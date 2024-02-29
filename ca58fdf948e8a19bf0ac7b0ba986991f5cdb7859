@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a978f767_30128358",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1588,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-29T21:34:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "059dd0bc_a2a79980",
+      "range": {
+        "startLine": 1588,
+        "startChar": 0,
+        "endLine": 1588,
+        "endChar": 65
+      },
+      "revId": "ca58fdf948e8a19bf0ac7b0ba986991f5cdb7859",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8bea3df_862f2f03",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-29T19:26:29Z",
       "side": 1,
       "message": "Do we need that in a C file?",
+      "range": {
+        "startLine": 1606,
+        "startChar": 7,
+        "endLine": 1606,
+        "endChar": 13
+      },
+      "revId": "ca58fdf948e8a19bf0ac7b0ba986991f5cdb7859",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0e01d2b_a2b7fad0",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1606,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-29T21:34:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8bea3df_862f2f03",
       "range": {
         "startLine": 1606,
         "startChar": 7,
@@ -70,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06c80757_6265a017",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1607,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-29T21:34:29Z",
+      "side": 1,
+      "message": "IIRC, find_ppage would return NULL if it isn\u0027t found. the _or_above version jump straight to the next one.",
+      "parentUuid": "22d05020_e7b24ac2",
+      "range": {
+        "startLine": 1607,
+        "startChar": 0,
+        "endLine": 1607,
+        "endChar": 19
+      },
+      "revId": "ca58fdf948e8a19bf0ac7b0ba986991f5cdb7859",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bdd068c_7f5b315e",
@@ -93,6 +165,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39b6bff5_41cd8b18",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1774,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-29T21:34:29Z",
+      "side": 1,
+      "message": "Duh and of course that\u0027s not so easy. So I made something to only release it before the call to `pkvm_mem_abort()`.",
+      "parentUuid": "3bdd068c_7f5b315e",
+      "range": {
+        "startLine": 1774,
+        "startChar": 1,
+        "endLine": 1774,
+        "endChar": 51
+      },
+      "revId": "ca58fdf948e8a19bf0ac7b0ba986991f5cdb7859",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31fafa6c_9d6686a7",
@@ -106,6 +202,30 @@
       "writtenOn": "2024-02-29T19:54:18Z",
       "side": 1,
       "message": "We can actually tolerate that for np-guests now.",
+      "range": {
+        "startLine": 1787,
+        "startChar": 32,
+        "endLine": 1787,
+        "endChar": 42
+      },
+      "revId": "ca58fdf948e8a19bf0ac7b0ba986991f5cdb7859",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "177166e6_f2a69b1e",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1787,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-02-29T21:34:29Z",
+      "side": 1,
+      "message": "Only protected guests (via memshare) would trigger this path at the moment (and for the foreseeable future)",
+      "parentUuid": "31fafa6c_9d6686a7",
       "range": {
         "startLine": 1787,
         "startChar": 32,
