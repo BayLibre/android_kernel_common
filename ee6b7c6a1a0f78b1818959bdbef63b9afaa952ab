@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2908736_159c203a",
+        "filename": "mm/mmap.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2024-02-29T19:20:25Z",
+      "side": 1,
+      "message": "I think we should call the macros defined in mm/page_size_compat.c to initialize these 2 variables based on page_shift_compat_enabled here. Otherwise, it is not clear to see why the 3 variables have different values during runtime.",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 60
+      },
+      "revId": "ee6b7c6a1a0f78b1818959bdbef63b9afaa952ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
