@@ -16,6 +16,24 @@
       "message": "It appears old is set at line 486 to sysctl_sched_pelt_multiplier, so why does this hook have both if this is the only place its used?",
       "revId": "f7fc3e80fd5bc161c2344d4cea80fa2d36620b79",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90989de0_cf0dce4e",
+        "filename": "kernel/sched/pelt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 3077297
+      },
+      "writtenOn": "2024-02-29T03:13:52Z",
+      "side": 1,
+      "message": "The old record the previous multiplier setting, after proc_dointvec(line 487),\nthe sysctl_sched_pelt_multiplier will update to new pelt multiplier setting.\nSo the trace hook can help vendor to record the pelt switch transition time\nMoreover, vendor can add some function footprint for debug the setting caller.",
+      "parentUuid": "403de0dd_015249ed",
+      "revId": "f7fc3e80fd5bc161c2344d4cea80fa2d36620b79",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
