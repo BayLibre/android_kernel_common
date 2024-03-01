@@ -16,6 +16,24 @@
       "message": "why do you need this? reading files from the kernel bypasses security policies.",
       "revId": "aca9eedfec1df248b6360d1d8f5ea12ab9ad49cb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bf01357_5eb264d5",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 2
+      },
+      "lineNbr": 1686,
+      "author": {
+        "id": 3291869
+      },
+      "writtenOn": "2024-03-01T03:09:44Z",
+      "side": 1,
+      "message": "it was the 3rd party code for Toshiba Ethernet driver, i just pick it up to QC kernel, thanks\nhttps://github.com/TC956X/TC9564_Host_Driver/blob/industrial_limited_tested/drivers/net/ethernet/toshiba/tc956x/tc956xmac_main.c#L14570\n\n#if (LINUX_VERSION_CODE \u003e\u003d KERNEL_VERSION(5, 10, 0))\n\tret \u003d kernel_read_file_from_path(\"config.ini\", 0, \u0026data, INT_MAX, NULL, READING_POLICY);\n#else\n\tloff_t size;\n\tret \u003d kernel_read_file_from_path(\"config.ini\", \u0026data, \u0026size, 1000, READING_POLICY);\n#endif",
+      "parentUuid": "0ef2d169_7d83f54d",
+      "revId": "aca9eedfec1df248b6360d1d8f5ea12ab9ad49cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
