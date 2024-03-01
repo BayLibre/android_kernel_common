@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed4098b9_9d14d120",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3108516
+      },
+      "writtenOn": "2024-03-01T06:36:18Z",
+      "side": 1,
+      "message": "May I ask why the trace_android_vh_show_mem hook in __show_mem() is removed? The hook point exists in the previous branch. In oom scenario, we need the hook to display some memory usage information of the driver.",
+      "revId": "c64f4eae22523fbf4ecf7bd7783c3884214eeef4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
