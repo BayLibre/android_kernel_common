@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "116c55e4_99ae9cc8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-03-02T02:30:43Z",
+      "side": 1,
+      "message": "Re-uploading with the following fixes to resolve build issues when CONFIG_ANDROID_USB_CONFIGFS_UEVENT is not set:\n\ndrivers/usb/gadget/android_configfs_uevent.h: removed errant asterisk on line 146\ndrivers/usb/gadget/Makefile: add conditional include of android_configfs_uevent.o\n\nI have validated both cases for the config option. Apologies for the thrash on this - I should have re-tested the disabled case.",
+      "revId": "427369d3a095da70c89389dea12b783f4b509576",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
