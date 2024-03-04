@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccbb4958_bc527681",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1746,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-04T11:47:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea606cb1_81213466",
+      "revId": "c498754d327f9e9f06c16c55aa64c8436ce503bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "91fe52d4_673a2a1f",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "705d8ef1_7ed67ff3",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1757,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-04T11:47:25Z",
+      "side": 1,
+      "message": "Right, initially I was having src_pgt and dst_pgt because it makes more sense for the setup but I managed to get it more reusable by splitting the copy of the pgd part in the caller of this method.\n\nThe reasons being: you need to acquire the lock of the source vm/host before copy and you also need the size of the pgd.\n\nLet me know what do you think, if it makes sense to keep it as is or if you have a better idea 😊",
+      "parentUuid": "91fe52d4_673a2a1f",
+      "revId": "c498754d327f9e9f06c16c55aa64c8436ce503bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4fd91fd_7bd95379",
         "filename": "arch/arm64/kvm/hyp/pgtable.c",
         "patchSetId": 1
@@ -48,6 +84,24 @@
       "writtenOn": "2024-02-23T09:27:31Z",
       "side": 1,
       "message": "Probably not a good error code. EINVAL would be better. \n\nBut in any case as stated above, the preparation of the destination page-table should probably happen here.",
+      "revId": "c498754d327f9e9f06c16c55aa64c8436ce503bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a85df76d_e1b518d6",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1773,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-04T11:47:25Z",
+      "side": 1,
+      "message": "I updated the code to use -EINVAL as a ret code.",
+      "parentUuid": "d4fd91fd_7bd95379",
       "revId": "c498754d327f9e9f06c16c55aa64c8436ce503bb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
