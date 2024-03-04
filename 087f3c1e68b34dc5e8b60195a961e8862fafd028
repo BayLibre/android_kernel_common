@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "626179dd_f4d2e961",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2516,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-04T16:33:48Z",
+      "side": 1,
+      "message": "I think we can even drop this because it doesn\u0027t seem to be used",
+      "parentUuid": "8949651c_81bc4cb5",
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b2ad2edd_af50e7e6",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 6
@@ -54,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "501e009f_5a25f03f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2612,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-04T16:33:48Z",
+      "side": 1,
+      "message": "We save it on line 2613 in `dest_pgt-\u003emm_ops\t\u003d mm_ops;` and then the pagetable copy walker uses the ops while traversing the copy pagetable. I don\u0027t think we can use the mm_ops from the source because I also need the allocator to keep track of the used pages.",
+      "parentUuid": "b2ad2edd_af50e7e6",
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8cef89b5_2cba8118",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 6
@@ -65,6 +101,24 @@
       "writtenOn": "2024-03-04T16:03:41Z",
       "side": 1,
       "message": "The back and forth with pkvm.c is a bit strange.\n\nHow about you have a top level function in pkvm.c that handles the ... `pkvm_handle_t` and then call `__pkvm_guest_stage2_snapshot` ?\n\nI don\u0027t think mem_protect should issue any knowledge about `pkvm_handle_t`",
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81872df5_30e7b9eb",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2664,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-04T16:33:48Z",
+      "side": 1,
+      "message": "`The back and forth with pkvm.c is a bit strange.` - I agree, I had to do that because `pkvm.c` has the knowledge about the handles.\n\nNow I have :\n```\nhyp_main.c  |  mem_protect.c   |  ../nvhe/pkvm.c  | mem_protect.c\nhandler     -\u003e  __pkvm_stage2_snapshot\n                               -\u003e  pkvm_stage2_snapshot_by_handle\n                                                  -\u003e __pkvm_guest_stage2_snapshot\n```\n\nand with your suggestion it will become:\n\n```\nhyp_main.c  | ../nvhe/pkvm.c  | mem_protect.c\nhandler     -\u003e  __pkvm_stage2_snapshot_by_handle\n                                                  -\u003e __pkvm_guest_stage2_snapshot\n```\n\nI guest this should work, but we will have to duplicate the call to `pkvm_setup_snapshot` and `pkvm_teardown_snapshot` for the host. On the other hand the call chain will be more clear with your suggestion.",
+      "parentUuid": "8cef89b5_2cba8118",
       "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
