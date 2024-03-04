@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "840cb39a_fbddc680",
+        "filename": "include/trace/hooks/ftrace_dump.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-03-04T18:18:49Z",
+      "side": 1,
+      "message": "No, you cannot add inclusions here. Instead add a forward declaration after the inclusion of vendor_hooks.h:\n```\nstruct trace_seq;\n```\n```suggestion\n#include \u003clinux/trace_seq.h\u003e\n```",
+      "revId": "29b7e08ac7ef56261f3a02bc1c16ed27a78baa55",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
