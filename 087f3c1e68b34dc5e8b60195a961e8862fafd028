@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8889e98_c4fc47af",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2496,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-04T16:03:41Z",
+      "side": 1,
+      "message": "nit: it is common to shorten index into idx.\n\nnit: `sizeof(*used_pg)`?",
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8949651c_81bc4cb5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2516,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-04T16:03:41Z",
+      "side": 1,
+      "message": "I don\u0027t see the reference inc in zalloc_page. Is that something forgotten or is it because we take that reference somewhere else after the zalloc?",
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2ad2edd_af50e7e6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2612,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-04T16:03:41Z",
+      "side": 1,
+      "message": "Why do you need all that? `mm_ops` is not used after the call to `pkvm_stage2_initialize_snapshot()` Can\u0027t we just reuse the mm_ops from src?",
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cef89b5_2cba8118",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2664,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-04T16:03:41Z",
+      "side": 1,
+      "message": "The back and forth with pkvm.c is a bit strange.\n\nHow about you have a top level function in pkvm.c that handles the ... `pkvm_handle_t` and then call `__pkvm_guest_stage2_snapshot` ?\n\nI don\u0027t think mem_protect should issue any knowledge about `pkvm_handle_t`",
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
