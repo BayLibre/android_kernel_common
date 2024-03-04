@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d015c2d_cd00a0ae",
+        "filename": "arch/arm64/kernel/vmlinux.lds.S",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-04T15:24:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "416651f0_d2c1b16f",
+      "range": {
+        "startLine": 23,
+        "startChar": 3,
+        "endLine": 23,
+        "endChar": 7
+      },
+      "revId": "343d74d996098618f80d7379c3fb1052f0527d7c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a621eab0_831db296",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Gotha...\n\n1. No need to write the id anywhere if it is just an increment.\n2. The hyp doesn\u0027t need the id as it can just compute that offset with a delta between the format address and the start of the ELF section.\n\nI will try something like that.",
       "parentUuid": "a621eab0_831db296",
+      "range": {
+        "startLine": 56,
+        "startChar": 2,
+        "endLine": 56,
+        "endChar": 27
+      },
+      "revId": "343d74d996098618f80d7379c3fb1052f0527d7c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d60a24a_cfe81cf0",
+        "filename": "arch/arm64/kvm/hyp_events.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-04T15:24:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39f8ccec_ae7433c5",
       "range": {
         "startLine": 56,
         "startChar": 2,
