@@ -53,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f194387f_d96d3750",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-04T17:05:45Z",
+      "side": 1,
+      "message": "As discussed offline, we don\u0027t have any size_t variables to apply here.\n\nAlso, the walker in the hypervisor is already checking all those boundaries. If for any reason the addr overflow, the walker would prevent that. \n\nSo it feels like no additional check is needed.",
+      "parentUuid": "f9c2fd74_b93bd909",
+      "revId": "d12620a2164993c5aba50c95c1bf06eea10013a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6aa5cdb_6965336f",
