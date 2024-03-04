@@ -141,6 +141,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53ba4350_e7326be5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2461,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-04T12:12:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44cac12b_c70ec18b",
+      "revId": "ca905a6a85d593a21bde7dc541f7fb3d1c032f60",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93deb0a7_b04705b5",
@@ -158,6 +176,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d2afee0_30819f80",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2489,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-04T12:12:08Z",
+      "side": 1,
+      "message": "Yep that should work. I used -EPERM because I wanted to differentiate between these.",
+      "parentUuid": "93deb0a7_b04705b5",
+      "revId": "ca905a6a85d593a21bde7dc541f7fb3d1c032f60",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f9d2c7d_b6503875",
@@ -171,6 +207,24 @@
       "writtenOn": "2024-02-23T09:58:06Z",
       "side": 1,
       "message": "You could just __pkvm_guest_stage2_snapshot if vm !\u003d NULL to avoid that label.",
+      "revId": "ca905a6a85d593a21bde7dc541f7fb3d1c032f60",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01e9e595_abdd79c6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1646,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-04T12:12:08Z",
+      "side": 1,
+      "message": "Good ideea, done !",
+      "parentUuid": "6f9d2c7d_b6503875",
       "revId": "ca905a6a85d593a21bde7dc541f7fb3d1c032f60",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
