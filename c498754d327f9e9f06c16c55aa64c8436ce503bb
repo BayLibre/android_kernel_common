@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0ec5356f_47ef8bc7",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1757,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-04T15:46:19Z",
+      "side": 1,
+      "message": "I am not worried about acquiring locks for both, it is a pretty common pattern that we acquire them in mem_protect.\n\nI am not so sure about the problem with the size, could it be called here? If not, how about it is just a new parameter?\n\n`kvm_pgtable_stage2_snapshot(dst, src, size)` ? \n\nThat\u0027s basically the memcpy prototype, that sounds pretty reasonable. \n\nThe mm_ops init can stay in mem_protect though.",
+      "parentUuid": "99ad87be_1b2f511b",
+      "revId": "c498754d327f9e9f06c16c55aa64c8436ce503bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4fd91fd_7bd95379",
         "filename": "arch/arm64/kvm/hyp/pgtable.c",
         "patchSetId": 1
