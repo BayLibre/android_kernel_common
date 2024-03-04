@@ -34,6 +34,24 @@
       "parentUuid": "3baf6a1b_cd7614dc",
       "revId": "f2d4a741311dc2a39d4bf8c6bf5e50fb3f9b29d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d2b3273_8fc3afd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-03-04T14:27:35Z",
+      "side": 1,
+      "message": "Change was merged into android15-6.1, then cherry picked into android15-6.6. Despite passing all presubmits, it caused a build breakage on android15-6.6 due to riscv having a different gki_defconfig on 6.6 (vs 6.1 is a symlink to arm64). \n\nThere were build issues in both patches which prevented building without the config enabled 😕. Therefore I reverted the patches from both 6.6 and 6.1, and this is the resubmit with fixes.\n\nChanges in this patch described in the comment here: https://android-review.git.corp.google.com/c/kernel/common/+/2983418/comments/116c55e4_99ae9cc8",
+      "parentUuid": "0a39b9c5_5757f296",
+      "revId": "f2d4a741311dc2a39d4bf8c6bf5e50fb3f9b29d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
