@@ -58,6 +58,7 @@ config CRYPTO_FIPS140_MOD
 	tristate "Enable FIPS 140 cryptographic module"
 	depends on ARM64 && ARM64_MODULE_PLTS
 	depends on m
+	select CRYPTO_FIPS140_LINKER_SCRIPT_PATCH
 	help
 	  This option enables building a loadable module fips140.ko, which
 	  contains various crypto algorithms that are also built into vmlinux.
@@ -78,6 +79,9 @@ config CRYPTO_FIPS140_MOD_EVAL_TESTING
 	  for lab evaluation testing of the module, e.g. support for injecting
 	  errors and support for a userspace interface to some of the module's
 	  services.  This option should not be enabled in production builds.
+
+config CRYPTO_FIPS140_LINKER_SCRIPT_PATCH
+	bool
 
 config CRYPTO_ALGAPI
 	tristate
