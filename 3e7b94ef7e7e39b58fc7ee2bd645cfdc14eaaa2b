@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0a53c0c_3908d4e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-03-05T23:29:59Z",
+      "side": 1,
+      "message": "Some symbols are not exported in the kernel and hence can\u0027t be allow-listed:\n\n```\nSymbols missing from the ksymtab:\n  __traceiter_mark_victim\n  __traceiter_mm_vmscan_direct_reclaim_begin\n  __traceiter_mm_vmscan_direct_reclaim_end\n  __tracepoint_mark_victim\n  __tracepoint_mm_vmscan_direct_reclaim_begin\n  __tracepoint_mm_vmscan_direct_reclaim_end\n  dev_pm_opp_add\n```",
+      "revId": "3e7b94ef7e7e39b58fc7ee2bd645cfdc14eaaa2b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
