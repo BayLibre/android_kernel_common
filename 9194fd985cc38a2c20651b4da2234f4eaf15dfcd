@@ -33,6 +33,24 @@
       "message": "Has this been proven? It seems unlikely since nice values in CFS affect bandwidth, but not latency. Is this a high-utilization task?\n\nPlease provide some data that this makes a difference.",
       "revId": "9194fd985cc38a2c20651b4da2234f4eaf15dfcd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dbb76ab_399abd16",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-03-05T23:28:33Z",
+      "side": 1,
+      "message": "Yes, this was shown to have a significant improvement during an app launch test in Wear (maybe Timothy can point to the results). However, I actually gave the same feedback as you did here.\n\nAlthough I do have a theory as to why this would work even without a \"high-utilization\" task. I\u0027ve been wondering what happens when the same binder target (CFS) gets continuously selected to service several RT transactions (one right after the other).\n\nI\u0027m guessing the scheduler determines that the target thread has exhausted its CFS runtime and it doesn\u0027t get picked for a while. When in theory, the CPU time should have been \"charged\" to the RT callers?\n\nSince binder\u0027s thread pool is LIFO the most recent thread gets selected and this makes sense as we want it to be close in memory. However, the most recent thread also has the most chances of having this exhausted CPU runtime situation.\n\nBumping the CFS priority, might put the task at a higher runtime quota and so it gets picked to run sooner. Thus improving transaction latency.\n\nThis is all a theory though. I would need to test it. Perhaps someone has already looked into this though?",
+      "parentUuid": "31354570_1ac6524c",
+      "revId": "9194fd985cc38a2c20651b4da2234f4eaf15dfcd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
