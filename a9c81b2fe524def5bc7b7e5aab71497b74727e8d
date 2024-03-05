@@ -70,6 +70,30 @@
       },
       "revId": "a9c81b2fe524def5bc7b7e5aab71497b74727e8d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82b78e48_ef67035e",
+        "filename": "init/Kconfig",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2024-03-05T14:39:38Z",
+      "side": 1,
+      "message": "\u003e unconditionally also pulls in some more things.\n\nDo we know which things? From Kleaf\u0027s PoV the [rust_defconfig](https://cs.android.com/android/kernel/superproject/+/common-android-mainline:build/kernel/kleaf/impl/defconfig/rust_defconfig) sets `CONFIG_RUST\u003dy` which is WAI.\n\nBy looking at ([Kconfig](https://cs.android.com/android/kernel/superproject/+/common-android-mainline:common/init/Kconfig;l\u003d1884-1904)) this has the effect of selecting `CONSTRUCTORS` (this change) but also from the [Kbuild](https://cs.android.com/android/kernel/superproject/+/common-android-mainline:common/Kbuild;l\u003d92) it pulls in the `rust/` ACK subdirectory, is this the problematic bit?",
+      "parentUuid": "d96cec3e_b23bdc87",
+      "range": {
+        "startLine": 123,
+        "startChar": 11,
+        "endLine": 123,
+        "endChar": 23
+      },
+      "revId": "a9c81b2fe524def5bc7b7e5aab71497b74727e8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
