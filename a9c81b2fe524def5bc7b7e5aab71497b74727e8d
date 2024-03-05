@@ -118,6 +118,30 @@
       },
       "revId": "a9c81b2fe524def5bc7b7e5aab71497b74727e8d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc10b77b_be334173",
+        "filename": "init/Kconfig",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-03-05T15:32:25Z",
+      "side": 1,
+      "message": "\u003e Do we know which things?\n\nI was actually thinking of some extra configuration options, but the `rust` subdirectory is indeed what causes actual trouble.\n\n\u003e \u003e There are also warnings about bindgen being too new.\n\u003e \n\u003e I see the warning coming from [scripts/rust_is_available.sh](https://cs.android.com/android/kernel/superproject/+/common-android-mainline:common/scripts/rust_is_available.sh;l\u003d168-175); probably invoked [here](https://cs.android.com/android/kernel/superproject/+/common-android-mainline:common/Makefile;l\u003d1255-1260)?\n\nYes. \"We\" can (and should) always patch `common/scripts/min-tool-version.sh` to match whatever we are shipping in prebuilts.",
+      "parentUuid": "cd0c4ecd_45b33957",
+      "range": {
+        "startLine": 123,
+        "startChar": 11,
+        "endLine": 123,
+        "endChar": 23
+      },
+      "revId": "a9c81b2fe524def5bc7b7e5aab71497b74727e8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
