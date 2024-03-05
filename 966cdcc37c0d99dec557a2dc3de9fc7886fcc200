@@ -96,6 +96,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8941354_577d76cb",
+        "filename": "fs/binfmt_elf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-03-05T22:44:05Z",
+      "side": 0,
+      "message": "\u003e Is ELF_EXEC_PAGESIZE \u003e\u003d PAGE_SIZE on Android? If so, please add a comment otherwise this change would be invalid, wouldn\u0027t it?\n\nAFAICT they are equal in all archs. (see below)\n\n\u003e Will architectures with ELF_EXEC_PAGESIZE \u003e PAGE_SIZE be supported after this change?\n\nI couldn\u0027t find any such case, so this looks remnant from dead code. It\u0027s before git days so I couldn\u0027t tell why it used to be needed.\n\n```\n❯ git grep -rni \u0027#define ELF_EXEC_PAGESIZE\\b\u0027 | grep -v \u0027\\bPAGE_SIZE\\b\\|\\b4096\\b\u0027\narch/alpha/include/asm/elf.h:86:#define ELF_EXEC_PAGESIZE       8192\narch/m68k/include/asm/elf.h:71:#define ELF_EXEC_PAGESIZE        8192\narch/openrisc/include/asm/elf.h:41:#define ELF_EXEC_PAGESIZE    8192\n```\n\n```\n❯ git grep -rni -C2 \u0027#define ELF_EXEC_PAGESIZE\\b\\|#define PAGE_SHIFT\\b\u0027 | grep \u0027arch/\u0027 | grep alpha\narch/alpha/include/asm/elf.h-84-#define ELF_ARCH        EM_ALPHA\narch/alpha/include/asm/elf.h-85-\narch/alpha/include/asm/elf.h:86:#define ELF_EXEC_PAGESIZE       8192\narch/alpha/include/asm/elf.h-87-\narch/alpha/include/asm/elf.h-88-/* This is the location that an ET_DYN program is loaded if exec\u0027ed.  Typical\narch/alpha/include/asm/page.h-7-\narch/alpha/include/asm/page.h-8-/* PAGE_SHIFT determines the page size */\narch/alpha/include/asm/page.h:9:#define PAGE_SHIFT      13\narch/alpha/include/asm/page.h-10-#define PAGE_SIZE      (_AC(1,UL) \u003c\u003c PAGE_SHIFT)\narch/alpha/include/asm/page.h-11-#define PAGE_MASK      (~(PAGE_SIZE-1))\n```\n\n```\n❯ git grep -rni -C2 \u0027#define ELF_EXEC_PAGESIZE\\b\\|#define PAGE_SHIFT\\b\u0027 | grep \u0027arch/\u0027 | grep m68k\narch/m68k/include/asm/elf.h-69-\narch/m68k/include/asm/elf.h-70-#if defined(CONFIG_SUN3) || defined(CONFIG_COLDFIRE)\narch/m68k/include/asm/elf.h:71:#define ELF_EXEC_PAGESIZE        8192\narch/m68k/include/asm/elf.h-72-#else\narch/m68k/include/asm/elf.h:73:#define ELF_EXEC_PAGESIZE        4096\narch/m68k/include/asm/elf.h-74-#endif\narch/m68k/include/asm/elf.h-75-\narch/m68k/include/asm/page.h-9-/* PAGE_SHIFT determines the page size */\narch/m68k/include/asm/page.h-10-#if defined(CONFIG_SUN3) || defined(CONFIG_COLDFIRE)\narch/m68k/include/asm/page.h:11:#define PAGE_SHIFT      13\narch/m68k/include/asm/page.h-12-#else\narch/m68k/include/asm/page.h:13:#define PAGE_SHIFT      12\narch/m68k/include/asm/page.h-14-#endif\narch/m68k/include/asm/page.h-15-#define PAGE_SIZE       (_AC(1, UL) \u003c\u003c PAGE_SHIFT)\n```\n\n```\n❯ git grep -rni -C2 \u0027#define ELF_EXEC_PAGESIZE\\b\\|#define PAGE_SHIFT\\b\u0027 | grep \u0027arch/\u0027 | grep openrisc\narch/openrisc/include/asm/elf.h-39-#define CORE_DUMP_USE_REGSET\narch/openrisc/include/asm/elf.h-40-\narch/openrisc/include/asm/elf.h:41:#define ELF_EXEC_PAGESIZE    8192\narch/openrisc/include/asm/elf.h-42-\narch/openrisc/include/asm/elf.h-43-extern void dump_elf_thread(elf_greg_t *dest, struct pt_regs *pt);\narch/openrisc/include/asm/page.h-19-/* PAGE_SHIFT determines the page size */\narch/openrisc/include/asm/page.h-20-\narch/openrisc/include/asm/page.h:21:#define PAGE_SHIFT      13\narch/openrisc/include/asm/page.h-22-#ifdef __ASSEMBLY__\narch/openrisc/include/asm/page.h-23-#define PAGE_SIZE       (1 \u003c\u003c PAGE_SHIFT)\n\n```",
+      "parentUuid": "b512ed2d_8fa22f35",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 6
+      },
+      "revId": "966cdcc37c0d99dec557a2dc3de9fc7886fcc200",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54314abf_77f73e6e",
