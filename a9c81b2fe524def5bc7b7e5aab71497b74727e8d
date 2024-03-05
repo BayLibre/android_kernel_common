@@ -46,6 +46,30 @@
       },
       "revId": "a9c81b2fe524def5bc7b7e5aab71497b74727e8d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d96cec3e_b23bdc87",
+        "filename": "init/Kconfig",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-03-05T10:08:10Z",
+      "side": 1,
+      "message": "@elsk@google.com @umendez@google.com @sidnayyar@google.com\n\nGetting Kleaf to add the one-line `rust_defconfig` fragment containing `CONFIG_RUST` unconditionally also pulls in some more things.\n\nMore importantly it actually compiles and/or links some Rust code somewhere. I know this, because it crashes `stg`. (The fix has been ready for some time.)\n\nSo if we want an intermediate step, it is just `CONSTRUCTORS`. Otherwise, we can go `RUST`, but we need at least one more tooling piece in place first.\n\nThere are also warnings about `bindgen` being too new.",
+      "parentUuid": "3b642848_33abfc3a",
+      "range": {
+        "startLine": 123,
+        "startChar": 11,
+        "endLine": 123,
+        "endChar": 23
+      },
+      "revId": "a9c81b2fe524def5bc7b7e5aab71497b74727e8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
