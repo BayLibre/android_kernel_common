@@ -166,6 +166,30 @@
       },
       "revId": "a9c81b2fe524def5bc7b7e5aab71497b74727e8d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5017767a_30d7fcf4",
+        "filename": "init/Kconfig",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2024-03-05T19:57:58Z",
+      "side": 1,
+      "message": "And then build with `--rust`: https://cs.android.com/android/kernel/superproject/+/common-android-mainline:build/kernel/kleaf/bazelrc/flags.bazelrc;l\u003d50;drc\u003d9b37d337539db01a540011273f35a54e4f5d009f\n\nThe flag adds CONFIG_RUST via the rust_defconfig you mentioned\n\nIt is hidden behind a flag for now. cc @mmaurer@google.com",
+      "parentUuid": "daf243d1_a479614a",
+      "range": {
+        "startLine": 123,
+        "startChar": 11,
+        "endLine": 123,
+        "endChar": 23
+      },
+      "revId": "a9c81b2fe524def5bc7b7e5aab71497b74727e8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
