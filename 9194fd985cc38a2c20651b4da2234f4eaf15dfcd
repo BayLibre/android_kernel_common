@@ -16,6 +16,23 @@
       "message": "I\u0027m not sure what to make of this... I\u0027m honestly a little skeptical of this change. CFS inheritance won\u0027t priority inversion or preemption against other RT tasks. However, it seems to have made a significant difference for Timothy\u0027s case. So I would open the discussion and appreciate some feedback here.",
       "revId": "9194fd985cc38a2c20651b4da2234f4eaf15dfcd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31354570_1ac6524c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-03-05T19:38:51Z",
+      "side": 1,
+      "message": "Has this been proven? It seems unlikely since nice values in CFS affect bandwidth, but not latency. Is this a high-utilization task?\n\nPlease provide some data that this makes a difference.",
+      "revId": "9194fd985cc38a2c20651b4da2234f4eaf15dfcd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
