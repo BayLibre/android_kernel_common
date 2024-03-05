@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b1ad9d1_809cd892",
+        "filename": "init/Kconfig",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-03-05T09:54:15Z",
+      "side": 1,
+      "message": "as RUST enables this, why not just enable CONFIG_RUST in our gki-defconfig?  That would be the \"correct\" fix here, and not this change from what I can tell, as CONFIG_RUST being enabled will probably cause other things to be enabled that we need in our base kernel image.",
+      "range": {
+        "startLine": 123,
+        "startChar": 11,
+        "endLine": 123,
+        "endChar": 23
+      },
+      "revId": "a9c81b2fe524def5bc7b7e5aab71497b74727e8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
