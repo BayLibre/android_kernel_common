@@ -249,7 +249,12 @@ static __always_inline ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
 					      unsigned long dst_start,
 					      unsigned long src_start,
 					      unsigned long len,
+<<<<<<< HEAD   (4e7acb Revert "bpf: Add map and need_defer parameters to .map_fd_pu)
 					      enum mcopy_atomic_mode mode)
+=======
+					      bool *mmap_changing,
+					      bool zeropage)
+>>>>>>> BRANCH (e133c1 Linux 5.4.270)
 {
 	int vm_alloc_shared = dst_vma->vm_flags & VM_SHARED;
 	int vm_shared = dst_vma->vm_flags & VM_SHARED;
@@ -378,6 +383,15 @@ retry:
 				goto out;
 			}
 			down_read(&dst_mm->mmap_sem);
+			/*
+			 * If memory mappings are changing because of non-cooperative
+			 * operation (e.g. mremap) running in parallel, bail out and
+			 * request the user to retry later
+			 */
+			if (mmap_changing && READ_ONCE(*mmap_changing)) {
+				err = -EAGAIN;
+				break;
+			}
 
 			dst_vma = NULL;
 			goto retry;
@@ -459,7 +473,12 @@ extern ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
 				      unsigned long dst_start,
 				      unsigned long src_start,
 				      unsigned long len,
+<<<<<<< HEAD   (4e7acb Revert "bpf: Add map and need_defer parameters to .map_fd_pu)
 				      enum mcopy_atomic_mode mode);
+=======
+				      bool *mmap_changing,
+				      bool zeropage);
+>>>>>>> BRANCH (e133c1 Linux 5.4.270)
 #endif /* CONFIG_HUGETLB_PAGE */
 
 static __always_inline ssize_t mfill_atomic_pte(struct mm_struct *dst_mm,
@@ -576,7 +595,12 @@ retry:
 	 */
 	if (is_vm_hugetlb_page(dst_vma))
 		return  __mcopy_atomic_hugetlb(dst_mm, dst_vma, dst_start,
+<<<<<<< HEAD   (4e7acb Revert "bpf: Add map and need_defer parameters to .map_fd_pu)
 						src_start, len, mcopy_mode);
+=======
+					       src_start, len, mmap_changing,
+					       zeropage);
+>>>>>>> BRANCH (e133c1 Linux 5.4.270)
 
 	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
 		goto out_unlock;
