@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000070379728",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2991349?revision\u003d1",
+      "key": {
+        "uuid": "a8e371c5_46d5c745",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-03-06T06:56:05Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against [change 2975111](https://r.android.com/c/2975111) on branch android14-6.1.\n\n```\n      ## android/abi_gki_aarch64_xiaomi ##\n     @@\n    -   sdio_writew\n    -   sdio_readw\n    - \n    + #required by zram.ko\n    +   bioset_init\n    +   bioset_exit\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (74f33d ANDROID: fuse-bpf: Follow mounts in lookups)\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    ++\n    ++#required by mi_asap.ko\n    ++  __traceiter_android_vh_read_pages\n    ++  __tracepoint_android_vh_read_pages\n    ++  page_cache_sync_ra\n    ++  page_cache_async_ra\n    ++  pagecache_get_page\n    ++  filemap_get_folios\n    ++  find_get_pages_range_tag\n    ++\n    ++#required by bcmdhd.ko\n    ++  nla_append\n    ++  sdio_writew\n    ++  sdio_readw\n    ++\n     +#required by speed_ui.ko\n     +  __tracepoint_android_rvh_update_cpus_allowed\n     +  __traceiter_android_rvh_update_cpus_allowed\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (4289e1 ANDROID: GKI: Update symbol list for xiaomi)\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "89d42822bbbb3ed260fc17acb79a333ccaea9c95",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000070379728",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/2991349?revision\u003d1",
+      "key": {
+        "uuid": "6fd038ea_fa094e38",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-03-06T06:56:05Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "89d42822bbbb3ed260fc17acb79a333ccaea9c95",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
