@@ -90,6 +90,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "603d6187_e71f9434",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2633,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-06T16:04:56Z",
+      "side": 1,
+      "message": "vdonnefort@google.com I am a bit worried that this field is host controlled. Eg. someone can trick the hyp into allocating 1 page but they can specify more pages in the `pgd_pages` (eg. 3) field which can pass this check. If the `required_pgd_len` is 2 pages then we end up overflowing one page.\n\nAn attacker can overwrite host kernel memory with this.",
+      "range": {
+        "startLine": 2633,
+        "startChar": 11,
+        "endLine": 2633,
+        "endChar": 20
+      },
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8cef89b5_2cba8118",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 6
