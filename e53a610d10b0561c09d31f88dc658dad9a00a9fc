@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4e04054b_b3fa5e51",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1901900
+      },
+      "writtenOn": "2024-03-06T10:16:04Z",
+      "side": 1,
+      "message": "this call sleeps potentially as well when allocating memory for the device.  do you think its really necessary to be holding a spinlock w/ pre-emption disabled during this API, which make_group() and drop_item() callbacks are protected by the su_item mutex in configFS?",
+      "range": {
+        "startLine": 156,
+        "startChar": 13,
+        "endLine": 156,
+        "endChar": 26
+      },
+      "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc2a55d6_9a83503d",
         "filename": "drivers/usb/gadget/android_configfs_uevent.c",
         "patchSetId": 3
