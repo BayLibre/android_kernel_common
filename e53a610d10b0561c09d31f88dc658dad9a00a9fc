@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebb4802a_29d63d10",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1901900
+      },
+      "writtenOn": "2024-03-06T04:39:23Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be GFP ATOMIC if you\u0027re taking the spinlock above?",
+      "range": {
+        "startLine": 152,
+        "startChar": 53,
+        "endLine": 152,
+        "endChar": 55
+      },
+      "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
