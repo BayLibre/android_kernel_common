@@ -161,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "edc9a4da_e1efd1d0",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2633,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-07T17:16:49Z",
+      "side": 1,
+      "message": "The hypervisor would just write in those buffers.\n\nWhat matters is that the hypervisor will not write on anything that isn\u0027t owned by the host.",
+      "parentUuid": "29a57b02_ba7da3f2",
+      "range": {
+        "startLine": 2633,
+        "startChar": 11,
+        "endLine": 2633,
+        "endChar": 20
+      },
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8cef89b5_2cba8118",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 6
