@@ -89,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0c605e12_2bd4943d",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1901900
+      },
+      "writtenOn": "2024-03-07T22:39:43Z",
+      "side": 1,
+      "message": "if work was busy, then the flush_work() will ensure that the work item is completed, and since we already cached the opts-\u003edev within a spinlock in the worker, even if we set it null here in the destroy path it will be still accessible.  we just need to ensure that we dont\u0027 free the memory yet until the work is completed.",
+      "parentUuid": "45e3f0d3_7c795f63",
+      "revId": "3d08c9a9abf7ee246936b9207d0f1130bedbbdab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e4e80c42_2ed47bb4",
         "filename": "drivers/usb/gadget/android_configfs_uevent.c",
         "patchSetId": 4
