@@ -145,6 +145,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e58eaedb_784af3a8",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1757,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-07T09:15:50Z",
+      "side": 1,
+      "message": "That could just be a parameter given by the caller (i.e. mem_protect) which should know about this data?\n\nHence the `kvm_pgtable_stage2_copy(dst, src, size)`",
+      "parentUuid": "8d8dce34_d1f89fa9",
+      "revId": "c498754d327f9e9f06c16c55aa64c8436ce503bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4fd91fd_7bd95379",
         "filename": "arch/arm64/kvm/hyp/pgtable.c",
         "patchSetId": 1
