@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "012119f8_04146a3b",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1901900
+      },
+      "writtenOn": "2024-03-07T03:34:25Z",
+      "side": 1,
+      "message": "hmm, i see what you mean.  do you think maybe a flush_work() (on the destroy path) or something like that would help here?  at least that would ensure that the worker is idle.",
+      "parentUuid": "332e1a6f_1789ce16",
+      "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ebb4802a_29d63d10",
         "filename": "drivers/usb/gadget/android_configfs_uevent.c",
         "patchSetId": 3
