@@ -51,6 +51,63 @@
       "parentUuid": "7ced2494_08f42dce",
       "revId": "3d08c9a9abf7ee246936b9207d0f1130bedbbdab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38416232_a5ccbd56",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1901900
+      },
+      "writtenOn": "2024-03-07T22:37:42Z",
+      "side": 1,
+      "message": "maybe with the flush work approach noted below, we\u0027d need to also have a local struct device\n\nstruct device *dev;\n\nspin_lock\ndev \u003d opts-\u003edev;\nspin_unlock\n\nthen for below koject ops just use dev instead of opts-\u003edev",
+      "revId": "3d08c9a9abf7ee246936b9207d0f1130bedbbdab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45e3f0d3_7c795f63",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1901900
+      },
+      "writtenOn": "2024-03-07T22:37:42Z",
+      "side": 1,
+      "message": "just noting down what i was suggesting for the flush_work approach if that works.  protects the null set of opts-\u003edev in the spinlock before flushing work.  that would ensure that if work was pending we\u0027d exit early in the work handler. if work was busy, \n\nvoid android_device_destroy(struct android_uevent_opts *opts)\n{\n        struct device *dev \u003d opts-\u003edev;\n\tunsigned long flags;\n\t\n\tspin_lock_irqsave(\u0026opts_lock, flags);\n\topts-\u003edev \u003d NULL;\n\tspin_unlock_irqrestore(\u0026opts_lock, flags);\n\t\n\tflush_work(\u0026opts-\u003ework);\n\t\n\tif (opts-\u003edevice_id \u003e\u003d 0)\n\t\tida_free(\u0026android_ida, opts-\u003edevice_id);\n\tandroid_opts \u003d NULL;\n\tida_destroy(\u0026opts-\u003efunction_ida);\n\tdevice_destroy(dev-\u003eclass, dev-\u003edevt);\n}",
+      "revId": "3d08c9a9abf7ee246936b9207d0f1130bedbbdab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4e80c42_2ed47bb4",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1901900
+      },
+      "writtenOn": "2024-03-07T22:37:42Z",
+      "side": 1,
+      "message": "this is going to sleep as well",
+      "range": {
+        "startLine": 266,
+        "startChar": 7,
+        "endLine": 266,
+        "endChar": 32
+      },
+      "revId": "3d08c9a9abf7ee246936b9207d0f1130bedbbdab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
