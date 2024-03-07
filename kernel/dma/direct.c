@@ -59,8 +59,10 @@ static gfp_t dma_direct_optimal_gfp_mask(struct device *dev, u64 *phys_limit)
 	 * zones.
 	 */
 	*phys_limit = dma_to_phys(dev, dma_limit);
-	if (*phys_limit <= DMA_BIT_MASK(zone_dma_bits))
+	if (*phys_limit <= DMA_BIT_MASK(zone_dma_bits)){
+		WARN_ON_ONCE(!zone_dma32_are_empty());
 		return GFP_DMA;
+	}
 	if (*phys_limit <= DMA_BIT_MASK(32) &&
 		!zone_dma32_are_empty())
 		return GFP_DMA32;
@@ -157,7 +159,7 @@ again:
 			goto again;
 		}
 	}
-
+	WARN_ON(zone_dma32_are_empty() && !page);
 	return page;
 }
 
@@ -182,8 +184,10 @@ static void *dma_direct_alloc_from_pool(struct device *dev, size_t size,
 
 	gfp |= dma_direct_optimal_gfp_mask(dev, &phys_limit);
 	page = dma_alloc_from_pool(dev, size, &ret, gfp, dma_coherent_ok);
-	if (!page)
+	if (!page){
+		WARN_ON(zone_dma32_are_empty());
 		return NULL;
+	}
 	*dma_handle = phys_to_dma_direct(dev, page_to_phys(page));
 	return ret;
 }
