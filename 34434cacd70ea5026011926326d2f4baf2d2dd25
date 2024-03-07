@@ -50,6 +50,24 @@
       "message": "Out of curiosity, what is the intent with having this patch in android-mainline?",
       "revId": "34434cacd70ea5026011926326d2f4baf2d2dd25",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74beb9a4_5a9aa0eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2024-03-07T17:16:31Z",
+      "side": 1,
+      "message": "The reason I pushed this is because https://r.android.com/2980575 was added to android-mainline which will become a problem for the next LTS if we want to support pKVM modules. We should solve this problem (b/327245884) now on android-mainline instead of breaking riscv when we try to enable pKVM modules in the next LTS.",
+      "parentUuid": "c62ababd_1670eeb8",
+      "revId": "34434cacd70ea5026011926326d2f4baf2d2dd25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
