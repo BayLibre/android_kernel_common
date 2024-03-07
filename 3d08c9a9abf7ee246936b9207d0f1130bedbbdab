@@ -107,6 +107,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8c1f991e_e52ee3c9",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-03-07T23:06:27Z",
+      "side": 1,
+      "message": "Thanks, this looks cleaner than the approach I was taking. I was along the same lines of setting opts-\u003edev \u003d NULL, but added a separate mutex which was taken at the start of the worker and released at the end.",
+      "parentUuid": "0c605e12_2bd4943d",
+      "revId": "3d08c9a9abf7ee246936b9207d0f1130bedbbdab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e4e80c42_2ed47bb4",
         "filename": "drivers/usb/gadget/android_configfs_uevent.c",
         "patchSetId": 4
