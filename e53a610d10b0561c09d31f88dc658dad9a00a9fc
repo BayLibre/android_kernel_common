@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c78ba5da_706ad43b",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-03-07T03:24:23Z",
+      "side": 1,
+      "message": "Was an error below- was meant to operate on the local configured.",
+      "parentUuid": "74171a00_e90f961e",
+      "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7977ab9c_1ea12df7",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-03-07T02:01:22Z",
       "side": 1,
       "message": "we need to be careful here also because calls to kobject_uevent_env() are also potentially sleeping.  how about something like\n\nspin_lock()\nif (opts-\u003econnected !\u003d opts-\u003esw_connected) {\n\t\tif (opts-\u003econnected)\n\t\t\tconnected \u003d true;\n\t\telse\n\t\t\tdisconnected \u003d true;\n\t\topts-\u003esw_connected \u003d opts-\u003econnected;\n\t}\n\tif (opts-\u003econfigured)\n\t\tconfigured \u003d true;\nspin_unlock()\n\nthen below you operate purely on the local variables that were determined based on the opt parameters.  at least that way, state changes are not intermixed. (ie if a state change occurred while reading in it in the worker thread)  if the state changes after this point, that is fine, as the state change API will schedule_work() to run this routine again and we would propagate the new USB connection state as a separate uevent.",
+      "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "332e1a6f_1789ce16",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-03-07T03:24:23Z",
+      "side": 1,
+      "message": "You are correct- the intent was to unlock and operate on the local configured variables. The reason for keeping the lock around until after the uevents are sent is so the dev doesn\u0027t get destroyed while we are accessing it. I started to play with incrementing the dev\u0027s reference count in the lock with get_device(), storing a pointer to it, unlocking, sending the uevents, then calling put_device(), but realized the logic around android_device_destroy() wouldn\u0027t support this.",
+      "parentUuid": "7977ab9c_1ea12df7",
       "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -58,6 +94,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b55765c0_56d509a0",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-03-07T03:24:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebb4802a_29d63d10",
+      "range": {
+        "startLine": 152,
+        "startChar": 53,
+        "endLine": 152,
+        "endChar": 55
+      },
+      "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "abd8461a_abaa93b4",
@@ -71,6 +131,24 @@
       "writtenOn": "2024-03-06T10:18:29Z",
       "side": 1,
       "message": "if you stick with spinlocks, please unlock on error cases.",
+      "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96efd8b6_6fd4f2bd",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-03-07T03:24:23Z",
+      "side": 1,
+      "message": "Whoops, good catch. Done.",
+      "parentUuid": "abd8461a_abaa93b4",
       "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -98,6 +176,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d755c783_fd6063bf",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-03-07T03:24:23Z",
+      "side": 1,
+      "message": "Thanks, I have pushed an updated patch which unlocks for this call.",
+      "parentUuid": "4e04054b_b3fa5e51",
+      "range": {
+        "startLine": 156,
+        "startChar": 13,
+        "endLine": 156,
+        "endChar": 26
+      },
+      "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc2a55d6_9a83503d",
@@ -111,6 +213,24 @@
       "writtenOn": "2024-03-06T05:10:05Z",
       "side": 1,
       "message": "here too...",
+      "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea60c378_01cdee55",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-03-07T03:24:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc2a55d6_9a83503d",
       "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
