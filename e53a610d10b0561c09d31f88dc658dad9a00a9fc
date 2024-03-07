@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ed31609_2ef795de",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-03-07T03:48:31Z",
+      "side": 1,
+      "message": "Possibly, but depending on where it is put in the destroy path, we would just be waiting in the same locked scenario there waiting for the flush... need to think this one through a bit more.",
+      "parentUuid": "012119f8_04146a3b",
+      "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ebb4802a_29d63d10",
         "filename": "drivers/usb/gadget/android_configfs_uevent.c",
         "patchSetId": 3
