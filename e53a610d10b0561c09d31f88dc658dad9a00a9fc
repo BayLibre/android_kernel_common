@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74171a00_e90f961e",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1901900
+      },
+      "writtenOn": "2024-03-07T02:01:22Z",
+      "side": 1,
+      "message": "do we need to have this?  you\u0027re checking opts-\u003econfigured directly below.",
+      "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7977ab9c_1ea12df7",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1901900
+      },
+      "writtenOn": "2024-03-07T02:01:22Z",
+      "side": 1,
+      "message": "we need to be careful here also because calls to kobject_uevent_env() are also potentially sleeping.  how about something like\n\nspin_lock()\nif (opts-\u003econnected !\u003d opts-\u003esw_connected) {\n\t\tif (opts-\u003econnected)\n\t\t\tconnected \u003d true;\n\t\telse\n\t\t\tdisconnected \u003d true;\n\t\topts-\u003esw_connected \u003d opts-\u003econnected;\n\t}\n\tif (opts-\u003econfigured)\n\t\tconfigured \u003d true;\nspin_unlock()\n\nthen below you operate purely on the local variables that were determined based on the opt parameters.  at least that way, state changes are not intermixed. (ie if a state change occurred while reading in it in the worker thread)  if the state changes after this point, that is fine, as the state change API will schedule_work() to run this routine again and we would propagate the new USB connection state as a separate uevent.",
+      "revId": "e53a610d10b0561c09d31f88dc658dad9a00a9fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ebb4802a_29d63d10",
         "filename": "drivers/usb/gadget/android_configfs_uevent.c",
         "patchSetId": 3
