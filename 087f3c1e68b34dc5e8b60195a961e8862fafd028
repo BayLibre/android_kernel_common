@@ -113,6 +113,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84753a30_8601e49d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2633,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-07T09:20:29Z",
+      "side": 1,
+      "message": "I thought when you host_donate_hyp the memory for the snapshot, you were using the hyp internal function to get the PGD size anyway? \n\nIf that\u0027s the case, this field here is just a simple check. It doesn\u0027t give any surface for the host to attack the hypervisor.\n\nIf the wrong PGD size is given, the hyp will lock what it thinks is the PGD size (and fails if it is not allowed to).",
+      "parentUuid": "603d6187_e71f9434",
+      "range": {
+        "startLine": 2633,
+        "startChar": 11,
+        "endLine": 2633,
+        "endChar": 20
+      },
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8cef89b5_2cba8118",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 6
