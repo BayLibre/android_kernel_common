@@ -16,6 +16,23 @@
       "message": "Sorry if I confused you.\n\nThose declarations should go at the top of this function __unless__ they are within a {} block.",
       "revId": "baefb0a7161f6a07a87a371e20ac5d28ecb0c298",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "826df60b_95d69667",
+        "filename": "arch/arm64/kvm/hyp/nvhe/switch.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-08T11:12:39Z",
+      "side": 1,
+      "message": "Probably worth to make that dependant on NVHE_EL2_DEBUG as the host wouldn\u0027t be able to read that anyway?",
+      "revId": "baefb0a7161f6a07a87a371e20ac5d28ecb0c298",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
