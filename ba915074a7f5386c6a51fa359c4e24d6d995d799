@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "681d436a_badc05e4",
+        "filename": "mm/userfaultfd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-03-09T00:26:10Z",
+      "side": 1,
+      "message": "I don\u0027t understand why this should depend on `copied`. Why not just:\nI would think this condition would be:\n```\nif (mmap_lock_is_contended(dst_mm)) {\n    err \u003d -EAGAIN;\n    break;\n}\n```\nThe final return will choose between `copied` or `err`.",
+      "range": {
+        "startLine": 667,
+        "startChar": 7,
+        "endLine": 667,
+        "endChar": 13
+      },
+      "revId": "ba915074a7f5386c6a51fa359c4e24d6d995d799",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e682052_ab102ba8",
+        "filename": "mm/userfaultfd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-03-09T00:26:10Z",
+      "side": 1,
+      "message": "Instead if this (which might not return -EAGAIN) you can handle this next to `fatal_signal_pending`:\n```\n\t\tif (!err) {\n\t\t\tdst_addr +\u003d PAGE_SIZE;\n\t\t\tsrc_addr +\u003d PAGE_SIZE;\n\t\t\tcopied +\u003d PAGE_SIZE;\n\n\t\t\tif (fatal_signal_pending(current))\n\t\t\t\terr \u003d -EINTR;\n\n\t\t\tif (mmap_lock_is_contended(dst_mm))\n\t\t\t\terr \u003d -EAGAIN;\n\t\t}\n\t\tif (err)\n\t\t\tbreak;\t\t\n```",
+      "range": {
+        "startLine": 695,
+        "startChar": 2,
+        "endLine": 695,
+        "endChar": 44
+      },
+      "revId": "ba915074a7f5386c6a51fa359c4e24d6d995d799",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
