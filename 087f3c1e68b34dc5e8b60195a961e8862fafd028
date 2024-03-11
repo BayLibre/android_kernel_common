@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b84d0a3_6fd1a70e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2496,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-11T14:27:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8889e98_c4fc47af",
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8949651c_81bc4cb5",
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "I think we can even drop this because it doesn\u0027t seem to be used",
       "parentUuid": "8949651c_81bc4cb5",
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bc5f743_76e0d460",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2516,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-11T14:27:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "626179dd_f4d2e961",
       "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -219,6 +255,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac74e70b_1146af87",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2633,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-11T14:27:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "edc9a4da_e1efd1d0",
+      "range": {
+        "startLine": 2633,
+        "startChar": 11,
+        "endLine": 2633,
+        "endChar": 20
+      },
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8cef89b5_2cba8118",
@@ -250,6 +310,24 @@
       "side": 1,
       "message": "`The back and forth with pkvm.c is a bit strange.` - I agree, I had to do that because `pkvm.c` has the knowledge about the handles.\n\nNow I have :\n```\nhyp_main.c  |  mem_protect.c   |  ../nvhe/pkvm.c  | mem_protect.c\nhandler     -\u003e  __pkvm_stage2_snapshot\n                               -\u003e  pkvm_stage2_snapshot_by_handle\n                                                  -\u003e __pkvm_guest_stage2_snapshot\n```\n\nand with your suggestion it will become:\n\n```\nhyp_main.c  | ../nvhe/pkvm.c  | mem_protect.c\nhandler     -\u003e  __pkvm_stage2_snapshot_by_handle\n                                                  -\u003e __pkvm_guest_stage2_snapshot\n```\n\nI guest this should work, but we will have to duplicate the call to `pkvm_setup_snapshot` and `pkvm_teardown_snapshot` for the host. On the other hand the call chain will be more clear with your suggestion.",
       "parentUuid": "8cef89b5_2cba8118",
+      "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8b15d34_8a9f3d0c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2664,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-11T14:27:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81872df5_30e7b9eb",
       "revId": "087f3c1e68b34dc5e8b60195a961e8862fafd028",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
