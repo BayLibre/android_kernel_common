@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a023569_adfe39b7",
+        "filename": "arch/arm64/kvm/handle_exit.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1882526
+      },
+      "writtenOn": "2024-03-11T21:54:50Z",
+      "side": 1,
+      "message": "My bad, done.",
+      "parentUuid": "c85084e4_f1c8db6c",
+      "revId": "baefb0a7161f6a07a87a371e20ac5d28ecb0c298",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "826df60b_95d69667",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-03-08T11:12:39Z",
       "side": 1,
       "message": "Probably worth to make that dependant on NVHE_EL2_DEBUG as the host wouldn\u0027t be able to read that anyway?",
+      "revId": "baefb0a7161f6a07a87a371e20ac5d28ecb0c298",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75c37017_8313708a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/switch.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1882526
+      },
+      "writtenOn": "2024-03-11T21:54:50Z",
+      "side": 1,
+      "message": "I\u0027ve got rid of these variables altogether as EL1 can simply access the CPU context.",
+      "parentUuid": "826df60b_95d69667",
       "revId": "baefb0a7161f6a07a87a371e20ac5d28ecb0c298",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
