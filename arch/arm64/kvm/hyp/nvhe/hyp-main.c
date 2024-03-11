@@ -766,10 +766,13 @@ static void sync_hyp_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu, u32 exit_reason)
 static void __hyp_sve_save_guest(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
 	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+	u64 zcr = read_sysreg_el1(SYS_ZCR);
 
+	BUG_ON(zcr & ~ZCR_ELx_LEN_MASK);
+
+	__vcpu_sys_reg(vcpu, ZCR_EL1) = zcr;
+	sve_cond_update_zcr_vq(zcr, SYS_ZCR_EL2);
 	__sve_save_state(vcpu_sve_pffr(vcpu), &vcpu->arch.ctxt.fp_regs.fpsr);
-	__vcpu_sys_reg(vcpu, ZCR_EL1) = read_sysreg_el1(SYS_ZCR);
-	sve_cond_update_zcr_vq(vcpu_sve_max_vq(vcpu) - 1, SYS_ZCR_EL1);
 }
 
 static void fpsimd_host_restore(void)
