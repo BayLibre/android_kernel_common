@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a373f9f_dc486a60",
+        "filename": "mm/userfaultfd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 1258954
+      },
+      "writtenOn": "2024-03-11T20:38:43Z",
+      "side": 1,
+      "message": "My thinking was that once mmap_lock is acquired, we should make some progress before releasing the lock due to contention. That\u0027s why I checked for `copied`. Otherwise, at least theoretically, it is possible that copy operation may keep returning -EAGAIN without making any progress. WDYT?\n\nPlease let me know if you think it should be without `copied` check. I\u0027ll change the code in next patch in that case.",
+      "parentUuid": "681d436a_badc05e4",
+      "range": {
+        "startLine": 667,
+        "startChar": 7,
+        "endLine": 667,
+        "endChar": 13
+      },
+      "revId": "ba915074a7f5386c6a51fa359c4e24d6d995d799",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e682052_ab102ba8",
         "filename": "mm/userfaultfd.c",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-09T00:26:10Z",
       "side": 1,
       "message": "Instead if this (which might not return -EAGAIN) you can handle this next to `fatal_signal_pending`:\n```\n\t\tif (!err) {\n\t\t\tdst_addr +\u003d PAGE_SIZE;\n\t\t\tsrc_addr +\u003d PAGE_SIZE;\n\t\t\tcopied +\u003d PAGE_SIZE;\n\n\t\t\tif (fatal_signal_pending(current))\n\t\t\t\terr \u003d -EINTR;\n\n\t\t\tif (mmap_lock_is_contended(dst_mm))\n\t\t\t\terr \u003d -EAGAIN;\n\t\t}\n\t\tif (err)\n\t\t\tbreak;\t\t\n```",
+      "range": {
+        "startLine": 695,
+        "startChar": 2,
+        "endLine": 695,
+        "endChar": 44
+      },
+      "revId": "ba915074a7f5386c6a51fa359c4e24d6d995d799",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78f0a673_b1f9c507",
+        "filename": "mm/userfaultfd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 1258954
+      },
+      "writtenOn": "2024-03-11T20:38:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e682052_ab102ba8",
       "range": {
         "startLine": 695,
         "startChar": 2,
