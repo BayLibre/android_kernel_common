@@ -16,6 +16,29 @@
       "message": "@cmllamas@google.com. Hi, Carlos, please help to review, thanks!🙂",
       "revId": "9af2d74294b3d085bc42412b81382c449908a17d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6391e5fd_97474073",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 4861,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-03-11T23:28:48Z",
+      "side": 1,
+      "message": "What exactly are you doing to improve latency here? Are you changing the priority of thread-\u003etask based on certain t_from? It seems too late to do this now you want to do it sooner. Why not use hooks in binder_transaction_priority() before the target thread wakes up?",
+      "range": {
+        "startLine": 4861,
+        "startChar": 3,
+        "endLine": 4861,
+        "endChar": 34
+      },
+      "revId": "9af2d74294b3d085bc42412b81382c449908a17d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
