@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb40749d_58abac03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-03-12T20:20:37Z",
+      "side": 1,
+      "message": "This title does not represent well what is done here. I suggest something like `abort uffdio ops if mmap_lock is contended`",
+      "range": {
+        "startLine": 7,
+        "startChar": 22,
+        "endLine": 7,
+        "endChar": 71
+      },
+      "revId": "4c74f51529463d6a479de21e3cf3f0fb2bc7f4cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92ee1e54_36401212",
+        "filename": "mm/userfaultfd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-03-12T20:20:37Z",
+      "side": 1,
+      "message": "This description is unclear. It endures sensitive threads don\u0027t block because we return early or because we guarantee some progress? Please clarify/simplify this comment.\n\nIIUC you do 2 things here:\n1. you try to avoid blocking other threads\n2. you try to guarantee some progress so that the calling thread does not retry forever (this particular check).\n\nI don\u0027t know if this `copied` check will actually guarantee progress. Consider the case when copied\u003d\u003d0, then we do mmap_read_unlock(), copy the page and then goto retry. Over there we call mmap_read_trylock() and if contention is still there we will break without any progress returning -EAGAIN. Not sure how important this guarantee is but it\u0027s definitely not guaranteed 100% here.",
+      "range": {
+        "startLine": 669,
+        "startChar": 24,
+        "endLine": 670,
+        "endChar": 45
+      },
+      "revId": "4c74f51529463d6a479de21e3cf3f0fb2bc7f4cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
