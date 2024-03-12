@@ -45,6 +45,30 @@
       },
       "revId": "4c74f51529463d6a479de21e3cf3f0fb2bc7f4cc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb07d90e_0fbc948e",
+        "filename": "mm/userfaultfd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1258954
+      },
+      "writtenOn": "2024-03-12T20:36:49Z",
+      "side": 1,
+      "message": "The first page of an ioctl invoked by an application thread is necessary for it to make progress. It userfaulted on it and that\u0027s why it\u0027s attempting to fill it. Therefore, by checking for contention only after `copied` is non-zero, we are making sure that the first (necessary) page is done before aborting.\n\nOn retry `mmap_read_trylock()` is used only if user uses `UFFDIO_MODE_MMAP_TRYLOCK`, in which case the user knows that the operation can abort without any progress. The current patch ensures that if user really wants progress (and hence didn\u0027t use TRYLOCK mode), then some progress will be made before aborting.\n\nIf you say, I can just add `UFFDIO_MODE_CHECK_MMAP_CONTENTION` mode and then drop the check for `copied`. That way if some page is necessary, then the user won\u0027t use this mode for that ioctl, thereby guaranteeing progress.",
+      "parentUuid": "92ee1e54_36401212",
+      "range": {
+        "startLine": 669,
+        "startChar": 24,
+        "endLine": 670,
+        "endChar": 45
+      },
+      "revId": "4c74f51529463d6a479de21e3cf3f0fb2bc7f4cc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
