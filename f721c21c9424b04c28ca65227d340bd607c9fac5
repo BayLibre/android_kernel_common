@@ -16,6 +16,24 @@
       "message": "The previous code seems to end up in `hyp_panic` even if a vcpu is not loaded. You seem to change this behavior and I wonder if it is correct.",
       "revId": "f721c21c9424b04c28ca65227d340bd607c9fac5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf6c5c28_76346fff",
+        "filename": "arch/arm64/kvm/hyp/nvhe/host.S",
+        "patchSetId": 6
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1882526
+      },
+      "writtenOn": "2024-03-12T17:44:38Z",
+      "side": 1,
+      "message": "All this CL changes to the codeflow is turn\n```\nif (cond) { X }\nelse if (cond) { X}\nelse { Y }\n```\ninto \n```\nif (cond) { X }\nelse { Y }\n```\n\nAs, previously, we had:\n\n- if `get_loaded_vcpu` returned `NULL`, the handler branched to `hyp_panic()`;\n- otherwise, it branched to `__guest_exit_panic()` which:\n  - if `get_loaded_vcpu` returned `NULL`, branched to `hyp_panic()`;\n  - otherwise, returned [*] to `hyp_panic()`.\n\nand now, the handler branches to `__hyp_panic()` (i.e. `__guest_exit_panic()` renamed) directly.\n\n[*] in detail, `__guest_exit_panic()`/`__hyp_panic()` (see `arch/arm64/kvm/hyp/entry.S`)\n\n1. L103: points the saved LR in `kvm_hyp_ctxt` to `hyp_panic`\n1. L155: restores LR from `kvm_hyp_ctxt`\n1. L168/L174/L199/L213: `ret`urns, effectively jumping to `hyp_panic()`",
+      "parentUuid": "1253dfc7_0895addf",
+      "revId": "f721c21c9424b04c28ca65227d340bd607c9fac5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
