@@ -102,6 +102,10 @@
 #define FFA_FEAT_RXTX_MIN_SZ_64K	1
 #define FFA_FEAT_RXTX_MIN_SZ_16K	2
 
+#define FFA_DIRECT_MSG_TYPE_MASK		(1 << 31)
+#define FFA_DIRECT_MSG_TYPE_PART_MSG		(0)
+#define FFA_DIRECT_MSG_TYPE_FRAMEWORK_MSG	(1)
+
 /* FFA Bus/Device/Driver related */
 struct ffa_device {
 	u32 id;

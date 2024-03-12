@@ -574,6 +574,20 @@ out_unlock:
 		ffa_to_smccc_res(res, ret);
 }
 
+static bool do_ffa_direct_req(struct arm_smccc_res *res,
+			      struct kvm_cpu_context *ctxt)
+{
+	DECLARE_REG(u32, flags, ctxt, 2);
+	u32 msg_type = FIELD_GET(FFA_DIRECT_MSG_TYPE_MASK, flags);
+
+	if (msg_type == FFA_DIRECT_MSG_TYPE_FRAMEWORK_MSG) {
+		ffa_to_smccc_res(res, FFA_RET_DENIED);
+		return true;
+	}
+
+	return false;
+}
+
 /*
  * Is a given FFA function supported, either by forwarding on directly
  * or by handling at EL2?
@@ -635,6 +649,7 @@ out_handled:
 bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 {
 	struct arm_smccc_res res;
+	bool handled = true;
 
 	/*
 	 * There's no way we can tell what a non-standard SMC call might
@@ -678,6 +693,11 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 	case FFA_MEM_FRAG_TX:
 		do_ffa_mem_frag_tx(&res, host_ctxt);
 		goto out_handled;
+
+	case FFA_MSG_SEND_DIRECT_REQ:
+	case FFA_FN64_MSG_SEND_DIRECT_REQ:
+		handled = do_ffa_direct_req(&res, host_ctxt);
+		goto out_handled;
 	}
 
 	if (ffa_call_supported(func_id))
@@ -686,7 +706,7 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 	ffa_to_smccc_error(&res, FFA_RET_NOT_SUPPORTED);
 out_handled:
 	ffa_set_retval(host_ctxt, &res);
-	return true;
+	return handled;
 }
 
 int hyp_ffa_init(void *pages)
