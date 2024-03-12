@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6084d95_0681a2e7",
+        "filename": "mm/userfaultfd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-03-12T15:38:26Z",
+      "side": 1,
+      "message": "Well, if copy_from_user() returns error you are risking to block readers for a long time. I think returning EAGAIN here is the right thing to do and let userspace decide how many times and how often it should retry.\n\nIf you want to guarantee *some* progress, that behavior should be documented and you should also add a comment here clarifying why you are checking for `copied`.",
+      "parentUuid": "7a373f9f_dc486a60",
+      "range": {
+        "startLine": 667,
+        "startChar": 7,
+        "endLine": 667,
+        "endChar": 13
+      },
+      "revId": "ba915074a7f5386c6a51fa359c4e24d6d995d799",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e682052_ab102ba8",
         "filename": "mm/userfaultfd.c",
         "patchSetId": 1
