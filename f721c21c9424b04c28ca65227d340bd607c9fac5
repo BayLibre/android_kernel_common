@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1253dfc7_0895addf",
+        "filename": "arch/arm64/kvm/hyp/nvhe/host.S",
+        "patchSetId": 6
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-12T17:04:34Z",
+      "side": 1,
+      "message": "The previous code seems to end up in `hyp_panic` even if a vcpu is not loaded. You seem to change this behavior and I wonder if it is correct.",
+      "revId": "f721c21c9424b04c28ca65227d340bd607c9fac5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
