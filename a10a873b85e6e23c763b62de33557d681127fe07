@@ -16,6 +16,24 @@
       "message": "Is this the appropriate way to handle a protected symbol update?",
       "revId": "a10a873b85e6e23c763b62de33557d681127fe07",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7e5977f_43c5d4e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2024-03-13T17:45:20Z",
+      "side": 1,
+      "message": "Technically, they should be updated with tooling. Since most of these are partner lists; we can do update on `db845` and take the corresponding change. With that said, this looks good to me as things are still in sorted order. So, should be fine.\n\nThese are the commands to double check if you have these changes locally:\n\n```\n# Protected exports update\ntools/bazel run //common:kernel_aarch64_abi_update_protected_exports\n\n# DB845 list update\ntools/bazel run //common:db845c_abi_update_symbol_list\n```",
+      "parentUuid": "65a71cff_7ae0ae00",
+      "revId": "a10a873b85e6e23c763b62de33557d681127fe07",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
