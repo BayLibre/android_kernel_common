@@ -52,6 +52,24 @@
       "parentUuid": "f7e5977f_43c5d4e9",
       "revId": "a10a873b85e6e23c763b62de33557d681127fe07",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a180038_95ce7625",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2024-03-13T18:03:15Z",
+      "side": 1,
+      "message": "Symbol list orders them after ignoring any preceding underscores; where as protected exports are sorted based on ASCII. Sorting is not functional requirement in both cases; it\u0027s just readability and ASCII is faster as other requires extra processing. That\u0027s why I chose ASCII for protected symbols.",
+      "parentUuid": "cff249b8_36c36a92",
+      "revId": "a10a873b85e6e23c763b62de33557d681127fe07",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
