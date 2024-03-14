@@ -63,6 +63,30 @@
       },
       "revId": "9af2d74294b3d085bc42412b81382c449908a17d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3efb0d65_9c762574",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 4861,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2024-03-14T02:25:36Z",
+      "side": 1,
+      "message": "Hi Carlos,\n1. What exactly are you doing to improve latency here? Are you changing the priority of thread-\u003etask based on certain t_from?\n--- \nYes, when no thread is selected in binder_proc_transaction() -\u003e trace_android_vh_binder_proc_transaction_finish(), the priority is raised in binder_thread_read()  -\u003e trace_android_vh_sync_txn_recvd() for sync binders.\n\n2. Why not use hooks in binder_transaction_priority() before the target thread wakes up?\n---\n1) trace_android_vh_binder_set_priority(t, task) cannot distinguish between being called by binder_proc_transaction() and binder_thread_read().\n2) We don\u0027t customize the priority adjustment in binder_proc_transaction() -\u003e trace_android_vh_binder_set_priority(t, task), but implement it in binder_proc_transaction() -\u003e trace_android_vh_binder_proc_transaction_finish(), which can consider the situations where there is thread, no thread, and pending_async.\n3) When a thread is selected in trace_android_vh_binder_proc_transaction_finish(), the priority of the binder_thread is raised before the thread is awakened.\n4) For sync binders, when no thread is selected in binder_proc_transaction() -\u003e trace_android_vh_binder_proc_transaction_finish() , the priority is raised in binder_thread_read() -\u003e trace_android_vh_sync_txn_recvd().",
+      "parentUuid": "30adbdc4_5f7cc558",
+      "range": {
+        "startLine": 4861,
+        "startChar": 3,
+        "endLine": 4861,
+        "endChar": 34
+      },
+      "revId": "9af2d74294b3d085bc42412b81382c449908a17d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
