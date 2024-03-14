@@ -39,6 +39,30 @@
       },
       "revId": "9af2d74294b3d085bc42412b81382c449908a17d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30adbdc4_5f7cc558",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 4861,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2024-03-14T01:35:54Z",
+      "side": 1,
+      "message": "@cmllamas@google.com\nThe reason why we use trace_android_vh_sync_txn_recvd() instead of trace_android_vh_binder_set_priority() is:\n1) trace_android_vh_binder_set_priority(t, task) cannot distinguish between being called by binder_proc_transaction() or binder_thread_read().\n2) We don\u0027t customize the priority adjustment in binder_proc_transaction() -\u003e trace_android_vh_binder_set_priority(t, task), but implement it in binder_proc_transaction() -\u003e trace_android_vh_binder_proc_transaction_finish(), which can consider the situations where there is thread, no thread, and pending_async.\n3) When a thread is selected in trace_android_vh_binder_proc_transaction_finish(), the priority of the binder_thread is raised before the thread is awakened.\n4) For sync binders, when no thread is selected in binder_proc_transaction() -\u003e trace_android_vh_binder_proc_transaction_finish() , the priority is raised again in trace_android_vh_sync_txn_recvd().",
+      "parentUuid": "6391e5fd_97474073",
+      "range": {
+        "startLine": 4861,
+        "startChar": 3,
+        "endLine": 4861,
+        "endChar": 34
+      },
+      "revId": "9af2d74294b3d085bc42412b81382c449908a17d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
