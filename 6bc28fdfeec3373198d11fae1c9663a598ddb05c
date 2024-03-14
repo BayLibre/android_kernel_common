@@ -22,6 +22,30 @@
       },
       "revId": "6bc28fdfeec3373198d11fae1c9663a598ddb05c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71654293_2e83a20c",
+        "filename": "mm/userfaultfd.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 1258954
+      },
+      "writtenOn": "2024-03-14T14:25:31Z",
+      "side": 1,
+      "message": "We are about to release the lock and then reacquire. If there is contention, then it\u0027s better to abort rather than add to the contention. Also, if MMAP_TRYLOCK mode is set, then most likely the copy_from_user will go waste as it\u0027s likely that mmap_read_trylock() will fail.",
+      "parentUuid": "4aed987a_62350b79",
+      "range": {
+        "startLine": 664,
+        "startChar": 0,
+        "endLine": 665,
+        "endChar": 19
+      },
+      "revId": "6bc28fdfeec3373198d11fae1c9663a598ddb05c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
