@@ -16,6 +16,23 @@
       "message": "@mzyngier@google.com : regarding the whole thing with __SVE_VQ_MAX, its value is wrong (i.e., too big) on purpose. At least the following patch (not yet in 6.8) clarifies it:\n\nhttps://lore.kernel.org/all/20240209-arm64-sve-vl-max-comment-v2-1-111b283469ee@kernel.org/",
       "revId": "f58e345c2eae71afe03bde7d4bfdb2a0b711f6c5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "749f9bb6_cc9dc68b",
+        "filename": "arch/arm64/kvm/hyp/include/hyp/switch.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2024-03-14T17:55:52Z",
+      "side": 1,
+      "message": "I wonder whether we should introduce a `sve_cond_update_zcr_el1_vq()`, similar to the EL2 version (and make that one EL2-specific).",
+      "revId": "f58e345c2eae71afe03bde7d4bfdb2a0b711f6c5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
