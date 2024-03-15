@@ -421,12 +421,14 @@ static int kvm_pgtable_debugfs_open(struct inode *m, struct file *file)
 	struct kvm_pgtable *pgtable;
 	struct kvm_pgtable_snapshot *snap;
 	int ret = -EINVAL;
+	pkvm_handle_t handle;
 
-	if (!kvm_get_kvm_safe(kvm))
+	if (kvm && !kvm_get_kvm_safe(kvm))
 		return -ENOENT;
 
 	if (is_protected_kvm_enabled()) {
-		snap = kvm_ptdump_get_snapshot(kvm->arch.pkvm.handle, 0, 0);
+		handle = kvm ? kvm->arch.pkvm.handle : 0;
+		snap = kvm_ptdump_get_snapshot(handle, 0, 0);
 		if (IS_ERR(snap))
 			goto free_with_kvm_ref;
 		pgtable = &snap->pgtable;
@@ -444,7 +446,8 @@ free_with_snapshot:
 	if (is_protected_kvm_enabled())
 		kvm_ptdump_put_snapshot(snap);
 free_with_kvm_ref:
-	kvm_put_kvm(kvm);
+	if (kvm)
+		kvm_put_kvm(kvm);
 	return ret;
 }
 
@@ -463,7 +466,8 @@ static int kvm_pgtable_debugfs_close(struct inode *m, struct file *file)
 		kvm_ptdump_put_snapshot(snap);
 	}
 
-	kvm_put_kvm(kvm);
+	if (kvm)
+		kvm_put_kvm(kvm);
 	return single_release(m, file);
 }
 
@@ -523,4 +527,8 @@ void kvm_ptdump_host_register(void)
 {
 	debugfs_create_file("host_stage2_page_tables", 0400, kvm_debugfs_dir,
 			    (void *)host_s2_pgtable_pages(), &kvm_ptdump_host_fops);
+	debugfs_create_file("ipa_range", 0400, kvm_debugfs_dir, NULL,
+			    &kvm_pgtable_debugfs_fops);
+	debugfs_create_file("stage2_levels", 0400, kvm_debugfs_dir,
+			    NULL, &kvm_pgtable_debugfs_fops);
 }
