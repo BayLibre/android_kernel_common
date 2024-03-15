@@ -16,6 +16,23 @@
       "message": "@tkjos@google.com Hi, Todd, Please review this commit and help merge it. Thanks.",
       "revId": "a64ed90f46b7199e29dd18384ab2847573adeab3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5f041ee_c3431ef8",
+        "filename": "include/trace/hooks/dtask.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-03-15T21:03:35Z",
+      "side": 1,
+      "message": "Build-break for allmodconfig builds:\n```\nIn file included from /tmp/bazel-working-directory/__main__/common/kernel/locking/rwsem.c:34:\n/tmp/bazel-working-directory/__main__/common/include/trace/hooks/dtask.h:70:18: warning: declaration of \u0027struct percpu_rw_semaphore\u0027 will not be visible outside of this function [-Wvisibility]\n   70 |         TP_PROTO(struct percpu_rw_semaphore *sem, bool reader),\n      |                         ^\n/tmp/bazel-working-directory/__main__/common/include/trace/hooks/dtask.h:70:18: warning: declaration of \u0027struct percpu_rw_semaphore\u0027 will not be visible outside of this function [-Wvisibility]\n/tmp/bazel-working-directory/__main__/common/include/trace/hooks/dtask.h:71:10: error: incompatible pointer types passing \u0027struct percpu_rw_semaphore *\u0027 to parameter of type \u0027struct percpu_rw_semaphore *\u0027 [-Werror,-Wincompatible-pointer-types]\n   71 |         TP_ARGS(sem, reader));\n```",
+      "revId": "a64ed90f46b7199e29dd18384ab2847573adeab3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
