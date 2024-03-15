@@ -33,6 +33,24 @@
       "message": "I wonder whether we should introduce a `sve_cond_update_zcr_el1_vq()`, similar to the EL2 version (and make that one EL2-specific).",
       "revId": "f58e345c2eae71afe03bde7d4bfdb2a0b711f6c5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00b9bffc_24cb480d",
+        "filename": "arch/arm64/kvm/hyp/include/hyp/switch.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2024-03-15T08:54:06Z",
+      "side": 1,
+      "message": "Not sure I understand how that would be different from using sve_cond_update_zcr_vq() for zcr_el1, other parts of the code do that. Or like we talked about, is it really worth using sve_cond_update_zcr_vq(), or should we just write to ZCR?",
+      "parentUuid": "749f9bb6_cc9dc68b",
+      "revId": "f58e345c2eae71afe03bde7d4bfdb2a0b711f6c5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
