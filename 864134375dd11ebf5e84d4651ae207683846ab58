@@ -52,6 +52,24 @@
       "parentUuid": "524a8496_1c8f4ff8",
       "revId": "864134375dd11ebf5e84d4651ae207683846ab58",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c67f4c6b_e6a0e003",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1843125
+      },
+      "writtenOn": "2024-03-18T15:59:00Z",
+      "side": 1,
+      "message": "The patching code makes some assumptions about the format of the DWARF metadata, given that this is specific to Clang C kernel code. But apparently, the FDE augmentation data looks subtly different.\n\nCould you please share the exact compiler version, and the first block of output of `llvm-readelf -u vmlinux`?",
+      "parentUuid": "a6fb8944_fda84077",
+      "revId": "864134375dd11ebf5e84d4651ae207683846ab58",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
