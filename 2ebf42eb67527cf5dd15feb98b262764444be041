@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a309681_86dda8ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2024-03-18T07:20:45Z",
+      "side": 1,
+      "message": "@tkjos@google.com \nHi,Todd, \nI updated this patch and added \"struct percpu_rw_semaphore;\" in \u003cinclude/trace/hooks/dtask.h\u003e. This may solve the error encountered during compilation. \n\nPlease help check again whether the compilation can pass. As it can always succeed when compiled locally, maybe my compilation results are unreliable.\n\nThanks\n\nPS:\nActually, I didn\u0027t understand the error message \u003cerror: incompatible pointer types passing \u0027struct percpu_rw_semaphore *\u0027 to parameter of type \u0027struct percpu_rw_semaphore *\u0027\u003e. It is obviously the same type, and I can\u0027t figure out why it said that the type is incompatible.",
+      "revId": "2ebf42eb67527cf5dd15feb98b262764444be041",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
