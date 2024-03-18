@@ -3979,8 +3979,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 			need_clear_cache = true;
 
 			/* skip swapcache */
-			folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0,
-						vma, vmf->address, false);
+			folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE|__GFP_CMA,
+						0, vma, vmf->address, false);
 			page = &folio->page;
 			if (folio) {
 				__folio_set_locked(folio);
@@ -4006,7 +4006,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 				folio->private = NULL;
 			}
 		} else {
-			page = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE,
+			page = swapin_readahead(entry,
+						GFP_HIGHUSER_MOVABLE|__GFP_CMA,
 						vmf);
 			if (page)
 				folio = page_folio(page);
