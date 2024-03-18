@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf0f5460_b6b769f7",
+        "filename": "fs/fuse/backing.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1951,
+      "author": {
+        "id": 1045980
+      },
+      "writtenOn": "2024-03-18T21:14:58Z",
+      "side": 1,
+      "message": "This flag was added in 8a924db2d7b5eb69 (\"fs: Pass AT_GETATTR_NOSEC flag to getattr interface function\") to prevent unnecessary calls to security_inode_getattr, which also avoids a potential null pointer in IMA with overlayfs.\n\nInstead of just dropping the flag, we should call the nosec variant of vfs_getattr if that flag is present.\n\nOverlayfs deals with this by using a helper function for vfs_getattr:\n```\nstatic inline int ovl_do_getattr(const struct path *path, struct kstat *stat,\n\t\t\t\t u32 request_mask, unsigned int flags)\n{\n\tif (flags \u0026 AT_GETATTR_NOSEC)\n\t\treturn vfs_getattr_nosec(path, stat, request_mask, flags);\n\treturn vfs_getattr(path, stat, request_mask, flags);\n}\n```",
+      "range": {
+        "startLine": 1951,
+        "startChar": 62,
+        "endLine": 1951,
+        "endChar": 78
+      },
+      "revId": "80e92db84393e251d5fe333d37698eeb2e507fd6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
