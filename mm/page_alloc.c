@@ -3666,10 +3666,12 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask, unsigned int order,
 		unsigned int alloc_flags, const struct alloc_context *ac,
 		unsigned long *did_some_progress)
 {
+	int retry_times = 0;
 	struct page *page = NULL;
 	unsigned long pflags;
 	bool drained = false;
-
+	
+	trace_android_vh_mm_direct_reclaim_enter(order);
 	psi_memstall_enter(&pflags);
 	*did_some_progress = __perform_reclaim(gfp_mask, order, ac);
 	if (unlikely(!(*did_some_progress)))
@@ -3687,11 +3689,12 @@ retry:
 		unreserve_highatomic_pageblock(ac, false);
 		drain_all_pages(NULL);
 		drained = true;
+		++retry_times;
 		goto retry;
 	}
 out:
 	psi_memstall_leave(&pflags);
-
+	trace_android_vh_mm_direct_reclaim_exit(*did_some_progress, retry_times);
 	return page;
 }
 
