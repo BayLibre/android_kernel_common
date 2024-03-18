@@ -16,6 +16,24 @@
       "message": "I agree that cherry-picking this patch is a good idea, but out of curiosity, have you seen actual failures here?",
       "revId": "864134375dd11ebf5e84d4651ae207683846ab58",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "524a8496_1c8f4ff8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1576997
+      },
+      "writtenOn": "2024-03-18T01:40:36Z",
+      "side": 1,
+      "message": "Yes, we got below warning which was reported when a out-of-tree kernel loading.\n\n[   12.446419][  T223] WARNING: CPU: 0 PID: 223 at arch/arm64/kernel/patch-scs.c:143 scs_handle_fde_frame+0x158/0x178\n\nThen the half-patched function result in kernel panic.",
+      "parentUuid": "82344259_f42477de",
+      "revId": "864134375dd11ebf5e84d4651ae207683846ab58",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
