@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "583c8e83_ee2964b7",
+        "filename": "arch/arm64/include/asm/kvm_pgtable.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-18T11:15:48Z",
+      "side": 1,
+      "message": "nit: this is not wrapper.",
+      "revId": "5763d618410b5df0fd2d4f866aab122f250e5557",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac4794bc_871822f8",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1768,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-18T11:15:48Z",
+      "side": 1,
+      "message": "nit: pgd_len",
+      "revId": "5763d618410b5df0fd2d4f866aab122f250e5557",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7aad1c9d_ff58db2d",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1772,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-18T11:15:48Z",
+      "side": 1,
+      "message": "You do not seem to use this .pgt.\n\nThis can simplify a lot by removing the need for `struct snapshot_data`",
+      "revId": "5763d618410b5df0fd2d4f866aab122f250e5557",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47c97131_61cd5853",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1786,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-18T11:15:48Z",
+      "side": 1,
+      "message": "nit: This probably deserves a comment here to explain the trick of walking the destination page-table instead of the source one.",
+      "revId": "5763d618410b5df0fd2d4f866aab122f250e5557",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
