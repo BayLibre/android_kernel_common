@@ -52,6 +52,9 @@
 #include <trace/hooks/rwsem.h>
 #include <trace/hooks/futex.h>
 #include <trace/hooks/topology.h>
+<<<<<<< PATCH SET (5cc492 ANDROID: mm: Add vendor hook for compact pages work.)
+#include <trace/hooks/compaction.h>
+=======
 #include <trace/hooks/thermal.h>
 #include <trace/hooks/bug.h>
 #include <trace/hooks/softlockup.h>
@@ -59,6 +62,7 @@
 #include <trace/hooks/gzvm.h>
 #include <trace/hooks/signal.h>
 
+>>>>>>> BASE      (083527 ANDROID: KVM: arm64: iommu: Fix lock in iova_to_phys)
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
  * associated with them) to allow external modules to probe them.
@@ -187,6 +191,11 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_mmc_suspend);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmc_update_mmc_queue);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rwsem_downgrade_wake_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rwsem_wake_finish);
+<<<<<<< PATCH SET (5cc492 ANDROID: mm: Add vendor hook for compact pages work.)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_compaction_exit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_compaction_try_to_compact_exit);
+
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_report_bug);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_watchdog_timer_softlockup);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_freeze_todo);
@@ -207,3 +216,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_trans);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal_whether_wake);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_check);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freeze_whether_wake);
+>>>>>>> BASE      (083527 ANDROID: KVM: arm64: iommu: Fix lock in iova_to_phys)
