@@ -48,7 +48,7 @@
 #include <trace/hooks/rwsem.h>
 #include <trace/hooks/futex.h>
 #include <trace/hooks/topology.h>
-
+#include <trace/hooks/compaction.h>
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
  * associated with them) to allow external modules to probe them.
@@ -153,3 +153,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_mmc_suspend);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmc_update_mmc_queue);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rwsem_downgrade_wake_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rwsem_wake_finish);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_compaction_exit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_compaction_try_to_compact_exit);
+
