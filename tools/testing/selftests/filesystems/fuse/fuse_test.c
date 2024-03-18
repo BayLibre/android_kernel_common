@@ -1644,6 +1644,9 @@ static int bpf_test_readdirplus_not_overriding_backing(const char *mount_dir)
 			.open_flags = open_in->flags
 		}));
 
+		TESTFUSEINNULL(FUSE_CANONICAL_PATH);
+		TESTFUSEOUTREAD("ignored", 7);
+
 		// Step 2: Handle getattr
 		TESTFUSEIN(FUSE_GETATTR, getattr_in);
 		TESTSYSCALL(s_fuse_attr(s(ft_src), &attr));
