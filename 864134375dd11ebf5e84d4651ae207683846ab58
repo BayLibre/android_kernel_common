@@ -34,6 +34,24 @@
       "parentUuid": "82344259_f42477de",
       "revId": "864134375dd11ebf5e84d4651ae207683846ab58",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6fb8944_fda84077",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1058768
+      },
+      "writtenOn": "2024-03-18T15:37:49Z",
+      "side": 1,
+      "message": "Thanks for confirming. That sounds like a bug, either in the compiler or the kernel. Applying this patch will allow the kernel to boot, but it won\u0027t have SCS enabled. If you see this issue in production kernels, please file a bug and attach the binaries that trigger the warning.",
+      "parentUuid": "524a8496_1c8f4ff8",
+      "revId": "864134375dd11ebf5e84d4651ae207683846ab58",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
