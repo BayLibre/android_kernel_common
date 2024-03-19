@@ -16,6 +16,7 @@ use kernel::{
 use crate::{context::Context, process::Process};
 
 mod context;
+mod defs;
 mod process;
 
 module! {
