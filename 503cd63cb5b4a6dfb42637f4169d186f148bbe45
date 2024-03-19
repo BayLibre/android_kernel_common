@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8d78268_364ea2e8",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2837,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-19T14:05:48Z",
+      "side": 1,
+      "message": "Yes, we only have a problem if the user gives less memory than necessary... if we give more, that\u0027s not such a problem",
+      "parentUuid": "0ef68d08_141e60e4",
+      "revId": "503cd63cb5b4a6dfb42637f4169d186f148bbe45",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c5ab47a8_d0d4977b",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 8
