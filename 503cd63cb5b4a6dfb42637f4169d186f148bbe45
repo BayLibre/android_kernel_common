@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0ef68d08_141e60e4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2837,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-19T13:48:09Z",
+      "side": 1,
+      "message": "Is the comment for the inequality checking ? (`!\u003d` vs suggested `\u003c`) ?\nPlease let me know what you were referring to 😊",
+      "parentUuid": "c1321cca_ae395987",
+      "revId": "503cd63cb5b4a6dfb42637f4169d186f148bbe45",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c5ab47a8_d0d4977b",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 8
@@ -31,6 +49,24 @@
       "writtenOn": "2024-03-18T14:52:25Z",
       "side": 1,
       "message": "I suppose the host is doing the same? How about your init function is taking care of that? To go further, the only difference in the end between guest and host is which lock you take right?\n\nSo you could have\n\n```\n__pkvm_guest_stage2_snapshot()\n  -\u003e guest_lock_component(vm)\n  -\u003e __pkvm_stage2_snapshot()\n```\n\nand\n\n```\n__pkvm_host_stage2_snapshot()\n  -\u003e take host pgd lock\n  -\u003e __pkvm_stage2_snapshot()\n```\n\nSo most of your function here would be in `__pkvm_stage2_snapshot()`",
+      "revId": "503cd63cb5b4a6dfb42637f4169d186f148bbe45",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2102f2a_162c6a41",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2847,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-19T13:48:09Z",
+      "side": 1,
+      "message": "Which init function are you referring to ? I prefer to keep it structured like this because I have a case where I invoke this hvc without copying the pagetables. (for accessing the `start_level` and `ia_bits`)",
+      "parentUuid": "c5ab47a8_d0d4977b",
       "revId": "503cd63cb5b4a6dfb42637f4169d186f148bbe45",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2024-03-18T14:52:25Z",
       "side": 1,
       "message": "nit: it\u0027s quite of a mouthful. Maybe add a macro here, as you reuse that several times?",
+      "revId": "503cd63cb5b4a6dfb42637f4169d186f148bbe45",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18585195_b40ce866",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1785,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-19T13:48:09Z",
+      "side": 1,
+      "message": "I created a small inline function to also benefit from the arg type check",
+      "parentUuid": "dd435367_a7d16bb6",
       "revId": "503cd63cb5b4a6dfb42637f4169d186f148bbe45",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
