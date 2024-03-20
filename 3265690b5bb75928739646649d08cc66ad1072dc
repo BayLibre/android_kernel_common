@@ -43,6 +43,50 @@
       ],
       "revId": "3265690b5bb75928739646649d08cc66ad1072dc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000072050059",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3002747?revision\u003d3",
+      "key": {
+        "uuid": "174da82e_01a0cd77",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-03-20T18:18:13Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: maoshenshen \u003cmaoshenshen@oppo.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 0
+      },
+      "tag": "",
+      "fixSuggestions": [
+        {
+          "fixId": "a80d31e0_44b81dfc",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 20,
+                "startChar": 0,
+                "endLine": 20,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: maoshenshen \u003cmaoshenshen@oppo.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3265690b5bb75928739646649d08cc66ad1072dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
