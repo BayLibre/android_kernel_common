@@ -122,6 +122,18 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_util_est_se_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_update_nr_running_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_compute_energy_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_switch);
+<<<<<<< HEAD   (4e79ee ANDROID: Adding an Android vendor LMK event)
+||||||| BASE
+#if defined(CONFIG_SCHEDSTATS)
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_iowait);
+#endif
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_waking);
+#if defined(CONFIG_SCHEDSTATS)
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_sleep);
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_iowait);
+#endif
+>>>>>>> CHANGE (0bfc20 ANDROID: vendor_hooks: Export the tracepoints sched_stat_sle)
 
 DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
 EXPORT_SYMBOL_GPL(runqueues);
