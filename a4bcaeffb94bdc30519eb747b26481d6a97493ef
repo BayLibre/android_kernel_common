@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5919072e_d4ff6453",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2888,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-03-20T11:44:10Z",
+      "side": 1,
+      "message": "What I meant in a previous comment, this function is basically a copy paste of `__pkvm_guest_stage2_snapshot` \n\nJust put the main body into a `static __pkvm_stage2_snapshot()`",
+      "revId": "a4bcaeffb94bdc30519eb747b26481d6a97493ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
