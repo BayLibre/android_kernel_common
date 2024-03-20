@@ -201,6 +201,7 @@ void __init kvm_hyp_reserve(void)
 		 hyp_mem_base);
 }
 
+<<<<<<< HEAD   (b4f484 ANDROID: KVM: arm64: Fix infinite loop in for_ppage_node_in_)
 static int __pkvm_create_hyp_vcpu(struct kvm *host_kvm, struct kvm_vcpu *host_vcpu, unsigned long idx)
 {
 	pkvm_handle_t handle = host_kvm->arch.pkvm.handle;
@@ -289,6 +290,17 @@ out_free:
 		host_vcpu->arch.hyp_reqs = NULL;
 		free_page((unsigned long)hyp_reqs);
 	}
+=======
+static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
+{
+	if (host_kvm->arch.pkvm.handle) {
+		WARN_ON(kvm_call_hyp_nvhe(__pkvm_teardown_vm,
+					  host_kvm->arch.pkvm.handle));
+	}
+
+	host_kvm->arch.pkvm.handle = 0;
+	free_hyp_memcache(&host_kvm->arch.pkvm.teardown_mc);
+>>>>>>> BRANCH (d8a27e Linux 6.6.18)
 }
 
 /*
