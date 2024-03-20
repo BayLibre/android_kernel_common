@@ -16,6 +16,24 @@
       "message": "Hum, I guess this wasn\u0027t brought by any of our code? Any chance to get this upstream?\n\nAlso, did you hit this bug?",
       "revId": "43e0488a558238b91aa4884fa64f191e6d8b0dfd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9266dedc_591596a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-20T17:46:43Z",
+      "side": 1,
+      "message": "Yes, I managed to hit this bug while dumping the host s2 but this was happening because we were not resetting the internal state of the ptdump parser when we were calling the show() function. This lead to the st-\u003estart_address being set to the end address on a subsequent invocation.",
+      "parentUuid": "fec58f74_a00a0a30",
+      "revId": "43e0488a558238b91aa4884fa64f191e6d8b0dfd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
