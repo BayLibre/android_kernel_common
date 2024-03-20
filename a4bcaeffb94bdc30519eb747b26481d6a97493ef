@@ -16,6 +16,24 @@
       "message": "What I meant in a previous comment, this function is basically a copy paste of `__pkvm_guest_stage2_snapshot` \n\nJust put the main body into a `static __pkvm_stage2_snapshot()`",
       "revId": "a4bcaeffb94bdc30519eb747b26481d6a97493ef",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a31f6e7e_ac50e963",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2888,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-03-20T17:01:10Z",
+      "side": 1,
+      "message": "As I introduced in this CL the host portion, I moved everything as you suggested to a helper function to avoid code duplication.",
+      "parentUuid": "5919072e_d4ff6453",
+      "revId": "a4bcaeffb94bdc30519eb747b26481d6a97493ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
