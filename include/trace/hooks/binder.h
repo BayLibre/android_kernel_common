@@ -105,7 +105,11 @@ DECLARE_HOOK(android_vh_binder_new_ref,
 DECLARE_HOOK(android_vh_binder_del_ref,
 	TP_PROTO(struct task_struct *proc, uint32_t ref_desc),
 	TP_ARGS(proc, ref_desc));
-
+struct binder_proc;
+struct binder_thread;
+DECLARE_HOOK(android_vh_binder_wakeup_ilocked,
+	TP_PROTO(struct task_struct *task, bool sync, struct binder_proc *proc),
+	TP_ARGS(task, sync, proc));
 #endif /* _TRACE_HOOK_BINDER_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
