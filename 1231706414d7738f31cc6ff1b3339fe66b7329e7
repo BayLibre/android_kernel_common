@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "416e1cb0_256280ed",
+        "filename": "drivers/android/binder/node.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-03-21T08:45:21Z",
+      "side": 1,
+      "message": "One option we\u0027ve discussed is to use dummy types for it. But then I need to figure out how to assert that two types are different, since there\u0027s a method for creating two `ListArc`s as long as their IDs are different.",
+      "parentUuid": "353dbe5b_32f9fefc",
+      "revId": "1231706414d7738f31cc6ff1b3339fe66b7329e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b2f6975_287c808f",
         "filename": "drivers/android/binder/node.rs",
         "patchSetId": 24
@@ -71,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0a036e8e_6dbf1eb5",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-03-21T08:45:21Z",
+      "side": 1,
+      "message": "Yeah, I agree this needs a refactor.",
+      "parentUuid": "46abc874_0af6cce8",
+      "revId": "1231706414d7738f31cc6ff1b3339fe66b7329e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "316feee6_158116d9",
         "filename": "drivers/android/binder/process.rs",
         "patchSetId": 24
@@ -82,6 +118,24 @@
       "writtenOn": "2024-03-21T00:44:10Z",
       "side": 1,
       "message": "why does this code move in this CL?",
+      "revId": "1231706414d7738f31cc6ff1b3339fe66b7329e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eccc3f29_dfdb2f5b",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-03-21T08:45:21Z",
+      "side": 1,
+      "message": "I thought I had fixed this ... I\u0027ll look into it again.",
+      "parentUuid": "316feee6_158116d9",
       "revId": "1231706414d7738f31cc6ff1b3339fe66b7329e7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
