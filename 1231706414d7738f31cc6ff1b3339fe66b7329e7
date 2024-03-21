@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaa412df_93eed0d1",
+        "filename": "drivers/android/binder/defs.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-03-21T00:44:10Z",
+      "side": 1,
+      "message": "nit: If the language allows it, using a `,` at last entry as well, makes for cleaner diffs (and simpler merge conflict resolution)",
+      "revId": "1231706414d7738f31cc6ff1b3339fe66b7329e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "353dbe5b_32f9fefc",
+        "filename": "drivers/android/binder/node.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-03-21T00:44:10Z",
+      "side": 1,
+      "message": "Using numbers to identify the list type seems fragile. Can we use something that is guaranteed to be unique instead?",
+      "revId": "1231706414d7738f31cc6ff1b3339fe66b7329e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b2f6975_287c808f",
+        "filename": "drivers/android/binder/node.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-03-21T00:44:10Z",
+      "side": 1,
+      "message": "I think you should copy the original comment, `DEAD_BINDER notifications can cause transactions`, instead of saying `Mimic the original code`. It explains why we need to stop processing work items (from the process work queue), and at some point the original code will presumably be deleted.",
+      "revId": "1231706414d7738f31cc6ff1b3339fe66b7329e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46abc874_0af6cce8",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-03-21T00:44:10Z",
+      "side": 1,
+      "message": "This looks convoluted. Why are you not calling this inside the if statement. Also the continue statement means the rest of this ref cleanup block will be skipped if there is no death notification registered. The C code increments the ref deleted stats after this, although that is in the common binder_cleanup_ref_olocked hepler function that is also used on the last dec-ref (would is be possible to also avoid this extra code duplication in the rust version).",
+      "revId": "1231706414d7738f31cc6ff1b3339fe66b7329e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "316feee6_158116d9",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 24
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-03-21T00:44:10Z",
+      "side": 1,
+      "message": "why does this code move in this CL?",
+      "revId": "1231706414d7738f31cc6ff1b3339fe66b7329e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
