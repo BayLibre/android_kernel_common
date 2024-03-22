@@ -638,6 +638,8 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 {
 	struct arm_smccc_res res;
 
+	trace_printk("[FF-A] func: %u\n", func_id);
+
 	/*
 	 * There's no way we can tell what a non-standard SMC call might
 	 * be up to. Ideally, we would terminate these here and return
@@ -685,8 +687,10 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 	if (ffa_call_supported(func_id))
 		return false; /* Pass through */
 
+	trace_printk("[FF-A] not supported func_id: %u\n", func_id);
 	ffa_to_smccc_error(&res, FFA_RET_NOT_SUPPORTED);
 out_handled:
+	trace_printk("[FF-A] ret a0:%x a2: %x\n", res.a0, res.a2);
 	ffa_set_retval(host_ctxt, &res);
 	return true;
 }
