@@ -4415,6 +4415,53 @@ static int __init fault_around_debugfs(void)
 late_initcall(fault_around_debugfs);
 #endif
 
+static inline unsigned long vm_flags_get_nr_pages_evicted(struct vm_area_struct *vma)
+{
+	unsigned long nr_pages = 0;
+
+	if (vma->vm_flags & VM_NR_EVICTED_BIT1)
+		nr_pages |= 1UL;
+	if (vma->vm_flags & VM_NR_EVICTED_BIT2)
+		nr_pages |= 2UL;
+
+	return nr_pages;
+}
+
+/*
+ * If VMA's end was evicted with MADV_DONTNEED, don't bother faulting it in again.
+ */
+static inline unsigned long vma_data_pages(struct vm_area_struct *vma)
+{
+	unsigned long data_pages = vma_pages(vma);
+	unsigned long evicted_pages = vm_flags_get_nr_pages_evicted(vma);
+	unsigned long end = 0;
+	loff_t start_offset, end_offset;
+
+	/* Potential MADV_DONTNEED was done on a range that ends at vm_end ? */
+	if (!evicted_pages)
+		return data_pages;
+
+	/*
+	 * We try to limit this only to ELF files.
+	 *
+	 * For an ELF built with max-page-size=16kB loaded on a 4kB page size
+	 * system, the maximum amout of padding pages will be 3 per segment.
+	 */
+	if (evicted_pages > 3)
+		return data_pages;
+
+	/* Update the data_pages to exclude the evicted range */
+	end = vma->vm_end - (evicted_pages << PAGE_SHIFT);
+	data_pages = (end - vma->vm_start) >> PAGE_SHIFT;
+
+	/* Drop the pages now to save reclaim work later */
+	end_offset = (vma->vm_pgoff << PAGE_SHIFT) + (vma->vm_end - vma->vm_start);
+	start_offset = (vma->vm_pgoff << PAGE_SHIFT) + (end - vma->vm_start);
+	truncate_inode_pages_range(vma->vm_file->f_mapping, start_offset, end_offset);
+
+	return data_pages;
+}
+
 /*
  * do_fault_around() tries to map few pages around the fault address. The hope
  * is that the pages will be needed soon and this will lower the number of
@@ -4461,7 +4508,7 @@ static vm_fault_t do_fault_around(struct vm_fault *vmf)
 	end_pgoff = start_pgoff -
 		((address >> PAGE_SHIFT) & (PTRS_PER_PTE - 1)) +
 		PTRS_PER_PTE - 1;
-	end_pgoff = min3(end_pgoff, vma_pages(vmf->vma) + vmf->vma->vm_pgoff - 1,
+	end_pgoff = min3(end_pgoff, vma_data_pages(vmf->vma) + vmf->vma->vm_pgoff - 1,
 			start_pgoff + nr_pages - 1);
 
 	if (!(vmf->flags & FAULT_FLAG_SPECULATIVE) &&
