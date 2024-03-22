@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4fef436_b78ac360",
+        "filename": "include/trace/hooks/oom.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-03-22T20:55:19Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by GKI Guidelines: Please do not add #include statements to headers under include/trace/hooks/. These should only be getting forward decls and not new includes (to avoid CRC changes due to visibility).\\n\\n Refer to go/ack-contribution-guidelines and go/vendor...\n\nAnalyzer Description: Validates that changes do not have prohibited expressions in them.\nOwner: gki-eng-team@google.com\n\nPlease do not add #include statements to headers under include/trace/hooks/. These should only be getting forward decls and not new includes (to avoid CRC changes due to visibility).\\n\\n Refer to go/ack-contribution-guidelines and go/vendor-hooks for details.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 38
+      },
+      "revId": "9e462c37807b4292ea15f9574f66e5fb73f77973",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0340ace_b01d5adc",
+        "filename": "include/trace/hooks/oom.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-03-22T20:55:19Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by GKI Guidelines: Please do not add #include statements to headers under include/trace/hooks/. These should only be getting forward decls and not new includes (to avoid CRC changes due to visibility).\\n\\n Refer to go/ack-contribution-guidelines and go/vendor...\n\nAnalyzer Description: Validates that changes do not have prohibited expressions in them.\nOwner: gki-eng-team@google.com\n\nPlease do not add #include statements to headers under include/trace/hooks/. These should only be getting forward decls and not new includes (to avoid CRC changes due to visibility).\\n\\n Refer to go/ack-contribution-guidelines and go/vendor-hooks for details.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 32
+      },
+      "revId": "9e462c37807b4292ea15f9574f66e5fb73f77973",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f09be82e_fbd951f0",
+        "filename": "mm/oom_kill.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 944,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-03-22T20:55:19Z",
+      "side": 1,
+      "message": "`mark_oom_victim()` called below already has `trace_mark_victim()` tracepoint which you can hook to. Why do you need this additional vendor hook?",
+      "range": {
+        "startLine": 944,
+        "startChar": 1,
+        "endLine": 944,
+        "endChar": 32
+      },
+      "revId": "9e462c37807b4292ea15f9574f66e5fb73f77973",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
