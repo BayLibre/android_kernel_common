@@ -33,6 +33,24 @@
       "message": "These symbol definitions will be needed for a bunch of release branches too before the builds are enabled for new .ko files. Since there aren\u0027t separate branches for the common-modules/virtual-device, all kernel branches that build with those modules need to be updated. The active release branches are android14-6.1-2023-06 through android14-6.1-2024-03. All of them need these symbols.",
       "revId": "50fe3d2012b309bdac2015e81c345134eea36af7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eccab467_a7b86868",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2036855
+      },
+      "writtenOn": "2024-03-22T21:17:38Z",
+      "side": 1,
+      "message": "It appears that those manifests pin common-modules/virtual-device: https://android.googlesource.com/kernel/manifest/+/refs/heads/common-android14-6.1-2024-03/default.xml#17\n\nIf that\u0027s the case, would the symbol definitions still need to be cherry-picked to these branches?",
+      "parentUuid": "6aeecac8_21836357",
+      "revId": "50fe3d2012b309bdac2015e81c345134eea36af7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
