@@ -16,6 +16,23 @@
       "message": "Looks like a flaky test, I\u0027ve restarted it",
       "revId": "50fe3d2012b309bdac2015e81c345134eea36af7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6aeecac8_21836357",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-03-22T20:58:52Z",
+      "side": 1,
+      "message": "These symbol definitions will be needed for a bunch of release branches too before the builds are enabled for new .ko files. Since there aren\u0027t separate branches for the common-modules/virtual-device, all kernel branches that build with those modules need to be updated. The active release branches are android14-6.1-2023-06 through android14-6.1-2024-03. All of them need these symbols.",
+      "revId": "50fe3d2012b309bdac2015e81c345134eea36af7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
