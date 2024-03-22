@@ -16,6 +16,24 @@
       "message": "This is an -lts branch. Is there a change on android14-6.1 as well? Please cherry-pick instead.",
       "revId": "ea0155119e2fcc2c0933294379feb921f2bad327",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b95ae297_aade6780",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2036855
+      },
+      "writtenOn": "2024-03-22T13:44:18Z",
+      "side": 1,
+      "message": "Yes, this corresponds to this change on android14-6.1: https://android-review.git.corp.google.com/c/kernel/common/+/3005865\n\nI\u0027ve instead cherry-picked that change to android14-6.1-lts: https://android-review.git.corp.google.com/c/kernel/common/+/3009264",
+      "parentUuid": "137dee20_42962007",
+      "revId": "ea0155119e2fcc2c0933294379feb921f2bad327",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
