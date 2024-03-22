@@ -2542,6 +2542,7 @@ void free_unref_page_list(struct list_head *list)
 		pcp_trylock_finish(UP_flags);
 	}
 }
+EXPORT_SYMBOL_GPL(free_unref_page_list);
 
 /*
  * split_page takes a non-compound higher-order page, and splits it into

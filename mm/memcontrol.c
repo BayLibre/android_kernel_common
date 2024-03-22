@@ -827,6 +827,7 @@ void __mod_memcg_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
 	memcg_rstat_updated(memcg, val);
 	memcg_stats_unlock();
 }
+EXPORT_SYMBOL_GPL(__mod_memcg_lruvec_state);
 
 /**
  * __mod_lruvec_state - update lruvec memory statistics
@@ -915,6 +916,7 @@ void __count_memcg_events(struct mem_cgroup *memcg, enum vm_event_item idx,
 	memcg_rstat_updated(memcg, count);
 	memcg_stats_unlock();
 }
+EXPORT_SYMBOL_GPL(__count_memcg_events);
 
 static unsigned long memcg_events(struct mem_cgroup *memcg, int event)
 {
@@ -7216,6 +7218,7 @@ void __mem_cgroup_uncharge_list(struct list_head *page_list)
 	if (ug.memcg)
 		uncharge_batch(&ug);
 }
+EXPORT_SYMBOL_GPL(__mem_cgroup_uncharge_list);
 
 /**
  * mem_cgroup_migrate - Charge a folio's replacement.

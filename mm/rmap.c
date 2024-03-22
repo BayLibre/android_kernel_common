@@ -622,6 +622,7 @@ void try_to_unmap_flush(void)
 	tlb_ubc->flush_required = false;
 	tlb_ubc->writable = false;
 }
+EXPORT_SYMBOL_GPL(try_to_unmap_flush);
 
 /* Flush iff there are potentially writable TLB entries that can race with IO */
 void try_to_unmap_flush_dirty(void)
@@ -1807,6 +1808,7 @@ void try_to_unmap(struct folio *folio, enum ttu_flags flags)
 	else
 		rmap_walk(folio, &rwc);
 }
+EXPORT_SYMBOL_GPL(try_to_unmap);
 
 /*
  * @arg: enum ttu_flags will be passed to this argument.

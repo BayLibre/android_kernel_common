@@ -1384,7 +1384,7 @@ static pageout_t pageout(struct folio *folio, struct address_space *mapping,
  * Same as remove_mapping, but if the folio is removed from the mapping, it
  * gets returned with a refcount of 0.
  */
-static int __remove_mapping(struct address_space *mapping, struct folio *folio,
+int __remove_mapping(struct address_space *mapping, struct folio *folio,
 			    bool reclaimed, struct mem_cgroup *target_memcg)
 {
 	int refcount;
@@ -1480,6 +1480,7 @@ cannot_free:
 		spin_unlock(&mapping->host->i_lock);
 	return 0;
 }
+EXPORT_SYMBOL_GPL(__remove_mapping);
 
 /**
  * remove_mapping() - Attempt to remove a folio from its mapping.
@@ -1521,6 +1522,7 @@ void folio_putback_lru(struct folio *folio)
 	folio_add_lru(folio);
 	folio_put(folio);		/* drop ref from isolate */
 }
+EXPORT_SYMBOL_GPL(folio_putback_lru);
 
 enum folio_references {
 	FOLIOREF_RECLAIM,

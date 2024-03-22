@@ -1243,6 +1243,8 @@ void cache_random_seq_destroy(struct kmem_cache *cachep)
 	kfree(cachep->random_seq);
 	cachep->random_seq = NULL;
 }
+EXPORT_SYMBOL_GPL(cache_random_seq_destroy);
+
 #endif /* CONFIG_SLAB_FREELIST_RANDOM */
 
 #if defined(CONFIG_SLAB) || defined(CONFIG_SLUB_DEBUG)
