@@ -70,6 +70,24 @@
       "parentUuid": "c588f03f_18011dba",
       "revId": "cb42bd9e7db14a102ec3dd16972b5d0497a283be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b771b7d8_e324a288",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1319385
+      },
+      "writtenOn": "2024-03-24T10:47:45Z",
+      "side": 1,
+      "message": "Those commits cannot be reverted as of now as Android userspace (including libselinux and sepolicy) heavily depends on them, and afaik no one is working on adapting userspace for upstream solutions (if there are any). I think Jeffery can explain further.",
+      "parentUuid": "aa239e28_cb525fa9",
+      "revId": "cb42bd9e7db14a102ec3dd16972b5d0497a283be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
