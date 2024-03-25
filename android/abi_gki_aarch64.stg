@@ -298116,6 +298116,13 @@ function {
   parameter_id: 0x2668e644
 }
 function {
+  id: 0xaa7f8be4
+  return_type_id: 0x064d6086
+  parameter_id: 0x0258f96e
+  parameter_id: 0x4585663f
+  parameter_id: 0xf1a6dfed
+}
+function {
   id: 0xaa8f5c2d
   return_type_id: 0xf435685e
   parameter_id: 0xf435685e
@@ -320073,6 +320080,15 @@ elf_symbol {
   crc: 0x004a6adb
   type_id: 0x10cc1a70
   full_name: "devm_backlight_device_unregister"
+}
+elf_symbol {
+  id: 0xff3a9dde
+  name: "devm_bitmap_zalloc"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x5e53ca9c
+  type_id: 0xaa7f8be4
+  full_name: "devm_bitmap_zalloc"
 }
 elf_symbol {
   id: 0x01a0cc1d
@@ -354896,6 +354912,15 @@ elf_symbol {
   full_name: "tracing_off"
 }
 elf_symbol {
+  id: 0x6521b803
+  name: "tracing_on"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x10138352
+  type_id: 0x10985193
+  full_name: "tracing_on"
+}
+elf_symbol {
   id: 0x3f07269b
   name: "truncate_inode_pages"
   is_defined: true
@@ -364123,6 +364148,7 @@ interface {
   symbol_id: 0xa2a47944
   symbol_id: 0x97ae66e9
   symbol_id: 0x206986c6
+  symbol_id: 0xff3a9dde
   symbol_id: 0x01a0cc1d
   symbol_id: 0x32439a1e
   symbol_id: 0x70cc5ef2
@@ -367987,6 +368013,7 @@ interface {
   symbol_id: 0x3df2f359
   symbol_id: 0x33172d21
   symbol_id: 0x54bbaa46
+  symbol_id: 0x6521b803
   symbol_id: 0x3f07269b
   symbol_id: 0x3c7c6ce9
   symbol_id: 0x7a43283c
