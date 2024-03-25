@@ -1,3 +1,4 @@
+<<<<<<< HEAD   (9f44f9 ANDROID: Create code coverage helper script and doc.)
 // SPDX-License-Identifier: GPL-2.0
 /*
  * drivers/base/power/domain_governor.c - Governors for device PM domains.
@@ -419,3 +420,5 @@ struct dev_power_governor simple_qos_governor = {
 struct dev_power_governor pm_domain_always_on_gov = {
 	.suspend_ok = default_suspend_ok,
 };
+=======
+>>>>>>> BRANCH (0c6bc3 Merge tag 'ubifs-for-linus-6.8-rc1' of git://git.kernel.org/)
