@@ -21,6 +21,16 @@ struct binder_context {
 	struct mutex context_mgr_node_lock;
 	kuid_t binder_context_mgr_uid;
 	const char *name;
+
+	/*
+	 * What kinds of binder transactions should be reported
+	 */
+	u32 report_flags;
+
+	/*
+	 * The process that enables binder_report would receive the reports
+	 */
+	pid_t report_pid;
 };
 
 /**
