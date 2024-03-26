@@ -74,6 +74,7 @@
 
 #include <linux/cacheflush.h>
 
+#include "binder_genl.h"
 #include "binder_internal.h"
 #include "binder_trace.h"
 #include <trace/hooks/binder.h>
@@ -3811,10 +3812,16 @@ static void binder_transaction(struct binder_proc *proc,
 		return_error_line = __LINE__;
 		goto err_copy_data_failed;
 	}
-	if (t->buffer->oneway_spam_suspect)
+	if (t->buffer->oneway_spam_suspect) {
 		tcomplete->type = BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT;
-	else
+		if (binder_report_enabled(BINDER_REPORT_SPAM))
+			binder_send_report(context, BR_ONEWAY_SPAM_SUSPECT, proc->pid, thread->pid,
+					target_proc ? target_proc->pid : 0,
+					target_thread ? target_thread->pid : 0,
+					reply, tr->flags, tr->code, tr->data_size);
+	} else {
 		tcomplete->type = BINDER_WORK_TRANSACTION_COMPLETE;
+	}
 	t->work.type = BINDER_WORK_TRANSACTION;
 
 	if (reply) {
@@ -3926,6 +3933,13 @@ err_invalid_target_handle:
 		binder_dec_node(target_node, 1, 0);
 		binder_dec_node_tmpref(target_node);
 	}
+
+
+	if (binder_report_enabled(BINDER_REPORT_FAILED))
+		binder_send_report(context, return_error, proc->pid, thread->pid,
+				target_proc ? target_proc->pid : 0,
+				target_thread ? target_thread->pid : 0,
+				reply, tr->flags, tr->code, tr->data_size);
 
 	binder_debug(BINDER_DEBUG_FAILED_TRANSACTION,
 		     "%d:%d transaction %s to %d:%d failed %d/%d/%d, size %lld-%lld line %d\n",
@@ -6836,6 +6850,9 @@ static int __init binder_init(void)
 	char *device_names = NULL;
 
 	ret = binder_alloc_shrinker_init();
+	if (ret)
+		return ret;
+	ret = init_binder_netlink();
 	if (ret)
 		return ret;
 

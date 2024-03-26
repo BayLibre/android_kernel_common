@@ -593,5 +593,42 @@ enum binder_driver_command_protocol {
 	 */
 };
 
+#define BINDER_GENL_FAMILY_NAME	"binder"
+#define BINDER_GENL_VERSION	1
+
+#define BINDER_REPORT_FAILED	1	/* failed txn */
+#define BINDER_REPORT_DELAYED	2	/* delayed txn */
+#define BINDER_REPORT_SPAM	4	/* spamming txn */
+
+struct binder_report {
+	__u32 minor;	/* binder device */
+	__u32 err;	/* returned transaction error */
+	__u32 from_pid;	/* sender pid */
+	__u32 from_tid;	/* sender tid */
+	__u32 to_pid;	/* target pid */
+	__u32 to_tid;	/* target tid */
+	__u32 reply;	/* is reply transaction */
+	__u32 flags;	/* transaction flags */
+	__u32 code;	/* tranaction code */
+	__u32 size;	/* transaction data size */
+};
+
+enum binder_genl_attr {
+	BINDER_GENL_ATTR_UNSPEC,
+	BINDER_GENL_ATTR_FLAGS,
+	BINDER_GENL_ATTR_REPORT,
+	__BINDER_GENL_ATTR_MAX,
+};
+#define BINDER_GENL_ATTR_MAX (__BINDER_GENL_ATTR_MAX - 1)
+
+enum binder_genl_cmd {
+	BINDER_GENL_CMD_UNSPEC,
+	BINDER_GENL_CMD_ENABLE,
+	BINDER_GENL_CMD_REPLY,
+	BINDER_GENL_CMD_REPORT,
+	__BINDER_GENL_CMD_MAX,
+};
+#define BINDER_GENL_CMD_MAX (__BINDER_GENL_CMD_MAX - 1)
+
 #endif /* _UAPI_LINUX_BINDER_H */
 
