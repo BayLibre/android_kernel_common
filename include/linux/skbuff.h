@@ -749,8 +749,8 @@ typedef unsigned char *sk_buff_data_t;
  *	@list: queue head
  *	@ll_node: anchor in an llist (eg socket defer_list)
  *	@sk: Socket we are owned by
- *	@ip_defrag_offset: (aka @sk) alternate use of @sk, used in
- *		fragmentation management
+ *	@android_abi: used to be 'ip_defrag_offset' which was removed in 18685451fc4e
+ *	              ("inet: inet_defrag: prevent sk release while still in use")
  *	@dev: Device we arrived on/are leaving by
  *	@dev_scratch: (aka @dev) alternate use of @dev when @dev would be %NULL
  *	@cb: Control buffer. Free for use by every layer. Put private vars here
@@ -876,7 +876,7 @@ struct sk_buff {
 
 	union {
 		struct sock		*sk;
-		int			ip_defrag_offset;
+		int			android_abi; /* Was ip_defrag_offset */
 	};
 
 	union {
