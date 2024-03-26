@@ -1204,11 +1204,6 @@ static inline unsigned block_sectors(const struct bch_fs *c)
 	return c->opts.block_size >> 9;
 }
 
-static inline size_t btree_sectors(const struct bch_fs *c)
-{
-	return c->opts.btree_node_size >> 9;
-}
-
 static inline bool btree_id_cached(const struct bch_fs *c, enum btree_id btree)
 {
 	return c->btree_key_cache_btrees & (1U << btree);
@@ -1252,6 +1247,18 @@ static inline struct stdio_redirect *bch2_fs_stdio_redirect(struct bch_fs *c)
 	if (c->stdio_filter && c->stdio_filter != current)
 		stdio = NULL;
 	return stdio;
+}
+
+static inline unsigned metadata_replicas_required(struct bch_fs *c)
+{
+	return min(c->opts.metadata_replicas,
+		   c->opts.metadata_replicas_required);
+}
+
+static inline unsigned data_replicas_required(struct bch_fs *c)
+{
+	return min(c->opts.data_replicas,
+		   c->opts.data_replicas_required);
 }
 
 #define BKEY_PADDED_ONSTACK(key, pad)				\

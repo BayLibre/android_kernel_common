@@ -546,6 +546,7 @@ int fnic_queuecommand(struct Scsi_Host *shost, struct scsi_cmnd *sc)
 	if (fnic->sw_copy_wq[hwq].io_req_table[blk_mq_unique_tag_to_tag(mqtag)] != NULL) {
 		WARN(1, "fnic<%d>: %s: hwq: %d tag 0x%x already exists\n",
 				fnic->fnic_num, __func__, hwq, blk_mq_unique_tag_to_tag(mqtag));
+		spin_unlock_irqrestore(&fnic->wq_copy_lock[hwq], flags);
 		return SCSI_MLQUEUE_HOST_BUSY;
 	}
 
@@ -679,7 +680,7 @@ static int fnic_fcpio_fw_reset_cmpl_handler(struct fnic *fnic,
 
 	spin_unlock_irqrestore(&fnic->fnic_lock, flags);
 
-	fnic_flush_tx(fnic);
+	queue_work(fnic_event_queue, &fnic->flush_work);
 
  reset_cmpl_handler_end:
 	fnic_clear_state_flags(fnic, FNIC_FLAGS_FWRESET);
@@ -735,7 +736,7 @@ static int fnic_fcpio_flogi_reg_cmpl_handler(struct fnic *fnic,
 		}
 		spin_unlock_irqrestore(&fnic->fnic_lock, flags);
 
-		fnic_flush_tx(fnic);
+		queue_work(fnic_event_queue, &fnic->flush_work);
 		queue_work(fnic_event_queue, &fnic->frame_work);
 	} else {
 		spin_unlock_irqrestore(&fnic->fnic_lock, flags);

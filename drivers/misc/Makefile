@@ -67,4 +67,8 @@ obj-$(CONFIG_TMR_MANAGER)      += xilinx_tmr_manager.o
 obj-$(CONFIG_TMR_INJECT)	+= xilinx_tmr_inject.o
 obj-$(CONFIG_TPS6594_ESM)	+= tps6594-esm.o
 obj-$(CONFIG_TPS6594_PFSM)	+= tps6594-pfsm.o
+<<<<<<< HEAD   (a17899 ANDROID: BUILD.bazel: vm_util needs linux/fs.h header file)
 obj-$(CONFIG_UID_SYS_STATS)	+= uid_sys_stats.o
+=======
+obj-$(CONFIG_NSM)		+= nsm.o
+>>>>>>> BRANCH (e8f897 Linux 6.8)
