@@ -97,7 +97,7 @@ struct xe_mem_region {
 	 */
 	resource_size_t actual_physical_size;
 	/** @mapping: pointer to VRAM mappable space */
-	void *__iomem mapping;
+	void __iomem *mapping;
 };
 
 /**
@@ -146,7 +146,7 @@ struct xe_tile {
 		size_t size;
 
 		/** @regs: pointer to tile's MMIO space (starting with registers) */
-		void *regs;
+		void __iomem *regs;
 	} mmio;
 
 	/**
@@ -159,7 +159,7 @@ struct xe_tile {
 		size_t size;
 
 		/** @regs: pointer to tile's additional MMIO-extension space */
-		void *regs;
+		void __iomem *regs;
 	} mmio_ext;
 
 	/** @mem: memory management info for tile */
@@ -301,7 +301,7 @@ struct xe_device {
 		/** @size: size of MMIO space for device */
 		size_t size;
 		/** @regs: pointer to MMIO space for device */
-		void *regs;
+		void __iomem *regs;
 	} mmio;
 
 	/** @mem: memory info for device */
@@ -340,14 +340,6 @@ struct xe_device {
 		/** @lock: protects UM state */
 		struct mutex lock;
 	} usm;
-
-	/** @persistent_engines: engines that are closed but still running */
-	struct {
-		/** @lock: protects persistent engines */
-		struct mutex lock;
-		/** @list: list of persistent engines */
-		struct list_head list;
-	} persistent_engines;
 
 	/** @pinned: pinned BO state */
 	struct {

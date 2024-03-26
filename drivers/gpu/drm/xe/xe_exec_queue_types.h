@@ -52,8 +52,6 @@ struct xe_exec_queue {
 	struct xe_vm *vm;
 	/** @class: class of this exec queue */
 	enum xe_engine_class class;
-	/** @priority: priority of this exec queue */
-	enum xe_exec_queue_priority priority;
 	/**
 	 * @logical_mask: logical mask of where job submitted to exec queue can run
 	 */
@@ -84,6 +82,8 @@ struct xe_exec_queue {
 #define EXEC_QUEUE_FLAG_VM			BIT(4)
 /* child of VM queue for multi-tile VM jobs */
 #define EXEC_QUEUE_FLAG_BIND_ENGINE_CHILD	BIT(5)
+/* kernel exec_queue only, set priority to highest level */
+#define EXEC_QUEUE_FLAG_HIGH_PRIORITY		BIT(6)
 
 	/**
 	 * @flags: flags for this exec queue, should statically setup aside from ban
@@ -104,16 +104,6 @@ struct xe_exec_queue {
 		/** @guc: GuC backend specific state for exec queue */
 		struct xe_guc_exec_queue *guc;
 	};
-
-	/**
-	 * @persistent: persistent exec queue state
-	 */
-	struct {
-		/** @xef: file which this exec queue belongs to */
-		struct xe_file *xef;
-		/** @link: link in list of persistent exec queues */
-		struct list_head link;
-	} persistent;
 
 	union {
 		/**
@@ -142,6 +132,8 @@ struct xe_exec_queue {
 		u32 timeslice_us;
 		/** @preempt_timeout_us: preemption timeout in micro-seconds */
 		u32 preempt_timeout_us;
+		/** @priority: priority of this exec queue */
+		enum xe_exec_queue_priority priority;
 	} sched_props;
 
 	/** @compute: compute exec queue state */
@@ -157,16 +149,6 @@ struct xe_exec_queue {
 		/** @lock: preemption fences lock */
 		spinlock_t lock;
 	} compute;
-
-	/** @usm: unified shared memory state */
-	struct {
-		/** @acc_trigger: access counter trigger */
-		u32 acc_trigger;
-		/** @acc_notify: access counter notify */
-		u32 acc_notify;
-		/** @acc_granularity: access counter granularity */
-		u32 acc_granularity;
-	} usm;
 
 	/** @ops: submission backend exec queue operations */
 	const struct xe_exec_queue_ops *ops;
