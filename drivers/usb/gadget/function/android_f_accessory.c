@@ -262,7 +262,7 @@ static struct usb_gadget_strings *acc_strings[] = {
 	NULL,
 };
 
-static DEFINE_MUTEX(acc_dev_instance_lock);
+static DEFINE_SPINLOCK(acc_dev_instance_lock);
 static struct acc_dev *acc_dev_instance;
 
 struct acc_instance {
@@ -272,10 +272,10 @@ struct acc_instance {
 
 static struct acc_dev *get_acc_dev(void)
 {
-	mutex_lock(&acc_dev_instance_lock);
+	spin_lock_irq(&acc_dev_instance_lock);
 	if (acc_dev_instance)
 		kref_get(&acc_dev_instance->kref);
-	mutex_unlock(&acc_dev_instance_lock);
+	spin_unlock_irq(&acc_dev_instance_lock);
 
 	return acc_dev_instance;
 }
@@ -297,8 +297,12 @@ static void __acc_dev_instance_release(struct kref *kref)
 
 static void put_acc_dev(struct acc_dev *dev)
 {
-	kref_put_mutex(&acc_dev_instance->kref, __acc_dev_instance_release,
+	int rv;
+	rv = kref_put_lock(&acc_dev_instance->kref, __acc_dev_instance_release,
 		       &acc_dev_instance_lock);
+	if (rv) {
+		spin_unlock_irq(&acc_dev_instance_lock);
+	}
 }
 
 static inline struct acc_dev *func_to_dev(struct usb_function *f)
@@ -1244,14 +1248,14 @@ static int acc_init(void)
 	struct acc_dev *dev;
 	int ret;
 
-	mutex_lock(&acc_dev_instance_lock);
+	spin_lock_irq(&acc_dev_instance_lock);
 	if (acc_dev_instance) {
-		mutex_unlock(&acc_dev_instance_lock);
+		spin_unlock_irq(&acc_dev_instance_lock);
 		return -EBUSY;
 	}
 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
 	if (!dev) {
-		mutex_unlock(&acc_dev_instance_lock);
+		spin_unlock_irq(&acc_dev_instance_lock);
 		return -ENOMEM;
 	}
 
@@ -1273,12 +1277,12 @@ static int acc_init(void)
 
 	kref_init(&dev->kref);
 	acc_dev_instance = dev;
-	mutex_unlock(&acc_dev_instance_lock);
+	spin_unlock_irq(&acc_dev_instance_lock);
 	return 0;
 
 err_free_dev:
 	kfree(dev);
-	mutex_unlock(&acc_dev_instance_lock);
+	spin_unlock_irq(&acc_dev_instance_lock);
 	pr_err("USB accessory gadget driver failed to initialize\n");
 	return ret;
 }
