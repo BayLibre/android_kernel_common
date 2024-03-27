@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9d46ed5_68561b15",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-03-27T21:15:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e88ef487_5d39f8c9",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 44
+      },
+      "revId": "97163447adea86f6a5579ff871bdacc9279f781e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "602a2928_97315baa",
@@ -61,6 +85,24 @@
       "writtenOn": "2024-03-27T20:14:07Z",
       "side": 1,
       "message": "Please add a bug number",
+      "revId": "97163447adea86f6a5579ff871bdacc9279f781e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a9f2626_e4100bbc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-03-27T21:15:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "602a2928_97315baa",
       "revId": "97163447adea86f6a5579ff871bdacc9279f781e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -131,6 +173,24 @@
       "side": 1,
       "message": "The most common usage of this trace point would be in a private section of a kernel. Same as `trace_gpu_mem`, I\u0027ve not been able to find trace_gpu_mem_total calls in GKI. It is however Ambiguous for every vendor to redefine this tracepoint.",
       "parentUuid": "ff525a98_5e16ca63",
+      "revId": "97163447adea86f6a5579ff871bdacc9279f781e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaf106b6_4dd0446c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-03-27T21:15:49Z",
+      "side": 1,
+      "message": "This is quite unusual case. I know trace_gpu_mem() got accepted upstream and there was a lot of pushback. I\u0027m quite surprised it made it eventually.\n\nBut if you want to use that as an example then note that it was merged upstream and that\u0027s the reason we have it in ACK. Now, back to my question. Why is this work not being done upstream?",
+      "parentUuid": "0a0af495_ba875256",
       "revId": "97163447adea86f6a5579ff871bdacc9279f781e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
