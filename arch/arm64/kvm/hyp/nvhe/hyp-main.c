@@ -1700,10 +1700,24 @@ static void handle_host_smc(struct kvm_cpu_context *host_ctxt)
 	func_id &= ~ARM_SMCCC_CALL_HINTS;
 
 	handled = kvm_host_psci_handler(host_ctxt, func_id);
-	if (!handled)
+	if (!handled && is_ffa_call(func_id))
 		handled = kvm_host_ffa_handler(host_ctxt, func_id);
 	if (!handled && smp_load_acquire(&default_host_smc_handler))
 		handled = default_host_smc_handler(&host_ctxt->regs);
+
+	/*
+	 * There's no way we can tell what a non-standard SMC call might
+	 * be up to. Ideally, we would terminate these here and return
+	 * an error to the host, but sadly devices make use of custom
+	 * firmware calls for things like power management, debugging,
+	 * RNG access and crash reporting.
+	 *
+	 * Given that the architecture requires us to trust EL3 anyway,
+	 * we forward unrecognised calls on under the assumption that
+	 * the firmware doesn't expose a mechanism to access arbitrary
+	 * non-secure memory. Short of a per-device table of SMCs, this
+	 * is the best we can do.
+	 */
 	if (!handled) {
 		__hyp_exit();
 		__kvm_hyp_host_forward_smc(host_ctxt);

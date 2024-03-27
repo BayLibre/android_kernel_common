@@ -100,14 +100,6 @@ static void ffa_set_retval(struct kvm_cpu_context *ctxt,
 	cpu_reg(ctxt, 3) = res->a3;
 }
 
-static bool is_ffa_call(u64 func_id)
-{
-	return ARM_SMCCC_IS_FAST_CALL(func_id) &&
-	       ARM_SMCCC_OWNER_NUM(func_id) == ARM_SMCCC_OWNER_STANDARD &&
-	       ARM_SMCCC_FUNC_NUM(func_id) >= FFA_MIN_FUNC_NUM &&
-	       ARM_SMCCC_FUNC_NUM(func_id) <= FFA_MAX_FUNC_NUM;
-}
-
 static int ffa_map_hyp_buffers(u64 ffa_page_count)
 {
 	struct arm_smccc_res res;
@@ -634,61 +626,58 @@ out_handled:
 	return true;
 }
 
-bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
+bool kvm_host_ffa_handler(struct kvm_cpu_context *ctxt, u32 func_id)
 {
+	DECLARE_REG(u32, arg1, ctxt, 1);
+	DECLARE_REG(u32, arg2, ctxt, 2);
+	DECLARE_REG(u64, arg3, ctxt, 3);
+	DECLARE_REG(u32, arg4, ctxt, 4);
 	struct arm_smccc_res res;
-
-	/*
-	 * There's no way we can tell what a non-standard SMC call might
-	 * be up to. Ideally, we would terminate these here and return
-	 * an error to the host, but sadly devices make use of custom
-	 * firmware calls for things like power management, debugging,
-	 * RNG access and crash reporting.
-	 *
-	 * Given that the architecture requires us to trust EL3 anyway,
-	 * we forward unrecognised calls on under the assumption that
-	 * the firmware doesn't expose a mechanism to access arbitrary
-	 * non-secure memory. Short of a per-device table of SMCs, this
-	 * is the best we can do.
-	 */
-	if (!is_ffa_call(func_id))
-		return false;
+	bool handled = true;
+	int err = 0;
 
 	switch (func_id) {
 	case FFA_FEATURES:
-		if (!do_ffa_features(&res, host_ctxt))
-			return false;
-		goto out_handled;
+		if (!do_ffa_features(&res, ctxt)) {
+			handled = false;
+			goto unhandled;
+		}
+		break;
 	/* Memory management */
 	case FFA_FN64_RXTX_MAP:
-		do_ffa_rxtx_map(&res, host_ctxt);
-		goto out_handled;
+		do_ffa_rxtx_map(&res, ctxt);
+		break;
 	case FFA_RXTX_UNMAP:
-		do_ffa_rxtx_unmap(&res, host_ctxt);
-		goto out_handled;
+		do_ffa_rxtx_unmap(&res, ctxt);
+		break;
 	case FFA_MEM_SHARE:
 	case FFA_FN64_MEM_SHARE:
-		do_ffa_mem_xfer(FFA_FN64_MEM_SHARE, &res, host_ctxt);
-		goto out_handled;
+		do_ffa_mem_xfer(FFA_FN64_MEM_SHARE, &res, ctxt);
+		break;
 	case FFA_MEM_RECLAIM:
-		do_ffa_mem_reclaim(&res, host_ctxt);
-		goto out_handled;
+		do_ffa_mem_reclaim(&res, ctxt);
+		break;
 	case FFA_MEM_LEND:
 	case FFA_FN64_MEM_LEND:
-		do_ffa_mem_xfer(FFA_FN64_MEM_LEND, &res, host_ctxt);
-		goto out_handled;
+		do_ffa_mem_xfer(FFA_FN64_MEM_LEND, &res, ctxt);
+		break;
 	case FFA_MEM_FRAG_TX:
-		do_ffa_mem_frag_tx(&res, host_ctxt);
-		goto out_handled;
+		do_ffa_mem_frag_tx(&res, ctxt);
+		break;
+	default:
+		if (ffa_call_supported(func_id)) {
+			handled = false;
+			goto unhandled;
+		}
+
+		ffa_to_smccc_error(&res, FFA_RET_NOT_SUPPORTED);
 	}
 
-	if (ffa_call_supported(func_id))
-		return false; /* Pass through */
-
-	ffa_to_smccc_error(&res, FFA_RET_NOT_SUPPORTED);
-out_handled:
-	ffa_set_retval(host_ctxt, &res);
-	return true;
+	ffa_set_retval(ctxt, &res);
+	err = res.a0 == FFA_SUCCESS ? 0 : res.a2;
+unhandled:
+	trace_ffa_call(func_id, arg1, arg2, arg3, arg4, handled, err);
+	return handled;
 }
 
 int hyp_ffa_init(void *pages)
