@@ -29,7 +29,11 @@
 #include <linux/spinlock.h>
 #include <linux/swiotlb.h>
 #include <linux/vmalloc.h>
+<<<<<<< HEAD   (1f6108 Merge e7ded27593bf ("Merge tag 'percpu-for-6.8' of git://git)
 #include <trace/hooks/iommu.h>
+=======
+#include <trace/events/swiotlb.h>
+>>>>>>> BRANCH (5c9350 Merge tag 'pwm/for-6.8-2' of gitolite.kernel.org:pub/scm/lin)
 
 #include "dma-iommu.h"
 
@@ -1159,6 +1163,8 @@ static dma_addr_t iommu_dma_map_page(struct device *dev, struct page *page,
 			dev_warn_once(dev, "DMA bounce buffers are inactive, unable to map unaligned transaction.\n");
 			return DMA_MAPPING_ERROR;
 		}
+
+		trace_swiotlb_bounced(dev, phys, size);
 
 		aligned_size = iova_align(iovad, size);
 		phys = swiotlb_tbl_map_single(dev, phys, size, aligned_size,

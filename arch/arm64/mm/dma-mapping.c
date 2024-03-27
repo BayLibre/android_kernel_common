@@ -48,7 +48,7 @@ void arch_teardown_dma_ops(struct device *dev)
 #endif
 
 void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
-			const struct iommu_ops *iommu, bool coherent)
+			bool coherent)
 {
 	int cls = cache_line_size_of_cpu();
 
@@ -59,7 +59,11 @@ void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
 		   ARCH_DMA_MINALIGN, cls);
 
 	dev->dma_coherent = coherent;
+<<<<<<< HEAD   (1f6108 Merge e7ded27593bf ("Merge tag 'percpu-for-6.8' of git://git)
 	if (iommu) {
+=======
+	if (device_iommu_mapped(dev))
+>>>>>>> BRANCH (5c9350 Merge tag 'pwm/for-6.8-2' of gitolite.kernel.org:pub/scm/lin)
 		iommu_setup_dma_ops(dev, dma_base, dma_base + size - 1);
 		trace_android_rvh_iommu_setup_dma_ops(dev, dma_base, dma_base + size - 1);
 	}
