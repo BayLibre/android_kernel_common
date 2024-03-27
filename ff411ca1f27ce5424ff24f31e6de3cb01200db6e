@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77da1844_ca0cfa1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2036855
+      },
+      "writtenOn": "2024-03-27T17:34:09Z",
+      "side": 1,
+      "message": "When building this for virtual aarch64 devices:\n\n```\ntools/bazel run //common-modules/virtual-device:virtual_device_aarch64_dist\n```\n\nI get the following error:\n\n```\nThese symbols are missing from the symbol list and are not available at runtime for unsigned modules:\n  snd_ctl_add required by [\u0027virtio_snd.ko\u0027]\n  snd_ctl_new1 required by [\u0027virtio_snd.ko\u0027]\n  snd_ctl_notify required by [\u0027virtio_snd.ko\u0027]\nTarget //common-modules/virtual-device:virtual_device_aarch64_dist failed to build\n```\n\nThis can be fixed by running:\n\n```\ntools/bazel run //common-modules/virtual-device:virtual_device_aarch64_abi_update_symbol_list\n```\n\nWhich updates `kernel/common/android/abi_gki_aarch64_virtual_device` accordingly. Perhaps that should be submitted as a separate change in the same topic?",
+      "revId": "ff411ca1f27ce5424ff24f31e6de3cb01200db6e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
