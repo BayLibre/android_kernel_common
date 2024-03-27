@@ -16,6 +16,24 @@
       "message": "is this going upstream?",
       "revId": "3460e85adb57202f1a48a53a4e890c216b6b6198",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76693b7f_29340b90",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-03-27T23:43:04Z",
+      "side": 1,
+      "message": "Hi Alistair, we didn\u0027t upstream any of the patches for the x86 emulated mode since this is android specific to support a userspace 16k page-size. It doesn\u0027t have any of the performance benefits, but only to catch compatibility issues with the apps since \u003e90% of the app developers are on x86 machines.",
+      "parentUuid": "836f77f5_52c25d71",
+      "revId": "3460e85adb57202f1a48a53a4e890c216b6b6198",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
