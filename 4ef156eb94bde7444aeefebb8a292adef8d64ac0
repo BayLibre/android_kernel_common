@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0de80f3_5a714a7b",
+        "filename": "arch/arm64/configs/microdroid_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-03-28T14:02:23Z",
+      "side": 0,
+      "message": "That should only be needed if the option defaults to \u003dy, which is not the case for CONFIG_MODULES, so I think removing the line is the right thing here :)",
+      "parentUuid": "65cb3b82_6f40b2a3",
+      "revId": "4ef156eb94bde7444aeefebb8a292adef8d64ac0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b942227_7c092247",
