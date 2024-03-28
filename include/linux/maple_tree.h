@@ -9,6 +9,7 @@
  */
 
 #include <linux/kernel.h>
+#include <linux/maple_tree.h>
 #include <linux/rcupdate.h>
 #include <linux/spinlock.h>
 /* #define CONFIG_MAPLE_RCU_DISABLED */
