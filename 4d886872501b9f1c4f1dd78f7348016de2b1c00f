@@ -34,6 +34,24 @@
       "parentUuid": "62fb5b70_403b96ab",
       "revId": "4d886872501b9f1c4f1dd78f7348016de2b1c00f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cef32809_a23565fa",
+        "filename": "drivers/ufs/core/ufshcd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1954115
+      },
+      "writtenOn": "2024-03-28T16:57:26Z",
+      "side": 0,
+      "message": "We would like to avoid deviation from upstream if not absolutely necessary and bringing this change in header file makes the enum part of the ABI which we will have to maintain. Also every partner will have to rework to accommodate this, so its better you drop this move to header file and have it in your driver file.\nAlso IIUC we added these things to ACK12-5.10 to fix a problem which was not yet upstream. Can you explain why do you still need hooks and why the fix cannot be sent upstream?",
+      "parentUuid": "128a39c0_cb801a97",
+      "revId": "4d886872501b9f1c4f1dd78f7348016de2b1c00f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
