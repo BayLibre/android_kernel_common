@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2315660a_37c0701e",
+        "filename": "arch/arm64/configs/microdroid_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-03-28T14:07:46Z",
+      "side": 0,
+      "message": "Well, you had it correct before! The defconfig should only change the defaults, so no need to explicitly disable something that defaults to \u003dn. I think the CI would even complain about the defconfig being inconsistent for gki_defconfig, microdroid_defconfig seems to have been forgotten ... Not a huge deal though.",
+      "parentUuid": "c6550069_61d757a5",
+      "revId": "4ef156eb94bde7444aeefebb8a292adef8d64ac0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b942227_7c092247",
         "filename": "arch/x86/configs/microdroid_defconfig",
         "patchSetId": 1
