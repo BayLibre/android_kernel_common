@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be65fffb_fcbc869e",
+        "filename": "arch/arm64/configs/microdroid_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-03-28T13:12:38Z",
+      "side": 1,
+      "message": "Either CONFIG_MODULES defaults to \u0027n\u0027 and you should just remove that line (which I think is the case, because otherwise there would be no need to have it set to \u003dy to start with), or you should have\n\n```\n# CONFIG_MODULES is not set\n```\n\n(and yes the defconfig syntax is totally weird)",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 16
+      },
+      "revId": "d6a82b566aaa4b56832791614b187c199a47cc0b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
