@@ -1515,7 +1515,12 @@ SYSCALL_DEFINE5(process_madvise, int, pidfd, const struct iovec __user *, vec,
 	total_len = iov_iter_count(&iter);
 
 	while (iov_iter_count(&iter)) {
-		ret = do_madvise(mm, (unsigned long)iter_iov_addr(&iter),
+		unsigned long addr = (unsigned long)iter_iov_addr(&iter);
+		if (__offset_in_page(addr)) {
+			pr_err("pgcompat [%i (%s)]: %s: addr (0x%08lx) not page aligned",
+			task_pid_nr(task), task->comm, __func__, addr);
+		}
+		ret = do_madvise(mm, addr,
 					iter_iov_len(&iter), behavior);
 		if (ret < 0)
 			break;
