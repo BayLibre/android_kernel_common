@@ -52,6 +52,24 @@
       "parentUuid": "128a39c0_cb801a97",
       "revId": "4d886872501b9f1c4f1dd78f7348016de2b1c00f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eabdf6c9_6d7998b7",
+        "filename": "drivers/ufs/core/ufshcd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 3232272
+      },
+      "writtenOn": "2024-03-28T19:44:19Z",
+      "side": 0,
+      "message": "Understood 1st point related to ABI, we will try sync these EH flags to our vendor drv file separately.\n\nFor the hooks requirement, as these Hooks are essential to integrate our chipset specific/HW design and gets integrated in ACK12-5.10.\nIn the migration process from ACK12-5.10 to ACK15-6.6, the same Hooks are also required in k6.6, i.e. we\u0027re going to integrate the same here.",
+      "parentUuid": "cef32809_a23565fa",
+      "revId": "4d886872501b9f1c4f1dd78f7348016de2b1c00f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
