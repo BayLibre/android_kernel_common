@@ -16,6 +16,24 @@
       "message": "Do you really need these moving to `ufshcd.h` file? Maybe just define it in your driver file just like here.",
       "revId": "4d886872501b9f1c4f1dd78f7348016de2b1c00f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "128a39c0_cb801a97",
+        "filename": "drivers/ufs/core/ufshcd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 3232272
+      },
+      "writtenOn": "2024-03-28T14:03:04Z",
+      "side": 0,
+      "message": "Yes we can do that. \nActually these are the common EH handling flags, Our purpose was to make sync these flag between ufs core and vendor specific drv files. \nThe similar changes being done in K5.10 so we tried make same in K6.6 also.\nPlease help consider the same.",
+      "parentUuid": "62fb5b70_403b96ab",
+      "revId": "4d886872501b9f1c4f1dd78f7348016de2b1c00f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
