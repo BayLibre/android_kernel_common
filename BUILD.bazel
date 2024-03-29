@@ -1401,7 +1401,10 @@ cc_binary_with_abi(
 
 cc_binary_with_abi(
     name = "kselftest_mm_map_hugetlb",
-    srcs = ["tools/testing/selftests/mm/map_hugetlb.c"],
+    srcs = [
+        "tools/testing/selftests/mm/map_hugetlb.c",
+        "tools/testing/selftests/mm/vm_util.h",
+    ],
     includes = ["tools/testing/selftests"],
     path_prefix = _KSELFTEST_DIR,
     target_compatible_with = ["@platforms//os:android"],
