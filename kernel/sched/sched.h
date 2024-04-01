@@ -3925,4 +3925,13 @@ void sched_enq_and_set_task(struct sched_enq_and_set_ctx *ctx);
 #include "ext.h"
 
 
+#ifdef CONFIG_RT_SOFTIRQ_AWARE_SCHED
+extern bool cpu_busy_with_softirqs(int cpu);
+#else
+static inline bool cpu_busy_with_softirqs(int cpu)
+{
+	return false;
+}
+#endif /* CONFIG_RT_SOFTIRQ_AWARE_SCHED */
+
 #endif /* _KERNEL_SCHED_SCHED_H */
