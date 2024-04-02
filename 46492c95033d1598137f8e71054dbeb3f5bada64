@@ -39,6 +39,30 @@
       },
       "revId": "46492c95033d1598137f8e71054dbeb3f5bada64",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc49ec85_b46c3e4e",
+        "filename": "kernel/panic.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 1962616
+      },
+      "writtenOn": "2024-04-02T01:23:59Z",
+      "side": 1,
+      "message": "Do you mean that \"regs\" parameter is not unneccessary?\n\nIs it okay to call trace_android_rvh_stack_chk_fail(void)?",
+      "parentUuid": "03b10991_4c932b17",
+      "range": {
+        "startLine": 762,
+        "startChar": 34,
+        "endLine": 762,
+        "endChar": 38
+      },
+      "revId": "46492c95033d1598137f8e71054dbeb3f5bada64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
