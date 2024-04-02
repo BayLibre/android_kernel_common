@@ -20,8 +20,8 @@ struct host_arm_smmu_device {
 	pkvm_handle_t			id;
 	u32				boot_gbpa;
 	bool				hvc_pd;
-	unsigned long			pgsize_bitmap_s1;
-	unsigned long			pgsize_bitmap_s2;
+	struct io_pgtable_cfg		cfg_s1;
+	struct io_pgtable_cfg		cfg_s2;
 };
 
 #define smmu_to_host(_smmu) \
@@ -216,17 +216,18 @@ static int kvm_arm_smmu_domain_finalize(struct kvm_arm_smmu_domain *kvm_smmu_dom
 	/* Default to stage-1. */
 	if (smmu->features & ARM_SMMU_FEAT_TRANS_S1) {
 		kvm_smmu_domain->type = KVM_ARM_SMMU_DOMAIN_S1;
-		kvm_smmu_domain->domain.pgsize_bitmap = host_smmu->pgsize_bitmap_s1;
+		kvm_smmu_domain->domain.pgsize_bitmap = host_smmu->cfg_s1.pgsize_bitmap;
+		kvm_smmu_domain->domain.geometry.aperture_end = (1UL << host_smmu->cfg_s1.ias) - 1;
 	} else {
 		kvm_smmu_domain->type = KVM_ARM_SMMU_DOMAIN_S2;
-		kvm_smmu_domain->domain.pgsize_bitmap = host_smmu->pgsize_bitmap_s2;
+		kvm_smmu_domain->domain.pgsize_bitmap = host_smmu->cfg_s2.pgsize_bitmap;
+		kvm_smmu_domain->domain.geometry.aperture_end = (1UL << host_smmu->cfg_s2.ias) - 1;
 	}
 	ret = kvm_call_hyp_nvhe_mc(smmu, __pkvm_host_iommu_alloc_domain,
 				   kvm_smmu_domain->id, kvm_smmu_domain->type);
 	if (ret)
 		return ret;
 
-	kvm_smmu_domain->domain.geometry.aperture_end = (1UL << smmu->ias) - 1;
 	kvm_smmu_domain->domain.geometry.force_aperture = true;
 	kvm_smmu_domain->smmu = smmu;
 
@@ -683,7 +684,6 @@ static int kvm_arm_smmu_probe(struct platform_device *pdev)
 	struct host_arm_smmu_device *host_smmu;
 	struct hyp_arm_smmu_v3_device *hyp_smmu;
 	struct kvm_power_domain power_domain = {};
-	unsigned long ias;
 
 	if (kvm_arm_smmu_cur >= kvm_arm_smmu_count)
 		return -ENOSPC;
@@ -737,8 +737,6 @@ static int kvm_arm_smmu_probe(struct platform_device *pdev)
 	else
 		kvm_arm_smmu_ops.pgsize_bitmap |= smmu->pgsize_bitmap;
 
-	ias = (smmu->features & ARM_SMMU_FEAT_VAX) ? 52 : 48;
-
 	/*
 	 * SMMU will hold possible configuration for both S1 and S2 as any of
 	 * them can be chosen when a device is attached.
@@ -746,7 +744,7 @@ static int kvm_arm_smmu_probe(struct platform_device *pdev)
 	cfg_s1 = (struct io_pgtable_cfg) {
 		.fmt = ARM_64_LPAE_S1,
 		.pgsize_bitmap = smmu->pgsize_bitmap,
-		.ias = min_t(unsigned long, ias, VA_BITS),
+		.ias = (smmu->features & ARM_SMMU_FEAT_VAX) ? 52 : 48,
 		.oas = smmu->ias,
 		.coherent_walk = smmu->features & ARM_SMMU_FEAT_COHERENCY,
 	};
@@ -766,13 +764,13 @@ static int kvm_arm_smmu_probe(struct platform_device *pdev)
 		ret = io_pgtable_configure(&cfg_s1, &pgd_size);
 		if (ret)
 			return ret;
-		host_smmu->pgsize_bitmap_s1 = cfg_s1.pgsize_bitmap;
+		host_smmu->cfg_s1 = cfg_s1;
 	}
 	if (smmu->features & ARM_SMMU_FEAT_TRANS_S2) {
 		ret = io_pgtable_configure(&cfg_s2, &pgd_size);
 		if (ret)
 			return ret;
-		host_smmu->pgsize_bitmap_s2 = cfg_s2.pgsize_bitmap;
+		host_smmu->cfg_s2 = cfg_s2;
 	}
 	ret = arm_smmu_init_one_queue(smmu, &smmu->cmdq.q, smmu->base,
 				      ARM_SMMU_CMDQ_PROD, ARM_SMMU_CMDQ_CONS,
