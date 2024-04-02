@@ -11,6 +11,11 @@ struct task_struct;
 DECLARE_HOOK(android_vh_syscall_prctl_finished,
 	TP_PROTO(int option, struct task_struct *task),
 	TP_ARGS(option, task));
+
+DECLARE_RESTRICTED_HOOK(android_rvh_syscall_prctl,
+	TP_PROTO(int option, unsigned long arg2, unsigned long arg3,
+		unsigned long arg4, unsigned long arg5, long *error),
+	TP_ARGS(option, arg2, arg3, arg4, arg5, error), 1);
 #endif
 
 #include <trace/define_trace.h>

@@ -2751,6 +2751,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
 		break;
 	}
 	trace_android_vh_syscall_prctl_finished(option, me);
+	trace_android_rvh_syscall_prctl(option, arg2, arg3, arg4, arg5, &error);
 	return error;
 }
 
