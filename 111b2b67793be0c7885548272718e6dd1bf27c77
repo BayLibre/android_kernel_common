@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c13522c1_8b40ff17",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-04-02T14:22:23Z",
+      "side": 1,
+      "message": "I think limiting the IAS to VA_BITS is actually a good idea:\n\n  * VA_BITS must be large enough to map all of physical memory, otherwise the kernel linear map wouldn\u0027t work.\n  * It reduces the depth of the page-table walk",
+      "range": {
+        "startLine": 12,
+        "startChar": 2,
+        "endLine": 13,
+        "endChar": 49
+      },
+      "revId": "111b2b67793be0c7885548272718e6dd1bf27c77",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
