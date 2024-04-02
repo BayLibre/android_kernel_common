@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7dabee9_9fefb28d",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-04-02T11:28:54Z",
+      "side": 1,
+      "message": "MAYBE: Check if the returned size is page aligned and move `memshare_has_range` assignment after that",
+      "revId": "3f5a4948040db2d0e3e2d9bbfa5c4b5ff54b2823",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50bf22ab_1cbcc60a",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-04-02T11:28:54Z",
+      "side": 1,
+      "message": "If we keep the memshare_granule in pages we can avoid the PAGE_SIZE multiplication.",
+      "revId": "3f5a4948040db2d0e3e2d9bbfa5c4b5ff54b2823",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86ed8860_c504d55b",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-04-02T11:28:54Z",
+      "side": 1,
+      "message": "NIT: The name is a bit too vague. Maybe `used_granules` ?",
+      "range": {
+        "startLine": 128,
+        "startChar": 11,
+        "endLine": 128,
+        "endChar": 18
+      },
+      "revId": "3f5a4948040db2d0e3e2d9bbfa5c4b5ff54b2823",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
