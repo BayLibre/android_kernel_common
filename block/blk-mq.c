@@ -2798,6 +2798,8 @@ void blk_mq_flush_plug_list(struct blk_plug *plug, bool from_schedule)
 				blk_mq_plug_issue_direct(plug, false));
 		if (rq_list_empty(plug->mq_list))
 			return;
+	} else if (bio->bi_vcnt == 1) {
+		nr_segs = blk_segments(&q->limits, bio->bi_io_vec[0].bv_len);
 	}
 
 	do {
