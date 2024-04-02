@@ -22,6 +22,30 @@
       },
       "revId": "1849d8866645a6d795b0742324078309b65de7f1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f3ca14a_1ee0068d",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/io-pgtable-arm.c",
+        "patchSetId": 38
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-04-02T12:57:01Z",
+      "side": 1,
+      "message": "`__arm_lpae_alloc_pages` now uses `container_of` to get `arm_lpae_io_pgtable` so we need to use the cfg copy inside  this struct instead of the argument one.",
+      "parentUuid": "720c41f5_410cfba9",
+      "range": {
+        "startLine": 105,
+        "startChar": 13,
+        "endLine": 105,
+        "endChar": 35
+      },
+      "revId": "1849d8866645a6d795b0742324078309b65de7f1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
