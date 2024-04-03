@@ -1,0 +1,48 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000073593909",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3025585?revision\u003d6",
+      "key": {
+        "uuid": "6052af34_e48ca8e3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-03T18:53:08Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Todd Kjos \u003ctkjos@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 0
+      },
+      "tag": "",
+      "fixSuggestions": [
+        {
+          "fixId": "381a165d_08a43330",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 16,
+                "startChar": 0,
+                "endLine": 16,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Todd Kjos \u003ctkjos@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c380d30e17507ec0e46a09015e697c6c1b3d1229",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
