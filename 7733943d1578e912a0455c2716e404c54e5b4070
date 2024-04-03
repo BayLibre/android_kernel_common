@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000073525524",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3024347?revision\u003d1",
+      "key": {
+        "uuid": "e82de690_6d59b403",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-03T06:24:57Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "7733943d1578e912a0455c2716e404c54e5b4070",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000073525524",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3024347?revision\u003d1",
+      "key": {
+        "uuid": "8093fb01_0f22c94a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-03T06:24:57Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/08dff2810e8feb3096bf5c8242ab1649d1e8b1a4) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d08dff2810e8feb3096bf5c8242ab1649d1e8b1a4).\n\n```\n      ## mm/memory.c ##\n     @@ mm/memory.c: retry:\n      \t * concurrent mremap() with MREMAP_DONTUNMAP could dissociate the VMA\n      \t * from its anon_vma.\n      \t */\n    --\tif (unlikely(!vma-\u003eanon_vma \u0026\u0026 !vma_is_tcp(vma)))\n    +-\tif (unlikely(!vma-\u003eanon_vma))\n     +\tif (vma_is_anonymous(vma) \u0026\u0026 !vma-\u003eanon_vma)\n      \t\tgoto inval_end_read;\n      \n    - \t/*\n    + \t/* Check since vm_start/vm_end might change before we lock the VMA */\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "7733943d1578e912a0455c2716e404c54e5b4070",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
