@@ -16,6 +16,24 @@
       "message": "I think this should go in `crypt_alloc_buffer()`, where it is upstream.\n\nThe other caller of `clone_init()` does not need `clone_init()` to set the ioprio, since it uses `bio_clone_fast()`.",
       "revId": "252b767d82428188e94c7645dd49eaceff1a19f7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "669224d0_fe4ce6db",
+        "filename": "drivers/md/dm-crypt.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1833,
+      "author": {
+        "id": 1966983
+      },
+      "writtenOn": "2024-04-03T10:43:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "322b51b6_07a3f992",
+      "revId": "252b767d82428188e94c7645dd49eaceff1a19f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
