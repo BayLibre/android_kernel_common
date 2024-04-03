@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0212ceb2_f343fc25",
+        "filename": "kernel/locking/percpu-rwsem.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-04-03T18:18:24Z",
+      "side": 1,
+      "message": "We missed this on review... This is not a clean cherry-pick. The signature from the original patch is:\n```\nvoid _trace_android_vh_record_percpu_rwsem_lock_starttime(struct task_struct *tsk,\n\t\tunsigned long settime)\n{\n\ttrace_android_vh_record_percpu_rwsem_lock_starttime(tsk, settime);\n}\nEXPORT_SYMBOL_GPL(_trace_android_vh_record_percpu_rwsem_lock_starttime);\n```\nNotice that the first argument has been changed from a `struct task_struct *` to a `u64`. Calls to this function cast a pointer to a `u64` which results in errors for 32-bit builds:\n```\nkernel/locking/rwsem.c:264:48: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]\n```\n\nFor the 2024-04-10 KMI update, this patch will be reverted if there is no fix. This patch should have exactly matched its cherry-pick source.",
+      "revId": "51c3760d93e2a3f2e64a65c5875c000180205a23",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
