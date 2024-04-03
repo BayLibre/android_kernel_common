@@ -28,6 +28,7 @@
 #include <linux/pinctrl/consumer.h>
 #include <linux/reset.h>
 #include <linux/bitfield.h>
+#include <linux/export.h>
 
 #include <linux/usb/ch9.h>
 #include <linux/usb/gadget.h>
@@ -41,6 +42,14 @@
 #include "debug.h"
 
 #define DWC3_DEFAULT_AUTOSUSPEND_DELAY	5000 /* ms */
+
+/**
+ * dwc3_noop - Exists only to depend on interface types
+ *		TODO: remove this once struct dwc3 is an explicit interface
+ *		dependency
+ */
+struct dwc3 *dwc3_noop(void) { return NULL; }
+EXPORT_SYMBOL_GPL(dwc3_noop);
 
 /**
  * dwc3_get_dr_mode - Validates and sets dr_mode
