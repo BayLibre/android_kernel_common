@@ -1599,6 +1599,7 @@ bool dwc3_has_imod(struct dwc3 *dwc)
 		DWC3_VER_IS_WITHIN(DWC31, 120A, ANY) ||
 		DWC3_IP_IS(DWC32);
 }
+EXPORT_SYMBOL_GPL(dwc3_has_imod);
 
 static void dwc3_check_params(struct dwc3 *dwc)
 {
