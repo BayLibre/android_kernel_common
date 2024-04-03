@@ -16,6 +16,24 @@
       "message": "The build does not succeed:\n\n```\ndrivers/interconnect/core.c:1146:16: error: use of undeclared identifier \u0027icc_bw_lock\u0027; did you mean \u0027icc_lock\u0027?\n        mutex_unlock(\u0026icc_bw_lock);\n                      ^~~~~~~~~~~\n                      icc_lock\ndrivers/interconnect/core.c:31:21: note: \u0027icc_lock\u0027 declared here\nstatic DEFINE_MUTEX(icc_lock);\n```",
       "revId": "0ffb454af4cf7e51086215b00f89ec5418ae99ea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "081d092a_e8fa98cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1951391
+      },
+      "writtenOn": "2024-04-03T13:20:20Z",
+      "side": 1,
+      "message": "rebased on 3c16f5df13ca727a25d170e2e0c795c13797c820",
+      "parentUuid": "c622a440_620dc896",
+      "revId": "0ffb454af4cf7e51086215b00f89ec5418ae99ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
