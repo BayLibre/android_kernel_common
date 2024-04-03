@@ -11,10 +11,10 @@ This script needs to be run on the target device once it has booted to a
 shell.
 
 The script takes as input a list of one or more device directories under
-/sys/devices and then lists the probe dependency chain (suppliers and
-parents) of these devices. It does a breadth first search of the dependency
-chain, so the last entry in the output is close to the root of the
-dependency chain.
+/sys/devices and then lists either the probe dependency chain (suppliers
+and parents) or subordinate dependency chain (consumers and children).
+It does a breadth first search of the dependency chain, so the last
+entry in the output is close to the root of the dependency chain.
 
 By default it lists the full path to the devices under /sys/devices.
 
@@ -28,6 +28,7 @@ not available, the device name is printed.
   -f	list the firmware node path of the dependencies
   -g	list the dependencies as edges and nodes for graphviz
   -t	list the dependencies as edges for tsort
+  -s	list the subordinate dependency chain for the devices
 
 The filter options provide a way to filter out some dependencies:
   --allow-no-driver	By default dependencies that don't have a driver
@@ -37,11 +38,14 @@ The filter options provide a way to filter out some dependencies:
 			dependency). If you want to follow these links
 			anyway, use this flag.
 
-  --exclude-devlinks	Don't follow device links when tracking probe
+  --exclude-devlinks	Don't follow device links when tracking
 			dependencies.
 
   --exclude-parents	Don't follow parent devices when tracking probe
 			dependencies.
+
+  --exclude-children	Don't follow child devices when tracking
+			subordinate dependencies.
 
 EOF
 }
@@ -106,9 +110,31 @@ function add_parent() {
 	return 0
 }
 
-# Return 0 (no-error/true) if one or more suppliers were added
-function add_suppliers() {
-	local CON=$1
+#TODO: What about children without drivers?
+function add_children() {
+
+	if [ ${ALLOW_CHILDREN} -eq 0 ]
+	then
+		return 1
+	fi
+
+	local DEV=$1
+	local CHILDREN=$(find $DEV -mindepth 2 -name "driver" | sed -e "s/\/driver$//" | xargs realpath)
+	local RET=1
+
+	for CHILD in $CHILDREN;
+	do
+		DEVICES+=($CHILD)
+		OUT_LIST+=(${CHILD} ${DEV})
+		RET=0
+	done
+
+	return $RET
+}
+
+function add_devlink_deps() {
+	local DEV=$1
+	local DEP_TYPE=$2
 	local RET=1
 
 	if [ ${ALLOW_DEVLINKS} -eq 0 ]
@@ -116,10 +142,11 @@ function add_suppliers() {
 		return 1
 	fi
 
-	SUPPLIER_LINKS=$(ls -1d $CON/supplier:* 2>/dev/null)
-	for SL in $SUPPLIER_LINKS;
+	DEVICE_LINKS=$(ls -1d $DEV/$DEP_TYPE:* 2>/dev/null)
+	for DL in $DEVICE_LINKS;
 	do
-		SYNC_STATE=$(cat $SL/sync_state_only)
+		SYNC_STATE=$(cat $DL/sync_state_only)
+
 
 		# sync_state_only links are proxy dependencies.
 		# They can also have cycles. So, don't follow them.
@@ -128,19 +155,42 @@ function add_suppliers() {
 			continue
 		fi
 
-		SUPPLIER=$(realpath $SL/supplier)
+		DEP=$(realpath $DL/$DEP_TYPE)
 
-		if [ ! -e $SUPPLIER/driver -a ${ALLOW_NO_DRIVER} -eq 0 ]
+		if [ ! -e $DEP/driver -a ${ALLOW_NO_DRIVER} -eq 0 ]
 		then
 			continue
 		fi
 
-		DEVICES+=($SUPPLIER)
-		OUT_LIST+=(${CON} ${SUPPLIER})
+		DEVICES+=($DEP)
+
+		if [ "${DEP_TYPE}" = "supplier" ]
+		then
+			OUT_LIST+=(${DEV} ${DEP})
+		else
+			OUT_LIST+=(${DEP} ${DEV})
+		fi
 		RET=0
 	done
 
 	return $RET
+}
+
+# Return 0 (no-error/true) if one or more suppliers were added
+function add_suppliers() {
+	local DEV=$1
+
+	add_devlink_deps ${DEV} "supplier"
+
+	return $?
+}
+
+function add_consumers() {
+	local DEV=$1
+
+	add_devlink_deps ${DEV} "consumer"
+
+	return $?
 }
 
 function detail_compat() {
@@ -207,6 +257,8 @@ alias detail=detail_device
 ALLOW_NO_DRIVER=0
 ALLOW_DEVLINKS=1
 ALLOW_PARENTS=1
+ALLOW_CHILDREN=1
+LIST_SUBORDINATES=0
 
 while [ $# -gt 0 ]
 do
@@ -234,6 +286,9 @@ do
 		-t)
 			alias detail=detail_tsort
 			;;
+		-s)
+			LIST_SUBORDINATES=1
+			;;
 		--allow-no-driver)
 			ALLOW_NO_DRIVER=1
 			;;
@@ -242,6 +297,9 @@ do
 			;;
 		--exclude-parents)
 			ALLOW_PARENTS=0
+			;;
+		--exclude-children)
+			ALLOW_CHILDREN=0
 			;;
 		*)
 			# Stop at the first argument that's not an option.
@@ -264,8 +322,8 @@ fi
 DEVICES=($@)
 OUT_LIST=()
 
-# Do a breadth first, non-recursive tracking of suppliers. The parent is also
-# considered a "supplier" as a device can't probe without its parent.
+# Do a breadth first, non-recursive tracking of dependencies. The parent is
+# also considered a "supplier" as a device can't probe without its parent.
 i=0
 while [ $i -lt ${#DEVICES[@]} ]
 do
@@ -278,33 +336,39 @@ do
 	fi
 
 	# If this is not a device with a driver, we don't care about its
-	# suppliers.
+	# dependencies.
 	if [ ! -e ${DEVICE}/driver -a ${ALLOW_NO_DRIVER} -eq 0 ]
 	then
 		continue
 	fi
 
-	ROOT=1
-
-	# Add suppliers to DEVICES list and output the consumer details.
-	#
-	# We don't need to worry about a cycle in the dependency chain causing
-	# infinite loops. That's because the kernel doesn't allow cycles in
-	# device links unless it's a sync_state_only device link. And we ignore
-	# sync_state_only device links inside add_suppliers.
-	if add_suppliers ${DEVICE}
+	if [ ${LIST_SUBORDINATES} -eq 0 ]
 	then
-		ROOT=0
-	fi
+		ROOT=1
 
-	if add_parent ${DEVICE}
-	then
-		ROOT=0
-	fi
+		# Add suppliers to DEVICES list and output the consumer details.
+		#
+		# We don't need to worry about a cycle in the dependency chain causing
+		# infinite loops. That's because the kernel doesn't allow cycles in
+		# device links unless it's a sync_state_only device link. And we ignore
+		# sync_state_only device links inside add_suppliers.
+		if add_suppliers ${DEVICE}
+		then
+			ROOT=0
+		fi
 
-	if [ $ROOT -eq 1 ]
-	then
-		OUT_LIST+=(${DEVICE} "ROOT")
+		if add_parent ${DEVICE}
+		then
+			ROOT=0
+		fi
+
+		if [ $ROOT -eq 1 ]
+		then
+			OUT_LIST+=(${DEVICE} "ROOT")
+		fi
+	else
+		add_consumers ${DEVICE}
+		add_children ${DEVICE}
 	fi
 done
 
