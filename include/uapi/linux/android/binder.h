@@ -513,6 +513,21 @@ enum binder_driver_return_protocol {
 	/*
 	 * The target of the last async transaction is frozen.  No parameters.
 	 */
+
+	BR_FROZEN_BINDER = _IO('r', 20),
+	/*
+	 * void *: cookie
+	 */
+
+	BR_UNFROZEN_BINDER = _IO('r', 21),
+	/*
+	 * void *: cookie
+	 */
+
+	BR_CLEAR_FREEZE_NOTIFICATION_DONE = _IOR('r', 22, binder_uintptr_t),
+	/*
+	 * void *: cookie
+	 */
 };
 
 enum binder_driver_command_protocol {
@@ -595,6 +610,25 @@ enum binder_driver_command_protocol {
 	BC_REPLY_SG = _IOW('c', 18, struct binder_transaction_data_sg),
 	/*
 	 * binder_transaction_data_sg: the sent command.
+	 */
+
+	BC_REQUEST_FREEZE_NOTIFICATION = _IOW('c', 19,
+						struct binder_handle_cookie),
+	/*
+	 * int: handle
+	 * void *: cookie
+	 */
+
+	BC_CLEAR_FREEZE_NOTIFICATION = _IOW('c', 20,
+						struct binder_handle_cookie),
+	/*
+	 * int: handle
+	 * void *: cookie
+	 */
+
+	BC_FREEZE_NOTIFICATION_DONE = _IOW('c', 21, binder_uintptr_t),
+	/*
+	 * void *: cookie
 	 */
 };
 
