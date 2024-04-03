@@ -101,7 +101,7 @@ function add_parent() {
 		PARENT=$(realpath $PARENT/..)
 	done
 
-	CONSUMERS+=($PARENT)
+	DEVICES+=($PARENT)
 	OUT_LIST+=(${CON} ${PARENT})
 	return 0
 }
@@ -135,7 +135,7 @@ function add_suppliers() {
 			continue
 		fi
 
-		CONSUMERS+=($SUPPLIER)
+		DEVICES+=($SUPPLIER)
 		OUT_LIST+=(${CON} ${SUPPLIER})
 		RET=0
 	done
@@ -261,50 +261,50 @@ then
 	exit 1
 fi
 
-CONSUMERS=($@)
+DEVICES=($@)
 OUT_LIST=()
 
 # Do a breadth first, non-recursive tracking of suppliers. The parent is also
 # considered a "supplier" as a device can't probe without its parent.
 i=0
-while [ $i -lt ${#CONSUMERS[@]} ]
+while [ $i -lt ${#DEVICES[@]} ]
 do
-	CONSUMER=$(realpath ${CONSUMERS[$i]})
+	DEVICE=$(realpath ${DEVICES[$i]})
 	i=$(($i+1))
 
-	if already_seen ${CONSUMER}
+	if already_seen ${DEVICE}
 	then
 		continue
 	fi
 
 	# If this is not a device with a driver, we don't care about its
 	# suppliers.
-	if [ ! -e ${CONSUMER}/driver -a ${ALLOW_NO_DRIVER} -eq 0 ]
+	if [ ! -e ${DEVICE}/driver -a ${ALLOW_NO_DRIVER} -eq 0 ]
 	then
 		continue
 	fi
 
 	ROOT=1
 
-	# Add suppliers to CONSUMERS list and output the consumer details.
+	# Add suppliers to DEVICES list and output the consumer details.
 	#
 	# We don't need to worry about a cycle in the dependency chain causing
 	# infinite loops. That's because the kernel doesn't allow cycles in
 	# device links unless it's a sync_state_only device link. And we ignore
 	# sync_state_only device links inside add_suppliers.
-	if add_suppliers ${CONSUMER}
+	if add_suppliers ${DEVICE}
 	then
 		ROOT=0
 	fi
 
-	if add_parent ${CONSUMER}
+	if add_parent ${DEVICE}
 	then
 		ROOT=0
 	fi
 
 	if [ $ROOT -eq 1 ]
 	then
-		OUT_LIST+=(${CONSUMER} "ROOT")
+		OUT_LIST+=(${DEVICE} "ROOT")
 	fi
 done
 
