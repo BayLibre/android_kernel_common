@@ -5,7 +5,7 @@
 
 function help() {
 	cat << EOF
-Usage: $(basename $0) [-c|-d|-m|-f] [filter options] <list of devices>
+Usage: $(basename $0) [-c|-d|-m|-f|-g|-t] [filter options] <list of devices>
 
 This script needs to be run on the target device once it has booted to a
 shell.
