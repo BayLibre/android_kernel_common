@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca9da5cd_5c75d019",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2024-04-04T21:51:19Z",
+      "side": 1,
+      "message": "Bypass reasoning:\n\n1) The bloat warnings are due to https://r.android.com/3025627 which I\u0027ve asked to revert in b/297608514.\n\n2) The cuttlefish failures are due to infra issues reported in http://b/332781753 and b/328471390.\n\nThis change is safe to bypass.",
+      "revId": "fb4a3a07d6ac0f1b7c224f9cab450409760f347c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
