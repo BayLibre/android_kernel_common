@@ -1,0 +1,48 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000073761420",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3029023?revision\u003d1",
+      "key": {
+        "uuid": "2c66ed93_069c06cf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-04T23:39:44Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Carlos Galo \u003ccarlosgalo@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 0
+      },
+      "tag": "",
+      "fixSuggestions": [
+        {
+          "fixId": "8f8de4be_c70e2302",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 14,
+                "startChar": 0,
+                "endLine": 14,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Carlos Galo \u003ccarlosgalo@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dfd2f979f006e88fc3616bdbd48bf263a6b9fdde",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
