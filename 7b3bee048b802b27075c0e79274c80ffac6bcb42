@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f668d57e_5bcf03d4",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 41
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-04-04T17:49:29Z",
+      "side": 1,
+      "message": "typo: registration",
+      "range": {
+        "startLine": 50,
+        "startChar": 20,
+        "endLine": 50,
+        "endChar": 38
+      },
+      "revId": "7b3bee048b802b27075c0e79274c80ffac6bcb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12f4f83b_e084249e",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 41
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-04-04T17:49:29Z",
+      "side": 1,
+      "message": "Although we don\u0027t have DMA protection up and running, I\u0027m still wary that this looks like a read gadget. It would be nice to check that the pa is actually a host-owned memory page before we map it at EL2. (i.e. something like the `hyp_pin_shared_mem` logic we have elsewhere).",
+      "range": {
+        "startLine": 763,
+        "startChar": 0,
+        "endLine": 766,
+        "endChar": 0
+      },
+      "revId": "7b3bee048b802b27075c0e79274c80ffac6bcb42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
