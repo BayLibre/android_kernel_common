@@ -16,6 +16,24 @@
       "message": "When building this for virtual aarch64 devices:\n\n```\ntools/bazel run //common-modules/virtual-device:virtual_device_aarch64_dist\n```\n\nI get the following error:\n\n```\nThese symbols are missing from the symbol list and are not available at runtime for unsigned modules:\n  snd_ctl_add required by [\u0027virtio_snd.ko\u0027]\n  snd_ctl_new1 required by [\u0027virtio_snd.ko\u0027]\n  snd_ctl_notify required by [\u0027virtio_snd.ko\u0027]\nTarget //common-modules/virtual-device:virtual_device_aarch64_dist failed to build\n```\n\nThis can be fixed by running:\n\n```\ntools/bazel run //common-modules/virtual-device:virtual_device_aarch64_abi_update_symbol_list\n```\n\nWhich updates `kernel/common/android/abi_gki_aarch64_virtual_device` accordingly. Perhaps that should be submitted as a separate change in the same topic?",
       "revId": "ff411ca1f27ce5424ff24f31e6de3cb01200db6e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0da1aa2_0b752d3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1986660
+      },
+      "writtenOn": "2024-04-04T15:38:29Z",
+      "side": 1,
+      "message": "Great point, thanks Brian. I created aosp/3027744 that adds those symbols. I chose not to submit the output of the `virtual_device_aarch64_abi_update_symbol_list` run, because it created a lot of unrelated changes.",
+      "parentUuid": "77da1844_ca0cfa1d",
+      "revId": "ff411ca1f27ce5424ff24f31e6de3cb01200db6e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
