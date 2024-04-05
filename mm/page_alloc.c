@@ -2211,7 +2211,8 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
 	if (unlikely(!page)) {
 		if (!cma_redirect_restricted() && alloc_flags & ALLOC_CMA)
 			page = __rmqueue_cma_fallback(zone, order);
-		else
+
+		if (!page)
 			page = __rmqueue_fallback(zone, order, migratetype,
 						  alloc_flags);
 	}
