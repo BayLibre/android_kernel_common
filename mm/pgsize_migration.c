@@ -10,7 +10,7 @@
  * Author: Kalesh Singh <kaleshsingh@goole.com>
  */
 
-#include <linux/mm.h>
+#include <linux/pgsize_migration.h>
 #include <linux/sysfs.h>
 #include <linux/kobject.h>
 
