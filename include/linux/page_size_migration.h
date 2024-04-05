@@ -28,6 +28,8 @@
 
 typedef void (*show_map_vma_fn)(struct seq_file *m, struct vm_area_struct *vma);
 
+extern bool pgsize_migration_enabled;
+
 static inline void vma_set_pad_pages(struct vm_area_struct *vma,
 				     unsigned long nr_pages)
 {
@@ -74,6 +76,9 @@ static inline void madvise_vma_pad_pages(struct vm_area_struct *vma,
 {
 	unsigned long nr_pad_pages;
 
+	if (!pgsize_migration_enabled)
+		return;
+
 	/* Only handle this for file backed VMAs */
 	if (!vma->vm_file || !vma->vm_ops || vma->vm_ops->fault != filemap_fault)
 		return;
@@ -98,6 +103,9 @@ static inline void show_map_vma_pad(struct vm_area_struct *vma,
 				    show_map_vma_fn func,
 				    struct seq_file *m)
 {
+	if (!pgsize_migration_enabled)
+		return;
+
 	if (!(vma->vm_flags & VM_PAD_BITS))
 		return;
 
