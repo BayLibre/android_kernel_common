@@ -40,6 +40,8 @@
 #define VM_PAD_BITS		(VM_PAD_16KB_BIT2|VM_PAD_16KB_BIT1|VM_PAD_4KB_BIT2|VM_PAD_4KB_BIT1)
 #define VM_TOTAL_PAD_PAGES 	15
 
+typedef void (*show_map_vma_fn)(struct seq_file *m, struct vm_area_struct *vma);
+
 extern bool pgsize_migration_enabled;
 
 static inline void vma_set_pad_pages(struct vm_area_struct *vma,
@@ -118,4 +120,25 @@ static inline void madvise_vma_pad_pages(struct vm_area_struct *vma,
 
 	vma_set_pad_pages(vma, nr_pad_pages);
 }
+
+#if PAGE_SIZE == SZ_4K
+extern  void show_map_vma_pad(struct vm_area_struct *vma,
+				    show_map_vma_fn func,
+				    struct seq_file *m);
+
+extern const char *vma_pad_name(struct vm_area_struct *vma);
+
+#else
+static inline void show_map_vma_pad(struct vm_area_struct *vma,
+				    show_map_vma_fn func,
+				    struct seq_file *m)
+{
+}
+
+static inline const char *vma_pad_name(struct vm_area_struct *vma)
+{
+	return NULL;
+}
+#endif
+
 #endif /* _LINUX_PAGE_SIZE_MIGRATION_H */
