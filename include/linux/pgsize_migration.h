@@ -48,6 +48,9 @@ extern void vma_set_pad_pages(struct vm_area_struct *vma,
 			      unsigned long nr_pages);
 
 extern unsigned long vma_pad_pages(struct vm_area_struct *vma);
+
+extern void madvise_vma_pad_pages(struct vm_area_struct *vma,
+				  unsigned long start, unsigned long end);
 #else /* PAGE_SIZE != SZ_4K */
 static inline void vma_set_pad_pages(struct vm_area_struct *vma,
 				     unsigned long nr_pages)
@@ -55,6 +58,11 @@ static inline void vma_set_pad_pages(struct vm_area_struct *vma,
 }
 
 static inline unsigned long vma_pad_pages(struct vm_area_struct *vma)
+{
+}
+
+static inline void madvise_vma_pad_pages(struct vm_area_struct *vma,
+					 unsigned long start, unsigned long end)
 {
 }
 #endif /* PAGE_SIZE == SZ_4K */
