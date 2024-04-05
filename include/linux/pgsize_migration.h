@@ -77,4 +77,14 @@ static inline unsigned long vma_data_pages(struct vm_area_struct *vma)
 	return vma_pages(vma) - vma_pad_pages(vma);
 }
 
+#if PAGE_SIZE == SZ_4K
+extern void madvise_vma_pad_pages(struct vm_area_struct *vma,
+				  unsigned long start, unsigned long end);
+#else /* PAGE_SIZE != SZ_4K */
+static inline void madvise_vma_pad_pages(struct vm_area_struct *vma,
+					 unsigned long start, unsigned long end)
+{
+}
+#endif /* PAGE_SIZE == SZ_4K */
+
 #endif /* _LINUX_PAGE_SIZE_MIGRATION_H */
