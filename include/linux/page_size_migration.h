@@ -26,6 +26,8 @@
 #define VM_PAD_BITS		(VM_PAD_16KB_BIT2|VM_PAD_16KB_BIT1|VM_PAD_4KB_BIT2|VM_PAD_4KB_BIT1)
 #define VM_TOTAL_PAD_PAGES 	15
 
+typedef void (*show_map_vma_fn)(struct seq_file *m, struct vm_area_struct *vma);
+
 static inline void vma_set_pad_pages(struct vm_area_struct *vma,
 				     unsigned long nr_pages)
 {
@@ -91,4 +93,18 @@ static inline void madvise_vma_pad_pages(struct vm_area_struct *vma,
 	vma_set_pad_pages(vma, nr_pad_pages);
 }
 
+static inline void show_map_vma_pad(struct vm_area_struct *vma,
+				    struct vm_area_struct *pad_vma,
+				    show_map_vma_fn func,
+				    struct seq_file *m)
+{
+	if (!(vma->vm_flags & VM_PAD_BITS))
+		return;
+
+	*pad_vma = *vma;
+	pad_vma->vm_flags = vma->vm_flags & ~(VM_PAD_BITS|VM_READ|VM_WRITE|VM_EXEC);
+	pad_vma->vm_file = NULL;
+	pad_vma->vm_start = vma->vm_end - (vma_pad_pages(vma) << PAGE_SHIFT);
+	func(m, pad_vma);
+}
 #endif /* _LINUX_PAGE_SIZE_MIGRATION_H */
