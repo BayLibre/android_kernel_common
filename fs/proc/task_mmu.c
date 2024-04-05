@@ -269,8 +269,6 @@ static void show_vma_header_prefix(struct seq_file *m,
 	seq_putc(m, ' ');
 }
 
-static struct vm_area_struct pad_vma;
-
 static void
 show_map_vma(struct seq_file *m, struct vm_area_struct *vma)
 {
@@ -304,10 +302,9 @@ show_map_vma(struct seq_file *m, struct vm_area_struct *vma)
 		goto done;
 	}
 
-	if (vma == &pad_vma) {
-		name = "[page size compat]";
+	name = vma_pad_name(vma);
+	if (name)
 		goto done;
-	}
 
 	if (vma->vm_ops && vma->vm_ops->name) {
 		name = vma->vm_ops->name(vma);
@@ -349,7 +346,7 @@ done:
 	}
 	seq_putc(m, '\n');
 
-	show_map_vma_pad(vma, &pad_vma, show_map_vma, m);
+	show_map_vma_pad(vma, show_map_vma, m);
 }
 
 static int show_map(struct seq_file *m, void *v)
