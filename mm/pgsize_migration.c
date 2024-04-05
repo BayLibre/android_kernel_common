@@ -10,11 +10,12 @@
  * Author: Kalesh Singh <kaleshsingh@goole.com>
  */
 
+#include <linux/pgsize_migration.h>
+
 #include <linux/init.h>
 #include <linux/jump_label.h>
 #include <linux/kobject.h>
 #include <linux/kstrtox.h>
-#include <linux/mm.h>
 #include <linux/sysfs.h>
 
 #if PAGE_SIZE == SZ_4K
@@ -97,3 +98,44 @@ static int __init init_pgsize_migration(void)
 	return 0;
 };
 late_initcall(init_pgsize_migration);
+
+#if PAGE_SIZE == SZ_4K
+void vma_set_pad_pages(struct vm_area_struct *vma,
+		       unsigned long nr_pages)
+{
+	vm_flags_t flags = 0;
+
+	if (!is_pgsize_migration_enabled())
+		return;
+
+	if (nr_pages & 1UL)
+		flags |=  VM_PAD_4KB_BIT1;
+	if (nr_pages & 2UL)
+		flags |=  VM_PAD_4KB_BIT2;
+	if (nr_pages & 4UL)
+		flags |=  VM_PAD_16KB_BIT1;
+	if (nr_pages & 8UL)
+		flags |=  VM_PAD_16KB_BIT2;
+
+	vma->vm_flags |= flags;
+}
+
+unsigned long vma_pad_pages(struct vm_area_struct *vma)
+{
+	unsigned long nr_pages = 0;
+
+	if (!is_pgsize_migration_enabled())
+		return nr_pages;
+
+	if (vma->vm_flags & VM_PAD_4KB_BIT1)
+		nr_pages |= 1UL;
+	if (vma->vm_flags & VM_PAD_4KB_BIT2)
+		nr_pages |= 2UL;
+	if (vma->vm_flags & VM_PAD_16KB_BIT1)
+		nr_pages |= 4UL;
+	if (vma->vm_flags & VM_PAD_16KB_BIT2)
+		nr_pages |= 8UL;
+
+	return nr_pages;
+}
+#endif /* PAGE_SIZE == SZ_4K */
