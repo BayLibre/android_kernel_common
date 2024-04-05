@@ -64,4 +64,31 @@ static inline unsigned long vma_data_pages(struct vm_area_struct *vma)
 	return vma_pages(vma) - vma_pad_pages(vma);
 }
 
+/*
+ * Saves the number of ELF padding pages at in vm_flags
+ */
+static inline void madvise_vma_pad_pages(struct vm_area_struct *vma,
+				      unsigned long start, unsigned long end)
+{
+	unsigned long nr_pad_pages;
+
+	/* Only handle this for file backed VMAs */
+	if (!vma->vm_file || !vma->vm_ops || vma->vm_ops->fault != filemap_fault)
+		return;
+
+	/*
+	 * If the madvise range is it at the end of the file save the number of
+	 * pages in vm_flags (only need 4 bits are needed for 16kB aligned ELFs).
+	 */
+	if (start <= vma->vm_start || end != vma->vm_end)
+		return;
+
+	nr_pad_pages = (end - start) >> PAGE_SHIFT;
+
+	if (!nr_pad_pages || nr_pad_pages > VM_TOTAL_PAD_PAGES)
+		return;
+
+	vma_set_pad_pages(vma, nr_pad_pages);
+}
+
 #endif /* _LINUX_PAGE_SIZE_MIGRATION_H */
