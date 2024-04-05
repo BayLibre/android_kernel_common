@@ -98,21 +98,24 @@ static inline void madvise_vma_pad_pages(struct vm_area_struct *vma,
 	vma_set_pad_pages(vma, nr_pad_pages);
 }
 
+#if PAGE_SIZE == SZ_4K
+extern  void show_map_vma_pad(struct vm_area_struct *vma,
+				    show_map_vma_fn func,
+				    struct seq_file *m);
+
+extern const char *vma_pad_name(struct vm_area_struct *vma);
+
+#else
 static inline void show_map_vma_pad(struct vm_area_struct *vma,
-				    struct vm_area_struct *pad_vma,
 				    show_map_vma_fn func,
 				    struct seq_file *m)
 {
-	if (!pgsize_migration_enabled)
-		return;
-
-	if (!(vma->vm_flags & VM_PAD_BITS))
-		return;
-
-	*pad_vma = *vma;
-	pad_vma->vm_flags = vma->vm_flags & ~(VM_PAD_BITS|VM_READ|VM_WRITE|VM_EXEC);
-	pad_vma->vm_file = NULL;
-	pad_vma->vm_start = vma->vm_end - (vma_pad_pages(vma) << PAGE_SHIFT);
-	func(m, pad_vma);
 }
+
+static inline const char *vma_pad_name(struct vm_area_struct *vma)
+{
+	return NULL;
+}
+#endif
+
 #endif /* _LINUX_PAGE_SIZE_MIGRATION_H */

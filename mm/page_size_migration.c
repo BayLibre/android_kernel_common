@@ -55,3 +55,39 @@ static int __init init_pgsize_migration(void)
 	return 0;
 };
 late_initcall(init_pgsize_migration);
+
+/* ------------ Show maps -------------------*/
+#if PAGE_SIZE == SZ_4K
+DEFINE_PER_CPU(struct vm_area_struct, pad_vma);
+
+static const char *pad_name = "[page size compat]";
+
+const char *vma_pad_name(struct vm_area_struct *vma)
+{
+	struct vm_area_struct *pad = this_cpu_ptr(&pad_vma);
+
+	if (!pgsize_migration_enabled || vma != pad)
+		return NULL;
+
+	return pad_name;
+}
+
+void show_map_vma_pad(struct vm_area_struct *vma,
+				    show_map_vma_fn func,
+				    struct seq_file *m)
+{
+	struct vm_area_struct *pad = this_cpu_ptr(&pad_vma);
+
+	if (!pgsize_migration_enabled)
+		return;
+
+	if (!(vma->vm_flags & VM_PAD_BITS))
+		return;
+
+	*pad = *vma;
+	pad->vm_flags = vma->vm_flags & ~(VM_PAD_BITS|VM_READ|VM_WRITE|VM_EXEC);
+	pad->vm_file = NULL;
+	pad->vm_start = vma->vm_end - (vma_pad_pages(vma) << PAGE_SHIFT);
+	func(m, pad);
+}
+#endif
