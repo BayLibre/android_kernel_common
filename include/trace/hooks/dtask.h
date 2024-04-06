@@ -55,6 +55,9 @@ DECLARE_HOOK(android_vh_mutex_unlock_slowpath,
 	TP_PROTO(struct mutex *lock),
 	TP_ARGS(lock));
 
+DECLARE_HOOK(android_vh_exit_check,
+	TP_PROTO(struct task_struct *tsk, long code, int group_dead),
+	TP_ARGS(tsk, code, group_dead));
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_DTASK_H */
