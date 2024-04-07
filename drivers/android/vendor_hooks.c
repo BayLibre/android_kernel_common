@@ -61,6 +61,7 @@
 #include <trace/hooks/signal.h>
 #include <trace/hooks/logbuf.h>
 #include <trace/hooks/dmabuf.h>
+#include <trace/hooks/fuse.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -278,3 +279,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf_pr_cont);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_pages_slowpath);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmap_region);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_unmap_one);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_queue_request_and_unlock);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fuse_request_end);
