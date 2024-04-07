@@ -61,7 +61,11 @@
 #include <trace/hooks/signal.h>
 #include <trace/hooks/logbuf.h>
 #include <trace/hooks/dmabuf.h>
+<<<<<<< HEAD
 #include <trace/hooks/compaction.h>
+=======
+#include <trace/hooks/fuse.h>
+>>>>>>> 77beae4fc716 (ANDROID: vendor_hooks: add vendor hooks for fuse request)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -303,3 +307,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_direct_reclaim_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_may_oom_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_vmscan_kswapd_done);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpu_capacity_show);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_queue_request_and_unlock);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fuse_request_end);
