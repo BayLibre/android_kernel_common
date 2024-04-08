@@ -74,6 +74,10 @@ DECLARE_HOOK(android_vh_save_track_hash,
 DECLARE_HOOK(android_vh_kmalloc_slab,
 	TP_PROTO(unsigned int index, gfp_t flags, struct kmem_cache **s),
 	TP_ARGS(index, flags, s));
+DECLARE_HOOK(android_vh_pcp_free_one_page_bypass,
+	TP_PROTO(struct page *page, struct zone *zone, int order, int migratetype,
+		bool *bypass),
+	TP_ARGS(page, zone, order, migratetype, bypass));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
