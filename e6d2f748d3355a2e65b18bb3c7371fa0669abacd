@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a569b582_f0e8631d",
+        "filename": "BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-04-08T17:18:26Z",
+      "side": 1,
+      "message": "You changed the permissions on this file to make it executable. Please restore the original permissions (100644)",
+      "revId": "e6d2f748d3355a2e65b18bb3c7371fa0669abacd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0888c703_8953f973",
+        "filename": "android/abi_gki_aarch64_honor",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-04-08T17:18:26Z",
+      "side": 1,
+      "message": "This file should not have execute permissions. Please change permissions to 0644",
+      "revId": "e6d2f748d3355a2e65b18bb3c7371fa0669abacd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fe178a5_97e624d1",
+        "filename": "android/abi_gki_aarch64_honor",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-04-08T17:18:26Z",
+      "side": 1,
+      "message": "cfg80211 is changing to a GKI module as part of the 2024-04-10 KMI update. See the series at aosp/3023106. Please regenerate this symbol list after the KMI update.",
+      "revId": "e6d2f748d3355a2e65b18bb3c7371fa0669abacd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
