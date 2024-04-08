@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000074013881",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3009080?revision\u003d5",
+      "key": {
+        "uuid": "4e1466f1_e4e5a609",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-08T20:41:05Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against AOSP commit.\nAOSP commit: [source](https://android-review.googlesource.com/kernel/common/+/cb0ff599726afc48fcdc786b596bee06b2b3eb97).\n\n```\n      ## drivers/android/vendor_hooks.c ##\n     @@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_table_limits);\n    @@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_tab\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_fast_switch);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_target);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_offline);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_skip_swapcache_flags);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_gfp_zone_flags);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_readahead_gfp_mask);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_preempt_disable);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_preempt_enable);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_irqs_disable);\n     \n      ## drivers/cpufreq/cpufreq.c ##\n    -@@ drivers/cpufreq/cpufreq.c: static int cpufreq_offline(unsigned int cpu)\n    - \t}\n    +@@ drivers/cpufreq/cpufreq.c: static void __cpufreq_offline(unsigned int cpu, struct cpufreq_policy *policy)\n    + \t\tpolicy-\u003elast_policy \u003d policy-\u003epolicy;\n      \n      \tif (cpufreq_thermal_control_enabled(cpufreq_driver)) {\n     +\t\ttrace_android_vh_cpufreq_offline(\u0026policy-\u003ecdev-\u003edevice, true);\n    @@ drivers/cpufreq/mediatek-cpufreq-hw.c: static int mtk_cpufreq_hw_driver_probe(st\n     \n      ## drivers/cpufreq/mediatek-cpufreq.c ##\n     @@\n    + #include \u003clinux/platform_device.h\u003e\n    + #include \u003clinux/pm_opp.h\u003e\n      #include \u003clinux/regulator/consumer.h\u003e\n    - #include \u003clinux/slab.h\u003e\n    - #include \u003clinux/thermal.h\u003e\n     +#include \u003clinux/device.h\u003e\n     +#include \u003ctrace/hooks/cpufreq.h\u003e\n      \n    - #define MIN_VOLT_SHIFT\t\t(100000)\n    - #define MAX_VOLT_SHIFT\t\t(200000)\n    + struct mtk_cpufreq_platform_data {\n    + \tint min_volt_shift;\n     @@ drivers/cpufreq/mediatek-cpufreq.c: static int mtk_cpufreq_exit(struct cpufreq_policy *policy)\n      \treturn 0;\n      }\n    @@ include/trace/hooks/cpufreq.h: DECLARE_HOOK(android_vh_cpufreq_target,\n     +DECLARE_HOOK(android_vh_cpufreq_offline,\n     +\tTP_PROTO(struct device *dev, int val),\n     +\tTP_ARGS(dev, val));\n    ++\n      #endif /* _TRACE_HOOK_CPUFREQ_H */\n      /* This part must be outside protection */\n      #include \u003ctrace/define_trace.h\u003e\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "02102595ebce1c04b5e9512bb66cf8b5775b2dcd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
