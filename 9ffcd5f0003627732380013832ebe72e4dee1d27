@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a2b3b55_4674b0d0",
+        "filename": "arch/arm64/include/asm/kvm_hypevents.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-04-08T18:05:44Z",
+      "side": 1,
+      "message": "These should be unsigned\n```suggestion\n\tHE_PRINTK(\"count\u003d%llu was\u003d%llu\", __entry-\u003ecount, __entry-\u003ewas)\n```",
+      "range": {
+        "startLine": 130,
+        "startChar": 18,
+        "endLine": 130,
+        "endChar": 31
+      },
+      "revId": "9ffcd5f0003627732380013832ebe72e4dee1d27",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
