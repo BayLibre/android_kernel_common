@@ -34,6 +34,8 @@
 
 #include "power.h"
 
+#define REC_FAILED_NUM         2
+
 const char * const pm_labels[] = {
 	[PM_SUSPEND_TO_IDLE] = "freeze",
 	[PM_SUSPEND_STANDBY] = "standby",
