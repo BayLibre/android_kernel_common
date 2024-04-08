@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47327fc8_bb5d0298",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-04-08T13:14:23Z",
+      "side": 1,
+      "message": "If the returned value is not aligned with PAGE_SIZE e.g. 16K guest on a 4K system, we still can use this service. Simply a higher number of granules will be used.",
+      "parentUuid": "d7dabee9_9fefb28d",
+      "revId": "3f5a4948040db2d0e3e2d9bbfa5c4b5ff54b2823",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50bf22ab_1cbcc60a",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7c35474_508c6092",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-04-08T13:14:23Z",
+      "side": 1,
+      "message": "But what if that value is \u003c 1? This would happen if running a 16K guest on a 4K system. It\u0027s probably better to have those mod/mult than having to deal with float",
+      "parentUuid": "50bf22ab_1cbcc60a",
+      "revId": "3f5a4948040db2d0e3e2d9bbfa5c4b5ff54b2823",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86ed8860_c504d55b",
@@ -48,6 +84,30 @@
       "writtenOn": "2024-04-02T11:28:54Z",
       "side": 1,
       "message": "NIT: The name is a bit too vague. Maybe `used_granules` ?",
+      "range": {
+        "startLine": 128,
+        "startChar": 11,
+        "endLine": 128,
+        "endChar": 18
+      },
+      "revId": "3f5a4948040db2d0e3e2d9bbfa5c4b5ff54b2823",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a553fa1_4aee1fa0",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-04-08T13:14:23Z",
+      "side": 1,
+      "message": "It just implies nr_\"granules\"_done. It\u0027s quite common in Linux to keep the variable name as short as possible, which I know irritates some people.\n\nI could go for \"nr_xcrypted\" which probably relates more to the function name?",
+      "parentUuid": "86ed8860_c504d55b",
       "range": {
         "startLine": 128,
         "startChar": 11,
