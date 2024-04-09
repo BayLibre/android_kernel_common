@@ -156,6 +156,23 @@ define_common_kernels(target_configs = {
     },
 })
 
+kernel_build(
+    name = "elsk",
+    srcs = ["//common:kernel_aarch64_sources"],
+    outs = [
+        "vmlinux.o",
+        "kernel/config_data",
+        "kernel/config_data.gz",
+        "kernel/configs.o",
+        "auto.conf",
+        "autoconf.h",
+    ],
+    build_config = "build.config.elsk",
+    make_goals = [
+        "vmlinux",
+    ],
+)
+
 _DB845C_MODULE_OUTS = [
     # keep sorted
     "crypto/michael_mic.ko",
