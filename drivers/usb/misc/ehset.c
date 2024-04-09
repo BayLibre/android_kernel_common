@@ -36,6 +36,7 @@ static int ehset_prepare_port_for_testing(struct usb_device *hub_udev, u16 portn
 {
 	int ret = 0;
 
+	return ret;
 	/*
 	 * The USB2.0 spec chapter 11.24.2.13 says that the USB port which is
 	 * going under test needs to be put in suspend before sending the

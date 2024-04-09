@@ -749,7 +749,7 @@ static int xhci_enter_test_mode(struct xhci_hcd *xhci,
 		xhci_set_port_power(xhci, xhci->usb3_rhub.ports[i], false, flags);
 	/* Power off USB2 ports*/
 	for (i = 0; i < xhci->usb2_rhub.num_ports; i++)
-		xhci_set_port_power(xhci, xhci->usb2_rhub.ports[i], false, flags);
+		xhci_set_port_power(xhci, xhci->usb2_rhub.ports[i], true, flags);
 	/* Stop the controller */
 	xhci_dbg(xhci, "Stop controller\n");
 	retval = xhci_halt(xhci);
