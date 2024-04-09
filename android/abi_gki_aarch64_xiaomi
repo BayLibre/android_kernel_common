@@ -4,3 +4,13 @@
   __tracepoint_android_vh_logbuf
   tracepoint_probe_register
   tracepoint_probe_unregister
+
+#required by mi_sched.ko
+  __traceiter_android_vh_scheduler_tick
+  __traceiter_android_vh_free_user
+  __traceiter_android_vh_alloc_uid
+  __tracepoint_android_vh_scheduler_tick
+  __tracepoint_android_vh_free_user
+  __tracepoint_android_vh_alloc_uid
+  free_uid
+  find_user
