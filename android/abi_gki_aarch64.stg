@@ -305878,6 +305878,11 @@ function {
   parameter_id: 0x2ed8b8f9
 }
 function {
+  id: 0x229f1818
+  return_type_id: 0x106029c6
+  parameter_id: 0x18ea6ae3
+}
+function {
   id: 0x22a7ae7f
   return_type_id: 0x2b8f13b3
   parameter_id: 0x3806a5e7
@@ -379701,6 +379706,7 @@ elf_symbol {
   full_name: "is_vmalloc_addr"
 }
 elf_symbol {
+<<<<<<< HEAD   (27310e ANDROID: binder: fix KMI issues due to frozen notification)
   id: 0x2066c48d
   name: "isolate_and_split_free_page"
   is_defined: true
@@ -379717,6 +379723,15 @@ elf_symbol {
   crc: 0x0b7af894
   type_id: 0x9c203488
   full_name: "isolate_anon_lru_page"
+=======
+  id: 0x99bcb7fe
+  name: "is_vmalloc_or_module_addr"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1ee47e00
+  type_id: 0x93c72655
+  full_name: "is_vmalloc_or_module_addr"
+>>>>>>> CHANGE (8d957b ANDROID: GKI: Add initial symbol list for honor)
 }
 elf_symbol {
   id: 0xbb7edccb
@@ -387356,6 +387371,7 @@ elf_symbol {
   full_name: "overflowuid"
 }
 elf_symbol {
+<<<<<<< HEAD   (27310e ANDROID: binder: fix KMI issues due to frozen notification)
   id: 0xd1ef7302
   name: "override_creds"
   is_defined: true
@@ -387428,6 +387444,15 @@ elf_symbol {
   namespace: "MINIDUMP"
   type_id: 0x141076c6
   full_name: "page_ext_put"
+=======
+  id: 0x591c4b4f
+  name: "page_cache_sync_ra"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xbc548521
+  type_id: 0x19832808
+  full_name: "page_cache_sync_ra"
+>>>>>>> CHANGE (8d957b ANDROID: GKI: Add initial symbol list for honor)
 }
 elf_symbol {
   id: 0xd723c668
@@ -401319,6 +401344,15 @@ elf_symbol {
   full_name: "sock_efree"
 }
 elf_symbol {
+  id: 0xd661cceb
+  name: "sock_from_file"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xeca80468
+  type_id: 0x229f1818
+  full_name: "sock_from_file"
+}
+elf_symbol {
   id: 0x4ece0732
   name: "sock_gen_put"
   is_defined: true
@@ -403590,6 +403624,7 @@ elf_symbol {
   full_name: "tcp_hashinfo"
 }
 elf_symbol {
+<<<<<<< HEAD   (27310e ANDROID: binder: fix KMI issues due to frozen notification)
   id: 0x5f96413a
   name: "tcp_register_congestion_control"
   is_defined: true
@@ -403660,6 +403695,15 @@ elf_symbol {
   crc: 0xc80e5686
   type_id: 0x1f121b27
   full_name: "tcp_unregister_congestion_control"
+=======
+  id: 0xef808179
+  name: "tcp_sync_mss"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xe9cebee3
+  type_id: 0xcaae52cc
+  full_name: "tcp_sync_mss"
+>>>>>>> CHANGE (8d957b ANDROID: GKI: Add initial symbol list for honor)
 }
 elf_symbol {
   id: 0x857e5dc9
@@ -418030,8 +418074,12 @@ interface {
   symbol_id: 0x73ffe9a9
   symbol_id: 0x03de6dc5
   symbol_id: 0xe4e974b3
+<<<<<<< HEAD   (27310e ANDROID: binder: fix KMI issues due to frozen notification)
   symbol_id: 0x2066c48d
   symbol_id: 0x1cd74592
+=======
+  symbol_id: 0x99bcb7fe
+>>>>>>> CHANGE (8d957b ANDROID: GKI: Add initial symbol list for honor)
   symbol_id: 0xbb7edccb
   symbol_id: 0xd4b34ea6
   symbol_id: 0x3c6496cb
@@ -418881,6 +418929,7 @@ interface {
   symbol_id: 0x27d0c7b6
   symbol_id: 0x3d8c84e9
   symbol_id: 0x28b33064
+<<<<<<< HEAD   (27310e ANDROID: binder: fix KMI issues due to frozen notification)
   symbol_id: 0xd1ef7302
   symbol_id: 0x23a386a4
   symbol_id: 0xdea2b008
@@ -418889,6 +418938,9 @@ interface {
   symbol_id: 0x60d84cc3
   symbol_id: 0xb613af5e
   symbol_id: 0xff029108
+=======
+  symbol_id: 0x591c4b4f
+>>>>>>> CHANGE (8d957b ANDROID: GKI: Add initial symbol list for honor)
   symbol_id: 0xd723c668
   symbol_id: 0x13dfcd3d
   symbol_id: 0xbf668081
@@ -420432,6 +420484,7 @@ interface {
   symbol_id: 0x5ca98337
   symbol_id: 0xbcf8b9bf
   symbol_id: 0x83497546
+  symbol_id: 0xd661cceb
   symbol_id: 0x4ece0732
   symbol_id: 0x284bec0f
   symbol_id: 0xb2cef8e2
@@ -420685,6 +420738,7 @@ interface {
   symbol_id: 0x529a9e72
   symbol_id: 0x99d5bf98
   symbol_id: 0xeb0e3e9b
+<<<<<<< HEAD   (27310e ANDROID: binder: fix KMI issues due to frozen notification)
   symbol_id: 0x5f96413a
   symbol_id: 0x34a062e9
   symbol_id: 0x97edc1c5
@@ -420693,6 +420747,9 @@ interface {
   symbol_id: 0xb56d0844
   symbol_id: 0x51ff5f80
   symbol_id: 0xefab10bf
+=======
+  symbol_id: 0xef808179
+>>>>>>> CHANGE (8d957b ANDROID: GKI: Add initial symbol list for honor)
   symbol_id: 0x857e5dc9
   symbol_id: 0x85459353
   symbol_id: 0x1ecfd7d9
