@@ -16,22 +16,6 @@
 #include <linux/init.h>
 #include <linux/uaccess.h>
 
-/*
- * "IKCFG_ST" and "IKCFG_ED" are used to extract the config data from
- * a binary kernel image or a module. See scripts/extract-ikconfig.
- */
-asm (
-"	.pushsection .rodata, \"a\"		\n"
-"	.ascii \"IKCFG_ST\"			\n"
-"	.global kernel_config_data		\n"
-"kernel_config_data:				\n"
-"	.incbin \"kernel/config_data.gz\"	\n"
-"	.global kernel_config_data_end		\n"
-"kernel_config_data_end:			\n"
-"	.ascii \"IKCFG_ED\"			\n"
-"	.popsection				\n"
-);
-
 #ifdef CONFIG_IKCONFIG_PROC
 
 extern char kernel_config_data;
