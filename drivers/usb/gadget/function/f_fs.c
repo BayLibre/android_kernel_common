@@ -833,6 +833,7 @@ static void ffs_user_copy_worker(struct work_struct *work)
 	int ret = io_data->req->status ? io_data->req->status :
 					 io_data->req->actual;
 	bool kiocb_has_eventfd = io_data->kiocb->ki_flags & IOCB_EVENTFD;
+	unsigned long flags;
 
 	if (io_data->read && ret > 0) {
 		kthread_use_mm(io_data->mm);
@@ -845,7 +846,14 @@ static void ffs_user_copy_worker(struct work_struct *work)
 	if (io_data->ffs->ffs_eventfd && !kiocb_has_eventfd)
 		eventfd_signal(io_data->ffs->ffs_eventfd, 1);
 
+<<<<<<< HEAD   (3c19f7 ANDROID: set rewrite_absolute_paths_in_config for GKI aarch6)
 	usb_ep_free_request(io_data->ep, io_data->req);
+=======
+	spin_lock_irqsave(&io_data->ffs->eps_lock, flags);
+	usb_ep_free_request(io_data->ep, io_data->req);
+	io_data->req = NULL;
+	spin_unlock_irqrestore(&io_data->ffs->eps_lock, flags);
+>>>>>>> CHANGE (5883e8 UPSTREAM: usb: gadget: f_fs: Fix race between aio_cancel() a)
 
 	if (io_data->read)
 		kfree(io_data->to_free);
@@ -861,6 +869,11 @@ static void ffs_epfile_async_io_complete(struct usb_ep *_ep,
 
 	ENTER();
 
+<<<<<<< HEAD   (3c19f7 ANDROID: set rewrite_absolute_paths_in_config for GKI aarch6)
+=======
+	io_data->status = req->status ? req->status : req->actual;
+
+>>>>>>> CHANGE (5883e8 UPSTREAM: usb: gadget: f_fs: Fix race between aio_cancel() a)
 	INIT_WORK(&io_data->work, ffs_user_copy_worker);
 	queue_work(ffs->io_completion_wq, &io_data->work);
 }
