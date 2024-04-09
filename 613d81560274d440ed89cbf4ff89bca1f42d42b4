@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000074090589",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3033433?revision\u003d1",
+      "key": {
+        "uuid": "434a4424_7e1ee964",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-09T12:16:23Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against AOSP commit.\nAOSP commit: [source](https://android-review.googlesource.com/kernel/common/+/a1580311c36ca28344b2f03b3c8a72d9f8db5bde).\n\n```\n      ## drivers/android/vendor_hooks.c ##\n     @@\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_select_task_rq_fair);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_select_task_rq_rt);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_select_fallback_rq);\n    +  * Export tracepoints that act as a bare tracehook (ie: have no trace event\n    +  * associated with them) to allow external modules to probe them.\n    +  */\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_refrigerator);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_scheduler_tick);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_enqueue_task);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_task);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_send_sig_info);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_wait_start);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_wait_finish);\n     \n      ## include/trace/hooks/cgroup.h ##\n    -@@ include/trace/hooks/cgroup.h: DECLARE_RESTRICTED_HOOK(android_rvh_cpuset_fork,\n    - DECLARE_RESTRICTED_HOOK(android_rvh_cgroup_force_kthread_migration,\n    - \tTP_PROTO(struct task_struct *tsk, struct cgroup *dst_cgrp, bool *force_migration),\n    - \tTP_ARGS(tsk, dst_cgrp, force_migration), 1);\n    +@@ include/trace/hooks/cgroup.h: DECLARE_HOOK(android_vh_cgroup_set_task,\n    + \tTP_PROTO(int ret, struct task_struct *task),\n    + \tTP_ARGS(ret, task));\n    + \n     +DECLARE_RESTRICTED_HOOK(android_rvh_refrigerator,\n     +\tTP_PROTO(bool f),\n     +\tTP_ARGS(f), 1);\n    - \n    - struct cgroup_subsys;\n    - struct cgroup_taskset;\n    ++\n    + DECLARE_HOOK(android_vh_cgroup_attach,\n    + \tTP_PROTO(struct cgroup_subsys *ss, struct cgroup_taskset *tset),\n    + \tTP_ARGS(ss, tset));\n     \n      ## kernel/freezer.c ##\n     @@\n    + #include \u003clinux/freezer.h\u003e\n      #include \u003clinux/kthread.h\u003e\n    - #include \u003clinux/mmu_context.h\u003e\n      \n     +#undef CREATE_TRACE_POINT\n     +#include \u003ctrace/hooks/cgroup.h\u003e\n     +\n      /* total number of freezing conditions in effect */\n    - atomic_t system_freezing_cnt \u003d ATOMIC_INIT(0);\n    - EXPORT_SYMBOL(system_freezing_cnt);\n    + DEFINE_STATIC_KEY_FALSE(freezer_active);\n    + EXPORT_SYMBOL(freezer_active);\n     @@ kernel/freezer.c: bool __refrigerator(bool check_kthr_stop)\n    - \t\tif (!freezing(current) ||\n    - \t\t    (check_kthr_stop \u0026\u0026 kthread_should_stop()))\n    - \t\t\tcurrent-\u003eflags \u0026\u003d ~PF_FROZEN;\n    + \n    + \t\tspin_lock_irq(\u0026freezer_lock);\n    + \t\tfreeze \u003d freezing(current) \u0026\u0026 !(check_kthr_stop \u0026\u0026 kthread_should_stop());\n     +\t\ttrace_android_rvh_refrigerator(pm_nosig_freezing);\n      \t\tspin_unlock_irq(\u0026freezer_lock);\n      \n    - \t\tif (!(current-\u003eflags \u0026 PF_FROZEN))\n    + \t\tif (!freeze)\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "613d81560274d440ed89cbf4ff89bca1f42d42b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
