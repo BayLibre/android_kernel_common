@@ -52,6 +52,24 @@
       "parentUuid": "3145f4c2_22fe18a1",
       "revId": "75d00dfe3e12c9d86e42c68d8535ab47888315e3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e1e2557_32c11627",
+        "filename": "android/abi_gki_aarch64_mtktv",
+        "patchSetId": 2
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 3011835
+      },
+      "writtenOn": "2024-04-09T10:14:39Z",
+      "side": 1,
+      "message": "A MTK proprietary driver which is used to detect whether CPU is in stall state. Once tty irq is handled by a stalled CPU, use get_current_tty to get tty struct and move irq to other CPU so that we can start printing logs and let SYSRQ can be used. It\u0027s for debugging usage, I will remove the symbol which belongs to debug driver and update this patch set again.",
+      "parentUuid": "be9ba888_1d71fb11",
+      "revId": "75d00dfe3e12c9d86e42c68d8535ab47888315e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
