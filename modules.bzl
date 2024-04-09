@@ -69,8 +69,8 @@ _COMMON_GKI_MODULES_LIST = [
     "net/mac802154/mac802154.ko",
     "net/nfc/nfc.ko",
     "net/rfkill/rfkill.ko",
-    "net/tipc/diag.ko",
     "net/tipc/tipc.ko",
+    "net/tipc/tipc_diag.ko",
     "net/wireless/cfg80211.ko",
 ]
 
