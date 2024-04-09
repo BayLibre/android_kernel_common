@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000074092014",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3033535?revision\u003d1",
+      "key": {
+        "uuid": "cb4c142f_3ebfffdd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-09T12:45:00Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against AOSP commit.\nAOSP commit: [source](https://android-review.googlesource.com/kernel/common/+/a188361628461c58a4dfc72869d9acb1dfa2542f).\n\n```\n      ## drivers/android/vendor_hooks.c ##\n    -@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_css_offline);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_css_online);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_free);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_alloc);\n    +@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_err_print_ctrl);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_proc_transaction);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_new_ref);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_del_ref);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpuset_fork);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_looper_state_registered);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_thread_read);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_free_proc);\n     \n      ## include/trace/hooks/cgroup.h ##\n    -@@ include/trace/hooks/cgroup.h: DECLARE_HOOK(android_rvh_memcgv2_init,\n    - DECLARE_HOOK(android_rvh_memcgv2_calc_decayed_watermark,\n    - \tTP_PROTO(struct mem_cgroup *memcg),\n    - \tTP_ARGS(memcg));\n    +@@ include/trace/hooks/cgroup.h: DECLARE_RESTRICTED_HOOK(android_rvh_cgroup_force_kthread_migration,\n    + \tTP_PROTO(struct task_struct *tsk, struct cgroup *dst_cgrp, bool *force_migration),\n    + \tTP_ARGS(tsk, dst_cgrp, force_migration), 1);\n    + \n     +DECLARE_RESTRICTED_HOOK(android_rvh_cpuset_fork,\n    -+\tTP_PROTO(struct task_struct *p, int *inherit_cpus),\n    ++\tTP_PROTO(struct task_struct *p, bool *inherit_cpus),\n     +\tTP_ARGS(p, inherit_cpus), 1);\n    - \n    - struct page_counter;\n    - DECLARE_HOOK(android_rvh_update_watermark,\n    ++\n    + DECLARE_RESTRICTED_HOOK(android_rvh_cpu_cgroup_attach,\n    + \tTP_PROTO(struct cgroup_taskset *tset),\n    + \tTP_ARGS(tset), 1);\n     \n      ## kernel/cgroup/cpuset.c ##\n     @@\n    + #include \u003clinux/cgroup.h\u003e\n      #include \u003clinux/wait.h\u003e\n      \n    - #include \u003ctrace/hooks/sched.h\u003e\n     +#include \u003ctrace/hooks/cgroup.h\u003e\n    - \n    ++\n      DEFINE_STATIC_KEY_FALSE(cpusets_pre_enable_key);\n      DEFINE_STATIC_KEY_FALSE(cpusets_enabled_key);\n    -@@ kernel/cgroup/cpuset.c: static void cpuset_bind(struct cgroup_subsys_state *root_css)\n    -  */\n    + \n    +@@ kernel/cgroup/cpuset.c: static void cpuset_cancel_fork(struct task_struct *task, struct css_set *cset)\n      static void cpuset_fork(struct task_struct *task)\n      {\n    -+\tint inherit_cpus \u003d 0;\n    - \tif (task_css_is_root(task, cpuset_cgrp_id))\n    - \t\treturn;\n    - \n    --\tset_cpus_allowed_ptr(task, current-\u003ecpus_ptr);\n    -+\ttrace_android_rvh_cpuset_fork(task, \u0026inherit_cpus);\n    -+\tif (!inherit_cpus)\n    -+\t\tset_cpus_allowed_ptr(task, current-\u003ecpus_ptr);\n    - \ttask-\u003emems_allowed \u003d current-\u003emems_allowed;\n    - }\n    + \tstruct cpuset *cs;\n    +-\tbool same_cs;\n    ++\tbool same_cs, inherit_cpus \u003d false;\n      \n    + \trcu_read_lock();\n    + \tcs \u003d task_cs(task);\n    + \tsame_cs \u003d (cs \u003d\u003d task_cs(current));\n    + \trcu_read_unlock();\n    +-\n    + \tif (same_cs) {\n    + \t\tif (cs \u003d\u003d \u0026top_cpuset)\n    + \t\t\treturn;\n    +-\n    +-\t\tset_cpus_allowed_ptr(task, current-\u003ecpus_ptr);\n    ++\t\ttrace_android_rvh_cpuset_fork(task, \u0026inherit_cpus);\n    ++\t\tif (!inherit_cpus)\n    ++\t\t\tset_cpus_allowed_ptr(task, current-\u003ecpus_ptr);\n    + \t\ttask-\u003emems_allowed \u003d current-\u003emems_allowed;\n    + \t\treturn;\n    + \t}\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "fa09df1114da1c80dde061c0591757ec1577ecb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
