@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c39c611_e13dc3f9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-04-09T17:54:43Z",
+      "side": 1,
+      "message": "Please give some concrete examples of why copy_to_user/copy_from_user are an issue. Since you are making a performance argument, please include numbers and benchmarks to show that this performance benefit is significant enough to justify this bypass mechanism.",
+      "revId": "dd588c51ff121d459ed303a2f9dabc5a8e4dba80",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57be7103_0993950e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-04-09T17:54:43Z",
+      "side": 1,
+      "message": "Please provide enough details to demonstrate that this isn\u0027t a security bypass. Since you are using prctl to eliminate open/read/write, how do you ensure that security is maintained?",
+      "revId": "dd588c51ff121d459ed303a2f9dabc5a8e4dba80",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c078a88c_79efc0dc",
+        "filename": "kernel/sys.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2754,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-04-09T17:54:43Z",
+      "side": 1,
+      "message": "This looks like a generic syscall interface. If you need new syscalls, then please work with upstream to create them. If this is for very specific use-cases, then please target those cases and provide more description of them in the commit message. We can\u0027t accept a generic syscall (and security) bypass.",
+      "revId": "dd588c51ff121d459ed303a2f9dabc5a8e4dba80",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
