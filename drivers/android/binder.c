@@ -5408,17 +5408,20 @@ static int binder_ioctl_get_node_info_for_ref(struct binder_proc *proc,
 		struct binder_node_info_for_ref *info)
 {
 	struct binder_node *node;
+#if 0
 	struct binder_context *context = proc->context;
+#endif
 	__u32 handle = info->handle;
 
-	if (info->strong_count || info->weak_count || info->reserved1 ||
-	    info->reserved2 || info->reserved3) {
+	if (info->strong_count || info->weak_count || info->uid ||
+	    info->pid || info->reserved3) {
 		binder_user_error("%d BINDER_GET_NODE_INFO_FOR_REF: only handle may be non-zero.",
 				  proc->pid);
 		return -EINVAL;
 	}
 
 	/* This ioctl may only be used by the context manager */
+#if 0
 	mutex_lock(&context->context_mgr_node_lock);
 	if (!context->binder_context_mgr_node ||
 		context->binder_context_mgr_node->proc != proc) {
@@ -5426,14 +5429,18 @@ static int binder_ioctl_get_node_info_for_ref(struct binder_proc *proc,
 		return -EPERM;
 	}
 	mutex_unlock(&context->context_mgr_node_lock);
+#endif
 
 	node = binder_get_node_from_ref(proc, handle, true, NULL);
-	if (!node)
+	if (!node || !node->proc) {
 		return -EINVAL;
+        }
 
 	info->strong_count = node->local_strong_refs +
 		node->internal_strong_refs;
 	info->weak_count = node->local_weak_refs;
+        info->uid = from_kuid(current_user_ns(), task_euid(node->proc->tsk));
+        info->pid = node->proc->pid;
 
 	binder_put_node(node);
 

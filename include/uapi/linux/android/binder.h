@@ -260,8 +260,8 @@ struct binder_node_info_for_ref {
 	__u32            handle;
 	__u32            strong_count;
 	__u32            weak_count;
-	__u32            reserved1;
-	__u32            reserved2;
+	__u32            uid;
+	__u32            pid;
 	__u32            reserved3;
 };
 
