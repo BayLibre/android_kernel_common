@@ -316465,6 +316465,13 @@ function {
   parameter_id: 0x4585663f
 }
 function {
+  id: 0x9b482026
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x3f949c69
+  parameter_id: 0x6720d32f
+}
+function {
   id: 0x9b4884ab
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -316622,6 +316629,12 @@ function {
   parameter_id: 0x4585663f
   parameter_id: 0x4585663f
   parameter_id: 0x4585663f
+}
+function {
+  id: 0x9b51e812
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x3f949c69
 }
 function {
   id: 0x9b523c43
@@ -334748,6 +334761,24 @@ elf_symbol {
   full_name: "__traceiter_sched_waking"
 }
 elf_symbol {
+  id: 0xd3f7c7b4
+  name: "__traceiter_scsi_dispatch_cmd_error"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x37765a7b
+  type_id: 0x9b482026
+  full_name: "__traceiter_scsi_dispatch_cmd_error"
+}
+elf_symbol {
+  id: 0x64f8cfd6
+  name: "__traceiter_scsi_dispatch_cmd_timeout"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x43e9d08f
+  type_id: 0x9b51e812
+  full_name: "__traceiter_scsi_dispatch_cmd_timeout"
+}
+elf_symbol {
   id: 0x8ce8e50d
   name: "__traceiter_sk_data_ready"
   is_defined: true
@@ -337257,6 +337288,24 @@ elf_symbol {
   crc: 0xa9d05ba3
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_sched_waking"
+}
+elf_symbol {
+  id: 0xdeb02bc6
+  name: "__tracepoint_scsi_dispatch_cmd_error"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xede53141
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_scsi_dispatch_cmd_error"
+}
+elf_symbol {
+  id: 0xb2b238f8
+  name: "__tracepoint_scsi_dispatch_cmd_timeout"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x2ca42f29
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_scsi_dispatch_cmd_timeout"
 }
 elf_symbol {
   id: 0xf68d6127
@@ -387723,6 +387772,8 @@ interface {
   symbol_id: 0x570f3032
   symbol_id: 0x00296361
   symbol_id: 0x20097074
+  symbol_id: 0xd3f7c7b4
+  symbol_id: 0x64f8cfd6
   symbol_id: 0x8ce8e50d
   symbol_id: 0x863777a0
   symbol_id: 0xcac5a7d5
@@ -388002,6 +388053,8 @@ interface {
   symbol_id: 0xe10cee18
   symbol_id: 0x2160e0b7
   symbol_id: 0xa70e8cd2
+  symbol_id: 0xdeb02bc6
+  symbol_id: 0xb2b238f8
   symbol_id: 0xf68d6127
   symbol_id: 0x5b327cd6
   symbol_id: 0xe91cdbb3
