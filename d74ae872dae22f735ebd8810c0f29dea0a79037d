@@ -59,6 +59,26 @@
       "tag": "",
       "revId": "d74ae872dae22f735ebd8810c0f29dea0a79037d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000074065873",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3031769?revision\u003d1",
+      "key": {
+        "uuid": "65afaf7e_e9bd3219",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-10T18:56:26Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against AOSP commit.\nAOSP commit: [source](https://android-review.googlesource.com/kernel/common/+/01f2392e13dbdb17d7a22290fba48207059a7f5a).\n\n```\n      ## drivers/android/vendor_hooks.c ##\n    -@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_post_init_entity_util_avg);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_get_timer);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_adj_current_limit);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);\n    +@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_err_print_ctrl);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_proc_transaction);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_new_ref);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_del_ref);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf_pr_cont);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_type);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_swappiness);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_slab_bypass);\n     \n      ## include/trace/hooks/logbuf.h ##\n    -@@ include/trace/hooks/logbuf.h: struct printk_record;\n    - DECLARE_HOOK(android_vh_logbuf,\n    +@@ include/trace/hooks/logbuf.h: DECLARE_HOOK(android_vh_logbuf,\n      \tTP_PROTO(struct printk_ringbuffer *rb, struct printk_record *r),\n      \tTP_ARGS(rb, r))\n    -+\n    + \n     +DECLARE_HOOK(android_vh_logbuf_pr_cont,\n     +\tTP_PROTO(struct printk_record *r, size_t text_len),\n     +\tTP_ARGS(r, text_len))\n    - #else\n    - #define trace_android_vh_logbuf(rb, r)\n    - #endif\n    ++\n    + #endif /* _TRACE_HOOK_LOGBUF_H */\n    + /* This part must be outside protection */\n    + #include \u003ctrace/define_trace.h\u003e\n     \n      ## kernel/printk/printk.c ##\n    -@@ kernel/printk/printk.c: static size_t log_output(int facility, int level, enum log_flags lflags,\n    - \t\t\t} else {\n    +@@ kernel/printk/printk.c: int vprintk_store(int facility, int level,\n      \t\t\t\tprb_commit(\u0026e);\n      \t\t\t}\n    -+\n    + \n     +\t\t\ttrace_android_vh_logbuf_pr_cont(\u0026r, text_len);\n    - \t\t\treturn text_len;\n    + \t\t\tret \u003d text_len;\n    + \t\t\tgoto out;\n      \t\t}\n    - \t}\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "d74ae872dae22f735ebd8810c0f29dea0a79037d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
