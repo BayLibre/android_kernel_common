@@ -145,6 +145,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d4e2afb_39355d87",
+        "filename": "drivers/android/debug_kinfo.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2024-04-10T18:45:55Z",
+      "side": 1,
+      "message": "All global variables are initialized to 0 by default. Since this is constant, for clang it\u0027ll reside in the .const section. So I don\u0027t think it will make a difference as the compiler should know the value is zero. @ndesaulniers@google.com, is my understanding correct?\n\nRegarding making static, that\u0027s not allowed when exporting:\n\n```\nERROR: modpost: vmlinux: local symbol \u0027ANDROID_GKI_struct_dwc3\u0027 was exported\nERROR: modpost: vmlinux: local symbol \u0027ANDROID_GKI_struct_kernel_all_info\u0027 was exported\n```",
+      "parentUuid": "9878b774_3851d618",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 57
+      },
+      "revId": "96fc33b00d689b2827f4bc1aaa38bf8c047a3f86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "41845b18_6d7a40ac",
         "filename": "drivers/usb/dwc3/core.c",
         "patchSetId": 1
