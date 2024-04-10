@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8674f07d_8e44483f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1879222
+      },
+      "writtenOn": "2024-04-10T03:11:13Z",
+      "side": 1,
+      "message": "I think if security can be bypassed through prctl, it also can be bypassed throuth open/read/write.\nThe potential for security bypass is dependent on how the functionality behind these interfaces is implemented.",
+      "parentUuid": "57be7103_0993950e",
+      "revId": "dd588c51ff121d459ed303a2f9dabc5a8e4dba80",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c078a88c_79efc0dc",
         "filename": "kernel/sys.c",
         "patchSetId": 4
@@ -48,6 +66,24 @@
       "writtenOn": "2024-04-09T17:54:43Z",
       "side": 1,
       "message": "This looks like a generic syscall interface. If you need new syscalls, then please work with upstream to create them. If this is for very specific use-cases, then please target those cases and provide more description of them in the commit message. We can\u0027t accept a generic syscall (and security) bypass.",
+      "revId": "dd588c51ff121d459ed303a2f9dabc5a8e4dba80",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f7cb0bb_fd415248",
+        "filename": "kernel/sys.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2754,
+      "author": {
+        "id": 1879222
+      },
+      "writtenOn": "2024-04-10T03:11:13Z",
+      "side": 1,
+      "message": "I will find another way to achieve this functionality. Thanks for your patience.",
+      "parentUuid": "c078a88c_79efc0dc",
       "revId": "dd588c51ff121d459ed303a2f9dabc5a8e4dba80",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
