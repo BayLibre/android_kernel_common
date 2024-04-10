@@ -35,6 +35,14 @@ DECLARE_RESTRICTED_HOOK(android_rvh_dequeue_task,
 	TP_PROTO(struct rq *rq, struct task_struct *p, int flags),
 	TP_ARGS(rq, p, flags), 1);
 
+DECLARE_HOOK(android_vh_enqueue_task_rt,
+        TP_PROTO(struct task_struct *p, int cpu),
+        TP_ARGS(p, cpu));
+
+DECLARE_HOOK(android_vh_dequeue_task_rt,
+        TP_PROTO(struct task_struct *p, int cpu),
+        TP_ARGS(p, cpu));
+
 DECLARE_RESTRICTED_HOOK(android_rvh_can_migrate_task,
 	TP_PROTO(struct task_struct *p, int dst_cpu, int *can_migrate),
 	TP_ARGS(p, dst_cpu, can_migrate), 1);
