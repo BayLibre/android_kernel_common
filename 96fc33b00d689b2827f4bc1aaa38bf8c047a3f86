@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8164900_bf30dfc8",
+        "filename": "android/abi_gki_aarch64_type_visibility",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-04-10T17:54:32Z",
+      "side": 1,
+      "message": "The bootloader depends on this layout...\n\nIs this documented anywhere?",
+      "range": {
+        "startLine": 5,
+        "startChar": 2,
+        "endLine": 5,
+        "endChar": 28
+      },
+      "revId": "96fc33b00d689b2827f4bc1aaa38bf8c047a3f86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e931ef0e_4cc0892a",
+        "filename": "drivers/android/debug_kinfo.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-04-10T17:54:32Z",
+      "side": 1,
+      "message": "Would it be better to do this?\n\nstatic const struct kernel_all_info *const GKI_struct_kernel_all_info \u003d NULL;",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 57
+      },
+      "revId": "96fc33b00d689b2827f4bc1aaa38bf8c047a3f86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41845b18_6d7a40ac",
+        "filename": "drivers/usb/dwc3/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2376,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-04-10T17:54:32Z",
+      "side": 1,
+      "message": "static const struct dwc3 *const GKI_struct_dwc3 \u003d NULL;\n\n?",
+      "range": {
+        "startLine": 2376,
+        "startChar": 0,
+        "endLine": 2376,
+        "endChar": 35
+      },
+      "revId": "96fc33b00d689b2827f4bc1aaa38bf8c047a3f86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
