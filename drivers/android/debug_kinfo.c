@@ -14,7 +14,7 @@
 #include <linux/of_reserved_mem.h>
 #include <linux/pgtable.h>
 #include <asm/module.h>
-#include "debug_kinfo.h"
+#include <linux/debug_kinfo.h>
 
 /*
  * These will be re-linked against their real values
