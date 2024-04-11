@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "966fce0f_0c521e02",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1232,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-04-11T19:54:51Z",
+      "side": 1,
+      "message": "Sorry I uploaded a previous version of the patch. I added the retry later.",
+      "parentUuid": "32bd6c63_8175994d",
+      "revId": "8e19865e16feef70fe2850039f759925ae3f829e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a76f24f_bec5855f",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "331b8839_821f3888",
+        "filename": "drivers/android/binder_internal.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-04-11T19:54:51Z",
+      "side": 1,
+      "message": "sure, that sounds like a better name.",
+      "parentUuid": "5a76f24f_bec5855f",
+      "revId": "8e19865e16feef70fe2850039f759925ae3f829e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c020ada_e2af2204",
         "filename": "include/uapi/linux/android/binder.h",
         "patchSetId": 1
@@ -48,6 +84,24 @@
       "writtenOn": "2024-04-11T19:32:24Z",
       "side": 1,
       "message": "You want this to be bidirectional so user-space can see which of the requested flags it actually got.",
+      "revId": "8e19865e16feef70fe2850039f759925ae3f829e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ce90ba6_0194433c",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-04-11T19:54:51Z",
+      "side": 1,
+      "message": "oh sure, that is a good idea.",
+      "parentUuid": "3c020ada_e2af2204",
       "revId": "8e19865e16feef70fe2850039f759925ae3f829e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
