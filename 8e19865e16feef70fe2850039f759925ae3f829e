@@ -104,6 +104,24 @@
       "parentUuid": "3c020ada_e2af2204",
       "revId": "8e19865e16feef70fe2850039f759925ae3f829e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57505827_850944c7",
+        "filename": "include/uapi/linux/android/binder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-04-11T21:17:38Z",
+      "side": 1,
+      "message": "Oh wait, that would require changing the _IOW for _IOWR which is encoded on the enum value. I suppose it could be achieved by maintaining both IDs.\nSo:\n```\n@@ -266,6 +271,7 @@ enum {\n        BINDER_GET_FROZEN_INFO          \u003d _IOWR(\u0027b\u0027, 15, struct binder_frozen_status_info),\n        BINDER_ENABLE_ONEWAY_SPAM_DETECTION     \u003d _IOW(\u0027b\u0027, 16, __u32),\n        BINDER_GET_EXTENDED_ERROR       \u003d _IOWR(\u0027b\u0027, 17, struct binder_extended_error),\n+       BINDER_SET_PROC_FLAGS           \u003d _IOWR(\u0027b\u0027, 18, __u32 /* enum binder_proc_flags */),\n };\n```\nAnd then handling them separately e.g. something like:\n```\n@@ -5533,10 +5557,27 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)\n                        goto err;\n                }\n                binder_inner_proc_lock(proc);\n-               proc-\u003eoneway_spam_detection_enabled \u003d (bool)enable;\n+               proc-\u003eflags \u003d BF_SPAM_DETECTION \u0026 enable;\n                binder_inner_proc_unlock(proc);\n                break;\n        }\n+       case BINDER_SET_PROC_FLAGS: {\n+               u32 flags;\n+\n+               if (copy_from_user(\u0026flags, ubuf, sizeof(flags))) {\n+                       ret \u003d -EFAULT;\n+                       goto err;\n+               }\n+               binder_inner_proc_lock(proc);\n+               proc-\u003eflags \u003d flags;\n+               binder_inner_proc_unlock(proc);\n+\n+               if (copy_to_user(ubuf, \u0026flags, sizeof(flags))) {\n+                       ret \u003d -EFAULT;\n+                       goto err;\n+               }\n+               break;\n+       }\n```",
+      "parentUuid": "4ce90ba6_0194433c",
+      "revId": "8e19865e16feef70fe2850039f759925ae3f829e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
