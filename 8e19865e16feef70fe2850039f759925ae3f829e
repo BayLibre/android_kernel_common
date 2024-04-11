@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32bd6c63_8175994d",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1232,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-04-11T09:31:30Z",
+      "side": 1,
+      "message": "Since this is a 32-bit integer, it can wrap around in practice. You must handle the rare case where this handle descriptor is already in use.\n\nI guess the easiest way to handle that is just to just replace the `BUG()` in the loop after the call to `next_ref_desc` with a goto that calls `next_ref_desc` again.",
+      "revId": "8e19865e16feef70fe2850039f759925ae3f829e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a76f24f_bec5855f",
+        "filename": "drivers/android/binder_internal.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-04-11T09:31:30Z",
+      "side": 1,
+      "message": "How about calling this `next_ref_desc`?",
+      "revId": "8e19865e16feef70fe2850039f759925ae3f829e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
