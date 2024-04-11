@@ -299671,6 +299671,12 @@ function {
   parameter_id: 0x3863a91c
 }
 function {
+  id: 0x1e818bd6
+  return_type_id: 0x48b5725f
+  parameter_id: 0x3c3f3f74
+  parameter_id: 0x4585663f
+}
+function {
   id: 0x1e82fda2
   return_type_id: 0x48b5725f
   parameter_id: 0x3860f3c0
@@ -312064,6 +312070,12 @@ function {
   return_type_id: 0x6720d32f
   parameter_id: 0x3806390a
   parameter_id: 0x0665e6b6
+}
+function {
+  id: 0x9399396a
+  return_type_id: 0x6720d32f
+  parameter_id: 0x3c3f3f74
+  parameter_id: 0x4585663f
 }
 function {
   id: 0x93994651
@@ -404128,6 +404140,15 @@ elf_symbol {
   full_name: "xt_register_target"
 }
 elf_symbol {
+  id: 0x450f3768
+  name: "xt_register_targets"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xd5418617
+  type_id: 0x9399396a
+  full_name: "xt_register_targets"
+}
+elf_symbol {
   id: 0xffcb0fa2
   name: "xt_request_find_match"
   is_defined: true
@@ -404162,6 +404183,15 @@ elf_symbol {
   crc: 0xd16885ed
   type_id: 0x1f979e4e
   full_name: "xt_unregister_target"
+}
+elf_symbol {
+  id: 0x7c598ee8
+  name: "xt_unregister_targets"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x621efe3e
+  type_id: 0x1e818bd6
+  full_name: "xt_unregister_targets"
 }
 elf_symbol {
   id: 0x0fc8c78d
@@ -412068,10 +412098,12 @@ interface {
   symbol_id: 0xf6d0be30
   symbol_id: 0x7a3f2cd6
   symbol_id: 0xb2fbe60e
+  symbol_id: 0x450f3768
   symbol_id: 0xffcb0fa2
   symbol_id: 0xa2ee5f12
   symbol_id: 0x807b9318
   symbol_id: 0x15f1eb71
+  symbol_id: 0x7c598ee8
   symbol_id: 0x0fc8c78d
   symbol_id: 0xe8e0ea6a
   symbol_id: 0xa5d58813
