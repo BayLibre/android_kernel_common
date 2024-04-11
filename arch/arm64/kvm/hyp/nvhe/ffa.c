@@ -415,6 +415,23 @@ out:
 	return;
 }
 
+static void dump_xfer_buffer_content(struct ffa_composite_mem_region *reg, u32 nr_ranges)
+{
+	struct ffa_mem_region_addr_range *constituent;
+	u32 i, j;
+
+	trace_hyp_printk("nr_ranges %u", nr_ranges);
+	for (i = 0; i < nr_ranges; i++) {
+		trace_hyp_printk("pg_cnt %u addr_range_cnt %u", reg[i].total_pg_cnt, reg[i].addr_range_cnt);
+
+		for (j = 0; j < reg->addr_range_cnt; j++) {
+			constituent = &reg[i].constituents[j];
+			trace_hyp_printk("addr %llx pages %u rsrvd %u",
+					  constituent->address, constituent->pg_cnt, constituent->reserved);
+		}
+	}
+}
+
 static __always_inline void do_ffa_mem_xfer(const u64 func_id,
 					    struct arm_smccc_res *res,
 					    struct kvm_cpu_context *ctxt)
@@ -440,12 +457,15 @@ static __always_inline void do_ffa_mem_xfer(const u64 func_id,
 	if (fraglen < sizeof(struct ffa_mem_region) +
 		      sizeof(struct ffa_mem_region_attributes)) {
 		ret = FFA_RET_INVALID_PARAMETERS;
+		trace_hyp_printk("unexpected sz %u less than %u\n", fraglen,
+				 (sizeof(struct ffa_mem_region) + sizeof(struct ffa_mem_region_attributes)));
 		goto out;
 	}
 
 	hyp_spin_lock(&host_buffers.lock);
 	if (!host_buffers.tx) {
 		ret = FFA_RET_INVALID_PARAMETERS;
+		trace_hyp_printk("TX buffer is NULL!");
 		goto out_unlock;
 	}
 
@@ -455,27 +475,35 @@ static __always_inline void do_ffa_mem_xfer(const u64 func_id,
 	offset = buf->ep_mem_access[0].composite_off;
 	if (!offset || buf->ep_count != 1 || buf->sender_id != HOST_FFA_ID) {
 		ret = FFA_RET_INVALID_PARAMETERS;
+		trace_hyp_printk("off:%u ep_cnt=%u sender %d", offset, buf->ep_count, buf->sender_id);
 		goto out_unlock;
 	}
 
 	if (fraglen < offset + sizeof(struct ffa_composite_mem_region)) {
 		ret = FFA_RET_INVALID_PARAMETERS;
+		trace_hyp_printk("frag %u less than %u", fraglen, offset + sizeof(struct ffa_composite_mem_region));
 		goto out_unlock;
 	}
 
+	trace_hyp_printk("offset %u", offset);
 	reg = (void *)buf + offset;
 	nr_ranges = ((void *)buf + fraglen) - (void *)reg->constituents;
+	dump_xfer_buffer_content(reg, nr_ranges/sizeof(reg->constituents[0]));
+
 	if (nr_ranges % sizeof(reg->constituents[0])) {
 		ret = FFA_RET_INVALID_PARAMETERS;
+		trace_hyp_printk("nr_ranges %u not aligned", nr_ranges);
 		goto out_unlock;
 	}
 
 	nr_ranges /= sizeof(reg->constituents[0]);
 	ret = ffa_host_share_ranges(reg->constituents, nr_ranges);
+	trace_hyp_printk("share ranges ret %u", ret);
 	if (ret)
 		goto out_unlock;
 
 	ffa_mem_xfer(res, func_id, len, fraglen);
+	trace_hyp_printk("frag %u len %u", fraglen, len);
 	if (fraglen != len) {
 		if (res->a0 != FFA_MEM_FRAG_RX)
 			goto err_unshare;
