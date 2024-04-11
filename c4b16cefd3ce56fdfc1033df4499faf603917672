@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "051971d4_74e818a3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-04-11T02:20:02Z",
+      "side": 1,
+      "message": "Checkpatch is having problems with the author line not matching the SoB line.\n\n\nWARNING:FROM_SIGN_OFF_MISMATCH: From:/Signed-off-by: email name mismatch: \u0027From: jianzhou \u003cquic_jianzhou@quicinc.com\u003e\u0027 !\u003d \u0027Signed-off-by: Zhou Jian \u003cquic_jianzhou@quicinc.com\u003e\u0027\n\n\nCould you fix this via `git commit --amend --author\u003d\"Zhou Jian \u003cquic_jianzhou@quicinc.com\u003e\"`\n\nThen you might want to look at your git config settings to avoid this problem in the future.",
+      "revId": "c4b16cefd3ce56fdfc1033df4499faf603917672",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
