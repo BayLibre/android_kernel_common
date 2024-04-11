@@ -2,6 +2,7 @@
 # commonly used by custom vendor modules
   __bitmap_subset
   devres_find
+  driver_find
   input_device_enabled
   pvclock_gtod_register_notifier
   refcount_dec_if_one
@@ -11,6 +12,8 @@
 
 # commonly required by ledtrig-*.ko modules
   led_blink_set_oneshot
+  led_get_default_pattern
+  led_set_brightness
   led_set_brightness_nosleep
   led_stop_software_blink
 
