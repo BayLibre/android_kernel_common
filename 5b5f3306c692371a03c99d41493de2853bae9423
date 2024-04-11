@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0e2696a_3ca93fb6",
+        "filename": "fs/proc/task_mmu.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2024-04-11T23:03:44Z",
+      "side": 1,
+      "message": "Suggestion: In order to avoid the recursion, we can have something like:\n\n\n```\nshow_map_vma(m, v);\n\nstruct vm_area_struct *vma_pad \u003d get_vma_pad(vma);\nif (vma_pad !\u003d NULL)\n   show_map_vma(m, vma_pad);\n```",
+      "range": {
+        "startLine": 350,
+        "startChar": 1,
+        "endLine": 350,
+        "endChar": 20
+      },
+      "revId": "5b5f3306c692371a03c99d41493de2853bae9423",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4851dc54_a391dbbd",
+        "filename": "mm/pgsize_migration.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2024-04-11T23:03:44Z",
+      "side": 1,
+      "message": "We can move this to line 208 where we are setting the other flags.",
+      "range": {
+        "startLine": 212,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 59
+      },
+      "revId": "5b5f3306c692371a03c99d41493de2853bae9423",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
