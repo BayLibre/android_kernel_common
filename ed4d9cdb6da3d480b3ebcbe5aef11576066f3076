@@ -33,6 +33,24 @@
       "message": "Does this work if there are two wrappers? DeliveryState::did_crit_strong_push clears has_crit_weak_push (if it was active), but the code there seems to assume it left it alone.",
       "revId": "ed4d9cdb6da3d480b3ebcbe5aef11576066f3076",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b39ec9a_47d6f0c8",
+        "filename": "drivers/android/binder/node/wrapper.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-04-11T07:23:26Z",
+      "side": 1,
+      "message": "The `DeliveryState::did_crit_strong_push` function only clears `has_crit_weak_push` if it was scheduled _without_ the use of a wrapper. This is because `crit_push_uses_wrapper` applies to both `has_crit_weak_push` and `has_crit_strong_push`, so if those three booleans are all true, then it means that two wrappers are scheduled.\n\nSo if `has_crit_weak_push` is set without the use of a wrapper, then if we don\u0027t unset it in `DeliveryState::did_crit_strong_push`, we end up with a state saying we have two wrappers when in reality we have scheduled the `Node` and one strong wrapper.\n\n(Downgrading a weak critical push to a normal push is okay when we also have a strong critical push.)",
+      "parentUuid": "cdaed2df_58b9326d",
+      "revId": "ed4d9cdb6da3d480b3ebcbe5aef11576066f3076",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
