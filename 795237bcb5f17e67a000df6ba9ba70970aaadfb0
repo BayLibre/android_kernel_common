@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dc7bda38_b8db735f",
+        "filename": "mm/pgsize_migration.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-04-12T22:38:15Z",
+      "side": 1,
+      "message": "get_pad_vma() returns null in those cases, but we can add for clarity",
+      "parentUuid": "cbca54dd_e85ac3a6",
+      "range": {
+        "startLine": 258,
+        "startChar": 1,
+        "endLine": 258,
+        "endChar": 10
+      },
+      "revId": "795237bcb5f17e67a000df6ba9ba70970aaadfb0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c514db98_fbb1566d",
         "filename": "mm/pgsize_migration.c",
         "patchSetId": 17
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-12T22:29:19Z",
       "side": 1,
       "message": "if there is not pad, but we already allocate memory for `struct vm_area_struct *vma` after calling get_data_vma(v) in show_smap(), we won\u0027t be able to release the vma memory (kfree(vma).\n\nWe might have a memory leak.",
+      "range": {
+        "startLine": 258,
+        "startChar": 1,
+        "endLine": 259,
+        "endChar": 9
+      },
+      "revId": "795237bcb5f17e67a000df6ba9ba70970aaadfb0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec8d24ad_1f8b19c7",
+        "filename": "mm/pgsize_migration.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-04-12T22:38:15Z",
+      "side": 1,
+      "message": "If there is not a pad we don\u0027t allocate a copy in `get_data_vma`()`",
+      "parentUuid": "c514db98_fbb1566d",
       "range": {
         "startLine": 258,
         "startChar": 1,
