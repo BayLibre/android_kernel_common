@@ -114,6 +114,13 @@ DECLARE_HOOK(android_vh_binder_has_proc_work_ilocked,
 DECLARE_HOOK(android_vh_binder_release_special_work,
 	TP_PROTO(struct binder_proc *proc, struct list_head **special_list),
 	TP_ARGS(proc, special_list));
+struct binder_alloc;
+DECLARE_RESTRICTED_HOOK(android_rvh_binder_alloc_mm_lock,
+	TP_PROTO(struct binder_alloc *alloc, bool *locked),
+	TP_ARGS(alloc, locked), 1);
+DECLARE_HOOK(android_vh_binder_alloc_mm_unlock,
+	TP_PROTO(struct binder_alloc *alloc, bool locked),
+	TP_ARGS(alloc, locked));
 
 #endif /* _TRACE_HOOK_BINDER_H */
 /* This part must be outside protection */

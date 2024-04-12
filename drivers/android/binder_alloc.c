@@ -224,6 +224,7 @@ static int binder_install_single_page(struct binder_alloc *alloc,
 {
 	struct page *page;
 	int ret = 0;
+	bool locked = false;
 
 	if (!mmget_not_zero(alloc->mm))
 		return -ESRCH;
@@ -232,7 +233,9 @@ static int binder_install_single_page(struct binder_alloc *alloc,
 	 * Protected with mmap_sem in write mode as multiple tasks
 	 * might race to install the same page.
 	 */
-	mmap_write_lock(alloc->mm);
+	trace_android_rvh_binder_alloc_mm_lock(alloc, &locked);
+	if (!locked)
+		mmap_write_lock(alloc->mm);
 	if (binder_get_installed_page(lru_page))
 		goto out;
 
@@ -261,7 +264,9 @@ static int binder_install_single_page(struct binder_alloc *alloc,
 	/* Mark page installation complete and safe to use */
 	binder_set_installed_page(lru_page, page);
 out:
-	mmap_write_unlock(alloc->mm);
+	trace_android_vh_binder_alloc_mm_unlock(alloc, locked);
+	if (!locked)
+		mmap_write_unlock(alloc->mm);
 	mmput_async(alloc->mm);
 	return ret;
 }
