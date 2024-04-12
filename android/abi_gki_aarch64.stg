@@ -350352,6 +350352,15 @@ elf_symbol {
   full_name: "seq_read"
 }
 elf_symbol {
+  id: 0x8ad22c43
+  name: "seq_read_iter"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x3bf0fbdb
+  type_id: 0x16637235
+  full_name: "seq_read_iter"
+}
+elf_symbol {
   id: 0x91763ae6
   name: "seq_release"
   is_defined: true
@@ -368839,6 +368848,7 @@ interface {
   symbol_id: 0x25bebf3b
   symbol_id: 0x59b4ca07
   symbol_id: 0xba8007cd
+  symbol_id: 0x8ad22c43
   symbol_id: 0x91763ae6
   symbol_id: 0x2cc9ecc6
   symbol_id: 0x56c495a4
