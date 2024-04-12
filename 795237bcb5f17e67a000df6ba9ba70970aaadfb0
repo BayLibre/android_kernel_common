@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cbca54dd_e85ac3a6",
+        "filename": "mm/pgsize_migration.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2024-04-12T22:34:28Z",
+      "side": 1,
+      "message": "we could also have the same condition in these 3 functions:\n\n- get_pad_vma\n- get_data_vma\n- show_map_pad_vma\n\n```\nif (!is_pgsize_migration_enabled() || !(data-\u003evm_flags \u0026 VM_PAD_MASK)\n```\n\nIn this way it is clear to see the flow.",
+      "range": {
+        "startLine": 258,
+        "startChar": 1,
+        "endLine": 258,
+        "endChar": 10
+      },
+      "revId": "795237bcb5f17e67a000df6ba9ba70970aaadfb0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c514db98_fbb1566d",
         "filename": "mm/pgsize_migration.c",
         "patchSetId": 17
