@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c514db98_fbb1566d",
+        "filename": "mm/pgsize_migration.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2024-04-12T22:29:19Z",
+      "side": 1,
+      "message": "if there is not pad, but we already allocate memory for `struct vm_area_struct *vma` after calling get_data_vma(v) in show_smap(), we won\u0027t be able to release the vma memory (kfree(vma).\n\nWe might have a memory leak.",
+      "range": {
+        "startLine": 258,
+        "startChar": 1,
+        "endLine": 259,
+        "endChar": 9
+      },
+      "revId": "795237bcb5f17e67a000df6ba9ba70970aaadfb0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
