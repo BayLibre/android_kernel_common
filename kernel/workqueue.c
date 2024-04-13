@@ -57,6 +57,7 @@
 #include "workqueue_internal.h"
 
 #include <trace/hooks/wqlockup.h>
+#include <trace/hooks/worker.h>
 /* events/workqueue.h uses default TRACE_INCLUDE_PATH */
 #undef TRACE_INCLUDE_PATH
 
@@ -2639,7 +2640,9 @@ __acquires(&pool->lock)
 	 */
 	lockdep_invariant_state(true);
 	trace_workqueue_execute_start(work);
+	trace_android_rvh_worker((u64)(worker->current_func), 1);
 	worker->current_func(work);
+	trace_android_rvh_worker((u64)(worker->current_func), 0);
 	/*
 	 * While we must be careful to not use "work" after this, the trace
 	 * point will only record its address.
