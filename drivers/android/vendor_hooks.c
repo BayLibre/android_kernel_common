@@ -610,4 +610,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_migrate_one_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_remove_migration_pte_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_split_huge_page_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_try_split_folio_bypass);
+<<<<<<< PATCH SET (94cd22b87782e101b7936b4b022d4b92bd0c66d1 ANDROID: vendor_hooks:vendor hook for fiq)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_fiq_dump);
+||||||| BASE      (1ccd114e35d885f2014330261fc413658ce056ca UPSTREAM: usb: dwc3: core: Avoid redundant system suspend/re)
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_scmi_limit_notify_cb);
+>>>>>>> BASE      (e5a17398e40d988ce7e9c79259eb8b08b5377b43 ANDROID: gunyah: Fix use-after-free in gunyah_vm_clean_resou)
