@@ -592,6 +592,10 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gzvm_destroy_vm_post_process);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_usb_dev_suspend);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_dev_resume);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swap_bio_charge);
+<<<<<<< PATCH SET (153d738dd9d2e1a341703385d842ec5e128c48af ANDROID: vendor_hooks:vendor hook for fiq)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_fiq_dump);
+||||||| BASE      (e06733ed385198e74964bdbf4fa9fdc4c2e74929 ANDROID: GKI: update symbol list for galaxy)
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_customize_alloc_anon_thp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_customize_ac);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_customize_rmqueue);
@@ -610,3 +614,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_migrate_one_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_remove_migration_pte_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_split_huge_page_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_try_split_folio_bypass);
+>>>>>>> BASE      (1ccd114e35d885f2014330261fc413658ce056ca UPSTREAM: usb: dwc3: core: Avoid redundant system suspend/re)
