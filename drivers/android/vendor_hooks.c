@@ -45,6 +45,33 @@
 #include <trace/hooks/selinux.h>
 #include <trace/hooks/syscall_check.h>
 #include <trace/hooks/remoteproc.h>
+<<<<<<< HEAD   (51bee1 BACKPORT: FROMGIT: binder: add delivered_freeze to debugfs o)
+||||||| BASE
+#include <trace/hooks/psci.h>
+#include <trace/hooks/timer.h>
+#include <trace/hooks/fpsimd.h>
+#include <trace/hooks/preemptirq.h>
+#include <trace/hooks/mm.h>
+#include <trace/hooks/dtask.h>
+#include <trace/hooks/ftrace_dump.h>
+#include <trace/hooks/traps.h>
+#include <trace/hooks/fault.h>
+#include <trace/hooks/regmap.h>
+#include <trace/hooks/hung_task.h>
+=======
+#include <trace/hooks/reboot.h>
+#include <trace/hooks/psci.h>
+#include <trace/hooks/timer.h>
+#include <trace/hooks/fpsimd.h>
+#include <trace/hooks/preemptirq.h>
+#include <trace/hooks/mm.h>
+#include <trace/hooks/dtask.h>
+#include <trace/hooks/ftrace_dump.h>
+#include <trace/hooks/traps.h>
+#include <trace/hooks/fault.h>
+#include <trace/hooks/regmap.h>
+#include <trace/hooks/hung_task.h>
+>>>>>>> CHANGE (70e95a ANDROID: vendor_hooks: add hook to record reboot reason)
 #include <trace/hooks/rwsem.h>
 #include <trace/hooks/futex.h>
 #include <trace/hooks/fips140.h>
@@ -183,6 +210,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_qos_update_request);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_qos_remove_request);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_balance_anon_file_reclaim);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_show_max_freq);
+<<<<<<< HEAD   (51bee1 BACKPORT: FROMGIT: binder: add delivered_freeze to debugfs o)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dm_bufio_shrink_scan_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cleanup_old_buffers_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_unref_page_bypass);
@@ -194,6 +222,12 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ra_tuning_max_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_mmap_readaround);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_slab_alloc_node);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_slab_free);
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_slab_bypass);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_slab_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_hw_protection_shutdown);
+>>>>>>> CHANGE (70e95a ANDROID: vendor_hooks: add hook to record reboot reason)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_insert);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_delete);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_replace);
