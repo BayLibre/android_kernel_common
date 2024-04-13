@@ -35,6 +35,7 @@
 #include <trace/hooks/gic.h>
 #include <trace/hooks/gic_v3.h>
 #include <trace/hooks/remoteproc.h>
+#include <trace/hooks/reboot.h>
 #include <trace/hooks/timer.h>
 #include <trace/hooks/fpsimd.h>
 #include <trace/hooks/dtask.h>
@@ -114,6 +115,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_proc_transaction_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sync_txn_recvd);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_balance_anon_file_reclaim);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_show_max_freq);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_hw_protection_shutdown);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_insert);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_delete);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_replace);
