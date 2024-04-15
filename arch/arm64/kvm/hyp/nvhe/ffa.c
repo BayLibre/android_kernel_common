@@ -69,12 +69,18 @@ static struct kvm_ffa_buffers hyp_buffers;
 static struct kvm_ffa_buffers host_buffers;
 static u32 ffa_version;
 
-static void ffa_to_smccc_error(struct arm_smccc_res *res, u64 ffa_errno)
+static void ffa_to_smccc_with_error(struct arm_smccc_res *res, u64 err_code,
+				    u64 ffa_errno)
 {
 	*res = (struct arm_smccc_res) {
-		.a0	= FFA_ERROR,
+		.a0	= err_code,
 		.a2	= ffa_errno,
 	};
+}
+
+static void ffa_to_smccc_error(struct arm_smccc_res *res, u64 ffa_errno)
+{
+	ffa_to_smccc_with_error(res, FFA_ERROR, ffa_errno);
 }
 
 static void ffa_to_smccc_res_prop(struct arm_smccc_res *res, int ret, u64 prop)
@@ -677,6 +683,22 @@ out_unlock:
 	hyp_spin_unlock(&host_buffers.lock);
 }
 
+static void do_ffa_version(struct arm_smccc_res *res,
+			   struct kvm_cpu_context *ctxt)
+{
+	DECLARE_REG(u32, ffa_req_version, ctxt, 1);
+
+	if (FFA_MAJOR_VERSION(ffa_req_version) != FFA_MAJOR_VERSION(FFA_VERSION_1_0) ||
+	    FFA_MINOR_VERSION(ffa_req_version) > FFA_MINOR_VERSION(FFA_VERSION_1_0)) {
+		ffa_to_smccc_with_error(res, FFA_RET_NOT_SUPPORTED, 0);
+		return;
+	}
+
+	arm_smccc_1_1_smc(FFA_VERSION, ffa_req_version, 0,
+			  0, 0, 0, 0, 0,
+			  res);
+}
+
 bool kvm_host_ffa_handler(struct kvm_cpu_context *ctxt, u32 func_id)
 {
 	DECLARE_REG(u64, arg1, ctxt, 1);
@@ -733,6 +755,9 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *ctxt, u32 func_id)
 		break;
 	case FFA_PARTITION_INFO_GET:
 		do_ffa_part_get(&res, ctxt);
+		break;
+	case FFA_VERSION:
+		do_ffa_version(&res, ctxt);
 		break;
 	default:
 		if (ffa_call_supported(func_id)) {
