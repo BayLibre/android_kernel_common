@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bc3baa0_a040352f",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-04-15T11:27:25Z",
+      "side": 1,
+      "message": "I think this assumes that the next level is the final level and contains only leaf entries, whereas we probably need to handle the case where e.g. we get a 1GiB unmap call for a range mapped using 4KiB pages.",
+      "range": {
+        "startLine": 446,
+        "startChar": 0,
+        "endLine": 446,
+        "endChar": 23
+      },
+      "revId": "df8ff5fa06e1b0b74241c3bfaf216c7e8578d088",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
