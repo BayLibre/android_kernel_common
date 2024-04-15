@@ -58,6 +58,7 @@ struct kvm_ffa_buffers {
 	hyp_spinlock_t lock;
 	void *tx;
 	void *rx;
+	u32 ffa_version;
 };
 
 /*
@@ -634,6 +635,39 @@ out_handled:
 	return true;
 }
 
+static void do_ffa_version(struct arm_smccc_res *res,
+			   struct kvm_cpu_context *ctxt)
+{
+	DECLARE_REG(u32, ffa_req_version, ctxt, 1);
+	u32 current_version;
+
+	hyp_spin_lock(&host_buffers.lock);
+	current_version = host_buffers.ffa_version;
+	if (FFA_MAJOR_VERSION(ffa_req_version) != FFA_MAJOR_VERSION(current_version)) {
+		res->a0 = FFA_RET_NOT_SUPPORTED;
+		goto unlock;
+	}
+
+	/*
+	 * If the client driver tries to downgrade the version, we need to ask
+	 * first if TEE supports it.
+	 */
+	if (FFA_MINOR_VERSION(ffa_req_version) < FFA_MINOR_VERSION(current_version)) {
+		arm_smccc_1_1_smc(FFA_VERSION, ffa_req_version, 0,
+				  0, 0, 0, 0, 0,
+				  res);
+		if (res->a0 == FFA_RET_NOT_SUPPORTED)
+			goto unlock;
+
+		host_buffers.ffa_version = ffa_req_version;
+		goto unlock;
+	}
+
+	res->a0 = current_version;
+unlock:
+	hyp_spin_unlock(&host_buffers.lock);
+}
+
 bool kvm_host_ffa_handler(struct kvm_cpu_context *ctxt, u32 func_id)
 {
 	DECLARE_REG(u64, arg1, ctxt, 1);
@@ -688,6 +722,9 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *ctxt, u32 func_id)
 	case FFA_MEM_FRAG_TX:
 		do_ffa_mem_frag_tx(&res, ctxt);
 		break;
+	case FFA_VERSION:
+		do_ffa_version(&res, ctxt);
+		break;
 	default:
 		if (ffa_call_supported(func_id)) {
 			handled = false;
@@ -732,6 +769,8 @@ int hyp_ffa_init(void *pages)
 	 */
 	if (FFA_MAJOR_VERSION(res.a0) != 1)
 		return -EOPNOTSUPP;
+
+	host_buffers.ffa_version = res.a0;
 
 	arm_smccc_1_1_smc(FFA_ID_GET, 0, 0, 0, 0, 0, 0, 0, &res);
 	if (res.a0 != FFA_SUCCESS)
@@ -779,9 +818,7 @@ int hyp_ffa_init(void *pages)
 		.rx	= rx,
 	};
 
-	host_buffers = (struct kvm_ffa_buffers) {
-		.lock	= __HYP_SPIN_LOCK_UNLOCKED,
-	};
+	host_buffers.lock = __HYP_SPIN_LOCK_UNLOCKED;
 
 	return 0;
 }
