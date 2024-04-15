@@ -677,6 +677,34 @@ out_unlock:
 	hyp_spin_unlock(&host_buffers.lock);
 }
 
+static void do_ffa_version(struct arm_smccc_res *res,
+			   struct kvm_cpu_context *ctxt)
+{
+	DECLARE_REG(u32, ffa_req_version, ctxt, 1);
+
+	if (FFA_MAJOR_VERSION(ffa_req_version) != FFA_MAJOR_VERSION(ffa_version)) {
+		res->a0 = FFA_RET_NOT_SUPPORTED;
+		return;
+	}
+
+	/*
+	 * If the client driver tries to downgrade the version, we need to ask
+	 * first if TEE supports it.
+	 */
+	if (FFA_MINOR_VERSION(ffa_req_version) < FFA_MINOR_VERSION(ffa_version)) {
+		arm_smccc_1_1_smc(FFA_VERSION, ffa_req_version, 0,
+				  0, 0, 0, 0, 0,
+				  res);
+		if (res->a0 == FFA_RET_NOT_SUPPORTED)
+			return;
+
+		ffa_version = ffa_req_version;
+		return;
+	}
+
+	res->a0 = ffa_version;
+}
+
 bool kvm_host_ffa_handler(struct kvm_cpu_context *ctxt, u32 func_id)
 {
 	DECLARE_REG(u64, arg1, ctxt, 1);
@@ -733,6 +761,9 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *ctxt, u32 func_id)
 		break;
 	case FFA_PARTITION_INFO_GET:
 		do_ffa_part_get(&res, ctxt);
+		break;
+	case FFA_VERSION:
+		do_ffa_version(&res, ctxt);
 		break;
 	default:
 		if (ffa_call_supported(func_id)) {
