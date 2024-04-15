@@ -401,6 +401,11 @@ DECLARE_HOOK(android_vh_cpu_cgroup_css_free,
 	TP_PROTO(struct cgroup_subsys_state *css),
 	TP_ARGS(css));
 
+DECLARE_HOOK(android_vh_check_class_changed,
+        TP_PROTO(struct rq *rq, struct task_struct *p,
+		const struct sched_class *prev_class, int oldprio),
+        TP_ARGS(rq, p, prev_class, oldprio));
+
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */
