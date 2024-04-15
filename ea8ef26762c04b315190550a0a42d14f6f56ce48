@@ -22,6 +22,30 @@
       },
       "revId": "ea8ef26762c04b315190550a0a42d14f6f56ce48",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db68115e_548bbe01",
+        "filename": "mm/pgsize_migration.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-04-15T16:08:47Z",
+      "side": 1,
+      "message": "Only `!pad` is necessary. I added based on previous review comment\n\nOn second thought I believe that the additional `!is_pgsize_migration_enabled()` can cause a leak, like below:\n\n```\ncat /sys/kernel/mm/pgsize_migration/enabled\n1\n\nget_pad_vma() // Allocated pad vma\nget_data_vma() // Allocated data vma (if pad vma was allocated)\n\necho 0 \u003e /sys/kernel/mm/pgsize_migration/enabled\n\n// pad and data VMA leaked\n```",
+      "parentUuid": "7aca8b10_22a46a16",
+      "range": {
+        "startLine": 252,
+        "startChar": 5,
+        "endLine": 252,
+        "endChar": 9
+      },
+      "revId": "ea8ef26762c04b315190550a0a42d14f6f56ce48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
