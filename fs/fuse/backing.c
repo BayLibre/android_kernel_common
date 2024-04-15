@@ -2298,6 +2298,8 @@ int fuse_readdir_initialize(struct fuse_bpf_args *fa, struct fuse_read_io *frio,
 		.again = 0,
 		.offset = 0,
 	};
+	if (ctx->buff_size && ctx->buff_size <= PAGE_SIZE)
+		fa->out_args[1].size = ctx->buff_size;
 	*force_again = false;
 	*allow_force = true;
 	return 0;
@@ -2307,6 +2309,7 @@ struct extfuse_ctx {
 	struct dir_context ctx;
 	u8 *addr;
 	size_t offset;
+	u32 size;
 };
 
 static int filldir(struct dir_context *ctx, const char *name, int namelen,
@@ -2315,7 +2318,7 @@ static int filldir(struct dir_context *ctx, const char *name, int namelen,
 	struct extfuse_ctx *ec = container_of(ctx, struct extfuse_ctx, ctx);
 	struct fuse_dirent *fd = (struct fuse_dirent *) (ec->addr + ec->offset);
 
-	if (ec->offset + sizeof(struct fuse_dirent) + namelen > PAGE_SIZE)
+	if (ec->offset + sizeof(struct fuse_dirent) + namelen > ec->size)
 		return -ENOMEM;
 
 	*fd = (struct fuse_dirent) {
@@ -2380,6 +2383,7 @@ int fuse_readdir_backing(struct fuse_bpf_args *fa,
 		.ctx.actor = filldir,
 		.ctx.pos = ctx->pos,
 		.addr = fa->out_args[1].value,
+		.size = fa->out_args[1].size,
 	};
 
 	if (!ec.addr)

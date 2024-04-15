@@ -273,7 +273,10 @@ SYSCALL_DEFINE3(getdents, unsigned int, fd,
 {
 	struct fd f;
 	struct getdents_callback buf = {
-		.ctx.actor = filldir,
+		.ctx = {
+			.actor = filldir,
+			.buff_size = count,
+		},
 		.count = count,
 		.current_dir = dirent
 	};
@@ -356,7 +359,10 @@ SYSCALL_DEFINE3(getdents64, unsigned int, fd,
 {
 	struct fd f;
 	struct getdents_callback64 buf = {
-		.ctx.actor = filldir64,
+		.ctx = {
+			.actor = filldir64,
+			.buff_size = count,
+		},
 		.count = count,
 		.current_dir = dirent
 	};
@@ -524,7 +530,10 @@ COMPAT_SYSCALL_DEFINE3(getdents, unsigned int, fd,
 {
 	struct fd f;
 	struct compat_getdents_callback buf = {
-		.ctx.actor = compat_filldir,
+		.ctx = {
+			.actor = compat_filldir,
+			.buff_size = count,
+		},
 		.current_dir = dirent,
 		.count = count
 	};
