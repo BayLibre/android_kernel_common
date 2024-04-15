@@ -22,6 +22,30 @@
       },
       "revId": "df8ff5fa06e1b0b74241c3bfaf216c7e8578d088",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40021c65_d533ca40",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-04-15T13:44:53Z",
+      "side": 1,
+      "message": "Yes, I missed that case, next level can be a mix of table and blocks, I updated the code.",
+      "parentUuid": "0bc3baa0_a040352f",
+      "range": {
+        "startLine": 446,
+        "startChar": 0,
+        "endLine": 446,
+        "endChar": 23
+      },
+      "revId": "df8ff5fa06e1b0b74241c3bfaf216c7e8578d088",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
