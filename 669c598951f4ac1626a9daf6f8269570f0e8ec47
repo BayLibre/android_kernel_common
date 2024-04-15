@@ -34,6 +34,24 @@
       "parentUuid": "2683611f_55947b04",
       "revId": "669c598951f4ac1626a9daf6f8269570f0e8ec47",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4905581d_0646c80a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-04-15T15:34:27Z",
+      "side": 1,
+      "message": "We have two separate builds for 16 vs 4k pages, so this should not be needed, just the hardware that does not support 16k pages should use the other kernel and all should be ok, right?  Why take a change that upstream rejected?",
+      "parentUuid": "dbbae768_47795073",
+      "revId": "669c598951f4ac1626a9daf6f8269570f0e8ec47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
