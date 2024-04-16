@@ -16,6 +16,23 @@
       "message": "Does not build, how was this tested?\n\nAnd are you SURE you need all of these symbols?  Why not trim it down to just the ones that you require now and then add new ones at a later time if they are needed.",
       "revId": "cb34c73ecae388833280dcd6ac4833b44c9813bf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "390df00d_9b98c7e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-04-16T14:42:34Z",
+      "side": 1,
+      "message": "FTR: This breaks the x86_64 kernel build:\n\n```\ncommon/drivers/android/android_debug_symbols.c:59:39: error: use of undeclared identifier \u0027hardirq_stack_ptr\u0027\n   59 |         ADS_PER_CPU_ENTRY(ADS_IRQ_STACK_PTR, hardirq_stack_ptr),\n      |                                              ^\n1 error generated.\n```\n\nPlease fix. The target is `//common:kernel_x86_64`",
+      "revId": "cb34c73ecae388833280dcd6ac4833b44c9813bf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
