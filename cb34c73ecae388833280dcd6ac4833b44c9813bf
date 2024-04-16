@@ -33,6 +33,29 @@
       "message": "FTR: This breaks the x86_64 kernel build:\n\n```\ncommon/drivers/android/android_debug_symbols.c:59:39: error: use of undeclared identifier \u0027hardirq_stack_ptr\u0027\n   59 |         ADS_PER_CPU_ENTRY(ADS_IRQ_STACK_PTR, hardirq_stack_ptr),\n      |                                              ^\n1 error generated.\n```\n\nPlease fix. The target is `//common:kernel_x86_64`",
       "revId": "cb34c73ecae388833280dcd6ac4833b44c9813bf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "189d6593_91d9af79",
+        "filename": "drivers/android/android_debug_symbols.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2024-04-16T16:21:11Z",
+      "side": 1,
+      "message": "Needs to be updated to fix the x86 build according to this change:\n\nhttps://lore.kernel.org/all/20220915111145.599170752@infradead.org/",
+      "range": {
+        "startLine": 59,
+        "startChar": 38,
+        "endLine": 59,
+        "endChar": 55
+      },
+      "revId": "cb34c73ecae388833280dcd6ac4833b44c9813bf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
