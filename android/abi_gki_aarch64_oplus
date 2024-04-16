@@ -9,7 +9,6 @@
   blk_rq_map_user_iov
   blk_start_plug
   cgroup_add_legacy_cftypes
-  cpu_cgrp_subsys
   console_printk
   cpufreq_frequency_table_get_index
   cpufreq_policy_transition_delay_us
@@ -114,9 +113,7 @@
   __traceiter_android_vh_binder_special_task
   __traceiter_android_vh_binder_transaction_received
   __traceiter_android_vh_binder_wait_for_work
-  __traceiter_android_vh_cpu_cgroup_css_alloc
-  __traceiter_android_vh_cpu_cgroup_css_alloc_early
-  __traceiter_android_vh_cpu_cgroup_css_free
+  __traceiter_android_vh_check_class_changed
   __traceiter_android_vh_cgroup_set_task
   __traceiter_android_vh_cpufreq_acct_update_power
   __traceiter_android_vh_check_folio_look_around_ref
@@ -128,6 +125,13 @@
   __traceiter_android_vh_irqtime_account_process_tick
   __traceiter_android_vh_kmalloc_slab
   __traceiter_android_vh_free_oem_binder_struct
+  __traceiter_android_vh_rwsem_downgrade_wake_finish
+  __traceiter_android_vh_map_util_freq
+  __traceiter_android_vh_mem_cgroup_id_remove
+  __traceiter_android_vh_mem_cgroup_css_offline
+  __traceiter_android_vh_mem_cgroup_css_online
+  __traceiter_android_vh_mem_cgroup_free
+  __traceiter_android_vh_mem_cgroup_alloc
   __traceiter_android_vh_rwsem_downgrade_wake_finish
   __traceiter_android_vh_map_util_freq
   __traceiter_android_vh_mem_cgroup_id_remove
@@ -181,6 +185,7 @@
   __tracepoint_android_vh_binder_special_task
   __tracepoint_android_vh_binder_transaction_received
   __tracepoint_android_vh_binder_wait_for_work
+  __tracepoint_android_vh_check_class_changed
   __tracepoint_android_vh_cpu_cgroup_css_alloc
   __tracepoint_android_vh_cpu_cgroup_css_alloc_early
   __tracepoint_android_vh_cpu_cgroup_css_free
@@ -216,20 +221,6 @@
   __tracepoint_android_vh_look_around_migrate_folio
   __tracepoint_android_vh_adjust_alloc_flags
   __tracepoint_android_vh_test_clear_look_around_ref
-  __tracepoint_android_vh_meminfo_cache_adjust
-  __tracepoint_android_vh_si_mem_available_adjust
-  __tracepoint_android_vh_si_meminfo_adjust
-  __tracepoint_mm_vmscan_kswapd_wake
-  __tracepoint_block_bio_queue
-  __tracepoint_block_getrq
-  __tracepoint_block_rq_complete
-  __tracepoint_block_rq_issue
-  __tracepoint_block_rq_merge
-  __tracepoint_block_rq_requeue
-  __tracepoint_sched_stat_blocked
-  __tracepoint_sched_stat_iowait
-  __tracepoint_sched_stat_sleep
-  __tracepoint_sched_stat_runtime
   __tracepoint_sched_stat_wait
   __tracepoint_sched_waking
   __tracepoint_task_rename
