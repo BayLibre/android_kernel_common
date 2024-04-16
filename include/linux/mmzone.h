@@ -1977,13 +1977,26 @@ static inline int pfn_valid(unsigned long pfn)
 	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
 		return 0;
 	ms = __pfn_to_section(pfn);
+<<<<<<< HEAD   (7a8376 ANDROID: use reserved cpucaps for new capability)
 	if (!valid_section(ms))
+=======
+	rcu_read_lock_sched();
+	if (!valid_section(ms)) {
+		rcu_read_unlock_sched();
+>>>>>>> BRANCH (f1bb70 Linux 6.1.77)
 		return 0;
 	/*
 	 * Traditionally early sections always returned pfn_valid() for
 	 * the entire section-sized span.
 	 */
+<<<<<<< HEAD   (7a8376 ANDROID: use reserved cpucaps for new capability)
 	return early_section(ms) || pfn_section_valid(ms, pfn);
+=======
+	ret = early_section(ms) || pfn_section_valid(ms, pfn);
+	rcu_read_unlock_sched();
+
+	return ret;
+>>>>>>> BRANCH (f1bb70 Linux 6.1.77)
 }
 #endif
 
