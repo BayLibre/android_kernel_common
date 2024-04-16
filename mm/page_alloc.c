@@ -4843,6 +4843,7 @@ fail:
 	warn_alloc(gfp_mask, ac->nodemask,
 			"page allocation failure: order:%u", order);
 got_pg:
+	trace_android_vh_alloc_pages_slowpath(gfp_mask, order, alloc_start);
 	trace_android_vh_alloc_pages_slowpath_end(&gfp_mask, order, alloc_start,
 			stime, did_some_progress, pages_reclaimed, retry_loop_count);
 	return page;

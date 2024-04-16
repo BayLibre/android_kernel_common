@@ -399,7 +399,9 @@ DECLARE_HOOK(android_vh_customize_alloc_gfp,
 DECLARE_HOOK(android_vh_mm_kcompactd_cpu_online,
 	TP_PROTO(int cpu),
 	TP_ARGS(cpu));
-
+DECLARE_HOOK(android_vh_alloc_pages_slowpath,
+	TP_PROTO(gfp_t gfp_mask, unsigned int order, unsigned long delta),
+	TP_ARGS(gfp_mask, order, delta));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
