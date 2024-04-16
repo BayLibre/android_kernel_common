@@ -19,6 +19,8 @@
 #include "xattr.h"
 
 #include <trace/events/f2fs.h>
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/f2fs_ext.h>
 
 #ifdef CONFIG_F2FS_FS_COMPRESSION
 extern const struct address_space_operations f2fs_compress_aops;
@@ -264,6 +266,7 @@ static bool sanity_check_inode(struct inode *inode, struct page *node_page)
 	struct f2fs_inode_info *fi = F2FS_I(inode);
 	struct f2fs_inode *ri = F2FS_INODE(node_page);
 	unsigned long long iblocks;
+	int plug_size = 0;
 
 	iblocks = le64_to_cpu(F2FS_INODE(node_page)->i_blocks);
 	if (!iblocks) {
@@ -285,12 +288,13 @@ static bool sanity_check_inode(struct inode *inode, struct page *node_page)
 				  __func__, inode->i_ino);
 			return false;
 		}
-		if (fi->i_extra_isize > F2FS_TOTAL_EXTRA_ATTR_SIZE ||
+		trace_android_vh_f2fs_change_extra_size(&plug_size);
+		if (fi->i_extra_isize > (F2FS_TOTAL_EXTRA_ATTR_SIZE + plug_size) ||
 			fi->i_extra_isize < F2FS_MIN_EXTRA_ATTR_SIZE ||
 			fi->i_extra_isize % sizeof(__le32)) {
 			f2fs_warn(sbi, "%s: inode (ino=%lx) has corrupted i_extra_isize: %d, max: %zu",
 				  __func__, inode->i_ino, fi->i_extra_isize,
-				  F2FS_TOTAL_EXTRA_ATTR_SIZE);
+				  F2FS_TOTAL_EXTRA_ATTR_SIZE + plug_size);
 			return false;
 		}
 		if (f2fs_sb_has_flexible_inline_xattr(sbi) &&
