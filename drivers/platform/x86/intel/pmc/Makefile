@@ -8,3 +8,7 @@ intel_pmc_core-y			:= core.o core_ssram.o spt.o cnp.o \
 obj-$(CONFIG_INTEL_PMC_CORE)		+= intel_pmc_core.o
 intel_pmc_core_pltdrv-y			:= pltdrv.o
 obj-$(CONFIG_INTEL_PMC_CORE)		+= intel_pmc_core_pltdrv.o
+
+# Intel PMC SSRAM driver
+intel_pmc_ssram_telemetry-y		+= pmc_ssram_telemetry.o
+obj-$(CONFIG_INTEL_PMC_SSRAM_TELEMETRY)	+= intel_pmc_ssram_telemetry.o
