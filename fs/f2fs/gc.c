@@ -1398,7 +1398,11 @@ static int move_data_block(struct inode *inode, block_t bidx,
 
 	f2fs_update_data_blkaddr(&dn, newaddr);
 	set_inode_flag(inode, FI_APPEND_WRITE);
+<<<<<<< HEAD   (417137 Merge 6.6.22 into android15-6.6)
 
+=======
+put_page_out:
+>>>>>>> BRANCH (5c7587 Linux 6.6.23)
 	f2fs_put_page(fio.encrypted_page, 1);
 recover_block:
 	if (err)
