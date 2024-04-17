@@ -1299,6 +1299,17 @@ static int move_data_block(struct inode *inode, block_t bidx,
 	err = f2fs_gc_pinned_control(inode, gc_type, segno);
 	if (err)
 		goto out;
+<<<<<<< HEAD   (8e3ef7 Revert "hrtimer: Report offline hrtimer enqueue")
+=======
+	}
+
+	if (f2fs_is_pinned_file(inode)) {
+		if (gc_type == FG_GC)
+			f2fs_pin_file_control(inode, true);
+		err = -EAGAIN;
+		goto out;
+	}
+>>>>>>> BRANCH (80efc6 Linux 5.15.150)
 
 	set_new_dnode(&dn, inode, NULL, NULL, 0);
 	err = f2fs_get_dnode_of_data(&dn, bidx, LOOKUP_NODE);
@@ -1873,6 +1884,7 @@ retry:
 	if (gc_type == FG_GC) {
 		sbi->cur_victim_sec = NULL_SEGNO;
 
+<<<<<<< HEAD   (8e3ef7 Revert "hrtimer: Report offline hrtimer enqueue")
 		if (has_enough_free_secs(sbi, sec_freed, 0)) {
 			if (!gc_control->no_bg_gc &&
 			    sec_freed < gc_control->nr_free_secs)
@@ -1884,12 +1896,35 @@ retry:
 		round++;
 		if (skipped_round > MAX_SKIP_GC_COUNT &&
 				skipped_round * 2 >= round) {
+=======
+	if (sync)
+		goto stop;
+
+	if (!has_not_enough_free_secs(sbi, sec_freed, 0))
+		goto stop;
+
+	if (skipped_round <= MAX_SKIP_GC_COUNT || skipped_round * 2 < round) {
+
+		/* Write checkpoint to reclaim prefree segments */
+		if (free_sections(sbi) < NR_CURSEG_PERSIST_TYPE &&
+				prefree_segments(sbi) &&
+				!is_sbi_flag_set(sbi, SBI_CP_DISABLED)) {
+>>>>>>> BRANCH (80efc6 Linux 5.15.150)
 			ret = f2fs_write_checkpoint(sbi, &cpc);
+<<<<<<< HEAD   (8e3ef7 Revert "hrtimer: Report offline hrtimer enqueue")
 			goto stop;
 		}
 	} else if (has_enough_free_secs(sbi, 0, 0)) {
 		goto stop;
+=======
+			if (ret)
+				goto stop;
+		}
+		segno = NULL_SEGNO;
+		goto gc_more;
+>>>>>>> BRANCH (80efc6 Linux 5.15.150)
 	}
+<<<<<<< HEAD   (8e3ef7 Revert "hrtimer: Report offline hrtimer enqueue")
 
 	__get_secs_required(sbi, NULL, &upper_secs, NULL);
 
@@ -1907,6 +1942,17 @@ go_gc_more:
 	segno = NULL_SEGNO;
 	goto gc_more;
 
+=======
+	if (first_skipped < last_skipped &&
+			(last_skipped - first_skipped) >
+					sbi->skipped_gc_rwsem) {
+		f2fs_drop_inmem_pages_all(sbi, true);
+		segno = NULL_SEGNO;
+		goto gc_more;
+	}
+	if (gc_type == FG_GC && !is_sbi_flag_set(sbi, SBI_CP_DISABLED))
+		ret = f2fs_write_checkpoint(sbi, &cpc);
+>>>>>>> BRANCH (80efc6 Linux 5.15.150)
 stop:
 	SIT_I(sbi)->last_victim[ALLOC_NEXT] = 0;
 	SIT_I(sbi)->last_victim[FLUSH_DEVICE] = gc_control->victim_segno;
