@@ -288,6 +288,8 @@ static struct sk_buff *__build_skb_around(struct sk_buff *skb,
 
 	skb_set_kcov_handle(skb, kcov_common_handle());
 
+	trace_android_vh_build_skb_around(skb);
+
 	return skb;
 }
 

@@ -281,6 +281,7 @@
 #include <net/busy_poll.h>
 
 #include <trace/hooks/ipv4.h>
+#include <trace/hooks/net.h>
 
 struct percpu_counter tcp_orphan_count;
 EXPORT_SYMBOL_GPL(tcp_orphan_count);
@@ -1450,6 +1451,7 @@ int tcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
 {
 	int ret;
 
+	trace_android_rvh_tcp_sendmsg(sk, msg, size);
 	lock_sock(sk);
 	ret = tcp_sendmsg_locked(sk, msg, size);
 	release_sock(sk);
