@@ -176,12 +176,17 @@
 static inline void rwsem_set_owner(struct rw_semaphore *sem)
 {
 	atomic_long_set(&sem->owner, (long)current);
+<<<<<<< HEAD   (d7881f ANDROID: GKI: Add symbol to symbol list for vivo.)
 	trace_android_vh_rwsem_set_owner(sem);
+=======
+	trace_android_vh_record_rwsem_writer_owned(sem);
+>>>>>>> CHANGE (869fc7 ANDROID: vendor_hooks: add hooks in rwsem)
 }
 
 static inline void rwsem_clear_owner(struct rw_semaphore *sem)
 {
 	atomic_long_set(&sem->owner, 0);
+	trace_android_vh_clear_rwsem_writer_owned(sem);
 }
 
 /*
@@ -214,7 +219,11 @@ static inline void __rwsem_set_reader_owned(struct rw_semaphore *sem,
 static inline void rwsem_set_reader_owned(struct rw_semaphore *sem)
 {
 	__rwsem_set_reader_owned(sem, current);
+<<<<<<< HEAD   (d7881f ANDROID: GKI: Add symbol to symbol list for vivo.)
 	trace_android_vh_rwsem_set_reader_owned(sem);
+=======
+	trace_android_vh_record_rwsem_reader_owned(sem, NULL);
+>>>>>>> CHANGE (869fc7 ANDROID: vendor_hooks: add hooks in rwsem)
 }
 
 /*
@@ -245,6 +254,7 @@ static inline void rwsem_clear_reader_owned(struct rw_semaphore *sem)
 {
 	unsigned long val = atomic_long_read(&sem->owner);
 
+	trace_android_vh_clear_rwsem_reader_owned(sem);
 	while ((val & ~RWSEM_OWNER_FLAGS_MASK) == (unsigned long)current) {
 		if (atomic_long_try_cmpxchg(&sem->owner, &val,
 					    val & RWSEM_OWNER_FLAGS_MASK))
@@ -254,6 +264,7 @@ static inline void rwsem_clear_reader_owned(struct rw_semaphore *sem)
 #else
 static inline void rwsem_clear_reader_owned(struct rw_semaphore *sem)
 {
+	trace_android_vh_clear_rwsem_reader_owned(sem);
 }
 #endif
 
@@ -526,6 +537,7 @@ static void rwsem_mark_wake(struct rw_semaphore *sem,
 
 	if (adjustment)
 		atomic_long_add(adjustment, &sem->count);
+	trace_android_vh_record_rwsem_reader_owned(sem, &wlist);
 
 	/* 2nd pass */
 	list_for_each_entry_safe(waiter, tmp, &wlist, list) {
