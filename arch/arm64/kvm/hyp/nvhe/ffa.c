@@ -628,6 +628,7 @@ static bool do_ffa_features(struct arm_smccc_res *res,
 	case FFA_FN64_MEM_SHARE:
 	case FFA_MEM_LEND:
 	case FFA_FN64_MEM_LEND:
+	case FFA_NOTIFICATION_BITMAP_CREATE:
 		ret = FFA_RET_SUCCESS;
 		prop = 0; /* No support for dynamic buffers */
 		goto out_handled;
