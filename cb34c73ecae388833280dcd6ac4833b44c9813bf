@@ -52,6 +52,60 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "507250fa_b864bbbb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3398417
+      },
+      "writtenOn": "2024-04-17T02:08:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f89d84a8_e38b2566",
+      "revId": "cb34c73ecae388833280dcd6ac4833b44c9813bf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaa29269_88d58235",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3398417
+      },
+      "writtenOn": "2024-04-17T02:08:14Z",
+      "side": 1,
+      "message": "I\u0027m very sorry that I only compiled arm64 last time. This modification successfully compiled both arm64 and x86 locally.",
+      "parentUuid": "f0545ee7_2ed3a605",
+      "revId": "cb34c73ecae388833280dcd6ac4833b44c9813bf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "362ad701_5d286c23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3398417
+      },
+      "writtenOn": "2024-04-17T02:08:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "390df00d_9b98c7e8",
+      "revId": "cb34c73ecae388833280dcd6ac4833b44c9813bf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "189d6593_91d9af79",
@@ -65,6 +119,30 @@
       "writtenOn": "2024-04-16T16:21:11Z",
       "side": 1,
       "message": "Needs to be updated to fix the x86 build according to this change:\n\nhttps://lore.kernel.org/all/20220915111145.599170752@infradead.org/",
+      "range": {
+        "startLine": 59,
+        "startChar": 38,
+        "endLine": 59,
+        "endChar": 55
+      },
+      "revId": "cb34c73ecae388833280dcd6ac4833b44c9813bf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91b8f5ba_d24f77e6",
+        "filename": "drivers/android/android_debug_symbols.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3398417
+      },
+      "writtenOn": "2024-04-17T02:08:14Z",
+      "side": 1,
+      "message": "Hi William\n\nI have delete hardirq_stack_ptr on x86 and Successfully compiled x86 locally, please help review.\n\nThanks!",
+      "parentUuid": "189d6593_91d9af79",
       "range": {
         "startLine": 59,
         "startChar": 38,
