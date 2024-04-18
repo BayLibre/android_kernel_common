@@ -174,7 +174,8 @@ ssize_t backing_file_read_iter(struct file *file, struct iov_iter *iter,
 			backing_aio_cleanup(aio, ret);
 	}
 out:
-	revert_creds(old_cred);
+	if (old_cred)
+		revert_creds(old_cred);
 
 	if (ctx->accessed)
 		ctx->accessed(ctx->user_file);
@@ -241,7 +242,8 @@ ssize_t backing_file_write_iter(struct file *file, struct iov_iter *iter,
 			backing_aio_cleanup(aio, ret);
 	}
 out:
-	revert_creds(old_cred);
+	if (old_cred)
+		revert_creds(old_cred);
 
 	return ret;
 }
@@ -260,7 +262,8 @@ ssize_t backing_file_splice_read(struct file *in, loff_t *ppos,
 
 	old_cred = override_creds(ctx->cred);
 	ret = vfs_splice_read(in, ppos, pipe, len, flags);
-	revert_creds(old_cred);
+	if (old_cred)
+		revert_creds(old_cred);
 
 	if (ctx->accessed)
 		ctx->accessed(ctx->user_file);
@@ -288,7 +291,8 @@ ssize_t backing_file_splice_write(struct pipe_inode_info *pipe,
 	file_start_write(out);
 	ret = iter_file_splice_write(pipe, out, ppos, len, flags);
 	file_end_write(out);
-	revert_creds(old_cred);
+	if (old_cred)
+		revert_creds(old_cred);
 
 	if (ctx->end_write)
 		ctx->end_write(ctx->user_file);
@@ -314,7 +318,8 @@ int backing_file_mmap(struct file *file, struct vm_area_struct *vma,
 
 	old_cred = override_creds(ctx->cred);
 	ret = call_mmap(vma->vm_file, vma);
-	revert_creds(old_cred);
+	if (old_cred)
+		revert_creds(old_cred);
 
 	if (ctx->accessed)
 		ctx->accessed(ctx->user_file);
