@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a44330e7_2c9115e5",
+        "filename": "include/linux/android_debug_symbols.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-04-18T08:14:52Z",
+      "side": 1,
+      "message": "note, by doing this your userspace code MUST handle the different apis as this value is different (nit, why isn\u0027t this in a UAPI file?) from other kernel versions.  Are you sure your userspace can handle this properly?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 23
+      },
+      "revId": "1cca66d4fb025d0e2dfadfc76a19adcc51b21f84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
