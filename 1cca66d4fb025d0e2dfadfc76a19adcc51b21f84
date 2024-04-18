@@ -22,6 +22,30 @@
       },
       "revId": "1cca66d4fb025d0e2dfadfc76a19adcc51b21f84",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cf8e20b_b308f58f",
+        "filename": "include/linux/android_debug_symbols.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3398417
+      },
+      "writtenOn": "2024-04-18T08:33:11Z",
+      "side": 1,
+      "message": "I use this variable（__per_cpu_start） in the kernel driver minidump, not in user space.So changing this value seems to have no effect.",
+      "parentUuid": "a44330e7_2c9115e5",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 23
+      },
+      "revId": "1cca66d4fb025d0e2dfadfc76a19adcc51b21f84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
