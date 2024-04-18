@@ -16,6 +16,23 @@
       "message": "please review",
       "revId": "02362d26d453a6503e603811a6eb3ec6bc0fff25",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fec479f4_48218991",
+        "filename": "kernel/workqueue.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2643,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-04-18T18:07:56Z",
+      "side": 1,
+      "message": "please don\u0027t cast pointer through u64. This breaks 32-bit builds. Declare the hook with the proper pointer type.\n\nWhy can\u0027t you use the existing tracepoint above and below instead of adding these new ones? (`trace_workqueue_execute_start` and `trace_workqueue_execute_end`)",
+      "revId": "02362d26d453a6503e603811a6eb3ec6bc0fff25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
