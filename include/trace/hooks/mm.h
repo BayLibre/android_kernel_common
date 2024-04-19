@@ -180,6 +180,12 @@ DECLARE_HOOK(android_vh_alloc_pages_failure_bypass,
 	int migratetype, struct page **page),
 	TP_ARGS(gfp_mask, order, alloc_flags, migratetype, page));
 
+DECLARE_RESTRICTED_HOOK(android_rvh_paddr_over_maxaddr,
+	TP_PROTO(phys_addr_t phys_addr),
+	TP_ARGS(phys_addr), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_page_addr_over_maxaddr,
+	TP_PROTO(struct page *page),
+	TP_ARGS(page), 1);
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
