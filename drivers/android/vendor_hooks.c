@@ -349,3 +349,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_smaps_pte_entry);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_smap);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_pages_reclaim_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_pages_failure_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_page_addr_over_maxaddr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_paddr_over_maxaddr);

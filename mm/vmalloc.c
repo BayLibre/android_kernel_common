@@ -47,6 +47,9 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/vmalloc.h>
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/mm.h>
+
 #include "internal.h"
 #include "pgalloc-track.h"
 
@@ -2910,6 +2913,8 @@ void *vmap(struct page **pages, unsigned int count,
 	struct vm_struct *area;
 	unsigned long addr;
 	unsigned long size;		/* In bytes */
+
+	trace_android_rvh_page_addr_over_maxaddr(*pages);
 
 	might_sleep();
 
