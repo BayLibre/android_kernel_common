@@ -8,6 +8,7 @@
 #include <linux/arm-smccc.h>
 
 #include <asm/hypervisor.h>
+#include <trace/hooks/mm.h>
 
 #ifndef ARM_SMCCC_KVM_FUNC_MMIO_GUARD_INFO
 #define ARM_SMCCC_KVM_FUNC_MMIO_GUARD_INFO	5
@@ -215,6 +216,8 @@ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
 			   unsigned long prot)
 {
 	unsigned long last_addr = phys_addr + size - 1;
+
+	trace_android_rvh_paddr_over_maxaddr(phys_addr);
 
 	/* Don't allow outside PHYS_MASK */
 	if (last_addr & ~PHYS_MASK)

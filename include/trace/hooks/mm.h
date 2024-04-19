@@ -96,6 +96,13 @@ DECLARE_HOOK(android_vh_try_to_unmap_one,
 	TP_PROTO(struct folio *folio, struct vm_area_struct *vma,
 		unsigned long addr, void *arg, bool ret),
 	TP_ARGS(folio, vma, addr, arg, ret));
+
+DECLARE_RESTRICTED_HOOK(android_rvh_paddr_over_maxaddr,
+	TP_PROTO(phys_addr_t phys_addr),
+	TP_ARGS(phys_addr), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_page_addr_over_maxaddr,
+	TP_PROTO(struct page *page),
+	TP_ARGS(page), 1);
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
