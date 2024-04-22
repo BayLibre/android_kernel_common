@@ -34,6 +34,24 @@
       "parentUuid": "8a26a976_5e6fdacf",
       "revId": "2dc06f908d918924789f665b3c8b275d27ce5fad",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2825a75_4cec02e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1954115
+      },
+      "writtenOn": "2024-04-22T18:20:48Z",
+      "side": 1,
+      "message": "I am not sure about gerrit issue why it is not letting you edit in place.\n\nMaybe instead of editing here in UI, try it `git commit --amend` in your environment and re-upload? Or abandon this change and do a clean cherrypick of the original change?",
+      "parentUuid": "6d853458_17114c91",
+      "revId": "2dc06f908d918924789f665b3c8b275d27ce5fad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
