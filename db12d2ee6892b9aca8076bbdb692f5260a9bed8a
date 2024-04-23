@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae1ad0ba_955a6405",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 2026921
+      },
+      "writtenOn": "2024-04-23T04:16:01Z",
+      "side": 1,
+      "message": "modify title add vendor hooks for USB enumeration.",
+      "parentUuid": "2d9637c1_ac228d91",
+      "revId": "db12d2ee6892b9aca8076bbdb692f5260a9bed8a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5cb16d80_372db280",
@@ -41,6 +59,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7b8bbd7_82c71b85",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 2026921
+      },
+      "writtenOn": "2024-04-23T04:16:01Z",
+      "side": 1,
+      "message": "Get USB enumeration status (such as bringup time or upper card owner time).",
+      "parentUuid": "5cb16d80_372db280",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 241
+      },
+      "revId": "db12d2ee6892b9aca8076bbdb692f5260a9bed8a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "544d44df_76cd4817",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-04-18T07:56:55Z",
       "side": 1,
       "message": "no, this should all be done in userspace, this is not a kernel policy decision to make.\n\nAlso, this does not show the enumeration of USB devices in the kernel, this is only for this one specific driver, not all of them.",
+      "range": {
+        "startLine": 13,
+        "startChar": 1,
+        "endLine": 13,
+        "endChar": 207
+      },
+      "revId": "db12d2ee6892b9aca8076bbdb692f5260a9bed8a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd39b788_001fde91",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 2026921
+      },
+      "writtenOn": "2024-04-23T04:16:01Z",
+      "side": 1,
+      "message": "no, this should all be done in userspace, this is not a kernel policy decision to make.   ---------  The logic of vivo charging switching to dp and dm is done in the kernel state. The interface in the kernel state needs to inform the charging module of the USB enumeration status at that time. If the USB enumeration is successful, the charging will not switch to dp, and the dm signal will be detected by the charger, and vice versa. , charging switches dp, dm signals to charger for testing\n\nAlso, this does not show the enumeration of USB devices in the kernel, this is only for this one specific driver, not all of them.\n\n------------  May I ask what interface we can use in kernel mode to accurately obtain the enumeration status of USB?",
+      "parentUuid": "544d44df_76cd4817",
       "range": {
         "startLine": 13,
         "startChar": 1,

@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "292e3234_8b0c03e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2026921
+      },
+      "writtenOn": "2024-04-23T04:16:01Z",
+      "side": 1,
+      "message": "There are some scenarios where we can only capture the uart log, but not the upper layer log, for example, the upper layer card owner, etc.\n\nWe just need to be able to get the enumeration status of USB in the kernel, because vivo charging needs the enumeration status information of USB to decide whether to switch to dp and dm signal to the charger.",
+      "parentUuid": "c7bf4e32_c7dccdd2",
+      "revId": "7145ffdd2dcd37c5da911c20dec18dcf59febb8f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4b52731_1ef0ed26",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-04-15T17:42:15Z",
       "side": 1,
       "message": "this is not needed at all as you already have this information in userspace, no kernel changes are going to be needed.",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 49
+      },
+      "revId": "7145ffdd2dcd37c5da911c20dec18dcf59febb8f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78734fe2_7055ade5",
+        "filename": "drivers/usb/gadget/android_configfs_uevent.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 2026921
+      },
+      "writtenOn": "2024-04-23T04:16:01Z",
+      "side": 1,
+      "message": "We just need to be able to get the enumeration status of USB in the kernel, because vivo charging needs the enumeration status information of USB to decide whether to switch to dp and dm signal to the charger.",
+      "parentUuid": "d4b52731_1ef0ed26",
       "range": {
         "startLine": 122,
         "startChar": 0,
