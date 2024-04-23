@@ -61,7 +61,11 @@
 #include <trace/hooks/signal.h>
 #include <trace/hooks/logbuf.h>
 #include <trace/hooks/dmabuf.h>
+<<<<<<< PATCH SET (24abfa ANDROID: usb: Add vendor hooks for USB enumeration.)
+#include <trace/hooks/usb.h>
+=======
 #include <trace/hooks/compaction.h>
+>>>>>>> BASE      (1ee7de ANDROID: abi_gki_aarch64_qcom: update abi symbols)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -296,6 +300,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_record_rwsem_reader_owned);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clear_rwsem_reader_owned);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_record_rwsem_writer_owned);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clear_rwsem_writer_owned);
+<<<<<<< PATCH SET (24abfa ANDROID: usb: Add vendor hooks for USB enumeration.)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_configfs_uevent_work);
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_compaction_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_compaction_try_to_compact_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_direct_reclaim_enter);
@@ -303,3 +310,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_direct_reclaim_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_may_oom_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_vmscan_kswapd_done);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpu_capacity_show);
+>>>>>>> BASE      (1ee7de ANDROID: abi_gki_aarch64_qcom: update abi symbols)
