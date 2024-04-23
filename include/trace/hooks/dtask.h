@@ -111,17 +111,17 @@ DECLARE_HOOK(android_vh_rtmutex_waiter_prio,
 	TP_PROTO(struct task_struct *task, int *waiter_prio),
 	TP_ARGS(task, waiter_prio));
 DECLARE_HOOK(android_vh_record_mutex_lock_starttime,
-	TP_PROTO(struct task_struct *tsk, unsigned long settime_jiffies),
-	TP_ARGS(tsk, settime_jiffies));
+	TP_PROTO(struct mutex *lock, unsigned long settime_jiffies),
+	TP_ARGS(lock, settime_jiffies));
 DECLARE_HOOK(android_vh_record_rtmutex_lock_starttime,
-	TP_PROTO(struct task_struct *tsk, unsigned long settime_jiffies),
-	TP_ARGS(tsk, settime_jiffies));
+	TP_PROTO(struct rt_mutex *lock, unsigned long settime_jiffies),
+	TP_ARGS(lock, settime_jiffies));
 DECLARE_HOOK(android_vh_record_rwsem_lock_starttime,
-	TP_PROTO(struct task_struct *tsk, unsigned long settime_jiffies),
-	TP_ARGS(tsk, settime_jiffies));
+	TP_PROTO(struct rw_semaphore *sem, unsigned long settime_jiffies),
+	TP_ARGS(sem, settime_jiffies));
 DECLARE_HOOK(android_vh_record_pcpu_rwsem_starttime,
-	TP_PROTO(struct task_struct *tsk, unsigned long settime_jiffies),
-	TP_ARGS(tsk, settime_jiffies));
+	TP_PROTO(struct percpu_rw_semaphore *sem, unsigned long settime_jiffies),
+	TP_ARGS(sem, settime_jiffies));
 #endif /* _TRACE_HOOK_DTASK_H */
 
 /* This part must be outside protection */
