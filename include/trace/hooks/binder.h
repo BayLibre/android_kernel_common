@@ -60,6 +60,7 @@ DECLARE_HOOK(android_vh_binder_buffer_release,
 	TP_PROTO(struct binder_proc *proc, struct binder_thread *thread,
 		struct binder_buffer *buffer, bool has_transaction),
 	TP_ARGS(proc, thread, buffer, has_transaction));
+<<<<<<< HEAD   (aa7c4dafcede702fbecdac38fd9698900ede5ebc ANDROID: GKI: Update symbol list for honor)
 DECLARE_HOOK(android_vh_binder_ioctl_end,
 	TP_PROTO(struct task_struct *caller_task,
 		unsigned int cmd,
@@ -77,9 +78,38 @@ DECLARE_HOOK(android_vh_binder_spawn_new_thread,
 DECLARE_HOOK(android_vh_binder_has_special_work_ilocked,
 	TP_PROTO(struct binder_thread *thread, bool do_proc_work, bool *has_work),
 	TP_ARGS(thread, do_proc_work, has_work));
+||||||| BASE   (0ebf9a330d5324a59010618d94402b1a93321cb3 ANDROID: GKI: net: add vendor hook for network quality estim)
+struct binder_proc;
+struct binder_thread;
+=======
+struct binder_proc;
+struct binder_thread;
+DECLARE_HOOK(android_vh_binder_list_add_work,
+	TP_PROTO(struct binder_work *work, struct list_head *target_list),
+	TP_ARGS(work, target_list));
+DECLARE_HOOK(android_vh_binder_has_proc_work_ilocked,
+	TP_PROTO(struct binder_thread *thread, bool do_proc_work, bool *has_work),
+	TP_ARGS(thread, do_proc_work, has_work));
+DECLARE_HOOK(android_vh_binder_check_special_work,
+	TP_PROTO(struct binder_proc *proc, struct list_head **special_list),
+	TP_ARGS(proc, special_list));
+DECLARE_HOOK(android_vh_binder_free_proc,
+	TP_PROTO(struct binder_proc *proc),
+	TP_ARGS(proc));
+>>>>>>> CHANGE (f831b886d2d3d4ca04de4b57ff997b2fa4439294 ANDROID: binder: Add vendor hooks to implement the feature o)
 DECLARE_HOOK(android_vh_binder_preset,
+<<<<<<< HEAD   (aa7c4dafcede702fbecdac38fd9698900ede5ebc ANDROID: GKI: Update symbol list for honor)
 	TP_PROTO(struct hlist_head *hhead, struct mutex *lock),
 	TP_ARGS(hhead, lock));
+||||||| BASE   (0ebf9a330d5324a59010618d94402b1a93321cb3 ANDROID: GKI: net: add vendor hook for network quality estim)
+	TP_PROTO(struct hlist_head *hhead, struct mutex *lock),
+	TP_ARGS(hhead, lock));
+struct binder_transaction_data;
+=======
+	TP_PROTO(struct hlist_head *hhead, struct mutex *lock, struct binder_proc *proc),
+	TP_ARGS(hhead, lock, proc));
+struct binder_transaction_data;
+>>>>>>> CHANGE (f831b886d2d3d4ca04de4b57ff997b2fa4439294 ANDROID: binder: Add vendor hooks to implement the feature o)
 DECLARE_HOOK(android_vh_binder_reply,
 	TP_PROTO(struct binder_proc *target_proc, struct binder_proc *proc,
 		struct binder_thread *thread, struct binder_transaction_data *tr),
@@ -88,6 +118,7 @@ DECLARE_HOOK(android_vh_binder_trans,
 	TP_PROTO(struct binder_proc *target_proc, struct binder_proc *proc,
 		struct binder_thread *thread, struct binder_transaction_data *tr),
 	TP_ARGS(target_proc, proc, thread, tr));
+<<<<<<< HEAD   (aa7c4dafcede702fbecdac38fd9698900ede5ebc ANDROID: GKI: Update symbol list for honor)
 DECLARE_HOOK(android_vh_binder_proc_transaction,
 	TP_PROTO(struct task_struct *caller_task, struct task_struct *binder_proc_task,
 		struct task_struct *binder_th_task, int node_debug_id,
@@ -103,6 +134,10 @@ DECLARE_HOOK(android_vh_binder_new_ref,
 DECLARE_HOOK(android_vh_binder_del_ref,
 	TP_PROTO(struct binder_proc *proc, uint32_t ref_desc),
 	TP_ARGS(proc, ref_desc));
+||||||| BASE   (0ebf9a330d5324a59010618d94402b1a93321cb3 ANDROID: GKI: net: add vendor hook for network quality estim)
+
+=======
+>>>>>>> CHANGE (f831b886d2d3d4ca04de4b57ff997b2fa4439294 ANDROID: binder: Add vendor hooks to implement the feature o)
 #endif /* _TRACE_HOOK_BINDER_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
