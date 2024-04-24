@@ -34,6 +34,24 @@
       "parentUuid": "5f5a706e_c325d9d8",
       "revId": "3dc10317a036b933ed25cfbb49dd6a5af82e9926",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6cf787f_96ae449c",
+        "filename": "include/linux/userfaultfd_k.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-04-24T16:14:51Z",
+      "side": 1,
+      "message": "Yes, please remove it. Only GregKH should be adding these. If you need a field for some feature you know is coming upstream, then use `ANDROID_BACKPORT_RESERVED` instead.",
+      "parentUuid": "f42a7c22_430e8d1e",
+      "revId": "3dc10317a036b933ed25cfbb49dd6a5af82e9926",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
