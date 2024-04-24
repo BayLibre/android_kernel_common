@@ -3331,9 +3331,14 @@ void __init proc_caches_init(void)
 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
 			NULL);
 
-	vm_area_cachep = KMEM_CACHE(vm_area_struct, SLAB_PANIC|SLAB_ACCOUNT);
+	vm_area_cachep = KMEM_CACHE(vm_area_struct, SLAB_PANIC|SLAB_ACCOUNT|
+				    SLAB_NO_MERGE);
+	BUG_ON(kmem_cache_setup_percpu_array(vm_area_cachep, 32));
+
 #ifdef CONFIG_PER_VMA_LOCK
-	vma_lock_cachep = KMEM_CACHE(vma_lock, SLAB_PANIC|SLAB_ACCOUNT);
+	vma_lock_cachep = KMEM_CACHE(vma_lock, SLAB_PANIC|SLAB_ACCOUNT|
+				     SLAB_NO_MERGE);
+	BUG_ON(kmem_cache_setup_percpu_array(vma_lock_cachep, 32));
 #endif
 	mmap_init();
 	nsproxy_cache_init();
