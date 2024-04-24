@@ -1,0 +1,48 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000075764242",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3060287?revision\u003d2",
+      "key": {
+        "uuid": "c94e79e2_7fadf45c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-24T23:53:24Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Matthias Männich \u003cmaennich@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 0
+      },
+      "tag": "",
+      "fixSuggestions": [
+        {
+          "fixId": "09f48e9d_b8016aef",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 25,
+                "startChar": 0,
+                "endLine": 25,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Matthias Männich \u003cmaennich@google.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8b588c2b10d3d450ddd2943c00c412df9a5f5bf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
