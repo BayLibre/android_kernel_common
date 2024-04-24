@@ -16,6 +16,24 @@
       "message": "This patch needs to drop the STG file updates. It should only have changes to the symbols file. Also, I would reword the commit message from \"fix ABI\" message to \"symbol udpates\".",
       "revId": "4ed774f88cbedbbc8f5a18f12272411a0e4bb9d1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc0eddd8_91d53197",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1258954
+      },
+      "writtenOn": "2024-04-24T18:35:16Z",
+      "side": 1,
+      "message": "Can you please suggest what command to use for this? I used `tools/bazel run //common:kernel_aarch64_abi_dist` to know ABI breakage and therefore updated stg using\n```\ntools/bazel run //common:kernel_aarch64_abi_update_symbol_list\ntools/bazel run //common:kernel_aarch64_abi_update\n```",
+      "parentUuid": "dd116caa_eccbeb0c",
+      "revId": "4ed774f88cbedbbc8f5a18f12272411a0e4bb9d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
