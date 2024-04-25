@@ -318196,6 +318196,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_binder_wait_for_work"
 }
 elf_symbol {
+  id: 0xe479b209
+  name: "__traceiter_android_vh_build_sched_domains"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf1522f52
+  type_id: 0x9a1a471c
+  full_name: "__traceiter_android_vh_build_sched_domains"
+}
+elf_symbol {
   id: 0x02b646c9
   name: "__traceiter_android_vh_build_skb_around"
   is_defined: true
@@ -318920,7 +318929,11 @@ elf_symbol {
   name: "__traceiter_android_vh_page_add_new_anon_rmap"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (c0384c ANDROID: ABI: Update oplus symbol list)
+  crc: 0x4123f046
+=======
   crc: 0x9e41a747
+>>>>>>> BASE      (3a483d ANDROID: 2024/04/24 KMI update)
   type_id: 0x9bb7fe1c
   full_name: "__traceiter_android_vh_page_add_new_anon_rmap"
 }
@@ -321245,6 +321258,15 @@ elf_symbol {
   crc: 0x8536cf75
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_binder_wait_for_work"
+}
+elf_symbol {
+  id: 0x0d3c7607
+  name: "__tracepoint_android_vh_build_sched_domains"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xb61430d1
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_build_sched_domains"
 }
 elf_symbol {
   id: 0xbf8faf2f
@@ -338417,7 +338439,11 @@ elf_symbol {
   name: "file_modified"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (c0384c ANDROID: ABI: Update oplus symbol list)
+  crc: 0x86070cb8
+=======
   crc: 0xad0ed541
+>>>>>>> BASE      (3a483d ANDROID: 2024/04/24 KMI update)
   type_id: 0x9bba7997
   full_name: "file_modified"
 }
@@ -339083,7 +339109,11 @@ elf_symbol {
   name: "fscrypt_file_open"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (c0384c ANDROID: ABI: Update oplus symbol list)
+  crc: 0xd67e9a13
+=======
   crc: 0xf0befd67
+>>>>>>> BASE      (3a483d ANDROID: 2024/04/24 KMI update)
   type_id: 0x9b022eae
   full_name: "fscrypt_file_open"
 }
@@ -340164,7 +340194,11 @@ elf_symbol {
   name: "get_fs_type"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (c0384c ANDROID: ABI: Update oplus symbol list)
+  crc: 0x4c4687b5
+=======
   crc: 0xf67a04f1
+>>>>>>> BASE      (3a483d ANDROID: 2024/04/24 KMI update)
   type_id: 0xdd084b85
   full_name: "get_fs_type"
 }
@@ -340182,7 +340216,11 @@ elf_symbol {
   name: "get_inode_acl"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (c0384c ANDROID: ABI: Update oplus symbol list)
+  crc: 0xbccdf543
+=======
   crc: 0x2c1167f6
+>>>>>>> BASE      (3a483d ANDROID: 2024/04/24 KMI update)
   type_id: 0x7c899e37
   full_name: "get_inode_acl"
 }
@@ -344901,7 +344939,11 @@ elf_symbol {
   name: "iterate_supers_type"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (c0384c ANDROID: ABI: Update oplus symbol list)
+  crc: 0x277e7f23
+=======
   crc: 0xc81fae14
+>>>>>>> BASE      (3a483d ANDROID: 2024/04/24 KMI update)
   type_id: 0x1c167d2e
   full_name: "iterate_supers_type"
 }
@@ -354295,6 +354337,36 @@ elf_symbol {
   name: "posix_acl_create"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (c0384c ANDROID: ABI: Update oplus symbol list)
+  crc: 0x2bf6a9ca
+  type_id: 0x9b5934bc
+  full_name: "posix_acl_create"
+}
+elf_symbol {
+  id: 0xacb83eb1
+  name: "posix_acl_from_xattr"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xc82c6d26
+  type_id: 0x78c7e392
+  full_name: "posix_acl_from_xattr"
+}
+elf_symbol {
+  id: 0xa3b2084d
+  name: "posix_acl_to_xattr"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf12b96b1
+  type_id: 0x9eb3dea3
+  full_name: "posix_acl_to_xattr"
+}
+elf_symbol {
+  id: 0xad2e2906
+  name: "posix_acl_update_mode"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x341e0f51
+=======
   crc: 0xc8ff8adc
   type_id: 0x9b5934bc
   full_name: "posix_acl_create"
@@ -354323,6 +354395,7 @@ elf_symbol {
   is_defined: true
   symbol_type: FUNCTION
   crc: 0x0ac9400c
+>>>>>>> BASE      (3a483d ANDROID: 2024/04/24 KMI update)
   type_id: 0x9eaf006b
   full_name: "posix_acl_update_mode"
 }
@@ -359272,7 +359345,11 @@ elf_symbol {
   name: "set_cached_acl"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (c0384c ANDROID: ABI: Update oplus symbol list)
+  crc: 0xb4cab3db
+=======
   crc: 0x51d4841c
+>>>>>>> BASE      (3a483d ANDROID: 2024/04/24 KMI update)
   type_id: 0x17ed8cca
   full_name: "set_cached_acl"
 }
@@ -372914,6 +372991,7 @@ interface {
   symbol_id: 0x5cf60b10
   symbol_id: 0xcc2edef9
   symbol_id: 0x61c82fb5
+  symbol_id: 0xe479b209
   symbol_id: 0x02b646c9
   symbol_id: 0xa9225bf8
   symbol_id: 0x33c527ab
@@ -373253,6 +373331,7 @@ interface {
   symbol_id: 0xa9d55136
   symbol_id: 0xabc729f7
   symbol_id: 0x75b174bb
+  symbol_id: 0x0d3c7607
   symbol_id: 0xbf8faf2f
   symbol_id: 0xd3845a12
   symbol_id: 0x6f146fe1
