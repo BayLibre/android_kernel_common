@@ -633,7 +633,7 @@ static bool dev_use_sg_swiotlb(struct device *dev, struct scatterlist *sg,
 				return true;
 	}
 
-	return false;
+	return is_swiotlb_force_bounce(dev);
 }
 
 /**

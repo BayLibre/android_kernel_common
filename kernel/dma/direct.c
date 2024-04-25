@@ -489,6 +489,9 @@ int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl, int nents,
 			}
 		}
 
+		if (dev_use_swiotlb(dev, sg_page(sg), sg->offset, sg->length, dir))
+			sg_dma_mark_swiotlb(sg);
+
 		sg->dma_address = dma_direct_map_page(dev, sg_page(sg),
 				sg->offset, sg->length, dir, attrs);
 		if (sg->dma_address == DMA_MAPPING_ERROR) {

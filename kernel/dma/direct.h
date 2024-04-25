@@ -82,6 +82,31 @@ static inline void dma_direct_sync_single_for_cpu(struct device *dev,
 		arch_dma_mark_clean(paddr, size);
 }
 
+static inline bool swiotlb_required(struct device *dev, dma_addr_t dma_addr, size_t size,
+		enum dma_data_direction dir)
+{
+	return unlikely(!dma_capable(dev, dma_addr, size, true)) ||
+			dma_kmalloc_needs_bounce(dev, size, dir);
+}
+
+static inline bool dev_use_swiotlb(struct device *dev, struct page *page, unsigned long offset,
+		size_t size, enum dma_data_direction dir)
+{
+	if (is_swiotlb_force_bounce(dev))
+		return true;
+
+	if (!is_swiotlb_active(dev))
+		return false;
+
+	phys_addr_t phys = page_to_phys(page) + offset;
+	dma_addr_t dma_addr = phys_to_dma(dev, phys);
+
+	if (swiotlb_required(dev, dma_addr, size, dir))
+		return true;
+
+	return false;
+}
+
 static inline dma_addr_t dma_direct_map_page(struct device *dev,
 		struct page *page, unsigned long offset, size_t size,
 		enum dma_data_direction dir, unsigned long attrs)
@@ -89,19 +114,17 @@ static inline dma_addr_t dma_direct_map_page(struct device *dev,
 	phys_addr_t phys = page_to_phys(page) + offset;
 	dma_addr_t dma_addr = phys_to_dma(dev, phys);
 
-	if (is_swiotlb_force_bounce(dev)) {
+	if (dev_use_swiotlb(dev, page, offset, size, dir)) {
 		if (is_pci_p2pdma_page(page))
 			return DMA_MAPPING_ERROR;
-		return swiotlb_map(dev, phys, size, dir, attrs);
+		else
+			return swiotlb_map(dev, phys, size, dir, attrs);
 	}
 
-	if (unlikely(!dma_capable(dev, dma_addr, size, true)) ||
-	    dma_kmalloc_needs_bounce(dev, size, dir)) {
+	if (swiotlb_required(dev, dma_addr, size, dir)) {
 		if (is_pci_p2pdma_page(page))
 			return DMA_MAPPING_ERROR;
-		if (is_swiotlb_active(dev))
-			return swiotlb_map(dev, phys, size, dir, attrs);
-
+		
 		dev_WARN_ONCE(dev, 1,
 			     "DMA addr %pad+%zu overflow (mask %llx, bus limit %llx).\n",
 			     &dma_addr, size, *dev->dma_mask, dev->bus_dma_limit);
