@@ -45,6 +45,12 @@
 	__flush_tlb_range(vma, addr, end, PUD_SIZE, false, 1)
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
 
+static inline bool arch_thp_swp_supported(void)
+{
+	return !system_supports_mte();
+}
+#define arch_thp_swp_supported arch_thp_swp_supported
+
 /*
  * Outside of a few very special situations (e.g. hibernation), we always
  * use broadcast TLB invalidation instructions, therefore a spurious page
@@ -1036,46 +1042,6 @@ static inline void __wrprotect_ptes(struct mm_struct *mm, unsigned long address,
 		__ptep_set_wrprotect(mm, address, ptep);
 }
 
-static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
-					   unsigned long addr, pte_t *ptep,
-					   pte_t pte, cydp_t flags)
-{
-	pte_t old_pte;
-
-	do {
-		old_pte = pte;
-
-		if (flags & CYDP_CLEAR_YOUNG)
-			pte = pte_mkold(pte);
-		if (flags & CYDP_CLEAR_DIRTY)
-			pte = pte_mkclean(pte);
-
-		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-					       pte_val(old_pte), pte_val(pte));
-	} while (pte_val(pte) != pte_val(old_pte));
-}
-
-static inline void __clear_young_dirty_ptes(struct vm_area_struct *vma,
-					    unsigned long addr, pte_t *ptep,
-					    unsigned int nr, cydp_t flags)
-{
-	pte_t pte;
-
-	for (;;) {
-		pte = __ptep_get(ptep);
-
-		if (flags == (CYDP_CLEAR_YOUNG | CYDP_CLEAR_DIRTY))
-			__set_pte(ptep, pte_mkclean(pte_mkold(pte)));
-		else
-			__clear_young_dirty_pte(vma, addr, ptep, pte, flags);
-
-		if (--nr == 0)
-			break;
-		ptep++;
-		addr += PAGE_SIZE;
-	}
-}
-
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
 #define __HAVE_ARCH_PMDP_SET_WRPROTECT
 static inline void pmdp_set_wrprotect(struct mm_struct *mm,
@@ -1129,7 +1095,12 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
 #ifdef CONFIG_ARM64_MTE
 
 #define __HAVE_ARCH_PREPARE_TO_SWAP
-extern int arch_prepare_to_swap(struct folio *folio);
+static inline int arch_prepare_to_swap(struct page *page)
+{
+	if (system_supports_mte())
+		return mte_save_tags(page);
+	return 0;
+}
 
 #define __HAVE_ARCH_SWAP_INVALIDATE
 static inline void arch_swap_invalidate_page(int type, pgoff_t offset)
@@ -1145,7 +1116,11 @@ static inline void arch_swap_invalidate_area(int type)
 }
 
 #define __HAVE_ARCH_SWAP_RESTORE
-extern void arch_swap_restore(swp_entry_t entry, struct folio *folio);
+static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
+{
+	if (system_supports_mte())
+		mte_restore_tags(entry, &folio->page);
+}
 
 #endif /* CONFIG_ARM64_MTE */
 
@@ -1232,9 +1207,6 @@ extern void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
 extern int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
 				unsigned long addr, pte_t *ptep,
 				pte_t entry, int dirty);
-extern void contpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
-				unsigned long addr, pte_t *ptep,
-				unsigned int nr, cydp_t flags);
 
 static __always_inline void contpte_try_fold(struct mm_struct *mm,
 				unsigned long addr, pte_t *ptep, pte_t pte)
@@ -1459,17 +1431,6 @@ static inline int ptep_set_access_flags(struct vm_area_struct *vma,
 	return contpte_ptep_set_access_flags(vma, addr, ptep, entry, dirty);
 }
 
-#define clear_young_dirty_ptes clear_young_dirty_ptes
-static inline void clear_young_dirty_ptes(struct vm_area_struct *vma,
-					  unsigned long addr, pte_t *ptep,
-					  unsigned int nr, cydp_t flags)
-{
-	if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
-		__clear_young_dirty_ptes(vma, addr, ptep, nr, flags);
-	else
-		contpte_clear_young_dirty_ptes(vma, addr, ptep, nr, flags);
-}
-
 #else /* CONFIG_ARM64_CONTPTE */
 
 #define ptep_get				__ptep_get
@@ -1489,7 +1450,6 @@ static inline void clear_young_dirty_ptes(struct vm_area_struct *vma,
 #define wrprotect_ptes				__wrprotect_ptes
 #define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
 #define ptep_set_access_flags			__ptep_set_access_flags
-#define clear_young_dirty_ptes			__clear_young_dirty_ptes
 
 #endif /* CONFIG_ARM64_CONTPTE */
 
