@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000075845214",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3061944?revision\u003d1",
+      "key": {
+        "uuid": "bdc7ee7e_351928b6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-25T15:58:31Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/7d5843b59548672c23c977b4666c3779d31695fb).\n\n```\n      ## arch/arm64/kvm/pkvm.c ##\n     @@\n    +  * Author: Quentin Perret \u003cqperret@google.com\u003e\n       */\n      \n    - #include \u003clinux/init.h\u003e\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (c61278 ANDROID: GKI: Update symbols to symbol list)\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    ++#include \u003clinux/init.h\u003e\n     +#include \u003clinux/initrd.h\u003e\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (7d5843 ANDROID: KVM: arm64: wait_for_initramfs for pKVM module load)\n      #include \u003clinux/io.h\u003e\n      #include \u003clinux/kmemleak.h\u003e\n      #include \u003clinux/kvm_host.h\u003e\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "caa84f4c1c4eab0aa937c4214c5d81db0b961bec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
