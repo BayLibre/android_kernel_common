@@ -16,6 +16,24 @@
       "message": "Any detail as to why this is needed all the way back to android13-5.15?",
       "revId": "4f726e34c0409a0219cb4ea953cc4668256891c7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8df57eaf_5a7e520b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1866058
+      },
+      "writtenOn": "2024-04-25T03:55:33Z",
+      "side": 1,
+      "message": "Hi,John\nThis is because our products are using different kernel versions, such as kernel-5.10, kernle-5.15, kernel-6.1 and kernel-6.6. And rwsem reader spin has been disabled since kernel-5.15. So we need these hooks back to kernel-5.15 and kernel-6.1.",
+      "parentUuid": "dc6becb2_ad1f7c0b",
+      "revId": "4f726e34c0409a0219cb4ea953cc4668256891c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
