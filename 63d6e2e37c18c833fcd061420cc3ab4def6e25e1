@@ -16,6 +16,23 @@
       "message": "Please include the following details in your commit message:\n1) Why are these hooks needed (what problem do you see that you are trying to address)\n2) What benefit does having the hooks bring\n3) What would the upstream kernel need so that the hooks would be unnecessary?\n\nIf there is any sensitive details, you can include them in the bug.",
       "revId": "63d6e2e37c18c833fcd061420cc3ab4def6e25e1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "356811f6_fa3da53a",
+        "filename": "include/trace/hooks/sched.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-04-25T17:10:41Z",
+      "side": 1,
+      "message": "nit: use tab\u0027s not spaces here.\n```suggestion\n\tTP_PROTO(struct sched_entity *se),\n\tTP_ARGS(se));\n```",
+      "revId": "63d6e2e37c18c833fcd061420cc3ab4def6e25e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
