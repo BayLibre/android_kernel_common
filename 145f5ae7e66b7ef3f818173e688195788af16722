@@ -50,6 +50,23 @@
       "message": "#include \u003clinux/blk-mq.h\u003e\n#include \u003clinux/t10-pi.h\u003e\n#include \"blk.h\"\n#include \"blk-mq.h\"\n#include \"blk-mq-debugfs.h\"\n#include \"blk-mq-tag.h\"\n#include \"blk-pm.h\"\n#include \"blk-stat.h\"\n#include \"blk-mq-sched.h\"\n#include \"blk-rq-qos.h\"\n#include \u003ctrace/hooks/block.h\u003e\nstatic DEFINE_PER_CPU(struct llist_head, blk_cpu_done);\nstatic void blk_mq_poll_stats_start(struct request_queue *q);\nstatic void blk_mq_poll_stats_fn(struct blk_stat_callback *cb);\nstatic int blk_mq_poll_stats_bkt(const struct request *rq)\n{\n * queues. This is important for md arrays to benefit from merging\n * requests.\n */\nstatic inline unsigned short blk_plug_max_rq_count(struct blk_plug *plug)\n{\n\tif (plug-\u003emultiple_queues)\n\t\treturn BLK_MAX_REQUEST_COUNT * 2;\n\treturn BLK_MAX_REQUEST_COUNT;\n}\n/**\n * blk_mq_submit_bio - Create and send a request to block device.\n * @bio: Bio pointer.\n *\n * Builds up a request structure from @q and @bio and send to the device. The\n * request may not be queued directly to hardware if:\n * * This request can be merged with another one\n * * We want to place request at plug queue for possible future merging\n * * There is an IO scheduler active at this queue\n *\n\tbool hipri;\n\tblk_queue_bounce(q, \u0026bio);\n\t__blk_queue_split(\u0026bio, \u0026nr_segs);\n\tif (!bio)\n\t\tgoto queue_exit;\n\tif (!bio_integrity_prep(bio))\n\t\tgoto queue_exit;\n\tif (!is_flush_fua \u0026\u0026 !blk_queue_nomerges(q) \u0026\u0026\n\t    blk_attempt_plug_merge(q, bio, nr_segs, \u0026same_queue_rq))\n\t\tgoto queue_exit;\n\tif (blk_mq_sched_bio_merge(q, bio, nr_segs))\n\t\tgoto queue_exit;\n\trq_qos_throttle(q, bio);\n\thipri \u003d bio-\u003ebi_opf \u0026 REQ_HIPRI;",
       "revId": "145f5ae7e66b7ef3f818173e688195788af16722",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "feab1246_2133fcb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3409162
+      },
+      "writtenOn": "2024-04-26T04:18:04Z",
+      "side": 1,
+      "message": "#include \u003clinux/blk-mq.h\u003e\n#include \u003clinux/t10-pi.h\u003e\n#include \"blk.h\"\n#include \"blk-mq.h\"\n#include \"blk-mq-debugfs.h\"\n#include \"blk-mq-tag.h\"\n#include \"blk-pm.h\"\n#include \"blk-stat.h\"\n#include \"blk-mq-sched.h\"\n#include \"blk-rq-qos.h\"\n#include \u003ctrace/hooks/block.h\u003e\nstatic DEFINE_PER_CPU(struct llist_head, blk_cpu_done);\nstatic void blk_mq_poll_stats_start(struct request_queue *q);\nstatic void blk_mq_poll_stats_fn(struct blk_stat_callback *cb);\nstatic int blk_mq_poll_stats_bkt(const struct request *rq)\n{\n * queues. This is important for md arrays to benefit from merging\n * requests.\n */\nstatic inline unsigned short blk_plug_max_rq_count(struct blk_plug *plug)\n{\n\tif (plug-\u003emultiple_queues)\n\t\treturn BLK_MAX_REQUEST_COUNT * 2;\n\treturn BLK_MAX_REQUEST_COUNT;\n}\n/**\n * blk_mq_submit_bio - Create and send a request to block device.\n * @bio: Bio pointer.\n *\n * Builds up a request structure from @q and @bio and send to the device. The\n * request may not be queued directly to hardware if:\n * * This request can be merged with another one\n * * We want to place request at plug queue for possible future merging\n * * There is an IO scheduler active at this queue\n *\n\tbool hipri;\n\tblk_queue_bounce(q, \u0026bio);\n\t__blk_queue_split(\u0026bio, \u0026nr_segs);\n\tif (!bio)\n\t\tgoto queue_exit;\n\tif (!bio_integrity_prep(bio))\n\t\tgoto queue_exit;\n\tif (!is_flush_fua \u0026\u0026 !blk_queue_nomerges(q) \u0026\u0026\n\t    blk_attempt_plug_merge(q, bio, nr_segs, \u0026same_queue_rq))\n\t\tgoto queue_exit;\n\tif (blk_mq_sched_bio_merge(q, bio, nr_segs))\n\t\tgoto queue_exit;\n\trq_qos_throttle(q, bio);\n\thipri \u003d bio-\u003ebi_opf \u0026 REQ_HIPRI;",
+      "revId": "145f5ae7e66b7ef3f818173e688195788af16722",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
