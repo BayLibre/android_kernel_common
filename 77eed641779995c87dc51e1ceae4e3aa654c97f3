@@ -50,6 +50,23 @@
       "message": "if (ret)\n\t\tgoto out;\n\t/*\n\t * double check for wraparound just in case. copy_from_user()\n\t * will later check uffdio_copy.src + uffdio_copy.len to fit\n\t * in the userland range.\n\t */\n\tret \u003d -EINVAL;\n\tif (uffdio_copy.src + uffdio_copy.len \u003c\u003d uffdio_copy.src)\n\t\tgoto out;\n\tif (uffdio_copy.mode \u0026 ~(UFFDIO_COPY_MODE_DONTWAKE|\n\t\t\t\t UFFDIO_COPY_MODE_WP|\n\t\t\t\t UFFDIO_COPY_MODE_MMAP_TRYLOCK))\n\t\tgoto out;\n\tif (mmget_not_zero(ctx-\u003emm)) {\n\t\tret \u003d mcopy_atomic(ctx-\u003emm, uffdio_copy.dst, uffdio_copy.src,\n\t\t\t\t   uffdio_copy.len, \u0026ctx-\u003emmap_changing,\n\t\t\t\t   uffdio_copy.mode);\n\t\tmmput(ctx-\u003emm);\n\t} else {\n\t\treturn -ESRCH;\n\t}\n\tif (unlikely(put_user(ret, \u0026user_uffdio_copy-\u003ecopy)))",
       "revId": "77eed641779995c87dc51e1ceae4e3aa654c97f3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "289238f6_ca312633",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3409162
+      },
+      "writtenOn": "2024-04-26T05:04:48Z",
+      "side": 1,
+      "message": "* to re-use O_* flags that couldn\u0027t possibly have a meaning\n * from userfaultfd, in order to leave a free define-space for\n * shared O_* flags.\n */\n#define UFFD_CLOEXEC O_CLOEXEC\n#define UFFD_NONBLOCK O_NONBLOCK\n#define UFFD_SHARED_FCNTL_FLAGS (O_CLOEXEC | O_NONBLOCK)\n#define UFFD_FLAGS_SET (EFD_SHARED_FCNTL_FLAGS)\nstatic_assert(UFFDIO_ZEROPAGE_MODE_MMAP_TRYLOCK \u003d\u003d UFFDIO_COPY_MODE_MMAP_TRYLOCK);\n#define UFFDIO_MODE_MMAP_TRYLOCK UFFDIO_COPY_MODE_MMAP_TRYLOCK\nextern int sysctl_unprivileged_userfaultfd;\nextern vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason);\n#ifdef CONFIG_SPECULATIVE_PAGE_FAULT\nextern bool userfaultfd_using_sigbus(struct vm_area_struct *vma);\n#endif\n/*\n * The mode of operation for __mcopy_atomic and its helpers.\n *\nextern int mfill_atomic_install_pte(struct mm_struct *dst_mm, pmd_t *dst_pmd,\n\t\t\t\t    struct vm_area_struct *dst_vma,\n\t\t\t\t    unsigned long dst_addr, struct page *page,\n\t\t\t\t    bool newly_allocated, bool wp_copy);\nextern ssize_t mcopy_atomic(struct mm_struct *dst_mm, unsigned long dst_start,\n\t\t\t    unsigned long src_start, unsigned long len,\n\t\t\t    atomic_t *mmap_changing, __u64 mode);\nextern ssize_t mfill_zeropage(struct mm_struct *dst_mm,\n\t\t\t      unsigned long dst_start, unsigned long len,\n\t\t\t      atomic_t *mmap_changing, __u64 mode);\nextern ssize_t mcopy_continue(struct mm_struct *dst_mm, unsigned long dst_start,\n\t\t\t      unsigned long len, atomic_t *mmap_changing);\nextern int mwriteprotect_range(struct mm_struct *dst_mm,\n\t\t\t       unsigned long start, unsigned long len,\n\t\t\t       bool enable_wp, atomic_t *mmap_changing);\n/* mm helpers */\nstatic inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,\n\t\t\t\t\tstruct vm_userfaultfd_ctx vm_ctx)\n{",
+      "revId": "77eed641779995c87dc51e1ceae4e3aa654c97f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
