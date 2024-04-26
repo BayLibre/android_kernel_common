@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000075910311",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3041373?revision\u003d10",
+      "key": {
+        "uuid": "ed067cff_d68c54df",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-26T00:14:50Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/72515e57f036651497985c2dc0c1d2caac62d487).\n\n```\n      ## include/ufs/ufs.h ##\n     @@\n    - #include \u003clinux/mutex.h\u003e\n    + #include \u003clinux/bitops.h\u003e\n      #include \u003clinux/types.h\u003e\n      #include \u003clinux/android_kabi.h\u003e\n     +#include \u003clinux/android_vendor.h\u003e\n      #include \u003cuapi/scsi/scsi_bsg_ufs.h\u003e\n      \n    - #define GENERAL_UPIU_REQUEST_SIZE (sizeof(struct utp_upiu_req))\n    + /*\n     @@ include/ufs/ufs.h: struct ufs_dev_info {\n    - \n      \t/* UFS EXT_IID Enable */\n      \tbool\tb_ext_iid_en;\n    -+\n    + \n     +\tANDROID_OEM_DATA(1);\n      \tANDROID_KABI_RESERVE(1);\n    + \tANDROID_KABI_RESERVE(2);\n      };\n    - \n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "b52958e450e42e030919f57636cd5242963a336f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
