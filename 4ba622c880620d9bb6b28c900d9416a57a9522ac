@@ -50,6 +50,23 @@
       "message": "BACKPORT: dm-crypt: Corrige prioridade de IO perdida ao enfileirar gravação de bios\n\nComo as filas dm-crypt gravam em um thread de kernel diferente (workqueue),\na bios será despachada de tarefas com io_context-\u003eioprio diferentes\nconfigurações e blkcg do que a tarefa de envio, fornecendo assim informações incorretas\nioprio para o agendador io.\n\nObtenha a configuração original de prioridade de IO via struct dm_crypt_io::base_bio\ne defina essa prioridade na biografia para escrever.\n\nLink: https://lore.kernel.org/dm-devel/alpine.LRH.2.11.1612141049250.13402@mail.ewheeler.net\n\nAssinado por: Hongyu Jin \u003chongyu.jin@unisoc.com\u003e\nRevisado por: Eric Biggers \u003cebiggers@google.com\u003e\nRevisado por: Mikulas Patocka \u003cmpatocka@redhat.com\u003e\nAssinado por: Mike Snitzer \u003csnitzer@kernel.org\u003e\n\nBug: 331551156 \n(cereja escolhida no commit 5d8d40815314684af2593c075e6eee1afb42bb92 )\nID de alteração: I08620abb8c77d9610fc093e456a11b66c8396c70\nAssinado por: Hongyu Jin \u003chongyu.jin@unisoc.com\u003e",
       "revId": "4ba622c880620d9bb6b28c900d9416a57a9522ac",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a13b4bc3_032e3ebf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3409162
+      },
+      "writtenOn": "2024-04-26T05:06:33Z",
+      "side": 1,
+      "message": "Parent:     21bc63de (BACKPORT: dm-verity: Fix IO priority lost when reading FEC and hash)\nAuthor:     Hongyu Jin \u003chongyu.jin@unisoc.com\u003e\nAuthorDate: 2024-01-24 13:35:56 +0800\nCommit:     Treehugger Robot \u003candroid-test-infra-autosubmit@system.gserviceaccount.com\u003e\nCommitDate: 2024-04-10 20:28:40 +0000\n\nBACKPORT: dm-crypt: Fix IO priority lost when queuing write bios\n\nSince dm-crypt queues writes to a different kernel thread (workqueue),\nthe bios will dispatch from tasks with different io_context-\u003eioprio\nsettings and blkcg than the submitting task, thus giving incorrect\nioprio to the io scheduler.\n\nGet the original IO priority setting via struct dm_crypt_io::base_bio\nand set this priority in the bio for write.\n\nLink: https://lore.kernel.org/dm-devel/alpine.LRH.2.11.1612141049250.13402@mail.ewheeler.net\n\nSigned-off-by: Hongyu Jin \u003chongyu.jin@unisoc.com\u003e\nReviewed-by: Eric Biggers \u003cebiggers@google.com\u003e\nReviewed-by: Mikulas Patocka \u003cmpatocka@redhat.com\u003e\nSigned-off-by: Mike Snitzer \u003csnitzer@kernel.org\u003e\n\nBug: 331551156\n(cherry picked from commit 5d8d40815314684af2593c075e6eee1afb42bb92)\nChange-Id: I08620abb8c77d9610fc093e456a11b66c8396c70\nSigned-off-by: Hongyu Jin \u003chongyu.jin@unisoc.com\u003e",
+      "revId": "4ba622c880620d9bb6b28c900d9416a57a9522ac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
