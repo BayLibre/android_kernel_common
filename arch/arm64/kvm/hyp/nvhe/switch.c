@@ -19,6 +19,7 @@
 #include <asm/kprobes.h>
 #include <asm/kvm_asm.h>
 #include <asm/kvm_emulate.h>
+#include <asm/kvm_host.h>
 #include <asm/kvm_hyp.h>
 #include <asm/kvm_hypevents.h>
 #include <asm/kvm_mmu.h>
@@ -290,6 +291,29 @@ static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code)
 	}
 }
 
+#define AMCNTENCLR_MASK GENMASK(15, 0)
+
+static void __amu_switch_to_guest(struct kvm_cpu_context *ctxt)
+{
+	ctxt_sys_reg(ctxt, AMCNTENSET0_EL0) = read_sysreg_s(SYS_AMCNTENSET0_EL0);
+	ctxt_sys_reg(ctxt, AMCNTENSET1_EL0) = read_sysreg_s(SYS_AMCNTENSET1_EL0);
+
+	/*
+	 * Note: AMCNTENCLR0/AMCNTENSET0 bits [15,4] are RAZ/WI (DDI0487K.g),
+	 * but could in the future be used for new events.
+	 * Since they are RAZ/WI, clear them anyway so that potential new
+	 * events aren't counted.
+	 */
+	write_sysreg_s(AMCNTENCLR_MASK, SYS_AMCNTENCLR0_EL0);
+	write_sysreg_s(AMCNTENCLR_MASK, SYS_AMCNTENCLR1_EL0);
+}
+
+static void __amu_switch_to_host(struct kvm_cpu_context *ctxt)
+{
+	write_sysreg_s(ctxt_sys_reg(ctxt, AMCNTENSET0_EL0), SYS_AMCNTENSET0_EL0);
+	write_sysreg_s(ctxt_sys_reg(ctxt, AMCNTENSET1_EL0), SYS_AMCNTENSET1_EL0);
+}
+
 /* Switch to the guest for legacy non-VHE systems */
 int __kvm_vcpu_run(struct kvm_vcpu *vcpu)
 {
@@ -315,6 +339,9 @@ int __kvm_vcpu_run(struct kvm_vcpu *vcpu)
 	guest_ctxt = &vcpu->arch.ctxt;
 
 	pmu_switch_needed = __pmu_switch_to_guest(vcpu);
+
+	if (vcpu_is_protected(vcpu))
+		__amu_switch_to_guest(host_ctxt);
 
 	__sysreg_save_state_nvhe(host_ctxt);
 	/*
@@ -385,6 +412,9 @@ int __kvm_vcpu_run(struct kvm_vcpu *vcpu)
 	__load_host_stage2();
 
 	__sysreg_restore_state_nvhe(host_ctxt);
+
+	if (vcpu_is_protected(vcpu))
+		__amu_switch_to_host(host_ctxt);
 
 	if (vcpu->arch.fp_state == FP_STATE_GUEST_OWNED)
 		__fpsimd_save_fpexc32(vcpu);
