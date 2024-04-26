@@ -33,6 +33,23 @@
       "message": "Bug: 336961299 \nBug: 320478828 \nID de alteração: I2d196fd317e054af03dbd35ac1b0c7634cb370dc\nAssinado por: Lokesh Gidra \u003clokeshgidra@google.com\u003e\n(cereja escolhida no commit ba6ef9bdef8e3876c60bd357bbd015e0ae6f0f87",
       "revId": "77eed641779995c87dc51e1ceae4e3aa654c97f3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acb44bb1_48e12c91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3409162
+      },
+      "writtenOn": "2024-04-26T05:03:28Z",
+      "side": 1,
+      "message": "if (ret)\n\t\tgoto out;\n\t/*\n\t * double check for wraparound just in case. copy_from_user()\n\t * will later check uffdio_copy.src + uffdio_copy.len to fit\n\t * in the userland range.\n\t */\n\tret \u003d -EINVAL;\n\tif (uffdio_copy.src + uffdio_copy.len \u003c\u003d uffdio_copy.src)\n\t\tgoto out;\n\tif (uffdio_copy.mode \u0026 ~(UFFDIO_COPY_MODE_DONTWAKE|\n\t\t\t\t UFFDIO_COPY_MODE_WP|\n\t\t\t\t UFFDIO_COPY_MODE_MMAP_TRYLOCK))\n\t\tgoto out;\n\tif (mmget_not_zero(ctx-\u003emm)) {\n\t\tret \u003d mcopy_atomic(ctx-\u003emm, uffdio_copy.dst, uffdio_copy.src,\n\t\t\t\t   uffdio_copy.len, \u0026ctx-\u003emmap_changing,\n\t\t\t\t   uffdio_copy.mode);\n\t\tmmput(ctx-\u003emm);\n\t} else {\n\t\treturn -ESRCH;\n\t}\n\tif (unlikely(put_user(ret, \u0026user_uffdio_copy-\u003ecopy)))",
+      "revId": "77eed641779995c87dc51e1ceae4e3aa654c97f3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
