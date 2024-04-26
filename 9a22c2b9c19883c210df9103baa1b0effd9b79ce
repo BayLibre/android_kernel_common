@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000075910916",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3039015?revision\u003d10",
+      "key": {
+        "uuid": "af387ef1_9b7e186e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-26T00:15:41Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/643c727c8e0fdde71219a470988a5d8ca5011ec7).\n\n```\n      ## include/ufs/ufshcd.h ##\n    +@@\n    + #include \u003cufs/ufs_quirks.h\u003e\n    + #include \u003cufs/ufshci.h\u003e\n    + #include \u003clinux/android_kabi.h\u003e\n    ++#include \u003clinux/android_vendor.h\u003e\n    + \n    + #define UFSHCD \"ufshcd\"\n    + \n     @@ include/ufs/ufshcd.h: struct ufs_hba {\n      \tstruct ufs_hw_queue *uhq;\n      \tstruct ufs_hw_queue *dev_cmd_queue;\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "9a22c2b9c19883c210df9103baa1b0effd9b79ce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
