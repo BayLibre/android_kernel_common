@@ -33,6 +33,23 @@
       "message": "retry:\n\tif (unlikely(gfp_mask \u0026 __GFP_DIRECT_RECLAIM))\n\t\tmutex_lock(\u0026cc-\u003ebio_alloc_lock);\n\tclone \u003d bio_alloc_bioset(GFP_NOIO, nr_iovecs, \u0026cc-\u003ebs);\n\tif (!clone)\n\t\tgoto out;\n\tclone_init(io, clone);\n\tclone-\u003ebi_ioprio \u003d io-\u003ebase_bio-\u003ebi_ioprio;\n\tremaining_size \u003d size;\n\tfor (i \u003d 0; i \u003c nr_iovecs; i++) {\n\t\tpage \u003d mempool_alloc(\u0026cc-\u003epage_pool, gfp_mask);\n\t\tif (!page) {\n\t\t\tcrypt_free_buffer_pages(cc, clone);\n\t\t\tbio_put(clone);\n\t\t\tgfp_mask |\u003d __GFP_DIRECT_RECLAIM;\n\t\t\tgoto retry;",
       "revId": "4ba622c880620d9bb6b28c900d9416a57a9522ac",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf6de6fb_55039824",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3409162
+      },
+      "writtenOn": "2024-04-26T05:05:56Z",
+      "side": 1,
+      "message": "BACKPORT: dm-crypt: Corrige prioridade de IO perdida ao enfileirar gravação de bios\n\nComo as filas dm-crypt gravam em um thread de kernel diferente (workqueue),\na bios será despachada de tarefas com io_context-\u003eioprio diferentes\nconfigurações e blkcg do que a tarefa de envio, fornecendo assim informações incorretas\nioprio para o agendador io.\n\nObtenha a configuração original de prioridade de IO via struct dm_crypt_io::base_bio\ne defina essa prioridade na biografia para escrever.\n\nLink: https://lore.kernel.org/dm-devel/alpine.LRH.2.11.1612141049250.13402@mail.ewheeler.net\n\nAssinado por: Hongyu Jin \u003chongyu.jin@unisoc.com\u003e\nRevisado por: Eric Biggers \u003cebiggers@google.com\u003e\nRevisado por: Mikulas Patocka \u003cmpatocka@redhat.com\u003e\nAssinado por: Mike Snitzer \u003csnitzer@kernel.org\u003e\n\nBug: 331551156 \n(cereja escolhida no commit 5d8d40815314684af2593c075e6eee1afb42bb92 )\nID de alteração: I08620abb8c77d9610fc093e456a11b66c8396c70\nAssinado por: Hongyu Jin \u003chongyu.jin@unisoc.com\u003e",
+      "revId": "4ba622c880620d9bb6b28c900d9416a57a9522ac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
