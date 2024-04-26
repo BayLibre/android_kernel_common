@@ -16,6 +16,23 @@
       "message": "\u003cyibin.ding@unisoc.com\u003e\nAssinado por: Yibin Ding \u003cyibin.ding@unisoc.com\u003e\nAssinado por: Hongyu Jin \u003chongyu.jin@unisoc.com\u003e\nRevisado por: Eric Biggers \u003cebiggers@google.com\u003e\nRevisado por: Mikulas Patocka \u003cmpatocka@redhat.com\u003e\n[snitzer: cabeçalho de commit revisado]\nAssinado por: Mike Snitzer \u003csnitzer@kernel.org\u003e\nRevisado por: Ming Lei \u003cming.lei@redhat.com\u003e\nLink: https://lore.kernel.org/r/20240130202638.62600-2-snitzer@kernel.org\nAssinado por: Jens Axboe \u003caxboe@kernel.dk\u003e\n\nBug: 331551156 \n(cereja escolhida no commit f3c89983cb4fc00be64eb0d5cbcfcdf2cacb965e )\nID de alteração: If54c45760690aea33a4d4a6eb5a56d71d404af8d\nAssinado por: Hongyu Jin \u003chongyu.jin@unisoc.com\u003e",
       "revId": "145f5ae7e66b7ef3f818173e688195788af16722",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8e8d928_563c4550",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3409162
+      },
+      "writtenOn": "2024-04-26T03:54:00Z",
+      "side": 1,
+      "message": "Parent:     d2356f0a (UPSTREAM: netfilter: nft_chain_filter: handle NETDEV_UNREGISTER for inet/ingress basechain)\nAuthor:     Hongyu Jin \u003chongyu.jin@unisoc.com\u003e\nAuthorDate: 2024-01-30 15:26:34 -0500\nCommit:     Treehugger Robot \u003candroid-test-infra-autosubmit@system.gserviceaccount.com\u003e\nCommitDate: 2024-04-10 20:28:40 +0000\nBACKPORT: block: Fix where bio IO priority gets set\nCommit 82b74cac2849 (\"blk-ioprio: Convert from rqos policy to direct\ncall\") pushed setting bio I/O priority down into blk_mq_submit_bio()\n-- which is too low within block core\u0027s submit_bio() because it\nskips setting I/O priority for block drivers that implement\nfops-\u003esubmit_bio() (e.g. DM, MD, etc).\nFix this by moving bio_set_ioprio() up from blk-mq.c to blk-core.c and\ncall it from submit_bio().  This ensures all block drivers call\nbio_set_ioprio() during initial bio submission.\nFixes: a78418e6a04c (\"block: Always initialize bio IO priority on submit\")\nCo-developed-by: Yibin Ding \u003cyibin.ding@unisoc.com\u003e\nSigned-off-by: Yibin Ding \u003cyibin.ding@unisoc.com\u003e\nSigned-off-by: Hongyu Jin \u003chongyu.jin@unisoc.com\u003e\nReviewed-by: Eric Biggers \u003cebiggers@google.com\u003e\nReviewed-by: Mikulas Patocka \u003cmpatocka@redhat.com\u003e\n[snitzer: revised commit header]\nSigned-off-by: Mike Snitzer \u003csnitzer@kernel.org\u003e\nReviewed-by: Ming Lei \u003cming.lei@redhat.com\u003e\nLink: https://lore.kernel.org/r/20240130202638.62600-2-snitzer@kernel.org\nSigned-off-by: Jens Axboe \u003caxboe@kernel.dk\u003e\nBug: 331551156\n(cherry picked from commit f3c89983cb4fc00be64eb0d5cbcfcdf2cacb965e)\nChange-Id: If54c45760690aea33a4d4a6eb5a56d71d404af8d\nSigned-off-by: Hongyu Jin \u003chongyu.jin@unisoc.com\u003e",
+      "revId": "145f5ae7e66b7ef3f818173e688195788af16722",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
