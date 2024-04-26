@@ -67,6 +67,23 @@
       "message": "#include \u003clinux/blk-mq.h\u003e\n#include \u003clinux/t10-pi.h\u003e\n#include \"blk.h\"\n#include \"blk-mq.h\"\n#include \"blk-mq-debugfs.h\"\n#include \"blk-mq-tag.h\"\n#include \"blk-pm.h\"\n#include \"blk-stat.h\"\n#include \"blk-mq-sched.h\"\n#include \"blk-rq-qos.h\"\n#include \u003ctrace/hooks/block.h\u003e\nstatic DEFINE_PER_CPU(struct llist_head, blk_cpu_done);\nstatic void blk_mq_poll_stats_start(struct request_queue *q);\nstatic void blk_mq_poll_stats_fn(struct blk_stat_callback *cb);\nstatic int blk_mq_poll_stats_bkt(const struct request *rq)\n{\n * queues. This is important for md arrays to benefit from merging\n * requests.\n */\nstatic inline unsigned short blk_plug_max_rq_count(struct blk_plug *plug)\n{\n\tif (plug-\u003emultiple_queues)\n\t\treturn BLK_MAX_REQUEST_COUNT * 2;\n\treturn BLK_MAX_REQUEST_COUNT;\n}\n/**\n * blk_mq_submit_bio - Create and send a request to block device.\n * @bio: Bio pointer.\n *\n * Builds up a request structure from @q and @bio and send to the device. The\n * request may not be queued directly to hardware if:\n * * This request can be merged with another one\n * * We want to place request at plug queue for possible future merging\n * * There is an IO scheduler active at this queue\n *\n\tbool hipri;\n\tblk_queue_bounce(q, \u0026bio);\n\t__blk_queue_split(\u0026bio, \u0026nr_segs);\n\tif (!bio)\n\t\tgoto queue_exit;\n\tif (!bio_integrity_prep(bio))\n\t\tgoto queue_exit;\n\tif (!is_flush_fua \u0026\u0026 !blk_queue_nomerges(q) \u0026\u0026\n\t    blk_attempt_plug_merge(q, bio, nr_segs, \u0026same_queue_rq))\n\t\tgoto queue_exit;\n\tif (blk_mq_sched_bio_merge(q, bio, nr_segs))\n\t\tgoto queue_exit;\n\trq_qos_throttle(q, bio);\n\thipri \u003d bio-\u003ebi_opf \u0026 REQ_HIPRI;",
       "revId": "145f5ae7e66b7ef3f818173e688195788af16722",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e55d8df_d42b4cb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3409162
+      },
+      "writtenOn": "2024-04-26T04:55:18Z",
+      "side": 1,
+      "message": "it message \nSem comentários\nParent:     d2356f0a (UPSTREAM: netfilter: nft_chain_filter: handle NETDEV_UNREGISTER for inet/ingress basechain)\nAuthor:     Hongyu Jin \u003chongyu.jin@unisoc.com\u003e\nAuthorDate: 2024-01-30 15:26:34 -0500\nCommit:     Treehugger Robot \u003candroid-test-infra-autosubmit@system.gserviceaccount.com\u003e\nCommitDate: 2024-04-10 20:28:40 +0000\nBACKPORT: block: Fix where bio IO priority gets set\nCommit 82b74cac2849 (\"blk-ioprio: Convert from rqos policy to direct\ncall\") pushed setting bio I/O priority down into blk_mq_submit_bio()\n-- which is too low within block core\u0027s submit_bio() because it\nskips setting I/O priority for block drivers that implement\nfops-\u003esubmit_bio() (e.g. DM, MD, etc).\nFix this by moving bio_set_ioprio() up from blk-mq.c to blk-core.c and\ncall it from submit_bio().  This ensures all block drivers call\nbio_set_ioprio() during initial bio submission.\nFixes: a78418e6a04c (\"block: Always initialize bio IO priority on submit\")\nCo-developed-by: Yibin Ding \u003cyibin.ding@unisoc.com\u003e\nSigned-off-by: Yibin Ding \u003cyibin.ding@unisoc.com\u003e\nSigned-off-by: Hongyu Jin \u003chongyu.jin@unisoc.com\u003e\nReviewed-by: Eric Biggers \u003cebiggers@google.com\u003e\nReviewed-by: Mikulas Patocka \u003cmpatocka@redhat.com\u003e\n[snitzer: revised commit header]\nSigned-off-by: Mike Snitzer \u003csnitzer@kernel.org\u003e\nReviewed-by: Ming Lei \u003cming.lei@redhat.com\u003e\nLink: https://lore.kernel.org/r/20240130202638.62600-2-snitzer@kernel.org\nSigned-off-by: Jens Axboe \u003caxboe@kernel.dk\u003e\nBug: 331551156\n(cherry picked from commit f3c89983cb4fc00be64eb0d5cbcfcdf2cacb965e)\nChange-Id: If54c45760690aea33a4d4a6eb5a56d71d404af8d\nSigned-off-by: Hongyu Jin \u003chongyu.jin@unisoc.com\u003e",
+      "revId": "145f5ae7e66b7ef3f818173e688195788af16722",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
