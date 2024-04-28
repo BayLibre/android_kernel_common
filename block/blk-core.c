@@ -43,6 +43,7 @@
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/block.h>
+#include <trace/hooks/ioprio.h>
 
 #include "blk.h"
 #include "blk-mq-debugfs.h"
@@ -834,6 +835,7 @@ static void bio_set_ioprio(struct bio *bio)
 	if (IOPRIO_PRIO_CLASS(bio->bi_ioprio) == IOPRIO_CLASS_NONE)
 		bio->bi_ioprio = get_current_ioprio();
 	blkcg_set_ioprio(bio);
+	trace_android_vh_bio_ioprio_acct(bio);
 }
 
 /**
