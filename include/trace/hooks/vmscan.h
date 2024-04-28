@@ -21,6 +21,10 @@ DECLARE_HOOK(android_vh_shrink_slab_bypass,
 DECLARE_HOOK(android_vh_check_folio_look_around_ref,
 	TP_PROTO(struct folio *folio, int *skip),
 	TP_ARGS(folio, skip));
+enum scan_balance;
+DECLARE_HOOK(android_vh_tune_scan_type,
+	TP_PROTO(enum scan_balance *scan_type),
+	TP_ARGS(scan_type));
 DECLARE_HOOK(android_vh_do_shrink_slab,
 	TP_PROTO(struct shrinker *shrinker, long *freeable),
 	TP_ARGS(shrinker, freeable));
