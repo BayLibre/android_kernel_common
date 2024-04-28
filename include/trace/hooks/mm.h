@@ -29,6 +29,12 @@ DECLARE_RESTRICTED_HOOK(android_rvh_set_readahead_gfp_mask,
 			TP_ARGS(flags), 1);
 
 */
+DECLARE_HOOK(android_vh_process_madvise_begin,
+	TP_PROTO(struct task_struct *task, int behavior),
+	TP_ARGS(task, behavior));
+DECLARE_HOOK(android_vh_process_madvise_iter,
+	TP_PROTO(struct task_struct *task, int behavior, ssize_t *ret),
+	TP_ARGS(task, behavior, ret));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
