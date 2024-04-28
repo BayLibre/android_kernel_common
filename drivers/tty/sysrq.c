@@ -345,6 +345,17 @@ static const struct sysrq_key_op sysrq_ftrace_dump_op = {
 #define sysrq_ftrace_dump_op (*(const struct sysrq_key_op *)NULL)
 #endif
 
+static void sysrq_warn(int key) {
+	WARN(1, "sysrq initiated WARN");
+}
+
+static const struct sysrq_key_op sysrq_warn_op = {
+	.handler	= sysrq_warn,
+	.help_msg	= "warn(W)",
+	.action_msg	= "Trigger a warning",
+	.enable_mask	= SYSRQ_ENABLE_DUMP,
+};
+
 static void sysrq_handle_showmem(int key)
 {
 	show_mem(0, NULL);
@@ -529,7 +540,7 @@ static const struct sysrq_key_op *sysrq_key_table[62] = {
 	NULL,				/* T */
 	NULL,				/* U */
 	NULL,				/* V */
-	NULL,				/* W */
+	&sysrq_warn_op,			/* W */
 	NULL,				/* X */
 	NULL,				/* Y */
 	NULL,				/* Z */
