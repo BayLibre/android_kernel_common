@@ -37,6 +37,7 @@
 
 #include "internal.h"
 #include "swap.h"
+#include <trace/hooks/mm.h>
 
 struct madvise_walk_private {
 	struct mmu_gather *tlb;
@@ -217,6 +218,7 @@ static int swapin_walk_pmd_entry(pmd_t *pmd, unsigned long start,
 		pte_unmap_unlock(ptep, ptl);
 		ptep = NULL;
 
+		trace_android_vh_madvise_swapin_walk_pmd_entry(entry);
 		page = read_swap_cache_async(entry, GFP_HIGHUSER_MOVABLE,
 					     vma, addr, &splug);
 		if (page)
@@ -1543,15 +1545,18 @@ SYSCALL_DEFINE5(process_madvise, int, pidfd, const struct iovec __user *, vec,
 	}
 
 	total_len = iov_iter_count(&iter);
+	trace_android_vh_process_madvise_begin(task, behavior);
 
 	while (iov_iter_count(&iter)) {
+
 		ret = do_madvise(mm, (unsigned long)iter_iov_addr(&iter),
 					iter_iov_len(&iter), behavior);
+		trace_android_vh_process_madvise_iter(task, behavior, &ret);
 		if (ret < 0)
 			break;
 		iov_iter_advance(&iter, iter_iov_len(&iter));
 	}
-
+	trace_android_vh_process_madvise_end(task, behavior, &ret);
 	ret = (total_len - iov_iter_count(&iter)) ? : ret;
 
 release_mm:
