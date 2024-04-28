@@ -68,6 +68,24 @@
       "message": "We just need to be able to get the enumeration status of USB in the\nkernel, because vivo charging needs the enumeration status information\nof USB to decide whether to switch to dp and dm signal to the charger.",
       "revId": "c38bea02e657e38302b3eea294f922252c2bb52b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffd114c1_500d7a34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-04-28T07:59:22Z",
+      "side": 1,
+      "message": "This should not be needed at all, this information is all present in userspace, please use the code there instead.",
+      "parentUuid": "3e00a2bc_401f2068",
+      "revId": "c38bea02e657e38302b3eea294f922252c2bb52b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
