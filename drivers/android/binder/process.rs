@@ -918,13 +918,7 @@ impl Process {
         let mapping = inner.mapping.as_mut()?;
         let offset = ptr.checked_sub(mapping.address)?;
         let (size, odata) = mapping.alloc.reserve_existing(offset).ok()?;
-        let mut alloc = Allocation::new(
-            self.clone(),
-            offset,
-            size,
-            ptr,
-            mapping.alloc.oneway_spam_detected,
-        );
+        let mut alloc = Allocation::new(self.clone(), offset, size, ptr, false);
         if let Some(data) = odata {
             alloc.set_info(data);
         }
@@ -1195,11 +1189,9 @@ impl Process {
         let omapping = self.inner.lock().mapping.take();
         if let Some(mut mapping) = omapping {
             let address = mapping.address;
-            let oneway_spam_detected = mapping.alloc.oneway_spam_detected;
             mapping.alloc.take_for_each(|offset, size, odata| {
                 let ptr = offset + address;
-                let mut alloc =
-                    Allocation::new(self.clone(), offset, size, ptr, oneway_spam_detected);
+                let mut alloc = Allocation::new(self.clone(), offset, size, ptr, false);
                 if let Some(data) = odata {
                     alloc.set_info(data);
                 }
