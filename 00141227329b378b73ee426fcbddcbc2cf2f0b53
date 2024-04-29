@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab6df84a_9253d24c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1949205
+      },
+      "writtenOn": "2024-04-29T09:38:04Z",
+      "side": 1,
+      "message": "Export walk_page_vma mlock_vma_page munlock_vma_page functions, allow vendor modules to preload the file page and improve application startup performance.\nDuring the application startup and clicking process, a lot of file pages need to be read, and sometimes I/O blocking occurs, which affects performance. In order to speed up the reading of file pages, by recording the file pages required for application startup, the relevant pages can be preloaded at next startup to improve application startup performance.                                                     These interfaces are not used by a vendor hook. Used to record file pages info during the application startup and clicking process, and preread pages at next time.",
+      "parentUuid": "b5b0a97e_cf6a1cf3",
+      "revId": "00141227329b378b73ee426fcbddcbc2cf2f0b53",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be5fd275_5dcdcf08",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
