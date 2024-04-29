@@ -876,18 +876,14 @@ impl Process {
         let alloc = range_alloc::ReserveNewBox::try_new()?;
         let mut inner = self.inner.lock();
         let mapping = inner.mapping.as_mut().ok_or_else(BinderError::new_dead)?;
-        let offset = mapping
+        let (offset, oneway_spam_detected) = mapping
             .alloc
             .reserve_new(size, is_oneway, from_pid, alloc)?;
 
-        let res = Allocation::new(
-            self.clone(),
-            offset,
-            size,
-            mapping.address + offset,
-            mapping.alloc.oneway_spam_detected,
-        );
+        let addr = mapping.address + offset;
         drop(inner);
+
+        let res = Allocation::new(self.clone(), offset, size, addr, oneway_spam_detected);
 
         // This allocation will be marked as in use until the `Allocation` is used to free it.
         //
