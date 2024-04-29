@@ -51,6 +51,24 @@
       "message": "Please add more description about why these symbols are needed. What feature do they enable? If called from a vendor hook handler, which one(s)?",
       "revId": "a365a9c509975705d0273dfb479294059306b6f1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "807c6d3f_9ea13cda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3334410
+      },
+      "writtenOn": "2024-04-29T13:48:57Z",
+      "side": 1,
+      "message": "These functions have been exported in kernel, but have not been added to the symbol list. They are used in our ko which translates 32-bit applications to 64-bit.\n\nThe usage of functions is as follows:\n\ndown_write_killable is used to apply for write lock.\n\niterate_dir is used to call the iterate function in file_operations.\n\nsecurity_file_ioctl is used to check ioctl operability security.\n\nvfs_llseek is used in system call.",
+      "parentUuid": "360f296c_ec82a364",
+      "revId": "a365a9c509975705d0273dfb479294059306b6f1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
