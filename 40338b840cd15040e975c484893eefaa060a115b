@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f753e46e_2778c770",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1094,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-04-29T14:24:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f672248_e919c188",
+      "revId": "40338b840cd15040e975c484893eefaa060a115b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81222d78_a3df2a6a",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-04-29T10:36:28Z",
       "side": 1,
       "message": "`stage2_try_break_pte` seems to operate on the `ctx-\u003eold` and this value seems to be set to be the content of the descriptor representing the mapping (line 192 in this file). If this is not a table then we exit with the goto and we exit this recursion level to check for `ctx.flags \u0026 KVM_PGTABLE_WALK_TABLE_POST`.\n\n\nIt seems that `ctx-\u003eold` points to the last descriptor and not to the table, so we might need to invalidate at the table level. Can you please double check on this ?",
+      "range": {
+        "startLine": 1128,
+        "startChar": 10,
+        "endLine": 1128,
+        "endChar": 30
+      },
+      "revId": "40338b840cd15040e975c484893eefaa060a115b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c0c9e74_1896cc12",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1128,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-04-29T14:24:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81222d78_a3df2a6a",
       "range": {
         "startLine": 1128,
         "startChar": 10,
