@@ -59,6 +59,26 @@
       "tag": "",
       "revId": "c8cf69deb6c3b65ba5db64a6d3fdbd1f29fef584",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000075630381",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3054879?revision\u003d1",
+      "key": {
+        "uuid": "012108d5_302d4f91",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-29T23:29:17Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/82d26c36cc68e781400eb4e541f943008208f2d6) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d82d26c36cc68e781400eb4e541f943008208f2d6).\n\n```\n      ## kernel/rcu/tree.c ##\n     @@ kernel/rcu/tree.c: struct kfree_rcu_cpu_work {\n    @@ kernel/rcu/tree.c: struct kfree_rcu_cpu {\n      \tbool initialized;\n      \tint count;\n      \n    -@@ kernel/rcu/tree.c: static void kfree_rcu_work(struct work_struct *work)\n    - \t}\n    - }\n    - \n    -+static bool\n    -+need_offload_krc(struct kfree_rcu_cpu *krcp)\n    -+{\n    -+\tint i;\n    -+\n    -+\tfor (i \u003d 0; i \u003c FREE_N_CHANNELS; i++)\n    -+\t\tif (krcp-\u003ebkvhead[i])\n    -+\t\t\treturn true;\n    -+\n    -+\treturn !!krcp-\u003ehead;\n    -+}\n    -+\n    - /*\n    -  * This function is invoked after the KFREE_DRAIN_JIFFIES timeout.\n    -  */\n     @@ kernel/rcu/tree.c: static void kfree_rcu_monitor(struct work_struct *work)\n      \t// of the channels that is still busy we should rearm the\n      \t// work to repeat an attempt. Because previous batches are\n    @@ kernel/rcu/tree.c: static void kfree_rcu_monitor(struct work_struct *work)\n      \n      \traw_spin_unlock_irqrestore(\u0026krcp-\u003elock, flags);\n     @@ kernel/rcu/tree.c: void kvfree_call_rcu(struct rcu_head *head, rcu_callback_t func)\n    - \tWRITE_ONCE(krcp-\u003ecount, krcp-\u003ecount + 1);\n    + \tkmemleak_ignore(ptr);\n      \n      \t// Set timer to drain after KFREE_DRAIN_JIFFIES.\n     -\tif (rcu_scheduler_active \u003d\u003d RCU_SCHEDULER_RUNNING \u0026\u0026\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "c8cf69deb6c3b65ba5db64a6d3fdbd1f29fef584",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
