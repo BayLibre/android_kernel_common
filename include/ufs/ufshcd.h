@@ -653,6 +653,9 @@ enum ufshcd_quirks {
 	 * thus need this quirk to skip related flow.
 	 */
 	UFSHCD_QUIRK_MCQ_BROKEN_RTC			= 1 << 21,
+
+	/* Set IID to one. */
+	UFSHCD_QUIRK_SET_IID_TO_ONE			= 1 << 30,
 };
 
 enum ufshcd_android_quirks {
