@@ -2543,6 +2543,11 @@ static int __init init_hyp_mode(void)
 		}
 	}
 
+	pr_info("SYS_ID_AA64PFR0_EL1 is 0x%llx and amu 0x%lx, has feat %d",
+		read_sanitised_ftr_reg(SYS_ID_AA64PFR0_EL1),
+		FIELD_GET(ARM64_FEATURE_MASK(ID_AA64PFR0_EL1_AMU), read_sanitised_ftr_reg(SYS_ID_AA64PFR0_EL1)),
+		cpu_has_amu_feat(0));
+
 	return 0;
 
 out_err:
