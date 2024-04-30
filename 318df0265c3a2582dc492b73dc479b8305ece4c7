@@ -79,6 +79,26 @@
       "tag": "",
       "revId": "318df0265c3a2582dc492b73dc479b8305ece4c7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000075630363",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3055302?revision\u003d1",
+      "key": {
+        "uuid": "8a1de9e7_67ec657d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-04-30T16:23:26Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/8fc5494ad5face62747a3937db66b00db1e5d80b) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d8fc5494ad5face62747a3937db66b00db1e5d80b).\n\n```\n      ## kernel/rcu/tree.c ##\n     @@ kernel/rcu/tree.c: static void kfree_rcu_monitor(struct work_struct *work)\n    @@ kernel/rcu/tree.c: static void kfree_rcu_monitor(struct work_struct *work)\n      }\n      \n      static enum hrtimer_restart\n    -@@ kernel/rcu/tree.c: void kvfree_call_rcu(struct rcu_head *head, void *ptr)\n    +@@ kernel/rcu/tree.c: void kvfree_call_rcu(struct rcu_head *head, rcu_callback_t func)\n      \n    - \t\thead-\u003efunc \u003d ptr;\n    + \t\thead-\u003efunc \u003d func;\n      \t\thead-\u003enext \u003d krcp-\u003ehead;\n     -\t\tkrcp-\u003ehead \u003d head;\n     +\t\tWRITE_ONCE(krcp-\u003ehead, head);\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "318df0265c3a2582dc492b73dc479b8305ece4c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
