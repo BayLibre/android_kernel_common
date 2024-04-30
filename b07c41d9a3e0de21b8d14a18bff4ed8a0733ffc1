@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11d742fd_0b669165",
+        "filename": "include/trace/hooks/mm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-04-30T20:13:32Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by GKI Guidelines: Please do not add #include statements to headers under include/trace/hooks/. These should only be getting forward decls and not new includes (to avoid CRC changes due to visibility).\\n\\n Refer to go/ack-contribution-guidelines and go/vendor...\n\nAnalyzer Description: Validates that changes do not have prohibited expressions in them.\nOwner: gki-eng-team@google.com\n\nPlease do not add #include statements to headers under include/trace/hooks/. These should only be getting forward decls and not new includes (to avoid CRC changes due to visibility).\\n\\n Refer to go/ack-contribution-guidelines and go/vendor-hooks for details.",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 37
+      },
+      "revId": "b07c41d9a3e0de21b8d14a18bff4ed8a0733ffc1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cb90b0f_c0659c79",
+        "filename": "include/trace/hooks/mm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-04-30T20:13:32Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by GKI Guidelines: Please do not add #include statements to headers under include/trace/hooks/. These should only be getting forward decls and not new includes (to avoid CRC changes due to visibility).\\n\\n Refer to go/ack-contribution-guidelines and go/vendor...\n\nAnalyzer Description: Validates that changes do not have prohibited expressions in them.\nOwner: gki-eng-team@google.com\n\nPlease do not add #include statements to headers under include/trace/hooks/. These should only be getting forward decls and not new includes (to avoid CRC changes due to visibility).\\n\\n Refer to go/ack-contribution-guidelines and go/vendor-hooks for details.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 27
+      },
+      "revId": "b07c41d9a3e0de21b8d14a18bff4ed8a0733ffc1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93c5836e_df282843",
+        "filename": "include/trace/hooks/mm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-04-30T20:13:32Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by GKI Guidelines: Please do not add #include statements to headers under include/trace/hooks/. These should only be getting forward decls and not new includes (to avoid CRC changes due to visibility).\\n\\n Refer to go/ack-contribution-guidelines and go/vendor...\n\nAnalyzer Description: Validates that changes do not have prohibited expressions in them.\nOwner: gki-eng-team@google.com\n\nPlease do not add #include statements to headers under include/trace/hooks/. These should only be getting forward decls and not new includes (to avoid CRC changes due to visibility).\\n\\n Refer to go/ack-contribution-guidelines and go/vendor-hooks for details.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "b07c41d9a3e0de21b8d14a18bff4ed8a0733ffc1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
