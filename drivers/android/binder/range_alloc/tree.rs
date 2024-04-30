@@ -26,17 +26,32 @@ pub(super) struct TreeRangeAllocator<T> {
 }
 
 impl<T> TreeRangeAllocator<T> {
-    pub(crate) fn new(size: usize) -> Result<Self> {
+    pub(crate) fn new(size: usize, alloc: EmptyTreeAlloc<T>) -> Self {
         let mut tree = RBTree::new();
-        tree.try_create_and_insert(0, Descriptor::new(0, size))?;
+        tree.insert(alloc.tree.into_node(0, Descriptor::new(0, size)));
         let mut free_tree = RBTree::new();
-        free_tree.try_create_and_insert((size, 0), ())?;
-        Ok(Self {
+        free_tree.insert(alloc.free_tree.into_node((size, 0), ()));
+        Self {
             free_oneway_space: size / 2,
             tree,
             free_tree,
             size,
-        })
+        }
+    }
+
+    pub(crate) fn is_empty(&self) -> bool {
+        let mut tree_iter = self.tree.values();
+        let first_value = tree_iter.next().unwrap();
+        if tree_iter.next().is_some() {
+            // If there is more than one descriptor, then at least one of them must hold a range.
+            return false;
+        }
+        // There is only one descriptor. Is it empty?
+        first_value.state.is_none()
+    }
+
+    pub(crate) fn total_size(&self) -> usize {
+        self.size
     }
 
     pub(crate) fn debug_print(&self, m: &mut SeqFile) -> Result<()> {
@@ -450,5 +465,20 @@ impl<T> ReserveNewTreeAlloc<T> {
             self.free_tree_node_res.into_node((size, offset), ()),
             self.desc_node_res,
         )
+    }
+}
+
+/// An allocation for an empty `TreeRangeAllocator`.
+pub(crate) struct EmptyTreeAlloc<T> {
+    tree: RBTreeNodeReservation<usize, Descriptor<T>>,
+    free_tree: RBTreeNodeReservation<FreeKey, ()>,
+}
+
+impl<T> EmptyTreeAlloc<T> {
+    pub(crate) fn try_new() -> Result<Self> {
+        Ok(Self {
+            tree: RBTree::try_reserve_node()?,
+            free_tree: RBTree::try_reserve_node()?,
+        })
     }
 }
