@@ -16,6 +16,24 @@
       "message": "breaks abi 😞",
       "revId": "0aaeca52dea2b5cc59470f9010f70101f0981e3c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1395240_04fc70d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-04-30T22:57:37Z",
+      "side": 1,
+      "message": "FTR\n\n```\nfunction symbol \u0027int ___pskb_trim(struct sk_buff*, unsigned int)\u0027 changed\n  CRC changed from 0xe18afde1 to 0xb6ae3df5\n\nfunction symbol \u0027struct sk_buff* __alloc_skb(unsigned int, gfp_t, int, int)\u0027 changed\n  CRC changed from 0x6f2cc785 to 0xd2913b36\n\nfunction symbol \u0027void __balance_callbacks(struct rq*)\u0027 changed\n  CRC changed from 0xaba29c8d to 0x4417c362\n\n... 839 omitted; 842 symbols have only CRC changes\n\ntype \u0027struct sk_buff\u0027 changed\n  member \u0027union { struct sock* sk; int ip_defrag_offset; }\u0027 was removed\n  member \u0027struct sock* sk\u0027 was added\n```",
+      "parentUuid": "01e389e2_e31a48f2",
+      "revId": "0aaeca52dea2b5cc59470f9010f70101f0981e3c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
