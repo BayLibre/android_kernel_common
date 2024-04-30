@@ -16,6 +16,23 @@
       "message": "The three patches in this set are already queued for 6.6-stable already, so if the next -stable release \u0026 merge is imminent, taking it from there would be preferred, but I wanted to submit here in the meantime.",
       "revId": "27d344f01186466ad2cf72ae2df03e60eacdd93b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b6197b5_5facc9e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-04-30T19:29:49Z",
+      "side": 1,
+      "message": "Overriding lint -1 that came from later patch in this series (not being merged now) breaking KABI.",
+      "revId": "27d344f01186466ad2cf72ae2df03e60eacdd93b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
