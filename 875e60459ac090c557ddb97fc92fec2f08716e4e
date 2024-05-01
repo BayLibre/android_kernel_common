@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db136de9_ae110c70",
+        "filename": "mm/memory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4039,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-05-01T17:00:29Z",
+      "side": 1,
+      "message": "What if the very next folio_lock_or_retry() fails? Do you still want to account that swap attempt?",
+      "range": {
+        "startLine": 4039,
+        "startChar": 1,
+        "endLine": 4039,
+        "endChar": 30
+      },
+      "revId": "875e60459ac090c557ddb97fc92fec2f08716e4e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d60492b6_5aeffca5",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1752,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-05-01T17:00:29Z",
+      "side": 1,
+      "message": "This looks like an attempt to work around RLIMIT_MEMLOCK limits for mlock(). I hope you do not expose this ability to unprivileged processes...",
+      "range": {
+        "startLine": 1752,
+        "startChar": 2,
+        "endLine": 1752,
+        "endChar": 38
+      },
+      "revId": "875e60459ac090c557ddb97fc92fec2f08716e4e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
