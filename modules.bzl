@@ -83,7 +83,14 @@ _ARM_GKI_MODULES_LIST = [
 _ARM64_GKI_MODULES_LIST = [
     # keep sorted
     "arch/arm64/geniezone/gzvm.ko",
+    "drivers/char/hw_random/cctrng.ko",
+    # "drivers/char/virtio_console.ko",
+    "drivers/block/virtio_blk.ko",
+    "drivers/virtio/virtio_balloon.ko",
+    "drivers/misc/open-dice.ko",
+    "drivers/misc/vcpu_stall_detector.ko",
     "drivers/ptp/ptp_kvm.ko",
+    "net/vmw_vsock/vmw_vsock_virtio_transport.ko",
 ]
 
 _RISCV64_GKI_MODULES_LIST = [
