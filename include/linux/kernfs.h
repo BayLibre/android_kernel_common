@@ -226,8 +226,11 @@ struct kernfs_node {
 	struct kernfs_iattrs	*iattr;
 
 	struct rcu_head		rcu;
+<<<<<<< HEAD   (4332d5 Revert "bpf: support deferring bpf_link dealloc to after RCU)
 
 	ANDROID_KABI_RESERVE(1);
+=======
+>>>>>>> BRANCH (5e8280 Linux 6.6.27)
 };
 
 /*
