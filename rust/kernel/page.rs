@@ -14,6 +14,8 @@ use core::{
 pub const PAGE_SHIFT: usize = bindings::PAGE_SHIFT as usize;
 /// The number of bytes in a page.
 pub const PAGE_SIZE: usize = 1 << PAGE_SHIFT;
+/// A bitmask that gives the page containing a given address.
+pub const PAGE_MASK: usize = !(PAGE_SIZE - 1);
 
 /// A pointer to a page that owns the page allocation.
 ///
