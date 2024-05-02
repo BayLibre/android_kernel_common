@@ -178,13 +178,8 @@ static inline void __hyp_putx4n(unsigned long x, int n)
 {
 	int i = n >> 2;
 
-	hyp_putc('0');
-	hyp_putc('x');
-
 	while (i--)
 		__hyp_putx4(x >> (4 * i));
-
-	hyp_putc('\n');
 }
 
 static inline void hyp_putx32(unsigned int x)
@@ -197,6 +192,88 @@ static inline void hyp_putx64(unsigned long x)
 	__hyp_putx4n(x, 64);
 }
 
+static inline void hyp_putl(long l)
+{
+	long r = 0;
+
+	if(!l) {
+		hyp_putc('0');
+		return;
+	}
+	if (l == LONG_MIN) {
+		hyp_puts("-9223372036854775808");
+		return;
+	}
+	if (l < 0) {
+		l = -l;
+		hyp_putc('-');
+	}
+
+
+	/* Reverse. */
+	while(l) {
+		r = r * 10 + l % 10;
+		l /= 10;
+	}
+	/* Display. */
+	while(r) {
+		hyp_putc(r % 10 + '0');
+		r /= 10;
+	}
+}
+
+/*
+ * printh: Buggy printf for the hypervisor
+ * Supported formats %d %ld %x %lx %s
+ * Anything else has undefined behaviour and might(mostly) crash.
+ * The author has no liability and is not responsible for any misuse or
+ * damage caused by printh.
+ */
+static inline int printh(const char *fmt, ...)
+{
+	va_list ap;
+	u64 i;
+	char* s;
+	char last;
+
+	va_start(ap, fmt);
+	while (*fmt) {
+		if (*fmt == '%') {
+			fmt++;
+			switch(*fmt) {
+				case 'x':
+					i = va_arg(ap, u32);
+					hyp_putx32(i);
+					break;
+				case 's':
+					s = va_arg(ap, char*);
+					hyp_puts(s);
+					break;
+				case 'd':
+					i = va_arg(ap, u32);
+					hyp_putl(i);
+					break;
+				case 'l':
+					fmt++;
+					i = va_arg(ap, u64);
+					if(*fmt == 'x')
+						hyp_putx64(i);
+					else
+						hyp_putl(i);
+			}
+		} else {
+			hyp_putc(*fmt);
+		}
+		last = *fmt;
+		fmt++;
+	}
+	va_end(ap);
+
+	if(last != '\n')
+		hyp_putc('\n');
+
+	return 0;
+}
 #endif
 
 #else
