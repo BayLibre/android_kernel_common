@@ -12,7 +12,7 @@
 #include <linux/pfn.h>
 #include <linux/vmalloc.h>
 #include <linux/set_memory.h>
-#include <linux/slab.h>
+#include <linux/swiotlb.h>
 #include "direct.h"
 
 /*
@@ -495,6 +495,9 @@ int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl, int nents,
 			ret = -EIO;
 			goto out_unmap;
 		}
+
+		if (is_swiotlb_buffer(dev, dma_to_phys(dev, sg->dma_address)))
+			sg_dma_mark_swiotlb(sg);
 		sg_dma_len(sg) = sg->length;
 	}
 
