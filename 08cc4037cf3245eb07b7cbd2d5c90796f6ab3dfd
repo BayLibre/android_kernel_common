@@ -46,6 +46,30 @@
       },
       "revId": "08cc4037cf3245eb07b7cbd2d5c90796f6ab3dfd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf41e879_31a6c94c",
+        "filename": "android/abi_gki_aarch64_exynos",
+        "patchSetId": 2
+      },
+      "lineNbr": 2499,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-05-02T12:57:27Z",
+      "side": 0,
+      "message": "Removing a symbol would be a breakage of the exposed API/ABI and as such is not allowed after the release. \n\nCan you clarify why this is a requirement for the other change you mentioned?",
+      "parentUuid": "07ae7b7d_c2d95e10",
+      "range": {
+        "startLine": 2499,
+        "startChar": 2,
+        "endLine": 2499,
+        "endChar": 27
+      },
+      "revId": "08cc4037cf3245eb07b7cbd2d5c90796f6ab3dfd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
