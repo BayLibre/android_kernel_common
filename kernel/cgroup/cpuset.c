@@ -66,12 +66,19 @@
 #include <linux/mutex.h>
 #include <linux/cgroup.h>
 #include <linux/wait.h>
+#include <linux/sched.h>
 
 #include <trace/hooks/cgroup.h>
 #include <trace/hooks/sched.h>
 
 DEFINE_STATIC_KEY_FALSE(cpusets_pre_enable_key);
 DEFINE_STATIC_KEY_FALSE(cpusets_enabled_key);
+
+extern const char *get_tg_name(struct cgroup_subsys_state *css);
+struct cpuset *cpuset_ptr[10];
+struct task_struct *task_ptr[10];
+struct kernfs_open_file *cpuset_of[10];
+static void get_task_ptr(const char *name, struct task_struct *p, struct cpuset *cs);
 
 /*
  * There could be abnormal cpuset configurations for cpu or memory
@@ -245,6 +252,24 @@ static inline struct cpuset *css_cs(struct cgroup_subsys_state *css)
 {
 	return css ? container_of(css, struct cpuset, css) : NULL;
 }
+
+
+const char *css_cs_ex(struct cgroup_subsys_state *css)
+{
+        const char *name = css_cs(css)->css.ss->name; 
+        return name;
+}
+EXPORT_SYMBOL_GPL(css_cs_ex);
+
+const char *get_name(struct cpuset cs)
+{
+        return cs.css.ss->name;
+
+}
+EXPORT_SYMBOL_GPL(get_name);
+
+
+
 
 /* Retrieve the cpuset for a task */
 static inline struct cpuset *task_cs(struct task_struct *task)
@@ -1246,6 +1271,14 @@ static int update_cpus_allowed(struct cpuset *cs, struct task_struct *p,
 				const struct cpumask *new_mask)
 {
 	int ret = -EINVAL;
+        //char cur_cpus[20];
+        const char *name = get_tg_name(&cs->css);
+
+        //scnprintf(cur_cpus, 10, "%*pbl", cpumask_pr_args(cs->cpus_requested));
+
+        //pr_err("tg %s cpus_allowed cur_state %s~~~\n",name, cur_cpus);
+
+        get_task_ptr(name, p, cs);
 
 	trace_android_rvh_update_cpus_allowed(p, cs->cpus_requested, new_mask, &ret);
 	if (!ret)
@@ -1253,6 +1286,21 @@ static int update_cpus_allowed(struct cpuset *cs, struct task_struct *p,
 
 	return set_cpus_allowed_ptr(p, new_mask);
 }
+
+#if 0
+void rvh_update_cpus_allowed(void *data, struct task_struct *p, cpumask_var_t cpus_requested, const struct cpumask *new_nask, int *ret)
+{
+
+
+        const char *name = get_tg_name(css);
+
+        pr_err("task_group %s\n", p->sched_task_group->css.cgroup->kn->name);
+
+
+}
+EXPORT_SYMBOL_GPL(rvh_update_cpus_allowed);
+#endif
+
 
 /**
  * update_tasks_cpumask - Update the cpumasks of tasks in the cpuset.
@@ -2816,6 +2864,204 @@ out_unlock:
 	return retval;
 }
 
+
+/* charles modify */
+#if 0
+static inline struct task_group *css_tg(struct cgroup_subsys_state *css)
+{
+        return css ? container_of(css, struct task_group, css) : NULL;
+}
+#endif
+
+
+
+static unsigned int cpuset_flag;
+#if 0
+ssize_t cpuset_write(char *buf, unsigned int idx)
+{
+	//struct cpuset *cs = css_cs(of_css(of));
+        struct kernfs_open_file *of;
+	struct cpuset *cs = cpuset_ptr[idx];
+	struct cpuset *trialcs;
+	int retval = -ENODEV;
+        //const char *name = css_tg(css)->css.cgroup->kn->name;
+
+	//struct task_group *tg = css_tg(css);
+        //struct cgroup_subsys_state *css = of_css(cpuset_of[idx]);
+        //const char *name = get_tg_name(css);
+        char cur_cpus[20];
+        unsigned int len = 10;
+
+        if (cpuset_flag == 1) {
+                pr_err("cpuset updating skip\n");
+                return 0;
+
+        }
+
+
+        scnprintf(cur_cpus, len, "%*pbl", cpumask_pr_args(cs->cpus_requested));
+
+        pr_err("new cmd write affinity cur_state %s new_buf %s idx %d~~~\n", cur_cpus,
+               buf, idx);
+
+        of = cpuset_of[idx];
+
+        if (strcmp(buf, cur_cpus) == 0) {
+                prg_err("doesnt need to change cpus\n");
+                cpuset_flag = 0;
+                return 0;
+
+        }
+        cpuset_flag = 1;
+
+	//buf = strstrip(buf);
+
+	/*
+	 * CPU or memory hotunplug may leave @cs w/o any execution
+	 * resources, in which case the hotplug code asynchronously updates
+	 * configuration and transfers all tasks to the nearest ancestor
+	 * which can execute.
+	 *
+	 * As writes to "cpus" or "mems" may restore @cs's execution
+	 * resources, wait for the previously scheduled operations before
+	 * proceeding, so that we don't end up keep removing tasks added
+	 * after execution capability is restored.
+	 *
+	 * cpuset_hotplug_work calls back into cgroup core via
+	 * cgroup_transfer_tasks() and waiting for it from a cgroupfs
+	 * operation like this one can lead to a deadlock through kernfs
+	 * active_ref protection.  Let's break the protection.  Losing the
+	 * protection is okay as we check whether @cs is online after
+	 * grabbing cpuset_mutex anyway.  This only happens on the legacy
+	 * hierarchies.
+	 */
+
+	css_get(&cs->css);
+        //pr_err("ready protect kn");
+	//kernfs_break_active_protection(of->kn);
+	flush_work(&cpuset_hotplug_work);
+
+	cpus_read_lock();
+	mutex_lock(&cpuset_mutex);
+
+	if (!is_cpuset_online(cs))
+		goto out_unlock;
+
+
+	trialcs = alloc_trial_cpuset(cs);
+	if (!trialcs) {
+                pr_err("no trail cs\n");
+		retval = -ENOMEM;
+		goto out_unlock;
+	}
+
+
+	retval = update_cpumask(cs, trialcs, buf);
+
+	free_cpuset(trialcs);
+
+out_unlock:
+
+	mutex_unlock(&cpuset_mutex);
+	cpus_read_unlock();
+	//kernfs_unbreak_active_protection(of->kn);
+	css_put(&cs->css);
+	flush_workqueue(cpuset_migrate_mm_wq);
+
+        pr_err("end cpuset write~~");
+        cpuset_flag = 0;
+	return retval;
+}
+EXPORT_SYMBOL_GPL(cpuset_write);
+#endif
+
+
+
+
+ssize_t cpuset_write(char *buf, unsigned int idx)
+{
+        struct cpumask send_mask;
+	struct cpuset *cs = cpuset_ptr[idx];
+	int retval = -ENODEV;
+        char cur_cpus[20];
+        //unsigned int len = 10;
+#if 0
+        if (cpuset_flag == 1) {
+                pr_err("cpuset updating skip\n");
+                return 0;
+
+        }
+#endif   
+        cpuset_flag = 1;
+
+        if (task_ptr[idx] == NULL) {
+                pr_err("NULL task_ptr\n");
+                return 0;
+        }
+        //scnprintf(cur_cpus, len, "%*pbl", cpumask_pr_args(cs->cpus_requested));
+        //pr_err("new cmd write affinity cur_state %s new_buf %s idx %d~~~\n", cur_cpus, buf, idx);
+        
+        if (strcmp(buf, cur_cpus) == 0) {
+                cpuset_flag = 0;
+                return 0;
+
+        }
+        cpulist_parse(buf, &send_mask);
+        cpulist_parse(buf, cs->cpus_requested);
+        //pr_err("ready to send task ptr\n");
+	//set_cpus_allowed_ptr(task_ptr[idx], &send_mask);
+        //pr_err("finish setting cpus\n");
+        cpuset_flag = 0;
+	return retval;
+}
+EXPORT_SYMBOL_GPL(cpuset_write);
+
+
+static void get_task_ptr(const char *name, struct task_struct *p, struct cpuset *cs)
+{
+
+        //pr_err("!!prepare %s ptr\n", name);
+        if (strcmp(name, "top-app") == 0 && (task_ptr[0] == NULL || cpuset_ptr[0] == NULL)) {
+                //pr_err("!!init %s ptr\n", name);
+                task_ptr[0] = p;          
+                cpuset_ptr[0] = cs;                
+        } else if (strcmp(name, "foreground") == 0 && (task_ptr[1] == NULL || cpuset_ptr[1] == NULL) ) {
+                task_ptr[1] = p;                
+                cpuset_ptr[1] = cs;                
+        } else if (strcmp(name, "background") == 0 && (task_ptr[2] == NULL || cpuset_ptr[2] == NULL)) {
+                task_ptr[2] = p;                
+                cpuset_ptr[2] = cs;                
+        } else if (strcmp(name, "restricted") == 0 && (task_ptr[3] == NULL || cpuset_ptr[3] == NULL) ) {
+                task_ptr[3] = p; 
+                cpuset_ptr[3] = cs;                
+        }
+}
+
+#if 0
+static void get_cpuset_ptr(const char *name, struct cpuset *cs,struct kernfs_open_file *of, char *buf)
+{
+
+        if (strcmp(buf, "0-7") != 0) {
+                pr_err("%s not initialize %s\n", name, buf);
+                return;
+        }
+
+        if (strcmp(name, "top-app") == 0) {
+                cpuset_of[0] = of;
+                cpuset_ptr[0] = cs;                
+        } else if (strcmp(name, "foreground") == 0) {
+                cpuset_of[1] = of;
+                cpuset_ptr[1] = cs;                
+        } else if (strcmp(name, "background") == 0) {
+                cpuset_of[2] = of;
+                cpuset_ptr[2] = cs;                
+        } else if (strcmp(name, "restricted") == 0) {
+                cpuset_of[3] = of;
+                cpuset_ptr[3] = cs;                
+        }
+}
+#endif
+
 /*
  * Common handling for a write to a "cpus" or "mems" file.
  */
@@ -2823,10 +3069,19 @@ static ssize_t cpuset_write_resmask(struct kernfs_open_file *of,
 				    char *buf, size_t nbytes, loff_t off)
 {
 	struct cpuset *cs = css_cs(of_css(of));
+        //struct cgroup_subsys_state *css = of_css(of);
 	struct cpuset *trialcs;
 	int retval = -ENODEV;
+        
+        //const char *name = get_tg_name(css);
 
 	buf = strstrip(buf);
+
+        //get_cpuset_ptr(name, cs, of, buf);
+
+        //pr_err("orig cmd write affinity buf %s name %s id %d !!!!\n", buf, name, id);
+
+        cpuset_flag = 1;
 
 	/*
 	 * CPU or memory hotunplug may leave @cs w/o any execution
@@ -2853,13 +3108,15 @@ static ssize_t cpuset_write_resmask(struct kernfs_open_file *of,
 
 	cpus_read_lock();
 	mutex_lock(&cpuset_mutex);
-	if (!is_cpuset_online(cs))
+	if (!is_cpuset_online(cs)) {
 		goto out_unlock;
+        }
 
 	trialcs = alloc_trial_cpuset(cs);
 	if (!trialcs) {
 		retval = -ENOMEM;
 		goto out_unlock;
+
 	}
 
 	switch (of_cft(of)->private) {
@@ -2877,10 +3134,12 @@ static ssize_t cpuset_write_resmask(struct kernfs_open_file *of,
 	free_cpuset(trialcs);
 out_unlock:
 	mutex_unlock(&cpuset_mutex);
+	buf = strstrip(buf);
 	cpus_read_unlock();
 	kernfs_unbreak_active_protection(of->kn);
 	css_put(&cs->css);
 	flush_workqueue(cpuset_migrate_mm_wq);
+        cpuset_flag = 0;
 	return retval ?: nbytes;
 }
 
