@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6396809_d4116243",
+        "filename": "fs/fuse/file.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2771,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-05-03T14:28:44Z",
+      "side": 1,
+      "message": "why not use `in-\u003eprivate_data-\u003ebacking_file` directly in the condition further down?\n\nIf left as is it breaks !CONFIG_FUSE_BPF builds as `ff` is unused and that triggers an error.",
+      "range": {
+        "startLine": 2771,
+        "startChar": 0,
+        "endLine": 2771,
+        "endChar": 41
+      },
+      "revId": "5fb8f1c931c2f690bce45a962711b02a8a101e75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
