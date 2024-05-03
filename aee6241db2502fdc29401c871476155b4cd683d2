@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8e5acdb_827240be",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-05-03T09:39:32Z",
+      "side": 1,
+      "message": "Could we use `U32_MAX` as a special value instead?",
+      "revId": "aee6241db2502fdc29401c871476155b4cd683d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "432695f1_aed75b16",
+        "filename": "drivers/android/dbitmap.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-05-03T09:39:32Z",
+      "side": 1,
+      "message": "What about reducing the size of the bitmap? Is that something we want to do when the process stops using many nodes?",
+      "revId": "aee6241db2502fdc29401c871476155b4cd683d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb6f8f12_bff6a408",
+        "filename": "drivers/android/dbitmap.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-05-03T09:39:32Z",
+      "side": 1,
+      "message": "You don\u0027t *have* to disable the bitmap in this case. You can also just say that in edge-cases, it\u0027s okay for the bitmap to have a zero at an index where the node actually exists. (But we don\u0027t allow the bitmap to have ones when a node does not exist.)\n\nWith that approach, you handle failures to allocate by using `slow_desc_lookup` to find an unused id. You leave the bitmap unchanged.\n\nThe only other change you need is to `goto retry` instead of `BUG()` when the node already exists. That way, if the bitmap chooses an index for which a node already exists, then we update the bitmap with that information and try again with the next unused bit.",
+      "revId": "aee6241db2502fdc29401c871476155b4cd683d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
