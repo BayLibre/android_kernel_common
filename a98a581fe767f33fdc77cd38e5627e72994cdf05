@@ -22,6 +22,30 @@
       },
       "revId": "a98a581fe767f33fdc77cd38e5627e72994cdf05",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d36637a1_b16cd89b",
+        "filename": "fs/fuse/file.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2772,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2024-05-03T15:48:59Z",
+      "side": 1,
+      "message": "It would require an explicit cast, it\u0027s more in style with how we\u0027ve done it everywhere else and (IMO) is easier to read. It also gives you the ff for if we need it in the future.",
+      "parentUuid": "0e202f69_f29502fc",
+      "range": {
+        "startLine": 2772,
+        "startChar": 0,
+        "endLine": 2772,
+        "endChar": 41
+      },
+      "revId": "a98a581fe767f33fdc77cd38e5627e72994cdf05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
