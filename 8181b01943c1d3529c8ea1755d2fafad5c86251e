@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000076818389",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3075525?revision\u003d1",
+      "key": {
+        "uuid": "7bc9e676_c2ef8aff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-05-06T01:28:34Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/5f478adf1f992d4a680c341d49122224286c805f) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d5f478adf1f992d4a680c341d49122224286c805f).\n\n```\n      ## net/wireless/scan.c ##\n    -@@ net/wireless/scan.c: static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,\n    - \tconst struct element *elem;\n    +@@ net/wireless/scan.c: cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,\n    + \tstruct ieee80211_multi_link_elem *ml_elem;\n      \tstruct cfg80211_mle *mle;\n      \tu16 control;\n     +\tu8 ml_common_len;\n      \tu8 *new_ie;\n      \tstruct cfg80211_bss *bss;\n      \tint mld_id;\n    -@@ net/wireless/scan.c: static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,\n    +@@ net/wireless/scan.c: cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,\n      \t    !(control \u0026 IEEE80211_MLC_BASIC_PRES_MLD_CAPA_OP))\n      \t\treturn;\n      \n    @@ net/wireless/scan.c: static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,\n      \t/* length + MLD MAC address + link ID info + BSS Params Change Count */\n      \tpos \u003d ml_elem-\u003evariable + 1 + 6 + 1 + 1;\n      \n    -@@ net/wireless/scan.c: static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,\n    +@@ net/wireless/scan.c: cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,\n      \t\tif (!data.ielen)\n      \t\t\tcontinue;\n      \n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "8181b01943c1d3529c8ea1755d2fafad5c86251e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
