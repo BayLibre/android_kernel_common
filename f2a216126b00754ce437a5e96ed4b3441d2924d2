@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d036f20b_0d5c47b5",
+        "filename": "drivers/virt/gunyah/gunyah_vcpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2024-05-06T16:54:06Z",
+      "side": 0,
+      "message": "Unnecessary delta?",
+      "revId": "f2a216126b00754ce437a5e96ed4b3441d2924d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6507adef_e17a428a",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 866,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2024-05-06T16:54:06Z",
+      "side": 0,
+      "message": "We don\u0027t support removing GUP bindings, but we still need to `mtree_destroy` the maple tree and free the alloc\u0027d bindings to avoid memory leak.",
+      "range": {
+        "startLine": 866,
+        "startChar": 1,
+        "endLine": 866,
+        "endChar": 32
+      },
+      "revId": "f2a216126b00754ce437a5e96ed4b3441d2924d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
