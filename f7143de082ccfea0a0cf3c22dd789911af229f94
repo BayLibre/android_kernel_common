@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "125fb25f_25252e03",
+        "filename": "drivers/virt/gunyah/gunyah_vcpu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1960706
+      },
+      "writtenOn": "2024-05-07T12:45:39Z",
+      "side": 1,
+      "message": "guestmemfd.c wont compile due to missing dependency upstream patches. Hence gunyah_gmem_demand_page not available. So in next patch, I have removed code under \"case GUNYAH_VCPU_RESUME_RETRY:\"",
+      "parentUuid": "cc52779e_c12675e4",
+      "range": {
+        "startLine": 174,
+        "startChar": 6,
+        "endLine": 174,
+        "endChar": 53
+      },
+      "revId": "f7143de082ccfea0a0cf3c22dd789911af229f94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9db2d4b_45df5b26",
