@@ -42,6 +42,7 @@
 struct madvise_walk_private {
 	struct mmu_gather *tlb;
 	bool pageout;
+	void *private;
 };
 
 /*
@@ -426,7 +427,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
 huge_unlock:
 		spin_unlock(ptl);
 		if (pageout)
-			reclaim_pages(&page_list);
+			reclaim_pages(&page_list, private->private);
 		return 0;
 	}
 
@@ -534,7 +535,7 @@ regular_page:
 	arch_leave_lazy_mmu_mode();
 	pte_unmap_unlock(orig_pte, ptl);
 	if (pageout)
-		reclaim_pages(&page_list);
+		reclaim_pages(&page_list, private->private);
 	cond_resched();
 
 	return 0;
@@ -592,9 +593,13 @@ static void madvise_pageout_page_range(struct mmu_gather *tlb,
 		.tlb = tlb,
 	};
 
+	trace_android_rvh_madvise_pageout_page_range_1(&walk_private.private);
+
 	tlb_start_vma(tlb, vma);
 	walk_page_range(vma->vm_mm, addr, end, &cold_walk_ops, &walk_private);
 	tlb_end_vma(tlb, vma);
+
+	trace_android_rvh_madvise_pageout_page_range_2(walk_private.private);
 }
 
 static long madvise_pageout(struct vm_area_struct *vma,
