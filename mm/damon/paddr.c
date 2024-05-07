@@ -225,7 +225,7 @@ static unsigned long damon_pa_pageout(struct damon_region *r)
 			list_add(&page->lru, &page_list);
 		put_page(page);
 	}
-	applied = reclaim_pages(&page_list);
+	applied = reclaim_pages(&page_list, NULL);
 	cond_resched();
 	return applied * PAGE_SIZE;
 }
