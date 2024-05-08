@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000077110416",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3078671?revision\u003d1",
+      "key": {
+        "uuid": "43f78dfe_908bb0c3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-05-08T07:21:59Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/60b0f85e2486a73ba60815335ee4d86e6e555aff).\n\n```\n      ## android/abi_gki_aarch64_honor ##\n     @@\n    -  __tracepoint_android_vh_page_add_new_anon_rmap\n    -  __tracepoint_android_vh_do_shrink_slab\n    -  __tracepoint_android_vh_shrink_slab_bypass\n    + [abi_symbol_list]\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (784c9c ANDROID: abi_gki_aarch64_qcom: Add additional offloading API)\n    +   is_vmalloc_or_module_addr\n    +   kfree\n    +   __kmalloc\n    +@@\n    +   __traceiter_android_vh_si_mem_available_adjust\n    +   __tracepoint_android_vh_si_meminfo_adjust\n    +   __traceiter_android_vh_si_meminfo_adjust\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    ++ __tracepoint_android_vh_get_page_wmark\n    ++ __tracepoint_android_vh_page_add_new_anon_rmap\n    ++ __tracepoint_android_vh_do_shrink_slab\n    ++ __tracepoint_android_vh_shrink_slab_bypass\n     + __tracepoint_android_vh_mutex_init\n     + __tracepoint_android_vh_file_is_tiny_bypass\n     + __tracepoint_android_vh_modify_scan_control\n     + __tracepoint_android_vh_should_continue_reclaim\n    -  __traceiter_android_vh_get_page_wmark\n    -  __traceiter_android_vh_page_add_new_anon_rmap\n    -  __traceiter_android_vh_do_shrink_slab\n    -  __traceiter_android_vh_shrink_slab_bypass\n    -  __traceiter_android_vh_mutex_init\n    -- __tracepoint_android_vh_mutex_init\n    ++ __traceiter_android_vh_get_page_wmark\n    ++ __traceiter_android_vh_page_add_new_anon_rmap\n    ++ __traceiter_android_vh_do_shrink_slab\n    ++ __traceiter_android_vh_shrink_slab_bypass\n    ++ __traceiter_android_vh_mutex_init\n     + __traceiter_android_vh_file_is_tiny_bypass\n     + __traceiter_android_vh_modify_scan_control\n     + __traceiter_android_vh_should_continue_reclaim\n    - \\ No newline at end of file\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (60b0f8 ANDROID: ABI: Update honor symbol list)\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "2e7dcf85829f0a8edeefb0caf240b0d8b37e4a42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
