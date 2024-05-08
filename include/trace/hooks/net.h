@@ -58,6 +58,25 @@ DECLARE_HOOK(android_vh_build_skb_around,
 	TP_PROTO(struct sk_buff *skb), TP_ARGS(skb));
 DECLARE_HOOK(android_vh_tcp_write_timeout_estab_retrans,
         TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_tcp_state_change,
+        TP_PROTO(struct sock *sk, int state), TP_ARGS(sk, state));
+DECLARE_HOOK(android_vh_tcp_srtt_estimator,
+        TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_tcp_rcv_established_fast_path,
+        TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_tcp_rcv_established_slow_path,
+        TP_PROTO(struct sock *sk), TP_ARGS(sk));
+struct tcp_sock;
+DECLARE_HOOK(android_vh_tcp_rcv_rtt_update,
+        TP_PROTO(struct tcp_sock *tp, u32 sample, int win_dep), TP_ARGS(tp, sample, win_dep));
+DECLARE_HOOK(android_vh_tcp_retransmit_timer,
+        TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_tcp_v4_init_sock,
+        TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_tcp_v4_destroy_sock,
+        TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_tcp_v6_init_sock,
+        TP_PROTO(struct sock *sk), TP_ARGS(sk));
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_NET_VH_H */

@@ -83,6 +83,7 @@
 #include <linux/scatterlist.h>
 
 #include <trace/events/tcp.h>
+#include <trace/hooks/net.h>
 
 #ifdef CONFIG_TCP_MD5SIG
 static int tcp_v4_md5_hash_hdr(char *md5_hash, const struct tcp_md5sig_key *key,
@@ -2291,12 +2292,16 @@ static int tcp_v4_init_sock(struct sock *sk)
 	tcp_sk(sk)->af_specific = &tcp_sock_ipv4_specific;
 #endif
 
+	trace_android_vh_tcp_v4_init_sock(sk);
+	
 	return 0;
 }
 
 void tcp_v4_destroy_sock(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
+
+	trace_android_vh_tcp_v4_destroy_sock(sk);
 
 	trace_tcp_destroy_sock(sk);
 

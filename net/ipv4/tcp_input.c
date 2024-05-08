@@ -649,6 +649,8 @@ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
 	u32 new_sample = tp->rcv_rtt_est.rtt_us;
 	long m = sample;
 
+	trace_android_vh_tcp_rcv_rtt_update(tp, sample, win_dep);
+
 	if (new_sample != 0) {
 		/* If we sample in larger samples in the non-timestamp
 		 * case, we could grossly overestimate the RTT especially
@@ -911,6 +913,8 @@ static void tcp_rtt_estimator(struct sock *sk, long mrtt_us)
 		tcp_bpf_rtt(sk);
 	}
 	tp->srtt_us = max(1U, srtt);
+
+	trace_android_vh_tcp_srtt_estimator(sk);
 }
 
 static void tcp_update_pacing_rate(struct sock *sk)
@@ -6023,6 +6027,7 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb)
 
 			__tcp_ack_snd_check(sk, 0);
 no_ack:
+			trace_android_vh_tcp_rcv_established_fast_path(sk);
 			if (eaten)
 				kfree_skb_partial(skb, fragstolen);
 			tcp_data_ready(sk);
@@ -6062,6 +6067,8 @@ step5:
 
 	tcp_data_snd_check(sk);
 	tcp_ack_snd_check(sk);
+
+	trace_android_vh_tcp_rcv_established_slow_path(sk);
 	return;
 
 csum_error:
