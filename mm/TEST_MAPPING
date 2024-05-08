@@ -21,6 +21,14 @@
           "exclude-annotation": "com.android.testutils.SkipPresubmit"
         }
       ]
+    },
+    {
+      "name": "selftests",
+      "options": [
+        {
+          "include-filter": "kselftest_mm_*"
+        }
+      ]
     }
   ]
 }
