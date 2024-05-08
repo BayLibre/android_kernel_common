@@ -10,6 +10,283 @@
 struct blk_mq_tags;
 struct blk_flush_queue;
 
+<<<<<<< HEAD   (170f95 ANDROID: Update symbols for ARCVM)
+=======
+#define BLKDEV_MIN_RQ	4
+#define BLKDEV_DEFAULT_RQ	128
+
+enum rq_end_io_ret {
+	RQ_END_IO_NONE,
+	RQ_END_IO_FREE,
+};
+
+typedef enum rq_end_io_ret (rq_end_io_fn)(struct request *, blk_status_t);
+
+/*
+ * request flags */
+typedef __u32 __bitwise req_flags_t;
+
+/* drive already may have started this one */
+#define RQF_STARTED		((__force req_flags_t)(1 << 1))
+/* request for flush sequence */
+#define RQF_FLUSH_SEQ		((__force req_flags_t)(1 << 4))
+/* merge of different types, fail separately */
+#define RQF_MIXED_MERGE		((__force req_flags_t)(1 << 5))
+/* track inflight for MQ */
+#define RQF_MQ_INFLIGHT		((__force req_flags_t)(1 << 6))
+/* don't call prep for this one */
+#define RQF_DONTPREP		((__force req_flags_t)(1 << 7))
+/* use hctx->sched_tags */
+#define RQF_SCHED_TAGS		((__force req_flags_t)(1 << 8))
+/* use an I/O scheduler for this request */
+#define RQF_USE_SCHED		((__force req_flags_t)(1 << 9))
+/* vaguely specified driver internal error.  Ignored by the block layer */
+#define RQF_FAILED		((__force req_flags_t)(1 << 10))
+/* don't warn about errors */
+#define RQF_QUIET		((__force req_flags_t)(1 << 11))
+/* account into disk and partition IO statistics */
+#define RQF_IO_STAT		((__force req_flags_t)(1 << 13))
+/* runtime pm request */
+#define RQF_PM			((__force req_flags_t)(1 << 15))
+/* on IO scheduler merge hash */
+#define RQF_HASHED		((__force req_flags_t)(1 << 16))
+/* track IO completion time */
+#define RQF_STATS		((__force req_flags_t)(1 << 17))
+/* Look at ->special_vec for the actual data payload instead of the
+   bio chain. */
+#define RQF_SPECIAL_PAYLOAD	((__force req_flags_t)(1 << 18))
+/* The per-zone write lock is held for this request */
+#define RQF_ZONE_WRITE_LOCKED	((__force req_flags_t)(1 << 19))
+/* ->timeout has been called, don't expire again */
+#define RQF_TIMED_OUT		((__force req_flags_t)(1 << 21))
+#define RQF_RESV		((__force req_flags_t)(1 << 23))
+
+/* flags that prevent us from merging requests: */
+#define RQF_NOMERGE_FLAGS \
+	(RQF_STARTED | RQF_FLUSH_SEQ | RQF_SPECIAL_PAYLOAD)
+
+enum mq_rq_state {
+	MQ_RQ_IDLE		= 0,
+	MQ_RQ_IN_FLIGHT		= 1,
+	MQ_RQ_COMPLETE		= 2,
+};
+
+/*
+ * Try to put the fields that are referenced together in the same cacheline.
+ *
+ * If you modify this structure, make sure to update blk_rq_init() and
+ * especially blk_mq_rq_ctx_init() to take care of the added fields.
+ */
+struct request {
+	struct request_queue *q;
+	struct blk_mq_ctx *mq_ctx;
+	struct blk_mq_hw_ctx *mq_hctx;
+
+	blk_opf_t cmd_flags;		/* op and common flags */
+	req_flags_t rq_flags;
+
+	int tag;
+	int internal_tag;
+
+	unsigned int timeout;
+
+	/* the following two fields are internal, NEVER access directly */
+	unsigned int __data_len;	/* total data len */
+	sector_t __sector;		/* sector cursor */
+
+	struct bio *bio;
+	struct bio *biotail;
+
+	union {
+		struct list_head queuelist;
+		struct request *rq_next;
+	};
+
+	struct block_device *part;
+#ifdef CONFIG_BLK_RQ_ALLOC_TIME
+	/* Time that the first bio started allocating this request. */
+	u64 alloc_time_ns;
+#endif
+	/* Time that this request was allocated for this IO. */
+	u64 start_time_ns;
+	/* Time that I/O was submitted to the device. */
+	u64 io_start_time_ns;
+
+#ifdef CONFIG_BLK_WBT
+	unsigned short wbt_flags;
+#endif
+	/*
+	 * rq sectors used for blk stats. It has the same value
+	 * with blk_rq_sectors(rq), except that it never be zeroed
+	 * by completion.
+	 */
+	unsigned short stats_sectors;
+
+	/*
+	 * Number of scatter-gather DMA addr+len pairs after
+	 * physical address coalescing is performed.
+	 */
+	unsigned short nr_phys_segments;
+
+#ifdef CONFIG_BLK_DEV_INTEGRITY
+	unsigned short nr_integrity_segments;
+#endif
+
+#ifdef CONFIG_BLK_INLINE_ENCRYPTION
+	struct bio_crypt_ctx *crypt_ctx;
+	struct blk_crypto_keyslot *crypt_keyslot;
+#endif
+
+	enum rw_hint write_hint;
+	unsigned short ioprio;
+
+	enum mq_rq_state state;
+	atomic_t ref;
+
+	unsigned long deadline;
+
+	/*
+	 * The hash is used inside the scheduler, and killed once the
+	 * request reaches the dispatch list. The ipi_list is only used
+	 * to queue the request for softirq completion, which is long
+	 * after the request has been unhashed (and even removed from
+	 * the dispatch list).
+	 */
+	union {
+		struct hlist_node hash;	/* merge hash */
+		struct llist_node ipi_list;
+	};
+
+	/*
+	 * The rb_node is only used inside the io scheduler, requests
+	 * are pruned when moved to the dispatch queue. special_vec must
+	 * only be used if RQF_SPECIAL_PAYLOAD is set, and those cannot be
+	 * insert into an IO scheduler.
+	 */
+	union {
+		struct rb_node rb_node;	/* sort/lookup */
+		struct bio_vec special_vec;
+	};
+
+	/*
+	 * Three pointers are available for the IO schedulers, if they need
+	 * more they have to dynamically allocate it.
+	 */
+	struct {
+		struct io_cq		*icq;
+		void			*priv[2];
+	} elv;
+
+	struct {
+		unsigned int		seq;
+		rq_end_io_fn		*saved_end_io;
+	} flush;
+
+	u64 fifo_time;
+
+	/*
+	 * completion callback.
+	 */
+	rq_end_io_fn *end_io;
+	void *end_io_data;
+
+	ANDROID_OEM_DATA(1);
+
+	ANDROID_KABI_RESERVE(1);
+};
+
+static inline enum req_op req_op(const struct request *req)
+{
+	return req->cmd_flags & REQ_OP_MASK;
+}
+
+static inline bool blk_rq_is_passthrough(struct request *rq)
+{
+	return blk_op_is_passthrough(rq->cmd_flags);
+}
+
+static inline unsigned short req_get_ioprio(struct request *req)
+{
+	return req->ioprio;
+}
+
+#define rq_data_dir(rq)		(op_is_write(req_op(rq)) ? WRITE : READ)
+
+#define rq_dma_dir(rq) \
+	(op_is_write(req_op(rq)) ? DMA_TO_DEVICE : DMA_FROM_DEVICE)
+
+#define rq_list_add(listptr, rq)	do {		\
+	(rq)->rq_next = *(listptr);			\
+	*(listptr) = rq;				\
+} while (0)
+
+#define rq_list_add_tail(lastpptr, rq)	do {		\
+	(rq)->rq_next = NULL;				\
+	**(lastpptr) = rq;				\
+	*(lastpptr) = &rq->rq_next;			\
+} while (0)
+
+#define rq_list_pop(listptr)				\
+({							\
+	struct request *__req = NULL;			\
+	if ((listptr) && *(listptr))	{		\
+		__req = *(listptr);			\
+		*(listptr) = __req->rq_next;		\
+	}						\
+	__req;						\
+})
+
+#define rq_list_peek(listptr)				\
+({							\
+	struct request *__req = NULL;			\
+	if ((listptr) && *(listptr))			\
+		__req = *(listptr);			\
+	__req;						\
+})
+
+#define rq_list_for_each(listptr, pos)			\
+	for (pos = rq_list_peek((listptr)); pos; pos = rq_list_next(pos))
+
+#define rq_list_for_each_safe(listptr, pos, nxt)			\
+	for (pos = rq_list_peek((listptr)), nxt = rq_list_next(pos);	\
+		pos; pos = nxt, nxt = pos ? rq_list_next(pos) : NULL)
+
+#define rq_list_next(rq)	(rq)->rq_next
+#define rq_list_empty(list)	((list) == (struct request *) NULL)
+
+/**
+ * rq_list_move() - move a struct request from one list to another
+ * @src: The source list @rq is currently in
+ * @dst: The destination list that @rq will be appended to
+ * @rq: The request to move
+ * @prev: The request preceding @rq in @src (NULL if @rq is the head)
+ */
+static inline void rq_list_move(struct request **src, struct request **dst,
+				struct request *rq, struct request *prev)
+{
+	if (prev)
+		prev->rq_next = rq->rq_next;
+	else
+		*src = rq->rq_next;
+	rq_list_add(dst, rq);
+}
+
+/**
+ * enum blk_eh_timer_return - How the timeout handler should proceed
+ * @BLK_EH_DONE: The block driver completed the command or will complete it at
+ *	a later time.
+ * @BLK_EH_RESET_TIMER: Reset the request timer and continue waiting for the
+ *	request to complete.
+ */
+enum blk_eh_timer_return {
+	BLK_EH_DONE,
+	BLK_EH_RESET_TIMER,
+};
+
+#define BLK_TAG_ALLOC_FIFO 0 /* allocate starting from 0 */
+#define BLK_TAG_ALLOC_RR 1 /* allocate starting from last allocated tag */
+
+>>>>>>> CHANGE (943f28 ANDROID: GKI: Add ANDROID_OEM_DATA(1) in struct request to s)
 /**
  * struct blk_mq_hw_ctx - State for a hardware queue facing the hardware
  * block device
