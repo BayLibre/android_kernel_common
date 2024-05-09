@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0f4bc38_02ca8b36",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-05-09T12:51:59Z",
+      "side": 1,
+      "message": "I haven\u0027t noticed that you moved around `virt_to_phys `. I assumed the argument `addr` is already a physical address(from guest perspective) in this function.",
+      "parentUuid": "28f469bc_d200cfde",
+      "range": {
+        "startLine": 92,
+        "startChar": 31,
+        "endLine": 92,
+        "endChar": 43
+      },
+      "revId": "da3c627bd7b09ee40190c0e20fcc1827c45b5728",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b211de5_202016b1",
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "Because of the line below:\n\n`nr_granules \u003d (numpages * PAGE_SIZE) / memshare_granule_sz`.\n\nIt makes it clear why this limitation is in place.",
       "parentUuid": "6b211de5_202016b1",
+      "revId": "da3c627bd7b09ee40190c0e20fcc1827c45b5728",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c776bbf_3f163b4e",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-05-09T12:51:59Z",
+      "side": 1,
+      "message": "Sorry I wasn\u0027t clear, I\u0027m proposing to rewrite it with IS_ALIGNED macro as you do for the other check.",
+      "parentUuid": "6b444a47_a31882d7",
       "revId": "da3c627bd7b09ee40190c0e20fcc1827c45b5728",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
