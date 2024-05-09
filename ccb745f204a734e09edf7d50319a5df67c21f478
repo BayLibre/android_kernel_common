@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dbe6833_719f622d",
+        "filename": "drivers/android/binder/range_alloc/tree.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2024-05-09T14:34:23Z",
+      "side": 1,
+      "message": "nit: some ascii or something would help here as well, to visualize the tree getting populated.  I have a hard time reading the `free_offset`/`free_size` logic.",
+      "range": {
+        "startLine": 42,
+        "startChar": 18,
+        "endLine": 42,
+        "endChar": 28
+      },
+      "revId": "ccb745f204a734e09edf7d50319a5df67c21f478",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ac8adf4_3b5c7795",
+        "filename": "drivers/android/binder/range_alloc/tree.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2024-05-09T14:34:23Z",
+      "side": 1,
+      "message": "This could be simplified if `DescriptorState` could be shared between tree/array.",
+      "range": {
+        "startLine": 75,
+        "startChar": 12,
+        "endLine": 88,
+        "endChar": 13
+      },
+      "revId": "ccb745f204a734e09edf7d50319a5df67c21f478",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
