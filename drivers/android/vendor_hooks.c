@@ -604,3 +604,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_direct_reclaim_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_queue_work);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_wake_idle_worker);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_send_signal_locked);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_read_fault);
