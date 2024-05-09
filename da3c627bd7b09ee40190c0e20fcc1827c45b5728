@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8a863c0_6c179b8b",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-05-09T10:12:39Z",
+      "side": 1,
+      "message": "Why do you need this conversion ? based on [this](https://elixir.bootlin.com/linux/latest/source/arch/arm64/include/asm/memory.h#L348) the DMA API should not use this for converting dma addresses to physical addr.",
+      "range": {
+        "startLine": 92,
+        "startChar": 31,
+        "endLine": 92,
+        "endChar": 43
+      },
+      "revId": "da3c627bd7b09ee40190c0e20fcc1827c45b5728",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b211de5_202016b1",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-05-09T10:12:39Z",
+      "side": 1,
+      "message": "Why not `!IS_ALIGNED(numpages \u003c\u003c PAGE_SHIFT, memshare_granule_sz)` ?",
+      "revId": "da3c627bd7b09ee40190c0e20fcc1827c45b5728",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb062d57_d1016bf7",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-05-09T10:12:39Z",
+      "side": 1,
+      "message": "Why do we need this ? Isn\u0027t it harder to keep track if it fails sharing in between ? Can\u0027t we just simplify it and return an error if we weren\u0027t able to share `nr_granules` at a time ?",
+      "range": {
+        "startLine": 120,
+        "startChar": 6,
+        "endLine": 120,
+        "endChar": 17
+      },
+      "revId": "da3c627bd7b09ee40190c0e20fcc1827c45b5728",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
