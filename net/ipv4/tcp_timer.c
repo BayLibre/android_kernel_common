@@ -23,6 +23,8 @@
 #include <linux/gfp.h>
 #include <net/tcp.h>
 
+/* The rto of the 3 time retry remain unchanged */
+#define TCP_SYN_SENT_LINEAR_RETRIES 2
 static u32 tcp_clamp_rto_to_user_timeout(const struct sock *sk)
 {
 	struct inet_connection_sock *icsk = inet_csk(sk);
@@ -621,6 +623,10 @@ out_reset_timer:
 		icsk->icsk_rto = clamp(__tcp_set_rto(tp),
 				       tcp_rto_min(sk),
 				       TCP_RTO_MAX);
+	} else if (sk->sk_state == TCP_SYN_SENT &&
+		icsk->icsk_retransmits <= TCP_SYN_SENT_LINEAR_RETRIES &&
+		icsk->icsk_rto == (TCP_TIMEOUT_INIT << 1)) {
+		icsk->icsk_backoff = 1;
 	} else if (sk->sk_state != TCP_SYN_SENT ||
 		   icsk->icsk_backoff >
 		   READ_ONCE(net->ipv4.sysctl_tcp_syn_linear_timeouts)) {
