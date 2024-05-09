@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fadab245_e5bb3723",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 2032918
+      },
+      "writtenOn": "2024-05-09T08:26:25Z",
+      "side": 1,
+      "message": "We add these hooks for report risks of hacker. When usercopy abort, sign check error,cfi failure or setid to 0，it\u0027s most possbility of a hacker is trying to root our devices! Therefore,upload these risks and we can be noticed:OHH! These devices maybe rooted.We can also analyst root status。",
+      "parentUuid": "86dfd12c_0b5315e9",
+      "revId": "73a3aecb52ef5002ebf23ecb227cb10ba92238bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5ed942fd_698916f3",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "writtenOn": "2024-05-08T17:04:18Z",
       "side": 1,
       "message": "why is this needed? The device is going to crash (CFI_PERMISSIVE is not set). Aren\u0027t the pr-err() enough to diagnose the issue?",
+      "revId": "73a3aecb52ef5002ebf23ecb227cb10ba92238bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "738b19aa_a1d540cc",
+        "filename": "kernel/cfi.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 2032918
+      },
+      "writtenOn": "2024-05-09T08:26:25Z",
+      "side": 1,
+      "message": "pr-err()  maybe trigger panic and device will reboot quickly,it\u0027s not enough to upload these risks。",
+      "parentUuid": "c6a7cf8f_f65ea57d",
       "revId": "73a3aecb52ef5002ebf23ecb227cb10ba92238bc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
