@@ -93,6 +93,8 @@
 #include "internal.h"
 #include "swap.h"
 
+EXPORT_TRACEPOINT_SYMBOL_GPL(do_read_fault);
+
 #if defined(LAST_CPUPID_NOT_IN_PAGE_FLAGS) && !defined(CONFIG_COMPILE_TEST)
 #warning Unfortunate NUMA and NUMA Balancing config, growing page-frame for last_cpupid.
 #endif
@@ -4644,6 +4646,8 @@ static inline bool should_fault_around(struct vm_fault *vmf)
 static vm_fault_t do_read_fault(struct vm_fault *vmf)
 {
 	vm_fault_t ret = 0;
+
+	trace_do_read_fault(vmf->vma->vm_file, vmf->pgoff);
 
 	/*
 	 * Let's call ->map_pages() first and use ->fault() as fallback
