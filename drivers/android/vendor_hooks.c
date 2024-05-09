@@ -592,4 +592,15 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_migrate_one_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_remove_migration_pte_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_split_huge_page_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_try_split_folio_bypass);
+<<<<<<< HEAD   (e9d42b35319f3e24c4d80cfde92c8069854f306f FROMGIT: HID: input: report battery status changes immediate)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swap_bio_charge);
+||||||| BASE   (bb9513914902b52a9751ea1126ad40518a38c89f UPSTREAM: f2fs: zone: wait for inflight dio completion, excl)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_scmi_limit_notify_cb);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_fiq_dump);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_scmi_limit_notify_cb);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_fiq_dump);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_looper_state_registered);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_thread_release);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_read_done);
+>>>>>>> CHANGE (a78c22c33d463f989ddfc48cda74721b7f1d0c5b ANDROID: vendor_hooks:vendor hooks for binder thread info)
