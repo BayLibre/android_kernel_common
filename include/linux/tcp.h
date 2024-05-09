@@ -501,6 +501,15 @@ struct tcp_sock {
 	 */
 	struct request_sock __rcu *fastopen_rsk;
 	struct saved_syn *saved_syn;
+<<<<<<< HEAD   (1fa59c ANDROID: build: Add top level directory to unsafe headers in)
+||||||| BASE
+
+	ANDROID_KABI_RESERVE(1);
+=======
+
+	ANDROID_OEM_DATA(1);
+	ANDROID_KABI_RESERVE(1);
+>>>>>>> CHANGE (2ab34b ANDROID: GKI: net: add oem data for rtt statistics.)
 };
 
 enum tsq_enum {
