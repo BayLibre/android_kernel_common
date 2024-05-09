@@ -4544,18 +4544,18 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
 static unsigned long fault_around_bytes __read_mostly =
 	rounddown_pow_of_two(65536);
 
-#ifdef CONFIG_DEBUG_FS
-static int fault_around_bytes_get(void *data, u64 *val)
+int fault_around_bytes_get(void *data, u64 *val)
 {
 	*val = fault_around_bytes;
 	return 0;
 }
+EXPORT_SYMBOL_GPL(fault_around_bytes_get);
 
 /*
  * fault_around_bytes must be rounded down to the nearest page order as it's
  * what do_fault_around() expects to see.
  */
-static int fault_around_bytes_set(void *data, u64 val)
+int fault_around_bytes_set(void *data, u64 val)
 {
 	if (val / PAGE_SIZE > PTRS_PER_PTE)
 		return -EINVAL;
@@ -4565,6 +4565,9 @@ static int fault_around_bytes_set(void *data, u64 val)
 		fault_around_bytes = PAGE_SIZE; /* rounddown_pow_of_two(0) is undefined */
 	return 0;
 }
+EXPORT_SYMBOL_GPL(fault_around_bytes_set);
+
+#ifdef CONFIG_DEBUG_FS
 DEFINE_DEBUGFS_ATTRIBUTE(fault_around_bytes_fops,
 		fault_around_bytes_get, fault_around_bytes_set, "%llu\n");
 
