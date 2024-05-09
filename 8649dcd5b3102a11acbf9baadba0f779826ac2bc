@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fa7fdd2_f1a28e7f",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 890,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2024-05-09T13:54:42Z",
+      "side": 1,
+      "message": "I\u0027m assuming this `drop` combined with the `make_alloc` below is the reason the logic can\u0027t be delegated to the range allocator.  Meaning - we have to release the lock by calling `drop(inner)` before calling `make_alloc`.\n\nI guess there is no way around this?  Could we pass a function `|| drop(inner)` into `reserve_new` and let it handle releasing the lock before it creates an allocation?  Is this impossible because we need to then take the lock again before using that allocation?",
+      "range": {
+        "startLine": 890,
+        "startChar": 12,
+        "endLine": 890,
+        "endChar": 24
+      },
+      "revId": "8649dcd5b3102a11acbf9baadba0f779826ac2bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b132be95_50dec269",
+        "filename": "drivers/android/binder/range_alloc/mod.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2024-05-09T13:54:42Z",
+      "side": 1,
+      "message": "What are the implications of the caller forgetting to do this? Or would this value, since it\u0027s owned, get dropped automatically once the caller\u0027s scope is dropped?",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 128,
+        "endChar": 42
+      },
+      "revId": "8649dcd5b3102a11acbf9baadba0f779826ac2bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
