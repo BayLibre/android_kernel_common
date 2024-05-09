@@ -409,6 +409,25 @@ TRACE_EVENT(rss_stat,
 		__print_symbolic(__entry->member, TRACE_MM_PAGES),
 		__entry->size)
 	);
+
+TRACE_EVENT(do_read_fault,
+        TP_PROTO(struct file *file, pgoff_t pgoff),
+
+	TP_ARGS(file, pgoff),
+
+        TP_STRUCT__entry(
+                __field(unsigned long, i_ino)
+                __field(pgoff_t, offset)
+        ),
+
+        TP_fast_assign(
+                __entry->i_ino = file ? file->f_inode->i_ino : 0;
+                __entry->offset = pgoff;
+        ),
+
+	TP_printk("inode=%lu offset=%lu\n", __entry->i_ino, __entry->offset)
+);
+
 #endif /* _TRACE_KMEM_H */
 
 /* This part must be outside protection */
