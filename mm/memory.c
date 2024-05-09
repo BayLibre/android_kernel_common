@@ -4639,6 +4639,8 @@ static inline bool should_fault_around(struct vm_fault *vmf)
 	if (uffd_disable_fault_around(vmf->vma))
 		return false;
 
+	trace_android_rvh_should_fault_around(&fault_around_bytes);
+
 	return fault_around_bytes >> PAGE_SHIFT > 1;
 }
 
