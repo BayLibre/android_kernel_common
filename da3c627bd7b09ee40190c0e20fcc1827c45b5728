@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28f469bc_d200cfde",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-05-09T10:32:59Z",
+      "side": 1,
+      "message": "The hypervisor works with IPAs. I do believe this is here normal memory only, and actually, if you look at the diff, in \"set_memory_xcrypted()\", we always used virt_to_phys().",
+      "parentUuid": "a8a863c0_6c179b8b",
+      "range": {
+        "startLine": 92,
+        "startChar": 31,
+        "endLine": 92,
+        "endChar": 43
+      },
+      "revId": "da3c627bd7b09ee40190c0e20fcc1827c45b5728",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b211de5_202016b1",
@@ -41,6 +65,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b444a47_a31882d7",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-05-09T10:32:59Z",
+      "side": 1,
+      "message": "Because of the line below:\n\n`nr_granules \u003d (numpages * PAGE_SIZE) / memshare_granule_sz`.\n\nIt makes it clear why this limitation is in place.",
+      "parentUuid": "6b211de5_202016b1",
+      "revId": "da3c627bd7b09ee40190c0e20fcc1827c45b5728",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb062d57_d1016bf7",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-05-09T10:12:39Z",
       "side": 1,
       "message": "Why do we need this ? Isn\u0027t it harder to keep track if it fails sharing in between ? Can\u0027t we just simplify it and return an error if we weren\u0027t able to share `nr_granules` at a time ?",
+      "range": {
+        "startLine": 120,
+        "startChar": 6,
+        "endLine": 120,
+        "endChar": 17
+      },
+      "revId": "da3c627bd7b09ee40190c0e20fcc1827c45b5728",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea721f76_937c2ba8",
+        "filename": "arch/arm64/mm/mem_encrypt.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-05-09T10:32:59Z",
+      "side": 1,
+      "message": "A success doesn\u0027t mean `nr_granules` have been actually been shared/unshared. This is to limit the time we spend at EL2. So we need to know what has actually been shared.",
+      "parentUuid": "cb062d57_d1016bf7",
       "range": {
         "startLine": 120,
         "startChar": 6,
