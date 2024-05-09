@@ -81,6 +81,7 @@
 #include <linux/set_memory.h>
 
 #include <trace/events/kmem.h>
+#include <trace/hooks/mm.h>
 
 #include <asm/io.h>
 #include <asm/mmu_context.h>
@@ -4644,6 +4645,8 @@ static inline bool should_fault_around(struct vm_fault *vmf)
 static vm_fault_t do_read_fault(struct vm_fault *vmf)
 {
 	vm_fault_t ret = 0;
+
+	trace_android_rvh_do_read_fault(vmf->vma->vm_file, vmf->pgoff);
 
 	/*
 	 * Let's call ->map_pages() first and use ->fault() as fallback
