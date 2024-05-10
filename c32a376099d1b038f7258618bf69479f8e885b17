@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d0770f0_7539a03a",
+        "filename": "mm/memory.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4552,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-05-10T01:15:51Z",
+      "side": 1,
+      "message": "Instead of exporting these functions you can simply add vendor hooks inside `do_fault_around()` and `should_fault_around()` to adjust calculation results involving `fault_around_bytes`.",
+      "range": {
+        "startLine": 4552,
+        "startChar": 0,
+        "endLine": 4552,
+        "endChar": 42
+      },
+      "revId": "c32a376099d1b038f7258618bf69479f8e885b17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
