@@ -16,6 +16,41 @@
       "message": "Respin Bug: b/339845931",
       "revId": "2ba6dbe1cfbbde9c1b773a07020b32816b41cc37",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f5f9f69_beb5f43b",
+        "filename": "include/linux/userfaultfd_k.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-05-10T18:05:19Z",
+      "side": 1,
+      "message": "why are you adding this? The KABI fields are exclusively for resolving LTS merge issues. It must not be used for anything related to this feature.",
+      "fixSuggestions": [
+        {
+          "fixId": "34d7408d_bc60b2fe",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/userfaultfd_k.h",
+              "range": {
+                "startLine": 89,
+                "startChar": 0,
+                "endLine": 91,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "2ba6dbe1cfbbde9c1b773a07020b32816b41cc37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
