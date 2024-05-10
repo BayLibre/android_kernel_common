@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000077466226",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3082325?revision\u003d2",
+      "key": {
+        "uuid": "97dcb3de_380ef3f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-05-10T13:09:05Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/0df40fbf0313699fbfd63e136e17cec165311458).\n\n```\n      ## drivers/android/vendor_hooks.c ##\n     @@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_qos_update_request);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freq_qos_remove_request);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_balance_anon_file_reclaim);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_show_max_freq);\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (b98dd5 ANDROID: GKI: Add symbols to symbol list for tcl)\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_slab_bypass);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_hw_protection_shutdown);\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dm_bufio_shrink_scan_bypass);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cleanup_old_buffers_bypass);\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (0df40f ANDROID: vendor_hook: add hooks in dm_bufio.c)\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_insert);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_delete);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_replace);\n     \n      ## drivers/md/dm-bufio.c ##\n     @@\n    + #include \u003clinux/rbtree.h\u003e\n      #include \u003clinux/stacktrace.h\u003e\n      #include \u003clinux/jump_label.h\u003e\n    - \n     +#include \u003ctrace/hooks/mm.h\u003e\n    -+\n    - #define DM_MSG_PREFIX \"bufio\"\n      \n    - /*\n    + #include \"dm.h\"\n    + \n     @@ drivers/md/dm-bufio.c: static void shrink_work(struct work_struct *w)\n      static unsigned long dm_bufio_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)\n      {\n    @@ include/trace/hooks/mm.h: DECLARE_RESTRICTED_HOOK(android_rvh_set_gfp_zone_flags\n      DECLARE_RESTRICTED_HOOK(android_rvh_set_readahead_gfp_mask,\n      \t\t\tTP_PROTO(unsigned int *flags),\t/* gfp_t *flags */\n      \t\t\tTP_ARGS(flags), 1);\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (b98dd5 ANDROID: GKI: Add symbols to symbol list for tcl)\n    + DECLARE_HOOK(android_vh_meminfo_cache_adjust,\n    + \tTP_PROTO(unsigned long *cached),\n    + \tTP_ARGS(cached));\n    +@@ include/trace/hooks/mm.h: DECLARE_HOOK(android_vh_adjust_kvmalloc_flags,\n    + DECLARE_HOOK(android_vh_alloc_pages_slowpath,\n    + \tTP_PROTO(gfp_t gfp_mask, unsigned int order, unsigned long delta),\n    + \tTP_ARGS(gfp_mask, order, delta));\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n     +DECLARE_HOOK(android_vh_dm_bufio_shrink_scan_bypass,\n     +\tTP_PROTO(unsigned long dm_bufio_current_allocated, bool *bypass),\n     +\tTP_ARGS(dm_bufio_current_allocated, bypass));\n    @@ include/trace/hooks/mm.h: DECLARE_RESTRICTED_HOOK(android_rvh_set_gfp_zone_flags\n     +\t\tunsigned long *max_age_hz,\n     +\t\tbool *bypass),\n     +\tTP_ARGS(dm_bufio_current_allocated, max_age_hz, bypass));\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (0df40f ANDROID: vendor_hook: add hooks in dm_bufio.c)\n      DECLARE_HOOK(android_vh_mmap_region,\n      \tTP_PROTO(struct vm_area_struct *vma, unsigned long addr),\n      \tTP_ARGS(vma, addr));\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "be8b5a143e926bf796cd8940b79a75439e3f1a54",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
