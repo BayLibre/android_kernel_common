@@ -113,6 +113,11 @@ static void tracing_mod_hyp_printk(u8 fmt_id, u64 a, u64 b, u64 c, u64 d)
 #endif
 }
 
+static int __hyp_smp_processor_id(void)
+{
+	return hyp_smp_processor_id();
+}
+
 const struct pkvm_module_ops module_ops = {
 	.create_private_mapping = __pkvm_create_private_mapping,
 	.alloc_module_va = __pkvm_alloc_module_va,
@@ -168,6 +173,7 @@ const struct pkvm_module_ops module_ops = {
 	.iommu_snapshot_host_stage2 = kvm_iommu_snapshot_host_stage2,
 	.iommu_donate_pages_atomic = kvm_iommu_donate_pages_atomic,
 	.iommu_reclaim_pages_atomic = kvm_iommu_reclaim_pages_atomic,
+	.hyp_smp_processor_id = __hyp_smp_processor_id,
 };
 
 int __pkvm_init_module(void *module_init)
