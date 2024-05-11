@@ -176,6 +176,24 @@
       "parentUuid": "0fcb608d_7d6c3990",
       "revId": "73a3aecb52ef5002ebf23ecb227cb10ba92238bc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38270529_041fade3",
+        "filename": "kernel/cfi.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 2032918
+      },
+      "writtenOn": "2024-05-11T01:45:39Z",
+      "side": 1,
+      "message": "As we all known,They are attack pathes frequently used by attackers.\nFirstly,module sign check error and setid to 0 will not trigger crash. This is the only way to diagnose risk.\nSecondary, yes,cfi faliure and usercopy abort will trigger crash.  There is plenty of diagnostic data in the crash output. But we want to upload these risks to our cloud server immediately。If we upload these risks after crash while not uploading before crash，it\u0027s too late。Crash will damage uploading to server and maybe log missing result in we can\u0027t upload when device opening next time.\nThirdly,It\u0027s hard to find and analyst cfi faliure and usercopy abort crash in all crashes. Thus,we won\u0027t upload crashes in our business devices unless user permission.",
+      "parentUuid": "881e8b15_cc16d433",
+      "revId": "73a3aecb52ef5002ebf23ecb227cb10ba92238bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
