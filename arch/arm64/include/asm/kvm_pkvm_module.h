@@ -90,6 +90,8 @@ enum pkvm_psci_notification {
  *				pKVM couldn't handle. If @cb returns false, the
  *				control is given back to the host kernel to
  *				handle the exit.
+ * @guest_set_smc_trapping_by_handle: Called from vendor modules to enable SMC
+ *				trapping for one VM.
  * @register_default_trap_handler:
  *				@cb is called whenever EL2 traps EL1 and pKVM
  *				has not handled it. If @cb returns false, the
@@ -176,6 +178,7 @@ struct pkvm_module_ops {
 	int (*host_stage2_get_leaf)(phys_addr_t phys, kvm_pte_t *ptep, u32 *level);
 	int (*register_host_smc_handler)(bool (*cb)(struct user_pt_regs *));
 	int (*register_guest_smc_handler)(bool (*cb)(struct user_pt_regs *));
+	int (*guest_set_smc_trapping_by_handle)(pkvm_handle_t handle, bool state);
 	int (*register_default_trap_handler)(bool (*cb)(struct user_pt_regs *));
 	int (*register_illegal_abt_notifier)(void (*cb)(struct user_pt_regs *));
 	int (*register_psci_notifier)(void (*cb)(enum pkvm_psci_notification, struct user_pt_regs *));

@@ -6,6 +6,7 @@
 
 int __pkvm_register_host_smc_handler(bool (*cb)(struct user_pt_regs *));
 int __pkvm_register_guest_smc_handler(bool (*cb)(struct user_pt_regs *));
+int __pkvm_guest_set_smc_trapping_by_handle(pkvm_handle_t handle, bool state);
 int __pkvm_register_default_trap_handler(bool (*cb)(struct user_pt_regs *));
 int __pkvm_register_illegal_abt_notifier(void (*cb)(struct user_pt_regs *));
 int __pkvm_register_hyp_panic_notifier(void (*cb)(struct user_pt_regs *));
