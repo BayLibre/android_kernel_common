@@ -69,6 +69,30 @@
       },
       "revId": "aa2b239a46376cb629803a0c0c022f2a37e3a5f5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f67af8b3_441fed95",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 801,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-05-13T17:49:47Z",
+      "side": 1,
+      "message": "Ha right, I understand I believe.\n\nThis patch is to help with the psci_mem_protect(). While the one on top is for the reclaim path.",
+      "parentUuid": "1432529e_fde1f562",
+      "range": {
+        "startLine": 801,
+        "startChar": 2,
+        "endLine": 801,
+        "endChar": 29
+      },
+      "revId": "aa2b239a46376cb629803a0c0c022f2a37e3a5f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
