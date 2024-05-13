@@ -329,8 +329,8 @@ int usb_ep_dequeue(struct usb_ep *ep, struct usb_request *req)
 {
 	int ret;
 
+	trace_usb_ep_dequeue(ep, req, 0);
 	ret = ep->ops->dequeue(ep, req);
-	trace_usb_ep_dequeue(ep, req, ret);
 
 	return ret;
 }
