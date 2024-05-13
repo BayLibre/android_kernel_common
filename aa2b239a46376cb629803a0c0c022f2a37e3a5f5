@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b4d29425_8e53b9a2",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-05-13T17:44:57Z",
+      "side": 1,
+      "message": "Sorry, not sure to follow here. That memory is still not accessible from the host,  So it shouldn\u0027t be possible to get a nc mapping there, right?\n\n(notice the patch where I flush on unmap will follow, I\u0027m actually writing the commit message)",
+      "parentUuid": "e9769b34_3f8bce7a",
+      "range": {
+        "startLine": 650,
+        "startChar": 4,
+        "endLine": 650,
+        "endChar": 35
+      },
+      "revId": "aa2b239a46376cb629803a0c0c022f2a37e3a5f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1432529e_fde1f562",
         "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
         "patchSetId": 1
