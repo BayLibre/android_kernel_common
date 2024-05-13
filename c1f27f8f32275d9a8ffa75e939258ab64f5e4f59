@@ -16,6 +16,29 @@
       "message": "please create a patch on top of this one to add the symbols to your symbol list",
       "revId": "c1f27f8f32275d9a8ffa75e939258ab64f5e4f59",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4c8845f_dacb644c",
+        "filename": "drivers/ufs/core/ufshcd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 9158,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-05-13T23:52:16Z",
+      "side": 1,
+      "message": "Is this callback necessary? The statement below this callback passes `on` to `hba-\u003evops-\u003esetup_clocks()`. Has it been considered to modifiy the `.setup_clocks()` implementation instead of adding this vendor hook?",
+      "range": {
+        "startLine": 9158,
+        "startChar": 1,
+        "endLine": 9158,
+        "endChar": 39
+      },
+      "revId": "c1f27f8f32275d9a8ffa75e939258ab64f5e4f59",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
