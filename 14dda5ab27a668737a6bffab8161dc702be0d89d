@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1fbd7d5_f26fd865",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-05-13T16:42:41Z",
+      "side": 1,
+      "message": "Loads of room of optimisation here, we might want to map the whole block with a block at EL2 stage-1 as well to avoid issuing hundreds of TLBI on the unmap path :/\n\nHave you tried measuring the EL2 latency with and without THP out of curiosity?",
+      "range": {
+        "startLine": 276,
+        "startChar": 1,
+        "endLine": 282,
+        "endChar": 2
+      },
+      "revId": "14dda5ab27a668737a6bffab8161dc702be0d89d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
