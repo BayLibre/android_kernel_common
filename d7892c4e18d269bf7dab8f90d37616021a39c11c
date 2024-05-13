@@ -33,6 +33,23 @@
       "message": "Where is the needed userspace changes for this?",
       "revId": "d7892c4e18d269bf7dab8f90d37616021a39c11c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85356a36_41bc2414",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-05-13T17:53:29Z",
+      "side": 1,
+      "message": "Please just backport the original, and then add a commit after that to handle the ABI breakage, to make it more obvious what was changed for the ABI issue vs. the backport.",
+      "revId": "d7892c4e18d269bf7dab8f90d37616021a39c11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
