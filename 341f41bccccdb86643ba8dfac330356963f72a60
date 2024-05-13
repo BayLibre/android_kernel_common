@@ -39,6 +39,26 @@
       "tag": "",
       "revId": "341f41bccccdb86643ba8dfac330356963f72a60",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000077601498",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3079174?revision\u003d2",
+      "key": {
+        "uuid": "5faff899_11199ee3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-05-13T22:49:32Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/d346fa09abff46988de9267b67b6900d9913d5a2) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003dd346fa09abff46988de9267b67b6900d9913d5a2).\n\n```\n      ## Documentation/ABI/testing/sysfs-fs-f2fs ##\n     @@ Documentation/ABI/testing/sysfs-fs-f2fs: Description:\tWhen compress cache is on, it controls cached page\n    @@ fs/f2fs/sysfs.c: out:\n      \tif (!strcmp(a-\u003eattr.name, \"migration_granularity\")) {\n      \t\tif (t \u003d\u003d 0 || t \u003e sbi-\u003esegs_per_sec)\n      \t\t\treturn -EINVAL;\n    -@@ fs/f2fs/sysfs.c: DCC_INFO_GENERAL_RW_ATTR(discard_io_aware_gran);\n    - DCC_INFO_GENERAL_RW_ATTR(discard_urgent_util);\n    - DCC_INFO_GENERAL_RW_ATTR(discard_granularity);\n    - DCC_INFO_GENERAL_RW_ATTR(max_ordered_discard);\n    -+DCC_INFO_GENERAL_RW_ATTR(discard_io_aware);\n    - \n    - /* NM_INFO ATTR */\n    - NM_INFO_RW_ATTR(max_roll_forward_node_blocks, max_rf_node_blocks);\n    +@@ fs/f2fs/sysfs.c: F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, discard_io_aware_gran, discard_io_aw\n    + F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, discard_urgent_util, discard_urgent_util);\n    + F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, discard_granularity, discard_granularity);\n    + F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, max_ordered_discard, max_ordered_discard);\n    ++F2FS_RW_ATTR(DCC_INFO, discard_cmd_control, discard_io_aware, discard_io_aware);\n    + F2FS_RW_ATTR(RESERVED_BLOCKS, f2fs_sb_info, reserved_blocks, reserved_blocks);\n    + F2FS_RW_ATTR(SM_INFO, f2fs_sm_info, ipu_policy, ipu_policy);\n    + F2FS_RW_ATTR(SM_INFO, f2fs_sm_info, min_ipu_util, min_ipu_util);\n     @@ fs/f2fs/sysfs.c: static struct attribute *f2fs_attrs[] \u003d {\n      \tATTR_LIST(discard_urgent_util),\n      \tATTR_LIST(discard_granularity),\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "341f41bccccdb86643ba8dfac330356963f72a60",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
