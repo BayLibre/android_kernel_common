@@ -266,6 +266,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "15e0d3b1_9a9ea8c2",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-05-14T08:42:06Z",
+      "side": 1,
+      "message": "Ack, that\u0027s a good point. Or maybe we only do the psci_mem_protect() stuff in the hyp_{alloc,free}_account() path? It\u0027s only the guest-related data that we need to protect I think, which by the look of it is always accounted against said guest. IOW, the fact that we account is a proxy/indication for \u0027this has guest stuff in it\u0027. Thoughts?\n\nThe non-accounted hyp_alloc() users also include the SMMU stuff, but that too doesn\u0027t hold anything secret so we\u0027re fine with excluding that from psci_mem_protect().",
+      "parentUuid": "ab4e2462_fa7e3bdf",
+      "range": {
+        "startLine": 650,
+        "startChar": 4,
+        "endLine": 650,
+        "endChar": 35
+      },
+      "revId": "aa2b239a46376cb629803a0c0c022f2a37e3a5f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1432529e_fde1f562",
         "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
         "patchSetId": 1
