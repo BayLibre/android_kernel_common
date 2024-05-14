@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3015ccd3_4ca0e9dc",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-05-14T06:59:40Z",
+      "side": 1,
+      "message": "I guess I was saying that this code doesn\u0027t protect against cold reboot attacks ATM. In order to do this you\u0027d need to psci_mem_protect_inc() on alloc and psci_mem_protect_dec() on free after the page has been poisoned. And I\u0027m not sure the CMOs are needed for this case.",
+      "parentUuid": "b4d29425_8e53b9a2",
+      "range": {
+        "startLine": 650,
+        "startChar": 4,
+        "endLine": 650,
+        "endChar": 35
+      },
+      "revId": "aa2b239a46376cb629803a0c0c022f2a37e3a5f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1432529e_fde1f562",
         "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
         "patchSetId": 1
