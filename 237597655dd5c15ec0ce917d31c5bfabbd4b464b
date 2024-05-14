@@ -16,6 +16,24 @@
       "message": "Can you decouple the tests from the new functionality please, by moving the tests to the end of the series?",
       "revId": "237597655dd5c15ec0ce917d31c5bfabbd4b464b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3d134e6_327b60f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1882526
+      },
+      "writtenOn": "2024-05-14T10:10:03Z",
+      "side": 1,
+      "message": "I\u0027ve reordered the commits so that the 2 adding/extending the test module are at the top and can be dropped. Note that they effectively add dead code from a GKI perspective as it will never enable `HYP_CFI_TEST`.",
+      "parentUuid": "113a4543_f7dc6b63",
+      "revId": "237597655dd5c15ec0ce917d31c5bfabbd4b464b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
