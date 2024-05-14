@@ -139,6 +139,24 @@
       "parentUuid": "ebae1a67_8ca3939d",
       "revId": "c38bea02e657e38302b3eea294f922252c2bb52b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd1f2afd_03bf26b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2026921
+      },
+      "writtenOn": "2024-05-14T02:41:31Z",
+      "side": 1,
+      "message": "No no, the charging driver needs to obtain the USB enumeration status, because the DP and DM signal lines USB and charging are both used. When connecting to the PD type restarter, the charging needs to determine whether to switch based on the USB enumeration status. dp, dm are used for charging test.",
+      "parentUuid": "4668d420_eecdb21c",
+      "revId": "c38bea02e657e38302b3eea294f922252c2bb52b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
