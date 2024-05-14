@@ -672,8 +672,9 @@ int __handle_domain_irq(struct irq_domain *domain, unsigned int hwirq,
 {
 	struct pt_regs *old_regs = set_irq_regs(regs);
 	unsigned int irq = hwirq;
-	struct irq_desc *desc;
 	int ret = 0;
+
+	irq_enter();
 
 #ifdef CONFIG_IRQ_DOMAIN
 	if (lookup)
@@ -684,22 +685,14 @@ int __handle_domain_irq(struct irq_domain *domain, unsigned int hwirq,
 	 * Some hardware gives randomly wrong interrupts.  Rather
 	 * than crashing, do something sensible.
 	 */
-	if (unlikely(!irq || irq >= nr_irqs || !(desc = irq_to_desc(irq)))) {
+	if (unlikely(!irq || irq >= nr_irqs)) {
 		ack_bad_irq(irq);
 		ret = -EINVAL;
-		goto out;
-	}
-
-	if (IS_ENABLED(CONFIG_ARCH_WANTS_IRQ_RAW) &&
-	    unlikely(irq_settings_is_raw(desc))) {
-		generic_handle_irq_desc(desc);
 	} else {
-		irq_enter();
-		generic_handle_irq_desc(desc);
-		irq_exit();
+		generic_handle_irq(irq);
 	}
 
-out:
+	irq_exit();
 	set_irq_regs(old_regs);
 	return ret;
 }
