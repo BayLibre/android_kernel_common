@@ -73,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "83c3dda3_428bd095",
+        "filename": "drivers/virt/gunyah/vm_mgr_mem.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2024-05-14T23:47:20Z",
+      "side": 1,
+      "message": "The current implementation (guest_memfd, too) doesn\u0027t handle same page being mapped multiple times very well. There\u0027s not currently a usecase in AVF for it, so I haven\u0027t spent much time on coming up with a way to track it; it increases code complexity \u003d harder to get accepted upstream.\n\nBack to the original \"is this ok?\" -- because it was already donated to the first guest, Gunyah should reject our attempt to donate the page to the second guest, so it should fail in a deterministic way.",
+      "parentUuid": "db2b1e28_6210d319",
+      "range": {
+        "startLine": 418,
+        "startChar": 2,
+        "endLine": 418,
+        "endChar": 26
+      },
+      "revId": "5d5617e8787be809a5b9327b0fb5563af6d8964b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54c35f8b_188889a0",
         "filename": "drivers/virt/gunyah/vm_mgr_mem.c",
         "patchSetId": 5
