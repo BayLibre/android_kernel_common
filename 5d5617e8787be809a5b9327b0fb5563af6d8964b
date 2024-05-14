@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db2b1e28_6210d319",
+        "filename": "drivers/virt/gunyah/vm_mgr_mem.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-05-14T12:16:28Z",
+      "side": 1,
+      "message": "Not passing FOLL_WRITE means that GUP will not break CoW IIRC. This means you might end up with the same page being mapped multiple times, possibly in multiple guests. Is this OK?",
+      "range": {
+        "startLine": 418,
+        "startChar": 2,
+        "endLine": 418,
+        "endChar": 26
+      },
+      "revId": "5d5617e8787be809a5b9327b0fb5563af6d8964b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
