@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "147c66f2_44d49bb2",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-05-14T15:02:32Z",
+      "side": 1,
+      "message": "nit: `smp_processor_id()` fits better with the existing nomenclature (CPU ID tends to refer to the part number)",
+      "range": {
+        "startLine": 152,
+        "startChar": 4,
+        "endLine": 152,
+        "endChar": 14
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "4eebc78e_f683500c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/include/asm/kvm_pkvm_module.h",
+              "range": {
+                "startLine": 152,
+                "startChar": 0,
+                "endLine": 153,
+                "endChar": 0
+              },
+              "replacement": " * @smp_processor_id:\t\tCurrent CPU id\n"
+            },
+            {
+              "path": "arch/arm64/include/asm/kvm_pkvm_module.h",
+              "range": {
+                "startLine": 215,
+                "startChar": 0,
+                "endLine": 216,
+                "endChar": 0
+              },
+              "replacement": "\tint (*smp_processor_id)(void);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bfb1531a6ad6fa9afc2ddf0867af7c0a576c7f17",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
