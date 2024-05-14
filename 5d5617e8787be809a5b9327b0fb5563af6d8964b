@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "07135b15_e6e73ac8",
+        "filename": "drivers/virt/gunyah/vm_mgr_mem.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-05-14T12:32:32Z",
+      "side": 1,
+      "message": "Nit: why does this need to be taken all the way up here? IOW, is this lock protecting more than ghvm-\u003ebindings?",
+      "range": {
+        "startLine": 365,
+        "startChar": 1,
+        "endLine": 365,
+        "endChar": 33
+      },
+      "revId": "5d5617e8787be809a5b9327b0fb5563af6d8964b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db2b1e28_6210d319",
         "filename": "drivers/virt/gunyah/vm_mgr_mem.c",
         "patchSetId": 5
@@ -19,6 +42,75 @@
         "startChar": 2,
         "endLine": 418,
         "endChar": 26
+      },
+      "revId": "5d5617e8787be809a5b9327b0fb5563af6d8964b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54c35f8b_188889a0",
+        "filename": "drivers/virt/gunyah/vm_mgr_mem.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-05-14T12:32:32Z",
+      "side": 1,
+      "message": "Anything different than `pinned \u003d\u003d 1` is probably bogus no?",
+      "range": {
+        "startLine": 429,
+        "startChar": 5,
+        "endLine": 429,
+        "endChar": 15
+      },
+      "revId": "5d5617e8787be809a5b9327b0fb5563af6d8964b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c5ac5bb_6f04b74d",
+        "filename": "drivers/virt/gunyah/vm_mgr_mem.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-05-14T12:32:32Z",
+      "side": 1,
+      "message": "Are you guys OK with page-cache pages, and if so, why? The pKVM implementation had issues with that as the writable stage-2 mapping is not known to the filesystem which can cause things to go out of sync and cause fs corruption. See https://android.googlesource.com/kernel/common/+/refs/heads/android15-6.6/arch/arm64/kvm/mmu.c#1719\n\nDoes this apply here?",
+      "range": {
+        "startLine": 434,
+        "startChar": 20,
+        "endLine": 434,
+        "endChar": 24
+      },
+      "revId": "5d5617e8787be809a5b9327b0fb5563af6d8964b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "644b4665_e10292e2",
+        "filename": "drivers/virt/gunyah/vm_mgr_mem.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-05-14T12:32:32Z",
+      "side": 1,
+      "message": "There is an error path where gunyah_vm_provide_folio() does that already. Are we sure this cannot happen here?",
+      "range": {
+        "startLine": 440,
+        "startChar": 1,
+        "endLine": 440,
+        "endChar": 21
       },
       "revId": "5d5617e8787be809a5b9327b0fb5563af6d8964b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
