@@ -67,6 +67,60 @@
       "message": "Wrong bug id.",
       "revId": "d7892c4e18d269bf7dab8f90d37616021a39c11c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77dab16a_cceca172",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1957137
+      },
+      "writtenOn": "2024-05-14T06:16:10Z",
+      "side": 1,
+      "message": "No user space changes needed for this feature. The default values stay the same. We need to modify any segment size value in vendor daemons or scripts as per necessity.",
+      "parentUuid": "2a845684_ac1779cf",
+      "revId": "d7892c4e18d269bf7dab8f90d37616021a39c11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62487f56_d4ebe49a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1957137
+      },
+      "writtenOn": "2024-05-14T06:16:10Z",
+      "side": 1,
+      "message": "So, I need to do the following ?\n\n1. Port [1] as is.\n2. Add vendor opts changes that reflect what changed in ABI ? \n\nIf yes, then doesn\u0027t the original commit break ABI ?",
+      "parentUuid": "85356a36_41bc2414",
+      "revId": "d7892c4e18d269bf7dab8f90d37616021a39c11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1153cdb4_2469d9e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1957137
+      },
+      "writtenOn": "2024-05-14T06:16:10Z",
+      "side": 1,
+      "message": "Hi Greg. Will port it to mainline and 6.1 also after 5.10.",
+      "parentUuid": "8ee6ed7c_f4311621",
+      "revId": "d7892c4e18d269bf7dab8f90d37616021a39c11c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
