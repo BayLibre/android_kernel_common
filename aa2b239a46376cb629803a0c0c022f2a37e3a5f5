@@ -218,6 +218,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "913c4b29_8e370e20",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-05-14T08:08:10Z",
+      "side": 1,
+      "message": "I actually think that using psci_mem_protect_{inc,dec}(allco_size) in the heap allocator is a pretty good idea on its own, so I vote for adding that now 😊. The psci_mem_protect calls are pretty cheap fwiw, the vast majority of the time they won\u0027t result in issuing an actual SMC since we maintain the refcount at EL2.",
+      "parentUuid": "239b8f69_93f99045",
+      "range": {
+        "startLine": 650,
+        "startChar": 4,
+        "endLine": 650,
+        "endChar": 35
+      },
+      "revId": "aa2b239a46376cb629803a0c0c022f2a37e3a5f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1432529e_fde1f562",
         "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
         "patchSetId": 1
