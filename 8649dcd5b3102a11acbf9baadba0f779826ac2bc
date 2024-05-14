@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24aa3274_8f534c6b",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 890,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-05-14T15:57:55Z",
+      "side": 1,
+      "message": "Yep. It has to be like this.",
+      "parentUuid": "5fa7fdd2_f1a28e7f",
+      "range": {
+        "startLine": 890,
+        "startChar": 12,
+        "endLine": 890,
+        "endChar": 24
+      },
+      "revId": "8649dcd5b3102a11acbf9baadba0f779826ac2bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b132be95_50dec269",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-09T13:54:42Z",
       "side": 1,
       "message": "What are the implications of the caller forgetting to do this? Or would this value, since it\u0027s owned, get dropped automatically once the caller\u0027s scope is dropped?",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 128,
+        "endChar": 42
+      },
+      "revId": "8649dcd5b3102a11acbf9baadba0f779826ac2bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bf30e1c_bf63e6f1",
+        "filename": "drivers/android/binder/range_alloc/mod.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-05-14T15:57:55Z",
+      "side": 1,
+      "message": "Calling kfree inside the lock is allowed, but could be a perf issue.",
+      "parentUuid": "b132be95_50dec269",
       "range": {
         "startLine": 127,
         "startChar": 4,
