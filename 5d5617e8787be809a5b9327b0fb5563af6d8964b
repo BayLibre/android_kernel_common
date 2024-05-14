@@ -95,6 +95,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e3c8ec0_e7b4e286",
+        "filename": "drivers/virt/gunyah/vm_mgr_mem.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2024-05-14T16:59:09Z",
+      "side": 1,
+      "message": "Yes, this is applicable for us. We\u0027ll update to test for `!PageSwapBacked(page)`",
+      "parentUuid": "8c5ac5bb_6f04b74d",
+      "range": {
+        "startLine": 434,
+        "startChar": 20,
+        "endLine": 434,
+        "endChar": 24
+      },
+      "revId": "5d5617e8787be809a5b9327b0fb5563af6d8964b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "644b4665_e10292e2",
         "filename": "drivers/virt/gunyah/vm_mgr_mem.c",
         "patchSetId": 5
@@ -106,6 +130,30 @@
       "writtenOn": "2024-05-14T12:32:32Z",
       "side": 1,
       "message": "There is an error path where gunyah_vm_provide_folio() does that already. Are we sure this cannot happen here?",
+      "range": {
+        "startLine": 440,
+        "startChar": 1,
+        "endLine": 440,
+        "endChar": 21
+      },
+      "revId": "5d5617e8787be809a5b9327b0fb5563af6d8964b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e971ce75_3412fcdf",
+        "filename": "drivers/virt/gunyah/vm_mgr_mem.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2024-05-14T16:59:09Z",
+      "side": 1,
+      "message": "Ah, that is good catch. Sreenad, let\u0027s delete the one folio_unlock inside gunyah_vm_provide_folio",
+      "parentUuid": "644b4665_e10292e2",
       "range": {
         "startLine": 440,
         "startChar": 1,
