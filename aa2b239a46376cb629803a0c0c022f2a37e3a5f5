@@ -170,6 +170,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f4b9e13_1013d375",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-05-14T07:41:37Z",
+      "side": 1,
+      "message": "Ack.\n\nI haven\u0027t touched the psci_mem_protect as I wasn\u0027t sure we all agree to move it to the pVMs boot/teardown.\n\nLet me first swap those patches so we can merge first what actually fixes something.",
+      "parentUuid": "7d3dc9e9_7659675c",
+      "range": {
+        "startLine": 650,
+        "startChar": 4,
+        "endLine": 650,
+        "endChar": 35
+      },
+      "revId": "aa2b239a46376cb629803a0c0c022f2a37e3a5f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1432529e_fde1f562",
         "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
         "patchSetId": 1
@@ -205,6 +229,30 @@
       "side": 1,
       "message": "Ha right, I understand I believe.\n\nThis patch is to help with the psci_mem_protect(). While the one on top is for the reclaim path.",
       "parentUuid": "1432529e_fde1f562",
+      "range": {
+        "startLine": 801,
+        "startChar": 2,
+        "endLine": 801,
+        "endChar": 29
+      },
+      "revId": "aa2b239a46376cb629803a0c0c022f2a37e3a5f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bc68570_3840f4df",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 801,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-05-14T07:41:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f67af8b3_441fed95",
       "range": {
         "startLine": 801,
         "startChar": 2,
