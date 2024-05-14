@@ -698,10 +698,8 @@ int handle_domain_irq(struct irq_domain *domain,
 
 	irq_enter();
 
-	__irq_enter_raw();
 	/* The irqdomain code provides boundary checks */
 	desc = irq_resolve_mapping(domain, hwirq);
-	__irq_exit_raw();
 	if (likely(desc))
 		handle_irq_desc(desc);
 	else
