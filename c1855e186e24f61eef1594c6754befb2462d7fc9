@@ -1,0 +1,22 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eab5bdc3_416f736d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1955380
+      },
+      "writtenOn": "2024-05-15T23:57:16Z",
+      "side": 1,
+      "message": "\u003e Cherry pick is not clean. Checked against UPSTREAM.\n\u003e UPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/5add321c329b1746589b51359259666ca3dbe219) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d5add321c329b1746589b51359259666ca3dbe219).\n\u003e \n\u003e ```\n\u003e       ## drivers/net/wireless/ath/wil6210/wmi.c ##\n\u003e      @@ drivers/net/wireless/ath/wil6210/wmi.c: static void wmi_evt_rx_mgmt(struct wil6210_vif *vif, int id, void *d, int len)\n\u003e       \t\tstruct cfg80211_bss *bss;\n\u003e     @@ include/net/cfg80211.h: void cfg80211_bss_iter(struct wiphy *wiphy,\n\u003e        * @dev: network device\n\u003e      \n\u003e       ## include/uapi/linux/nl80211.h ##\n\u003e     -@@ include/uapi/linux/nl80211.h: enum nl80211_bss_scan_width {\n\u003e     +@@ include/uapi/linux/nl80211.h: enum nl80211_bss_cannot_use_reasons {\n\u003e        *\telements from a Beacon frame (bin); not present if no Beacon frame has\n\u003e        *\tyet been received\n\u003e        * @NL80211_BSS_CHAN_WIDTH: channel width of the control channel\n\u003e     @@ net/mac80211/ibss.c: static void ieee80211_ibss_sta_expire(struct ieee80211_sub_\n\u003e       \tstruct ieee80211_if_ibss *ifibss \u003d \u0026sdata-\u003eu.ibss;\n\u003e      -\tenum nl80211_bss_scan_width scan_width;\n\u003e       \n\u003e     - \tlockdep_assert_wiphy(sdata-\u003elocal-\u003ehw.wiphy);\n\u003e     + \tsdata_assert_lock(sdata);\n\u003e       \n\u003e      @@ net/mac80211/ibss.c: static void ieee80211_sta_merge_ibss(struct ieee80211_sub_if_data *sdata)\n\u003e       \tsdata_info(sdata,\n\u003e     @@ net/mac80211/ibss.c: static void ieee80211_sta_find_ibss(struct ieee80211_sub_if\n\u003e      -\tenum nl80211_bss_scan_width scan_width;\n\u003e       \tint active_ibss;\n\u003e       \n\u003e     - \tlockdep_assert_wiphy(sdata-\u003elocal-\u003ehw.wiphy);\n\u003e     + \tsdata_assert_lock(sdata);\n\u003e      @@ net/mac80211/ibss.c: static void ieee80211_sta_find_ibss(struct ieee80211_sub_if_data *sdata)\n\u003e       \n\u003e       \t\tsdata_info(sdata, \"Trigger new scan to find an IBSS to join\\n\");\n\u003e ```\n\u003e \n\u003e \n\u003e Please refer to the contribution guidelines for details:\n\u003e https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\n\nPlease fix.",
+      "parentUuid": "31447f4b_9fbeccc7",
+      "revId": "c1855e186e24f61eef1594c6754befb2462d7fc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
