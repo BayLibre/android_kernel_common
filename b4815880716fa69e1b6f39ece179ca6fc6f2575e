@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad8976d3_d7a188c6",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1296,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-05-15T16:18:39Z",
+      "side": 1,
+      "message": "When does that happen?",
+      "range": {
+        "startLine": 1296,
+        "startChar": 6,
+        "endLine": 1296,
+        "endChar": 44
+      },
+      "revId": "b4815880716fa69e1b6f39ece179ca6fc6f2575e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc379066_202e08f4",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1307,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-05-15T16:18:39Z",
+      "side": 1,
+      "message": "See later comment. For this, you could use `stclr` instead of the cmpxchg loop, however the ordering here is even more subtle.\n\nAcquire isn\u0027t what you want, as that only applies to the load part of the cmpxchg, so the later va_{start,end} updates can be hoisted above the store to the bitmap. Instead, I think you need _release_ semantics (i.e. `stclrl`) to make sure that the bitmap isn\u0027t updated until after the page-table has been updated.",
+      "range": {
+        "startLine": 1303,
+        "startChar": 5,
+        "endLine": 1307,
+        "endChar": 69
+      },
+      "revId": "b4815880716fa69e1b6f39ece179ca6fc6f2575e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c32140e3_84acafd4",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1311,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-05-15T16:18:39Z",
+      "side": 1,
+      "message": "I think it\u0027s simplest to remove these two assignment, as the variables can be accessed concurrently by `sync_range_overlap()` and we\u0027d have to add extra synchronisation to make this safe.",
+      "range": {
+        "startLine": 1309,
+        "startChar": 0,
+        "endLine": 1311,
+        "endChar": 0
+      },
+      "revId": "b4815880716fa69e1b6f39ece179ca6fc6f2575e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2143be9c_1b8c7c23",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1344,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-05-15T16:18:39Z",
+      "side": 1,
+      "message": "I think we can do this with an `ldsetl`, although I\u0027m also wondering whether or not you need acquire semantics in addition to the release so that loads from the page-table are ordered _after_ the load of the bitmap confirming that there aren\u0027t any overlaps. In that case, we want `ldsetal` to get acquire+release.\n\n(looking ahead: we need the acquire to make sure that the sync_range_overlap() check is working with up-to-date va_{start,end})",
+      "range": {
+        "startLine": 1339,
+        "startChar": 6,
+        "endLine": 1344,
+        "endChar": 0
+      },
+      "revId": "b4815880716fa69e1b6f39ece179ca6fc6f2575e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c37645f_934f2878",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1345,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-05-15T16:18:39Z",
+      "side": 1,
+      "message": "Does this still search by bit if `old_sync_bitmap \u003d\u003d 0`?",
+      "range": {
+        "startLine": 1345,
+        "startChar": 1,
+        "endLine": 1345,
+        "endChar": 17
+      },
+      "revId": "b4815880716fa69e1b6f39ece179ca6fc6f2575e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
