@@ -338,6 +338,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "747e49ca_ddc21fe6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-05-15T15:04:30Z",
+      "side": 1,
+      "message": "Also giving more thoughts, this isn\u0027t enough what I did here! In case of a merge, the meta-data for the deleted chunk must be zeroed as well!\n\nBut then if I zero (and cache flush) those meta-data whenever a chunk is destroyed (chunk_list_del()) it would remove the need to memset the pages we reclaim back.\n\nWith that the entire page will always be 0... But to be on the safe side I can hide a test behind EL2_DEBUG that verifies that this page is actually 0 (or I could extend my local test to verify it)",
+      "parentUuid": "32f27a7b_294ee412",
+      "range": {
+        "startLine": 650,
+        "startChar": 4,
+        "endLine": 650,
+        "endChar": 35
+      },
+      "revId": "aa2b239a46376cb629803a0c0c022f2a37e3a5f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1432529e_fde1f562",
         "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
         "patchSetId": 1
