@@ -1578,6 +1578,7 @@
       <elf-symbol name='crypto_aead_encrypt' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb13b7647'/>
       <elf-symbol name='crypto_aead_setauthsize' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xead73e40'/>
       <elf-symbol name='crypto_aead_setkey' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xb3a872a1'/>
+      <elf-symbol name='crypto_aes_set_key' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x9ac515fd'/>
       <elf-symbol name='crypto_ahash_digest' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x41db154a'/>
       <elf-symbol name='crypto_ahash_finup' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x36cdb2b7'/>
       <elf-symbol name='crypto_ahash_setkey' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xcd2e94d'/>
@@ -138924,6 +138925,12 @@
         <parameter type-id='a585cbc4' name='tfm' filepath='crypto/aead.c' line='43' column='1'/>
         <parameter type-id='bbaf3419' name='key' filepath='crypto/aead.c' line='44' column='1'/>
         <parameter type-id='f0981eeb' name='keylen' filepath='crypto/aead.c' line='44' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
+      <function-decl name='crypto_aes_set_key' mangled-name='crypto_aes_set_key' filepath='crypto/aes_generic.c' line='1136' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='crypto_aes_set_key'>
+        <parameter type-id='dfeb7f6c' name='tfm' filepath='crypto/aes_generic.c' line='1136' column='1'/>
+        <parameter type-id='bbaf3419' name='in_key' filepath='crypto/aes_generic.c' line='1136' column='1'/>
+        <parameter type-id='f0981eeb' name='key_len' filepath='crypto/aes_generic.c' line='1137' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
       <function-decl name='crypto_ahash_digest' mangled-name='crypto_ahash_digest' filepath='crypto/ahash.c' line='368' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='crypto_ahash_digest'>
