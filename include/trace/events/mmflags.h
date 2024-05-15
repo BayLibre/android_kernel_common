@@ -135,7 +135,11 @@ IF_HAVE_PG_ARCH_X(arch_3)						\
 IF_HAVE_PG_OEM_RESERVED(oem_reserved_1)					\
 IF_HAVE_PG_OEM_RESERVED(oem_reserved_2)					\
 IF_HAVE_PG_OEM_RESERVED(oem_reserved_3)					\
-IF_HAVE_PG_OEM_RESERVED(oem_reserved_4)
+IF_HAVE_PG_OEM_RESERVED(oem_reserved_4)					\
+IF_HAVE_PG_OEM_RESERVED(oem_reserved_5)					\
+IF_HAVE_PG_OEM_RESERVED(oem_reserved_6)					\
+IF_HAVE_PG_OEM_RESERVED(oem_reserved_7)					\
+IF_HAVE_PG_OEM_RESERVED(oem_reserved_8)
 
 #define show_page_flags(flags)						\
 	(flags) ? __print_flags(flags, "|",				\

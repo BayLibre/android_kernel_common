@@ -141,6 +141,10 @@ enum pageflags {
 	PG_oem_reserved_2,
 	PG_oem_reserved_3,
 	PG_oem_reserved_4,
+	PG_oem_reserved_5,
+	PG_oem_reserved_6,
+	PG_oem_reserved_7,
+	PG_oem_reserved_8,
 #endif
 	__NR_PAGEFLAGS,
 
