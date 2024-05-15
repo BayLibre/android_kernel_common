@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8ba483f_f2f90388",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2024-05-15T18:36:43Z",
+      "side": 1,
+      "message": "**1)**\nThere are an additional 27 configs present in the .config file with these changes. \n22 of those configs are TEGRA specific configs that are used to enable a variety of tegra features including pinctrl, gpio, bpmp, serial, as well as some general tegra soc enablement configs:\n```\nCONFIG_ARCH_TEGRA_234_SOC\u003dy\nCONFIG_ARCH_TEGRA\u003dy\nCONFIG_CLK_TEGRA_BPMP\u003dy\nCONFIG_GPIO_TEGRA\u003dy\nCONFIG_I2C_TEGRA_BPMP\u003dy\nCONFIG_PINCTRL_TEGRA234\u003dy\nCONFIG_PINCTRL_TEGRA_XUSB\u003dy\nCONFIG_PINCTRL_TEGRA\u003dy\nCONFIG_RESET_TEGRA_BPMP\u003dy\nCONFIG_SERIAL_8250_TEGRA\u003dy\nCONFIG_SERIAL_TEGRA_TCU_CONSOLE\u003dy\nCONFIG_SERIAL_TEGRA_TCU\u003dy\nCONFIG_SOC_TEGRA_CBB\u003dy\nCONFIG_SOC_TEGRA_FUSE\u003dy\nCONFIG_SOC_TEGRA_PMC\u003dy\nCONFIG_SOC_TEGRA_POWERGATE_BPMP\u003dy\nCONFIG_TEGRA_AHB\u003dy\nCONFIG_TEGRA_BPMP\u003dy\nCONFIG_TEGRA_HSP_MBOX\u003dy\nCONFIG_TEGRA_IOMMU_SMMU\u003dy\nCONFIG_TEGRA_IVC\u003dy\nCONFIG_TEGRA_MC\u003dy\n```\n\n5 of those configs are non-tegra related configs:\n```\nCONFIG_ARCH_HAS_PMEM_API\u003dy\nCONFIG_ARCH_HAS_UACCESS_FLUSHCACHE\u003dy\nCONFIG_ARM64_PMEM\u003dy\nCONFIG_ARM_GIC_PM\u003dy\nCONFIG_MEMORY\u003dy\n```\n\n\n\n**2)**\n**Kernel Memory Footprint without addition:**\nImage: 34M\nvmlinux: 163M\n\n```\ntext: 26710032\ndata: 8081042  \nbss: 571856 \ndec: 35362930\nhex: 21b9872 \nfilename: vmlinux\n```\n\n**Kernel Memory Footprint with addition:**\nImage: 34M\nvmlinux: 164M (increased by 1M)\n\n```\ntext: 26955980        \ndata: 8282646   \nbss: 572432 \ndec: 35811058                     \nhex: 2226ef2 \nfilename: vmlinux\n```\n\n**Summary of in-memory size changes**\nThe text segment increased by 245,948 bytes.\nThe data segment increased by 201,604 bytes.\nThe bss segment increased by 576 bytes.\ndec increased by 448,128 bytes",
+      "parentUuid": "287dcca6_ecfa66ac",
+      "revId": "a3506cf08426bfd2ea2e5bcf57eda7889be8ec57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ebe1335b_bd28c446",
