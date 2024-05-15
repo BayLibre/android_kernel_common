@@ -106,6 +106,24 @@
       "parentUuid": "5082e8f0_699b5428",
       "revId": "d849a504cf13473ee39b272dde437c02652bfd8f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "742e3f11_29dcdf35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1637924
+      },
+      "writtenOn": "2024-05-15T21:23:24Z",
+      "side": 1,
+      "message": "Can I point out that GENERIC_PHY and INTERCONNECT aren\u0027t actually disabled by this change? Interconnect is selected by tegra_mc and generic_phy is selected by xusb pinctrl, thus they are not listed in the minimized savedefconfig output. Check .config after making the defconfig and see what the values of these options are.",
+      "parentUuid": "7bdc80e9_36b9b9e9",
+      "revId": "d849a504cf13473ee39b272dde437c02652bfd8f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
