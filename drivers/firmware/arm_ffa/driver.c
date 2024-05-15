@@ -1467,14 +1467,9 @@ static int __init ffa_init(void)
 	if (ret)
 		return ret;
 
-	ret = arm_ffa_bus_init();
-	if (ret)
-		return ret;
-
 	drv_info = kzalloc(sizeof(*drv_info), GFP_KERNEL);
 	if (!drv_info) {
-		ret = -ENOMEM;
-		goto ffa_bus_exit;
+		return -ENOMEM;
 	}
 
 	ret = ffa_version_check(&drv_info->version);
@@ -1527,11 +1522,9 @@ free_pages:
 	free_pages_exact(drv_info->rx_buffer, RXTX_BUFFER_SIZE);
 free_drv_info:
 	kfree(drv_info);
-ffa_bus_exit:
-	arm_ffa_bus_exit();
 	return ret;
 }
-subsys_initcall(ffa_init);
+module_init(ffa_init);
 
 static void __exit ffa_exit(void)
 {
@@ -1542,7 +1535,6 @@ static void __exit ffa_exit(void)
 	free_pages_exact(drv_info->rx_buffer, RXTX_BUFFER_SIZE);
 	xa_destroy(&drv_info->partition_info);
 	kfree(drv_info);
-	arm_ffa_bus_exit();
 }
 module_exit(ffa_exit);
 
