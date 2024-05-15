@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bffd539d_12fb3fb9",
+        "filename": "include/trace/hooks/mm.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-05-15T23:16:34Z",
+      "side": 1,
+      "message": "`android_rvh_madvise_pageout_end` is better",
+      "range": {
+        "startLine": 105,
+        "startChar": 24,
+        "endLine": 105,
+        "endChar": 57
+      },
+      "revId": "1d2935576b377f1b3d85100a6851111bae43ec76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb225548_24d2afee",
+        "filename": "mm/madvise.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-05-15T23:16:34Z",
+      "side": 1,
+      "message": "please add `if(is_list_empty(\u0026folio_list)` so that all partners who do not use this hook are not paying price of calling additional function.",
+      "range": {
+        "startLine": 604,
+        "startChar": 1,
+        "endLine": 604,
+        "endChar": 28
+      },
+      "revId": "1d2935576b377f1b3d85100a6851111bae43ec76",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
