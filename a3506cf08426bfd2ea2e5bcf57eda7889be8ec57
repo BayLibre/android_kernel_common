@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "32094e96_e092b22b",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2024-05-16T15:39:20Z",
+      "side": 1,
+      "message": "Out of all these configs, the only ones which are tristate and can potentially be built as a module instead of built into the kernel are \n```\nCONFIG_GPIO_TEGRA\nCONFIG_I2C_TEGRA_BPMP\nCONFIG_SERIAL_8250_TEGRA\nCONFIG_SOC_TEGRA_CBB\n```\n\nAll the other configs are bool and are set to y based on some sort of relation with `CONFIG_ARCH_TEGRA`, with a few having relation with some of the other configs being proposed for addition.\n\nAs for these bool configs that are being added as builtin, most of these configs were created with their CONFIG_ARCH_TEGRA dependencies years ago when tegra chips were first being brought up, causing their continued dependency in future devices as tegra development has continued from that point onwards. Some others such as `CONFIG_PINCTRL_TEGRA234` were added during later bringups, but are still necessary for our device",
+      "parentUuid": "057a4568_d495c6d0",
+      "revId": "a3506cf08426bfd2ea2e5bcf57eda7889be8ec57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ebe1335b_bd28c446",
