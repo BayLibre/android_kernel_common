@@ -4714,6 +4714,12 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
 		if ((flags & (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT | NFT_SET_EVAL)) ==
 			     (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT))
 			return -EOPNOTSUPP;
+<<<<<<< HEAD   (81cc17 Revert "io_uring: drop any code related to SCM_RIGHTS")
+=======
+		if ((flags & (NFT_SET_CONSTANT | NFT_SET_TIMEOUT)) ==
+			     (NFT_SET_CONSTANT | NFT_SET_TIMEOUT))
+			return -EOPNOTSUPP;
+>>>>>>> BRANCH (347385 Linux 6.1.84)
 	}
 
 	desc.dtype = 0;
