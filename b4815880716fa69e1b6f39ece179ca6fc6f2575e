@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd54d97b_8e30d958",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1296,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-05-16T12:08:39Z",
+      "side": 1,
+      "message": "This was from an old implementation, removed it.",
+      "parentUuid": "ad8976d3_d7a188c6",
+      "range": {
+        "startLine": 1296,
+        "startChar": 6,
+        "endLine": 1296,
+        "endChar": 44
+      },
+      "revId": "b4815880716fa69e1b6f39ece179ca6fc6f2575e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc379066_202e08f4",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-15T16:18:39Z",
       "side": 1,
       "message": "See later comment. For this, you could use `stclr` instead of the cmpxchg loop, however the ordering here is even more subtle.\n\nAcquire isn\u0027t what you want, as that only applies to the load part of the cmpxchg, so the later va_{start,end} updates can be hoisted above the store to the bitmap. Instead, I think you need _release_ semantics (i.e. `stclrl`) to make sure that the bitmap isn\u0027t updated until after the page-table has been updated.",
+      "range": {
+        "startLine": 1303,
+        "startChar": 5,
+        "endLine": 1307,
+        "endChar": 69
+      },
+      "revId": "b4815880716fa69e1b6f39ece179ca6fc6f2575e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52eec647_a8945321",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1307,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-05-16T12:08:39Z",
+      "side": 1,
+      "message": "Done, unfortunately modules doesn\u0027t support alternatives, so we use ll_sc versions, however each platform can switch to lse versions if implemented.",
+      "parentUuid": "dc379066_202e08f4",
       "range": {
         "startLine": 1303,
         "startChar": 5,
@@ -70,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2898ffa1_8e3c2b44",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1311,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-05-16T12:08:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c32140e3_84acafd4",
+      "range": {
+        "startLine": 1309,
+        "startChar": 0,
+        "endLine": 1311,
+        "endChar": 0
+      },
+      "revId": "b4815880716fa69e1b6f39ece179ca6fc6f2575e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2143be9c_1b8c7c23",
@@ -93,6 +165,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70439ba5_a162a8ce",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1344,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-05-16T12:08:39Z",
+      "side": 1,
+      "message": "Yes, thanks for catching that!\n\nDone.",
+      "parentUuid": "2143be9c_1b8c7c23",
+      "range": {
+        "startLine": 1339,
+        "startChar": 6,
+        "endLine": 1344,
+        "endChar": 0
+      },
+      "revId": "b4815880716fa69e1b6f39ece179ca6fc6f2575e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c37645f_934f2878",
@@ -106,6 +202,30 @@
       "writtenOn": "2024-05-15T16:18:39Z",
       "side": 1,
       "message": "Does this still search by bit if `old_sync_bitmap \u003d\u003d 0`?",
+      "range": {
+        "startLine": 1345,
+        "startChar": 1,
+        "endLine": 1345,
+        "endChar": 17
+      },
+      "revId": "b4815880716fa69e1b6f39ece179ca6fc6f2575e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "795d49d5_a858dd77",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1345,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-05-16T12:08:39Z",
+      "side": 1,
+      "message": "This uses `__ffs`  which should do the right thing.",
+      "parentUuid": "6c37645f_934f2878",
       "range": {
         "startLine": 1345,
         "startChar": 1,
