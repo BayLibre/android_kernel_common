@@ -16,6 +16,111 @@
       "message": "Please submit your changes you wish to see to these functions upstream, no hooks should be needed here at all as everyone wants to know this information.",
       "revId": "e32ccc08561ab7514fd3be4a49e95024f503a240",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e1ce4e0_f30e0ced",
+        "filename": "include/trace/hooks/security.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-05-17T07:58:11Z",
+      "side": 1,
+      "message": "very generic, why not one hook per specific \"type\"?",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 42
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e12dad47_bb7d7a2b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/security.h",
+              "range": {
+                "startLine": 10,
+                "startChar": 0,
+                "endLine": 11,
+                "endChar": 0
+              },
+              "replacement": "DECLARE_HOOK(android_vh_security_audit_log_write,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e32ccc08561ab7514fd3be4a49e95024f503a240",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffae27df_dbb5a7f1",
+        "filename": "include/trace/hooks/security.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-05-17T07:58:11Z",
+      "side": 1,
+      "message": "what are these \"param\" for?",
+      "range": {
+        "startLine": 11,
+        "startChar": 75,
+        "endLine": 11,
+        "endChar": 81
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "3d1fb17c_313d050e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/security.h",
+              "range": {
+                "startLine": 11,
+                "startChar": 0,
+                "endLine": 13,
+                "endChar": 0
+              },
+              "replacement": "\tTP_PROTO(u32 type, int err, bool to_user, const char* name, unsigned long param1, unsigned long param2), // NOLINT\n\tTP_ARGS(type, err, to_user, name, param1, param2)); // NOLINT\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e32ccc08561ab7514fd3be4a49e95024f503a240",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3460d51f_37dd34f6",
+        "filename": "include/trace/hooks/security.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-05-17T07:58:11Z",
+      "side": 1,
+      "message": "what is \"type\"?",
+      "range": {
+        "startLine": 11,
+        "startChar": 14,
+        "endLine": 11,
+        "endChar": 18
+      },
+      "revId": "e32ccc08561ab7514fd3be4a49e95024f503a240",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
