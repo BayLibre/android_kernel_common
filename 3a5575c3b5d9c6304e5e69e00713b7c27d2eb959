@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68f5effe_2f1a5f37",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2024-05-17T18:21:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7fd69825_84317838",
+      "range": {
+        "startLine": 3,
+        "startChar": 17,
+        "endLine": 3,
+        "endChar": 21
+      },
+      "revId": "3a5575c3b5d9c6304e5e69e00713b7c27d2eb959",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "037e1867_6e08cc95",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-17T13:42:22Z",
       "side": 1,
       "message": "Maybe add the device documentation above this?",
+      "range": {
+        "startLine": 18,
+        "startChar": 8,
+        "endLine": 18,
+        "endChar": 33
+      },
+      "revId": "3a5575c3b5d9c6304e5e69e00713b7c27d2eb959",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db53baf7_a0e668bf",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2024-05-17T18:21:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "037e1867_6e08cc95",
       "range": {
         "startLine": 18,
         "startChar": 8,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "394c9e19_d6ef9001",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2024-05-17T18:21:48Z",
+      "side": 1,
+      "message": "The 0 case here isn\u0027t really part of the spec, but to handle the device not being emulated for whatever reason, hence the -ENODEV error. The backend should only emulate \u003d\u003e 1 for freqtbl entries.",
+      "parentUuid": "c66e3b53_54cd7afc",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 17
+      },
+      "revId": "3a5575c3b5d9c6304e5e69e00713b7c27d2eb959",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3cacd2f9_ea9b5dee",
         "filename": "drivers/cpufreq/virtual-cpufreq.c",
         "patchSetId": 35
@@ -83,6 +155,30 @@
       "writtenOn": "2024-05-17T13:39:55Z",
       "side": 1,
       "message": "Have an upper limit so you don\u0027t alloc 100 or something?",
+      "range": {
+        "startLine": 134,
+        "startChar": 18,
+        "endLine": 134,
+        "endChar": 37
+      },
+      "revId": "3a5575c3b5d9c6304e5e69e00713b7c27d2eb959",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40c3ff60_c6002429",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2024-05-17T18:21:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3cacd2f9_ea9b5dee",
       "range": {
         "startLine": 134,
         "startChar": 18,
@@ -106,6 +202,30 @@
       "writtenOn": "2024-05-17T13:39:55Z",
       "side": 1,
       "message": "Return early for the no table (just max freq) case so that the table case doesn\u0027t need to be indented?",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 2
+      },
+      "revId": "3a5575c3b5d9c6304e5e69e00713b7c27d2eb959",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4daed19_05517295",
+        "filename": "drivers/cpufreq/virtual-cpufreq.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1937676
+      },
+      "writtenOn": "2024-05-17T18:21:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "878a6a41_42eb4b44",
       "range": {
         "startLine": 141,
         "startChar": 0,
