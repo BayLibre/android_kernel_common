@@ -55,7 +55,7 @@ use core::mem::{size_of, MaybeUninit};
 /// use kernel::error::Result;
 /// use kernel::uaccess::UserSlice;
 ///
-/// pub fn bytes_add_one(uptr: *mut c_void, len: usize) -> Result<()> {
+/// fn bytes_add_one(uptr: *mut c_void, len: usize) -> Result<()> {
 ///     let (read, mut write) = UserSlice::new(uptr, len).reader_writer();
 ///
 ///     let mut buf = Vec::new();
@@ -89,7 +89,7 @@ use core::mem::{size_of, MaybeUninit};
 /// }
 ///
 /// /// Returns the bytes behind this user pointer if they are valid.
-/// pub fn get_bytes_if_valid(uptr: *mut c_void, len: usize) -> Result<Vec<u8>> {
+/// fn get_bytes_if_valid(uptr: *mut c_void, len: usize) -> Result<Vec<u8>> {
 ///     if !is_valid(uptr, len)? {
 ///         return Err(EINVAL);
 ///     }
