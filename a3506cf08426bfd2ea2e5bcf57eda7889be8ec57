@@ -72,6 +72,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3d66e67_105601d5",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-05-18T19:18:08Z",
+      "side": 1,
+      "message": "\u003e Some others such as CONFIG_PINCTRL_TEGRA234 were added during later bringups, but are still necessary for our device\n\nOk, let\u0027s please tristate all of the drivers that can be (as vendor modules - not GKI modules), and eliminate all the ones that aren\u0027t actually necessary. This should be refactored upstream if it is really needless kruft that has grown over the years. We can take Kconfig changes in ACK now to reduce the number of needless configs enabled.",
+      "parentUuid": "32094e96_e092b22b",
+      "revId": "a3506cf08426bfd2ea2e5bcf57eda7889be8ec57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ebe1335b_bd28c446",
