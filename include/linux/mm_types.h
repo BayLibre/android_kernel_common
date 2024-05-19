@@ -598,7 +598,7 @@ struct vm_area_struct {
 			unsigned long vm_end;
 		};
 #ifdef CONFIG_PER_VMA_LOCK
-		struct rcu_head vm_rcu;	/* Used for deferred freeing. */
+		struct list_head vm_free_node; /* Used for deferred freeing. */
 #endif
 	};
 
@@ -814,6 +814,9 @@ struct mm_struct {
 		 * mmap_lock.
 		 */
 		int mm_lock_seq;
+		struct list_head vma_free_list;
+		spinlock_t vma_free_lock;
+		unsigned long vm_free_cookie;
 #endif
 
 
