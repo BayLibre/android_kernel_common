@@ -536,25 +536,51 @@ void __vm_area_free(struct vm_area_struct *vma)
 }
 
 #ifdef CONFIG_PER_VMA_LOCK
-static void vm_area_free_rcu_cb(struct rcu_head *head)
+static void free_isolated_vmas(struct list_head *to_destroy)
 {
-	struct vm_area_struct *vma = container_of(head, struct vm_area_struct,
-						  vm_rcu);
+	struct vm_area_struct *vma, *tmp;
 
-	/* The vma should not be locked while being destroyed. */
-	VM_BUG_ON_VMA(rwsem_is_locked(&vma->vm_lock->lock), vma);
-	__vm_area_free(vma);
+	list_for_each_entry_safe(vma, tmp, to_destroy, vm_free_node)
+		__vm_area_free(vma);
 }
-#endif
+
+void drain_free_vmas(struct mm_struct *mm)
+{
+	LIST_HEAD(to_destroy);
+
+	spin_lock(&mm->vma_free_lock);
+	list_splice_init(&mm->vma_free_list, &to_destroy);
+	spin_unlock(&mm->vma_free_lock);
+
+	free_isolated_vmas(&to_destroy);
+}
 
 void vm_area_free(struct vm_area_struct *vma)
 {
-#ifdef CONFIG_PER_VMA_LOCK
-	call_rcu(&vma->vm_rcu, vm_area_free_rcu_cb);
-#else
-	__vm_area_free(vma);
-#endif
+	unsigned long curr_cookie = get_state_synchronize_rcu();
+	struct mm_struct *mm = vma->vm_mm;
+	LIST_HEAD(to_destroy);
+
+	spin_lock(&mm->vma_free_lock);
+	if (!list_empty(&mm->vma_free_list) && poll_state_synchronize_rcu(mm->vm_free_cookie))
+		list_splice_init(&mm->vma_free_list, &to_destroy);
+	list_add(&vma->vm_free_node, &mm->vma_free_list);
+	mm->vm_free_cookie = curr_cookie;
+	spin_unlock(&mm->vma_free_lock);
+
+	free_isolated_vmas(&to_destroy);
 }
+
+#else /* CONFIG_PER_VMA_LOCK */
+
+void drain_free_vmas(struct mm_struct *mm) {}
+
+void vm_area_free(struct vm_area_struct *vma)
+{
+	__vm_area_free(vma);
+}
+
+#endif /* CONFIG_PER_VMA_LOCK */
 
 static void account_kernel_stack(struct task_struct *tsk, int account)
 {
@@ -1297,6 +1323,8 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
 	INIT_LIST_HEAD(&mm->mmlist);
 #ifdef CONFIG_PER_VMA_LOCK
 	mm->mm_lock_seq = 0;
+	INIT_LIST_HEAD(&mm->vma_free_list);
+	spin_lock_init(&mm->vma_free_lock);
 #endif
 	mm_pgtables_bytes_init(mm);
 	mm->map_count = 0;

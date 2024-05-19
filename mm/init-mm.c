@@ -41,6 +41,8 @@ struct mm_struct init_mm = {
 	.mmlist		= LIST_HEAD_INIT(init_mm.mmlist),
 #ifdef CONFIG_PER_VMA_LOCK
 	.mm_lock_seq	= 0,
+	.vma_free_list	= LIST_HEAD_INIT(init_mm.vma_free_list),
+	.vma_free_lock	=  __SPIN_LOCK_UNLOCKED(init_mm.vma_free_lock),
 #endif
 	.user_ns	= &init_user_ns,
 	.cpu_bitmap	= CPU_BITS_NONE,

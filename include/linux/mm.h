@@ -251,6 +251,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *);
 void vm_area_free(struct vm_area_struct *);
 /* Use only if VMA has no other users */
 void __vm_area_free(struct vm_area_struct *vma);
+void drain_free_vmas(struct mm_struct *mm);
 
 #ifndef CONFIG_MMU
 extern struct rb_root nommu_region_tree;
