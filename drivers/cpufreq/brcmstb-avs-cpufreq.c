@@ -486,7 +486,10 @@ static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
 	if (!policy)
 		return 0;
 	priv = policy->driver_data;
+<<<<<<< HEAD   (a8e7f8 ANDROID: cpufreq: brcmstb-avs-cpufreq: fix build error)
 
+=======
+>>>>>>> BRANCH (e2e4e7 Linux 5.10.215)
 	cpufreq_cpu_put(policy);
 
 	return brcm_avs_get_frequency(priv->base);
