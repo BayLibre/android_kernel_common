@@ -16,6 +16,24 @@
       "message": "Hey we\u0027re meant to use ANDROID_BACKPORT_RESERVED for this, as in aosp/3018226.",
       "revId": "0d6d8a2b38b2185561114c3ef361191f9f17fb93",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddc4b8bc_eb767873",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2024-05-20T19:57:34Z",
+      "side": 1,
+      "message": "`ANDROID_BACKPORT_RESERVED` is defined in `android_vendor.h` which is documented to be for use by vendor modules:\n\n```\n * These macros are to be used to reserve space in kernel data structures                            \n * for use by vendor modules.                                                     \n```\n\nIs that not correct?\n\n`android_kabi.h`, which contains `ANDROID_KABI_RESERVED` which I\u0027m using, is documented as follows:\n\n```\n * These macros are to be used to try to help alleviate future kernel abi                            \n * changes that will occur as LTS and other kernel patches are merged into the                       \n * tree during a period in which the kernel abi is wishing to not be disturbed.                      \n```\n\nThat seems to match the use case of \"planned backport of non vendor specific patches\" better.  It\u0027s not LTS, but it\u0027s \"other kernel patches\".\n\nWhat is `ANDROID_BACKPORT_RESERVED` really meant for, and how does it differ from `ANDROID_KABI_RESERVED`?\n\n@tkjos@google.com, @gregkh@google.com, any thoughts?",
+      "parentUuid": "7b3de9c9_d4a3ac98",
+      "revId": "0d6d8a2b38b2185561114c3ef361191f9f17fb93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
