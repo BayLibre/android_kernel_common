@@ -69,6 +69,24 @@
       "message": "Also, I don\u0027t object to adding the `ANDROID_KABI_RESERVED` use here, if you think it will help with future -lts releases.  But don\u0027t use them for any feature backporting work, so maybe you need/want both here?",
       "revId": "0d6d8a2b38b2185561114c3ef361191f9f17fb93",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a46b2f2_1e9662ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-05-21T15:17:47Z",
+      "side": 1,
+      "message": "+1 to Greg\u0027s statements. Planned backports must use ANDROID_BACKPORT_RESERVED(). These will not be used for LTS - they are reserved for backports. KABI_RESERVED() fields are reserved only for LTS updates. Vendor modules must never use either of these - they need to use ANDROID_VENDOR_DATA (if vendor) or ANDROID_OEM_DATA if not the SoC vendor.",
+      "parentUuid": "110a1ebf_e0a81824",
+      "revId": "0d6d8a2b38b2185561114c3ef361191f9f17fb93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
