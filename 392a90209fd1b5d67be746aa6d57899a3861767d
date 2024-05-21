@@ -16,6 +16,24 @@
       "message": "please add more description. Why is needed? If it is used by a vendor hook handler, which one is it? What feature does this enable?",
       "revId": "392a90209fd1b5d67be746aa6d57899a3861767d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "740d45a1_e890cadc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1878293
+      },
+      "writtenOn": "2024-05-21T07:15:51Z",
+      "side": 1,
+      "message": "We use \u0027user_mode(get_irq_regs())\u0027 in vendor hook android_vh_scheduler_tick to decide whether this tick is from user_mode or not. The API get_irq_regs() relys on this __irq_regs.\nWith this, we can collect some schedule statistic information about ticks from userspace, which can help us to optimize our game power consumption.",
+      "parentUuid": "8db1ef3c_4bfc2892",
+      "revId": "392a90209fd1b5d67be746aa6d57899a3861767d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
