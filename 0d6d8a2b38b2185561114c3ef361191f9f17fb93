@@ -123,6 +123,24 @@
       "parentUuid": "37a356b4_f1b4a07f",
       "revId": "0d6d8a2b38b2185561114c3ef361191f9f17fb93",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd28e9a1_d270400a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2024-05-21T18:55:10Z",
+      "side": 1,
+      "message": "Changed to `ANDROID_BACKPORT_RESERVE`.\n\nAdding `ANDROID_KABI_RESERVE` to all the crypto algorithm structs (not just this one) might make sense.  That would need to be a separate change.  I\u0027m not sure if there are any specific rules you follow when deciding which structs get `ANDROID_KABI_RESERVE`, and if so how many fields.",
+      "parentUuid": "0bd7ad36_6246bb44",
+      "revId": "0d6d8a2b38b2185561114c3ef361191f9f17fb93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
