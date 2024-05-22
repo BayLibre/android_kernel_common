@@ -1818,11 +1818,19 @@ static int _regmap_raw_write_impl(struct regmap *map, unsigned int reg,
 	 * write.
 	 */
 	if (val == work_val)
+<<<<<<< HEAD   (f93738 Merge branch 'android14-5.15' into branch 'android14-5.15-lt)
 		ret = map->bus->write(map->bus_context, map->work_buf,
 				      map->format.reg_bytes +
 				      map->format.pad_bytes +
 				      val_len);
 	else if (map->bus->gather_write)
+=======
+		ret = map->write(map->bus_context, map->work_buf,
+				 map->format.reg_bytes +
+				 map->format.pad_bytes +
+				 val_len);
+	else if (map->bus && map->bus->gather_write)
+>>>>>>> BRANCH (9465fe Linux 5.15.153)
 		ret = map->bus->gather_write(map->bus_context, map->work_buf,
 					     map->format.reg_bytes +
 					     map->format.pad_bytes,
