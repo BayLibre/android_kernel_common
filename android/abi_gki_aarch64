@@ -17,6 +17,40 @@
   __stack_chk_fail
   __ubsan_handle_cfi_check_fail_abort
 
+# required by rndis_host.ko
+  __cfi_slowpath_diag
+  _dev_err
+  dev_get_tstats64
+  _dev_info
+  __dev_kfree_skb_any
+  _dev_warn
+  eth_mac_addr
+  eth_validate_addr
+  get_random_bytes
+  memmove
+  memset
+  msleep
+  skb_clone
+  skb_copy_expand
+  skb_pull
+  skb_trim
+  usb_control_msg
+  usb_deregister
+  usb_driver_release_interface
+  usb_interrupt_msg
+  usbnet_cdc_unbind
+  usbnet_disconnect
+  usbnet_generic_cdc_bind
+  usbnet_open
+  usbnet_probe
+  usbnet_resume
+  usbnet_skb_return
+  usbnet_start_xmit
+  usbnet_stop
+  usbnet_suspend
+  usbnet_tx_timeout
+  usb_register_driver
+
 # required by zram.ko
   __alloc_percpu
   bio_endio
