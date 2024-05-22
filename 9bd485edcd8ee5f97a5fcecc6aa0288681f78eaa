@@ -1,0 +1,64 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000078748189",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3093413?revision\u003d1",
+      "key": {
+        "uuid": "35e4121d_a30babc8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-05-22T02:59:06Z",
+      "side": 1,
+      "message": "Please **attach the following Buganizer ID(s)** to the commit message: 320243175.\nThese IDs were found in the original change with number [2960282](https://android-review.googlesource.com/c/2960282) but not in this cherry pick.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "9bd485edcd8ee5f97a5fcecc6aa0288681f78eaa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000078748189",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3093413?revision\u003d1",
+      "key": {
+        "uuid": "89a85b1f_cccc6647",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-05-22T02:59:06Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against base branch android14-6.1.\nBase branch change: [2960282](https://android-review.googlesource.com/c/2960282).\n\n```\n      ## net/ipv6/addrconf.c ##\n     @@ net/ipv6/addrconf.c: void addrconf_prefix_rcv(struct net_device *dev, u8 *opt, int len, bool sllao)\n    + \t\treturn;\n      \t}\n      \n    - \tif (valid_lft !\u003d 0 \u0026\u0026 valid_lft \u003c in6_dev-\u003ecnf.accept_ra_min_lft)\n    --\t\treturn;\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (fa7914 UPSTREAM: bpf: Fix re-attachment branch in bpf_tracing_prog_)\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    ++\tif (valid_lft !\u003d 0 \u0026\u0026 valid_lft \u003c in6_dev-\u003ecnf.accept_ra_min_lft)\n     +\t\tgoto put;\n    - \n    ++\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (20131b Reapply \"net: release reference to inet6_dev pointer\")\n      \t/*\n      \t *\tTwo things going on here:\n    + \t *\t1) Add routes for on-link prefixes\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "9bd485edcd8ee5f97a5fcecc6aa0288681f78eaa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000078748189",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3093413?revision\u003d1",
+      "key": {
+        "uuid": "8b02e806_b415e994",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-05-22T02:59:06Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "9bd485edcd8ee5f97a5fcecc6aa0288681f78eaa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
