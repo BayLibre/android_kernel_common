@@ -1252,6 +1252,7 @@ static int verity_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	sector_t hash_position;
 	char dummy;
 	char *root_hash_digest_to_validate;
+	unsigned int workqueue_flags = 0;
 
 	v = kzalloc(sizeof(struct dm_verity), GFP_KERNEL);
 	if (!v) {
@@ -1506,7 +1507,8 @@ static int verity_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	 * will fall-back to using it for error handling (or if the bufio cache
 	 * doesn't have required hashes).
 	 */
-	v->verify_wq = alloc_workqueue("kverityd", WQ_MEM_RECLAIM | WQ_HIGHPRI, 0);
+	workqueue_flags = WQ_UNBOUND | WQ_MEM_RECLAIM | WQ_HIGHPRI;
+	v->verify_wq = alloc_workqueue("kverityd", workqueue_flags, 0);
 	if (!v->verify_wq) {
 		ti->error = "Cannot allocate workqueue";
 		r = -ENOMEM;
