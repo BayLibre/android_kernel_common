@@ -14,6 +14,9 @@
  */
 void *hyp_alloc(size_t size);
 
+#define HYP_ALLOC_ACCT_STATS	BIT(0)
+#define HYP_ALLOC_ACCT_PSCI	BIT(1)
+
 /**
  * hyp_alloc_account() - Allocate memory from the heap allocator and account
  *
@@ -23,10 +26,11 @@ void *hyp_alloc(size_t size);
  *
  * @size:	Allocation size in bytes.
  * @host_kvm:	Pointer (in the hyp VA space) to the host KVM struct.
+ * @flags:	HYP_ALLOC_ACCT_STATS | HYP_ALLOC_ACCT_PSCI
  *
  * Return: A pointer to the allocated memory on success, else NULL.
  */
-void *hyp_alloc_account(size_t size, struct kvm *host_kvm);
+void *hyp_alloc_account(size_t size, struct kvm *host_kvm, u8 flags);
 
 /**
  * hyp_alloc_errno() - Read the errno on allocation error
