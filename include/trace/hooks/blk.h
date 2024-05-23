@@ -17,6 +17,12 @@ DECLARE_HOOK(android_vh_bd_link_disk_holder,
 	TP_PROTO(struct block_device *bdev, struct gendisk *disk),
 	TP_ARGS(bdev, disk));
 
+struct readahead_control;
+
+DECLARE_HOOK(android_vh_f2fs_read_single_page,
+	TP_PROTO(unsigned int *bi_opf, struct readahead_control *rac),
+	TP_ARGS(bi_opf, rac));
+
 #endif /* _TRACE_HOOK_BLK_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
