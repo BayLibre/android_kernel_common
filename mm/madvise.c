@@ -63,6 +63,139 @@ static int madvise_need_mmap_write(int behavior)
 	}
 }
 
+<<<<<<< HEAD   (e733b3 ANDROID: GKI: Update symbols to symbol list)
+||||||| BASE
+#ifdef CONFIG_ANON_VMA_NAME
+struct anon_vma_name *anon_vma_name_alloc(const char *name)
+{
+	struct anon_vma_name *anon_name;
+	size_t count;
+
+	/* Add 1 for NUL terminator at the end of the anon_name->name */
+	count = strlen(name) + 1;
+	anon_name = kmalloc(struct_size(anon_name, name, count), GFP_KERNEL);
+	if (anon_name) {
+		kref_init(&anon_name->kref);
+		memcpy(anon_name->name, name, count);
+	}
+
+	return anon_name;
+}
+
+void anon_vma_name_free(struct kref *kref)
+{
+	struct anon_vma_name *anon_name =
+			container_of(kref, struct anon_vma_name, kref);
+	kfree(anon_name);
+}
+
+struct anon_vma_name *anon_vma_name(struct vm_area_struct *vma)
+{
+	mmap_assert_locked(vma->vm_mm);
+
+	if (vma->vm_file)
+		return NULL;
+
+	return vma->anon_name;
+}
+
+/* mmap_lock should be write-locked */
+static int replace_anon_vma_name(struct vm_area_struct *vma,
+				 struct anon_vma_name *anon_name)
+{
+	struct anon_vma_name *orig_name = anon_vma_name(vma);
+
+	if (!anon_name) {
+		vma->anon_name = NULL;
+		anon_vma_name_put(orig_name);
+		return 0;
+	}
+
+	if (anon_vma_name_eq(orig_name, anon_name))
+		return 0;
+
+	vma->anon_name = anon_vma_name_reuse(anon_name);
+	anon_vma_name_put(orig_name);
+
+	return 0;
+}
+#else /* CONFIG_ANON_VMA_NAME */
+static int replace_anon_vma_name(struct vm_area_struct *vma,
+				 struct anon_vma_name *anon_name)
+{
+	if (anon_name)
+		return -EINVAL;
+
+	return 0;
+}
+#endif /* CONFIG_ANON_VMA_NAME */
+=======
+#ifdef CONFIG_ANON_VMA_NAME
+struct anon_vma_name *anon_vma_name_alloc(const char *name)
+{
+	struct anon_vma_name *anon_name;
+	size_t count;
+
+	/* Add 1 for NUL terminator at the end of the anon_name->name */
+	count = strlen(name) + 1;
+	anon_name = kmalloc(struct_size(anon_name, name, count), GFP_KERNEL);
+	if (anon_name) {
+		kref_init(&anon_name->kref);
+		memcpy(anon_name->name, name, count);
+	}
+
+	return anon_name;
+}
+
+void anon_vma_name_free(struct kref *kref)
+{
+	struct anon_vma_name *anon_name =
+			container_of(kref, struct anon_vma_name, kref);
+	kfree(anon_name);
+}
+
+struct anon_vma_name *anon_vma_name(struct vm_area_struct *vma)
+{
+	mmap_assert_locked(vma->vm_mm);
+
+	if (vma->vm_file)
+		return NULL;
+
+	return vma->anon_name;
+}
+EXPORT_SYMBOL_GPL(anon_vma_name);
+
+/* mmap_lock should be write-locked */
+static int replace_anon_vma_name(struct vm_area_struct *vma,
+				 struct anon_vma_name *anon_name)
+{
+	struct anon_vma_name *orig_name = anon_vma_name(vma);
+
+	if (!anon_name) {
+		vma->anon_name = NULL;
+		anon_vma_name_put(orig_name);
+		return 0;
+	}
+
+	if (anon_vma_name_eq(orig_name, anon_name))
+		return 0;
+
+	vma->anon_name = anon_vma_name_reuse(anon_name);
+	anon_vma_name_put(orig_name);
+
+	return 0;
+}
+#else /* CONFIG_ANON_VMA_NAME */
+static int replace_anon_vma_name(struct vm_area_struct *vma,
+				 struct anon_vma_name *anon_name)
+{
+	if (anon_name)
+		return -EINVAL;
+
+	return 0;
+}
+#endif /* CONFIG_ANON_VMA_NAME */
+>>>>>>> CHANGE (ce0653 ANDROID: Allow vendor modules perform more operations on mem)
 /*
  * We can potentially split a vm area into separate
  * areas, each area with its own behavior.
