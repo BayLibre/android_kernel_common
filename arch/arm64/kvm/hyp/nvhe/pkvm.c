@@ -634,7 +634,6 @@ static void init_pkvm_hyp_vm(struct kvm *host_kvm, struct pkvm_hyp_vm *hyp_vm,
 	hyp_vm->host_kvm = host_kvm;
 	hyp_vm->kvm.created_vcpus = nr_vcpus;
 	hyp_vm->kvm.arch.vtcr = host_mmu.arch.vtcr;
-	hyp_vm->kvm.arch.pkvm.enabled = READ_ONCE(host_kvm->arch.pkvm.enabled);
 
 	if (hyp_vm->kvm.arch.pkvm.enabled)
 		pvmfw_load_addr = READ_ONCE(host_kvm->arch.pkvm.pvmfw_load_addr);
@@ -666,7 +665,8 @@ static int init_pkvm_hyp_vcpu_sve(struct pkvm_hyp_vcpu *hyp_vcpu, struct kvm_vcp
 		struct pkvm_hyp_vm *hyp_vm = pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu);
 
 		sve_state = hyp_alloc_account(sve_state_size,
-					      hyp_vm->host_kvm);
+					      hyp_vm->host_kvm,
+					      HYP_ALLOC_ACCT_PSCI | HYP_ALLOC_ACCT_STATS);
 		if (!sve_state) {
 			ret = hyp_alloc_errno();
 			goto err;
@@ -836,7 +836,10 @@ int __pkvm_init_vm(struct kvm *host_kvm, unsigned long pgd_hva)
 	unsigned int nr_vcpus;
 	void *pgd = NULL;
 	size_t pgd_size;
+	bool protected;
+	u8 acc_flags;
 	int ret;
+
 
 	ret = hyp_pin_shared_mem(host_kvm, host_kvm + 1);
 	if (ret)
@@ -848,14 +851,20 @@ int __pkvm_init_vm(struct kvm *host_kvm, unsigned long pgd_hva)
 		goto err_unpin_kvm;
 	}
 
+	protected = READ_ONCE(host_kvm->arch.pkvm.enabled);
+	acc_flags = HYP_ALLOC_ACCT_STATS +
+		(protected ? HYP_ALLOC_ACCT_PSCI : 0);
+
 	hyp_vm = hyp_alloc_account(pkvm_get_hyp_vm_size(nr_vcpus),
-				   host_kvm);
+				   host_kvm, acc_flags);
 	if (!hyp_vm) {
 		ret = hyp_alloc_errno();
 		goto err_unpin_kvm;
 	}
+	hyp_vm->kvm.arch.pkvm.enabled = protected;
 
-	last_ran = hyp_alloc_account(pkvm_get_last_ran_size(), host_kvm);
+	last_ran = hyp_alloc_account(pkvm_get_last_ran_size(), host_kvm,
+				     acc_flags);
 	if (!last_ran) {
 		ret = hyp_alloc_errno();
 		goto err_free_vm;
@@ -909,6 +918,7 @@ int __pkvm_init_vcpu(pkvm_handle_t handle, struct kvm_vcpu *host_vcpu)
 	struct pkvm_hyp_vcpu *hyp_vcpu;
 	struct pkvm_hyp_vm *hyp_vm;
 	unsigned int idx;
+	u8 acc_flags;
 	int ret;
 
 	hyp_read_lock(&vm_table_lock);
@@ -919,7 +929,11 @@ int __pkvm_init_vcpu(pkvm_handle_t handle, struct kvm_vcpu *host_vcpu)
 		goto unlock_vm;
 	}
 
-	hyp_vcpu = hyp_alloc_account(sizeof(*hyp_vcpu), hyp_vm->host_kvm);
+	acc_flags = HYP_ALLOC_ACCT_STATS +
+		(hyp_vm->kvm.arch.pkvm.enabled ? HYP_ALLOC_ACCT_PSCI : 0);
+
+	hyp_vcpu = hyp_alloc_account(sizeof(*hyp_vcpu), hyp_vm->host_kvm,
+				     acc_flags);
 	if (!hyp_vcpu) {
 		ret = hyp_alloc_errno();
 		goto unlock_vm;
