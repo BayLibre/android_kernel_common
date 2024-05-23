@@ -225,6 +225,7 @@ struct qca_serdev {
 	struct qca_power *bt_power;
 	u32 init_speed;
 	u32 oper_speed;
+	bool bdaddr_property_broken;
 	const char *firmware_name;
 };
 
@@ -1705,6 +1706,11 @@ static int qca_setup(struct hci_uart *hu)
 	const char *firmware_name = qca_get_firmware_name(hu);
 	int ret;
 	struct qca_btsoc_version ver;
+<<<<<<< HEAD   (1dca1f Merge branch 'android14-6.1' into branch 'android14-6.1-lts')
+=======
+	struct qca_serdev *qcadev;
+	const char *soc_name;
+>>>>>>> BRANCH (bf1e3b Linux 6.1.85)
 
 	ret = qca_check_speeds(hu);
 	if (ret)
@@ -1732,9 +1738,26 @@ retry:
 
 	clear_bit(QCA_SSR_TRIGGERED, &qca->flags);
 
+<<<<<<< HEAD   (1dca1f Merge branch 'android14-6.1' into branch 'android14-6.1-lts')
 	if (qca_is_wcn399x(soc_type) ||
 	    qca_is_wcn6750(soc_type)) {
 		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
+=======
+	switch (soc_type) {
+	case QCA_WCN3988:
+	case QCA_WCN3990:
+	case QCA_WCN3991:
+	case QCA_WCN3998:
+	case QCA_WCN6750:
+	case QCA_WCN6855:
+	case QCA_WCN7850:
+		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
+
+		qcadev = serdev_device_get_drvdata(hu->serdev);
+		if (qcadev->bdaddr_property_broken)
+			set_bit(HCI_QUIRK_BDADDR_PROPERTY_BROKEN, &hdev->quirks);
+
+>>>>>>> BRANCH (bf1e3b Linux 6.1.85)
 		hci_set_aosp_capable(hdev);
 
 		ret = qca_read_soc_version(hdev, &ver, soc_type);
@@ -2043,9 +2066,16 @@ static int qca_serdev_probe(struct serdev_device *serdev)
 	if (!qcadev->oper_speed)
 		BT_DBG("UART will pick default operating speed");
 
+<<<<<<< HEAD   (1dca1f Merge branch 'android14-6.1' into branch 'android14-6.1-lts')
 	if (data &&
 	    (qca_is_wcn399x(data->soc_type) ||
 	    qca_is_wcn6750(data->soc_type))) {
+=======
+	qcadev->bdaddr_property_broken = device_property_read_bool(&serdev->dev,
+			"qcom,local-bd-address-broken");
+
+	if (data)
+>>>>>>> BRANCH (bf1e3b Linux 6.1.85)
 		qcadev->btsoc_type = data->soc_type;
 		qcadev->bt_power = devm_kzalloc(&serdev->dev,
 						sizeof(struct qca_power),
