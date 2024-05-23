@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37902d0e_a4dfe16a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-05-23T16:58:51Z",
+      "side": 1,
+      "message": "RNDIS is a known-insecure protocol, do NOT use it unless your security team has properly verified and knows the risks involved.\n\nBecause of this, we can not enable it in our kernels, and I strongly recommend that you do not either.",
+      "revId": "dbba301b08b00b7bb2fdfda621763229abd25dc6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
