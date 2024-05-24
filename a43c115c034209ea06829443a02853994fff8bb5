@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98c84bc9_8c8d1f43",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2024-05-24T07:53:55Z",
+      "side": 1,
+      "message": "For clarity, can you wrap `chunk-\u003ealloc_size \u0026 HYP_ALLOC_PSCI_PROTECT` in a helper function/macro, something along the lines of\n`is_psci_protected()` or some better name? :)\n\nAnd use it below as well.",
+      "revId": "a43c115c034209ea06829443a02853994fff8bb5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8feb42d9_d4d9cebd",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 841,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2024-05-24T07:53:55Z",
+      "side": 1,
+      "message": "Why not\n`BUILD_BUG_ON(MIN_ALLOC \u0026 HYP_ALLOC_PSCI_PROTECT);`",
+      "revId": "a43c115c034209ea06829443a02853994fff8bb5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
