@@ -16,6 +16,24 @@
       "message": "Why not submit the needed change upstream to track these statistics?  Why wouldn\u0027t everyone want to know this?",
       "revId": "d8ecc2c623072c7ae3c6038ddd50e0950d2f8697",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74e554e5_d5f37ec0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2032918
+      },
+      "writtenOn": "2024-05-24T02:11:39Z",
+      "side": 1,
+      "message": "The rtt statistics function is part of network quality estimation.\n(1)It contains our own algorithms, and it has commercial value;\n(2)It has thousands of lines of code, and it also contains code for interacting with the Framework.\nSo it’s not suitable to submit the change upstream.",
+      "parentUuid": "ee240769_0d367154",
+      "revId": "d8ecc2c623072c7ae3c6038ddd50e0950d2f8697",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
