@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000079315367",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3104969?revision\u003d1",
+      "key": {
+        "uuid": "d66b09c4_ab09e1ce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-05-27T19:32:43Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/403edfa436286b21f5ffe6856ae5b36396e8966c) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d403edfa436286b21f5ffe6856ae5b36396e8966c).\n\n```\n      ## arch/arm/include/asm/arm_pmuv3.h ##\n     @@\n    @@ arch/arm/include/asm/arm_pmuv3.h: static inline void write_pmuserenr(u32 val)\n      static inline void kvm_set_pmu_events(u32 set, struct perf_event_attr *attr) {}\n      static inline void kvm_clr_pmu_events(u32 clr) {}\n      static inline bool kvm_pmu_counter_deferred(struct perf_event_attr *attr)\n    -@@ arch/arm/include/asm/arm_pmuv3.h: static inline void kvm_vcpu_pmu_resync_el0(void) {}\n    +@@ arch/arm/include/asm/arm_pmuv3.h: static inline bool kvm_pmu_counter_deferred(struct perf_event_attr *attr)\n      \n      /* PMU Version in DFR Register */\n      #define ARMV8_PMU_DFR_VER_NI        0\n    @@ drivers/perf/arm_pmuv3.c: static inline bool armv8pmu_event_is_chained(struct pe\n      {\n      \tval \u0026\u003d ARMV8_PMU_PMCR_MASK;\n      \tisb();\n    -@@ drivers/perf/arm_pmuv3.c: static int armv8pmu_set_event_filter(struct hw_perf_event *event,\n    +@@ drivers/perf/arm_pmuv3.c: static int armv8pmu_filter_match(struct perf_event *event)\n      static void armv8pmu_reset(void *info)\n      {\n      \tstruct arm_pmu *cpu_pmu \u003d (struct arm_pmu *)info;\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "0a5f22d574ce9e300565eeff613465af6a100d79",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
