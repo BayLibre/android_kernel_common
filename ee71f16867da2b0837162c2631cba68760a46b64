@@ -1,0 +1,82 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000079315424",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3104973?revision\u003d1",
+      "key": {
+        "uuid": "d2b75a36_35b7e09f",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-05-27T19:31:35Z",
+      "side": 1,
+      "message": "File is not formatted. Run `buildifier BUILD.bazel` to format the file, or apply the suggested fix.",
+      "tag": "",
+      "fixSuggestions": [
+        {
+          "fixId": "011a1c28_77cdec4e",
+          "description": "Buildifier Suggestion",
+          "replacements": [
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 718,
+                "startChar": 0,
+                "endLine": 718,
+                "endChar": 0
+              },
+              "replacement": "    \"drivers/ata/ahci_brcm.ko\",\n    \"drivers/ata/ahci_platform.ko\",\n    \"drivers/ata/libahci.ko\",\n    \"drivers/ata/libahci_platform.ko\",\n    \"drivers/ata/libata.ko\",\n    \"drivers/bus/brcmstb_gisb.ko\",\n    \"drivers/char/bcm6802.ko\",\n    \"drivers/char/bmoca.ko\",\n    \"drivers/clk/clk-scmi.ko\",\n    \"drivers/extcon/extcon-brcmstb-hdmi-hpd.ko\",\n    \"drivers/firmware/arm_scmi/scmi_pm_domain.ko\",\n    \"drivers/gpio/gpio-brcmstb.ko\",\n    \"drivers/hwmon/hwmon.ko\",\n    \"drivers/hwmon/scmi-hwmon.ko\",\n    \"drivers/i2c/busses/i2c-bcm2835.ko\",\n    \"drivers/i2c/busses/i2c-brcmstb.ko\",\n    \"drivers/input/keyboard/gpio_keys_polled.ko\",\n    \"drivers/irqchip/irq-bcm7038-l1.ko\",\n    \"drivers/irqchip/irq-bcm7120-l2.ko\",\n    \"drivers/irqchip/irq-brcmstb-l2.ko\",\n    \"drivers/memory/brcmstb_dpfe.ko\",\n    \"drivers/memory/brcmstb_memc.ko\",\n    \"drivers/misc/brcmstb-proc-info.ko\",\n    \"drivers/mmc/host/cqhci.ko\",\n    \"drivers/mmc/host/sdhci-brcmstb.ko\",\n    \"drivers/net/ethernet/broadcom/asp2/bcm-asp.ko\",\n    \"drivers/net/ethernet/broadcom/genet/genet.ko\",\n    \"drivers/net/mdio/mdio-bcm-unimac.ko\",\n    \"drivers/net/phy/bcm-phy-lib.ko\",\n    \"drivers/net/phy/bcm7xxx.ko\",\n    \"drivers/net/phy/broadcom.ko\",\n    \"drivers/net/phy/ethsw.ko\",\n    \"drivers/pci/controller/pcie-brcmstb.ko\",\n    \"drivers/phy/broadcom/phy-brcm-sata.ko\",\n    \"drivers/phy/broadcom/phy-brcm-usb-dvr.ko\",\n    \"drivers/pinctrl/bcm/pinctrl-bcm2835.ko\",\n    \"drivers/pwm/pwm-bcm2835.ko\",\n    \"drivers/pwm/pwm-brcmstb.ko\",\n    \"drivers/regulator/scmi-regulator.ko\",\n    \"drivers/reset/reset-brcmstb.ko\",\n    \"drivers/reset/reset-brcmstb-rescal.ko\",\n    \"drivers/rtc/rtc-brcmstb-waketimer.ko\",\n"
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 719,
+                "startChar": 0,
+                "endLine": 720,
+                "endChar": 0
+              },
+              "replacement": "    \"drivers/soc/bcm/brcmstb/memory.ko\",\n    \"drivers/soc/bcm/brcmstb/nexus/clk.ko\",\n    \"drivers/soc/bcm/brcmstb/nexus/dvfs.ko\",\n    \"drivers/soc/bcm/brcmstb/nexus/gpio.ko\",\n    \"drivers/soc/bcm/brcmstb/nexus/irq.ko\",\n    \"drivers/soc/bcm/brcmstb/nexus/reg.ko\",\n    \"drivers/soc/bcm/brcmstb/nexus/spi.ko\",\n    \"drivers/soc/bcm/brcmstb/pm/pm-common.ko\",\n    \"drivers/soc/bcm/brcmstb/pm/pm-psci.ko\",\n    \"drivers/soc/bcm/brcmstb/pm/regsave.ko\",\n    \"drivers/soc/bcm/brcmstb/reboot_data_save.ko\",\n    \"drivers/spi/spi-bcm-qspi.ko\",\n    \"drivers/spi/spi-bcm2835.ko\",\n    \"drivers/spi/spi-brcmstb-qspi.ko\",\n    \"drivers/spi/spi-iproc-qspi.ko\",\n    \"drivers/thermal/broadcom/brcmstb_thermal.ko\",\n    \"drivers/tty/serial/8250/8250_bcm7271.ko\",\n    \"drivers/usb/gadget/udc/bdc/bdc.ko\",\n    \"drivers/usb/host/ehci-brcm.ko\",\n    \"drivers/usb/misc/brcmstb-usb-pinmap.ko\",\n    \"drivers/video/fbdev/core/fb.ko\",\n"
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 721,
+                "startChar": 0,
+                "endLine": 740,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 741,
+                "startChar": 0,
+                "endLine": 745,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 747,
+                "startChar": 0,
+                "endLine": 786,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "ee71f16867da2b0837162c2631cba68760a46b64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
