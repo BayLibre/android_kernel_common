@@ -1305,3 +1305,9 @@ int binder_alloc_copy_from_buffer(struct binder_alloc *alloc,
 	return binder_alloc_do_buffer_copy(alloc, false, buffer, buffer_offset,
 					   dest, bytes);
 }
+<<<<<<< HEAD   (412d29 ANDROID: Fuse: Fix Passthrough and Cache Coherency)
+||||||| BASE
+
+=======
+EXPORT_SYMBOL_GPL(binder_alloc_copy_from_buffer);
+>>>>>>> CHANGE (d8db83 ANDROID: Allow vendor modules perform more operations on bin)
