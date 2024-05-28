@@ -10,6 +10,8 @@
 #include <linux/vmalloc.h>
 #include <linux/set_memory.h>
 #include "internal.h"
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/strict_rwx.h>
 
 static void module_set_memory(const struct module *mod, enum mod_mem_type type,
 			      int (*set_memory)(unsigned long start, int num_pages))
@@ -48,6 +50,11 @@ void module_enable_ro(const struct module *mod, bool after_init)
 
 	if (after_init)
 		module_set_memory(mod, MOD_RO_AFTER_INIT, set_memory_ro);
+
+	trace_android_rvh_mod_text_enable_ro(mod->mem[MOD_TEXT].base,
+		mod->mem[MOD_TEXT].size,
+		mod->mem[MOD_INIT_TEXT].base,
+		mod->mem[MOD_INIT_TEXT].size);
 }
 
 void module_enable_nx(const struct module *mod)
