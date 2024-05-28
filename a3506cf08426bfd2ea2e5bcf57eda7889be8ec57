@@ -108,6 +108,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0176480_c7aefa42",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2024-05-28T21:38:53Z",
+      "side": 1,
+      "message": "After spending the past week looking into it and reaching out to some folks internally as well as diving into these additional built-in configs, I was able to determine which configs were no longer necessary and can be removed as built-in, and also which configs are boot requirements for our devices.\n\nI\u0027ve updated this patch to remove CONFIG_TEGRA_IOMMU_SMMU, and I\u0027ve also pushed another patch to ACK https://android-review.googlesource.com/c/kernel/common/+/3107078 to convert each of the tristate configs to vendor modules as well as remove one more built-in config (CONFIG_TEGRA_AHB).\n\nEach of the remaining built-in configs have been identified as necessary for boot on our device, and so we unfortunately can\u0027t cut them down further. \n\nThis reduces the total additional built-in configs to 21, which can be seen below\n```\n CONFIG_ARCH_HAS_PMEM_API\u003dy\n CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE\u003dy\n CONFIG_ARCH_TEGRA_234_SOC\u003dy\n CONFIG_ARCH_TEGRA\u003dy\n CONFIG_ARM64_PMEM\u003dy\n CONFIG_ARM_GIC_PM\u003dy\n CONFIG_CLK_TEGRA_BPMP\u003dy\n CONFIG_MEMORY\u003dy\n CONFIG_PINCTRL_TEGRA234\u003dy\n CONFIG_PINCTRL_TEGRA_XUSB\u003dy\n CONFIG_PINCTRL_TEGRA\u003dy\n CONFIG_RESET_TEGRA_BPMP\u003dy\n CONFIG_SERIAL_TEGRA_TCU_CONSOLE\u003dy\n CONFIG_SERIAL_TEGRA_TCU\u003dy\n CONFIG_SOC_TEGRA_FUSE\u003dy\n CONFIG_SOC_TEGRA_PMC\u003dy\n CONFIG_SOC_TEGRA_POWERGATE_BPMP\u003dy\n CONFIG_TEGRA_BPMP\u003dy\n CONFIG_TEGRA_HSP_MBOX\u003dy\n CONFIG_TEGRA_IVC\u003dy\n CONFIG_TEGRA_MC\u003dy\n```\n\nPlease review when you get the chance, thank you!",
+      "parentUuid": "c9ed0ef3_31ee60ec",
+      "revId": "a3506cf08426bfd2ea2e5bcf57eda7889be8ec57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ebe1335b_bd28c446",
