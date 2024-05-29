@@ -470,6 +470,12 @@ regular_folio:
 		if (!folio || folio_is_zone_device(folio))
 			continue;
 
+		trace_android_vh_madvise_cold_pageout_skip(vma, page, pageout,
+			&need_skip);
+
+		if (need_skip)
+			continue;
+
 		/*
 		 * If we encounter a large folio, only split it if it is not
 		 * fully mapped within the range we are operating on. Otherwise
