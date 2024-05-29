@@ -79,6 +79,26 @@
       "tag": "",
       "revId": "d959716b91b421f2e64441b60b3960b2209c5916",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000078956646",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3099645?revision\u003d2",
+      "key": {
+        "uuid": "51fb30b5_f84e4bab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-05-29T09:30:59Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/b50155cb0d609437236c88201206267835c6f965) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003db50155cb0d609437236c88201206267835c6f965).\n\n```\n      ## drivers/powercap/dtpm_cpu.c ##\n    -@@ drivers/powercap/dtpm_cpu.c: static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)\n    +@@ drivers/powercap/dtpm_cpu.c: static int cpuhp_dtpm_cpu_online(unsigned int cpu)\n      \tret \u003d freq_qos_add_request(\u0026policy-\u003econstraints,\n      \t\t\t\t   \u0026dtpm_cpu-\u003eqos_req, FREQ_QOS_MAX,\n      \t\t\t\t   pd-\u003etable[pd-\u003enr_perf_states - 1].frequency);\n     -\tif (ret)\n     +\tif (ret \u003c 0)\n    - \t\tgoto out_dtpm_unregister;\n    + \t\tgoto out_power_sub;\n      \n    - \tcpufreq_cpu_put(policy);\n    + \treturn 0;\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "d959716b91b421f2e64441b60b3960b2209c5916",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
