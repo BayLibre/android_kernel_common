@@ -39,6 +39,7 @@
 #include <trace/hooks/syscall_check.h>
 #include <trace/hooks/gic.h>
 #include <trace/hooks/gic_v3.h>
+#include <trace/hooks/smp_ipi.h>
 #include <trace/hooks/remoteproc.h>
 #include <trace/hooks/reboot.h>
 #include <trace/hooks/psci.h>
@@ -197,6 +198,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_commit_creds);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_exit_creds);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_override_creds);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_revert_creds);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ipi_vendor_reserved);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_mmap_file);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_file_open);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_disable_thermal_cooling_stats);

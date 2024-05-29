@@ -54,6 +54,7 @@
 #include <trace/events/ipi.h>
 #undef CREATE_TRACE_POINTS
 #include <trace/hooks/debug.h>
+#include <trace/hooks/smp_ipi.h>
 
 DEFINE_PER_CPU_READ_MOSTLY(int, cpu_number);
 EXPORT_PER_CPU_SYMBOL(cpu_number);
@@ -78,6 +79,7 @@ enum ipi_msg_type {
 	IPI_TIMER,
 	IPI_IRQ_WORK,
 	IPI_WAKEUP,
+	IPI_VENDOR_RESV,
 	NR_IPI
 };
 
@@ -770,6 +772,7 @@ static const char *ipi_types[NR_IPI] __tracepoint_string = {
 	[IPI_TIMER]		= "Timer broadcast interrupts",
 	[IPI_IRQ_WORK]		= "IRQ work interrupts",
 	[IPI_WAKEUP]		= "CPU wake-up interrupts",
+	[IPI_VENDOR_RESV]       = "IPI reserved for vendor",
 };
 
 static void smp_cross_call(const struct cpumask *target, unsigned int ipinr);
@@ -910,7 +913,9 @@ static void do_handle_IPI(int ipinr)
 			  cpu);
 		break;
 #endif
-
+	case IPI_VENDOR_RESV:
+		trace_android_vh_ipi_vendor_reserved(get_irq_regs());
+		break;
 	default:
 		pr_crit("CPU%u: Unknown IPI message 0x%x\n", cpu, ipinr);
 		break;
