@@ -919,6 +919,26 @@
       "tag": "",
       "revId": "d7494d9dfd029056dd3528510345e45095925c6b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000078956716",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3099294?revision\u003d2",
+      "key": {
+        "uuid": "55f6bd7a_6b724ca2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-05-29T09:37:58Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/8b4d9469d0b0e553208ee6f62f2807111fde18b9) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d8b4d9469d0b0e553208ee6f62f2807111fde18b9).\n\n```\n      ## drivers/ata/libata-core.c ##\n     @@ drivers/ata/libata-core.c: static const unsigned int ata_port_suspend_ehi \u003d ATA_EHI_QUIET\n    @@ drivers/ata/libata-scsi.c: void ata_scsi_dev_rescan(struct work_struct *work)\n     -\t\t\t}\n     -\n      \t\t\tspin_unlock_irqrestore(ap-\u003elock, flags);\n    --\t\t\tscsi_rescan_device(sdev);\n    -+\t\t\tret \u003d scsi_rescan_device(sdev);\n    + \t\t\tscsi_rescan_device(\u0026(sdev-\u003esdev_gendev));\n      \t\t\tscsi_device_put(sdev);\n      \t\t\tspin_lock_irqsave(ap-\u003elock, flags);\n     +\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "d7494d9dfd029056dd3528510345e45095925c6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
