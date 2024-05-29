@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59590bca_e8403579",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2024-05-29T05:38:14Z",
+      "side": 1,
+      "message": "Should `FFA_INTERRUPT` also be here?",
+      "revId": "3f1adfc464a261786583a4e2f98b6cf4f7d169d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85b36a11_8d631132",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2024-05-29T05:38:14Z",
+      "side": 1,
+      "message": "Trusty also uses `FFA_MSG_WAIT` but only outgoing from the secure world. It doesn\u0027t need to be covered here, right?",
+      "revId": "3f1adfc464a261786583a4e2f98b6cf4f7d169d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c0a0dfb_44bfadc4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 602,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2024-05-29T05:38:14Z",
+      "side": 1,
+      "message": "We\u0027ll also need some notification calls soon, and maybe `FFA_MSG_SEND2`.",
+      "revId": "3f1adfc464a261786583a4e2f98b6cf4f7d169d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
