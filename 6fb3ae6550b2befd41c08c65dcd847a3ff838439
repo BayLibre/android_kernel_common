@@ -41,6 +41,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0e2bdf9_95f6d064",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 3402659
+      },
+      "writtenOn": "2024-05-29T03:30:34Z",
+      "side": 1,
+      "message": "i am sorry and already fix this.",
+      "parentUuid": "fa49430b_596f5197",
+      "range": {
+        "startLine": 324,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 35
+      },
+      "revId": "6fb3ae6550b2befd41c08c65dcd847a3ff838439",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81380343_243e1652",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-05-23T23:46:21Z",
       "side": 1,
       "message": "this breaks build.",
+      "range": {
+        "startLine": 2077,
+        "startChar": 5,
+        "endLine": 2077,
+        "endChar": 35
+      },
+      "revId": "6fb3ae6550b2befd41c08c65dcd847a3ff838439",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9b1e4af_c32cd81b",
+        "filename": "fs/f2fs/data.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2077,
+      "author": {
+        "id": 3402659
+      },
+      "writtenOn": "2024-05-29T03:30:34Z",
+      "side": 1,
+      "message": "When we use f2fs_read_single_page ,it actually deliver \"rac\" to the next. Just change it to bool. So i want to change this parameter and hope to be able to use it in the next steps.\nThe logic of the code has not changed ,i think there is no risk.\nI have successfully built it in the local environment.",
+      "parentUuid": "81380343_243e1652",
       "range": {
         "startLine": 2077,
         "startChar": 5,
