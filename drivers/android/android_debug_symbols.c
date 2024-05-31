@@ -17,8 +17,12 @@
 #include <linux/fs.h>
 #include <linux/swap.h>
 #include <linux/compaction.h>
+<<<<<<< HEAD   (09d40a ANDROID: GKI: update symbol list for xiaomi)
 #include <linux/cma.h>
 #include "../mm/slab.h"
+||||||| BASE
+=======
+>>>>>>> CHANGE (7d32bc ANDROID: android: Add symbols to debug_symbols driver)
 
 struct ads_entry {
 	char *name;
@@ -49,10 +53,14 @@ static const struct ads_entry ads_entries[ADS_END] = {
 	ADS_ENTRY(ADS_DROP_SLAB, drop_slab),
 	ADS_ENTRY(ADS_FREE_PAGES, try_to_free_pages),
 	ADS_ENTRY(ADS_COMPACT_PAGES, try_to_compact_pages),
+<<<<<<< HEAD   (09d40a ANDROID: GKI: update symbol list for xiaomi)
 	ADS_ENTRY(ADS_SHOW_MEM, __show_mem),
 	ADS_ENTRY(ADS_TOTAL_CMA, &totalcma_pages),
 	ADS_ENTRY(ADS_SLAB_CACHES, &slab_caches),
 	ADS_ENTRY(ADS_SLAB_MUTEX, &slab_mutex),
+||||||| BASE
+=======
+>>>>>>> CHANGE (7d32bc ANDROID: android: Add symbols to debug_symbols driver)
 };
 
 /*

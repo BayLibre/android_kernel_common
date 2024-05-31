@@ -18,10 +18,14 @@ enum android_debug_symbol {
 	ADS_DROP_SLAB,
 	ADS_FREE_PAGES,
 	ADS_COMPACT_PAGES,
+<<<<<<< HEAD   (09d40a ANDROID: GKI: update symbol list for xiaomi)
 	ADS_SHOW_MEM, /* for debugging memory usage */
 	ADS_TOTAL_CMA, /* for debugging total cma pages */
 	ADS_SLAB_CACHES, /* for debugging slab */
 	ADS_SLAB_MUTEX, /* for debugging slab */
+||||||| BASE
+=======
+>>>>>>> CHANGE (7d32bc ANDROID: android: Add symbols to debug_symbols driver)
 	ADS_END
 };
 
