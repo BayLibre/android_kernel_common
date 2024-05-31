@@ -48,3 +48,6 @@ mod bindings_helper {
 }
 
 pub use bindings_raw::*;
+
+mod rwonce;
+pub use rwonce::{READ_ONCE, WRITE_ONCE};
