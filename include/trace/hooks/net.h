@@ -25,6 +25,7 @@ DECLARE_HOOK(android_vh_ptype_head,
 	TP_ARGS(pt, vendor_pt));
 
 struct sock;
+<<<<<<< HEAD   (33e939 ANDROID: vendor_hooks: add a field in mem_cgroup)
 struct sockaddr_in6;
 DECLARE_HOOK(android_vh_tcp_v4_connect,
 	TP_PROTO(struct sock *sk, struct sockaddr *uaddr), TP_ARGS(sk, uaddr));
@@ -81,6 +82,45 @@ DECLARE_HOOK(android_vh_tcp_rcv_established_fast_path,
 	TP_PROTO(struct sock *sk), TP_ARGS(sk));
 DECLARE_HOOK(android_vh_tcp_rcv_established_slow_path,
 	TP_PROTO(struct sock *sk), TP_ARGS(sk));
+||||||| BASE
+DECLARE_RESTRICTED_HOOK(android_rvh_nf_conn_alloc,
+	TP_PROTO(struct nf_conn *nf_conn), TP_ARGS(nf_conn), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_nf_conn_free,
+	TP_PROTO(struct nf_conn *nf_conn), TP_ARGS(nf_conn), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_sk_alloc,
+	TP_PROTO(struct sock *sock), TP_ARGS(sock), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_sk_free,
+	TP_PROTO(struct sock *sock), TP_ARGS(sock), 1);
+
+struct poll_table_struct;
+typedef struct poll_table_struct poll_table;
+DECLARE_HOOK(android_vh_netlink_poll,
+	TP_PROTO(struct file *file, struct socket *sock, poll_table *wait,
+		__poll_t *mask),
+	TP_ARGS(file, sock, wait, mask));
+
+=======
+struct net_device;
+DECLARE_RESTRICTED_HOOK(android_rvh_nf_conn_alloc,
+	TP_PROTO(struct nf_conn *nf_conn), TP_ARGS(nf_conn), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_nf_conn_free,
+	TP_PROTO(struct nf_conn *nf_conn), TP_ARGS(nf_conn), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_sk_alloc,
+	TP_PROTO(struct sock *sock), TP_ARGS(sock), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_sk_free,
+	TP_PROTO(struct sock *sock), TP_ARGS(sock), 1);
+
+struct poll_table_struct;
+typedef struct poll_table_struct poll_table;
+DECLARE_HOOK(android_vh_netlink_poll,
+	TP_PROTO(struct file *file, struct socket *sock, poll_table *wait,
+		__poll_t *mask),
+	TP_ARGS(file, sock, wait, mask));
+DECLARE_HOOK(android_vh_dc_send_copy,
+	TP_PROTO(struct sk_buff *skb, struct net_device *dev), TP_ARGS(skb, dev));
+DECLARE_HOOK(android_vh_dc_receive,
+	TP_PROTO(struct sk_buff *skb, int *flag), TP_ARGS(skb, flag));
+>>>>>>> CHANGE (f94939 ANDROID: GKI: net: add vendor hooks for link data path)
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_NET_VH_H */
