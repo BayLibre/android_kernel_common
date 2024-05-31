@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4276cfb3_7f115de2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2052564
+      },
+      "writtenOn": "2024-05-31T21:52:26Z",
+      "side": 1,
+      "message": "For the more general swap cluster order reservation, it should be a list of reservation tuple \u003corder, reservation percentage\u003e. The current main usage is just one list item for now. However, this API is hard to expand to reserve for more than one order.\n\nAnother example is /sys/kernel/mm/transparent_hugepage/hugepage-%dKB. That is not a list form.",
+      "revId": "1e36317e075bb67ed413537b78fd6c913af8375a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
