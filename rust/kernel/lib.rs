@@ -52,6 +52,7 @@ pub mod security;
 pub mod seq_file;
 mod static_assert;
 pub mod static_call;
+pub mod static_key;
 #[doc(hidden)]
 pub mod std_vendor;
 pub mod str;
