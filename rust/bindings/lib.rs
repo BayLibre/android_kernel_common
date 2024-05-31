@@ -50,4 +50,4 @@ mod bindings_helper {
 pub use bindings_raw::*;
 
 mod rwonce;
-pub use rwonce::{READ_ONCE, WRITE_ONCE};
+pub use rwonce::{READ_ONCE, WRITE_ONCE, rcu_dereference_raw};

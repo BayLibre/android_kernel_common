@@ -32,3 +32,9 @@ pub unsafe fn READ_ONCE<T: Copy>(ptr: *const T) -> T {
 pub unsafe fn WRITE_ONCE<T: Copy>(ptr: *mut T, val: T) {
     unsafe { __WRITE_ONCE(ptr, val) }
 }
+
+/// Dereference the pointer for rcu.
+#[inline(always)]
+pub unsafe fn rcu_dereference_raw<T>(ptr: *const *mut T) -> *mut T {
+    unsafe { READ_ONCE(ptr) }
+}
