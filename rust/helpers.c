@@ -392,6 +392,18 @@ unsigned long rust_helper_list_lru_walk(struct list_lru *lru,
 }
 EXPORT_SYMBOL_GPL(rust_helper_list_lru_walk);
 
+void rust_helper_preempt_enable_notrace(void)
+{
+	preempt_enable_notrace();
+}
+EXPORT_SYMBOL_GPL(rust_helper_preempt_enable_notrace);
+
+void rust_helper_preempt_disable_notrace(void)
+{
+	preempt_disable_notrace();
+}
+EXPORT_SYMBOL_GPL(rust_helper_preempt_disable_notrace);
+
 /*
  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
  * use it in contexts where Rust expects a `usize` like slice (array) indices.
