@@ -12,6 +12,12 @@ struct sk_buff;
 struct sock;
 struct net;
 
+#ifdef __GENKSYMS__
+	#define ANDROID_DST_OPS_NEGATIVE_ADVICE struct dst_entry * (*negative_advice)(struct dst_entry *)
+#else
+	#define ANDROID_DST_OPS_NEGATIVE_ADVICE void (*negative_advice)(struct sock *sk, struct dst_entry *)
+#endif
+
 struct dst_ops {
 	unsigned short		family;
 	unsigned int		gc_thresh;
@@ -24,7 +30,7 @@ struct dst_ops {
 	void			(*destroy)(struct dst_entry *);
 	void			(*ifdown)(struct dst_entry *,
 					  struct net_device *dev, int how);
-	void			(*negative_advice)(struct sock *sk, struct dst_entry *);
+	ANDROID_DST_OPS_NEGATIVE_ADVICE;
 	void			(*link_failure)(struct sk_buff *);
 	void			(*update_pmtu)(struct dst_entry *dst, struct sock *sk,
 					       struct sk_buff *skb, u32 mtu,
