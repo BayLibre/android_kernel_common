@@ -342585,6 +342585,13 @@ function {
   parameter_id: 0x0665e6b6
 }
 function {
+  id: 0x9bb62e4f
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x054f691a
+  parameter_id: 0x32a623d7
+}
+function {
   id: 0x9bb63c93
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -342821,6 +342828,13 @@ function {
   parameter_id: 0x00c72527
   parameter_id: 0x4585663f
   parameter_id: 0xf435685e
+}
+function {
+  id: 0x9bbe51c4
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x054f691a
+  parameter_id: 0x13580d6c
 }
 function {
   id: 0x9bbe531f
@@ -360866,6 +360880,24 @@ elf_symbol {
   full_name: "__traceiter_android_vh_customize_alloc_gfp"
 }
 elf_symbol {
+  id: 0xbb17692f
+  name: "__traceiter_android_vh_dc_receive"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x95551fd6
+  type_id: 0x9bbe51c4
+  full_name: "__traceiter_android_vh_dc_receive"
+}
+elf_symbol {
+  id: 0xc8db6e69
+  name: "__traceiter_android_vh_dc_send_copy"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf57e0652
+  type_id: 0x9bb62e4f
+  full_name: "__traceiter_android_vh_dc_send_copy"
+}
+elf_symbol {
   id: 0x17df4128
   name: "__traceiter_android_vh_direct_reclaim_begin"
   is_defined: true
@@ -364968,6 +365000,24 @@ elf_symbol {
   crc: 0x7c5aa8a7
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_customize_alloc_gfp"
+}
+elf_symbol {
+  id: 0x869fd955
+  name: "__tracepoint_android_vh_dc_receive"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dc_receive"
+}
+elf_symbol {
+  id: 0xaab0786f
+  name: "__tracepoint_android_vh_dc_send_copy"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dc_send_copy"
 }
 elf_symbol {
   id: 0x749563a6
@@ -424944,6 +424994,8 @@ interface {
   symbol_id: 0x431c5bf5
   symbol_id: 0x9f47ed94
   symbol_id: 0x96cfd964
+  symbol_id: 0xbb17692f
+  symbol_id: 0xc8db6e69
   symbol_id: 0x17df4128
   symbol_id: 0x5db6a094
   symbol_id: 0x94b48bb0
@@ -425400,6 +425452,8 @@ interface {
   symbol_id: 0x66a766d7
   symbol_id: 0xc44d61e6
   symbol_id: 0x611b30be
+  symbol_id: 0x869fd955
+  symbol_id: 0xaab0786f
   symbol_id: 0x749563a6
   symbol_id: 0x694ad7a6
   symbol_id: 0x30442e2e
