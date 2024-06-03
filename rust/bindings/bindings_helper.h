@@ -29,6 +29,7 @@
 #include <linux/tracepoint.h>
 #include <linux/wait.h>
 #include <linux/workqueue.h>
+#include <trace/hooks/rust_binder.h>
 #include <uapi/linux/android/binder.h>
 #include <uapi/linux/android/binderfs.h>
 #include <uapi/linux/sched/types.h>

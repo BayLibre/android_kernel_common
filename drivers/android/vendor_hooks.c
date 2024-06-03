@@ -15,6 +15,7 @@
 #include <linux/tracepoint.h>
 
 #include <trace/hooks/binder.h>
+#include <trace/hooks/rust_binder.h>
 #include <trace/hooks/cpuidle.h>
 #include <trace/hooks/mpam.h>
 #include <trace/hooks/wqlockup.h>

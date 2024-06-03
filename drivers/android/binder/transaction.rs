@@ -505,7 +505,7 @@ impl DeliverToRead for Transaction {
         }
         drop(prio_state);
 
-        to_thread.set_priority(&desired);
+        to_thread.set_priority(&desired, self.flags & TF_ONE_WAY != 0);
     }
 
     fn should_sync_wakeup(&self) -> bool {
