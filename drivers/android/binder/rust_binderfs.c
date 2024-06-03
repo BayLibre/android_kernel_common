@@ -30,6 +30,7 @@
 #include <linux/uaccess.h>
 #include <linux/user_namespace.h>
 #include <linux/xarray.h>
+#include <trace/hooks/rust_binder.h>
 #include <uapi/asm-generic/errno-base.h>
 #include <uapi/linux/android/binder.h>
 #include <uapi/linux/android/binderfs.h>
@@ -834,11 +835,21 @@ static struct file_system_type binder_fs_type = {
 	.fs_flags		= FS_USERNS_MOUNT,
 };
 
+void vh_rust_binder_set_priority_pixel_mod(void *data, bool is_oneway, struct task_struct *p)
+{
+	printk(KERN_WARNING "Rust Binder vendorhook: %s\n", is_oneway ? "oneway" : "transaction");
+}
+
 int init_rust_binderfs(void)
 {
 	int ret;
 	const char *name;
 	size_t len;
+
+	ret = register_trace_android_vh_rust_binder_set_priority(
+			vh_rust_binder_set_priority_pixel_mod, NULL);
+	if (ret)
+		return ret;
 
 	/* Verify that the default binderfs device names are valid. */
 	name = rust_binder_devices_param;
