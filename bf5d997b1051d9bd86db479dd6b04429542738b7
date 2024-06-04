@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d204283_b2d87858",
+        "filename": "include/linux/cgroup-defs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-06-04T23:52:16Z",
+      "side": 1,
+      "message": "can you put this into the commit message?",
+      "parentUuid": "8ef587e7_05dc742b",
+      "revId": "bf5d997b1051d9bd86db479dd6b04429542738b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "68d6e6ba_b98ff8b7",
         "filename": "include/linux/cgroup-defs.h",
         "patchSetId": 1
@@ -85,6 +103,24 @@
       "side": 1,
       "message": "Gemini actually has it pretty correct:\n```\n/*\n * Reserve space for the array of atomic_t\u0027s, which is used to\n * track the number of cgroups in each subsystem.\n */\n```\nI\u0027d also add that `sizeof(atomic_t) \u003c sizeof(u64)` so we\u0027d waste memory by trying to stuff `atomic_t` into an array of `u64`.",
       "parentUuid": "68d6e6ba_b98ff8b7",
+      "revId": "bf5d997b1051d9bd86db479dd6b04429542738b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f41f5129_6fea5ccd",
+        "filename": "include/linux/cgroup-defs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-06-04T23:52:16Z",
+      "side": 1,
+      "message": "put this in the commit message?",
+      "parentUuid": "72de553e_5179b70d",
       "revId": "bf5d997b1051d9bd86db479dd6b04429542738b7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
