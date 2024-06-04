@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9bbe294_afd816c9",
+        "filename": "include/linux/cgroup-defs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-06-04T23:20:44Z",
+      "side": 1,
+      "message": "rationale? The cited patch does add anything here.",
+      "revId": "bf5d997b1051d9bd86db479dd6b04429542738b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68d6e6ba_b98ff8b7",
+        "filename": "include/linux/cgroup-defs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-06-04T23:20:44Z",
+      "side": 1,
+      "message": "rationale for the size?",
+      "fixSuggestions": [
+        {
+          "fixId": "8a7951b6_a0c50d76",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/cgroup-defs.h",
+              "range": {
+                "startLine": 574,
+                "startChar": 0,
+                "endLine": 574,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * Reserve space for the array of atomic_t\u0027s, which is used to\n\t * track the number of cgroups in each subsystem.\n\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bf5d997b1051d9bd86db479dd6b04429542738b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
