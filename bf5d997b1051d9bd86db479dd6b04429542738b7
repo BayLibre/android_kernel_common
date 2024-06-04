@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8ef587e7_05dc742b",
+        "filename": "include/linux/cgroup-defs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2024-06-04T23:35:53Z",
+      "side": 1,
+      "message": "The maintainer mentioned hierarchical accounting instead of root-only. I think hierarchical accounting is unnecessary and costly, so I will oppose it. However if the maintainer insists then fields in `struct cgroup` will be required, in which case this would be a pointer to a dynamically allocated array for each cgroup instead of always paying for the memory as in `cgroup_root`.",
+      "parentUuid": "e9bbe294_afd816c9",
+      "revId": "bf5d997b1051d9bd86db479dd6b04429542738b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "68d6e6ba_b98ff8b7",
         "filename": "include/linux/cgroup-defs.h",
         "patchSetId": 1
@@ -49,6 +67,24 @@
           ]
         }
       ],
+      "revId": "bf5d997b1051d9bd86db479dd6b04429542738b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72de553e_5179b70d",
+        "filename": "include/linux/cgroup-defs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2024-06-04T23:35:53Z",
+      "side": 1,
+      "message": "Gemini actually has it pretty correct:\n```\n/*\n * Reserve space for the array of atomic_t\u0027s, which is used to\n * track the number of cgroups in each subsystem.\n */\n```\nI\u0027d also add that `sizeof(atomic_t) \u003c sizeof(u64)` so we\u0027d waste memory by trying to stuff `atomic_t` into an array of `u64`.",
+      "parentUuid": "68d6e6ba_b98ff8b7",
       "revId": "bf5d997b1051d9bd86db479dd6b04429542738b7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
