@@ -404923,6 +404923,24 @@ elf_symbol {
   full_name: "usb_wakeup_notification"
 }
 elf_symbol {
+  id: 0x1227900d
+  name: "usbnet_cdc_unbind"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x2e5cd3da
+  type_id: 0x136e318e
+  full_name: "usbnet_cdc_unbind"
+}
+elf_symbol {
+  id: 0x8189acd0
+  name: "usbnet_cdc_zte_rx_fixup"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xc11ed7fa
+  type_id: 0x9ee7a4e9
+  full_name: "usbnet_cdc_zte_rx_fixup"
+}
+elf_symbol {
   id: 0xbbf007f4
   name: "usbnet_change_mtu"
   is_defined: true
@@ -404948,6 +404966,15 @@ elf_symbol {
   crc: 0xfe1e5ee6
   type_id: 0x18d9f669
   full_name: "usbnet_disconnect"
+}
+elf_symbol {
+  id: 0xe395160a
+  name: "usbnet_generic_cdc_bind"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xb379792d
+  type_id: 0x9e768332
+  full_name: "usbnet_generic_cdc_bind"
 }
 elf_symbol {
   id: 0x8f0c866d
@@ -416858,9 +416885,12 @@ interface {
   symbol_id: 0xcac8f190
   symbol_id: 0x9ea1c58f
   symbol_id: 0x140d9164
+  symbol_id: 0x1227900d
+  symbol_id: 0x8189acd0
   symbol_id: 0xbbf007f4
   symbol_id: 0xd28057f3
   symbol_id: 0x580c56b8
+  symbol_id: 0xe395160a
   symbol_id: 0x8f0c866d
   symbol_id: 0x52816b1c
   symbol_id: 0x4f4e9353
