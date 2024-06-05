@@ -516,8 +516,8 @@ enum {
 #define NR_BLOOM_FILTERS	2
 
 struct lru_gen_mm_state {
-	/* synced with max_seq after each iteration */
-	unsigned long seq;
+	/* the current scan's seqno, incremented after each iteration */
+	unsigned long scan_seq;
 	/* where the current iteration continues after */
 	struct list_head *head;
 	/* where the last iteration ended before */
@@ -535,6 +535,8 @@ struct lru_gen_mm_walk {
 	struct lruvec *lruvec;
 	/* max_seq from lru_gen_folio: can be out of date */
 	unsigned long seq;
+	/* scan_seq of the scan this walk is part of */
+	unsigned long scan_seq;
 	/* the next address within an mm to scan */
 	unsigned long next_addr;
 	/* to batch promoted pages */
