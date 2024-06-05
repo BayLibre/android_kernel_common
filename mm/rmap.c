@@ -1660,7 +1660,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
 
 	/*
 	 * When racing against e.g. zap_pte_range() on another cpu,
-	 * in between its ptep_get_and_clear_full() and folio_remove_rmap_*(),
+	 * in between its ptep_get_and_clear_full() and page_remove_rmap(),
 	 * try_to_unmap() may return before page_mapped() has become false,
 	 * if page table locking is skipped: use TTU_SYNC to wait for that.
 	 */
@@ -1941,7 +1941,7 @@ discard:
 		if (unlikely(folio_test_hugetlb(folio)))
 			hugetlb_remove_rmap(folio);
 		else
-			folio_remove_rmap_pte(folio, subpage, vma);
+			page_remove_rmap(subpage, vma, false);
 		if (vma->vm_flags & VM_LOCKED)
 			mlock_drain_local();
 		folio_put(folio);
@@ -2010,7 +2010,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
 
 	/*
 	 * When racing against e.g. zap_pte_range() on another cpu,
-	 * in between its ptep_get_and_clear_full() and folio_remove_rmap_*(),
+	 * in between its ptep_get_and_clear_full() and page_remove_rmap(),
 	 * try_to_migrate() may return before page_mapped() has become false,
 	 * if page table locking is skipped: use TTU_SYNC to wait for that.
 	 */
@@ -2303,7 +2303,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
 		if (unlikely(folio_test_hugetlb(folio)))
 			hugetlb_remove_rmap(folio);
 		else
-			folio_remove_rmap_pte(folio, subpage, vma);
+			page_remove_rmap(subpage, vma, false);
 		if (vma->vm_flags & VM_LOCKED)
 			mlock_drain_local();
 		folio_put(folio);
@@ -2442,7 +2442,7 @@ static bool page_make_device_exclusive_one(struct folio *folio,
 		 * There is a reference on the page for the swap entry which has
 		 * been removed, so shouldn't take another.
 		 */
-		folio_remove_rmap_pte(folio, subpage, vma);
+		page_remove_rmap(subpage, vma, false);
 	}
 
 	mmu_notifier_invalidate_range_end(&range);
