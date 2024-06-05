@@ -2579,16 +2579,18 @@ void rmap_walk_locked(struct folio *folio, struct rmap_walk_control *rwc)
  *
  * RMAP_COMPOUND is ignored.
  */
-void hugepage_add_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
+void hugepage_add_anon_rmap(struct page *page, struct vm_area_struct *vma,
 			    unsigned long address, rmap_t flags)
 {
+	struct folio *folio = page_folio(page);
+
 	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
 
 	atomic_inc(&folio->_entire_mapcount);
 	if (flags & RMAP_EXCLUSIVE)
-		SetPageAnonExclusive(&folio->page);
+		SetPageAnonExclusive(page);
 	VM_WARN_ON_FOLIO(folio_entire_mapcount(folio) > 1 &&
-			 PageAnonExclusive(&folio->page), folio);
+			 PageAnonExclusive(page), folio);
 }
 
 void hugepage_add_new_anon_rmap(struct folio *folio,
