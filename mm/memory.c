@@ -4838,8 +4838,8 @@ int numa_migrate_prep(struct page *page, struct vm_area_struct *vma,
 static vm_fault_t do_numa_page(struct vm_fault *vmf)
 {
 	struct vm_area_struct *vma = vmf->vma;
-	struct folio *folio = NULL;
-	int nid = NUMA_NO_NODE;
+	struct page *page = NULL;
+	int page_nid = NUMA_NO_NODE;
 	bool writable = false;
 	int last_cpupid;
 	int target_nid;
@@ -4870,12 +4870,12 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
 	    can_change_pte_writable(vma, vmf->address, pte))
 		writable = true;
 
-	folio = vm_normal_folio(vma, vmf->address, pte);
-	if (!folio || folio_is_zone_device(folio))
+	page = vm_normal_page(vma, vmf->address, pte);
+	if (!page || is_zone_device_page(page))
 		goto out_map;
 
 	/* TODO: handle PTE-mapped THP */
-	if (folio_test_large(folio))
+	if (PageCompound(page))
 		goto out_map;
 
 	/*
@@ -4890,34 +4890,34 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
 		flags |= TNF_NO_GROUP;
 
 	/*
-	 * Flag if the folio is shared between multiple address spaces. This
+	 * Flag if the page is shared between multiple address spaces. This
 	 * is later used when determining whether to group tasks together
 	 */
-	if (folio_estimated_sharers(folio) > 1 && (vma->vm_flags & VM_SHARED))
+	if (page_mapcount(page) > 1 && (vma->vm_flags & VM_SHARED))
 		flags |= TNF_SHARED;
 
-	nid = folio_nid(folio);
+	page_nid = page_to_nid(page);
 	/*
 	 * For memory tiering mode, cpupid of slow memory page is used
 	 * to record page access time.  So use default value.
 	 */
 	if ((sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
-	    !node_is_toptier(nid))
+	    !node_is_toptier(page_nid))
 		last_cpupid = (-1 & LAST_CPUPID_MASK);
 	else
-		last_cpupid = page_cpupid_last(&folio->page);
-	target_nid = numa_migrate_prep(&folio->page, vma, vmf->address, nid,
-				       &flags);
+		last_cpupid = page_cpupid_last(page);
+	target_nid = numa_migrate_prep(page, vma, vmf->address, page_nid,
+			&flags);
 	if (target_nid == NUMA_NO_NODE) {
-		folio_put(folio);
+		put_page(page);
 		goto out_map;
 	}
 	pte_unmap_unlock(vmf->pte, vmf->ptl);
 	writable = false;
 
 	/* Migrate to the requested node */
-	if (migrate_misplaced_folio(folio, vma, target_nid)) {
-		nid = target_nid;
+	if (migrate_misplaced_folio(page_folio(page), vma, target_nid)) {
+		page_nid = target_nid;
 		flags |= TNF_MIGRATED;
 	} else {
 		flags |= TNF_MIGRATE_FAIL;
@@ -4933,8 +4933,8 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
 	}
 
 out:
-	if (nid != NUMA_NO_NODE)
-		task_numa_fault(last_cpupid, nid, 1, flags);
+	if (page_nid != NUMA_NO_NODE)
+		task_numa_fault(last_cpupid, page_nid, 1, flags);
 	return 0;
 out_map:
 	/*
