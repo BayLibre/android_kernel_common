@@ -2640,8 +2640,11 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
 					0, flags);
 	if (!xhci->event_ring)
 		goto fail;
-	if (xhci_check_trb_in_td_math(xhci) < 0)
-		goto fail;
+	/*
+	 * Function xhci_check_trb_in_td_math is no longer used, however since
+	 * KMI is frozen keeping the function but removing fatal failure.
+	 */
+	xhci_check_trb_in_td_math(xhci);
 
 	ret = xhci_alloc_erst(xhci, xhci->event_ring, &xhci->erst, flags);
 	if (ret)
