@@ -1163,17 +1163,19 @@ int folio_total_mapcount(struct folio *folio)
 EXPORT_SYMBOL_GPL(folio_total_mapcount);
 
 /**
- * folio_move_anon_rmap - move a folio to our anon_vma
- * @folio:	The folio to move to our anon_vma
- * @vma:	The vma the folio belongs to
+ * page_move_anon_rmap - move a page to our anon_vma
+ * @page:	the page to move to our anon_vma
+ * @vma:	the vma the page belongs to
  *
- * When a folio belongs exclusively to one process after a COW event,
- * that folio can be moved into the anon_vma that belongs to just that
- * process, so the rmap code will not search the parent or sibling processes.
+ * When a page belongs exclusively to one process after a COW event,
+ * that page can be moved into the anon_vma that belongs to just that
+ * process, so the rmap code will not search the parent or sibling
+ * processes.
  */
-void folio_move_anon_rmap(struct folio *folio, struct vm_area_struct *vma)
+void page_move_anon_rmap(struct page *page, struct vm_area_struct *vma)
 {
 	void *anon_vma = vma->anon_vma;
+	struct folio *folio = page_folio(page);
 
 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
 	VM_BUG_ON_VMA(!anon_vma, vma);
