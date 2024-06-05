@@ -76,7 +76,8 @@ alias(
 write_file(
     name = "gki_system_dlkm_modules_arm64",
     out = "android/gki_system_dlkm_modules_arm64",
-    content = get_gki_modules_list("arm64") + [
+    # Do not built kunit.ko into system_dlkm
+    content = [e for e in get_gki_modules_list("arm64") if "kunit.ko" not in e] + [
         # Ensure new line at the end.
         "",
     ],
@@ -85,7 +86,8 @@ write_file(
 write_file(
     name = "gki_system_dlkm_modules_x86_64",
     out = "android/gki_system_dlkm_modules_x86_64",
-    content = get_gki_modules_list("x86_64") + [
+    # Do not built kunit.ko into system_dlkm
+    content = [e for e in get_gki_modules_list("x86_64") if "kunit.ko" not in e] + [
         # Ensure new line at the end.
         "",
     ],
