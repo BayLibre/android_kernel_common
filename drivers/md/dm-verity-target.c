@@ -48,6 +48,8 @@ module_param_named(prefetch_cluster, dm_verity_prefetch_cluster, uint, 0644);
 
 static DEFINE_STATIC_KEY_FALSE(use_bh_wq_enabled);
 
+static DEFINE_IDA(workqueue_ida);
+
 struct dm_verity_prefetch_work {
 	struct work_struct work;
 	struct dm_verity *v;
@@ -1024,6 +1026,9 @@ static void verity_dtr(struct dm_target *ti)
 	if (v->verify_wq)
 		destroy_workqueue(v->verify_wq);
 
+	if (v->workqueue_id)
+		ida_free(&workqueue_ida, v->workqueue_id);
+
 	mempool_exit(&v->recheck_pool);
 	if (v->io)
 		dm_io_client_destroy(v->io);
@@ -1249,6 +1254,7 @@ static int verity_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	unsigned long long num_ll;
 	int r;
 	int i;
+	int wq_id;
 	sector_t hash_position;
 	char dummy;
 	char *root_hash_digest_to_validate;
@@ -1498,6 +1504,13 @@ static int verity_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		goto bad;
 	}
 
+	wq_id = ida_alloc_min(&workqueue_ida, 1, GFP_KERNEL);
+	if (wq_id < 0) {
+		ti->error = "Couldn't get workqueue id";
+		r = wq_id;
+		goto bad;
+	}
+	v->workqueue_id = wq_id;
 	/*
 	 * Using WQ_HIGHPRI improves throughput and completion latency by
 	 * reducing wait times when reading from a dm-verity device.
@@ -1507,8 +1520,8 @@ static int verity_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	 * will fall-back to using it for error handling (or if the bufio cache
 	 * doesn't have required hashes).
 	 */
-	workqueue_flags = WQ_UNBOUND | WQ_MEM_RECLAIM | WQ_HIGHPRI;
-	v->verify_wq = alloc_workqueue("kverityd", workqueue_flags, 0);
+	workqueue_flags = WQ_UNBOUND | WQ_MEM_RECLAIM | WQ_HIGHPRI | WQ_SYSFS;
+	v->verify_wq = alloc_workqueue("kverityd-%s-%d", workqueue_flags, 0, v->data_dev->name, v->workqueue_id);
 	if (!v->verify_wq) {
 		ti->error = "Cannot allocate workqueue";
 		r = -ENOMEM;
