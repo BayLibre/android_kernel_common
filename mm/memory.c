@@ -4548,7 +4548,7 @@ void set_pte_range(struct vm_fault *vmf, struct folio *folio,
 		folio_add_lru_vma(folio, vma);
 	} else {
 		add_mm_counter(vma->vm_mm, mm_counter_file(page), nr);
-		folio_add_file_rmap_ptes(folio, page, nr, vma);
+		folio_add_file_rmap_range(folio, page, nr, vma, false);
 	}
 	set_ptes(vma->vm_mm, addr, vmf->pte, entry, nr);
 

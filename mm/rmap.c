@@ -1384,18 +1384,31 @@ void folio_add_new_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
 	trace_android_vh_page_add_new_anon_rmap(&folio->page, vma, address);
 }
 
-static __always_inline void __folio_add_file_rmap(struct folio *folio,
-		struct page *page, int nr_pages, struct vm_area_struct *vma,
-		enum rmap_level level)
+/**
+ * folio_add_file_rmap_range - add pte mapping to page range of a folio
+ * @folio:	The folio to add the mapping to
+ * @page:	The first page to add
+ * @nr_pages:	The number of pages which will be mapped
+ * @vma:	the vm area in which the mapping is added
+ * @compound:	charge the page as compound or small page
+ *
+ * The page range of folio is defined by [first_page, first_page + nr_pages)
+ *
+ * The caller needs to hold the pte lock.
+ */
+void folio_add_file_rmap_range(struct folio *folio, struct page *page,
+			unsigned int nr_pages, struct vm_area_struct *vma,
+			bool compound)
 {
 	atomic_t *mapped = &folio->_nr_pages_mapped;
-	int nr = 0, nr_pmdmapped = 0, first;
+	unsigned int nr_pmdmapped = 0, first;
+	int nr = 0;
 
-	VM_WARN_ON_FOLIO(folio_test_anon(folio), folio);
-	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
+	VM_WARN_ON_FOLIO(folio_test_hugetlb(folio), folio);
+	VM_WARN_ON_FOLIO(compound && !folio_test_pmd_mappable(folio), folio);
 
-	switch (level) {
-	case RMAP_LEVEL_PTE:
+	/* Is page being mapped by PTE? Is this its first map to be added? */
+	if (likely(!compound)) {
 		do {
 			first = atomic_inc_and_test(&page->_mapcount);
 			if (first && folio_test_large(folio)) {
@@ -1406,8 +1419,9 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
 			if (first)
 				nr++;
 		} while (page++, --nr_pages > 0);
-		break;
-	case RMAP_LEVEL_PMD:
+	} else if (folio_test_pmd_mappable(folio)) {
+		/* That test is redundant: it's for safety or to optimize out */
+
 		first = atomic_inc_and_test(&folio->_entire_mapcount);
 		if (first) {
 			nr = atomic_add_return_relaxed(COMPOUND_MAPPED, mapped);
@@ -1422,7 +1436,6 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
 				nr = 0;
 			}
 		}
-		break;
 	}
 
 	if (nr_pmdmapped)
@@ -1437,43 +1450,6 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
 }
 
 /**
- * folio_add_file_rmap_ptes - add PTE mappings to a page range of a folio
- * @folio:	The folio to add the mappings to
- * @page:	The first page to add
- * @nr_pages:	The number of pages that will be mapped using PTEs
- * @vma:	The vm area in which the mappings are added
- *
- * The page range of the folio is defined by [page, page + nr_pages)
- *
- * The caller needs to hold the page table lock.
- */
-void folio_add_file_rmap_ptes(struct folio *folio, struct page *page,
-		int nr_pages, struct vm_area_struct *vma)
-{
-	__folio_add_file_rmap(folio, page, nr_pages, vma, RMAP_LEVEL_PTE);
-}
-
-/**
- * folio_add_file_rmap_pmd - add a PMD mapping to a page range of a folio
- * @folio:	The folio to add the mapping to
- * @page:	The first page to add
- * @vma:	The vm area in which the mapping is added
- *
- * The page range of the folio is defined by [page, page + HPAGE_PMD_NR)
- *
- * The caller needs to hold the page table lock.
- */
-void folio_add_file_rmap_pmd(struct folio *folio, struct page *page,
-		struct vm_area_struct *vma)
-{
-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-	__folio_add_file_rmap(folio, page, HPAGE_PMD_NR, vma, RMAP_LEVEL_PMD);
-#else
-	WARN_ON_ONCE(true);
-#endif
-}
-
-/**
  * page_add_file_rmap - add pte mapping to a file page
  * @page:	the page to add the mapping to
  * @vma:	the vm area in which the mapping is added
@@ -1485,13 +1461,16 @@ void page_add_file_rmap(struct page *page, struct vm_area_struct *vma,
 		bool compound)
 {
 	struct folio *folio = page_folio(page);
+	unsigned int nr_pages;
 
 	VM_WARN_ON_ONCE_PAGE(compound && !PageTransHuge(page), page);
 
 	if (likely(!compound))
-		folio_add_file_rmap_pte(folio, page, vma);
+		nr_pages = 1;
 	else
-		folio_add_file_rmap_pmd(folio, page, vma);
+		nr_pages = folio_nr_pages(folio);
+
+	folio_add_file_rmap_range(folio, page, nr_pages, vma, compound);
 }
 
 /**
