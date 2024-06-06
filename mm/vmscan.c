@@ -3271,32 +3271,31 @@ static bool iterate_mm_list_nowalk(struct lruvec *lruvec, unsigned long scan_seq
  ******************************************************************************/
 
 /*
- * A feedback loop based on Proportional-Integral-Derivative (PID) controller.
+ * To decide between two eviction targets X and Y, the target whose pages have
+ * a higher estimated cost for retention is chosen. The cost of retaining a
+ * page in X is the sum of:
  *
- * The P term is refaulted/(evicted+protected) from a tier in the generation
- * currently being evicted; the I term is the exponential moving average of the
- * P term over the generations previously evicted, using the smoothing factor
- * 1/2; the D term isn't supported.
+ *  - The cost paid so far to retain the page so far. This is estimated as the
+ *    number of pages in Y that were evicted in favor of retaining pages in X
+ *    but which have since been refaulted, divided by the original size of X
+ *    to amortize the cost across all retained pages.
+ *  - The predicted cost of evicting a page in Y instead of a page in X. This
+ *    is the refault rate of Y.
  *
- * The setpoint (SP) is always the first tier of one type; the process variable
- * (PV) is either any tier of the other type or any other tier of the same
- * type.
+ * The estimated cost of retention is then multiplied by a constant gain factor.
  *
- * The error is the difference between the SP and the PV; the correction is to
- * turn off protection when SP>PV or turn on protection when SP<PV.
- *
- * For future optimizations:
- * 1. The D term may discount the other two terms over time so that long-lived
- *    generations can resist stale information.
+ * TODO: consider evicted+protected+cur_size instead of oldest_gen_size
  */
 struct ctrl_pos {
 	unsigned long refaulted;
 	unsigned long total;
+	unsigned long num_victims;
+	unsigned long gen_size;
 	int gain;
 };
 
 static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
-			  struct ctrl_pos *pos)
+			  bool has_victims, struct ctrl_pos *pos)
 {
 	int i;
 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
@@ -3311,6 +3310,14 @@ static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
 		pos->total += lrugen->avg_total[type][i] +
 			      lrugen->protected[hist][type][i] +
 			      atomic_long_read(&lrugen->evicted[hist][type][i]);
+	}
+
+	if (has_victims) {
+		pos->num_victims = atomic_long_read(&lrugen->refaulted_victims[hist][type]);
+		pos->gen_size = lrugen->oldest_gen_size[hist][type];
+	} else {
+		pos->num_victims = 0;
+		pos->gen_size = 1;
 	}
 }
 
@@ -3327,17 +3334,24 @@ static void reset_histograms(struct lruvec *lruvec, int type, unsigned long seq)
 		atomic_long_set(&lrugen->evicted[hist][type][tier], 0);
 		WRITE_ONCE(lrugen->protected[hist][type][tier], 0);
 	}
+	atomic_long_set(&lrugen->refaulted_victims[hist][type], 0);
+
+	WRITE_ONCE(lrugen->victim_seq[hist][type], 0);
+	WRITE_ONCE(lrugen->oldest_gen_size[hist][type], 0);
 }
 
 static void reset_ctrl_pos(struct lruvec *lruvec, int type)
 {
 	int hist, tier;
 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-	unsigned long seq = lrugen->min_seq[type];
+	unsigned long carry_from_seq = lrugen->min_seq[type];
+	unsigned long next_seq = carry_from_seq + 1;
+	unsigned long next_gen = lru_gen_from_seq(next_seq);
+	long total_nr_pages = 0;
 
 	lockdep_assert_held(&lruvec->lru_lock);
 
-	hist = lru_hist_from_seq(seq);
+	hist = lru_hist_from_seq(carry_from_seq);
 
 	for (tier = 0; tier < MAX_NR_TIERS; tier++) {
 		unsigned long sum;
@@ -3350,21 +3364,35 @@ static void reset_ctrl_pos(struct lruvec *lruvec, int type)
 		      lrugen->protected[hist][type][tier] +
 		      atomic_long_read(&lrugen->evicted[hist][type][tier]);
 		WRITE_ONCE(lrugen->avg_total[type][tier], sum / 2);
+
+		total_nr_pages += lrugen->nr_pages[next_gen][type][tier];
 	}
+	/* nr_pages is eventually consistent, so fix up the estimate if it's negative. */
+	total_nr_pages = max(total_nr_pages, 0);
 
 	if (NR_HIST_GENS == 1)
-		reset_histograms(lruvec, type, seq);
+		reset_histograms(lruvec, type, carry_from_seq);
+
+	hist = lru_hist_from_seq(next_seq);
+	WRITE_ONCE(lrugen->victim_seq[hist][type], READ_ONCE(lrugen->min_seq[!type]));
+	WRITE_ONCE(lrugen->oldest_gen_size[hist][type], total_nr_pages);
+}
+
+/* Constant multiplier for cost calculations, to allow integer division. */
+#define COST_SHIFT 16
+
+static unsigned long retain_cost(struct ctrl_pos *retain, struct ctrl_pos *evict)
+{
+	unsigned long unnecessary_refaults, potential_refault;
+
+	unnecessary_refaults = (retain->num_victims << COST_SHIFT) / (retain->gen_size + 1);
+	potential_refault = (evict->refaulted << COST_SHIFT) / (evict->total + 1);
+	return retain->gain * (unnecessary_refaults + potential_refault);
 }
 
 static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
 {
-	/*
-	 * Return true if the PV has a limited number of refaults or a lower
-	 * refaulted/total than the SP.
-	 */
-	return pv->refaulted < MIN_LRU_BATCH ||
-	       pv->refaulted * (sp->total + MIN_LRU_BATCH) * sp->gain <=
-	       (sp->refaulted + 1) * pv->total * pv->gain;
+	return retain_cost(pv, sp) > retain_cost(sp, pv);
 }
 
 /******************************************************************************
@@ -4102,17 +4130,6 @@ next:
 		;
 	}
 
-	/* see the comment on lru_gen_folio */
-	if (swappiness && swappiness <= MAX_SWAPPINESS) {
-		// TODO
-		unsigned long seq = lrugen->max_seq[LRU_GEN_FILE] - MIN_NR_GENS;
-
-		if (min_seq[LRU_GEN_ANON] > seq && min_seq[LRU_GEN_FILE] < seq)
-			min_seq[LRU_GEN_ANON] = seq;
-		else if (min_seq[LRU_GEN_FILE] > seq && min_seq[LRU_GEN_ANON] < seq)
-			min_seq[LRU_GEN_FILE] = seq;
-	}
-
 	for_each_evictable_type(type, swappiness) {
 		if (min_seq[type] <= lrugen->min_seq[type])
 			continue;
@@ -4182,12 +4199,13 @@ unlock:
 	return success;
 }
 
-static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long *seq,
+static void try_to_inc_max_seq(struct lruvec *lruvec, unsigned long *seq,
 			       unsigned long scan_seq, bool *should_age,
-			       int swappiness, bool force_scan)
+			       int swappiness, bool force_scan,
+			       bool *max_seq_incremented)
 {
-	bool success;
 	int type;
+	bool success;
 	struct lru_gen_mm_walk *walk;
 	struct mm_struct *mm = NULL;
 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
@@ -4197,17 +4215,16 @@ static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long *seq,
 	VM_WARN_ON_ONCE(seq[LRU_GEN_FILE] > READ_ONCE(lrugen->max_seq[LRU_GEN_FILE]));
 
 	if (!mm_state) {
-		success = false;
 		for (type = ANON_AND_FILE - 1; type >= 0; type--)
-			if (should_age[type])
-				success |= inc_max_seq(lruvec, type, seq[type], swappiness);
-		return success;
+			max_seq_incremented[type] = should_age[type] &&
+				inc_max_seq(lruvec, type, seq[type], swappiness);
+		return;
 	}
 
 	/* see the comment on SCAN_ITER_FINISHING and in iterate_mm_list() */
 	if (scan_seq == SCAN_ITER_FINISHING ||
 	    scan_seq < READ_ONCE(mm_state->scan_seq))
-		return false;
+		return;
 
 	/*
 	 * If the hardware doesn't automatically set the accessed bit, fallback
@@ -4240,17 +4257,15 @@ static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long *seq,
 	} while (mm);
 done:
 	if (success) {
-		success = false;
 		for (type = ANON_AND_FILE - 1; type >= 0; type--)
-			if (should_age[type])
-				 success |= inc_max_seq(lruvec, type, seq[type], swappiness);
-		WARN_ON_ONCE(!success);
+			max_seq_incremented[type] = should_age[type] &&
+				 inc_max_seq(lruvec, type, seq[type], swappiness);
+		WARN_ON_ONCE(!max_seq_incremented[LRU_GEN_ANON] &&
+			     !max_seq_incremented[LRU_GEN_FILE]);
 
 		VM_WARN_ON_ONCE(mm_state->scan_seq != SCAN_ITER_FINISHING);
 		WRITE_ONCE(mm_state->scan_seq, scan_seq + 1);
 	}
-
-	return success;
 }
 
 /******************************************************************************
@@ -4884,9 +4899,9 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
 	 * This value is chosen because any other tier would have at least twice
 	 * as many refaults as the first tier.
 	 */
-	read_ctrl_pos(lruvec, type, 0, 2, &sp);
+	read_ctrl_pos(lruvec, type, 0, 2, false, &sp);
 	for (tier = 1; tier < MAX_NR_TIERS; tier++) {
-		read_ctrl_pos(lruvec, type, tier, 3, &pv);
+		read_ctrl_pos(lruvec, type, tier, 3, false, &pv);
 		if (!positive_ctrl_err(&sp, &pv))
 			break;
 	}
@@ -4907,8 +4922,8 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
 	 * Compare the sum of all tiers of anon with that of file to determine
 	 * which type to scan.
 	 */
-	read_ctrl_pos(lruvec, LRU_GEN_ANON, MAX_NR_TIERS, swappiness, &sp);
-	read_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_NR_TIERS, MAX_SWAPPINESS - swappiness, &pv);
+	read_ctrl_pos(lruvec, LRU_GEN_ANON, MAX_NR_TIERS, swappiness, true, &sp);
+	read_ctrl_pos(lruvec, LRU_GEN_FILE, MAX_NR_TIERS, MAX_SWAPPINESS - swappiness, true, &pv);
 
 	return positive_ctrl_err(&sp, &pv);
 }
@@ -5027,40 +5042,29 @@ retry:
 	return scanned;
 }
 
-static bool should_run_aging(struct lruvec *lruvec, unsigned long *max_seq,
-			     int swappiness, unsigned long *nr_to_scan)
+static bool should_run_aging(struct lruvec *lruvec, int type, unsigned long max_seq,
+			     unsigned long min_seq, unsigned long *nr_to_scan)
 {
-	int gen, type, zone;
+	int gen, zone;
 	unsigned long size = 0;
+	unsigned long seq;
 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-	DEFINE_MIN_SEQ(lruvec);
-	bool needs_aging = true;
 
 	*nr_to_scan = 0;
 	/* have to run aging, since eviction is not possible anymore */
-	for_each_evictable_type(type, swappiness)
-		needs_aging &= min_seq[type] + MIN_NR_GENS > max_seq[type];
-	if (needs_aging)
+	if (min_seq + MIN_NR_GENS > max_seq)
 		return true;
 
-	for_each_evictable_type(type, swappiness) {
-		unsigned long seq;
+	for (seq = min_seq; seq <= max_seq; seq++) {
+		gen = lru_gen_from_seq(seq);
 
-		for (seq = min_seq[type]; seq <= max_seq[type]; seq++) {
-			gen = lru_gen_from_seq(seq);
-
-			for (zone = 0; zone < MAX_NR_ZONES; zone++)
-				size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
-		}
+		for (zone = 0; zone < MAX_NR_ZONES; zone++)
+			size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
 	}
 
 	*nr_to_scan = size;
 	/* better to run aging even though eviction is still possible */
-	for_each_evictable_type(type, swappiness)
-		if (min_seq[type] + MIN_NR_GENS == max_seq[type])
-			return true;
-
-	return false;
+	return min_seq + MIN_NR_GENS == max_seq;
 }
 
 /*
@@ -5068,29 +5072,40 @@ static bool should_run_aging(struct lruvec *lruvec, unsigned long *max_seq,
  * 1. Defer try_to_inc_max_seq() to workqueues to reduce latency for memcg
  *    reclaim.
  */
-static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, int swappiness)
+static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, int swappiness,
+			   int *did_age)
 {
-	bool success;
-	unsigned long nr_to_scan;
+	unsigned long nr_to_scan[ANON_AND_FILE] = {}, ret;
 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
 	DEFINE_MAX_SEQ(lruvec);
+	DEFINE_MIN_SEQ(lruvec);
 	unsigned long scan_seq = READ_ONCE(lruvec->mm_state.scan_seq);
-	bool should_age[ANON_AND_FILE] = { true, true };
+	bool should_age[ANON_AND_FILE] = {};
+	int type;
+	bool max_seq_incremented[ANON_AND_FILE] = {}, max_seq_inc = false;
 	bool bypass = false;
 	bool young = false;
 
 	if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg))
 		return -1;
 
-	success = should_run_aging(lruvec, max_seq, swappiness, &nr_to_scan);
+	for_each_evictable_type(type, swappiness) {
+		if (did_age[type])
+			continue;
+
+		should_age[type] = should_run_aging(lruvec, type, max_seq[type],
+						    min_seq[type], nr_to_scan + type);
+	}
+	ret = nr_to_scan[LRU_GEN_ANON] + nr_to_scan[LRU_GEN_FILE];
 
 	/* try to scrape all its memory if this memcg was deleted */
-	if (nr_to_scan && !mem_cgroup_online(memcg))
-		return nr_to_scan > 0 ? nr_to_scan : -1;
+	if (ret && !mem_cgroup_online(memcg))
+		return ret > 0 ? ret : -1;
 
 	/* try to get away with not aging at the default priority */
-	if (!success || sc->priority == DEF_PRIORITY)
-		return nr_to_scan >> sc->priority;
+	if (sc->priority == DEF_PRIORITY ||
+	    (!should_age[LRU_GEN_ANON] && !should_age[LRU_GEN_FILE]))
+		return ret >> sc->priority;
 
 	/* TODO */
 	trace_android_vh_mglru_aging_bypass(lruvec, max_seq[0],
@@ -5098,9 +5113,18 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, int s
 	if (bypass)
 		return young ? -1 : 0;
 
-	/* stop scanning this lruvec as it's low on cold folios */
-	return try_to_inc_max_seq(lruvec, max_seq, scan_seq,
-				  should_age, swappiness, false) ? -1 : 0;
+	try_to_inc_max_seq(lruvec, max_seq, scan_seq, should_age,
+			   swappiness, false, max_seq_incremented);
+	ret = 0;
+	for_each_evictable_type(type, swappiness) {
+		did_age[type] |= max_seq_incremented[type];
+		max_seq_inc |= max_seq_incremented[type];
+		if (!did_age[type] && !should_age[type])
+			ret += nr_to_scan[type];
+	}
+
+	/* skip this lruvec as it's low on cold folios */
+	return ret > 0 ? ret : (max_seq_inc ? -1  : 0);
 }
 
 static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
@@ -5142,11 +5166,12 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
 	long nr_to_scan;
 	unsigned long scanned = 0;
 	int swappiness = get_swappiness(lruvec, sc);
+	int did_age[ANON_AND_FILE] = {};
 
 	while (true) {
 		int delta;
 
-		nr_to_scan = get_nr_to_scan(lruvec, sc, swappiness);
+		nr_to_scan = get_nr_to_scan(lruvec, sc, swappiness, did_age);
 		if (nr_to_scan <= 0)
 			break;
 
@@ -5778,6 +5803,7 @@ static int run_aging(struct lruvec *lruvec, unsigned long *seqs,
 	DEFINE_MAX_SEQ(lruvec);
 	unsigned long scan_seq = READ_ONCE(lruvec->mm_state.scan_seq);
 	bool should_age[ANON_AND_FILE] = {true, true};
+	bool max_seq_incremented[ANON_AND_FILE] = {};
 	int type;
 
 	for_each_evictable_type(type, swappiness) {
@@ -5786,8 +5812,9 @@ static int run_aging(struct lruvec *lruvec, unsigned long *seqs,
 		should_age[type] = seqs[type] == max_seq[type];
 	}
 
-	return try_to_inc_max_seq(lruvec, max_seq, scan_seq,
-				  should_age, swappiness, force_scan) ? 0 : -EEXIST;
+	try_to_inc_max_seq(lruvec, max_seq, scan_seq, should_age,
+			   swappiness, force_scan, max_seq_incremented);
+	return max_seq_incremented[LRU_GEN_ANON] || max_seq_incremented[LRU_GEN_FILE] ? 0 : -EEXIST;
 }
 
 static int run_eviction(struct lruvec *lruvec, unsigned long *seqs, struct scan_control *sc,
