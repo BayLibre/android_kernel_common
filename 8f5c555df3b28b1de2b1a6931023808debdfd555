@@ -16,6 +16,24 @@
       "message": "\"UPSTREAM:\" should be changed into \"BACKPORT:\" since this is not a clean cherry-pick.",
       "revId": "8f5c555df3b28b1de2b1a6931023808debdfd555",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bbc1a68_59b6399c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2024-06-06T13:48:36Z",
+      "side": 1,
+      "message": "Thanks for having a look Bart. I did the original cherry-pick on 15-6.6 and I didn\u0027t get a conflict.\n\nI iniitially started with picking the patch FROMLIST where I did see a conflict. But then realized it\u0027s already in Linus tree so when I did the cherry-pick it applied cleanly.\n\ngit can be too smart sometimes",
+      "parentUuid": "148337ff_f366b65e",
+      "revId": "8f5c555df3b28b1de2b1a6931023808debdfd555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
