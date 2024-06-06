@@ -34,6 +34,24 @@
       "parentUuid": "148337ff_f366b65e",
       "revId": "8f5c555df3b28b1de2b1a6931023808debdfd555",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8471e135_2c505f5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-06-06T15:15:33Z",
+      "side": 1,
+      "message": "I see a small difference between the upstream commit and this CL: in this CL I see \"EXPORT_SYMBOL_GPL(wake_up_if_idle);\" That function is not exported in the upstream kernel. So I think that the report that this is not a clean cherry-pick is correct.",
+      "parentUuid": "4bbc1a68_59b6399c",
+      "revId": "8f5c555df3b28b1de2b1a6931023808debdfd555",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
