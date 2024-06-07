@@ -16,6 +16,75 @@
       "message": "Please explain why in the commit message.",
       "revId": "ee69182e9eaa9eb680e870aa33e4cb529ba6c4dc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2b94367_22c1ca0d",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-06-07T09:10:42Z",
+      "side": 1,
+      "message": "Consider using `defines` [1] for `-D_GNU_SOURCE` right here for the library that every test depends on.\n\n[1] https://bazel.build/reference/be/c-cpp#cc_library.defines",
+      "range": {
+        "startLine": 1058,
+        "startChar": 0,
+        "endLine": 1058,
+        "endChar": 35
+      },
+      "revId": "ee69182e9eaa9eb680e870aa33e4cb529ba6c4dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eff0b038_ed7f2be6",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 1639,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-06-07T09:10:42Z",
+      "side": 1,
+      "message": "add those to the defaults?\n\nIn particular, pick one optimization level consistent across the definition unless there are very good reasons for O2 and O3 specifically.",
+      "range": {
+        "startLine": 1638,
+        "startChar": 1,
+        "endLine": 1639,
+        "endChar": 18
+      },
+      "revId": "ee69182e9eaa9eb680e870aa33e4cb529ba6c4dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6352a30b_e8aa9cae",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 1972,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-06-07T09:10:42Z",
+      "side": 1,
+      "message": "those seem reasonable defaults as well?",
+      "range": {
+        "startLine": 1971,
+        "startChar": 0,
+        "endLine": 1972,
+        "endChar": 14
+      },
+      "revId": "ee69182e9eaa9eb680e870aa33e4cb529ba6c4dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
