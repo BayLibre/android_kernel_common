@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bda9b63_4e782b7a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1942356
+      },
+      "writtenOn": "2024-06-07T18:57:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5be5abc_ef5947de",
+      "revId": "ee69182e9eaa9eb680e870aa33e4cb529ba6c4dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2b94367_22c1ca0d",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-06-07T09:10:42Z",
       "side": 1,
       "message": "Consider using `defines` [1] for `-D_GNU_SOURCE` right here for the library that every test depends on.\n\n[1] https://bazel.build/reference/be/c-cpp#cc_library.defines",
+      "range": {
+        "startLine": 1058,
+        "startChar": 0,
+        "endLine": 1058,
+        "endChar": 35
+      },
+      "revId": "ee69182e9eaa9eb680e870aa33e4cb529ba6c4dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0dd4b93_13039c5f",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1942356
+      },
+      "writtenOn": "2024-06-07T18:57:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2b94367_22c1ca0d",
       "range": {
         "startLine": 1058,
         "startChar": 0,
@@ -64,6 +106,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3efbc8e4_2798ab66",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 1639,
+      "author": {
+        "id": 1942356
+      },
+      "writtenOn": "2024-06-07T18:57:34Z",
+      "side": 1,
+      "message": "Thanks for the review.  Comparing all the kselftests Makefiles, most are built with -O2, except timers some other tests that branched from timers that are -O3.\n\nFor timers, I think it makes sense to keep it consistent with upstream as they are threshold tests that have the potential to be flaky if the runtime changes.\n\nIt looks like clang will use the last optimization level set, so I could set the default to -O2, and add -O3 for the timer test cases.\n\nAs for the -DKTEST, that looks like a leftover from the old configuration that is no longer set, so I will remove it in another commit.",
+      "parentUuid": "eff0b038_ed7f2be6",
+      "range": {
+        "startLine": 1638,
+        "startChar": 1,
+        "endLine": 1639,
+        "endChar": 18
+      },
+      "revId": "ee69182e9eaa9eb680e870aa33e4cb529ba6c4dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6352a30b_e8aa9cae",
@@ -77,6 +143,30 @@
       "writtenOn": "2024-06-07T09:10:42Z",
       "side": 1,
       "message": "those seem reasonable defaults as well?",
+      "range": {
+        "startLine": 1971,
+        "startChar": 0,
+        "endLine": 1972,
+        "endChar": 14
+      },
+      "revId": "ee69182e9eaa9eb680e870aa33e4cb529ba6c4dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "795ca889_80d06ac5",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 1972,
+      "author": {
+        "id": 1942356
+      },
+      "writtenOn": "2024-06-07T18:57:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6352a30b_e8aa9cae",
       "range": {
         "startLine": 1971,
         "startChar": 0,
