@@ -46,6 +46,30 @@
       },
       "revId": "95551072ba8a49d2c4db8c231004ce9473f7d455",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53253ffc_091124e0",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 1063,
+      "author": {
+        "id": 1942356
+      },
+      "writtenOn": "2024-06-07T21:32:01Z",
+      "side": 1,
+      "message": "Yes, if there is no equals sign, it will set `_GNU_SOURCE\u003d1` which will cause macro redefinition warnings if `#define _GNU_SOURCE` is present in any source files.",
+      "parentUuid": "26f460a6_528f4296",
+      "range": {
+        "startLine": 1063,
+        "startChar": 20,
+        "endLine": 1063,
+        "endChar": 21
+      },
+      "revId": "95551072ba8a49d2c4db8c231004ce9473f7d455",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
