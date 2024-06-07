@@ -893,3 +893,7 @@ int init_rust_binderfs(void)
 
 	return ret;
 }
+
+#define CREATE_TRACE_POINTS
+#define CREATE_RUST_TRACE_POINTS
+#include <trace/events/rust_binder.h>
