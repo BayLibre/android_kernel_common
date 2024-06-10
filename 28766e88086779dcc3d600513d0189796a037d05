@@ -16,6 +16,24 @@
       "message": "IIUC, this assignment is acting as a hint and will be used in vendor hook for cases when driver registers hooks later than the rw_semaphoare initiation ?\n\nHow atomic is this assignment wherein the value doesn\u0027t change before its passed to the vendor hook.",
       "revId": "28766e88086779dcc3d600513d0189796a037d05",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf36525b_4b520ed4",
+        "filename": "kernel/locking/rwsem.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-06-10T18:21:51Z",
+      "side": 1,
+      "message": "Yeah. I\u0027m similarly confused as to why this initialization isn\u0027t done by the trace_android_vh_rwsem_init hook?",
+      "parentUuid": "53f12605_e9d2882b",
+      "revId": "28766e88086779dcc3d600513d0189796a037d05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
