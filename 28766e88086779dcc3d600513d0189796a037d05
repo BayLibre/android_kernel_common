@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f9c0926_30dc66a4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-06-10T18:31:22Z",
+      "side": 1,
+      "message": "Critical context missing from the BUG, please integrate this detail in the commit message:  Some semaphores are created before the VendorHook driver is registered, so the value cannot be reliably initialized in the trace_android_vh_rwsem_init() call.",
+      "revId": "28766e88086779dcc3d600513d0189796a037d05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "53f12605_e9d2882b",
         "filename": "kernel/locking/rwsem.c",
         "patchSetId": 2
@@ -32,6 +49,24 @@
       "side": 1,
       "message": "Yeah. I\u0027m similarly confused as to why this initialization isn\u0027t done by the trace_android_vh_rwsem_init hook?",
       "parentUuid": "53f12605_e9d2882b",
+      "revId": "28766e88086779dcc3d600513d0189796a037d05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fe7f499_580155d5",
+        "filename": "kernel/locking/rwsem.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-06-10T18:31:22Z",
+      "side": 1,
+      "message": "I see this was answered in the bug. I suggest tweaking the commit message to make it clear.",
+      "parentUuid": "cf36525b_4b520ed4",
       "revId": "28766e88086779dcc3d600513d0189796a037d05",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
