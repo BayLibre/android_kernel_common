@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3eea97f5_20ab1a39",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 1029,
+      "author": {
+        "id": 1942356
+      },
+      "writtenOn": "2024-06-10T17:47:24Z",
+      "side": 1,
+      "message": "It does compile fine with -O3.  I could set that as the default, but I\u0027m concerned that it would be hard to debug if it does cause an issue in the future.",
+      "parentUuid": "713771a1_d31f3691",
+      "range": {
+        "startLine": 1029,
+        "startChar": 0,
+        "endLine": 1029,
+        "endChar": 10
+      },
+      "revId": "95551072ba8a49d2c4db8c231004ce9473f7d455",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0161e171_2d68d395",
         "filename": "BUILD.bazel",
         "patchSetId": 4
@@ -135,6 +159,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e3390a2_33cb28fa",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 1063,
+      "author": {
+        "id": 1942356
+      },
+      "writtenOn": "2024-06-10T17:47:24Z",
+      "side": 1,
+      "message": "It\u0027s not an undefine.  It is defining it as an empty string afaik.  If the equals sign is omitted, it will be defined to 1.",
+      "parentUuid": "92f7f10a_8ed637a5",
+      "range": {
+        "startLine": 1063,
+        "startChar": 0,
+        "endLine": 1063,
+        "endChar": 23
+      },
+      "revId": "95551072ba8a49d2c4db8c231004ce9473f7d455",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2efaa28_2d59795e",
@@ -148,6 +196,30 @@
       "writtenOn": "2024-06-10T13:53:43Z",
       "side": 1,
       "message": "should this be the default for `cc_binary_with_abi` ? At least for consistency?",
+      "range": {
+        "startLine": 1116,
+        "startChar": 0,
+        "endLine": 1119,
+        "endChar": 7
+      },
+      "revId": "95551072ba8a49d2c4db8c231004ce9473f7d455",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d93ebc24_80fc473e",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 1119,
+      "author": {
+        "id": 1942356
+      },
+      "writtenOn": "2024-06-10T17:47:24Z",
+      "side": 1,
+      "message": "I\u0027m not sure how to implement this in cc_binary_with_abi.  I could just add it to the end of _KSELFTEST_COPTS, i.e.\n\n```\n_KSELFTEST_COPTS \u003d [\n    \"-O3\",\n    \"-pthread\",\n    \"-std\u003dgnu99\",\n] + select({\n    \":arm\": [\"-mcpu\u003dcortex-a8\"],\n    \"//conditions:default\": [],\n})\n```",
+      "parentUuid": "a2efaa28_2d59795e",
       "range": {
         "startLine": 1116,
         "startChar": 0,
