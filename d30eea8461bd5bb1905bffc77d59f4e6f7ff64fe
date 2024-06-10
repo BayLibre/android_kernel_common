@@ -35,6 +35,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f816781_980743ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-06-10T22:14:09Z",
+      "side": 1,
+      "message": "Yeah, this was the only issue. I\u0027ll update pixel when the time comes.",
+      "parentUuid": "4d952abd_987c96b4",
+      "revId": "d30eea8461bd5bb1905bffc77d59f4e6f7ff64fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40f0ca13_131961a9",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-06-10T19:03:38Z",
       "side": 1,
       "message": "Unlike `heap_flags`, at some point `fd_flags` needs to be converted to `int`, since `int` is used for the kernel APIs that take these flag values. The conversion used to happen right after the check for valid flags in `dma_heap_ioctl_allocate`, after which `int` was used from then on. Now, we\u0027re implicitly converting from `u32` to `int` here in all heap implementations which seems unnecessary. So I don\u0027t think I\u0027m in favor of propagating the `u32` type for `fd_flags` all the way to heaps.\n\n`heap_flags` could do with changing to `unsigned long long` since the current implicit conversion to `unsigned int` would be potential truncation if we actually had `heap_flag` values, and there are no existing API calls to worry about. But I don\u0027t see why we should be using these `u*` types outside of dma-heap.c.",
+      "revId": "d30eea8461bd5bb1905bffc77d59f4e6f7ff64fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e66bb1d_40b3de56",
+        "filename": "drivers/dma-buf/heaps/system_heap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-06-10T22:14:09Z",
+      "side": 1,
+      "message": "Yeah, the implicit `u32` to `int` conversion should be fine as long as there are no pointers involved. If the kernel API takes an `int *flags` somewhere then using the `u32` might throw some warnings. I suppose this is not the case otherwise we would have seen it by now.\n\nI agree with you that `heap_flags` is the only really necessary change. I also agree that the conversion could have been to `unsigned long long`. I would have preferred keeping these types too but I don\u0027t really mind if upstream switches to `u{32,64}` either.\n\nFWIW, I\u0027m only following the \"convention\" of the upstream patches. I sure don\u0027t want a collage of different types.",
+      "parentUuid": "40f0ca13_131961a9",
       "revId": "d30eea8461bd5bb1905bffc77d59f4e6f7ff64fe",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
