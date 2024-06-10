@@ -1,0 +1,131 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32aca8bb_51fd1dd8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2052564
+      },
+      "writtenOn": "2024-06-10T22:58:01Z",
+      "side": 1,
+      "message": "Hi Kalesh, thanks for the change. I make some minor suggestion there for the value range.",
+      "revId": "3a617bef022fdc9f654a5465a06df34987308415",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "979f7184_21fcd403",
+        "filename": "include/linux/swap.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 2052564
+      },
+      "writtenOn": "2024-06-10T22:58:01Z",
+      "side": 1,
+      "message": "PMD_ORDER+1, or SWAP_NR_ORDER. Should be around for x86 and arm.",
+      "range": {
+        "startLine": 34,
+        "startChar": 37,
+        "endLine": 34,
+        "endChar": 48
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "51c516aa_fcab8efc",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/swap.h",
+              "range": {
+                "startLine": 34,
+                "startChar": 0,
+                "endLine": 35,
+                "endChar": 0
+              },
+              "replacement": "/* order to reserve: Orders 1 to min(PMD_ORDER+1, 24) are valid */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3a617bef022fdc9f654a5465a06df34987308415",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0b30494_93113f2e",
+        "filename": "include/linux/swap.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 2052564
+      },
+      "writtenOn": "2024-06-10T22:58:01Z",
+      "side": 1,
+      "message": "100? See my other comment.",
+      "range": {
+        "startLine": 37,
+        "startChar": 48,
+        "endLine": 37,
+        "endChar": 50
+      },
+      "revId": "3a617bef022fdc9f654a5465a06df34987308415",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11315ad7_5dd3c68c",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3211,
+      "author": {
+        "id": 2052564
+      },
+      "writtenOn": "2024-06-10T22:58:01Z",
+      "side": 1,
+      "message": "This should be SWAP_NR_ORDERS. PMD_SHIFT include the 4K page shft as well, it is too big. We want PMD_ORDER + 1, that is SWAP_NR_ORDERS.",
+      "range": {
+        "startLine": 3211,
+        "startChar": 27,
+        "endLine": 3211,
+        "endChar": 37
+      },
+      "revId": "3a617bef022fdc9f654a5465a06df34987308415",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be05a8f7_ce77e466",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3216,
+      "author": {
+        "id": 2052564
+      },
+      "writtenOn": "2024-06-10T22:58:01Z",
+      "side": 1,
+      "message": "Suggest change to 100? It should be possible assign one swap file to one dedicate order completely, that is 100%",
+      "range": {
+        "startLine": 3216,
+        "startChar": 31,
+        "endLine": 3216,
+        "endChar": 33
+      },
+      "revId": "3a617bef022fdc9f654a5465a06df34987308415",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
