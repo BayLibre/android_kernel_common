@@ -163,6 +163,7 @@
   clk_hw_is_enabled
   clk_hw_round_rate
   clk_hw_set_parent
+  clk_hw_set_rate_range
   __clk_is_enabled
   clk_mux_determine_rate_flags
   clk_mux_index_to_val
@@ -252,6 +253,7 @@
   crypto_init_queue
   __crypto_memneq
   crypto_register_ahash
+  crypto_register_alg
   crypto_register_shash
   crypto_register_skcipher
   crypto_sha1_finup
@@ -266,6 +268,7 @@
   crypto_skcipher_setkey
   crypto_unregister_ahash
   crypto_unregister_ahashes
+  crypto_unregister_alg
   crypto_unregister_shash
   crypto_unregister_skcipher
   __crypto_xor
@@ -395,6 +398,7 @@
   devm_platform_ioremap_resource_byname
   devm_pwm_get
   devm_regmap_field_alloc
+  __devm_regmap_init
   __devm_regmap_init_i2c
   __devm_regmap_init_mmio_clk
   devm_regulator_bulk_get
@@ -1062,6 +1066,9 @@
   iput
   __ipv6_addr_type
   __irq_apply_affinity_hint
+  irq_chip_ack_parent
+  irq_chip_disable_parent
+  irq_chip_enable_parent
   irq_chip_eoi_parent
   irq_chip_mask_parent
   irq_chip_retrigger_hierarchy
@@ -1073,11 +1080,13 @@
   __irq_domain_add
   irq_domain_alloc_irqs_parent
   irq_domain_create_hierarchy
+  irq_domain_free_irqs_common
   irq_domain_free_irqs_parent
   irq_domain_get_irq_data
   irq_domain_remove
   irq_domain_set_hwirq_and_chip
   irq_domain_set_info
+  irq_domain_xlate_onecell
   irq_find_matching_fwspec
   irq_get_irq_data
   irq_of_parse_and_map
@@ -1195,6 +1204,7 @@
   led_classdev_register_ext
   led_classdev_unregister
   led_init_default_state_get
+  led_set_brightness
   led_trigger_blink_oneshot
   led_trigger_event
   led_trigger_register
@@ -1525,11 +1535,14 @@
   perf_trace_run_bpf_submit
   pfn_is_map_memory
   phy_attached_info
+  phy_basic_features
   phy_basic_t1_features
   phy_drivers_register
   phy_drivers_unregister
   phy_error
   phy_exit
+  phy_gbit_features
+  phy_get_internal_delay
   phy_init
   phy_init_eee
   phylink_connect_phy
@@ -1577,6 +1590,7 @@
   phy_select_page
   phy_set_mode_ext
   phy_trigger_machine
+  phy_write_mmd
   phy_write_paged
   pid_task
   pinconf_generic_dt_free_map
@@ -1744,6 +1758,7 @@
   register_shrinker
   register_syscore_ops
   register_wide_hw_breakpoint
+  regmap_bulk_write
   regmap_field_read
   regmap_field_update_bits_base
   regmap_irq_chip_get_base
@@ -1830,6 +1845,8 @@
   schedule_timeout_interruptible
   schedule_timeout_killable
   schedule_timeout_uninterruptible
+  scmi_driver_register
+  scmi_driver_unregister
   scnprintf
   sdio_align_size
   sdio_claim_host
