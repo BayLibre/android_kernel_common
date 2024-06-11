@@ -54,6 +54,12 @@ DECLARE_HOOK(android_vh_dc_send_copy,
 	TP_PROTO(struct sk_buff *skb, struct net_device *dev), TP_ARGS(skb, dev));
 DECLARE_HOOK(android_vh_dc_receive,
 	TP_PROTO(struct sk_buff *skb, int *flag), TP_ARGS(skb, flag));
+DECLARE_HOOK(android_vh_inet_create,
+	TP_PROTO(struct sock *sk, bool err), TP_ARGS(sk, err));
+DECLARE_HOOK(android_vh_uplink_send_msg,
+	TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_sock_create,
+	TP_PROTO(struct sock *sk), TP_ARGS(sk));
 DECLARE_HOOK(android_vh_tcp_rtt_estimator,
 	TP_PROTO(struct sock *sk, long mrtt_us), TP_ARGS(sk, mrtt_us));
 DECLARE_HOOK(android_vh_udp_enqueue_schedule_skb,
