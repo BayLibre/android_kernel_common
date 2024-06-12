@@ -142,6 +142,30 @@
       },
       "revId": "c265eea26c9a6c00048bfd4d2d0ba6ff1eca1ac1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "619f3b78_ee5946fd",
+        "filename": "fs/f2fs/data.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 2171,
+      "author": {
+        "id": 3402659
+      },
+      "writtenOn": "2024-06-12T02:31:08Z",
+      "side": 1,
+      "message": "The mainstream file system used in the /data path of current mobile devices is f2fs, so we have decided to first complete in F2fs.\nAdditionally, in userspace, we maintain a set of recognition strategies for different scenarios. Once a corresponding strategy is triggered, the target parameters will be set to the rac during readahead. Based on the rac, the parameters will be inherited by the bio. And then, it will be performed in multiple areas such as the block layer and I/O scheduler. These operations are not limited to increasing priority to accelerate IO processing, but also include temporary modifications of readahead size, readahead window, and other operations. Therefore, using ioctl or IO priority alone cannot fully leverage this feature.",
+      "parentUuid": "15bf9609_49fb7c20",
+      "range": {
+        "startLine": 2171,
+        "startChar": 2,
+        "endLine": 2171,
+        "endChar": 51
+      },
+      "revId": "c265eea26c9a6c00048bfd4d2d0ba6ff1eca1ac1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
