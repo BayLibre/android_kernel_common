@@ -16,6 +16,24 @@
       "message": "Could we also pass here the `pkvm_handle_t`? this would enable the handler to call other functions such as aosp/3123031",
       "revId": "471d042acdfe92ef64485841c470b1ceaae7533f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83c60e53_b1e5af51",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1694,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-06-12T14:40:17Z",
+      "side": 1,
+      "message": "This is a good idea but I would like to pass a `void *priv` that can repurposed based on their needs during registration. Wdyth ?",
+      "parentUuid": "979796d1_d04f39cc",
+      "revId": "471d042acdfe92ef64485841c470b1ceaae7533f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
