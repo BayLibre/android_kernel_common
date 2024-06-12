@@ -7,9 +7,10 @@ use crate::{thread::Thread, transaction::Transaction};
 use kernel::bindings::{rust_binder_thread, rust_binder_transaction, task_struct};
 use kernel::tracepoint::declare_trace;
 
-use core::ffi::c_uint;
+use core::ffi::{c_uint, c_ulong};
 
 declare_trace! {
+    fn rust_binder_ioctl(cmd: c_uint, arg: c_ulong);
     fn rust_binder_set_priority(thread: *mut task_struct, desired_prio: c_uint, new_prio: c_uint);
     fn rust_binder_wait_for_work(proc_work: bool, transaction_stack: bool, thread_todo: bool);
     fn rust_binder_transaction(reply: bool, t: rust_binder_transaction);
@@ -25,6 +26,12 @@ fn raw_transaction(t: &Transaction) -> rust_binder_transaction {
 #[inline]
 fn raw_thread(t: &Thread) -> rust_binder_thread {
     t as *const Thread as rust_binder_thread
+}
+
+#[inline]
+pub(crate) fn trace_ioctl(cmd: u32, arg: u64) {
+    // SAFETY: Always safe to call.
+    unsafe { rust_binder_ioctl(cmd, arg) }
 }
 
 #[inline]
