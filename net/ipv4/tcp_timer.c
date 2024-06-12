@@ -282,8 +282,13 @@ static int tcp_write_timeout(struct sock *sk)
 				  icsk->icsk_retransmits,
 				  icsk->icsk_rto, (int)expired);
 
+	trace_android_vh_tcp_state_change(sk, 3, 0);
+
 	if (expired) {
 		/* Has it gone just too far? */
+
+		trace_android_vh_tcp_state_change(sk, 2, 0);
+
 		tcp_write_err(sk);
 		return 1;
 	}
@@ -630,6 +635,8 @@ out_reset_timer:
 		 * activated.
 		 */
 		icsk->icsk_rto = min(icsk->icsk_rto << 1, TCP_RTO_MAX);
+
+		trace_android_vh_tcp_fastsyn(sk);
 	}
 	inet_csk_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
 				  tcp_clamp_rto_to_user_timeout(sk), TCP_RTO_MAX);
