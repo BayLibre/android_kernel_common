@@ -16,6 +16,23 @@
       "message": "why is this not added to the honor list, but to the oplus list?",
       "revId": "8377203cee9b4f4994bf430ce5d1d83920623fa7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef575089_cb55ee06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-06-12T17:12:34Z",
+      "side": 1,
+      "message": "```\nERROR: Differences between ksymtab and symbol list detected!\nSymbols missing from ksymtab:\n - __traceiter_android_vh_do_swap_page_spf\n - __tracepoint_android_vh_do_swap_page_spf\n```\n\nThe error indicates that those symbols are not exported for this kernel. Do they exist?",
+      "revId": "8377203cee9b4f4994bf430ce5d1d83920623fa7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
