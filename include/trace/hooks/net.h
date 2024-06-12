@@ -50,6 +50,16 @@ DECLARE_RESTRICTED_HOOK(android_rvh_bpf_skb_load_bytes,
 	TP_PROTO(const struct sk_buff *skb, u32 offset, void *to, u32 len,
 		int *handled, int *err),
 	TP_ARGS(skb, offset, to, len, handled, err), 1);
+DECLARE_HOOK(android_vh_tcp_sock_error,
+	TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_tcp_fastsyn,
+	TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_tcp_select_window,
+	TP_PROTO(struct sock *sk, uint32_t *win), TP_ARGS(sk, win));
+DECLARE_HOOK(android_vh_tcp_state_change,
+	TP_PROTO(struct sock *sk, int reason, int state), TP_ARGS(sk, reason, state));
+DECLARE_HOOK(android_vh_tcp_update_rtt,
+	TP_PROTO(struct sock *sk, long rtt), TP_ARGS(sk, rtt));
 DECLARE_HOOK(android_vh_dc_send_copy,
 	TP_PROTO(struct sk_buff *skb, struct net_device *dev), TP_ARGS(skb, dev));
 DECLARE_HOOK(android_vh_dc_receive,
