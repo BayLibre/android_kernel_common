@@ -33,6 +33,42 @@
       "message": "```\nERROR: Differences between ksymtab and symbol list detected!\nSymbols missing from ksymtab:\n - __traceiter_android_vh_do_swap_page_spf\n - __tracepoint_android_vh_do_swap_page_spf\n```\n\nThe error indicates that those symbols are not exported for this kernel. Do they exist?",
       "revId": "8377203cee9b4f4994bf430ce5d1d83920623fa7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84d897ad_0d5c0aa4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2032918
+      },
+      "writtenOn": "2024-06-13T02:31:23Z",
+      "side": 1,
+      "message": "this symbol depend on https://android-review.googlesource.com/c/kernel/common/+/3119453,it already merged so can we sync the code and trigger the presubmit-verfied again,this error can fixed.",
+      "parentUuid": "ef575089_cb55ee06",
+      "revId": "8377203cee9b4f4994bf430ce5d1d83920623fa7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3baea5e8_4f6a4750",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2032918
+      },
+      "writtenOn": "2024-06-13T02:31:23Z",
+      "side": 1,
+      "message": "This is cherry-pick from Android13-5.15 lts branch to this monthly branch,its not a upstream directly,so shall we perfer not change the original code.",
+      "parentUuid": "ad2d4406_008be161",
+      "revId": "8377203cee9b4f4994bf430ce5d1d83920623fa7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
