@@ -16,6 +16,24 @@
       "message": "```\nSymbols missing from the ksymtab:\n  of_machine_is_compatible\n```\n\nIs that symbol actually exported in this kernel (configuration)?",
       "revId": "c73fd0755b18b3ffa6986977a9dea7205d1d7060",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8f08d6e_554e92d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1953271
+      },
+      "writtenOn": "2024-06-13T11:20:38Z",
+      "side": 1,
+      "message": "Looks like this symbol was not intended to be included by the author of the change. They have a new change without the symbol now (change number 3129673). I am going to abandon this change for now.",
+      "parentUuid": "dd244f96_171bef22",
+      "revId": "c73fd0755b18b3ffa6986977a9dea7205d1d7060",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
