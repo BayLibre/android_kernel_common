@@ -476,7 +476,58 @@ impl Process {
     }
 
     #[inline(never)]
-    pub(crate) fn debug_print(&self, m: &mut SeqFile, ctx: &Context) -> Result<()> {
+    pub(crate) fn debug_print_stats(&self, m: &mut SeqFile, ctx: &Context) -> Result<()> {
+        seq_print!(m, "proc {}\n", self.task.pid_in_current_ns());
+        seq_print!(m, "context {}\n", &*ctx.name);
+
+        let inner = self.inner.lock();
+        seq_print!(m, "  threads: {}\n", inner.threads.iter().count());
+        seq_print!(
+            m,
+            "  requested threads: {}+{}/{}\n",
+            inner.requested_thread_count,
+            inner.started_thread_count,
+            inner.max_threads,
+        );
+        if let Some(mapping) = &inner.mapping {
+            seq_print!(
+                m,
+                "  free oneway space: {}\n",
+                mapping.alloc.free_oneway_space()
+            );
+            seq_print!(m, "  buffers: {}\n", mapping.alloc.count_buffers());
+        }
+        seq_print!(
+            m,
+            "  outstanding transactions: {}\n",
+            inner.outstanding_txns
+        );
+        seq_print!(m, "  nodes: {}\n", inner.nodes.iter().count());
+        drop(inner);
+
+        {
+            let mut refs = self.node_refs.lock();
+            let (mut count, mut weak, mut strong) = (0, 0, 0);
+            for r in refs.by_handle.values_mut() {
+                let node_ref = r.node_ref();
+                let (nstrong, nweak) = node_ref.get_count();
+                count += 1;
+                weak += nweak;
+                strong += nstrong;
+            }
+            seq_print!(m, "  refs: {count} s {strong} w {weak}\n");
+        }
+
+        Ok(())
+    }
+
+    #[inline(never)]
+    pub(crate) fn debug_print(
+        &self,
+        m: &mut SeqFile,
+        ctx: &Context,
+        print_all: bool,
+    ) -> Result<()> {
         seq_print!(m, "proc {}\n", self.task.pid_in_current_ns());
         seq_print!(m, "context {}\n", &*ctx.name);
 
@@ -508,35 +559,38 @@ impl Process {
         }
 
         for thread in all_threads {
-            thread.debug_print(m);
+            thread.debug_print(m, print_all)?;
         }
 
         let mut inner = self.inner.lock();
         for node in all_nodes {
-            node.full_debug_print(m, &mut inner)?;
+            if print_all || node.has_oneway_transaction(&mut inner) {
+                node.full_debug_print(m, &mut inner)?;
+            }
         }
         drop(inner);
 
-        let mut refs = self.node_refs.lock();
-        for r in refs.by_handle.values_mut() {
-            let node_ref = r.node_ref();
-            let dead = node_ref.node.owner.inner.lock().is_dead;
-            let (strong, weak) = node_ref.get_count();
-            let debug_id = node_ref.node.debug_id;
+        if print_all {
+            let mut refs = self.node_refs.lock();
+            for r in refs.by_handle.values_mut() {
+                let node_ref = r.node_ref();
+                let dead = node_ref.node.owner.inner.lock().is_dead;
+                let (strong, weak) = node_ref.get_count();
+                let debug_id = node_ref.node.debug_id;
 
-            seq_print!(
-                m,
-                "  ref {}: desc {} {}node {debug_id} s {strong} w {weak}",
-                r.debug_id,
-                r.handle,
-                if dead { "dead " } else { "" },
-            );
+                seq_print!(
+                    m,
+                    "  ref {}: desc {} {}node {debug_id} s {strong} w {weak}",
+                    r.debug_id,
+                    r.handle,
+                    if dead { "dead " } else { "" },
+                );
+            }
         }
-        drop(refs);
 
         let inner = self.inner.lock();
         for work in &inner.work {
-            work.debug_print(m, "  ", "  pending transaction")?;
+            work.debug_print(m, "  ", "  pending transaction ")?;
         }
         for _death in &inner.delivered_deaths {
             seq_print!(m, "  has delivered dead binder\n");

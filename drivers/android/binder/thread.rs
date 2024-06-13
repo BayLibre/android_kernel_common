@@ -469,16 +469,18 @@ impl Thread {
     }
 
     #[inline(never)]
-    pub(crate) fn debug_print(self: &Arc<Self>, m: &mut SeqFile) {
+    pub(crate) fn debug_print(self: &Arc<Self>, m: &mut SeqFile, print_all: bool) -> Result<()> {
         let inner = self.inner.lock();
 
-        seq_print!(
-            m,
-            "  thread {}: l {:02x} need_return {}\n",
-            self.id,
-            inner.looper_flags,
-            inner.looper_need_return
-        );
+        if print_all || inner.current_transaction.is_some() || !inner.work_list.is_empty() {
+            seq_print!(
+                m,
+                "  thread {}: l {:02x} need_return {}\n",
+                self.id,
+                inner.looper_flags,
+                inner.looper_need_return,
+            );
+        }
 
         let mut t_opt = inner.current_transaction.clone();
         while let Some(t) = t_opt {
@@ -493,6 +495,11 @@ impl Thread {
                 t_opt = None;
             }
         }
+
+        for work in &inner.work_list {
+            work.debug_print(m, "    ", "    pending transaction ")?;
+        }
+        Ok(())
     }
 
     pub(crate) fn get_extended_error(&self, data: UserSlice) -> Result {

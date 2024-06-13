@@ -57,6 +57,17 @@ impl<T> RangeAllocator<T> {
         })
     }
 
+    pub(crate) fn free_oneway_space(&self) -> usize {
+        self.free_oneway_space
+    }
+
+    pub(crate) fn count_buffers(&self) -> usize {
+        self.tree
+            .values()
+            .filter(|desc| desc.state.is_some())
+            .count()
+    }
+
     pub(crate) fn debug_print(&self, m: &mut SeqFile) -> Result<()> {
         for desc in self.tree.values() {
             let state = match &desc.state {
@@ -65,19 +76,20 @@ impl<T> RangeAllocator<T> {
             };
             seq_print!(
                 m,
-                "  buffer {}: {} size {} pid {} oneway {}",
-                0,
+                "  buffer: {} size {} pid {}",
                 desc.offset,
                 desc.size,
                 state.pid(),
-                state.is_oneway()
             );
+            if state.is_oneway() {
+                seq_print!(m, " oneway");
+            }
             match state {
                 DescriptorState::Reserved(_res) => {
-                    seq_print!(m, "reserved\n");
+                    seq_print!(m, " reserved\n");
                 }
                 DescriptorState::Allocated(_alloc) => {
-                    seq_print!(m, "allocated\n");
+                    seq_print!(m, " allocated\n");
                 }
             }
         }

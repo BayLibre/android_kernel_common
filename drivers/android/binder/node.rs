@@ -133,6 +133,11 @@ impl Node {
         })
     }
 
+    pub(crate) fn has_oneway_transaction(&self, owner_inner: &mut ProcessInner) -> bool {
+        let inner = self.inner.access_mut(owner_inner);
+        inner.has_oneway_transaction
+    }
+
     #[inline(never)]
     pub(crate) fn full_debug_print(
         &self,

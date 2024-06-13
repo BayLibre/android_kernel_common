@@ -412,9 +412,15 @@ unsafe extern "C" fn rust_binder_state_show(
 
 #[no_mangle]
 unsafe extern "C" fn rust_binder_transactions_show(
-    _: *mut seq_file,
+    ptr: *mut seq_file,
     _: *mut core::ffi::c_void,
 ) -> core::ffi::c_int {
+    // SAFETY: The caller ensures that the pointer is valid and exclusive for the duration in which
+    // this method is called.
+    let m = unsafe { SeqFile::from_raw(ptr) };
+    if let Err(err) = rust_binder_transactions_show_impl(m) {
+        seq_print!(m, "failed to generate state: {:?}\n", err);
+    }
     0
 }
 
@@ -426,13 +432,26 @@ unsafe extern "C" fn rust_binder_transaction_log_show(
     0
 }
 
+fn rust_binder_transactions_show_impl(m: &mut SeqFile) -> Result<()> {
+    seq_print!(m, "binder transactions:\n");
+    let contexts = context::get_all_contexts()?;
+    for ctx in contexts {
+        let procs = ctx.get_all_procs()?;
+        for proc in procs {
+            proc.debug_print(m, &ctx, false)?;
+            seq_print!(m, "\n");
+        }
+    }
+    Ok(())
+}
+
 fn rust_binder_state_show_impl(m: &mut SeqFile) -> Result<()> {
     seq_print!(m, "binder state:\n");
     let contexts = context::get_all_contexts()?;
     for ctx in contexts {
         let procs = ctx.get_all_procs()?;
         for proc in procs {
-            proc.debug_print(m, &ctx)?;
+            proc.debug_print(m, &ctx, true)?;
             seq_print!(m, "\n");
         }
     }
