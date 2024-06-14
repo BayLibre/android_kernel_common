@@ -22,6 +22,30 @@
       },
       "revId": "5c94535c0886ef1950458b709fd9f0560dc89c2d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf5d175e_003b539e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 2052564
+      },
+      "writtenOn": "2024-06-14T20:48:05Z",
+      "side": 1,
+      "message": "Just paste from my cover letter of V2:\nChanges in v2:\n- Add the cluster state field to track the different phases of\n  cluster allocations.\n- Rename \"next\" to \"list\" for the list field, suggested by Ying.\n- Update comment for the locking rules for cluster fields and list.\n- Nonfull list avoid cluster on the per cpu active cluster.\n- Allocate from the nonfull list before attempting free list, suggested\n  by Kairui.",
+      "parentUuid": "802ca27e_1b4bfa52",
+      "range": {
+        "startLine": 7,
+        "startChar": 10,
+        "endLine": 7,
+        "endChar": 18
+      },
+      "revId": "5c94535c0886ef1950458b709fd9f0560dc89c2d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
