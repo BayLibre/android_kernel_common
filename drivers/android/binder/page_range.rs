@@ -21,7 +21,7 @@ use core::{
     ptr,
 };
 
-use crate::{
+use kernel::{
     bindings,
     error::Result,
     mm::{virt, MmGrab},
