@@ -486,7 +486,10 @@ static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
 	if (!policy)
 		return 0;
 	priv = policy->driver_data;
+<<<<<<< HEAD   (c71da7 Revert "ANDROID: Setting up GS before calling __restore_proc)
 
+=======
+>>>>>>> BRANCH (449b8b cpufreq: brcmstb-avs-cpufreq: fix up "add check for cpufreq_)
 	cpufreq_cpu_put(policy);
 
 	return brcm_avs_get_frequency(priv->base);
