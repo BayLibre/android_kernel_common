@@ -39,6 +39,26 @@
       "tag": "",
       "revId": "6f78085c5a7c4568009932db5d97c571827179e5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000081687620",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3132187?revision\u003d1",
+      "key": {
+        "uuid": "2397ab44_b3d0a42d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-06-17T17:22:27Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/984523c368423410bf53ca4c68402897d160c5dd).\n\n```\n      ## include/trace/hooks/sched.h ##\n     @@ include/trace/hooks/sched.h: DECLARE_RESTRICTED_HOOK(android_rvh_update_load_avg,\n    @@ include/trace/hooks/sched.h: DECLARE_RESTRICTED_HOOK(android_rvh_update_load_avg\n     \n      ## kernel/sched/pelt.c ##\n     @@\n    +  *  Author: Vincent Guittot \u003cvincent.guittot@linaro.org\u003e\n       */\n      \n    - #include \u003clinux/sched.h\u003e\n     +#include \u003ctrace/hooks/sched.h\u003e\n    - #include \"sched.h\"\n    - #include \"pelt.h\"\n    - \n    -@@ kernel/sched/pelt.c: int ___update_load_sum(u64 now, struct sched_avg *sa,\n    ++\n    + /*\n    +  * Approximate:\n    +  *   val * y^n,    where y^32 ~\u003d 0.5 (~1 scheduling period)\n    +@@ kernel/sched/pelt.c: ___update_load_sum(u64 now, struct sched_avg *sa,\n      \n      \tsa-\u003elast_update_time +\u003d delta \u003c\u003c 10;\n      \n    @@ kernel/sched/pelt.c: int ___update_load_sum(u64 now, struct sched_avg *sa,\n      \t * runnable is clear. But there are some corner cases where the current\n     \n      ## kernel/sched/vendor_hooks.c ##\n    -@@ kernel/sched/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dup_task_struct);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_account_task_time);\n    +@@ kernel/sched/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_sugov_sched_attr);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_attach_entity_load_avg);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_detach_entity_load_avg);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_sum);\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "6f78085c5a7c4568009932db5d97c571827179e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
