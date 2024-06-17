@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000081664487",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3124955?revision\u003d2",
+      "key": {
+        "uuid": "3bf63731_61097cfb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-06-17T12:14:20Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against base branch android12-5.10.\nBase branch change: [2956692](https://android-review.googlesource.com/c/2956692).\n\n```\n      ## drivers/android/vendor_hooks.c ##\n    -@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_err_handler);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_err_check_ctrl);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_err_print_ctrl);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_vmscan_kswapd_done);\n    +@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_blk_mq_all_tag_iter);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_blk_mq_queue_tag_busy_iter);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_blk_mq_free_tags);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_blk_mq_sched_insert_request);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_swap_page_spf);\n      /*\n       * For type visibility\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "f651551daf5010311dcdfdb83ccc40b5853c3f91",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000081664487",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3124955?revision\u003d2",
+      "key": {
+        "uuid": "059e4565_db62cf56",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-06-17T12:14:20Z",
+      "side": 1,
+      "message": "Please **attach an open respin request bug** to this change. Refer the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "f651551daf5010311dcdfdb83ccc40b5853c3f91",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
