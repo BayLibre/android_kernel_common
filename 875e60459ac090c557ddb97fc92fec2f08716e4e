@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "72fa8af4_1f93d15f",
+        "filename": "mm/memory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4039,
+      "author": {
+        "id": 2032918
+      },
+      "writtenOn": "2024-06-17T08:06:04Z",
+      "side": 1,
+      "message": "we have delete this vh and found new hook that already in kernel6.6",
+      "parentUuid": "db136de9_ae110c70",
+      "range": {
+        "startLine": 4039,
+        "startChar": 1,
+        "endLine": 4039,
+        "endChar": 30
+      },
+      "revId": "875e60459ac090c557ddb97fc92fec2f08716e4e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d60492b6_5aeffca5",
         "filename": "mm/vmscan.c",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-01T17:00:29Z",
       "side": 1,
       "message": "This looks like an attempt to work around RLIMIT_MEMLOCK limits for mlock(). I hope you do not expose this ability to unprivileged processes...",
+      "range": {
+        "startLine": 1752,
+        "startChar": 2,
+        "endLine": 1752,
+        "endChar": 38
+      },
+      "revId": "875e60459ac090c557ddb97fc92fec2f08716e4e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bcf6d82_0c900da0",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1752,
+      "author": {
+        "id": 2032918
+      },
+      "writtenOn": "2024-06-17T08:06:04Z",
+      "side": 1,
+      "message": "we have delete this vh and found new hook that already in kernel6.6",
+      "parentUuid": "d60492b6_5aeffca5",
       "range": {
         "startLine": 1752,
         "startChar": 2,
