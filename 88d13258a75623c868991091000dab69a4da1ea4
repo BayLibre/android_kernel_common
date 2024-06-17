@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "982a3e80_ab8f1840",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3460742
+      },
+      "writtenOn": "2024-06-17T03:20:35Z",
+      "side": 1,
+      "message": "1) What problem are you seeing that motivates/necessitates a vendor-specific load tracker? 2) What benefit do you realize by implementing this load tracker\n  - We have a plan to enhance performance and power consumption via own load tracker.\n    in more detail, if the sensitivity of pelt based on cgroup can be controlled, we would manage scheduler for various scenarios.\n\n3) What efforts upstream have been done and/or what would be needed for this to be later removed?\n  - As you know, the vendor hooks was applied to kernel 6.1 by google team.\n  \n    commit 6d97f75abc168e1d38feb9450daa52cd0fbcdc62\n\tAuthor: Rick Yiu \u003crickyiu@google.com\u003e\n\tDate:   Fri Jan 7 18:31:06 2022 +0800\n\n    ANDROID: sched: Add vendor hook for util-update related functions\n    \n    Vendor may have the need to implement their own util tracking.\n    \n    Bug: 297343949\n    Signed-off-by: Rick Yiu \u003crickyiu@google.com\u003e\n    Change-Id: I973902e6ff82a85ecd029ac5a78692d629df1ebe\n\t\n  - We are going to consider applying own load tracker continuously if it would be possible.",
+      "parentUuid": "59fd30ce_124be037",
+      "revId": "88d13258a75623c868991091000dab69a4da1ea4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "144c399d_49b54c69",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
