@@ -16,6 +16,24 @@
       "message": "This change needs more work: Changes on release branches need to be cherry-picks of changes on the development branch. This change refers to an original change, but the original change does update a different file. Here is what you need to do:\n\n1) submit the symbol list update to android13-5.15\n2) land that change\n3) submit the cherry-pick to android13-5.15-2024-01\n\nOnly that way we guarantee that future releases are incorporating all changes made to prior release branches.",
       "revId": "96f4352e7c845d7721d07d6fd19a0ce469108c3e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff8828fa_2a28c449",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2032918
+      },
+      "writtenOn": "2024-06-17T11:50:27Z",
+      "side": 1,
+      "message": "we have submit and already merge the symbol to our honor kmi list.pls help merge this cherrypick.",
+      "parentUuid": "63fab30b_c5ab0cd5",
+      "revId": "96f4352e7c845d7721d07d6fd19a0ce469108c3e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
