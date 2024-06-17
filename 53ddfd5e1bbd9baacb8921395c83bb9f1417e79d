@@ -1,0 +1,48 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000081670919",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3132011?revision\u003d1",
+      "key": {
+        "uuid": "a21ab988_0218158e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-06-17T13:46:14Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Android Culprit Assistant \u003cboq-android-culprit-assistant@system.gserviceaccount.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 0
+      },
+      "tag": "",
+      "fixSuggestions": [
+        {
+          "fixId": "90fc6ba8_71aa1ae7",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 13,
+                "startChar": 0,
+                "endLine": 13,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: Android Culprit Assistant \u003cboq-android-culprit-assistant@system.gserviceaccount.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "revId": "53ddfd5e1bbd9baacb8921395c83bb9f1417e79d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
