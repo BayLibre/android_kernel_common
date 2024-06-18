@@ -227,6 +227,7 @@ config GKI_HIDDEN_MM_CONFIGS
 	select PAGE_REPORTING
 	select BALLOON_COMPACTION
 	select MEMORY_BALLOON
+	select VMAP_PFN if (X86)
 	help
 	  Dummy config option used to enable hidden MM configs,
 	  currently required for VIRTIO_BALLOON
