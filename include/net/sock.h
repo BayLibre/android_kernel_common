@@ -2195,6 +2195,7 @@ sk_dst_get(const struct sock *sk)
 
 static inline void __dst_negative_advice(struct sock *sk)
 {
+<<<<<<< HEAD   (b8fe1c ANDROID: GKI: fix stg due to kthread_stop_put())
 	/* *** ANDROID FIXUP ***
 	 * See b/343727534 for more details why this typedef is needed here.
 	 * *** ANDROID FIXUP ***
@@ -2202,13 +2203,20 @@ static inline void __dst_negative_advice(struct sock *sk)
 	android_dst_ops_negative_advice_new_t negative_advice;
 	void *c_is_fun;		/* Work around --Werror=cast-function-type */
 
+=======
+>>>>>>> BRANCH (76d42e Linux 6.6.34)
 	struct dst_entry *dst = __sk_dst_get(sk);
 
+<<<<<<< HEAD   (b8fe1c ANDROID: GKI: fix stg due to kthread_stop_put())
 	if (dst && dst->ops->negative_advice) {
 		c_is_fun = dst->ops->negative_advice;
 		negative_advice = c_is_fun;
 		negative_advice(sk, dst);
 	}
+=======
+	if (dst && dst->ops->negative_advice)
+		dst->ops->negative_advice(sk, dst);
+>>>>>>> BRANCH (76d42e Linux 6.6.34)
 }
 
 static inline void dst_negative_advice(struct sock *sk)
