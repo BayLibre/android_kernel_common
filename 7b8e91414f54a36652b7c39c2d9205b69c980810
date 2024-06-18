@@ -119,6 +119,26 @@
       "tag": "",
       "revId": "7b8e91414f54a36652b7c39c2d9205b69c980810",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000081795360",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3132189?revision\u003d2",
+      "key": {
+        "uuid": "45db5b0a_5901bc7e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-06-18T14:50:01Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/2b25d535d0703dbee0f9860dfd2c487e96a89fd8).\n\n```\n      ## arch/arm64/kernel/topology.c ##\n     @@\n    @@ arch/arm64/kernel/topology.c: static void amu_scale_freq_tick(void)\n      \tprev_core_cnt \u003d this_cpu_read(arch_core_cycles_prev);\n     \n      ## drivers/android/vendor_hooks.c ##\n    -@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_swappiness);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal_whether_wake);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_check);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freeze_whether_wake);\n    +@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_read_lazy_flag);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_tsk_need_resched_lazy);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_usb_dev_suspend);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_usb_dev_resume);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_use_amu_fie);\n     \n      ## drivers/base/arch_topology.c ##\n    @@ drivers/base/arch_topology.c: static DEFINE_PER_CPU(u32, freq_factor) \u003d 1;\n      \n     \n      ## include/trace/hooks/topology.h ##\n    -@@ include/trace/hooks/topology.h: DECLARE_HOOK(android_vh_arch_set_freq_scale,\n    +@@ include/trace/hooks/topology.h: DECLARE_RESTRICTED_HOOK(android_rvh_cpu_capacity_show,\n      \n      #endif\n      \n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "7b8e91414f54a36652b7c39c2d9205b69c980810",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
