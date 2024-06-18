@@ -250,7 +250,11 @@ void unix_gc(void)
 		struct sock *sk = &u->sk;
 		long total_refs;
 
+<<<<<<< HEAD   (a9bfcd Merge 5.4.277 into android12-5.4-lts)
 		total_refs = file_count(sk->sk_socket->file);
+=======
+		total_refs = file_count(u->sk.sk_socket->file);
+>>>>>>> BRANCH (6f97bd ANDROID: 16K: Only check basename of linker context)
 
 		BUG_ON(!u->inflight);
 		BUG_ON(total_refs < u->inflight);
