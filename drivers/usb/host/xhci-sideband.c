@@ -39,6 +39,9 @@ xhci_ring_to_sgtable(struct xhci_sideband *sb, struct xhci_ring *ring)
 	}
 
 	seg = ring->first_seg;
+	if (!seg)
+		goto err;
+
 	/*
 	 * Rings can potentially have multiple segments, create an array that
 	 * carries page references to allocated segments.  Utilize the
@@ -53,12 +56,8 @@ xhci_ring_to_sgtable(struct xhci_sideband *sb, struct xhci_ring *ring)
 		seg = seg->next;
 	}
 
-	if (sg_alloc_table_from_pages(sgt, pages, n_pages, 0, sz, GFP_KERNEL)) {
-		kvfree(pages);
-		kfree(sgt);
-
-		return NULL;
-	}
+	if (sg_alloc_table_from_pages(sgt, pages, n_pages, 0, sz, GFP_KERNEL))
+		goto err;
 	/*
 	 * Save first segment dma address to sg dma_address field for the sideband
 	 * client to have access to the IOVA of the ring.
@@ -66,6 +65,12 @@ xhci_ring_to_sgtable(struct xhci_sideband *sb, struct xhci_ring *ring)
 	sg_dma_address(sgt->sgl) = ring->first_seg->dma;
 
 	return sgt;
+
+err:
+	kvfree(pages);
+	kfree(sgt);
+
+	return NULL;
 }
 
 static void
@@ -208,7 +213,7 @@ xhci_sideband_get_endpoint_buffer(struct xhci_sideband *sb,
 	ep_index = xhci_get_endpoint_index(&host_ep->desc);
 	ep = sb->eps[ep_index];
 
-	if (!ep)
+	if (!ep || !ep->ring)
 		return NULL;
 
 	return xhci_ring_to_sgtable(sb, ep->ring);
