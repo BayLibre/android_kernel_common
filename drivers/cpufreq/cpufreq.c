@@ -1541,7 +1541,11 @@ static int cpufreq_online(unsigned int cpu)
 		cpufreq_driver->ready(policy);
 
 	/* Register cpufreq cooling only for a new policy */
+<<<<<<< HEAD   (a28d27 ANDROID: fix crc issue in net/ipv4/inet_fragment.c)
 	if (new_policy && cpufreq_thermal_control_enabled(cpufreq_driver)) {
+=======
+	if (new_policy && cpufreq_thermal_control_enabled(cpufreq_driver))
+>>>>>>> BRANCH (cd5d98 Linux 6.1.86)
 		policy->cdev = of_cpufreq_cooling_register(policy);
 		trace_android_vh_thermal_register(policy);
 	}
@@ -1693,7 +1697,10 @@ static void cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif)
 	 */
 	if (cpufreq_thermal_control_enabled(cpufreq_driver)) {
 		cpufreq_cooling_unregister(policy->cdev);
+<<<<<<< HEAD   (a28d27 ANDROID: fix crc issue in net/ipv4/inet_fragment.c)
 		trace_android_vh_thermal_unregister(policy);
+=======
+>>>>>>> BRANCH (cd5d98 Linux 6.1.86)
 		policy->cdev = NULL;
 	}
 
