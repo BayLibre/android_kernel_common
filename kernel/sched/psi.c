@@ -1282,17 +1282,10 @@ struct psi_trigger *psi_trigger_create(struct psi_group *group, char *buf,
 	struct psi_trigger *t;
 	enum psi_states state;
 	u32 threshold_us;
-	bool privileged;
 	u32 window_us;
 
 	if (static_branch_likely(&psi_disabled))
 		return ERR_PTR(-EOPNOTSUPP);
-
-	/*
-	 * Checking the privilege here on file->f_cred implies that a privileged user
-	 * could open the file and delegate the write to an unprivileged one.
-	 */
-	privileged = cap_raised(file->f_cred->cap_effective, CAP_SYS_RESOURCE);
 
 	if (sscanf(buf, "some %u %u", &threshold_us, &window_us) == 2)
 		state = PSI_IO_SOME + res * 2;
@@ -1310,13 +1303,6 @@ struct psi_trigger *psi_trigger_create(struct psi_group *group, char *buf,
 		return ERR_PTR(-EINVAL);
 
 	if (window_us == 0 || window_us > WINDOW_MAX_US)
-		return ERR_PTR(-EINVAL);
-
-	/*
-	 * Unprivileged users can only use 2s windows so that averages aggregation
-	 * work is used, and no RT threads need to be spawned.
-	 */
-	if (!privileged && window_us % 2000000)
 		return ERR_PTR(-EINVAL);
 
 	/* Check threshold */
@@ -1340,40 +1326,31 @@ struct psi_trigger *psi_trigger_create(struct psi_group *group, char *buf,
 	if (!of)
 		init_waitqueue_head(&t->event_wait);
 	t->pending_event = false;
-	t->aggregator = privileged ? PSI_POLL : PSI_AVGS;
+	t->aggregator = PSI_POLL;
 
-	if (privileged) {
-		mutex_lock(&group->rtpoll_trigger_lock);
+	mutex_lock(&group->rtpoll_trigger_lock);
 
-		if (!rcu_access_pointer(group->rtpoll_task)) {
-			struct task_struct *task;
+	if (!rcu_access_pointer(group->rtpoll_task)) {
+		struct task_struct *task;
 
-			task = kthread_create(psi_rtpoll_worker, group, "psimon");
-			if (IS_ERR(task)) {
-				kfree(t);
-				mutex_unlock(&group->rtpoll_trigger_lock);
-				return ERR_CAST(task);
-			}
-			atomic_set(&group->rtpoll_wakeup, 0);
-			wake_up_process(task);
-			rcu_assign_pointer(group->rtpoll_task, task);
+		task = kthread_create(psi_rtpoll_worker, group, "psimon");
+		if (IS_ERR(task)) {
+			kfree(t);
+			mutex_unlock(&group->rtpoll_trigger_lock);
+			return ERR_CAST(task);
 		}
-
-		list_add(&t->node, &group->rtpoll_triggers);
-		group->rtpoll_min_period = min(group->rtpoll_min_period,
-			div_u64(t->win.size, UPDATES_PER_WINDOW));
-		group->rtpoll_nr_triggers[t->state]++;
-		group->rtpoll_states |= (1 << t->state);
-
-		mutex_unlock(&group->rtpoll_trigger_lock);
-	} else {
-		mutex_lock(&group->avgs_lock);
-
-		list_add(&t->node, &group->avg_triggers);
-		group->avg_nr_triggers[t->state]++;
-
-		mutex_unlock(&group->avgs_lock);
+		atomic_set(&group->rtpoll_wakeup, 0);
+		wake_up_process(task);
+		rcu_assign_pointer(group->rtpoll_task, task);
 	}
+
+	list_add(&t->node, &group->rtpoll_triggers);
+	group->rtpoll_min_period = min(group->rtpoll_min_period,
+		div_u64(t->win.size, UPDATES_PER_WINDOW));
+	group->rtpoll_nr_triggers[t->state]++;
+	group->rtpoll_states |= (1 << t->state);
+
+	mutex_unlock(&group->rtpoll_trigger_lock);
 	return t;
 }
 
@@ -1651,11 +1628,11 @@ static int __init psi_proc_init(void)
 {
 	if (psi_enable) {
 		proc_mkdir("pressure", NULL);
-		proc_create("pressure/io", 0666, NULL, &psi_io_proc_ops);
-		proc_create("pressure/memory", 0666, NULL, &psi_memory_proc_ops);
-		proc_create("pressure/cpu", 0666, NULL, &psi_cpu_proc_ops);
+		proc_create("pressure/io", 0, NULL, &psi_io_proc_ops);
+		proc_create("pressure/memory", 0, NULL, &psi_memory_proc_ops);
+		proc_create("pressure/cpu", 0, NULL, &psi_cpu_proc_ops);
 #ifdef CONFIG_IRQ_TIME_ACCOUNTING
-		proc_create("pressure/irq", 0666, NULL, &psi_irq_proc_ops);
+		proc_create("pressure/irq", 0, NULL, &psi_irq_proc_ops);
 #endif
 	}
 	return 0;
