@@ -142,6 +142,7 @@ bool kvm_hyp_handle_hvc64(struct kvm_vcpu *vcpu, u64 *exit_code);
 
 int pkvm_init_devices(void);
 bool pkvm_device_is_assignable(u64 pfn);
+int pkvm_device_assign(u64 addr, u64 size, struct pkvm_hyp_vm *vm);
 
 struct pkvm_hyp_vcpu *pkvm_mpidr_to_hyp_vcpu(struct pkvm_hyp_vm *vm, u64 mpidr);
 

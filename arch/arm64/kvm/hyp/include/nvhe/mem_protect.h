@@ -101,4 +101,5 @@ static __always_inline void __load_host_stage2(void)
 }
 
 int __pkvm_host_donate_hyp_mmio(u64 pfn);
+int hyp_check_range_owned(u64 addr, u64 size);
 #endif /* __KVM_NVHE_MEM_PROTECT__ */
