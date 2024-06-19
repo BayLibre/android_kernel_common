@@ -47,6 +47,7 @@
 #include <trace/hooks/signal.h>
 #include <trace/hooks/hung_task.h>
 #include <trace/hooks/topology.h>
+#include <trace/hooks/thermal.h>
 #include <trace/hooks/mm.h>
 #include <trace/hooks/fault.h>
 #include <trace/hooks/ftrace_dump.h>
@@ -496,6 +497,11 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_swap_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_anonymous_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_uprobes_uprobe_write);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_swap_bio_charge);
+<<<<<<< PATCH SET (da13561dab8ace1e311ad46056f338de57668734 ANDROID: thermal: Add vendor thermal genl check)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_enable_thermal_genl_check);
+||||||| BASE      (8db071f0f68c4583eac0b33a5b3a1437e4f9762b ANDROID: GKI: Update qcom symbol list)
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_folio_drop_mmap_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_folio_drop_mmap_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_update_page);
+>>>>>>> BASE      (130f62c6fc8fbcc3940f379de1fe55bb231af0e7 ANDROID: GKI: Update symbol list for vivo)
