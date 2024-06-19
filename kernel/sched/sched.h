@@ -622,7 +622,9 @@ struct cfs_rq {
 #endif /* CONFIG_FAIR_GROUP_SCHED */
 #endif /* CONFIG_SMP */
 
-	 /* Unused, only kept here to preserve the KMI after revert. */
+	/*
+	 * Store whether last update_load_avg() has decayed
+	 */
 	bool			decayed;
 
 #ifdef CONFIG_FAIR_GROUP_SCHED
@@ -2410,6 +2412,8 @@ static inline bool sched_fair_runnable(struct rq *rq)
 
 extern struct task_struct *pick_next_task_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf);
 extern struct task_struct *pick_next_task_idle(struct rq *rq);
+
+extern void update_cpufreq_current(struct rq *rq);
 
 #define SCA_CHECK		0x01
 #define SCA_MIGRATE_DISABLE	0x02
