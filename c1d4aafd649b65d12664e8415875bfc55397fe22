@@ -59,6 +59,26 @@
       "tag": "",
       "revId": "c1d4aafd649b65d12664e8415875bfc55397fe22",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000081926814",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3138954?revision\u003d3",
+      "key": {
+        "uuid": "180f3e43_4f38243b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-06-19T17:50:27Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/e520c2932df0d1bbf83ae45c82ac01fd41655d77).\n\n```\n      ## drivers/android/vendor_hooks.c ##\n     @@\n    - #include \u003ctrace/hooks/compaction.h\u003e\n    - #include \u003ctrace/hooks/sd.h\u003e\n    - #include \u003ctrace/hooks/user.h\u003e\n    + #include \u003ctrace/hooks/delayacct.h\u003e\n    + #include \u003ctrace/hooks/usb.h\u003e\n    + #include \u003ctrace/hooks/sound.h\u003e\n     +#include \u003ctrace/hooks/fuse.h\u003e\n      \n      /*\n       * Export tracepoints that act as a bare tracehook (ie: have no trace event\n    -@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rwsem_read_trylock_failed);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sd_init_unmap_multi_segment);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sd_setup_unmap_multi_segment);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_type);\n    +@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_hibernate_save_cmp_len);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_read_lazy_flag);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_tsk_need_resched_lazy);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_read_fault);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_queue_request_and_unlock);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fuse_request_end);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpuset_fork);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_swapin_walk_pmd_entry);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_process_madvise);\n     \n      ## fs/fuse/dev.c ##\n     @@\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "c1d4aafd649b65d12664e8415875bfc55397fe22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
