@@ -919,6 +919,7 @@
       <elf-symbol name='__traceiter_sched_util_est_se_tp' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x4d1c0b8f'/>
       <elf-symbol name='__traceiter_sched_waking' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xca9ac223'/>
       <elf-symbol name='__traceiter_suspend_resume' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x5883efb'/>
+      <elf-symbol name='__traceiter_sys_exit' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x28f80de0'/>
       <elf-symbol name='__traceiter_task_newtask' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x1222cb50'/>
       <elf-symbol name='__traceiter_task_rename' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x199d26ce'/>
       <elf-symbol name='__traceiter_unmap' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xd3ec851c'/>
@@ -7893,6 +7894,7 @@
       <elf-symbol name='__tracepoint_sched_util_est_se_tp' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x3a74e484'/>
       <elf-symbol name='__tracepoint_sched_waking' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x36772c03'/>
       <elf-symbol name='__tracepoint_suspend_resume' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0xfede9222'/>
+      <elf-symbol name='__tracepoint_sys_exit' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2d3d9e52'/>
       <elf-symbol name='__tracepoint_task_newtask' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x6ba3f1e6'/>
       <elf-symbol name='__tracepoint_task_rename' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x990f1219'/>
       <elf-symbol name='__tracepoint_unmap' size='72' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes' crc='0x2c36cc85'/>
@@ -134994,6 +134996,12 @@
         <parameter type-id='b50a4934' name='start' filepath='include/trace/events/power.h' line='226' column='1'/>
         <return type-id='95e97e5e'/>
       </function-decl>
+      <function-decl name='__traceiter_sys_exit' mangled-name='__traceiter_sys_exit' filepath='include/trace/events/syscalls.h' line='44' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__traceiter_sys_exit'>
+        <parameter type-id='eaa32e2f' name='__data' filepath='include/trace/events/syscalls.h' line='44' column='1'/>
+        <parameter type-id='4616a179' name='regs' filepath='include/trace/events/syscalls.h' line='44' column='1'/>
+        <parameter type-id='bd54fe1a' name='ret' filepath='include/trace/events/syscalls.h' line='44' column='1'/>
+        <return type-id='95e97e5e'/>
+      </function-decl>
       <function-decl name='__traceiter_task_newtask' mangled-name='__traceiter_task_newtask' filepath='include/trace/events/task.h' line='9' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__traceiter_task_newtask'>
         <parameter type-id='eaa32e2f' name='__data' filepath='include/trace/events/task.h' line='9' column='1'/>
         <parameter type-id='f23e2572' name='task' filepath='include/trace/events/task.h' line='9' column='1'/>
@@ -135603,6 +135611,7 @@
       <var-decl name='__tracepoint_sched_util_est_se_tp' type-id='4ca0c298' mangled-name='__tracepoint_sched_util_est_se_tp' visibility='default' filepath='include/trace/events/sched.h' line='751' column='1' elf-symbol-id='__tracepoint_sched_util_est_se_tp'/>
       <var-decl name='__tracepoint_sched_waking' type-id='4ca0c298' mangled-name='__tracepoint_sched_waking' visibility='default' filepath='include/trace/events/sched.h' line='170' column='1' elf-symbol-id='__tracepoint_sched_waking'/>
       <var-decl name='__tracepoint_suspend_resume' type-id='4ca0c298' mangled-name='__tracepoint_suspend_resume' visibility='default' filepath='include/trace/events/power.h' line='226' column='1' elf-symbol-id='__tracepoint_suspend_resume'/>
+      <var-decl name='__tracepoint_sys_exit' type-id='4ca0c298' mangled-name='__tracepoint_sys_exit' visibility='default' filepath='include/trace/events/syscalls.h' line='44' column='1' elf-symbol-id='__tracepoint_sys_exit'/>
       <var-decl name='__tracepoint_task_newtask' type-id='4ca0c298' mangled-name='__tracepoint_task_newtask' visibility='default' filepath='include/trace/events/task.h' line='9' column='1' elf-symbol-id='__tracepoint_task_newtask'/>
       <var-decl name='__tracepoint_task_rename' type-id='4ca0c298' mangled-name='__tracepoint_task_rename' visibility='default' filepath='include/trace/events/task.h' line='34' column='1' elf-symbol-id='__tracepoint_task_rename'/>
       <var-decl name='__tracepoint_unmap' type-id='4ca0c298' mangled-name='__tracepoint_unmap' visibility='default' filepath='include/trace/events/iommu.h' line='109' column='1' elf-symbol-id='__tracepoint_unmap'/>
