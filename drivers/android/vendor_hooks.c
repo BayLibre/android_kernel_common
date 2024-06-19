@@ -46,6 +46,7 @@
 #include <trace/hooks/traps.h>
 #include <trace/hooks/fault.h>
 #include <trace/hooks/topology.h>
+#include <trace/hooks/thermal.h>
 #include <trace/hooks/rwsem.h>
 #include <trace/hooks/bl_hib.h>
 #include <trace/hooks/futex.h>
@@ -192,3 +193,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_shmem_get_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_slab_folio_alloced);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_kmalloc_large_alloced);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_ctl_dirty_rate);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_enable_thermal_genl_check);
