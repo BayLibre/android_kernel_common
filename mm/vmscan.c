@@ -876,6 +876,10 @@ static enum folio_references folio_check_references(struct folio *folio,
 	unsigned long vm_flags;
 	int ret = 0;
 
+#ifdef CONFIG_ANDROID_VENDOR_OEM_DATA
+	trace_android_vh_page_should_be_protected(folio, sc->nr_scanned,
+		sc->priority, &sc->android_vendor_data1, &ret);
+#endif
 	trace_android_vh_check_folio_look_around_ref(folio, &ret);
 	if (ret)
 		return ret;
@@ -2070,6 +2074,8 @@ static void shrink_active_list(unsigned long nr_to_scan,
 	unsigned nr_rotated = 0;
 	bool file = is_file_lru(lru);
 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+	int should_protect = 0;
+	bool bypass = false;
 
 	lru_add_drain();
 
@@ -2106,6 +2112,25 @@ static void shrink_active_list(unsigned long nr_to_scan,
 			}
 		}
 
+<<<<<<< HEAD   (32b9f5 ANDROID: Export memcg functions to allow module to add new f)
+||||||| BASE
+		trace_android_vh_folio_trylock_set(folio);
+=======
+#ifdef CONFIG_ANDROID_VENDOR_OEM_DATA
+		trace_android_vh_page_should_be_protected(folio, sc->nr_scanned,
+			sc->priority, &sc->android_vendor_data1, &should_protect);
+#endif
+		if (unlikely(should_protect)) {
+			nr_rotated += folio_nr_pages(folio);
+			list_add(&folio->lru, &l_active);
+			continue;
+		}
+
+		trace_android_vh_page_referenced_check_bypass(folio, nr_to_scan, lru, &bypass);
+		if (bypass)
+			goto skip_folio_referenced;
+		trace_android_vh_folio_trylock_set(folio);
+>>>>>>> CHANGE (530ff6 ANDROID: GKI: add vendor hooks android_vh_page_should_be_pro)
 		/* Referenced or rmap lock contention: rotate */
 		if (folio_referenced(folio, 0, sc->target_mem_cgroup,
 				     &vm_flags) != 0) {
@@ -2124,7 +2149,14 @@ static void shrink_active_list(unsigned long nr_to_scan,
 				continue;
 			}
 		}
+<<<<<<< HEAD   (32b9f5 ANDROID: Export memcg functions to allow module to add new f)
 
+||||||| BASE
+		trace_android_vh_folio_trylock_clear(folio);
+=======
+		trace_android_vh_folio_trylock_clear(folio);
+skip_folio_referenced:
+>>>>>>> CHANGE (530ff6 ANDROID: GKI: add vendor hooks android_vh_page_should_be_pro)
 		folio_clear_active(folio);	/* we are de-activating */
 		folio_set_workingset(folio);
 		list_add(&folio->lru, &l_inactive);

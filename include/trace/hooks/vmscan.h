@@ -27,6 +27,7 @@ DECLARE_HOOK(android_vh_should_continue_reclaim,
 	TP_PROTO(u64 *ext, unsigned long *nr_to_reclaim,
 	unsigned long *nr_reclaimed, bool *continue_reclaim),
 	TP_ARGS(ext, nr_to_reclaim, nr_reclaimed, continue_reclaim));
+<<<<<<< HEAD   (32b9f5 ANDROID: Export memcg functions to allow module to add new f)
 DECLARE_HOOK(android_vh_async_psi_bypass,
 	TP_PROTO(bool *bypass),
 	TP_ARGS(bypass));
@@ -49,6 +50,84 @@ DECLARE_HOOK(android_vh_use_vm_swappiness,
 DECLARE_HOOK(android_vh_tune_scan_control,
 	TP_PROTO(bool *skip_swap),
 	TP_ARGS(skip_swap));
+||||||| BASE
+DECLARE_HOOK(android_vh_file_is_tiny_bypass,
+	TP_PROTO(bool file_is_tiny, bool *bypass),
+	TP_ARGS(file_is_tiny, bypass));
+DECLARE_HOOK(android_vh_check_folio_look_around_ref,
+	TP_PROTO(struct folio *folio, int *skip),
+	TP_ARGS(folio, skip));
+enum scan_balance;
+DECLARE_HOOK(android_vh_tune_scan_type,
+	TP_PROTO(enum scan_balance *scan_type),
+	TP_ARGS(scan_type));
+DECLARE_HOOK(android_vh_tune_swappiness,
+	TP_PROTO(int *swappiness),
+	TP_ARGS(swappiness));
+DECLARE_HOOK(android_vh_scan_abort_check_wmarks,
+	TP_PROTO(bool *check_wmarks),
+	TP_ARGS(check_wmarks));
+DECLARE_HOOK(android_vh_vmscan_kswapd_done,
+	TP_PROTO(int node_id, unsigned int highest_zoneidx, unsigned int alloc_order,
+	        unsigned int reclaim_order),
+	TP_ARGS(node_id, highest_zoneidx, alloc_order, reclaim_order));
+DECLARE_HOOK(android_vh_handle_trylock_failed_folio,
+	TP_PROTO(struct list_head *folio_list),
+	TP_ARGS(folio_list));
+DECLARE_HOOK(android_vh_folio_trylock_set,
+	TP_PROTO(struct folio *folio),
+	TP_ARGS(folio));
+DECLARE_HOOK(android_vh_folio_trylock_clear,
+	TP_PROTO(struct folio *folio),
+	TP_ARGS(folio));
+DECLARE_HOOK(android_vh_get_folio_trylock_result,
+	TP_PROTO(struct folio *folio, bool *trylock_failed),
+	TP_ARGS(folio, trylock_failed));
+DECLARE_HOOK(android_vh_do_folio_trylock,
+	TP_PROTO(struct folio *folio, struct rw_semaphore *sem,
+		bool *got_lock, bool *skip),
+	TP_ARGS(folio, sem, got_lock, skip));
+=======
+DECLARE_HOOK(android_vh_file_is_tiny_bypass,
+	TP_PROTO(bool file_is_tiny, bool *bypass),
+	TP_ARGS(file_is_tiny, bypass));
+DECLARE_HOOK(android_vh_check_folio_look_around_ref,
+	TP_PROTO(struct folio *folio, int *skip),
+	TP_ARGS(folio, skip));
+enum scan_balance;
+DECLARE_HOOK(android_vh_tune_scan_type,
+	TP_PROTO(enum scan_balance *scan_type),
+	TP_ARGS(scan_type));
+DECLARE_HOOK(android_vh_tune_swappiness,
+	TP_PROTO(int *swappiness),
+	TP_ARGS(swappiness));
+DECLARE_HOOK(android_vh_scan_abort_check_wmarks,
+	TP_PROTO(bool *check_wmarks),
+	TP_ARGS(check_wmarks));
+DECLARE_HOOK(android_vh_vmscan_kswapd_done,
+	TP_PROTO(int node_id, unsigned int highest_zoneidx, unsigned int alloc_order,
+	        unsigned int reclaim_order),
+	TP_ARGS(node_id, highest_zoneidx, alloc_order, reclaim_order));
+DECLARE_HOOK(android_vh_handle_trylock_failed_folio,
+	TP_PROTO(struct list_head *folio_list),
+	TP_ARGS(folio_list));
+DECLARE_HOOK(android_vh_folio_trylock_set,
+	TP_PROTO(struct folio *folio),
+	TP_ARGS(folio));
+DECLARE_HOOK(android_vh_folio_trylock_clear,
+	TP_PROTO(struct folio *folio),
+	TP_ARGS(folio));
+DECLARE_HOOK(android_vh_get_folio_trylock_result,
+	TP_PROTO(struct folio *folio, bool *trylock_failed),
+	TP_ARGS(folio, trylock_failed));
+DECLARE_HOOK(android_vh_do_folio_trylock,
+	TP_PROTO(struct folio *folio, struct rw_semaphore *sem,
+		bool *got_lock, bool *skip),
+	TP_ARGS(folio, sem, got_lock, skip));
+DECLARE_HOOK(android_vh_page_referenced_check_bypass,
+	TP_PROTO(struct folio *folio, unsigned long nr_to_scan, int lru, bool *bypass),
+	TP_ARGS(folio, nr_to_scan, lru, bypass));
+>>>>>>> CHANGE (530ff6 ANDROID: GKI: add vendor hooks android_vh_page_should_be_pro)
 #endif /* _TRACE_HOOK_VMSCAN_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
