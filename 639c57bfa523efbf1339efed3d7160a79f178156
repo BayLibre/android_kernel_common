@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8228567a_ecf07eeb",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-06-20T10:59:28Z",
+      "side": 1,
+      "message": "why is `_reader` mutable?",
+      "revId": "639c57bfa523efbf1339efed3d7160a79f178156",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec015373_b2d026bd",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-06-20T10:59:28Z",
+      "side": 1,
+      "message": "OK, that is the expected behavior for _IOWR ioctls, but BINDER_VERSION, which is the only example implemented in this CL, violates this and is used as if it was a _IOR ioctl. You might want to mention that BINDER_VERSION is an exception here.",
+      "revId": "639c57bfa523efbf1339efed3d7160a79f178156",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
