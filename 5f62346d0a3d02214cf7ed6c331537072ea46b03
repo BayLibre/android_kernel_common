@@ -33,6 +33,24 @@
       "message": "tl;dr: Probably need to annotate RO vs mutable pointers in C, or use `\u0026mut` in Rust.\n\nDo we need to do something to make clear to vendors they can\u0027t modify this? You used `\u0026` in Rust, so it won\u0027t necessarily work if they do, but used `void *` here. For now, this is safish because the only accessors they have to this are your read-only projection functions, but if you add somewhere that they get to edit the transaction in the future, it won\u0027t be clear that they can\u0027t here.",
       "revId": "5f62346d0a3d02214cf7ed6c331537072ea46b03",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "646273b2_d46953d2",
+        "filename": "include/trace/events/rust_binder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-06-21T21:58:45Z",
+      "side": 1,
+      "message": "Having read further, are you trying to set the convention that Rust hooks will never allow you to directly mutate the Rust structures, the only thing you get to mutate is the C structures if you eventually project to them? (e.g. task_struct)",
+      "parentUuid": "d02ee151_7acdce48",
+      "revId": "5f62346d0a3d02214cf7ed6c331537072ea46b03",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
