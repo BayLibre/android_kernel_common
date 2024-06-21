@@ -316041,6 +316041,11 @@ function {
   parameter_id: 0x1b44744f
 }
 function {
+  id: 0x475f59e6
+  return_type_id: 0x18ea6ae3
+  parameter_id: 0x1b36c7a2
+}
+function {
   id: 0x477364db
   return_type_id: 0x356691bc
   parameter_id: 0x36d2de0e
@@ -319079,6 +319084,11 @@ function {
   return_type_id: 0xa256f9e0
   parameter_id: 0x23e1331e
   parameter_id: 0x16c24c4b
+}
+function {
+  id: 0x7c0bcc8a
+  return_type_id: 0x1d19a9d5
+  parameter_id: 0x1d19a9d5
 }
 function {
   id: 0x7c59d0ca
@@ -322878,6 +322888,14 @@ function {
   parameter_id: 0x33756485
   parameter_id: 0x3e10b518
   parameter_id: 0x6720d32f
+}
+function {
+  id: 0x91bd6836
+  return_type_id: 0x6720d32f
+  parameter_id: 0x33756485
+  parameter_id: 0x33756485
+  parameter_id: 0xbdd18903
+  parameter_id: 0x9cf21ab5
 }
 function {
   id: 0x91bdfab7
@@ -347621,6 +347639,13 @@ function {
   parameter_id: 0x4585663f
 }
 function {
+  id: 0xef327025
+  return_type_id: 0x32bee099
+  parameter_id: 0x21082bfc
+  parameter_id: 0x33756485
+  parameter_id: 0x21082bfc
+}
+function {
   id: 0xef54849c
   return_type_id: 0x6d7f5ff6
   parameter_id: 0x4585663f
@@ -349443,6 +349468,19 @@ function {
   id: 0xfff05fe5
   return_type_id: 0x6d7f5ff6
   parameter_id: 0x05501385
+}
+function {
+  id: 0xfff714fd
+  return_type_id: 0x2ee2a594
+  parameter_id: 0x33756485
+  parameter_id: 0x33756485
+}
+function {
+  id: 0xfff95338
+  return_type_id: 0x2ee2a594
+  parameter_id: 0x33756485
+  parameter_id: 0x33756485
+  parameter_id: 0x391f15ea
 }
 function {
   id: 0xfffcea5d
@@ -352125,6 +352163,15 @@ elf_symbol {
   crc: 0x07c712a5
   type_id: 0x5659e8fb
   full_name: "__pskb_pull_tail"
+}
+elf_symbol {
+  id: 0x3a9d1f63
+  name: "__pte_offset_map"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x8ac1bb00
+  type_id: 0xef327025
+  full_name: "__pte_offset_map"
 }
 elf_symbol {
   id: 0x541b27fa
@@ -379348,6 +379395,15 @@ elf_symbol {
   full_name: "find_get_pid"
 }
 elf_symbol {
+  id: 0x9227b439
+  name: "find_lock_task_mm"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x3a502bdd
+  type_id: 0x7c0bcc8a
+  full_name: "find_lock_task_mm"
+}
+elf_symbol {
   id: 0x90d375c5
   name: "find_pid_ns"
   is_defined: true
@@ -381447,6 +381503,15 @@ elf_symbol {
   full_name: "get_inode_acl"
 }
 elf_symbol {
+  id: 0x18d1292f
+  name: "get_mm_exe_file"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x7c20e2fe
+  type_id: 0x475f59e6
+  full_name: "get_mm_exe_file"
+}
+elf_symbol {
   id: 0x56ec444f
   name: "get_net_ns_by_fd"
   is_defined: true
@@ -381717,6 +381782,24 @@ elf_symbol {
   crc: 0xe20dfe0f
   type_id: 0x9050f786
   full_name: "get_vaddr_frames"
+}
+elf_symbol {
+  id: 0x26db1073
+  name: "get_vm_area"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x5e1ad77f
+  type_id: 0xfff714fd
+  full_name: "get_vm_area"
+}
+elf_symbol {
+  id: 0x2590dc03
+  name: "get_vm_area_caller"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x2bb2f0ef
+  type_id: 0xfff95338
+  full_name: "get_vm_area_caller"
 }
 elf_symbol {
   id: 0x4ba4e06f
@@ -386025,6 +386108,15 @@ elf_symbol {
   crc: 0x6bbf1b3e
   type_id: 0xc7736674
   full_name: "ioport_resource"
+}
+elf_symbol {
+  id: 0x09e48b4f
+  name: "ioremap_page_range"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xd7dedaec
+  type_id: 0x91bd6836
+  full_name: "ioremap_page_range"
 }
 elf_symbol {
   id: 0xa0390871
@@ -415458,6 +415550,15 @@ elf_symbol {
   full_name: "v4l_bound_align_image"
 }
 elf_symbol {
+  id: 0x34a6e08b
+  name: "valid_mmap_phys_addr_range"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x35219ac9
+  type_id: 0x928d6faf
+  full_name: "valid_mmap_phys_addr_range"
+}
+elf_symbol {
   id: 0x8e6a3c4a
   name: "vb2_buffer_done"
   is_defined: true
@@ -418916,6 +419017,7 @@ interface {
   symbol_id: 0xc37b6db0
   symbol_id: 0xa676022e
   symbol_id: 0x577da3d6
+  symbol_id: 0x3a9d1f63
   symbol_id: 0x541b27fa
   symbol_id: 0xf00cbe99
   symbol_id: 0x36fb0a8e
@@ -421937,6 +422039,7 @@ interface {
   symbol_id: 0xb9dc79d0
   symbol_id: 0x8bbdb127
   symbol_id: 0x02b1ce77
+  symbol_id: 0x9227b439
   symbol_id: 0x90d375c5
   symbol_id: 0xdc16d76a
   symbol_id: 0x5b7736f5
@@ -422169,6 +422272,7 @@ interface {
   symbol_id: 0x4579b2cf
   symbol_id: 0xdb82735d
   symbol_id: 0x67d0c2b8
+  symbol_id: 0x18d1292f
   symbol_id: 0x56ec444f
   symbol_id: 0x519dce2c
   symbol_id: 0xae723651
@@ -422199,6 +422303,8 @@ interface {
   symbol_id: 0x4909936e
   symbol_id: 0x474c6d6a
   symbol_id: 0xce04fca2
+  symbol_id: 0x26db1073
+  symbol_id: 0x2590dc03
   symbol_id: 0x4ba4e06f
   symbol_id: 0xbac82e84
   symbol_id: 0xa8319a8c
@@ -422676,6 +422782,7 @@ interface {
   symbol_id: 0x08ecc90d
   symbol_id: 0x42137268
   symbol_id: 0x45ab591d
+  symbol_id: 0x09e48b4f
   symbol_id: 0xa0390871
   symbol_id: 0xfb789e26
   symbol_id: 0x382b3272
@@ -425943,6 +426050,7 @@ interface {
   symbol_id: 0x4ccb58cf
   symbol_id: 0xae8bff1a
   symbol_id: 0x7733b651
+  symbol_id: 0x34a6e08b
   symbol_id: 0x8e6a3c4a
   symbol_id: 0x3635e264
   symbol_id: 0xc2eed4fe
