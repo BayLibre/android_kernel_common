@@ -79,6 +79,26 @@
       "tag": "",
       "revId": "7d9378f03add27f9ea2d664b4e0b8b59fce18ad8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000082257843",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3143219?revision\u003d1",
+      "key": {
+        "uuid": "341bfded_c067c145",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-06-22T03:57:16Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/a8403c07e3cce0bfb5c4e5426c9245677622993b).\n\n```\n      ## drivers/android/vendor_hooks.c ##\n    -@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_typec_tcpci_get_vbus);\n    +@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_enable_thermal_genl_check);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_get_timer);\n      EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "7d9378f03add27f9ea2d664b4e0b8b59fce18ad8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
