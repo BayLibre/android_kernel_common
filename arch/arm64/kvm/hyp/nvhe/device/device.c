@@ -3,6 +3,8 @@
  * Copyright (C) 2023 Google LLC
  * Author: Mostafa Saleh <smostafa@google.com>
  */
+
+#include <nvhe/iommu.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/mm.h>
 #include <nvhe/pkvm.h>
@@ -125,13 +127,27 @@ out_unlock:
 
 static int pkvm_device_reset(struct pkvm_device *dev)
 {
+	struct pkvm_dev_iommu *iommu;
+	int ret;
+	int i;
+
 	hyp_assert_lock_held(&device_spinlock);
 
 	/* Reset is mandatory. */
 	if (!dev->reset_handler)
 		return -ENODEV;
 
-	return dev->reset_handler(dev);
+	ret = dev->reset_handler(dev);
+	if (ret)
+		return ret;
+
+	for (i = 0 ; i < dev->nr_iommus ; ++i) {
+		iommu = &dev->iommus[i];
+		ret = kvm_iommu_dev_block_dma(iommu->id, iommu->endpoint, dev->ctxt);
+		if (ret)
+			return ret;
+	}
+	return 0;
 }
 
 static int __pkvm_device_assign(struct pkvm_device *dev, struct pkvm_hyp_vm *vm)
