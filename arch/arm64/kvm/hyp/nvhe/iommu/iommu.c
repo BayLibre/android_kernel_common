@@ -538,7 +538,9 @@ out_put_domain:
 	return total_mapped;
 }
 
-int kvm_iommu_dev_block_dma(pkvm_handle_t iommu_id, u32 endpoint_id, struct pkvm_hyp_vm *hyp_vm)
+
+int kvm_iommu_dev_block_dma(pkvm_handle_t iommu_id, u32 endpoint_id,
+			    struct pkvm_hyp_vm *hyp_vm)
 {
 	struct kvm_hyp_iommu *iommu;
 
