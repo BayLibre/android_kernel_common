@@ -16,6 +16,24 @@
       "message": "Can you store a weak arc in CONTEXTS instead and remove it from drop instead? That would keep it in the list a little longer it is still in use elsewhere.",
       "revId": "f227c6419769ebe3ce99015c3db40d762ca86fb9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95ea29b1_d8f40f97",
+        "filename": "drivers/android/binder/context.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-06-24T08:06:27Z",
+      "side": 1,
+      "message": "The kernel `Arc` does not have a concept of weak references, so I would need to change it or make another `Arc` to support that.",
+      "parentUuid": "a06153b5_5dfff7d1",
+      "revId": "f227c6419769ebe3ce99015c3db40d762ca86fb9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
