@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "699b03fc_7b52af13",
+        "filename": "include/trace/events/rust_binder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-06-24T11:07:27Z",
+      "side": 1,
+      "message": "This also happens in C binder. There\u0027s a struct and tracepoint called `binder_transaction`. Until now, I\u0027ve been following the C name exactly with a `rust_` prefix everywhere.",
+      "parentUuid": "4157837d_363ce8bd",
+      "revId": "5f62346d0a3d02214cf7ed6c331537072ea46b03",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d02ee151_7acdce48",
         "filename": "include/trace/events/rust_binder.h",
         "patchSetId": 5
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "Having read further, are you trying to set the convention that Rust hooks will never allow you to directly mutate the Rust structures, the only thing you get to mutate is the C structures if you eventually project to them? (e.g. task_struct)",
       "parentUuid": "d02ee151_7acdce48",
+      "revId": "5f62346d0a3d02214cf7ed6c331537072ea46b03",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05a47b34_ff0194c5",
+        "filename": "include/trace/events/rust_binder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-06-24T11:07:27Z",
+      "side": 1,
+      "message": "We\u0027re never going to have a `\u0026mut Transaction` because the value is in an `Arc`, and all fields that these CLs currently make available must be immutable as other parts of the driver could access them in parallel.\n\nThat said, there are some fields that can be modified, but that would require taking the spinlock, and it would still involve a `\u0026Transaction` in Rust terms.",
+      "parentUuid": "646273b2_d46953d2",
       "revId": "5f62346d0a3d02214cf7ed6c331537072ea46b03",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
