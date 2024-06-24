@@ -456,3 +456,10 @@
   __d_lookup_unhash_wake
   __fs_parse
   __filemap_get_folio
+
+#required by mem_reclaim_ctl.ko
+  __traceiter_android_vh_page_should_be_protected
+  __tracepoint_android_vh_page_should_be_protected
+  __traceiter_android_vh_page_referenced_check_bypass
+  __tracepoint_android_vh_page_referenced_check_bypass
+  __page_mapcount
