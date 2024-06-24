@@ -264131,6 +264131,11 @@ function {
   parameter_id: 0x035330ac
 }
 function {
+  id: 0x104da524
+  return_type_id: 0x48b5725f
+  parameter_id: 0x0357d2dd
+}
+function {
   id: 0x104de2e4
   return_type_id: 0x48b5725f
   parameter_id: 0x0356cddf
@@ -296484,6 +296489,13 @@ function {
   parameter_id: 0x368ec5cb
 }
 function {
+  id: 0x9d760cc4
+  return_type_id: 0x6720d32f
+  parameter_id: 0x0357d2dd
+  parameter_id: 0x0b27dc43
+  parameter_id: 0x3e10b518
+}
+function {
   id: 0x9d763af9
   return_type_id: 0x6720d32f
   parameter_id: 0x0258f96e
@@ -305589,6 +305601,15 @@ elf_symbol {
   crc: 0x1cd5d7d6
   type_id: 0x6d9955d1
   full_name: "__hci_cmd_sync_ev"
+}
+elf_symbol {
+  id: 0xb3d97fa3
+  name: "__hid_register_driver"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xae18d192
+  type_id: 0x9d760cc4
+  full_name: "__hid_register_driver"
 }
 elf_symbol {
   id: 0xf245d4a3
@@ -333127,6 +333148,15 @@ elf_symbol {
   crc: 0xa30a17b8
   type_id: 0x9e711486
   full_name: "hid_parse_report"
+}
+elf_symbol {
+  id: 0x6e37f09d
+  name: "hid_unregister_driver"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x3fa5b730
+  type_id: 0x104da524
+  full_name: "hid_unregister_driver"
 }
 elf_symbol {
   id: 0x334ff68f
@@ -365319,6 +365349,7 @@ interface {
   symbol_id: 0xea677002
   symbol_id: 0xa3a6c885
   symbol_id: 0x7efd1cdd
+  symbol_id: 0xb3d97fa3
   symbol_id: 0xf245d4a3
   symbol_id: 0x74b9825e
   symbol_id: 0xd672e937
@@ -368376,6 +368407,7 @@ interface {
   symbol_id: 0x10de460f
   symbol_id: 0x0eb11e95
   symbol_id: 0x6ca4d0ed
+  symbol_id: 0x6e37f09d
   symbol_id: 0x334ff68f
   symbol_id: 0xd7ecf501
   symbol_id: 0xa5f8942d
