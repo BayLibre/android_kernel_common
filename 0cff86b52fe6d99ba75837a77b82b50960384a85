@@ -16,6 +16,24 @@
       "message": "I don\u0027t think you need PROC_DEFER_FLUSH. The C version originally needed this since the flush needed the binder lock to wake up threads and it was not safe to grab that lock directly from the flush file operation. A separate lock was used to queue deferred work. Now you are using the same lock to queue the flush operation that you later use inside it, so you don\u0027t gain anything by deferring it.",
       "revId": "0cff86b52fe6d99ba75837a77b82b50960384a85",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72c31637_4481b297",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-06-24T08:04:39Z",
+      "side": 1,
+      "message": "Hmm. Alternatively it could be the case that the code is currently wrong due to this and could deadlock? Perhaps I should avoid using the same lock when deferring?",
+      "parentUuid": "90109262_d1f4f024",
+      "revId": "0cff86b52fe6d99ba75837a77b82b50960384a85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
