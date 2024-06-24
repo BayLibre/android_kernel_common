@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e69a302_ae1aa1ca",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-06-24T15:13:21Z",
+      "side": 1,
+      "message": "These lines look misordered (and may have upset a check on the child commit).\n```suggestion\nEXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ufs_prepare_command);\nEXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_ufs_reprogram_all_keys);\n```",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 61
+      },
+      "revId": "449a3bd49097939ebbd1a389099efcf4e0b5e581",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
