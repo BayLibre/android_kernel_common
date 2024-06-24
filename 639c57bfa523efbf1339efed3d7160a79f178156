@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98af23db_a1c8c554",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-06-24T08:07:35Z",
+      "side": 1,
+      "message": "When you read, this advances the userspace pointer and decreases the length. Those operations require mutable access.",
+      "parentUuid": "8228567a_ecf07eeb",
+      "revId": "639c57bfa523efbf1339efed3d7160a79f178156",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec015373_b2d026bd",
         "filename": "drivers/android/binder/process.rs",
         "patchSetId": 1
