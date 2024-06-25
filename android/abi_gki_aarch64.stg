@@ -292108,6 +292108,12 @@ function {
   parameter_id: 0x13580d6c
 }
 function {
+  id: 0x9b79f498
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x3593bec8
+}
+function {
   id: 0x9b79f513
   return_type_id: 0x6720d32f
   parameter_id: 0x188b9e81
@@ -307631,6 +307637,15 @@ elf_symbol {
   full_name: "__traceiter_android_rvh_new_task_stats"
 }
 elf_symbol {
+  id: 0x76b250af
+  name: "__traceiter_android_rvh_oom_killer_disable"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xa3bcf70c
+  type_id: 0x9b79f498
+  full_name: "__traceiter_android_rvh_oom_killer_disable"
+}
+elf_symbol {
   id: 0xc463ba81
   name: "__traceiter_android_rvh_panic_unhandled"
   is_defined: true
@@ -310923,6 +310938,15 @@ elf_symbol {
   crc: 0x798d7748
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_rvh_new_task_stats"
+}
+elf_symbol {
+  id: 0xda039ffd
+  name: "__tracepoint_android_rvh_oom_killer_disable"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x5037715f
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_rvh_oom_killer_disable"
 }
 elf_symbol {
   id: 0xeea6bf23
@@ -365463,6 +365487,7 @@ interface {
   symbol_id: 0x1ea5d323
   symbol_id: 0x7dde3788
   symbol_id: 0x0d22882d
+  symbol_id: 0x76b250af
   symbol_id: 0xc463ba81
   symbol_id: 0x8e79e55d
   symbol_id: 0x88e9b222
@@ -365829,6 +365854,7 @@ interface {
   symbol_id: 0x3cb4db49
   symbol_id: 0xa1ba5416
   symbol_id: 0x62726c6f
+  symbol_id: 0xda039ffd
   symbol_id: 0xeea6bf23
   symbol_id: 0x71d07b7b
   symbol_id: 0x18752990
