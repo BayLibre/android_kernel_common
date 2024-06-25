@@ -286,6 +286,30 @@
       },
       "revId": "c265eea26c9a6c00048bfd4d2d0ba6ff1eca1ac1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30b72b1d_1033c883",
+        "filename": "fs/f2fs/data.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 2171,
+      "author": {
+        "id": 3402659
+      },
+      "writtenOn": "2024-06-25T12:03:59Z",
+      "side": 1,
+      "message": "What do you think about modifying the code like this?\nstatic inline blk_opf_t f2fs_ra_op_flags(struct readahead_control *rac)\n{\n\tstruct blk_opf_t op_flag;\n\t\n\top_flag \u003d rac ? REQ_RAHEAD : 0;\n\ttrace_android_vh_f2fs_ra_op_flags(\u0026op_flag, rac);\n\treturn op_flag;\n}\n\nI see that your patch has not been merged yet. Can vendohook work normally inside inline type function?",
+      "parentUuid": "2ba79f78_dc38fa15",
+      "range": {
+        "startLine": 2171,
+        "startChar": 2,
+        "endLine": 2171,
+        "endChar": 51
+      },
+      "revId": "c265eea26c9a6c00048bfd4d2d0ba6ff1eca1ac1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
