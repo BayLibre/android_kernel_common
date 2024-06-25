@@ -262,6 +262,30 @@
       },
       "revId": "c265eea26c9a6c00048bfd4d2d0ba6ff1eca1ac1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ba79f78_dc38fa15",
+        "filename": "fs/f2fs/data.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 2171,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2024-06-25T05:05:26Z",
+      "side": 1,
+      "message": "Please take a look: https://android-review.git.corp.google.com/c/kernel/common/+/3145036\n\nI think you can add the vendor hook in f2fs_ra_op_flags().",
+      "parentUuid": "82202031_be3a9ead",
+      "range": {
+        "startLine": 2171,
+        "startChar": 2,
+        "endLine": 2171,
+        "endChar": 51
+      },
+      "revId": "c265eea26c9a6c00048bfd4d2d0ba6ff1eca1ac1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
