@@ -44,6 +44,7 @@ declare_trace! {
     fn rust_binder_unmap_user_end(pid: c_int, page_index: usize);
     fn rust_binder_unmap_kernel_start(pid: c_int, page_index: usize);
     fn rust_binder_unmap_kernel_end(pid: c_int, page_index: usize);
+    fn rust_binder_command(cmd: u32);
 
     fn android_vh_rust_binder_set_priority(t: rust_binder_transaction, task: *mut task_struct);
     fn android_vh_rust_binder_restore_priority(task: *mut task_struct);
@@ -215,4 +216,10 @@ define_wrapper_lru_page_class! {
     fn unmap_user_end;
     fn unmap_kernel_start;
     fn unmap_kernel_end;
+}
+
+#[inline]
+pub(crate) fn trace_command(cmd: u32) {
+    // SAFETY: Trivially safe to call with primitive u32.
+    unsafe { rust_binder_command(cmd) }
 }
