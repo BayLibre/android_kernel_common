@@ -189,6 +189,22 @@ TRACE_EVENT(rust_binder_transaction_node_send,
 		  __entry->translated_handle)
 );
 
+TRACE_EVENT(rust_binder_command,
+    TP_PROTO(uint32_t cmd),
+    TP_ARGS(cmd),
+    TP_STRUCT__entry(
+        __field(uint32_t, cmd)
+    ),
+    TP_fast_assign(
+        __entry->cmd = cmd;
+    ),
+    TP_printk("cmd=0x%x %s",
+          __entry->cmd,
+          _IOC_NR(__entry->cmd) < ARRAY_SIZE(binder_command_strings) ?
+              binder_command_strings[_IOC_NR(__entry->cmd)] :
+              "unknown")
+);
+
 #endif /* _RUST_BINDER_TRACE_H */
 
 /* This part must be outside protection */
