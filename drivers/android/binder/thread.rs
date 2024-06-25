@@ -754,6 +754,7 @@ impl Thread {
         view: &mut AllocationView<'_>,
         allow_fds: bool,
         sg_state: &mut ScatterGatherState,
+        debug_id: usize,
     ) -> BinderResult {
         match object {
             BinderObjectRef::Binder(obj) => {
@@ -768,7 +769,7 @@ impl Thread {
                     .as_arc_borrow()
                     .get_node(ptr, cookie, flags, strong, self)?;
                 security::binder_transfer_binder(&self.process.cred, &view.alloc.process.cred)?;
-                view.transfer_binder_object(offset, obj, strong, node)?;
+                view.transfer_binder_object(offset, obj, strong, node, debug_id)?;
             }
             BinderObjectRef::Handle(obj) => {
                 let strong = obj.hdr.type_ == BINDER_TYPE_HANDLE;
@@ -776,7 +777,7 @@ impl Thread {
                 let handle = unsafe { obj.__bindgen_anon_1.handle } as _;
                 let node = self.process.get_node_from_handle(handle, strong)?;
                 security::binder_transfer_binder(&self.process.cred, &view.alloc.process.cred)?;
-                view.transfer_binder_object(offset, obj, strong, node)?;
+                view.transfer_binder_object(offset, obj, strong, node, debug_id)?;
             }
             BinderObjectRef::Fd(obj) => {
                 if !allow_fds {
@@ -1016,6 +1017,7 @@ impl Thread {
     /// and those objects have to be translated so that they make sense to the target transaction.
     pub(crate) fn copy_transaction_data(
         &self,
+        debug_id: usize,
         to_process: Arc<Process>,
         tr: &BinderTransactionDataSg,
         allow_fds: bool,
@@ -1128,6 +1130,7 @@ impl Thread {
                     &mut view,
                     allow_fds,
                     sg_state,
+                    debug_id,
                 ) {
                     Ok(()) => end_of_previous_object = offset + object.size(),
                     Err(err) => {
