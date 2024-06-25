@@ -1393,7 +1393,8 @@ static inline void f2fs_clear_bit(unsigned int nr, char *addr);
  * bit 2	PAGE_PRIVATE_ONGOING_MIGRATION
  * bit 3	PAGE_PRIVATE_INLINE_INODE
  * bit 4	PAGE_PRIVATE_REF_RESOURCE
- * bit 5-	f2fs private data
+ * bit 5	PAGE_PRIVATE_ATOMIC_WRITE
+ * bit 6-	f2fs private data
  *
  * Layout B: lowest bit should be 0
  * page.private is a wrapped pointer.
@@ -1404,6 +1405,7 @@ enum {
 	PAGE_PRIVATE_ONGOING_MIGRATION,		/* data page which is on-going migrating */
 	PAGE_PRIVATE_INLINE_INODE,		/* inode page contains inline data */
 	PAGE_PRIVATE_REF_RESOURCE,		/* dirty page has referenced resources */
+	PAGE_PRIVATE_ATOMIC_WRITE,		/* data page from atomic write path */
 	PAGE_PRIVATE_MAX
 };
 
