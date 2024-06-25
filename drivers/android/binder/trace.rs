@@ -33,6 +33,7 @@ declare_trace! {
     fn rust_binder_transaction_buffer_release(debug_id: c_int);
     fn rust_binder_transaction_failed_buffer_release(debug_id: c_int);
     fn rust_binder_transaction_update_buffer_release(debug_id: c_int);
+    fn rust_binder_command(cmd: u32);
 
     fn android_vh_rust_binder_set_priority(t: rust_binder_transaction, task: *mut task_struct);
     fn android_vh_rust_binder_restore_priority(task: *mut task_struct);
@@ -173,4 +174,10 @@ pub(crate) fn trace_transaction_failed_buffer_release(debug_id: usize) {
 pub(crate) fn trace_transaction_update_buffer_release(debug_id: usize) {
     // SAFETY: Always safe to call.
     unsafe { rust_binder_transaction_update_buffer_release(debug_id as c_int) }
+}
+
+#[inline]
+pub(crate) fn trace_command(cmd: u32) {
+    // SAFETY: Always safe to call.
+    unsafe { rust_binder_command(cmd) }
 }
