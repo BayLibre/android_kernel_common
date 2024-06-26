@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63588d46_98e3acf6",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-06-26T10:33:40Z",
+      "side": 1,
+      "message": "Ah ... the writer is passed by value which is even more powerful than mutable reference. I should probably have both take it by ownership instead.",
+      "parentUuid": "b3228d12_712b9846",
+      "revId": "639c57bfa523efbf1339efed3d7160a79f178156",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec015373_b2d026bd",
         "filename": "drivers/android/binder/process.rs",
         "patchSetId": 1
