@@ -666,15 +666,19 @@ impl Node {
 
         if weak && !has_weak {
             self.write(writer, BR_INCREFS)?;
+            crate::trace::trace_return(BR_INCREFS);
         }
         if strong && !has_strong {
             self.write(writer, BR_ACQUIRE)?;
+            crate::trace::trace_return(BR_ACQUIRE);
         }
         if should_drop_strong {
             self.write(writer, BR_RELEASE)?;
+            crate::trace::trace_return(BR_RELEASE);
         }
         if should_drop_weak {
             self.write(writer, BR_DECREFS)?;
+            crate::trace::trace_return(BR_DECREFS);
         }
 
         Ok(true)

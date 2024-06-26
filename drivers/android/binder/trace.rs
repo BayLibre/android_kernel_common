@@ -27,6 +27,7 @@ declare_trace! {
                                          orig: *const flat_binder_object,
                                          trans: *const flat_binder_object);
     fn rust_binder_command(cmd: u32);
+    fn rust_binder_return(ret: u32);
 
     fn android_vh_rust_binder_set_priority(t: rust_binder_transaction, task: *mut task_struct);
     fn android_vh_rust_binder_restore_priority(task: *mut task_struct);
@@ -134,6 +135,12 @@ pub(crate) fn trace_rust_binder_transaction_node_send(
 
 #[inline]
 pub(crate) fn trace_command(cmd: u32) {
-    // SAFETY: Always safe to call.
+    // SAFETY: Trivially safe to call with primitive u32.
     unsafe { rust_binder_command(cmd) }
+}
+
+#[inline]
+pub(crate) fn trace_return(ret: u32) {
+    // SAFETY: Trivially safe to call with primitive u32.
+    unsafe { rust_binder_return(ret) }
 }

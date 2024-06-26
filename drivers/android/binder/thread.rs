@@ -1288,7 +1288,8 @@ impl Thread {
         // TODO: We need to ensure that there isn't a pending transaction in the work queue. How
         // could this happen?
         let top = self.top_of_transaction_stack()?;
-        let list_completion = DTRWrap::arc_try_new(DeliverCode::new(BR_TRANSACTION_COMPLETE))?;
+        let code = BR_TRANSACTION_COMPLETE;
+        let list_completion = DTRWrap::arc_try_new(DeliverCode::new(code))?;
         let completion = list_completion.clone_arc();
         let transaction = Transaction::new(node_ref, top, self, tr)?;
 
@@ -1315,6 +1316,7 @@ impl Thread {
             inner.current_transaction = transaction.clone_next();
             Err(e)
         } else {
+            crate::trace::trace_return(code);
             Ok(())
         }
     }
@@ -1327,12 +1329,14 @@ impl Thread {
 
         // We need to complete the transaction even if we cannot complete building the reply.
         let out = (|| -> BinderResult<_> {
-            let completion = DTRWrap::arc_try_new(DeliverCode::new(BR_TRANSACTION_COMPLETE))?;
+            let code = BR_TRANSACTION_COMPLETE;
+            let completion = DTRWrap::arc_try_new(DeliverCode::new(code))?;
             let process = orig.from.process.clone();
             let allow_fds = orig.flags & TF_ACCEPT_FDS != 0;
             let reply = Transaction::new_reply(self, process, tr, allow_fds)?;
             self.inner.lock().push_work(completion);
             orig.from.deliver_reply(Ok(reply), &orig);
+            crate::trace::trace_return(code);
             Ok(())
         })()
         .map_err(|mut err| {
@@ -1342,6 +1346,7 @@ impl Thread {
                 "Failure {:?} during reply - delivering BR_FAILED_REPLY to sender.",
                 err
             );
+            // TODO: trace this path?
             let reply = Err(BR_FAILED_REPLY);
             orig.from.deliver_reply(reply, &orig);
             err.reply = BR_TRANSACTION_COMPLETE;
@@ -1371,7 +1376,10 @@ impl Thread {
         let completion = list_completion.clone_arc();
         self.inner.lock().push_work(list_completion);
         match transaction.submit() {
-            Ok(()) => Ok(()),
+            Ok(()) => {
+                crate::trace::trace_return(code);
+                Ok(())
+            },
             Err(err) => {
                 completion.skip();
                 Err(err)
