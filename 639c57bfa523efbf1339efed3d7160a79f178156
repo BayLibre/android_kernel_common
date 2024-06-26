@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b3228d12_712b9846",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2024-06-26T10:05:30Z",
+      "side": 1,
+      "message": "OK, but why then is the writeable version not mutable. (perhaps this is more clear in later patches, but here I think it is confusing that the reader has mutable reference and the writer does not)",
+      "parentUuid": "98af23db_a1c8c554",
+      "revId": "639c57bfa523efbf1339efed3d7160a79f178156",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec015373_b2d026bd",
         "filename": "drivers/android/binder/process.rs",
         "patchSetId": 1
