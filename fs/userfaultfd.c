@@ -913,15 +913,18 @@ static int userfaultfd_release(struct inode *inode, struct file *file)
 			continue;
 		}
 		new_flags = vma->vm_flags & ~__VM_UFFD_FLAGS;
+		rcu_read_lock();
 		prev = vma_merge(mm, prev, vma->vm_start, vma->vm_end,
 				 new_flags, vma->anon_vma,
 				 vma->vm_file, vma->vm_pgoff,
 				 vma_policy(vma),
 				 NULL_VM_UFFD_CTX, anon_vma_name(vma));
-		if (prev)
+		if (prev) {
+			rcu_assign_pointer(vma->vm_userfaultfd_ctx.ctx, NULL);
 			vma = prev;
-		else
+		} else
 			prev = vma;
+		rcu_read_unlock();
 		vma->vm_flags = new_flags;
 		rcu_assign_pointer(vma->vm_userfaultfd_ctx.ctx, NULL);
 	}
