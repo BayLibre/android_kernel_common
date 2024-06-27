@@ -63,6 +63,30 @@
       },
       "revId": "06ef4940e8c673d5fa9703bb620b4c10e6c9d45c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7932ae3_de06017a",
+        "filename": "kernel/sched/psi.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 959,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-06-27T17:05:30Z",
+      "side": 1,
+      "message": "Ends up DEFINE_PER_CPU can\u0027t be used within the scope of a function:\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/percpu-defs.h#n66\n\nSo I\u0027ll make it static, but leave it as a global.",
+      "parentUuid": "ea56ac0c_d7b09893",
+      "range": {
+        "startLine": 959,
+        "startChar": 0,
+        "endLine": 959,
+        "endChar": 14
+      },
+      "revId": "06ef4940e8c673d5fa9703bb620b4c10e6c9d45c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
