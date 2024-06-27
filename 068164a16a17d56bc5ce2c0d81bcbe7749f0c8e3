@@ -33,6 +33,42 @@
       "message": "Does this Clang issue only manifest with AutoFDO enabled?",
       "revId": "068164a16a17d56bc5ce2c0d81bcbe7749f0c8e3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f736259_8ead7af5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2024-06-27T18:29:52Z",
+      "side": 1,
+      "message": "In the upstream, Linus said linux kernel expected the compiler to zero initialize left bytes with an empty initializer or a partial initializer. So the patch is unlikely to be accepted by upstream. Instead, clang upstream is happy to fix this bug, as in https://github.com/llvm/llvm-project/issues/78034. But waiting for a clang fix takes much more time, and needs a clang update.\n\nOn the other hand, the code in this CL probably is the only place that matters to android kernel. Because android kernel are built with -ftrivial-auto-var-init\u003dzero, so all local variables are zero initialized. For global variables and static variables in functions, I tried building 6.1 ACK with a check, there are three places having undefined fields, and the code here is the only place that matters. So I feel it\u0027s easier to just fix it.",
+      "parentUuid": "14b20261_1710b119",
+      "revId": "068164a16a17d56bc5ce2c0d81bcbe7749f0c8e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fade0729_e43d698c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2024-06-27T18:29:52Z",
+      "side": 1,
+      "message": "The initializer issue always exist in clang, whether it is uncovered depends on optimization decisions. The optimization decisions can be affected by clang updates, compile flag changes, or a kernel code change.",
+      "parentUuid": "9205a259_85736c39",
+      "revId": "068164a16a17d56bc5ce2c0d81bcbe7749f0c8e3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
