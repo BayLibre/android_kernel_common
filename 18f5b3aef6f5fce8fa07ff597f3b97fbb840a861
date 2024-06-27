@@ -22,6 +22,30 @@
       },
       "revId": "18f5b3aef6f5fce8fa07ff597f3b97fbb840a861",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "530e40ca_56bf0f48",
+        "filename": "kernel/signal.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2327,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-06-27T00:17:41Z",
+      "side": 1,
+      "message": "Not sure I understand... Whenever `current-\u003eptrace` is set, `current-\u003eparent` is pointing to the tracer process (see here: https://elixir.bootlin.com/linux/v6.1.95/source/kernel/signal.c#L2135 and how do_notify_parent_cldstop() is used). If the tracer is indeed the `init` process then we still will exit without waiting. What am I missing?",
+      "parentUuid": "bb353661_332d79e7",
+      "range": {
+        "startLine": 2327,
+        "startChar": 33,
+        "endLine": 2327,
+        "endChar": 39
+      },
+      "revId": "18f5b3aef6f5fce8fa07ff597f3b97fbb840a861",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
