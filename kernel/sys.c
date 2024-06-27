@@ -2317,6 +2317,7 @@ static int prctl_set_vma(unsigned long opt, unsigned long addr,
 	struct mm_struct *mm = current->mm;
 	const char __user *uname;
 	struct anon_vma_name *anon_name = NULL;
+	bool bypass = false;
 	int error;
 
 	switch (opt) {
@@ -2343,6 +2344,10 @@ static int prctl_set_vma(unsigned long opt, unsigned long addr,
 
 		}
 
+		trace_android_rvh_pr_set_vma_name_bypass(mm, addr, size, anon_name, &error, &bypass);
+		if (bypass) {
+			return error;
+		}
 		mmap_write_lock(mm);
 		error = madvise_set_anon_name(mm, addr, size, anon_name);
 		mmap_write_unlock(mm);
