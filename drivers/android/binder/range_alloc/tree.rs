@@ -11,7 +11,7 @@ use kernel::{
     task::Pid,
 };
 
-use crate::range_alloc::{FreedRange, Range};
+use crate::range_alloc::{Allocation, DescriptorState, FreedRange, Range, Reservation};
 
 /// Keeps track of allocations in a process' mmap.
 ///
@@ -65,18 +65,24 @@ impl<T> TreeRangeAllocator<T> {
             let tree_node = alloc.tree.pop().unwrap();
             let mut desc = Descriptor::new(range.offset, range.size);
             if range.is_reserved {
-                desc.state = Some(DescriptorState::Reserved(Reservation {
-                    is_oneway: range.is_oneway,
-                    pid: range.pid,
+                desc.state = Some((
+                    DescriptorState::Reserved(Reservation {
+                        is_oneway: range.is_oneway,
+                        pid: range.pid,
+                    }),
                     free_res,
-                }));
+                ));
             } else {
-                desc.state = Some(DescriptorState::Allocated(Allocation {
-                    is_oneway: range.is_oneway,
-                    pid: range.pid,
+                desc.state = Some((
+                    DescriptorState::Allocated(Allocation {
+                        reservation: Reservation {
+                            is_oneway: range.is_oneway,
+                            pid: range.pid,
+                        },
+                        data: range.data,
+                    }),
                     free_res,
-                    data: range.data,
-                }));
+                ))
             }
             tree.tree.insert(tree_node.into_node(range.offset, desc));
         }
@@ -116,7 +122,7 @@ impl<T> TreeRangeAllocator<T> {
     pub(crate) fn debug_print(&self, m: &mut SeqFile) -> Result<()> {
         for desc in self.tree.values() {
             let state = match &desc.state {
-                Some(state) => state,
+                Some(state) => &state.0,
                 None => continue,
             };
             seq_print!(
@@ -186,7 +192,7 @@ impl<T> TreeRangeAllocator<T> {
                 let new_desc = Descriptor::new(found_offset + size, found_size - size);
                 let (tree_node, free_tree_node, desc_node_res) = alloc.initialize(new_desc);
 
-                desc.state = Some(DescriptorState::new(is_oneway, pid, desc_node_res));
+                desc.state = Some((DescriptorState::new(is_oneway, pid), desc_node_res));
                 desc.size = size;
 
                 (found_size, found_offset, tree_node, free_tree_node)
@@ -222,8 +228,10 @@ impl<T> TreeRangeAllocator<T> {
             return Err(EINVAL);
         }
 
-        let reservation = desc.try_change_state(|state| match state {
-            Some(DescriptorState::Reserved(reservation)) => (None, Ok(reservation)),
+        let (reservation, free_node_res) = desc.try_change_state(|state| match state {
+            Some((DescriptorState::Reserved(reservation), free_node_res)) => {
+                (None, Ok((reservation, free_node_res)))
+            }
             None => {
                 pr_warn!(
                     "EINVAL from range_alloc.reservation_abort - offset: {}",
@@ -296,7 +304,7 @@ impl<T> TreeRangeAllocator<T> {
         };
 
         self.free_tree
-            .insert(reservation.free_res.into_node((size, offset), ()));
+            .insert(free_node_res.into_node((size, offset), ()));
 
         Ok(freed_range)
     }
@@ -311,8 +319,11 @@ impl<T> TreeRangeAllocator<T> {
         })?;
 
         desc.try_change_state(|state| match state {
-            Some(DescriptorState::Reserved(reservation)) => (
-                Some(DescriptorState::Allocated(reservation.allocate(data))),
+            Some((DescriptorState::Reserved(reservation), free_node_res)) => (
+                Some((
+                    DescriptorState::Allocated(reservation.allocate(data)),
+                    free_node_res,
+                )),
                 Ok(()),
             ),
             other => {
@@ -339,9 +350,12 @@ impl<T> TreeRangeAllocator<T> {
         })?;
 
         let data = desc.try_change_state(|state| match state {
-            Some(DescriptorState::Allocated(allocation)) => {
+            Some((DescriptorState::Allocated(allocation), free_node_res)) => {
                 let (reservation, data) = allocation.deallocate();
-                (Some(DescriptorState::Reserved(reservation)), Ok(data))
+                (
+                    Some((DescriptorState::Reserved(reservation), free_node_res)),
+                    Ok(data),
+                )
             }
             other => {
                 pr_warn!(
@@ -360,7 +374,7 @@ impl<T> TreeRangeAllocator<T> {
     /// This destroys the range allocator. Used only during shutdown.
     pub(crate) fn take_for_each<F: Fn(usize, usize, Option<T>)>(&mut self, callback: F) {
         for (_, desc) in self.tree.iter_mut() {
-            if let Some(DescriptorState::Allocated(allocation)) = &mut desc.state {
+            if let Some((DescriptorState::Allocated(allocation), _)) = &mut desc.state {
                 callback(desc.offset, desc.size, allocation.take());
             }
         }
@@ -376,7 +390,7 @@ impl<T> TreeRangeAllocator<T> {
         let mut total_alloc_size = 0;
         let mut num_buffers = 0;
         for (_, desc) in self.tree.iter() {
-            if let Some(state) = &desc.state {
+            if let Some((state, _)) = &desc.state {
                 if state.is_oneway() && state.pid() == calling_pid {
                     total_alloc_size += desc.size;
                     num_buffers += 1;
@@ -391,10 +405,11 @@ impl<T> TreeRangeAllocator<T> {
     }
 }
 
+type TreeDescriptorState<T> = (DescriptorState<T>, FreeNodeRes);
 struct Descriptor<T> {
     size: usize,
     offset: usize,
-    state: Option<DescriptorState<T>>,
+    state: Option<TreeDescriptorState<T>>,
 }
 
 impl<T> Descriptor<T> {
@@ -408,81 +423,11 @@ impl<T> Descriptor<T> {
 
     fn try_change_state<F, Data>(&mut self, f: F) -> Result<Data>
     where
-        F: FnOnce(Option<DescriptorState<T>>) -> (Option<DescriptorState<T>>, Result<Data>),
+        F: FnOnce(Option<TreeDescriptorState<T>>) -> (Option<TreeDescriptorState<T>>, Result<Data>),
     {
         let (new_state, result) = f(self.state.take());
         self.state = new_state;
         result
-    }
-}
-
-enum DescriptorState<T> {
-    Reserved(Reservation),
-    Allocated(Allocation<T>),
-}
-
-impl<T> DescriptorState<T> {
-    fn new(is_oneway: bool, pid: Pid, free_res: FreeNodeRes) -> Self {
-        DescriptorState::Reserved(Reservation {
-            is_oneway,
-            pid,
-            free_res,
-        })
-    }
-
-    fn pid(&self) -> Pid {
-        match self {
-            DescriptorState::Reserved(inner) => inner.pid,
-            DescriptorState::Allocated(inner) => inner.pid,
-        }
-    }
-
-    fn is_oneway(&self) -> bool {
-        match self {
-            DescriptorState::Reserved(inner) => inner.is_oneway,
-            DescriptorState::Allocated(inner) => inner.is_oneway,
-        }
-    }
-}
-
-struct Reservation {
-    is_oneway: bool,
-    pid: Pid,
-    free_res: FreeNodeRes,
-}
-
-impl Reservation {
-    fn allocate<T>(self, data: Option<T>) -> Allocation<T> {
-        Allocation {
-            data,
-            is_oneway: self.is_oneway,
-            pid: self.pid,
-            free_res: self.free_res,
-        }
-    }
-}
-
-struct Allocation<T> {
-    is_oneway: bool,
-    pid: Pid,
-    free_res: FreeNodeRes,
-    data: Option<T>,
-}
-
-impl<T> Allocation<T> {
-    fn deallocate(self) -> (Reservation, Option<T>) {
-        (
-            Reservation {
-                is_oneway: self.is_oneway,
-                pid: self.pid,
-                free_res: self.free_res,
-            },
-            self.data,
-        )
-    }
-
-    fn take(&mut self) -> Option<T> {
-        self.data.take()
     }
 }
 
