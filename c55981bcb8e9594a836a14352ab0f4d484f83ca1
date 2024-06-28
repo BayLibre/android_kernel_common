@@ -73,6 +73,23 @@
       },
       "revId": "c55981bcb8e9594a836a14352ab0f4d484f83ca1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e48be9a8_0180b185",
+        "filename": "include/trace/events/rust_binder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-06-28T18:32:23Z",
+      "side": 1,
+      "message": "!!!!!\nThis checks the range on the return strings, but indexes into the command strings. You probably want return_strings for both.",
+      "revId": "c55981bcb8e9594a836a14352ab0f4d484f83ca1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
