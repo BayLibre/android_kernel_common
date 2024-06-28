@@ -59,6 +59,26 @@
       "tag": "",
       "revId": "23db87e64f1c87a156d2caee1b71460c6db6572a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000082949969",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3148590?revision\u003d2",
+      "key": {
+        "uuid": "6f9f659c_d025aeb3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-06-28T15:48:41Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/408e28086f1c7a6423efc79926a43d7001902fae) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d408e28086f1c7a6423efc79926a43d7001902fae).\n\n```\n    - ## drivers/ufs/core/ufshcd.c ##\n    -@@ drivers/ufs/core/ufshcd.c: int ufshcd_system_restore(struct device *dev)\n    + ## drivers/scsi/ufs/ufshcd.c ##\n    +@@ drivers/scsi/ufs/ufshcd.c: int ufshcd_system_restore(struct device *dev)\n      \t * are updated with the latest queue addresses. Only after\n      \t * updating these addresses, we can queue the new commands.\n      \t */\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "23db87e64f1c87a156d2caee1b71460c6db6572a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
