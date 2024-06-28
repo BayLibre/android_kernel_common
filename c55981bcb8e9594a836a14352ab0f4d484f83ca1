@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "334c6e74_d28c9903",
+        "filename": "drivers/android/binder/thread.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 1349,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-06-28T16:46:02Z",
+      "side": 1,
+      "message": "You don\u0027t need to do anything here. The `push_return_work` on line 1284 should be enough to get it traced.",
+      "revId": "c55981bcb8e9594a836a14352ab0f4d484f83ca1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e68bff82_a3acef5e",
+        "filename": "drivers/android/binder/trace.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-06-28T16:46:02Z",
+      "side": 1,
+      "message": "Please move this change to the `trace_command` CL.",
+      "revId": "c55981bcb8e9594a836a14352ab0f4d484f83ca1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1852f28c_a6d3b5b5",
+        "filename": "drivers/android/binder_trace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-06-28T16:46:02Z",
+      "side": 1,
+      "message": "Don\u0027t change the C tracepoint.",
+      "range": {
+        "startLine": 434,
+        "startChar": 0,
+        "endLine": 434,
+        "endChar": 26
+      },
+      "revId": "c55981bcb8e9594a836a14352ab0f4d484f83ca1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
