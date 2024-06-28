@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "19035a71_f77c5eab",
+        "filename": "drivers/android/binder/page_range.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-06-28T18:03:04Z",
+      "side": 1,
+      "message": "Using `pub` emits a warning that breaks the build.",
+      "parentUuid": "8c4fc09a_651921e4",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 10
+      },
+      "revId": "c296a7238099c1dd73d953e82616857dbb30b849",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bd1b6d61_c25e1a77",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-06-28T17:57:53Z",
       "side": 1,
       "message": "In theory I\u0027d suggest that \"Fix CFI\" and \"Move `page_range` into the binder driver\" should be separate patches, but I wouldn\u0027t delay us on this.",
+      "revId": "c296a7238099c1dd73d953e82616857dbb30b849",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "569ae9ce_2c23a095",
+        "filename": "drivers/android/binder/page_range_helper.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-06-28T18:03:04Z",
+      "side": 1,
+      "message": "CFI was already fixed in a previous CL. This just moves the fix around so that it no longer goes through `rust/helpers.c`.",
+      "parentUuid": "bd1b6d61_c25e1a77",
       "revId": "c296a7238099c1dd73d953e82616857dbb30b849",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
