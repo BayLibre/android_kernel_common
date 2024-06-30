@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75926269_d6644ce5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1957137
+      },
+      "writtenOn": "2024-06-30T13:25:20Z",
+      "side": 1,
+      "message": "Do I need to update STG file as well ?\nI don\u0027t see ABI breaking but I see stg file getting updated when I build ABI:\n\ndiff --git a/android/abi_gki_aarch64.stg b/android/abi_gki_aarch64.stg\nindex b60ff8cf4e63..7c716033cab2 100644\n--- a/android/abi_gki_aarch64.stg\n+++ b/android/abi_gki_aarch64.stg\n@@ -339203,7 +339203,7 @@ elf_symbol {\n   name: \"ANDROID_GKI_struct_dwc3\"\n   is_defined: true\n   symbol_type: OBJECT\n-  crc: 0xc1a5e6eb\n+  crc: 0xb843382f\n   type_id: 0xd234ca36\n   full_name: \"ANDROID_GKI_struct_dwc3\"\n}",
+      "revId": "0636e7d360d0ca5e64b7b379d397a9e41b2a06ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
