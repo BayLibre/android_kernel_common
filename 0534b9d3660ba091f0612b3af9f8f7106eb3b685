@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1752889f_2fa8354d",
+        "filename": "mm/memblock.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2012,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-01T23:44:26Z",
+      "side": 1,
+      "message": "This won\u0027t work. It\u0027s used in `memblock_memsize_mod_kernel_size` which is not an `__init` function.",
+      "range": {
+        "startLine": 2012,
+        "startChar": 26,
+        "endLine": 2012,
+        "endChar": 45
+      },
+      "revId": "0534b9d3660ba091f0612b3af9f8f7106eb3b685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25b0b15a_b0b7ca3e",
+        "filename": "mm/memblock.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2013,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-01T23:44:26Z",
+      "side": 1,
+      "message": "You don\u0027t need to repreat the mispellings in the original patch. Please use the name which makes sense - `memsize_memmap`.",
+      "range": {
+        "startLine": 2013,
+        "startChar": 12,
+        "endLine": 2013,
+        "endChar": 25
+      },
+      "revId": "0534b9d3660ba091f0612b3af9f8f7106eb3b685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb2274e6_489a920a",
+        "filename": "mm/memblock.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2013,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-01T23:44:26Z",
+      "side": 1,
+      "message": "This won\u0027t work. It\u0027s used in `memblock_memsize_show` which is not an `__init` function.",
+      "range": {
+        "startLine": 2013,
+        "startChar": 26,
+        "endLine": 2013,
+        "endChar": 45
+      },
+      "revId": "0534b9d3660ba091f0612b3af9f8f7106eb3b685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
