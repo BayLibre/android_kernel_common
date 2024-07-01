@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39547bc5_7384be0c",
+        "filename": "drivers/android/binder/rust_binder.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2024-07-01T21:01:38Z",
+      "side": 1,
+      "message": "Done (in original `BinderReturnWriter` patch)",
+      "parentUuid": "4dd303df_8ce4dbde",
+      "revId": "c55981bcb8e9594a836a14352ab0f4d484f83ca1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "334c6e74_d28c9903",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4257a3f_1f4f2137",
+        "filename": "drivers/android/binder/thread.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 1349,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2024-07-01T21:01:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "334c6e74_d28c9903",
+      "revId": "c55981bcb8e9594a836a14352ab0f4d484f83ca1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e68bff82_a3acef5e",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-06-28T16:46:02Z",
       "side": 1,
       "message": "Please move this change to the `trace_command` CL.",
+      "revId": "c55981bcb8e9594a836a14352ab0f4d484f83ca1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4ada019_f1aa9ef3",
+        "filename": "drivers/android/binder/trace.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2024-07-01T21:01:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e68bff82_a3acef5e",
       "revId": "c55981bcb8e9594a836a14352ab0f4d484f83ca1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -75,6 +129,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9e520c3_7ab6930e",
+        "filename": "drivers/android/binder_trace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2024-07-01T21:01:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1852f28c_a6d3b5b5",
+      "range": {
+        "startLine": 434,
+        "startChar": 0,
+        "endLine": 434,
+        "endChar": 26
+      },
+      "revId": "c55981bcb8e9594a836a14352ab0f4d484f83ca1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e48be9a8_0180b185",
@@ -88,6 +166,24 @@
       "writtenOn": "2024-06-28T18:32:23Z",
       "side": 1,
       "message": "!!!!!\nThis checks the range on the return strings, but indexes into the command strings. You probably want return_strings for both.",
+      "revId": "c55981bcb8e9594a836a14352ab0f4d484f83ca1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "732b8a3a_33613098",
+        "filename": "include/trace/events/rust_binder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2024-07-01T21:01:38Z",
+      "side": 1,
+      "message": "Similar copy/paste/rebase error as the previous patch - great catch - sorry about that and fixed.",
+      "parentUuid": "e48be9a8_0180b185",
       "revId": "c55981bcb8e9594a836a14352ab0f4d484f83ca1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
