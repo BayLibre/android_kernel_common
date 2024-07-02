@@ -74,6 +74,7 @@
 #include <trace/hooks/psi.h>
 #include <trace/hooks/blk.h>
 #include <trace/hooks/suspend.h>
+#include <trace/hooks/fsnotify.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -436,3 +437,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_early_resume_begin);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_enable_thermal_genl_check);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_pr_set_vma_name_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rebalance_anon_lru_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fsnotify_open);
