@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7206efad_949f43ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-02T18:07:58Z",
+      "side": 1,
+      "message": "Why do you need to disable memsize calculations? If they affect performance then you should consider using static key to disable it. That would eliminate the conditional and will improve performance.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 61
+      },
+      "revId": "03b8fed4c01eef44c0765f52fce6234569ff25da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
