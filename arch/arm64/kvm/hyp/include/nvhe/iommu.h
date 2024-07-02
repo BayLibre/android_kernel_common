@@ -15,6 +15,7 @@ struct kvm_hyp_iommu_domain {
 	pkvm_handle_t		domain_id;
 	void			*priv;
 	struct kvm_iommu_ops	*driver;
+	struct pkvm_hyp_vm		*vm;
 };
 
 struct kvm_iommu_private {
