@@ -31,5 +31,5 @@ void pkvm_set_guest_smc_trapping_hyp_hvc(struct user_pt_regs *r)
 	if (!pkvm_ops || !pkvm_ops->register_guest_smc_handler)
 		return;
 
-	pkvm_ops->register_guest_smc_handler(guest_proxy_smc, r->regs[0]);
+	r->regs[0] = pkvm_ops->register_guest_smc_handler(guest_proxy_smc, r->regs[0]);
 }
