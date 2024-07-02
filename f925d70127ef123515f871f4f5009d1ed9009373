@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00817e86_612dd2f5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-02T16:51:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3662fe94_891fad16",
+      "range": {
+        "startLine": 33,
+        "startChar": 7,
+        "endLine": 33,
+        "endChar": 17
+      },
+      "revId": "f925d70127ef123515f871f4f5009d1ed9009373",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93762560_2159c627",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-06-03T15:08:39Z",
       "side": 1,
       "message": "I think it would be better to put this into the allocation function, rather than have a two stage alloc+protect sequence.\n\nMaybe we could extend hyp_alloc_account() to take a `flags` parameter, e.g.:\n\n`HYP_ALLOC_ACCT_STATS`\n`HYP_ALLOC_ACCT_PSCI`\n\nand drive the memprotect logic from the second flag?",
+      "range": {
+        "startLine": 638,
+        "startChar": 5,
+        "endLine": 638,
+        "endChar": 22
+      },
+      "revId": "f925d70127ef123515f871f4f5009d1ed9009373",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e208eda_e825adab",
+        "filename": "arch/arm64/kvm/hyp/nvhe/alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-02T16:51:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93762560_2159c627",
       "range": {
         "startLine": 638,
         "startChar": 5,
