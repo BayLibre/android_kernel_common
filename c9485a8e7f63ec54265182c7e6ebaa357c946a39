@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79762fa8_aec77e80",
+        "filename": "drivers/misc/pkvm-smc/pkvm-guest-smc.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-02T16:43:02Z",
+      "side": 1,
+      "message": "No need for this.",
+      "revId": "c9485a8e7f63ec54265182c7e6ebaa357c946a39",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e770a8b4_1db82e45",
+        "filename": "drivers/misc/pkvm-smc/pkvm/pkvm-guest-smc-proxy.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-02T16:43:02Z",
+      "side": 1,
+      "message": "I believe you should always return `true` here! The SMCC has always been \"handled\" no matter the return code, right?",
+      "revId": "c9485a8e7f63ec54265182c7e6ebaa357c946a39",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
