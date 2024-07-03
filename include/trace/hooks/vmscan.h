@@ -28,6 +28,15 @@ DECLARE_HOOK(android_vh_vmscan_kswapd_done,
 	TP_PROTO(int node_id, unsigned int highest_zoneidx, unsigned int alloc_order,
 	        unsigned int reclaim_order),
 	TP_ARGS(node_id, highest_zoneidx, alloc_order, reclaim_order));
+DECLARE_HOOK(android_vh_shrink_folio_list,
+	TP_PROTO(struct folio *folio, int *skip, bool dirty, bool writeback),
+	TP_ARGS(folio, skip, dirty, writeback));
+DECLARE_HOOK(android_vh_inode_lru_isolate,
+	TP_PROTO(struct inode *inode, bool *skip),
+	TP_ARGS(inode, skip));
+DECLARE_HOOK(android_vh_invalidate_mapping_pagevec,
+	TP_PROTO(struct address_space *mapping, bool *skip),
+	TP_ARGS(mapping, skip));
 
 enum scan_balance;
 DECLARE_HOOK(android_vh_tune_scan_type,
