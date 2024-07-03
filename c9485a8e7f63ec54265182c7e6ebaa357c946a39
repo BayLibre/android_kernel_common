@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7c86ec45_678b37cc",
+        "filename": "drivers/misc/pkvm-smc/pkvm-guest-smc.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-07-03T08:08:21Z",
+      "side": 1,
+      "message": "Will drop it",
+      "parentUuid": "79762fa8_aec77e80",
+      "revId": "c9485a8e7f63ec54265182c7e6ebaa357c946a39",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e770a8b4_1db82e45",
         "filename": "drivers/misc/pkvm-smc/pkvm/pkvm-guest-smc-proxy.c",
         "patchSetId": 6
@@ -31,6 +49,24 @@
       "writtenOn": "2024-07-02T16:43:02Z",
       "side": 1,
       "message": "I believe you should always return `true` here! The SMCC has always been \"handled\" no matter the return code, right?",
+      "revId": "c9485a8e7f63ec54265182c7e6ebaa357c946a39",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "142a1f85_ef21e145",
+        "filename": "drivers/misc/pkvm-smc/pkvm/pkvm-guest-smc-proxy.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-07-03T08:08:21Z",
+      "side": 1,
+      "message": "I think there is more to it. I should also pass res from the caller to be able to return the original results back.",
+      "parentUuid": "e770a8b4_1db82e45",
       "revId": "c9485a8e7f63ec54265182c7e6ebaa357c946a39",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
