@@ -22,6 +22,30 @@
       },
       "revId": "03b8fed4c01eef44c0765f52fce6234569ff25da",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e395761_9305ca3b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1809745
+      },
+      "writtenOn": "2024-07-03T03:38:01Z",
+      "side": 1,
+      "message": "Actually I don\u0027t think there is performance issue as the whole information are gathered with little extra code during the boot time. And the show interface is only for debug.\n\nI just prepared this commit for some vendors who does not want to open their information, even though I think this memsize solution is useful to them.\n\nI think we may be able to select debugfs or disable, not both.",
+      "parentUuid": "7206efad_949f43ff",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 61
+      },
+      "revId": "03b8fed4c01eef44c0765f52fce6234569ff25da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
