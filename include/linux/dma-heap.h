@@ -121,4 +121,9 @@ void dma_heap_buffer_free(struct dma_buf *);
 int dma_heap_bufferfd_alloc(struct dma_heap *heap, size_t len,
 			    u32 fd_flags,
 			    u64 heap_flags);
+
+/**
+ * try_get_dma_heap_pool_size_kb - Returns total dma-heap pool size in kb
+ **/
+long try_get_dma_heap_pool_size_kb(void);
 #endif /* _DMA_HEAPS_H */
