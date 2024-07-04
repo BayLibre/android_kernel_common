@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d60807e_c8e44a1c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-07-04T13:48:37Z",
+      "side": 1,
+      "message": "The old location is in the wrong compilation unit. For example, with Binder compiled as a module, the old location would still result in `page_range.rs` being part of the core kernel.",
+      "parentUuid": "618a3bdd_5e7656d1",
+      "range": {
+        "startLine": 9,
+        "startChar": 46,
+        "endLine": 9,
+        "endChar": 63
+      },
+      "revId": "c296a7238099c1dd73d953e82616857dbb30b849",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c4fc09a_651921e4",
@@ -143,6 +167,30 @@
       "writtenOn": "2024-07-04T13:18:51Z",
       "side": 1,
       "message": "I don\u0027t see/understand what this workaround is. The function signatures seem to be the same from the original helpers.c file.",
+      "range": {
+        "startLine": 9,
+        "startChar": 24,
+        "endLine": 9,
+        "endChar": 34
+      },
+      "revId": "c296a7238099c1dd73d953e82616857dbb30b849",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "363e0833_7ab97369",
+        "filename": "drivers/android/binder/page_range_helper.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-07-04T13:48:37Z",
+      "side": 1,
+      "message": "Ideally we just want to pass the `rust_shrink_free_page` function pointer as a function argument directly to `list_lru_walk`. But it has the wrong CFI tags due to the return type, so we instead pass a function pointer to `rust_shrink_free_page_wrap`.\n\nAs for matching `helpers.c`, the workarond existed before this CL. This CL just moves the workaround from `helpers.c` into `page_range_helper.c`.",
+      "parentUuid": "44f0d5eb_108d53c0",
       "range": {
         "startLine": 9,
         "startChar": 24,
