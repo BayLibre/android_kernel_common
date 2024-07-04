@@ -359,18 +359,35 @@ static inline unsigned int userfaultfd_get_blocking_state(unsigned int flags)
 }
 
 #ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+static bool vm_userfaultfd_ctx_existing(struct vm_area_struct *vma)
+{
+	struct mm_struct *mm = vma->vm_mm;
+	struct vm_area_struct *linked_vma;
+	bool ret = false;
+
+	linked_vma = get_vma(mm, vma->vm_start);
+	if (linked_vma) {
+		if (linked_vma->vm_userfaultfd_ctx.ctx)
+			ret = true;
+		put_vma(linked_vma);
+	}
+	return ret;
+}
+
 bool userfaultfd_using_sigbus(struct vm_area_struct *vma)
 {
 	struct userfaultfd_ctx *ctx;
-	bool ret;
+	bool ret = false;
 
 	/*
 	 * Do it inside RCU section to ensure that the ctx doesn't
 	 * disappear under us.
 	 */
 	rcu_read_lock();
-	ctx = rcu_dereference(vma->vm_userfaultfd_ctx.ctx);
-	ret = ctx && (ctx->features & UFFD_FEATURE_SIGBUS);
+	if (vm_userfaultfd_ctx_existing(vma)) {
+		ctx = rcu_dereference(vma->vm_userfaultfd_ctx.ctx);
+		ret = ctx && (ctx->features & UFFD_FEATURE_SIGBUS);
+	}
 	rcu_read_unlock();
 	return ret;
 }
@@ -913,11 +930,19 @@ static int userfaultfd_release(struct inode *inode, struct file *file)
 			continue;
 		}
 		new_flags = vma->vm_flags & ~__VM_UFFD_FLAGS;
+#ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+		rcu_read_lock();
+#endif
 		prev = vma_merge(mm, prev, vma->vm_start, vma->vm_end,
 				 new_flags, vma->anon_vma,
 				 vma->vm_file, vma->vm_pgoff,
 				 vma_policy(vma),
 				 NULL_VM_UFFD_CTX, anon_vma_name(vma));
+#ifdef CONFIG_SPECULATIVE_PAGE_FAULT
+		if (prev)
+			rcu_assign_pointer(vma->vm_userfaultfd_ctx.ctx, NULL);
+		rcu_read_unlock();
+#endif
 		if (prev)
 			vma = prev;
 		else
