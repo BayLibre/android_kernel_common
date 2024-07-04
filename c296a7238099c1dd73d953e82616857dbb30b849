@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "618a3bdd_5e7656d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-07-04T13:18:51Z",
+      "side": 1,
+      "message": "How? What is the impediment otherwise?",
+      "range": {
+        "startLine": 9,
+        "startChar": 46,
+        "endLine": 9,
+        "endChar": 63
+      },
+      "revId": "c296a7238099c1dd73d953e82616857dbb30b849",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c4fc09a_651921e4",
@@ -103,6 +126,29 @@
       "side": 1,
       "message": "CFI was already fixed in a previous CL. This just moves the fix around so that it no longer goes through `rust/helpers.c`.",
       "parentUuid": "bd1b6d61_c25e1a77",
+      "revId": "c296a7238099c1dd73d953e82616857dbb30b849",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44f0d5eb_108d53c0",
+        "filename": "drivers/android/binder/page_range_helper.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-07-04T13:18:51Z",
+      "side": 1,
+      "message": "I don\u0027t see/understand what this workaround is. The function signatures seem to be the same from the original helpers.c file.",
+      "range": {
+        "startLine": 9,
+        "startChar": 24,
+        "endLine": 9,
+        "endChar": 34
+      },
       "revId": "c296a7238099c1dd73d953e82616857dbb30b849",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
