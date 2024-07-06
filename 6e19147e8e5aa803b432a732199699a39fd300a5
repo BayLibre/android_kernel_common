@@ -219,6 +219,26 @@
       "tag": "",
       "revId": "6e19147e8e5aa803b432a732199699a39fd300a5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000083320472",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3147876?revision\u003d3",
+      "key": {
+        "uuid": "5cf80742_20dab0c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-07-06T06:50:24Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against base branch android14-5.15.\nBase branch change: [3132898](https://android-review.googlesource.com/c/3132898).\n\n```\n      ## net/unix/af_unix.c ##\n     @@ net/unix/af_unix.c: static int queue_oob(struct socket *sock, struct msghdr *msg, struct sock *other\n    @@ net/unix/af_unix.c: static int unix_stream_recv_urg(struct unix_stream_read_stat\n      \t\tmutex_unlock(\u0026u-\u003eiolock);\n      \t\treturn -EINVAL;\n     @@ net/unix/af_unix.c: static int unix_stream_recv_urg(struct unix_stream_read_state *state)\n    + \tif (!(state-\u003eflags \u0026 MSG_PEEK))\n      \t\tWRITE_ONCE(u-\u003eoob_skb, NULL);\n    - \telse\n    - \t\tskb_get(oob_skb);\n    -+\n    + \n     +\tspin_unlock(\u0026sk-\u003esk_receive_queue.lock);\n      \tunix_state_unlock(sk);\n      \n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "6e19147e8e5aa803b432a732199699a39fd300a5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
