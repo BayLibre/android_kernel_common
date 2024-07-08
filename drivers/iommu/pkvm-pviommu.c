@@ -315,11 +315,34 @@ static struct pviommu *pviommu_get_by_fwnode(struct fwnode_handle *fwnode)
 
 static struct iommu_ops pviommu_ops;
 
+static int pviommu_request_device(struct device *dev)
+{
+	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+	struct pviommu *pv = pviommu_get_by_fwnode(fwspec->iommu_fwnode);
+	int i;
+	u32 sid;
+	struct arm_smccc_res res;
+	int ret = 0;
+
+	for (i = 0; i < fwspec->num_ids; i++) {
+		sid = fwspec->ids[i];
+		arm_smccc_1_1_hvc(ARM_SMCCC_VENDOR_HYP_KVM_DEV_REQ_DMA_FUNC_ID,
+				  pv->id, sid, &res);
+		if (res.a0) {
+			dev_err(dev, "Failed to request device (sid = 0x%x) from the hypervisor\n", sid);
+			break;
+		}
+	}
+
+	return ret;
+}
+
 static struct iommu_device *pviommu_probe_device(struct device *dev)
 {
 	struct pviommu_master *master;
 	struct pviommu *pv = NULL;
 	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+	int ret;
 
 	if (!fwspec || fwspec->ops != &pviommu_ops)
 		return ERR_PTR(-ENODEV);
@@ -327,6 +350,14 @@ static struct iommu_device *pviommu_probe_device(struct device *dev)
 	pv = pviommu_get_by_fwnode(fwspec->iommu_fwnode);
 	if (!pv)
 		return ERR_PTR(-ENODEV);
+
+	/*
+	 * Request device from hypervisor, ideally done from firmware before booting,
+	 * but just incase, re-request it.
+	 */
+	ret = pviommu_request_device(dev);
+	if (ret)
+		return ERR_PTR(ret);
 
 	master = kzalloc(sizeof(*master), GFP_KERNEL);
 	if (!master)
