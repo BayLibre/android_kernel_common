@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63b03f13_3e0e4ec0",
+        "filename": "include/linux/dma-heap.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2024-07-08T16:31:47Z",
+      "side": 1,
+      "message": "Let\u0027s keep the prefix `dma_heap_` to be consistent.",
+      "range": {
+        "startLine": 128,
+        "startChar": 5,
+        "endLine": 128,
+        "endChar": 34
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b8da886f_1dcc4e9d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/dma-heap.h",
+              "range": {
+                "startLine": 128,
+                "startChar": 0,
+                "endLine": 129,
+                "endChar": 0
+              },
+              "replacement": "long dma_heap_try_get_pool_size_kb(void);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "337f6db54d632b989143cbd2798abe81631dfbd1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
