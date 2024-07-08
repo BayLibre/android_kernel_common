@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d411e61_ada405fe",
+        "filename": "include/linux/dma-heap.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2024-07-08T16:42:41Z",
+      "side": 1,
+      "message": "\"Returns total dma-heap pool size in kb **if there is no lock contention**\"\n\nLet\u0027s also add a comment about the possibility that this is always 0 if no heaps use pools:\n\"The pool size will always be 0 if no heaps use pools, or do not implement get_pool_size.\"",
+      "range": {
+        "startLine": 126,
+        "startChar": 3,
+        "endLine": 126,
+        "endChar": 73
+      },
+      "revId": "337f6db54d632b989143cbd2798abe81631dfbd1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "63b03f13_3e0e4ec0",
         "filename": "include/linux/dma-heap.h",
         "patchSetId": 3
