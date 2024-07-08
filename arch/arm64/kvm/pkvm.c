@@ -365,6 +365,7 @@ static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 	struct kvm_pinned_page *ppage;
 	struct kvm_vcpu *host_vcpu;
 	unsigned long idx, ipa = 0;
+	struct kvm_mmio_page *mmio_page, *temp;
 
 	if (!host_kvm->arch.pkvm.handle)
 		goto out_free;
@@ -382,6 +383,15 @@ static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 		kfree(ppage);
 	}
 	mtree_destroy(&host_kvm->arch.pkvm.pinned_pages);
+
+	/* Reclaim MMIO. */
+	list_for_each_entry_safe(mmio_page, temp, &host_kvm->arch.pkvm.mmio_pages, list) {
+		WARN_ON(__reclaim_dying_guest_page_call(mmio_page->pfn,
+							mmio_page->ipa >> PAGE_SHIFT,
+							0, host_kvm));
+		list_del(&mmio_page->list);
+		kfree(mmio_page);
+	}
 
 	WARN_ON(kvm_call_hyp_nvhe(__pkvm_finalize_teardown_vm, host_kvm->arch.pkvm.handle));
 

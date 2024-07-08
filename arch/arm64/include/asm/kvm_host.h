@@ -230,6 +230,12 @@ struct kvm_pinned_page {
 	u16			pins;
 };
 
+struct kvm_mmio_page {
+	struct list_head	list;
+	u64			ipa;
+	u64			pfn;
+};
+
 typedef unsigned int pkvm_handle_t;
 
 struct kvm_protected_vm {
@@ -237,6 +243,7 @@ struct kvm_protected_vm {
 	struct kvm_hyp_memcache stage2_teardown_mc;
 	struct maple_tree pinned_pages;
 	gpa_t pvmfw_load_addr;
+	struct list_head mmio_pages;
 	bool enabled;
 };
 

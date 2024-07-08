@@ -1008,6 +1008,7 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
 	mmfr1 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
 	kvm->arch.vtcr = kvm_get_vtcr(mmfr0, mmfr1, phys_shift);
 	mt_init(&kvm->arch.pkvm.pinned_pages);
+	INIT_LIST_HEAD(&kvm->arch.pkvm.mmio_pages);
 	mmu->arch = &kvm->arch;
 
 	if (is_protected_kvm_enabled())
@@ -1664,6 +1665,27 @@ static int pkvm_relax_perms(struct kvm_vcpu *vcpu, u64 pfn, u64 gfn, u8 order,
 					(void *)prot, false);
 }
 
+static int pkvm_mem_abort_device(struct kvm *kvm, u64 pfn, phys_addr_t fault_ipa)
+{
+	int ret;
+	struct kvm_mmio_page *mmio_page;
+
+	mmio_page = kmalloc(sizeof(*mmio_page), GFP_KERNEL_ACCOUNT);
+	if (!mmio_page)
+		return -ENOMEM;
+
+	ret = kvm_call_hyp_nvhe(__pkvm_host_map_guest_mmio, pfn, fault_ipa >> PAGE_SHIFT);
+	if (ret) {
+		kfree(mmio_page);
+		return ret;
+	}
+	mmio_page->ipa = fault_ipa;
+	mmio_page->pfn = pfn;
+	list_add_tail(&mmio_page->list, &kvm->arch.pkvm.mmio_pages);
+
+	return ret;
+}
+
 static int pkvm_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t *fault_ipa,
 			  struct kvm_memory_slot *memslot, unsigned long hva,
 			  size_t *size)
@@ -1677,6 +1699,7 @@ static int pkvm_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t *fault_ipa,
 	int ret, nr_pages;
 	struct page *page;
 	u64 pfn;
+	bool device;
 
 	nr_pages = hyp_memcache->nr_pages;
 	ret = topup_hyp_memcache(hyp_memcache, kvm_mmu_cache_min_pages(kvm), 0);
@@ -1687,21 +1710,29 @@ static int pkvm_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t *fault_ipa,
 	atomic64_add(nr_pages << PAGE_SHIFT, &kvm->stat.protected_hyp_mem);
 	atomic64_add(nr_pages << PAGE_SHIFT, &kvm->stat.protected_pgtable_mem);
 
-	ppage = kmalloc(sizeof(*ppage), GFP_KERNEL_ACCOUNT);
-	if (!ppage)
-		return -ENOMEM;
-
 	mmap_read_lock(mm);
 	ret = pin_user_pages(hva, 1, flags, &page);
 	mmap_read_unlock(mm);
 
 	if (ret == -EHWPOISON) {
 		kvm_send_hwpoison_signal(hva, PAGE_SHIFT);
-		ret = 0;
-		goto free_ppage;
-	} else if (ret != 1) {
-		ret = -EFAULT;
-		goto free_ppage;
+		return 0;
+	} else if (ret == -EFAULT) {
+		pfn = gfn_to_pfn(vcpu->kvm, gpa_to_gfn(*fault_ipa));
+		if (is_error_noslot_pfn(pfn))
+			return -EFAULT;
+		device = kvm_is_device_pfn(pfn);
+		/* Release pin from gfn_to_pfn(). */
+		kvm_release_pfn_clean(pfn);
+		if (device) {
+			if (size)
+				*size = PAGE_SIZE;
+			return pkvm_mem_abort_device(kvm, pfn, *fault_ipa);
+		}
+		return -EFAULT;
+	}
+	else if (ret != 1) {
+		return -EFAULT;
 	} else if (kvm->arch.pkvm.enabled && !PageSwapBacked(page)) {
 		/*
 		 * We really can't deal with page-cache pages returned by GUP
@@ -1721,6 +1752,10 @@ static int pkvm_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t *fault_ipa,
 		goto unpin;
 	}
 
+	ppage = kmalloc(sizeof(*ppage), GFP_KERNEL_ACCOUNT);
+	if (!ppage)
+		goto unpin;
+
 	pfn = page_to_pfn(page);
 	pmd_offset = *fault_ipa & (PMD_SIZE - 1);
 	page_size = transparent_hugepage_adjust(kvm, memslot,
@@ -1734,7 +1769,7 @@ static int pkvm_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t *fault_ipa,
 retry:
 	ret = account_locked_vm(mm, page_size >> PAGE_SHIFT, true);
 	if (ret)
-		goto unpin;
+		goto free_ppage;
 
 	write_lock(&kvm->mmu_lock);
 	/*
@@ -1776,10 +1811,10 @@ retry:
 dec_account:
 	write_unlock(&kvm->mmu_lock);
 	account_locked_vm(mm, page_size >> PAGE_SHIFT, false);
-unpin:
-	unpin_user_pages(&page, 1);
 free_ppage:
 	kfree(ppage);
+unpin:
+	unpin_user_pages(&page, 1);
 
 	return ret;
 }
