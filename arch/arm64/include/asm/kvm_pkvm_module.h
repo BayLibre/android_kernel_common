@@ -11,6 +11,7 @@ typedef void (*dyn_hcall_t)(struct user_pt_regs *);
 struct kvm_hyp_iommu;
 struct iommu_iotlb_gather;
 struct kvm_hyp_iommu_domain;
+struct pkvm_device;
 
 #ifdef CONFIG_MODULES
 enum pkvm_psci_notification {
@@ -169,6 +170,15 @@ enum pkvm_psci_notification {
  * @iommu_donate_pages_atomic:	Allocate memory from IOMMU identity pool.
  * @iommu_reclaim_pages_atomic:	Reclaim memory from iommu_donate_pages_atomic()
  * @hyp_smp_processor_id:	Current CPU id
+ * @device_register_reset:	Register a reset callback for devices that is called
+ * 				before/after devices are assigned where direction is
+ * 				passed in the callback host_to_guest. Only one callback
+ * 				can be registered per device.
+ * 				Devices are identified by the base address of the MMIO
+ * 				as defined in the device tree.
+ * 				Reset is expected to clear any state/secretes on the
+ * 				device and put it in quiescent state, where it can't
+ * 				trigger any DMA.
  */
 struct pkvm_module_ops {
 	int (*create_private_mapping)(phys_addr_t phys, size_t size,
@@ -235,6 +245,8 @@ struct pkvm_module_ops {
 	void * (*iommu_donate_pages_atomic)(u8 order);
 	void (*iommu_reclaim_pages_atomic)(void *p, u8 order);
 	int (*hyp_smp_processor_id)(void);
+	int (*device_register_reset)(u64 phys, int (*cb)(struct pkvm_device *dev,
+							 bool host_to_guest));
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
