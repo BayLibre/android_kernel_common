@@ -190,5 +190,6 @@ int pkvm_init_devices(void);
 int pkvm_device_hyp_assign_mmio(u64 pfn, u64 nr_pages);
 int pkvm_device_reclaim_mmio(u64 pfn, u64 nr_pages);
 int pkvm_host_map_guest_mmio(struct pkvm_hyp_vcpu *hyp_vcpu, u64 pfn, u64 gfn);
+int pkvm_device_register_reset(u64 phys, int (*cb)(struct pkvm_device *dev));
 
 #endif /* __ARM64_KVM_NVHE_PKVM_H__ */
