@@ -5,6 +5,8 @@
 #include <asm/kvm_host.h>
 #include <asm/kvm_pkvm_module.h>
 
+#include <kvm/device.h>
+
 #include <nvhe/alloc.h>
 #include <nvhe/iommu.h>
 #include <nvhe/mem_protect.h>
@@ -152,6 +154,7 @@ const struct pkvm_module_ops module_ops = {
 	.iommu_reclaim_pages_atomic = kvm_iommu_reclaim_pages_atomic,
 	.iommu_snapshot_host_stage2 = kvm_iommu_snapshot_host_stage2,
 	.hyp_smp_processor_id = _hyp_smp_processor_id,
+	.device_register_reset = pkvm_device_register_reset,
 	.iommu_flush_unmap_cache = kvm_iommu_flush_unmap_cache,
 };
 

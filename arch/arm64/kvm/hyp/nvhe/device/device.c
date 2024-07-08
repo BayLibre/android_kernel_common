@@ -61,9 +61,16 @@ bool pkvm_device_is_assignable(u64 pfn)
 	return pkvm_get_device(hyp_pfn_to_phys(pfn), PAGE_SIZE) != NULL;
 }
 
+
 static void __pkvm_device_reclaim(struct pkvm_device *dev)
 {
 	dev->ctxt = NULL;
+}
+
+static int pkvm_device_reset(struct pkvm_device *dev)
+{
+	if(smp_load_acquire(&dev->reset_handler))
+		return dev->reset_handler(dev);
 	return 0;
 }
 
@@ -79,6 +86,10 @@ static int __pkvm_device_assign(struct pkvm_device *dev, struct pkvm_hyp_vm *vm)
 		if (ret)
 			return ret;
 	}
+
+	ret = pkvm_device_reset(dev);
+	if (ret)
+		return ret;
 
 	dev->ctxt = vm;
 	return 0;
@@ -129,7 +140,6 @@ int pkvm_device_assign(u64 addr, u64 size, struct pkvm_hyp_vm *vm)
 		 */
 		__pkvm_group_assign(dev->group_id, vm);
 	}
-
 	hyp_spin_unlock(&device_spinlock);
 
 	return ret;
@@ -223,6 +233,7 @@ void pkvm_devices_teardown(struct pkvm_hyp_vm *vm)
 	for (i = 0 ; i < registered_devices_nr ; ++i) {
 		if (registered_devices[i].ctxt != vm)
 			continue;
+		WARN_ON(pkvm_device_reset(&registered_devices[i]));
 		registered_devices[i].ctxt = NULL;
 	}
 	hyp_spin_unlock(&device_spinlock);
@@ -279,4 +290,15 @@ bool pkvm_devices_iommu_vcpu_allowed(u64 id, u64 endpoint, struct pkvm_hyp_vcpu 
 	hyp_spin_unlock(&device_spinlock);
 
 	return ret;
+}
+
+int pkvm_device_register_reset(u64 phys, int (*cb)(struct pkvm_device *))
+{
+	struct pkvm_device *dev;
+
+	dev = pkvm_get_device(phys, PAGE_SIZE);
+	if (!dev)
+		return -ENODEV;
+
+	return cmpxchg_release(&dev->reset_handler, NULL, cb) ? -EBUSY : 0;
 }
