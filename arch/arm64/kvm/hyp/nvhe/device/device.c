@@ -214,3 +214,16 @@ out_ret:
 	hyp_spin_unlock(&device_spinlock);
 	return true;
 }
+
+void pkvm_devices_teardown(struct pkvm_hyp_vm *vm)
+{
+	int i;
+
+	hyp_spin_lock(&device_spinlock);
+	for (i = 0 ; i < registered_devices_nr ; ++i) {
+		if (registered_devices[i].ctxt != vm)
+			continue;
+		registered_devices[i].ctxt = NULL;
+	}
+	hyp_spin_unlock(&device_spinlock);
+}
