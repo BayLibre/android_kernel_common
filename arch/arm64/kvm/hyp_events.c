@@ -13,15 +13,77 @@ static const char *hyp_printk_fmt_from_id(u8 fmt_id);
 
 #include <asm/kvm_define_hypevents.h>
 
-extern char __hyp_printk_fmts_start[];
-extern char __hyp_printk_fmts_end[];
+struct hyp_table {
+	void		*start;
+	unsigned long	nr_entries;
+};
 
-#define nr_printk_fmts() ((__hyp_printk_fmts_end - __hyp_printk_fmts_start) / \
-				sizeof(struct hyp_printk_fmt))
+struct hyp_mod_tables {
+	struct hyp_table	*tables;
+	unsigned long		nr_tables;
+};
+
+#define nr_entries(__start, __stop) \
+	(((unsigned long)__stop - (unsigned long)__start) / sizeof(*__start))
+
+static int hyp_table_add(struct hyp_mod_tables *mod_tables, void *start,
+			 unsigned long nr_entries)
+{
+	struct hyp_table *new, *old;
+	int i;
+
+	new = kmalloc_array(mod_tables->nr_tables + 1, sizeof(*new), GFP_KERNEL);
+	if (!new)
+		return -ENOMEM;
+
+	for (i = 0; i < mod_tables->nr_tables; i++) {
+		new[i].start = mod_tables->tables[i].start;
+		new[i].nr_entries = mod_tables->tables[i].nr_entries;
+	}
+	new[i].start = start;
+	new[i].nr_entries = nr_entries;
+
+	old = rcu_replace_pointer(mod_tables->tables, new, true);
+	synchronize_rcu();
+	mod_tables->nr_tables++;
+	kfree(old);
+
+	return 0;
+}
+
+static void *hyp_table_entry(struct hyp_mod_tables *mod_tables,
+			     size_t entry_size, unsigned long id)
+{
+	struct hyp_table *table;
+	void *entry = NULL;
+
+	rcu_read_lock();
+	table = rcu_dereference(mod_tables->tables);
+
+	for (int i = 0; i < mod_tables->nr_tables; i++) {
+		if (table->nr_entries <= id) {
+			id -= table->nr_entries;
+			table++;
+			continue;
+		}
+
+		entry = (void *)((char *)table->start + (id * entry_size));
+		break;
+	}
+	rcu_read_unlock();
+
+	return entry;
+}
+
+extern struct hyp_printk_fmt __hyp_printk_fmts_start[];
+extern struct hyp_printk_fmt __hyp_printk_fmts_end[];
 
 static const char *hyp_printk_fmt_from_id(u8 fmt_id)
 {
-	if (fmt_id >= nr_printk_fmts())
+	int nr_printk_fmts = nr_entries(__hyp_printk_fmts_start,
+					__hyp_printk_fmts_end);
+
+	if (fmt_id <= nr_printk_fmts)
 		return "Unknown Format";
 
 	return (const char *)(__hyp_printk_fmts_start +
@@ -252,42 +314,17 @@ bool hyp_trace_init_event_early(void)
 static struct dentry *event_tracefs;
 static unsigned int last_event_id;
 
-struct hyp_event_table {
-	struct hyp_event	*start;
-	unsigned long		nr_events;
-};
-static struct hyp_event_mod_tables {
-	struct hyp_event_table *tables;
-	unsigned long		nr_tables;
-} mod_event_tables;
-
-#define nr_events(__start, __stop) \
-	(((unsigned long)__stop - (unsigned long)__start) / sizeof(*__start))
+static struct hyp_mod_tables mod_event_tables;
 
 struct hyp_event *hyp_trace_find_event(int id)
 {
 	struct hyp_event *event = __hyp_events_start + id;
 
 	if ((unsigned long)event >= (unsigned long)__hyp_events_end) {
-		struct hyp_event_table *table;
 
-		event = NULL;
-		id -= nr_events(__hyp_events_start, __hyp_events_end);
+		id -= nr_entries(__hyp_events_start, __hyp_events_end);
 
-		rcu_read_lock();
-		table = rcu_dereference(mod_event_tables.tables);
-
-		for (int i = 0; i < mod_event_tables.nr_tables; i++) {
-			if (table->nr_events <= id) {
-				id -= table->nr_events;
-				table++;
-				continue;
-			}
-
-			event = table->start + id;
-			break;
-		}
-		rcu_read_unlock();
+		event = hyp_table_entry(&mod_event_tables, sizeof(*event), id);
 	}
 
 	return event;
@@ -340,7 +377,7 @@ static int hyp_event_table_init(struct hyp_event *event,
 
 void hyp_trace_init_event_tracefs(struct dentry *parent)
 {
-	int nr_events = nr_events(__hyp_events_start, __hyp_events_end);
+	int nr_events = nr_entries(__hyp_events_start, __hyp_events_end);
 
 	parent = tracefs_create_dir("events", parent);
 	if (!parent) {
@@ -362,11 +399,12 @@ void hyp_trace_init_event_tracefs(struct dentry *parent)
 
 int hyp_trace_init_events(void)
 {
-	int nr_events = nr_events(__hyp_events_start, __hyp_events_end);
-	int nr_event_ids = nr_events(__hyp_event_ids_start, __hyp_event_ids_end);
+	int nr_events = nr_entries(__hyp_events_start, __hyp_events_end);
+	int nr_event_ids = nr_entries(__hyp_event_ids_start, __hyp_event_ids_end);
+	int nr_printk_fmts = nr_entries(__hyp_printk_fmts_start, __hyp_printk_fmts_end);
 
 	/* __hyp_printk event only supports U8_MAX different formats */
-	WARN_ON(nr_printk_fmts() > U8_MAX);
+	WARN_ON(nr_printk_fmts > U8_MAX);
 
 	if (WARN_ON(nr_events != nr_event_ids))
 		return -EINVAL;
@@ -378,29 +416,15 @@ int hyp_trace_init_events(void)
 int hyp_trace_init_mod_events(struct hyp_event *event,
 			      struct hyp_event_id *event_id, int nr_events)
 {
-	struct hyp_event_table *tables;
-	int ret, i;
+	int ret;
 
 	ret = hyp_event_table_init(event, event_id, nr_events);
 	if (ret)
 		return ret;
 
-	tables = kmalloc_array(mod_event_tables.nr_tables + 1,
-			       sizeof(*tables), GFP_KERNEL);
-	if (!tables)
-		return -ENOMEM;
-
-	for (i = 0; i < mod_event_tables.nr_tables; i++) {
-		tables[i].start = mod_event_tables.tables[i].start;
-		tables[i].nr_events = mod_event_tables.tables[i].nr_events;
-	}
-	tables[i].start = event;
-	tables[i].nr_events = nr_events;
-
-	tables = rcu_replace_pointer(mod_event_tables.tables, tables, true);
-	synchronize_rcu();
-	mod_event_tables.nr_tables++;
-	kfree(tables);
+	ret = hyp_table_add(&mod_event_tables, (void *)event, nr_events);
+	if (ret)
+		return ret;
 
 	hyp_event_table_init_tracefs(event, nr_events);
 
