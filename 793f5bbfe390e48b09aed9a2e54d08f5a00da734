@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cae445d_cd2eba09",
+        "filename": "arch/arm64/mm/ioremap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-10T12:48:54Z",
+      "side": 1,
+      "message": "No need to check, you can do the alignment regardless of if it is already aligned or not.",
+      "revId": "793f5bbfe390e48b09aed9a2e54d08f5a00da734",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31d5add9_8e8a6a6a",
+        "filename": "arch/arm64/mm/ioremap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-10T12:48:54Z",
+      "side": 1,
+      "message": "You\u0027ll have to align_down the phys_addr as well",
+      "revId": "793f5bbfe390e48b09aed9a2e54d08f5a00da734",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19579357_24bd1f07",
+        "filename": "arch/arm64/mm/ioremap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-10T12:48:54Z",
+      "side": 1,
+      "message": "No need to log that things are working properly",
+      "revId": "793f5bbfe390e48b09aed9a2e54d08f5a00da734",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5994711_5ca51549",
+        "filename": "arch/arm64/mm/ioremap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-10T12:48:54Z",
+      "side": 1,
+      "message": "Probably need to leave this check first though and then you align.",
+      "revId": "793f5bbfe390e48b09aed9a2e54d08f5a00da734",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
