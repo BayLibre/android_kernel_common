@@ -21,6 +21,9 @@ DECLARE_HOOK(android_vh_tune_swappiness,
 DECLARE_HOOK(android_vh_async_psi_bypass,
 	TP_PROTO(bool *bypass),
 	TP_ARGS(bypass));
+DECLARE_HOOK(android_vh_rebalance_anon_lru_bypass,
+	TP_PROTO(bool *bypass),
+	TP_ARGS(bypass));
 #endif /* _TRACE_HOOK_VMSCAN_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
