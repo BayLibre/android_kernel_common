@@ -10429,6 +10429,11 @@ pointer_reference {
   pointee_type_id: 0x44596890
 }
 pointer_reference {
+  id: 0x1b8988c0
+  kind: POINTER
+  pointee_type_id: 0x4466c59f
+}
+pointer_reference {
   id: 0x1b8de637
   kind: POINTER
   pointee_type_id: 0x44777e42
@@ -323779,6 +323784,13 @@ function {
   parameter_id: 0x0483e6f8
 }
 function {
+  id: 0x9b511ad5
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x3e10b518
+  parameter_id: 0x1b8988c0
+}
+function {
   id: 0x9b51247b
   return_type_id: 0x6720d32f
   parameter_id: 0x1a8d1bcb
@@ -344347,6 +344359,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_kmalloc_slab"
 }
 elf_symbol {
+  id: 0xe97b132f
+  name: "__traceiter_android_vh_kmem_cache_flags"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x353107f6
+  type_id: 0x9b511ad5
+  full_name: "__traceiter_android_vh_kmem_cache_flags"
+}
+elf_symbol {
   id: 0x0992491b
   name: "__traceiter_android_vh_kvmalloc_node_use_vmalloc"
   is_defined: true
@@ -349034,6 +349055,15 @@ elf_symbol {
   crc: 0xb482f883
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_kmalloc_slab"
+}
+elf_symbol {
+  id: 0x9bb440d9
+  name: "__tracepoint_android_vh_kmem_cache_flags"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x9923e497
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_kmem_cache_flags"
 }
 elf_symbol {
   id: 0x8bd577fd
@@ -408855,6 +408885,7 @@ interface {
   symbol_id: 0xf83fbd26
   symbol_id: 0x19426a78
   symbol_id: 0x04e61b81
+  symbol_id: 0xe97b132f
   symbol_id: 0x0992491b
   symbol_id: 0xf56758ea
   symbol_id: 0x95b7ecea
@@ -409376,6 +409407,7 @@ interface {
   symbol_id: 0xafbca760
   symbol_id: 0xb1f4423e
   symbol_id: 0x918a6f4b
+  symbol_id: 0x9bb440d9
   symbol_id: 0x8bd577fd
   symbol_id: 0xb1ce9338
   symbol_id: 0xeb8159ac
