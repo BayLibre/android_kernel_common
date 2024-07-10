@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503a5616_282f18fd",
+        "filename": "include/trace/hooks/mm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-10T20:04:11Z",
+      "side": 1,
+      "message": "This change has to be done in https://android-review.googlesource.com/c/kernel/common/+/3164628",
+      "range": {
+        "startLine": 218,
+        "startChar": 10,
+        "endLine": 218,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ef8931b7_457c7fad",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/mm.h",
+              "range": {
+                "startLine": 218,
+                "startChar": 0,
+                "endLine": 219,
+                "endChar": 0
+              },
+              "replacement": "\tTP_PROTO(struct seq_file *m, unsigned long *swap_shared),\n"
+            }
+          ]
+        }
+      ],
+      "revId": "cbf40bb5498caebb96c557c8929003666cfcaaf0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
