@@ -23,6 +23,11 @@ struct pviommu_master {
 	u32				ssid_bits;
 };
 
+struct pviommu_domain {
+	struct iommu_domain		domain;
+	unsigned long			id; /* pKVM domain ID. */
+};
+
 static int pviommu_map_pages(struct iommu_domain *domain, unsigned long iova,
 			     phys_addr_t paddr, size_t pgsize, size_t pgcount,
 			     int prot, gfp_t gfp, size_t *mapped)
@@ -44,6 +49,14 @@ static phys_addr_t pviommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t 
 
 static void pviommu_domain_free(struct iommu_domain *domain)
 {
+	struct pviommu_domain *pv_domain = container_of(domain, struct pviommu_domain, domain);
+	struct arm_smccc_res res;
+
+	arm_smccc_1_1_hvc(ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_FREE_DOMAIN_FUNC_ID,
+			  pv_domain->id, &res);
+	if (res.a0 != SMCCC_RET_SUCCESS)
+		pr_err("Failed to free domain %ld\n", res.a0);
+	kfree(pv_domain);
 }
 
 static int pviommu_attach_dev(struct iommu_domain *domain, struct device *dev)
@@ -53,7 +66,27 @@ static int pviommu_attach_dev(struct iommu_domain *domain, struct device *dev)
 
 static struct iommu_domain *pviommu_domain_alloc(unsigned int type)
 {
-	return NULL;
+	struct pviommu_domain *pv_domain;
+	struct arm_smccc_res res;
+
+	if (type != IOMMU_DOMAIN_UNMANAGED &&
+	    type != IOMMU_DOMAIN_DMA)
+		return NULL;
+
+	pv_domain = kzalloc(sizeof(*pv_domain), GFP_KERNEL);
+	if (!pv_domain)
+		return NULL;
+
+	arm_smccc_1_1_hvc(ARM_SMCCC_VENDOR_HYP_KVM_IOMMU_ALLOC_DOMAIN_FUNC_ID, &res);
+
+	if (res.a0 != SMCCC_RET_SUCCESS) {
+		kfree(pv_domain);
+		return NULL;
+	}
+
+	pv_domain->id = res.a1;
+
+	return &pv_domain->domain;
 }
 
 static struct platform_driver pkvm_pviommu_driver;
