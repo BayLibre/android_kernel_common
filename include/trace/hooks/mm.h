@@ -286,6 +286,9 @@ DECLARE_HOOK(android_vh_filemap_update_page,
 	TP_PROTO(struct address_space *mapping, struct folio *folio,
 		struct file *file),
 	TP_ARGS(mapping, folio, file));
+DECLARE_HOOK(android_vh_kmem_cache_flags,
+	TP_PROTO(const char *name, slab_flags_t *flags),
+	TP_ARGS(name, flags));
 
 #endif /* _TRACE_HOOK_MM_H */
 
