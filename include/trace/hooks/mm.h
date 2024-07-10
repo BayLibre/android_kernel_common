@@ -215,7 +215,7 @@ DECLARE_HOOK(android_vh_smaps_swap_shared,
 	TP_PROTO(unsigned long *swap_shared),
 	TP_ARGS(swap_shared));
 DECLARE_HOOK(android_vh_show_smap_swap_shared,
-	TP_PROTO(unsigned long swap_shared),
+	TP_PROTO(struct seq_file *m, unsigned long swap_shared),
 	TP_ARGS(m, swap_shared));
 DECLARE_HOOK(android_vh_count_workingset_refault,
 	TP_PROTO(struct folio *folio),
