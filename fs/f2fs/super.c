@@ -150,7 +150,10 @@ enum {
 	Opt_compress_extension,
 	Opt_compress_chksum,
 	Opt_compress_mode,
+<<<<<<< HEAD   (3a2d22 Merge 5.10.218 into android12-5.10-lts)
 	Opt_compress_cache,
+=======
+>>>>>>> BRANCH (a2ed16 Linux 5.10.219)
 	Opt_atgc,
 	Opt_gc_merge,
 	Opt_nogc_merge,
@@ -227,7 +230,10 @@ static match_table_t f2fs_tokens = {
 	{Opt_compress_extension, "compress_extension=%s"},
 	{Opt_compress_chksum, "compress_chksum"},
 	{Opt_compress_mode, "compress_mode=%s"},
+<<<<<<< HEAD   (3a2d22 Merge 5.10.218 into android12-5.10-lts)
 	{Opt_compress_cache, "compress_cache"},
+=======
+>>>>>>> BRANCH (a2ed16 Linux 5.10.219)
 	{Opt_atgc, "atgc"},
 	{Opt_gc_merge, "gc_merge"},
 	{Opt_nogc_merge, "nogc_merge"},
@@ -1130,16 +1136,22 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
 			}
 			kfree(name);
 			break;
+<<<<<<< HEAD   (3a2d22 Merge 5.10.218 into android12-5.10-lts)
 		case Opt_compress_cache:
 			set_opt(sbi, COMPRESS_CACHE);
 			break;
+=======
+>>>>>>> BRANCH (a2ed16 Linux 5.10.219)
 #else
 		case Opt_compress_algorithm:
 		case Opt_compress_log_size:
 		case Opt_compress_extension:
 		case Opt_compress_chksum:
 		case Opt_compress_mode:
+<<<<<<< HEAD   (3a2d22 Merge 5.10.218 into android12-5.10-lts)
 		case Opt_compress_cache:
+=======
+>>>>>>> BRANCH (a2ed16 Linux 5.10.219)
 			f2fs_info(sbi, "compression options not supported");
 			break;
 #endif
@@ -1772,9 +1784,12 @@ static inline void f2fs_show_compress_options(struct seq_file *seq,
 		seq_printf(seq, ",compress_mode=%s", "fs");
 	else if (F2FS_OPTION(sbi).compress_mode == COMPR_MODE_USER)
 		seq_printf(seq, ",compress_mode=%s", "user");
+<<<<<<< HEAD   (3a2d22 Merge 5.10.218 into android12-5.10-lts)
 
 	if (test_opt(sbi, COMPRESS_CACHE))
 		seq_puts(seq, ",compress_cache");
+=======
+>>>>>>> BRANCH (a2ed16 Linux 5.10.219)
 }
 #endif
 

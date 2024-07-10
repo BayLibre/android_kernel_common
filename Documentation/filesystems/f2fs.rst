@@ -289,9 +289,12 @@ compress_mode=%s	 Control file compression mode. This supports "fs" and "user"
 			 choosing the target file and the timing. The user can do manual
 			 compression/decompression on the compression enabled files using
 			 ioctls.
+<<<<<<< HEAD   (3a2d22 Merge 5.10.218 into android12-5.10-lts)
 compress_cache		 Support to use address space of a filesystem managed inode to
 			 cache compressed block, in order to improve cache hit ratio of
 			 random read.
+=======
+>>>>>>> BRANCH (a2ed16 Linux 5.10.219)
 inlinecrypt		 When possible, encrypt/decrypt the contents of encrypted
 			 files using the blk-crypto framework rather than
 			 filesystem-layer encryption. This allows the use of
@@ -872,7 +875,11 @@ This is the default option. f2fs does automatic compression in the writeback of 
 compression enabled files.
 
 2) compress_mode=user
+<<<<<<< HEAD   (3a2d22 Merge 5.10.218 into android12-5.10-lts)
 This disables the automatic compression and gives the user discretion of choosing the
+=======
+This disables the automaic compression and gives the user discretion of choosing the
+>>>>>>> BRANCH (a2ed16 Linux 5.10.219)
 target file and the timing. The user can do manual compression/decompression on the
 compression enabled files using F2FS_IOC_DECOMPRESS_FILE and F2FS_IOC_COMPRESS_FILE
 ioctls like the below.
