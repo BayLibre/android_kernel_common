@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32f2fe73_8fdad641",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-10T14:54:12Z",
+      "side": 1,
+      "message": "nit: if you look at the other commits, this isn\u0027t prefixed with KVM as you\u0027re into mm/. This could actually work with any other hypervisor.\n\nAlso perhaps \"Allow non granule aligned MMIO guard requests\"?",
+      "revId": "f3ec97c42fbbfa303275f2af7695a478d87c0b3a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "003b7753_ca25afec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-10T14:54:12Z",
+      "side": 1,
+      "message": "You do not explain why we believe this is fine to relax the alignment check. Something between the lines of\n\n\"The RAM regions being aligned with the granule size, we can safely over-guard using this same alignment\" ?",
+      "revId": "f3ec97c42fbbfa303275f2af7695a478d87c0b3a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c7bf945_1bbd5dea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-10T14:54:12Z",
+      "side": 1,
+      "message": "Just couple of nits for the commit description",
+      "revId": "f3ec97c42fbbfa303275f2af7695a478d87c0b3a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
