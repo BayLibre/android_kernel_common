@@ -349,3 +349,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_remove_rmap_ptes);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_adjust_swap_info_flags);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_smaps_pte_entry);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_smap);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rebalance_anon_lru_bypass);
