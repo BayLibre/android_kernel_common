@@ -260,7 +260,11 @@ void unix_gc(void)
 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
 
 			if (sk->sk_state == TCP_LISTEN) {
+<<<<<<< HEAD   (2bef82 ANDROID: fix kernelci build breaks due to hid/uhid cyclic de)
 				unix_state_lock(sk);
+=======
+				unix_state_lock_nested(sk, U_LOCK_GC_LISTENER);
+>>>>>>> BRANCH (3feee7 Merge 5.10.218 into android13-5.10-lts)
 				unix_state_unlock(sk);
 			}
 		}
