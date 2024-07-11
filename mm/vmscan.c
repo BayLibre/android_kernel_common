@@ -7232,6 +7232,7 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
 
 	set_task_reclaim_state(current, &sc.reclaim_state);
 	trace_mm_vmscan_direct_reclaim_begin(order, sc.gfp_mask);
+	trace_android_vh_tune_scan_control(&sc);
 
 	nr_reclaimed = do_try_to_free_pages(zonelist, &sc);
 
