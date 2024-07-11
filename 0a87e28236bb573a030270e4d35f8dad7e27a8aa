@@ -22,6 +22,30 @@
       },
       "revId": "0a87e28236bb573a030270e4d35f8dad7e27a8aa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10d7f817_45e80104",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4108,
+      "author": {
+        "id": 1988826
+      },
+      "writtenOn": "2024-07-11T00:41:01Z",
+      "side": 1,
+      "message": "It is needed because did_some_prorgress can be passed to trace_android_vh_alloc_pages_slowpath_end() without being initialized, if allocation request goes to got_pg or nopage without __alloc_pages_direct_reclaim(), isn\u0027t it?",
+      "parentUuid": "709a1cfc_1149c055",
+      "range": {
+        "startLine": 4108,
+        "startChar": 32,
+        "endLine": 4108,
+        "endChar": 36
+      },
+      "revId": "0a87e28236bb573a030270e4d35f8dad7e27a8aa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
