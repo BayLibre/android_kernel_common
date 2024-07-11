@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "983534a1_f23b771b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1998840
+      },
+      "writtenOn": "2024-07-11T16:36:19Z",
+      "side": 1,
+      "message": "\u003e you mean resuming from a virtio device?\n\nresuming from virtual device\n\u003e Why is this something a normal Android device would be doing?\n\nNormal Android devices would not be doing this\n\u003e What platform requires this and what is the size of the increased kernel image?\n\nCuttlefish in auto requires this and any virtualized environment that wants to use suspend to disk would need this. I included the increased kernel image on the CL description",
+      "parentUuid": "3be5fc64_ee8258fb",
+      "range": {
+        "startLine": 10,
+        "startChar": 45,
+        "endLine": 13,
+        "endChar": 0
+      },
+      "revId": "471036d8b33833815ba65852dbdb3134cce9c7b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b74e9c68_abb99488",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-11T15:10:30Z",
       "side": 1,
       "message": "name please, not imap.",
+      "range": {
+        "startLine": 17,
+        "startChar": 15,
+        "endLine": 17,
+        "endChar": 24
+      },
+      "revId": "471036d8b33833815ba65852dbdb3134cce9c7b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a15b65af_9cd3d8f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1998840
+      },
+      "writtenOn": "2024-07-11T16:36:19Z",
+      "side": 1,
+      "message": "I was getting an error when using my name\n```\nWARNING:FROM_SIGN_OFF_MISMATCH: From:/Signed-off-by: email name mismatch: \u0027From: terryguan \u003cterryguan@google.com\u003e\u0027 !\u003d \u0027Signed-off-by: Terry Guan \u003cterryguan@google.com\u003e\u0027\n```",
+      "parentUuid": "b74e9c68_abb99488",
       "range": {
         "startLine": 17,
         "startChar": 15,
