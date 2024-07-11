@@ -34,11 +34,17 @@ int __pkvm_enable_tracing(bool enable);
 int __pkvm_swap_reader_tracing(int cpu);
 int __pkvm_enable_event(unsigned short id, bool enable);
 
-extern char __hyp_printk_fmts_start[];
+extern struct hyp_printk_fmt __hyp_printk_fmts_start[];
+extern struct hyp_event_id __hyp_event_ids_end[];
 
 static inline u8 hyp_printk_fmt_to_id(const char *fmt)
 {
-	return (fmt - __hyp_printk_fmts_start) / sizeof(struct hyp_printk_fmt);
+	u8 offset = 0;
+#ifdef MODULE
+	/* offset stored after event_ids (see module.lds.S) */
+	offset = *((u8 *)__hyp_event_ids_end);
+#endif
+	return (struct hyp_printk_fmt *)fmt - __hyp_printk_fmts_start + offset;
 }
 
 #define __trace_hyp_printk(__fmt, a, b, c, d)		\

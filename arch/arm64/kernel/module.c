@@ -660,6 +660,13 @@ static int module_init_hyp(const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs,
 		     "%s: Did you forget kvm_define_hypevents.h in the EL1 code?",
 		     mod->name);
 	}
+
+	s = find_section(hdr, sechdrs, ".hyp.printk_fmts");
+	if (s) {
+		hyp_mod->hyp_printk_fmts = (void *)s->sh_addr;
+		hyp_mod->nr_hyp_printk_fmts = s->sh_size /
+			sizeof(*hyp_mod->hyp_printk_fmts);
+	}
 #endif
 	return 0;
 }
