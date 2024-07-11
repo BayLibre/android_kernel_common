@@ -64,6 +64,11 @@ DECLARE_HOOK(android_vh_rebalance_anon_lru_bypass,
 DECLARE_HOOK(android_vh_use_vm_swappiness,
 	TP_PROTO(bool *use_vm_swappiness),
 	TP_ARGS(use_vm_swappiness));
+struct scan_control;
+DECLARE_HOOK(android_vh_tune_scan_control,
+	TP_PROTO(struct scan_control *sc),
+	TP_ARGS(sc));
+
 #endif /* _TRACE_HOOK_VMSCAN_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
