@@ -142,6 +142,30 @@
       },
       "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be0ce896_8cade1ae",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1960,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2024-07-12T22:40:43Z",
+      "side": 1,
+      "message": "In clang-r530567, we enabled frame pointer for x86_64 on Android by default, as in https://github.com/llvm/llvm-project/pull/97614. The config change is only for Android, not affecting upstream (unless they also test Android).\n\nSo I think it\u0027s fine to just explicitly omit frame pointer for do_full_int80() for x86_64. It\u0027s better to fix it in upstream, but not necessary.",
+      "parentUuid": "8b36ac6c_f8450957",
+      "range": {
+        "startLine": 1960,
+        "startChar": 33,
+        "endLine": 1960,
+        "endChar": 54
+      },
+      "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
