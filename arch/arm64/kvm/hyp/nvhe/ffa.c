@@ -28,6 +28,7 @@
 
 #include <linux/arm_ffa.h>
 #include <asm/kvm_pkvm.h>
+#include <asm/virt.h>
 
 #include <nvhe/arm-smccc.h>
 #include <nvhe/ffa.h>
@@ -70,6 +71,8 @@ static struct kvm_ffa_buffers host_buffers;
 static u32 hyp_ffa_version;
 static bool has_version_negotiated;
 static hyp_spinlock_t version_lock;
+
+DECLARE_STATIC_KEY_FALSE(kvm_ffa_unmap_on_lend);
 
 static void ffa_to_smccc_error(struct arm_smccc_res *res, u64 ffa_errno)
 {
@@ -301,9 +304,10 @@ out:
 }
 
 static u32 __ffa_host_share_ranges(struct ffa_mem_region_addr_range *ranges,
-				   u32 nranges)
+				   u32 nranges, bool is_lend)
 {
 	u32 i;
+	int ret;
 
 	for (i = 0; i < nranges; ++i) {
 		struct ffa_mem_region_addr_range *range = &ranges[i];
@@ -313,17 +317,27 @@ static u32 __ffa_host_share_ranges(struct ffa_mem_region_addr_range *ranges,
 		if (!PAGE_ALIGNED(sz))
 			break;
 
-		if (__pkvm_host_share_ffa(pfn, sz / PAGE_SIZE))
+		if (static_branch_unlikely(&kvm_ffa_unmap_on_lend) && is_lend)
+			ret = __pkvm_host_donate_ffa(pfn, sz / PAGE_SIZE);
+		else
+			ret = __pkvm_host_share_ffa(pfn, sz / PAGE_SIZE);
+		if (ret)
 			break;
 	}
 
 	return i;
 }
 
+/*
+ * Verify if the page is lent on shared and unshare it with FF-A.
+ * On success, return the number of *unshared* pages and store in the
+ * is_lend argument whether the range was shared or lent.
+ */
 static u32 __ffa_host_unshare_ranges(struct ffa_mem_region_addr_range *ranges,
-				     u32 nranges)
+				     u32 nranges, bool *is_lend)
 {
 	u32 i;
+	int ret;
 
 	for (i = 0; i < nranges; ++i) {
 		struct ffa_mem_region_addr_range *range = &ranges[i];
@@ -333,7 +347,12 @@ static u32 __ffa_host_unshare_ranges(struct ffa_mem_region_addr_range *ranges,
 		if (!PAGE_ALIGNED(sz))
 			break;
 
-		if (__pkvm_host_unshare_ffa(pfn, sz / PAGE_SIZE))
+		if (static_branch_unlikely(&kvm_ffa_unmap_on_lend))
+			ret = __pkvm_host_release_ffa(pfn, sz / PAGE_SIZE, is_lend);
+		else
+
+			ret = __pkvm_host_unshare_ffa(pfn, sz / PAGE_SIZE);
+		if (ret)
 			break;
 	}
 
@@ -341,13 +360,13 @@ static u32 __ffa_host_unshare_ranges(struct ffa_mem_region_addr_range *ranges,
 }
 
 static int ffa_host_share_ranges(struct ffa_mem_region_addr_range *ranges,
-				 u32 nranges)
+				 u32 nranges, bool is_lend)
 {
-	u32 nshared = __ffa_host_share_ranges(ranges, nranges);
+	u32 nshared = __ffa_host_share_ranges(ranges, nranges, is_lend);
 	int ret = 0;
 
 	if (nshared != nranges) {
-		WARN_ON(__ffa_host_unshare_ranges(ranges, nshared) != nshared);
+		WARN_ON(__ffa_host_unshare_ranges(ranges, nshared, &is_lend) != nshared);
 		ret = FFA_RET_DENIED;
 	}
 
@@ -357,11 +376,12 @@ static int ffa_host_share_ranges(struct ffa_mem_region_addr_range *ranges,
 static int ffa_host_unshare_ranges(struct ffa_mem_region_addr_range *ranges,
 				   u32 nranges)
 {
-	u32 nunshared = __ffa_host_unshare_ranges(ranges, nranges);
+	bool is_lend;
 	int ret = 0;
+	u32 nunshared = __ffa_host_unshare_ranges(ranges, nranges, &is_lend);
 
 	if (nunshared != nranges) {
-		WARN_ON(__ffa_host_share_ranges(ranges, nunshared) != nunshared);
+		WARN_ON(__ffa_host_share_ranges(ranges, nunshared, is_lend) != nunshared);
 		ret = FFA_RET_DENIED;
 	}
 
@@ -378,6 +398,7 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
 	struct ffa_mem_region_addr_range *buf;
 	int ret = FFA_RET_INVALID_PARAMETERS;
 	u32 nr_ranges;
+	bool is_lend = false;
 
 	if (fraglen > KVM_FFA_MBOX_NR_PAGES * PAGE_SIZE)
 		goto out;
@@ -393,7 +414,7 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
 	memcpy(buf, host_buffers.tx, fraglen);
 	nr_ranges = fraglen / sizeof(*buf);
 
-	ret = ffa_host_share_ranges(buf, nr_ranges);
+	ret = ffa_host_share_ranges(buf, nr_ranges, is_lend);
 	if (ret) {
 		/*
 		 * We're effectively aborting the transaction, so we need
@@ -485,7 +506,7 @@ static __always_inline void do_ffa_mem_xfer(const u64 func_id,
 	}
 
 	nr_ranges /= sizeof(reg->constituents[0]);
-	ret = ffa_host_share_ranges(reg->constituents, nr_ranges);
+	ret = ffa_host_share_ranges(reg->constituents, nr_ranges, func_id == FFA_FN64_MEM_LEND);
 	if (ret)
 		goto out_unlock;
 

@@ -1066,3 +1066,13 @@ unsigned long __pkvm_reclaim_hyp_alloc_mgt(unsigned long nr_pages)
 
 	return reclaimed;
 }
+
+DEFINE_STATIC_KEY_FALSE(kvm_ffa_unmap_on_lend);
+
+static int early_ffa_unmap_on_lend_cfg(char *arg)
+{
+	static_branch_enable(&kvm_ffa_unmap_on_lend);
+	return 0;
+}
+
+early_param("kvm-arm.ffa-unmap-on-lend", early_ffa_unmap_on_lend_cfg);

@@ -113,6 +113,7 @@ KVM_NVHE_ALIAS(__hyp_printk_fmts_start);
 /* pKVM static key */
 KVM_NVHE_ALIAS(kvm_protected_mode_initialized);
 
+KVM_NVHE_ALIAS(kvm_ffa_unmap_on_lend);
 #endif /* CONFIG_KVM */
 
 #ifdef CONFIG_EFI_ZBOOT

@@ -1928,6 +1928,10 @@ static int check_donation(struct pkvm_mem_transition *tx)
 	case PKVM_ID_HYP:
 		ret = hyp_request_donation(&completer_addr, tx);
 		break;
+	case PKVM_ID_FFA:
+		/* We don't control the state of the FF-A page tables. */
+		ret = 0;
+		break;
 	default:
 		ret = -EINVAL;
 	}
@@ -1944,6 +1948,9 @@ static int check_donation(struct pkvm_mem_transition *tx)
 		break;
 	case PKVM_ID_GUEST:
 		ret = guest_ack_donation(completer_addr, tx);
+		break;
+	case PKVM_ID_FFA:
+		ret = 0;
 		break;
 	default:
 		ret = -EINVAL;
@@ -1964,6 +1971,9 @@ static int __do_donate(struct pkvm_mem_transition *tx)
 	case PKVM_ID_HYP:
 		ret = hyp_initiate_donation(&completer_addr, tx);
 		break;
+	case PKVM_ID_FFA:
+		ret = host_initiate_donation(&completer_addr, tx);
+		return ret;
 	default:
 		ret = -EINVAL;
 	}
@@ -1980,6 +1990,9 @@ static int __do_donate(struct pkvm_mem_transition *tx)
 		break;
 	case PKVM_ID_GUEST:
 		ret = guest_complete_donation(completer_addr, tx);
+		break;
+	case PKVM_ID_FFA:
+		/* We are not in control of the FF-A pagetables to put NO_PAGE */
 		break;
 	default:
 		ret = -EINVAL;
@@ -2393,6 +2406,87 @@ int __pkvm_host_unshare_ffa(u64 pfn, u64 nr_pages)
 
 	host_lock_component();
 	ret = do_unshare(&share, &nr_unshared);
+	host_unlock_component();
+
+	return ret;
+}
+
+int __pkvm_host_donate_ffa(u64 pfn, u64 nr_pages)
+{
+	int ret;
+	struct pkvm_mem_transition donation = {
+		.nr_pages	= nr_pages,
+		.initiator	= {
+			.id	= PKVM_ID_HOST,
+			.addr	= hyp_pfn_to_phys(pfn),
+			.host	= {
+				.completer_addr = hyp_pfn_to_phys(pfn),
+			},
+		},
+		.completer	= {
+			.id	= PKVM_ID_FFA,
+		},
+	};
+
+	host_lock_component();
+	ret = do_donate(&donation);
+	host_unlock_component();
+
+	return ret;
+}
+
+int __pkvm_host_release_ffa(u64 pfn, u64 nr_pages, bool *was_lent)
+{
+	int ret;
+	struct memblock_region *reg;
+	struct kvm_mem_range range;
+	u64 i, addr = hyp_pfn_to_phys(pfn);
+	u64 end = addr + nr_pages * PAGE_SIZE;
+	struct hyp_page *page = NULL;
+	struct pkvm_mem_transition mem_request;
+	u64 nr_unshared;
+
+	if (!was_lent)
+		return -EINVAL;
+
+	reg = find_mem_range(addr, &range);
+	if (end > range.end || !reg)
+		return -EPERM;
+
+	/*
+	 * Check the page state range: if it is NO_PAGE, it might be a lent page otherwise
+	 * it should be a shared one with SHARED_OWNED.
+	 */
+	host_lock_component();
+	page = hyp_phys_to_page(addr);
+	*was_lent = page->host_state == PKVM_NOPAGE;
+
+	for (i = 1; i < nr_pages; i++) {
+		if (*was_lent && page[i].host_state == PKVM_NOPAGE)
+			continue;
+		else if (*was_lent == false && page[i].host_state == PKVM_PAGE_SHARED_OWNED)
+			continue;
+
+		ret = -EPERM;
+		goto unlock;
+	}
+
+	mem_request.nr_pages = nr_pages;
+	mem_request.initiator.addr = hyp_pfn_to_phys(pfn);
+
+	if (*was_lent) {
+		mem_request.initiator.id = PKVM_ID_FFA;
+		mem_request.initiator.host.completer_addr = hyp_pfn_to_phys(pfn);
+		mem_request.completer.id = PKVM_ID_HOST;
+
+		ret = do_donate(&mem_request);
+	} else {
+		mem_request.initiator.id = PKVM_ID_HOST;
+		mem_request.completer.id = PKVM_ID_FFA;
+
+		ret = do_unshare(&mem_request, &nr_unshared);
+	}
+unlock:
 	host_unlock_component();
 
 	return ret;
