@@ -22,6 +22,30 @@
       },
       "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73ed5b44_5edbc571",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1960,
+      "author": {
+        "id": 1942356
+      },
+      "writtenOn": "2024-07-12T22:00:07Z",
+      "side": 1,
+      "message": "This is for this test case only because of the inline assembly.  It apparently breaks on a clang update if not provided.  We don\u0027t want it defined for all kselftests.",
+      "parentUuid": "36a4df9f_88b4f0f7",
+      "range": {
+        "startLine": 1960,
+        "startChar": 33,
+        "endLine": 1960,
+        "endChar": 54
+      },
+      "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
