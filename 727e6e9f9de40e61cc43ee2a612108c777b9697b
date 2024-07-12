@@ -70,6 +70,24 @@
       "parentUuid": "ce42f7d6_846c89ec",
       "revId": "727e6e9f9de40e61cc43ee2a612108c777b9697b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf58cbbd_b1d5a755",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-07-12T17:09:20Z",
+      "side": 1,
+      "message": "From Presubmit Lint:\n\nAnalyzer Description: Ensures that kernel commit messages follow the guidelines.\nOwner: android-kernel-team@google.com\n\n\u0027linux-next\u0027 is not an acceptable maintainer tree as commit hashes are not stable there.\nPlease refer to a different maintainer tree or use FROMLIST instead.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "parentUuid": "d3feb79f_9a2a221a",
+      "revId": "727e6e9f9de40e61cc43ee2a612108c777b9697b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
