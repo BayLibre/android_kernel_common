@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afed119f_9426427f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-07-12T15:48:33Z",
+      "side": 1,
+      "message": "Breaks the pixel6 build:\n\n```/tmp/bazel-working-directory/_main/common/include/uapi/linux/v4l2-controls.h:889:9: note: previous definition is here\n  889 | #define V4L2_CID_MPEG_VIDEO_AVERAGE_QP  (V4L2_CID_CODEC_BASE + 657)```",
+      "revId": "a1edd491be28b93b21cf76ad5fa35a33b8e01a93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
