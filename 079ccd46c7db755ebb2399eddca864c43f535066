@@ -46,6 +46,30 @@
       },
       "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d64c780f_29a05713",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1960,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-07-12T22:00:19Z",
+      "side": 1,
+      "message": "oh I suppose we want to have frame-pointer enabled for every other case.\n\nI wonder why it breaks `do_full_int80()` specifically though. Is this some external issue that needs to be fixed? This sounds like a temporary work-around.",
+      "parentUuid": "36a4df9f_88b4f0f7",
+      "range": {
+        "startLine": 1960,
+        "startChar": 33,
+        "endLine": 1960,
+        "endChar": 54
+      },
+      "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
