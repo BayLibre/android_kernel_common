@@ -68,6 +68,10 @@ struct scan_control;
 DECLARE_HOOK(android_vh_tune_scan_control,
 	TP_PROTO(struct scan_control *sc),
 	TP_ARGS(sc));
+struct shrinker_info;
+DECLARE_HOOK(android_vh_shrink_slab_memcg_nonslab,
+	TP_PROTO(int i, struct shrinker_info *info),
+	TP_ARGS(i, info));
 
 #endif /* _TRACE_HOOK_VMSCAN_H */
 /* This part must be outside protection */
