@@ -185,9 +185,15 @@ static struct extent_node *__lookup_extent_node(struct rb_root_cached *root,
 /*
  * lookup rb entry in position of @fofs in rb-tree,
  * if hit, return the entry, otherwise, return NULL
+<<<<<<< HEAD   (bc2c8b Merge 8a4a516a7fdd ("scsi: ufs: qcom: Perform read back afte)
  * @prev_ex: extent before fofs
  * @next_ex: extent after fofs
  * @insert_p: insert point for new extent at fofs
+=======
+ * @prev_ex: extent before ofs
+ * @next_ex: extent after ofs
+ * @insert_p: insert point for new extent at ofs
+>>>>>>> BRANCH (a89f73 scripts/gdb: fix SB_* constants parsing)
  * in order to simplify the insertion after.
  * tree must stay unchanged between lookup and insertion.
  */
