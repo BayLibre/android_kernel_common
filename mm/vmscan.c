@@ -3303,40 +3303,46 @@ static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
 	}
 }
 
-static void reset_ctrl_pos(struct lruvec *lruvec, int type, bool carryover)
+static void reset_histograms(struct lruvec *lruvec, int type, unsigned long seq)
 {
 	int hist, tier;
 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-	bool clear = carryover ? NR_HIST_GENS == 1 : NR_HIST_GENS > 1;
-	unsigned long seq = carryover ? lrugen->min_seq[type] : lrugen->max_seq + 1;
 
 	lockdep_assert_held(&lruvec->lru_lock);
+	hist = lru_hist_from_seq(seq);
 
-	if (!carryover && !clear)
-		return;
+	for (tier = 0; tier < MAX_NR_TIERS; tier++) {
+		atomic_long_set(&lrugen->refaulted[hist][type][tier], 0);
+		atomic_long_set(&lrugen->evicted[hist][type][tier], 0);
+		WRITE_ONCE(lrugen->protected[hist][type][tier], 0);
+	}
+}
+
+static void reset_ctrl_pos(struct lruvec *lruvec, int type)
+{
+	int hist, tier;
+	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+	unsigned long seq = lrugen->min_seq[type];
+
+	lockdep_assert_held(&lruvec->lru_lock);
 
 	hist = lru_hist_from_seq(seq);
 
 	for (tier = 0; tier < MAX_NR_TIERS; tier++) {
-		if (carryover) {
-			unsigned long sum;
+		unsigned long sum;
 
-			sum = lrugen->avg_refaulted[type][tier] +
-			      atomic_long_read(&lrugen->refaulted[hist][type][tier]);
-			WRITE_ONCE(lrugen->avg_refaulted[type][tier], sum / 2);
+		sum = lrugen->avg_refaulted[type][tier] +
+		      atomic_long_read(&lrugen->refaulted[hist][type][tier]);
+		WRITE_ONCE(lrugen->avg_refaulted[type][tier], sum / 2);
 
-			sum = lrugen->avg_total[type][tier] +
-			      lrugen->protected[hist][type][tier] +
-			      atomic_long_read(&lrugen->evicted[hist][type][tier]);
-			WRITE_ONCE(lrugen->avg_total[type][tier], sum / 2);
-		}
-
-		if (clear) {
-			atomic_long_set(&lrugen->refaulted[hist][type][tier], 0);
-			atomic_long_set(&lrugen->evicted[hist][type][tier], 0);
-			WRITE_ONCE(lrugen->protected[hist][type][tier], 0);
-		}
+		sum = lrugen->avg_total[type][tier] +
+		      lrugen->protected[hist][type][tier] +
+		      atomic_long_read(&lrugen->evicted[hist][type][tier]);
+		WRITE_ONCE(lrugen->avg_total[type][tier], sum / 2);
 	}
+
+	if (NR_HIST_GENS == 1)
+		reset_histograms(lruvec, type, seq);
 }
 
 static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
@@ -4048,7 +4054,7 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
 		}
 	}
 done:
-	reset_ctrl_pos(lruvec, type, true);
+	reset_ctrl_pos(lruvec, type);
 	WRITE_ONCE(lrugen->min_seq[type], lrugen->min_seq[type] + 1);
 
 	return true;
@@ -4093,7 +4099,7 @@ next:
 		if (min_seq[type] <= lrugen->min_seq[type])
 			continue;
 
-		reset_ctrl_pos(lruvec, type, true);
+		reset_ctrl_pos(lruvec, type);
 		WRITE_ONCE(lrugen->min_seq[type], min_seq[type]);
 		success = true;
 	}
@@ -4154,8 +4160,9 @@ restart:
 		}
 	}
 
-	for (type = 0; type < ANON_AND_FILE; type++)
-		reset_ctrl_pos(lruvec, type, false);
+	if (NR_HIST_GENS > 1)
+		for (type = 0; type < ANON_AND_FILE; type++)
+			reset_histograms(lruvec, type, lrugen->max_seq + 1);
 
 	WRITE_ONCE(lrugen->timestamps[next], jiffies);
 	/* make sure preceding modifications appear */
