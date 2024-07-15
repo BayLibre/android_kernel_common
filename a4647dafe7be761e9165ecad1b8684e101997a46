@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d8dfd1d_f9179a40",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7235,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-15T23:13:38Z",
+      "side": 1,
+      "message": "I don\u0027t think this will work because `struct scan_control` is internal and defined in `/mm/vmscan.c`. You will have to pass specific members you are trying to tune.",
+      "range": {
+        "startLine": 7235,
+        "startChar": 36,
+        "endLine": 7235,
+        "endChar": 39
+      },
+      "revId": "a4647dafe7be761e9165ecad1b8684e101997a46",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
