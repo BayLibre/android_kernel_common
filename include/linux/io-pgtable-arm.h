@@ -185,6 +185,9 @@ int arm_lpae_init_pgtable_s1(struct io_pgtable_cfg *cfg,
 int arm_lpae_init_pgtable_s2(struct io_pgtable_cfg *cfg,
 			     struct arm_lpae_io_pgtable *data);
 
+void __arm_lpae_free_pgtable_walk(struct arm_lpae_io_pgtable *data, int lvl,
+				  arm_lpae_iopte *ptep, struct io_pgtable_walker *walker);
+
 /* Host/hyp-specific functions */
 void *__arm_lpae_alloc_pages(size_t size, gfp_t gfp, struct io_pgtable_cfg *cfg);
 void __arm_lpae_free_pages(void *pages, size_t size, struct io_pgtable_cfg *cfg);
