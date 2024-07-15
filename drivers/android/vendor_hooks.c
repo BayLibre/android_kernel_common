@@ -62,6 +62,7 @@
 #include <trace/hooks/power.h>
 #include <trace/hooks/dmabuf.h>
 #include <trace/hooks/signal.h>
+#include <trace/hooks/madvise.h>
 #include <trace/events/android_vendor_lmk.h>
 
 
@@ -326,3 +327,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_warn_alloc_show_mem_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_use_vm_swappiness);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_control);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_process_madvise_bypass);
