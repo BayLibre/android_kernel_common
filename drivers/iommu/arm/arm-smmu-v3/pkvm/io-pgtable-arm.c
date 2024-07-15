@@ -139,6 +139,19 @@ int kvm_arm_io_pgtable_free(struct io_pgtable *iopt)
 	return 0;
 }
 
+int kvm_arm_io_pgtable_force_free(struct io_pgtable *iopt, struct io_pgtable_walker *walker)
+{
+	struct arm_lpae_io_pgtable *data = io_pgtable_to_data(iopt);
+	size_t pgd_size = ARM_LPAE_PGD_SIZE(data);
+
+	if (!data->iop.cfg.coherent_walk)
+		kvm_flush_dcache_to_poc(data->pgd, pgd_size);
+
+	__arm_lpae_free_pgtable_walk(data, data->start_level, data->pgd, walker);
+	hyp_free(data);
+	return 0;
+}
+
 int arm_lpae_mapping_exists(struct arm_lpae_io_pgtable *data)
 {
 	/*
