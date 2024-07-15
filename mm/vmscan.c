@@ -1262,9 +1262,13 @@ retry:
 				}
 				if (!add_to_swap(folio)) {
 					int __maybe_unused order = folio_order(folio);
+					bool bypass = false;
 
 					if (!folio_test_large(folio))
 						goto activate_locked_split;
+					trace_android_vh_split_large_folio_bypass(&bypass);
+					if (bypass)
+						goto activate_locked;
 					/* Fallback to swap normal pages */
 					if (split_folio_to_list(folio, folio_list))
 						goto activate_locked;
