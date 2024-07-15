@@ -17,6 +17,10 @@ struct io_pgtable *kvm_arm_io_pgtable_alloc(struct io_pgtable_cfg *cfg,
 					    void *cookie,
 					    int *out_ret);
 int kvm_arm_io_pgtable_free(struct io_pgtable *iop);
+
+int kvm_arm_io_pgtable_force_free(struct io_pgtable *iopt,
+				  struct io_pgtable_walker *walker);
+
 #endif /* CONFIG_ARM_SMMU_V3_PKVM */
 
 int kvm_iommu_init(struct kvm_iommu_ops *ops,

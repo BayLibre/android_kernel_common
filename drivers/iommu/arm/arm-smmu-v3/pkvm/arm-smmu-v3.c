@@ -1431,8 +1431,10 @@ static void kvm_iommu_unmap_walker(struct io_pgtable_ctxt *ctxt)
 	/* Make more space. */
 	if(cache->ptr == KVM_IOMMU_PADDR_CACHE_MAX) {
 		/* Must invalidate TLB first. */
-		smmu_iotlb_sync(data->cookie, data->iotlb_gather);
-		iommu_iotlb_gather_init(data->iotlb_gather);
+		if (data->iotlb_gather) {
+			smmu_iotlb_sync(data->cookie, data->iotlb_gather);
+			iommu_iotlb_gather_init(data->iotlb_gather);
+		}
 		kvm_iommu_flush_unmap_cache(cache);
 	}
 }
@@ -1476,6 +1478,37 @@ static phys_addr_t smmu_iova_to_phys(struct kvm_hyp_iommu_domain *domain,
 	hyp_spin_unlock(&smmu_domain->pgt_lock);
 
 	return paddr;
+}
+
+static void smmu_force_free_domain(struct kvm_hyp_iommu_domain *domain,
+				   struct kvm_iommu_paddr_cache *cache)
+{
+	struct hyp_arm_smmu_v3_domain *smmu_domain = domain->priv;
+	struct kvm_iommu_walk_data data = {
+		.cache = cache,
+	};
+	struct io_pgtable_walker walker = {
+		.cb = kvm_iommu_unmap_walker,
+		.arg = &data,
+	};
+	struct domain_iommu_node *iommu_node, *temp;
+
+	smmu_tlb_flush_all(domain);
+	/*
+	 * As page table allocation is decoupled from alloc_domain, free_domain can
+	 * be called with a domain that have never been attached.
+	 */
+	if (smmu_domain->pgtable) {
+		data.cookie = smmu_domain->pgtable->cookie;
+		kvm_arm_io_pgtable_force_free(smmu_domain->pgtable, &walker);
+	}
+
+	list_for_each_entry_safe(iommu_node, temp, &smmu_domain->iommu_list, list) {
+		list_del(&iommu_node->list);
+		hyp_free(iommu_node);
+	}
+
+	hyp_free(smmu_domain);
 }
 
 /*
@@ -1555,6 +1588,7 @@ struct kvm_iommu_ops smmu_ops = {
 	.get_iommu_by_id		= smmu_id_to_iommu,
 	.alloc_domain			= smmu_alloc_domain,
 	.free_domain			= smmu_free_domain,
+	.force_free_domain		= smmu_force_free_domain,
 	.attach_dev			= smmu_attach_dev,
 	.detach_dev			= smmu_detach_dev,
 	.dabt_handler			= smmu_dabt_handler,
