@@ -52,6 +52,24 @@
       "parentUuid": "efa8ee41_56a71692",
       "revId": "28ad431c7398ac62263f7564b8bc687b743fd729",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef4e6a05_750aee78",
+        "filename": "build.config.allmodconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-16T23:22:28Z",
+      "side": 1,
+      "message": "I see. Ok, in that case this will indeed break the KernelCI unless we disable CONFIG_NUMA_BALANCING there as well. Let me investigate that first.",
+      "parentUuid": "1001562f_e025f8f5",
+      "revId": "28ad431c7398ac62263f7564b8bc687b743fd729",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
