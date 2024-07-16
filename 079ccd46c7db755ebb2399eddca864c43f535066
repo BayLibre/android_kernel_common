@@ -190,6 +190,30 @@
       },
       "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61a1ec1a_ab895ea7",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1960,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-07-16T18:32:13Z",
+      "side": 1,
+      "message": "This is not an issue about clang or android specific configuration though. This is broken even with gcc. The only reason it works in the kernel with gcc is because the \"bp\" gets optimized out by the \"-02\" flag.\n\nWithout optimizations then you\u0027ll hit the issue with vanilla gcc:\n```\n$ make -C tools/testing/selftests TARGETS\u003dx86\n[...]\ngcc -m64 -o /usr/local/google/home/cmllamas/kernels/linux/tools/testing/selftests/x86/ptrace_syscall_64 -g -std\u003dgnu99 -pthread -Wall -isystem /usr/local/google/home/cmllamas/kernels/linux/usr/include -no-pie -DCAN_BUILD_32 -DCAN_BUILD_64 ptrace_syscall.c helpers.h -lrt -ldl\nptrace_syscall.c: In function ‘do_full_int80’:\nptrace_syscall.c:68:1: error: bp cannot be used in ‘asm’ here\n   68 | }\n      | ^\n```\n\nAt least gcc breaks the build whereas clang has to wait until the binary segfaults.\n\nHowever, the same outcome applies in clang. The optimization flag is what makes the difference. If I use \"make LLVM\u003d1...\" and run the test it succeeds with -02 but if one removes the optimization:\n```\n$ ./tools/testing/selftests/x86/ptrace_syscall_64\n[RUN]   Check int80 return regs\nSegmentation fault\n```\n\nSo, the question that I have is why this optimization is not working for your android builds?",
+      "parentUuid": "15e0b077_6fe5b20c",
+      "range": {
+        "startLine": 1960,
+        "startChar": 33,
+        "endLine": 1960,
+        "endChar": 54
+      },
+      "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
