@@ -238,6 +238,30 @@
       },
       "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06869775_e278e022",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1960,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-07-16T19:15:12Z",
+      "side": 1,
+      "message": "```\n$ clang --version\nAndroid (12059595, +pgo, +bolt, +lto, +mlgo, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\n\n\n$ clang -o ptrace_syscall_64 -O2 ptrace_syscall.c\n$ ./ptrace_syscall_64\n[RUN]   Check int80 return regs\n[OK]    getpid() preserves regs\n[OK]    kill(getpid(), SIGUSR1) preserves regs\n[RUN]   ptrace-induced syscall restart\n        Child will make one syscall\n[RUN]   SYSEMU\n[OK]    Initial nr and args are correct\n[RUN]   Restart the syscall (ip \u003d 0x7f5418864059)\n[OK]    Restarted nr and args are correct\n[RUN]   Change nr and args and restart the syscall (ip \u003d 0x7f5418864059)\n[OK]    Replacement nr and args are correct\n[OK]    Child exited cleanly\n[RUN]   kernel syscall restart under ptrace\n        Child will take a nap until signaled\n[RUN]   SYSCALL\n[OK]    Initial nr and args are correct\n[RUN]   SYSCALL\n[OK]    Args after SIGUSR1 are correct (ax \u003d -514)\n[OK]    Child got SIGUSR1\n[RUN]   Step again\n[OK]    pause(2) restarted correctly\n\n\n$ clang -o ptrace_syscall_64 -O0 ptrace_syscall.c\n$ ./ptrace_syscall_64\n[RUN]   Check int80 return regs\nSegmentation fault\n```",
+      "parentUuid": "dc542aa7_1c14cce7",
+      "range": {
+        "startLine": 1960,
+        "startChar": 33,
+        "endLine": 1960,
+        "endChar": 54
+      },
+      "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
