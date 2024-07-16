@@ -214,6 +214,30 @@
       },
       "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc542aa7_1c14cce7",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1960,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2024-07-16T18:54:57Z",
+      "side": 1,
+      "message": "\u003e So, the question that I have is why this optimization is not working for your android builds?\n\nclang-r530567 is a new clang build that hasn\u0027t been released. It enables frame pointer by default for x86_64 android build (https://github.com/llvm/llvm-project/pull/97614). That makes do_full_int80() sets up frame pointer even when optimized with -O2. You can try it in https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/refs/heads/main/clang-r530567/.",
+      "parentUuid": "61a1ec1a_ab895ea7",
+      "range": {
+        "startLine": 1960,
+        "startChar": 33,
+        "endLine": 1960,
+        "endChar": 54
+      },
+      "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
