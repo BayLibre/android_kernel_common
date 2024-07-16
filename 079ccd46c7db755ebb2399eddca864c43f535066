@@ -262,6 +262,30 @@
       },
       "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12638389_a9f0223e",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1960,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-07-16T19:17:45Z",
+      "side": 1,
+      "message": "hmmm I suppose you mean this is the equivalent behavior for android?\n```\n$ clang -o ptrace_syscall_64 -O2 -fno-omit-frame-pointer ptrace_syscall.c\n$ ./ptrace_syscall_64\n[RUN]   Check int80 return regs\nSegmentation fault\n```",
+      "parentUuid": "06869775_e278e022",
+      "range": {
+        "startLine": 1960,
+        "startChar": 33,
+        "endLine": 1960,
+        "endChar": 54
+      },
+      "revId": "079ccd46c7db755ebb2399eddca864c43f535066",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
