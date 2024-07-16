@@ -189,3 +189,13 @@ Ideally from protected vm firmware.
 |                     | (uint64) | R1 | Token used to represent the region which    |
 |                     |          |    | can be used to verify it.                   |
 +---------------------+----------+----+---------------------------------------------+
+
+``ARM_SMCCC_KVM_FUNC_DEV_REQ_DMA``
+--------------------------------------
+
+See pviommu.rst
+
+``ARM_SMCCC_KVM_FUNC_IOMMU_*``
+--------------------------------------
+
+See pviommu.rst
