@@ -16,6 +16,29 @@
       "message": "adding relation chain\nresolve conflict",
       "revId": "3dd5f454685ce54a45c89436b1b6bfc42047b5fb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "613674bc_b4ebf117",
+        "filename": "android/abi_gki_aarch64_galaxy",
+        "patchSetId": 6
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-07-16T11:42:44Z",
+      "side": 1,
+      "message": "Sort order should be preserved. I will fix this.\n```suggestion\n  __traceiter_console\n  __traceiter_consume_skb\n  __traceiter_workqueue_execute_start\n  __tracepoint_android_rvh_arm64_serror_panic\n  __tracepoint_android_rvh_die_kernel_fault\n  __tracepoint_android_rvh_do_el1_bti\n  __tracepoint_android_rvh_do_el1_fpac\n  __tracepoint_android_rvh_do_el1_undef\n  __tracepoint_android_rvh_do_sea\n  __tracepoint_android_rvh_do_sp_pc_abort\n  __tracepoint_android_rvh_panic_unhandled\n  __tracepoint_android_rvh_report_bug\n  __tracepoint_android_vh_is_fpsimd_save\n  __tracepoint_android_vh_logbuf\n  __tracepoint_android_vh_logbuf_pr_cont\n  __tracepoint_android_vh_try_to_freeze_todo\n  __tracepoint_android_vh_try_to_freeze_todo_unfrozen\n  __tracepoint_android_vh_watchdog_timer_softlockup\n  __tracepoint_console\n  __tracepoint_consume_skb\n  __tracepoint_workqueue_execute_start\n  usb_set_device_state\n```",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 22
+      },
+      "revId": "3dd5f454685ce54a45c89436b1b6bfc42047b5fb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
