@@ -22,6 +22,30 @@
       },
       "revId": "4f539f0272caa69501e3298a9eceee88958d5218",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cd212cd_e05e219d",
+        "filename": "include/ufs/ufshcd.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1954115
+      },
+      "writtenOn": "2024-07-16T00:59:42Z",
+      "side": 1,
+      "message": "Hi Bart, I suggested that approach as a workaround as there is an opportunity of using a 7 byte hole in a `struct ufs_clk_scaling`. Without utilizing hole the only way to get this in is using a vendor hook. \n\nWe have used this workaround of using hole in a struct couple of times in ACK. Though I agree with your sentiment and don\u0027t want to encourage this for every case, improvement in IO performance in random read of 28% weighed in favor of looking to take this in without vendor hook. Let me know if you have strong objection to it.",
+      "parentUuid": "7ef29461_89a3b7b8",
+      "range": {
+        "startLine": 463,
+        "startChar": 0,
+        "endLine": 463,
+        "endChar": 20
+      },
+      "revId": "4f539f0272caa69501e3298a9eceee88958d5218",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
