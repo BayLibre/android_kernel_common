@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "647a159b_6b6530a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-07-16T02:18:11Z",
+      "side": 1,
+      "message": "The following text in the patch description is no longer correct: \"[quic_mapa: Utilize 7 byte hole space just before ANDROID_KABI_RESERVE to avoid ABI breakup]\"",
+      "revId": "4f539f0272caa69501e3298a9eceee88958d5218",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ef29461_89a3b7b8",
         "filename": "include/ufs/ufshcd.h",
         "patchSetId": 14
@@ -38,6 +55,30 @@
       "side": 1,
       "message": "Hi Bart, I suggested that approach as a workaround as there is an opportunity of using a 7 byte hole in a `struct ufs_clk_scaling`. Without utilizing hole the only way to get this in is using a vendor hook. \n\nWe have used this workaround of using hole in a struct couple of times in ACK. Though I agree with your sentiment and don\u0027t want to encourage this for every case, improvement in IO performance in random read of 28% weighed in favor of looking to take this in without vendor hook. Let me know if you have strong objection to it.",
       "parentUuid": "7ef29461_89a3b7b8",
+      "range": {
+        "startLine": 463,
+        "startChar": 0,
+        "endLine": 463,
+        "endChar": 20
+      },
+      "revId": "4f539f0272caa69501e3298a9eceee88958d5218",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c6f11c6_25310e2e",
+        "filename": "include/ufs/ufshcd.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-07-16T02:18:11Z",
+      "side": 1,
+      "message": "Thanks for the interesting feedback Sandeep. Shouldn\u0027t a source code comment be added that in this case the new structure member fills a hole and hence does not modify the ABI?",
+      "parentUuid": "6cd212cd_e05e219d",
       "range": {
         "startLine": 463,
         "startChar": 0,
