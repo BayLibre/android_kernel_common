@@ -37,6 +37,12 @@
 #include <linux/falloc.h>
 #include <linux/slab.h>
 #include <linux/kthread.h>
+<<<<<<< HEAD   (7de4cc ANDROID: add __module_get to db845c symbol list.)
+=======
+#include <linux/namei.h>
+#include <linux/freezer.h>
+
+>>>>>>> BRANCH (3feac2 sunrpc: exclude from freezer when waiting for requests:)
 #include <linux/sunrpc/addr.h>
 #include <linux/nfs_ssc.h>
 
@@ -1205,8 +1211,13 @@ try_again:
 			spin_unlock(&nn->nfsd_ssc_lock);
 
 			/* allow 20secs for mount/unmount for now - revisit */
+<<<<<<< HEAD   (7de4cc ANDROID: add __module_get to db845c symbol list.)
 			if (signal_pending(current) ||
 					(schedule_timeout(20*HZ) == 0)) {
+=======
+			if (kthread_should_stop() ||
+					(freezable_schedule_timeout(20*HZ) == 0)) {
+>>>>>>> BRANCH (3feac2 sunrpc: exclude from freezer when waiting for requests:)
 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
 				kfree(work);
 				return nfserr_eagain;
