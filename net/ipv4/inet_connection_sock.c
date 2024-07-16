@@ -22,6 +22,7 @@
 #include <net/tcp.h>
 #include <net/sock_reuseport.h>
 #include <net/addrconf.h>
+#include <trace/hooks/net.h>
 
 #if IS_ENABLED(CONFIG_IPV6)
 /* match_sk*_wildcard == true:  IPV6_ADDR_ANY equals to any IPv6 addresses
@@ -1255,6 +1256,7 @@ struct sock *inet_csk_clone_lock(const struct sock *sk,
 
 	inet_sk(newsk)->mc_list = NULL;
 
+<<<<<<< HEAD   (fec071c24f0608cd614124766c6166a02ce7479b ANDROID: vendor_hooks: add hooks in cpu_cgroup subsystem)
 	newsk->sk_mark = inet_rsk(req)->ir_mark;
 	atomic64_set(&newsk->sk_cookie,
 		     atomic64_read(&inet_rsk(req)->ir_cookie));
@@ -1274,6 +1276,15 @@ struct sock *inet_csk_clone_lock(const struct sock *sk,
 
 	security_inet_csk_clone(newsk, req);
 
+||||||| BASE   (d2d0d170018f82b7df924425c74f9dddf259096c ANDROID: GKI: load vendor modules without tainting the kerne)
+		security_inet_csk_clone(newsk, req);
+	}
+=======
+		security_inet_csk_clone(newsk, req);
+
+		trace_android_vh_inet_csk_clone_lock(newsk, req);
+	}
+>>>>>>> CHANGE (f1f0470b735771c63804bc7a975544ab5fc4fbe6 ANDROID: GKI: net: add vendor hook for network quality estim)
 	return newsk;
 }
 
