@@ -2361,7 +2361,7 @@ static int arm_smmu_insert_master(struct arm_smmu_device *smmu,
 
 		new_stream = &master->streams[i];
 		new_stream->id = sid;
-		new_stream->master = master;
+		new_stream->master = (struct arm_smmu_master *)master;
 
 		ret = arm_smmu_init_sid_strtab(smmu, sid);
 		if (ret)

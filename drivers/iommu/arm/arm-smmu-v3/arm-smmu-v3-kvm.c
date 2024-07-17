@@ -34,6 +34,8 @@ struct kvm_arm_smmu_master {
 	struct xarray			domains;
 	u32				ssid_bits;
 	bool				idmapped; /* Stage-2 is transparently identity mapped*/
+	struct arm_smmu_stream          *streams;
+	unsigned int                    num_streams;
 };
 
 struct kvm_arm_smmu_domain {
@@ -128,6 +130,81 @@ kvm_arm_smmu_get_by_fwnode(struct fwnode_handle *fwnode)
 
 static struct iommu_ops kvm_arm_smmu_ops;
 
+static int kvm_arm_smmu_insert_master(struct arm_smmu_device *smmu,
+				      struct kvm_arm_smmu_master *master)
+{
+	int i;
+	int ret = 0;
+	struct arm_smmu_stream *new_stream, *cur_stream;
+	struct rb_node **new_node, *parent_node = NULL;
+	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(master->dev);
+
+	master->streams = kcalloc(fwspec->num_ids, sizeof(*master->streams),
+				  GFP_KERNEL);
+	if (!master->streams)
+		return -ENOMEM;
+	master->num_streams = fwspec->num_ids;
+
+	mutex_lock(&smmu->streams_mutex);
+	for (i = 0; i < fwspec->num_ids; i++) {
+		u32 sid = fwspec->ids[i];
+
+		new_stream = &master->streams[i];
+		new_stream->id = sid;
+		new_stream->master = (struct kvm_arm_smmu_master *)master;
+
+		/* Insert into SID tree */
+		new_node = &(smmu->streams.rb_node);
+		while (*new_node) {
+			cur_stream = rb_entry(*new_node, struct arm_smmu_stream,
+					      node);
+			parent_node = *new_node;
+			if (cur_stream->id > new_stream->id) {
+				new_node = &((*new_node)->rb_left);
+			} else if (cur_stream->id < new_stream->id) {
+				new_node = &((*new_node)->rb_right);
+			} else {
+				dev_warn(master->dev,
+					 "stream %u already in tree\n",
+					 cur_stream->id);
+				ret = -EINVAL;
+				break;
+			}
+		}
+		if (ret)
+			break;
+
+		rb_link_node(&new_stream->node, parent_node, new_node);
+		rb_insert_color(&new_stream->node, &smmu->streams);
+	}
+
+	if (ret) {
+		for (i--; i >= 0; i--)
+			rb_erase(&master->streams[i].node, &smmu->streams);
+		kfree(master->streams);
+	}
+	mutex_unlock(&smmu->streams_mutex);
+
+	return ret;
+}
+
+static void kvm_arm_smmu_remove_master(struct kvm_arm_smmu_master *master)
+{
+	int i;
+	struct arm_smmu_device *smmu = master->smmu;
+	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(master->dev);
+
+	if (!smmu || !master->streams)
+		return;
+
+	mutex_lock(&smmu->streams_mutex);
+	for (i = 0; i < fwspec->num_ids; i++)
+		rb_erase(&master->streams[i].node, &smmu->streams);
+	mutex_unlock(&smmu->streams_mutex);
+
+	kfree(master->streams);
+}
+
 static struct iommu_device *kvm_arm_smmu_probe_device(struct device *dev)
 {
 	int ret;
@@ -155,6 +232,10 @@ static struct iommu_device *kvm_arm_smmu_probe_device(struct device *dev)
 	master->ssid_bits = min(smmu->ssid_bits, master->ssid_bits);
 	xa_init(&master->domains);
 	master->idmapped = device_property_read_bool(dev, "iommu-idmapped");
+	ret = kvm_arm_smmu_insert_master(smmu, master);
+	if (ret)
+		goto err_free;
+
 	dev_iommu_priv_set(dev, master);
 
 	if (!device_link_add(dev, smmu->dev,
@@ -307,6 +388,7 @@ static void kvm_arm_smmu_release_device(struct device *dev)
 	struct host_arm_smmu_device *host_smmu = smmu_to_host(master->smmu);
 
 	kvm_arm_smmu_detach_dev(host_smmu, master);
+	kvm_arm_smmu_remove_master(master);
 	xa_destroy(&master->domains);
 	kfree(master);
 	iommu_fwspec_free(dev);

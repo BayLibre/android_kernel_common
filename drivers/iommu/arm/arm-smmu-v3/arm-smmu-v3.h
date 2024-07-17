@@ -212,7 +212,7 @@ struct arm_smmu_device {
 
 struct arm_smmu_stream {
 	u32				id;
-	struct arm_smmu_master		*master;
+	void				*master;
 	struct rb_node			node;
 };
 
