@@ -423,7 +423,11 @@ int kvm_vgic_v4_unset_forwarding(struct kvm *kvm, int irq,
 				 struct kvm_kernel_irq_routing_entry *irq_entry);
 
 int vgic_v4_load(struct kvm_vcpu *vcpu);
+<<<<<<< HEAD   (c4f41a Revert "Merge 5.10.220 into android13-5.10-lts")
 void vgic_v4_commit(struct kvm_vcpu *vcpu);
 int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db);
+=======
+int vgic_v4_put(struct kvm_vcpu *vcpu);
+>>>>>>> BRANCH (6ab8b6 Linux 5.10.221)
 
 #endif /* __KVM_ARM_VGIC_H */
