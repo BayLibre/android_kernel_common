@@ -787,6 +787,77 @@ void arm_smmu_probe_irq(struct platform_device *pdev,
 	}
 }
 
+int arm_smmu_report_evt(struct arm_smmu_device *smmu, u64 *evt, struct device *dev,
+			struct iommu_fault_event *fault_evt)
+{
+	u32 reason;
+	u32 perm = 0;
+	bool ssid_valid = evt[0] & EVTQ_0_SSV;
+	struct iommu_fault *flt = &fault_evt->fault;
+
+	switch (FIELD_GET(EVTQ_0_ID, evt[0])) {
+	case EVT_ID_TRANSLATION_FAULT:
+		reason = IOMMU_FAULT_REASON_PTE_FETCH;
+		break;
+	case EVT_ID_ADDR_SIZE_FAULT:
+		reason = IOMMU_FAULT_REASON_OOR_ADDRESS;
+		break;
+	case EVT_ID_ACCESS_FAULT:
+		reason = IOMMU_FAULT_REASON_ACCESS;
+		break;
+	case EVT_ID_PERMISSION_FAULT:
+		reason = IOMMU_FAULT_REASON_PERMISSION;
+		break;
+	default:
+		return -EOPNOTSUPP;
+	}
+
+	/* Stage-2 is always pinned at the moment */
+	if (evt[1] & EVTQ_1_S2)
+		return -EFAULT;
+
+	if (evt[1] & EVTQ_1_RnW)
+		perm |= IOMMU_FAULT_PERM_READ;
+	else
+		perm |= IOMMU_FAULT_PERM_WRITE;
+
+	if (evt[1] & EVTQ_1_InD)
+		perm |= IOMMU_FAULT_PERM_EXEC;
+
+	if (evt[1] & EVTQ_1_PnU)
+		perm |= IOMMU_FAULT_PERM_PRIV;
+
+	if (evt[1] & EVTQ_1_STALL) {
+		flt->type = IOMMU_FAULT_PAGE_REQ;
+		flt->prm = (struct iommu_fault_page_request) {
+			.flags = IOMMU_FAULT_PAGE_REQUEST_LAST_PAGE,
+			.grpid = FIELD_GET(EVTQ_1_STAG, evt[1]),
+			.perm = perm,
+			.addr = FIELD_GET(EVTQ_2_ADDR, evt[2]),
+		};
+
+		if (ssid_valid) {
+			flt->prm.flags |= IOMMU_FAULT_PAGE_REQUEST_PASID_VALID;
+			flt->prm.pasid = FIELD_GET(EVTQ_0_SSID, evt[0]);
+		}
+	} else {
+		flt->type = IOMMU_FAULT_DMA_UNRECOV;
+		flt->event = (struct iommu_fault_unrecoverable) {
+			.reason = reason,
+			.flags = IOMMU_FAULT_UNRECOV_ADDR_VALID,
+			.perm = perm,
+			.addr = FIELD_GET(EVTQ_2_ADDR, evt[2]),
+		};
+
+		if (ssid_valid) {
+			flt->event.flags |= IOMMU_FAULT_UNRECOV_PASID_VALID;
+			flt->event.pasid = FIELD_GET(EVTQ_0_SSID, evt[0]);
+		}
+	}
+
+	return iommu_report_device_fault(dev, fault_evt);
+}
+
 int arm_smmu_register_iommu(struct arm_smmu_device *smmu,
 			    struct iommu_ops *ops, phys_addr_t ioaddr)
 {
