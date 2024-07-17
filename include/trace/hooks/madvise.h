@@ -15,6 +15,12 @@ struct vm_area_struct;
 DECLARE_HOOK(android_vh_update_vma_flags,
 	TP_PROTO(struct vm_area_struct *vma),
 	TP_ARGS(vma));
+DECLARE_HOOK(android_vh_madvise_pageout_return_error,
+	TP_PROTO(bool *return_error),
+	TP_ARGS(return_error));
+DECLARE_HOOK(android_vh_process_madvise_return_error,
+	TP_PROTO(bool *return_error),
+	TP_ARGS(return_error));
 
 #endif
 
