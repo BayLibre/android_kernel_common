@@ -75,6 +75,7 @@
 #include <trace/hooks/blk.h>
 #include <trace/hooks/suspend.h>
 #include <trace/hooks/fsnotify.h>
+#include <trace/hooks/perf.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -445,3 +446,24 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_warn_alloc_tune_ratelimit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_warn_alloc_show_mem_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_use_vm_swappiness);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fsnotify_open);
+<<<<<<< HEAD   (0218a9 Merge 6.6.43 into android15-6.6-lts)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_control);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_smaps_swap_shared);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_smap_swap_shared);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_armv8pmu_counter_overflowed);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_perf_rotate_context);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_process_madvise_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_prepare_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_ok_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_split_large_folio_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_pageout_return_error);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_process_madvise_return_error);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_pageout_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_set_max_retries);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_folio_trylock);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_get_folio_trylock_result);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_trylock_clear);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_trylock_set);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_handle_trylock_failed_folio);
+>>>>>>> CHANGE (eec127 ANDROID: vendor_hooks:vendor hook for perf)
