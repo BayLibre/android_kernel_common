@@ -124,6 +124,24 @@
       "parentUuid": "e4b7a529_dee6bd9d",
       "revId": "cb42bd9e7db14a102ec3dd16972b5d0497a283be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8514eaa_e1e39786",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1561651
+      },
+      "writtenOn": "2024-07-18T03:17:47Z",
+      "side": 1,
+      "message": "\u003e there is now no one responsible for maintaining it [...]\n\nThere is, this is our team (Android Platform Security). And as I mentioned above, I\u0027ll be following up on the patches.\n\n\u003e Relying on a rejected user/kernel api [...]\n\nThe patch wasn\u0027t rejected. If you look at the discussion (https://lore.kernel.org/selinux/20211110111308.3463879-1-brambonne@google.com/T/#u), there was simply some feedback on how the implementation should be done (and how some tests should be added). \n\nAlso, these changes were added to address a security vulnerability in Android (CVE-2020-0293). Reverting them now would reintroduce this vulnerability.",
+      "parentUuid": "f38900de_44e1b7fa",
+      "revId": "cb42bd9e7db14a102ec3dd16972b5d0497a283be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
