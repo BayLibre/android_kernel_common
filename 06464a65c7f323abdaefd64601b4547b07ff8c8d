@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a33c131c_4008394d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1988826
+      },
+      "writtenOn": "2024-07-18T02:49:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b44f1cd6_05ae5efa",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 74
+      },
+      "revId": "06464a65c7f323abdaefd64601b4547b07ff8c8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf145258_bb1471ce",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-18T02:37:49Z",
       "side": 1,
       "message": "I think this block should be after `skip` label since `trace_android_vh_free_pages_prepare_bypass` is supposed to skip only `free_pages_prepare`. Does that make any difference for your module if it\u0027s moved that way?",
+      "range": {
+        "startLine": 1369,
+        "startChar": 1,
+        "endLine": 1371,
+        "endChar": 9
+      },
+      "revId": "06464a65c7f323abdaefd64601b4547b07ff8c8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0ec649e_d21e76ac",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1371,
+      "author": {
+        "id": 1988826
+      },
+      "writtenOn": "2024-07-18T02:49:22Z",
+      "side": 1,
+      "message": "No, it won\u0027t make any differences.\nIt will be just skipped from vendor module.\nBut I think this is the right position for this vendor hook,\nbecause it is to try to hook the pages after free_pages_prepare.",
+      "parentUuid": "cf145258_bb1471ce",
       "range": {
         "startLine": 1369,
         "startChar": 1,
