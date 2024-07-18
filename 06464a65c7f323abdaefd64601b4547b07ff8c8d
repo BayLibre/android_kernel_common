@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b44f1cd6_05ae5efa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-18T02:37:49Z",
+      "side": 1,
+      "message": "line is too long. Please break it to keep lines under 75 chars.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 74
+      },
+      "revId": "06464a65c7f323abdaefd64601b4547b07ff8c8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf145258_bb1471ce",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1371,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-18T02:37:49Z",
+      "side": 1,
+      "message": "I think this block should be after `skip` label since `trace_android_vh_free_pages_prepare_bypass` is supposed to skip only `free_pages_prepare`. Does that make any difference for your module if it\u0027s moved that way?",
+      "range": {
+        "startLine": 1369,
+        "startChar": 1,
+        "endLine": 1371,
+        "endChar": 9
+      },
+      "revId": "06464a65c7f323abdaefd64601b4547b07ff8c8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
