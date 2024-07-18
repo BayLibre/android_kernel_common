@@ -51,6 +51,41 @@
       "parentUuid": "4520b442_19870984",
       "revId": "ca309998b54972f4fb2832e7993278df44e2077f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd558b4b_2ab75c7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-18T20:02:16Z",
+      "side": 1,
+      "message": "I guess it is upstream, sorry about that. However it does change the output for this event which could break tools like perfetto which rely on this event. Discussing the best patch forward...",
+      "revId": "ca309998b54972f4fb2832e7993278df44e2077f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e98ee1e2_abcf25c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-18T20:02:16Z",
+      "side": 1,
+      "message": "Oh, but it is upstream and your BACKPORT looks clean. Sorry about the noise.",
+      "parentUuid": "4520b442_19870984",
+      "revId": "ca309998b54972f4fb2832e7993278df44e2077f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
