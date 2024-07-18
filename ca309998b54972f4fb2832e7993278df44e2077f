@@ -16,6 +16,23 @@
       "message": "Giuliano: Just want to double check on this, does adding entries to traceevents not affect KABI?",
       "revId": "ca309998b54972f4fb2832e7993278df44e2077f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4520b442_19870984",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-18T19:34:40Z",
+      "side": 1,
+      "message": "Actually, this is a change to an upstream event so it changes UAPI. Please submit this upstream. If you want to capture some additional information, you can also attach to this tracepoint from a vendor module.",
+      "revId": "ca309998b54972f4fb2832e7993278df44e2077f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
