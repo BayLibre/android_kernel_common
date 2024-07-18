@@ -61,6 +61,7 @@
 #include <trace/hooks/signal.h>
 #include <trace/hooks/softlockup.h>
 #include <trace/hooks/suspend.h>
+<<<<<<< HEAD   (47923b213cfafd8a9f85b58b7ac6aaef7dae909e ANDROID: pKVM: VMX: Unmap pKVM memory from the host kernel d)
 #include <trace/hooks/sys.h>
 #include <trace/hooks/syscall_check.h>
 #include <trace/hooks/sysrqcrash.h>
@@ -79,6 +80,12 @@
  * due TRACE_INCLUDE_PATH is being redefined.
  */
 #include <trace/events/android_vendor_lmk.h>
+||||||| BASE   (b53f1b55763a5bfef41013af8994c9b56a0c3754 UPSTREAM: scsi: ufs: core: Fix ufshcd_abort_one racing issue)
+#include <trace/hooks/fsnotify.h>
+=======
+#include <trace/hooks/fsnotify.h>
+#include <trace/hooks/perf.h>
+>>>>>>> CHANGE (eec127b5484d09fef414b9914710cd1faa7be1bc ANDROID: vendor_hooks:vendor hook for perf)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -461,6 +468,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rcu_boost_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rcu_boost_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_readahead_add_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rebalance_anon_lru_bypass);
+<<<<<<< HEAD   (47923b213cfafd8a9f85b58b7ac6aaef7dae909e ANDROID: pKVM: VMX: Unmap pKVM memory from the host kernel d)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_receive_sock);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_reclaim_before_kswapd);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_record_rwsem_reader_owned);
@@ -534,6 +542,35 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_slab_free);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_smaps_pte_entry);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sock_create);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_spec_promote_folio);
+||||||| BASE   (b53f1b55763a5bfef41013af8994c9b56a0c3754 UPSTREAM: scsi: ufs: core: Fix ufshcd_abort_one racing issue)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_debug_show_areas);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_contig_range_not_isolated);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_warn_alloc_tune_ratelimit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_warn_alloc_show_mem_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_use_vm_swappiness);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fsnotify_open);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_control);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_smaps_swap_shared);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_smap_swap_shared);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_process_madvise_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_prepare_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_ok_bypass);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_debug_show_areas);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_contig_range_not_isolated);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_warn_alloc_tune_ratelimit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_warn_alloc_show_mem_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_use_vm_swappiness);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fsnotify_open);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_control);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_smaps_swap_shared);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_smap_swap_shared);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_armv8pmu_counter_overflowed);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_perf_rotate_context);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_process_madvise_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_prepare_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_ok_bypass);
+>>>>>>> CHANGE (eec127b5484d09fef414b9914710cd1faa7be1bc ANDROID: vendor_hooks:vendor hook for perf)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_split_large_folio_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swap_writepage);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swap_writepage_end);

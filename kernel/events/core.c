@@ -56,8 +56,14 @@
 #include <linux/pgtable.h>
 #include <linux/buildid.h>
 #include <linux/task_work.h>
+<<<<<<< HEAD   (47923b213cfafd8a9f85b58b7ac6aaef7dae909e ANDROID: pKVM: VMX: Unmap pKVM memory from the host kernel d)
 #include <linux/percpu-rwsem.h>
 
+||||||| BASE   (b53f1b55763a5bfef41013af8994c9b56a0c3754 UPSTREAM: scsi: ufs: core: Fix ufshcd_abort_one racing issue)
+
+=======
+#include <trace/hooks/perf.h>
+>>>>>>> CHANGE (eec127b5484d09fef414b9914710cd1faa7be1bc ANDROID: vendor_hooks:vendor hook for perf)
 #include "internal.h"
 
 #include <asm/irq_regs.h>
@@ -4468,6 +4474,8 @@ static bool perf_rotate_context(struct perf_cpu_pmu_context *cpc)
 
 	perf_ctx_lock(cpuctx, cpuctx->task_ctx);
 	perf_pmu_disable(pmu);
+
+	trace_android_rvh_perf_rotate_context(cpc);
 
 	if (task_rotate)
 		task_event = ctx_event_to_rotate(task_epc);
