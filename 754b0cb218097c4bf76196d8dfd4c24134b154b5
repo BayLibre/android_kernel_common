@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08a874d9_792fb52d",
+        "filename": "include/ufs/ufshcd.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2024-07-18T21:56:38Z",
+      "side": 1,
+      "message": "I\u0027d prefer adding \"layout\" because we care about that too. So something like,\n\n\"Using a hole for the new field here to avoid affecting the layout of the existing fields and the size of the struct\"\n\nBut it\u0027s a nit and I\u0027ll +2 it as is.",
+      "range": {
+        "startLine": 464,
+        "startChar": 48,
+        "endLine": 464,
+        "endChar": 52
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "33f4b21d_f67812ed",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/ufs/ufshcd.h",
+              "range": {
+                "startLine": 464,
+                "startChar": 0,
+                "endLine": 465,
+                "endChar": 0
+              },
+              "replacement": "\t/* Using a hole for the new field here to avoid affecting the layout of\n\t * the existing fields and the size of the struct.\n\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "754b0cb218097c4bf76196d8dfd4c24134b154b5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
