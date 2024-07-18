@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dc41a9b_9b7e5753",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1370,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-18T23:11:20Z",
+      "side": 1,
+      "message": "You are reusing `bypass`, so you need to reset it back to `false` before reusing it.",
+      "range": {
+        "startLine": 1370,
+        "startChar": 1,
+        "endLine": 1370,
+        "endChar": 38
+      },
+      "revId": "2005de7b93de7c2cec4e207cae3fa584c0170b81",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
