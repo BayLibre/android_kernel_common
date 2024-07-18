@@ -441,4 +441,12 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_get_folio_trylock_result);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_trylock_clear);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_trylock_set);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_handle_trylock_failed_folio);
+<<<<<<< HEAD   (6cbdf0 ANDROID: Update the ABI symbol list)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_hibernate_state);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_try_alloc_pages);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dmabuf_page_pool_free_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_read_fault);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_read);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_map_pages);
+>>>>>>> CHANGE (a9867d ANDROID: mm: add vendor hook in fault and read file)
