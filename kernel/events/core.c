@@ -12784,12 +12784,14 @@ err_fd:
  * @attr: attributes of the counter to create
  * @cpu: cpu in which the counter is bound
  * @task: task to profile (NULL for percpu)
+ * @group_leader: the group leader of events
  * @overflow_handler: callback to trigger when we hit the event
  * @context: context data could be used in overflow_handler callback
  */
-struct perf_event *
-perf_event_create_kernel_counter(struct perf_event_attr *attr, int cpu,
+static struct perf_event *
+_perf_event_create_kernel_counter(struct perf_event_attr *attr, int cpu,
 				 struct task_struct *task,
+				 struct perf_event *group_leader,
 				 perf_overflow_handler_t overflow_handler,
 				 void *context)
 {
@@ -12806,7 +12808,7 @@ perf_event_create_kernel_counter(struct perf_event_attr *attr, int cpu,
 	if (attr->aux_output)
 		return ERR_PTR(-EINVAL);
 
-	event = perf_event_alloc(attr, cpu, task, NULL, NULL,
+	event = perf_event_alloc(attr, cpu, task, group_leader, NULL,
 				 overflow_handler, context, -1);
 	if (IS_ERR(event)) {
 		err = PTR_ERR(event);
@@ -12881,7 +12883,27 @@ err_alloc:
 err:
 	return ERR_PTR(err);
 }
+
+struct perf_event *
+perf_event_create_kernel_counter(struct perf_event_attr *attr, int cpu,
+				 struct task_struct *task,
+				 perf_overflow_handler_t overflow_handler,
+				 void *context)
+{
+	return _perf_event_create_kernel_counter(attr, cpu, task, NULL, overflow_handler, context);
+}
 EXPORT_SYMBOL_GPL(perf_event_create_kernel_counter);
+
+struct perf_event *
+perf_event_create_group_counter(struct perf_event_attr *attr, int cpu,
+				       struct task_struct *task,
+				       struct perf_event *group_leader,
+				       perf_overflow_handler_t overflow_handler,
+				       void *context)
+{
+	return _perf_event_create_kernel_counter(attr, cpu, task, group_leader, overflow_handler, context);
+}
+EXPORT_SYMBOL_GPL(perf_event_create_group_counter);
 
 static void __perf_pmu_remove(struct perf_event_context *ctx,
 			      int cpu, struct pmu *pmu,
