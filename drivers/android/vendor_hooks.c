@@ -566,3 +566,13 @@ EXPORT_SYMBOL_GPL(GKI_struct_gic_chip_data);
 #include <linux/swap_slots.h>
 const struct swap_slots_cache *GKI_struct_swap_slots_cache;
 EXPORT_SYMBOL_GPL(GKI_struct_swap_slots_cache);
+<<<<<<< HEAD   (af9200 UPSTREAM: vsock/virtio: Initialization of the dangling point)
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_io_statistics);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_io_statistics);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_should_fault_around);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_read_fault);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_read);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_map_pages);
+>>>>>>> CHANGE (577ed0 ANDROID: mm: add vendor hook in fault and read file)
