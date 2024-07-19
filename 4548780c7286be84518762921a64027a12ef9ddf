@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61663d7e_ba850d97",
+        "filename": "BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2024-07-19T00:29:12Z",
+      "side": 1,
+      "message": "\u003e File is not formatted. Run `buildifier BUILD.bazel` to format the file, or apply the suggested fix.\n\nPlease fix.",
+      "parentUuid": "7cdfec73_2fcd93de",
+      "revId": "4548780c7286be84518762921a64027a12ef9ddf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a320305_84ffa6bd",
+        "filename": "BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2024-07-19T00:29:12Z",
+      "side": 1,
+      "message": "nit: `not e.endswith(\"/kunit.ko\")`\n\nor even\n\n`not e.endswith(\"/kunit.ko\") and e !\u003d \"kunit.ko\"`\n\nto be pedantically correct.",
+      "range": {
+        "startLine": 90,
+        "startChar": 60,
+        "endLine": 90,
+        "endChar": 79
+      },
+      "revId": "4548780c7286be84518762921a64027a12ef9ddf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d1cc928_abf1a6fa",
+        "filename": "tools/testing/android/bin/kselftest.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2024-07-19T00:29:12Z",
+      "side": 1,
+      "message": "@maennich@google.com FYI\n\nBazel has its bundled JDK so I thought we were going to drop prebuilts/jdk from the manifest. But after this change we\u0027ll need it for tradefed.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 38
+      },
+      "revId": "4548780c7286be84518762921a64027a12ef9ddf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
