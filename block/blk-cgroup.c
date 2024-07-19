@@ -1484,9 +1484,6 @@ int blkcg_init_disk(struct gendisk *disk)
 	if (preloaded)
 		radix_tree_preload_end();
 
-	ret = blk_ioprio_init(disk);
-	if (ret)
-		goto err_destroy_all;
 
 	ret = blk_throtl_init(disk);
 	if (ret)
@@ -1496,9 +1493,6 @@ int blkcg_init_disk(struct gendisk *disk)
 
 err_ioprio_exit:
 	blk_ioprio_exit(disk);
-err_destroy_all:
-	blkg_destroy_all(disk);
-	return ret;
 err_unlock:
 	spin_unlock_irq(&q->queue_lock);
 	if (preloaded)
