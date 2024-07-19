@@ -16,6 +16,41 @@
       "message": "See comments on bug.",
       "revId": "3c8bef25816127d1ce5d29a68727dcc730e0e3ee",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f794e939_b2b875a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1878708
+      },
+      "writtenOn": "2024-07-19T02:42:17Z",
+      "side": 1,
+      "message": "We strongly expect to synchronize this patch so that we can register a wake-up source for devices such as mice.\n\nAt present, the usbhid doesn\u0027t support the mouse as a wake-up source, and similar issues have occurred with keyboards in the past.\nHowever, the commit \u00273d61510f4eca\u0027 (\"HID: usbhid: enable remote wakeup for keyboards\") fixed this issue.\n\nIn order to support mouse wake-up, we submitted a patch to the Linux open source community last year, but it was rejected.\nPlease refer to the details:\nhttps://patchwork.kernel.org/project/linux-usb/patch/20230222013944.31095-1-michael@allwinnertech.com/\n\nTherefore, we have to continue using the 5.15 kernel approach and register the wake-up source for mouse devices through vendor hooks.",
+      "parentUuid": "a143d6e4_086bdec7",
+      "revId": "3c8bef25816127d1ce5d29a68727dcc730e0e3ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6af23fa6_06ab17ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1878708
+      },
+      "writtenOn": "2024-07-19T02:42:17Z",
+      "side": 1,
+      "message": "We strongly expect to synchronize this patch so that we can register a wake-up source for devices such as mice.\n\nAt present, the usbhid doesn\u0027t support the mouse as a wake-up source, and similar issues have occurred with keyboards in the past.\nHowever, the commit \u00273d61510f4eca\u0027 (\"HID: usbhid: enable remote wakeup for keyboards\") fixed this issue.\n\nIn order to support mouse wake-up, we submitted a patch to the Linux open source community last year, but it was rejected.\nPlease refer to the details:\nhttps://patchwork.kernel.org/project/linux-usb/patch/20230222013944.31095-1-michael@allwinnertech.com/\n\nTherefore, we have to continue using the 5.15 kernel approach and register the wake-up source for mouse devices through vendor hooks.",
+      "revId": "3c8bef25816127d1ce5d29a68727dcc730e0e3ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
