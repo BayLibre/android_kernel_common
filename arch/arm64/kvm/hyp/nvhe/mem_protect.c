@@ -2309,6 +2309,63 @@ unlock:
 	return ret;
 }
 
+int module_unmap_host(u64 pfn, u64 nr_pages)
+{
+	u64 size = nr_pages << PAGE_SHIFT;
+	u64 addr = hyp_pfn_to_phys(pfn);
+	struct memblock_region *reg;
+	struct kvm_mem_range range;
+	int ret;
+
+	reg = find_mem_range(addr, &range);
+	if (!reg)
+		return -EPERM;
+
+	host_lock_component();
+
+	ret = ___host_check_page_state_range(addr, size, PKVM_PAGE_OWNED, reg);
+	if (ret)
+		goto unlock;
+
+	ret = kvm_pgtable_stage2_get_pages(&host_mmu.pgt, addr, size,
+					   &host_s2_pool);
+
+unlock:
+	host_unlock_component();
+
+	return ret;
+}
+
+int module_remap_host(u64 pfn, u64 nr_pages)
+{
+	u64 size = nr_pages << PAGE_SHIFT;
+	u64 addr = hyp_pfn_to_phys(pfn);
+	struct memblock_region *reg;
+	struct kvm_mem_range range;
+	int ret;
+
+	reg = find_mem_range(addr, &range);
+	if (!reg)
+		return -EPERM;
+
+	host_lock_component();
+
+	ret = ___host_check_page_state_range(addr, size, PKVM_PAGE_OWNED, reg);
+	if (ret)
+		goto unlock;
+
+	ret = kvm_pgtable_stage2_put_pages(&host_mmu.pgt, addr, size);
+	if (ret)
+		goto unlock;
+
+	ret = host_stage2_idmap_locked(addr, size, PKVM_HOST_MEM_PROT, false);
+
+unlock:
+	host_unlock_component();
+
+	return ret;
+}
+
 int hyp_pin_shared_mem(void *from, void *to)
 {
 	u64 cur, start = ALIGN_DOWN((u64)from, PAGE_SIZE);

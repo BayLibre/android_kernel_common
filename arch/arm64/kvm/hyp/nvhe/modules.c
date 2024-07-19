@@ -153,6 +153,8 @@ const struct pkvm_module_ops module_ops = {
 	.iommu_snapshot_host_stage2 = kvm_iommu_snapshot_host_stage2,
 	.hyp_smp_processor_id = _hyp_smp_processor_id,
 	.iommu_flush_unmap_cache = kvm_iommu_flush_unmap_cache,
+	.host_stage2_unmap = module_unmap_host,
+	.host_stage2_remap = module_remap_host,
 };
 
 int __pkvm_init_module(void *module_init)
