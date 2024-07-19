@@ -122,6 +122,23 @@
       "parentUuid": "bd558b4b_2ab75c7d",
       "revId": "ca309998b54972f4fb2832e7993278df44e2077f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a8130f1_74e5c3a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945342
+      },
+      "writtenOn": "2024-07-19T02:14:58Z",
+      "side": 1,
+      "message": "Adding a field to a trace event should never cause issues. The binary location of the fields must be found via the `format` files, which I believe Perfetto uses.\n```\n# cat /sys/kernel/tracing/events/block/block_rq_requeue/format \nname: block_rq_requeue\nID: 1420\nformat:\n\tfield:unsigned short common_type;\toffset:0;\tsize:2;\tsigned:0;\n\tfield:unsigned char common_flags;\toffset:2;\tsize:1;\tsigned:0;\n\tfield:unsigned char common_preempt_count;\toffset:3;\tsize:1;\tsigned:0;\n\tfield:int common_pid;\toffset:4;\tsize:4;\tsigned:1;\n\n\tfield:dev_t dev;\toffset:8;\tsize:4;\tsigned:0;\n\tfield:sector_t sector;\toffset:16;\tsize:8;\tsigned:0;\n\tfield:unsigned int nr_sector;\toffset:24;\tsize:4;\tsigned:0;\n\tfield:char rwbs[8];\toffset:28;\tsize:8;\tsigned:0;\n\tfield:__data_loc char[] cmd;\toffset:36;\tsize:4;\tsigned:0;\n```",
+      "revId": "ca309998b54972f4fb2832e7993278df44e2077f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
