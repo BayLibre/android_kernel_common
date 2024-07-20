@@ -260,7 +260,11 @@ void unix_gc(void)
 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
 
 			if (sk->sk_state == TCP_LISTEN) {
+<<<<<<< HEAD   (e0ab53 UPSTREAM: f2fs: avoid false alarm of circular locking)
 				unix_state_lock(sk);
+=======
+				unix_state_lock_nested(sk, U_LOCK_GC_LISTENER);
+>>>>>>> BRANCH (3a2d22 Merge 5.10.218 into android12-5.10-lts)
 				unix_state_unlock(sk);
 			}
 		}
