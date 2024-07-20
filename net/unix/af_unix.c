@@ -2578,9 +2578,16 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
 			} else if (flags & MSG_PEEK) {
 				skb = NULL;
 			} else {
+<<<<<<< HEAD   (440655 ANDROID: 16K: Don't set padding vm_flags on 32-bit archs)
 				__skb_unlink(skb, &sk->sk_receive_queue);
 				WRITE_ONCE(u->oob_skb, NULL);
 				unlinked_skb = skb;
+=======
+				skb_unlink(skb, &sk->sk_receive_queue);
+				WRITE_ONCE(u->oob_skb, NULL);
+				if (!WARN_ON_ONCE(skb_unref(skb)))
+					kfree_skb(skb);
+>>>>>>> BRANCH (4f5ee1 Merge 5.15.158 into android14-5.15-lts)
 				skb = skb_peek(&sk->sk_receive_queue);
 			}
 		}
@@ -2662,6 +2669,7 @@ redo:
 		last = skb = skb_peek(&sk->sk_receive_queue);
 		last_len = last ? last->len : 0;
 
+again:
 #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
 		if (skb) {
 			skb = manage_oob(skb, sk, flags, copied);
@@ -2671,7 +2679,6 @@ redo:
 			}
 		}
 #endif
-again:
 		if (skb == NULL) {
 			if (copied >= target)
 				goto unlock;
