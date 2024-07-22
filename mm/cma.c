@@ -444,6 +444,8 @@ struct page *__cma_alloc(struct cma *cma, unsigned long count,
 	if (!count)
 		return page;
 
+	trace_android_vh_cma_alloc_set_max_retries(&max_retries);
+
 	mask = cma_bitmap_aligned_mask(cma, align);
 	offset = cma_bitmap_aligned_offset(cma, align);
 	bitmap_maxno = cma_bitmap_maxno(cma);
