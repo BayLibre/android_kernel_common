@@ -453,3 +453,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_pageout_return_error);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_process_madvise_return_error);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_pageout_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_set_max_retries);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_try_alloc_pages);
