@@ -331,6 +331,9 @@ DECLARE_HOOK(android_vh_compact_finished,
 DECLARE_HOOK(android_vh_madvise_cold_or_pageout_abort,
 	TP_PROTO(struct vm_area_struct *vma, bool *abort_madvise),
 	TP_ARGS(vma, abort_madvise));
+DECLARE_HOOK(android_vh_cma_alloc_set_max_retries,
+	TP_PROTO(int *max_retries),
+	TP_ARGS(max_retries));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
