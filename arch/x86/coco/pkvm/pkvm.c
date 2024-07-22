@@ -38,7 +38,7 @@ int pkvm_set_mem_host_visibility(unsigned long addr, int numpages, bool enc)
 
 __init void pkvm_guest_init_coco(void)
 {
-	cc_set_vendor(CC_VENDOR_PKVM);
+	cc_vendor = CC_VENDOR_PKVM;
 
 	pkvm_guest_detected = true;
 }
