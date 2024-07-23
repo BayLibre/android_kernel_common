@@ -16,6 +16,24 @@
       "message": "Greg: As you haven\u0027t yet merged latest 6.1-stable branch into android14-6.1-lts, this isn\u0027t yet ready to apply, but once you do and revert the underlying change, this will be ready to be rebased and applied to fix the KABI issue.",
       "revId": "d6306f9d5cf98a87ec8bfd3575e3b61720a0c7ee",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83d3969b_d893a89b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-07-23T16:22:38Z",
+      "side": 1,
+      "message": "I would prefer to do a backmerge from `android14-6.1` instead, I can do that now if that is easier, adding patches to the -lts branch is generally not a good idea (merges get hard and sometimes go the wrong way.)",
+      "parentUuid": "1760d706_62d772c7",
+      "revId": "d6306f9d5cf98a87ec8bfd3575e3b61720a0c7ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
