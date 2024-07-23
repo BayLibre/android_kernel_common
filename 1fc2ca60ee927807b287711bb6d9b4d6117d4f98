@@ -22,6 +22,30 @@
       },
       "revId": "1fc2ca60ee927807b287711bb6d9b4d6117d4f98",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b67ed3e4_b868f43d",
+        "filename": "mm/memblock.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2196,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-23T20:01:46Z",
+      "side": 1,
+      "message": "This is the reason presubmits fail with ```/tmp/bazel-working-directory/_main/common/mm/memblock.c:2282:13: error: unused function \u0027memblock_memsize_free\u0027 [-Werror,-Wunused-function]\n 2282 | static void memblock_memsize_free(phys_addr_t free_base,\n      |             ^~~~~~~~~~~~~~~~~~~~~\n1 error generated.```",
+      "parentUuid": "bfbdf7e0_123185fc",
+      "range": {
+        "startLine": 2195,
+        "startChar": 0,
+        "endLine": 2196,
+        "endChar": 30
+      },
+      "revId": "1fc2ca60ee927807b287711bb6d9b4d6117d4f98",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
