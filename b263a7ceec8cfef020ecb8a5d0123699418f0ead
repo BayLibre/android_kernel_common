@@ -16,6 +16,24 @@
       "message": "Abi changes are ok, see commit a4a2b7a82ee4 for details.",
       "revId": "b263a7ceec8cfef020ecb8a5d0123699418f0ead",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cffdc1c3_cc1e9ed3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-07-23T11:36:35Z",
+      "side": 1,
+      "message": "ABI changes are not OK. You should never bypass ABI Compliance failures.\n\nThat commit is not reflected in the final merge for some reason.\n\n```\n$ git show a4a2b7a82ee4:android/abi_gki_aarch64.xml | grep clk_core\n      \u003cclass-decl name\u003d\u0027clk_core\u0027 size-in-bits\u003d\u00272112\u0027 is-struct\u003d\u0027yes\u0027 visibility\u003d\u0027default\u0027 filepath\u003d\u0027drivers/clk/clk.c\u0027 line\u003d\u002760\u0027 column\u003d\u00271\u0027 id\u003d\u0027636cc9ab\u0027\u003e\n$ git show b263a7ceec8cfef020ecb8a5d0123699418f0ead:android/abi_gki_aarch64.xml | grep clk_core\n      \u003cclass-decl name\u003d\u0027clk_core\u0027 size-in-bits\u003d\u00271984\u0027 is-struct\u003d\u0027yes\u0027 visibility\u003d\u0027default\u0027 filepath\u003d\u0027drivers/clk/clk.c\u0027 line\u003d\u002756\u0027 column\u003d\u00271\u0027 id\u003d\u0027636cc9ab\u0027\u003e\n```",
+      "parentUuid": "0d0b1ebc_b57591c9",
+      "revId": "b263a7ceec8cfef020ecb8a5d0123699418f0ead",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
