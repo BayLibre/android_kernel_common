@@ -1754,6 +1754,7 @@ void handle_trap(struct kvm_cpu_context *host_ctxt)
 	switch (ESR_ELx_EC(esr)) {
 	case ESR_ELx_EC_HVC64:
 		handle_host_hcall(host_ctxt);
+		trace_hyp_printk("hcall!!");
 		break;
 	case ESR_ELx_EC_SMC64:
 		handle_host_smc(host_ctxt);

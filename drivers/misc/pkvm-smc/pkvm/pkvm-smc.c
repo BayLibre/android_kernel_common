@@ -9,16 +9,18 @@
 #include <linux/arm-smccc.h>
 #include <linux/bsearch.h>
 
-#include "events.h"
-#define HYP_EVENT_FILE ../../../../drivers/misc/pkvm-smc/pkvm/events.h
-#include <define_events.h>
+//#include "events.h"
+//#define HYP_EVENT_FILE ../../../../drivers/misc/pkvm-smc/pkvm/events.h
+//#include <define_events.h>
 
 const struct pkvm_module_ops *pkvm_ops;
 bool permissive;
 
+#include <trace.h>
+
 #ifdef CONFIG_TRACING
-extern struct hyp_event_id __hyp_event_ids_start[];
-extern struct hyp_event_id __hyp_event_ids_end[];
+//extern struct hyp_event_id __hyp_event_ids_start[];
+//extern struct hyp_event_id __hyp_event_ids_end[];
 
 void *tracing_reserve_entry(unsigned long length)
 {
@@ -29,6 +31,11 @@ void tracing_commit_entry(void)
 {
 	pkvm_ops->tracing_commit_entry();
 }
+
+void trace___hyp_printk(u8 fmt_id, u64 a, u64 b, u64 c, u64 d)
+{
+	pkvm_ops->tracing_mod_hyp_printk(fmt_id, a, b, c, d);
+}
 #endif
 
 struct pkvm_smc_filter {
@@ -38,7 +45,7 @@ struct pkvm_smc_filter {
 
 static bool deny_smc(struct user_pt_regs *regs)
 {
-	trace_filtered_smc(regs->regs[0]);
+	//trace_filtered_smc(regs->regs[0]);
 
 	if (permissive)
 		return false;
@@ -135,9 +142,14 @@ bool filter_smc(struct user_pt_regs *regs)
 int pkvm_smc_filter_hyp_init(const struct pkvm_module_ops *ops)
 {
 #ifdef CONFIG_TRACING
-	ops->register_hyp_event_ids((unsigned long)__hyp_event_ids_start,
-				    (unsigned long)__hyp_event_ids_end);
+	//ops->register_hyp_event_ids((unsigned long)__hyp_event_ids_start,
+	//			    (unsigned long)__hyp_event_ids_end);
 #endif
 	pkvm_ops = ops;
+
+	//trace_hyp_printk("Test!!!");
+	//trace_hyp_printk("Test2!!!");
+	//trace_hyp_printk("Test3!!!");
+
 	return ops->register_host_smc_handler(filter_smc);
 }
