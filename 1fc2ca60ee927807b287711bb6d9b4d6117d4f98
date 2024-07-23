@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfbdf7e0_123185fc",
+        "filename": "mm/memblock.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2196,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-23T20:00:51Z",
+      "side": 1,
+      "message": "This function should be under\n```\n#if defined(CONFIG_DEBUG_FS) \u0026\u0026 defined(CONFIG_ARCH_KEEP_MEMBLOCK)\n```\ncondition because its user will have the same condition (see line 2443).",
+      "range": {
+        "startLine": 2195,
+        "startChar": 0,
+        "endLine": 2196,
+        "endChar": 30
+      },
+      "revId": "1fc2ca60ee927807b287711bb6d9b4d6117d4f98",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
