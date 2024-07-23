@@ -302,6 +302,7 @@ int kvm_iommu_free_domain(pkvm_handle_t domain_id)
 {
 	int ret = 0;
 	struct kvm_hyp_iommu_domain *domain;
+	struct kvm_iommu_paddr_cache *cache = this_cpu_ptr(&kvm_iommu_unmap_cache);
 
 	domain = handle_to_domain(domain_id);
 	ret = access_allowed(domain);
@@ -314,7 +315,8 @@ int kvm_iommu_free_domain(pkvm_handle_t domain_id)
 		goto out_unlock;
 	}
 
-	kvm_iommu_ops->free_domain(domain);
+	kvm_iommu_ops->force_free_domain(domain, cache);
+	kvm_iommu_flush_unmap_cache(cache);
 
 	/* Set domain->refs to 0 and mark it as unused. */
 	memset(domain, 0, sizeof(*domain));
