@@ -203,12 +203,12 @@ struct tee_shm *tee_shm_alloc_priv_buf(struct tee_context *ctx, size_t size)
 EXPORT_SYMBOL_GPL(tee_shm_alloc_priv_buf);
 
 static struct tee_shm *
-register_shm_helper(struct tee_context *ctx, struct iov_iter *iter, u32 flags,
+register_shm_helper(struct tee_context *ctx, unsigned long addr, struct iov_iter *iter, u32 flags,
 		    int id)
 {
 	struct tee_device *teedev = ctx->teedev;
 	struct tee_shm *shm;
-	unsigned long start, addr;
+	unsigned long start;
 	size_t num_pages, off;
 	ssize_t len;
 	void *ret;
@@ -235,7 +235,7 @@ register_shm_helper(struct tee_context *ctx, struct iov_iter *iter, u32 flags,
 	shm->flags = flags;
 	shm->ctx = ctx;
 	shm->id = id;
-	addr = untagged_addr((unsigned long)iter_iov_addr(iter));
+	addr = untagged_addr(addr);
 	start = rounddown(addr, PAGE_SIZE);
 	num_pages = iov_iter_npages(iter, INT_MAX);
 	if (!num_pages) {
@@ -319,7 +319,7 @@ struct tee_shm *tee_shm_register_user_buf(struct tee_context *ctx,
 		return ERR_PTR(id);
 
 	iov_iter_ubuf(&iter, ITER_DEST,  (void __user *)addr, length);
-	shm = register_shm_helper(ctx, &iter, flags, id);
+	shm = register_shm_helper(ctx, addr, &iter, flags, id);
 	if (IS_ERR(shm)) {
 		mutex_lock(&teedev->mutex);
 		idr_remove(&teedev->idr, id);
@@ -359,7 +359,7 @@ struct tee_shm *tee_shm_register_kernel_buf(struct tee_context *ctx,
 	kvec.iov_len = length;
 	iov_iter_kvec(&iter, ITER_DEST, &kvec, 1, length);
 
-	return register_shm_helper(ctx, &iter, flags, -1);
+	return register_shm_helper(ctx, (unsigned long)addr, &iter, flags, -1);
 }
 EXPORT_SYMBOL_GPL(tee_shm_register_kernel_buf);
 
