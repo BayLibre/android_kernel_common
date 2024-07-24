@@ -23,6 +23,7 @@
   end_buffer_read_sync
   end_buffer_write_sync
   filp_close
+  finish_rcuwait
   free_workqueue_attrs
   __getblk_gfp
   gnet_stats_add_queue
@@ -71,6 +72,7 @@
   tcf_block_put
   tcf_classify
   timer_reduce
+  __trace_bputs
   __traceiter_android_rvh_alloc_and_link_pwqs
   __traceiter_android_rvh_bpf_skb_load_bytes
   __traceiter_android_rvh_check_preempt_wakeup
@@ -305,6 +307,7 @@
   __tracepoint_tcp_retransmit_skb
   __tracepoint_workqueue_execute_end
   __tracepoint_workqueue_execute_start
+  tracing_is_on
   ucsi_send_command
   ufshcd_query_descriptor_retry
   unlock_buffer
