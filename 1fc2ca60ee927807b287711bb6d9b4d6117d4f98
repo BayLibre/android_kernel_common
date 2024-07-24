@@ -70,6 +70,30 @@
       },
       "revId": "1fc2ca60ee927807b287711bb6d9b4d6117d4f98",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49bc3a4c_4ed6225d",
+        "filename": "mm/memblock.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2196,
+      "author": {
+        "id": 1886500
+      },
+      "writtenOn": "2024-07-24T01:26:53Z",
+      "side": 1,
+      "message": "Oh this is the commit for the obsolete, how can I avoid the unused warning at this commit?\n\nI think I can move the function whithin the #if defined(CONFIG_DEBUG_FS) \u0026\u0026 defined(CONFIG_ARCH_KEEP_MEMBLOCK) at this commit, but I think the unused warning still will come.\n\n Can I use __attribute__((unused))? Or can I just #if 0 , #endif temporarily?",
+      "parentUuid": "60c01316_d009899b",
+      "range": {
+        "startLine": 2195,
+        "startChar": 0,
+        "endLine": 2196,
+        "endChar": 30
+      },
+      "revId": "1fc2ca60ee927807b287711bb6d9b4d6117d4f98",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
