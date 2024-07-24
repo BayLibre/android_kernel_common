@@ -79,6 +79,26 @@
       "tag": "",
       "revId": "60c38994fe4300d2973b72a0f92a39dd0574f7a0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000085576963",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3191812?revision\u003d1",
+      "key": {
+        "uuid": "fcda8740_1c3485c2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-07-24T01:40:36Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/7bdee41575919773818e525ea19e54eb817770af) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d7bdee41575919773818e525ea19e54eb817770af).\n\n```\n      ## drivers/tee/tee_shm.c ##\n     @@ drivers/tee/tee_shm.c: static void shm_put_kernel_pages(struct page **pages, size_t page_count)\n      \t\tput_page(pages[n]);\n    @@ drivers/tee/tee_shm.c: static void shm_put_kernel_pages(struct page **pages, siz\n     -\t\t\t is_kmap_addr((void *)start)))\n     -\t\treturn -EINVAL;\n     -\n    --\tpage \u003d virt_to_page((void *)start);\n    +-\tpage \u003d virt_to_page(start);\n     -\tfor (n \u003d 0; n \u003c page_count; n++) {\n     -\t\tpages[n] \u003d page + n;\n     +\tfor (n \u003d 0; n \u003c page_count; n++)\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "60c38994fe4300d2973b72a0f92a39dd0574f7a0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
