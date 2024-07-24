@@ -2878,6 +2878,9 @@ static int ufshcd_compose_devman_upiu(struct ufs_hba *hba,
 	else
 		ret = -EINVAL;
 
+	if (!ret && hba->quirks & UFSHCD_QUIRK_SET_IID_TO_ONE)
+		lrbp->ucd_req_ptr->header.iid = 1;
+
 	return ret;
 }
 
@@ -2903,6 +2906,9 @@ static void ufshcd_comp_scsi_upiu(struct ufs_hba *hba, struct ufshcd_lrb *lrbp)
 	if (ioprio_class == IOPRIO_CLASS_RT)
 		upiu_flags |= UPIU_CMD_FLAGS_CP;
 	ufshcd_prepare_utp_scsi_cmd_upiu(lrbp, upiu_flags);
+
+	if (hba->quirks & UFSHCD_QUIRK_SET_IID_TO_ONE)
+		lrbp->ucd_req_ptr->header.iid = 1;
 }
 
 /**
