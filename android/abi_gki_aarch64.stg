@@ -360915,6 +360915,15 @@ elf_symbol {
   full_name: "usbnet_generic_cdc_bind"
 }
 elf_symbol {
+  id: 0x52816b1c
+  name: "usbnet_get_endpoints"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x9db1c63d
+  type_id: 0x9e768332
+  full_name: "usbnet_get_endpoints"
+}
+elf_symbol {
   id: 0xcd021e80
   name: "usbnet_open"
   is_defined: true
@@ -370799,6 +370808,7 @@ interface {
   symbol_id: 0x1227900d
   symbol_id: 0x580c56b8
   symbol_id: 0xe395160a
+  symbol_id: 0x52816b1c
   symbol_id: 0xcd021e80
   symbol_id: 0x147e4ad2
   symbol_id: 0x3be16591
