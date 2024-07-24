@@ -16,6 +16,24 @@
       "message": "Why not wait for the merge instead, why do this now?",
       "revId": "7a93d02cf2e333a2fe517ecb512f9214b36851c6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c5a2b0a_c2fa7149",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2024-07-24T00:48:26Z",
+      "side": 1,
+      "message": "This commit fixes the boot broken regression caused by commit 8cc3bad9d9d6 (\"spi: Remove unneded check for orig_nents\"), to have the test continued it would be better to have the boot broken issues resolved as soon as possible. And also I see there are some RC1 merges queued on gerrit, but not on RC2 merge, thought the RC2 merge may take a while(like a week or more) to finish, so submitted these cherrypicks here. \nWith them being merged the new merges before the RC2 could be tested as well then.",
+      "parentUuid": "f5d090a3_96b22ae6",
+      "revId": "7a93d02cf2e333a2fe517ecb512f9214b36851c6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
