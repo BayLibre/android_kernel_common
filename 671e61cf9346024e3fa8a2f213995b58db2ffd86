@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bdf70dd_55566a7b",
+        "filename": "arch/arm64/configs/corsola_cros_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2024-07-24T17:01:47Z",
+      "side": 1,
+      "message": "Please add between `CONFIG_DAX\u003dy` and `CONFIG_PKGLIST\u003dy`:\n\n```\nCONFIG_NVMEM_MTK_EFUSE\u003dy\n```",
+      "range": {
+        "startLine": 635,
+        "startChar": 0,
+        "endLine": 636,
+        "endChar": 16
+      },
+      "revId": "671e61cf9346024e3fa8a2f213995b58db2ffd86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
