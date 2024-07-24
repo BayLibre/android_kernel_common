@@ -953,9 +953,13 @@ void binder_alloc_deferred_release(struct binder_alloc *alloc)
 			__free_page(alloc->pages[i].page_ptr);
 			page_count++;
 		}
+<<<<<<< HEAD   (244787 UPSTREAM: block: fix deadlock between sd_remove & sd_release)
 		kfree(alloc->pages);
+=======
+>>>>>>> CHANGE (717519 FROMLIST: binder_alloc: Fix sleeping function called from in)
 	}
 	spin_unlock(&alloc->lock);
+	kvfree(alloc->pages);
 	if (alloc->mm)
 		mmdrop(alloc->mm);
 
