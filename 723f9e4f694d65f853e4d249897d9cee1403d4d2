@@ -203,6 +203,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b70874e_189d3a8b",
+        "filename": "mm/rmap.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2539,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-24T22:50:37Z",
+      "side": 1,
+      "message": "... but I don\u0027t see why you can\u0027t implement my first suggestion since your handler has full control of the flow. Looking at my first suggestion... \n\nIf you want the control flow to return immediately, then the handler returns got_lock\u003d\u003dtrue. (maybe it should be called \"return_now\" instead)\n\nIf you want the control flow to skip the normal stuff, then the handler returns got_lock\u003d\u003dfalse and skip\u003d\u003dtrue.\n\nIf you want to behave like the default case, then the handler returns got_lock\u003d\u003dfalse and skip\u003d\u003dfalse.\n\nYour more complex implementation adds nothing and is harder to read.",
+      "parentUuid": "d41d4d68_7f32da4d",
+      "range": {
+        "startLine": 2523,
+        "startChar": 2,
+        "endLine": 2539,
+        "endChar": 3
+      },
+      "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d645d89_a093cd16",
         "filename": "mm/vmscan.c",
         "patchSetId": 6
