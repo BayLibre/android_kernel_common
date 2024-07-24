@@ -68,6 +68,7 @@
 #include <trace/hooks/usb.h>
 #include <trace/hooks/compaction.h>
 #include <trace/hooks/sd.h>
+#include <trace/hooks/kprobes.h>
 #include <trace/hooks/user.h>
 #include <trace/hooks/fuse.h>
 #include <trace/hooks/psi.h>
@@ -199,6 +200,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_drain_all_pages_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_slab_alloc_node);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_slab_free);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_referenced_check_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_get_insn_slot);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_insert);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_delete);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_replace);
