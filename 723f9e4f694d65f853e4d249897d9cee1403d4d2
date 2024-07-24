@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "976b2df1_85447c1e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-24T15:58:33Z",
+      "side": 1,
+      "message": "Add a space after the \u0027.\u0027 (multiple cases in this paragraph)",
+      "range": {
+        "startLine": 22,
+        "startChar": 29,
+        "endLine": 22,
+        "endChar": 47
+      },
+      "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07611ddc_0dbac121",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-24T15:58:33Z",
+      "side": 1,
+      "message": "fix typo",
+      "range": {
+        "startLine": 33,
+        "startChar": 33,
+        "endLine": 33,
+        "endChar": 46
+      },
+      "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17293a53_b9a93de6",
+        "filename": "mm/rmap.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2507,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-24T15:58:33Z",
+      "side": 1,
+      "message": "move this declaration down to line 2523 since these are only needed within that scope.",
+      "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f4702ba_6ec12a80",
+        "filename": "mm/rmap.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2539,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-24T15:58:33Z",
+      "side": 1,
+      "message": "Please simplify this, perhaps to what I suggested in the bug:\n```\n\tbool got_lock \u003d false;\n\tbool skip \u003d false;\n\n\ttrace_android_vh_do_folio_trylock(folio,\n\t\t\t\u0026mapping-\u003ei_mmap_rwsem, \u0026got_lock, \u0026skip);\n\tif (got_lock)\n\t\treturn;\n\tif (skip)\n\t\tgoto lookup;\n```\nThis is easier to follow and makes it crystal clear that the default behavior hasn\u0027t changed.",
+      "range": {
+        "startLine": 2523,
+        "startChar": 2,
+        "endLine": 2539,
+        "endChar": 3
+      },
+      "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d645d89_a093cd16",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1489,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-24T15:58:33Z",
+      "side": 1,
+      "message": "why do we need these two steps? (line 1485 and 1489). Is 1489 looking for some side-effect of folio_referenced() or folio_test_clear_referenced()? Can you add a clearer description of what the handlers for trylock_set, trylock_clear and trylock_result are expected to do?",
+      "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}

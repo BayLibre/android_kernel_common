@@ -197,6 +197,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d2490940_aec75d1b",
+        "filename": "mm/rmap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2525,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-24T15:58:33Z",
+      "side": 1,
+      "message": "but your handler controls the modifications of got_lock and skip_if_required, so you can adapt how the handler updates those to allow for simpler code here. Please do.",
+      "parentUuid": "f72b2e29_c1bef1e2",
+      "revId": "cd47002df572ecd4c22b61e433e193d28745bf28",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5ff80d45_d88d6c02",
         "filename": "mm/rmap.c",
         "patchSetId": 1
