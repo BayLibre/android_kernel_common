@@ -179,6 +179,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d41d4d68_7f32da4d",
+        "filename": "mm/rmap.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2539,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-24T18:48:33Z",
+      "side": 1,
+      "message": "\u003e Therefore, my optimization needs to ensure that got_lock is judged after skip_if_acquired is true\n\nOk, then do this (change to what you need it to be, but keep the simplicity):\n```\n    bool got_lock \u003d false;\n    bool skip \u003d false;\n\n    trace_android_vh_do_folio_trylock(folio,\n            \u0026mapping-\u003ei_mmap_rwsem, \u0026got_lock, \u0026skip);\n    if (skip) {\n       if (!got_lock)\n           return;\n       else\n           goto lookup;\n    }\n```",
+      "parentUuid": "6a785a13_1e975774",
+      "range": {
+        "startLine": 2523,
+        "startChar": 2,
+        "endLine": 2539,
+        "endChar": 3
+      },
+      "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d645d89_a093cd16",
         "filename": "mm/vmscan.c",
         "patchSetId": 6
