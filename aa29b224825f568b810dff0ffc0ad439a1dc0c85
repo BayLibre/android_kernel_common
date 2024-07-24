@@ -63,6 +63,64 @@
       "robotRunId": "AR00000000000085675809",
       "url": "https://android-build.googleplex.com/builds/treetop/android-review/3185699?revision\u003d17",
       "key": {
+        "uuid": "852ba33d_816fb763",
+        "filename": "BUILD.bazel",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-07-24T17:42:14Z",
+      "side": 1,
+      "message": "File is not formatted. Run `buildifier BUILD.bazel` to format the file, or apply the suggested fix.",
+      "tag": "",
+      "fixSuggestions": [
+        {
+          "fixId": "88073866_97c44d14",
+          "description": "Buildifier Suggestion",
+          "replacements": [
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 762,
+                "startChar": 0,
+                "endLine": 762,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 765,
+                "startChar": 0,
+                "endLine": 766,
+                "endChar": 0
+              },
+              "replacement": "        \"//common:kernel_aarch64/\" + e\n        for e in get_kunit_modules_list(\"arm64\")\n"
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 774,
+                "startChar": 0,
+                "endLine": 775,
+                "endChar": 0
+              },
+              "replacement": "        \"//common:kernel_x86_64/\" + e\n        for e in get_kunit_modules_list(\"x86_64\")\n"
+            }
+          ]
+        }
+      ],
+      "revId": "aa29b224825f568b810dff0ffc0ad439a1dc0c85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000085675809",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3185699?revision\u003d17",
+      "key": {
         "uuid": "940ddad5_63e9043e",
         "filename": "BUILD.bazel",
         "patchSetId": 17
@@ -72,6 +130,32 @@
         "id": 1757831
       },
       "writtenOn": "2024-07-24T17:42:07Z",
+      "side": 1,
+      "message": "Loaded symbol \"paths\" is unused. Please remove it.\nTo disable the warning, add \u0027@unused\u0027 in a comment. http://go/buildifier-warnings#load",
+      "range": {
+        "startLine": 4,
+        "startChar": 38,
+        "endLine": 4,
+        "endChar": 43
+      },
+      "tag": "",
+      "revId": "aa29b224825f568b810dff0ffc0ad439a1dc0c85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000085675809",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3185699?revision\u003d17",
+      "key": {
+        "uuid": "ce6c8e10_1a4cf0a8",
+        "filename": "BUILD.bazel",
+        "patchSetId": 17
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-07-24T17:42:14Z",
       "side": 1,
       "message": "Loaded symbol \"paths\" is unused. Please remove it.\nTo disable the warning, add \u0027@unused\u0027 in a comment. http://go/buildifier-warnings#load",
       "range": {
@@ -115,6 +199,32 @@
       "robotRunId": "AR00000000000085675809",
       "url": "https://android-build.googleplex.com/builds/treetop/android-review/3185699?revision\u003d17",
       "key": {
+        "uuid": "7ca5e6cd_fc3b9f92",
+        "filename": "BUILD.bazel",
+        "patchSetId": 17
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-07-24T17:42:14Z",
+      "side": 1,
+      "message": "Loaded symbol \"pkg_install\" is unused. Please remove it.\nTo disable the warning, add \u0027@unused\u0027 in a comment. http://go/buildifier-warnings#load",
+      "range": {
+        "startLine": 7,
+        "startChar": 37,
+        "endLine": 7,
+        "endChar": 48
+      },
+      "tag": "",
+      "revId": "aa29b224825f568b810dff0ffc0ad439a1dc0c85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000085675809",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3185699?revision\u003d17",
+      "key": {
         "uuid": "840b168d_58cb865a",
         "filename": "BUILD.bazel",
         "patchSetId": 17
@@ -124,6 +234,32 @@
         "id": 1757831
       },
       "writtenOn": "2024-07-24T17:42:07Z",
+      "side": 1,
+      "message": "Loaded symbol \"pkg_filegroup\" is unused. Please remove it.\nTo disable the warning, add \u0027@unused\u0027 in a comment. http://go/buildifier-warnings#load",
+      "range": {
+        "startLine": 10,
+        "startChar": 5,
+        "endLine": 10,
+        "endChar": 18
+      },
+      "tag": "",
+      "revId": "aa29b224825f568b810dff0ffc0ad439a1dc0c85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000085675809",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3185699?revision\u003d17",
+      "key": {
+        "uuid": "472ea7d0_6ff33b62",
+        "filename": "BUILD.bazel",
+        "patchSetId": 17
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-07-24T17:42:14Z",
       "side": 1,
       "message": "Loaded symbol \"pkg_filegroup\" is unused. Please remove it.\nTo disable the warning, add \u0027@unused\u0027 in a comment. http://go/buildifier-warnings#load",
       "range": {
