@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d66191e_4201ab22",
+        "filename": "include/uapi/linux/inet_diag.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-24T16:14:19Z",
+      "side": 1,
+      "message": "You cannot change UAPI without first getting it merged upstream. See https://source.android.com/docs/core/architecture/kernel/kernel-code#core-kernel-features\n\nIf this is a value that is only set and used by your vendor hook, then define it in a vendor specific header file - and you should be concerned about this value being used by upstream and coming to this branch via LTS update (which is why we can\u0027t accept UAPI changes that don\u0027t come from upstream)",
+      "fixSuggestions": [
+        {
+          "fixId": "f920fd65_5e46810d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/uapi/linux/inet_diag.h",
+              "range": {
+                "startLine": 164,
+                "startChar": 0,
+                "endLine": 165,
+                "endChar": 0
+              },
+              "replacement": "\tINET_DIAG_SK_UNALIGNED,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bc783c23dafc13909d6568bdb4e11a0168bcf9d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
