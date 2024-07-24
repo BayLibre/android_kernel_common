@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b861a5fe_4f28f57e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 3536821
+      },
+      "writtenOn": "2024-07-24T18:18:51Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "976b2df1_85447c1e",
+      "range": {
+        "startLine": 22,
+        "startChar": 29,
+        "endLine": 22,
+        "endChar": 47
+      },
+      "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07611ddc_0dbac121",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-24T15:58:33Z",
       "side": 1,
       "message": "fix typo",
+      "range": {
+        "startLine": 33,
+        "startChar": 33,
+        "endLine": 33,
+        "endChar": 46
+      },
+      "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a3591e5_0a9a774a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3536821
+      },
+      "writtenOn": "2024-07-24T18:18:51Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "07611ddc_0dbac121",
       "range": {
         "startLine": 33,
         "startChar": 33,
@@ -64,6 +112,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93c2bdfe_06c17ab0",
+        "filename": "mm/rmap.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2507,
+      "author": {
+        "id": 3536821
+      },
+      "writtenOn": "2024-07-24T18:18:51Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "17293a53_b9a93de6",
+      "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f4702ba_6ec12a80",
@@ -87,6 +153,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a785a13_1e975774",
+        "filename": "mm/rmap.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2539,
+      "author": {
+        "id": 3536821
+      },
+      "writtenOn": "2024-07-24T18:18:51Z",
+      "side": 1,
+      "message": "Dear Todd Kjos,the purpose of my optimization is to prevent or reduce the problem that some key threads are blocked for a long time and the memory recycling link is blocked for a long time and cannot be recycled due to the page being stuck with rwsem lock when some key threads enter direct_reclaim when the memory is low. \n  We will create an asynchronous thread to process these rwsem locked pages and use the reclaim_pages() interface to process them in the asynchronous thread. Before each reverse mapping, such as folio_referenced and try_to_unmap, execute the trace_android_vh_folio_trylock_set(folio) program. In the program, it will first determine whether it is the asynchronous thread itself. If it is not the asynchronous thread itself, the PG_nolockdelay flag will be set for the page, because it is not important whether the asynchronous thread will be blocked by the lock during the recycling process. What is important is that the main thread is no longer blocked by the rwsem lock for a long time. Later, I will execute trace_android_vh_do_folio_trylock(folio,\u0026mapping-\u003ei_mmap_rwsem, \u0026got_lock, \u0026skip_if_acquired) in rmap_walk_file(). In this program, if the page is set with the PG_nolockdelay flag, then skip_if_acquired will be set to true, and then call if (down_read_trylock(sem)) is used to determine whether the lock can be obtained. If it is obtained, got_lock is set to true. If not, got_lock is set to false, and the PG_skipped_lock flag is set for the page. The subsequent asynchronous thread will process and recycle the page with PG_skipped_lock set. Therefore, my optimization needs to ensure that got_lock is judged after skip_if_acquired is true. If it is false, the reverse mapping process is terminated directly, and then it is processed uniformly in the asynchronous thread. According to your modification method, it deviates from my idea. I hope you can adopt my opinion. Thanks a lot.",
+      "parentUuid": "5f4702ba_6ec12a80",
+      "range": {
+        "startLine": 2523,
+        "startChar": 2,
+        "endLine": 2539,
+        "endChar": 3
+      },
+      "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d645d89_a093cd16",
@@ -100,6 +190,24 @@
       "writtenOn": "2024-07-24T15:58:33Z",
       "side": 1,
       "message": "why do we need these two steps? (line 1485 and 1489). Is 1489 looking for some side-effect of folio_referenced() or folio_test_clear_referenced()? Can you add a clearer description of what the handlers for trylock_set, trylock_clear and trylock_result are expected to do?",
+      "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5563be17_6c5aa544",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1489,
+      "author": {
+        "id": 3536821
+      },
+      "writtenOn": "2024-07-24T18:18:51Z",
+      "side": 1,
+      "message": "Dear Todd Kjos,in the previous answer, these vendor hooks are basically explained. trace_android_vh_get_folio_trylock_result determines whether the acquisition of rwsem lock fails. If it fails, it will continue to be placed in the inactive list. The subsequent asynchronous thread will process the page with PG_skipped_lock set in folio_list. trylock_clear clears the flag bits of the pages with PG_nolockdelay and PG_skipped_lock flags set in the program at the appropriate place.",
+      "parentUuid": "5d645d89_a093cd16",
       "revId": "723f9e4f694d65f853e4d249897d9cee1403d4d2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
