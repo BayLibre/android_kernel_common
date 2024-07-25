@@ -569,6 +569,7 @@ static void init_pkvm_hyp_vm(struct kvm *host_kvm, struct pkvm_hyp_vm *hyp_vm,
 	memset(last_ran, -1, pkvm_get_last_ran_size());
 	pkvm_init_features_from_host(hyp_vm, host_kvm);
 	hyp_spin_lock_init(&hyp_vm->vcpus_lock);
+	INIT_LIST_HEAD(&hyp_vm->ffa_buf.xfer_list);
 }
 
 static int pkvm_vcpu_init_sve(struct pkvm_hyp_vcpu *hyp_vcpu, struct kvm_vcpu *host_vcpu)
