@@ -53,6 +53,7 @@ struct kvm_ffa_buffers {
 	u64 tx_ipa;
 	void *rx;
 	u64 rx_ipa;
+	struct list_head xfer_list;
 };
 
 #define PKVM_VCPU_FROM_CTXT(ctxt) ((struct pkvm_hyp_vcpu *)container_of(\
