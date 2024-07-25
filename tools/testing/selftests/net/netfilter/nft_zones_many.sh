@@ -6,6 +6,8 @@
 source lib.sh
 
 zones=2000
+[ "$KSFT_MACHINE_SLOW" = yes ] && zones=500
+
 have_ct_tool=0
 ret=0
 
@@ -28,7 +30,6 @@ fi
 test_zones() {
 	local max_zones=$1
 
-ip netns exec "$ns1" sysctl -q net.netfilter.nf_conntrack_udp_timeout=3600
 ip netns exec "$ns1" nft -f /dev/stdin<<EOF
 flush ruleset
 table inet raw {
@@ -46,6 +47,9 @@ if [ "$?" -ne 0 ];then
 	echo "SKIP: Cannot add nftables rules"
 	exit $ksft_skip
 fi
+
+	ip netns exec "$ns1" sysctl -q net.netfilter.nf_conntrack_udp_timeout=3600
+
 	(
 		echo "add element inet raw rndzone {"
 	for i in $(seq 1 "$max_zones");do
@@ -87,7 +91,7 @@ fi
 		count=$(ip netns exec "$ns1" conntrack -C)
 		duration=$((stop-outerstart))
 
-		if [ "$count" -eq "$max_zones" ]; then
+		if [ "$count" -ge "$max_zones" ]; then
 			echo "PASS: inserted $count entries from packet path in $duration ms total"
 		else
 			ip netns exec "$ns1" conntrack -S 1>&2

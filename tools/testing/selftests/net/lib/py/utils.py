@@ -8,7 +8,7 @@ import time
 
 
 class cmd:
-    def __init__(self, comm, shell=True, fail=True, ns=None, background=False, host=None):
+    def __init__(self, comm, shell=True, fail=True, ns=None, background=False, host=None, timeout=5):
         if ns:
             comm = f'ip netns exec {ns} ' + comm
 
@@ -23,12 +23,15 @@ class cmd:
             self.proc = subprocess.Popen(comm, shell=shell, stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE)
         if not background:
-            self.process(terminate=False, fail=fail)
+            self.process(terminate=False, fail=fail, timeout=timeout)
 
-    def process(self, terminate=True, fail=None):
+    def process(self, terminate=True, fail=None, timeout=5):
+        if fail is None:
+            fail = not terminate
+
         if terminate:
             self.proc.terminate()
-        stdout, stderr = self.proc.communicate(timeout=5)
+        stdout, stderr = self.proc.communicate(timeout)
         self.stdout = stdout.decode("utf-8")
         self.stderr = stderr.decode("utf-8")
         self.proc.stdout.close()
@@ -43,23 +46,24 @@ class cmd:
 
 
 class bkg(cmd):
-    def __init__(self, comm, shell=True, fail=True, ns=None, host=None,
+    def __init__(self, comm, shell=True, fail=None, ns=None, host=None,
                  exit_wait=False):
         super().__init__(comm, background=True,
                          shell=shell, fail=fail, ns=ns, host=host)
         self.terminate = not exit_wait
+        self.check_fail = fail
 
     def __enter__(self):
         return self
 
     def __exit__(self, ex_type, ex_value, ex_tb):
-        return self.process(terminate=self.terminate)
+        return self.process(terminate=self.terminate, fail=self.check_fail)
 
 
-def ip(args, json=None, ns=None, host=None):
-    cmd_str = "ip "
+def tool(name, args, json=None, ns=None, host=None):
+    cmd_str = name + ' '
     if json:
-        cmd_str += '-j '
+        cmd_str += '--json '
     cmd_str += args
     cmd_obj = cmd(cmd_str, ns=ns, host=host)
     if json:
@@ -67,11 +71,17 @@ def ip(args, json=None, ns=None, host=None):
     return cmd_obj
 
 
+def ip(args, json=None, ns=None, host=None):
+    if ns:
+        args = f'-netns {ns} ' + args
+    return tool('ip', args, json=json, host=host)
+
+
 def rand_port():
     """
     Get unprivileged port, for now just random, one day we may decide to check if used.
     """
-    return random.randint(1024, 65535)
+    return random.randint(10000, 65535)
 
 
 def wait_port_listen(port, proto="tcp", ns=None, host=None, sleep=0.005, deadline=5):
