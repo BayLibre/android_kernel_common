@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4615b260_18f6c41f",
+        "filename": "BUILD.bazel",
+        "patchSetId": 22
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2024-07-25T23:42:07Z",
+      "side": 1,
+      "message": "nit: Just use pkg_install directly?\n\nmix-and-match copy_to_dist_dir with pkg_* rules are a bit confusing. copy_to_dist_dir won\u0027t read PackageFilesInfo so the prefix etc. in your pkg_files are not effective here.",
+      "range": {
+        "startLine": 807,
+        "startChar": 0,
+        "endLine": 807,
+        "endChar": 16
+      },
+      "revId": "caec881d5f9c582722dc882deffe61c2b9d4f141",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
