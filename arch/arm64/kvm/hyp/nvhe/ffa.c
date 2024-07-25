@@ -31,6 +31,7 @@
 #include <kvm/arm_hypercalls.h>
 
 #include <nvhe/arm-smccc.h>
+#include <nvhe/alloc.h>
 #include <nvhe/ffa.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/memory.h>
@@ -63,6 +64,12 @@ struct kvm_ffa_buffers {
 	u64 tx_ipa;
 	void *rx;
 	u64 rx_ipa;
+	struct list_head xfer_list;
+};
+
+struct ffa_mem_transfer {
+	struct list_head node;
+	u64 ffa_handle;
 };
 
 /*
@@ -229,6 +236,31 @@ static int ffa_guest_share_with_cb(struct pkvm_hyp_vcpu *vcpu,
 		pkvm_handle_empty_memcache(vcpu, exit_code);
 
 	return ret;
+}
+
+static void *ffa_alloc(size_t size, struct pkvm_hyp_vcpu *vcpu, u64 *exit_code)
+{
+	void *buf;
+	struct kvm_hyp_req *req;
+
+	buf = hyp_alloc(size);
+	if (!buf) {
+		BUG_ON(hyp_alloc_errno() != -ENOMEM);
+		req = pkvm_hyp_req_reserve(vcpu, KVM_HYP_REQ_TYPE_MEM);
+		if (!req)
+			return ERR_PTR(-ENOMEM);
+
+		req->mem.dest = REQ_MEM_DEST_HYP_ALLOC;
+		req->mem.nr_pages = hyp_alloc_missing_donations();
+
+		write_sysreg_el2(read_sysreg_el2(SYS_ELR) - 4, SYS_ELR);
+
+		*exit_code = ARM_EXCEPTION_HYP_REQ;
+
+		return ERR_PTR(-ENOMEM);
+	}
+
+	return buf;
 }
 
 static int ffa_map_guest_buffers(void **hyp_tx_va, void **hyp_rx_va, struct kvm_cpu_context *ctxt,
@@ -520,10 +552,8 @@ out:
 	return;
 }
 
-static void __do_ffa_mem_xfer(const u64 func_id,
-			      struct arm_smccc_res *res,
-			      struct kvm_cpu_context *ctxt,
-			      u16 vm_handle)
+static int __do_ffa_mem_xfer(const u64 func_id, struct arm_smccc_res *res, struct kvm_cpu_context *ctxt,
+			     u16 vm_handle, u64 *exit_code)
 {
 	DECLARE_REG(u32, len, ctxt, 1);
 	DECLARE_REG(u32, fraglen, ctxt, 2);
@@ -534,6 +564,8 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 	struct ffa_mem_region *buf;
 	u32 offset, nr_ranges;
 	int ret = 0;
+	struct ffa_mem_transfer *transfer = NULL;
+	struct pkvm_hyp_vcpu *vcpu;
 
 	if (addr_mbz || npages_mbz || fraglen > len ||
 	    fraglen > KVM_FFA_MBOX_NR_PAGES * PAGE_SIZE) {
@@ -545,6 +577,21 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 		      sizeof(struct ffa_mem_region_attributes)) {
 		ret = FFA_RET_INVALID_PARAMETERS;
 		goto out;
+	}
+
+	if (vm_handle) {
+		/* Reject the fragmentation API for the guest */
+		if (len != fraglen) {
+			ret = FFA_RET_INVALID_PARAMETERS;
+			goto out;
+		}
+
+		vcpu = PKVM_VCPU_FROM_CTXT(ctxt);
+		transfer = ffa_alloc(sizeof(struct ffa_mem_transfer), vcpu, exit_code);
+		if (IS_ERR(transfer)) {
+			ret = PTR_ERR(transfer);
+			goto out;
+		}
 	}
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
@@ -597,24 +644,45 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 		goto err_unshare;
 	}
 
+	if (vm_handle) {
+		transfer->ffa_handle = PACK_HANDLE(res->a2, res->a3);
+		list_add(&transfer->node, &endp_buffers[vm_handle].xfer_list);
+	}
 out_unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 out:
-	if (ret)
+	if (ret) {
 		ffa_to_smccc_res(res, ret);
-	return;
+		if (transfer && !IS_ERR(transfer))
+			hyp_free(transfer);
+	}
+	return ret;
 
 err_unshare:
 	WARN_ON(ffa_host_unshare_ranges(reg->constituents, nr_ranges));
 	goto out_unlock;
 }
 
-#define do_ffa_mem_xfer(fid, res, ctxt, handle)				\
+#define do_ffa_mem_xfer(fid, res, ctxt, handle, exit_code)	({\
+	int __ret = 0;					\
 	do {							\
 		BUILD_BUG_ON((fid) != FFA_FN64_MEM_SHARE &&	\
 			     (fid) != FFA_FN64_MEM_LEND);	\
-		__do_ffa_mem_xfer((fid), (res), (ctxt), (handle));	\
-	} while (0);
+		__ret = __do_ffa_mem_xfer((fid), (res), (ctxt), (handle), (exit_code));\
+	} while (0); \
+	__ret;\
+	})
+
+static struct ffa_mem_transfer *find_transfer_by_handle_locked(u64 ffa_handle,
+							       struct kvm_ffa_buffers *endp)
+{
+	struct ffa_mem_transfer *transfer;
+
+	list_for_each_entry(transfer, &endp->xfer_list, node)
+		if (transfer->ffa_handle == ffa_handle)
+			return transfer;
+	return NULL;
+}
 
 static void do_ffa_mem_reclaim(struct arm_smccc_res *res,
 			       struct kvm_cpu_context *ctxt,
@@ -627,12 +695,33 @@ static void do_ffa_mem_reclaim(struct arm_smccc_res *res,
 	struct ffa_composite_mem_region *reg;
 	u32 offset, len, fraglen, fragoff;
 	struct ffa_mem_region *buf;
-	int ret = 0;
+	int ret = 0, i;
 	u64 handle;
+	struct ffa_mem_transfer *transfer = NULL;
 
 	handle = PACK_HANDLE(handle_lo, handle_hi);
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
+
+	if (vm_handle) {
+		transfer = find_transfer_by_handle_locked(handle, &endp_buffers[vm_handle]);
+		if (!transfer) {
+			ret = FFA_RET_INVALID_PARAMETERS;
+			goto out_unlock;
+		}
+	} else {
+		for (i = 1; i < KVM_MAX_PVMS; i++) {
+			if (list_empty(&endp_buffers[i].xfer_list))
+				continue;
+
+			transfer = find_transfer_by_handle_locked(handle, &endp_buffers[i]);
+			if (transfer)
+				break;
+		}
+
+		/* Prevent the host from replicating a transfer handle used by the guest */
+		WARN_ON(transfer);
+	}
 
 	buf = hyp_buffers.tx;
 	*buf = (struct ffa_mem_region) {
@@ -693,6 +782,11 @@ static void do_ffa_mem_reclaim(struct arm_smccc_res *res,
 	/* If the SPMD was happy, then we should be too. */
 	WARN_ON(ffa_host_unshare_ranges(reg->constituents,
 					reg->addr_range_cnt));
+
+	if (transfer) {
+		list_del(&transfer->node);
+		hyp_free(transfer);
+	}
 out_unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 
@@ -928,14 +1022,14 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 		goto out_handled;
 	case FFA_MEM_SHARE:
 	case FFA_FN64_MEM_SHARE:
-		do_ffa_mem_xfer(FFA_FN64_MEM_SHARE, &res, host_ctxt, HOST_FFA_ID);
+		do_ffa_mem_xfer(FFA_FN64_MEM_SHARE, &res, host_ctxt, HOST_FFA_ID, NULL);
 		goto out_handled;
 	case FFA_MEM_RECLAIM:
 		do_ffa_mem_reclaim(&res, host_ctxt, HOST_FFA_ID);
 		goto out_handled;
 	case FFA_MEM_LEND:
 	case FFA_FN64_MEM_LEND:
-		do_ffa_mem_xfer(FFA_FN64_MEM_LEND, &res, host_ctxt, HOST_FFA_ID);
+		do_ffa_mem_xfer(FFA_FN64_MEM_LEND, &res, host_ctxt, HOST_FFA_ID, NULL);
 		goto out_handled;
 	case FFA_MEM_FRAG_TX:
 		do_ffa_mem_frag_tx(&res, host_ctxt, HOST_FFA_ID);
@@ -990,6 +1084,17 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 	case FFA_RXTX_UNMAP:
 		do_ffa_rxtx_unmap(&res, ctxt, vm_handle);
 		break;
+	case FFA_MEM_SHARE:
+	case FFA_FN64_MEM_SHARE:
+		ret = do_ffa_mem_xfer(FFA_FN64_MEM_SHARE, &res, ctxt, vm_handle, exit_code);
+		break;
+	case FFA_MEM_RECLAIM:
+		do_ffa_mem_reclaim(&res, ctxt, vm_handle);
+		break;
+	case FFA_MEM_LEND:
+	case FFA_FN64_MEM_LEND:
+		ret = do_ffa_mem_xfer(FFA_FN64_MEM_LEND, &res, ctxt, vm_handle, exit_code);
+		break;
 	default:
 		if (ffa_call_supported(func_id))
 			goto unhandled;
@@ -1010,6 +1115,7 @@ int hyp_ffa_init(void *pages)
 {
 	struct arm_smccc_res res;
 	void *tx, *rx;
+	int i;
 
 	if (kvm_host_psci_config.smccc_version < ARM_SMCCC_VERSION_1_1)
 		return 0;
@@ -1054,6 +1160,9 @@ int hyp_ffa_init(void *pages)
 		.tx	= tx,
 		.rx	= rx,
 	};
+
+	for (i = 0; i < KVM_MAX_PVMS; i++)
+		INIT_LIST_HEAD(&endp_buffers[i].xfer_list);
 
 	kvm_ffa_hyp_lock = __HYP_SPIN_LOCK_UNLOCKED;
 	version_lock = __HYP_SPIN_LOCK_UNLOCKED;
