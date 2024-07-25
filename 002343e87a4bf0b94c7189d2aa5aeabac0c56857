@@ -419,6 +419,26 @@
       "tag": "",
       "revId": "002343e87a4bf0b94c7189d2aa5aeabac0c56857",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000085800927",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3196304?revision\u003d1",
+      "key": {
+        "uuid": "bdd359eb_dadcee95",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-07-25T14:36:33Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/4090fa373f0e763c43610853d2774b5979915959) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d4090fa373f0e763c43610853d2774b5979915959).\n\n```\n      ## include/net/af_unix.h ##\n     @@ include/net/af_unix.h: static inline struct unix_sock *unix_get_socket(struct file *filp)\n    @@ net/unix/garbage.c: static void unix_walk_scc_fast(void)\n     -\t * receive queues.  Other, non candidate sockets _can_ be\n     -\t * added to queue, so we must make sure only to touch\n     -\t * candidates.\n    +-\t *\n    +-\t * Embryos, though never candidates themselves, affect which\n    +-\t * candidates are reachable by the garbage collector.  Before\n    +-\t * being added to a listener\u0027s queue, an embryo may already\n    +-\t * receive data carrying SCM_RIGHTS, potentially making the\n    +-\t * passed socket a candidate that is not yet reachable by the\n    +-\t * collector.  It becomes reachable once the embryo is\n    +-\t * enqueued.  Therefore, we must ensure that no SCM-laden\n    +-\t * embryo appears in a (candidate) listener\u0027s queue between\n    +-\t * consecutive scan_children() calls.\n     -\t */\n     -\tlist_for_each_entry_safe(u, next, \u0026gc_inflight_list, link) {\n    +-\t\tstruct sock *sk \u003d \u0026u-\u003esk;\n     -\t\tlong total_refs;\n     -\n    --\t\ttotal_refs \u003d file_count(u-\u003esk.sk_socket-\u003efile);\n    +-\t\ttotal_refs \u003d file_count(sk-\u003esk_socket-\u003efile);\n     -\n     -\t\tWARN_ON_ONCE(!u-\u003einflight);\n     -\t\tWARN_ON_ONCE(total_refs \u003c u-\u003einflight);\n    @@ net/unix/garbage.c: static void unix_walk_scc_fast(void)\n     -\t\t\tlist_move_tail(\u0026u-\u003elink, \u0026gc_candidates);\n     -\t\t\t__set_bit(UNIX_GC_CANDIDATE, \u0026u-\u003egc_flags);\n     -\t\t\t__set_bit(UNIX_GC_MAYBE_CYCLE, \u0026u-\u003egc_flags);\n    +-\n    +-\t\t\tif (sk-\u003esk_state \u003d\u003d TCP_LISTEN) {\n    +-\t\t\t\tunix_state_lock_nested(sk, U_LOCK_GC_LISTENER);\n    +-\t\t\t\tunix_state_unlock(sk);\n    +-\t\t\t}\n     -\t\t}\n     -\t}\n     -\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "002343e87a4bf0b94c7189d2aa5aeabac0c56857",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
