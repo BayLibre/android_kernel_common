@@ -159,6 +159,26 @@
       "tag": "",
       "revId": "fabbd8f5c1adc6674ceb286b1f561858b1273ec4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000085848811",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3179863?revision\u003d6",
+      "key": {
+        "uuid": "fb91033f_33b20a98",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-07-25T20:04:54Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/4e4aafcddbbfcdd6eed5780e190fcbfac8b4685a) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d4e4aafcddbbfcdd6eed5780e190fcbfac8b4685a).\n\n```\n      ## drivers/net/phy/mdio_bus.c ##\n     @@ drivers/net/phy/mdio_bus.c: int __mdiobus_modify_changed(struct mii_bus *bus, int addr, u32 regnum,\n    @@ include/linux/phy.h: struct mii_bus {\n      \tint (*read)(struct mii_bus *bus, int addr, int regnum);\n      \t/** @write: Perform a write transfer on the bus */\n      \tint (*write)(struct mii_bus *bus, int addr, int regnum, u16 val);\n    -+\t/** @read_c45: Perform a C45 read transfer on the bus */\n    ++\t/** @read: Perform a C45 read transfer on the bus */\n     +\tint (*read_c45)(struct mii_bus *bus, int addr, int devnum, int regnum);\n    -+\t/** @write_c45: Perform a C45 write transfer on the bus */\n    ++\t/** @write: Perform a C45 write transfer on the bus */\n     +\tint (*write_c45)(struct mii_bus *bus, int addr, int devnum,\n     +\t\t\t int regnum, u16 val);\n      \t/** @reset: Perform a reset of the bus */\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "fabbd8f5c1adc6674ceb286b1f561858b1273ec4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
