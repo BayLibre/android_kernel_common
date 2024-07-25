@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "555ffd52_f77a78ff",
+        "filename": "mm/rmap.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 2530,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-07-25T03:24:34Z",
+      "side": 1,
+      "message": "Please get rid of the \u0027} else {\u0027 by adding a `goto lookup;` Then lines 2431 to 2440 don\u0027t need to change at all.\n\nFor folks reviewing the patch this makes it obvious that these lines weren\u0027t changed in the default case.",
+      "range": {
+        "startLine": 2530,
+        "startChar": 2,
+        "endLine": 2530,
+        "endChar": 10
+      },
+      "revId": "8347bbf9c815275be9bbd70727fbecb639484a07",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
