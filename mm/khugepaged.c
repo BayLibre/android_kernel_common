@@ -2577,8 +2577,10 @@ static void set_recommended_min_free_kbytes(void)
 	struct zone *zone;
 	int nr_zones = 0;
 	unsigned long recommended_min;
+	bool bypass = false;
 
-	if (!hugepage_flags_enabled()) {
+	trace_android_vh_set_recommended_min_free_kbytes_bypass(&bypass);
+	if (!hugepage_flags_enabled() || bypass) {
 		calculate_min_free_kbytes();
 		goto update_wmarks;
 	}
