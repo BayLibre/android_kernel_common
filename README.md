@@ -33,6 +33,8 @@ Additional requirements are listed below based on patch type
 - If the patch is a cherry-pick from Linux mainline with no changes at all
     - tag the patch subject with `UPSTREAM:`.
     - add upstream commit information with a `(cherry picked from commit ...)` line
+    - the commit in the '(cherry picked ...)' line is preferred to be the commit
+      from the stable branch matching the destination branch in ACK.
     - Example:
         - if the upstream commit message is
 ```
