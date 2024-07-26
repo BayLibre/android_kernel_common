@@ -1607,6 +1607,12 @@ void snd_usb_endpoint_free_all(struct snd_usb_audio *chip)
 
 	list_for_each_entry_safe(ip, in, &chip->iface_ref_list, list)
 		kfree(ip);
+<<<<<<< HEAD   (4edafe Merge fd63fb84ed6d ("fs/proc: do_task_stat: move thread_grou)
+=======
+
+	list_for_each_entry_safe(cp, cn, &chip->clock_ref_list, list)
+		kfree(cp);
+>>>>>>> BRANCH (a6f53d ALSA: usb-audio: Fix wrong kfree issue in snd_usb_endpoint_f)
 }
 
 /*
