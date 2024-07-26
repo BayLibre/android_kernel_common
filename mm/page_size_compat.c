@@ -96,6 +96,22 @@ unsigned long ___filemap_len(struct inode *inode, unsigned long pgoff, unsigned 
 	return len;
 }
 
+#ifdef CONFIG_SHMEM
+extern vm_fault_t shmem_fault(struct vm_fault *vmf);
+#else
+static vm_fault_t shmem_fault(struct vm_fault *vmf)
+{
+}
+#endif
+
+#ifdef CONFIG_F2FS_FS
+extern vm_fault_t f2fs_filemap_fault(struct vm_fault *vmf);
+#else
+static vm_fault_t f2fs_filemap_fault(struct vm_fault *vmf)
+{
+}
+#endif
+
 /*
  * This is called to fill any holes created by ___filemap_len()
  * with an anonymous mapping.
@@ -108,6 +124,7 @@ void ___filemap_fixup(unsigned long addr, unsigned long prot, unsigned long old_
 	struct mm_struct *mm = current->mm;
 	unsigned long populate = 0;
 	struct vm_area_struct *vma;
+	vm_fault_t (*fault)(struct vm_fault *vmf);
 
 	if (!anon_len)
 		return;
@@ -126,8 +143,22 @@ void ___filemap_fixup(unsigned long addr, unsigned long prot, unsigned long old_
 	 */
 	BUG_ON(!vma);
 
-	/* Only handle fixups for filemap faults */
-	if (vma->vm_ops && vma->vm_ops->fault != filemap_fault)
+	if (!vma->vm_ops)
+		return;
+
+	/*
+	 * Insert fixup vmas for file backed and shmem backed VMAs.
+	 *
+	 * Faulting off the end of a file will result in SIGBUS since there is no
+	 * file page for the given file offset.
+	 *
+	 * shmem pages live in page cache or swap cache. Looking up a page cache
+	 * page with an index (pgoff) beyond the file is invalid and will result
+	 * in shmem_get_folio_gfp() returning -EINVAL.
+	 */
+	fault = vma->vm_ops->fault;
+	if (fault != filemap_fault && fault != shmem_fault &&
+	    fault != f2fs_filemap_fault)
 		return;
 
 	/*
