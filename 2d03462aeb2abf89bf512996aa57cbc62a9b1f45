@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1ee24f5_66f145ea",
+        "filename": "mm/page_size_compat.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-07-27T00:47:07Z",
+      "side": 1,
+      "message": "Instead cleaner to do this:\n```\nstatic bool is_shmem_fault(const struct vm_operations_struct *ops)\n{\n#ifdef CONFIG_SHMEM\n    return ops-\u003efault \u003d\u003d shmem_fault;\n#else\n    return false;\n#endif\n}\n```\nsame for f2fs.",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 6
+      },
+      "revId": "2d03462aeb2abf89bf512996aa57cbc62a9b1f45",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
