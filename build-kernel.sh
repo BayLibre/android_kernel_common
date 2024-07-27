@@ -117,7 +117,11 @@ if [ "$ARCH" == "arm64" ] ; then
     # devicetrees for this build family.
     # TODO(svenva@) generate-its-script.sh is really old and generates a legacy FIT.
     #               upgrade to modern FIT format which is much more compact.
-    DEVICETREES=$(find ./arch/arm64/boot/dts -name \*$BUILD_FAMILY_NAME\*.dtb)
+    #
+    # Until we find a better way we just hardcode the regex here to limit the devicetrees
+    # to just ones we care about.
+    DEVICETREES=$(find ./arch/arm64/boot/dts -regex '.*\(corsola\|trogdor\).*\.dtb$')
+
     ./chromeos/scripts/generate-its-script.sh -a arm64 -c lz4 -d $(pwd) arch/$ARCH/boot/$ZIMAGE \
         $DEVICETREES | dtc -I dts -O dtb -p 1024 > arch/$ARCH/boot/$ZIMAGE.fit
     mv arch/$ARCH/boot/$ZIMAGE.fit arch/$ARCH/boot/$ZIMAGE
