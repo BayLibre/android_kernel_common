@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb287f15_645b411c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-07-29T16:36:32Z",
+      "side": 1,
+      "message": "```\nErrors were reported from checkpatch.pl.\n\nSummary:\n\nWARNING:UNKNOWN_COMMIT_ID: Unknown commit id \u002736c55ce8703c\u0027, maybe rebased or not pulled?\n```\n\nIt\u0027s really annoying that we do a partial clone and checkpatch can\u0027t look at commits from upstream master: https://git.kernel.org/torvalds/c/36c55ce8703c",
+      "revId": "a229f75738421a88244e7bd658a4a39b06803e0b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
