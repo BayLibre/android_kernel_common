@@ -618,7 +618,11 @@ TRACE_EVENT(rpcgss_context,
 		__entry->timeout = timeout;
 		__entry->window_size = window_size;
 		__entry->len = len;
+<<<<<<< HEAD   (33916c Merge d76c740b2eaa ("Merge branch 'net-dsa-microchip-ksz8-re)
 		__assign_str(acceptor, data);
+=======
+		memcpy(__get_str(acceptor), data, len);
+>>>>>>> BRANCH (267e31 Merge branch 'phy-listing-link_topology-tracking')
 	),
 
 	TP_printk("win_size=%u expiry=%lu now=%lu timeout=%u acceptor=%.*s",
