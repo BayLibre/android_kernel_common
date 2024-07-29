@@ -16,6 +16,24 @@
       "message": "The changes in this series are breaking the KMI (likely the original reason for them being reverted). They need to be introduced in an ABI compatible way.",
       "revId": "1dab9d45b48aa7cb4bdc476093c505a3afa989ac",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a7deb75_c758c78b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-07-29T04:50:19Z",
+      "side": 1,
+      "message": "```\nfunction symbol \u0027int ___pskb_trim(struct sk_buff*, unsigned int)\u0027 changed\n  CRC changed from 0xa6794467 to 0xeeb40636\n\nfunction symbol \u0027struct sk_buff* __alloc_skb(unsigned int, gfp_t, int, int)\u0027 changed\n  CRC changed from 0xdbaaf285 to 0x29063164\n\nfunction symbol \u0027int __dev_change_net_namespace(struct net_device*, struct net*, const char*, int)\u0027 changed\n  CRC changed from 0xa2c8bf34 to 0xd50a33ca\n\n... 768 omitted; 771 symbols have only CRC changes\n\ntype \u0027struct net_device\u0027 changed\n  member \u0027struct wireless_dev* ieee80211_ptr\u0027 was added\n  19 members (\u0027struct wpan_dev* ieee802154_ptr\u0027 .. \u0027struct hlist_node index_hlist\u0027) changed\n    offset changed by 64\n```",
+      "parentUuid": "8ed3a94c_2e0b7711",
+      "revId": "1dab9d45b48aa7cb4bdc476093c505a3afa989ac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
