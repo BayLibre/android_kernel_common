@@ -12,7 +12,9 @@ JDK_PATH=prebuilts/jdk/jdk11/linux-x86
 print_help() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
-    echo "This script builds kernel, launches cvd and runs selftests on it."
+    echo "This script runs Selftests on an Android device."
+    echo "Please run the script at the root of your local tree with common/tools/testing/android/bin/kunit.sh."
+    echo "Build kernel and launch virtual device are enabled by default, please add additional options to disable them."
     echo "Available options:"
     echo "  --skip-kernel-build   Skip the kernel building step"
     echo "  --skip-cvd-launch     Skip the CVD launch step"
