@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000086372170",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3200352?revision\u003d1",
+      "key": {
+        "uuid": "621a141f_0eb01061",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-07-30T20:40:13Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/61d32e739d27dd35353a22804023f099b383df3b).\n\n```\n      ## include/linux/fsnotify.h ##\n     @@ include/linux/fsnotify.h: static inline int fsnotify_file(struct file *file, __u32 mask)\n    + \t\t\tstruct path lower_path;\n      \t\t\tint ret;\n      \n    - \t\t\tpath-\u003edentry-\u003ed_op-\u003ed_canonical_path(path, \u0026lower_path);\n    --\t\t\tif (IS_ERR(lower_path.dentry))\n    --\t\t\t\treturn PTR_ERR(lower_path.dentry);\n    -+\t\t\tif (lower_path.dentry !\u003d (struct dentry *)-ENOSYS) {\n    -+\t\t\t\tif (IS_ERR(lower_path.dentry))\n    -+\t\t\t\t\treturn PTR_ERR(lower_path.dentry);\n    - \n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (d30ecb ANDROID: GKI: update mtktv symbol)\n    + \t\t\tret \u003d path-\u003edentry-\u003ed_op-\u003ed_canonical_path(path,\n    + \t\t\t\t\t\t\t\t   \u0026lower_path);\n    + \t\t\tif (ret)\n    + \t\t\t\treturn ret;\n    +-\n     -\t\t\tret \u003d fsnotify_parent(lower_path.dentry, mask,\n     -\t\t\t\t\t      \u0026lower_path, FSNOTIFY_EVENT_PATH);\n     -\t\t\tpath_put(\u0026lower_path);\n    +-\n    +-\t\t\tif (ret)\n    +-\t\t\t\treturn ret;\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    ++\t\t\tpath-\u003edentry-\u003ed_op-\u003ed_canonical_path(path, \u0026lower_path);\n    ++\t\t\tif (lower_path.dentry !\u003d (struct dentry *)-ENOSYS) {\n    ++\t\t\t\tif (IS_ERR(lower_path.dentry))\n    ++\t\t\t\t\treturn PTR_ERR(lower_path.dentry);\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (61d32e ANDROID: fsnotify: Do not notify lower fs of open when ENOSY)\n    ++\n     +\t\t\t\tret \u003d fsnotify_parent(lower_path.dentry, mask,\n     +\t\t\t\t\t\t      \u0026lower_path, FSNOTIFY_EVENT_PATH);\n     +\t\t\t\tpath_put(\u0026lower_path);\n    - \n    --\t\t\tif (ret)\n    --\t\t\t\treturn ret;\n    ++\n     +\t\t\t\tif (ret)\n     +\t\t\t\t\treturn ret;\n     +\t\t\t}\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "dd9bac4548ffd7fb63438b25296e53df02d15286",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
