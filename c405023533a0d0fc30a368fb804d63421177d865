@@ -219,6 +219,50 @@
       ],
       "revId": "c405023533a0d0fc30a368fb804d63421177d865",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000086247571",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3184080?revision\u003d18",
+      "key": {
+        "uuid": "f908d87a_50604206",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-07-30T16:22:54Z",
+      "side": 1,
+      "message": "Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: linjunjie1 \u003clinjunjie1@xiaomi.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "tag": "",
+      "fixSuggestions": [
+        {
+          "fixId": "bd88c5a3_deafca4a",
+          "description": "Add author\u0027s Signed-off-by",
+          "replacements": [
+            {
+              "path": "/COMMIT_MSG",
+              "range": {
+                "startLine": 18,
+                "startChar": 0,
+                "endLine": 18,
+                "endChar": 0
+              },
+              "replacement": "Signed-off-by: linjunjie1 \u003clinjunjie1@xiaomi.com\u003e\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c405023533a0d0fc30a368fb804d63421177d865",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
