@@ -89,7 +89,7 @@ struct dma_buf *dma_heap_buffer_alloc(struct dma_heap *heap, size_t len,
 	 * Allocations from all heaps have to begin
 	 * and end on page boundaries.
 	 */
-	len = PAGE_ALIGN(len);
+	len = __PAGE_ALIGN(len);
 	if (!len)
 		return ERR_PTR(-EINVAL);
 
