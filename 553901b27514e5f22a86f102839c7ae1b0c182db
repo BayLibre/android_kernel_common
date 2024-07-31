@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8fa981c_fbacecbd",
+        "filename": "Documentation/virt/kvm/arm/hypercalls.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-31T13:11:01Z",
+      "side": 1,
+      "message": "Anything works really as this is the only flag. But sure, I\u0027ll detail what\u0027s the value of FUNC_HAS_RANGE",
+      "parentUuid": "69f2bf69_88e14772",
+      "range": {
+        "startLine": 69,
+        "startChar": 40,
+        "endLine": 70,
+        "endChar": 75
+      },
+      "revId": "553901b27514e5f22a86f102839c7ae1b0c182db",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7981e2c8_fd1963ed",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62f7920c_9718ba78",
+        "filename": "Documentation/virt/kvm/arm/hypercalls.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-31T13:11:01Z",
+      "side": 1,
+      "message": "Hum, that\u0027s for legacy really, I wouldn\u0027t expect anyone writing new software to pass 0 here. But yes, I can mention the 0 value.",
+      "parentUuid": "7981e2c8_fd1963ed",
+      "range": {
+        "startLine": 93,
+        "startChar": 35,
+        "endLine": 93,
+        "endChar": 67
+      },
+      "revId": "553901b27514e5f22a86f102839c7ae1b0c182db",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7212a1b4_3521bea2",
@@ -60,6 +108,54 @@
       "writtenOn": "2024-07-03T08:50:31Z",
       "side": 1,
       "message": "If there are new HVCs, why not document them in the table format used below? If you\u0027re referring to `MMIO_GUARD_{,UN}MAP`, should you also document the new argument and return value in that table (like you\u0027ve done for `MEM_{,UN}SHARE`)?",
+      "range": {
+        "startLine": 30,
+        "startChar": 32,
+        "endLine": 31,
+        "endChar": 9
+      },
+      "revId": "553901b27514e5f22a86f102839c7ae1b0c182db",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16880a5b_4a4258ea",
+        "filename": "Documentation/virt/kvm/arm/mmio-guard.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-31T13:11:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7212a1b4_3521bea2",
+      "range": {
+        "startLine": 30,
+        "startChar": 32,
+        "endLine": 31,
+        "endChar": 9
+      },
+      "revId": "553901b27514e5f22a86f102839c7ae1b0c182db",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32b1206f_b9aeeca4",
+        "filename": "Documentation/virt/kvm/arm/mmio-guard.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-31T13:11:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7212a1b4_3521bea2",
       "range": {
         "startLine": 30,
         "startChar": 32,
@@ -95,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e141c6df_c60e796e",
+        "filename": "Documentation/virt/kvm/arm/mmio-guard.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-31T13:11:01Z",
+      "side": 1,
+      "message": "No reason really. This has been mentioned but as we have several return values, we at least have the latitude of returning both an error and a number of granules that have been mapped/unmapped. But this is _not_ something we do at the moment.",
+      "parentUuid": "881a6620_ce97c77e",
+      "range": {
+        "startLine": 32,
+        "startChar": 8,
+        "endLine": 32,
+        "endChar": 10
+      },
+      "revId": "553901b27514e5f22a86f102839c7ae1b0c182db",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "498134ce_9441459d",
         "filename": "Documentation/virt/kvm/arm/mmio-guard.rst",
         "patchSetId": 1
@@ -106,6 +226,54 @@
       "writtenOn": "2024-07-03T08:50:31Z",
       "side": 1,
       "message": "What happens if the already-shared pages are passed again e.g.\n```\nlet mut total \u003d 0;\nwhile (total \u003c n_granules) {\n    total +\u003d mmio_guard_map(base, n_granules)?;\n}\n```\ninstead of\n```\nwhile (n_granules \u003e 0) {\n    let n \u003d mmio_guard_map(base, n_granules)?;\n    n_granules -\u003d n;\n    base +\u003d n * granule_size;\n}\n```\n?\n\nCould you specify in the docs that the `n` pages that the HVC returns having shared can only be the \"first\" ones (in IPA order) of the range?\n\nAlso, there must be a guarantee that `n` is never 0 i.e. that the first page is always shared, for compatibility with guests that don\u0027t support `KVM_FUNC_HAS_RANGE` (which would see that R0 is `RET_SUCCESS`, ignoring R1). As a result, this also gives a guarantee to guests that do support it that the loops above always terminate. If I\u0027m not wrong, could this also be mentioned?\n\nIMO, it would be worth discussing this details once in a paragraph/section then point to it from the 4 individual ranged HVC docs.",
+      "range": {
+        "startLine": 34,
+        "startChar": 7,
+        "endLine": 34,
+        "endChar": 46
+      },
+      "revId": "553901b27514e5f22a86f102839c7ae1b0c182db",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1f8cfc7_041b8e82",
+        "filename": "Documentation/virt/kvm/arm/mmio-guard.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-31T13:11:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "498134ce_9441459d",
+      "range": {
+        "startLine": 34,
+        "startChar": 7,
+        "endLine": 34,
+        "endChar": 46
+      },
+      "revId": "553901b27514e5f22a86f102839c7ae1b0c182db",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3b4822f_75233b8a",
+        "filename": "Documentation/virt/kvm/arm/mmio-guard.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-07-31T13:11:01Z",
+      "side": 1,
+      "message": "Yes, if not a single granule has been processed, an error will be returned.",
+      "parentUuid": "498134ce_9441459d",
       "range": {
         "startLine": 34,
         "startChar": 7,
