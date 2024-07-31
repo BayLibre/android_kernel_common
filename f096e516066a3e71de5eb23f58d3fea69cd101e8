@@ -19,6 +19,26 @@
       "tag": "",
       "revId": "f096e516066a3e71de5eb23f58d3fea69cd101e8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000086445071",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3199667?revision\u003d1",
+      "key": {
+        "uuid": "34e8b3e8_bb8e8d19",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-07-31T08:12:40Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/9533864816fb4a6207c63b7a98396351ce1a9fae) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d9533864816fb4a6207c63b7a98396351ce1a9fae).\n\n```\n      ## arch/arm64/include/asm/fpsimd.h ##\n    -@@ arch/arm64/include/asm/fpsimd.h: extern void sme_alloc(struct task_struct *task, bool flush);\n    +@@ arch/arm64/include/asm/fpsimd.h: extern void sme_alloc(struct task_struct *task);\n      extern unsigned int sme_get_vl(void);\n      extern int sme_set_current_vl(unsigned long arg);\n      extern int sme_get_current_vl(void);\n    @@ arch/arm64/include/asm/fpsimd.h: static inline int sme_max_vl(void) { return 0;\n      static inline int sme_get_current_vl(void) { return -EINVAL; }\n     +static inline void sme_suspend_exit(void) { }\n      \n    - static inline size_t sme_state_size(struct task_struct const *task)\n    + static inline size_t za_state_size(struct task_struct const *task)\n      {\n     \n      ## arch/arm64/kernel/fpsimd.c ##\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "f096e516066a3e71de5eb23f58d3fea69cd101e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
