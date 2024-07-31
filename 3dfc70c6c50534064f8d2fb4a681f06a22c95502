@@ -199,6 +199,26 @@
       "tag": "",
       "revId": "3dfc70c6c50534064f8d2fb4a681f06a22c95502",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000086376190",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3200353?revision\u003d1",
+      "key": {
+        "uuid": "a9333f19_7a0f66b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-07-31T17:47:32Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/61d32e739d27dd35353a22804023f099b383df3b).\n\n```\n      ## include/linux/fsnotify.h ##\n     @@ include/linux/fsnotify.h: static inline int fsnotify_file(struct file *file, __u32 mask)\n    - \t\t\tint ret;\n      \n    - \t\t\tpath-\u003edentry-\u003ed_op-\u003ed_canonical_path(path, \u0026lower_path);\n    --\t\t\tif (IS_ERR(lower_path.dentry))\n    --\t\t\t\treturn PTR_ERR(lower_path.dentry);\n    -+\t\t\tif (lower_path.dentry !\u003d (struct dentry *)-ENOSYS) {\n    -+\t\t\t\tif (IS_ERR(lower_path.dentry))\n    -+\t\t\t\t\treturn PTR_ERR(lower_path.dentry);\n    + \t\t\tret \u003d path-\u003edentry-\u003ed_op-\u003ed_canonical_path(path,\n    + \t\t\t\t\t\t\t\t   \u0026lower_path);\n    +-\t\t\tif (ret)\n    +-\t\t\t\treturn ret;\n    ++\t\t\tif (ret !\u003d -ENOSYS) {\n    ++\t\t\t\tif (ret)\n    ++\t\t\t\t\treturn ret;\n      \n     -\t\t\tret \u003d fsnotify_parent(lower_path.dentry, mask,\n     -\t\t\t\t\t      \u0026lower_path, FSNOTIFY_EVENT_PATH);\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "3dfc70c6c50534064f8d2fb4a681f06a22c95502",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
