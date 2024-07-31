@@ -283,10 +283,10 @@ static int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
 		return ret;
 
 	start = untagged_addr(start);
-	if (!PAGE_ALIGNED(start))
+	if (!__PAGE_ALIGNED(start))
 		return -EINVAL;
 
-	len = PAGE_ALIGN(len_in);
+	len = __PAGE_ALIGN(len_in);
 	/* Check to see whether len was rounded up from small -ve to zero. */
 	if (len_in && !len)
 		return -EINVAL;
