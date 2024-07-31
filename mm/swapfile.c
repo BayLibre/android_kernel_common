@@ -48,6 +48,7 @@
 #include <linux/swap_cgroup.h>
 #include "internal.h"
 #include "swap.h"
+#include <trace/hooks/swapfile.h>
 
 #define CLUSTER_FLAG_FREE	1 /* This cluster is free */
 #define CLUSTER_FLAG_NONFULL	2 /* This cluster on nonfull list  */
@@ -2417,6 +2418,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
 	struct filename *pathname;
 	int err, found = 0;
 	unsigned int old_block_size;
+	bool skip = false;
 
 	if (!capable(CAP_SYS_ADMIN))
 		return -EPERM;
@@ -2426,6 +2428,10 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
 	pathname = getname(specialfile);
 	if (IS_ERR(pathname))
 		return PTR_ERR(pathname);
+
+	trace_android_vh_swapoff_skip(pathname, &skip);
+	if (skip)
+		return 0;
 
 	victim = file_open_name(pathname, O_RDWR|O_LARGEFILE, 0);
 	err = PTR_ERR(victim);
