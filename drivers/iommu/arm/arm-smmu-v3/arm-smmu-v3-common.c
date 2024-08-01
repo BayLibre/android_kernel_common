@@ -120,6 +120,21 @@ static void arm_smmu_get_httu(struct arm_smmu_device *smmu, u32 reg)
 			  hw_features, fw_features);
 }
 
+static void arm_smmu_dt_adjust_sid_bits(struct arm_smmu_device *smmu)
+{
+	struct device *dev = smmu->dev;
+	u32 max_sid_bits = U32_MAX;
+
+	of_property_read_u32(dev->of_node, "arm,max-sid-bits", &max_sid_bits);
+
+	if (smmu->sid_bits > max_sid_bits) {
+		dev_dbg(dev,
+			"Reducing width of SID from %u to %u bits as per device tree configuration\n",
+			smmu->sid_bits, max_sid_bits);
+		smmu->sid_bits = max_sid_bits;
+	}
+}
+
 int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
 {
 	u32 reg;
@@ -203,6 +218,9 @@ int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
 	smmu->ssid_bits = FIELD_GET(IDR1_SSIDSIZE, reg);
 	smmu->sid_bits = FIELD_GET(IDR1_SIDSIZE, reg);
 	smmu->iommu.max_pasids = 1UL << smmu->ssid_bits;
+
+	/* Adjust SID sizes based on device tree settings */
+	arm_smmu_dt_adjust_sid_bits(smmu);
 
 	/*
 	 * If the SMMU supports fewer bits than would fill a single L2 stream
