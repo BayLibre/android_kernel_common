@@ -70,6 +70,20 @@ DECLARE_HOOK(android_vh_sk_alloc,
         TP_PROTO(struct sock *sk), TP_ARGS(sk));
 DECLARE_HOOK(android_vh_sk_free,
         TP_PROTO(struct sock *sk), TP_ARGS(sk));
+<<<<<<< HEAD   (6dd183 UPSTREAM: erofs: fix race in z_erofs_get_gbuf())
+=======
+DECLARE_HOOK(android_vh_sk_clone_lock,
+	TP_PROTO(struct sock *nsk), TP_ARGS(nsk));
+struct request_sock;
+DECLARE_HOOK(android_vh_inet_csk_clone_lock,
+	TP_PROTO(struct sock *newsk, const struct request_sock *req), TP_ARGS(newsk, req));
+DECLARE_HOOK(android_vh_tcp_clean_rtx_queue,
+	TP_PROTO(struct sock *sk, int flag, long seq_rtt_us),
+	TP_ARGS(sk, flag, seq_rtt_us));
+struct inet_connection_sock;
+DECLARE_HOOK(android_vh_tcp_rcv_synack,
+	TP_PROTO(struct inet_connection_sock *icsk), TP_ARGS(icsk));
+>>>>>>> CHANGE (4bf30e ANDROID: GKI: Add a hook for sock management.)
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_NET_VH_H */
