@@ -16,6 +16,24 @@
       "message": "@willmcvicker@google.com\n\nCan we make this change for `android-mainline` without splitting the binary artefacts used for Pixel tests?\n\nWhat\u0027s the way forward for making this flag change?",
       "revId": "aed577f41991fbe53c7d38d9f44e903e705b8b0b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c839ece_67a636ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2024-08-01T16:20:43Z",
+      "side": 1,
+      "message": "What do you mean by \"without splitting the binary artifacts?\" Are you referring to the AOSP configured Pixel tests that pick the LKGB from the Pixel build? If so, I\u0027ve tried to get rid of those mixed configurations on non-ABI stable branches, but @bettyzhou@google.com needs them for code coverage purposes. Any breakages you see due to a bad build selection can be ignored as it will be transitory.",
+      "parentUuid": "50b55912_184d6f0e",
+      "revId": "aed577f41991fbe53c7d38d9f44e903e705b8b0b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
