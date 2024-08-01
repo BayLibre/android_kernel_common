@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000086629690",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3203393?revision\u003d3",
+      "key": {
+        "uuid": "fd4b8016_3ba5e5a5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-08-01T11:39:50Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/eec127b5484d09fef414b9914710cd1faa7be1bc).\n\n```\n      ## drivers/android/vendor_hooks.c ##\n     @@\n    @@ drivers/android/vendor_hooks.c\n      \n      /*\n       * Export tracepoints that act as a bare tracehook (ie: have no trace event\n    -@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fsnotify_open);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_control);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_smaps_swap_shared);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_smap_swap_shared);\n    +@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_warn_alloc_tune_ratelimit);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_warn_alloc_show_mem_bypass);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_use_vm_swappiness);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fsnotify_open);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_armv8pmu_counter_overflowed);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_perf_rotate_context);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_process_madvise_bypass);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_prepare_bypass);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_ok_bypass);\n     \n      ## drivers/perf/arm_pmuv3.c ##\n     @@\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "b95fa2495324641a8bced6a2cf0499536935586f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
