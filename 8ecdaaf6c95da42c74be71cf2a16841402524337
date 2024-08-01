@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000086619025",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3203393?revision\u003d1",
+      "key": {
+        "uuid": "836c17a6_0bf5af4d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-08-01T09:48:02Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/eec127b5484d09fef414b9914710cd1faa7be1bc).\n\n```\n      ## drivers/android/vendor_hooks.c ##\n     @@\n    @@ drivers/android/vendor_hooks.c\n      \n      /*\n       * Export tracepoints that act as a bare tracehook (ie: have no trace event\n    -@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fsnotify_open);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_control);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_smaps_swap_shared);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_smap_swap_shared);\n    +@@ drivers/android/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_warn_alloc_tune_ratelimit);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_warn_alloc_show_mem_bypass);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_use_vm_swappiness);\n    + EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fsnotify_open);\n    ++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD   (0218a9 Merge 6.6.43 into android15-6.6-lts)\n    ++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_scan_control);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_smaps_swap_shared);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_smap_swap_shared);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_armv8pmu_counter_overflowed);\n     +EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_perf_rotate_context);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_process_madvise_bypass);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_prepare_bypass);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_ok_bypass);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_process_madvise_bypass);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_prepare_bypass);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_pages_ok_bypass);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_split_large_folio_bypass);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_pageout_return_error);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_process_madvise_return_error);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_pageout_bypass);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_set_max_retries);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_folio_trylock);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_get_folio_trylock_result);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_trylock_clear);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_trylock_set);\n    ++EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_handle_trylock_failed_folio);\n    ++\u003e\u003e\u003e\u003e\u003e\u003e\u003e CHANGE (eec127 ANDROID: vendor_hooks:vendor hook for perf)\n     \n      ## drivers/perf/arm_pmuv3.c ##\n     @@\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "8ecdaaf6c95da42c74be71cf2a16841402524337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
