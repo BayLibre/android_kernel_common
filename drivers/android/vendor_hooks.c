@@ -426,6 +426,16 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mark_page_accessed);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_cold_pageout_skip);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_psi_event);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_psi_group);
+<<<<<<< HEAD   (6dd183 UPSTREAM: erofs: fix race in z_erofs_get_gbuf())
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_psi_update_triggers);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_cold_or_pageout_abort);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tcp_sock_error);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tcp_fastsyn);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tcp_state_change);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tcp_select_window);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tcp_update_rtt);
+>>>>>>> CHANGE (e8020c ANDROID: GKI: Add hooks for TCP parameter management.)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmc_sdio_pm_flag_set);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_read_lazy_flag);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_tsk_need_resched_lazy);
