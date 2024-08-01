@@ -19,6 +19,20 @@ DECLARE_HOOK(android_vh_tcp_write_timeout_estab_retrans,
 	TP_PROTO(struct sock *sk), TP_ARGS(sk));
 DECLARE_HOOK(android_vh_tcp_connect,
 	TP_PROTO(struct sk_buff *skb), TP_ARGS(skb));
+<<<<<<< HEAD   (c79ee7 ANDROID: Load cc_library from rules_cc.)
+||||||| BASE
+DECLARE_HOOK(android_vh_sk_alloc,
+        TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_sk_free,
+        TP_PROTO(struct sock *sk), TP_ARGS(sk));
+=======
+DECLARE_HOOK(android_vh_sk_alloc,
+        TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_sk_free,
+        TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_sk_clone_lock,
+	TP_PROTO(struct sock *nsk), TP_ARGS(nsk));
+>>>>>>> CHANGE (4bf30e ANDROID: GKI: Add a hook for sock management.)
 struct request_sock;
 DECLARE_HOOK(android_vh_inet_csk_clone_lock,
 	TP_PROTO(struct sock *newsk, const struct request_sock *req), TP_ARGS(newsk, req));
