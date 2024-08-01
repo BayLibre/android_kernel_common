@@ -31,6 +31,10 @@ DECLARE_RESTRICTED_HOOK(android_rvh_try_alloc_pages,
 			TP_PROTO(struct page **page, unsigned int order,
 				enum zone_type highest_zoneidx),
 			TP_ARGS(page, order, highest_zoneidx), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_try_alloc_pages_gfp,
+			TP_PROTO(struct page **page, unsigned int order,
+				gfp_t gfp, enum zone_type highest_zoneidx),
+			TP_ARGS(page, order, gfp, highest_zoneidx), 1);
 DECLARE_HOOK(android_vh_slab_alloc_node,
 	TP_PROTO(void *object, unsigned long addr, struct kmem_cache *s),
 	TP_ARGS(object, addr, s));
