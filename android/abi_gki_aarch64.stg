@@ -358634,6 +358634,15 @@ elf_symbol {
   full_name: "tty_port_tty_wakeup"
 }
 elf_symbol {
+  id: 0x1ebf9ca2
+  name: "tty_put_char"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x0382446e
+  type_id: 0x97494660
+  full_name: "tty_put_char"
+}
+elf_symbol {
   id: 0x727ea003
   name: "tty_register_driver"
   is_defined: true
@@ -371417,6 +371426,7 @@ interface {
   symbol_id: 0xdcd44915
   symbol_id: 0xca491b5d
   symbol_id: 0x1f87b736
+  symbol_id: 0x1ebf9ca2
   symbol_id: 0x727ea003
   symbol_id: 0x2aefba25
   symbol_id: 0xe9e8ea7d
