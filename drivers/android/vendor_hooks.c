@@ -478,3 +478,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dmabuf_page_pool_free_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_read_fault);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_read);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_map_pages);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_file_read_start);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_file_read_end);
