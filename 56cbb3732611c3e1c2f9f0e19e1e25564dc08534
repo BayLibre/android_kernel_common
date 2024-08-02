@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae1aaab3_09c25762",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-08-02T05:54:05Z",
+      "side": 1,
+      "message": "Note, the upstream patch differs:\n\n```\n      ## drivers/ufs/core/ufs-mcq.c ##\n     @@ drivers/ufs/core/ufs-mcq.c: EXPORT_SYMBOL_GPL(ufshcd_mcq_config_mac);\n       * @hba: per adapter instance\n       * @req: pointer to the request to be issued\n       *\n    -- * Return: the hardware queue instance on which the request would\n    +- * Returns the hardware queue instance on which the request would\n     - * be queued.\n     + * Return: the hardware queue instance on which the request will be or has\n     + * been queued. %NULL if the request has already been freed.\n```\n\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d9307a998cb9846a2557fdca286997430bee36a2a\n\nPlease cleanly pick from upstream.",
+      "revId": "56cbb3732611c3e1c2f9f0e19e1e25564dc08534",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
