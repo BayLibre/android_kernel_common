@@ -51,6 +51,32 @@
       "tag": "",
       "revId": "eb8edbb6716cad6bd965ffa1fa7ff877291838c8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000086868754",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3205666?revision\u003d1",
+      "key": {
+        "uuid": "c981e973_6820d153",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-08-03T00:48:50Z",
+      "side": 1,
+      "message": "Loaded symbol \"strip_prefix\" is unused. Please remove it.\nTo disable the warning, add \u0027@unused\u0027 in a comment. http://go/buildifier-warnings#load",
+      "range": {
+        "startLine": 10,
+        "startChar": 5,
+        "endLine": 10,
+        "endChar": 17
+      },
+      "tag": "",
+      "revId": "eb8edbb6716cad6bd965ffa1fa7ff877291838c8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
