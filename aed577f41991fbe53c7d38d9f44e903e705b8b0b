@@ -34,6 +34,24 @@
       "parentUuid": "50b55912_184d6f0e",
       "revId": "aed577f41991fbe53c7d38d9f44e903e705b8b0b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4e822db_d659273e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-08-05T10:31:02Z",
+      "side": 1,
+      "message": "I mean... I get the impression that there are some Pixel 6 artefacts / builds used for running boot tests. If the same artefacts get used with more than just one kernel branch, then we will run into trouble when only one branch is switched to Rust-friendly KCFI.\n\nPlease correct me if this is just my misunderstanding.\n\nIf we are picking up LKGB Pixel modules AND using them with BOTH `android-mainline` and `androidX-Y.Z` then we cannot independently switch `android-mainline` to the new KCFI ABI.",
+      "parentUuid": "5c839ece_67a636ea",
+      "revId": "aed577f41991fbe53c7d38d9f44e903e705b8b0b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
