@@ -709,6 +709,11 @@ pointer_reference {
   pointee_type_id: 0x20e3a5b9
 }
 pointer_reference {
+  id: 0x02aa06b1
+  kind: POINTER
+  pointee_type_id: 0x20e8fc5a
+}
+pointer_reference {
   id: 0x02b3baf5
   kind: POINTER
   pointee_type_id: 0x208e0d4b
@@ -23554,6 +23559,11 @@ pointer_reference {
   pointee_type_id: 0xf65676a9
 }
 pointer_reference {
+  id: 0x370a73b0
+  kind: POINTER
+  pointee_type_id: 0xf669285f
+}
+pointer_reference {
   id: 0x370b11b2
   kind: POINTER
   pointee_type_id: 0xf66ca055
@@ -31637,6 +31647,11 @@ qualified {
   id: 0xf652a731
   qualifier: CONST
   qualified_type_id: 0xa90d2a4f
+}
+qualified {
+  id: 0xf669285f
+  qualifier: CONST
+  qualified_type_id: 0xa9e317f6
 }
 qualified {
   id: 0xf6a40fd8
@@ -269214,6 +269229,13 @@ function {
   parameter_id: 0x1dce0fdd
 }
 function {
+  id: 0x17ed8cca
+  return_type_id: 0x48b5725f
+  parameter_id: 0x1b8590a8
+  parameter_id: 0x6720d32f
+  parameter_id: 0x20e8fc5a
+}
+function {
   id: 0x17ee95ba
   return_type_id: 0x48b5725f
   parameter_id: 0x1e9f31fe
@@ -291636,6 +291658,14 @@ function {
   parameter_id: 0x3ea31487
 }
 function {
+  id: 0x9b5934bc
+  return_type_id: 0x6720d32f
+  parameter_id: 0x1b8590a8
+  parameter_id: 0x0e04e400
+  parameter_id: 0x02aa06b1
+  parameter_id: 0x02aa06b1
+}
+function {
   id: 0x9b5a33b3
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -297550,6 +297580,14 @@ function {
   parameter_id: 0x2ec35650
 }
 function {
+  id: 0x9e079532
+  return_type_id: 0x6720d32f
+  parameter_id: 0x0fabaf3b
+  parameter_id: 0x1b8590a8
+  parameter_id: 0x0e04e400
+  parameter_id: 0x02aa06b1
+}
+function {
   id: 0x9e08dfbb
   return_type_id: 0x6720d32f
   parameter_id: 0x0c467c34
@@ -298272,6 +298310,14 @@ function {
   parameter_id: 0x0ab9fa4c
   parameter_id: 0x6720d32f
   parameter_id: 0x064d6086
+}
+function {
+  id: 0x9eb3dea3
+  return_type_id: 0x6720d32f
+  parameter_id: 0x0fabaf3b
+  parameter_id: 0x370a73b0
+  parameter_id: 0x18bd6530
+  parameter_id: 0xf435685e
 }
 function {
   id: 0x9eb724d7
@@ -346500,6 +346546,15 @@ elf_symbol {
   full_name: "posix_acl_chmod"
 }
 elf_symbol {
+  id: 0x8ba316ea
+  name: "posix_acl_create"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x860089c6
+  type_id: 0x9b5934bc
+  full_name: "posix_acl_create"
+}
+elf_symbol {
   id: 0xf2ab750d
   name: "posix_acl_default_xattr_handler"
   is_defined: true
@@ -346516,6 +346571,24 @@ elf_symbol {
   crc: 0xbf2d2a86
   type_id: 0x78c7e392
   full_name: "posix_acl_from_xattr"
+}
+elf_symbol {
+  id: 0xa3b2084d
+  name: "posix_acl_to_xattr"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x9a0aaf6f
+  type_id: 0x9eb3dea3
+  full_name: "posix_acl_to_xattr"
+}
+elf_symbol {
+  id: 0xad2e2906
+  name: "posix_acl_update_mode"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x0df5aed0
+  type_id: 0x9e079532
+  full_name: "posix_acl_update_mode"
 }
 elf_symbol {
   id: 0x561323f1
@@ -352033,6 +352106,15 @@ elf_symbol {
   crc: 0x8f41bf5b
   type_id: 0x9f17e634
   full_name: "set_blocksize"
+}
+elf_symbol {
+  id: 0x013afad5
+  name: "set_cached_acl"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf6432fbd
+  type_id: 0x17ed8cca
+  full_name: "set_cached_acl"
 }
 elf_symbol {
   id: 0x2c6a64fa
@@ -369782,8 +369864,11 @@ interface {
   symbol_id: 0x324d8228
   symbol_id: 0x81d56dd6
   symbol_id: 0x3e0dea4e
+  symbol_id: 0x8ba316ea
   symbol_id: 0xf2ab750d
   symbol_id: 0xacb83eb1
+  symbol_id: 0xa3b2084d
+  symbol_id: 0xad2e2906
   symbol_id: 0x561323f1
   symbol_id: 0x81c5befa
   symbol_id: 0xd1691fe4
@@ -370397,6 +370482,7 @@ interface {
   symbol_id: 0x7df87144
   symbol_id: 0x334adb18
   symbol_id: 0xdfe1cb53
+  symbol_id: 0x013afad5
   symbol_id: 0x2c6a64fa
   symbol_id: 0x689737cf
   symbol_id: 0x7b6738b5
