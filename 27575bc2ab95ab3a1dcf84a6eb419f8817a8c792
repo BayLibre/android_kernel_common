@@ -46,6 +46,30 @@
       },
       "revId": "27575bc2ab95ab3a1dcf84a6eb419f8817a8c792",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83c26d49_803811fa",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-08-06T12:55:12Z",
+      "side": 1,
+      "message": "Sure. The problem seems to be that the TLB can cache a partial walk, and the table that gets unlinked can still be accessed. This is like aosp/3014282 was for your original coalescing work.",
+      "parentUuid": "f9bb8a60_cfd291c9",
+      "range": {
+        "startLine": 671,
+        "startChar": 5,
+        "endLine": 671,
+        "endChar": 18
+      },
+      "revId": "27575bc2ab95ab3a1dcf84a6eb419f8817a8c792",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
