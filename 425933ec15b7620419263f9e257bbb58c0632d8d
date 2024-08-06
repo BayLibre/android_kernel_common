@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a63f9835_85540e09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-08-06T20:38:37Z",
+      "side": 1,
+      "message": "Hi @maennich@google.com \n\ndo you know what is causing the ABI issue here?\n\nLocally I cannot reproduce it with \n\n```\ntools/bazel run //common:kernel_aarch64_abi_update\n```\n\nThese patches don\u0027t remove the symbols it is claiming\n\nThanks,  \nKalesh",
+      "revId": "425933ec15b7620419263f9e257bbb58c0632d8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
