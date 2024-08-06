@@ -510,8 +510,49 @@ static ssize_t thpsize_enabled_store(struct kobject *kobj,
 static struct kobj_attribute thpsize_enabled_attr =
 	__ATTR(enabled, 0644, thpsize_enabled_show, thpsize_enabled_store);
 
+unsigned long huge_pcp_allow_orders __read_mostly;
+static ssize_t thpsize_pcp_enabled_show(struct kobject *kobj,
+					struct kobj_attribute *attr, char *buf)
+{
+	int order = to_thpsize(kobj)->order;
+
+	return sysfs_emit(buf, "%d\n",
+			  !!test_bit(order, &huge_pcp_allow_orders));
+}
+
+static ssize_t thpsize_pcp_enabled_store(struct kobject *kobj,
+					 struct kobj_attribute *attr,
+					 const char *buf, size_t count)
+{
+	int order = to_thpsize(kobj)->order;
+	unsigned long value;
+	int ret;
+
+	if (order <= PAGE_ALLOC_COSTLY_ORDER || order == PMD_ORDER)
+		return -EINVAL;
+
+	ret = kstrtoul(buf, 10, &value);
+	if (ret < 0)
+		return ret;
+	if (value > 1)
+		return -EINVAL;
+
+	if (value) {
+		set_bit(order, &huge_pcp_allow_orders);
+	} else {
+		if (test_and_clear_bit(order, &huge_pcp_allow_orders))
+			drain_all_zone_pages();
+	}
+
+	return count;
+}
+
+static struct kobj_attribute thpsize_pcp_enabled_attr = __ATTR(pcp_enabled,
+		0644, thpsize_pcp_enabled_show, thpsize_pcp_enabled_store);
+
 static struct attribute *thpsize_attrs[] = {
 	&thpsize_enabled_attr.attr,
+	&thpsize_pcp_enabled_attr.attr,
 	NULL,
 };
 
@@ -622,6 +663,8 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
 	 */
 	huge_anon_orders_inherit = BIT(PMD_ORDER);
 
+	huge_pcp_allow_orders = BIT(PMD_ORDER);
+
 	*hugepage_kobj = kobject_create_and_add("transparent_hugepage", mm_kobj);
 	if (unlikely(!*hugepage_kobj)) {
 		pr_err("failed to create transparent hugepage kobject\n");
@@ -649,6 +692,10 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
 			err = PTR_ERR(thpsize);
 			goto remove_all;
 		}
+
+		if (order <= PAGE_ALLOC_COSTLY_ORDER)
+			huge_pcp_allow_orders |= BIT(order);
+
 		list_add(&thpsize->node, &thpsize_list);
 		order = next_order(&orders, order);
 	}

@@ -189,6 +189,17 @@ madvise
 never
 	should be self-explanatory.
 
+
+There's also sysfs knob to control hugepage to be stored on PCP lists for
+high-orders(greated than PAGE_ALLOC_COSTLY_ORDER), which could reduce
+the zone lock contention when allocate hige-order pages frequently. Please
+note that the PCP behavior of low-order and PMD-order pages cannot changed,
+it is possible to enable other higher-order pages stored on PCP lists by
+writing 1 or disable it back by writing 0::
+
+        echo 0 >/sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/pcp_enabled
+        echo 1 >/sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/pcp_enabled
+
 By default kernel tries to use huge, PMD-mappable zero page on read
 page fault to anonymous mapping. It's possible to disable huge zero
 page by writing 0 or enable it back by writing 1::
