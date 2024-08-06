@@ -888,8 +888,12 @@ static void do_ffa_mem_reclaim(struct arm_smccc_res *res,
 
 	reg = (void *)buf + offset;
 	/* If the SPMD was happy, then we should be too. */
-	WARN_ON(ffa_host_unshare_ranges(reg->constituents,
-					reg->addr_range_cnt));
+	if (hyp_vcpu)
+		WARN_ON(ffa_guest_unshare_ranges(reg->constituents,
+						 reg->addr_range_cnt, hyp_vcpu, transfer));
+	else
+		WARN_ON(ffa_host_unshare_ranges(reg->constituents,
+						reg->addr_range_cnt));
 
 	if (transfer) {
 		list_del(&transfer->node);
