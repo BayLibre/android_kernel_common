@@ -815,12 +815,14 @@ static void do_ffa_mem_reclaim(struct arm_smccc_res *res,
 	u64 handle;
 	struct ffa_mem_transfer *transfer = NULL;
 	struct kvm_ffa_buffers *ffa_buf;
+	struct pkvm_hyp_vcpu *vcpu;
 
 	handle = PACK_HANDLE(handle_lo, handle_hi);
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
 	ffa_buf = ffa_get_buffers(ctxt, vm_handle);
 	if (vm_handle) {
+		vcpu = PKVM_VCPU_FROM_CTXT(ctxt);
 		transfer = find_transfer_by_handle_locked(handle, ffa_buf);
 		if (!transfer) {
 			ret = FFA_RET_INVALID_PARAMETERS;
@@ -897,8 +899,12 @@ static void do_ffa_mem_reclaim(struct arm_smccc_res *res,
 
 	reg = (void *)buf + offset;
 	/* If the SPMD was happy, then we should be too. */
-	WARN_ON(ffa_host_unshare_ranges(reg->constituents,
-					reg->addr_range_cnt));
+	if (vm_handle)
+		WARN_ON(ffa_guest_unshare_ranges(reg->constituents,
+						 reg->addr_range_cnt, vcpu, transfer));
+	else
+		WARN_ON(ffa_host_unshare_ranges(reg->constituents,
+						reg->addr_range_cnt));
 
 	if (transfer) {
 		list_del(&transfer->node);
