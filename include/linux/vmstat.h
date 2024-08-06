@@ -656,4 +656,23 @@ static inline void lruvec_stat_sub_folio(struct folio *folio,
 {
 	lruvec_stat_mod_folio(folio, idx, -folio_nr_pages(folio));
 }
+
+static inline void pcp_order_stat_mod(struct per_cpu_pages *pcp, int order,
+				      int val)
+{
+#ifdef CONFIG_PCP_ORDER_STATS
+	pcp->per_order_count[order] += val;
+#endif
+}
+
+static inline void pcp_order_stat_inc(struct per_cpu_pages *pcp, int order)
+{
+	pcp_order_stat_mod(pcp, order, 1);
+}
+
+static inline void pcp_order_stat_dec(struct per_cpu_pages *pcp, int order)
+{
+	pcp_order_stat_mod(pcp, order, -1);
+}
+
 #endif /* _LINUX_VMSTAT_H */

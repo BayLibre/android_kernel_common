@@ -597,12 +597,39 @@ DEFINE_MTHP_STAT_ATTR(anon_fault_fallback_charge, MTHP_STAT_ANON_FAULT_FALLBACK_
 DEFINE_MTHP_STAT_ATTR(swpout, MTHP_STAT_SWPOUT);
 DEFINE_MTHP_STAT_ATTR(swpout_fallback, MTHP_STAT_SWPOUT_FALLBACK);
 
+#ifdef CONFIG_PCP_ORDER_STATS
+static ssize_t pcp_order_stat_show(struct kobject *kobj,
+				   struct kobj_attribute *attr, char *buf)
+{
+	int order = to_thpsize(kobj)->order;
+	unsigned int counts = 0;
+	struct zone *zone;
+
+	for_each_populated_zone(zone) {
+		struct per_cpu_pages *pcp;
+		int i;
+
+		for_each_online_cpu(i) {
+			pcp = per_cpu_ptr(zone->per_cpu_pageset, i);
+			counts += pcp->per_order_count[order];
+		}
+	}
+
+	return sysfs_emit(buf, "%u\n", counts);
+}
+
+static struct kobj_attribute pcp_order_stat_attr = __ATTR_RO(pcp_order_stat);
+#endif
+
 static struct attribute *stats_attrs[] = {
 	&anon_fault_alloc_attr.attr,
 	&anon_fault_fallback_attr.attr,
 	&anon_fault_fallback_charge_attr.attr,
 	&swpout_attr.attr,
 	&swpout_fallback_attr.attr,
+#ifdef CONFIG_PCP_ORDER_STATS
+	&pcp_order_stat_attr.attr,
+#endif
 	NULL,
 };
 

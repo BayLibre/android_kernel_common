@@ -691,6 +691,9 @@ enum zone_watermarks {
 #define NR_LOWORDER_PCP_LISTS (MIGRATE_PCPTYPES * (PAGE_ALLOC_COSTLY_ORDER + 1))
 #define HIGHORDER_PCP_LIST_INDEX (NR_LOWORDER_PCP_LISTS - (PAGE_ALLOC_COSTLY_ORDER + 1))
 #define NR_PCP_LISTS (NR_LOWORDER_PCP_LISTS + NR_PCP_THP)
+#ifdef CONFIG_PCP_ORDER_STATS
+#define NR_PCP_ORDER (PAGE_ALLOC_COSTLY_ORDER + NR_PCP_THP + 1)
+#endif
 
 #define min_wmark_pages(z) (z->_watermark[WMARK_MIN] + z->watermark_boost)
 #define low_wmark_pages(z) (z->_watermark[WMARK_LOW] + z->watermark_boost)
@@ -709,6 +712,9 @@ struct per_cpu_pages {
 
 	/* Lists of pages, one per migrate type stored on the pcp-lists */
 	struct list_head lists[NR_PCP_LISTS];
+#ifdef CONFIG_PCP_ORDER_STATS
+	int per_order_count[NR_PCP_ORDER]; /* per-order page counts */
+#endif
 } ____cacheline_aligned_in_smp;
 
 struct per_cpu_zonestat {

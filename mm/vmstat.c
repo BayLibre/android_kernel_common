@@ -1671,6 +1671,19 @@ static bool is_zone_first_populated(pg_data_t *pgdat, struct zone *zone)
 	return false;
 }
 
+static void zoneinfo_show_pcp_order_stat(struct seq_file *m,
+					 struct per_cpu_pages *pcp)
+{
+#ifdef CONFIG_PCP_ORDER_STATS
+	int j;
+
+	for (j = 0; j < NR_PCP_ORDER; j++)
+		seq_printf(m,
+			   "\n              order%d: %i",
+			   j, pcp->per_order_count[j]);
+#endif
+}
+
 static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
 							struct zone *zone)
 {
@@ -1747,6 +1760,9 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
 			   pcp->count,
 			   pcp->high,
 			   pcp->batch);
+
+		zoneinfo_show_pcp_order_stat(m, pcp);
+
 #ifdef CONFIG_SMP
 		pzstats = per_cpu_ptr(zone->per_cpu_zonestats, i);
 		seq_printf(m, "\n  vm stats threshold: %d",

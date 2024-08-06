@@ -300,3 +300,11 @@ config PER_VMA_LOCK_STATS
 	  overhead in the page fault path.
 
 	  If in doubt, say N.
+
+config PCP_ORDER_STATS
+	bool "Statistics for per-order of PCP (Per-CPU pageset)"
+	help
+	  Say Y to show per-order statistics of Per-CPU pageset from zoneinfo
+	  and pcp_order_stat in sysfs.
+
+	  If in doubt, say N.
