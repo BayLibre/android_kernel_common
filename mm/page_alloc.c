@@ -603,8 +603,8 @@ static inline unsigned int order_to_pindex(int migratetype, int order)
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
 	if (order > PAGE_ALLOC_COSTLY_ORDER) {
-		VM_BUG_ON(order != pageblock_order);
-		return NR_LOWORDER_PCP_LISTS;
+		VM_BUG_ON(order > PCP_MAX_ORDER);
+		return order + HIGHORDER_PCP_LIST_INDEX;
 	}
 #else
 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
@@ -618,8 +618,8 @@ static inline int pindex_to_order(unsigned int pindex)
 	int order = pindex / MIGRATE_PCPTYPES;
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-	if (pindex == NR_LOWORDER_PCP_LISTS)
-		order = pageblock_order;
+	if (pindex >= NR_LOWORDER_PCP_LISTS)
+		order = pindex - HIGHORDER_PCP_LIST_INDEX;
 #else
 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
 #endif
@@ -632,7 +632,7 @@ static inline bool pcp_allowed_order(unsigned int order)
 	if (order <= PAGE_ALLOC_COSTLY_ORDER)
 		return true;
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-	if (order == pageblock_order)
+	if (order == PCP_MAX_ORDER)
 		return true;
 #endif
 	return false;
