@@ -20,6 +20,7 @@
 #include "format.h"
 #include "integrity.h"
 #include "vfs.h"
+#include "../internal.h"
 
 #define READ_WRITE_FILE_MODE 0666
 
@@ -242,7 +243,9 @@ static int dir_relative_path_resolve(
 {
 	int dir_fd = get_unused_fd_flags(0);
 	struct file *dir_f = NULL;
+	struct filename *name;
 	int error = 0;
+	int flags;
 
 	if (!base_path)
 		base_path = &mi->mi_backing_dir_path;
@@ -265,8 +268,9 @@ static int dir_relative_path_resolve(
 		goto out;
 	}
 
-	error = user_path_at_empty(dir_fd, relative_path,
-		LOOKUP_FOLLOW | LOOKUP_DIRECTORY, result_path, NULL);
+	flags = LOOKUP_FOLLOW | LOOKUP_DIRECTORY;
+	name = getname_flags(relative_path, flags);
+	error = filename_lookup(dir_fd, name, flags, &presult_path, NULL);
 
 out:
 	close_fd(dir_fd);
