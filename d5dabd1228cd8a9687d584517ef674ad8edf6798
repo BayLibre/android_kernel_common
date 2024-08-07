@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7664f615_5d354fcc",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-08-07T16:45:35Z",
+      "side": 1,
+      "message": "It would be more generic to have this vendor hook modifying order like this:\n```\ntrace_android_vh_pindex_to_order(\u0026order);\n```\n\nThen the hook implementation can modify the order to arbitrary value;",
+      "range": {
+        "startLine": 623,
+        "startChar": 2,
+        "endLine": 624,
+        "endChar": 39
+      },
+      "revId": "d5dabd1228cd8a9687d584517ef674ad8edf6798",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9af8f2d9_c3671e15",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-08-07T16:45:35Z",
+      "side": 1,
+      "message": "Instread:\n```\n\tunsigned int allowed_order \u003d pageblock_order;\n\ttrace_android_vh_pcp_allowed_order(\u0026allowed_order);\n\tif (order \u003d\u003d allowed_order)\n\t\treturn true;\t\n```",
+      "range": {
+        "startLine": 638,
+        "startChar": 0,
+        "endLine": 642,
+        "endChar": 27
+      },
+      "revId": "d5dabd1228cd8a9687d584517ef674ad8edf6798",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
