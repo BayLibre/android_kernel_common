@@ -202,6 +202,26 @@
     },
     {
       "robotId": "ayeaye",
+      "robotRunId": "AR00000000000087306004",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3207681?revision\u003d4",
+      "key": {
+        "uuid": "e7bcf0d9_6b791dbd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-08-07T13:11:21Z",
+      "side": 1,
+      "message": "Commit needs to contain a properly formatted Bug: or Fixes: line.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "f0b03fd9fded8fa7d1b13cdec3abcbbf07d8d87e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
       "robotRunId": "AR00000000000087305958",
       "url": "https://android-build.googleplex.com/builds/treetop/android-review/3207681?revision\u003d4",
       "key": {
@@ -700,6 +720,54 @@
       "fixSuggestions": [
         {
           "fixId": "c54c4828_0aefe0a5",
+          "description": "Buildifier Suggestion",
+          "replacements": [
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 323,
+                "startChar": 0,
+                "endLine": 325,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 330,
+                "startChar": 0,
+                "endLine": 330,
+                "endChar": 0
+              },
+              "replacement": "    \"drivers/power/sequencing/pwrseq-core.ko\",\n    \"drivers/power/sequencing/pwrseq-qcom-wcn.ko\",\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f0b03fd9fded8fa7d1b13cdec3abcbbf07d8d87e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000087305958",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3207681?revision\u003d4",
+      "key": {
+        "uuid": "0715c383_ad10829a",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-08-07T13:11:21Z",
+      "side": 1,
+      "message": "File is not formatted. Run `buildifier BUILD.bazel` to format the file, or apply the suggested fix.",
+      "tag": "",
+      "fixSuggestions": [
+        {
+          "fixId": "64ba167f_786b4277",
           "description": "Buildifier Suggestion",
           "replacements": [
             {
