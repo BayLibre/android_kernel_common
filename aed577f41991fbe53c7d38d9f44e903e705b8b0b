@@ -52,6 +52,24 @@
       "parentUuid": "5c839ece_67a636ea",
       "revId": "aed577f41991fbe53c7d38d9f44e903e705b8b0b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59a915d8_abb25dc2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2024-08-08T15:39:53Z",
+      "side": 1,
+      "message": "For each GKI branch there is a corresponding Pixel driver branch. So changing `android-mainline` to use a new KCFI ABI won\u0027t impact other GKI branches. This is similar to how all our GKI branches have different ABIs, e.g. `android13-5.15` vs `android14-5.15` vs `android14-6.1` all have different ABIs.",
+      "parentUuid": "d4e822db_d659273e",
+      "revId": "aed577f41991fbe53c7d38d9f44e903e705b8b0b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
