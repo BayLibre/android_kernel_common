@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "62bc7d98_02515acf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-08-08T07:23:55Z",
+      "side": 1,
+      "message": "It shouldn\u0027t change anything.\n\nMainly, it changes an `#ifndef INLINE_COPY_TO_USER` to `#if !defined(INLINE_COPY_TO_USER) || defined(CONFIG_RUST)`, but if CONFIG_RUST is turned off, then they should be equivalent.\n\nOther than that, there\u0027s a detail related to `barrier_nospec`, but as [the author explained here](https://lore.kernel.org/rust-for-linux/4f0eb08d-bb5d-4544-aeba-ac9d8a663005@app.fastmail.com/), that is also a noop.\n\nBut let me know if you\u0027d like to keep it.",
+      "parentUuid": "a694b867_0febb7b4",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 83
+      },
+      "revId": "c27248099db0ef9ff507fa6f3ebeb31ee78867ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "18f0ba50_27632faf",
