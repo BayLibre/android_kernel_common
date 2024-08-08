@@ -89,6 +89,8 @@ struct kunit_resource {
 	struct kref refcount;
 	struct list_head node;
 	bool should_kfree;
+	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_RESERVE(2);
 };
 
 /**
