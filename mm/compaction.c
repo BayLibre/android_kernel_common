@@ -2411,7 +2411,7 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
 	return false;
 }
 
-static enum compact_result
+enum compact_result
 compact_zone(struct compact_control *cc, struct capture_control *capc)
 {
 	enum compact_result ret;
@@ -2648,6 +2648,7 @@ out:
 
 	return ret;
 }
+EXPORT_SYMBOL_GPL(compact_zone);
 
 static enum compact_result compact_zone_order(struct zone *zone, int order,
 		gfp_t gfp_mask, enum compact_priority prio,

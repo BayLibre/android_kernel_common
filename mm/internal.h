@@ -738,6 +738,9 @@ int __alloc_contig_migrate_range(struct compact_control *cc,
 /* Free whole pageblock and set its migration type to MIGRATE_CMA. */
 void init_cma_reserved_pageblock(struct page *page);
 
+enum compact_result
+compact_zone(struct compact_control *cc, struct capture_control *capc);
+
 #endif /* CONFIG_COMPACTION || CONFIG_CMA */
 
 int find_suitable_fallback(struct free_area *area, unsigned int order,
