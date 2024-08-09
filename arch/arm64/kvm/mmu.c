@@ -1805,6 +1805,8 @@ int pkvm_mem_abort_range(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa, size_t si
 	ppage = find_ppage_or_above(vcpu->kvm, fault_ipa);
 
 	while (size) {
+		phys_addr_t map_ipa = fault_ipa;
+
 		if (ppage && ppage->ipa == fault_ipa) {
 			page_size = PAGE_SIZE << ppage->order;
 			ppage = mt_next(&vcpu->kvm->arch.pkvm.pinned_pages,
@@ -1823,7 +1825,7 @@ int pkvm_mem_abort_range(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa, size_t si
 			}
 
 			read_unlock(&vcpu->kvm->mmu_lock);
-			err = pkvm_mem_abort(vcpu, &fault_ipa, memslot, hva, &page_size);
+			err = pkvm_mem_abort(vcpu, &map_ipa, memslot, hva, &page_size);
 			read_lock(&vcpu->kvm->mmu_lock);
 			if (err)
 				goto end;
@@ -1832,11 +1834,19 @@ int pkvm_mem_abort_range(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa, size_t si
 			 * We had to release the mmu_lock so let's update the
 			 * reference.
 			 */
-			ppage = find_ppage_or_above(vcpu->kvm, fault_ipa + PAGE_SIZE);
+			ppage = find_ppage_or_above(vcpu->kvm, fault_ipa + page_size);
 		}
 
-		size = size_sub(size, PAGE_SIZE);
-		fault_ipa += PAGE_SIZE;
+		/*
+		 * The requested range is fault_ipa_orig + size. Do not account
+		 * the extra size, potentially mapped by pkvm_mem_abort() if a
+		 * PMD size mapping has been installed.
+		 */
+		size = size_sub(size, page_size - (map_ipa - fault_ipa));
+		if (size == SIZE_MAX)
+			break;
+
+		fault_ipa = map_ipa + page_size;
 	}
 end:
 	read_unlock(&vcpu->kvm->mmu_lock);
