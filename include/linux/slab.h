@@ -120,6 +120,9 @@
 /* Slab deactivation flag */
 #define SLAB_DEACTIVATED	((slab_flags_t __force)0x10000000U)
 
+/* Allocation deemed to be from a module */
+#define SLAB_MODULES		((slab_flags_t __force)0x20000000U)
+
 /*
  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
  *
@@ -154,6 +157,8 @@ struct kmem_cache *kmem_cache_create_usercopy(const char *name,
 			void (*ctor)(void *));
 void kmem_cache_destroy(struct kmem_cache *);
 int kmem_cache_shrink(struct kmem_cache *);
+
+extern atomic_long_t kmalloc_large_allocs_kb;
 
 /*
  * Please use this macro to create slab caches. Simply specify the
@@ -332,6 +337,8 @@ enum kmalloc_cache_type {
 #else
 	KMALLOC_CGROUP,
 #endif
+	KMALLOC_MODULES,
+	KMALLOC_MODULES_RECLAIM,
 	KMALLOC_RECLAIM,
 #ifdef CONFIG_ZONE_DMA
 	KMALLOC_DMA,

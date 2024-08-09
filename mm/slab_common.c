@@ -51,6 +51,8 @@ static void slab_caches_to_rcu_destroy_workfn(struct work_struct *work);
 static DECLARE_WORK(slab_caches_to_rcu_destroy_work,
 		    slab_caches_to_rcu_destroy_workfn);
 
+atomic_long_t kmalloc_large_allocs_kb = ATOMIC_LONG_INIT(0);
+
 /*
  * Set of flags that will prevent slab merging
  */
@@ -783,6 +785,8 @@ struct kmem_cache *kmalloc_slab(size_t size, gfp_t flags)
 {								\
 	.name[KMALLOC_NORMAL]  = "kmalloc-" #__short_size,	\
 	.name[KMALLOC_RECLAIM] = "kmalloc-rcl-" #__short_size,	\
+	.name[KMALLOC_MODULES] = "kmalloc-modules-" #__short_size, \
+	.name[KMALLOC_MODULES_RECLAIM] = "kmalloc-modules-rcl-" #__short_size, \
 	KMALLOC_CGROUP_NAME(__short_size)			\
 	KMALLOC_DMA_NAME(__short_size)				\
 	.size = __size,						\
@@ -880,6 +884,10 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type, slab_flags_t flags)
 			return;
 		}
 		flags |= SLAB_ACCOUNT;
+	} else if (type == KMALLOC_MODULES_RECLAIM) {
+		flags |= SLAB_RECLAIM_ACCOUNT | SLAB_MODULES;
+	} else if (type == KMALLOC_MODULES) {
+		flags |= SLAB_MODULES;
 	}
 
 	kmalloc_caches[type][idx] = create_kmalloc_cache(
@@ -977,6 +985,7 @@ void *kmalloc_order(size_t size, gfp_t flags, unsigned int order)
 		ret = page_address(page);
 		mod_lruvec_page_state(page, NR_SLAB_UNRECLAIMABLE_B,
 				      PAGE_SIZE << order);
+		atomic_long_add((PAGE_SIZE << order) >> 10, &kmalloc_large_allocs_kb);
 	}
 
 	trace_android_vh_kmalloc_order_alloced(page, size, flags);
