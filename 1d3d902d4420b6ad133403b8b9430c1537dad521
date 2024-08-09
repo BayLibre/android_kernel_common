@@ -16,6 +16,116 @@
       "message": "On the \"why not rename the existing `AVTAB_XPERMS_IOCTLDRIVER` and `AVTAB_XPERMS_IOCTLFUNCTION` constants\", I will add an entry below the marker line `---`, something similar to:\n\n\"I previously suggested to rename the constants AVTAB_XPERMS_IOCTLDRIVER and AVTAB_XPERMS_IOCTLFUNCTION as they have a similar purpose to the new AVTAB_XPERMS_NLMSG. However, there is no other information in the avtab_datum structure to link the extended permission to the original permission. So it is still necessary to capture which permission is specified in struct avtab_extended_perms.\"\n\nThe info below the marker line is useful for this kind of comment: \"Other comments relevant only to the moment or the maintainer, not suitable for the permanent changelog, should also go here.\" from https://docs.kernel.org/process/submitting-patches.html",
       "revId": "1d3d902d4420b6ad133403b8b9430c1537dad521",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6652f60e_9bab61ca",
+        "filename": "security/selinux/include/policycap.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1054468
+      },
+      "writtenOn": "2024-08-09T09:39:50Z",
+      "side": 1,
+      "message": "I\u0027m not convinced that we actually need this. We didn\u0027t need a policy capability for the original xperms.",
+      "range": {
+        "startLine": 17,
+        "startChar": 1,
+        "endLine": 17,
+        "endChar": 27
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8eb23c3d_9e8c6bee",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "security/selinux/include/policycap.h",
+              "range": {
+                "startLine": 17,
+                "startChar": 0,
+                "endLine": 18,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "1d3d902d4420b6ad133403b8b9430c1537dad521",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98a684ea_e0479d1f",
+        "filename": "security/selinux/ss/services.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 959,
+      "author": {
+        "id": 1054468
+      },
+      "writtenOn": "2024-08-09T09:39:50Z",
+      "side": 1,
+      "message": "Why are you doing this?",
+      "range": {
+        "startLine": 959,
+        "startChar": 0,
+        "endLine": 959,
+        "endChar": 47
+      },
+      "revId": "1d3d902d4420b6ad133403b8b9430c1537dad521",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc2e06c2_23e4e752",
+        "filename": "security/selinux/ss/services.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 961,
+      "author": {
+        "id": 1054468
+      },
+      "writtenOn": "2024-08-09T09:39:50Z",
+      "side": 1,
+      "message": "don\u0027t we need an annotation that the case fallthrough is intentional?\n\nSome kernel configs have -Wimplicit-fallthrough enabled (or perhaps that\u0027s the default now?). See: https://lore.kernel.org/lkml/20210304225202.GB105908@embeddedor/T/",
+      "range": {
+        "startLine": 961,
+        "startChar": 6,
+        "endLine": 961,
+        "endChar": 32
+      },
+      "revId": "1d3d902d4420b6ad133403b8b9430c1537dad521",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1288ae9_09373f2e",
+        "filename": "security/selinux/ss/services.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 974,
+      "author": {
+        "id": 1054468
+      },
+      "writtenOn": "2024-08-09T09:39:50Z",
+      "side": 1,
+      "message": "same question about the fallthrough.",
+      "range": {
+        "startLine": 974,
+        "startChar": 6,
+        "endLine": 974,
+        "endChar": 32
+      },
+      "revId": "1d3d902d4420b6ad133403b8b9430c1537dad521",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
