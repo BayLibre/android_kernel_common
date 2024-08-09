@@ -140,6 +140,7 @@ struct pid *pidfd_pid(const struct file *file)
 
 #ifdef CONFIG_FS_PID
 static struct vfsmount *pidfs_mnt __ro_after_init;
+static struct super_block *pidfs_sb __ro_after_init;
 
 /*
  * The vfs falls back to simple_setattr() if i_op->setattr() isn't
@@ -187,30 +188,21 @@ static char *pidfs_dname(struct dentry *dentry, char *buffer, int buflen)
 			     d_inode(dentry)->i_ino);
 }
 
+static void pidfs_prune_dentry(struct dentry *dentry)
+{
+	struct inode *inode;
+
+	inode = d_inode(dentry);
+	if (inode) {
+		struct pid *pid = inode->i_private;
+		WRITE_ONCE(pid->stashed, NULL);
+	}
+}
+
 static const struct dentry_operations pidfs_dentry_operations = {
 	.d_delete	= always_delete_dentry,
 	.d_dname	= pidfs_dname,
-	.d_prune	= stashed_dentry_prune,
-};
-
-static void pidfs_init_inode(struct inode *inode, void *data)
-{
-	inode->i_private = data;
-	inode->i_flags |= S_PRIVATE;
-	inode->i_mode |= S_IRWXU;
-	inode->i_op = &pidfs_inode_operations;
-	inode->i_fop = &pidfs_file_operations;
-}
-
-static void pidfs_put_data(void *data)
-{
-	struct pid *pid = data;
-	put_pid(pid);
-}
-
-static const struct stashed_operations pidfs_stashed_ops = {
-	.init_inode = pidfs_init_inode,
-	.put_data = pidfs_put_data,
+	.d_prune	= pidfs_prune_dentry,
 };
 
 static int pidfs_init_fs_context(struct fs_context *fc)
@@ -223,7 +215,6 @@ static int pidfs_init_fs_context(struct fs_context *fc)
 
 	ctx->ops = &pidfs_sops;
 	ctx->dops = &pidfs_dentry_operations;
-	fc->s_fs_info = (void *)&pidfs_stashed_ops;
 	return 0;
 }
 
@@ -240,13 +231,19 @@ struct file *pidfs_alloc_file(struct pid *pid, unsigned int flags)
 	struct path path;
 	int ret;
 
-	/*
-	* Inode numbering for pidfs start at RESERVED_PIDS + 1.
-	* This avoids collisions with the root inode which is 1
-	* for pseudo filesystems.
-	 */
-	ret = path_from_stashed(&pid->stashed, pid->ino, pidfs_mnt,
-				get_pid(pid), &path);
+	do {
+		/*
+		 * Inode numbering for pidfs start at RESERVED_PIDS + 1.
+		 * This avoids collisions with the root inode which is 1
+		 * for pseudo filesystems.
+		 */
+		ret = path_from_stashed(&pid->stashed, pid->ino, pidfs_mnt,
+					&pidfs_file_operations,
+					&pidfs_inode_operations, get_pid(pid),
+					&path);
+		if (ret <= 0 && ret != -EAGAIN)
+			put_pid(pid);
+	} while (ret == -EAGAIN);
 	if (ret < 0)
 		return ERR_PTR(ret);
 
@@ -260,6 +257,8 @@ void __init pidfs_init(void)
 	pidfs_mnt = kern_mount(&pidfs_type);
 	if (IS_ERR(pidfs_mnt))
 		panic("Failed to mount pidfs pseudo filesystem");
+
+	pidfs_sb = pidfs_mnt->mnt_sb;
 }
 
 bool is_pidfs_sb(const struct super_block *sb)
