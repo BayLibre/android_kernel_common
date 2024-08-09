@@ -98,6 +98,12 @@ extern void compaction_defer_reset(struct zone *zone, int order,
 bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
 					int alloc_flags);
 
+struct compact_control;
+struct capture_control;
+
+enum compact_result
+compact_zone(struct compact_control *cc, struct capture_control *capc);
+
 extern void __meminit kcompactd_run(int nid);
 extern void __meminit kcompactd_stop(int nid);
 extern void wakeup_kcompactd(pg_data_t *pgdat, int order, int highest_zoneidx);
