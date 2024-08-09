@@ -213,6 +213,12 @@ static int smmu_add_cmd(struct hyp_arm_smmu_v3_device *smmu,
 	for (i = 0; i < CMDQ_ENT_DWORDS; i++)
 		slot[i] = cpu_to_le64(cmd[i]);
 
+	/*
+	 * Order writes to PTEs, STE/CDs and command queue before
+	 * issuing the command to the SMMU.
+	 */
+	dma_wmb();
+
 	smmu->cmdq_prod++;
 	writel(Q_IDX(smmu, smmu->cmdq_prod) | Q_WRAP(smmu, smmu->cmdq_prod),
 	       smmu->base + ARM_SMMU_CMDQ_PROD);
