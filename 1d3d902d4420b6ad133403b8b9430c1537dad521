@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaa6a4ca_b33fd7d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1561651
+      },
+      "writtenOn": "2024-08-09T04:03:38Z",
+      "side": 1,
+      "message": "On the \"why not rename the existing `AVTAB_XPERMS_IOCTLDRIVER` and `AVTAB_XPERMS_IOCTLFUNCTION` constants\", I will add an entry below the marker line `---`, something similar to:\n\n\"I previously suggested to rename the constants AVTAB_XPERMS_IOCTLDRIVER and AVTAB_XPERMS_IOCTLFUNCTION as they have a similar purpose to the new AVTAB_XPERMS_NLMSG. However, there is no other information in the avtab_datum structure to link the extended permission to the original permission. So it is still necessary to capture which permission is specified in struct avtab_extended_perms.\"\n\nThe info below the marker line is useful for this kind of comment: \"Other comments relevant only to the moment or the maintainer, not suitable for the permanent changelog, should also go here.\" from https://docs.kernel.org/process/submitting-patches.html",
+      "revId": "1d3d902d4420b6ad133403b8b9430c1537dad521",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
