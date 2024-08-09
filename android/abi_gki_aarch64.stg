@@ -342641,6 +342641,12 @@ function {
   parameter_id: 0x33756485
 }
 function {
+  id: 0xfa5f5c49
+  return_type_id: 0xb01beef1
+  parameter_id: 0x0622699d
+  parameter_id: 0x1a73eb90
+}
+function {
   id: 0xfab273f5
   return_type_id: 0x6d7f5ff6
   parameter_id: 0x1058a3c5
@@ -362200,6 +362206,15 @@ elf_symbol {
   crc: 0x859ec937
   type_id: 0x09506558
   full_name: "compact_node_async"
+}
+elf_symbol {
+  id: 0x1cca71cb
+  name: "compact_zone"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1a6198d4
+  type_id: 0xfa5f5c49
+  full_name: "compact_zone"
 }
 elf_symbol {
   id: 0x4f627b39
@@ -417298,6 +417313,7 @@ interface {
   symbol_id: 0x966a7c42
   symbol_id: 0xab62b21c
   symbol_id: 0x036561b6
+  symbol_id: 0x1cca71cb
   symbol_id: 0x4f627b39
   symbol_id: 0xda163e44
   symbol_id: 0xb375007c
