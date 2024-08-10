@@ -151,8 +151,8 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
 
 	arch_report_meminfo(m);
 
-	seq_printf(m, "SUnreclaimableLargeAlloc:%8lu kB\n",
-		    atomic_long_read(&kmalloc_large_allocs_kb));
+	seq_printf(m, "SUnreclaimableLargeModAllocs:%8lu kB\n",
+		    atomic_long_read(&kmalloc_large_module_allocs_kb));
 
 	return 0;
 }
