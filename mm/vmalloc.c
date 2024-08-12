@@ -2068,6 +2068,7 @@ static void *new_vmap_block(unsigned int order, gfp_t gfp_mask)
 	vb->dirty_max = 0;
 	bitmap_set(vb->used_map, 0, (1UL << order));
 	INIT_LIST_HEAD(&vb->free_list);
+	vb->cpu = raw_smp_processor_id();
 
 	xa = addr_to_vb_xa(va->va_start);
 	vb_idx = addr_to_vb_idx(va->va_start);
@@ -2079,13 +2080,12 @@ static void *new_vmap_block(unsigned int order, gfp_t gfp_mask)
 	}
 
 	/*
-	* list_add_tail_rcu could happened in another core
-	* rather than vb->cpu due to task migration, which
-	* is safe as list_add_tail_rcu will ensure the list's
-	* integrity together with list_for_each_rcu from read
-	* side.
-	*/
-	vb->cpu = raw_smp_processor_id();
+	 * list_add_tail_rcu could happened in another core
+	 * rather than vb->cpu due to task migration, which
+	 * is safe as list_add_tail_rcu will ensure the list's
+	 * integrity together with list_for_each_rcu from read
+	 * side.
+	 */
 	vbq = per_cpu_ptr(&vmap_block_queue, vb->cpu);
 	spin_lock(&vbq->lock);
 	list_add_tail_rcu(&vb->free_list, &vbq->free);
