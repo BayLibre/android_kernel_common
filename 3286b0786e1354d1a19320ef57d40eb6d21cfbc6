@@ -65,6 +65,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71b969c0_5a21173f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2024-08-12T22:39:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3b87c89_0ddd01d2",
+      "revId": "3286b0786e1354d1a19320ef57d40eb6d21cfbc6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f464b81c_a4a4aeaf",
@@ -78,6 +96,24 @@
       "writtenOn": "2024-08-12T21:48:39Z",
       "side": 1,
       "message": "Do you need handling for ZBC_OUT command? like open, close, finish or reset write pointer? Else trace cmd will only show ZBC_OUT while other fields for ZBC_OUT won\u0027t be meaningful.",
+      "revId": "3286b0786e1354d1a19320ef57d40eb6d21cfbc6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edd37941_affffbbd",
+        "filename": "include/trace/events/ufs.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1176763
+      },
+      "writtenOn": "2024-08-12T22:39:50Z",
+      "side": 1,
+      "message": "Yes to trace ZBC_IN and ZBC_OUT in general to catch all Zoned operations.",
+      "parentUuid": "f464b81c_a4a4aeaf",
       "revId": "3286b0786e1354d1a19320ef57d40eb6d21cfbc6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
