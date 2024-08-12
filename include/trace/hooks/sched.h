@@ -476,6 +476,11 @@ DECLARE_HOOK(android_vh_prio_restore,
 	TP_PROTO(int saved_prio),
 	TP_ARGS(saved_prio));
 
+DECLARE_RESTRICTED_HOOK(android_rvh_sched_wakeup,
+	TP_PROTO(struct task_struct *p),
+	TP_ARGS(p),1);
+
+
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */
