@@ -2225,6 +2225,7 @@ sk_dst_get(struct sock *sk)
 
 static inline void __dst_negative_advice(struct sock *sk)
 {
+<<<<<<< HEAD   (a4d90a Merge 6.1.93 into android14-6.1-lts)
 	/* *** ANDROID FIXUP ***
 	 * See b/343727534 for more details why this typedef is needed here.
 	 * *** ANDROID FIXUP ***
@@ -2232,13 +2233,20 @@ static inline void __dst_negative_advice(struct sock *sk)
 	android_dst_ops_negative_advice_new_t negative_advice;
 	void *c_is_fun;		/* Work around --Werror=cast-function-type */
 
+=======
+>>>>>>> BRANCH (eb44d8 Linux 6.1.94)
 	struct dst_entry *dst = __sk_dst_get(sk);
 
+<<<<<<< HEAD   (a4d90a Merge 6.1.93 into android14-6.1-lts)
 	if (dst && dst->ops->negative_advice) {
 		c_is_fun = dst->ops->negative_advice;
 		negative_advice = c_is_fun;
 		negative_advice(sk, dst);
 	}
+=======
+	if (dst && dst->ops->negative_advice)
+		dst->ops->negative_advice(sk, dst);
+>>>>>>> BRANCH (eb44d8 Linux 6.1.94)
 }
 
 static inline void dst_negative_advice(struct sock *sk)
