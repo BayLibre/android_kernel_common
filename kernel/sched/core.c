@@ -3851,6 +3851,7 @@ static inline void ttwu_do_wakeup(struct task_struct *p)
 {
 	WRITE_ONCE(p->__state, TASK_RUNNING);
 	trace_sched_wakeup(p);
+	trace_android_vh_sched_wakeup(p);
 }
 
 static void
