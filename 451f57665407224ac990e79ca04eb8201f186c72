@@ -16,6 +16,24 @@
       "message": "Submit upstream first please.",
       "revId": "451f57665407224ac990e79ca04eb8201f186c72",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb938d69_3301de1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1944987
+      },
+      "writtenOn": "2024-08-12T06:27:01Z",
+      "side": 1,
+      "message": "It intends that a module driver set force_reset to one in vh_ufs_check_int_errors and queue the error handler, but kernel in mainline doesn\u0027t have vh_ufs_check_int_errors.\n\nOr do you intend that I should submit another change like adding another callback?",
+      "parentUuid": "d000030e_83859caf",
+      "revId": "451f57665407224ac990e79ca04eb8201f186c72",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
