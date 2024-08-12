@@ -213,6 +213,7 @@ static void tick_setup_device(struct tick_device *td,
 
 		} else if (tick_do_timer_boot_cpu != -1 && !tick_nohz_full_cpu(cpu)) {
 			tick_do_timer_boot_cpu = -1;
+<<<<<<< HEAD   (ed1bf7 ANDROID: Update the ABI symbol list and stg)
 			/*
 			 * The boot CPU will stay in periodic (NOHZ disabled)
 			 * mode until clocksource_done_booting() called after
@@ -223,6 +224,11 @@ static void tick_setup_device(struct tick_device *td,
 			 * check in tick_periodic() but this race is harmless.
 			 */
 			WRITE_ONCE(tick_do_timer_cpu, cpu);
+||||||| BASE
+			WARN_ON(tick_do_timer_cpu != cpu);
+=======
+			WARN_ON(READ_ONCE(tick_do_timer_cpu) != cpu);
+>>>>>>> CHANGE (a94ba5 BACKPORT: timekeeping: Use READ/WRITE_ONCE() for tick_do_tim)
 #endif
 		}
 
