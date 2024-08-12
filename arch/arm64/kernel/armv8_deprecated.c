@@ -617,6 +617,208 @@ static struct insn_emulation_ops setend_ops = {
 	.hooks = setend_hooks,
 	.set_hw_mode = setend_set_hw_mode,
 };
+<<<<<<< HEAD   (fd5893 Merge 5.10.222 into android13-5.10-lts)
+=======
+#endif /* CONFIG_SETEND_EMULATION */
+
+static struct insn_emulation *insn_emulations[] = {
+#ifdef CONFIG_SWP_EMULATION
+	&insn_swp,
+#endif
+#ifdef CONFIG_CP15_BARRIER_EMULATION
+	&insn_cp15_barrier,
+#endif
+#ifdef CONFIG_SETEND_EMULATION
+	&insn_setend,
+#endif
+};
+
+static DEFINE_MUTEX(insn_emulation_mutex);
+
+static void enable_insn_hw_mode(void *data)
+{
+	struct insn_emulation *insn = (struct insn_emulation *)data;
+	if (insn->set_hw_mode)
+		insn->set_hw_mode(true);
+}
+
+static void disable_insn_hw_mode(void *data)
+{
+	struct insn_emulation *insn = (struct insn_emulation *)data;
+	if (insn->set_hw_mode)
+		insn->set_hw_mode(false);
+}
+
+/* Run set_hw_mode(mode) on all active CPUs */
+static int run_all_cpu_set_hw_mode(struct insn_emulation *insn, bool enable)
+{
+	if (!insn->set_hw_mode)
+		return -EINVAL;
+	if (enable)
+		on_each_cpu(enable_insn_hw_mode, (void *)insn, true);
+	else
+		on_each_cpu(disable_insn_hw_mode, (void *)insn, true);
+	return 0;
+}
+
+/*
+ * Run set_hw_mode for all insns on a starting CPU.
+ * Returns:
+ *  0 		- If all the hooks ran successfully.
+ * -EINVAL	- At least one hook is not supported by the CPU.
+ */
+static int run_all_insn_set_hw_mode(unsigned int cpu)
+{
+	int i;
+	int rc = 0;
+	unsigned long flags;
+
+	/*
+	 * Disable IRQs to serialize against an IPI from
+	 * run_all_cpu_set_hw_mode(), ensuring the HW is programmed to the most
+	 * recent enablement state if the two race with one another.
+	 */
+	local_irq_save(flags);
+	for (i = 0; i < ARRAY_SIZE(insn_emulations); i++) {
+		struct insn_emulation *insn = insn_emulations[i];
+		bool enable = READ_ONCE(insn->current_mode) == INSN_HW;
+		if (insn->status == INSN_UNAVAILABLE)
+			continue;
+
+		if (insn->set_hw_mode && insn->set_hw_mode(enable)) {
+			pr_warn("CPU[%u] cannot support the emulation of %s",
+				cpu, insn->name);
+			rc = -EINVAL;
+		}
+	}
+	local_irq_restore(flags);
+
+	return rc;
+}
+
+static int update_insn_emulation_mode(struct insn_emulation *insn,
+				       enum insn_emulation_mode prev)
+{
+	int ret = 0;
+
+	switch (prev) {
+	case INSN_UNDEF: /* Nothing to be done */
+		break;
+	case INSN_EMULATE:
+		break;
+	case INSN_HW:
+		if (!run_all_cpu_set_hw_mode(insn, false))
+			pr_notice("Disabled %s support\n", insn->name);
+		break;
+	}
+
+	switch (insn->current_mode) {
+	case INSN_UNDEF:
+		break;
+	case INSN_EMULATE:
+		break;
+	case INSN_HW:
+		ret = run_all_cpu_set_hw_mode(insn, true);
+		if (!ret)
+			pr_notice("Enabled %s support\n", insn->name);
+		break;
+	}
+
+	return ret;
+}
+
+static int emulation_proc_handler(struct ctl_table *table, int write,
+				  void *buffer, size_t *lenp,
+				  loff_t *ppos)
+{
+	int ret = 0;
+	struct insn_emulation *insn = container_of(table->data, struct insn_emulation, current_mode);
+	enum insn_emulation_mode prev_mode = insn->current_mode;
+
+	mutex_lock(&insn_emulation_mutex);
+	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+
+	if (ret || !write || prev_mode == insn->current_mode)
+		goto ret;
+
+	ret = update_insn_emulation_mode(insn, prev_mode);
+	if (ret) {
+		/* Mode change failed, revert to previous mode. */
+		WRITE_ONCE(insn->current_mode, prev_mode);
+		update_insn_emulation_mode(insn, INSN_UNDEF);
+	}
+ret:
+	mutex_unlock(&insn_emulation_mutex);
+	return ret;
+}
+
+static void __init register_insn_emulation(struct insn_emulation *insn)
+{
+	struct ctl_table *sysctl;
+
+	insn->min = INSN_UNDEF;
+
+	switch (insn->status) {
+	case INSN_DEPRECATED:
+		insn->current_mode = INSN_EMULATE;
+		/* Disable the HW mode if it was turned on at early boot time */
+		run_all_cpu_set_hw_mode(insn, false);
+		insn->max = INSN_HW;
+		break;
+	case INSN_OBSOLETE:
+		insn->current_mode = INSN_UNDEF;
+		insn->max = INSN_EMULATE;
+		break;
+	case INSN_UNAVAILABLE:
+		insn->current_mode = INSN_UNDEF;
+		insn->max = INSN_UNDEF;
+		break;
+	}
+
+	/* Program the HW if required */
+	update_insn_emulation_mode(insn, INSN_UNDEF);
+
+	if (insn->status != INSN_UNAVAILABLE) {
+		sysctl = &insn->sysctl[0];
+
+		sysctl->mode = 0644;
+		sysctl->maxlen = sizeof(int);
+
+		sysctl->procname = insn->name;
+		sysctl->data = &insn->current_mode;
+		sysctl->extra1 = &insn->min;
+		sysctl->extra2 = &insn->max;
+		sysctl->proc_handler = emulation_proc_handler;
+
+		register_sysctl("abi", sysctl);
+	}
+}
+
+bool try_emulate_armv8_deprecated(struct pt_regs *regs, u32 insn)
+{
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(insn_emulations); i++) {
+		struct insn_emulation *ie = insn_emulations[i];
+
+		if (ie->status == INSN_UNAVAILABLE)
+			continue;
+
+		/*
+		 * A trap may race with the mode being changed
+		 * INSN_EMULATE<->INSN_HW. Try to emulate the instruction to
+		 * avoid a spurious UNDEF.
+		 */
+		if (READ_ONCE(ie->current_mode) == INSN_UNDEF)
+			continue;
+
+		if (ie->try_emulate(regs, insn))
+			return true;
+	}
+
+	return false;
+}
+>>>>>>> BRANCH (b15dc4 Linux 5.10.223)
 
 /*
  * Invoked as core_initcall, which guarantees that the instruction
