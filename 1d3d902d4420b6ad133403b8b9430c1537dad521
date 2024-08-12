@@ -61,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a608666f_5d713c5b",
+        "filename": "security/selinux/include/policycap.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1561651
+      },
+      "writtenOn": "2024-08-12T01:14:23Z",
+      "side": 1,
+      "message": "Without the new capability, we would have to put the extended permissions behind the current permissions. That is, for instance, \n\nallowxperm d self:netlink_audit_socket nlmsg_read { RTM_GETLINK };\nallowxperm d self:netlink_audit_socket nlmsg_write { RTM_SETLINK };\n\ninstead of \n\nallowxperm d self:netlink_audit_socket nlmsg { RTM_GETLINK RTM_SETLINK };\n\n\nSee also the list in the commit message on why I think this is a better approach.\n\nSince this is changing which permission is mapped to which action (i.e., all nlmsg_send are now mapped to `nlmsg`), then it needs to be put behind a capability / flag. There was a similar behaviour change recently with POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT.",
+      "parentUuid": "6652f60e_9bab61ca",
+      "range": {
+        "startLine": 17,
+        "startChar": 1,
+        "endLine": 17,
+        "endChar": 27
+      },
+      "revId": "1d3d902d4420b6ad133403b8b9430c1537dad521",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98a684ea_e0479d1f",
         "filename": "security/selinux/ss/services.c",
         "patchSetId": 4
@@ -72,6 +96,30 @@
       "writtenOn": "2024-08-09T09:39:50Z",
       "side": 1,
       "message": "Why are you doing this?",
+      "range": {
+        "startLine": 959,
+        "startChar": 0,
+        "endLine": 959,
+        "endChar": 47
+      },
+      "revId": "1d3d902d4420b6ad133403b8b9430c1537dad521",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74331b62_7ff5ea0d",
+        "filename": "security/selinux/ss/services.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 959,
+      "author": {
+        "id": 1561651
+      },
+      "writtenOn": "2024-08-12T01:14:23Z",
+      "side": 1,
+      "message": "The diff from Gerrit is not great. I basically extracted the repeated blocks from `services_compute_xperms_decision` into a separate function to improve the readability.\n\nSo the memset here is just the previous memset that used to be in `services_compute_xperms_decision`.",
+      "parentUuid": "98a684ea_e0479d1f",
       "range": {
         "startLine": 959,
         "startChar": 0,
@@ -107,6 +155,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "53c070ee_40669587",
+        "filename": "security/selinux/ss/services.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 961,
+      "author": {
+        "id": 1561651
+      },
+      "writtenOn": "2024-08-12T01:14:23Z",
+      "side": 1,
+      "message": "I didn\u0027t get any error building. From my understanding, this is not considered a fallthrough, as all cases have a `break`. The fact that there are 2 \u0027case\u0027 for a block is not the same.\n\nI did try to remove the break above for testing, and it did trigger the \"fallthrough\" build error you mentioned. So if there was an issue with the current code, I assume something would have been raised.",
+      "parentUuid": "fc2e06c2_23e4e752",
+      "range": {
+        "startLine": 961,
+        "startChar": 6,
+        "endLine": 961,
+        "endChar": 32
+      },
+      "revId": "1d3d902d4420b6ad133403b8b9430c1537dad521",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d1288ae9_09373f2e",
         "filename": "security/selinux/ss/services.c",
         "patchSetId": 4
@@ -118,6 +190,30 @@
       "writtenOn": "2024-08-09T09:39:50Z",
       "side": 1,
       "message": "same question about the fallthrough.",
+      "range": {
+        "startLine": 974,
+        "startChar": 6,
+        "endLine": 974,
+        "endChar": 32
+      },
+      "revId": "1d3d902d4420b6ad133403b8b9430c1537dad521",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7562fadf_4e6046ea",
+        "filename": "security/selinux/ss/services.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 974,
+      "author": {
+        "id": 1561651
+      },
+      "writtenOn": "2024-08-12T01:14:23Z",
+      "side": 1,
+      "message": "Ack, see above.",
+      "parentUuid": "d1288ae9_09373f2e",
       "range": {
         "startLine": 974,
         "startChar": 6,
