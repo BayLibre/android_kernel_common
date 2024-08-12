@@ -250,7 +250,7 @@ retry:
 	} else {
 		blkcnt_t count = 1;
 
-		err = inc_valid_block_count(sbi, inode, &count, true);
+		err = inc_valid_block_count(sbi, inode, &count);
 		if (err) {
 			f2fs_put_dnode(&dn);
 			return err;
