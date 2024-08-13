@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54656892_075e0e40",
+        "filename": "mm/memory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4416,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-08-13T17:50:54Z",
+      "side": 1,
+      "message": "`highest_order()` is available for modules to use, so the vendor hook should set the final `order` internally instead of modifying `orders` and then calling `highest_order()`. You can just add:\n\n```\ntrace_android_vh_customize_alloc_anon_folio_order(\u0026gfp, orders, \u0026order);\n```\n\n`order \u003d highest_order(orders);` can be done inside the implementation of this hook.",
+      "range": {
+        "startLine": 4415,
+        "startChar": 1,
+        "endLine": 4416,
+        "endChar": 31
+      },
+      "revId": "a70ae9533fc419dcd1ff4d2f145348350487784a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
