@@ -7030,8 +7030,19 @@ static void perf_output_read_group(struct perf_output_handle *handle,
 {
 	struct perf_event *leader = event->group_leader, *sub;
 	u64 read_format = event->attr.read_format;
+<<<<<<< HEAD   (e787d6 Revert "cpufreq: brcmstb-avs-cpufreq: add check for cpufreq_)
 	u64 values[5];
+=======
+	unsigned long flags;
+	u64 values[6];
+>>>>>>> BRANCH (cdfd0a Linux 5.15.154)
 	int n = 0;
+
+	/*
+	 * Disabling interrupts avoids all counter scheduling
+	 * (context switches, timer based rotation and IPIs).
+	 */
+	local_irq_save(flags);
 
 	values[n++] = 1 + leader->nr_siblings;
 
@@ -7064,6 +7075,8 @@ static void perf_output_read_group(struct perf_output_handle *handle,
 
 		__output_copy(handle, values, n * sizeof(u64));
 	}
+
+	local_irq_restore(flags);
 }
 
 #define PERF_FORMAT_TOTAL_TIMES (PERF_FORMAT_TOTAL_TIME_ENABLED|\

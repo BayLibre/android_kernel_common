@@ -521,11 +521,23 @@ int fuse_lookup_name(struct super_block *sb, u64 nodeid, const struct qstr *name
 	fuse_lookup_init(fm->fc, &args, nodeid, name, outarg, &bpf_arg.out);
 	err = fuse_simple_request(fm, &args);
 
+<<<<<<< HEAD   (e787d6 Revert "cpufreq: brcmstb-avs-cpufreq: add check for cpufreq_)
 #ifdef CONFIG_FUSE_BPF
 	if (err == sizeof(bpf_arg.out)) {
 		/* TODO Make sure this handles invalid handles */
 		struct file *backing_file;
 		struct inode *backing_inode;
+=======
+	err = -EIO;
+	if (!outarg->nodeid)
+		goto out_put_forget;
+	if (fuse_invalid_attr(&outarg->attr))
+		goto out_put_forget;
+	if (outarg->nodeid == FUSE_ROOT_ID && outarg->generation != 0) {
+		pr_warn_once("root generation should be zero\n");
+		outarg->generation = 0;
+	}
+>>>>>>> BRANCH (cdfd0a Linux 5.15.154)
 
 		err = -ENOENT;
 		if (!entry)
