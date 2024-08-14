@@ -1198,6 +1198,7 @@ struct class block_class = {
 	.name		= "block",
 	.dev_uevent	= block_uevent,
 };
+EXPORT_SYMBOL(block_class);
 
 static char *block_devnode(const struct device *dev, umode_t *mode,
 			   kuid_t *uid, kgid_t *gid)

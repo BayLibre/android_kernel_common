@@ -109,6 +109,7 @@ unsigned int blk_mq_in_flight(struct request_queue *q,
 
 	return mi.inflight[0] + mi.inflight[1];
 }
+EXPORT_SYMBOL_GPL(blk_mq_in_flight);
 
 void blk_mq_in_flight_rw(struct request_queue *q, struct block_device *part,
 		unsigned int inflight[2])
