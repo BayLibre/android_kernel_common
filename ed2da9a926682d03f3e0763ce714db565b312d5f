@@ -16,6 +16,47 @@
       "message": "What exact disk information is required apart from what is available from /proc ? Please add that in commit message.",
       "revId": "ed2da9a926682d03f3e0763ce714db565b312d5f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eddfbbe0_f6dad332",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-08-14T16:51:04Z",
+      "side": 1,
+      "message": "This function is very short and only calls one other function that has already been exported. I think the Android kernel will be easier to maintain if this function is copied rather than exported.",
+      "parentUuid": "4e34997c_7ce58e26",
+      "revId": "ed2da9a926682d03f3e0763ce714db565b312d5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4926d54_ad408e81",
+        "filename": "block/genhd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1201,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-08-14T16:51:04Z",
+      "side": 1,
+      "message": "This data structure probably should not be exported. See also https://lore.kernel.org/linux-block/YIz0EBqKTHhB+n8N@kroah.com/.",
+      "range": {
+        "startLine": 1201,
+        "startChar": 14,
+        "endLine": 1201,
+        "endChar": 25
+      },
+      "revId": "ed2da9a926682d03f3e0763ce714db565b312d5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
