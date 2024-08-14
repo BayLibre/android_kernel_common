@@ -16,6 +16,24 @@
       "message": "IIUC, this should put in the first line and with a blank line.",
       "revId": "befb530406eef12a20643617669e18101c871d53",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07f4c77b_d0d16252",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-08-14T16:44:53Z",
+      "side": 1,
+      "message": "Correct. Some compilers won\u0027t like this. You need something like this instead:\n\n```\nstatic inline bool pcp_allowed_order(unsigned int order)\n{\n\tunsigned int __maybe_unused allowed_order;\n\n\tif (order \u003c\u003d PAGE_ALLOC_COSTLY_ORDER)\n\t\treturn true;\n#ifdef CONFIG_TRANSPARENT_HUGEPAGE\n\tallowed_order \u003d pageblock_order;\n\ttrace_android_vh_customize_thp_pcp_order(\u0026allowed_order);\n\tif (order \u003d\u003d allowed_order)\n\t\treturn true;\n#endif\n\treturn false;\n}...\n```",
+      "parentUuid": "9b19c845_9de3744b",
+      "revId": "befb530406eef12a20643617669e18101c871d53",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
