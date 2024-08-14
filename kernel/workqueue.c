@@ -1961,8 +1961,19 @@ static struct worker *create_worker(struct worker_pool *pool)
 	if (IS_ERR(worker->task))
 		goto fail;
 
+<<<<<<< HEAD   (96160a0e0aa17568e4e04e684a6b57a897564df0 UPSTREAM: net: fix udp gso skb_segment after pull from frag_)
 	set_user_nice(worker->task, pool->attrs->nice);
 	kthread_bind_mask(worker->task, pool->attrs->cpumask);
+||||||| BASE
+		set_user_nice(worker->task, pool->attrs->nice);
+		kthread_bind_mask(worker->task, pool_allowed_cpus(pool));
+	}
+=======
+		set_user_nice(worker->task, pool->attrs->nice);
+		trace_android_rvh_create_worker(worker->task, pool->attrs);
+		kthread_bind_mask(worker->task, pool_allowed_cpus(pool));
+	}
+>>>>>>> CHANGE (25d43121e3f3902876198cd4deb803ce76b944d3 ANDROID: vendor_hooks: add hook in create_worker())
 
 	/* successful, attach the worker to the pool */
 	worker_attach_to_pool(worker, pool);
