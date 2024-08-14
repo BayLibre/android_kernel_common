@@ -16,6 +16,106 @@
       "message": "Something went wrong, that\u0027s a lot of .h changes without any actual hooks being added.",
       "revId": "e6232103cf2ec78d3d12a0ed15559aba56229496",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8c16ddc_294ebc5b",
+        "filename": "include/trace/hooks/sched.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-08-14T15:45:42Z",
+      "side": 1,
+      "message": "fix indentation",
+      "fixSuggestions": [
+        {
+          "fixId": "38852b1a_04b62373",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/sched.h",
+              "range": {
+                "startLine": 484,
+                "startChar": 0,
+                "endLine": 486,
+                "endChar": 0
+              },
+              "replacement": "\tTP_PROTO(struct task_struct* p, unsigned long* ret),\n\tTP_ARGS(p, ret), 1);\n"
+            },
+            {
+              "path": "include/trace/hooks/sched.h",
+              "range": {
+                "startLine": 488,
+                "startChar": 0,
+                "endLine": 490,
+                "endChar": 0
+              },
+              "replacement": "\tTP_PROTO(struct task_struct* p, unsigned long* ret),\n\tTP_ARGS(p, ret), 1);\n"
+            },
+            {
+              "path": "include/trace/hooks/sched.h",
+              "range": {
+                "startLine": 492,
+                "startChar": 0,
+                "endLine": 494,
+                "endChar": 0
+              },
+              "replacement": "\tTP_PROTO(struct task_struct* p, unsigned long long* ret),\n\tTP_ARGS(p, ret), 1);\n"
+            },
+            {
+              "path": "include/trace/hooks/sched.h",
+              "range": {
+                "startLine": 496,
+                "startChar": 0,
+                "endLine": 498,
+                "endChar": 0
+              },
+              "replacement": "\tTP_PROTO(struct task_struct* p, unsigned long long* ret),\n\tTP_ARGS(p, ret), 1);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e6232103cf2ec78d3d12a0ed15559aba56229496",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "077d80c7_7d761230",
+        "filename": "include/trace/hooks/sys.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-08-14T15:45:42Z",
+      "side": 1,
+      "message": "C-style comments please. If this comment is useful, please expand it so everyone can understand what it is trying to say",
+      "fixSuggestions": [
+        {
+          "fixId": "89077b09_9c2a948d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/sys.h",
+              "range": {
+                "startLine": 28,
+                "startChar": 0,
+                "endLine": 29,
+                "endChar": 0
+              },
+              "replacement": "// type: 0:setuid;1:setreuid;2:setresuid;3:setgid;4:setregid;5:setresgid\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e6232103cf2ec78d3d12a0ed15559aba56229496",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
