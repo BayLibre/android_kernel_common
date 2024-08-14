@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89aa4770_ed1953a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2024-08-14T21:52:04Z",
+      "side": 1,
+      "message": "This is currently failing with:\n\nRunning on Linux 6.10.0-mainline-g6b36ab63e43d-abP79235452-4k (6, 10, 0) armv8l-32bit\n\nwhich is likely 32-on-64 oriole.  I landed changes to aosp/main net/test to log more, but they haven\u0027t been picked up.  If I\u0027m interpreting https://android-build.corp.google.com/test_investigate/?blocking\u003dwarning\u0026status\u003dnone\u0026invocationId\u003dI75500010306329687\u0026testResultId\u003dTR55529408459061666\u0026legacy\u003d correctly than it\u0027s using tests from August 9th, so perhaps we need to wait for another week to pick up the newer test suite with more logging.",
+      "revId": "ef19ac93bcf1ec65ff78c74918d630d3a5f65022",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
