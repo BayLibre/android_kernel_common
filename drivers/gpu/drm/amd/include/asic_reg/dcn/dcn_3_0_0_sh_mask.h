@@ -1189,6 +1189,11 @@
 #define PHYFSYMCLK_CLOCK_CNTL__PHYFSYMCLK_FORCE_SRC_SEL__SHIFT                                                0x4
 #define PHYFSYMCLK_CLOCK_CNTL__PHYFSYMCLK_FORCE_EN_MASK                                                       0x00000001L
 #define PHYFSYMCLK_CLOCK_CNTL__PHYFSYMCLK_FORCE_SRC_SEL_MASK                                                  0x00000010L
+//HDMICHARCLK0_CLOCK_CNTL
+#define HDMICHARCLK0_CLOCK_CNTL__HDMICHARCLK0_EN__SHIFT                                                       0x0
+#define HDMICHARCLK0_CLOCK_CNTL__HDMICHARCLK0_SRC_SEL__SHIFT                                                  0x4
+#define HDMICHARCLK0_CLOCK_CNTL__HDMICHARCLK0_EN_MASK                                                         0x00000001L
+#define HDMICHARCLK0_CLOCK_CNTL__HDMICHARCLK0_SRC_SEL_MASK                                                    0x00000070L
 
 
 // addressBlock: dce_dc_dccg_dccg_dfs_dispdec
@@ -16739,6 +16744,15 @@
 #define CM0_CM_3DLUT_OUT_OFFSET_B__CM_3DLUT_OUT_SCALE_B__SHIFT                                                0x10
 #define CM0_CM_3DLUT_OUT_OFFSET_B__CM_3DLUT_OUT_OFFSET_B_MASK                                                 0x0000FFFFL
 #define CM0_CM_3DLUT_OUT_OFFSET_B__CM_3DLUT_OUT_SCALE_B_MASK                                                  0xFFFF0000L
+//CM0_CM_TEST_DEBUG_INDEX
+#define CM0_CM_TEST_DEBUG_INDEX__CM_TEST_DEBUG_INDEX__SHIFT                                                   0x0
+#define CM0_CM_TEST_DEBUG_INDEX__CM_TEST_DEBUG_WRITE_EN__SHIFT                                                0x8
+#define CM0_CM_TEST_DEBUG_INDEX__CM_TEST_DEBUG_INDEX_MASK                                                     0x000000FFL
+#define CM0_CM_TEST_DEBUG_INDEX__CM_TEST_DEBUG_WRITE_EN_MASK                                                  0x00000100L
+//CM0_CM_TEST_DEBUG_DATA
+#define CM0_CM_TEST_DEBUG_DATA__CM_TEST_DEBUG_DATA__SHIFT                                                     0x0
+#define CM0_CM_TEST_DEBUG_DATA__CM_TEST_DEBUG_DATA_MASK                                                       0xFFFFFFFFL
+
 
 // addressBlock: dce_dc_dpp0_dispdec_dpp_dcperfmon_dc_perfmon_dispdec
 //DC_PERFMON12_PERFCOUNTER_CNTL
@@ -60666,7 +60680,12 @@
 #define DME6_DME_MEMORY_CONTROL__DME_MEM_PWR_STATE_MASK                                                       0x00000300L
 #define DME6_DME_MEMORY_CONTROL__DME_MEM_DEFAULT_MEM_LOW_POWER_STATE_MASK                                     0x00003000L
 
+// addressBlock: dce_dc_hpo_hpo_top_dispdec
+//HPO_TOP_CLOCK_CONTROL
+#define HPO_TOP_CLOCK_CONTROL__HPO_HDMISTREAMCLK_GATE_DIS__SHIFT                                              0x9
+#define HPO_TOP_CLOCK_CONTROL__HPO_HDMISTREAMCLK_GATE_DIS_MASK                                                0x00000200L
 
+// addressBlock: dce_dc_hpo_hpo_dcperfmon_dc_perfmon_dispdec
 //DC_PERFMON29_PERFCOUNTER_CNTL
 #define DC_PERFMON29_PERFCOUNTER_CNTL__PERFCOUNTER_EVENT_SEL__SHIFT                                           0x0
 #define DC_PERFMON29_PERFCOUNTER_CNTL__PERFCOUNTER_CVALUE_SEL__SHIFT                                          0x9

@@ -15676,6 +15676,14 @@
 #define CM0_CM_3DLUT_OUT_OFFSET_B__CM_3DLUT_OUT_SCALE_B__SHIFT                                                0x10
 #define CM0_CM_3DLUT_OUT_OFFSET_B__CM_3DLUT_OUT_OFFSET_B_MASK                                                 0x0000FFFFL
 #define CM0_CM_3DLUT_OUT_OFFSET_B__CM_3DLUT_OUT_SCALE_B_MASK                                                  0xFFFF0000L
+//CM0_CM_TEST_DEBUG_INDEX
+#define CM0_CM_TEST_DEBUG_INDEX__CM_TEST_DEBUG_INDEX__SHIFT                                                   0x0
+#define CM0_CM_TEST_DEBUG_INDEX__CM_TEST_DEBUG_WRITE_EN__SHIFT                                                0x8
+#define CM0_CM_TEST_DEBUG_INDEX__CM_TEST_DEBUG_INDEX_MASK                                                     0x000000FFL
+#define CM0_CM_TEST_DEBUG_INDEX__CM_TEST_DEBUG_WRITE_EN_MASK                                                  0x00000100L
+//CM0_CM_TEST_DEBUG_DATA
+#define CM0_CM_TEST_DEBUG_DATA__CM_TEST_DEBUG_DATA__SHIFT                                                     0x0
+#define CM0_CM_TEST_DEBUG_DATA__CM_TEST_DEBUG_DATA_MASK                                                       0xFFFFFFFFL
 
 
 // addressBlock: dce_dc_dpp0_dispdec_dpp_dcperfmon_dc_perfmon_dispdec
@@ -52401,7 +52409,10 @@
 #define DC_PERFMON25_PERFMON_LOW__PERFMON_LOW__SHIFT                                                          0x0
 #define DC_PERFMON25_PERFMON_LOW__PERFMON_LOW_MASK                                                            0xFFFFFFFFL
 
-
+// addressBlock: dce_dc_hpo_hpo_top_dispdec
+//HPO_TOP_CLOCK_CONTROL
+#define HPO_TOP_CLOCK_CONTROL__HPO_HDMISTREAMCLK_GATE_DIS__SHIFT                                              0x9
+#define HPO_TOP_CLOCK_CONTROL__HPO_HDMISTREAMCLK_GATE_DIS_MASK                                                0x00000200L
 
 // addressBlock: dce_dc_hpo_hpo_dcperfmon_dc_perfmon_dispdec
 //DC_PERFMON26_PERFCOUNTER_CNTL
