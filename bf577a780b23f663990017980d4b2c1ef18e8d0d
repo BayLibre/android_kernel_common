@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7bb5d06_40d564d3",
+        "filename": "net/ipv4/af_inet.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-08-14T17:37:57Z",
+      "side": 1,
+      "message": "why is this needed? There is no way to get to the `out:` label without setting `sk` (line 326)",
+      "revId": "bf577a780b23f663990017980d4b2c1ef18e8d0d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f911058_05bd9080",
+        "filename": "net/ipv6/af_inet6.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-08-14T17:37:57Z",
+      "side": 1,
+      "message": "why is this change needed? there is no way to get to the `out:` label without setting `sk` at line 194",
+      "revId": "bf577a780b23f663990017980d4b2c1ef18e8d0d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
