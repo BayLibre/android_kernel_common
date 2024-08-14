@@ -38,6 +38,8 @@
 #include <nvhe/spinlock.h>
 #include <kvm/arm_hypercalls.h>
 
+#include "../debug-pl011.h"
+
 /*
  * "ID value 0 must be returned at the Non-secure physical FF-A instance"
  * We share this ID with the host.
@@ -496,7 +498,7 @@ static int ffa_guest_unshare_ranges(struct ffa_mem_region_addr_range *ranges,
 	for (i = 0; i < nranges; i++) {
 		range = &ranges[i];
 		translation = ffa_find_translation(transfer, range->address);
-
+		hyp_puts("[guest_unshare_ffa] address:"); hyp_putx64(range->address);
 		WARN_ON(!translation);
 		WARN_ON(__pkvm_guest_unshare_ffa(vcpu, translation->ipa));
 
@@ -526,10 +528,12 @@ static int ffa_guest_share_ranges(struct ffa_mem_region_addr_range *ranges,
 		for (j = 0; j < range->pg_cnt; j++) {
 			ipa = range->address + PAGE_SIZE * j;
 			ret = guest_share_with_cb(ctxt, res, __pkvm_guest_share_ffa, ipa, &pa);
+			hyp_puts("[guest_share_ffa] ret:"); hyp_putx64(ret);
 			if (ret)
 				goto unshare;
 
 			ret = ffa_store_translation(transfer, ipa, pa, ctxt, res);
+			hyp_puts("[ffa_store_transition] ret, ipa, pa"); hyp_putx64(ret); hyp_putx64(ipa); hyp_putx64(pa);
 			if (ret) {
 				__pkvm_guest_unshare_ffa(vcpu, ipa);
 				goto unshare;
@@ -762,6 +766,7 @@ static __always_inline void do_ffa_mem_xfer(const u64 func_id,
 		goto out_unlock;
 
 	ffa_mem_xfer(res, func_id, len, fraglen);
+	hyp_puts("ffa_mem_xfer func_id, res->a0, res->a3"); hyp_putx64(func_id); hyp_putx64(res->a0); hyp_putx64(res->a3);
 	if (fraglen != len) {
 		if (res->a0 != FFA_MEM_FRAG_RX)
 			goto err_unshare;
