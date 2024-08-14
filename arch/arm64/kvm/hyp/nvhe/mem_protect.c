@@ -23,6 +23,8 @@
 #include <nvhe/modules.h>
 #include <nvhe/pkvm.h>
 
+#include "../debug-pl011.h"
+
 #define KVM_HOST_S2_FLAGS (KVM_PGTABLE_S2_NOFWB | \
 			   KVM_PGTABLE_S2_IDMAP | \
 			   KVM_PGTABLE_S2_PREFAULT_BLOCK)
@@ -2116,6 +2118,9 @@ int __pkvm_guest_share_hyp(struct pkvm_hyp_vcpu *vcpu, u64 ipa, u64 *hyp_va)
 	ret = do_share(&share, &nr_shared);
 	if (!ret && hyp_va)
 		*hyp_va = share.completer.hyp.completer_addr;
+	else {
+		hyp_puts("guest_share_hyp ret, ipa"); hyp_putx64(ret); hyp_putx64(ipa);
+	}
 	hyp_unlock_component();
 	guest_unlock_component(vm);
 
@@ -2178,6 +2183,9 @@ int __pkvm_guest_share_ffa(struct pkvm_hyp_vcpu *vcpu, u64 ipa, phys_addr_t *out
 	ret = do_share(&share, &nr_unshared);
 	if (!ret && out_addr)
 		*out_addr = share.completer.ffa.completer_addr;
+	else {
+		hyp_puts("guest_share_ffa ret, ipa"); hyp_putx64(ret); hyp_putx64(ipa);
+	}
 	guest_unlock_component(vm);
 
 	return ret;
