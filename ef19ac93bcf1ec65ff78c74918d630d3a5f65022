@@ -16,6 +16,24 @@
       "message": "This is currently failing with:\n\nRunning on Linux 6.10.0-mainline-g6b36ab63e43d-abP79235452-4k (6, 10, 0) armv8l-32bit\n\nwhich is likely 32-on-64 oriole.  I landed changes to aosp/main net/test to log more, but they haven\u0027t been picked up.  If I\u0027m interpreting https://android-build.corp.google.com/test_investigate/?blocking\u003dwarning\u0026status\u003dnone\u0026invocationId\u003dI75500010306329687\u0026testResultId\u003dTR55529408459061666\u0026legacy\u003d correctly than it\u0027s using tests from August 9th, so perhaps we need to wait for another week to pick up the newer test suite with more logging.",
       "revId": "ef19ac93bcf1ec65ff78c74918d630d3a5f65022",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "447a7c68_0bc5c6fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2024-08-14T21:54:30Z",
+      "side": 1,
+      "message": "That\u0027ll presumably confirm this is indeed 32-bit python on 64-bit aarch64 kernel.\n\nThen it becomes a question of:\n(a) why is it using 32-bit python instead of 64-bit\n(b) do we care?  Technically phones are required to run 64-bit userspace with new releases/kernels...",
+      "parentUuid": "89aa4770_ed1953a0",
+      "revId": "ef19ac93bcf1ec65ff78c74918d630d3a5f65022",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
