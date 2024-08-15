@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f5e47553_e83c5aa1",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-08-15T16:56:09Z",
+      "side": 1,
+      "message": "Right, `blk_mq_queue_tag_busy_iter()` has not been exported.\n\nPlease take a look at `blk_mq_tagset_busy_iter()`. Although that function iterates over a tag set instead of the requests for a request queue, tags can be filtered by request queue by converting the tag into a request pointer and by checking rq-\u003eq. An example from the SCSI core of how to use `blk_mq_tagset_busy_iter()`:\n```\nstatic bool scsi_host_check_in_flight(struct request *rq, void *data)\n{\n\tint *count \u003d data;\n\tstruct scsi_cmnd *cmd \u003d blk_mq_rq_to_pdu(rq);\n\n\tif (test_bit(SCMD_STATE_INFLIGHT, \u0026cmd-\u003estate))\n\t\t(*count)++;\n\n\treturn true;\n}\n\nint scsi_host_busy(struct Scsi_Host *shost)\n{\n\tint cnt \u003d 0;\n\n\tblk_mq_tagset_busy_iter(\u0026shost-\u003etag_set,\n\t\t\t\tscsi_host_check_in_flight, \u0026cnt);\n\treturn cnt;\n}\nEXPORT_SYMBOL(scsi_host_busy);\n```",
+      "parentUuid": "a9d53a92_a585c933",
+      "revId": "ed2da9a926682d03f3e0763ce714db565b312d5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f4926d54_ad408e81",
         "filename": "block/genhd.c",
         "patchSetId": 1
