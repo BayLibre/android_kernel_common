@@ -795,7 +795,11 @@ pkg_files(
 )
 
 pkg_filegroup(
+<<<<<<< HEAD   (184aac ANDROID: ABI: virtual_device update ABI and symbol list)
     name = "kunit_tests_arm64_pgk_files",
+=======
+    name = "kunit_tests_arm64_pkg_files",
+>>>>>>> BRANCH (92db83 ANDROID: ABI: Update symbol list for sunxi)
     srcs = [
         ":kunit_modules_arm64",
         ":kunit_tests_config_arm64",
@@ -2313,7 +2317,11 @@ pkg_zip(
     name = "tests_zip_arm64",
     srcs = [
         ":kselftest_tests_arm64_pkg_files",
+<<<<<<< HEAD   (184aac ANDROID: ABI: virtual_device update ABI and symbol list)
         ":kunit_tests_arm64_pgk_files",
+=======
+        ":kunit_tests_arm64_pkg_files",
+>>>>>>> BRANCH (92db83 ANDROID: ABI: Update symbol list for sunxi)
     ],
     out = "arm64/tests.zip",
     visibility = ["//visibility:public"],
