@@ -281317,6 +281317,39 @@ enumeration {
   }
 }
 enumeration {
+  id: 0xbb2b0c19
+  name: "compact_priority"
+  definition {
+    underlying_type_id: 0x4585663f
+    enumerator {
+      name: "COMPACT_PRIO_SYNC_FULL"
+    }
+    enumerator {
+      name: "MIN_COMPACT_PRIORITY"
+    }
+    enumerator {
+      name: "COMPACT_PRIO_SYNC_LIGHT"
+      value: 1
+    }
+    enumerator {
+      name: "MIN_COMPACT_COSTLY_PRIORITY"
+      value: 1
+    }
+    enumerator {
+      name: "DEF_COMPACT_PRIORITY"
+      value: 1
+    }
+    enumerator {
+      name: "COMPACT_PRIO_ASYNC"
+      value: 2
+    }
+    enumerator {
+      name: "INIT_COMPACT_PRIORITY"
+      value: 2
+    }
+  }
+}
+enumeration {
   id: 0xb01beef1
   name: "compact_result"
   definition {
@@ -342502,6 +342535,17 @@ function {
   parameter_id: 0x6720d32f
 }
 function {
+  id: 0xf884d14b
+  return_type_id: 0xb01beef1
+  parameter_id: 0x0a63398f
+  parameter_id: 0x6720d32f
+  parameter_id: 0xf1a6dfed
+  parameter_id: 0xbb2b0c19
+  parameter_id: 0x4585663f
+  parameter_id: 0x6720d32f
+  parameter_id: 0x0b30ee00
+}
+function {
   id: 0xf886bca4
   return_type_id: 0x6d7f5ff6
   parameter_id: 0x188b9e81
@@ -362200,6 +362244,15 @@ elf_symbol {
   crc: 0x859ec937
   type_id: 0x09506558
   full_name: "compact_node_async"
+}
+elf_symbol {
+  id: 0x2457d0ec
+  name: "compact_zone_order"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf3d66e89
+  type_id: 0xf884d14b
+  full_name: "compact_zone_order"
 }
 elf_symbol {
   id: 0x4f627b39
@@ -417298,6 +417351,7 @@ interface {
   symbol_id: 0x966a7c42
   symbol_id: 0xab62b21c
   symbol_id: 0x036561b6
+  symbol_id: 0x2457d0ec
   symbol_id: 0x4f627b39
   symbol_id: 0xda163e44
   symbol_id: 0xb375007c
