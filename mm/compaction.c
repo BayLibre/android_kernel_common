@@ -2649,7 +2649,7 @@ out:
 	return ret;
 }
 
-static enum compact_result compact_zone_order(struct zone *zone, int order,
+enum compact_result compact_zone_order(struct zone *zone, int order,
 		gfp_t gfp_mask, enum compact_priority prio,
 		unsigned int alloc_flags, int highest_zoneidx,
 		struct page **capture)
@@ -2702,6 +2702,7 @@ static enum compact_result compact_zone_order(struct zone *zone, int order,
 
 	return ret;
 }
+EXPORT_SYMBOL_GPL(compact_zone_order);
 
 /**
  * try_to_compact_pages - Direct compact to satisfy a high-order allocation
