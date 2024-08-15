@@ -16,6 +16,29 @@
       "message": "It would be nice if you can delete `android/abi_gki_aarch64.stg` also in this change.",
       "revId": "cc510393927cab34948ccf9259b499c49d0e6d19",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b3e4cd9_f0495248",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2024-08-15T12:18:03Z",
+      "side": 1,
+      "message": "### Short version: \n\nAdditionally set these ones too:\n```\n        \"trim_nonlisted_kmi\": False,\n        \"kmi_enforced\": False,\n```\n\n### Long version:\n\nThere are default values set based on the presence of some files [0], e.g. symbol lists, ABI definitions, etc. For that reason it\u0027s better to be explicit about what the desired behavior is here. I don\u0027t know if the intention here is to re-enable ABI monitoring later but if not, maybe it makes more sense to delete the android/* files altogether.\n\n[0] https://cs.android.com/android/kernel/superproject/+/common-android-mainline:build/kernel/kleaf/common_kernels.bzl;l\u003d80-93",
+      "range": {
+        "startLine": 125,
+        "startChar": 44,
+        "endLine": 125,
+        "endChar": 45
+      },
+      "revId": "cc510393927cab34948ccf9259b499c49d0e6d19",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
