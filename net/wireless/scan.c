@@ -8,6 +8,7 @@
  * Copyright (C) 2018-2023 Intel Corporation
  */
 #include <linux/kernel.h>
+#include <linux/kmemleak.h>
 #include <linux/slab.h>
 #include <linux/module.h>
 #include <linux/netdevice.h>
@@ -2098,6 +2099,7 @@ cfg80211_inform_single_bss_data(struct wiphy *wiphy,
 
 	trace_cfg80211_return_bss(&res->pub);
 	/* cfg80211_bss_update gives us a referenced result */
+	kmemleak_not_leak(res);
 	return &res->pub;
 }
 
@@ -2448,6 +2450,7 @@ cfg80211_inform_single_bss_frame_data(struct wiphy *wiphy,
 
 	trace_cfg80211_return_bss(&res->pub);
 	/* cfg80211_bss_update gives us a referenced result */
+	kmemleak_not_leak(res);
 	return &res->pub;
 }
 
