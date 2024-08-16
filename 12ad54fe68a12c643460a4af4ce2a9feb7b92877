@@ -22,6 +22,30 @@
       },
       "revId": "12ad54fe68a12c643460a4af4ce2a9feb7b92877",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4343bdd9_469b1945",
+        "filename": "include/linux/scmi_protocol.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3298792
+      },
+      "writtenOn": "2024-08-16T19:09:42Z",
+      "side": 1,
+      "message": "Hi Saravana,\n\nDid the ABI check complete? I don\u0027t see any updates in these changes.\n\nWe ran the ABI monitoring checks (as defined in the Android documentation for ABI checking: https://source.android.com/docs/core/architecture/kernel/howto-abi-monitor and didn\u0027t receive any errors.\n\nI did a quick check and the abi_gki_aarch64.stg doesn\u0027t include any references to this header file. In the previous versions of these changes, we were changing struct pm_domain{ } which has entries in the abi_gki_aarch64.stg.\n\nI\u0027ve left the same comment in the buganizer.",
+      "parentUuid": "7b535868_49668a78",
+      "range": {
+        "startLine": 127,
+        "startChar": 7,
+        "endLine": 127,
+        "endChar": 22
+      },
+      "revId": "12ad54fe68a12c643460a4af4ce2a9feb7b92877",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
