@@ -8,6 +8,7 @@
  * Copyright (C) 2018-2023 Intel Corporation
  */
 #include <linux/kernel.h>
+#include <linux/kmemleak.h>
 #include <linux/slab.h>
 #include <linux/module.h>
 #include <linux/netdevice.h>
@@ -134,6 +135,7 @@ static void bss_free(struct cfg80211_internal_bss *bss)
 	if (!list_empty(&bss->hidden_list))
 		list_del(&bss->hidden_list);
 
+	kmemleak_free(&bss->pub);
 	kfree(bss);
 }
 
@@ -2098,6 +2100,8 @@ cfg80211_inform_single_bss_data(struct wiphy *wiphy,
 
 	trace_cfg80211_return_bss(&res->pub);
 	/* cfg80211_bss_update gives us a referenced result */
+	kmemleak_free(res);
+	kmemleak_alloc(&res->pub, sizeof(res->pub), 1, GFP_ATOMIC);
 	return &res->pub;
 }
 
@@ -2448,6 +2452,8 @@ cfg80211_inform_single_bss_frame_data(struct wiphy *wiphy,
 
 	trace_cfg80211_return_bss(&res->pub);
 	/* cfg80211_bss_update gives us a referenced result */
+	kmemleak_free(res);
+	kmemleak_alloc(&res->pub, sizeof(res->pub), 1, GFP_ATOMIC);
 	return &res->pub;
 }
 
