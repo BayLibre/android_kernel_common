@@ -22,6 +22,30 @@
       },
       "revId": "3163aeef14a362c2f241ceb6b59ac644edb5f1c1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5cd4e8b_665f2e8a",
+        "filename": "drivers/opp/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1028,
+      "author": {
+        "id": 3298792
+      },
+      "writtenOn": "2024-08-16T20:18:06Z",
+      "side": 1,
+      "message": "Sorry I missed this before, please see the comment below.\n\nThe underlying functionality is the same between dev_pm_domain_set_performance_state() and dev_pm_genpd_set_performance_state().\n\nUpstream dev_pm_domain_set_performance_state() [1] -\u003e calls genpd_dev_pm_set_performance_state() [2] -\u003e calls genpd_set_performance_state() [3].\n\nandroid14-6.1 dev_pm_genpd_set_performance_state [4] -\u003e calls genpd_set_performance_state (with the check if the passed *dev translates to a valid *genpd) [5].\n\nThe dev_pm_domain_set_performance_state() was introduced in [6] as a helper function if consumers wish to set a performance state based on their *dev. However, the preference/direction is that consumers use the OPP library to request for a new performance state for its device (as mentioned in the commit text for [6]).\n\nNo drivers in the android14-6.1 Kernel use this API (as it doesn\u0027t exist). Drivers which will be backported/added as vendor modules that need to set performance levels will do so via the OPP library.\n\n[1]. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pmdomain/core.c?h\u003dv6.11-rc3#n2195\n\n[2]. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pmdomain/core.c?h\u003dv6.11-rc3#n461\n\n[3]. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pmdomain/core.c?h\u003dv6.11-rc3#n423\n\n[4]. https://android.googlesource.com/kernel/common/+/refs/heads/android14-6.1-lts/drivers/base/power/domain.c#437\n\n[5]. https://android.googlesource.com/kernel/common/+/refs/heads/android14-6.1-lts/drivers/base/power/domain.c#384\n\n[6]. https://lore.kernel.org/lkml/20230925131715.138411-1-ulf.hansson@linaro.org/T/#m4ec62719f12492650d55cf6f1178f526fd35c9ee",
+      "parentUuid": "dd0b017e_065628b8",
+      "range": {
+        "startLine": 1028,
+        "startChar": 7,
+        "endLine": 1028,
+        "endChar": 41
+      },
+      "revId": "3163aeef14a362c2f241ceb6b59ac644edb5f1c1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
