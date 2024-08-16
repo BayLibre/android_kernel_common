@@ -1099,6 +1099,9 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 	case FFA_FN64_MEM_LEND:
 		ret = __do_ffa_mem_xfer(FFA_FN64_MEM_LEND, &res, ctxt, vm_handle, exit_code);
 		break;
+	case FFA_ID_GET:
+		ffa_to_smccc_res_prop(&res, FFA_RET_SUCCESS, vm_handle);
+		break;
 	default:
 		if (ffa_call_supported(func_id))
 			goto unhandled;
