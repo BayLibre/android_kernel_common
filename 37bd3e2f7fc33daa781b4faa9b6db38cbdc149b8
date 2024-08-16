@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76a3d8a5_0b1b70d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-08-16T08:41:57Z",
+      "side": 1,
+      "message": "Presubmit builds and tests may need to be set up.\n\nI ran this manually and it looked OK with `android15-6.6`.\n\n```\ntools/bazel run //common:kernel_aarch64_abi_dist\n```\n\nHowever, it\u0027s broken with `android-mainline` tooling which is what you are aiming for:\n\n```\nERROR: no such package \u0027prebuilts/clang/host/linux-x86/clang-r510928\u0027: BUILD file not found in any of the following directories. Add a BUILD file to a directory to mark it as a package.\n - /big/ak/mainline/prebuilts/clang/host/linux-x86/clang-r510928\n```\n\nI think you need to update `build.config.constants` in `kernel/common` to match the the prebuilts for `android-mainline`.",
+      "revId": "37bd3e2f7fc33daa781b4faa9b6db38cbdc149b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
