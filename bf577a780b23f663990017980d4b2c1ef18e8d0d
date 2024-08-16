@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2c318f75_3faa7b1a",
+        "filename": "net/ipv4/af_inet.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 2032918
+      },
+      "writtenOn": "2024-08-16T03:43:41Z",
+      "side": 1,
+      "message": "When compiling, the bazel tool reports errors in af_inet.c and af_inet6.c without setting sk to NULL: \nerror: variable \u0027sk\u0027 is used uninitialized whenever \u0027if\u0027 condition is true. (line 314 in af_inet.c and line 182 in af_inet6.c)",
+      "parentUuid": "c7bb5d06_40d564d3",
+      "revId": "bf577a780b23f663990017980d4b2c1ef18e8d0d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f911058_05bd9080",
         "filename": "net/ipv6/af_inet6.c",
         "patchSetId": 4
@@ -31,6 +49,24 @@
       "writtenOn": "2024-08-14T17:37:57Z",
       "side": 1,
       "message": "why is this change needed? there is no way to get to the `out:` label without setting `sk` at line 194",
+      "revId": "bf577a780b23f663990017980d4b2c1ef18e8d0d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "423e908d_726d1538",
+        "filename": "net/ipv6/af_inet6.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 2032918
+      },
+      "writtenOn": "2024-08-16T03:43:41Z",
+      "side": 1,
+      "message": "When compiling, the bazel tool reports errors in af_inet.c and af_inet6.c without setting sk to NULL: \nerror: variable \u0027sk\u0027 is used uninitialized whenever \u0027if\u0027 condition is true. (line 314 in af_inet.c and line 182 in af_inet6.c)",
+      "parentUuid": "1f911058_05bd9080",
       "revId": "bf577a780b23f663990017980d4b2c1ef18e8d0d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
