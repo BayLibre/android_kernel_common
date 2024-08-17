@@ -470,6 +470,12 @@ nlmsvc_lock(struct svc_rqst *rqstp, struct nlm_file *file,
 	    struct nlm_host *host, struct nlm_lock *lock, int wait,
 	    struct nlm_cookie *cookie, int reclaim)
 {
+<<<<<<< HEAD   (29d153 Merge 5.15.156 into android13-5.15-lts)
+=======
+#if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
+	struct inode		*inode = nlmsvc_file_inode(file);
+#endif
+>>>>>>> BRANCH (b925f6 Linux 5.15.157)
 	struct nlm_block	*block = NULL;
 	struct inode		*inode = nlmsvc_file_inode(file);
 	int			error;
@@ -484,7 +490,11 @@ nlmsvc_lock(struct svc_rqst *rqstp, struct nlm_file *file,
 				(long long)lock->fl.fl_end,
 				wait);
 
+<<<<<<< HEAD   (29d153 Merge 5.15.156 into android13-5.15-lts)
 	if (inode->i_sb->s_export_op->flags & EXPORT_OP_SYNC_LOCKS) {
+=======
+	if (nlmsvc_file_file(file)->f_op->lock) {
+>>>>>>> BRANCH (b925f6 Linux 5.15.157)
 		async_block = wait;
 		wait = 0;
 	}

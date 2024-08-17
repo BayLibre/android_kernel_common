@@ -221,8 +221,12 @@ struct export_operations {
 #define EXPORT_OP_NOATOMIC_ATTR		(0x10) /* Filesystem cannot supply
 						  atomic attribute updates
 						*/
+<<<<<<< HEAD   (29d153 Merge 5.15.156 into android13-5.15-lts)
 #define EXPORT_OP_SYNC_LOCKS		(0x20) /* Filesystem can't do
 						  asychronous blocking locks */
+=======
+#define EXPORT_OP_FLUSH_ON_CLOSE	(0x20) /* fs flushes file data on close */
+>>>>>>> BRANCH (b925f6 Linux 5.15.157)
 	unsigned long	flags;
 };
 

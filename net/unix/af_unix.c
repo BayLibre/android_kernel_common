@@ -2578,7 +2578,11 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
 			} else if (flags & MSG_PEEK) {
 				skb = NULL;
 			} else {
+<<<<<<< HEAD   (29d153 Merge 5.15.156 into android13-5.15-lts)
 				__skb_unlink(skb, &sk->sk_receive_queue);
+=======
+				skb_unlink(skb, &sk->sk_receive_queue);
+>>>>>>> BRANCH (b925f6 Linux 5.15.157)
 				WRITE_ONCE(u->oob_skb, NULL);
 				unlinked_skb = skb;
 				skb = skb_peek(&sk->sk_receive_queue);
@@ -2662,6 +2666,7 @@ redo:
 		last = skb = skb_peek(&sk->sk_receive_queue);
 		last_len = last ? last->len : 0;
 
+again:
 #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
 		if (skb) {
 			skb = manage_oob(skb, sk, flags, copied);
@@ -2671,7 +2676,6 @@ redo:
 			}
 		}
 #endif
-again:
 		if (skb == NULL) {
 			if (copied >= target)
 				goto unlock;
