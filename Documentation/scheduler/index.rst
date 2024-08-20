@@ -23,6 +23,7 @@ Scheduler
     sched-stats
     sched-ext
     sched-debug
+    sched-qos
 
     text_files
 
