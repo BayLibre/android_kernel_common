@@ -598,6 +598,9 @@ recheck:
 			return retval;
 	}
 
+	if (attr->sched_flags & SCHED_FLAG_QOS)
+		return -EOPNOTSUPP;
+
 	/*
 	 * SCHED_DEADLINE bandwidth accounting relies on stable cpusets
 	 * information.
