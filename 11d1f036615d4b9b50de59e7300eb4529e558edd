@@ -16,6 +16,52 @@
       "message": "Should we perform some sort of audit at some point?",
       "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71c36f03_851ebcca",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 2023081
+      },
+      "writtenOn": "2024-08-20T08:17:16Z",
+      "side": 1,
+      "message": "For future discussion, as this patch is taking all the diffs as part of the gki_defconfig (idk, maybe for the upstream we should discuss each option separately anyway?)\n\n\n`CONFIG_KERNEL_LZ*` is defining the algorithm used for the kernel compression.\n\n- LZMA - better compression, slower boot time\n- LZ4 - slower compression, faster boot time\n\nThis will affect every x86-64 device using algorithms. Do we care nowadays about space the kernel takes on the disk? The boot time for mobile devices is not that critical, but for us it is.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 20
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afc95c80_36a23efa",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 2023081
+      },
+      "writtenOn": "2024-08-20T08:17:16Z",
+      "side": 1,
+      "message": "This may be redundant as on android we are supposed to be using Binder IPC instead of System V IPC. Unless there are some places in the OS that are using the SYSVIPC?\n\nMay be worth double checking if the kernel still works after disabling this option and what is a long term plan for the SYSVIPC (if it\u0027s being used).",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 14
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
