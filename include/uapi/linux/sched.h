@@ -103,7 +103,10 @@ struct clone_args {
 	__aligned_u64 cgroup;
 };
 
-enum sched_qos_type;
+enum sched_qos_type {
+	SCHED_QOS_RAMPUP_MULTIPLIER,
+	SCHED_QOS_MAX,
+ };
 
 #endif
 
