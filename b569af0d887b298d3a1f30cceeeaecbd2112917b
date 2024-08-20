@@ -16,6 +16,24 @@
       "message": "Just a general note for this and other commits:\n\nHave you considered adding some kind of label to the commit title (like [HACK], [DO NOT MERGE], [TEMPORARY], or whatever)?\n\nIf us or someone else will need to evaluate commits which need to be ported to the `android-mainline`, this will make it easier to see that those patches shouldn\u0027t be touched.",
       "revId": "b569af0d887b298d3a1f30cceeeaecbd2112917b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aa1c796_2630647d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2018217
+      },
+      "writtenOn": "2024-08-20T10:03:17Z",
+      "side": 1,
+      "message": "Are you suggesting that all (say legacy build related patches) should come in with additional e.g.[TEMPORARY] tag? or just limited to those submitted here? If all, [TEMPORARY] is custom tag and it would be on us to keep updating if someone else submits further changes while it is relatively easy to grep and revert CLs when we are ready to revert it.",
+      "parentUuid": "dcc4c510_86f1e2bb",
+      "revId": "b569af0d887b298d3a1f30cceeeaecbd2112917b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
