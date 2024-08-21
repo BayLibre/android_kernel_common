@@ -37,6 +37,8 @@
 #include <trace/events/error_report.h>
 #include <asm/sections.h>
 
+#include <trace/hooks/panic.h>
+
 #define PANIC_TIMER_STEP 100
 #define PANIC_BLINK_SPD 18
 
@@ -280,6 +282,8 @@ void panic(const char *fmt, ...)
 	int state = 0;
 	int old_cpu, this_cpu;
 	bool _crash_kexec_post_notifiers = crash_kexec_post_notifiers;
+
+	trace_android_vh_panic(NULL);
 
 	if (panic_on_warn) {
 		/*
