@@ -1,0 +1,24 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000088938079",
+      "url": "https://android-build.googleplex.com/builds/treetop/android-review/3235382?revision\u003d1",
+      "key": {
+        "uuid": "62f2a0a1_b75fe4fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1757831
+      },
+      "writtenOn": "2024-08-21T08:36:36Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/9866dc4314c6c858e451933f965d64532aec00a9) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d9866dc4314c6c858e451933f965d64532aec00a9).\n\n```\n      ## drivers/usb/gadget/function/uvc_video.c ##\n     @@ drivers/usb/gadget/function/uvc_video.c: uvc_video_complete(struct usb_ep *ep, struct usb_request *req)\n      \t\t\t * Put request back in req_free for it to be cleaned\n    @@ drivers/usb/gadget/function/uvc_video.c: uvc_video_complete(struct usb_ep *ep, s\n      \t}\n      \tspin_unlock_irqrestore(\u0026video-\u003ereq_lock, flags);\n     +\tif (ret \u003c 0)\n    -+\t\tuvcg_queue_cancel(queue, 0);\n    ++\t\t\tuvcg_queue_cancel(queue, 0);\n      }\n      \n      static int\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "tag": "",
+      "revId": "7245a9d7486bc403b26e219de574975c9d6d550a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
