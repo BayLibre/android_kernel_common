@@ -19,6 +19,8 @@ mod ashmem_range;
 mod ashmem_mutex;
 use ashmem_mutex::AshmemGuard;
 
+mod shmem;
+
 struct AshmemLru {
     lru_count: usize,
     lru_list: List<ashmem_range::Range, 0>,

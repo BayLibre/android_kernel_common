@@ -29,6 +29,7 @@
 #include <linux/sched.h>
 #include <linux/security.h>
 #include <linux/seq_file.h>
+#include <linux/shmem_fs.h>
 #include <linux/shrinker.h>
 #include <linux/slab.h>
 #include <linux/task_work.h>
@@ -51,3 +52,4 @@ const gfp_t RUST_CONST_HELPER_GFP_NOWAIT = GFP_NOWAIT;
 const gfp_t RUST_CONST_HELPER___GFP_ZERO = __GFP_ZERO;
 const gfp_t RUST_CONST_HELPER___GFP_HIGHMEM = ___GFP_HIGHMEM;
 const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL = BLK_FEAT_ROTATIONAL;
+const fmode_t RUST_CONST_HELPER_FMODE_LSEEK = FMODE_LSEEK;
