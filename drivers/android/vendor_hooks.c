@@ -74,6 +74,7 @@
 #include <trace/hooks/usb.h>
 #include <trace/hooks/sound.h>
 #include <trace/hooks/fuse.h>
+#include <trace/hooks/panic.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -442,3 +443,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_trylock_clear);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_trylock_set);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_handle_trylock_failed_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_hibernate_state);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_panic);
