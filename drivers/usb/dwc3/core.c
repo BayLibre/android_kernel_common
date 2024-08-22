@@ -108,27 +108,22 @@ static int dwc3_get_dr_mode(struct dwc3 *dwc)
 void dwc3_enable_susphy(struct dwc3 *dwc, bool enable)
 {
 	u32 reg;
-	int i;
 
-	for (i = 0; i < dwc->num_usb3_ports; i++) {
-		reg = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(i));
-		if (enable && !dwc->dis_u3_susphy_quirk)
-			reg |= DWC3_GUSB3PIPECTL_SUSPHY;
-		else
-			reg &= ~DWC3_GUSB3PIPECTL_SUSPHY;
+	reg = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
+	if (enable && !dwc->dis_u3_susphy_quirk)
+		reg |= DWC3_GUSB3PIPECTL_SUSPHY;
+	else
+		reg &= ~DWC3_GUSB3PIPECTL_SUSPHY;
 
-		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(i), reg);
-	}
+	dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), reg);
 
-	for (i = 0; i < dwc->num_usb2_ports; i++) {
-		reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(i));
-		if (enable && !dwc->dis_u2_susphy_quirk)
-			reg |= DWC3_GUSB2PHYCFG_SUSPHY;
-		else
-			reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
+	reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
+	if (enable && !dwc->dis_u2_susphy_quirk)
+		reg |= DWC3_GUSB2PHYCFG_SUSPHY;
+	else
+		reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
 
-		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(i), reg);
-	}
+	dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
 }
 
 void dwc3_set_prtcap(struct dwc3 *dwc, u32 mode)
