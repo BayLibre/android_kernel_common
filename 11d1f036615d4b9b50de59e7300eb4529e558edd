@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3bb48cf7_075cefb3",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-08-22T15:03:22Z",
+      "side": 1,
+      "message": "This change is actually reverted by https://android-review.git.corp.google.com/c/kernel/common/+/3209798.",
+      "parentUuid": "71c36f03_851ebcca",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 20
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "afc95c80_36a23efa",
         "filename": "arch/x86/configs/gki_defconfig",
         "patchSetId": 1
@@ -59,6 +83,144 @@
         "startChar": 0,
         "endLine": 3,
         "endChar": 14
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f419f31d_0b7e745c",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-08-22T15:03:22Z",
+      "side": 1,
+      "message": "Not needed, the module compression is reverted by: https://android-review.git.corp.google.com/c/kernel/common/+/3210951.",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 26
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52a7aebe_18ed695f",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-08-22T15:03:22Z",
+      "side": 1,
+      "message": "It definitely makes sense to have DEVTMPS enabled for linux deskop with udev, however, it may be not required for Android. It needs to be verified.",
+      "range": {
+        "startLine": 369,
+        "startChar": 0,
+        "endLine": 371,
+        "endChar": 22
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca60bdc4_05b39f06",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-08-22T15:03:22Z",
+      "side": 1,
+      "message": "Required for DRM but moved to vendor modules in https://android-review.git.corp.google.com/c/kernel/common/+/3209801.",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 405,
+        "endChar": 28
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85c0c272_f3b8327c",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-08-22T15:03:22Z",
+      "side": 1,
+      "message": "Moved to vendor modules in https://android-review.git.corp.google.com/c/kernel/common/+/3209805.",
+      "range": {
+        "startLine": 448,
+        "startChar": 0,
+        "endLine": 448,
+        "endChar": 18
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e37c3217_c104c711",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 598,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-08-22T15:03:22Z",
+      "side": 1,
+      "message": "DRM related configs are moved to vendor modules in https://android-review.git.corp.google.com/c/kernel/common/+/3209801.",
+      "range": {
+        "startLine": 594,
+        "startChar": 0,
+        "endLine": 598,
+        "endChar": 21
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f66a7f7_9080c8f4",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 713,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-08-22T15:03:22Z",
+      "side": 1,
+      "message": "Seems to be not needed. Removed in https://android-review.git.corp.google.com/c/kernel/common/+/3209801 and not used as vendor module",
+      "range": {
+        "startLine": 713,
+        "startChar": 0,
+        "endLine": 713,
+        "endChar": 16
       },
       "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
