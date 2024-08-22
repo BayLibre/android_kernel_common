@@ -5631,11 +5631,7 @@ static void run_state_machine(struct tcpm_port *port)
 	case PORT_RESET:
 		tcpm_reset_port(port);
 		port->pd_events = 0;
-		if (port->self_powered)
-			tcpm_set_cc(port, TYPEC_CC_OPEN);
-		else
-			tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
-				    TYPEC_CC_RD : tcpm_rp_cc(port));
+		tcpm_set_cc(port, TYPEC_CC_OPEN);
 		tcpm_set_state(port, PORT_RESET_WAIT_OFF,
 			       PD_T_ERROR_RECOVERY);
 		break;
