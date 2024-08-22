@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cd09e0b_20a7e3d8",
+        "filename": "tools/testing/kunit/android/README",
+        "patchSetId": 4
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1942356
+      },
+      "writtenOn": "2024-08-22T20:48:04Z",
+      "side": 1,
+      "message": "```suggestion\nCheck the test module dependency with `modinfo \u003cmodule_name\u003e.ko` on your local host machine or on the Android device with `adb shell modinfo /data/kunit-example-test.ko`. All dependent modules need to be installed before the test module can be installed successfully.\n\nCheck if the module is already installed with `adb shell lsmod`. `adb shell rmmod` can be used to remove the already installed test module, and installing the test module again will trigger the test rerun.\n\n`adb shell lsmod` will also show the module dependency for your test module in the `Used by` column. You can not remove a module with `adb shell rmmod` if it is being used by another module. Other modules that are using it need to be removed first.\n\n```",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 0
+      },
+      "revId": "36635a456005ffb0bbc5e29d4cd2664a155e78ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99c70561_405674a1",
+        "filename": "tools/testing/kunit/android/README",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1942356
+      },
+      "writtenOn": "2024-08-22T20:48:04Z",
+      "side": 1,
+      "message": "```suggestion\nIf \"kunit: disabled\" is shown then kunit.ko is not installed with `enable\u003d1`.\n\nIf kunit.ko or kunit_\u003c*test\u003e.ko fails to install, check for whether they are already installed with `adb shell lsmod`.\n\n```",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 0
+      },
+      "revId": "36635a456005ffb0bbc5e29d4cd2664a155e78ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
