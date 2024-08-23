@@ -33,6 +33,23 @@
       "message": "Hi everyone, can you give any feedback?",
       "revId": "5899bd962318f8a18ee4c56d8b7021d194c1e1a0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcad3114_1cedfe33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2024-08-23T17:54:33Z",
+      "side": 1,
+      "message": "Hi Wei, `upstream-linux-5.10.y` is a stable kernel I don\u0027t think we should be committing this directly to. One or more of the GKI branches are probably where you want this (android13-5.10 / android12-5.10). This seems like it could also go into the upstream stable branches where they will filter down into the GKI branches, but since a firmware update created the problem I\u0027m not sure what the `Fixes` would be for this commit.\n\nAlso, the author on this commit is incorrect.",
+      "revId": "5899bd962318f8a18ee4c56d8b7021d194c1e1a0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
