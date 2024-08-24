@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67307543_f960fcb2",
+        "filename": "include/trace/hooks/ogki_honor.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-08-24T15:40:10Z",
+      "side": 1,
+      "message": "if we are just changing the names to avoid \"too long\" errors, why are these new forward declarations needed? If they are needed, please explain in the commit message.",
+      "fixSuggestions": [
+        {
+          "fixId": "892483e1_bbc7b1c1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/ogki_honor.h",
+              "range": {
+                "startLine": 18,
+                "startChar": 0,
+                "endLine": 19,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "48bc78018b4735f2d00f75dfc9736579d4334eba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
