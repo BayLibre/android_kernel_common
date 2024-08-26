@@ -133,5 +133,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_sugov_sched_attr);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_uclamp_validate);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_util_fits_cpu);
-
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_task_comm);
 

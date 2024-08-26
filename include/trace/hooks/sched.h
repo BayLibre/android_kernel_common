@@ -518,6 +518,10 @@ DECLARE_RESTRICTED_HOOK(android_rvh_util_fits_cpu,
 		 int cpu, bool *fits, bool *done),
 	TP_ARGS(util, uclamp_min, uclamp_max, cpu, fits, done), 1);
 
+DECLARE_HOOK(android_vh_set_task_comm,
+	TP_PROTO(struct task_struct *p),
+	TP_ARGS(p));
+
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */
