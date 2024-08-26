@@ -167,8 +167,11 @@ for ORIG_MERGE_FILE in $MERGE_LIST ; do
 			sed -i "/$CFG[ =]/d" $MERGE_FILE
 		fi
 	done
+	echo "" >> $TMP_FILE
 	cat $MERGE_FILE >> $TMP_FILE
 done
+#make sure that the merged defconfig has a newline character
+echo "" >> $TMP_FILE
 
 if [ "$STRICT_MODE_VIOLATED" = "true" ]; then
 	echo "The fragment redefined a value and strict mode had been passed."
