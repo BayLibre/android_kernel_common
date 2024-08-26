@@ -74,6 +74,7 @@
 #include "internal.h"
 
 #include <trace/events/sched.h>
+#include <trace/hooks/sched.h>
 
 EXPORT_TRACEPOINT_SYMBOL_GPL(task_rename);
 
@@ -1236,7 +1237,14 @@ void __set_task_comm(struct task_struct *tsk, const char *buf, bool exec)
 {
 	task_lock(tsk);
 	trace_task_rename(tsk, buf);
+<<<<<<< HEAD   (55d874 BACKPORT: netem: fix return value if duplicate enqueue fails)
 	strlcpy(tsk->comm, buf, sizeof(tsk->comm));
+||||||| BASE
+	strscpy_pad(tsk->comm, buf, sizeof(tsk->comm));
+=======
+	strscpy_pad(tsk->comm, buf, sizeof(tsk->comm));
+	trace_android_vh_set_task_comm(tsk);
+>>>>>>> CHANGE (42515e ANDROID: sched: Add android_vh_set_task_comm)
 	task_unlock(tsk);
 	perf_event_comm(tsk, exec);
 }
