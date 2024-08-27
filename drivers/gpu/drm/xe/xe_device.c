@@ -17,6 +17,7 @@
 #include <drm/drm_managed.h>
 #include <drm/drm_print.h>
 #include <uapi/drm/xe_drm.h>
+#include <uapi/drm/xe_drm_prelim.h>
 
 #include "display/xe_display.h"
 #include "instructions/xe_gpu_commands.h"
@@ -51,6 +52,7 @@
 #include "xe_pcode.h"
 #include "xe_pm.h"
 #include "xe_pxp.h"
+#include "xe_pxp_multi_session.h"
 #include "xe_query.h"
 #include "xe_shrinker.h"
 #include "xe_sriov.h"
@@ -168,6 +170,8 @@ static void xe_file_close(struct drm_device *dev, struct drm_file *file)
 
 	xe_pm_runtime_get(xe);
 
+	xe_pxp_close(xe->pxp, file);
+
 	/*
 	 * No need for exec_queue.lock here as there is no contention for it
 	 * when FD is closing as IOCTLs presumably can't be modifying the
@@ -188,6 +192,14 @@ static void xe_file_close(struct drm_device *dev, struct drm_file *file)
 	xe_pm_runtime_put(xe);
 }
 
+#define PRELIM_DRM_IOCTL_DEF_DRV(ioctl, _func, _flags)			\
+		[DRM_IOCTL_NR(PRELIM_DRM_IOCTL_##ioctl) - DRM_COMMAND_BASE] = {	\
+					.cmd = PRELIM_DRM_IOCTL_##ioctl,			\
+					.func = _func,						\
+					.flags = _flags,					\
+					.name = #ioctl						\
+				}
+
 static const struct drm_ioctl_desc xe_ioctls[] = {
 	DRM_IOCTL_DEF_DRV(XE_DEVICE_QUERY, xe_query_ioctl, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(XE_GEM_CREATE, xe_gem_create_ioctl, DRM_RENDER_ALLOW),
@@ -206,6 +218,7 @@ static const struct drm_ioctl_desc xe_ioctls[] = {
 	DRM_IOCTL_DEF_DRV(XE_WAIT_USER_FENCE, xe_wait_user_fence_ioctl,
 			  DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(XE_OBSERVATION, xe_observation_ioctl, DRM_RENDER_ALLOW),
+	PRELIM_DRM_IOCTL_DEF_DRV(XE_PXP_OPS, xe_pxp_ops_ioctl, DRM_RENDER_ALLOW),
 };
 
 static long xe_drm_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
