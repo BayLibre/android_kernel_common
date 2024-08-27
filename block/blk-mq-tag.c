@@ -135,6 +135,7 @@ unsigned int blk_mq_get_tag(struct blk_mq_alloc_data *data)
 	DEFINE_SBQ_WAIT(wait);
 	unsigned int tag_offset;
 	int tag;
+	unsigned int tag_busy, tag_limit, tag_max;
 
 	if (data->flags & BLK_MQ_REQ_RESERVED) {
 		if (unlikely(!tags->nr_reserved_tags)) {
@@ -146,6 +147,17 @@ unsigned int blk_mq_get_tag(struct blk_mq_alloc_data *data)
 	} else {
 		bt = &tags->bitmap_tags;
 		tag_offset = tags->nr_reserved_tags;
+	}
+
+	if (blk_xiaomi_exlim_sfi_check(data->q) && sfi_taglim_enable(data->q)) {
+		tag_busy = sbitmap_weight(&bt->sb);
+		tag_limit = q_to_xiaomi_exlim_sfi(data->q)->sfi_tag_limit_threshold;
+		tag_max = data->q->nr_requests;
+
+		if (!strncmp(current_sfigroup_name(), "background", 10)) {
+			if (tag_max - tag_busy <= tag_limit)
+				return BLK_MQ_NO_TAG;
+		}
 	}
 
 	tag = __blk_mq_get_tag(data, bt);

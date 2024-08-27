@@ -14,7 +14,8 @@
 #include <linux/task_io_accounting_ops.h>
 #ifndef __GENKSYMS__
 #include <trace/hooks/mm.h>
-#endif
+#include <linux/blkdev.h>
+#endif /* __GENKSYMS__ */
 #include "trace.h"
 
 #include "../internal.h"
@@ -72,7 +73,7 @@ static void iomap_dio_submit_bio(const struct iomap_iter *iter,
 	atomic_inc(&dio->ref);
 
 	/* Sync dio can't be polled reliably */
-	if ((iocb->ki_flags & IOCB_HIPRI) && !is_sync_kiocb(iocb)) {
+	if (iocb->ki_flags & IOCB_HIPRI) {
 		bio_set_polled(bio, iocb);
 		WRITE_ONCE(iocb->private, bio);
 	}
@@ -559,6 +560,7 @@ __iomap_dio_rw(struct kiocb *iocb, struct iov_iter *iter,
 		is_sync_kiocb(iocb) || (dio_flags & IOMAP_DIO_FORCE_WAIT);
 	struct blk_plug plug;
 	struct iomap_dio *dio;
+	struct request_queue *q = NULL;
 	loff_t ret = 0;
 
 	trace_iomap_dio_rw_begin(iocb, iter, dio_flags, done_before);
@@ -662,12 +664,25 @@ __iomap_dio_rw(struct kiocb *iocb, struct iov_iter *iter,
 
 	blk_start_plug(&plug);
 	while ((ret = iomap_iter(&iomi, ops)) > 0) {
+		if (iomi.iomap.bdev)
+			q = bdev_get_queue(iomi.iomap.bdev);
+
+		if (q &&
+			blk_xiaomi_exlim_sfi_check(q) &&
+			sfi_iopoll_enable(q) &&
+			iov_iter_rw(iter) == READ &&
+			is_sync_kiocb(iocb) &&
+			iter->count <= q_to_xiaomi_exlim_sfi(q)->sfi_io_poll_size &&
+			!strncmp(current_sfigroup_name(), "top-app", 7)) {
+				iocb->ki_flags |= IOCB_HIPRI;
+		}
+
 		iomi.processed = iomap_dio_iter(&iomi, dio);
 
-		/*
-		 * We can only poll for single bio I/Os.
-		 */
-		iocb->ki_flags &= ~IOCB_HIPRI;
+		if (!q || !blk_xiaomi_exlim_sfi_check(q))
+			iocb->ki_flags &= ~IOCB_HIPRI;
+		else if (!sfi_iopoll_enable(q))
+			iocb->ki_flags &= ~IOCB_HIPRI;
 	}
 
 	blk_finish_plug(&plug);
@@ -724,12 +739,25 @@ __iomap_dio_rw(struct kiocb *iocb, struct iov_iter *iter,
 			return ERR_PTR(-EIOCBQUEUED);
 		}
 
-		for (;;) {
-			set_current_state(TASK_UNINTERRUPTIBLE);
-			if (!READ_ONCE(dio->submit.waiter))
-				break;
+		if (iocb->ki_flags & IOCB_HIPRI) {
+			for (;;) {
+				if (!iocb_bio_iopoll(iocb, NULL, BLK_POLL_ONESHOT)) {
+					if (!READ_ONCE(dio->submit.waiter))
+						break;
+					blk_io_schedule();
+				}
 
-			blk_io_schedule();
+				if (!READ_ONCE(dio->submit.waiter))
+					break;
+			}
+		} else {
+			for (;;) {
+				set_current_state(TASK_UNINTERRUPTIBLE);
+				if (!READ_ONCE(dio->submit.waiter))
+					break;
+
+				blk_io_schedule();
+			}
 		}
 		__set_current_state(TASK_RUNNING);
 	}

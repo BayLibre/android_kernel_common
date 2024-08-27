@@ -498,6 +498,158 @@ static ssize_t queue_dax_show(struct request_queue *q, char *page)
 	return queue_var_show(blk_queue_dax(q), page);
 }
 
+static ssize_t sfi_io_poll_show(struct request_queue *q, char *page)
+{
+	if (!blk_xiaomi_exlim_sfi_check(q)) {
+		pr_info_ratelimited("%s %d [error] xiaomi_extra_limit null\n", __func__, __LINE__);
+		return -EINVAL;
+	}
+
+	return queue_var_show(sfi_iopoll_enable(q), page);
+}
+
+static ssize_t sfi_io_poll_store(struct request_queue *q, const char *page,
+				size_t count)
+{
+	unsigned long nr;
+	int ret;
+
+	if (!blk_xiaomi_exlim_sfi_check(q)) {
+		pr_info_ratelimited("%s %d [error] xiaomi_extra_limit null\n", __func__, __LINE__);
+		return -EINVAL;
+	}
+
+	ret = queue_var_store(&nr, page, count);
+	if (ret < 0) {
+		pr_info_ratelimited("%s %d [error] nr : %lu\n", __func__, __LINE__, nr);
+		return ret;
+	}
+
+	pr_info_ratelimited("%s %d nr : %lu\n", __func__, __LINE__, nr);
+
+	if (nr) {
+		set_bit(SFI_FLAG_IO_POLL, &q_to_sfi_queue_flags(q));
+		pr_info_ratelimited("%s %d set_bit sfi_queue_flags : %lx\n",
+				__func__, __LINE__, q_to_sfi_queue_flags(q));
+	} else {
+		clear_bit(SFI_FLAG_IO_POLL, &q_to_sfi_queue_flags(q));
+		pr_info_ratelimited("%s %d clear_bit sfi_queue_flags : %lx\n",
+				__func__, __LINE__, q_to_sfi_queue_flags(q));
+	}
+
+	return ret;
+}
+
+static ssize_t sfi_tag_limit_show(struct request_queue *q, char *page)
+{
+	if (!blk_xiaomi_exlim_sfi_check(q)) {
+		pr_info_ratelimited("%s %d [error] xiaomi_extra_limit null\n", __func__, __LINE__);
+		return -EINVAL;
+	}
+
+	return queue_var_show(sfi_taglim_enable(q), page);
+}
+
+static ssize_t sfi_tag_limit_store(struct request_queue *q, const char *page,
+				size_t count)
+{
+	unsigned long nr;
+	int ret;
+
+	if (!blk_xiaomi_exlim_sfi_check(q)) {
+		pr_info_ratelimited("%s %d [error] xiaomi_extra_limit null\n", __func__, __LINE__);
+		return -EINVAL;
+	}
+
+	ret = queue_var_store(&nr, page, count);
+	if (ret < 0) {
+		pr_info_ratelimited("%s %d [error] nr : %lu\n", __func__, __LINE__, nr);
+		return ret;
+	}
+
+	pr_info_ratelimited("%s %d nr : %lu\n", __func__, __LINE__, nr);
+
+	if (nr) {
+		set_bit(SFI_FLAG_TAG_LIMIT, &q_to_sfi_queue_flags(q));
+		pr_info_ratelimited("%s %d set_bit sfi_queue_flags : %lx\n",
+				__func__, __LINE__, q_to_sfi_queue_flags(q));
+	} else {
+		clear_bit(SFI_FLAG_TAG_LIMIT, &q_to_sfi_queue_flags(q));
+		pr_info_ratelimited("%s %d clear_bit sfi_queue_flags : %lx\n",
+				__func__, __LINE__, q_to_sfi_queue_flags(q));
+	}
+
+	return ret;
+}
+
+static ssize_t sfi_io_poll_size_show(struct request_queue *q, char *page)
+{
+	if (!blk_xiaomi_exlim_sfi_check(q)) {
+		pr_info_ratelimited("%s %d [error] xiaomi_extra_limit null\n", __func__, __LINE__);
+		return -EINVAL;
+	}
+
+	return sprintf(page, "%u\n",
+		       q_to_xiaomi_exlim_sfi(q)->sfi_io_poll_size);
+}
+
+static ssize_t sfi_io_poll_size_store(struct request_queue *q,
+				       const char *page, size_t count)
+{
+	unsigned long io_poll_size;
+
+	if (!blk_xiaomi_exlim_sfi_check(q)) {
+		pr_info_ratelimited("%s %d [error] xiaomi_extra_limit null\n", __func__, __LINE__);
+		return -EINVAL;
+	}
+
+	ssize_t ret = queue_var_store(&io_poll_size, page, count);
+
+	if (ret < 0)
+		return ret;
+
+	if (io_poll_size > UINT_MAX)
+		return -EINVAL;
+
+	q_to_xiaomi_exlim_sfi(q)->sfi_io_poll_size = io_poll_size;
+	return ret;
+}
+
+static ssize_t sfi_tag_limit_threshold_show(struct request_queue *q, char *page)
+{
+	if (!blk_xiaomi_exlim_sfi_check(q)) {
+		pr_info_ratelimited("%s %d [error] xiaomi_extra_limit null\n", __func__, __LINE__);
+		return -EINVAL;
+	}
+
+	return sprintf(page, "%u\n",
+		       q_to_xiaomi_exlim_sfi(q)->sfi_tag_limit_threshold);
+}
+
+static ssize_t sfi_tag_limit_threshold_store(struct request_queue *q,
+				       const char *page, size_t count)
+{
+	unsigned long tag_limit_threshold;
+	ssize_t ret = queue_var_store(&tag_limit_threshold, page, count);
+
+	if (!blk_xiaomi_exlim_sfi_check(q)) {
+		pr_info_ratelimited("%s %d [error] xiaomi_extra_limit null\n", __func__, __LINE__);
+		return -EINVAL;
+	}
+
+	if (ret < 0)
+		return ret;
+
+	if (tag_limit_threshold > UINT_MAX)
+		return -EINVAL;
+
+	if (tag_limit_threshold > q->nr_requests)
+		tag_limit_threshold = q->nr_requests;
+
+	q_to_xiaomi_exlim_sfi(q)->sfi_tag_limit_threshold = tag_limit_threshold;
+	return ret;
+}
+
 #define QUEUE_RO_ENTRY(_prefix, _name)			\
 static struct queue_sysfs_entry _prefix##_entry = {	\
 	.attr	= { .name = _name, .mode = 0444 },	\
@@ -556,6 +708,11 @@ QUEUE_RO_ENTRY(queue_dax, "dax");
 QUEUE_RW_ENTRY(queue_io_timeout, "io_timeout");
 QUEUE_RO_ENTRY(queue_virt_boundary_mask, "virt_boundary_mask");
 QUEUE_RO_ENTRY(queue_dma_alignment, "dma_alignment");
+
+QUEUE_RW_ENTRY(sfi_io_poll, "sfi_io_poll");
+QUEUE_RW_ENTRY(sfi_tag_limit, "sfi_tag_limit");
+QUEUE_RW_ENTRY(sfi_io_poll_size, "sfi_io_poll_size");
+QUEUE_RW_ENTRY(sfi_tag_limit_threshold, "sfi_tag_limit_threshold");
 
 #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
 QUEUE_RW_ENTRY(blk_throtl_sample_time, "throttle_sample_time");
@@ -685,6 +842,11 @@ static struct attribute *queue_attrs[] = {
 #endif
 	&queue_virt_boundary_mask_entry.attr,
 	&queue_dma_alignment_entry.attr,
+
+	&sfi_io_poll_entry.attr,
+	&sfi_tag_limit_entry.attr,
+	&sfi_io_poll_size_entry.attr,
+	&sfi_tag_limit_threshold_entry.attr,
 	NULL,
 };
 

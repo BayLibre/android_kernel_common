@@ -26,6 +26,9 @@
 #include <linux/xarray.h>
 #include <linux/android_kabi.h>
 #include <linux/android_vendor.h>
+#ifndef __GENKSYMS__
+#include <linux/cgroup.h>
+#endif /* __GENKSYMS__ */
 
 struct module;
 struct request_queue;
@@ -560,6 +563,56 @@ struct request_queue {
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);
 };
+
+struct xiaomi_exlim_sfi {
+	unsigned long		sfi_queue_flags;
+	unsigned int		sfi_tag_limit_threshold;
+	unsigned int		sfi_io_poll_size;
+};
+
+struct queue_xiaomi_extra_limit {
+	struct xiaomi_exlim_sfi *sfi_limit;
+};
+
+enum sfi_specific_field {
+	SFI_FLAG_IO_POLL = 0,
+	SFI_FLAG_TAG_LIMIT,
+};
+
+#define q_to_oem_data(q) \
+	(q->android_oem_data1)
+
+#define q_to_xiaomi_exlim(q) \
+	((struct queue_xiaomi_extra_limit *)q->android_oem_data1)
+
+#define q_to_xiaomi_exlim_sfi(q) \
+	(q_to_xiaomi_exlim(q)->sfi_limit)
+
+#define q_to_sfi_queue_flags(q) \
+	(q_to_xiaomi_exlim_sfi(q)->sfi_queue_flags)
+
+static inline bool blk_xiaomi_exlim_sfi_check(struct request_queue *q)
+{
+	if (!q_to_xiaomi_exlim(q)  || !q_to_xiaomi_exlim_sfi(q))
+		return false;
+
+	return true;
+}
+
+static inline int sfi_iopoll_enable(struct request_queue *q)
+{
+	return test_bit(SFI_FLAG_IO_POLL, &q_to_sfi_queue_flags(q));
+}
+
+static inline int sfi_taglim_enable(struct request_queue *q)
+{
+	return test_bit(SFI_FLAG_TAG_LIMIT, &q_to_sfi_queue_flags(q));
+}
+
+static inline const char *current_sfigroup_name(void)
+{
+	return task_css(current, cpuset_cgrp_id)->cgroup->kn->name;
+}
 
 /* Keep blk_queue_flag_name[] in sync with the definitions below */
 #define QUEUE_FLAG_STOPPED	0	/* queue is stopped */

@@ -273,9 +273,19 @@ static void blk_free_queue_rcu(struct rcu_head *rcu_head)
 	kmem_cache_free(blk_requestq_cachep, q);
 }
 
+static void blk_free_queue_xiaomi_extra_limit(struct request_queue *q)
+{
+	if (!q_to_xiaomi_exlim(q))
+		return;
+	if (q_to_xiaomi_exlim_sfi(q))
+		kfree(q_to_xiaomi_exlim_sfi(q));
+	kfree(q_to_xiaomi_exlim(q));
+}
+
 static void blk_free_queue(struct request_queue *q)
 {
 	blk_free_queue_stats(q->stats);
+	blk_free_queue_xiaomi_extra_limit(q);
 	blk_disable_sub_page_limits(&q->limits);
 	if (queue_is_mq(q))
 		blk_mq_release(q);
@@ -402,6 +412,22 @@ static void blk_timeout_work(struct work_struct *work)
 {
 }
 
+struct queue_xiaomi_extra_limit *blk_alloc_queue_xiaomi_extra_limit(void)
+{
+	struct queue_xiaomi_extra_limit *ex_lim = kmalloc(sizeof(*ex_lim), GFP_KERNEL);
+
+	if (!ex_lim)
+		return NULL;
+	memset(ex_lim, 0, sizeof(*ex_lim));
+	ex_lim->sfi_limit = kmalloc(sizeof(*(ex_lim->sfi_limit)), GFP_KERNEL);
+
+	if (!ex_lim->sfi_limit)
+		return NULL;
+	memset(ex_lim->sfi_limit, 0, sizeof(*(ex_lim->sfi_limit)));
+
+	return ex_lim;
+}
+
 struct request_queue *blk_alloc_queue(int node_id)
 {
 	struct request_queue *q;
@@ -451,6 +477,9 @@ struct request_queue *blk_alloc_queue(int node_id)
 		goto fail_stats;
 
 	blk_set_default_limits(&q->limits);
+
+	q_to_oem_data(q) = (u64)blk_alloc_queue_xiaomi_extra_limit();
+
 	q->nr_requests = BLKDEV_DEFAULT_RQ;
 
 	return q;
