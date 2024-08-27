@@ -114,7 +114,7 @@ static int gc_thread_func(void *data)
 			goto next;
 		}
 
-		if (!is_idle(sbi, GC_TIME)) {
+		if (gc_th->io_aware && !is_idle(sbi, GC_TIME)) {
 			increase_sleep_time(gc_th, &wait_ms);
 			f2fs_up_write(&sbi->gc_lock);
 			stat_io_skip_bggc_count(sbi);
@@ -138,6 +138,10 @@ static int gc_thread_func(void *data)
 				gc_control.one_time = true;
 		} else {
 			increase_sleep_time(gc_th, &wait_ms);
+		}
+
+		if(gc_th->min_sleep_time == gc_th->max_sleep_time) {
+			wait_ms = gc_th->min_sleep_time;
 		}
 do_gc:
 		stat_inc_gc_call_count(sbi, foreground ?
@@ -214,6 +218,7 @@ int f2fs_start_gc_thread(struct f2fs_sb_info *sbi)
 		gc_th->no_zoned_gc_percent = 0;
 		gc_th->boost_zoned_gc_percent = 0;
 	}
+	gc_th->io_aware = true;
 
 	gc_th->gc_wake = false;
 
@@ -2027,8 +2032,7 @@ static void init_atgc_management(struct f2fs_sb_info *sbi)
 {
 	struct atgc_management *am = &sbi->am;
 
-	if (test_opt(sbi, ATGC) &&
-		SIT_I(sbi)->elapsed_time >= DEF_GC_THREAD_AGE_THRESHOLD)
+	if (test_opt(sbi, ATGC))
 		am->atgc_enabled = true;
 
 	am->root = RB_ROOT_CACHED;

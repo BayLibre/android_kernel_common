@@ -12,6 +12,7 @@
 #include <linux/backing-dev.h>
 #include <linux/f2fs_fs.h>
 #include <linux/blkdev.h>
+#include <linux/proc_fs.h>
 #include <linux/debugfs.h>
 #include <linux/seq_file.h>
 
@@ -24,6 +25,7 @@ static LIST_HEAD(f2fs_stat_list);
 static DEFINE_RAW_SPINLOCK(f2fs_stat_lock);
 #ifdef CONFIG_DEBUG_FS
 static struct dentry *f2fs_debugfs_root;
+extern struct proc_dir_entry *f2fs_proc_root;
 #endif
 
 /*
@@ -844,12 +846,17 @@ void __init f2fs_create_root_stats(void)
 
 	debugfs_create_file("status", 0444, f2fs_debugfs_root, NULL,
 			    &stat_fops);
+	if (f2fs_proc_root)
+		proc_create_single_data("status", 0444, f2fs_proc_root,
+				stat_show, NULL);
 #endif
 }
 
 void f2fs_destroy_root_stats(void)
 {
 #ifdef CONFIG_DEBUG_FS
+	if (f2fs_proc_root)
+		remove_proc_entry("status", f2fs_proc_root);
 	debugfs_remove_recursive(f2fs_debugfs_root);
 	f2fs_debugfs_root = NULL;
 #endif
