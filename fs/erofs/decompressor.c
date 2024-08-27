@@ -7,6 +7,7 @@
 #include <linux/module.h>
 #include <linux/lz4.h>
 #include <trace/hooks/lz4_decompress.h>
+#include <trace/events/erofs.h>
 
 #ifndef LZ4_DISTANCE_MAX	/* history window size */
 #define LZ4_DISTANCE_MAX 65535	/* set to maximum value by default */
@@ -14,7 +15,7 @@
 
 #define LZ4_MAX_DISTANCE_PAGES	(DIV_ROUND_UP(LZ4_DISTANCE_MAX, PAGE_SIZE) + 1)
 #ifndef LZ4_DECOMPRESS_INPLACE_MARGIN
-#define LZ4_DECOMPRESS_INPLACE_MARGIN(srcsize)  (((srcsize) >> 8) + 32)
+#define LZ4_DECOMPRESS_INPLACE_MARGIN(srcsize, margin)  (((srcsize) >> 8) + margin)
 #endif
 
 struct z_erofs_lz4_decompress_ctx {
@@ -24,6 +25,19 @@ struct z_erofs_lz4_decompress_ctx {
 	/* decoded block total length (used for in-place decompression) */
 	unsigned int oend;
 };
+
+static int inplace_margin = 32;
+
+static int __init z_erofs_get_lz4_decompress_inplace_margin(char *arg)
+{
+	if (strcmp(arg, "1") == 0)
+		inplace_margin = 65;
+
+	printk("erofs lz4 decompress implace margin: %d\n", inplace_margin);
+	return 0;
+}
+
+early_param("lz4asm.support", z_erofs_get_lz4_decompress_inplace_margin);
 
 static int z_erofs_load_lz4_config(struct super_block *sb,
 			    struct erofs_super_block *dsb, void *data, int size)
@@ -135,7 +149,7 @@ static void *z_erofs_lz4_handle_overlap(struct z_erofs_lz4_decompress_ctx *ctx,
 	if (rq->inplace_io) {
 		omargin = PAGE_ALIGN(ctx->oend) - ctx->oend;
 		if (rq->partial_decoding || !may_inplace ||
-		    omargin < LZ4_DECOMPRESS_INPLACE_MARGIN(rq->inputsize))
+		    omargin < LZ4_DECOMPRESS_INPLACE_MARGIN(rq->inputsize, inplace_margin))
 			goto docopy;
 
 		for (i = 0; i < ctx->inpages; ++i)
@@ -241,6 +255,8 @@ static int z_erofs_lz4_decompress_mem(struct z_erofs_lz4_decompress_ctx *ctx,
 
 	out = dst + rq->pageofs_out;
 
+	trace_lz4_decompress_start(rq->inputsize, rq->outputsize, lz4_decompression_bypass);
+
 	trace_android_vh_lz4_decompress_bypass(src + inputmargin, out, rq->inputsize,
 			rq->outputsize, rq->inplace_io, &ret, &lz4_decompression_bypass);
 
@@ -256,6 +272,9 @@ static int z_erofs_lz4_decompress_mem(struct z_erofs_lz4_decompress_ctx *ctx,
 					  rq->inputsize, rq->outputsize);
 
 bypass_decompression:
+
+	trace_lz4_decompress_end(rq->inputsize, rq->outputsize, ret, lz4_decompression_bypass);
+
 	if (ret != rq->outputsize) {
 		erofs_err(rq->sb, "failed to decompress %d in[%u, %u] out[%u]",
 			  ret, rq->inputsize, inputmargin, rq->outputsize);

@@ -143,6 +143,55 @@ TRACE_EVENT(erofs_readpages,
 		__entry->raw)
 );
 
+TRACE_EVENT(lz4_decompress_start,
+	TP_PROTO(int inputsize, int outputsize, int bypass),
+
+	TP_ARGS(inputsize, outputsize, bypass),
+
+	TP_STRUCT__entry(
+		__field(int,	inputsize)
+		__field(int,	outputsize)
+		__field(int,	bypass)
+	),
+
+	TP_fast_assign(
+		__entry->inputsize	= inputsize;
+		__entry->outputsize	= outputsize;
+		__entry->bypass 	= bypass;
+	),
+
+	TP_printk("inputsize = %d, outputsize = %d, bypass = %d",
+		__entry->inputsize,
+		__entry->outputsize,
+		__entry->bypass)
+);
+
+TRACE_EVENT(lz4_decompress_end,
+	TP_PROTO(int inputsize, int outputsize, int ret, int bypass),
+
+	TP_ARGS(inputsize, outputsize, ret, bypass),
+
+	TP_STRUCT__entry(
+		__field(int,	inputsize)
+		__field(int,	outputsize)
+		__field(int,	ret)
+		__field(int,	bypass)
+	),
+
+	TP_fast_assign(
+		__entry->inputsize	= inputsize;
+		__entry->outputsize	= outputsize;
+		__entry->ret		= ret;
+		__entry->bypass 	= bypass;
+	),
+
+	TP_printk("inputsize = %d, outputsize = %d, ret = %d, bypass = %d",
+		__entry->inputsize,
+		__entry->outputsize,
+		__entry->ret,
+		__entry->bypass)
+);
+
 DECLARE_EVENT_CLASS(erofs__map_blocks_enter,
 	TP_PROTO(struct inode *inode, struct erofs_map_blocks *map,
 		 unsigned int flags),
