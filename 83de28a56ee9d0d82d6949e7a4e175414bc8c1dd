@@ -16,6 +16,24 @@
       "message": "What filesystem information is required in this panic path. Since the kernel is already in the panic path, how do we know that the information saved is correct.",
       "revId": "83de28a56ee9d0d82d6949e7a4e175414bc8c1dd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a022f84_41a058aa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1182000
+      },
+      "writtenOn": "2024-08-28T02:01:49Z",
+      "side": 1,
+      "message": "The panic will cause data lost if it is still in page cache.\nSo we want to call \"ksys_sync_helper\" before panic.\ne.g\necho 123 \u003e /data/test; echo c \u003e /proc/sysrq-trigger\nafter reboot, /data/test is missing or empty.",
+      "parentUuid": "c7f67262_a6974b9e",
+      "revId": "83de28a56ee9d0d82d6949e7a4e175414bc8c1dd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
