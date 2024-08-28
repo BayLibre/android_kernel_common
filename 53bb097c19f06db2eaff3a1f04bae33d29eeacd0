@@ -34,6 +34,24 @@
       "parentUuid": "b7bb05c0_db272f7d",
       "revId": "53bb097c19f06db2eaff3a1f04bae33d29eeacd0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b582ad7_d8805ed5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-08-28T17:19:20Z",
+      "side": 1,
+      "message": "Ah, for some reason `kunit` and `kunit_assert` are already being drug into the abi?  I missed that, hopefully all will be ok with those, I guess we missed them in the past 😞\n\nYou might want to go add padding for those structures in `android-mainline` so we catch them in the next release.",
+      "parentUuid": "f5c6e2a8_e50e27f2",
+      "revId": "53bb097c19f06db2eaff3a1f04bae33d29eeacd0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
