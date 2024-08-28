@@ -116,6 +116,12 @@ config ZSWAP_COMPRESSOR_DEFAULT_ZSTD
 	  Use the zstd algorithm as the default compression algorithm.
 endchoice
 
+config XIAOMI_DMABUF_HUGETLB
+        bool "Enable dmabuf hugetlb"
+        default n
+        help
+          dma-buf huge page support.
+
 config ZSWAP_COMPRESSOR_DEFAULT
        string
        depends on ZSWAP

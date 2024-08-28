@@ -27,6 +27,9 @@
 #include <linux/mm.h>
 #include <linux/mount.h>
 #include <linux/pseudo_fs.h>
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+#include <linux/hugetlb_dmabuf.h>
+#endif
 
 #include <uapi/linux/dma-buf.h>
 #include <uapi/linux/magic.h>
@@ -560,6 +563,9 @@ static void dma_buf_show_fdinfo(struct seq_file *m, struct file *file)
 static const struct file_operations dma_buf_fops = {
 	.release	= dma_buf_file_release,
 	.mmap		= dma_buf_mmap_internal,
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+	.get_unmapped_area = dma_buf_hugetlb_get_unmapped_area,
+#endif
 	.llseek		= dma_buf_llseek,
 	.poll		= dma_buf_poll,
 	.unlocked_ioctl	= dma_buf_ioctl,

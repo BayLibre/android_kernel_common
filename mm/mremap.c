@@ -27,6 +27,10 @@
 #include <linux/mempolicy.h>
 #include <linux/page_size_compat.h>
 
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+#include <linux/hugetlb_dmabuf.h>
+#endif
+
 #include <asm/cacheflush.h>
 #include <asm/tlb.h>
 #include <asm/pgalloc.h>
@@ -557,6 +561,17 @@ unsigned long move_page_tables(struct vm_area_struct *vma,
 		if (!new_pmd)
 			break;
 again:
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+		if (is_vm_dmabuf_hugetlb_page(vma)) {
+			if (pmd_dmabuf_huge(*old_pmd)) {
+				if (extent == PMD_SIZE &&
+					move_dmabuf_huge_pmd(vma, old_addr, new_addr,
+						   old_pmd, new_pmd, need_rmap_locks))
+					continue;
+				__split_dmabuf_huge_pmd(vma, old_pmd, old_addr, false, NULL);
+			}
+		} else
+#endif
 		if (is_swap_pmd(*old_pmd) || pmd_trans_huge(*old_pmd) ||
 		    pmd_devmap(*old_pmd)) {
 			if (extent == HPAGE_PMD_SIZE &&

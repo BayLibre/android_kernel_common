@@ -50,6 +50,10 @@
 #include <linux/sched/mm.h>
 #include <linux/ksm.h>
 
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+#include <linux/hugetlb_dmabuf.h>
+#endif
+
 #include <linux/uaccess.h>
 #include <asm/cacheflush.h>
 #include <asm/tlb.h>
@@ -664,7 +668,16 @@ int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
 		goto nomem;
 
 	vma_prepare(&vp);
+
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+	if(is_vm_dmabuf_hugetlb_page(vma))
+		vma_adjust_dmabuf_huge(vma, start, end, 0);
+	else
+		vma_adjust_trans_huge(vma, start, end, 0);
+#else
 	vma_adjust_trans_huge(vma, start, end, 0);
+#endif
+
 	vma->vm_start = start;
 	vma->vm_end = end;
 	vma->vm_pgoff = pgoff;
@@ -707,7 +720,15 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
 
 	init_vma_prep(&vp, vma);
 	vma_prepare(&vp);
+
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+	if(is_vm_dmabuf_hugetlb_page(vma))
+		vma_adjust_dmabuf_huge(vma, start, end, 0);
+	else
+		vma_adjust_trans_huge(vma, start, end, 0);
+#else
 	vma_adjust_trans_huge(vma, start, end, 0);
+#endif
 
 	vma_iter_clear(vmi);
 	vma->vm_start = start;
@@ -2427,7 +2448,15 @@ int __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
 	init_vma_prep(&vp, vma);
 	vp.insert = new;
 	vma_prepare(&vp);
+
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+	if(is_vm_dmabuf_hugetlb_page(vma))
+		vma_adjust_dmabuf_huge(vma, vma->vm_start, addr, 0);
+	else
+		vma_adjust_trans_huge(vma, vma->vm_start, addr, 0);
+#else
 	vma_adjust_trans_huge(vma, vma->vm_start, addr, 0);
+#endif
 
 	if (new_below) {
 		vma->vm_start = addr;

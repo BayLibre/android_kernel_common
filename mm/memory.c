@@ -80,6 +80,10 @@
 #include <linux/sched/sysctl.h>
 #include <linux/zswap.h>
 
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+#include <linux/hugetlb_dmabuf.h>
+#endif
+
 #include <trace/events/kmem.h>
 #include <trace/hooks/mm.h>
 
@@ -1362,6 +1366,14 @@ copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
 	if (!vma_needs_copy(dst_vma, src_vma))
 		return 0;
 
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+	if (is_vm_dmabuf_hugetlb_page(src_vma)) {
+		split_dmabuf_huge_range(src_vma);
+		vm_dmabuf_hugetlb_clear(src_vma);
+		vm_dmabuf_hugetlb_clear(dst_vma);
+	}
+#endif
+
 	if (is_vm_hugetlb_page(src_vma))
 		return copy_hugetlb_page_range(dst_mm, src_mm, dst_vma, src_vma);
 
@@ -1712,6 +1724,18 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
 	pmd = pmd_offset(pud, addr);
 	do {
 		next = pmd_addr_end(addr, end);
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+		if (unlikely(is_vm_dmabuf_hugetlb_page(vma))) {
+			if(pmd_dmabuf_huge(*pmd)){
+				if (next - addr != PMD_SIZE) {
+					zap_split_dmabuf_huge_pmd(vma, pmd, addr, false, NULL);
+				} else if(zap_dmabuf_huge_pmd(tlb, vma, pmd, addr)) {
+					addr = next;
+					continue;
+				}
+			}
+		} else
+#endif
 		if (is_swap_pmd(*pmd) || pmd_trans_huge(*pmd) || pmd_devmap(*pmd)) {
 			if (next - addr != HPAGE_PMD_SIZE)
 				__split_huge_pmd(vma, pmd, addr, false, NULL);

@@ -176,6 +176,12 @@ IF_HAVE_PG_OEM_RESERVED(oem_reserved_4)
 # define IF_HAVE_UFFD_MINOR(flag, name)
 #endif
 
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+#define IF_HAVE_DMAB_HUGE(flag, name) {flag, name},
+#else
+#define IF_HAVE_DMAB_HUGE(flag, name)
+#endif
+
 #define __def_vmaflag_names						\
 	{VM_READ,			"read"		},		\
 	{VM_WRITE,			"write"		},		\
@@ -208,6 +214,7 @@ IF_HAVE_VM_SOFTDIRTY(VM_SOFTDIRTY,	"softdirty"	)		\
 	{VM_MIXEDMAP,			"mixedmap"	},		\
 	{VM_HUGEPAGE,			"hugepage"	},		\
 	{VM_NOHUGEPAGE,			"nohugepage"	},		\
+IF_HAVE_DMAB_HUGE(VM_DMABUF_HUGETLB,	"dmabuf_hugetlb")		\
 	{VM_MERGEABLE,			"mergeable"	}		\
 
 #define show_vma_flags(flags)						\

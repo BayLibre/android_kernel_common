@@ -405,6 +405,11 @@ extern unsigned int kobjsize(const void *objp);
 #define VM_SEALED	_BITUL(63)
 #endif
 
+#ifdef CONFIG_XIAOMI_DMABUF_HUGETLB
+#define VM_DMABUF_HUGETLB_BIT	39
+#define VM_DMABUF_HUGETLB	BIT(VM_DMABUF_HUGETLB_BIT)
+#endif /* CONFIG_XIAOMI_DMABUF_HUGETLB */
+
 /* Bits set in the VMA until the stack is in its final location */
 #define VM_STACK_INCOMPLETE_SETUP (VM_RAND_READ | VM_SEQ_READ | VM_STACK_EARLY)
 
