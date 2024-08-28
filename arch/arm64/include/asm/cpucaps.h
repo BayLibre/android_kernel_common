@@ -55,11 +55,21 @@
 #define ARM64_WORKAROUND_CAVIUM_TX2_219_TVM	45
 #define ARM64_WORKAROUND_CAVIUM_TX2_219_PRFM	46
 #define ARM64_WORKAROUND_1542419		47
+<<<<<<< HEAD   (46aecb Merge branch 'android12-5.4' into 'android12-5.4-lts')
 #define ARM64_HAS_AMU_EXTN			48
 #define ARM64_SPECTRE_BHB			49
 #define ARM64_WORKAROUND_1742098		50
+=======
+#define ARM64_SPECTRE_BHB			48
+#define ARM64_WORKAROUND_1742098		49
+#define ARM64_WORKAROUND_SPECULATIVE_SSBS	50
+>>>>>>> BRANCH (5bb3c8 Linux 5.4.282)
 
+<<<<<<< HEAD   (46aecb Merge branch 'android12-5.4' into 'android12-5.4-lts')
 /* kabi: reserve 51 - 62 for future cpu capabilities */
 #define ARM64_NCAPS				62
+=======
+#define ARM64_NCAPS				51
+>>>>>>> BRANCH (5bb3c8 Linux 5.4.282)
 
 #endif /* __ASM_CPUCAPS_H */
