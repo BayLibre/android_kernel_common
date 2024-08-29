@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04c9bd8e_822170c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 3388319
+      },
+      "writtenOn": "2024-08-29T06:44:29Z",
+      "side": 1,
+      "message": "Hi John\nThis new hook is used to modify the variables in mutex oemdata when the task releases mutex lock.\nThis code cannot be done in existing hook trace_android_vh_mutex_unlock_slowpath(),  because it is executed after wake_up_q, and there is a risk that the mutex object has been freed.",
+      "parentUuid": "d0ea88a8_a975316b",
+      "revId": "e1be2e45ffc3f348f672d5c716b4932d54c7beee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2b5c234_cf7703cb",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-08-29T05:12:22Z",
       "side": 1,
       "message": "Minor detail: You need a space after the \"Bug:\" before the number.",
+      "revId": "e1be2e45ffc3f348f672d5c716b4932d54c7beee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0f6bf2b_3d79b14a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3388319
+      },
+      "writtenOn": "2024-08-29T06:44:29Z",
+      "side": 1,
+      "message": "resolved",
+      "parentUuid": "c2b5c234_cf7703cb",
       "revId": "e1be2e45ffc3f348f672d5c716b4932d54c7beee",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
