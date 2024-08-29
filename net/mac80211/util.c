@@ -1346,8 +1346,8 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
 				elems->max_idle_period_ie = (void *)pos;
 			break;
 		case WLAN_EID_RSNX:
-			elems->rsnx = pos;
-			elems->rsnx_len = elen;
+			/* elems->rsnx = pos; */
+			/* elems->rsnx_len = elen; */
 			break;
 		case WLAN_EID_TX_POWER_ENVELOPE:
 			if (elen < 1 ||
