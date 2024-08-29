@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3024047_6b647574",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-08-29T16:22:25Z",
+      "side": 1,
+      "message": "I suspect we won\u0027t be able to change the tracepoint name here as I believe it is part of the frozen KABI.\n\nI suspect new tracepoint will be needed",
+      "revId": "2d8e771ef31f624365a83022428d13c7775edc22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
