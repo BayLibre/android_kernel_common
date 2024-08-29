@@ -16,6 +16,24 @@
       "message": "This change only allows MTK to override nortt, which is a functional change.\nI guess you had to do that because you are not allowed to change ufs_hba_variant_ops.\n\nI think its better to leave this patch out as the next patch makes the max_number_of_rtt sysfs entry rw, and MTK/MTK clients can use it to adjust it.\n\nI also think that Peter Wang needs to approve this change as well.",
       "revId": "580ff33f9d2df2e608e281fa0f13bcbea329235a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95288484_fe5cc73d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-08-29T10:31:45Z",
+      "side": 1,
+      "message": "Peter, do you agree that we need this change to prevent that this CL series breaks support for MediaTek UFS host controllers?",
+      "parentUuid": "a78dbb63_87f1ed29",
+      "revId": "580ff33f9d2df2e608e281fa0f13bcbea329235a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
