@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b085f0c6_fd77349a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-08-29T21:39:36Z",
+      "side": 1,
+      "message": "One other thing needed here is a follow on patch that adds the new symbol to the KABI symbols list.",
+      "revId": "2d8e771ef31f624365a83022428d13c7775edc22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d3024047_6b647574",
         "filename": "drivers/android/vendor_hooks.c",
         "patchSetId": 4
@@ -14,6 +31,24 @@
       "writtenOn": "2024-08-29T16:22:25Z",
       "side": 1,
       "message": "I suspect we won\u0027t be able to change the tracepoint name here as I believe it is part of the frozen KABI.\n\nI suspect new tracepoint will be needed",
+      "revId": "2d8e771ef31f624365a83022428d13c7775edc22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "753572fb_f76844d7",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-08-29T21:39:36Z",
+      "side": 1,
+      "message": "Hrm. Ignore this. I was apparently looking at an earlier version of the patch when I replied.",
+      "parentUuid": "d3024047_6b647574",
       "revId": "2d8e771ef31f624365a83022428d13c7775edc22",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
