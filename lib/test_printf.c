@@ -824,5 +824,4 @@ static void __init selftest(void)
 
 KSTM_MODULE_LOADERS(test_printf);
 MODULE_AUTHOR("Rasmus Villemoes <linux@rasmusvillemoes.dk>");
-MODULE_DESCRIPTION("Test cases for printf facility");
 MODULE_LICENSE("GPL");
