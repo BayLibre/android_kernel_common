@@ -49,6 +49,16 @@ int damon_sysfs_schemes_update_regions_start(
 		struct damon_sysfs_schemes *sysfs_schemes,
 		struct damon_ctx *ctx, bool total_bytes_only);
 
+<<<<<<< HEAD   (3ca020 ANDROID: GKI: update mtktv symbol)
+||||||| BASE
+bool damos_sysfs_regions_upd_done(void);
+
+=======
+void damos_sysfs_mark_finished_regions_updates(struct damon_ctx *ctx);
+
+bool damos_sysfs_regions_upd_done(void);
+
+>>>>>>> CHANGE (86b84a UPSTREAM: mm/damon/sysfs: handle 'state' file inputs for eve)
 int damon_sysfs_schemes_update_regions_stop(struct damon_ctx *ctx);
 
 int damon_sysfs_schemes_clear_regions(
