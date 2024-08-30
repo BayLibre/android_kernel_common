@@ -84,12 +84,14 @@ static int of_pmem_region_probe(struct platform_device *pdev)
 	return 0;
 }
 
-static void of_pmem_region_remove(struct platform_device *pdev)
+static int of_pmem_region_remove(struct platform_device *pdev)
 {
 	struct of_pmem_private *priv = platform_get_drvdata(pdev);
 
 	nvdimm_bus_unregister(priv->bus);
 	kfree(priv);
+
+	return 0;
 }
 
 static const struct of_device_id of_pmem_region_match[] = {
@@ -100,7 +102,7 @@ static const struct of_device_id of_pmem_region_match[] = {
 
 static struct platform_driver of_pmem_region_driver = {
 	.probe = of_pmem_region_probe,
-	.remove_new = of_pmem_region_remove,
+	.remove = of_pmem_region_remove,
 	.driver = {
 		.name = "of_pmem",
 		.of_match_table = of_pmem_region_match,

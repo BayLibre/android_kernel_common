@@ -71,6 +71,7 @@ struct vector_estats {
 
 struct vector_private {
 	struct list_head list;
+	spinlock_t lock;
 	struct net_device *dev;
 	struct napi_struct		napi	____cacheline_aligned;
 

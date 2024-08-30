@@ -351,7 +351,7 @@ static int ipu_pre_probe(struct platform_device *pdev)
 	return 0;
 }
 
-static void ipu_pre_remove(struct platform_device *pdev)
+static int ipu_pre_remove(struct platform_device *pdev)
 {
 	struct ipu_pre *pre = platform_get_drvdata(pdev);
 
@@ -365,6 +365,7 @@ static void ipu_pre_remove(struct platform_device *pdev)
 	if (pre->buffer_virt)
 		gen_pool_free(pre->iram, (unsigned long)pre->buffer_virt,
 			      IPU_PRE_MAX_WIDTH * IPU_PRE_NUM_SCANLINES * 4);
+	return 0;
 }
 
 static const struct of_device_id ipu_pre_dt_ids[] = {
@@ -374,7 +375,7 @@ static const struct of_device_id ipu_pre_dt_ids[] = {
 
 struct platform_driver ipu_pre_drv = {
 	.probe		= ipu_pre_probe,
-	.remove_new	= ipu_pre_remove,
+	.remove		= ipu_pre_remove,
 	.driver		= {
 		.name	= "imx-ipu-pre",
 		.of_match_table = ipu_pre_dt_ids,
