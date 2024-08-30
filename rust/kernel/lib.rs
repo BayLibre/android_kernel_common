@@ -40,7 +40,6 @@ pub mod ioctl;
 pub mod kunit;
 #[cfg(CONFIG_NET)]
 pub mod net;
-pub mod page;
 pub mod prelude;
 pub mod print;
 mod static_assert;
@@ -51,7 +50,6 @@ pub mod sync;
 pub mod task;
 pub mod time;
 pub mod types;
-pub mod uaccess;
 pub mod workqueue;
 
 #[doc(hidden)]

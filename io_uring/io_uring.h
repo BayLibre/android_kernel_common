@@ -43,7 +43,7 @@ struct io_wait_queue {
 	ktime_t timeout;
 
 #ifdef CONFIG_NET_RX_BUSY_POLL
-	ktime_t napi_busy_poll_dt;
+	unsigned int napi_busy_poll_to;
 	bool napi_prefer_busy_poll;
 #endif
 };

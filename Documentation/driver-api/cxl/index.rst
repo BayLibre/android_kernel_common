@@ -9,6 +9,4 @@ Compute Express Link
 
    memory-devices
 
-   maturity-map
-
 .. only::  subproject and html
