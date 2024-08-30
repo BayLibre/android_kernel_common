@@ -106,8 +106,7 @@ amdgpu-y += \
 	df_v1_7.o \
 	df_v3_6.o \
 	df_v4_3.o \
-	df_v4_6_2.o \
-	df_v4_15.o
+	df_v4_6_2.o
 
 # add GMC block
 amdgpu-y += \

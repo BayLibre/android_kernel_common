@@ -332,14 +332,7 @@ static inline unsigned long __must_check clear_user(void __user *to, unsigned lo
 	return __clear_user(to, n);
 }
 
-void *__s390_kernel_write(void *dst, const void *src, size_t size);
-
-static inline void *s390_kernel_write(void *dst, const void *src, size_t size)
-{
-	if (__is_defined(__DECOMPRESSOR))
-		return memcpy(dst, src, size);
-	return __s390_kernel_write(dst, src, size);
-}
+void *s390_kernel_write(void *dst, const void *src, size_t size);
 
 int __noreturn __put_kernel_bad(void);
 

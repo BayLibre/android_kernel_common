@@ -200,7 +200,6 @@ struct psp_xgmi_context {
 struct psp_ras_context {
 	struct ta_context		context;
 	struct amdgpu_ras		*ras;
-	struct mutex			mutex;
 };
 
 #define MEM_TRAIN_SYSTEM_SIGNATURE		0x54534942

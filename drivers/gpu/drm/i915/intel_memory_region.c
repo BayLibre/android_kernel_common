@@ -368,10 +368,8 @@ int intel_memory_regions_hw_probe(struct drm_i915_private *i915)
 			goto out_cleanup;
 		}
 
-		if (mem) { /* Skip on non-fatal errors */
-			mem->id = i;
-			i915->mm.regions[i] = mem;
-		}
+		mem->id = i;
+		i915->mm.regions[i] = mem;
 	}
 
 	for (i = 0; i < ARRAY_SIZE(i915->mm.regions); i++) {

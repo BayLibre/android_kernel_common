@@ -98,12 +98,10 @@ struct v3d_perfmon {
 struct v3d_dev {
 	struct drm_device drm;
 
-	/* Short representation (e.g. 33, 41) of the V3D tech version */
+	/* Short representation (e.g. 33, 41) of the V3D tech version
+	 * and revision.
+	 */
 	int ver;
-
-	/* Short representation (e.g. 5, 6) of the V3D tech revision */
-	int rev;
-
 	bool single_irq_line;
 
 	/* Different revisions of V3D have different total number of performance
