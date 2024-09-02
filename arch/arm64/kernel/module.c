@@ -637,13 +637,13 @@ static int module_init_hyp(const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs,
 	}
 
 	s = find_section(hdr, sechdrs, "_hyp_events");
-	if (s) {
+	if (s && s->sh_size) {
 		hyp_mod->hyp_events = (void *)s->sh_addr;
 		hyp_mod->nr_hyp_events = s->sh_size /
 			sizeof(*hyp_mod->hyp_events);
 
 		s = find_section(hdr, sechdrs, ".hyp.event_ids");
-		if (s) {
+		if (s && s->sh_size) {
 			mod->arch.hyp.event_ids = (struct pkvm_module_section) {
 				.start	= (void *)s->sh_addr,
 				.end	= (void *)s->sh_addr + s->sh_size,
