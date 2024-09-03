@@ -8871,7 +8871,16 @@ static void __setup_per_zone_wmarks(void)
 
 		zone->watermark_boost = 0;
 		zone->_watermark[WMARK_LOW]  = min_wmark_pages(zone) + tmp;
+<<<<<<< HEAD   (b3f67f41e42261ca5553d1eac0175746b72ab027 ANDROID: GKI: Update GKI symbol list with fwnode and v2l ent)
 		zone->_watermark[WMARK_HIGH] = min_wmark_pages(zone) + tmp * 2;
+||||||| BASE   (cf502a22fed23c1227e3196363f86dc1295790fe UPSTREAM: usb: dwc3: core: Skip setting event buffers for ho)
+		zone->_watermark[WMARK_HIGH] = low_wmark_pages(zone) + tmp;
+		zone->_watermark[WMARK_PROMO] = high_wmark_pages(zone) + tmp;
+=======
+		zone->_watermark[WMARK_HIGH] = low_wmark_pages(zone) + tmp;
+		zone->_watermark[WMARK_PROMO] = high_wmark_pages(zone) + tmp;
+		trace_android_vh_init_adjust_zone_wmark(zone, tmp);
+>>>>>>> CHANGE (fdf9c08933a6c12ab52486354be0cc38f208a198 ANDROID: vendor_hooks: add hook for adjusting a more suitabl)
 
 		spin_unlock_irqrestore(&zone->lock, flags);
 	}

@@ -315,6 +315,7 @@ DECLARE_HOOK(android_vh_filemap_map_pages,
 	TP_PROTO(struct file *file, pgoff_t first_pgoff,
 		pgoff_t last_pgoff, vm_fault_t ret),
 	TP_ARGS(file, first_pgoff, last_pgoff, ret));
+<<<<<<< HEAD   (b3f67f41e42261ca5553d1eac0175746b72ab027 ANDROID: GKI: Update GKI symbol list with fwnode and v2l ent)
 DECLARE_HOOK(android_vh_do_swap_page_spf,
 	TP_PROTO(bool *allow_swap_spf),
 	TP_ARGS(allow_swap_spf));
@@ -383,6 +384,82 @@ DECLARE_HOOK(android_vh_filemap_add_to_page_cache,
 	TP_PROTO(struct address_space *mapping, struct page *page,
 		pgoff_t offset),
 	TP_ARGS(mapping, page, offset));
+||||||| BASE   (cf502a22fed23c1227e3196363f86dc1295790fe UPSTREAM: usb: dwc3: core: Skip setting event buffers for ho)
+DECLARE_HOOK(android_vh_page_cache_readahead_start,
+	TP_PROTO(struct file *file, pgoff_t pgoff,
+		unsigned int size, bool sync),
+	TP_ARGS(file, pgoff, size, sync));
+DECLARE_HOOK(android_vh_page_cache_readahead_end,
+	TP_PROTO(struct file *file, pgoff_t pgoff),
+	TP_ARGS(file, pgoff));
+DECLARE_HOOK(android_vh_filemap_fault_start,
+	TP_PROTO(struct file *file, pgoff_t pgoff),
+	TP_ARGS(file, pgoff));
+DECLARE_HOOK(android_vh_filemap_fault_end,
+	TP_PROTO(struct file *file, pgoff_t pgoff),
+	TP_ARGS(file, pgoff));
+
+DECLARE_HOOK(android_vh_cma_alloc_set_max_retries,
+	TP_PROTO(int *max_retries),
+	TP_ARGS(max_retries));
+DECLARE_HOOK(android_vh_compact_finished,
+	TP_PROTO(bool *abort_compact),
+	TP_ARGS(abort_compact));
+DECLARE_HOOK(android_vh_madvise_cold_or_pageout_abort,
+	TP_PROTO(struct vm_area_struct *vma, bool *abort_madvise),
+	TP_ARGS(vma, abort_madvise));
+DECLARE_HOOK(android_vh_zs_shrinker_adjust,
+	TP_PROTO(unsigned long *pages_to_free),
+	TP_ARGS(pages_to_free));
+DECLARE_HOOK(android_vh_zs_shrinker_bypass,
+	TP_PROTO(bool *bypass),
+	TP_ARGS(bypass));
+DECLARE_HOOK(android_vh_customize_thp_pcp_order,
+	TP_PROTO(unsigned int *order),
+	TP_ARGS(order));
+DECLARE_HOOK(android_vh_customize_thp_gfp_orders,
+	TP_PROTO(gfp_t *gfp_mask, unsigned long *orders, int *order),
+	TP_ARGS(gfp_mask, orders, order));
+=======
+DECLARE_HOOK(android_vh_page_cache_readahead_start,
+	TP_PROTO(struct file *file, pgoff_t pgoff,
+		unsigned int size, bool sync),
+	TP_ARGS(file, pgoff, size, sync));
+DECLARE_HOOK(android_vh_page_cache_readahead_end,
+	TP_PROTO(struct file *file, pgoff_t pgoff),
+	TP_ARGS(file, pgoff));
+DECLARE_HOOK(android_vh_filemap_fault_start,
+	TP_PROTO(struct file *file, pgoff_t pgoff),
+	TP_ARGS(file, pgoff));
+DECLARE_HOOK(android_vh_filemap_fault_end,
+	TP_PROTO(struct file *file, pgoff_t pgoff),
+	TP_ARGS(file, pgoff));
+
+DECLARE_HOOK(android_vh_cma_alloc_set_max_retries,
+	TP_PROTO(int *max_retries),
+	TP_ARGS(max_retries));
+DECLARE_HOOK(android_vh_compact_finished,
+	TP_PROTO(bool *abort_compact),
+	TP_ARGS(abort_compact));
+DECLARE_HOOK(android_vh_madvise_cold_or_pageout_abort,
+	TP_PROTO(struct vm_area_struct *vma, bool *abort_madvise),
+	TP_ARGS(vma, abort_madvise));
+DECLARE_HOOK(android_vh_zs_shrinker_adjust,
+	TP_PROTO(unsigned long *pages_to_free),
+	TP_ARGS(pages_to_free));
+DECLARE_HOOK(android_vh_zs_shrinker_bypass,
+	TP_PROTO(bool *bypass),
+	TP_ARGS(bypass));
+DECLARE_HOOK(android_vh_customize_thp_pcp_order,
+	TP_PROTO(unsigned int *order),
+	TP_ARGS(order));
+DECLARE_HOOK(android_vh_customize_thp_gfp_orders,
+	TP_PROTO(gfp_t *gfp_mask, unsigned long *orders, int *order),
+	TP_ARGS(gfp_mask, orders, order));
+DECLARE_HOOK(android_vh_init_adjust_zone_wmark,
+	TP_PROTO(struct zone *zone, u64 interval),
+	TP_ARGS(zone, interval));
+>>>>>>> CHANGE (fdf9c08933a6c12ab52486354be0cc38f208a198 ANDROID: vendor_hooks: add hook for adjusting a more suitabl)
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
