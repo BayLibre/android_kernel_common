@@ -1025,6 +1025,7 @@ do_group_exit(int exit_code)
 		}
 		spin_unlock_irq(&sighand->siglock);
 	}
+	trace_android_vh_boost_free_mm(current);
 
 	do_exit(exit_code);
 	/* NOTREACHED */
