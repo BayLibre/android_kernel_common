@@ -496,4 +496,12 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ogki_tcp_retransmit_timer);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ogki_udp_unicast_rcv_skb);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ogki_udp6_unicast_rcv_skb);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ogki_kmem_cache_create_usercopy);
+<<<<<<< HEAD   (94048e ANDROID: GKI: Update symbol list for vivo)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_init_adjust_zone_wmark);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_customize_thp_pcp_order);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_customize_thp_gfp_orders);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_init_adjust_zone_wmark);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_ksys_umount);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_group_exit);
+>>>>>>> CHANGE (1a958c ANDROID: vendor_hooks: add hook for boost free pages mapped )
