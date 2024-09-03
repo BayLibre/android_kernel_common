@@ -408,6 +408,9 @@ DECLARE_HOOK(android_rvh_alloc_pages_reclaim_cycle_end,
 	unsigned long direct_reclaim_retries),
 	TP_ARGS(gfp_mask, order, alloc_flags, did_some_progress,
 	no_progress_loops, direct_reclaim_retries));
+DECLARE_HOOK(android_vh_init_adjust_zone_wmark,
+	TP_PROTO(struct zone *zone, u64 interval),
+	TP_ARGS(zone, interval));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
