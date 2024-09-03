@@ -2,7 +2,7 @@
 VERSION = 6
 PATCHLEVEL = 11
 SUBLEVEL = 0
-EXTRAVERSION = -rc4
+EXTRAVERSION = -rc5
 NAME = Baby Opossum Posse
 
 # *DOCUMENTATION*
@@ -2026,8 +2026,13 @@ nsdeps: modules
 quiet_cmd_gen_compile_commands = GEN     $@
       cmd_gen_compile_commands = $(PYTHON3) $< -a $(AR) -o $@ $(filter-out $<, $(real-prereqs))
 
+<<<<<<< HEAD   (8e0dce Merge tag 'v6.11-rc4' into android-mainline)
 $(extmod_prefix)compile_commands.json: scripts/clang-tools/gen_compile_commands.py \
 	$(if $(KBUILD_EXTMOD)$(KBUILD_MIXED_TREE),, vmlinux.a $(KBUILD_VMLINUX_LIBS)) \
+=======
+$(extmod_prefix)compile_commands.json: $(srctree)/scripts/clang-tools/gen_compile_commands.py \
+	$(if $(KBUILD_EXTMOD),, vmlinux.a $(KBUILD_VMLINUX_LIBS)) \
+>>>>>>> BRANCH (5be63f Linux 6.11-rc5)
 	$(if $(CONFIG_MODULES), $(MODORDER)) FORCE
 	$(call if_changed,gen_compile_commands)
 
