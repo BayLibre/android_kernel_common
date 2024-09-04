@@ -813,8 +813,12 @@ int setup_arg_pages(struct linux_binprm *bprm,
 	 */
 	if (unlikely(executable_stack == EXSTACK_ENABLE_X))
 		vm_flags |= VM_EXEC;
-	else if (executable_stack == EXSTACK_DISABLE_X)
+	else if (executable_stack == EXSTACK_DISABLE_X) {
 		vm_flags &= ~VM_EXEC;
+#ifdef CONFIG_64BIT 
+		vm_flags |= VM_SEALED;
+#endif
+	}
 	vm_flags |= mm->def_flags;
 	vm_flags |= VM_STACK_INCOMPLETE_SETUP;
 
