@@ -7,6 +7,7 @@
  * This file is released under the GPL.
  */
 
+#include <linux/ashmem_compat.h>
 #include <linux/fs.h>
 #include <linux/vfs.h>
 #include <linux/pagemap.h>
@@ -291,9 +292,7 @@ static int check_sysctl_memfd_noexec(unsigned int *flags)
 	return 0;
 }
 
-SYSCALL_DEFINE2(memfd_create,
-		const char __user *, uname,
-		unsigned int, flags)
+int do_memfd_create(const char *uname, unsigned int flags, bool ashmem_compat_enable)
 {
 	unsigned int *file_seals;
 	struct file *file;
@@ -326,7 +325,11 @@ SYSCALL_DEFINE2(memfd_create,
 		return error;
 
 	/* length includes terminating zero */
-	len = strnlen_user(uname, MFD_NAME_MAX_LEN + 1);
+	if (ashmem_compat_enable) {
+		/* strnlen doesn't include the terminating zero */
+		len = strnlen(uname, MFD_NAME_MAX_LEN + 1) + 1;
+	} else
+    		len = strnlen_user(uname, MFD_NAME_MAX_LEN + 1);
 	if (len <= 0)
 		return -EFAULT;
 	if (len > MFD_NAME_MAX_LEN + 1)
@@ -337,9 +340,13 @@ SYSCALL_DEFINE2(memfd_create,
 		return -ENOMEM;
 
 	strcpy(name, MFD_NAME_PREFIX);
-	if (copy_from_user(&name[MFD_NAME_PREFIX_LEN], uname, len)) {
-		error = -EFAULT;
-		goto err_name;
+	if (ashmem_compat_enable)
+		strncpy(&name[MFD_NAME_PREFIX_LEN], uname, len);
+	else {
+		if (copy_from_user(&name[MFD_NAME_PREFIX_LEN], uname, len)) {
+			error = -EFAULT;
+			goto err_name;
+		}
 	}
 
 	/* terminating-zero may have changed after strnlen_user() returned */
@@ -365,6 +372,9 @@ SYSCALL_DEFINE2(memfd_create,
 		error = PTR_ERR(file);
 		goto err_fd;
 	}
+
+	setup_ashmem_compat_ioctl(file);
+
 	file->f_mode |= FMODE_LSEEK | FMODE_PREAD | FMODE_PWRITE;
 	file->f_flags |= O_LARGEFILE;
 
@@ -393,4 +403,11 @@ err_fd:
 err_name:
 	kfree(name);
 	return error;
+}
+
+SYSCALL_DEFINE2(memfd_create,
+		const char __user *, uname,
+		unsigned int, flags)
+{
+	return do_memfd_create(uname, flags, false);
 }
