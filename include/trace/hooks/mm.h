@@ -127,6 +127,19 @@ DECLARE_RESTRICTED_HOOK(android_rvh_vfree_bypass,
 DECLARE_HOOK(android_vh_cma_alloc_retry,
 	TP_PROTO(char *name, int *retry),
 	TP_ARGS(name, retry));
+<<<<<<< HEAD   (f4f89c UPSTREAM: rust: jump_label: skip formatting generated file)
+||||||| BASE
+DECLARE_HOOK(android_vh_do_group_exit,
+	TP_PROTO(struct task_struct *tsk),
+	TP_ARGS(tsk));
+=======
+DECLARE_HOOK(android_vh_do_group_exit,
+	TP_PROTO(struct task_struct *tsk),
+	TP_ARGS(tsk));
+DECLARE_HOOK(android_vh_suitable_migration_target_bypass,
+	TP_PROTO(struct page *page, bool *bypass),
+	TP_ARGS(page, bypass));
+>>>>>>> CHANGE (8936b3 ANDROID: mm: add vendor hook for compaction)
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */

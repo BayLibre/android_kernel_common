@@ -1417,6 +1417,8 @@ static bool suitable_migration_source(struct compact_control *cc,
 static bool suitable_migration_target(struct compact_control *cc,
 							struct page *page)
 {
+	bool bypass = false;
+
 	/* If the page is a large free page, then disallow migration */
 	if (PageBuddy(page)) {
 		int order = cc->order > 0 ? cc->order : pageblock_order;
@@ -1429,6 +1431,10 @@ static bool suitable_migration_target(struct compact_control *cc,
 		if (buddy_order_unsafe(page) >= order)
 			return false;
 	}
+
+	trace_android_vh_suitable_migration_target_bypass(page, &bypass);
+	if (bypass)
+		return false;
 
 	if (cc->ignore_block_suitable)
 		return true;

@@ -262,3 +262,12 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_vmalloc_node_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_vfree_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_async_psi_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_retry);
+<<<<<<< HEAD   (f4f89c UPSTREAM: rust: jump_label: skip formatting generated file)
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_ksys_umount);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_group_exit);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_ksys_umount);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_group_exit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_suitable_migration_target_bypass);
+>>>>>>> CHANGE (8936b3 ANDROID: mm: add vendor hook for compaction)
