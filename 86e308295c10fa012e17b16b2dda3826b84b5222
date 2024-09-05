@@ -16,6 +16,23 @@
       "message": "-1 Hold while testing",
       "revId": "86e308295c10fa012e17b16b2dda3826b84b5222",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80e66d59_6c9df759",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-09-05T05:33:49Z",
+      "side": 1,
+      "message": "Ok, -2 on this as it doesn\u0027t actually build.\n\nLooks like with commit 59ae90d93ed59856f7c054a1bdaf4dcb58a84dfb we\u0027ve exported the util_threshold to vendor modules. \n\nWe could preserve the util_threshold field and allow teo_cpu_set_util_threshold() to set it and teo_cpu_get_util_threshold to return what was set (or some roughly initialized value), but I fret we\u0027re changing the semantics of the functions even if we preserve the KABI.",
+      "revId": "86e308295c10fa012e17b16b2dda3826b84b5222",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
