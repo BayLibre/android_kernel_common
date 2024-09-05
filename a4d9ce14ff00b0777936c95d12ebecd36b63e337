@@ -86,6 +86,24 @@
       "message": "Temporary -1.\n\nWhy can\u0027t we just backport this?\nhttps://git.kernel.org/pub/scm/linux/kernel/git/sudeep.holla/linux.git/commit/?h\u003dfor-linux-next\u0026id\u003d1780e411ef940db314578b511518e5872d4a13b4",
       "revId": "a4d9ce14ff00b0777936c95d12ebecd36b63e337",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3954e040_b3ccd4d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1786831
+      },
+      "writtenOn": "2024-09-05T03:10:16Z",
+      "side": 1,
+      "message": "Thank you very much for your response. I should have explained more \nclearly regarding the backport. The latest changes in the SCMI transport\n restructuring from the SCM maintainer tree for linux-next are the \nfoundation for the patch mentioned above, and I would like to bring in \nthe patch with as few modifications as possible, but it seems difficult \nto achieve. From my perspective, the patches I need to handle are listed\n below, and they may introduce risks. Do you think this approach makes \nmore sense? I will also attempt to backport all the patches. I would \nlike to hear your suggestions.\n\n| | * | 1780e411ef94 firmware: arm_scmi: Use max-rx-timeout-ms from devicetree\n| | * | 3a5e6ab06eab dt-bindings: firmware: arm,scmi: Introduce property max-rx-timeout-ms\n| | * | 668f0cb2337f firmware: arm_scmi: Remove const from transport descriptors\n| | * | a8bd37e64560 firmware: arm_scmi: Simplify with scoped for each OF child loop\n| | * | be9f086524b3 firmware: arm_scmi: Update various protocols versions\n| | * | fc789363c9f0 firmware: arm_scmi: Remove legacy transport-layer code\n| | * | 20bda12a0ea0 firmware: arm_scmi: Make VirtIO transport a standalone driver\n| | * | db9cc5e67778 firmware: arm_scmi: Make OPTEE transport a standalone driver\n| | * | a41759500b71 firmware: arm_scmi: Make SMC transport a standalone driver\n| | * | b53515fa177c firmware: arm_scmi: Make MBOX transport a standalone driver\n| | * | 8b76a8c95930 firmware: arm_scmi: Add support for standalone transport drivers\n| | * | b6b7c77c988a firmware: arm_scmi: Introduce packet handling helpers\n| | * | 1ebc28e9357c firmware: arm_scmi: Introduce setup_shmem_iomap",
+      "parentUuid": "f01fff02_11de85f6",
+      "revId": "a4d9ce14ff00b0777936c95d12ebecd36b63e337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
