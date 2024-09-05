@@ -118,6 +118,30 @@
       },
       "revId": "3d9179a348300acff910b83360e68605bf500458",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f6e1a54_6f2fe9fc",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-09-05T08:40:48Z",
+      "side": 1,
+      "message": "\u003e You can look at the object lookup which does not have \"alias\" set\n\nYep, just saw that in the tree lookup stuff in kmemleak.c 😞\n\nAlso saw comments like that which make me a little nervous:\n\n\u003e Note that partial freeing is only done by free_bootmem() and\n\u003e this happens before kmemleak_init() is called.\n\nAnd regarding the error path, ack, we can live with that (the _kernel_ module is likely to fail loading anyway if we get an error in the EL2 loading path, so the whole thing will be free\u0027d from kmemleak).",
+      "parentUuid": "e718c340_75efa61e",
+      "range": {
+        "startLine": 876,
+        "startChar": 1,
+        "endLine": 876,
+        "endChar": 47
+      },
+      "revId": "3d9179a348300acff910b83360e68605bf500458",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
