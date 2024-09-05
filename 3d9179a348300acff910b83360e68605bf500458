@@ -46,6 +46,30 @@
       },
       "revId": "3d9179a348300acff910b83360e68605bf500458",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8b70ada_22169911",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-09-05T08:16:32Z",
+      "side": 1,
+      "message": "So kmemleak_free() wouldn\u0027t work because our pointer is not on the start of the \"object\" but within this object. (You can look at the object lookup which does not have \"alias\" set) :-\\ there\u0027s basically no invert operation and the reason is probably because this has been created for memslot initially.",
+      "parentUuid": "68ce0159_8bfb3ca7",
+      "range": {
+        "startLine": 876,
+        "startChar": 1,
+        "endLine": 876,
+        "endChar": 47
+      },
+      "revId": "3d9179a348300acff910b83360e68605bf500458",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
