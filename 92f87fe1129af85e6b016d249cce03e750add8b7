@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d4928bd_7bd46af6",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2024-09-05T17:42:58Z",
+      "side": 1,
+      "message": "What does it mean that you pass two spaces here? If I\u0027m reading correctly, this is going to produce e.g.:\n```\n  BR_TRANSACTION: 3\n  BR_FOO: 2\n  BR_BAR: 1\n```\nAre you going to use `prefix` differently in other places? Because?",
+      "range": {
+        "startLine": 537,
+        "startChar": 8,
+        "endLine": 537,
+        "endChar": 40
+      },
+      "revId": "92f87fe1129af85e6b016d249cce03e750add8b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f5e2df7_7488dedc",
+        "filename": "drivers/android/binder/rust_binder.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2024-09-05T17:42:58Z",
+      "side": 1,
+      "message": "I\u0027m glad that `BinderReturnWriter` is useful 😊",
+      "range": {
+        "startLine": 65,
+        "startChar": 18,
+        "endLine": 65,
+        "endChar": 36
+      },
+      "revId": "92f87fe1129af85e6b016d249cce03e750add8b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec259e63_8c136834",
+        "filename": "drivers/android/binder/stats.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1944206
+      },
+      "writtenOn": "2024-09-05T17:42:58Z",
+      "side": 1,
+      "message": "Getting into the habit of documenting stuff with RustDoc would be nice 😊\n\nAre there presubmit checks from other branches we can turn on to hold ourselves to this?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 31
+      },
+      "revId": "92f87fe1129af85e6b016d249cce03e750add8b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
