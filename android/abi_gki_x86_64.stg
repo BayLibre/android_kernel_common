@@ -14379,11 +14379,6 @@ pointer_reference {
   pointee_type_id: 0xea5f49fa
 }
 pointer_reference {
-  id: 0x3008ff96
-  kind: POINTER
-  pointee_type_id: 0xea6318c6
-}
-pointer_reference {
   id: 0x30092723
   kind: POINTER
   pointee_type_id: 0xea647a11
@@ -15484,6 +15479,11 @@ pointer_reference {
   pointee_type_id: 0xfa0fceaf
 }
 pointer_reference {
+  id: 0x3413d17b
+  kind: POINTER
+  pointee_type_id: 0xfa0fa371
+}
+pointer_reference {
   id: 0x34192ccc
   kind: POINTER
   pointee_type_id: 0xfa2455af
@@ -15637,6 +15637,11 @@ pointer_reference {
   id: 0x348873b3
   kind: POINTER
   pointee_type_id: 0xf8612850
+}
+pointer_reference {
+  id: 0x34894aac
+  kind: POINTER
+  pointee_type_id: 0xf865cc2f
 }
 pointer_reference {
   id: 0x348b5e76
@@ -17982,6 +17987,11 @@ pointer_reference {
   id: 0x3d09670a
   kind: POINTER
   pointee_type_id: 0xde657ab4
+}
+pointer_reference {
+  id: 0x3d0a3be5
+  kind: POINTER
+  pointee_type_id: 0xde680909
 }
 pointer_reference {
   id: 0x3d2ef874
@@ -21264,6 +21274,11 @@ qualified {
   qualified_type_id: 0x09d25c5b
 }
 qualified {
+  id: 0xde680909
+  qualifier: CONST
+  qualified_type_id: 0x09e792ae
+}
+qualified {
   id: 0xde802eab
   qualifier: CONST
   qualified_type_id: 0x0a470c27
@@ -21597,6 +21612,11 @@ qualified {
   id: 0xe92afccd
   qualifier: CONST
   qualified_type_id: 0xd4ec45bf
+}
+qualified {
+  id: 0xe966346e
+  qualifier: CONST
+  qualified_type_id: 0xd5df6730
 }
 qualified {
   id: 0xe96b6185
@@ -22067,6 +22087,11 @@ qualified {
   id: 0xfa06309a
   qualifier: CONST
   qualified_type_id: 0x985f74e0
+}
+qualified {
+  id: 0xfa0fa371
+  qualifier: CONST
+  qualified_type_id: 0x98793b4d
 }
 qualified {
   id: 0xfa0fceaf
@@ -29078,6 +29103,12 @@ member {
   offset: 128
 }
 member {
+  id: 0x4ff76f76
+  name: "acpi_match"
+  type_id: 0x3d0a3be5
+  offset: 384
+}
+member {
   id: 0xf0b9c32d
   name: "acpi_match_table"
   type_id: 0x32f0db7d
@@ -30030,6 +30061,12 @@ member {
   name: "adp_support"
   type_id: 0x6d7f5ff6
   offset: 32
+}
+member {
+  id: 0x6e613216
+  name: "adr"
+  type_id: 0xe966346e
+  offset: 64
 }
 member {
   id: 0xc6d6a72e
@@ -70494,6 +70531,12 @@ member {
   offset: 960
 }
 member {
+  id: 0x3c0613a1
+  name: "ignore_resource_conflicts"
+  type_id: 0x6d7f5ff6
+  offset: 768
+}
+member {
   id: 0xa6432eed
   name: "ignore_routes_with_linkdown"
   type_id: 0x0faae5b1
@@ -77911,6 +77954,12 @@ member {
   offset: 512
 }
 member {
+  id: 0x86dde642
+  name: "level"
+  type_id: 0x6720d32f
+  offset: 96
+}
+member {
   id: 0x86dde9b2
   name: "level"
   type_id: 0x6720d32f
@@ -84912,9 +84961,9 @@ member {
   type_id: 0xb6bc1f4d
 }
 member {
-  id: 0x6eebb5bd
+  id: 0x6eef3408
   name: "mfd_cell"
-  type_id: 0x3008ff96
+  type_id: 0x34894aac
   offset: 7936
 }
 member {
@@ -93854,6 +93903,12 @@ member {
   offset: 448
 }
 member {
+  id: 0xed43042e
+  name: "num_parent_supplies"
+  type_id: 0x6720d32f
+  offset: 800
+}
+member {
   id: 0x20040d9e
   name: "num_planes"
   type_id: 0xb3e7bac9
@@ -94019,6 +94074,12 @@ member {
   name: "num_res"
   type_id: 0x4585663f
   offset: 384
+}
+member {
+  id: 0xdc465b7d
+  name: "num_resources"
+  type_id: 0x6720d32f
+  offset: 672
 }
 member {
   id: 0xdce87ac1
@@ -94576,6 +94637,12 @@ member {
   offset: 1600
 }
 member {
+  id: 0x862e877c
+  name: "of_compatible"
+  type_id: 0x3e10b518
+  offset: 512
+}
+member {
   id: 0xe881b0e4
   name: "of_gpio_n_cells"
   type_id: 0x4585663f
@@ -94658,6 +94725,12 @@ member {
   name: "of_parse_cb"
   type_id: 0x2e8dc6ee
   offset: 320
+}
+member {
+  id: 0x42849e3d
+  name: "of_reg"
+  type_id: 0x92233392
+  offset: 576
 }
 member {
   id: 0x4a7cfa10
@@ -97911,6 +97984,12 @@ member {
   offset: 896
 }
 member {
+  id: 0x720565ca
+  name: "parent"
+  type_id: 0x3413d17b
+  offset: 64
+}
+member {
   id: 0x720a39dd
   name: "parent"
   type_id: 0x3b4ce03a
@@ -98193,6 +98272,12 @@ member {
   name: "parent_partref"
   type_id: 0x914dbfdc
   offset: 48
+}
+member {
+  id: 0x48a33bb4
+  name: "parent_supplies"
+  type_id: 0x3e75499e
+  offset: 832
 }
 member {
   id: 0xd666f314
@@ -98739,6 +98824,12 @@ member {
   name: "pdata"
   type_id: 0x2d222ff1
   offset: 2560
+}
+member {
+  id: 0x5a412cda
+  name: "pdata_size"
+  type_id: 0xf435685e
+  offset: 320
 }
 member {
   id: 0x58733d10
@@ -100617,6 +100708,12 @@ member {
   bitsize: 1
 }
 member {
+  id: 0x38c654ae
+  name: "platform_data"
+  type_id: 0x18bd6530
+  offset: 256
+}
+member {
   id: 0x38c65ad9
   name: "platform_data"
   type_id: 0x18bd6530
@@ -100723,6 +100820,12 @@ member {
   name: "pm_only"
   type_id: 0x74d29cf1
   offset: 1280
+}
+member {
+  id: 0x341fe4fb
+  name: "pm_runtime_no_callbacks"
+  type_id: 0x6d7f5ff6
+  offset: 776
 }
 member {
   id: 0x2e0e8cb5
@@ -100866,6 +100969,11 @@ member {
   id: 0x713ca529
   name: "pnode"
   type_id: 0x6c32e522
+}
+member {
+  id: 0x207c8d17
+  name: "pnpid"
+  type_id: 0x3e10b518
 }
 member {
   id: 0x768763dc
@@ -104409,6 +104517,12 @@ member {
   id: 0x3f715b76
   name: "properties"
   type_id: 0x33756485
+}
+member {
+  id: 0x3f74c084
+  name: "properties"
+  type_id: 0x36e75420
+  offset: 128
 }
 member {
   id: 0x3f74cf3f
@@ -111458,6 +111572,12 @@ member {
   offset: 64
 }
 member {
+  id: 0x1974048f
+  name: "resources"
+  type_id: 0x31e374a8
+  offset: 704
+}
+member {
   id: 0x19962569
   name: "resources"
   type_id: 0xd3c80119
@@ -111588,6 +111708,12 @@ member {
   name: "resume"
   type_id: 0x2e037cf1
   offset: 320
+}
+member {
+  id: 0xcab1ebd9
+  name: "resume"
+  type_id: 0x2e037cf1
+  offset: 192
 }
 member {
   id: 0xcab20ff2
@@ -124947,6 +125073,12 @@ member {
   offset: 2176
 }
 member {
+  id: 0xf394dc87
+  name: "suspend"
+  type_id: 0x2e037cf1
+  offset: 128
+}
+member {
   id: 0xf395c6ed
   name: "suspend"
   type_id: 0x2f107f13
@@ -125322,6 +125454,12 @@ member {
   name: "switched_to"
   type_id: 0x0c4b1d9d
   offset: 1408
+}
+member {
+  id: 0xb36c4a5a
+  name: "swnode"
+  type_id: 0x3413d17b
+  offset: 448
 }
 member {
   id: 0xe4a96d72
@@ -134345,6 +134483,12 @@ member {
   type_id: 0x4585663f
   offset: 11976
   bitsize: 1
+}
+member {
+  id: 0x765645eb
+  name: "use_of_reg"
+  type_id: 0x6d7f5ff6
+  offset: 640
 }
 member {
   id: 0x80b51a4c
@@ -166073,9 +166217,40 @@ struct_union {
   }
 }
 struct_union {
-  id: 0xea6318c6
+  id: 0xf865cc2f
   kind: STRUCT
   name: "mfd_cell"
+  definition {
+    bytesize: 112
+    member_id: 0x0de57ce8
+    member_id: 0xcc4808a3
+    member_id: 0x86dde642
+    member_id: 0xf394dc87
+    member_id: 0xcab1ebd9
+    member_id: 0x38c654ae
+    member_id: 0x5a412cda
+    member_id: 0x4ff76f76
+    member_id: 0xb36c4a5a
+    member_id: 0x862e877c
+    member_id: 0x42849e3d
+    member_id: 0x765645eb
+    member_id: 0xdc465b7d
+    member_id: 0x1974048f
+    member_id: 0x3c0613a1
+    member_id: 0x341fe4fb
+    member_id: 0xed43042e
+    member_id: 0x48a33bb4
+  }
+}
+struct_union {
+  id: 0x09e792ae
+  kind: STRUCT
+  name: "mfd_cell_acpi_match"
+  definition {
+    bytesize: 16
+    member_id: 0x207c8d17
+    member_id: 0x6e613216
+  }
 }
 struct_union {
   id: 0xfd14a591
@@ -170549,7 +170724,7 @@ struct_union {
     member_id: 0x5d3b1e0f
     member_id: 0xf3ddd228
     member_id: 0x09f1fc6e
-    member_id: 0x6eebb5bd
+    member_id: 0x6eef3408
     member_id: 0x57601b4c
     member_id: 0x2d0819dd
     member_id: 0x63760ecd
@@ -175741,6 +175916,17 @@ struct_union {
     member_id: 0x1bbf5875
     member_id: 0x3192c2ff
     member_id: 0x454aae2a
+  }
+}
+struct_union {
+  id: 0x98793b4d
+  kind: STRUCT
+  name: "software_node"
+  definition {
+    bytesize: 24
+    member_id: 0x0de57ce8
+    member_id: 0x720565ca
+    member_id: 0x3f74c084
   }
 }
 struct_union {
