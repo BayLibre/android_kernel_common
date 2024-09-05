@@ -1279,19 +1279,13 @@ static int __init qrtr_proto_init(void)
 		return rc;
 
 	rc = sock_register(&qrtr_family);
-	if (rc)
-		goto err_proto;
+	if (rc) {
+		proto_unregister(&qrtr_proto);
+		return rc;
+	}
 
-	rc = qrtr_ns_init();
-	if (rc)
-		goto err_sock;
+	qrtr_ns_init();
 
-	return 0;
-
-err_sock:
-	sock_unregister(qrtr_family.family);
-err_proto:
-	proto_unregister(&qrtr_proto);
 	return rc;
 }
 postcore_initcall(qrtr_proto_init);
