@@ -241,7 +241,14 @@ static int z_erofs_bvec_enqueue(struct z_erofs_bvec_iter *iter,
 		struct page *nextpage = *candidate_bvpage;
 
 		if (!nextpage) {
+<<<<<<< HEAD   (3048ff ANDROID: GKI: Update symbol list file for xiaomi)
 			nextpage = erofs_allocpage(pagepool, GFP_NOFS);
+||||||| BASE
+			nextpage = erofs_allocpage(pagepool, GFP_KERNEL);
+=======
+			nextpage = __erofs_allocpage(pagepool, GFP_KERNEL,
+					true);
+>>>>>>> CHANGE (6e7af9 BACKPORT: erofs: allocate more short-lived pages from reserv)
 			if (!nextpage)
 				return -ENOMEM;
 			set_page_private(nextpage, Z_EROFS_SHORTLIVED_PAGE);
@@ -1535,8 +1542,16 @@ repeat:
 	unlock_page(page);
 	put_page(page);
 out_allocpage:
+<<<<<<< HEAD   (3048ff ANDROID: GKI: Update symbol list file for xiaomi)
 	page = erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL);
 	spin_lock(&pcl->obj.lock);
+||||||| BASE
+	page = erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL);
+	spin_lock(&pcl->obj.lockref.lock);
+=======
+	page = __erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL, true);
+	spin_lock(&pcl->obj.lockref.lock);
+>>>>>>> CHANGE (6e7af9 BACKPORT: erofs: allocate more short-lived pages from reserv)
 	if (pcl->compressed_bvecs[nr].page) {
 		erofs_pagepool_add(&f->pagepool, page);
 		spin_unlock(&pcl->obj.lock);
