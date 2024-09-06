@@ -166,6 +166,30 @@
       },
       "revId": "3d9179a348300acff910b83360e68605bf500458",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "489f89cd_73451b46",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-09-06T09:23:32Z",
+      "side": 1,
+      "message": "As discussed offline, this CL is an improvement over the current code but we should do better and ignore the whole object instead of calling free_part() after kmemleak is up and running. i.e. any object containing writable hyp sections should be dropped.",
+      "parentUuid": "ab9f433b_6e16594d",
+      "range": {
+        "startLine": 876,
+        "startChar": 1,
+        "endLine": 876,
+        "endChar": 47
+      },
+      "revId": "3d9179a348300acff910b83360e68605bf500458",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
