@@ -431,7 +431,7 @@ int __pkvm_swap_reader_tracing(int cpu)
 
 	hyp_spin_lock(&trace_rb_lock);
 
-	if (cpu >= hyp_nr_cpus) {
+	if (cpu >= hyp_nr_cpus || cpu < 0) {
 		ret = -EINVAL;
 		goto err;
 	}
