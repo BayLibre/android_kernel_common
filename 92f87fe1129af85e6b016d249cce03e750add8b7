@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ad54a28e_e940c31b",
+        "filename": "drivers/android/binder/process.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-09-06T06:36:49Z",
+      "side": 1,
+      "message": "It\u0027s printed without a prefix in `rust_binder_stats_show_impl`. This matches C Binder.",
+      "parentUuid": "6d4928bd_7bd46af6",
+      "range": {
+        "startLine": 537,
+        "startChar": 8,
+        "endLine": 537,
+        "endChar": 40
+      },
+      "revId": "92f87fe1129af85e6b016d249cce03e750add8b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "0f5e2df7_7488dedc",
         "filename": "drivers/android/binder/rust_binder.rs",
         "patchSetId": 1
@@ -60,6 +84,30 @@
       "writtenOn": "2024-09-05T17:42:58Z",
       "side": 1,
       "message": "Getting into the habit of documenting stuff with RustDoc would be nice 😊\n\nAre there presubmit checks from other branches we can turn on to hold ourselves to this?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 31
+      },
+      "revId": "92f87fe1129af85e6b016d249cce03e750add8b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e36359c5_98177551",
+        "filename": "drivers/android/binder/stats.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-09-06T06:36:49Z",
+      "side": 1,
+      "message": "No, the relevant warnings do not apply to items not exported from the crate.",
+      "parentUuid": "ec259e63_8c136834",
       "range": {
         "startLine": 16,
         "startChar": 0,
