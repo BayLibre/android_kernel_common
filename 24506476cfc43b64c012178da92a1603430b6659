@@ -16,6 +16,29 @@
       "message": "Respin Bug: b/364977553",
       "revId": "24506476cfc43b64c012178da92a1603430b6659",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfd73929_7f2a63bc",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-09-06T04:14:41Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by Conflict Markers: Conflict resolution marker found.If this is a false alarm, add IGNORE_MERGE_CONFLICT_CHECK\u003d\u003d\u003creason\u003e to your commit message.\n\nAnalyzer Description: Identifies when changes accidentally have leftover conflict markers.\nOwner: maennich@google.com\n\nConflict resolution marker found.If this is a false alarm, add IGNORE_MERGE_CONFLICT_CHECK\u003d\u003d\u003creason\u003e to your commit message.",
+      "range": {
+        "startLine": 439,
+        "startChar": 1,
+        "endLine": 439,
+        "endChar": 7
+      },
+      "revId": "24506476cfc43b64c012178da92a1603430b6659",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
