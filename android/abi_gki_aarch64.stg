@@ -302718,6 +302718,12 @@ function {
   parameter_id: 0xd0b3a203
 }
 function {
+  id: 0x10e61e10
+  return_type_id: 0x48b5725f
+  parameter_id: 0x0258f96e
+  parameter_id: 0x3a1c763b
+}
+function {
   id: 0x10e93841
   return_type_id: 0x48b5725f
   parameter_id: 0x01c5a749
@@ -333251,6 +333257,13 @@ function {
   parameter_id: 0x13580d6c
 }
 function {
+  id: 0x9b13aa4d
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x2e18f543
+  parameter_id: 0x11cfee5a
+}
+function {
   id: 0x9b144a97
   return_type_id: 0x6720d32f
   parameter_id: 0x1aeeade4
@@ -355056,6 +355069,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_clear_rwsem_writer_owned"
 }
 elf_symbol {
+  id: 0x9cbc7813
+  name: "__traceiter_android_vh_cma_alloc_retry"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1921ac58
+  type_id: 0x9bb963fb
+  full_name: "__traceiter_android_vh_cma_alloc_retry"
+}
+elf_symbol {
   id: 0x478c1248
   name: "__traceiter_android_vh_cma_alloc_set_max_retries"
   is_defined: true
@@ -356188,6 +356210,15 @@ elf_symbol {
   crc: 0xe84e6ab4
   type_id: 0x9bb62df9
   full_name: "__traceiter_android_vh_meminfo_proc_show"
+}
+elf_symbol {
+  id: 0x105350cb
+  name: "__traceiter_android_vh_mglru_should_abort_scan"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x23dfd4d7
+  type_id: 0x9b13aa4d
+  full_name: "__traceiter_android_vh_mglru_should_abort_scan"
 }
 elf_symbol {
   id: 0x9f58159a
@@ -357412,6 +357443,15 @@ elf_symbol {
   crc: 0xb66a31d4
   type_id: 0x9be885da
   full_name: "__traceiter_android_vh_split_large_folio_bypass"
+}
+elf_symbol {
+  id: 0xa61572f8
+  name: "__traceiter_android_vh_suitable_migration_target_bypass"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xdb869c27
+  type_id: 0x9bb1c4e2
+  full_name: "__traceiter_android_vh_suitable_migration_target_bypass"
 }
 elf_symbol {
   id: 0x445e3749
@@ -360816,6 +360856,15 @@ elf_symbol {
   full_name: "__tracepoint_android_vh_clear_rwsem_writer_owned"
 }
 elf_symbol {
+  id: 0xaf598d05
+  name: "__tracepoint_android_vh_cma_alloc_retry"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x1deca267
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_cma_alloc_retry"
+}
+elf_symbol {
   id: 0x0340e826
   name: "__tracepoint_android_vh_cma_alloc_set_max_retries"
   is_defined: true
@@ -361948,6 +361997,15 @@ elf_symbol {
   crc: 0xf7c503be
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_meminfo_proc_show"
+}
+elf_symbol {
+  id: 0xca4f3601
+  name: "__tracepoint_android_vh_mglru_should_abort_scan"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xfc074060
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_mglru_should_abort_scan"
 }
 elf_symbol {
   id: 0xd333a65c
@@ -363172,6 +363230,15 @@ elf_symbol {
   crc: 0x0c4e84a7
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_split_large_folio_bypass"
+}
+elf_symbol {
+  id: 0xdeb3106a
+  name: "__tracepoint_android_vh_suitable_migration_target_bypass"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x5eb049c5
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_suitable_migration_target_bypass"
 }
 elf_symbol {
   id: 0x052557d7
@@ -374840,6 +374907,15 @@ elf_symbol {
   crc: 0x6c5ba0f8
   type_id: 0x9435d177
   full_name: "devm_nvmem_device_get"
+}
+elf_symbol {
+  id: 0xe504a070
+  name: "devm_nvmem_device_put"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x53ca63ed
+  type_id: 0x10e61e10
+  full_name: "devm_nvmem_device_put"
 }
 elf_symbol {
   id: 0x47264dbb
@@ -404123,6 +404199,15 @@ elf_symbol {
   full_name: "regulator_count_voltages"
 }
 elf_symbol {
+  id: 0x1e484088
+  name: "regulator_desc_list_voltage_linear"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x3b1414ec
+  type_id: 0x92f2a156
+  full_name: "regulator_desc_list_voltage_linear"
+}
+elf_symbol {
   id: 0x4cf1070c
   name: "regulator_desc_list_voltage_linear_range"
   is_defined: true
@@ -404258,6 +404343,15 @@ elf_symbol {
   full_name: "regulator_get_voltage_rdev"
 }
 elf_symbol {
+  id: 0x22a5b64b
+  name: "regulator_get_voltage_sel_pickable_regmap"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x087bae09
+  type_id: 0x9e5ef2fc
+  full_name: "regulator_get_voltage_sel_pickable_regmap"
+}
+elf_symbol {
   id: 0x117f1097
   name: "regulator_get_voltage_sel_regmap"
   is_defined: true
@@ -404319,6 +404413,15 @@ elf_symbol {
   crc: 0x219689b5
   type_id: 0x9f48e764
   full_name: "regulator_list_voltage_linear_range"
+}
+elf_symbol {
+  id: 0x6833e084
+  name: "regulator_list_voltage_pickable_linear_range"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x96e3ae41
+  type_id: 0x9f48e764
+  full_name: "regulator_list_voltage_pickable_linear_range"
 }
 elf_symbol {
   id: 0x04d5663a
@@ -404472,6 +404575,15 @@ elf_symbol {
   crc: 0x6854bf5a
   type_id: 0x9c6e2fdb
   full_name: "regulator_set_voltage"
+}
+elf_symbol {
+  id: 0x8af977a8
+  name: "regulator_set_voltage_sel_pickable_regmap"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x9f5e93b0
+  type_id: 0x9f48e764
+  full_name: "regulator_set_voltage_sel_pickable_regmap"
 }
 elf_symbol {
   id: 0x0b03a904
@@ -423943,6 +424055,7 @@ interface {
   symbol_id: 0xef7737f8
   symbol_id: 0xaed0a325
   symbol_id: 0xc308efa9
+  symbol_id: 0x9cbc7813
   symbol_id: 0x478c1248
   symbol_id: 0x9615636c
   symbol_id: 0xf3cb298b
@@ -424069,6 +424182,7 @@ interface {
   symbol_id: 0x3431d426
   symbol_id: 0x8c174a7d
   symbol_id: 0xea8ce2b0
+  symbol_id: 0x105350cb
   symbol_id: 0x9f58159a
   symbol_id: 0x29c67d40
   symbol_id: 0xf182fb15
@@ -424205,6 +424319,7 @@ interface {
   symbol_id: 0xa082ad86
   symbol_id: 0x57cb67b6
   symbol_id: 0x7068c1fb
+  symbol_id: 0xa61572f8
   symbol_id: 0x445e3749
   symbol_id: 0x3f14ea30
   symbol_id: 0x64e397a9
@@ -424583,6 +424698,7 @@ interface {
   symbol_id: 0xca10f06e
   symbol_id: 0xbbfbc9db
   symbol_id: 0x36fc8313
+  symbol_id: 0xaf598d05
   symbol_id: 0x0340e826
   symbol_id: 0x948bb626
   symbol_id: 0xd7bdd001
@@ -424709,6 +424825,7 @@ interface {
   symbol_id: 0xac62c748
   symbol_id: 0xa2bd1edf
   symbol_id: 0xa5b4e5b2
+  symbol_id: 0xca4f3601
   symbol_id: 0xd333a65c
   symbol_id: 0xddcff44a
   symbol_id: 0x47bcd15f
@@ -424845,6 +424962,7 @@ interface {
   symbol_id: 0x227ce62c
   symbol_id: 0xb11763a0
   symbol_id: 0x02bb68bd
+  symbol_id: 0xdeb3106a
   symbol_id: 0x052557d7
   symbol_id: 0x6fb8113a
   symbol_id: 0xab09fdb7
@@ -426141,6 +426259,7 @@ interface {
   symbol_id: 0x91f58d29
   symbol_id: 0x7abe395b
   symbol_id: 0xa8b058e5
+  symbol_id: 0xe504a070
   symbol_id: 0x47264dbb
   symbol_id: 0x35094803
   symbol_id: 0x5bc8c0f2
@@ -429386,6 +429505,7 @@ interface {
   symbol_id: 0xf2357f9f
   symbol_id: 0xc16e78d8
   symbol_id: 0xabbc8603
+  symbol_id: 0x1e484088
   symbol_id: 0x4cf1070c
   symbol_id: 0x9e48588d
   symbol_id: 0x3945d02a
@@ -429401,6 +429521,7 @@ interface {
   symbol_id: 0x0118b55f
   symbol_id: 0x4e97a73b
   symbol_id: 0x62f86638
+  symbol_id: 0x22a5b64b
   symbol_id: 0x117f1097
   symbol_id: 0x8570255f
   symbol_id: 0x438146c4
@@ -429408,6 +429529,7 @@ interface {
   symbol_id: 0xd8377ddc
   symbol_id: 0xfbb2197e
   symbol_id: 0xb4fdfb1e
+  symbol_id: 0x6833e084
   symbol_id: 0x04d5663a
   symbol_id: 0x5cf2f6f8
   symbol_id: 0xa66866da
@@ -429425,6 +429547,7 @@ interface {
   symbol_id: 0x1764380c
   symbol_id: 0xfb766d3e
   symbol_id: 0xc20a2c2c
+  symbol_id: 0x8af977a8
   symbol_id: 0x0b03a904
   symbol_id: 0x2bce772d
   symbol_id: 0x705777ef
