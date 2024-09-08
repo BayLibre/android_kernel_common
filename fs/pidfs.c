@@ -104,14 +104,16 @@ static __poll_t pidfd_poll(struct file *file, struct poll_table_struct *pts)
 	 * Depending on PIDFD_THREAD, inform pollers when the thread
 	 * or the whole thread-group exits.
 	 */
-	guard(rcu)();
-	task = pid_task(pid, PIDTYPE_PID);
-	if (!task)
-		poll_flags = EPOLLIN | EPOLLRDNORM | EPOLLHUP;
-	else if (task->exit_state && (thread || thread_group_empty(task)))
-		poll_flags = EPOLLIN | EPOLLRDNORM;
+        rcu_read_lock();
+        task = pid_task(pid, PIDTYPE_PID);
+        if(!task ||
+           (task->exit_state && 
+           (thread || thread_group_empty(task)))){
+          poll_flags = EPOLLIN | EPOLLRDNORM;
+        }
+        rcu_read_unlock();
 
-	return poll_flags;
+        return poll_flags;
 }
 
 static long pidfd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
