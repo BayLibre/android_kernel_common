@@ -22,6 +22,30 @@
       },
       "revId": "66b300c866e473069a68727ced570ca3dbe60d61",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0b3e6a1_7b9e3a34",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 986,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-09-09T07:11:30Z",
+      "side": 1,
+      "message": "kmemleak checks for null ptr (and even PTR_ERR 😎) in all its functions already! So we\u0027re safe.\n\nFor the builtin module support yeah we have quite a lot to do first :)",
+      "parentUuid": "13ab3e12_3cd8e443",
+      "range": {
+        "startLine": 986,
+        "startChar": 18,
+        "endLine": 986,
+        "endChar": 24
+      },
+      "revId": "66b300c866e473069a68727ced570ca3dbe60d61",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
