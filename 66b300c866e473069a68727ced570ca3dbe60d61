@@ -46,6 +46,30 @@
       },
       "revId": "66b300c866e473069a68727ced570ca3dbe60d61",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "987ee0ce_a155c46f",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 986,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-09-09T07:14:33Z",
+      "side": 1,
+      "message": "Argh, well obviously when I asked to check \u0027module \u003d\u003d NULL\u0027 I meant \u0027this \u003d\u003d NULL\u0027 😊 (sorry)\nIOW, pls don\u0027t dereference \u0027this\u0027 without checking it first",
+      "parentUuid": "b0b3e6a1_7b9e3a34",
+      "range": {
+        "startLine": 986,
+        "startChar": 18,
+        "endLine": 986,
+        "endChar": 24
+      },
+      "revId": "66b300c866e473069a68727ced570ca3dbe60d61",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
