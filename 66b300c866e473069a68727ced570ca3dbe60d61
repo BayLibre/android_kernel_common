@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13ab3e12_3cd8e443",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 986,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-09-09T06:38:34Z",
+      "side": 1,
+      "message": "Can you guard against module \u003d\u003d NULL? That would happen if the module was built into the kernel -- try_module_get() and consort deal with that already. We probably have other things to fix to support builtin module (?), but that sounds simple enough that we can do it from the start :)",
+      "range": {
+        "startLine": 986,
+        "startChar": 18,
+        "endLine": 986,
+        "endChar": 24
+      },
+      "revId": "66b300c866e473069a68727ced570ca3dbe60d61",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
