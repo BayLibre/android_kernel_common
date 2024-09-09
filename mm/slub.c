@@ -48,6 +48,10 @@
 
 #include "internal.h"
 
+
+EXPORT_TRACEPOINT_SYMBOL_GPL(kmalloc);
+EXPORT_TRACEPOINT_SYMBOL_GPL(kfree);
+
 /*
  * Lock order:
  *   1. slab_mutex (Global Mutex)
