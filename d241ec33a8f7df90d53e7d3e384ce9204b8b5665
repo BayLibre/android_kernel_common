@@ -106,6 +106,24 @@
       "parentUuid": "3b9ff6e7_d3b2a25f",
       "revId": "d241ec33a8f7df90d53e7d3e384ce9204b8b5665",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56971d61_f99cb606",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1041813
+      },
+      "writtenOn": "2024-09-10T08:55:04Z",
+      "side": 1,
+      "message": "Maybe I found the issue, before I only set the topic of the first two changes in the series, and that may cause the Treehugger Robot only merge them without the other changes when did the presubmit test. On my local side I kinds reproduced it with only the first two changes applied. I have set the topic for all the changes of this series to hikey-gki-android12-5.4 now, let\u0027s see if that helps.",
+      "parentUuid": "06b1dbca_04905168",
+      "revId": "d241ec33a8f7df90d53e7d3e384ce9204b8b5665",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
