@@ -16,6 +16,24 @@
       "message": "This seems to be an incomplete cherry pick, as its missing the android_vh_record_rwsem_writer_owned hooks.\n\nThere\u0027s no annotation of why that was dropped in the commit message, so this needs to be respun to match the cherry-picked commit or more explanation of why a portion was dropped.",
       "revId": "71920a0908fc853943de8fdafb425ec8a8dbacb8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "457c383e_69c94f9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3388319
+      },
+      "writtenOn": "2024-09-10T04:08:04Z",
+      "side": 1,
+      "message": "Hi John\nIn this mainline of kernel-5.10, there is already a hook android_vh_rwsem_set_owner in the rwsem_set_owner() to record writer owned, so I deleted the hook android_vh_record_rwsem_writer_owned in cherry pick.",
+      "parentUuid": "3407456e_bf8b4fb4",
+      "revId": "71920a0908fc853943de8fdafb425ec8a8dbacb8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
