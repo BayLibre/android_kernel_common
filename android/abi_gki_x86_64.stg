@@ -26722,9 +26722,9 @@ member {
   offset: 256
 }
 member {
-  id: 0x3e9c67d2
+  id: 0x3e9c6d95
   type_id: 0x755ff98b
-  offset: 26304
+  offset: 26368
 }
 member {
   id: 0x3ea9d836
@@ -29175,10 +29175,10 @@ member {
   offset: 10944
 }
 member {
-  id: 0x4120e5e6
+  id: 0x4120e421
   name: "acs_cap"
   type_id: 0x914dbfdc
-  offset: 26400
+  offset: 26464
 }
 member {
   id: 0x4835d8e6
@@ -31377,16 +31377,16 @@ member {
   offset: 6272
 }
 member {
+  id: 0x2d0813cc
+  name: "android_kabi_reserved1"
+  type_id: 0x92233392
+  offset: 26816
+}
+member {
   id: 0x2d0813e8
   name: "android_kabi_reserved1"
   type_id: 0x92233392
   offset: 5760
-}
-member {
-  id: 0x2d081461
-  name: "android_kabi_reserved1"
-  type_id: 0x92233392
-  offset: 26752
 }
 member {
   id: 0x2d081490
@@ -32101,6 +32101,12 @@ member {
   offset: 2496
 }
 member {
+  id: 0x63760da7
+  name: "android_kabi_reserved2"
+  type_id: 0x92233392
+  offset: 26880
+}
+member {
   id: 0x63760dcc
   name: "android_kabi_reserved2"
   type_id: 0x92233392
@@ -32171,12 +32177,6 @@ member {
   name: "android_kabi_reserved2"
   type_id: 0x92233392
   offset: 7040
-}
-member {
-  id: 0x63760f5c
-  name: "android_kabi_reserved2"
-  type_id: 0x92233392
-  offset: 26816
 }
 member {
   id: 0x63760f99
@@ -32377,6 +32377,12 @@ member {
   offset: 2688
 }
 member {
+  id: 0xac894c7c
+  name: "android_kabi_reserved3"
+  type_id: 0x92233392
+  offset: 26944
+}
+member {
   id: 0xac894c9c
   name: "android_kabi_reserved3"
   type_id: 0x92233392
@@ -32405,12 +32411,6 @@ member {
   name: "android_kabi_reserved3"
   type_id: 0x92233392
   offset: 32128
-}
-member {
-  id: 0xac894d53
-  name: "android_kabi_reserved3"
-  type_id: 0x92233392
-  offset: 26880
 }
 member {
   id: 0xac894d81
@@ -32477,12 +32477,6 @@ member {
   name: "android_kabi_reserved3"
   type_id: 0x92233392
   offset: 56320
-}
-member {
-  id: 0xe0f63161
-  name: "android_kabi_reserved4"
-  type_id: 0x92233392
-  offset: 26944
 }
 member {
   id: 0xe0f63236
@@ -32753,6 +32747,12 @@ member {
   name: "android_kabi_reserved4"
   type_id: 0x92233392
   offset: 512
+}
+member {
+  id: 0xe0f63f69
+  name: "android_kabi_reserved4"
+  type_id: 0x92233392
+  offset: 27008
 }
 member {
   id: 0x2236902c
@@ -34142,10 +34142,10 @@ member {
   offset: 768
 }
 member {
-  id: 0xd1959134
+  id: 0xd195952f
   name: "ats_cap"
   type_id: 0x914dbfdc
-  offset: 26368
+  offset: 26432
 }
 member {
   id: 0xf07c1dcf
@@ -34155,10 +34155,10 @@ member {
   bitsize: 1
 }
 member {
-  id: 0x1f35f605
+  id: 0x1f35f0d4
   name: "ats_stu"
   type_id: 0x295c7202
-  offset: 26384
+  offset: 26448
 }
 member {
   id: 0x96184eda
@@ -37614,6 +37614,13 @@ member {
   name: "broadcast"
   type_id: 0x43acdd98
   offset: 6976
+}
+member {
+  id: 0xdd92cd82
+  name: "broken_cmd_compl"
+  type_id: 0x4585663f
+  offset: 25728
+  bitsize: 1
 }
 member {
   id: 0x20d3e746
@@ -53128,16 +53135,16 @@ member {
   offset: 384
 }
 member {
+  id: 0x09f1f929
+  name: "driver_override"
+  type_id: 0x3e10b518
+  offset: 26624
+}
+member {
   id: 0x09f1fc6e
   name: "driver_override"
   type_id: 0x3e10b518
   offset: 7872
-}
-member {
-  id: 0x09f1fda7
-  name: "driver_override"
-  type_id: 0x3e10b518
-  offset: 26560
 }
 member {
   id: 0xe49f62ad
@@ -88068,10 +88075,10 @@ member {
   offset: 64
 }
 member {
-  id: 0xa218427d
+  id: 0xa218417a
   name: "msi_lock"
   type_id: 0xc8b17aa7
-  offset: 25792
+  offset: 25856
 }
 member {
   id: 0x583578ea
@@ -88102,10 +88109,10 @@ member {
   type_id: 0xa5e1bddf
 }
 member {
-  id: 0x8e239698
+  id: 0x8e2392a1
   name: "msix_base"
   type_id: 0x18bd6530
-  offset: 25728
+  offset: 25792
 }
 member {
   id: 0x3636dc69
@@ -103616,10 +103623,10 @@ member {
   offset: 1600
 }
 member {
-  id: 0x278ca072
+  id: 0x278ca7f0
   name: "priv_flags"
   type_id: 0x33756485
-  offset: 26624
+  offset: 26688
 }
 member {
   id: 0x982aca23
@@ -111613,10 +111620,10 @@ member {
   bitsize: 1
 }
 member {
-  id: 0xb1b2f61c
+  id: 0xb1b2f344
   name: "reset_methods"
   type_id: 0x629984b1
-  offset: 26688
+  offset: 26752
 }
 member {
   id: 0x7df2f62d
@@ -112567,10 +112574,10 @@ member {
   type_id: 0x6e06e717
 }
 member {
-  id: 0x9d7c2330
+  id: 0x9d7c2fbf
   name: "rom"
   type_id: 0xbdd18903
-  offset: 26432
+  offset: 26496
 }
 member {
   id: 0x243ef86c
@@ -112593,10 +112600,10 @@ member {
   offset: 896
 }
 member {
-  id: 0x2979548a
+  id: 0x297954ea
   name: "romlen"
   type_id: 0xf435685e
-  offset: 26496
+  offset: 26560
 }
 member {
   id: 0x930fdb11
@@ -137959,10 +137966,10 @@ member {
   offset: 96
 }
 member {
-  id: 0xcfce97c1
+  id: 0xcfce9ba7
   name: "vpd"
   type_id: 0x96fcb104
-  offset: 25856
+  offset: 25920
 }
 member {
   id: 0x9a256e87
@@ -169526,7 +169533,7 @@ struct_union {
   kind: STRUCT
   name: "pci_dev"
   definition {
-    bytesize: 3376
+    bytesize: 3384
     member_id: 0x1c1fa3ce
     member_id: 0xdaf321d6
     member_id: 0xe08009d2
@@ -169633,22 +169640,23 @@ struct_union {
     member_id: 0x591a8f67
     member_id: 0x1e620968
     member_id: 0x5c2e595e
-    member_id: 0x8e239698
-    member_id: 0xa218427d
-    member_id: 0xcfce97c1
-    member_id: 0x3e9c67d2
-    member_id: 0xd1959134
-    member_id: 0x1f35f605
-    member_id: 0x4120e5e6
-    member_id: 0x9d7c2330
-    member_id: 0x2979548a
-    member_id: 0x09f1fda7
-    member_id: 0x278ca072
-    member_id: 0xb1b2f61c
-    member_id: 0x2d081461
-    member_id: 0x63760f5c
-    member_id: 0xac894d53
-    member_id: 0xe0f63161
+    member_id: 0xdd92cd82
+    member_id: 0x8e2392a1
+    member_id: 0xa218417a
+    member_id: 0xcfce9ba7
+    member_id: 0x3e9c6d95
+    member_id: 0xd195952f
+    member_id: 0x1f35f0d4
+    member_id: 0x4120e421
+    member_id: 0x9d7c2fbf
+    member_id: 0x297954ea
+    member_id: 0x09f1f929
+    member_id: 0x278ca7f0
+    member_id: 0xb1b2f344
+    member_id: 0x2d0813cc
+    member_id: 0x63760da7
+    member_id: 0xac894c7c
+    member_id: 0xe0f63f69
   }
 }
 struct_union {
@@ -213287,7 +213295,7 @@ elf_symbol {
   name: "__pci_register_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xea942b50
+  crc: 0x2252a936
   type_id: 0x97374fe9
   full_name: "__pci_register_driver"
 }
@@ -219931,7 +219939,7 @@ elf_symbol {
   name: "pci_alloc_irq_vectors_affinity"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x98a64726
+  crc: 0xd61ee291
   type_id: 0x98ff2dd7
   full_name: "pci_alloc_irq_vectors_affinity"
 }
@@ -219949,7 +219957,7 @@ elf_symbol {
   name: "pci_device_is_present"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x46714330
+  crc: 0x89425ff7
   type_id: 0xfaddfa97
   full_name: "pci_device_is_present"
 }
@@ -219958,7 +219966,7 @@ elf_symbol {
   name: "pci_disable_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x05bbecd7
+  crc: 0x80376fd5
   type_id: 0x14e1f000
   full_name: "pci_disable_device"
 }
@@ -219967,7 +219975,7 @@ elf_symbol {
   name: "pci_disable_link_state"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0d188b31
+  crc: 0x224e6f6e
   type_id: 0x9865c1f0
   full_name: "pci_disable_link_state"
 }
@@ -219976,7 +219984,7 @@ elf_symbol {
   name: "pci_disable_sriov"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x60be7a85
+  crc: 0xd0f7f40d
   type_id: 0x14e1f000
   full_name: "pci_disable_sriov"
 }
@@ -219985,7 +219993,7 @@ elf_symbol {
   name: "pci_enable_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x190a07db
+  crc: 0x3201df3d
   type_id: 0x99f942bc
   full_name: "pci_enable_device"
 }
@@ -219994,7 +220002,7 @@ elf_symbol {
   name: "pci_enable_sriov"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xed4c99cd
+  crc: 0x2d30ffb3
   type_id: 0x9865c1f0
   full_name: "pci_enable_sriov"
 }
@@ -220003,7 +220011,7 @@ elf_symbol {
   name: "pci_find_capability"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x54c5a29a
+  crc: 0x8c486c43
   type_id: 0x56af9ca8
   full_name: "pci_find_capability"
 }
@@ -220012,7 +220020,7 @@ elf_symbol {
   name: "pci_find_ext_capability"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xbc72bfbf
+  crc: 0x309555c1
   type_id: 0x04ce0b6f
   full_name: "pci_find_ext_capability"
 }
@@ -220021,7 +220029,7 @@ elf_symbol {
   name: "pci_find_next_capability"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x404d7ddf
+  crc: 0xb41c9c4b
   type_id: 0x578fa618
   full_name: "pci_find_next_capability"
 }
@@ -220030,7 +220038,7 @@ elf_symbol {
   name: "pci_free_irq_vectors"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb90b2a87
+  crc: 0x3db1ebc6
   type_id: 0x14e1f000
   full_name: "pci_free_irq_vectors"
 }
@@ -220039,7 +220047,7 @@ elf_symbol {
   name: "pci_iomap"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4e112e83
+  crc: 0xdc1654f4
   type_id: 0x537f4e77
   full_name: "pci_iomap"
 }
@@ -220048,7 +220056,7 @@ elf_symbol {
   name: "pci_iomap_range"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb1b87b24
+  crc: 0xfe1041d2
   type_id: 0x537f83a2
   full_name: "pci_iomap_range"
 }
@@ -220057,7 +220065,7 @@ elf_symbol {
   name: "pci_iounmap"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe687503c
+  crc: 0x2d78c552
   type_id: 0x14830594
   full_name: "pci_iounmap"
 }
@@ -220066,7 +220074,7 @@ elf_symbol {
   name: "pci_irq_get_affinity"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x46e7f7c1
+  crc: 0x7a897a2f
   type_id: 0x5c7d047e
   full_name: "pci_irq_get_affinity"
 }
@@ -220075,7 +220083,7 @@ elf_symbol {
   name: "pci_irq_vector"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb496cf83
+  crc: 0xc6090d43
   type_id: 0x98ef5724
   full_name: "pci_irq_vector"
 }
@@ -220084,7 +220092,7 @@ elf_symbol {
   name: "pci_read_config_byte"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3ea160db
+  crc: 0x488f7b4d
   type_id: 0x92ce2ae7
   full_name: "pci_read_config_byte"
 }
@@ -220093,7 +220101,7 @@ elf_symbol {
   name: "pci_read_config_dword"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x063cabf2
+  crc: 0x680dd800
   type_id: 0x92c02fa2
   full_name: "pci_read_config_dword"
 }
@@ -220102,7 +220110,7 @@ elf_symbol {
   name: "pci_read_config_word"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xaf26c4da
+  crc: 0x01ae79c4
   type_id: 0x92c5abfb
   full_name: "pci_read_config_word"
 }
@@ -220111,7 +220119,7 @@ elf_symbol {
   name: "pci_release_region"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9e542349
+  crc: 0xdfc8e7c8
   type_id: 0x157d734c
   full_name: "pci_release_region"
 }
@@ -220120,7 +220128,7 @@ elf_symbol {
   name: "pci_release_selected_regions"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe047609d
+  crc: 0xcfa273b6
   type_id: 0x157d734c
   full_name: "pci_release_selected_regions"
 }
@@ -220129,7 +220137,7 @@ elf_symbol {
   name: "pci_request_region"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc7eee20c
+  crc: 0x54233d2d
   type_id: 0x986a45dd
   full_name: "pci_request_region"
 }
@@ -220138,7 +220146,7 @@ elf_symbol {
   name: "pci_request_selected_regions"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xfd7a0871
+  crc: 0x54812e68
   type_id: 0x986a45dd
   full_name: "pci_request_selected_regions"
 }
@@ -220147,7 +220155,7 @@ elf_symbol {
   name: "pci_set_master"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xedb93ba8
+  crc: 0x393deccc
   type_id: 0x14e1f000
   full_name: "pci_set_master"
 }
@@ -220156,7 +220164,7 @@ elf_symbol {
   name: "pci_unregister_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xeeb7e46b
+  crc: 0xd87ffbed
   type_id: 0x1a0ce609
   full_name: "pci_unregister_driver"
 }
@@ -220165,7 +220173,7 @@ elf_symbol {
   name: "pci_vfs_assigned"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb2a08d1b
+  crc: 0xd65217da
   type_id: 0x99f942bc
   full_name: "pci_vfs_assigned"
 }
@@ -220174,7 +220182,7 @@ elf_symbol {
   name: "pcie_capability_clear_and_set_word_locked"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x980d2916
+  crc: 0x25c2cb37
   type_id: 0x9843d7a9
   full_name: "pcie_capability_clear_and_set_word_locked"
 }
@@ -220183,7 +220191,7 @@ elf_symbol {
   name: "pcie_capability_read_word"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb04522b6
+  crc: 0x4371cc47
   type_id: 0x986e7125
   full_name: "pcie_capability_read_word"
 }
