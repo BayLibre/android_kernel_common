@@ -33,6 +33,29 @@
       "message": "Could you please review it as soon as possible?",
       "revId": "4bc2cf32758420d4845e317c4b7c7cd458f6b8d2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80e34dfa_32df3735",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7205,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-09-10T18:12:10Z",
+      "side": 1,
+      "message": "You should move this code before `count_vm_event(PGSCAN_DIRECT_THROTTLE);` line otherwise your stats will be incorrect (you skip throttling but it\u0027s still counted).",
+      "range": {
+        "startLine": 7203,
+        "startChar": 0,
+        "endLine": 7205,
+        "endChar": 11
+      },
+      "revId": "4bc2cf32758420d4845e317c4b7c7cd458f6b8d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
