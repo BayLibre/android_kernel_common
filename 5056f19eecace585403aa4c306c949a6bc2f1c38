@@ -16,6 +16,23 @@
       "message": "Respin bug:b/365931030",
       "revId": "5056f19eecace585403aa4c306c949a6bc2f1c38",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c62b684_ace1ab31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-09-11T14:58:08Z",
+      "side": 1,
+      "message": "Cherry pick does not have same author date as original commit.\n\nOriginal author date: Thu May 23 21:29:48 2024 +0800\nCherry pick author date: Fri Jul 5 19:30:21 2024 +0800\n\nPlease cherry-pick using: git cherry-pick -x 5c8764f8679e659c5cb295af7d32279002d13735.",
+      "revId": "5056f19eecace585403aa4c306c949a6bc2f1c38",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
