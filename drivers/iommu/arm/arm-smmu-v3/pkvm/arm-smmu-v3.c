@@ -103,7 +103,7 @@ struct kvm_iommu_walk_data {
 })
 
 /* Request non-device memory */
-static void *smmu_alloc(size_t size)
+void *smmu_alloc(size_t size)
 {
 	void *p;
 	struct kvm_hyp_req req;

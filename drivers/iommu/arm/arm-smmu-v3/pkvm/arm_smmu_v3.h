@@ -51,6 +51,8 @@ enum kvm_arm_smmu_domain_stage {
 	KVM_ARM_SMMU_DOMAIN_S2,
 	KVM_ARM_SMMU_DOMAIN_BLOCKED,
 };
+
+void *smmu_alloc(size_t size);
 #endif /* CONFIG_ARM_SMMU_V3_PKVM */
 
 #endif /* __KVM_ARM_SMMU_V3_H */
