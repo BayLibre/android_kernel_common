@@ -70,6 +70,24 @@
       "parentUuid": "86e55039_663469f3",
       "revId": "33c9ae1069002626a1aaef514a780d62fba3eb08",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04e6fe4d_c517ca34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2031040
+      },
+      "writtenOn": "2024-09-11T08:33:54Z",
+      "side": 1,
+      "message": "Thank you for testing!\n\n\u003e Just to check my understanding, last time I checked the prebuilt kernel for brya does not have this kernel config, is it because the prebuilt one is not built from this source, or there are some changes recently?\n\nWhen you\u0027re adding change to the kernel source, you\u0027d need to bump the kernel prebuilts with separate CL too (since OS uses prebuilt kernel, not building the kernel from source on each build).",
+      "parentUuid": "a5ac29c4_dc1a841e",
+      "revId": "33c9ae1069002626a1aaef514a780d62fba3eb08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
