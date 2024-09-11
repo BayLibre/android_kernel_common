@@ -16,6 +16,24 @@
       "message": "jiejiang@google.com, could you verify that this change works fine with:\n```\nTest: Verified that `ip netns add testns` works on brya\n```\nIn future, if possible please follow the path to change kernel config from go/al-kernel-care:\n```\n## If one needs to make a changes around kernel kconfig e.g. for Brya\nmake android-x86_64_defconfig \u0026\u0026 make menuconfig\n## Kernel configs modification....\nmake savedefconfig \u0026\u0026 cp defconfig arch/x86/configs/android-x86_64_defconfig \u0026\u0026 make distclean\n./build-kernel.sh\n```",
       "revId": "33c9ae1069002626a1aaef514a780d62fba3eb08",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b2dbe11_3c02792d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1550296
+      },
+      "writtenOn": "2024-09-11T06:41:54Z",
+      "side": 1,
+      "message": "Acked, let me try to verify this again. Thanks for adding me here!",
+      "parentUuid": "cb272832_45910cbe",
+      "revId": "33c9ae1069002626a1aaef514a780d62fba3eb08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
