@@ -90,7 +90,7 @@ struct io_pgtable *kvm_arm_io_pgtable_alloc(struct io_pgtable_cfg *cfg,
 	struct arm_lpae_io_pgtable *data;
 	int ret;
 
-	data = hyp_alloc(sizeof(*data));
+	data = smmu_alloc(sizeof(*data));
 	if (!data) {
 		*out_ret = hyp_alloc_errno();
 		return NULL;
@@ -136,6 +136,7 @@ int kvm_arm_io_pgtable_free(struct io_pgtable *iopt)
 		kvm_flush_dcache_to_poc(data->pgd, pgd_size);
 
 	__arm_lpae_free_pgtable(data, data->start_level, data->pgd);
+	hyp_free(data);
 	return 0;
 }
 
