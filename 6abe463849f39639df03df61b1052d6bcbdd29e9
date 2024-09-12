@@ -88,6 +88,24 @@
       "parentUuid": "4950b2e2_a5e51035",
       "revId": "6abe463849f39639df03df61b1052d6bcbdd29e9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "753d88d6_236f8799",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2024-09-12T16:36:24Z",
+      "side": 1,
+      "message": "Based on that, since `CONFIG_GOOGLE_VPD` is not enabled with `\u003dy` in the `gki_defconfig` files, we want `\u003dm` for Desktop builds.\n\n```\ndesktop-kernel-source$ ag CONFIG_GOOGLE_VPD arch/x86/configs/gki_defconfig\ndesktop-kernel-source$ ag CONFIG_GOOGLE_VPD arch/arm64/configs/gki_defconfig\ndesktop-kernel-source$ \n```",
+      "parentUuid": "ae5290fd_a63df5a7",
+      "revId": "6abe463849f39639df03df61b1052d6bcbdd29e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
