@@ -50,6 +50,7 @@ pub mod print;
 pub mod rbtree;
 pub mod security;
 pub mod seq_file;
+pub mod shrinker;
 pub mod sizes;
 mod static_assert;
 #[doc(hidden)]
