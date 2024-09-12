@@ -70,6 +70,24 @@
       "parentUuid": "e1d60378_3e2b7cf4",
       "revId": "6abe463849f39639df03df61b1052d6bcbdd29e9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae5290fd_a63df5a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2018217
+      },
+      "writtenOn": "2024-09-12T13:09:31Z",
+      "side": 1,
+      "message": "Allen is right.\n\nIf `\u003dy` is already `\u003dy` in `gki_defconfig` that is the best case as we do not have divergence when moving to `gki_defconfig` + `vendor_fragment` policy.\n\nBut it is also okay if we add new vendor modules, say `FOO\u003dm` and `BAR\u003dy` and `BAR` just enable functionality within `FOO`. Then we can easily move it to `vendor_fragment` and leave `gki_defconfig`.\n\nWorst case if we need to add `y` to `gki_defconfig` because that increases our technical debt.",
+      "parentUuid": "4950b2e2_a5e51035",
+      "revId": "6abe463849f39639df03df61b1052d6bcbdd29e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
