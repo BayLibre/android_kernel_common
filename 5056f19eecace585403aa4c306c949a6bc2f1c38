@@ -87,6 +87,24 @@
       "parentUuid": "86dd42d8_bfb5f25e",
       "revId": "5056f19eecace585403aa4c306c949a6bc2f1c38",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e64231fe_3d5b8220",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-09-12T09:01:15Z",
+      "side": 1,
+      "message": "The issue is that the cherry-pick to android15-6.6 has the wrong author and our new check catches this now when picking to android15-6.6-2024-07.\n\nI will bypass this check in this instance.",
+      "parentUuid": "e8ba4760_de9fd273",
+      "revId": "5056f19eecace585403aa4c306c949a6bc2f1c38",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
