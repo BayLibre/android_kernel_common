@@ -2160,10 +2160,14 @@ nfsd4_proc_null(struct svc_rqst *rqstp)
 	return rpc_success;
 }
 
-static inline void nfsd4_increment_op_stats(u32 opnum)
+static inline void nfsd4_increment_op_stats(struct nfsd_net *nn, u32 opnum)
 {
 	if (opnum >= FIRST_NFS4_OP && opnum <= LAST_NFS4_OP)
+<<<<<<< HEAD   (b22678 Merge ddee5b4b6a1c ("mptcp: pm: avoid possible UaF when sele)
 		nfsdstats.nfs4_opcount[opnum]++;
+=======
+		percpu_counter_inc(&nn->counter[NFSD_STATS_NFS4_OP(opnum)]);
+>>>>>>> BRANCH (751777 nfsd: make svc_stat per-network namespace instead of global)
 }
 
 static const struct nfsd4_operation nfsd4_ops[];
@@ -2446,7 +2450,7 @@ encode_op:
 					   nfsd4_op_name(op->opnum));
 
 		nfsd4_cstate_clear_replay(cstate);
-		nfsd4_increment_op_stats(op->opnum);
+		nfsd4_increment_op_stats(nn, op->opnum);
 	}
 
 	fh_put(current_fh);

@@ -31,12 +31,16 @@
 
 #define NFSDDBG_FACILITY	NFSDDBG_SVC
 
+<<<<<<< HEAD   (b22678 Merge ddee5b4b6a1c ("mptcp: pm: avoid possible UaF when sele)
 bool inter_copy_offload_enable;
 EXPORT_SYMBOL_GPL(inter_copy_offload_enable);
 module_param(inter_copy_offload_enable, bool, 0644);
 MODULE_PARM_DESC(inter_copy_offload_enable,
 		 "Enable inter server to server copy offload. Default: false");
 
+=======
+atomic_t			nfsd_th_cnt = ATOMIC_INIT(0);
+>>>>>>> BRANCH (751777 nfsd: make svc_stat per-network namespace instead of global)
 extern struct svc_program	nfsd_program;
 static int			nfsd(void *vrqstp);
 #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
@@ -93,7 +97,6 @@ unsigned long	nfsd_drc_max_mem;
 unsigned long	nfsd_drc_mem_used;
 
 #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
-static struct svc_stat	nfsd_acl_svcstats;
 static const struct svc_version *nfsd_acl_version[] = {
 	[2] = &nfsd_acl_version2,
 	[3] = &nfsd_acl_version3,
@@ -108,15 +111,11 @@ static struct svc_program	nfsd_acl_program = {
 	.pg_vers		= nfsd_acl_version,
 	.pg_name		= "nfsacl",
 	.pg_class		= "nfsd",
-	.pg_stats		= &nfsd_acl_svcstats,
 	.pg_authenticate	= &svc_set_client,
 	.pg_init_request	= nfsd_acl_init_request,
 	.pg_rpcbind_set		= nfsd_acl_rpcbind_set,
 };
 
-static struct svc_stat	nfsd_acl_svcstats = {
-	.program	= &nfsd_acl_program,
-};
 #endif /* defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL) */
 
 static const struct svc_version *nfsd_version[] = {
@@ -141,7 +140,6 @@ struct svc_program		nfsd_program = {
 	.pg_vers		= nfsd_version,		/* version table */
 	.pg_name		= "nfsd",		/* program name */
 	.pg_class		= "nfsd",		/* authentication class */
-	.pg_stats		= &nfsd_svcstats,	/* version table */
 	.pg_authenticate	= &svc_set_client,	/* export authentication */
 	.pg_init_request	= nfsd_init_request,
 	.pg_rpcbind_set		= nfsd_rpcbind_set,
@@ -403,13 +401,26 @@ static int nfsd_startup_net(int nrservs, struct net *net, const struct cred *cre
 	ret = nfsd_file_cache_start_net(net);
 	if (ret)
 		goto out_lockd;
-	ret = nfs4_state_start_net(net);
+
+	ret = nfsd_reply_cache_init(nn);
 	if (ret)
 		goto out_filecache;
 
+<<<<<<< HEAD   (b22678 Merge ddee5b4b6a1c ("mptcp: pm: avoid possible UaF when sele)
+=======
+	ret = nfs4_state_start_net(net);
+	if (ret)
+		goto out_reply_cache;
+
+#ifdef CONFIG_NFSD_V4_2_INTER_SSC
+	nfsd4_ssc_init_umount_work(nn);
+#endif
+>>>>>>> BRANCH (751777 nfsd: make svc_stat per-network namespace instead of global)
 	nn->nfsd_net_up = true;
 	return 0;
 
+out_reply_cache:
+	nfsd_reply_cache_shutdown(nn);
 out_filecache:
 	nfsd_file_cache_shutdown_net(net);
 out_lockd:
@@ -427,6 +438,7 @@ static void nfsd_shutdown_net(struct net *net)
 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
 
 	nfs4_state_shutdown_net(net);
+	nfsd_reply_cache_shutdown(nn);
 	nfsd_file_cache_shutdown_net(net);
 	if (nn->lockd_up) {
 		lockd_down(net);
@@ -527,7 +539,6 @@ static void nfsd_last_thread(struct svc_serv *serv, struct net *net)
 		return;
 
 	nfsd_shutdown_net(net);
-	pr_info("nfsd: last server has exited, flushing export cache\n");
 	nfsd_export_flush(net);
 }
 
@@ -649,9 +660,15 @@ int nfsd_create_serv(struct net *net)
 	if (nfsd_max_blksize == 0)
 		nfsd_max_blksize = nfsd_get_default_max_blksize();
 	nfsd_reset_versions(nn);
+<<<<<<< HEAD   (b22678 Merge ddee5b4b6a1c ("mptcp: pm: avoid possible UaF when sele)
 	nn->nfsd_serv = svc_create_pooled(&nfsd_program, nfsd_max_blksize,
 						&nfsd_thread_sv_ops);
 	if (nn->nfsd_serv == NULL)
+=======
+	serv = svc_create_pooled(&nfsd_program, &nn->nfsd_svcstats,
+				 nfsd_max_blksize, nfsd);
+	if (serv == NULL)
+>>>>>>> BRANCH (751777 nfsd: make svc_stat per-network namespace instead of global)
 		return -ENOMEM;
 	init_completion(&nn->nfsd_shutdown_complete);
 
@@ -773,7 +790,6 @@ int
 nfsd_svc(int nrservs, struct net *net, const struct cred *cred)
 {
 	int	error;
-	bool	nfsd_up_before;
 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
 
 	mutex_lock(&nfsd_mutex);
@@ -792,8 +808,12 @@ nfsd_svc(int nrservs, struct net *net, const struct cred *cred)
 	error = nfsd_create_serv(net);
 	if (error)
 		goto out;
+<<<<<<< HEAD   (b22678 Merge ddee5b4b6a1c ("mptcp: pm: avoid possible UaF when sele)
 
 	nfsd_up_before = nn->nfsd_net_up;
+=======
+	serv = nn->nfsd_serv;
+>>>>>>> BRANCH (751777 nfsd: make svc_stat per-network namespace instead of global)
 
 	error = nfsd_startup_net(nrservs, net, cred);
 	if (error)
@@ -801,6 +821,7 @@ nfsd_svc(int nrservs, struct net *net, const struct cred *cred)
 	error = nn->nfsd_serv->sv_ops->svo_setup(nn->nfsd_serv,
 			NULL, nrservs);
 	if (error)
+<<<<<<< HEAD   (b22678 Merge ddee5b4b6a1c ("mptcp: pm: avoid possible UaF when sele)
 		goto out_shutdown;
 	/* We are holding a reference to nn->nfsd_serv which
 	 * we don't want to count in the return value,
@@ -812,6 +833,18 @@ out_shutdown:
 		nfsd_shutdown_net(net);
 out_destroy:
 	nfsd_destroy(net);		/* Release server */
+=======
+		goto out_put;
+	error = serv->sv_nrthreads;
+out_put:
+	/* Threads now hold service active */
+	if (xchg(&nn->keep_active, 0))
+		svc_put(serv);
+
+	if (serv->sv_nrthreads == 0)
+		nfsd_last_thread(net);
+	svc_put(serv);
+>>>>>>> BRANCH (751777 nfsd: make svc_stat per-network namespace instead of global)
 out:
 	mutex_unlock(&nfsd_mutex);
 	return error;
@@ -938,6 +971,7 @@ nfsd(void *vrqstp)
 
 	current->fs->umask = 0;
 
+<<<<<<< HEAD   (b22678 Merge ddee5b4b6a1c ("mptcp: pm: avoid possible UaF when sele)
 	/*
 	 * thread is spawned with all signals set to SIG_IGN, re-enable
 	 * the ones that will bring down the thread
@@ -949,6 +983,9 @@ nfsd(void *vrqstp)
 
 	nfsdstats.th_cnt++;
 	mutex_unlock(&nfsd_mutex);
+=======
+	atomic_inc(&nfsd_th_cnt);
+>>>>>>> BRANCH (751777 nfsd: make svc_stat per-network namespace instead of global)
 
 	set_freezable();
 
@@ -972,11 +1009,15 @@ nfsd(void *vrqstp)
 		validate_process_creds();
 	}
 
+<<<<<<< HEAD   (b22678 Merge ddee5b4b6a1c ("mptcp: pm: avoid possible UaF when sele)
 	/* Clear signals before calling svc_exit_thread() */
 	flush_signals(current);
 
 	mutex_lock(&nfsd_mutex);
 	nfsdstats.th_cnt --;
+=======
+	atomic_dec(&nfsd_th_cnt);
+>>>>>>> BRANCH (751777 nfsd: make svc_stat per-network namespace instead of global)
 
 out:
 	rqstp->rq_server = NULL;

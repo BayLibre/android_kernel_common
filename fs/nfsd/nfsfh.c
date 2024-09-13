@@ -327,7 +327,12 @@ out:
 __be32
 fh_verify(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type, int access)
 {
+<<<<<<< HEAD   (b22678 Merge ddee5b4b6a1c ("mptcp: pm: avoid possible UaF when sele)
 	struct svc_export *exp;
+=======
+	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+	struct svc_export *exp = NULL;
+>>>>>>> BRANCH (751777 nfsd: make svc_stat per-network namespace instead of global)
 	struct dentry	*dentry;
 	__be32		error;
 
@@ -400,7 +405,11 @@ skip_pseudoflavor_check:
 	}
 out:
 	if (error == nfserr_stale)
+<<<<<<< HEAD   (b22678 Merge ddee5b4b6a1c ("mptcp: pm: avoid possible UaF when sele)
 		nfsdstats.fh_stale++;
+=======
+		nfsd_stats_fh_stale_inc(nn, exp);
+>>>>>>> BRANCH (751777 nfsd: make svc_stat per-network namespace instead of global)
 	return error;
 }
 
