@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4516d517_f8f2896d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2024-09-13T02:44:31Z",
+      "side": 1,
+      "message": "No, the build bots have been fixed already. This only affects local developers.\n\nAlso, if the local developer does NOT specify any flag, it will use the default destdir just as it used to be. It is just that the path won\u0027t be printed to stdout ... yet. (I just created a pull request for this: https://github.com/bazelbuild/rules_pkg/pull/891). If you think this is an issue, I\u0027ll hold this until https://github.com/bazelbuild/rules_pkg/pull/891 is merged to AOSP.",
+      "parentUuid": "79b57418_06641c0d",
+      "range": {
+        "startLine": 10,
+        "startChar": 7,
+        "endLine": 10,
+        "endChar": 51
+      },
+      "revId": "fedeb17d19f8abc9f28d9bafae6e9aaafab2813d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2aeea358_c817419b",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
