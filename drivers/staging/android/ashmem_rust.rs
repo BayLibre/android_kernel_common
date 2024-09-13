@@ -103,6 +103,16 @@ impl MiscDevice for Ashmem {
             _ => Err(EINVAL),
         }
     }
+
+    #[cfg(CONFIG_COMPAT)]
+    fn compat_ioctl(me: Pin<&Ashmem>, file: &File, compat_cmd: u32, arg: usize) -> Result<c_long> {
+        let cmd = match compat_cmd {
+            bindings::COMPAT_ASHMEM_SET_SIZE => bindings::ASHMEM_SET_SIZE,
+            bindings::COMPAT_ASHMEM_SET_PROT_MASK => bindings::ASHMEM_SET_PROT_MASK,
+            _ => compat_cmd,
+        };
+        Self::ioctl(me, file, cmd, arg)
+    }
 }
 
 impl Ashmem {
