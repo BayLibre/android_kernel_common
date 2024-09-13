@@ -30,6 +30,7 @@ pub(crate) struct Range {
     lru: ListLinks<0>,
     #[pin]
     unpinned: ListLinks<1>,
+    file: ShmemFile,
     pub(crate) inner: LockedByAshmem<RangeInner>,
 }
 
@@ -40,6 +41,10 @@ pub(crate) struct RangeInner {
 }
 
 impl Range {
+    pub(crate) fn set_purged(&self, guard: &mut AshmemGuard) {
+        self.inner.as_mut(guard).purged = true;
+    }
+
     pub(crate) fn purged(&self, guard: &AshmemGuard) -> bool {
         self.inner.as_ref(guard).purged
     }
@@ -284,8 +289,67 @@ impl Area {
     }
 }
 
+impl AshmemGuard {
+    pub(crate) fn free_lru(&mut self, stop_after: usize, freed: &mut usize) -> bool {
+        while let Some(range) = self.lru_list.pop_back() {
+            let start = range.pgstart(self) * PAGE_SIZE;
+            let end = (range.pgend(self) + 1) * PAGE_SIZE;
+            range.set_purged(self);
+            self.remove_lru(&range);
+            *freed += range.size(self);
+
+            // C ashmem releases the mutex and uses a different mechanism to ensure mutual
+            // exclusion with `pin_unpin` operations, but we only hold `ASHMEM_MUTEX` here and in
+            // `pin_unpin`, so we don't need to release the mutex. A different mutex is used for
+            // all of the other ashmem operations.
+            range.file.punch_hole(start, end - start);
+
+            if *freed >= stop_after {
+                break;
+            }
+
+            if super::shrinker_should_stop() {
+                return true;
+            }
+        }
+        false
+    }
+}
+
+impl Shrinker for super::AshmemModule {
+    // Our shrinker data is in a global, so we don't need to set the private data.
+    type Ptr = ();
+
+    fn count_objects(_: (), _sc: ShrinkControl<'_>) -> CountObjects {
+        let count = super::LRU_COUNT.load(super::Ordering::Relaxed);
+        if count == 0 {
+            CountObjects::EMPTY
+        } else {
+            CountObjects::new(count)
+        }
+    }
+
+    fn scan_objects(_: (), mut sc: ShrinkControl<'_>) -> ScanObjects {
+        if !sc.reclaim_fs_allowed() {
+            return ScanObjects::STOP;
+        }
+
+        let Some(mut guard) = super::ASHMEM_MUTEX.try_lock() else {
+            return ScanObjects::STOP;
+        };
+
+        let mut freed = 0;
+        let did_stop_early = guard.free_lru(sc.nr_to_scan(), &mut freed);
+        sc.set_nr_scanned(freed);
+        if did_stop_early {
+            ScanObjects::STOP
+        } else {
+            ScanObjects::from_count(freed)
+        }
+    }
+}
+
 pub(crate) struct NewRange<'a> {
-    #[allow(dead_code)]
     pub(crate) file: &'a ShmemFile,
     pub(crate) alloc: UniqueArc<MaybeUninit<Range>>,
 }
@@ -295,6 +359,7 @@ impl<'a> NewRange<'a> {
         let new_range = self.alloc.pin_init_with(pin_init!(Range {
             lru <- ListLinks::new(),
             unpinned <- ListLinks::new(),
+            file: self.file.clone(),
             inner: LockedByAshmem::new(inner),
         }));
 
