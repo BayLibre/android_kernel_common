@@ -11,7 +11,7 @@ use kernel::{
     error::Result,
     fs::File,
     ioctl::_IOC_SIZE,
-    miscdevice::{declare_static_miscdev, MiscDevice, MiscDeviceOptions},
+    miscdevice::{declare_static_miscdev, IovIter, Kiocb, MiscDevice, MiscDeviceOptions},
     mm::virt::{flags as vma_flags, VmArea},
     page::page_align,
     prelude::*,
@@ -163,6 +163,24 @@ impl MiscDevice for Ashmem {
 
         vma.set_file(file.file());
         Ok(())
+    }
+
+    fn read_iter(mut kiocb: Kiocb<'_, Self::Ptr>, iov: &mut IovIter) -> Result<usize> {
+        let me = kiocb.private_data();
+        let asma = me.inner.lock();
+        if asma.size == 0 {
+            // If size is not set, or set to 0, always return EOF.
+            return Ok(0);
+        }
+        let Some(asma_file) = asma.file.clone() else {
+            return Err(EBADF);
+        };
+        drop(asma);
+
+        let ret = asma_file.vfs_iter_read(iov, kiocb.ki_pos_mut())?;
+
+        asma_file.set_f_pos(kiocb.ki_pos());
+        Ok(ret as usize)
     }
 
     fn ioctl(me: Pin<&Ashmem>, _file: &File, cmd: u32, arg: usize) -> Result<c_long> {
