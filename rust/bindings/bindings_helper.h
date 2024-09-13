@@ -31,6 +31,7 @@
 #include <linux/sched.h>
 #include <linux/security.h>
 #include <linux/seq_file.h>
+#include <linux/shmem_fs.h>
 #include <linux/shrinker.h>
 #include <linux/slab.h>
 #include <linux/task_work.h>
@@ -41,6 +42,7 @@
 #include <trace/hooks/rust_binder.h>
 #include <uapi/linux/android/binder.h>
 #include <uapi/linux/android/binderfs.h>
+#include <uapi/linux/falloc.h>
 #include <uapi/linux/sched/types.h>
 
 /* `bindgen` gets confused at certain things. */
@@ -54,7 +56,10 @@ const gfp_t RUST_CONST_HELPER___GFP_ZERO = __GFP_ZERO;
 const gfp_t RUST_CONST_HELPER___GFP_HIGHMEM = ___GFP_HIGHMEM;
 const gfp_t RUST_CONST_HELPER___GFP_FS = ___GFP_FS;
 const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL = BLK_FEAT_ROTATIONAL;
+const fmode_t RUST_CONST_HELPER_FMODE_LSEEK = FMODE_LSEEK;
 
 #ifdef CONFIG_ASHMEM_RUST
 #include "../../drivers/staging/android/ashmem.h"
+const size_t RUST_CONST_HELPER_ASHMEM_NAME_PREFIX_LEN = ASHMEM_NAME_PREFIX_LEN;
+const size_t RUST_CONST_HELPER_ASHMEM_FULL_NAME_LEN = ASHMEM_FULL_NAME_LEN;
 #endif
