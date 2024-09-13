@@ -30,6 +30,7 @@
 #include <linux/fs.h>
 #include <linux/gfp.h>
 #include <linux/highmem.h>
+#include <linux/mman.h>
 #include <linux/mutex.h>
 #include <linux/refcount.h>
 #include <linux/sched/signal.h>
@@ -416,6 +417,19 @@ struct vm_area_struct *rust_helper_vma_lookup(struct mm_struct *mm,
 	return vma_lookup(mm, addr);
 }
 EXPORT_SYMBOL_GPL(rust_helper_vma_lookup);
+
+unsigned long rust_helper_calc_vm_prot_bits(unsigned long prot, unsigned long pkey)
+{
+	return calc_vm_prot_bits(prot, pkey);
+}
+EXPORT_SYMBOL_GPL(rust_helper_calc_vm_prot_bits);
+
+void rust_helper_lockdep_set_class_rwsem(struct rw_semaphore *lock, struct lock_class_key *key,
+					 const char *name)
+{
+	lockdep_set_class_and_name(lock, key, name);
+}
+EXPORT_SYMBOL_GPL(rust_helper_lockdep_set_class_rwsem);
 
 /*
  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
