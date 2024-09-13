@@ -3,12 +3,12 @@
 // Copyright (C) 2024 Google LLC.
 
 use core::mem::{size_of, size_of_val, MaybeUninit};
-use core::ops::Range;
 
 use kernel::{
     bindings,
     fs::file::{File, FileDescriptorReservation},
     prelude::*,
+    range::{Range, RangeFixedSize, UsedRange},
     sync::Arc,
     types::{ARef, AsBytes, FromBytes},
     uaccess::UserSliceReader,
@@ -25,7 +25,7 @@ use crate::{
 #[derive(Default)]
 pub(crate) struct AllocationInfo {
     /// Range within the allocation where we can find the offsets to the object descriptors.
-    pub(crate) offsets: Option<Range<usize>>,
+    pub(crate) offsets: Option<core::ops::Range<usize>>,
     /// The target node of the transaction this allocation is associated to.
     /// Not set for replies.
     pub(crate) target_node: Option<NodeRef>,
@@ -81,7 +81,17 @@ impl Allocation {
         }
     }
 
-    fn size_check(&self, offset: usize, size: usize) -> Result {
+    fn size_check(&self, range: Range) -> Result<UsedRange> {
+        let range = range.use_range();
+        let overflow_fail = range.offset.checked_add(range.length).is_none();
+        let cmp_size_fail = range.offset.wrapping_add(range.length) > self.size;
+        if overflow_fail || cmp_size_fail {
+            return Err(EFAULT);
+        }
+        Ok(range)
+    }
+
+    fn size_check2(&self, offset: usize, size: usize) -> Result<()> {
         let overflow_fail = offset.checked_add(size).is_none();
         let cmp_size_fail = offset.wrapping_add(size) > self.size;
         if overflow_fail || cmp_size_fail {
@@ -90,37 +100,35 @@ impl Allocation {
         Ok(())
     }
 
-    pub(crate) fn copy_into(
-        &self,
-        reader: &mut UserSliceReader,
-        offset: usize,
-        size: usize,
-    ) -> Result {
-        self.size_check(offset, size)?;
+    pub(crate) fn copy_into(&self, reader: &mut UserSliceReader, range: Range) -> Result {
+        let range = self.size_check(range)?;
 
         // SAFETY: While this object exists, the range allocator will keep the range allocated, and
         // in turn, the pages will be marked as in use.
         unsafe {
-            self.process
-                .pages
-                .copy_from_user_slice(reader, self.offset + offset, size)
+            self.process.pages.copy_from_user_slice(
+                reader,
+                self.offset + range.offset,
+                range.length,
+            )
         }
     }
 
     pub(crate) fn read<T: FromBytes>(&self, offset: usize) -> Result<T> {
-        self.size_check(offset, size_of::<T>())?;
+        self.size_check2(offset, size_of::<T>())?;
 
         // SAFETY: While this object exists, the range allocator will keep the range allocated, and
         // in turn, the pages will be marked as in use.
         unsafe { self.process.pages.read(self.offset + offset) }
     }
 
-    pub(crate) fn write<T: ?Sized>(&self, offset: usize, obj: &T) -> Result {
-        self.size_check(offset, size_of_val::<T>(obj))?;
+    pub(crate) fn write<T: ?Sized>(&self, range: Range, obj: &T) -> Result {
+        range.assert_length_eq(size_of_val::<T>(obj))?;
+        let range = self.size_check(range)?;
 
         // SAFETY: While this object exists, the range allocator will keep the range allocated, and
         // in turn, the pages will be marked as in use.
-        unsafe { self.process.pages.write(self.offset + offset, obj) }
+        unsafe { self.process.pages.write(self.offset + range.offset, obj) }
     }
 
     pub(crate) fn fill_zero(&self) -> Result {
@@ -143,7 +151,7 @@ impl Allocation {
         self.allocation_info.get_or_insert_with(Default::default)
     }
 
-    pub(crate) fn set_info_offsets(&mut self, offsets: Range<usize>) {
+    pub(crate) fn set_info_offsets(&mut self, offsets: core::ops::Range<usize>) {
         self.get_or_init_info().offsets = Some(offsets);
     }
 
@@ -172,13 +180,13 @@ impl Allocation {
     pub(crate) fn info_add_fd(
         &mut self,
         file: ARef<File>,
-        buffer_offset: usize,
+        range: Range,
         close_on_free: bool,
     ) -> Result {
         self.get_or_init_info().file_list.files_to_translate.push(
             FileEntry {
                 file,
-                buffer_offset,
+                range: RangeFixedSize::from_range(range)?,
                 close_on_free,
             },
             GFP_KERNEL,
@@ -206,8 +214,9 @@ impl Allocation {
         for file_info in files {
             let res = FileDescriptorReservation::get_unused_fd_flags(bindings::O_CLOEXEC)?;
             let fd = res.reserved_fd();
-            self.write::<u32>(file_info.buffer_offset, &fd)?;
-            crate::trace::trace_transaction_fd_recv(self.debug_id, fd, file_info.buffer_offset);
+            let range = file_info.range.into_range();
+            crate::trace::trace_transaction_fd_recv(self.debug_id, fd, range.peek_offset());
+            self.write::<u32>(range, &fd)?;
 
             reservations.push(
                 Reservation {
@@ -343,20 +352,26 @@ impl<'a> AllocationView<'a> {
         self.alloc.read(offset)
     }
 
-    pub(crate) fn write<T: AsBytes>(&self, offset: usize, obj: &T) -> Result {
-        if offset.checked_add(size_of::<T>()).ok_or(EINVAL)? > self.limit {
+    pub(crate) fn write<T: AsBytes>(&self, range: Range, obj: &T) -> Result {
+        range.assert_length_eq(size_of::<T>())?;
+        let end = range
+            .peek_offset()
+            .checked_add(size_of::<T>())
+            .ok_or(EINVAL)?;
+        if end > self.limit {
             return Err(EINVAL);
         }
-        self.alloc.write(offset, obj)
+        self.alloc.write(range, obj)
     }
 
     pub(crate) fn transfer_binder_object(
         &self,
-        offset: usize,
+        range: Range,
         obj: &bindings::flat_binder_object,
         strong: bool,
         node_ref: NodeRef,
     ) -> Result {
+        range.assert_length_eq(size_of::<FlatBinderObject>())?;
         let mut newobj = FlatBinderObject::default();
         let node = node_ref.node.clone();
         if Arc::ptr_eq(&node_ref.node.owner, &self.alloc.process) {
@@ -371,7 +386,7 @@ impl<'a> AllocationView<'a> {
             newobj.flags = obj.flags;
             newobj.__bindgen_anon_1.binder = ptr as _;
             newobj.cookie = cookie as _;
-            self.write(offset, &newobj)?;
+            self.write(range, &newobj)?;
             // Increment the user ref count on the node. It will be decremented as part of the
             // destruction of the buffer, when we see a binder or weak-binder object.
             node.update_refcount(true, 1, strong);
@@ -390,7 +405,7 @@ impl<'a> AllocationView<'a> {
             };
             newobj.flags = obj.flags;
             newobj.__bindgen_anon_1.handle = handle;
-            if self.write(offset, &newobj).is_err() {
+            if self.write(range, &newobj).is_err() {
                 // Decrement ref count on the handle we just created.
                 let _ = self
                     .alloc
@@ -561,7 +576,7 @@ struct FileEntry {
     /// The file for which a descriptor will be created in the recipient process.
     file: ARef<File>,
     /// The offset in the buffer where the file descriptor is stored.
-    buffer_offset: usize,
+    range: RangeFixedSize<4>,
     /// Whether this fd should be closed when the allocation is freed.
     close_on_free: bool,
 }

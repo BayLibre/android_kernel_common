@@ -67,6 +67,14 @@ impl From<kernel::fs::file::BadFdError> for BinderError {
     }
 }
 
+impl From<kernel::range::RangeError> for BinderError {
+    #[track_caller]
+    fn from(source: kernel::range::RangeError) -> Self {
+        unsafe { kernel::bindings::dump_stack() };
+        BinderError::from(Error::from(source))
+    }
+}
+
 impl From<kernel::alloc::AllocError> for BinderError {
     fn from(_: kernel::alloc::AllocError) -> Self {
         Self {
