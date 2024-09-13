@@ -17,6 +17,7 @@ use kernel::{
     mm::virt::{flags as vma_flags, VmAreaNew},
     page::page_align,
     prelude::*,
+    seq_file::{seq_print, SeqFile},
     sync::{new_mutex, Mutex},
     task::Task,
     uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
@@ -227,6 +228,7 @@ impl MiscDevice for Ashmem {
             bindings::ASHMEM_GET_SIZE => me.get_size(),
             bindings::ASHMEM_SET_PROT_MASK => me.set_prot_mask(arg),
             bindings::ASHMEM_GET_PROT_MASK => me.get_prot_mask(),
+            bindings::ASHMEM_GET_FILE_ID => me.get_file_id(UserSlice::new(arg, size).writer()),
             _ => Err(EINVAL),
         }
     }
@@ -239,6 +241,20 @@ impl MiscDevice for Ashmem {
             _ => compat_cmd,
         };
         Self::ioctl(me, file, cmd, arg)
+    }
+
+    #[cfg(CONFIG_PROC_FS)]
+    fn show_fdinfo(me: Pin<&Ashmem>, _file: &File, m: &SeqFile) {
+        let asma = me.inner.lock();
+
+        if let Some(file) = asma.file.as_ref() {
+            seq_print!(m, "inode:\t{}\n", file.inode_ino());
+        }
+        if let Some(name) = asma.name.as_ref() {
+            let name = core::str::from_utf8(name).unwrap_or("<invalid utf-8>");
+            seq_print!(m, "name:\t{}\n", name);
+        }
+        seq_print!(m, "size\t{}\n", asma.size);
     }
 }
 
@@ -304,6 +320,18 @@ impl Ashmem {
 
     fn get_prot_mask(&self) -> Result<c_long> {
         Ok(self.inner.lock().prot_mask as c_long)
+    }
+
+    fn get_file_id(&self, mut writer: UserSliceWriter) -> Result<c_long> {
+        let ino = {
+            let asma = self.inner.lock();
+            let Some(file) = asma.file.as_ref() else {
+                return Err(EINVAL);
+            };
+            file.inode_ino()
+        };
+        writer.write(&ino)?;
+        Ok(0)
     }
 }
 
