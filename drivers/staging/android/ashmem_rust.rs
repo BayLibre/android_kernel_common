@@ -56,6 +56,16 @@ fn calc_vm_prot_bits(prot: usize, pkey: usize) -> usize {
     unsafe { bindings::calc_vm_prot_bits(prot as _, pkey as _) as usize }
 }
 
+struct AshmemLru {}
+
+kernel::sync::global_lock! {
+    // SAFETY: We call `init` as the very first thing in the initialization of this module, so
+    // there are no calls to `lock` before `init` is called.
+    static ASHMEM_MUTEX: Mutex<AshmemLru> = unsafe { uninit };
+    value: AshmemLru {};
+    wrapper: AshmemMutex;
+}
+
 module! {
     type: AshmemModule,
     name: "ashmem_rust",
@@ -70,6 +80,9 @@ struct AshmemModule {
 
 impl kernel::Module for AshmemModule {
     fn init(_module: &'static kernel::ThisModule) -> Result<Self> {
+        // SAFETY: Called once since this is the module initializer.
+        unsafe { ASHMEM_MUTEX.init() };
+
         pr_warn!("Ashmem Rust initialized.");
 
         Ok(Self {
