@@ -37,7 +37,7 @@ const PROT_WRITE: usize = bindings::PROT_WRITE as usize;
 const PROT_MASK: usize = PROT_EXEC | PROT_READ | PROT_WRITE;
 
 mod ashmem_range;
-use ashmem_range::{Area, AshmemGuard, NewRange, ASHMEM_MUTEX};
+use ashmem_range::{Area, AshmemGuard, NewRange, ASHMEM_MUTEX, LRU_COUNT};
 
 mod shmem;
 use shmem::ShmemFile;
@@ -47,6 +47,12 @@ fn read_implies_exec(task: &Task) -> bool {
     // SAFETY: Always safe to read.
     let personality = unsafe { (*task.as_ptr()).personality };
     (personality & bindings::READ_IMPLIES_EXEC) != 0
+}
+
+/// Calls `capable(CAP_SYS_ADMIN)`.
+fn has_cap_sys_admin() -> bool {
+    use kernel::bindings::CAP_SYS_ADMIN;
+    unsafe { bindings::capable(CAP_SYS_ADMIN as c_int) }
 }
 
 static NUM_PIN_IOCTLS_WAITING: AtomicUsize = AtomicUsize::new(0);
@@ -232,6 +238,7 @@ impl MiscDevice for Ashmem {
             ASHMEM_PIN | ASHMEM_UNPIN | ASHMEM_GET_PIN_STATUS => {
                 me.pin_unpin(cmd, UserSlice::new(arg, size).reader())
             }
+            bindings::ASHMEM_PURGE_ALL_CACHES => me.purge_all_caches(),
             _ => Err(EINVAL),
         }
     }
@@ -410,6 +417,16 @@ impl Ashmem {
             }
             _ => unreachable!(),
         }
+    }
+
+    fn purge_all_caches(&self) -> Result<isize> {
+        if !has_cap_sys_admin() {
+            return Err(EPERM);
+        }
+        let mut guard = AshmemGuard(ASHMEM_MUTEX.lock());
+        let ret = LRU_COUNT.load(Ordering::Relaxed);
+        let _did_stop_early = guard.free_lru(usize::MAX, &mut 0);
+        Ok(isize::try_from(ret).unwrap_or(isize::MAX))
     }
 }
 
