@@ -4,7 +4,11 @@
 
 //! Anonymous Shared Memory Subsystem for Android.
 
-use core::{ffi::c_int, pin::Pin};
+use core::{
+    ffi::c_int,
+    pin::Pin,
+    sync::atomic::{AtomicUsize, Ordering},
+};
 use kernel::{
     bindings::{self, ASHMEM_GET_PIN_STATUS, ASHMEM_PIN, ASHMEM_UNPIN},
     c_str,
@@ -16,6 +20,7 @@ use kernel::{
     page::{page_align, PAGE_MASK, PAGE_SIZE},
     prelude::*,
     seq_file::{seq_print, SeqFile},
+    shrinker::{self, ShrinkerBuilder, ShrinkerRegistration},
     sync::{new_mutex, Mutex, UniqueArc},
     task::Task,
     uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
@@ -44,6 +49,12 @@ fn read_implies_exec(task: &Task) -> bool {
     (personality & bindings::READ_IMPLIES_EXEC) != 0
 }
 
+static NUM_PIN_IOCTLS_WAITING: AtomicUsize = AtomicUsize::new(0);
+
+fn shrinker_should_stop() -> bool {
+    NUM_PIN_IOCTLS_WAITING.load(Ordering::Relaxed) > 0
+}
+
 module! {
     type: AshmemModule,
     name: "ashmem_rust",
@@ -54,6 +65,7 @@ module! {
 
 struct AshmemModule {
     _misc: Pin<Box<MiscDeviceRegistration<Ashmem>>>,
+    _shrinker: ShrinkerRegistration<Self>,
 }
 
 impl kernel::Module for AshmemModule {
@@ -65,6 +77,9 @@ impl kernel::Module for AshmemModule {
 
         pr_info!("Using Rust implementation.");
 
+        let mut shrinker = ShrinkerBuilder::new(c_str!("android-ashmem"))?;
+        shrinker.set_seeks(4 * shrinker::DEFAULT_SEEKS);
+
         Ok(Self {
             _misc: Box::pin_init(
                 MiscDeviceRegistration::register(MiscDeviceOptions {
@@ -72,6 +87,7 @@ impl kernel::Module for AshmemModule {
                 }),
                 GFP_KERNEL,
             )?,
+            _shrinker: shrinker.register(()),
         })
     }
 }
@@ -339,9 +355,13 @@ impl Ashmem {
             Some(UniqueArc::new_uninit(GFP_KERNEL)?)
         };
 
+        NUM_PIN_IOCTLS_WAITING.fetch_add(1, Ordering::Relaxed);
         let mut guard = AshmemGuard(ASHMEM_MUTEX.lock());
+        NUM_PIN_IOCTLS_WAITING.fetch_sub(1, Ordering::Relaxed);
+
         // C ashmem waits for in-flight shrinkers here using a separate mechanism, but we don't
         // release the lock when calling `punch_hole` in the shrinker, so we don't need to do that.
+
         let asma = &mut *self.inner.lock();
         let mut new_range = match asma.file.as_ref() {
             Some(file) => new_range.map(|alloc| NewRange { file, alloc }),
