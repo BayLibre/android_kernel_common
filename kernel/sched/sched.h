@@ -3862,4 +3862,9 @@ void sched_enq_and_set_task(struct sched_enq_and_set_ctx *ctx);
 
 #include "ext.h"
 
+static inline void *android_task_vendor_data(struct task_struct *p)
+{
+	return p + 1;
+}
+
 #endif /* _KERNEL_SCHED_SCHED_H */
