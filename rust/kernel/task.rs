@@ -213,6 +213,13 @@ impl Task {
         unsafe { bindings::wake_up_process(self.0.get()) };
     }
 
+    /// Does PROT_READ imply PROT_EXEC for this task?
+    pub fn read_implies_exec(&self) -> bool {
+        // SAFETY: Always safe to read.
+        let personality = unsafe { (*self.0.get()).personality };
+        (personality & bindings::READ_IMPLIES_EXEC) != 0
+    }
+
     /// Check if the task has the given capability without logging to the audit log.
     pub fn has_capability_noaudit(&self, capability: i32) -> bool {
         // SAFETY: By the type invariant, we know that `self.0.get()` is valid.

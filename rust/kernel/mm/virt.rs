@@ -7,8 +7,9 @@
 use crate::{
     bindings,
     error::{to_result, Result},
+    fs::File,
     page::Page,
-    types::Opaque,
+    types::{ARef, Opaque},
 };
 
 use core::pin::Pin;
@@ -99,6 +100,30 @@ impl VmArea {
         // SAFETY: By the type invariants, the caller holds the mmap write lock, so this access is
         // not a data race.
         unsafe { (*self.as_ptr()).vm_ops = core::ptr::null() };
+    }
+
+    /// Set the file.
+    ///
+    /// Must only be called during initial vma setup.
+    ///
+    /// TODO: Restrict calls outside of initial vma setup.
+    #[inline]
+    pub fn set_file(self: Pin<&mut Self>, file: &File) {
+        use core::ptr::NonNull;
+
+        let file = ARef::from(file);
+        // SAFETY: We're setting up the vma, so we can read the file pointer.
+        let old_file = unsafe { (*self.as_ptr()).vm_file };
+
+        // INVARIANT: This transfers ownership of the refcount we just created to the vma.
+        //
+        // SAFETY: We're setting up the vma, so we can write to the file pointer.
+        unsafe { (*self.as_ptr()).vm_file = ARef::into_raw(file).as_ptr().cast() };
+
+        if let Some(old_file) = NonNull::new(old_file) {
+            // SAFETY: We took ownership of the file refcount from the vma, so we can drop it.
+            drop(unsafe { ARef::<File>::from_raw(old_file.cast()) });
+        }
     }
 
     /// Maps a single page at the given address within the virtual memory area.
