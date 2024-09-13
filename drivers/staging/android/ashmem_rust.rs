@@ -4,14 +4,17 @@
 
 //! Anonymous Shared Memory Subsystem for Android.
 
-use core::{ffi::c_long, pin::Pin};
+use core::{
+    ffi::{c_int, c_long},
+    pin::Pin,
+};
 use kernel::{
     bindings::{self, ASHMEM_FULL_NAME_LEN, ASHMEM_NAME_LEN},
     c_str,
     error::Result,
-    fs::File,
+    fs::{File, LocalFile},
     ioctl::_IOC_SIZE,
-    miscdevice::{declare_static_miscdev, IovIter, Kiocb, MiscDevice, MiscDeviceOptions},
+    miscdevice::{declare_static_miscdev, loff_t, IovIter, Kiocb, MiscDevice, MiscDeviceOptions},
     mm::virt::{flags as vma_flags, VmArea},
     page::page_align,
     prelude::*,
@@ -163,6 +166,24 @@ impl MiscDevice for Ashmem {
 
         vma.set_file(file.file());
         Ok(())
+    }
+
+    fn llseek(me: Pin<&Ashmem>, file: &LocalFile, offset: loff_t, whence: c_int) -> Result<loff_t> {
+        let asma = me.inner.lock();
+        if asma.size == 0 {
+            return Err(EINVAL);
+        }
+        let Some(asma_file) = asma.file.clone() else {
+            return Err(EBADF);
+        };
+        drop(asma);
+
+        let ret = asma_file.vfs_llseek(offset, whence)?;
+
+        // SAFETY: We are in llseek, so we hold the fpos lock.
+        unsafe { file.set_f_pos(asma_file.f_pos()) };
+
+        Ok(ret)
     }
 
     fn read_iter(mut kiocb: Kiocb<'_, Self::Ptr>, iov: &mut IovIter) -> Result<usize> {
