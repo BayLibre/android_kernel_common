@@ -481,14 +481,12 @@ struct binder_proc {
  * @proc:                    binder_proc being wrapped
  * @dmap:                    dbitmap to manage available reference descriptors
  *                           (protected by @proc.outer_lock)
- * @lock:                    protects @proc->alloc fields
  * @delivered_freeze:        list of delivered freeze notification
  *                           (protected by @inner_lock)
  */
 struct binder_proc_wrap {
 	struct binder_proc proc;
 	struct dbitmap dmap;
-	spinlock_t lock;
 	struct list_head delivered_freeze;
 };
 
@@ -508,43 +506,6 @@ static inline struct binder_proc_wrap *
 binder_alloc_to_proc_wrap(struct binder_alloc *alloc)
 {
 	return proc_wrapper(binder_proc_entry(alloc));
-}
-
-static inline void binder_alloc_lock_init(struct binder_alloc *alloc)
-{
-	spin_lock_init(&binder_alloc_to_proc_wrap(alloc)->lock);
-}
-
-static inline void binder_alloc_lock(struct binder_alloc *alloc)
-{
-	spin_lock(&binder_alloc_to_proc_wrap(alloc)->lock);
-}
-
-static inline void binder_alloc_unlock(struct binder_alloc *alloc)
-{
-	spin_unlock(&binder_alloc_to_proc_wrap(alloc)->lock);
-}
-
-static inline int binder_alloc_trylock(struct binder_alloc *alloc)
-{
-	return spin_trylock(&binder_alloc_to_proc_wrap(alloc)->lock);
-}
-
-/**
- * binder_alloc_get_free_async_space() - get free space available for async
- * @alloc:	binder_alloc for this proc
- *
- * Return:	the bytes remaining in the address-space for async transactions
- */
-static inline size_t
-binder_alloc_get_free_async_space(struct binder_alloc *alloc)
-{
-	size_t free_async_space;
-
-	binder_alloc_lock(alloc);
-	free_async_space = alloc->free_async_space;
-	binder_alloc_unlock(alloc);
-	return free_async_space;
 }
 
 /**
