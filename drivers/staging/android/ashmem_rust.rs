@@ -7,6 +7,7 @@
 use core::{
     ffi::{c_int, c_long},
     pin::Pin,
+    sync::atomic::{AtomicUsize, Ordering},
 };
 use kernel::{
     bindings::{self, ASHMEM_GET_PIN_STATUS, ASHMEM_PIN, ASHMEM_UNPIN},
@@ -20,6 +21,7 @@ use kernel::{
     page::{page_align, PAGE_MASK, PAGE_SIZE},
     prelude::*,
     seq_file::{seq_print, SeqFile},
+    shrinker::{self, RegisteredShrinker, UnregisteredShrinker},
     sync::{new_mutex, Mutex, UniqueArc},
     task::Task,
     uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
@@ -69,9 +71,11 @@ fn read_implies_exec(task: &Task) -> bool {
     (personality & bindings::READ_IMPLIES_EXEC) != 0
 }
 
+// Only updated with ASHMEM_MUTEX held, but the shrinker will read it without the mutex.
+static LRU_COUNT: AtomicUsize = AtomicUsize::new(0);
+
 struct AshmemLru {
     lru_list: List<ashmem_range::Range, 0>,
-    lru_count: usize,
 }
 
 impl AshmemGuard {
@@ -86,15 +90,19 @@ impl AshmemGuard {
 
         // Only change the counter if the range is on the lru list.
         if !range.purged(self) {
-            self.lru_count -= old_size;
-            self.lru_count += new_size;
+            let mut lru_count = LRU_COUNT.load(Ordering::Relaxed);
+            lru_count -= old_size;
+            lru_count += new_size;
+            LRU_COUNT.store(lru_count, Ordering::Relaxed);
         }
     }
 
     fn insert_lru(&mut self, range: ListArc<ashmem_range::Range>) {
         // Don't insert the range if it's already purged.
         if !range.purged(self) {
-            self.lru_count += range.size(self);
+            let mut lru_count = LRU_COUNT.load(Ordering::Relaxed);
+            lru_count += range.size(self);
+            LRU_COUNT.store(lru_count, Ordering::Relaxed);
             self.lru_list.push_front(range);
         }
     }
@@ -106,7 +114,9 @@ impl AshmemGuard {
 
         // Only decrement lru_count if the range was actually in the list.
         if ret.is_some() {
-            self.lru_count -= range.size(self);
+            let mut lru_count = LRU_COUNT.load(Ordering::Relaxed);
+            lru_count -= range.size(self);
+            LRU_COUNT.store(lru_count, Ordering::Relaxed);
         }
 
         ret
@@ -117,10 +127,16 @@ kernel::sync::global_lock! {
     // SAFETY: We call `init` as the very first thing in the initialization of this module, so
     // there are no calls to `lock` before `init` is called.
     static ASHMEM_MUTEX: Mutex<AshmemLru> = unsafe { uninit };
-    value: AshmemLru { lru_list: List::new(), lru_count: 0 };
+    value: AshmemLru { lru_list: List::new() };
     wrapper: AshmemMutex;
     guard: AshmemGuard;
     locked_by: LockedByAshmem;
+}
+
+const NUM_PIN_IOCTLS_WAITING: AtomicUsize = AtomicUsize::new(0);
+
+fn shrinker_should_stop() -> bool {
+    NUM_PIN_IOCTLS_WAITING.load(Ordering::Relaxed) > 0
 }
 
 module! {
@@ -133,6 +149,7 @@ module! {
 
 struct AshmemModule {
     _misc: Pin<Box<MiscDeviceRegistration<Ashmem>>>,
+    _shrinker: RegisteredShrinker<Self>,
 }
 
 impl kernel::Module for AshmemModule {
@@ -144,6 +161,9 @@ impl kernel::Module for AshmemModule {
 
         pr_info!("Using Rust implementation.");
 
+        let mut shrinker = UnregisteredShrinker::alloc(c_str!("android-ashmem"))?;
+        shrinker.set_seeks(4 * shrinker::DEFAULT_SEEKS);
+
         Ok(Self {
             _misc: Box::pin_init(
                 MiscDeviceRegistration::register(MiscDeviceOptions {
@@ -151,6 +171,7 @@ impl kernel::Module for AshmemModule {
                 }),
                 GFP_KERNEL,
             )?,
+            _shrinker: shrinker.register(()),
         })
     }
 }
@@ -419,9 +440,13 @@ impl Ashmem {
             Some(UniqueArc::new_uninit(GFP_KERNEL)?)
         };
 
+        NUM_PIN_IOCTLS_WAITING.fetch_add(1, Ordering::Relaxed);
         let mut guard = ASHMEM_MUTEX.lock();
+        NUM_PIN_IOCTLS_WAITING.fetch_sub(1, Ordering::Relaxed);
+
         // C ashmem waits for in-flight shrinkers here using a separate mechanism, but we don't
         // release the lock when calling `punch_hole` in the shrinker, so we don't need to do that.
+
         let asma = &mut *self.inner.lock();
         let mut new_range = match asma.file.as_ref() {
             Some(file) => new_range.map(|alloc| NewRange { file, alloc }),
