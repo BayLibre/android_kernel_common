@@ -18,6 +18,11 @@ use kernel::{
 
 const ASHMEM_NAME_LEN: usize = bindings::ASHMEM_NAME_LEN as usize;
 
+const PROT_READ: usize = bindings::PROT_READ as usize;
+const PROT_EXEC: usize = bindings::PROT_EXEC as usize;
+const PROT_WRITE: usize = bindings::PROT_WRITE as usize;
+const PROT_MASK: usize = PROT_EXEC | PROT_READ | PROT_WRITE;
+
 module! {
     type: AshmemModule,
     name: "ashmem_rust",
@@ -60,6 +65,7 @@ struct Ashmem {
 
 struct AshmemInner {
     size: usize,
+    prot_mask: usize,
     /// If set, then this holds the ashmem name without the dev/ashmem/ prefix. No zero terminator.
     name: Option<Vec<u8>>,
 }
@@ -74,6 +80,7 @@ impl MiscDevice for Ashmem {
                 Ashmem {
                     inner <- new_mutex!(AshmemInner {
                         size: 0,
+                        prot_mask: PROT_MASK,
                         name: None,
                     }),
                 }
@@ -89,6 +96,8 @@ impl MiscDevice for Ashmem {
             bindings::ASHMEM_GET_NAME => me.get_name(UserSlice::new(arg, size).writer()),
             bindings::ASHMEM_SET_SIZE => me.set_size(arg),
             bindings::ASHMEM_GET_SIZE => me.get_size(),
+            bindings::ASHMEM_SET_PROT_MASK => me.set_prot_mask(arg),
+            bindings::ASHMEM_GET_PROT_MASK => me.get_prot_mask(),
             _ => Err(EINVAL),
         }
     }
@@ -132,5 +141,25 @@ impl Ashmem {
 
     fn get_size(&self) -> Result<c_long> {
         Ok(self.inner.lock().size as c_long)
+    }
+
+    fn set_prot_mask(&self, mut prot: usize) -> Result<c_long> {
+        let mut asma = self.inner.lock();
+
+        // The user can only remove, not add, protection bits.
+        if (asma.prot_mask & prot) != prot {
+            return Err(EINVAL);
+        }
+
+        if (prot & PROT_READ != 0) && current!().read_implies_exec() {
+            prot |= PROT_EXEC;
+        }
+
+        asma.prot_mask = prot;
+        Ok(0)
+    }
+
+    fn get_prot_mask(&self) -> Result<c_long> {
+        Ok(self.inner.lock().prot_mask as c_long)
     }
 }
