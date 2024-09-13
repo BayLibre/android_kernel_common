@@ -51,6 +51,24 @@
       "parentUuid": "ce6020ec_bdfc9ee8",
       "revId": "429747bdc124014aaf205fae63f36b5834a4808e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f40ded0e_3f74ffb1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2024-09-13T18:46:28Z",
+      "side": 1,
+      "message": "For the sake of consistency, please consider either of:\n\n- Upstreaming your BUILD definition (kernel_build, copy_to_dist_dir, etc) to common/BUILD.bazel to here, so we can suggest edits if necessary; or\n- Deleting build.config.amlogic here, and keep it downstream in your tree.\n\n(This discussion is unrelated to this change, though)",
+      "parentUuid": "d4a044dd_02a735aa",
+      "revId": "429747bdc124014aaf205fae63f36b5834a4808e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
