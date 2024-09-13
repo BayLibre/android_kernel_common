@@ -23,6 +23,7 @@
 #include "jump_label.c"
 #include "kunit.c"
 #include "mm.c"
+#include "mman.c"
 #include "mutex.c"
 #include "page.c"
 #include "platform.c"

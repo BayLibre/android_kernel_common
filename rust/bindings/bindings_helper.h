@@ -41,11 +41,14 @@
 #include <linux/refcount.h>
 #include <linux/sched.h>
 #include <linux/security.h>
+#include <linux/shmem_fs.h>
 #include <linux/slab.h>
 #include <linux/tracepoint.h>
 #include <linux/wait.h>
 #include <linux/workqueue.h>
 #include <trace/events/rust_sample.h>
+#include <uapi/linux/falloc.h>
+#include <uapi/linux/sched/types.h>
 
 #if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
 // Used by `#[export]` in `drivers/gpu/drm/drm_panic_qr.rs`.
@@ -67,4 +70,6 @@ const fop_flags_t RUST_CONST_HELPER_FOP_UNSIGNED_OFFSET = FOP_UNSIGNED_OFFSET;
 
 #ifdef CONFIG_ASHMEM_RUST
 #include "../../drivers/staging/android/ashmem.h"
+const size_t RUST_CONST_HELPER_ASHMEM_NAME_PREFIX_LEN = ASHMEM_NAME_PREFIX_LEN;
+const size_t RUST_CONST_HELPER_ASHMEM_FULL_NAME_LEN = ASHMEM_FULL_NAME_LEN;
 #endif
