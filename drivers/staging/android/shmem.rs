@@ -8,6 +8,7 @@ use kernel::{
     bindings,
     error::{from_err_ptr, to_result, Result},
     fs::file::File,
+    miscdevice::{loff_t, IovIter},
     mm::virt::VmArea,
     prelude::*,
     str::CStr,
@@ -51,6 +52,25 @@ impl ShmemFile {
 
     pub(crate) fn file(&self) -> &File {
         &self.inner
+    }
+
+    /// # Safety
+    ///
+    /// The caller must ensure that access to the file position has no data race.
+    pub(crate) fn set_f_pos(&self, value: loff_t) {
+        // SAFETY: The caller ensures that this is safe.
+        unsafe { self.inner.set_f_pos(value) }
+    }
+
+    pub(crate) fn vfs_iter_read(&self, iov: &mut IovIter, pos: &mut loff_t) -> Result<loff_t> {
+        // SAFETY: Just an FFI call. The file and iov is valid.
+        let ret = unsafe { bindings::vfs_iter_read(self.inner.as_ptr(), iov.as_raw(), pos, 0) };
+
+        if ret < 0 {
+            Err(Error::from_errno(ret as i32))
+        } else {
+            Ok(ret as loff_t)
+        }
     }
 }
 
