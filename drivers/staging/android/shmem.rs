@@ -57,9 +57,28 @@ impl ShmemFile {
     /// # Safety
     ///
     /// The caller must ensure that access to the file position has no data race.
+    pub(crate) unsafe fn f_pos(&self) -> loff_t {
+        // SAFETY: The caller ensures that this is safe.
+        unsafe { self.inner.f_pos() }
+    }
+
+    /// # Safety
+    ///
+    /// The caller must ensure that access to the file position has no data race.
     pub(crate) fn set_f_pos(&self, value: loff_t) {
         // SAFETY: The caller ensures that this is safe.
         unsafe { self.inner.set_f_pos(value) }
+    }
+
+    pub(crate) fn vfs_llseek(&self, offset: loff_t, whence: c_int) -> Result<loff_t> {
+        // SAFETY: Just an FFI call. The file is valid.
+        let ret = unsafe { bindings::vfs_llseek(self.inner.as_ptr(), offset, whence) };
+
+        if ret < 0 {
+            Err(Error::from_errno(ret as i32))
+        } else {
+            Ok(ret)
+        }
     }
 
     pub(crate) fn vfs_iter_read(&self, iov: &mut IovIter, pos: &mut loff_t) -> Result<loff_t> {
