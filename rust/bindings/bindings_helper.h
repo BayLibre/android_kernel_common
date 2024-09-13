@@ -53,3 +53,47 @@ const gfp_t RUST_CONST_HELPER___GFP_ZERO = __GFP_ZERO;
 const gfp_t RUST_CONST_HELPER___GFP_HIGHMEM = ___GFP_HIGHMEM;
 const gfp_t RUST_CONST_HELPER___GFP_FS = ___GFP_FS;
 const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL = BLK_FEAT_ROTATIONAL;
+
+#ifdef CONFIG_ASHMEM_RUST
+/* We can't use the header directly since it's not in include/ */
+/* TODO: Make separate bindgen invocation on ashmem uapi */
+#define ASHMEM_NAME_DEF "dev/ashmem"
+#define ASHMEM_NAME_PREFIX "dev/ashmem/"
+
+const size_t ASHMEM_NAME_LEN = 256;
+const size_t ASHMEM_NAME_PREFIX_LEN = (sizeof(ASHMEM_NAME_PREFIX) - 1);
+const size_t ASHMEM_FULL_NAME_LEN = (ASHMEM_NAME_LEN + ASHMEM_NAME_PREFIX_LEN);
+
+/* Return values from ASHMEM_PIN: Was the mapping purged while unpinned? */
+#define ASHMEM_NOT_PURGED	0
+#define ASHMEM_WAS_PURGED	1
+
+/* Return values from ASHMEM_GET_PIN_STATUS: Is the mapping pinned? */
+#define ASHMEM_IS_UNPINNED	0
+#define ASHMEM_IS_PINNED	1
+
+struct ashmem_pin {
+	__u32 offset;	/* offset into region, in bytes, page-aligned */
+	__u32 len;	/* length forward from offset, in bytes, page-aligned */
+};
+
+#define __ASHMEMIOC		0x77
+
+enum {
+	ASHMEM_SET_NAME		= _IOW(__ASHMEMIOC, 1, char[256]),
+	ASHMEM_GET_NAME		= _IOR(__ASHMEMIOC, 2, char[256]),
+	ASHMEM_SET_SIZE		= _IOW(__ASHMEMIOC, 3, size_t),
+	ASHMEM_GET_SIZE		= _IO(__ASHMEMIOC, 4),
+	ASHMEM_SET_PROT_MASK	= _IOW(__ASHMEMIOC, 5, unsigned long),
+	ASHMEM_GET_PROT_MASK	= _IO(__ASHMEMIOC, 6),
+	ASHMEM_PIN		= _IOW(__ASHMEMIOC, 7, struct ashmem_pin),
+	ASHMEM_UNPIN		= _IOW(__ASHMEMIOC, 8, struct ashmem_pin),
+	ASHMEM_GET_PIN_STATUS	= _IO(__ASHMEMIOC, 9),
+	ASHMEM_PURGE_ALL_CACHES	= _IO(__ASHMEMIOC, 10),
+	ASHMEM_GET_FILE_ID	= _IOR(__ASHMEMIOC, 11, unsigned long),
+#ifdef CONFIG_COMPAT
+	COMPAT_ASHMEM_SET_SIZE	=	_IOW(__ASHMEMIOC, 3, compat_size_t),
+	COMPAT_ASHMEM_SET_PROT_MASK	=	_IOW(__ASHMEMIOC, 5, unsigned int),
+#endif
+};
+#endif
