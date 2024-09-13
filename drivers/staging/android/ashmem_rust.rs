@@ -11,6 +11,8 @@ use kernel::{
     fs::File,
     ioctl::_IOC_SIZE,
     miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
+    mm::virt::{flags as vma_flags, VmAreaNew},
+    page::page_align,
     prelude::*,
     sync::{new_mutex, Mutex},
     task::Task,
@@ -18,11 +20,38 @@ use kernel::{
 };
 
 const ASHMEM_NAME_LEN: usize = bindings::ASHMEM_NAME_LEN as usize;
+const ASHMEM_FULL_NAME_LEN: usize = bindings::ASHMEM_FULL_NAME_LEN as usize;
+const ASHMEM_NAME_PREFIX_LEN: usize = bindings::ASHMEM_NAME_PREFIX_LEN as usize;
+const ASHMEM_NAME_PREFIX: [u8; ASHMEM_NAME_PREFIX_LEN] = *b"dev/ashmem/";
 
 const PROT_READ: usize = bindings::PROT_READ as usize;
 const PROT_EXEC: usize = bindings::PROT_EXEC as usize;
 const PROT_WRITE: usize = bindings::PROT_WRITE as usize;
 const PROT_MASK: usize = PROT_EXEC | PROT_READ | PROT_WRITE;
+
+mod shmem;
+use shmem::ShmemFile;
+
+fn calc_vm_may_flags(prot: usize) -> usize {
+    let mut ret = 0;
+    if prot & PROT_READ != 0 {
+        ret |= bindings::VM_MAYREAD as usize;
+    }
+    if prot & PROT_WRITE != 0 {
+        ret |= bindings::VM_MAYWRITE as usize;
+    }
+    if prot & PROT_EXEC != 0 {
+        ret |= bindings::VM_MAYEXEC as usize;
+    }
+    ret
+}
+
+/// Convert from `PROT_*` bitmasks to vma flags.
+fn calc_vm_prot_bits(prot: usize, pkey: usize) -> usize {
+    // Casts are between `usize` and `unsigned long` which are always the same size.
+    // SAFETY: This C function is always safe to call.
+    unsafe { bindings::calc_vm_prot_bits(prot as _, pkey as _) as usize }
+}
 
 /// Does PROT_READ imply PROT_EXEC for this task?
 fn read_implies_exec(task: &Task) -> bool {
@@ -45,6 +74,9 @@ struct AshmemModule {
 
 impl kernel::Module for AshmemModule {
     fn init(_module: &'static kernel::ThisModule) -> Result<Self> {
+        // SAFETY: Called once since this is the module initializer.
+        unsafe { shmem::SHMEM_FOPS_ONCE.init() };
+
         pr_info!("Using Rust implementation.");
 
         Ok(Self {
@@ -70,6 +102,7 @@ struct AshmemInner {
     prot_mask: usize,
     /// If set, then this holds the ashmem name without the dev/ashmem/ prefix. No zero terminator.
     name: Option<Vec<u8>>,
+    file: Option<ShmemFile>,
 }
 
 #[vtable]
@@ -84,11 +117,58 @@ impl MiscDevice for Ashmem {
                         size: 0,
                         prot_mask: PROT_MASK,
                         name: None,
+                        file: None,
                     }),
                 }
             },
             GFP_KERNEL,
         )
+    }
+
+    fn mmap(me: Pin<&Ashmem>, _file: &File, vma: &VmAreaNew) -> Result<()> {
+        let asma = &mut *me.inner.lock();
+
+        // User needs to SET_SIZE before mapping.
+        if asma.size == 0 {
+            return Err(EINVAL);
+        }
+
+        // Requested mapping size larger than object size.
+        if vma.end() - vma.start() > page_align(asma.size) {
+            return Err(EINVAL);
+        }
+
+        let vma_flags = vma.flags();
+        let allowed_prot_bits = calc_vm_prot_bits(asma.prot_mask, 0);
+        let extra_vma_flags = vma_flags & !allowed_prot_bits;
+        if extra_vma_flags & calc_vm_prot_bits(PROT_MASK, 0) != 0 {
+            return Err(EPERM);
+        }
+
+        let flags_clear = calc_vm_may_flags(!asma.prot_mask);
+        vma.set_flags(vma_flags & !flags_clear);
+
+        let file = match asma.file.as_ref() {
+            Some(file) => file,
+            None => {
+                let mut full_name = [0u8; ASHMEM_FULL_NAME_LEN];
+                let name_len = asma.full_name(&mut full_name);
+                let name = CStr::from_bytes_with_nul(&full_name[..name_len])?;
+                asma.file
+                    .insert(ShmemFile::new(name, asma.size, vma.flags())?)
+            }
+        };
+
+        if vma.flags() & vma_flags::SHARED != 0 {
+            // We're really using this just to set vm_ops to `shmem_anon_vm_ops`. Anything else it
+            // does is undone by the call to `set_file` below.
+            shmem::zero_setup(vma)?;
+        } else {
+            vma.set_anonymous();
+        }
+
+        shmem::set_file(vma, file.file());
+        Ok(())
     }
 
     fn ioctl(me: Pin<&Ashmem>, _file: &File, cmd: u32, arg: usize) -> Result<c_long> {
@@ -124,7 +204,9 @@ impl Ashmem {
         v.extend_from_slice(&local_name[..zero_pos], GFP_KERNEL)?;
 
         let mut asma = self.inner.lock();
-        // TODO: fail if `mmap` is already called
+        if asma.file.is_some() {
+            return Err(EINVAL);
+        }
         asma.name = Some(v);
         Ok(0)
     }
@@ -146,7 +228,9 @@ impl Ashmem {
 
     fn set_size(&self, size: usize) -> Result<c_long> {
         let mut asma = self.inner.lock();
-        // TODO: fail if `mmap` is already called
+        if asma.file.is_some() {
+            return Err(EINVAL);
+        }
         asma.size = size;
         Ok(0)
     }
@@ -173,5 +257,29 @@ impl Ashmem {
 
     fn get_prot_mask(&self) -> Result<c_long> {
         Ok(self.inner.lock().prot_mask as c_long)
+    }
+}
+
+impl AshmemInner {
+    /// Get the full name. Returns the length, including the nul terminator.
+    ///
+    /// If the name is `Some(name)`, then this returns `dev/ashmem/name\0`.
+    ///
+    /// If the name is `None`, then this returns `dev/ashmem\0`.
+    fn full_name(&self, name: &mut [u8; ASHMEM_FULL_NAME_LEN]) -> usize {
+        name[..ASHMEM_NAME_PREFIX_LEN].copy_from_slice(&ASHMEM_NAME_PREFIX);
+        if let Some(set_name) = self.name.as_deref() {
+            name[ASHMEM_NAME_PREFIX_LEN..][..set_name.len()].copy_from_slice(set_name);
+        } else {
+            // Remove last slash if no name set.
+            name[ASHMEM_NAME_PREFIX_LEN - 1] = 0;
+        }
+        name[ASHMEM_FULL_NAME_LEN - 1] = 0;
+
+        // This unwrap only fails if there's no nul-byte, but we just added one at the end above.
+        name.iter()
+            .position(|&c| c == 0)
+            .map(|len| len + 1)
+            .unwrap()
     }
 }
