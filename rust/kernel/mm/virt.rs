@@ -184,6 +184,27 @@ impl VmAreaNew {
         // SAFETY: The vma is not yet shared.
         unsafe { (*self.as_ptr()).vm_ops = core::ptr::null() };
     }
+
+    /// Set the file.
+    #[inline]
+    pub fn set_file(&self, file: &crate::fs::File) {
+        use crate::{fs::File, types::ARef};
+        use core::ptr::NonNull;
+
+        let file = ARef::from(file);
+        // SAFETY: We're setting up the vma, so we can read the file pointer.
+        let old_file = unsafe { (*self.as_ptr()).vm_file };
+
+        // INVARIANT: This transfers ownership of the refcount we just created to the vma.
+        //
+        // SAFETY: We're setting up the vma, so we can write to the file pointer.
+        unsafe { (*self.as_ptr()).vm_file = ARef::into_raw(file).as_ptr().cast() };
+
+        if let Some(old_file) = NonNull::new(old_file) {
+            // SAFETY: We took ownership of the file refcount from the vma, so we can drop it.
+            drop(unsafe { ARef::<File>::from_raw(old_file.cast()) });
+        }
+    }
 }
 
 /// Container for [`VmArea`] flags.
