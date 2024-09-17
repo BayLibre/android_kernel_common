@@ -12,7 +12,6 @@
 #include <linux/mm.h>
 #include <linux/mm_inline.h>
 #include <linux/mmu_context.h>
-#include <linux/page_size_compat.h>
 #include <linux/syscalls.h>
 #include <linux/sched.h>
 #include "internal.h"
@@ -292,10 +291,10 @@ static int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
 		return ret;
 
 	start = untagged_addr(start);
-	if (!__PAGE_ALIGNED(start))
+	if (!PAGE_ALIGNED(start))
 		return -EINVAL;
 
-	len = __PAGE_ALIGN(len_in);
+	len = PAGE_ALIGN(len_in);
 	/* Check to see whether len was rounded up from small -ve to zero. */
 	if (len_in && !len)
 		return -EINVAL;
