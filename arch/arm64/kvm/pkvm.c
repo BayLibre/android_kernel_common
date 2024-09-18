@@ -1019,12 +1019,14 @@ int __pkvm_register_el2_call(unsigned long hfn_hyp_va)
 EXPORT_SYMBOL(__pkvm_register_el2_call);
 #endif /* CONFIG_MODULES */
 
-int __pkvm_topup_hyp_alloc_mgt(unsigned long id, unsigned long nr_pages, unsigned long sz_alloc)
+int __pkvm_topup_hyp_alloc_mgt_flags(unsigned long id, unsigned long nr_pages,
+				     unsigned long sz_alloc, gfp_t gfp)
 {
 	struct kvm_hyp_memcache mc;
 	int ret;
 
 	init_hyp_memcache(&mc);
+	mc.flags = gfp;
 
 	ret = topup_hyp_memcache(&mc, nr_pages, get_order(sz_alloc));
 	if (ret)
@@ -1036,6 +1038,12 @@ int __pkvm_topup_hyp_alloc_mgt(unsigned long id, unsigned long nr_pages, unsigne
 		free_hyp_memcache(&mc);
 
 	return ret;
+}
+EXPORT_SYMBOL(__pkvm_topup_hyp_alloc_mgt_flags);
+
+int __pkvm_topup_hyp_alloc_mgt(unsigned long id, unsigned long nr_pages, unsigned long sz_alloc)
+{
+	return __pkvm_topup_hyp_alloc_mgt_flags(id, nr_pages, sz_alloc, 0);
 }
 EXPORT_SYMBOL(__pkvm_topup_hyp_alloc_mgt);
 

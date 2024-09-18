@@ -1346,5 +1346,6 @@ int kvm_iommu_register_driver(struct kvm_iommu_driver *kern_ops);
 unsigned long __pkvm_reclaim_hyp_alloc_mgt(unsigned long nr_pages);
 int __pkvm_topup_hyp_alloc_mgt(unsigned long id, unsigned long nr_pages,
 			       unsigned long sz_alloc);
-
+int __pkvm_topup_hyp_alloc_mgt_flags(unsigned long id, unsigned long nr_pages,
+				     unsigned long sz_alloc, gfp_t gfp);
 #endif /* __ARM64_KVM_HOST_H__ */
