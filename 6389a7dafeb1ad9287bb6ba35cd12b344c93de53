@@ -16,6 +16,23 @@
       "message": "Respin Bug: b/367895677",
       "revId": "6389a7dafeb1ad9287bb6ba35cd12b344c93de53",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c459dda6_85dade8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-09-18T13:29:01Z",
+      "side": 1,
+      "message": "Why is this backported? `kfree` doesn\u0027t sleep. It is the call to \u0027kvfree()\u0027 that has the problem but this branch doesn\u0027t have the patch that moves `kfree()` -\u003e `kvfree()`.",
+      "revId": "6389a7dafeb1ad9287bb6ba35cd12b344c93de53",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
