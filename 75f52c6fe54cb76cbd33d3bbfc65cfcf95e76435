@@ -22,6 +22,30 @@
       },
       "revId": "75f52c6fe54cb76cbd33d3bbfc65cfcf95e76435",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fad8588_0ad66136",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1028,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-09-18T11:10:55Z",
+      "side": 1,
+      "message": "We can,but this would intrusive as it change all callers, and as this is a fix, I wanted it to be as simple as possible.",
+      "parentUuid": "df8c3efa_eed32b8b",
+      "range": {
+        "startLine": 1028,
+        "startChar": 1,
+        "endLine": 1028,
+        "endChar": 18
+      },
+      "revId": "75f52c6fe54cb76cbd33d3bbfc65cfcf95e76435",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
