@@ -19,6 +19,13 @@ obj-$(CONFIG_CPU_FREQ_GOV_ATTR_SET)	+= cpufreq_governor_attr_set.o
 
 obj-$(CONFIG_CPUFREQ_DT)		+= cpufreq-dt.o
 obj-$(CONFIG_CPUFREQ_DT_PLATDEV)	+= cpufreq-dt-platdev.o
+<<<<<<< HEAD   (234bb9 ANDROID: ftrace: add more vendor hook for ftrace dump on oop)
+||||||| BASE
+obj-$(CONFIG_ANDROID_V_CPUFREQ_VIRT)	+= android-v-virt-cpufreq.o
+=======
+obj-$(CONFIG_ANDROID_V_CPUFREQ_VIRT)	+= android-v-virt-cpufreq.o
+obj-$(CONFIG_CPUFREQ_VIRT)		+= virtual-cpufreq.o
+>>>>>>> CHANGE (425424 BACKPORT: FROMGIT: cpufreq: add virtual-cpufreq driver)
 
 obj-$(CONFIG_CPUFREQ_DUMMY)		+= dummy-cpufreq.o
 
