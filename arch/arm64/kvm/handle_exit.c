@@ -344,7 +344,7 @@ static int handle_hyp_req_mem(struct kvm_vcpu *vcpu,
 	case REQ_MEM_DEST_VCPU_MEMCACHE:
 		nr_pages = vcpu->arch.stage2_mc.nr_pages;
 		ret = topup_hyp_memcache(&vcpu->arch.stage2_mc,
-					 req->mem.nr_pages, 0);
+					 nr_pages + req->mem.nr_pages, 0);
 		nr_pages = vcpu->arch.stage2_mc.nr_pages - nr_pages;
 		atomic64_add(nr_pages << PAGE_SHIFT, &kvm->stat.protected_hyp_mem);
 		atomic64_add(nr_pages << PAGE_SHIFT, &kvm->stat.protected_pgtable_mem);
