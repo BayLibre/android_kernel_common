@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c3cf4b2_f422ddae",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3037,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-09-19T11:18:59Z",
+      "side": 1,
+      "message": "From the offline discussion we had. It seems as FF-A will have to keep track of the handle, it could also keep track of the memory regions associated with that handle.\n\nOn __pkvm_start_teardown_vm(), those regions could be reclaimed from FF-A and the rx, tx buffers unpinned.\n\nhost_reclaim_page() would then mostly remain unchanged.",
+      "revId": "f9e4fd53ea5623c3e15d7f8c62969c382787ef1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
