@@ -122,6 +122,24 @@
       "message": "My understanding is that `mc.flags` and `gfp` are different types.\n\n`mc.flags` defines the following bits\n\n```\n#define HYP_MEMCACHE_ACCOUNT_KMEMCG BIT(1)\n#define HYP_MEMCACHE_ACCOUNT_STAGE2 BIT(2)\n```\n\nThe function `hyp_mc_alloc_fn` provides a mapping from `mc.flags` to `gfp` flags. It doesn\u0027t just pass `mc.flags` directly into `__get_free_pages`.\n\nIf I\u0027m not mistaken, this change does not achieve the desired result.\n\nShould we add something like\n```\n#define HYP_MEMCACHE_GFP_ATOMIC BIT(3)\n```",
       "revId": "75f52c6fe54cb76cbd33d3bbfc65cfcf95e76435",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d3de319_59ac4d2d",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1029,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2024-09-19T08:32:49Z",
+      "side": 1,
+      "message": "Ah, nice catch, I got confused.\n\nI think it\u0027s better to pass through the gfp as passed to the map function to avoid creating further dependencies.",
+      "parentUuid": "f54b2ae0_de7c610e",
+      "revId": "75f52c6fe54cb76cbd33d3bbfc65cfcf95e76435",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
