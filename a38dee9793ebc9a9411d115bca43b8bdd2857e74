@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef69ee1f_9bc69282",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2024-09-20T00:06:18Z",
+      "side": 1,
+      "message": "This needs to be `GFP_KERNEL`. Otherwise, you\u0027ll pass in `0` for GFP flags as the first argument to `__get_free_pages`.",
+      "range": {
+        "startLine": 1045,
+        "startChar": 65,
+        "endLine": 1045,
+        "endChar": 66
+      },
+      "revId": "a38dee9793ebc9a9411d115bca43b8bdd2857e74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
