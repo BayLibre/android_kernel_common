@@ -6,7 +6,7 @@
  *
  * Author: Will Deacon <will.deacon@arm.com>
  *
- * This driver currently supports:
+ * This driver currently supports
  *	- SMMUv1 and v2 implementations
  *	- Stream-matching and stream-indexing
  *	- v7/v8 long-descriptor format
