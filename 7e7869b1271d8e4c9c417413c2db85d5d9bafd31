@@ -16,6 +16,23 @@
       "message": "No. You cannot change the KMI in this way. The only valid fix is to undo the changes you made to MAX_CONFIG_INTERFACES and find a new way to get what you need done. `struct usb_function` cannot be changed. Period.",
       "revId": "7e7869b1271d8e4c9c417413c2db85d5d9bafd31",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bfe8528_03a3708b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-09-23T22:27:33Z",
+      "side": 1,
+      "message": "You can not simply redefine the KMI for `struct usb_configuration`. You will likely need to port the extent of this change to a vendor struct which provides the additional storage for the larger array, then where the struct array is accessed, add support to use the vendor struct.",
+      "revId": "7e7869b1271d8e4c9c417413c2db85d5d9bafd31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
