@@ -57,11 +57,13 @@ KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
 ifneq ($(CONFIG_UNWIND_TABLES),y)
 KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
 KBUILD_AFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
-KBUILD_RUSTFLAGS += -Cforce-unwind-tables=n
 else
 KBUILD_CFLAGS	+= -fasynchronous-unwind-tables
 KBUILD_AFLAGS	+= -fasynchronous-unwind-tables
+<<<<<<< HEAD   (221173 ANDROID: rust_binder: use AllocationView for copy_into)
 KBUILD_RUSTFLAGS += -Cforce-unwind-tables=y -Zuse-sync-unwind=n
+=======
+>>>>>>> BRANCH (c0af0e Merge da3ea35007d0 ("Linux 6.11-rc7") into android-mainline)
 endif
 
 ifeq ($(CONFIG_STACKPROTECTOR_PER_TASK),y)
@@ -116,7 +118,10 @@ endif
 
 ifeq ($(CONFIG_SHADOW_CALL_STACK), y)
 KBUILD_CFLAGS	+= -ffixed-x18
+<<<<<<< HEAD   (221173 ANDROID: rust_binder: use AllocationView for copy_into)
 KBUILD_RUSTFLAGS += -Zfixed-x18
+=======
+>>>>>>> BRANCH (c0af0e Merge da3ea35007d0 ("Linux 6.11-rc7") into android-mainline)
 endif
 
 ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
