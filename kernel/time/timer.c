@@ -2513,12 +2513,12 @@ static void run_local_timers(void)
  * Called from the timer interrupt handler to charge one tick to the current
  * process.  user_tick is 1 if the tick is user time, 0 for system.
  */
-void update_process_times(int user_tick)
+void update_process_times(unsigned long ticks, int user_tick)
 {
 	struct task_struct *p = current;
 
 	/* Note: this timer irq context must be accounted for as well. */
-	account_process_tick(p, user_tick);
+	account_process_tick(p, ticks, user_tick);
 	run_local_timers();
 	rcu_sched_clock_irq(user_tick);
 #ifdef CONFIG_IRQ_WORK
