@@ -2361,7 +2361,8 @@ pkg_filegroup(
         ":kselftest_timers_leapcrash_x86_64",
         ":kselftest_timers_nanosleep_x86_64",
         ":kselftest_timers_nsleep_lat_x86_64",
-        ":kselftest_timers_posix_timers_x86_64",
+        # TODO: b/369330443 - broken due to missing pthread_cancel in sysroot
+        #":kselftest_timers_posix_timers_x86_64",
         ":kselftest_timers_set_2038_x86_64",
         ":kselftest_timers_set_tai_x86_64",
         ":kselftest_timers_set_timer_lat_x86_64",
@@ -2430,7 +2431,8 @@ pkg_filegroup(
         ":kselftest_timers_leapcrash_x86",
         ":kselftest_timers_nanosleep_x86",
         ":kselftest_timers_nsleep_lat_x86",
-        ":kselftest_timers_posix_timers_x86",
+        # TODO: b/369330443 - broken due to missing pthread_cancel in sysroot
+        #":kselftest_timers_posix_timers_x86",
         ":kselftest_timers_set_2038_x86",
         ":kselftest_timers_set_tai_x86",
         ":kselftest_timers_set_timer_lat_x86",
@@ -2498,7 +2500,8 @@ pkg_filegroup(
         ":kselftest_timers_leapcrash_arm",
         ":kselftest_timers_nanosleep_arm",
         ":kselftest_timers_nsleep_lat_arm",
-        ":kselftest_timers_posix_timers_arm",
+        # TODO: b/369330443 - broken due to missing pthread_cancel in sysroot
+        #":kselftest_timers_posix_timers_arm",
         ":kselftest_timers_set_2038_arm",
         ":kselftest_timers_set_tai_arm",
         ":kselftest_timers_set_timer_lat_arm",
@@ -2561,7 +2564,8 @@ pkg_filegroup(
         ":kselftest_timers_leapcrash_arm64",
         ":kselftest_timers_nanosleep_arm64",
         ":kselftest_timers_nsleep_lat_arm64",
-        ":kselftest_timers_posix_timers_arm64",
+        # TODO: b/369330443 - broken due to missing pthread_cancel in sysroot
+        #":kselftest_timers_posix_timers_arm64",
         ":kselftest_timers_set_2038_arm64",
         ":kselftest_timers_set_tai_arm64",
         ":kselftest_timers_set_timer_lat_arm64",
