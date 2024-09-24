@@ -497,10 +497,9 @@ EXPORT_SYMBOL_GPL(thread_group_cputime_adjusted);
  * @p: the process that the CPU time gets accounted to
  * @user_tick: indicates if the tick is a user or a system tick
  */
-void account_process_tick(struct task_struct *p, int user_tick)
+void account_process_tick(struct task_struct *p, unsigned int ticks, int user_tick)
 {
 	u64 cputime, steal;
-	int ticks = 1;
 
 	trace_android_vh_account_process_tick_gran(user_tick, &ticks);
 	if (!ticks)
@@ -515,7 +514,7 @@ void account_process_tick(struct task_struct *p, int user_tick)
 		return;
 	}
 
-	cputime = TICK_NSEC * ticks;
+	cputime = ticks * TICK_NSEC;
 	steal = steal_account_process_time(ULONG_MAX);
 
 	if (steal >= cputime)
