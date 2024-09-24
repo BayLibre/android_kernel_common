@@ -33,6 +33,24 @@
       "message": "You can not simply redefine the KMI for `struct usb_configuration`. You will likely need to port the extent of this change to a vendor struct which provides the additional storage for the larger array, then where the struct array is accessed, add support to use the vendor struct.",
       "revId": "7e7869b1271d8e4c9c417413c2db85d5d9bafd31",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7bafbc5_e27fd951",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-09-24T20:05:49Z",
+      "side": 1,
+      "message": "Look at aosp/3153719 for inspiration",
+      "parentUuid": "2bfe8528_03a3708b",
+      "revId": "7e7869b1271d8e4c9c417413c2db85d5d9bafd31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
