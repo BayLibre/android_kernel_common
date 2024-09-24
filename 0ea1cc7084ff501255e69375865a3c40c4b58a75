@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1ba5851_acd8a271",
+        "filename": "drivers/android/debug_kinfo.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2024-09-24T18:52:30Z",
+      "side": 0,
+      "message": "How come you are removing this? The `MODULE_DEVICE_TABLE` macro is needed for auto-module loading based on devices that declare support for it in their device trees.",
+      "range": {
+        "startLine": 175,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 46
+      },
+      "revId": "0ea1cc7084ff501255e69375865a3c40c4b58a75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
