@@ -16,6 +16,23 @@
       "message": "@minchan@google.com the other case is unmap but there we don\u0027t override the flags after the split.",
       "revId": "56c706bfae5d962da0f7be6893ee08dcbe3d1c03",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8063ee4_0e5b878e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2024-09-24T20:23:44Z",
+      "side": 1,
+      "message": "Can we make vm_flags API immune for the padding hack?\n\nHow about adding vma_pad_fixup_flags in the vm_flags_reset and friends so no one need the extra care?",
+      "revId": "56c706bfae5d962da0f7be6893ee08dcbe3d1c03",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
