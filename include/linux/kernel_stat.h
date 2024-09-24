@@ -127,12 +127,12 @@ extern void account_idle_time(u64);
 extern u64 get_idle_time(struct kernel_cpustat *kcs, int cpu);
 
 #ifdef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
-static inline void account_process_tick(struct task_struct *tsk, int user)
+static inline void account_process_tick(struct task_struct *tsk, unsigned long ticks,  int user)
 {
 	vtime_flush(tsk);
 }
 #else
-extern void account_process_tick(struct task_struct *, int user);
+extern void account_process_tick(struct task_struct *, unsigned long ticks, int user);
 #endif
 
 extern void account_idle_ticks(unsigned long ticks);
