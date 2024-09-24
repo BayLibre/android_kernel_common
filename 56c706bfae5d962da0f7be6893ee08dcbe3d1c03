@@ -56,6 +56,30 @@
       },
       "revId": "56c706bfae5d962da0f7be6893ee08dcbe3d1c03",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "367693ae_976a608c",
+        "filename": "fs/userfaultfd.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1636,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-09-24T22:48:06Z",
+      "side": 1,
+      "message": "I move it into the vm_reset_flags() as Minchan suggested. This will work for 6.1 and later. In earlier kernels we need to fixup the callers",
+      "parentUuid": "46c52aa5_27ada132",
+      "range": {
+        "startLine": 1636,
+        "startChar": 32,
+        "endLine": 1636,
+        "endChar": 51
+      },
+      "revId": "56c706bfae5d962da0f7be6893ee08dcbe3d1c03",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
