@@ -55,7 +55,7 @@ static ktime_t last_jiffies_update;
 /*
  * Must be called with interrupts disabled !
  */
-static void tick_do_update_jiffies64(ktime_t now)
+static unsigned long tick_do_update_jiffies64(ktime_t now)
 {
 	unsigned long ticks = 1;
 	ktime_t delta, nextp;
@@ -71,7 +71,7 @@ static void tick_do_update_jiffies64(ktime_t now)
 	 */
 	if (IS_ENABLED(CONFIG_64BIT)) {
 		if (ktime_before(now, smp_load_acquire(&tick_next_period)))
-			return;
+			return 0;
 	} else {
 		unsigned int seq;
 
@@ -85,7 +85,7 @@ static void tick_do_update_jiffies64(ktime_t now)
 		} while (read_seqcount_retry(&jiffies_seq, seq));
 
 		if (ktime_before(now, nextp))
-			return;
+			return 0;
 	}
 
 	/* Quick check failed, i.e. update is required. */
@@ -96,7 +96,7 @@ static void tick_do_update_jiffies64(ktime_t now)
 	 */
 	if (ktime_before(now, tick_next_period)) {
 		raw_spin_unlock(&jiffies_lock);
-		return;
+		return 0;
 	}
 
 	write_seqcount_begin(&jiffies_seq);
@@ -148,6 +148,7 @@ static void tick_do_update_jiffies64(ktime_t now)
 
 	raw_spin_unlock(&jiffies_lock);
 	update_wall_time();
+	return ticks;
 }
 
 /*
@@ -204,10 +205,10 @@ static inline void tick_sched_flag_clear(struct tick_sched *ts,
 
 #define MAX_STALLED_JIFFIES 5
 
-static void tick_sched_do_timer(struct tick_sched *ts, ktime_t now)
+static unsigned long tick_sched_do_timer(struct tick_sched *ts, ktime_t now)
 {
 	int tick_cpu, cpu = smp_processor_id();
-
+	unsigned long ticks = 0;
 	/*
 	 * Check if the do_timer duty was dropped. We don't care about
 	 * concurrency: This happens only when the CPU in charge went
@@ -230,7 +231,7 @@ static void tick_sched_do_timer(struct tick_sched *ts, ktime_t now)
 
 	/* Check if jiffies need an update */
 	if (tick_cpu == cpu) {
-		tick_do_update_jiffies64(now);
+		ticks = tick_do_update_jiffies64(now);
 		trace_android_vh_jiffies_update(NULL);
 	}
 
@@ -243,7 +244,7 @@ static void tick_sched_do_timer(struct tick_sched *ts, ktime_t now)
 		ts->last_tick_jiffies = READ_ONCE(jiffies);
 	} else {
 		if (++ts->stalled_jiffies == MAX_STALLED_JIFFIES) {
-			tick_do_update_jiffies64(now);
+			ticks += tick_do_update_jiffies64(now);
 			ts->stalled_jiffies = 0;
 			ts->last_tick_jiffies = READ_ONCE(jiffies);
 		}
@@ -251,9 +252,10 @@ static void tick_sched_do_timer(struct tick_sched *ts, ktime_t now)
 
 	if (tick_sched_flag_test(ts, TS_FLAG_INIDLE))
 		ts->got_idle_tick = 1;
+	return ticks;
 }
 
-static void tick_sched_handle(struct tick_sched *ts, struct pt_regs *regs)
+static void tick_sched_handle(struct tick_sched *ts, unsigned long ticks, struct pt_regs *regs)
 {
 	/*
 	 * When we are idle and the tick is stopped, we have to touch
@@ -267,7 +269,7 @@ static void tick_sched_handle(struct tick_sched *ts, struct pt_regs *regs)
 	    tick_sched_flag_test(ts, TS_FLAG_STOPPED)) {
 		touch_softlockup_watchdog_sched();
 		if (is_idle_task(current))
-			ts->idle_jiffies++;
+			ts->idle_jiffies += ticks;
 		/*
 		 * In case the current tick fired too early past its expected
 		 * expiration, make sure we don't bypass the next clock reprogramming
@@ -276,7 +278,7 @@ static void tick_sched_handle(struct tick_sched *ts, struct pt_regs *regs)
 		ts->next_tick = 0;
 	}
 
-	update_process_times(user_mode(regs));
+	update_process_times(ticks, user_mode(regs));
 	profile_tick(CPU_PROFILING);
 }
 
@@ -289,15 +291,16 @@ static enum hrtimer_restart tick_nohz_handler(struct hrtimer *timer)
 	struct tick_sched *ts =	container_of(timer, struct tick_sched, sched_timer);
 	struct pt_regs *regs = get_irq_regs();
 	ktime_t now = ktime_get();
+	unsigned long ticks;
 
-	tick_sched_do_timer(ts, now);
+	ticks = tick_sched_do_timer(ts, now);
 
 	/*
 	 * Do not call when we are not in IRQ context and have
 	 * no valid 'regs' pointer
 	 */
 	if (regs)
-		tick_sched_handle(ts, regs);
+		tick_sched_handle(ts, ticks, regs);
 	else
 		ts->next_tick = 0;
 

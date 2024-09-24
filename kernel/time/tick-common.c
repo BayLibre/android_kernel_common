@@ -100,7 +100,7 @@ static void tick_periodic(int cpu)
 		trace_android_vh_jiffies_update(NULL);
 	}
 
-	update_process_times(user_mode(get_irq_regs()));
+	update_process_times(1, user_mode(get_irq_regs()));
 	profile_tick(CPU_PROFILING);
 }
 
