@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ad5bc544_64089f21",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5821,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-09-25T01:14:36Z",
+      "side": 1,
+      "message": "Hmm. I guess its safe since we take a ref on the node before dropping the lock so at least \"n\" is protected even if new nodes might be added to the tree (so rb_next might be different when we reacquire than when we dropped the lock).\n\nIs it possible that this loop misses newly added nodes then? Eg, would this be a problem?\n\n1. binder_add_freeze_work() called and processes several nodes\n2. when inner proc lock is dropped and node lock not yet acquired, a new node is added that is inserted in the tree immediately after `rb_first(\u0026proc-\u003enodes)`\n3. binder_add_freeze_work() continues processing nodes, but never sees the node added in #2",
+      "parentUuid": "5556c939_2a06f7ac",
+      "revId": "7eda12555b81c97036d3a8bd600ad2252e4fa6f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "740a3dbf_c1bb605c",
         "filename": "drivers/android/binder.c",
         "patchSetId": 2
