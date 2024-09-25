@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d51d637_7e3c4b57",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 840,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-09-25T12:13:48Z",
+      "side": 1,
+      "message": "retrieved",
+      "range": {
+        "startLine": 840,
+        "startChar": 14,
+        "endLine": 840,
+        "endChar": 23
+      },
+      "revId": "218378d22354e874338aaad3e1067d7f89653e35",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "712b27f4_f5dd2ae2",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 846,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-09-25T12:13:48Z",
+      "side": 1,
+      "message": "Just do \u0027val \u0026 STRTAB_STE_0_S1CTRXPTR_MASK` instead of the unnecessary shifting?",
+      "range": {
+        "startLine": 846,
+        "startChar": 31,
+        "endLine": 846,
+        "endChar": 57
+      },
+      "revId": "218378d22354e874338aaad3e1067d7f89653e35",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee1e1535_843c2454",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-09-25T12:13:48Z",
+      "side": 1,
+      "message": "You may as well declare `nr_entries` here, since it\u0027s not used anywhere else.",
+      "range": {
+        "startLine": 847,
+        "startChar": 2,
+        "endLine": 847,
+        "endChar": 12
+      },
+      "revId": "218378d22354e874338aaad3e1067d7f89653e35",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ee6c658_ae8413c0",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 889,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-09-25T12:13:48Z",
+      "side": 1,
+      "message": "Does this leak the newly allocated `cd_table`?",
+      "range": {
+        "startLine": 889,
+        "startChar": 3,
+        "endLine": 889,
+        "endChar": 16
+      },
+      "revId": "218378d22354e874338aaad3e1067d7f89653e35",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6148fd0d_f10b994f",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 909,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-09-25T12:13:48Z",
+      "side": 1,
+      "message": "Won\u0027t this overwrite a live CD in the case that it is shared with somebody else?",
+      "range": {
+        "startLine": 909,
+        "startChar": 0,
+        "endLine": 909,
+        "endChar": 43
+      },
+      "revId": "218378d22354e874338aaad3e1067d7f89653e35",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da5f3fa4_2f2973fc",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1193,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-09-25T12:13:48Z",
+      "side": 1,
+      "message": "This feels a bit fragile as it appears to rely on PASID 0 being detached last. Can we enforce that somehow?",
+      "range": {
+        "startLine": 1193,
+        "startChar": 2,
+        "endLine": 1193,
+        "endChar": 14
+      },
+      "revId": "218378d22354e874338aaad3e1067d7f89653e35",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebc8520c_238a39ae",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/pkvm/arm-smmu-v3.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1237,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-09-25T12:13:48Z",
+      "side": 1,
+      "message": "Where is this set to NULL on the `smmu_detach_dev` freeing path?",
+      "range": {
+        "startLine": 1237,
+        "startChar": 5,
+        "endLine": 1237,
+        "endChar": 23
+      },
+      "revId": "218378d22354e874338aaad3e1067d7f89653e35",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
