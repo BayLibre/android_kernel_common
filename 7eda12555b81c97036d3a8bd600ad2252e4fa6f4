@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5556c939_2a06f7ac",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5821,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-09-25T00:38:59Z",
+      "side": 1,
+      "message": "doesn\u0027t the fact that we drop the inner proc lock during this loop mean that the proc-\u003enodes list can change? Can we trust `rb_next(n)` not to be junk?",
+      "revId": "7eda12555b81c97036d3a8bd600ad2252e4fa6f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "740a3dbf_c1bb605c",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5858,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-09-25T00:38:59Z",
+      "side": 1,
+      "message": "is `prev` valid if proc is dead? Could this turn into a UAF at line 5862?",
+      "revId": "7eda12555b81c97036d3a8bd600ad2252e4fa6f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
