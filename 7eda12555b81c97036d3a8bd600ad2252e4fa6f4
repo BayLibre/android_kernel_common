@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b3adde7_1eb5d206",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5821,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-09-25T02:58:27Z",
+      "side": 1,
+      "message": "Traversing the proc-\u003enodes is very complicated because of the lock ordering. I believe we _could_ invert the order which would simplify this loop but it would also complicate other cases.\n\nAs it stands, I believe we could miss newly added nodes but the same applies if we were able to hold the inner_lock throughout. What I mean is new nodes could be added _after_ we exit the loop too and we\u0027d miss those.\n\nHowever, this wouldn\u0027t be a problem. When the reference adds a frozen notification for this new node (which we missed here), it will still get the current frozen status per the logic in `binder_request_freeze_notification()`.",
+      "parentUuid": "ad5bc544_64089f21",
+      "revId": "7eda12555b81c97036d3a8bd600ad2252e4fa6f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "740a3dbf_c1bb605c",
@@ -49,6 +67,24 @@
       "writtenOn": "2024-09-25T00:38:59Z",
       "side": 1,
       "message": "is `prev` valid if proc is dead? Could this turn into a UAF at line 5862?",
+      "revId": "7eda12555b81c97036d3a8bd600ad2252e4fa6f4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b5b274a_e9f28bd1",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5858,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-09-25T02:58:27Z",
+      "side": 1,
+      "message": "Yes, `prev` is now a dead node with a single temp ref that we acquired. In line 5862 it will finally be kfreed.",
+      "parentUuid": "740a3dbf_c1bb605c",
       "revId": "7eda12555b81c97036d3a8bd600ad2252e4fa6f4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
