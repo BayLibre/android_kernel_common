@@ -1,6 +1,8 @@
 . ${ROOT_DIR}/${KERNEL_DIR}/build.config.common
 . ${ROOT_DIR}/${KERNEL_DIR}/build.config.x86_64
-. ${ROOT_DIR}/${KERNEL_DIR}/build.config.gki
+
+# Do not source build.config.gki because it sets DEFCONFIG.
+POST_DEFCONFIG_CMDS="check_defconfig"
 
 if [ -n "${GKI_BUILD_CONFIG_FRAGMENT}" ]; then
 source ${GKI_BUILD_CONFIG_FRAGMENT}
