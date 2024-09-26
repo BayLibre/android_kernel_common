@@ -34,6 +34,24 @@
       "parentUuid": "4b0ed323_3b5d2f05",
       "revId": "34b1d5c572a38c8c11d150306e963c2e7261ed19",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "363cc951_25be0f22",
+        "filename": "arch/x86/configs/android-x86_64_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1299283
+      },
+      "writtenOn": "2024-09-26T19:43:53Z",
+      "side": 1,
+      "message": "I thought this had sent, but realized it was left as a draft comment:\n\nThe dropped configs represent a deviation from the arm64 gki_defconfig. My understanding is there isn\u0027t really a GKI for x86_64 yet so we can probably get away with making a change like this if it is sufficiently justified.\n\n+1 to answering why is it necessary to remove these configs?",
+      "parentUuid": "cd4df5db_33f43a6b",
+      "revId": "34b1d5c572a38c8c11d150306e963c2e7261ed19",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
