@@ -47,7 +47,7 @@ MODULE_NAME="kunit"
 TEST_FILTERS=
 SELECTED_TESTS=
 GCOV=false
-GCOV_DIST_DIR=
+GCOV_DIST_DIR_PATTERN="out/*/dist"
 
 while test $# -gt 0; do
     case "$1" in
@@ -70,7 +70,7 @@ while test $# -gt 0; do
             shift
             if test $# -gt 0; then
                 DIST_DIR=$1
-                GCOV_DIST_DIR=$DIST_DIR
+                GCOV_DIST_DIR_PATTERN=$DIST_DIR
             else
                 echo "kernel distribution directory is not specified"
                 exit 1
@@ -79,7 +79,7 @@ while test $# -gt 0; do
             ;;
         --dist-dir*)
             DIST_DIR=$(echo $1 | sed -e "s/^[^=]*=//g")
-            GCOV_DIST_DIR=$DIST_DIR
+            GCOV_DIST_DIR_PATTERN=$DIST_DIR
             shift
             ;;
         -s)
@@ -228,9 +228,13 @@ fi
 if $GCOV; then
     CREATE_TRACEFILE_CLI="common/tools/testing/android/bin/create-tracefile.py \
     -t $LOG_DIR -o $LOG_DIR/cov.info"
-    if [ -n "$GCOV_DIST_DIR" ]; then
-        CREATE_TRACEFILE_CLI+=" --dist-dir $GCOV_DIST_DIR"
-    fi
+    # kernel's gcno mapping files
+    for gcov_dist_dir in $(ls -d $GCOV_DIST_DIR_PATTERN); do
+        CREATE_TRACEFILE_CLI+=" --dist-dir $gcov_dist_dir"
+    done
+    # kunit modules' gcno mapping files
+    CREATE_TRACEFILE_CLI+=" --dist-dir $TESTSDIR/testcases/kunit"
+
     echo "Creating tracefile ..."
     $CREATE_TRACEFILE_CLI && echo "Created tracefile at $LOG_DIR/cov.info"
 fi

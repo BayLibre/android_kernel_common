@@ -18,6 +18,7 @@ load(
     "checkpatch",
     "ddk_headers",
     "ddk_headers_archive",
+    "gcov_files",
     "kernel_build",
     "kernel_compile_commands",
     "kernel_images",
@@ -1099,9 +1100,38 @@ pkg_files(
     visibility = ["//visibility:private"],
 )
 
+# KUnit modules do not provide GcovInfo. They are compiled with kernel.
+# These rules add kernel gcov files to kunit directory.
+gcov_files(
+    name = "kernel_aarch64_gcov",
+    srcs = [":kernel_aarch64"],
+    visibility = ["//visibility:private"],
+)
+
+gcov_files(
+    name = "kernel_x86_64_gcov",
+    srcs = [":kernel_x86_64"],
+    visibility = ["//visibility:private"],
+)
+
+pkg_files(
+    name = "kunit_gcov_arm64",
+    srcs = ["kernel_aarch64_gcov"],
+    prefix = _KUNIT_DIR,
+    visibility = ["//visibility:private"],
+)
+
+pkg_files(
+    name = "kunit_gcov_x86_64",
+    srcs = ["kernel_x86_64_gcov"],
+    prefix = _KUNIT_DIR,
+    visibility = ["//visibility:private"],
+)
+
 pkg_filegroup(
     name = "kunit_tests_arm64_pkg_files",
     srcs = [
+        ":kunit_gcov_arm64",
         ":kunit_modules_arm64",
         ":kunit_tests_config_arm64",
     ],
@@ -1111,6 +1141,7 @@ pkg_filegroup(
 pkg_filegroup(
     name = "kunit_tests_x86_64_pkg_files",
     srcs = [
+        ":kunit_gcov_x86_64",
         ":kunit_modules_x86_64",
         ":kunit_tests_config_x86_64",
     ],
