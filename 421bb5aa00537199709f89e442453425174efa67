@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55639ee9_52fcc8a5",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-09-27T19:24:07Z",
+      "side": 1,
+      "message": "I think all these calls to `seq_print` are missing a terminating newline?",
+      "revId": "421bb5aa00537199709f89e442453425174efa67",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67cd523c_7b07e66e",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-09-27T19:24:07Z",
+      "side": 1,
+      "message": "Style Nit: As previously, I think this would look clearer as\n```\nlet ino \u003d {\n  let asma \u003d self.inner.lock();\n  if let Some(file) \u003d asma.file.as_ref() {\n    file.inode_ino()\n  } else {\n    return Err(EINVAL)\n  }\n};\n```\nbut it\u0027s possible that explicit `drop` style got endorsed and I missed it.",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 19
+      },
+      "revId": "421bb5aa00537199709f89e442453425174efa67",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
