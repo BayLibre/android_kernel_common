@@ -368,11 +368,19 @@ static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 	struct kvm_vcpu *host_vcpu;
 	unsigned long pages = 0;
 	unsigned long idx;
+	int ret;
 
 	if (!pkvm_is_hyp_created(host_kvm))
 		goto out_free;
 
-	WARN_ON(kvm_call_hyp_nvhe(__pkvm_start_teardown_vm, host_kvm->arch.pkvm.handle));
+retry:
+	ret = kvm_call_hyp_nvhe(__pkvm_start_teardown_vm, host_kvm->arch.pkvm.handle);
+	if (ret == -EAGAIN) {
+		cond_resched();
+		goto retry;
+	}
+
+	WARN_ON(ret);
 
 	ppage = kvm_pinned_pages_iter_first(&host_kvm->arch.pkvm.pinned_pages, 0, ~(0UL));
 	while (ppage) {
