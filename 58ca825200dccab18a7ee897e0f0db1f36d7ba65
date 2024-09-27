@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06089d32_07fa69d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-09-27T21:52:03Z",
+      "side": 1,
+      "message": "Only -1 to make sure the `usize::min`/`usize::max` mixup is looked into - that appears to be a legitimate bug.",
+      "revId": "58ca825200dccab18a7ee897e0f0db1f36d7ba65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c4124c9_0f5af985",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-09-27T21:52:03Z",
+      "side": 1,
+      "message": "Might be worth dropping a comment here mentioning that throughout this file, `unpinned` refers to the state of ashmem-managed-memory, not Rust objects, given that you have to use pinned memory to work with lists, which looks weird. I recognize you mention that at the top of the file, but `#[pin] unpinned` seems like a good place to call this out too :P",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 12
+      },
+      "revId": "58ca825200dccab18a7ee897e0f0db1f36d7ba65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2caa1bb5_230503bf",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-09-27T21:52:03Z",
+      "side": 1,
+      "message": "Document that `new_range` is expected to be Some?",
+      "revId": "58ca825200dccab18a7ee897e0f0db1f36d7ba65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d27a82d2_073c07bc",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-09-27T21:52:03Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be `usize::max`?",
+      "revId": "58ca825200dccab18a7ee897e0f0db1f36d7ba65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8987f7f_b8999561",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-09-27T21:52:03Z",
+      "side": 1,
+      "message": "Maybe want a comment saying that `new_range` needs to contain `Some()` or it will panic?",
+      "revId": "58ca825200dccab18a7ee897e0f0db1f36d7ba65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
