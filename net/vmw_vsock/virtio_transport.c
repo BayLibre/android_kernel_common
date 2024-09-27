@@ -59,7 +59,6 @@ struct virtio_vsock {
 	 */
 	struct mutex event_lock;
 	bool event_run;
-	struct virtio_vsock_event event_list[8];
 
 	u32 guest_cid;
 	bool seqpacket_allow;
@@ -222,7 +221,7 @@ out_rcu:
 static void virtio_vsock_rx_fill(struct virtio_vsock *vsock)
 {
 	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM;
-	struct scatterlist pkt, *p;
+	struct scatterlist hdr, buf, *sgs[2];
 	struct virtqueue *vq;
 	struct sk_buff *skb;
 	int ret;
@@ -234,10 +233,12 @@ static void virtio_vsock_rx_fill(struct virtio_vsock *vsock)
 		if (!skb)
 			break;
 
-		memset(skb->head, 0, VIRTIO_VSOCK_SKB_HEADROOM);
-		sg_init_one(&pkt, virtio_vsock_hdr(skb), total_len);
-		p = &pkt;
-		ret = virtqueue_add_sgs(vq, &p, 0, 1, skb, GFP_KERNEL);
+		memset(virtio_vsock_hdr(skb), 0, VIRTIO_VSOCK_SKB_HEADROOM);
+		sg_init_one(&hdr, virtio_vsock_hdr(skb), VIRTIO_VSOCK_SKB_HEADROOM);
+		sgs[0] = &hdr;
+		sg_init_one(&buf, skb->data, VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE);
+		sgs[1] = &buf;
+		ret = virtqueue_add_sgs(vq, sgs, 0, 2, skb, GFP_KERNEL);
 		if (ret < 0) {
 			kfree_skb(skb);
 			break;
@@ -312,8 +313,9 @@ static void virtio_vsock_event_fill(struct virtio_vsock *vsock)
 {
 	size_t i;
 
-	for (i = 0; i < ARRAY_SIZE(vsock->event_list); i++) {
-		struct virtio_vsock_event *event = &vsock->event_list[i];
+	for (i = 0; i < 8; i++) {
+		/* TODO: free this memory  */
+		struct virtio_vsock_event *event = kzalloc(PAGE_ALIGN(sizeof(*event)), GFP_KERNEL);
 
 		virtio_vsock_event_fill_one(vsock, event);
 	}

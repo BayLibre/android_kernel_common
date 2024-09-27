@@ -262,7 +262,7 @@ vmci_transport_alloc_send_control_pkt(struct sockaddr_vm *src,
 	struct vmci_transport_packet *pkt;
 	int err;
 
-	pkt = kmalloc(sizeof(*pkt), GFP_KERNEL);
+	pkt = kmalloc(PAGE_ALIGN(sizeof(*pkt)), GFP_KERNEL);
 	if (!pkt)
 		return -ENOMEM;
 

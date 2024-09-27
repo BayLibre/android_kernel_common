@@ -63,11 +63,13 @@ static inline struct sk_buff *virtio_vsock_alloc_skb(unsigned int size, gfp_t ma
 	if (size < VIRTIO_VSOCK_SKB_HEADROOM)
 		return NULL;
 
-	skb = alloc_skb(size, mask);
+	skb = alloc_skb(PAGE_ALIGN(size - VIRTIO_VSOCK_SKB_HEADROOM) + PAGE_SIZE, mask);
 	if (!skb)
 		return NULL;
 
-	skb_reserve(skb, VIRTIO_VSOCK_SKB_HEADROOM);
+	WARN_ON(!PAGE_ALIGNED(skb->head));
+	skb_reserve(skb, PAGE_ALIGN(VIRTIO_VSOCK_SKB_HEADROOM));
+
 	return skb;
 }
 
@@ -107,7 +109,7 @@ static inline void virtio_vsock_skb_queue_purge(struct sk_buff_head *list)
 
 static inline size_t virtio_vsock_skb_len(struct sk_buff *skb)
 {
-	return (size_t)(skb_end_pointer(skb) - skb->head);
+	return (size_t)(skb_end_pointer(skb) - skb->head - (PAGE_SIZE - VIRTIO_VSOCK_SKB_HEADROOM));
 }
 
 #define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	(1024 * 4)
