@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7a9665a_11dec95f",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-09-27T17:23:06Z",
+      "side": 1,
+      "message": "Is it worth making this a heap value? We could just have `[u8; ASHMEM_NAME_LEN]` and avoid heap. If we have something like an `ArrayVec` in the kernel somewhere, I think that might be ideal.\n\nThis is all correct, it just seems a bit cleaner to avoid the heap and an additional error condition.",
+      "revId": "00da405f5132b2c953e2b231becfe47a0ec4f09c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55236c96_b20911be",
+        "filename": "rust/bindings/bindings_helper.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-09-27T17:23:06Z",
+      "side": 1,
+      "message": "Not to be done now, but we should really make things that could potentially be modules do their own, separate bindgen. Ideally these bindings would only be the things required by the `kernel` crate, and each other unit would be able to bind whatever it was directly interacting with.\n\nI say not to be done now because this would require a build system upgrade, which it\u0027s not worth blocking this on.",
+      "revId": "00da405f5132b2c953e2b231becfe47a0ec4f09c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
