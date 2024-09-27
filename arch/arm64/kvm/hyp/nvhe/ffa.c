@@ -1226,6 +1226,64 @@ unhandled:
 	return true;
 }
 
+static void kvm_guest_clear_transfer(struct ffa_mem_transfer *transfer, struct pkvm_hyp_vcpu *hyp_vcpu)
+{
+	struct ffa_translation *translation, *tmp;
+
+	list_for_each_entry_safe(translation, tmp, &transfer->translations, node) {
+		WARN_ON(__pkvm_guest_unshare_ffa_page(hyp_vcpu, translation->ipa));
+		list_del(&translation->node);
+		hyp_free(translation);
+	}
+}
+
+int kvm_reclaim_ffa_guest_pages(struct pkvm_hyp_vm *vm, pkvm_handle_t handle)
+{
+	int ret = 0;
+	uint16_t vm_handle;
+	bool guest_has_ffa = false;
+	struct ffa_mem_transfer *transfer, *tmp;
+	struct arm_smccc_res res;
+	struct pkvm_hyp_vcpu *hyp_vcpu = vm->vcpus[0];
+	struct kvm_ffa_buffers *ffa_buf = &vm->ffa_buf;
+
+	vm_handle = FFA_HANDLE_FROM_HYP_VCPU(hyp_vcpu);
+	WARN_ON(vm_handle >= KVM_MAX_PVMS);
+
+	hyp_spin_lock(&kvm_ffa_hyp_lock);
+	guest_has_ffa = ffa_buf->tx || ffa_buf->rx;
+	if (!guest_has_ffa)
+		goto unlock;
+
+	list_for_each_entry_safe(transfer, tmp, &ffa_buf->xfer_list, node) {
+		ffa_mem_reclaim(&res,
+				HANDLE_LOW(transfer->ffa_handle),
+				HANDLE_HIGH(transfer->ffa_handle), 0);
+		if (res.a0 != FFA_SUCCESS) {
+			ret = -EAGAIN;
+			goto unlock;
+		}
+
+		kvm_guest_clear_transfer(transfer, hyp_vcpu);
+		list_del(&transfer->node);
+		hyp_free(transfer);
+	}
+
+	if (ffa_buf->tx) {
+		WARN_ON(__pkvm_guest_unshare_hyp_page(hyp_vcpu, ffa_buf->tx_ipa));
+		ffa_buf->tx = NULL;
+	}
+
+	if (ffa_buf->rx) {
+		WARN_ON(__pkvm_guest_unshare_hyp_page(hyp_vcpu, ffa_buf->rx_ipa));
+		ffa_buf->rx = NULL;
+	}
+unlock:
+	hyp_spin_unlock(&kvm_ffa_hyp_lock);
+
+	return ret;
+}
+
 int hyp_ffa_init(void *pages)
 {
 	struct arm_smccc_res res;
