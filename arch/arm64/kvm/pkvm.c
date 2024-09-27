@@ -249,11 +249,19 @@ static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 	struct rb_node *node;
 	unsigned long pages = 0;
 	unsigned long idx;
+	int ret;
 
 	if (!pkvm_is_hyp_created(host_kvm))
 		goto out_free;
 
-	WARN_ON(kvm_call_hyp_nvhe(__pkvm_start_teardown_vm, host_kvm->arch.pkvm.handle));
+retry:
+	ret = kvm_call_hyp_nvhe(__pkvm_start_teardown_vm, host_kvm->arch.pkvm.handle);
+	if (ret == -EAGAIN) {
+		cond_resched();
+		goto retry;
+	}
+
+	WARN_ON(ret);
 
 	node = rb_first(&host_kvm->arch.pkvm.pinned_pages);
 	while (node) {
