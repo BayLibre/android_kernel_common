@@ -365,11 +365,19 @@ static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 	struct kvm_pinned_page *ppage;
 	struct kvm_vcpu *host_vcpu;
 	unsigned long idx, ipa = 0;
+	int ret;
 
 	if (!host_kvm->arch.pkvm.handle)
 		goto out_free;
 
-	WARN_ON(kvm_call_hyp_nvhe(__pkvm_start_teardown_vm, host_kvm->arch.pkvm.handle));
+retry:
+	ret = kvm_call_hyp_nvhe(__pkvm_start_teardown_vm, host_kvm->arch.pkvm.handle);
+	if (ret == -EAGAIN) {
+		cond_resched();
+		goto retry;
+	}
+
+	WARN_ON(ret);
 
 	mt_for_each(&host_kvm->arch.pkvm.pinned_pages, ppage, ipa, ULONG_MAX) {
 		WARN_ON(pkvm_call_hyp_nvhe_ppage(ppage,

@@ -965,21 +965,16 @@ int __pkvm_start_teardown_vm(pkvm_handle_t handle)
 
 	hyp_write_lock(&vm_table_lock);
 	hyp_vm = get_vm_by_handle(handle);
-	if (!hyp_vm) {
+	if (!hyp_vm)
 		ret = -ENOENT;
-		goto unlock;
-	} else if (WARN_ON(hyp_refcount_get(hyp_vm->refcount))) {
+	else if (WARN_ON(hyp_refcount_get(hyp_vm->refcount)))
 		ret = -EBUSY;
-		goto unlock;
-	} else if (hyp_vm->is_dying) {
-		ret = -EINVAL;
-		goto unlock;
-	}
+	else if (!hyp_vm->is_dying)
+		hyp_vm->is_dying = true;
+	hyp_read_unlock(&vm_table_lock);
 
-	hyp_vm->is_dying = true;
-
-unlock:
-	hyp_write_unlock(&vm_table_lock);
+	if (!ret)
+		ret = kvm_reclaim_ffa_guest_pages(hyp_vm, handle);
 
 	return ret;
 }

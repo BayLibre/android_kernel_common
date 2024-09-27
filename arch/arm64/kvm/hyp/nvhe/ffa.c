@@ -1273,6 +1273,65 @@ unhandled:
 	return true;
 }
 
+static void kvm_guest_clear_transfer(struct ffa_mem_transfer *transfer, struct pkvm_hyp_vcpu *hyp_vcpu)
+{
+	struct ffa_translation *translation, *tmp;
+
+	list_for_each_entry_safe(translation, tmp, &transfer->translations, node) {
+		WARN_ON(__pkvm_guest_unshare_ffa(hyp_vcpu, translation->ipa));
+		list_del(&translation->node);
+		hyp_free(translation);
+	}
+}
+
+int kvm_reclaim_ffa_guest_pages(struct pkvm_hyp_vm *vm, pkvm_handle_t handle)
+{
+	int ret = 0;
+	uint16_t vm_handle;
+	bool guest_has_ffa = false;
+	struct ffa_mem_transfer *transfer, *tmp;
+	struct arm_smccc_res res;
+	struct pkvm_hyp_vcpu *hyp_vcpu = vm->vcpus[0];
+
+	vm_handle = VM_FFA_HANDLE_FROM_VCPU(&hyp_vcpu->vcpu);
+	WARN_ON(vm_handle >= KVM_MAX_PVMS);
+
+	hyp_spin_lock(&hyp_buffers.lock);
+	guest_has_ffa = endp_buffers[vm_handle].tx || endp_buffers[vm_handle].rx;
+	if (!guest_has_ffa)
+		goto unlock;
+
+	list_for_each_entry_safe(transfer, tmp, &endp_buffers[vm_handle].xfer_list, node) {
+		ffa_mem_reclaim(&res,
+				HANDLE_LOW(transfer->ffa_handle),
+				HANDLE_HIGH(transfer->ffa_handle), 0);
+		if (res.a0 != FFA_SUCCESS) {
+			ret = -EAGAIN;
+			goto unlock;
+		}
+
+		kvm_guest_clear_transfer(transfer, hyp_vcpu);
+		list_del(&transfer->node);
+		hyp_free(transfer);
+	}
+
+	if (endp_buffers[vm_handle].tx) {
+		hyp_unpin_shared_guest_page(hyp_vcpu, endp_buffers[vm_handle].tx);
+		WARN_ON(__pkvm_guest_unshare_hyp(hyp_vcpu, endp_buffers[vm_handle].tx_ipa));
+		endp_buffers[vm_handle].tx = NULL;
+	}
+
+	if (endp_buffers[vm_handle].rx) {
+		hyp_unpin_shared_guest_page(hyp_vcpu, endp_buffers[vm_handle].rx);
+		WARN_ON(__pkvm_guest_unshare_hyp(hyp_vcpu, endp_buffers[vm_handle].rx_ipa));
+		endp_buffers[vm_handle].rx = NULL;
+	}
+unlock:
+	hyp_spin_unlock(&hyp_buffers.lock);
+
+	return ret;
+}
+
 int hyp_ffa_init(void *pages)
 {
 	struct arm_smccc_res res;
