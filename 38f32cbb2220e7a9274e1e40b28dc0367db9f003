@@ -118,6 +118,30 @@
       },
       "revId": "38f32cbb2220e7a9274e1e40b28dc0367db9f003",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81caf506_b08ac666",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-09-27T04:41:18Z",
+      "side": 1,
+      "message": "When additions or deletions need to be made, we should change the interface version. It may not be possible for every kernel to support every interface version, but an effort should be made to keep things compatible so we don\u0027t needlessly tie kernel and bootloader versions, especially just loosely based on the kernel branch.\n\nMy understanding is there are also limits to what vendors can do with kinfo on their own as some symbols are intentionally not exported to vendor modules.",
+      "parentUuid": "827d97f8_9915b6a7",
+      "range": {
+        "startLine": 9,
+        "startChar": 54,
+        "endLine": 10,
+        "endChar": 35
+      },
+      "revId": "38f32cbb2220e7a9274e1e40b28dc0367db9f003",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
