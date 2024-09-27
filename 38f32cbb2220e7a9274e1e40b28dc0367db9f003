@@ -94,6 +94,30 @@
       },
       "revId": "38f32cbb2220e7a9274e1e40b28dc0367db9f003",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "827d97f8_9915b6a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1334815
+      },
+      "writtenOn": "2024-09-27T04:18:20Z",
+      "side": 1,
+      "message": "If kallsyms feature is removed or module memory feature is also changed one day, part of old debug_kinfo items must be refactored(removed or added). And then how to maintain this CL ?\n  ex. android kernel 6.1 upgraded to 6.6, we have debug_kinfo changes to delete some old members and add new members (see https://android.googlesource.com/kernel/common.git/+/ac3b43283923440900b4f36ca5f9f0b1ca43b70e or b/330221056#comment5) ?\n\nVendor or pixel kernel can create the other local kinfo to backup their new items directly, like pixel_debug_kinfo.c instead of debug_kinfo in aosp.",
+      "parentUuid": "8aa420e3_7e91cac8",
+      "range": {
+        "startLine": 9,
+        "startChar": 54,
+        "endLine": 10,
+        "endChar": 35
+      },
+      "revId": "38f32cbb2220e7a9274e1e40b28dc0367db9f003",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
