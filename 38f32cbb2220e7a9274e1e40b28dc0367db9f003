@@ -46,6 +46,30 @@
       },
       "revId": "38f32cbb2220e7a9274e1e40b28dc0367db9f003",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1bc5a62_a2d3c1d4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1334815
+      },
+      "writtenOn": "2024-09-27T02:24:15Z",
+      "side": 1,
+      "message": "I think bootloader can check kernel version is enough. Because the backup items are dependent on kenrel feature changes and not just more and more. Like android kernel 6.1 to 6.6, we have debug_kinfo changes to delete some old members and add new members (see https://android.googlesource.com/kernel/common.git/+/ac3b43283923440900b4f36ca5f9f0b1ca43b70e or b/330221056#comment5) that will cause the bootloader must have related changes for kernel upgrade.",
+      "parentUuid": "275952a0_5f69f571",
+      "range": {
+        "startLine": 9,
+        "startChar": 54,
+        "endLine": 10,
+        "endChar": 35
+      },
+      "revId": "38f32cbb2220e7a9274e1e40b28dc0367db9f003",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
