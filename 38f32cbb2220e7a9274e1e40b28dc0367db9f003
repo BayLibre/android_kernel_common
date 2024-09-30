@@ -190,6 +190,30 @@
       },
       "revId": "38f32cbb2220e7a9274e1e40b28dc0367db9f003",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcaaf249_11e2e36d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-09-30T15:15:57Z",
+      "side": 1,
+      "message": "the debug_kinfo was a kernel-specific structure that was designed for a one-off issue where bootloaders were involved.  If you all wish to have this work across kernel branches, it needs to be redesigned and reimplemented properly, as that is NOT what this code was intended to do at all.",
+      "parentUuid": "f04cb016_d96d6630",
+      "range": {
+        "startLine": 9,
+        "startChar": 54,
+        "endLine": 10,
+        "endChar": 35
+      },
+      "revId": "38f32cbb2220e7a9274e1e40b28dc0367db9f003",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
