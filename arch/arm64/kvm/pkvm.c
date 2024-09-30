@@ -375,6 +375,17 @@ static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 		goto out_free;
 
 	WARN_ON(kvm_call_hyp_nvhe(__pkvm_start_teardown_vm, host_kvm->arch.pkvm.handle));
+	if (host_kvm->arch.pkvm.ffa_support) {
+		do {
+			ret = kvm_call_hyp_nvhe(__pkvm_notify_guest_vm_avail,
+						host_kvm->arch.pkvm.handle,
+						FFA_VM_DESTRUCTION_MSG);
+			if (!ret)
+				break;
+
+			cond_resched();
+		} while (ret == -EAGAIN || ret == -EINTR);
+	}
 
 retry:
 	pages = 0;
@@ -455,7 +466,7 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 {
 	size_t pgd_sz;
 	void *pgd;
-	int ret;
+	int ret, retry_availability_msg = 5;
 
 	if (host_kvm->created_vcpus < 1)
 		return -EINVAL;
@@ -482,8 +493,24 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 	WRITE_ONCE(host_kvm->arch.pkvm.handle, ret);
 
 	kvm_account_pgtable_pages(pgd, pgd_sz >> PAGE_SHIFT);
+	ret = 0;
+	if (host_kvm->arch.pkvm.ffa_support) {
+		do {
+			ret = kvm_call_hyp_nvhe(__pkvm_notify_guest_vm_avail,
+						host_kvm->arch.pkvm.handle,
+						FFA_VM_CREATION_MSG);
+			if (!ret)
+				break;
+			else if (ret == -EINTR || ret == -EAGAIN) {
+				retry_availability_msg--;
+				cond_resched();
+			}
+			else
+				break;
+		} while (retry_availability_msg >= 0);
+	}
 
-	return 0;
+	return ret;
 free_pgd:
 	free_pages_exact(pgd, pgd_sz);
 	atomic64_sub(pgd_sz, &host_kvm->stat.protected_hyp_mem);
