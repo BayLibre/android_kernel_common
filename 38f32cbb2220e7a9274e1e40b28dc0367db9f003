@@ -166,6 +166,30 @@
       },
       "revId": "38f32cbb2220e7a9274e1e40b28dc0367db9f003",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f04cb016_d96d6630",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3529145
+      },
+      "writtenOn": "2024-09-30T05:22:21Z",
+      "side": 1,
+      "message": "Unlike before, I heard that not only platform but also kernel update is going on in one device. (It is necessary to change the bootloader whenever the structure of debug_kinfo is updated.) Therefore, in order to preserve the current debug_kinfo as much as possible, we tried to divided version.\nHowever, as you said, if there is a value that needs to be changed among the existing values, the bootloader need to be modified.\n\nWhen I first created issue tracker, I tried to add _seqs_of_names_pa value. Then, because of the stability of debug_kinfo, we divided the version. (I have also written a patch that puts _seqs_of_names without dividing the version https://android-review.googlesource.com/c/kernel/common/+/3172239 )\nShould I just add the _seqs_of_names_pa value in the same way as before? Or do we need to discuss more about debug_kinfo? @jstultz@google.com @jonechou@google.com",
+      "parentUuid": "1110522d_7eae534c",
+      "range": {
+        "startLine": 9,
+        "startChar": 54,
+        "endLine": 10,
+        "endChar": 35
+      },
+      "revId": "38f32cbb2220e7a9274e1e40b28dc0367db9f003",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
