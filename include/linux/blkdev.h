@@ -716,12 +716,13 @@ static inline unsigned int disk_nr_zones(struct gendisk *disk)
 	return disk->nr_zones;
 }
 bool blk_zone_plug_bio(struct bio *bio, unsigned int nr_segs);
+bool blk_zone_plug_bio2(struct bio *bio, unsigned int nr_segs, int rq_cpu);
 #else /* CONFIG_BLK_DEV_ZONED */
 static inline unsigned int disk_nr_zones(struct gendisk *disk)
 {
 	return 0;
 }
-static inline bool blk_zone_plug_bio(struct bio *bio, unsigned int nr_segs)
+static inline bool blk_zone_plug_bio2(struct bio *bio, unsigned int nr_segs, int rq_cpu)
 {
 	return false;
 }
@@ -853,7 +854,7 @@ static inline u64 sb_bdev_nr_blocks(struct super_block *sb)
  * @bio: The BIO being submitted
  *
  * Return true whenever @bio execution needs to be handled through zone
- * write plugging (using blk_zone_plug_bio()). Return false otherwise.
+ * write plugging (using blk_zone_plug_bio2()). Return false otherwise.
  */
 static inline bool bio_needs_zone_write_plugging(struct bio *bio)
 {
@@ -880,7 +881,7 @@ static inline bool bio_needs_zone_write_plugging(struct bio *bio)
 
 	/*
 	 * All zone write operations must be handled through zone write plugging
-	 * using blk_zone_plug_bio().
+	 * using blk_zone_plug_bio2().
 	 */
 	switch (op) {
 	case REQ_OP_ZONE_APPEND:
