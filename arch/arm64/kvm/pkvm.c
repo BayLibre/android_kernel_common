@@ -390,6 +390,7 @@ retry:
 		cond_resched();
 		if (ret == -EBUSY) {
 			nr_busy++;
+			kvm_call_hyp_nvhe(__pkvm_notify_dying_guest_vm_avail, host_kvm->arch.pkvm.handle);
 			next = kvm_pinned_pages_iter_next(ppage, 0, ~(0UL));
 			ppage = next;
 			continue;
