@@ -410,9 +410,9 @@ retry:
 		do {
 			ret = kvm_call_hyp_nvhe(__pkvm_reclaim_dying_guest_ffa_resources,
 						host_kvm->arch.pkvm.handle);
-			WARN_ON(ret && ret != -EAGAIN);
+			WARN_ON(ret && ret != -EAGAIN && ret != -EINTR);
 			cond_resched();
-		} while (ret == -EAGAIN);
+		} while (ret == -EAGAIN || ret == -EINTR);
 		goto retry;
 	}
 

@@ -1006,7 +1006,7 @@ int __pkvm_finalize_teardown_vm(pkvm_handle_t handle)
 	/* A well-behaved host will have reclaimed all FF-A resources already */
 	do {
 		err = kvm_dying_guest_reclaim_ffa_resources(hyp_vm);
-	} while (err == -EAGAIN);
+	} while (err == -EAGAIN || err == -EINTR);
 	WARN_ON(err);
 
 	pkvm_devices_teardown(hyp_vm);
