@@ -395,6 +395,27 @@ int __pkvm_reclaim_dying_guest_ffa_resources(pkvm_handle_t handle)
 	return ret;
 }
 
+int __pkvm_notify_guest_vm_avail(pkvm_handle_t handle, u32 vm_availability)
+{
+	struct pkvm_hyp_vm *hyp_vm;
+	int ret = 0;
+
+	hyp_read_lock(&vm_table_lock);
+	hyp_vm = get_vm_by_handle(handle);
+	if (!hyp_vm || !hyp_vm->kvm.arch.pkvm.ffa_support)
+		goto unlock;
+
+	if (hyp_vm->is_dying && vm_availability != FFA_VM_DESTRUCTION_MSG) {
+		ret = -EINVAL;
+		goto unlock;
+	}
+
+	ret = kvm_guest_notify_availability(hyp_vm, vm_availability);
+unlock:
+	hyp_read_unlock(&vm_table_lock);
+	return ret;
+}
+
 struct pkvm_hyp_vcpu *pkvm_load_hyp_vcpu(pkvm_handle_t handle,
 					 unsigned int vcpu_idx)
 {
@@ -593,6 +614,9 @@ static void init_pkvm_hyp_vm(struct kvm *host_kvm, struct pkvm_hyp_vm *hyp_vm,
 	hyp_vm->kvm.arch.pkvm.pvmfw_load_addr = pvmfw_load_addr;
 
 	hyp_vm->kvm.arch.pkvm.ffa_support = READ_ONCE(host_kvm->arch.pkvm.ffa_support);
+	if (hyp_vm->kvm.arch.pkvm.ffa_support)
+		kvm_guest_notify_availability(hyp_vm, FFA_VM_CREATION_MSG);
+
 	hyp_vm->kvm.arch.mmu.last_vcpu_ran = (int __percpu *)last_ran;
 	memset(last_ran, -1, pkvm_get_last_ran_size());
 	pkvm_init_features_from_host(hyp_vm, host_kvm);
