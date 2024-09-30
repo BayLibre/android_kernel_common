@@ -40,10 +40,6 @@ impl ShmemFile {
         // a file and we can transfer ownership of the refcount it created to an `ARef<File>`.
         let vmfile = unsafe { ARef::<File>::from_raw(NonNull::new_unchecked(vmfile.cast())) };
 
-        // SAFETY: We just created the file and have not yet published it, so nobody else is
-        // looking at this field yet.
-        unsafe { (*vmfile.as_ptr()).f_mode |= bindings::FMODE_LSEEK };
-
         set_inode_lockdep_class(&vmfile);
 
         // SAFETY: We just created the file and have not yet published it, so nobody else is
