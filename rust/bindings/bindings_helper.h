@@ -56,7 +56,6 @@ const gfp_t RUST_CONST_HELPER___GFP_ZERO = __GFP_ZERO;
 const gfp_t RUST_CONST_HELPER___GFP_HIGHMEM = ___GFP_HIGHMEM;
 const gfp_t RUST_CONST_HELPER___GFP_FS = ___GFP_FS;
 const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL = BLK_FEAT_ROTATIONAL;
-const fmode_t RUST_CONST_HELPER_FMODE_LSEEK = FMODE_LSEEK;
 
 #ifdef CONFIG_ASHMEM_RUST
 #include "../../drivers/staging/android/ashmem.h"
