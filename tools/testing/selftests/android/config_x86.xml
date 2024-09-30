@@ -24,6 +24,8 @@ SPDX-License-Identifier: GPL-2.0 OR Apache-2.0
     <test class="com.android.tradefed.testtype.binary.KernelTargetTest" >
         <option name="exit-code-skip" value="4" />
         <option name="skip-binary-check" value="true" />
+        <option name="abort-if-device-lost" value="true" />
+        <option name="abort-if-root-lost" value="true" />
         <option name="test-command-line" key="kselftest_binderfs_binderfs_test" value="cd &ktest_dir;; ./kselftest_binderfs_binderfs_test" />
         <option name="test-command-line" key="kselftest_breakpoints_breakpoint_test" value="cd &ktest_dir;; ./kselftest_breakpoints_breakpoint_test" />
         <option name="test-command-line" key="kselftest_capabilities_test_execve" value="cd &ktest_dir;; ./kselftest_capabilities_test_execve" />
