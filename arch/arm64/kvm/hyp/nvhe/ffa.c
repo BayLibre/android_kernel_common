@@ -42,6 +42,9 @@
 #define REPLAY_FFA_CALL	BIT(63)
 #define VM_FFA_SUPPORTED(vcpu)		((vcpu)->kvm->arch.pkvm.ffa_support)
 
+/* The maximum number of secure partitions that can register for VM availability */
+#define FFA_MAX_REGISTERED_SP_IDS	(8)
+
 /*
  * A buffer to hold the maximum descriptor size we can see from the host,
  * which is required when the SPMD returns a fragmented FFA_MEM_RETRIEVE_RESP
@@ -71,6 +74,10 @@ static bool has_version_negotiated;
 
 static DEFINE_HYP_SPINLOCK(version_lock);
 static DEFINE_HYP_SPINLOCK(kvm_ffa_hyp_lock);
+
+/* Secure partitions that can receive VM availability messages */
+static u16 sp_ids[FFA_MAX_REGISTERED_SP_IDS];
+static u8 num_registered_sp_ids;
 
 static struct kvm_ffa_buffers *ffa_get_buffers(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
@@ -307,6 +314,82 @@ err_unshare_tx:
 err_unmap_hyp_buffers:
 	ffa_unmap_hyp_buffers();
 	return ret;
+}
+
+static int kvm_init_registered_sp_ids(void)
+{
+	int i, j, count, partition_sz;
+	struct arm_smccc_res res;
+
+	arm_smccc_1_1_smc(FFA_PARTITION_INFO_GET, 0, 0, 0, 0, 0, 0, 0,
+			  &res);
+	if (res.a0 == FFA_ERROR)
+		return ffa_to_linux_errno(res.a2);
+
+	if (hyp_ffa_version > FFA_VERSION_1_0) {
+		partition_sz  = res.a3;
+	} else {
+		/* FFA_VERSION_1_0 lacks the size in the response */
+		partition_sz = FFA_1_0_PARTITON_INFO_SZ;
+	}
+
+	count = res.a2 < FFA_MAX_REGISTERED_SP_IDS ? res.a2 : FFA_MAX_REGISTERED_SP_IDS;
+	num_registered_sp_ids = 0;
+	for (i = 0; i < count; i++) {
+		struct ffa_partition_info *part = hyp_buffers.rx + i * partition_sz;
+		if ((part->properties & FFA_PART_VM_AVAIL_MASK) == FFA_PART_SUPPORTS_VM_AVAIL) {
+			/* Check for duplicate SP IDs */
+			for (j = 0; j < num_registered_sp_ids; j++)
+				if (sp_ids[j] == part->id)
+					break;
+
+			if (j == num_registered_sp_ids)
+				sp_ids[num_registered_sp_ids++] = part->id;
+		}
+	}
+
+	ffa_rx_release(&res);
+	return 0;
+}
+
+static int kvm_notify_vm_availability(uint16_t vm_handle, struct kvm_ffa_buffers *ffa_buf,
+				      u32 availability_msg)
+{
+	int i;
+	struct arm_smccc_res res;
+	u64 avail_bit = availability_msg != FFA_VM_DESTRUCTION_MSG;
+
+	for (i = 0; i < num_registered_sp_ids; i++) {
+		u64 sp_mask = 1UL << i;
+		u64 avail_value = avail_bit << i;
+		uint32_t dest = ((uint32_t)sp_ids[i] << 16) | hyp_smp_processor_id();
+
+		if ((ffa_buf->vm_avail_bitmap & sp_mask) == avail_value)
+			continue;
+
+		/*
+		 * Give the SP some cycles in advance,
+		 * in case it got interrupted the last time
+		 */
+		arm_smccc_1_1_smc(FFA_RUN, dest, 0, 0, 0, 0, 0, 0, &res);
+		if (res.a0 == FFA_ERROR)
+			return ffa_to_linux_errno(res.a2);
+		if (res.a0 == FFA_INTERRUPT)
+			return -EINTR;
+
+		arm_smccc_1_1_smc(FFA_MSG_SEND_DIRECT_REQ, sp_ids[i], availability_msg,
+				  0, 0, vm_handle, 0, 0, &res);
+		if (res.a0 != FFA_MSG_SEND_DIRECT_RESP)
+			return -EINVAL;
+
+		if (res.a3 != FFA_RET_SUCCESS)
+			return ffa_to_linux_errno(res.a3);
+
+		ffa_buf->vm_avail_bitmap &= ~sp_mask;
+		ffa_buf->vm_avail_bitmap |= avail_value;
+	}
+
+	return 0;
 }
 
 static int do_ffa_rxtx_map(struct arm_smccc_res *res,
@@ -1118,6 +1201,7 @@ static void do_ffa_part_get(struct arm_smccc_res *res,
 	}
 
 	memcpy(ffa_buf->rx, hyp_buffers.rx, copy_sz);
+
 out_unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 }
@@ -1306,6 +1390,28 @@ static void kvm_guest_clear_transfer(struct ffa_mem_transfer *transfer, struct p
 	}
 }
 
+int kvm_ffa_notify_vm_creation(struct pkvm_hyp_vm *vm, pkvm_handle_t handle)
+{
+	int ret = 0;
+	uint16_t vm_handle;
+	struct kvm_ffa_buffers *ffa_buf;
+
+	if (vm) {
+		vm_handle = FFA_HANDLE_FROM_PKVM(handle);
+		ffa_buf = &vm->ffa_buf;
+	} else {
+		vm_handle = HOST_FFA_ID;
+		ffa_buf = &host_buffers;
+	}
+	WARN_ON(vm_handle >= KVM_MAX_PVMS);
+
+	hyp_spin_lock(&kvm_ffa_hyp_lock);
+	ret = kvm_notify_vm_availability(vm_handle, ffa_buf, FFA_VM_CREATION_MSG);
+	hyp_spin_unlock(&kvm_ffa_hyp_lock);
+
+	return ret;
+}
+
 int kvm_reclaim_ffa_guest_pages(struct pkvm_hyp_vm *vm, pkvm_handle_t handle)
 {
 	int ret = 0;
@@ -1325,6 +1431,10 @@ int kvm_reclaim_ffa_guest_pages(struct pkvm_hyp_vm *vm, pkvm_handle_t handle)
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
 	guest_has_ffa = ffa_buf->tx || ffa_buf->rx;
 	if (!guest_has_ffa)
+		goto unlock;
+
+	ret = kvm_notify_vm_availability(vm_handle, ffa_buf, FFA_VM_DESTRUCTION_MSG);
+	if (ret)
 		goto unlock;
 
 	list_for_each_entry_safe(transfer, tmp, &ffa_buf->xfer_list, node) {
@@ -1418,6 +1528,10 @@ int hyp_ffa_init(void *pages)
 
 	version_lock = __HYP_SPIN_LOCK_UNLOCKED;
 	INIT_LIST_HEAD(&host_buffers.xfer_list);
+
+	ret = kvm_init_registered_sp_ids();
+	if (ret)
+		return ret;
 
 	return 0;
 }
