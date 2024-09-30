@@ -16,6 +16,24 @@
       "message": "This breaks ABI. Even if that is a safe enum addition, it needs to be masked such that genksyms does not pick it up for the CRC calculation.",
       "revId": "6a7257978deededb4970a326460b5a307e50a4e9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91937d4a_7360ebf6",
+        "filename": "include/linux/kernel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-09-30T10:54:08Z",
+      "side": 1,
+      "message": "```\nfunction symbol \u0027void ftrace_dump(enum ftrace_dump_mode)\u0027 changed\n  CRC changed from 0xaaa918c9 to 0x17fb15ac\n\ntype \u0027enum ftrace_dump_mode\u0027 changed\n  enumerator \u0027DUMP_PARAM\u0027 (3) was added\n```",
+      "parentUuid": "37318aa7_cd23fbb8",
+      "revId": "6a7257978deededb4970a326460b5a307e50a4e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
