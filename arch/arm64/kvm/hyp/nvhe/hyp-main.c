@@ -1446,6 +1446,14 @@ static void handle___pkvm_reclaim_dying_guest_ffa_resources(struct kvm_cpu_conte
 	cpu_reg(host_ctxt, 1) = __pkvm_reclaim_dying_guest_ffa_resources(handle);
 }
 
+static void handle___pkvm_notify_guest_vm_avail(struct kvm_cpu_context *host_ctxt)
+{
+	DECLARE_REG(pkvm_handle_t, handle, host_ctxt, 1);
+	DECLARE_REG(u32, availability_msg, host_ctxt, 2);
+
+	cpu_reg(host_ctxt, 1) = __pkvm_notify_guest_vm_avail(handle, availability_msg);
+}
+
 static void handle___pkvm_create_private_mapping(struct kvm_cpu_context *host_ctxt)
 {
 	DECLARE_REG(phys_addr_t, phys, host_ctxt, 1);
@@ -1923,6 +1931,7 @@ static const hcall_t host_hcall[] = {
 	HANDLE_FUNC(__pkvm_finalize_teardown_vm),
 	HANDLE_FUNC(__pkvm_reclaim_dying_guest_page),
 	HANDLE_FUNC(__pkvm_reclaim_dying_guest_ffa_resources),
+	HANDLE_FUNC(__pkvm_notify_guest_vm_avail),
 	HANDLE_FUNC(__pkvm_vcpu_load),
 	HANDLE_FUNC(__pkvm_vcpu_put),
 	HANDLE_FUNC(__pkvm_vcpu_sync_state),
