@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37318aa7_cd23fbb8",
+        "filename": "include/linux/kernel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-09-30T10:53:42Z",
+      "side": 1,
+      "message": "This breaks ABI. Even if that is a safe enum addition, it needs to be masked such that genksyms does not pick it up for the CRC calculation.",
+      "revId": "6a7257978deededb4970a326460b5a307e50a4e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
