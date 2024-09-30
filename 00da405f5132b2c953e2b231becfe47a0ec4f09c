@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "98aa7190_4ef9e715",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-09-30T08:02:53Z",
+      "side": 1,
+      "message": "We don\u0027t have anything like `ArrayVec`. We would either need to add our own logic for the length, or implicitly use the first nul-byte in the array as the length.",
+      "parentUuid": "c7a9665a_11dec95f",
+      "revId": "00da405f5132b2c953e2b231becfe47a0ec4f09c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "55236c96_b20911be",
