@@ -239,6 +239,10 @@ struct ffa_partition_info {
 #define FFA_PARTITION_INDIRECT_MSG	BIT(2)
 /* partition can receive notifications */
 #define FFA_PARTITION_NOTIFICATION_RECV	BIT(3)
+/* partition must be informed about each VM that is created by the Hypervisor */
+#define FFA_PARTITION_HYP_CREATE_VM	BIT(6)
+/* partition must be informed about each VM that is destroyed by the Hypervisor */
+#define FFA_PARTITION_HYP_DESTROY_VM	BIT(7)
 /* partition runs in the AArch64 execution state. */
 #define FFA_PARTITION_AARCH64_EXEC	BIT(8)
 	u32 properties;

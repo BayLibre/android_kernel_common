@@ -361,6 +361,28 @@ static int __reclaim_dying_guest_page_call(u64 pfn, u64 gfn, u8 order, void *arg
 				 pfn, gfn, order);
 }
 
+static int __pkvm_notify_guest_vm_avail_retry(struct kvm *host_kvm)
+{
+	int ret, retry_availability_msg = 5;
+
+	if (!host_kvm->arch.pkvm.ffa_support)
+		return 0;
+
+	do {
+		ret = kvm_call_hyp_nvhe(__pkvm_notify_guest_vm_avail,
+					host_kvm->arch.pkvm.handle);
+		if (!ret)
+			break;
+		else if (ret == -EINTR || ret == -EAGAIN) {
+			retry_availability_msg--;
+			cond_resched();
+		} else
+			break;
+	} while (retry_availability_msg >= 0);
+
+	return ret;
+}
+
 static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 {
 	struct mm_struct *mm = current->mm;
@@ -405,6 +427,8 @@ retry:
 	}
 
 	account_locked_vm(mm, pages, false);
+
+	__pkvm_notify_guest_vm_avail_retry(host_kvm);
 
 	if (nr_busy) {
 		do {
@@ -482,8 +506,11 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 	WRITE_ONCE(host_kvm->arch.pkvm.handle, ret);
 
 	kvm_account_pgtable_pages(pgd, pgd_sz >> PAGE_SHIFT);
+	ret = __pkvm_notify_guest_vm_avail_retry(host_kvm);
+	if (ret)
+		goto free_pgd;
 
-	return 0;
+	return ret;
 free_pgd:
 	free_pages_exact(pgd, pgd_sz);
 	atomic64_sub(pgd_sz, &host_kvm->stat.protected_hyp_mem);
