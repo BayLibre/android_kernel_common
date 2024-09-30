@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eae6f6a_0460edb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-09-30T09:15:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06089d32_07fa69d5",
+      "revId": "58ca825200dccab18a7ee897e0f0db1f36d7ba65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c4124c9_0f5af985",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-09-27T21:52:03Z",
       "side": 1,
       "message": "Might be worth dropping a comment here mentioning that throughout this file, `unpinned` refers to the state of ashmem-managed-memory, not Rust objects, given that you have to use pinned memory to work with lists, which looks weird. I recognize you mention that at the top of the file, but `#[pin] unpinned` seems like a good place to call this out too :P",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 12
+      },
+      "revId": "58ca825200dccab18a7ee897e0f0db1f36d7ba65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "160cd7ff_e378b137",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-09-30T09:15:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c4124c9_0f5af985",
       "range": {
         "startLine": 26,
         "startChar": 4,
@@ -58,6 +100,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4d799a4_e1abe50b",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-09-30T09:15:40Z",
+      "side": 1,
+      "message": "Done. Added:\n\nThe `new_range` argument must be `Some` when calling this method. If this call needs an allocation, it will take it from the option. Otherwise, the allocation is left in the option so that the caller can free it after releasing the mutex.",
+      "parentUuid": "2caa1bb5_230503bf",
+      "revId": "58ca825200dccab18a7ee897e0f0db1f36d7ba65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d27a82d2_073c07bc",
@@ -75,6 +135,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d3696de_7f743d0f",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-09-30T09:15:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d27a82d2_073c07bc",
+      "revId": "58ca825200dccab18a7ee897e0f0db1f36d7ba65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8987f7f_b8999561",
@@ -88,6 +166,24 @@
       "writtenOn": "2024-09-27T21:52:03Z",
       "side": 1,
       "message": "Maybe want a comment saying that `new_range` needs to contain `Some()` or it will panic?",
+      "revId": "58ca825200dccab18a7ee897e0f0db1f36d7ba65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62fd2227_de2c9c91",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-09-30T09:15:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8987f7f_b8999561",
       "revId": "58ca825200dccab18a7ee897e0f0db1f36d7ba65",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
