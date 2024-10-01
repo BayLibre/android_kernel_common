@@ -80,7 +80,22 @@ static bool kvm_vfio_file_is_valid(struct file *file)
 	return ret;
 }
 
-#ifdef CONFIG_SPAPR_TCE_IOMMU
+static struct device *kvm_vfio_file_get_device(struct file *file)
+{
+	struct device *(*fn)(struct file *file);
+	struct device *dev;
+
+	fn = symbol_get(vfio_file_get_device);
+	if (!fn)
+		return NULL;
+
+	dev = fn(file);
+
+	symbol_put(vfio_file_get_device);
+
+	return dev;
+}
+
 static struct iommu_group *kvm_vfio_file_iommu_group(struct file *file)
 {
 	struct iommu_group *(*fn)(struct file *file);
@@ -97,6 +112,7 @@ static struct iommu_group *kvm_vfio_file_iommu_group(struct file *file)
 	return ret;
 }
 
+#ifdef CONFIG_SPAPR_TCE_IOMMU
 static void kvm_spapr_tce_release_vfio_group(struct kvm *kvm,
 					     struct kvm_vfio_file *kvf)
 {
@@ -140,6 +156,21 @@ static void kvm_vfio_update_coherency(struct kvm_device *dev)
 	}
 }
 
+static int kvm_vfio_assign_file(struct file *file)
+{
+	struct device *dev;
+	struct iommu_group *group;
+
+	dev = kvm_vfio_file_get_device(file);
+	if (dev)
+		return kvm_arch_assign_device(dev);
+	group = kvm_vfio_file_iommu_group(file);
+	if (group)
+		return kvm_arch_assign_group(group);
+
+	return -ENODEV;
+}
+
 static int kvm_vfio_file_add(struct kvm_device *dev, unsigned int fd)
 {
 	struct kvm_vfio *kv = dev->private;
@@ -174,6 +205,10 @@ static int kvm_vfio_file_add(struct kvm_device *dev, unsigned int fd)
 
 	kvf->file = get_file(filp);
 	list_add_tail(&kvf->node, &kv->file_list);
+
+	ret = kvm_vfio_assign_file(filp);
+	if (ret)
+		goto out_unlock;
 
 	kvm_arch_start_assignment(dev->kvm);
 	kvm_vfio_file_set_kvm(kvf->file, dev->kvm);
