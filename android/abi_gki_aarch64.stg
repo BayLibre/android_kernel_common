@@ -78855,11 +78855,6 @@ member {
   offset: 3392
 }
 member {
-  id: 0x92ca5d9f
-  name: "extra_ops"
-  type_id: 0x18bd6530
-}
-member {
   id: 0x162bfab8
   name: "extra_priv_size"
   type_id: 0xf435685e
@@ -309957,6 +309952,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_set_module_permit_after_init"
 }
 elf_symbol {
+  id: 0x0b48ad7a
+  name: "__traceiter_android_vh_set_task_comm"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x2e008ea5
+  type_id: 0x9bdbdcc4
+  full_name: "__traceiter_android_vh_set_task_comm"
+}
+elf_symbol {
   id: 0xa2fe718f
   name: "__traceiter_android_vh_setscheduler_uclamp"
   is_defined: true
@@ -313321,6 +313325,15 @@ elf_symbol {
   crc: 0x3bb8122d
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_set_module_permit_after_init"
+}
+elf_symbol {
+  id: 0x1f07c260
+  name: "__tracepoint_android_vh_set_task_comm"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x344a08a8
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_set_task_comm"
 }
 elf_symbol {
   id: 0x923147c1
@@ -366532,6 +366545,7 @@ interface {
   symbol_id: 0xe4ec133d
   symbol_id: 0x13086b43
   symbol_id: 0x0e19527f
+  symbol_id: 0x0b48ad7a
   symbol_id: 0xa2fe718f
   symbol_id: 0x98a943de
   symbol_id: 0x53263f73
@@ -366906,6 +366920,7 @@ interface {
   symbol_id: 0xcfab6e83
   symbol_id: 0xb4b0b9d9
   symbol_id: 0x6b29e9e5
+  symbol_id: 0x1f07c260
   symbol_id: 0x923147c1
   symbol_id: 0x5cfdecb8
   symbol_id: 0xd860c719
