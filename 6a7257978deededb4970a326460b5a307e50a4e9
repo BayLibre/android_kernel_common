@@ -70,6 +70,24 @@
       "parentUuid": "a6d68f5a_4e346459",
       "revId": "6a7257978deededb4970a326460b5a307e50a4e9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65d5b308_f27715b6",
+        "filename": "include/linux/kernel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-10-01T17:00:12Z",
+      "side": 1,
+      "message": "The enum addition - if safe - needs to be guarded with \n\n```\n#if !defined(__GENKSYMS__)\n\n#endif\n```\n\nThat way it is hidden from the CRC calculation.",
+      "parentUuid": "3adad604_334e7559",
+      "revId": "6a7257978deededb4970a326460b5a307e50a4e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
