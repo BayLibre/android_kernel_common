@@ -458,11 +458,19 @@ void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
 		swap_writepage_fs(folio, swap_plug);
 	/*
 	 * ->flags can be updated non-atomicially (scan_swap_map_slots),
-	 * but that will never affect SWP_SYNCHRONOUS_IO, so the data_race
+	 * but that will never affect __SWP_WRITE_SYNCHRONOUS_IO, so the data_race
 	 * is safe.
 	 */
+<<<<<<< HEAD   (eb5e5c1f626e74ce56890b491edb90a1d11a7ea7 ANDROID: gki_defconfig: Enable Tegra SoCs)
 	else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
 		swap_writepage_bdev_sync(folio, sis);
+||||||| BASE   (349fdbe6afd199aaf69251a80e96172c761de284 ANDROID: gki_defconfig: Enable CONFIG_NET_CLS_CGROUP)
+	else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
+		swap_writepage_bdev_sync(folio, wbc, sis);
+=======
+	else if (data_race(sis->flags & __SWP_WRITE_SYNCHRONOUS_IO))
+		swap_writepage_bdev_sync(folio, wbc, sis);
+>>>>>>> CHANGE (0258c527fb3df645438fad7dd58cc0aa4a3fce2f FROMLIST: mm: Split SWP_SYNCHRONOUS_IO into separate read an)
 	else
 		swap_writepage_bdev_async(folio, sis);
 }
