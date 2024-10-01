@@ -147,6 +147,8 @@ _KUNIT_COMMON_MODULES_LIST = [
     "lib/kunit/kunit-example-test.ko",
     "lib/kunit/kunit-test.ko",
     # "mm/kfence/kfence_test.ko",
+    "drivers/of/of_kunit_helpers.ko",
+    "lib/kunit/platform-test.ko",
     "net/core/dev_addr_lists_test.ko",
     "sound/soc/soc-topology-test.ko",
     "sound/soc/soc-utils-test.ko",
@@ -155,7 +157,8 @@ _KUNIT_COMMON_MODULES_LIST = [
 # Modules defined by tools/testing/kunit/configs/android/kunit_clk_defconfig
 _KUNIT_CLK_MODULES_LIST = [
     "drivers/clk/clk-gate_test.ko",
-    "drivers/clk/clk_test.ko",
+    "drivers/clk/clk-test.ko",
+    "drivers/clk/clk_kunit_helpers.ko",
 ]
 
 # buildifier: disable=unnamed-macro
