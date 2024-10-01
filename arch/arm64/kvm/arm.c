@@ -477,14 +477,30 @@ void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu)
 	 * doorbells to be signalled, should an interrupt become pending.
 	 */
 	preempt_disable();
+<<<<<<< HEAD   (8e3693 Merge branch 'android13-5.15' into android13-5.15-lts)
 	kvm_vgic_put(vcpu, true);
+||||||| BASE
+	kvm_vgic_vmcr_sync(vcpu);
+	vgic_v4_put(vcpu, true);
+=======
+	kvm_vgic_vmcr_sync(vcpu);
+	vcpu->arch.flags |= KVM_ARM64_VCPU_IN_WFI;
+	vgic_v4_put(vcpu);
+>>>>>>> BRANCH (f45bea Linux 5.15.162)
 	preempt_enable();
 }
 
 void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu)
 {
 	preempt_disable();
+<<<<<<< HEAD   (8e3693 Merge branch 'android13-5.15' into android13-5.15-lts)
 	kvm_vgic_load(vcpu);
+||||||| BASE
+	vgic_v4_load(vcpu);
+=======
+	vcpu->arch.flags &= ~KVM_ARM64_VCPU_IN_WFI;
+	vgic_v4_load(vcpu);
+>>>>>>> BRANCH (f45bea Linux 5.15.162)
 	preempt_enable();
 }
 
@@ -837,7 +853,7 @@ static void check_vcpu_requests(struct kvm_vcpu *vcpu)
 		if (kvm_check_request(KVM_REQ_RELOAD_GICv4, vcpu)) {
 			/* The distributor enable bits were changed */
 			preempt_disable();
-			vgic_v4_put(vcpu, false);
+			vgic_v4_put(vcpu);
 			vgic_v4_load(vcpu);
 			preempt_enable();
 		}
