@@ -89,7 +89,35 @@ struct udp_sock {
 	int		forward_deficit;
 };
 
+<<<<<<< HEAD   (8f2e4a Revert "cgroup: Make operations on the cgroup root_list RCU )
 #define UDP_MAX_SEGMENTS	(1 << 6UL)
+||||||| BASE
+#define udp_test_bit(nr, sk)			\
+	test_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
+#define udp_set_bit(nr, sk)			\
+	set_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
+#define udp_test_and_set_bit(nr, sk)		\
+	test_and_set_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
+#define udp_clear_bit(nr, sk)			\
+	clear_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
+#define udp_assign_bit(nr, sk, val)		\
+	assign_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags, val)
+
+#define UDP_MAX_SEGMENTS	(1 << 6UL)
+=======
+#define udp_test_bit(nr, sk)			\
+	test_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
+#define udp_set_bit(nr, sk)			\
+	set_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
+#define udp_test_and_set_bit(nr, sk)		\
+	test_and_set_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
+#define udp_clear_bit(nr, sk)			\
+	clear_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
+#define udp_assign_bit(nr, sk, val)		\
+	assign_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags, val)
+
+#define UDP_MAX_SEGMENTS	(1 << 7UL)
+>>>>>>> BRANCH (311d85 Linux 6.1.107)
 
 static inline struct udp_sock *udp_sk(const struct sock *sk)
 {
