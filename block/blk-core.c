@@ -828,6 +828,7 @@ end_io:
 }
 EXPORT_SYMBOL(submit_bio_noacct);
 
+<<<<<<< HEAD   (9fc5c4 Merge 6.6.52 into android15-6.6-lts)
 #ifdef CONFIG_BLK_DEV_ZONED
 /**
  * blk_bio_is_seq_zoned_write() - Check if @bio requires write serialization.
@@ -858,6 +859,11 @@ static void bio_set_ioprio(struct bio *bio)
 	if (blk_bio_is_seq_zoned_write(bio))
 		return;
 
+||||||| BASE
+=======
+static void bio_set_ioprio(struct bio *bio)
+{
+>>>>>>> BRANCH (4ad9fa Linux 6.6.53)
 	/* Nobody set ioprio so far? Initialize it based on task's nice value */
 	if (IOPRIO_PRIO_CLASS(bio->bi_ioprio) == IOPRIO_CLASS_NONE)
 		bio->bi_ioprio = get_current_ioprio();
