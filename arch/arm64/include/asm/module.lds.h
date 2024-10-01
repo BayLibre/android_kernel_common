@@ -30,6 +30,8 @@ SECTIONS {
 #ifdef CONFIG_KVM
 	.hyp.text : ALIGN(PAGE_SIZE) {
 		*(.hyp.text)
+		. = . + 20;		/* trampoline to __hyp_ftrace_tramp */
+		FILL(0);
 		. = ALIGN(PAGE_SIZE);
 	}
 	.hyp.bss : ALIGN(PAGE_SIZE) {
