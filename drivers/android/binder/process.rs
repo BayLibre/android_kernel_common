@@ -492,7 +492,7 @@ impl Process {
     }
 
     #[inline(never)]
-    pub(crate) fn debug_print_stats(&self, m: &mut SeqFile, ctx: &Context) -> Result<()> {
+    pub(crate) fn debug_print_stats(&self, m: &SeqFile, ctx: &Context) -> Result<()> {
         seq_print!(m, "proc {}\n", self.task.pid_in_current_ns());
         seq_print!(m, "context {}\n", &*ctx.name);
 
@@ -540,12 +540,7 @@ impl Process {
     }
 
     #[inline(never)]
-    pub(crate) fn debug_print(
-        &self,
-        m: &mut SeqFile,
-        ctx: &Context,
-        print_all: bool,
-    ) -> Result<()> {
+    pub(crate) fn debug_print(&self, m: &SeqFile, ctx: &Context, print_all: bool) -> Result<()> {
         seq_print!(m, "proc {}\n", self.task.pid_in_current_ns());
         seq_print!(m, "context {}\n", &*ctx.name);
 
