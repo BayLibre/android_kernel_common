@@ -25,14 +25,19 @@ SECTIONS {
 		*(HYP_SECTION_NAME(.printk_fmt_offset))
 	}
 
-	.hyp.data : {
-		HYP_SECTION_SYMBOL_NAME(.data) = .;
-		*(.data .data.*)
-	}
-
 	.hyp.printk_fmts : {
 		__hyp_printk_fmts_start = .;
 		*(HYP_SECTION_NAME(.printk_fmts))
 		__hyp_printk_fmts_end = .;
+	}
+
+	.hyp.patchable_function_entries : {
+		__hyp_section_.hyp.patchable_function_entries = .;
+		*(__patchable_function_entries __patchable_function_entries.*)
+	}
+
+	.hyp.data : {
+		HYP_SECTION_SYMBOL_NAME(.data) = .;
+		*(.data .data.*)
 	}
 }
