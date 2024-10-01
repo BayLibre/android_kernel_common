@@ -28,3 +28,26 @@ int pkvm_init_devices(void)
 
 	return ret;
 }
+
+static struct pkvm_device *pkvm_get_device(u64 addr, u64 size)
+{
+	struct pkvm_device *dev = NULL;
+	struct pkvm_dev_resource *res;
+	int i, j;
+
+	for (i = 0 ; i < registered_devices_nr ; ++i) {
+		dev = &registered_devices[i];
+		for (j = 0 ; j < dev->nr_resources; ++j) {
+			res = &dev->resources[j];
+			if ((addr >= res->base) && (addr + size <= (res->base + res->size)))
+				return dev;
+		}
+	}
+
+	return NULL;
+}
+
+bool pkvm_device_is_assignable(u64 pfn)
+{
+	return pkvm_get_device(hyp_pfn_to_phys(pfn), PAGE_SIZE) != NULL;
+}

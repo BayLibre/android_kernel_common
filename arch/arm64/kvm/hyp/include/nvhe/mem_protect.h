@@ -99,4 +99,6 @@ static __always_inline void __load_host_stage2(void)
 	else
 		write_sysreg(0, vttbr_el2);
 }
+
+int __pkvm_host_donate_hyp_mmio(u64 pfn);
 #endif /* __KVM_NVHE_MEM_PROTECT__ */

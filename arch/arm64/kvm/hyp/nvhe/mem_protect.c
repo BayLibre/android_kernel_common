@@ -2165,6 +2165,14 @@ int ___pkvm_host_donate_hyp(u64 pfn, u64 nr_pages, bool accept_mmio)
 					    default_hyp_prot(hyp_pfn_to_phys(pfn)));
 }
 
+int __pkvm_host_donate_hyp_mmio(u64 pfn)
+{
+	if (!pkvm_device_is_assignable(pfn))
+		return -ENODEV;
+	return ___pkvm_host_donate_hyp_prot(pfn, 1, true,
+					    default_hyp_prot(hyp_pfn_to_phys(pfn)));
+}
+
 int __pkvm_host_donate_hyp_locked(u64 pfn, u64 nr_pages, enum kvm_pgtable_prot prot)
 {
 	int ret;
