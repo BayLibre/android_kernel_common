@@ -344,9 +344,18 @@ struct fuse_page_desc {
 struct fuse_args {
 	uint64_t nodeid;
 	uint32_t opcode;
+<<<<<<< HEAD   (99de38 Revert "perf/aux: Fix AUX buffer serialization")
 	uint32_t error_in;
 	unsigned short in_numargs;
 	unsigned short out_numargs;
+||||||| BASE
+	unsigned short in_numargs;
+	unsigned short out_numargs;
+=======
+	uint8_t in_numargs;
+	uint8_t out_numargs;
+	uint8_t ext_idx;
+>>>>>>> BRANCH (5e2020 fuse: fix memory leak in fuse_create_open)
 	bool force:1;
 	bool noreply:1;
 	bool nocreds:1;
@@ -357,8 +366,17 @@ struct fuse_args {
 	bool page_zeroing:1;
 	bool page_replace:1;
 	bool may_block:1;
+<<<<<<< HEAD   (99de38 Revert "perf/aux: Fix AUX buffer serialization")
 	struct fuse_in_arg in_args[FUSE_MAX_IN_ARGS];
 	struct fuse_arg out_args[FUSE_MAX_OUT_ARGS];
+||||||| BASE
+	struct fuse_in_arg in_args[3];
+	struct fuse_arg out_args[2];
+=======
+	bool is_ext:1;
+	struct fuse_in_arg in_args[3];
+	struct fuse_arg out_args[2];
+>>>>>>> BRANCH (5e2020 fuse: fix memory leak in fuse_create_open)
 	void (*end)(struct fuse_mount *fm, struct fuse_args *args, int error);
 
 	/* Path used for completing d_canonical_path */
@@ -1339,7 +1357,7 @@ int fuse_reverse_inval_inode(struct fuse_conn *fc, u64 nodeid,
  * then the dentry is unhashed (d_delete()).
  */
 int fuse_reverse_inval_entry(struct fuse_conn *fc, u64 parent_nodeid,
-			     u64 child_nodeid, struct qstr *name);
+			     u64 child_nodeid, struct qstr *name, u32 flags);
 
 int fuse_do_open(struct fuse_mount *fm, u64 nodeid, struct file *file,
 		 bool isdir);
