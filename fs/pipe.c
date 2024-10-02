@@ -26,6 +26,7 @@
 #include <linux/memcontrol.h>
 #include <linux/watch_queue.h>
 #include <linux/sysctl.h>
+#include <linux/page_size_compat.h>
 
 #include <linux/uaccess.h>
 #include <asm/ioctls.h>
@@ -1246,8 +1247,8 @@ unsigned int round_pipe_size(unsigned int size)
 		return 0;
 
 	/* Minimum pipe size, as required by POSIX */
-	if (size < PAGE_SIZE)
-		return PAGE_SIZE;
+	if (size < __PAGE_SIZE)
+		return __PAGE_SIZE;
 
 	return roundup_pow_of_two(size);
 }
