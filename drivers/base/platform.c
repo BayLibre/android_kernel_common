@@ -1130,6 +1130,8 @@ int platform_pm_suspend(struct device *dev)
 	} else {
 		ret = platform_legacy_suspend(dev, PMSG_SUSPEND);
 	}
+	if (ret)
+		dev_err(dev, "[kyle] suspend fail %d\n", ret);
 
 	return ret;
 }

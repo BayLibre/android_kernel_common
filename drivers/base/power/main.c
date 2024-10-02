@@ -1629,6 +1629,7 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 	if (pm_wakeup_pending()) {
 		dev->power.direct_complete = false;
 		async_error = -EBUSY;
+		dev_err(dev, "[kyle] wakeup pending\n");
 		goto Complete;
 	}
 
@@ -1705,6 +1706,7 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 		dpm_propagate_wakeup_to_parent(dev);
 		dpm_clear_superiors_direct_complete(dev);
 	} else {
+		dev_err(dev, "Device %s failed to %s: error %d", dev_name(dev), pm_verb(state.event), error);
 		log_suspend_abort_reason("Device %s failed to %s: error %d",
 					 dev_name(dev), pm_verb(state.event), error);
 	}
@@ -1918,7 +1920,7 @@ int dpm_prepare(pm_message_t state)
 		} else if (error == -EAGAIN) {
 			error = 0;
 		} else {
-			dev_info(dev, "not prepared for power transition: code %d\n",
+			dev_err(dev, "not prepared for power transition: code %d\n",
 				 error);
 			log_suspend_abort_reason("Device %s not prepared for power transition: code %d",
 						 dev_name(dev), error);

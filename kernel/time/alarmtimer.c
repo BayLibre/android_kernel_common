@@ -281,6 +281,7 @@ static int alarmtimer_suspend(struct device *dev)
 		return 0;
 
 	if (ktime_to_ns(min) < 2 * NSEC_PER_SEC) {
+		dev_err(dev, "[kyle] min %lld ns\n", ktime_to_ns(min));
 		pm_wakeup_event(dev, 2 * MSEC_PER_SEC);
 		return -EBUSY;
 	}
@@ -379,6 +380,7 @@ void alarm_start_relative(struct alarm *alarm, ktime_t start)
 
 	start = ktime_add_safe(start, base->get_ktime());
 	alarm_start(alarm, start);
+//	WARN(1, "1");
 }
 EXPORT_SYMBOL_GPL(alarm_start_relative);
 
@@ -392,6 +394,7 @@ void alarm_restart(struct alarm *alarm)
 	hrtimer_restart(&alarm->timer);
 	alarmtimer_enqueue(base, alarm);
 	spin_unlock_irqrestore(&base->lock, flags);
+	WARN(1, "2");
 }
 EXPORT_SYMBOL_GPL(alarm_restart);
 
