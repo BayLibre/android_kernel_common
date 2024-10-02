@@ -68,7 +68,12 @@ ARCH=$($ANDROID_BUILD_TOP/build/soong/soong_ui.bash --dumpvar-mode TARGET_ARCH)
 case $ARCH in
     x86|x86_64)
         ZIMAGE=bzImage
-        CONFIG=android-x86_64
+        if [ -e arch/x86/configs/android-${BUILD_FAMILY_NAME}-x86_64_defconfig ]; then
+            CONFIG=android-${BUILD_FAMILY_NAME}-x86_64
+        else
+            CONFIG=android-x86_64
+        fi
+
         ;;
     arm64)
         ZIMAGE=Image
