@@ -14,7 +14,6 @@
 #include <linux/uidgid.h>
 #include <uapi/linux/android/binderfs.h>
 #include "binder_alloc.h"
-#include "dbitmap.h"
 
 struct binder_context {
 	struct binder_node *binder_context_mgr_node;
@@ -444,6 +443,7 @@ struct binder_proc {
 	bool sync_recv;
 	bool async_recv;
 	wait_queue_head_t freeze_wait;
+
 	struct list_head todo;
 	struct binder_stats stats;
 	struct list_head delivered_death;
@@ -461,24 +461,10 @@ struct binder_proc {
 	bool oneway_spam_detection_enabled;
 };
 
-/**
- * struct binder_proc_wrap - wrapper to preserve KMI in binder_proc
- * @proc:                    binder_proc being wrapped
- * @dmap:                    dbitmap to manage available reference descriptors
- *                           (protected by @proc.outer_lock)
- * @lock:                    protects @proc->alloc fields
- */
 struct binder_proc_wrap {
 	struct binder_proc proc;
-	struct dbitmap dmap;
 	spinlock_t lock;
 };
-
-static inline
-struct binder_proc_wrap *proc_wrapper(struct binder_proc *proc)
-{
-	return container_of(proc, struct binder_proc_wrap, proc);
-}
 
 static inline struct binder_proc *
 binder_proc_entry(struct binder_alloc *alloc)
@@ -487,9 +473,15 @@ binder_proc_entry(struct binder_alloc *alloc)
 }
 
 static inline struct binder_proc_wrap *
+binder_proc_wrap_entry(struct binder_proc *proc)
+{
+	return container_of(proc, struct binder_proc_wrap, proc);
+}
+
+static inline struct binder_proc_wrap *
 binder_alloc_to_proc_wrap(struct binder_alloc *alloc)
 {
-	return proc_wrapper(binder_proc_entry(alloc));
+	return binder_proc_wrap_entry(binder_proc_entry(alloc));
 }
 
 static inline void binder_alloc_lock_init(struct binder_alloc *alloc)
