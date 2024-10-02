@@ -60,17 +60,14 @@ static int __init init_mmap_rnd_bits(void)
 core_initcall(init_mmap_rnd_bits);
 
 /*
- * Updates len to avoid mapping off the end of the file.
- *
- * The length of the original mapping must be updated before
- * it's VMA is created to avoid an unaligned munmap in the
- * MAP_FIXED fixup mapping.
+ * Returns size of the portion of the VMA backed by the
+ * underlying file.
  */
 unsigned long ___filemap_len(struct inode *inode, unsigned long pgoff, unsigned long len,
 			     unsigned long flags)
 {
 	unsigned long file_size;
-	unsigned long new_len;
+	unsigned long filemap_len;
 	pgoff_t max_pgcount;
 	pgoff_t last_pgoff;
 
@@ -87,10 +84,10 @@ unsigned long ___filemap_len(struct inode *inode, unsigned long pgoff, unsigned 
 	last_pgoff = pgoff + (len >> PAGE_SHIFT);
 
 	if (unlikely(last_pgoff >= max_pgcount)) {
-		new_len = (max_pgcount - pgoff)  << PAGE_SHIFT;
+		filemap_len = (max_pgcount - pgoff)  << PAGE_SHIFT;
 		/* Careful of underflows in special files */
-		if (new_len > 0 && new_len < len)
-			return new_len;
+		if (filemap_len > 0 && filemap_len < len)
+			return filemap_len;
 	}
 
 	return len;
@@ -123,11 +120,12 @@ static inline bool is_filemap_fault(const struct vm_operations_struct *vm_ops)
  * This is called to fill any holes created by ___filemap_len()
  * with an anonymous mapping.
  */
-void ___filemap_fixup(unsigned long addr, unsigned long prot, unsigned long old_len,
-		      unsigned long new_len)
+void ___filemap_fixup(unsigned long addr, unsigned long prot, unsigned long file_backed_len,
+		      unsigned long len)
 {
-	unsigned long anon_len = old_len - new_len;
-	unsigned long anon_addr = addr + new_len;
+	unsigned long anon_addr = addr + file_backed_len;
+	unsigned long __offset = __offset_in_page(anon_addr);
+	unsigned long anon_len = __offset ? __PAGE_SIZE - __offset : 0;
 	struct mm_struct *mm = current->mm;
 	unsigned long populate = 0;
 	struct vm_area_struct *vma;
@@ -136,7 +134,7 @@ void ___filemap_fixup(unsigned long addr, unsigned long prot, unsigned long old_
 	if (!anon_len)
 		return;
 
-	BUG_ON(new_len > old_len);
+	BUG_ON(anon_len >= __PAGE_SIZE);
 
 	/* The original do_mmap() failed */
 	if (IS_ERR_VALUE(addr))
@@ -169,7 +167,7 @@ void ___filemap_fixup(unsigned long addr, unsigned long prot, unsigned long old_
 		return;
 
 	/*
-	 * Override the end of the file mapping that is off the file
+	 * Override the partial emulated page of the file backed portion of the VMA
 	 * with an anonymous mapping.
 	 */
 	anon_addr = do_mmap(NULL, anon_addr, anon_len, prot,
