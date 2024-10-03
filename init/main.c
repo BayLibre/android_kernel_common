@@ -1024,6 +1024,9 @@ void start_kernel(void)
 	boot_cpu_init();
 	page_address_init();
 	pr_notice("%s", linux_banner);
+#ifdef CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT
+	arch_task_struct_size = sizeof(struct task_struct);
+#endif
 	setup_arch(&command_line);
 	/* Static keys and static calls are needed by LSMs */
 	jump_label_init();

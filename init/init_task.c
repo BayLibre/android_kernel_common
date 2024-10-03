@@ -253,6 +253,9 @@ struct task_struct init_task __aligned(L1_CACHE_BYTES) = {
 };
 EXPORT_SYMBOL(init_task);
 
+u8 android_init_task_vendor_data_pad[GKI_TASK_STRUCT_VENDOR_SIZE_MAX];
+EXPORT_SYMBOL_GPL(android_init_task_vendor_data_pad);
+
 /*
  * Initial thread structure. Alignment of this is handled by a special
  * linker map entry.
