@@ -761,8 +761,11 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
 	 * can_modify_mm assumes we have acquired the lock on MM.
 	 */
 	if (unlikely(!can_modify_mm(current->mm, start, end))) {
-		error = -EPERM;
-		goto out;
+		/* checking if this is trying to use PROT_NONE on initial stack */
+		if (!((prot & PROT_EXEC) && (start <= current->mm->start_stack && end >= current->mm->start_stack))) {
+			error = -EPERM;
+			goto out;
+		}
 	}
 
 	prev = vma_prev(&vmi);
