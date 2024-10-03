@@ -1001,6 +1001,13 @@ static void __init print_kernel_cmdline(const char *cmdline)
 		pr_notice("%s%s\n", KERNEL_CMDLINE_PREFIX, cmdline);
 }
 
+#ifdef CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT
+static void __init setup_arch_task_struct_size(void)
+{
+	arch_task_struct_size = sizeof(struct task_struct);
+}
+#endif
+
 asmlinkage __visible __init __no_sanitize_address __noreturn __no_stack_protector
 void start_kernel(void)
 {
@@ -1024,6 +1031,9 @@ void start_kernel(void)
 	boot_cpu_init();
 	page_address_init();
 	pr_notice("%s", linux_banner);
+#ifdef CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT
+        setup_arch_task_struct_size();
+#endif
 	setup_arch(&command_line);
 	/* Static keys and static calls are needed by LSMs */
 	jump_label_init();
