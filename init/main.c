@@ -1042,7 +1042,22 @@ static void __init print_kernel_cmdline(const char *cmdline)
 		pr_notice("%s%s\n", KERNEL_CMDLINE_PREFIX, cmdline);
 }
 
+<<<<<<< HEAD   (69e1e941dbe1f38e288a4bbec9c3627248161081 ANDROID: GKI: Update xiaomi symbol list)
 asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
+||||||| BASE   (4604201b8d0a2f3093f9d232c2afaf93607190d7 ANDROID: GKI: update symbol list for xiaomi)
+asmlinkage __visible __init __no_sanitize_address __noreturn __no_stack_protector
+void start_kernel(void)
+=======
+#ifdef CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT
+static void __init setup_arch_task_struct_size(void)
+{
+	arch_task_struct_size = sizeof(struct task_struct);
+}
+#endif
+
+asmlinkage __visible __init __no_sanitize_address __noreturn __no_stack_protector
+void start_kernel(void)
+>>>>>>> CHANGE (9718459e2c57dbb5846464720be983c96e51bb0d ANDROID: GKI: Enable the option to alter task_struct size dy)
 {
 	char *command_line;
 	char *after_dashes;
@@ -1064,6 +1079,9 @@ asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
 	boot_cpu_init();
 	page_address_init();
 	pr_notice("%s", linux_banner);
+#ifdef CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT
+	setup_arch_task_struct_size();
+#endif
 	early_security_init();
 	setup_arch(&command_line);
 	setup_boot_config();
