@@ -153,6 +153,10 @@ static __always_inline void __filemap_fixup(unsigned long addr, unsigned long pr
 		___filemap_fixup(addr, prot, file_backed_len, len);
 }
 
+extern void __fold_filemap_fixup_entry(struct vma_iterator *iter, unsigned long *end);
+
+extern int __fixup_swap_header(struct file *swap_file, struct address_space *mapping);
+
 #endif /* !__ASSEMBLY__ */
 
 #endif /* __LINUX_PAGE_SIZE_COMPAT_H */
