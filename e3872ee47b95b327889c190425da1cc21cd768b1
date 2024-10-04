@@ -16,6 +16,414 @@
       "message": "changes need to land on android14-5.15 first (not a specific release branch)",
       "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f6fbf80_95d10f1c",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "Is this address fixed? What if the address and size is changed in future? Is it not possible to get the address and size through some API?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 41
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fc3bee5_cdc4d097",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "assign NULL here itself instead of in the line 245",
+      "range": {
+        "startLine": 80,
+        "startChar": 17,
+        "endLine": 80,
+        "endChar": 26
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2df875f_a1e16e40",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "static?",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 6
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11bf6b0b_76ac62ab",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "assign NULL??",
+      "range": {
+        "startLine": 197,
+        "startChar": 15,
+        "endLine": 197,
+        "endChar": 20
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c58485b_fcafa83b",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "space before \u003d needed",
+      "range": {
+        "startLine": 206,
+        "startChar": 6,
+        "endLine": 206,
+        "endChar": 7
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9150e83_acedbf94",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "If possible, populate using a API call instead of this as mentioned in other review comments above.",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 32
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed5bb408_143fbf5c",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "no space needed",
+      "range": {
+        "startLine": 238,
+        "startChar": 30,
+        "endLine": 238,
+        "endChar": 31
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fae2f1e6_ba5467be",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "magic number?? Kindly avoid or create a const in the beginning of this function.",
+      "range": {
+        "startLine": 252,
+        "startChar": 25,
+        "endLine": 252,
+        "endChar": 36
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02c6fccc_b3656c7e",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "rename this as offset from readability perspective",
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "379e2c9f_f1f625ea",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "nice to also write what this api returns.",
+      "range": {
+        "startLine": 274,
+        "startChar": 3,
+        "endLine": 274,
+        "endChar": 81
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd15ec23_53d7d417",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "remove space",
+      "range": {
+        "startLine": 288,
+        "startChar": 24,
+        "endLine": 288,
+        "endChar": 25
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b317f8d5_cb1c10af",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "extra space to be removed",
+      "range": {
+        "startLine": 297,
+        "startChar": 11,
+        "endLine": 297,
+        "endChar": 12
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa862766_c53d94a1",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "magic number 8? define const in the beginning.",
+      "range": {
+        "startLine": 301,
+        "startChar": 79,
+        "endLine": 301,
+        "endChar": 80
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21968e70_ad06dd59",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "This returns a value but not used to check and take decision here.",
+      "range": {
+        "startLine": 411,
+        "startChar": 1,
+        "endLine": 411,
+        "endChar": 27
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd231975_84194df8",
+        "filename": "fs/pstore/platform.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "Please add some comments on why this number was chosen",
+      "range": {
+        "startLine": 43,
+        "startChar": 37,
+        "endLine": 43,
+        "endChar": 43
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1557602a_4e57fecf",
+        "filename": "fs/pstore/platform.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "static?",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 6
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81cc9af0_9d24e9f6",
+        "filename": "fs/pstore/platform.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "magic number. Use const in the beginning and then assign? OR a macro whichever works.",
+      "range": {
+        "startLine": 416,
+        "startChar": 24,
+        "endLine": 416,
+        "endChar": 28
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f0b5283_bfe27999",
+        "filename": "include/linux/pstore_blk.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 2039868
+      },
+      "writtenOn": "2024-10-04T07:36:58Z",
+      "side": 1,
+      "message": "rename to offset instead of off",
+      "range": {
+        "startLine": 88,
+        "startChar": 10,
+        "endLine": 88,
+        "endChar": 13
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
