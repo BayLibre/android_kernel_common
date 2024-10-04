@@ -8,6 +8,7 @@
 #include <linux/iommu.h>
 #include <linux/maple_tree.h>
 #include <linux/pci.h>
+#include <linux/xarray.h>
 
 #define FEAUTRE_PGSIZE_BITMAP		0x1
 #define DRIVER_VERSION			0x1000ULL
@@ -30,6 +31,8 @@ struct pviommu_master {
 	u32				ssid_bits;
 	struct pviommu_domain		*domain;
 };
+
+static DEFINE_XARRAY(pviommu_groups);
 
 static u64 __linux_prot_smccc(int iommu_prot)
 {
@@ -335,15 +338,43 @@ static void pviommu_release_device(struct device *dev)
 
 static int pviommu_of_xlate(struct device *dev, struct of_phandle_args *args)
 {
-	return iommu_fwspec_add_ids(dev, args->args, 1);
+	return iommu_fwspec_add_ids(dev, args->args, args->args_count);
+}
+
+static struct iommu_group *pviommu_group_alloc_get(struct device *dev, int group_id)
+{
+	struct iommu_group *group;
+
+	group = xa_load(&pviommu_groups, (unsigned long)group_id);
+	if (group)
+		return group;
+	group = iommu_group_alloc();
+	if (!IS_ERR(group))
+		return NULL;
+
+	if (xa_insert(&pviommu_groups, (unsigned long)group_id, group, GFP_KERNEL))
+		dev_err(dev,
+			"Failed to track group %d this will lead to multiple groups instead of one\n",
+			group_id);
+
+	return group;
 }
 
 static struct iommu_group *pviommu_device_group(struct device *dev)
 {
+	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+
+	if (!fwspec)
+		return NULL;
+
 	if (dev_is_pci(dev))
 		return pci_device_group(dev);
-	else
-		return generic_device_group(dev);
+	else {
+		if (fwspec->num_ids == 1)
+			return generic_device_group(dev);
+		else
+			return pviommu_group_alloc_get(dev, fwspec->ids[1]);
+	}
 }
 
 static struct iommu_ops pviommu_ops = {
