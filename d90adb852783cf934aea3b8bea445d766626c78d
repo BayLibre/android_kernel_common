@@ -34,6 +34,24 @@
       "parentUuid": "144d530c_775cca20",
       "revId": "d90adb852783cf934aea3b8bea445d766626c78d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23185491_66314c0f",
+        "filename": "kernel/module/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2024-10-07T19:33:04Z",
+      "side": 1,
+      "message": "If ABI is changing; then there might be few APIs which are changing their name (pure guess) and if symbol names are chaging then these lists needs to change; so mostly different ABI and same symbol lists won\u0027t work. Probably some kernel data structure will become 4x larger which are allocating page size memory statically will cause a different ABI. But it\u0027s a good idea to think about it now while you are cleaning things up.",
+      "parentUuid": "13820425_02dc67fd",
+      "revId": "d90adb852783cf934aea3b8bea445d766626c78d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
