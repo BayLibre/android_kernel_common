@@ -846,8 +846,9 @@ static unsigned long mremap_to(unsigned long addr, unsigned long old_len,
 	 *
 	 * can_modify_mm assumes we have acquired the lock on MM.
 	 */
-	if (unlikely(!can_modify_mm(mm, addr, addr + old_len)))
-		return -EPERM;
+	if (unlikely(!can_modify_mm(mm, addr, addr + old_len))) {
+		pr_info("seal:mremap fail pid=%d", current->pid);
+	}
 
 	if (flags & MREMAP_FIXED) {
 		/*
@@ -1022,8 +1023,7 @@ SYSCALL_DEFINE5(mremap, unsigned long, addr, unsigned long, old_len,
 	 * shrink/expand together.
 	 */
 	if (unlikely(!can_modify_mm(mm, addr, addr + old_len))) {
-		ret = -EPERM;
-		goto out;
+		pr_info("seal:mremap 2 fail pid=%d", current->pid);
 	}
 
 	/*

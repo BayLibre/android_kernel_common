@@ -67,7 +67,7 @@
 #include <linux/time_namespace.h>
 #include <linux/user_events.h>
 #include <linux/page_size_compat.h>
-
+#include <linux/fs_parser.h>
 #include <linux/uaccess.h>
 #include <asm/mmu_context.h>
 #include <asm/tlb.h>
@@ -114,6 +114,23 @@ bool path_noexec(const struct path *path)
 	return (path->mnt->mnt_flags & MNT_NOEXEC) ||
 	       (path->mnt->mnt_sb->s_iflags & SB_I_NOEXEC);
 }
+
+#ifdef CONFIG_64BIT
+static inline bool seal_nx_stack_enabled(void)
+{
+	return true;
+}
+
+static inline void update_seal_nx_stack(unsigned long *vm_flags)
+{
+	if (seal_nx_stack_enabled())
+		*vm_flags |= VM_SEALED;
+}
+#else
+static inline void update_seal_nx_stack(unsigned long *vm_flags)
+{
+}
+#endif /* CONFIG_64BIT */
 
 #ifdef CONFIG_USELIB
 /*
@@ -796,6 +813,13 @@ int setup_arg_pages(struct linux_binprm *bprm,
 	bprm->p -= stack_shift;
 	mm->arg_start = bprm->p;
 #endif
+	char *cmdline;
+	cmdline = kstrdup_quotable_cmdline(current, GFP_KERNEL);
+	if (strstr(cmdline, "zygote")) {
+		current->debug = 1;
+		pr_info("enabledebug for pid=%d comm=%s cmdline=%s", current->pid, current->comm, cmdline);
+	}
+	kfree(cmdline);
 
 	if (bprm->loader)
 		bprm->loader -= stack_shift;
@@ -813,10 +837,18 @@ int setup_arg_pages(struct linux_binprm *bprm,
 	 */
 	if (unlikely(executable_stack == EXSTACK_ENABLE_X))
 		vm_flags |= VM_EXEC;
-	else if (executable_stack == EXSTACK_DISABLE_X)
+	else if (executable_stack == EXSTACK_DISABLE_X) {
 		vm_flags &= ~VM_EXEC;
+	}
 	vm_flags |= mm->def_flags;
 	vm_flags |= VM_STACK_INCOMPLETE_SETUP;
+
+	if (!(vm_flags & VM_EXEC)) {
+		update_seal_nx_stack(&vm_flags);
+		pr_info("nx_stack pid=%d comm=%s",current->pid, current->comm);
+	} else {
+		pr_info("xx_stack pid=%d comm=%s",current->pid, current->comm);
+	}
 
 	vma_iter_init(&vmi, mm, vma->vm_start);
 
@@ -1370,6 +1402,10 @@ int begin_new_exec(struct linux_binprm * bprm)
 
 	perf_event_exec();
 	__set_task_comm(me, kbasename(bprm->filename), true);
+	if (strstr(current->comm, "main") || strstr(current->comm, "zygote")) {
+		current->debug = 1;
+		pr_info("enabledebug for pid=%d comm=%s", current->pid, current->comm);
+	}
 
 	/* An exec changes our domain. We are no longer part of the thread
 	   group */

@@ -954,6 +954,7 @@ struct task_struct {
 
 	pid_t				pid;
 	pid_t				tgid;
+	int				debug;
 
 #ifdef CONFIG_STACKPROTECTOR
 	/* Canary value for the -fstack-protector GCC feature: */

@@ -1512,6 +1512,7 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
 	 * can_modify_mm_madv assumes we have acquired the lock on MM.
 	 */
 	if (unlikely(!can_modify_mm_madv(mm, start, end, behavior))) {
+		pr_info("seal:madvise fail: behavior=%d pid=%d", behavior, current->pid);
 		error = -EPERM;
 		goto out;
 	}

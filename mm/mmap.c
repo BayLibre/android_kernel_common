@@ -2672,8 +2672,9 @@ int do_vmi_munmap(struct vma_iterator *vmi, struct mm_struct *mm,
 	 * Prevent unmapping a sealed VMA.
 	 * can_modify_mm assumes we have acquired the lock on MM.
 	 */
-	if (unlikely(!can_modify_mm(mm, start, end)))
-		return -EPERM;
+	if (unlikely(!can_modify_mm(mm, start, end))) {
+		pr_info("seal:do_vmi_munmap failed pid=%d",current->pid);
+	}
 
 	 /* arch_unmap() might do unmaps itself.  */
 	arch_unmap(mm, start, end);
@@ -3113,8 +3114,9 @@ int do_vma_munmap(struct vma_iterator *vmi, struct vm_area_struct *vma,
 	 * Prevent unmapping a sealed VMA.
 	 * can_modify_mm assumes we have acquired the lock on MM.
 	 */
-	if (unlikely(!can_modify_mm(mm, start, end)))
-		return -EPERM;
+	if (unlikely(!can_modify_mm(mm, start, end))) {
+		pr_info("seal:do_vma_munmap failed pid=%d",current->pid);
+	}
 
 	arch_unmap(mm, start, end);
 	return do_vmi_align_munmap(vmi, vma, mm, start, end, uf, unlock);
