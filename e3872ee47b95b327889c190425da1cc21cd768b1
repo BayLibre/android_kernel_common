@@ -35,6 +35,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b92968b_4d8841bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Feedback comments have been incorporated into CL here: https://android-review.git.corp.google.com/c/kernel/common/+/3293382",
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f6fbf80_95d10f1c",
@@ -48,6 +65,30 @@
       "writtenOn": "2024-10-04T07:36:58Z",
       "side": 1,
       "message": "Is this address fixed? What if the address and size is changed in future? Is it not possible to get the address and size through some API?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 41
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23415be2_0a8e68dc",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "These addresses comes from parsing the device tree in ramoops module. We are in pstore_blk module so not sure if it should be parsed here. \n\nLet\u0027s discuss this more offline.",
+      "parentUuid": "6f6fbf80_95d10f1c",
       "range": {
         "startLine": 23,
         "startChar": 0,
@@ -104,6 +145,54 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6342f781_0d4046a3",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2df875f_a1e16e40",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 6
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f929bfa_e4b4c393",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fc3bee5_cdc4d097",
+      "range": {
+        "startLine": 80,
+        "startChar": 17,
+        "endLine": 80,
+        "endChar": 26
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11bf6b0b_76ac62ab",
@@ -127,6 +216,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed02df85_0986b236",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11bf6b0b_76ac62ab",
+      "range": {
+        "startLine": 197,
+        "startChar": 15,
+        "endLine": 197,
+        "endChar": 20
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c58485b_fcafa83b",
@@ -140,6 +253,30 @@
       "writtenOn": "2024-10-04T07:36:58Z",
       "side": 1,
       "message": "space before \u003d needed",
+      "range": {
+        "startLine": 206,
+        "startChar": 6,
+        "endLine": 206,
+        "endChar": 7
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b4d3f05_9ff6fc22",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c58485b_fcafa83b",
       "range": {
         "startLine": 206,
         "startChar": 6,
@@ -196,6 +333,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62f22274_a0e98313",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed5bb408_143fbf5c",
+      "range": {
+        "startLine": 238,
+        "startChar": 30,
+        "endLine": 238,
+        "endChar": 31
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fae2f1e6_ba5467be",
@@ -209,6 +370,30 @@
       "writtenOn": "2024-10-04T07:36:58Z",
       "side": 1,
       "message": "magic number?? Kindly avoid or create a const in the beginning of this function.",
+      "range": {
+        "startLine": 252,
+        "startChar": 25,
+        "endLine": 252,
+        "endChar": 36
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9e31c2d_875fcf12",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "This header is compared in XBL to make sure dump data is valid.",
+      "parentUuid": "fae2f1e6_ba5467be",
       "range": {
         "startLine": 252,
         "startChar": 25,
@@ -236,6 +421,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bee2a5a5_bf392505",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02c6fccc_b3656c7e",
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "379e2c9f_f1f625ea",
@@ -249,6 +452,30 @@
       "writtenOn": "2024-10-04T07:36:58Z",
       "side": 1,
       "message": "nice to also write what this api returns.",
+      "range": {
+        "startLine": 274,
+        "startChar": 3,
+        "endLine": 274,
+        "endChar": 81
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b168c4ae_131fbdb3",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "379e2c9f_f1f625ea",
       "range": {
         "startLine": 274,
         "startChar": 3,
@@ -282,6 +509,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "653b756e_a6cf5c84",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd15ec23_53d7d417",
+      "range": {
+        "startLine": 288,
+        "startChar": 24,
+        "endLine": 288,
+        "endChar": 25
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b317f8d5_cb1c10af",
@@ -295,6 +546,30 @@
       "writtenOn": "2024-10-04T07:36:58Z",
       "side": 1,
       "message": "extra space to be removed",
+      "range": {
+        "startLine": 297,
+        "startChar": 11,
+        "endLine": 297,
+        "endChar": 12
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b90e23da_de811315",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b317f8d5_cb1c10af",
       "range": {
         "startLine": 297,
         "startChar": 11,
@@ -351,6 +626,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4e81767_50ec035e",
+        "filename": "fs/pstore/blk.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Return value should not impact the current execution of the program, so changed the return type to void.",
+      "parentUuid": "21968e70_ad06dd59",
+      "range": {
+        "startLine": 411,
+        "startChar": 1,
+        "endLine": 411,
+        "endChar": 27
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd231975_84194df8",
@@ -364,6 +663,30 @@
       "writtenOn": "2024-10-04T07:36:58Z",
       "side": 1,
       "message": "Please add some comments on why this number was chosen",
+      "range": {
+        "startLine": 43,
+        "startChar": 37,
+        "endLine": 43,
+        "endChar": 43
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09030a91_e8471685",
+        "filename": "fs/pstore/platform.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd231975_84194df8",
       "range": {
         "startLine": 43,
         "startChar": 37,
@@ -397,6 +720,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97e3be9a_a1f08998",
+        "filename": "fs/pstore/platform.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1557602a_4e57fecf",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 6
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81cc9af0_9d24e9f6",
@@ -420,6 +767,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e8602d1_33ee6096",
+        "filename": "fs/pstore/platform.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81cc9af0_9d24e9f6",
+      "range": {
+        "startLine": 416,
+        "startChar": 24,
+        "endLine": 416,
+        "endChar": 28
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f0b5283_bfe27999",
@@ -433,6 +804,30 @@
       "writtenOn": "2024-10-04T07:36:58Z",
       "side": 1,
       "message": "rename to offset instead of off",
+      "range": {
+        "startLine": 88,
+        "startChar": 10,
+        "endLine": 88,
+        "endChar": 13
+      },
+      "revId": "e3872ee47b95b327889c190425da1cc21cd768b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f030c2e8_8da3e6ab",
+        "filename": "include/linux/pstore_blk.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1547508
+      },
+      "writtenOn": "2024-10-07T06:27:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f0b5283_bfe27999",
       "range": {
         "startLine": 88,
         "startChar": 10,
