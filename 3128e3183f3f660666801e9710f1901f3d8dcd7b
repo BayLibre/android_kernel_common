@@ -34,6 +34,24 @@
       "parentUuid": "449a9517_c032b865",
       "revId": "3128e3183f3f660666801e9710f1901f3d8dcd7b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1528d8d_b448cb60",
+        "filename": "kernel/module/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2024-10-07T19:29:17Z",
+      "side": 1,
+      "message": "Those two symbols are hard coded and present in all symbol lists; so anyway when we take union they are trimmed. I think that file was created for something in future but never really used. Matthias probably has more history on that file but we should probably remove that file rather than signing up for similar file to be created for every architecture we support KMI for.\n\nhttps://cs.android.com/android/_/android/kernel/build/+/841b353c057638b6bbcc445bf86343b4ebc05080:abi/extract_symbols.py;l\u003d29",
+      "parentUuid": "b355b225_5d4101bd",
+      "revId": "3128e3183f3f660666801e9710f1901f3d8dcd7b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
