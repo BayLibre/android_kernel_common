@@ -16,6 +16,24 @@
       "message": "`AARCH` ?\n\nWill this be able to handle the ARM64 16K scenario which probably coming soon unless it re-uses the ARM64 ABI?",
       "revId": "d90adb852783cf934aea3b8bea445d766626c78d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13820425_02dc67fd",
+        "filename": "kernel/module/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-10-07T18:45:52Z",
+      "side": 1,
+      "message": "Good question. My guess would be that this suffix should actually be supplied by Kleaf.\n\nThis will allow the possibility of sharing symbol lists / protected exports etc. between 4k and 16k variants even if the ABIs are not the same.\n\nI don\u0027t know what efforts there have been to making GKI present a uniform ABI surface between 4k and 16k modes. When I looked at it briefly a while ago, there were things like page table array sizes that differed.",
+      "parentUuid": "144d530c_775cca20",
+      "revId": "d90adb852783cf934aea3b8bea445d766626c78d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
