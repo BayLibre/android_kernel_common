@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a91a2c5_6386fd0e",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1512,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-10-08T19:22:19Z",
+      "side": 1,
+      "message": "Instead of optimizing the code path for requeuing I/O, it is better to prevent that requeuing happens. Same comment for blk_mq_delay_kick_requeue_list().",
+      "range": {
+        "startLine": 1508,
+        "startChar": 0,
+        "endLine": 1512,
+        "endChar": 9
+      },
+      "revId": "c2160e6ab424c1ac31c6a61c1d55bcb8df57b661",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34aab2f8_3a0894f0",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2269,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-10-08T19:22:19Z",
+      "side": 1,
+      "message": "Since we know that a new queue run will only happen after a delay, it is not clear to me why it would even matter on which CPU the delayed run work is scheduled?",
+      "range": {
+        "startLine": 2266,
+        "startChar": 0,
+        "endLine": 2269,
+        "endChar": 9
+      },
+      "revId": "c2160e6ab424c1ac31c6a61c1d55bcb8df57b661",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
