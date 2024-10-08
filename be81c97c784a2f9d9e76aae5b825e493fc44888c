@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "537ac61c_35162c80",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2024-10-08T17:59:00Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by KernelCommit: Commit needs to contain a properly formatted Bug: or Fixes: line.\n\nAnalyzer Description: Ensures that kernel commit messages follow the guidelines.\nOwner: android-kernel-team@google.com\n\nCommit needs to contain a properly formatted Bug: or Fixes: line.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\n\nLooks like just a space is missing.",
+      "range": {
+        "startLine": 0,
+        "startChar": 0,
+        "endLine": 0,
+        "endChar": 0
+      },
+      "revId": "be81c97c784a2f9d9e76aae5b825e493fc44888c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cce6fb4b_0ab5470f",
@@ -14,6 +37,23 @@
       "writtenOn": "2024-10-08T01:03:20Z",
       "side": 1,
       "message": "hi, sir\nplease help to review.",
+      "revId": "be81c97c784a2f9d9e76aae5b825e493fc44888c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07f11cd2_0cf6d3c2",
+        "filename": "mm/memcontrol.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2024-10-08T17:59:00Z",
+      "side": 1,
+      "message": "This can be called with indices from either `memcg_stat_item` or `node_stat_item`. `node_stat_item` is already part of the ABI, but `memcg_stat_item` is not. This change will not add `memcg_stat_item` to ABI monitoring (`idx` type is `int`), but I think it should be added. Not clear what the best way to make this happen is. I will ask.",
       "revId": "be81c97c784a2f9d9e76aae5b825e493fc44888c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
