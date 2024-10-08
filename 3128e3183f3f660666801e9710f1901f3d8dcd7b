@@ -70,6 +70,24 @@
       "parentUuid": "b1528d8d_b448cb60",
       "revId": "3128e3183f3f660666801e9710f1901f3d8dcd7b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65ff9bb2_d50b7fe6",
+        "filename": "kernel/module/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2024-10-08T19:54:09Z",
+      "side": 1,
+      "message": "I understand why they are there what I am trying to point is as long as symbol lists are generated with our tooling; they are going to be there in all partner symbol lists; and we don\u0027t have to call out for them with a separate file as at the end we are taking the unique union for trimming, symbol protection and ABI generation.\n\nCode which puts this symbols: https://cs.android.com/android/_/android/kernel/build/+/841b353c057638b6bbcc445bf86343b4ebc05080:abi/extract_symbols.py;l\u003d29",
+      "parentUuid": "d5237a54_7664cef7",
+      "revId": "3128e3183f3f660666801e9710f1901f3d8dcd7b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
