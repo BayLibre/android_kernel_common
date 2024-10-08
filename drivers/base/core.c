@@ -37,6 +37,8 @@
 #include "physical_location.h"
 #include "power/power.h"
 
+#include "trace/hooks/dev_shutdown.h"
+
 /* Device links support. */
 static LIST_HEAD(deferred_sync);
 static unsigned int defer_sync_state_count = 1;
@@ -4773,6 +4775,7 @@ void device_shutdown(void)
 		dev = list_entry(devices_kset->list.prev, struct device,
 				kobj.entry);
 
+		trace_android_vh_device_shutdown(dev);
 		/*
 		 * hold reference count of device's parent to
 		 * prevent it from being freed because parent's
@@ -4820,6 +4823,7 @@ void device_shutdown(void)
 
 		spin_lock(&devices_kset->list_lock);
 	}
+	trace_android_vh_device_shutdown(NULL);
 	spin_unlock(&devices_kset->list_lock);
 }
 
