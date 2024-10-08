@@ -545,8 +545,10 @@ void pkvm_host_reclaim_page(struct kvm *host_kvm, phys_addr_t ipa)
 		else
 			WARN_ON(1);
 
-		if (!ppage->pins)
+		if (!ppage->pins) {
 			mtree_erase(&host_kvm->arch.pkvm.pinned_pages, ipa);
+			host_kvm->arch.pkvm.seqcnt++;
+		}
 	}
 	write_unlock(&host_kvm->mmu_lock);
 

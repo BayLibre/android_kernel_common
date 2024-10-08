@@ -238,6 +238,7 @@ struct kvm_protected_vm {
 	pkvm_handle_t handle;
 	struct kvm_hyp_memcache stage2_teardown_mc;
 	struct maple_tree pinned_pages;
+	unsigned long seqcnt;
 	gpa_t pvmfw_load_addr;
 	bool enabled;
 };

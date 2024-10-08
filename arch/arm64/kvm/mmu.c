@@ -331,6 +331,7 @@ static int pkvm_unmap_range(struct kvm *kvm, u64 start, u64 end)
 			break;
 		cnt++;
 	}
+	kvm->arch.pkvm.seqcnt++;
 
 	/* account_locked_vm may sleep */
 	write_unlock(&kvm->mmu_lock);
@@ -1624,16 +1625,6 @@ find_ppage_or_above(struct kvm *kvm, phys_addr_t ipa)
 	return NULL;
 }
 
-static int insert_ppage(struct kvm *kvm, struct kvm_pinned_page *ppage)
-{
-	size_t size = PAGE_SIZE << ppage->order;
-	unsigned long start = ppage->ipa;
-	unsigned long end = start + size - 1;
-
-	return mtree_insert_range(&kvm->arch.pkvm.pinned_pages, start, end,
-				  ppage, GFP_KERNEL);
-}
-
 static struct kvm_pinned_page *find_ppage(struct kvm *kvm, u64 ipa)
 {
 	unsigned long index = ipa;
@@ -1690,10 +1681,11 @@ static int pkvm_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t *fault_ipa,
 {
 	unsigned int flags = FOLL_HWPOISON | FOLL_LONGTERM | FOLL_WRITE;
 	struct kvm_hyp_memcache *hyp_memcache = &vcpu->arch.stage2_mc;
-	unsigned long index, pmd_offset, page_size;
+	unsigned long index, pmd_offset, page_size, seqcnt;
 	struct mm_struct *mm = current->mm;
 	struct kvm_pinned_page *ppage;
 	struct kvm *kvm = vcpu->kvm;
+	MA_STATE(mas, &kvm->arch.pkvm.pinned_pages, 0, 0);
 	int ret, nr_pages;
 	struct page *page;
 	u64 pfn;
@@ -1756,16 +1748,23 @@ retry:
 	if (ret)
 		goto unpin;
 
-	write_lock(&kvm->mmu_lock);
+	index = *fault_ipa;
+	ppage->page = page;
+	ppage->ipa = *fault_ipa;
+	ppage->order = get_order(page_size);
+	ppage->pins = 1 << ppage->order;
+	mas_set_range(&mas, index, index + PAGE_SIZE - 1);
+
+	read_lock(&kvm->mmu_lock);
+	seqcnt = kvm->arch.pkvm.seqcnt;
 	/*
 	 * If we already have a mapping in the middle of the THP, we have no
 	 * other choice than enforcing PAGE_SIZE for pkvm_host_map_guest() to
 	 * succeed.
 	 */
-	index = *fault_ipa;
 	if (page_size > PAGE_SIZE &&
 	    mt_find(&kvm->arch.pkvm.pinned_pages, &index, index + page_size - 1)) {
-		write_unlock(&kvm->mmu_lock);
+		read_unlock(&kvm->mmu_lock);
 		*fault_ipa += pmd_offset;
 		pfn += pmd_offset >> PAGE_SHIFT;
 		page = pfn_to_page(pfn);
@@ -1773,6 +1772,16 @@ retry:
 		page_size = PAGE_SIZE;
 		goto retry;
 	}
+	read_unlock(&kvm->mmu_lock);
+
+	ret = mas_preallocate(&mas, ppage, GFP_KERNEL);
+	if (ret)
+		goto dec_account;
+
+	write_lock(&kvm->mmu_lock);
+	/* We raced with an mtree update, let's just try again */
+	if (seqcnt != kvm->arch.pkvm.seqcnt)
+		goto err_unlock;
 
 	ret = pkvm_host_map_guest(pfn, *fault_ipa >> PAGE_SHIFT,
 				  page_size >> PAGE_SHIFT, KVM_PGTABLE_PROT_R);
@@ -1780,25 +1789,23 @@ retry:
 		if (ret == -EAGAIN)
 			ret = 0;
 
-		goto dec_account;
+		goto err_unlock;
 	}
-
-	ppage->page = page;
-	ppage->ipa = *fault_ipa;
-	ppage->order = get_order(page_size);
-	ppage->pins = 1 << ppage->order;
-	WARN_ON(insert_ppage(kvm, ppage));
+	mas_store_prealloc(&mas, ppage);
+	kvm->arch.pkvm.seqcnt++;
 
 	write_unlock(&kvm->mmu_lock);
 
 	return 0;
 
-dec_account:
+err_unlock:
 	write_unlock(&kvm->mmu_lock);
+dec_account:
 	account_locked_vm(mm, page_size >> PAGE_SHIFT, false);
 unpin:
 	unpin_user_pages(&page, 1);
 free_ppage:
+	mas_destroy(&mas);
 	kfree(ppage);
 
 	return ret;
