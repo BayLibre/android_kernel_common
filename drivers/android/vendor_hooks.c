@@ -78,6 +78,7 @@
 #include <trace/hooks/fsnotify.h>
 #include <trace/hooks/perf.h>
 #include <trace/hooks/dmabuf.h>
+#include <trace/hooks/dev_shutdown.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -570,3 +571,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_wq_wait_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_wq_wait_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_work_wait_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_work_wait_finish);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_device_shutdown);
