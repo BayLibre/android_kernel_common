@@ -52,6 +52,24 @@
       "parentUuid": "b355b225_5d4101bd",
       "revId": "3128e3183f3f660666801e9710f1901f3d8dcd7b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5237a54_7664cef7",
+        "filename": "kernel/module/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-10-08T07:10:34Z",
+      "side": 1,
+      "message": "THe file represents artificial type dependencies. `struct task` is there because of some register magic on some architectures (including ARM64, I suppose). The module structure is there is because it is used by the module loader and must remain stable for load-link to actually work.\n\nBoth symbols could be called \"paranoia\" and there may be other symbols in the ABI that would pull them in anyway. It doesn\u0027t hurt to keep them.",
+      "parentUuid": "b1528d8d_b448cb60",
+      "revId": "3128e3183f3f660666801e9710f1901f3d8dcd7b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
