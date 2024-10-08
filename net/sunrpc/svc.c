@@ -423,8 +423,16 @@ __svc_init_bc(struct svc_serv *serv)
  * Create an RPC service
  */
 static struct svc_serv *
+<<<<<<< HEAD   (824a09 Merge da2a0c623181 ("block: use "unsigned long" for blk_vali)
 __svc_create(struct svc_program *prog, unsigned int bufsize, int npools,
 	     const struct svc_serv_ops *ops)
+||||||| BASE
+__svc_create(struct svc_program *prog, unsigned int bufsize, int npools,
+	     int (*threadfn)(void *data))
+=======
+__svc_create(struct svc_program *prog, struct svc_stat *stats,
+	     unsigned int bufsize, int npools, int (*threadfn)(void *data))
+>>>>>>> BRANCH (a510b5 nfsd: make svc_stat per-network namespace instead of global)
 {
 	struct svc_serv	*serv;
 	unsigned int vers;
@@ -435,8 +443,16 @@ __svc_create(struct svc_program *prog, unsigned int bufsize, int npools,
 		return NULL;
 	serv->sv_name      = prog->pg_name;
 	serv->sv_program   = prog;
+<<<<<<< HEAD   (824a09 Merge da2a0c623181 ("block: use "unsigned long" for blk_vali)
 	serv->sv_nrthreads = 1;
 	serv->sv_stats     = prog->pg_stats;
+||||||| BASE
+	kref_init(&serv->sv_refcnt);
+	serv->sv_stats     = prog->pg_stats;
+=======
+	kref_init(&serv->sv_refcnt);
+	serv->sv_stats     = stats;
+>>>>>>> BRANCH (a510b5 nfsd: make svc_stat per-network namespace instead of global)
 	if (bufsize > RPCSVC_MAXPAYLOAD)
 		bufsize = RPCSVC_MAXPAYLOAD;
 	serv->sv_max_payload = bufsize? bufsize : 4096;
@@ -491,18 +507,58 @@ struct svc_serv *
 svc_create(struct svc_program *prog, unsigned int bufsize,
 	   const struct svc_serv_ops *ops)
 {
+<<<<<<< HEAD   (824a09 Merge da2a0c623181 ("block: use "unsigned long" for blk_vali)
 	return __svc_create(prog, bufsize, /*npools*/1, ops);
+||||||| BASE
+	return __svc_create(prog, bufsize, 1, threadfn);
+=======
+	return __svc_create(prog, NULL, bufsize, 1, threadfn);
+>>>>>>> BRANCH (a510b5 nfsd: make svc_stat per-network namespace instead of global)
 }
 EXPORT_SYMBOL_GPL(svc_create);
 
+<<<<<<< HEAD   (824a09 Merge da2a0c623181 ("block: use "unsigned long" for blk_vali)
 struct svc_serv *
 svc_create_pooled(struct svc_program *prog, unsigned int bufsize,
 		  const struct svc_serv_ops *ops)
+||||||| BASE
+/**
+ * svc_create_pooled - Create an RPC service with pooled threads
+ * @prog: the RPC program the new service will handle
+ * @bufsize: maximum message size for @prog
+ * @threadfn: a function to service RPC requests for @prog
+ *
+ * Returns an instantiated struct svc_serv object or NULL.
+ */
+struct svc_serv *svc_create_pooled(struct svc_program *prog,
+				   unsigned int bufsize,
+				   int (*threadfn)(void *data))
+=======
+/**
+ * svc_create_pooled - Create an RPC service with pooled threads
+ * @prog: the RPC program the new service will handle
+ * @stats: the stats struct if desired
+ * @bufsize: maximum message size for @prog
+ * @threadfn: a function to service RPC requests for @prog
+ *
+ * Returns an instantiated struct svc_serv object or NULL.
+ */
+struct svc_serv *svc_create_pooled(struct svc_program *prog,
+				   struct svc_stat *stats,
+				   unsigned int bufsize,
+				   int (*threadfn)(void *data))
+>>>>>>> BRANCH (a510b5 nfsd: make svc_stat per-network namespace instead of global)
 {
 	struct svc_serv *serv;
 	unsigned int npools = svc_pool_map_get();
 
+<<<<<<< HEAD   (824a09 Merge da2a0c623181 ("block: use "unsigned long" for blk_vali)
 	serv = __svc_create(prog, bufsize, npools, ops);
+||||||| BASE
+	serv = __svc_create(prog, bufsize, npools, threadfn);
+=======
+	serv = __svc_create(prog, stats, bufsize, npools, threadfn);
+>>>>>>> BRANCH (a510b5 nfsd: make svc_stat per-network namespace instead of global)
 	if (!serv)
 		goto out_err;
 	return serv;
@@ -1380,7 +1436,8 @@ svc_process_common(struct svc_rqst *rqstp, struct kvec *argv, struct kvec *resv)
 		goto err_bad_proc;
 
 	/* Syntactic check complete */
-	serv->sv_stats->rpccnt++;
+	if (serv->sv_stats)
+		serv->sv_stats->rpccnt++;
 	trace_svc_process(rqstp, progp->pg_name);
 
 	/* Build the reply header. */
@@ -1446,7 +1503,8 @@ err_short_len:
 	goto close_xprt;
 
 err_bad_rpc:
-	serv->sv_stats->rpcbadfmt++;
+	if (serv->sv_stats)
+		serv->sv_stats->rpcbadfmt++;
 	svc_putnl(resv, 1);	/* REJECT */
 	svc_putnl(resv, 0);	/* RPC_MISMATCH */
 	svc_putnl(resv, 2);	/* Only RPCv2 supported */
@@ -1459,7 +1517,8 @@ err_release_bad_auth:
 err_bad_auth:
 	dprintk("svc: authentication failed (%d)\n",
 		be32_to_cpu(rqstp->rq_auth_stat));
-	serv->sv_stats->rpcbadauth++;
+	if (serv->sv_stats)
+		serv->sv_stats->rpcbadauth++;
 	/* Restore write pointer to location of accept status: */
 	xdr_ressize_check(rqstp, reply_statp);
 	svc_putnl(resv, 1);	/* REJECT */
@@ -1469,7 +1528,8 @@ err_bad_auth:
 
 err_bad_prog:
 	dprintk("svc: unknown program %d\n", prog);
-	serv->sv_stats->rpcbadfmt++;
+	if (serv->sv_stats)
+		serv->sv_stats->rpcbadfmt++;
 	svc_putnl(resv, RPC_PROG_UNAVAIL);
 	goto sendit;
 
@@ -1477,7 +1537,8 @@ err_bad_vers:
 	svc_printk(rqstp, "unknown version (%d for prog %d, %s)\n",
 		       rqstp->rq_vers, rqstp->rq_prog, progp->pg_name);
 
-	serv->sv_stats->rpcbadfmt++;
+	if (serv->sv_stats)
+		serv->sv_stats->rpcbadfmt++;
 	svc_putnl(resv, RPC_PROG_MISMATCH);
 	svc_putnl(resv, process.mismatch.lovers);
 	svc_putnl(resv, process.mismatch.hivers);
@@ -1486,7 +1547,8 @@ err_bad_vers:
 err_bad_proc:
 	svc_printk(rqstp, "unknown procedure (%d)\n", rqstp->rq_proc);
 
-	serv->sv_stats->rpcbadfmt++;
+	if (serv->sv_stats)
+		serv->sv_stats->rpcbadfmt++;
 	svc_putnl(resv, RPC_PROC_UNAVAIL);
 	goto sendit;
 
@@ -1495,7 +1557,8 @@ err_garbage:
 
 	rpc_stat = rpc_garbage_args;
 err_bad:
-	serv->sv_stats->rpcbadfmt++;
+	if (serv->sv_stats)
+		serv->sv_stats->rpcbadfmt++;
 	svc_putnl(resv, ntohl(rpc_stat));
 	goto sendit;
 }
@@ -1536,7 +1599,8 @@ svc_process(struct svc_rqst *rqstp)
 	if (dir != 0) {
 		/* direction != CALL */
 		svc_printk(rqstp, "bad direction %d, dropping request\n", dir);
-		serv->sv_stats->rpcbadfmt++;
+		if (serv->sv_stats)
+			serv->sv_stats->rpcbadfmt++;
 		goto out_drop;
 	}
 
