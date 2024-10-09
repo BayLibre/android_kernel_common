@@ -51,6 +51,24 @@
       "parentUuid": "450280c8_c24e35dd",
       "revId": "a66c74dc8f26803526e37a50a8d456fb0a3d7043",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "830c526f_400fc019",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1793,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-10-09T09:35:22Z",
+      "side": 1,
+      "message": "Phew, I think you\u0027re right. I misread the unlock/lock pair in pkvm_unmap_range()!!",
+      "parentUuid": "71f3d429_c3ab9425",
+      "revId": "a66c74dc8f26803526e37a50a8d456fb0a3d7043",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
