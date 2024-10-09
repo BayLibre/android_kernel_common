@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2cd5d737_8213ca92",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1512,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-10-09T16:39:49Z",
+      "side": 1,
+      "message": "With which kernel version has this been observed? The following patch has been merged in kernel v6.5 and prevents that the clock gating mechanism triggers requeuing: \n```\ncommit 078f4f4b34d6c2dadabb363d3fc6c84b32927dea\nAuthor: Bart Van Assche \u003cbvanassche@acm.org\u003e\nDate:   Mon May 29 13:26:40 2023 -0700\n\n    scsi: ufs: Ungate the clock synchronously\n    \n    Ungating the clock asynchronously causes ufshcd_queuecommand() to return\n    SCSI_MLQUEUE_HOST_BUSY and hence causes commands to be requeued.  This is\n    suboptimal. Allow ufshcd_queuecommand() to sleep such that clock ungating\n    does not trigger command requeuing. Remove the ufshcd_scsi_block_requests()\n    and ufshcd_scsi_unblock_requests() calls because these are no longer\n    needed. The flush_work(\u0026hba-\u003eclk_gating.ungate_work) call is sufficient to\n    make the SCSI core wait for clock ungating to complete.\n    \n    Acked-by: Adrian Hunter \u003cadrian.hunter@intel.com\u003e\n    Signed-off-by: Bart Van Assche \u003cbvanassche@acm.org\u003e\n    Link: https://lore.kernel.org/r/20230529202640.11883-6-bvanassche@acm.org\n    Reviewed-by: Bean Huo \u003cbeanhuo@micron.com\u003e\n    Reviewed-by: Bao D. Nguyen \u003cquic_nguyenb@quicinc.com\u003e\n    Signed-off-by: Martin K. Petersen \u003cmartin.petersen@oracle.com\u003e\n```",
+      "parentUuid": "e52d1c5a_2c3dd7a6",
+      "range": {
+        "startLine": 1508,
+        "startChar": 0,
+        "endLine": 1512,
+        "endChar": 9
+      },
+      "revId": "c2160e6ab424c1ac31c6a61c1d55bcb8df57b661",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "34aab2f8_3a0894f0",
         "filename": "block/blk-mq.c",
         "patchSetId": 1
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "We have extensively customized the CFS (Completely Fair Scheduler) scheduler and introduced a workqueue with higher priority than the default kblockd workqueue. In our testing environment, we have observed instances where the kblockd workqueue experiences scheduler latencies ranging from dozens to hundreds of milliseconds. Our primary goal is to utilize this customized workqueue to reduce scheduler latency.",
       "parentUuid": "34aab2f8_3a0894f0",
+      "range": {
+        "startLine": 2266,
+        "startChar": 0,
+        "endLine": 2269,
+        "endChar": 9
+      },
+      "revId": "c2160e6ab424c1ac31c6a61c1d55bcb8df57b661",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "652a099d_a4e30380",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2269,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-10-09T16:39:49Z",
+      "side": 1,
+      "message": "Why does it matter how quickly blk_mq_delay_run_hw_queue() is run? Is this function perhaps called frequently? If so, why is it called frequently? Is this because ufshcd_queuecommand() returns a non-zero value, is this because scsi_queue_rq() returns BLK_STS_RESOURCE or BLK_STS_DEV_RESOURCE or does this perhaps have another reason?\n\nIf an I/O scheduler is active, does reducing /sys/class/block/.../queue/nr_requests to the queue depth supported by the UFS driver help (31 in case of UFSHCI 3.1)?",
+      "parentUuid": "f9efdb18_eafa7c08",
       "range": {
         "startLine": 2266,
         "startChar": 0,
