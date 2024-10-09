@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e52d1c5a_2c3dd7a6",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1512,
+      "author": {
+        "id": 1879222
+      },
+      "writtenOn": "2024-10-09T03:59:59Z",
+      "side": 1,
+      "message": "The frequent gating and ungating of the clock by the UFS controller makes it impossible to prevent requeueing. Our goal is to minimize scheduler latency when requeueing occurs.",
+      "parentUuid": "9a91a2c5_6386fd0e",
+      "range": {
+        "startLine": 1508,
+        "startChar": 0,
+        "endLine": 1512,
+        "endChar": 9
+      },
+      "revId": "c2160e6ab424c1ac31c6a61c1d55bcb8df57b661",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34aab2f8_3a0894f0",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-10-08T19:22:19Z",
       "side": 1,
       "message": "Since we know that a new queue run will only happen after a delay, it is not clear to me why it would even matter on which CPU the delayed run work is scheduled?",
+      "range": {
+        "startLine": 2266,
+        "startChar": 0,
+        "endLine": 2269,
+        "endChar": 9
+      },
+      "revId": "c2160e6ab424c1ac31c6a61c1d55bcb8df57b661",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9efdb18_eafa7c08",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2269,
+      "author": {
+        "id": 1879222
+      },
+      "writtenOn": "2024-10-09T03:59:59Z",
+      "side": 1,
+      "message": "We have extensively customized the CFS (Completely Fair Scheduler) scheduler and introduced a workqueue with higher priority than the default kblockd workqueue. In our testing environment, we have observed instances where the kblockd workqueue experiences scheduler latencies ranging from dozens to hundreds of milliseconds. Our primary goal is to utilize this customized workqueue to reduce scheduler latency.",
+      "parentUuid": "34aab2f8_3a0894f0",
       "range": {
         "startLine": 2266,
         "startChar": 0,
