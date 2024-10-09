@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe6f6a4a_305c2563",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2006584
+      },
+      "writtenOn": "2024-10-09T01:27:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "537ac61c_35162c80",
+      "range": {
+        "startLine": 0,
+        "startChar": 0,
+        "endLine": 0,
+        "endChar": 0
+      },
+      "revId": "be81c97c784a2f9d9e76aae5b825e493fc44888c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30dc944d_d807882d",
@@ -41,6 +65,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "068c55c3_f6e59107",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 2006584
+      },
+      "writtenOn": "2024-10-09T01:27:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30dc944d_d807882d",
+      "revId": "be81c97c784a2f9d9e76aae5b825e493fc44888c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8afe6fe_6ec0844a",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-10-08T18:10:47Z",
       "side": 1,
       "message": "space is missing after `:`",
+      "range": {
+        "startLine": 9,
+        "startChar": 3,
+        "endLine": 9,
+        "endChar": 5
+      },
+      "revId": "be81c97c784a2f9d9e76aae5b825e493fc44888c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0376008e_938dfe7d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 2006584
+      },
+      "writtenOn": "2024-10-09T01:27:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8afe6fe_6ec0844a",
       "range": {
         "startLine": 9,
         "startChar": 3,
@@ -112,6 +178,24 @@
       "side": 1,
       "message": "In addition to `EXPORT_SYMBOL_GPL(memcg_page_state);` please add:\n\n```\n/* For type visibility of memcg_page_state indices */\nconst enum node_stat_item ANDROID_GKI_node_stat_item;\nEXPORT_SYMBOL_GPL(ANDROID_GKI_node_stat_item);\nconst enum memcg_stat_item ANDROID_GKI_memcg_stat_item;\nEXPORT_SYMBOL_GPL(ANDROID_GKI_memcg_stat_item);\n```\n\nand also add them to the `android/abi_gki_aarch64_type_visibility` file.",
       "parentUuid": "07f11cd2_0cf6d3c2",
+      "revId": "be81c97c784a2f9d9e76aae5b825e493fc44888c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bde1022d_bd59f872",
+        "filename": "mm/memcontrol.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 2006584
+      },
+      "writtenOn": "2024-10-09T01:27:47Z",
+      "side": 1,
+      "message": "thanks for advise, sir.\nalready update, please help to review again.",
+      "parentUuid": "a075e410_acdc299d",
       "revId": "be81c97c784a2f9d9e76aae5b825e493fc44888c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
