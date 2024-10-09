@@ -33,6 +33,24 @@
       "message": "This does not take the tree lock, which I think is not a problem *if* all other tree mutators are instead protected by the mmu_lock. But I don\u0027t think that\u0027s the case? By my reading of the API, either you need to fix the other mutators, or take mas_lock() around mas_store().",
       "revId": "a66c74dc8f26803526e37a50a8d456fb0a3d7043",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71f3d429_c3ab9425",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1793,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-10-09T09:20:00Z",
+      "side": 1,
+      "message": "\u003e But I don\u0027t think that\u0027s the case? \n\nI was thinking that it was in fact the case! That was the assumption for the old rb-tree, or even the llist prior to that at least. I\u0027ll go check that, this could have changed :/. There is a special case in the teardown path where we ignore the mmu_lock, but we should be guaranteed by construction that there are no vCPUs running any more by that point, so hopefully not an issue.\n\nI considered using the mtree API that allows to specify an external lock to make things obvious, but was worried about this may cause other issues (e.g. we may need nested locking). I\u0027ll look again.",
+      "parentUuid": "450280c8_c24e35dd",
+      "revId": "a66c74dc8f26803526e37a50a8d456fb0a3d7043",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
