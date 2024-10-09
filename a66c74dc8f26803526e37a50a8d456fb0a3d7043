@@ -16,6 +16,23 @@
       "message": "-2 pending on better testing (as well as spending a little longer staring at lib/maple_tree.c to convince myself the out-of-line pre-allocation of mtree nodes can in fact be done lock free ...)",
       "revId": "a66c74dc8f26803526e37a50a8d456fb0a3d7043",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "450280c8_c24e35dd",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1793,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-10-09T08:32:31Z",
+      "side": 1,
+      "message": "This does not take the tree lock, which I think is not a problem *if* all other tree mutators are instead protected by the mmu_lock. But I don\u0027t think that\u0027s the case? By my reading of the API, either you need to fix the other mutators, or take mas_lock() around mas_store().",
+      "revId": "a66c74dc8f26803526e37a50a8d456fb0a3d7043",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
