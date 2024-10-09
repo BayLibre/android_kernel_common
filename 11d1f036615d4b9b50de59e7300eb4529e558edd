@@ -90,6 +90,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2912d335_7f0f7d51",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "TODO: This increase log buffer size so it can probably be useful. Require GKI change",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 23
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b18126cb_cc389a94",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Required for GKI: Ibc06a864e7d5adbd17ca552854a00659c6c4cfbf",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 21
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7a7e28f_efd1c970",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Can be moved to vendor",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 18
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4626187a_0db2caf5",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor: https://partner-android-review.git.corp.google.com/q/I2b4d70c277179f4ff2f23cbf1ebef2791d329a24",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 20
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f419f31d_0b7e745c",
         "filename": "arch/x86/configs/gki_defconfig",
         "patchSetId": 1
@@ -106,6 +198,52 @@
         "startChar": 0,
         "endLine": 138,
         "endChar": 26
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a7fdd0f_2b135537",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "These enable additional fields in structure so must be in GKI if required. Needs to be checked: b/370905500",
+      "range": {
+        "startLine": 348,
+        "startChar": 0,
+        "endLine": 351,
+        "endChar": 36
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c57ac7e9_fb8b6654",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Required for GKI (already enabled for mainline): Ia4d48ff0c80b69b3ed24c1c73c41095bedaf9917",
+      "range": {
+        "startLine": 366,
+        "startChar": 0,
+        "endLine": 366,
+        "endChar": 25
       },
       "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
@@ -136,6 +274,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fad3774c_0240af8f",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Required for GKI: I3ebffb9a02db4e52a7907ecaaa56684f95498521",
+      "range": {
+        "startLine": 379,
+        "startChar": 0,
+        "endLine": 379,
+        "endChar": 22
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98b20970_37432dd4",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor: https://partner-android-review.git.corp.google.com/q/Ife73d9be82bf80ee5a7a60cc123a3d266ce81024",
+      "range": {
+        "startLine": 380,
+        "startChar": 0,
+        "endLine": 383,
+        "endChar": 19
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ca60bdc4_05b39f06",
         "filename": "arch/x86/configs/gki_defconfig",
         "patchSetId": 1
@@ -159,6 +343,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "88f5ed14_085bb47e",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "TODO: b/370905515\n\nAdditional storage drivers are probably not required for chrombooks but might be useful for generic x86 desktop. Some of these can be moved to vendor some require GKI change",
+      "range": {
+        "startLine": 410,
+        "startChar": 0,
+        "endLine": 418,
+        "endChar": 20
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85c0c272_f3b8327c",
         "filename": "arch/x86/configs/gki_defconfig",
         "patchSetId": 1
@@ -175,6 +382,29 @@
         "startChar": 0,
         "endLine": 448,
         "endChar": 18
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d8e519c_78299290",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor: https://partner-android-review.git.corp.google.com/q/Id222d4f0d05464e894c5070a66b5a17d80a5e459",
+      "range": {
+        "startLine": 479,
+        "startChar": 0,
+        "endLine": 479,
+        "endChar": 25
       },
       "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
@@ -251,6 +481,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f0d6c553_af190b08",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Required for GKI: Ic91f4f62cc1d118e4d83f6d6b75ba7d76dcff852",
+      "range": {
+        "startLine": 504,
+        "startChar": 0,
+        "endLine": 504,
+        "endChar": 23
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ec0e452_d17aa632",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor: https://partner-android-review.git.corp.google.com/q/I6ca709c110a1540d061a50df718edf44f8957651",
+      "range": {
+        "startLine": 518,
+        "startChar": 0,
+        "endLine": 522,
+        "endChar": 25
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e86f2af8_01691af3",
         "filename": "arch/x86/configs/gki_defconfig",
         "patchSetId": 1
@@ -320,6 +596,236 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2f584bc6_b16d6c05",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Required for GKI Idfb2a3a5d3176d04ed942ef49c00743cfb53f0e5",
+      "range": {
+        "startLine": 536,
+        "startChar": 0,
+        "endLine": 536,
+        "endChar": 25
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13a5c054_fbb7c036",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/Ia8ae77b752067cc3141aff17053c79e28d7ae20b",
+      "range": {
+        "startLine": 537,
+        "startChar": 0,
+        "endLine": 546,
+        "endChar": 26
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecf2cb2a_89e20433",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor: https://partner-android-review.git.corp.google.com/q/Ic4bdcad9df351fcf9828185517b5a226ef7e8213",
+      "range": {
+        "startLine": 551,
+        "startChar": 0,
+        "endLine": 551,
+        "endChar": 27
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84988e7c_f3e07b22",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/I1e278ef491680a3b7aff6094165764d1691b87b5",
+      "range": {
+        "startLine": 561,
+        "startChar": 0,
+        "endLine": 561,
+        "endChar": 28
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cd89fb1_45b5e9e1",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/I23f6dc7370be9300a2a3e81b9e4e32208d41f7ae\n\nRequires GKI change: I24d16e99bfcdb20cc95f7a98c7bb0d9505c9af20",
+      "range": {
+        "startLine": 562,
+        "startChar": 0,
+        "endLine": 562,
+        "endChar": 22
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c65d169f_deb32d50",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "TODO: b/370696727",
+      "range": {
+        "startLine": 563,
+        "startChar": 0,
+        "endLine": 563,
+        "endChar": 26
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f793a327_25275ec1",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Currently enabled for GKI but needs to be moved to vendor I905c5d93e5b6b606dc39cd0623288cffef73ee40",
+      "range": {
+        "startLine": 569,
+        "startChar": 0,
+        "endLine": 569,
+        "endChar": 28
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c5be55c_798d570b",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Reqired for GKI I905c5d93e5b6b606dc39cd0623288cffef73ee40",
+      "range": {
+        "startLine": 570,
+        "startChar": 0,
+        "endLine": 570,
+        "endChar": 27
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c40a47c_a0200479",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/I1ea462309acadbc60d81cc0d193386647f17d4f9",
+      "range": {
+        "startLine": 571,
+        "startChar": 0,
+        "endLine": 571,
+        "endChar": 26
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebfb4ded_ad699e72",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Work in progress b/370906200",
+      "range": {
+        "startLine": 581,
+        "startChar": 0,
+        "endLine": 584,
+        "endChar": 31
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f656491b_04e1397a",
         "filename": "arch/x86/configs/gki_defconfig",
         "patchSetId": 1
@@ -366,6 +872,190 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a74e32af_0da68aec",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Required for GKI I51a1b5b70d36ca5b03e78e92b80495b35f4dac2a",
+      "range": {
+        "startLine": 614,
+        "startChar": 0,
+        "endLine": 614,
+        "endChar": 45
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cb7fd51_90e463c0",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Required for GKI Ifbf86dd737f1c2d4662e1c5174dd0aac746545f6",
+      "range": {
+        "startLine": 615,
+        "startChar": 0,
+        "endLine": 616,
+        "endChar": 35
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "277ca81d_631051ee",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Work in Progress b/370906197",
+      "range": {
+        "startLine": 617,
+        "startChar": 0,
+        "endLine": 617,
+        "endChar": 23
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "163ad177_27e42705",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/I05f6abf0daa1ed73985850e73038ce2da29d6d79",
+      "range": {
+        "startLine": 644,
+        "startChar": 0,
+        "endLine": 644,
+        "endChar": 19
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fba61b0a_b27d9753",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/Idde56f433c1d483e63c7bd91addfda2edf672782",
+      "range": {
+        "startLine": 653,
+        "startChar": 0,
+        "endLine": 653,
+        "endChar": 19
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f552d383_8c70e8f2",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "TODO: b/370905515\n\nAdditional storage drivers are probably not required for chrombooks but might be useful for generic x86 desktop. Some of these can be moved to vendor some require GKI change",
+      "range": {
+        "startLine": 687,
+        "startChar": 0,
+        "endLine": 695,
+        "endChar": 24
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2425a12_ca77660a",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/Ica909a02dcb29cef6d45e8c0ff043ef79a08f9fa",
+      "range": {
+        "startLine": 710,
+        "startChar": 0,
+        "endLine": 710,
+        "endChar": 19
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07db449a_0dfba6d9",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor: https://partner-android-review.git.corp.google.com/q/Ia85a7222b9182d990432f21e5090c2241077d16d",
+      "range": {
+        "startLine": 711,
+        "startChar": 0,
+        "endLine": 711,
+        "endChar": 14
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f66a7f7_9080c8f4",
         "filename": "arch/x86/configs/gki_defconfig",
         "patchSetId": 1
@@ -382,6 +1072,29 @@
         "startChar": 0,
         "endLine": 713,
         "endChar": 16
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e1c0172_77a650d0",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 721,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Work in progress b/370906200",
+      "range": {
+        "startLine": 721,
+        "startChar": 0,
+        "endLine": 721,
+        "endChar": 22
       },
       "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
@@ -474,6 +1187,167 @@
         "startChar": 0,
         "endLine": 733,
         "endChar": 32
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da8045ae_bd3e29fa",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/I25ae26e80431b10f130963fb9c91ad74a34c5258",
+      "range": {
+        "startLine": 734,
+        "startChar": 0,
+        "endLine": 734,
+        "endChar": 26
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0449872c_e6bd861d",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/I4e3c95835ebf46425575c0a36f42f88b8f1d10b2",
+      "range": {
+        "startLine": 735,
+        "startChar": 0,
+        "endLine": 735,
+        "endChar": 23
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f8561b1_80b249a8",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/I00250cb0cd7a373d84f16907f1ab2f665f7e9093",
+      "range": {
+        "startLine": 736,
+        "startChar": 0,
+        "endLine": 736,
+        "endChar": 26
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9255694e_34609513",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/I0d2685b7e69299341c4af6dc928e2d678ad50be3\n\nRequire GKI change I84d31370d0181da7097cd511cf58b13d67649692",
+      "range": {
+        "startLine": 737,
+        "startChar": 0,
+        "endLine": 738,
+        "endChar": 24
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "172b9142_68957eef",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/I00250cb0cd7a373d84f16907f1ab2f665f7e9093",
+      "range": {
+        "startLine": 740,
+        "startChar": 0,
+        "endLine": 740,
+        "endChar": 19
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aabdbb4_11770363",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Required for GKI I84d31370d0181da7097cd511cf58b13d67649692",
+      "range": {
+        "startLine": 741,
+        "startChar": 0,
+        "endLine": 741,
+        "endChar": 25
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e796a57d_11d70d16",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-10-09T10:23:29Z",
+      "side": 1,
+      "message": "Moved to vendor https://partner-android-review.git.corp.google.com/q/I2fc329d93c5845f4e5140387fdfeedd68402e14b",
+      "range": {
+        "startLine": 758,
+        "startChar": 0,
+        "endLine": 759,
+        "endChar": 27
       },
       "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
