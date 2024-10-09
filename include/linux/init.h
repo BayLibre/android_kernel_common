@@ -7,6 +7,10 @@
 #include <linux/stringify.h>
 #include <linux/types.h>
 
+#ifdef CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT
+#define TASK_STRUCT_VENDOR_SIZE_MAX CONFIG_TASK_STRUCT_VENDOR_SIZE_MAX
+#endif
+
 /* Built-in __init functions needn't be compiled with retpoline */
 #if defined(__noretpoline) && !defined(MODULE)
 #define __noinitretpoline __noretpoline
