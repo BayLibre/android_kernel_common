@@ -49,6 +49,8 @@ static int try_to_freeze_tasks(bool user_only)
 	if (!user_only)
 		freeze_workqueues_begin();
 
+	trace_android_vh_unfrozen_task(NULL, 0);
+
 	while (true) {
 		todo = 0;
 		read_lock(&tasklist_lock);
@@ -57,6 +59,7 @@ static int try_to_freeze_tasks(bool user_only)
 				continue;
 
 			todo++;
+			trace_android_vh_unfrozen_task(p, todo);
 		}
 		read_unlock(&tasklist_lock);
 
@@ -115,6 +118,8 @@ static int try_to_freeze_tasks(bool user_only)
 		pr_info("Freezing %s completed (elapsed %d.%03d seconds)\n",
 			what, elapsed_msecs / 1000, elapsed_msecs % 1000);
 	}
+
+	trace_android_vh_unfrozen_task(NULL, 0);
 
 	return todo ? -EBUSY : 0;
 }
