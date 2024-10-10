@@ -79,6 +79,7 @@
 #include <trace/hooks/perf.h>
 #include <trace/hooks/dmabuf.h>
 #include <trace/hooks/dev_shutdown.h>
+#include <trace/hooks/irqmanage.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -573,3 +574,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_work_wait_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_work_wait_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_device_shutdown);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_unfrozen_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_synchronize_irq_start);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_synchronize_irq_finish);
