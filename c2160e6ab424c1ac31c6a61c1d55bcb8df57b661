@@ -72,6 +72,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "956b1875_c0463a6d",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1512,
+      "author": {
+        "id": 1879222
+      },
+      "writtenOn": "2024-10-10T08:31:05Z",
+      "side": 1,
+      "message": "The observation of clock gating and ungating causing requeuing occurred in kernel versions prior to v6.1. However, requeueing persists when user space triggers fsync. Certain applications perform fsync on their main thread during startup, and the prolonged scheduler latency of kblockd workqueue undoubtedly impacts the speed of application startup.",
+      "parentUuid": "2cd5d737_8213ca92",
+      "range": {
+        "startLine": 1508,
+        "startChar": 0,
+        "endLine": 1512,
+        "endChar": 9
+      },
+      "revId": "c2160e6ab424c1ac31c6a61c1d55bcb8df57b661",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34aab2f8_3a0894f0",
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "Why does it matter how quickly blk_mq_delay_run_hw_queue() is run? Is this function perhaps called frequently? If so, why is it called frequently? Is this because ufshcd_queuecommand() returns a non-zero value, is this because scsi_queue_rq() returns BLK_STS_RESOURCE or BLK_STS_DEV_RESOURCE or does this perhaps have another reason?\n\nIf an I/O scheduler is active, does reducing /sys/class/block/.../queue/nr_requests to the queue depth supported by the UFS driver help (31 in case of UFSHCI 3.1)?",
       "parentUuid": "f9efdb18_eafa7c08",
+      "range": {
+        "startLine": 2266,
+        "startChar": 0,
+        "endLine": 2269,
+        "endChar": 9
+      },
+      "revId": "c2160e6ab424c1ac31c6a61c1d55bcb8df57b661",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7186f094_01ea3085",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2269,
+      "author": {
+        "id": 1879222
+      },
+      "writtenOn": "2024-10-10T08:31:05Z",
+      "side": 1,
+      "message": "blk_mq_delay_run_hw_queue() is triggered by several scenarios: \n1. When the plug is NULL\n2. Upon exhaustion of tags for the UFS controller, invoking blk_mq_dispatch_wake()-\u003eblk_mq_run_hw_queue(hctx, true)\n\nThe critical factor is not the frequency of this function being called, but rather the potential for the kworker to be in a runnable state for dozens or even hundreds of milliseconds when blk_mq_delay_run_hw_queue() is triggered. Regardless of the low probability of this occurrence, when this happens, its impact on performance would be substantial. \n\nImagine that if the kworker thread accidentally remains in the runnable state for hundreds of milliseconds, it would lead to the phone becoming slow to respond with a high probability.",
+      "parentUuid": "652a099d_a4e30380",
       "range": {
         "startLine": 2266,
         "startChar": 0,
