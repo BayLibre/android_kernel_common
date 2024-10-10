@@ -1037,3 +1037,6 @@ error:
 	return ret;
 }
 EXPORT_SYMBOL_GPL(cros_ec_cmd);
+
+MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("ChromeOS EC communication protocol helpers");
