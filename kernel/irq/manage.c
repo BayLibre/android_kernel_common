@@ -23,6 +23,7 @@
 #include <linux/task_work.h>
 
 #include <trace/hooks/dtask.h>
+#include <trace/hooks/irqmanage.h>
 
 #include "internals.h"
 
@@ -141,8 +142,11 @@ void synchronize_irq(unsigned int irq)
 {
 	struct irq_desc *desc = irq_to_desc(irq);
 
-	if (desc)
+	if (desc) {
+		trace_android_vh_synchronize_irq_start(desc);
 		__synchronize_irq(desc);
+		trace_android_vh_synchronize_irq_finish(desc);
+	}
 }
 EXPORT_SYMBOL(synchronize_irq);
 
