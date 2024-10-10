@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "736f9c26_8269bdd9",
+        "filename": "drivers/tee/tee_shm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 3438462
+      },
+      "writtenOn": "2024-10-10T06:13:06Z",
+      "side": 1,
+      "message": "Dear sir,\n    sorry to reply late, as the previous patch:\n    https://android-review.googlesource.com/c/kernel/common/+/3161637\n    the current issue as follow:\n    page_flag |\u003d FOLL_LONGTERM;\n\tif (flags \u0026 TEE_SHM_USER_MAPPED)\n\t\trc \u003d pin_user_pages_fast(start, num_pages, page_flag,\n\t\t\t\t\t shm-\u003epages);\n    add FOLL_LONGTERM to prevent share memory from occupying the memory in the cma buffer for a long time\n    However, the current changes do not seem to add the FOLL_LONGTERM flag, but are the same as the previous kernel version. I am not sure whether the current changes can fix the previous problem.\n    Do you have any other suggestions? Or should we merge this patch first and then check if we encounter similar problems again?\n    many thanks for your kind help",
+      "range": {
+        "startLine": 238,
+        "startChar": 22,
+        "endLine": 238,
+        "endChar": 26
+      },
+      "revId": "20420e7034c7a5f8a7b160cfef6c171e12799983",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
