@@ -228,6 +228,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4c8a77ef_7d2a21e7",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1898956
+      },
+      "writtenOn": "2024-10-10T14:51:34Z",
+      "side": 1,
+      "message": "These two improve debugging features of `bluetooth.ko` module which is GKI module. Enabling those would have to be done in gki_defconfig to make impact. Since those are debugging related I think we can skip those.",
+      "range": {
+        "startLine": 350,
+        "startChar": 0,
+        "endLine": 351,
+        "endChar": 36
+      },
+      "revId": "11d1f036615d4b9b50de59e7300eb4529e558edd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c57ac7e9_fb8b6654",
         "filename": "arch/x86/configs/gki_defconfig",
         "patchSetId": 1
