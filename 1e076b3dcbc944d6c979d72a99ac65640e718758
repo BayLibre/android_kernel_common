@@ -46,6 +46,30 @@
       },
       "revId": "1e076b3dcbc944d6c979d72a99ac65640e718758",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9856e46c_11fbd492",
+        "filename": "init/Kconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 1945,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-10-10T16:14:44Z",
+      "side": 0,
+      "message": "I\u0027m not sure what to look for in change 3302176. IIUC, we would want this line to be in a separate commit so we can revert later? but we would want to keep `CONFIG_RUST\u003dy` set so it would be nice to have one thing per commit.\n\nIt seems we want to cherry-pick change 3302176 and then enable RUST\u003dy in a separate commit then? I would try to keep commits as consistent as possible across the different branches.",
+      "parentUuid": "0eac7b06_554382ce",
+      "range": {
+        "startLine": 1945,
+        "startChar": 13,
+        "endLine": 1945,
+        "endChar": 24
+      },
+      "revId": "1e076b3dcbc944d6c979d72a99ac65640e718758",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
