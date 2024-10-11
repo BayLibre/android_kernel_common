@@ -507,6 +507,10 @@ DECLARE_HOOK(android_vh_page_private_mod,
 DECLARE_HOOK(android_vh_cma_alloc_fail,
 	TP_PROTO(char *name, unsigned long count, unsigned long req_count),
 	TP_ARGS(name, count, req_count));
+DECLARE_HOOK(android_vh_page_cache_miss,
+	TP_PROTO(struct file *file, pgoff_t start,
+		pgoff_t len, bool buffered_read),
+	TP_ARGS(file, start, len, buffered_read));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */

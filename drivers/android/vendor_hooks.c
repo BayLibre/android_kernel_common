@@ -629,3 +629,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_compaction_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_read_fault);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_private_mod);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_fail);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_cache_miss);
