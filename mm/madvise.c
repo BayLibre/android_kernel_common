@@ -1432,7 +1432,7 @@ int madvise_set_anon_name(struct mm_struct *mm, unsigned long start,
  *  -EBADF  - map exists, but area maps something that isn't a file.
  *  -EAGAIN - a kernel resource was temporarily unavailable.
  */
-int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int behavior)
+int __do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int behavior, bool do_lock)
 {
 	unsigned long end;
 	int error;
@@ -1466,25 +1466,32 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
 #endif
 
 	write = madvise_need_mmap_write(behavior);
-	if (write) {
-		if (mmap_write_lock_killable(mm))
-			return -EINTR;
-	} else {
-		mmap_read_lock(mm);
+	if (do_lock) {
+		if (write) {
+			if (mmap_write_lock_killable(mm))
+				return -EINTR;
+		} else {
+			mmap_read_lock(mm);
+		}
 	}
 
 	blk_start_plug(&plug);
 	error = madvise_walk_vmas(mm, start, end, behavior,
 			madvise_vma_behavior);
 	blk_finish_plug(&plug);
-	if (write)
-		mmap_write_unlock(mm);
-	else
-		mmap_read_unlock(mm);
-
+	if (do_lock) {
+		if (write)
+			mmap_write_unlock(mm);
+		else
+			mmap_read_unlock(mm);
+	}
 	return error;
 }
 
+int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int behavior)
+{
+	return __do_madvise(mm, start, len_in, behavior, true);
+}
 SYSCALL_DEFINE3(madvise, unsigned long, start, size_t, len_in, int, behavior)
 {
 	return do_madvise(current->mm, start, len_in, behavior);

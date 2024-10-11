@@ -3047,6 +3047,7 @@ extern int do_mas_munmap(struct ma_state *mas, struct mm_struct *mm,
 extern int do_munmap(struct mm_struct *, unsigned long, size_t,
 		     struct list_head *uf);
 extern int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int behavior);
+extern int __do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int behavior, bool do_lock);
 
 #ifdef CONFIG_MMU
 extern int __mm_populate(unsigned long addr, unsigned long len,
