@@ -1477,6 +1477,11 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
 	    ((vm_flags & VM_LOCKED) ||
 	     (flags & (MAP_POPULATE | MAP_NONBLOCK)) == MAP_POPULATE))
 		*populate = len;
+
+	/* ANDROID: Pass MADV_MERGEABLE on private & annonymous mmaps */
+	if (!IS_ERR_VALUE(addr) && (flags & (MAP_PRIVATE | MAP_ANONYMOUS)))
+		do_madvise(mm, addr, len, MADV_MERGEABLE);
+
 	return addr;
 }
 
