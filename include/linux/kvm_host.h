@@ -834,8 +834,6 @@ struct kvm {
 #ifdef CONFIG_PARAVIRT_SCHED_KVM
 	bool pv_sched_enabled;
 #endif
-
-	struct kvm_protected_vm pkvm;
 };
 
 #define kvm_err(fmt, ...) \
