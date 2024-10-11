@@ -1409,6 +1409,10 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
 	     (flags & (MAP_POPULATE | MAP_NONBLOCK)) == MAP_POPULATE))
 		*populate = len;
 
+	/* ANDROID: Pass MADV_MERGEABLE on private & annonymous mmaps */
+	if (!IS_ERR_VALUE(addr) && (flags & (MAP_PRIVATE | MAP_ANONYMOUS)))
+		__do_madvise(mm, addr, len, MADV_MERGEABLE, false);
+
 	__filemap_fixup(addr, prot, old_len, len);
 
 	return addr;
