@@ -335102,6 +335102,15 @@ elf_symbol {
   full_name: "inode_set_bytes"
 }
 elf_symbol {
+  id: 0x90d2e1dd
+  name: "inode_set_ctime_current"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x51e628af
+  type_id: 0xb166862a
+  full_name: "inode_set_ctime_current"
+}
+elf_symbol {
   id: 0x2b7e86c2
   name: "inode_set_flags"
   is_defined: true
@@ -368764,6 +368773,7 @@ interface {
   symbol_id: 0xf4ae7c22
   symbol_id: 0x4ff0f410
   symbol_id: 0x1bb1212e
+  symbol_id: 0x90d2e1dd
   symbol_id: 0x2b7e86c2
   symbol_id: 0x18eeb52f
   symbol_id: 0xbc652525
