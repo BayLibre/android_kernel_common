@@ -80,12 +80,9 @@ DECLARE_HOOK(android_vh_do_folio_trylock,
 	TP_PROTO(struct folio *folio, struct rw_semaphore *sem,
 		bool *got_lock, bool *skip),
 	TP_ARGS(folio, sem, got_lock, skip));
-DECLARE_HOOK(android_vh_page_referenced_check_bypass,
-	TP_PROTO(struct folio *folio, unsigned long nr_to_scan, int lru, bool *bypass),
-	TP_ARGS(folio, nr_to_scan, lru, bypass));
-DECLARE_HOOK(android_vh_folio_referenced_check_bypass,
-	TP_PROTO(struct folio *folio, s8 priority, unsigned long nr_to_scan, int lru, bool *bypass),
-	TP_ARGS(folio, priority, nr_to_scan, lru, bypass));
+DECLARE_HOOK(android_vh_shrink_node,
+	TP_PROTO(pg_data_t *pgdat, struct mem_cgroup *memcg),
+	TP_ARGS(pgdat, memcg));
 DECLARE_HOOK(android_vh_should_memcg_bypass,
 	TP_PROTO(struct mem_cgroup *memcg, int priority, bool *bypass),
 	TP_ARGS(memcg, priority, bypass));
