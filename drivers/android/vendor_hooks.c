@@ -560,4 +560,11 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resume_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_early_resume_begin);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_use_amu_fie);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mem_cgroup_charge);
+<<<<<<< PATCH SET (8cc703 ANDROID: mm: add vendor hook to trace shrink_node)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_add_folio);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_node);
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_add_folio);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_add_folio);
+>>>>>>> BASE      (a2504b ANDROID: mm: add vendor hook to add folio to specific memcg)
