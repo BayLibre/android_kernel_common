@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75fa68d5_3e0cf8a9",
+        "filename": "mm/page_size_compat.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-10-15T23:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd6680e6_cc12b4c5",
+      "range": {
+        "startLine": 209,
+        "startChar": 66,
+        "endLine": 209,
+        "endChar": 70
+      },
+      "revId": "36961961fe89d8b7e363dfae804ca60e453fd84b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c9fde23_1d6a2948",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-10-15T22:46:31Z",
       "side": 1,
       "message": "should the lenght of the magic number be define in a macro or constant?",
+      "range": {
+        "startLine": 234,
+        "startChar": 45,
+        "endLine": 234,
+        "endChar": 47
+      },
+      "revId": "36961961fe89d8b7e363dfae804ca60e453fd84b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cedcc9f_32fd6311",
+        "filename": "mm/page_size_compat.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-10-15T23:26:48Z",
+      "side": 1,
+      "message": "It\u0027s hardcoded in order places so I think it is fine here too. We could do strlen but I think it\u0027s short enough to avoid here too.",
+      "parentUuid": "0c9fde23_1d6a2948",
       "range": {
         "startLine": 234,
         "startChar": 45,
