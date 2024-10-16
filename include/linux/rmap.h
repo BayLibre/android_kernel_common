@@ -102,6 +102,8 @@ enum ttu_flags {
 					 * caller holds it */
 };
 
+extern atomic_long_t shmem_mapped_pages;
+
 #ifdef CONFIG_MMU
 static inline void get_anon_vma(struct anon_vma *anon_vma)
 {

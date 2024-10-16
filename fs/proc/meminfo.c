@@ -20,6 +20,8 @@
 #include <linux/zswap.h>
 #include <asm/page.h>
 #include "internal.h"
+#include <linux/mm_inline.h>
+#include <linux/rmap.h>
 
 void __attribute__((weak)) arch_report_meminfo(struct seq_file *m)
 {
@@ -157,6 +159,8 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
 	show_val_kb(m, "CmaFree:        ",
 		    global_zone_page_state(NR_FREE_CMA_PAGES));
 #endif
+	show_val_kb(m, "MLocked File:   ", get_file_backed_mlocked_pages());
+	show_val_kb(m, "ShmemMapped:    ", atomic_long_read(&shmem_mapped_pages));
 
 #ifdef CONFIG_UNACCEPTED_MEMORY
 	show_val_kb(m, "Unaccepted:     ",

@@ -1284,6 +1284,8 @@ static void __page_check_anon_rmap(struct folio *folio, struct page *page,
 		       page);
 }
 
+atomic_long_t shmem_mapped_pages = ATOMIC_LONG_INIT(0);
+
 static void __folio_mod_stat(struct folio *folio, int nr, int nr_pmdmapped)
 {
 	int idx;
@@ -1291,6 +1293,8 @@ static void __folio_mod_stat(struct folio *folio, int nr, int nr_pmdmapped)
 	if (nr) {
 		idx = folio_test_anon(folio) ? NR_ANON_MAPPED : NR_FILE_MAPPED;
 		__lruvec_stat_mod_folio(folio, idx, nr);
+		if (!folio_test_anon(folio) && folio_test_swapbacked(folio))
+			atomic_long_add(nr, &shmem_mapped_pages);
 	}
 	if (nr_pmdmapped) {
 		if (folio_test_anon(folio)) {
@@ -1475,9 +1479,17 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
 		enum rmap_level level)
 {
 	int nr, nr_pmdmapped = 0;
+	static bool logged;
 
 	VM_WARN_ON_FOLIO(folio_test_anon(folio), folio);
 
+	if (folio_test_swapbacked(folio)) {
+		trace_printk("IJM: shmem page detected as file mapped page\n");
+		if (!logged) {
+			dump_page(folio_page(folio, 0), NULL);
+			logged = true;
+		}
+	}
 	nr = __folio_add_rmap(folio, page, nr_pages, level, &nr_pmdmapped);
 	__folio_mod_stat(folio, nr, nr_pmdmapped);
 

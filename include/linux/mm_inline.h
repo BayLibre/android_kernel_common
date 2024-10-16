@@ -315,6 +315,13 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
 
 #endif /* CONFIG_LRU_GEN */
 
+extern atomic_long_t file_backed_mlocked_pages;
+
+static __always_inline long get_file_backed_mlocked_pages(void)
+{
+	return atomic_long_read(&file_backed_mlocked_pages);
+}
+
 static __always_inline
 void lruvec_add_folio(struct lruvec *lruvec, struct folio *folio)
 {
@@ -327,6 +334,8 @@ void lruvec_add_folio(struct lruvec *lruvec, struct folio *folio)
 			folio_nr_pages(folio));
 	if (lru != LRU_UNEVICTABLE)
 		list_add(&folio->lru, &lruvec->lists[lru]);
+	else if (folio_is_file_lru(folio))
+		atomic_long_add(folio_nr_pages(folio), &file_backed_mlocked_pages);
 }
 
 static __always_inline
@@ -353,6 +362,8 @@ void lruvec_del_folio(struct lruvec *lruvec, struct folio *folio)
 
 	if (lru != LRU_UNEVICTABLE)
 		list_del(&folio->lru);
+	else if (folio_is_file_lru(folio))
+		atomic_long_sub(folio_nr_pages(folio), &file_backed_mlocked_pages);
 	update_lru_size(lruvec, lru, folio_zonenum(folio),
 			-folio_nr_pages(folio));
 }

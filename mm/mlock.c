@@ -33,6 +33,8 @@ struct mlock_fbatch {
 	struct folio_batch fbatch;
 };
 
+atomic_long_t file_backed_mlocked_pages = ATOMIC_LONG_INIT(0);
+
 static DEFINE_PER_CPU(struct mlock_fbatch, mlock_fbatch) = {
 	.lock = INIT_LOCAL_LOCK(lock),
 };

@@ -3,6 +3,7 @@
  * Helpers for initial module or kernel cmdline parsing
  * Copyright (C) 2001 Rusty Russell.
  */
+#define DEBUG
 #include <linux/ctype.h>
 #include <linux/device.h>
 #include <linux/err.h>
