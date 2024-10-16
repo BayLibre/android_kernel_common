@@ -122,6 +122,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ad1ba803_5b16888d",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1512,
+      "author": {
+        "id": 1952910
+      },
+      "writtenOn": "2024-10-16T03:55:03Z",
+      "side": 1,
+      "message": "Bart\u0027s patch has significantly improved such issues. However, a similar issue still occurs when dealing with fsync. This can be seen in the code: blk_kick_flush()-\u003eblk_mq_kick_requeue_list(q).",
+      "parentUuid": "ca15c033_752d2245",
+      "range": {
+        "startLine": 1508,
+        "startChar": 0,
+        "endLine": 1512,
+        "endChar": 9
+      },
+      "revId": "c2160e6ab424c1ac31c6a61c1d55bcb8df57b661",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "34aab2f8_3a0894f0",
         "filename": "block/blk-mq.c",
         "patchSetId": 1
@@ -229,6 +253,30 @@
       "side": 1,
       "message": "First - I see Bart had some fair questions but wasn\u0027t fully answered. I would appreciate to keep the comments open unless it is agreed upon. Thanks.\n\n\u003e The critical factor is not the frequency of this function being called, but rather the potential for the kworker to be in a runnable state for dozens or even hundreds of milliseconds \n\nThe issue related to kworker scheduling is a much wider beyond this subsystem.\n\n1: Given that you mention that you have a completely re-designed CFS scheduler, you would have to start injecting such vendor hooks all over the storage stack. What guarantees that this specific vendor hook is just going to address the issue and not touch other layers of the storage stack.",
       "parentUuid": "7186f094_01ea3085",
+      "range": {
+        "startLine": 2266,
+        "startChar": 0,
+        "endLine": 2269,
+        "endChar": 9
+      },
+      "revId": "c2160e6ab424c1ac31c6a61c1d55bcb8df57b661",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4941f2e_7f1739d9",
+        "filename": "block/blk-mq.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2269,
+      "author": {
+        "id": 1952910
+      },
+      "writtenOn": "2024-10-16T03:55:03Z",
+      "side": 1,
+      "message": "\u003e First - I see Bart had some fair questions but wasn\u0027t fully answered. I would appreciate to keep the comments open unless it is agreed upon. Thanks.\n\u003e \n\u003e Is this because ufshcd_queuecommand() returns a non-zero value, is this because scsi_queue_rq() returns BLK_STS_RESOURCE or BLK_STS_DEV_RESOURCE or does this perhaps have another reason?\n\nNo, I don\u0027t think so.\nblk_mq_delay_run_hw_queue() is triggered by several scenarios:\n1. When the plug is NULL\n2. When io_schedule is called\n3. When invoking blk_mq_dispatch_wake()-\u003eblk_mq_run_hw_queue(hctx, true)\n\n\u003e If an I/O scheduler is active, does reducing /sys/class/block/.../queue/nr_requests to the queue depth supported by the UFS driver help (31 in case of UFSHCI 3.1)?\n\nNo, I think it is unrelated to the queue depth.\n\n\u003e 1: Given that you mention that you have a completely re-designed CFS scheduler, you would have to start injecting such vendor hooks all over the storage stack. What guarantees that this specific vendor hook is just going to address the issue and not touch other layers of the storage stack.\n\nWe have added certain flags to indicate when the issue may occur. These vendor hooks are only functional when these flags are set. Otherwise, the handling remains the same as the native kernel.",
+      "parentUuid": "194041c5_33303a9d",
       "range": {
         "startLine": 2266,
         "startChar": 0,
