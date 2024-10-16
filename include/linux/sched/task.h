@@ -57,8 +57,10 @@ extern spinlock_t mmlist_lock;
 
 extern union thread_union init_thread_union;
 extern struct task_struct init_task;
+#ifdef CONFIG_GKI_DYNAMIC_TASK_STRUCT_SIZE
 #define GKI_TASK_STRUCT_VENDOR_SIZE_MAX 512
 extern u8 android_init_task_vendor_data_pad[GKI_TASK_STRUCT_VENDOR_SIZE_MAX];
+#endif
 
 extern int lockdep_tasklist_lock_is_held(void);
 
