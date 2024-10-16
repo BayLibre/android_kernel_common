@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d44dcf2c_797456c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-10-16T20:13:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ce9ee99_96edbdf0",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 14
+      },
+      "revId": "9f920e4a570567c5ca3352e2c21fef851381cda0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1500f134_2a849a9b",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c233d84_e9977fb3",
+        "filename": "mm/page_size_compat.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-10-16T20:13:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1500f134_2a849a9b",
+      "range": {
+        "startLine": 236,
+        "startChar": 1,
+        "endLine": 236,
+        "endChar": 5
+      },
+      "revId": "9f920e4a570567c5ca3352e2c21fef851381cda0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1474e8ba_382d7619",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-10-16T05:25:10Z",
       "side": 1,
       "message": "It\u0027s cleaner to have:\n```\n\tmagic_page \u003d read_mapping_page(mapping, index, swap_file);\n\tif (IS_ERR(magic_page)) {\n\t\t...\n\t\tgoto out;\n\t}\n\t...\n\tif (memcmp(magic, swap_header-\u003emagic.magic, 10))\n\t\tgoto free_magic;\n\t...\n\theader_page \u003d read_mapping_page(mapping, index, swap_file);\n\tif (IS_ERR(header_page)) {\n\t\t...\n\t\tgoto free_magic;\n\t}\n\tswap_header \u003d kmap(header_page);\n\tmemcpy(swap_header-\u003emagic.magic, magic, 10);\n\tkunmap(header_page);\n\tput_page(header_page);\nfree_magic:\n\tkunmap(magic_page);\n\tput_page(magic_page);\nout:\n\treturn error;\n```",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 14
+      },
+      "revId": "9f920e4a570567c5ca3352e2c21fef851381cda0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59ad1a7d_5a7b6524",
+        "filename": "mm/page_size_compat.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-10-16T20:13:52Z",
+      "side": 1,
+      "message": "Updated, per suggestion. Also removed out label.",
+      "parentUuid": "1474e8ba_382d7619",
       "range": {
         "startLine": 250,
         "startChar": 0,
