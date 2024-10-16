@@ -34,6 +34,7 @@
 #include <trace/hooks/cpuidle_psci.h>
 #include <trace/hooks/vmscan.h>
 #include <trace/hooks/avc.h>
+#include <trace/hooks/module.h>
 #include <trace/hooks/selinux.h>
 #include <trace/hooks/syscall_check.h>
 #include <trace/hooks/gic.h>
@@ -204,6 +205,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_node_replace);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_avc_lookup);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_selinux_is_initialized);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_mmap_file);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_mod_mem);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_mod_perm_after_init);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_mod_perm_before_init);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_file_open);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gic_v3_suspend);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_gic_set_affinity);
