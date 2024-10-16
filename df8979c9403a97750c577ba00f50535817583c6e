@@ -88,6 +88,24 @@
       "parentUuid": "340490ce_15543586",
       "revId": "df8979c9403a97750c577ba00f50535817583c6e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27c4627d_9b17e245",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-10-16T17:33:25Z",
+      "side": 1,
+      "message": "Ok, after collecting boot logs and talking with willmcvicker@, the problem appears to be that pixel drivers directly rely on the state of the original phy structures in the dwc3 struct. With this patch, the usb2_generic_phy and usb3_generic_phy structs are not being initialized.\n\nWithout looking in deeper, I have concerns that just initializing these would not be enough, it would be required to keep them in sync.",
+      "parentUuid": "2aa28d14_45059b6a",
+      "revId": "df8979c9403a97750c577ba00f50535817583c6e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
