@@ -28,6 +28,7 @@
 
 #include <linux/arm_ffa.h>
 #include <asm/kvm_pkvm.h>
+#include <kvm/arm_hypercalls.h>
 
 #include <nvhe/arm-smccc.h>
 #include <nvhe/ffa.h>
@@ -878,6 +879,42 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *ctxt, u32 func_id)
 unhandled:
 	trace_host_ffa_call(func_id, arg1, arg2, arg3, arg4, handled, err);
 	return handled;
+}
+
+bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
+{
+	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+	struct kvm_cpu_context *ctxt = &vcpu->arch.ctxt;
+	struct arm_smccc_res res;
+
+	DECLARE_REG(u64, func_id, ctxt, 0);
+
+	if (!is_ffa_call(func_id)) {
+		smccc_set_retval(vcpu, SMCCC_RET_NOT_SUPPORTED, 0, 0, 0);
+		return true;
+	}
+
+	switch (func_id) {
+	case FFA_FEATURES:
+		if (!do_ffa_features(&res, ctxt)) {
+			goto unhandled;
+		}
+		break;
+	case FFA_VERSION:
+		do_ffa_version(&res, ctxt);
+		break;
+	default:
+		if (ffa_call_supported(func_id))
+			goto unhandled;
+
+		ffa_to_smccc_error(&res, FFA_RET_NOT_SUPPORTED);
+	}
+
+	ffa_set_retval(ctxt, &res);
+	return true;
+unhandled:
+	__kvm_hyp_host_forward_smc(ctxt);
+	return true;
 }
 
 int hyp_ffa_init(void *pages)

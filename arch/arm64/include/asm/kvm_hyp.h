@@ -142,6 +142,7 @@ void __hyp_exit(void);
 #ifdef __KVM_NVHE_HYPERVISOR__
 struct user_fpsimd_state *get_host_fpsimd_state(struct kvm_vcpu *vcpu);
 struct kvm_host_sve_state *get_host_sve_state(struct kvm_vcpu *vcpu);
+void __kvm_hyp_host_forward_smc(struct kvm_cpu_context *host_ctxt);
 #endif
 
 extern u64 kvm_nvhe_sym(id_aa64pfr0_el1_sys_val);

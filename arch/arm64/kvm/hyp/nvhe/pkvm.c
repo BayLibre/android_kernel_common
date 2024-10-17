@@ -12,9 +12,11 @@
 #include <kvm/device.h>
 
 #include <asm/kvm_emulate.h>
+#include <hyp/adjust_pc.h>
 
 #include <nvhe/alloc.h>
 #include <nvhe/arm-smccc.h>
+#include <nvhe/ffa.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/memory.h>
 #include <nvhe/mm.h>
@@ -1687,6 +1689,14 @@ static bool pkvm_forward_trng(struct kvm_vcpu *vcpu)
 	}
 
 	return true;
+}
+
+bool kvm_handle_pvm_smc64(struct kvm_vcpu *vcpu, u64 *exit_code)
+{
+	struct pkvm_hyp_vcpu *hyp_vcpu = container_of(vcpu, struct pkvm_hyp_vcpu, vcpu);
+
+	__kvm_skip_instr(vcpu);
+	return kvm_guest_ffa_handler(hyp_vcpu, exit_code);
 }
 
 /*
