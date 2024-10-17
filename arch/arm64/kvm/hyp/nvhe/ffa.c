@@ -28,6 +28,7 @@
 
 #include <linux/arm_ffa.h>
 #include <asm/kvm_pkvm.h>
+#include <kvm/arm_hypercalls.h>
 
 #include <nvhe/arm-smccc.h>
 #include <nvhe/ffa.h>
@@ -42,6 +43,8 @@
  * We share this ID with the host.
  */
 #define HOST_FFA_ID	0
+
+#define REPLAY_FFA_CALL	BIT(63)
 
 /*
  * A buffer to hold the maximum descriptor size we can see from the host,
@@ -192,15 +195,101 @@ static void ffa_rx_release(struct arm_smccc_res *res)
 			  res);
 }
 
-static void do_ffa_rxtx_map(struct arm_smccc_res *res,
-			    struct kvm_cpu_context *ctxt,
-			    struct pkvm_hyp_vcpu *hyp_vcpu)
+static int ffa_guest_share_with_cb(struct pkvm_hyp_vcpu *vcpu,
+				   int (*share_cb)(struct pkvm_hyp_vcpu *, u64, u64 *),
+				   phys_addr_t guest_ipa, u64 *hyp_va, u64 *exit_code)
+{
+	int ret = share_cb(vcpu, guest_ipa, hyp_va);
+
+	if (ret == -EFAULT)
+		*exit_code = __pkvm_memshare_page_req(vcpu, guest_ipa) | REPLAY_FFA_CALL;
+	else if (ret == -ENOMEM) {
+		if (!pkvm_handle_empty_memcache(vcpu, exit_code))
+			*exit_code |= REPLAY_FFA_CALL;
+	}
+
+	return linux_errno_to_ffa(ret);
+}
+
+static int ffa_map_guest_buffers(u64 *tx_va, u64 *rx_va, phys_addr_t tx_ipa,
+				 phys_addr_t rx_ipa, struct pkvm_hyp_vcpu *vcpu,
+				 u64 *exit_code)
+{
+	int ret;
+
+	ret = ffa_guest_share_with_cb(vcpu, __pkvm_guest_share_hyp_page, tx_ipa, tx_va, exit_code);
+	if (ret)
+		return ret;
+
+	ret = ffa_guest_share_with_cb(vcpu, __pkvm_guest_share_hyp_page, rx_ipa, rx_va, exit_code);
+	if (ret)
+		goto err_unshare_tx;
+
+	return FFA_RET_SUCCESS;
+err_unshare_tx:
+	WARN_ON(__pkvm_guest_unshare_hyp_page(vcpu, tx_ipa));
+	return ret;
+}
+
+static int ffa_map_host_buffers(u64 *tx_va, u64 *rx_va, phys_addr_t tx,
+				phys_addr_t rx, u32 npages)
+{
+	int ret;
+
+	/*
+	 * Map our hypervisor buffers into the SPMD before mapping and
+	 * pinning the host buffers in our own address space.
+	 */
+	ret = ffa_map_hyp_buffers(npages);
+	if (ret)
+		return ret;
+
+	ret = __pkvm_host_share_hyp(hyp_phys_to_pfn(tx));
+	if (ret)
+		goto err_unmap_hyp_buffers;
+
+	ret = __pkvm_host_share_hyp(hyp_phys_to_pfn(rx));
+	if (ret) {
+		ret = FFA_RET_INVALID_PARAMETERS;
+		goto err_unshare_tx;
+	}
+
+	*tx_va = (u64)hyp_phys_to_virt(tx);
+	ret = hyp_pin_shared_mem((void *)*tx_va, (void *)*tx_va + 1);
+	if (ret) {
+		ret = FFA_RET_INVALID_PARAMETERS;
+		goto err_unshare_rx;
+	}
+
+	*rx_va = (u64)hyp_phys_to_virt(rx);
+	ret = hyp_pin_shared_mem((void *)*rx_va, (void *)*rx_va + 1);
+	if (ret) {
+		ret = FFA_RET_INVALID_PARAMETERS;
+		goto err_unpin_tx;
+	}
+
+	return 0;
+err_unpin_tx:
+	hyp_unpin_shared_mem((void *)*tx_va, (void *)*tx_va + 1);
+err_unshare_rx:
+	__pkvm_host_unshare_hyp(hyp_phys_to_pfn(rx));
+err_unshare_tx:
+	__pkvm_host_unshare_hyp(hyp_phys_to_pfn(tx));
+err_unmap_hyp_buffers:
+	ffa_unmap_hyp_buffers();
+	return ret;
+}
+
+static int do_ffa_rxtx_map(struct arm_smccc_res *res,
+			   struct kvm_cpu_context *ctxt,
+			   struct pkvm_hyp_vcpu *hyp_vcpu,
+			   u64 *exit_code)
 {
 	DECLARE_REG(phys_addr_t, tx, ctxt, 1);
 	DECLARE_REG(phys_addr_t, rx, ctxt, 2);
 	DECLARE_REG(u32, npages, ctxt, 3);
 	int ret = 0;
-	void *rx_virt, *tx_virt;
+	u64 rx_va, tx_va;
 	struct kvm_ffa_buffers *ffa_buf;
 
 	if (npages != (KVM_FFA_MBOX_NR_PAGES * PAGE_SIZE) / FFA_PAGE_SIZE) {
@@ -220,58 +309,21 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 		goto out_unlock;
 	}
 
-	/*
-	 * Map our hypervisor buffers into the SPMD before mapping and
-	 * pinning the host buffers in our own address space.
-	 */
-	ret = ffa_map_hyp_buffers(npages);
+	if (!hyp_vcpu)
+		ret = ffa_map_host_buffers(&tx_va, &rx_va, tx, rx, npages);
+	else
+		ret = ffa_map_guest_buffers(&tx_va, &rx_va, tx, rx, hyp_vcpu, exit_code);
 	if (ret)
 		goto out_unlock;
 
-	ret = __pkvm_host_share_hyp(hyp_phys_to_pfn(tx));
-	if (ret) {
-		ret = FFA_RET_INVALID_PARAMETERS;
-		goto err_unmap;
-	}
-
-	ret = __pkvm_host_share_hyp(hyp_phys_to_pfn(rx));
-	if (ret) {
-		ret = FFA_RET_INVALID_PARAMETERS;
-		goto err_unshare_tx;
-	}
-
-	tx_virt = hyp_phys_to_virt(tx);
-	ret = hyp_pin_shared_mem(tx_virt, tx_virt + 1);
-	if (ret) {
-		ret = FFA_RET_INVALID_PARAMETERS;
-		goto err_unshare_rx;
-	}
-
-	rx_virt = hyp_phys_to_virt(rx);
-	ret = hyp_pin_shared_mem(rx_virt, rx_virt + 1);
-	if (ret) {
-		ret = FFA_RET_INVALID_PARAMETERS;
-		goto err_unpin_tx;
-	}
-
-	ffa_buf->tx = tx_virt;
-	ffa_buf->rx = rx_virt;
+	ffa_buf->tx = (void *)tx_va;
+	ffa_buf->rx = (void *)rx_va;
 
 out_unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 out:
 	ffa_to_smccc_res(res, ret);
-	return;
-
-err_unpin_tx:
-	hyp_unpin_shared_mem(tx_virt, tx_virt + 1);
-err_unshare_rx:
-	__pkvm_host_unshare_hyp(hyp_phys_to_pfn(rx));
-err_unshare_tx:
-	__pkvm_host_unshare_hyp(hyp_phys_to_pfn(tx));
-err_unmap:
-	ffa_unmap_hyp_buffers();
-	goto out_unlock;
+	return ret;
 }
 
 static void do_ffa_rxtx_unmap(struct arm_smccc_res *res,
@@ -722,7 +774,8 @@ static int hyp_ffa_post_init(void)
 }
 
 static void do_ffa_version(struct arm_smccc_res *res,
-			   struct kvm_cpu_context *ctxt)
+			   struct kvm_cpu_context *ctxt,
+			   struct pkvm_hyp_vcpu *hyp_vcpu)
 {
 	DECLARE_REG(u32, ffa_req_version, ctxt, 1);
 
@@ -734,6 +787,10 @@ static void do_ffa_version(struct arm_smccc_res *res,
 	hyp_spin_lock(&version_lock);
 	if (has_version_negotiated) {
 		res->a0 = hyp_ffa_version;
+		goto unlock;
+	} else if (hyp_vcpu) {
+		/* Prevent the guest from negotiating a version with TZ */
+		res->a0 = FFA_RET_NOT_SUPPORTED;
 		goto unlock;
 	}
 
@@ -848,7 +905,7 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 		goto out_handled;
 	/* Memory management */
 	case FFA_FN64_RXTX_MAP:
-		do_ffa_rxtx_map(&res, host_ctxt, NULL);
+		do_ffa_rxtx_map(&res, host_ctxt, NULL, NULL);
 		goto out_handled;
 	case FFA_RXTX_UNMAP:
 		do_ffa_rxtx_unmap(&res, host_ctxt, NULL);
@@ -868,7 +925,7 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 		do_ffa_mem_frag_tx(&res, host_ctxt, NULL);
 		goto out_handled;
 	case FFA_VERSION:
-		do_ffa_version(&res, host_ctxt);
+		do_ffa_version(&res, host_ctxt, NULL);
 		goto out_handled;
 	case FFA_PARTITION_INFO_GET:
 		do_ffa_part_get(&res, host_ctxt, NULL);
@@ -882,6 +939,51 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 out_handled:
 	ffa_set_retval(host_ctxt, &res);
 	return true;
+}
+
+bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
+{
+	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+	struct kvm_cpu_context *ctxt = &vcpu->arch.ctxt;
+	struct arm_smccc_res res;
+	int ret = 0;
+
+	DECLARE_REG(u64, func_id, ctxt, 0);
+
+	if (!is_ffa_call(func_id)) {
+		smccc_set_retval(vcpu, SMCCC_RET_NOT_SUPPORTED, 0, 0, 0);
+		return true;
+	}
+
+	switch (func_id) {
+	case FFA_FEATURES:
+		if (!do_ffa_features(&res, ctxt))
+			goto unhandled;
+		break;
+	case FFA_VERSION:
+		do_ffa_version(&res, ctxt, hyp_vcpu);
+		break;
+	case FFA_FN64_RXTX_MAP:
+		ret = do_ffa_rxtx_map(&res, ctxt, hyp_vcpu, exit_code);
+		break;
+	default:
+		if (ffa_call_supported(func_id))
+			goto unhandled;
+
+		ffa_to_smccc_error(&res, FFA_RET_NOT_SUPPORTED);
+	}
+
+	if (*exit_code & REPLAY_FFA_CALL) {
+		*exit_code &= ~REPLAY_FFA_CALL;
+		return false;
+	}
+
+	ffa_set_retval(ctxt, &res);
+back_to_guest:
+	return true;
+unhandled:
+	__kvm_hyp_host_forward_smc(ctxt);
+	goto back_to_guest;
 }
 
 int hyp_ffa_init(void *pages)
