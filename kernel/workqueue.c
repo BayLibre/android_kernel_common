@@ -1155,6 +1155,8 @@ static bool kick_pool(struct worker_pool *pool)
 		}
 	}
 #endif
+	trace_android_vh_wq_wake_idle_worker(p, list_first_entry(&pool->worklist,
+					struct work_struct, entry));
 	wake_up_process(p);
 	return true;
 }
@@ -1800,6 +1802,8 @@ retry:
 
 	/* pwq determined, queue */
 	trace_workqueue_queue_work(req_cpu, pwq, work);
+
+	trace_android_vh_wq_queue_work(work, wq->name, wq->flags, cpu);
 
 	if (WARN_ON(!list_empty(&work->entry)))
 		goto out;
@@ -2645,7 +2649,9 @@ __acquires(&pool->lock)
 	 */
 	lockdep_invariant_state(true);
 	trace_workqueue_execute_start(work);
+	trace_android_vh_wq_process_work(work);
 	worker->current_func(work);
+	trace_android_vh_wq_process_work_end(work);
 	/*
 	 * While we must be careful to not use "work" after this, the trace
 	 * point will only record its address.
