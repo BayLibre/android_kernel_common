@@ -136,6 +136,7 @@ int __pkvm_init(phys_addr_t phys, unsigned long size, unsigned long nr_cpus,
 void __noreturn __host_enter(struct kvm_cpu_context *host_ctxt);
 void __hyp_enter(void);
 void __hyp_exit(void);
+void __kvm_hyp_host_forward_smc(struct kvm_cpu_context *host_ctxt);
 #endif
 
 extern u64 kvm_nvhe_sym(id_aa64pfr0_el1_sys_val);
