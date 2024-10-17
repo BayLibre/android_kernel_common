@@ -136,6 +136,10 @@ void __hyp_enter(void);
 void __hyp_exit(void);
 #endif
 
+#ifdef __KVM_NVHE_HYPERVISOR__
+void __kvm_hyp_host_forward_smc(struct kvm_cpu_context *host_ctxt);
+#endif
+
 extern u64 kvm_nvhe_sym(id_aa64pfr0_el1_sys_val);
 extern u64 kvm_nvhe_sym(id_aa64pfr1_el1_sys_val);
 extern u64 kvm_nvhe_sym(id_aa64zfr0_el1_sys_val);
