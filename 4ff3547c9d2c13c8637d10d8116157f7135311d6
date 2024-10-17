@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f996cbf2_b6d85d29",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3623314
+      },
+      "writtenOn": "2024-10-17T01:47:31Z",
+      "side": 1,
+      "message": "We use a type-1 hypervisor to manage EL2 stage2 page tables developed by ourselves at current, pKVM may be a future option.",
+      "parentUuid": "aa55eb72_a3f97a33",
+      "range": {
+        "startLine": 11,
+        "startChar": 13,
+        "endLine": 11,
+        "endChar": 34
+      },
+      "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c692280e_bcd5095c",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
@@ -37,6 +61,24 @@
       "writtenOn": "2024-10-16T16:18:40Z",
       "side": 1,
       "message": "Regular hooks can be invoked in a non-atomic context, so this is not a reason to use rvh. Do the handlers associated with these hooks block?",
+      "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2774351d_1b5c482f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3623314
+      },
+      "writtenOn": "2024-10-17T01:47:31Z",
+      "side": 1,
+      "message": "Yes，the hook handler transfers module section addr info to hypervisor by HVC call, and it is blocked until the HVC call finish.",
+      "parentUuid": "c692280e_bcd5095c",
       "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
