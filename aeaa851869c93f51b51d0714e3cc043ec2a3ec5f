@@ -16,6 +16,24 @@
       "message": "Breaks the build:\n```\nStarting local Bazel server and connecting to it...\n...el (lto\u003ddefault;trim) @@//common:kernel_aarch64 failed: (Exit 2): bash failed: error executing KernelBuild command (from target //common:kernel_aarch64) /bin/bash -c ... (remaining 1 argument skipped)\n\nUse --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\n/tmp/bazel-working-directory/_main/common/drivers/virt/gunyah/vm_mgr.c:1078:35: error: use of undeclared identifier \u0027idx\u0027\n 1078 |         xa_for_each(\u0026ghvm-\u003eboot_context, idx, entry)\n      |                                          ^\n```",
       "revId": "aeaa851869c93f51b51d0714e3cc043ec2a3ec5f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80c42ac2_dce00b33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1858345
+      },
+      "writtenOn": "2024-10-17T00:11:49Z",
+      "side": 1,
+      "message": "My bad, variable renamed in latest upstream series vs. in what\u0027s pulled into ACK. I\u0027m getting it tested by some folks as well. Could I get your help to re-trigger Treehugger and I\u0027ll update when device testing complete?",
+      "parentUuid": "9a3444f8_244c5314",
+      "revId": "aeaa851869c93f51b51d0714e3cc043ec2a3ec5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
