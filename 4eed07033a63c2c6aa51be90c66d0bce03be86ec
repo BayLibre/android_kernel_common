@@ -34,6 +34,24 @@
       "parentUuid": "edecb8e2_b436617c",
       "revId": "4eed07033a63c2c6aa51be90c66d0bce03be86ec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e24933d0_b3a3a32a",
+        "filename": "mm/page_size_compat.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1759142
+      },
+      "writtenOn": "2024-10-17T06:51:03Z",
+      "side": 1,
+      "message": "It\u0027s just a good practice to always use IS_ENABLED(CONFIG_xxx), which is semantically different if CONFIG_xxx can be set as m (module)\n\nFor CONFIG_PERF_EVENTS\u0027s case it has no difference indeed since it\u0027s a boolean config. I don\u0027t have strong opinion.",
+      "parentUuid": "3d08714a_39d30898",
+      "revId": "4eed07033a63c2c6aa51be90c66d0bce03be86ec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
