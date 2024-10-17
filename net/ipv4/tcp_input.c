@@ -918,6 +918,8 @@ static void tcp_rtt_estimator(struct sock *sk, long mrtt_us)
 		tcp_bpf_rtt(sk);
 	}
 	tp->srtt_us = max(1U, srtt);
+
+	trace_android_vh_tcp_srtt_estimator(sk);
 }
 
 static void tcp_update_pacing_rate(struct sock *sk)
