@@ -14,6 +14,12 @@
 #include <nvhe/spinlock.h>
 
 /*
+ * Start the VM table handle at the offset defined instead of at 0.
+ * Mainly for sanity checking and debugging.
+ */
+#define HANDLE_OFFSET 0x1000
+
+/*
  * Holds the relevant data for maintaining the vcpu state completely at hyp.
  */
 struct pkvm_hyp_vcpu {
@@ -41,6 +47,8 @@ struct pkvm_hyp_vcpu {
 	int power_state;
 };
 
+#define PKVM_VCPU_FROM_CTXT(ctxt) ((struct pkvm_hyp_vcpu *)container_of(\
+	container_of((ctxt), struct kvm_vcpu, arch.ctxt), struct pkvm_hyp_vcpu, vcpu))
 /*
  * Holds the relevant data for running a protected vm.
  */
@@ -195,6 +203,8 @@ bool pkvm_device_request_dma(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code);
 void pkvm_devices_teardown(struct pkvm_hyp_vm *vm);
 int pkvm_devices_iommu_lock(u64 id, u64 endpoint, struct pkvm_hyp_vcpu *vcpu);
 void pkvm_devices_iommu_unlock(u64 id, u64 endpoint);
+u64 __pkvm_memshare_page_req(struct pkvm_hyp_vcpu *hyp_vcpu, u64 ipa);
+int pkvm_handle_empty_memcache(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code);
 
 /*
  * Register a power domain. When the hypervisor catches power requests from the
@@ -217,4 +227,5 @@ static inline int pkvm_init_power_domain(struct kvm_power_domain *pd,
 int pkvm_stage2_snapshot_by_handle(struct kvm_pgtable_snapshot *snap,
 				   pkvm_handle_t handle);
 #endif /* CONFIG_NVHE_EL2_DEBUG */
+
 #endif /* __ARM64_KVM_NVHE_PKVM_H__ */
