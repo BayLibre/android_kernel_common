@@ -14,6 +14,12 @@
 #include <nvhe/spinlock.h>
 
 /*
+ * Start the VM table handle at the offset defined instead of at 0.
+ * Mainly for sanity checking and debugging.
+ */
+#define HANDLE_OFFSET 0x1000
+
+/*
  * Holds the relevant data for maintaining the vcpu state completely at hyp.
  */
 struct pkvm_hyp_vcpu {
@@ -41,6 +47,8 @@ struct pkvm_hyp_vcpu {
 	int power_state;
 };
 
+#define PKVM_VCPU_FROM_CTXT(ctxt) ((struct pkvm_hyp_vcpu *)container_of(\
+	container_of((ctxt), struct kvm_vcpu, arch.ctxt), struct pkvm_hyp_vcpu, vcpu))
 /*
  * Holds the relevant data for running a protected vm.
  */
@@ -120,6 +128,7 @@ int kvm_check_pvm_sysreg_table(void);
 void pkvm_reset_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu);
 
 bool kvm_handle_pvm_hvc64(struct kvm_vcpu *vcpu, u64 *exit_code);
+bool kvm_handle_pvm_smc64(struct kvm_vcpu *vcpu, u64 *exit_code);
 bool kvm_hyp_handle_hvc64(struct kvm_vcpu *vcpu, u64 *exit_code);
 
 struct pkvm_hyp_vcpu *pkvm_mpidr_to_hyp_vcpu(struct pkvm_hyp_vm *vm, u64 mpidr);
@@ -185,5 +194,7 @@ int pkvm_init_devices(void);
 int pkvm_device_hyp_assign_mmio(u64 pfn, u64 nr_pages);
 int pkvm_device_reclaim_mmio(u64 pfn, u64 nr_pages);
 int pkvm_host_map_guest_mmio(struct pkvm_hyp_vcpu *hyp_vcpu, u64 pfn, u64 gfn);
+u64 __pkvm_memshare_page_req(struct pkvm_hyp_vcpu *hyp_vcpu, u64 ipa);
+int pkvm_handle_empty_memcache(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code);
 
 #endif /* __ARM64_KVM_NVHE_PKVM_H__ */
