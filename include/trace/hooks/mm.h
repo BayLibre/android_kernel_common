@@ -141,9 +141,16 @@ DECLARE_HOOK(android_vh_mem_cgroup_css_online,
 DECLARE_HOOK(android_vh_mem_cgroup_css_offline,
 	TP_PROTO(struct cgroup_subsys_state *css, struct mem_cgroup *memcg),
 	TP_ARGS(css, memcg));
+<<<<<<< PATCH SET (c24564 ANDROID: mm: add vendor hook to trace filemap_add_folio)
+DECLARE_HOOK(android_vh_refault_filemap_add_folio,
+	TP_PROTO(struct folio *folio, void *shadow, gfp_t gfp, int *ret),
+	TP_ARGS(folio, shadow, gfp, ret));
+||||||| BASE
+=======
 DECLARE_HOOK(android_vh_mem_cgroup_charge,
 	TP_PROTO(struct folio *folio, struct mem_cgroup **memcg),
 	TP_ARGS(folio, memcg));
+>>>>>>> BASE      (7f1ad2 ANDROID: ABI: update gki symbol list)
 DECLARE_HOOK(android_vh_save_track_hash,
 	TP_PROTO(bool alloc, struct track *p),
 	TP_ARGS(alloc, p));
