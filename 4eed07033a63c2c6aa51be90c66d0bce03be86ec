@@ -16,6 +16,24 @@
       "message": "#if IS_ENABLED(CONFIG_PERF_EVENTS)",
       "revId": "4eed07033a63c2c6aa51be90c66d0bce03be86ec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d08714a_39d30898",
+        "filename": "mm/page_size_compat.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-10-17T06:44:05Z",
+      "side": 1,
+      "message": "any preference for this? It\u0027s effectively the same in this case IIUC since CONFIG_PERF_EVENTS is bool",
+      "parentUuid": "edecb8e2_b436617c",
+      "revId": "4eed07033a63c2c6aa51be90c66d0bce03be86ec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
