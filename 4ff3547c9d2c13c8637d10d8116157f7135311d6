@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1e150ae_502d8bad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-10-17T07:52:02Z",
+      "side": 1,
+      "message": "Given that hook handlers are provided by a module, you will obviously be missing registering this module against your hypervisor...",
+      "parentUuid": "f996cbf2_b6d85d29",
+      "range": {
+        "startLine": 11,
+        "startChar": 13,
+        "endLine": 11,
+        "endChar": 34
+      },
+      "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c692280e_bcd5095c",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "Yes，the hook handler transfers module section addr info to hypervisor by HVC call, and it is blocked until the HVC call finish.",
       "parentUuid": "c692280e_bcd5095c",
+      "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31b41027_60ff07b5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-10-17T07:52:02Z",
+      "side": 1,
+      "message": "The HVC call itself is presumably non-preemptible, so we\u0027re talking about different types of \u0027blocking\u0027 here. To re-phrase Todd\u0027s question, does your hook handler need to schedule (e.g. does it take a mutex, or a preemptible lock, or something like so?)? If not, then the restricted hooks are not needed -- spending time non-preemptible at EL2 is totally compatible with the standard vendor hooks.",
+      "parentUuid": "2774351d_1b5c482f",
       "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
