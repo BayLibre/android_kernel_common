@@ -574,5 +574,10 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_wq_wait_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_wq_wait_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_work_wait_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_flush_work_wait_finish);
+<<<<<<< PATCH SET (05d6cd ANDROID: mm: add vendor hook to trace filemap_add_folio)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_refault_filemap_add_folio);
+||||||| BASE
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_direct_reclaim_begin);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_direct_reclaim_end);
+>>>>>>> BASE      (f46818 ANDROID: 16K: Update sysctl_perf_event_mlock if PERF_EVENTS )
