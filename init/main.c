@@ -1042,7 +1042,47 @@ static void __init print_kernel_cmdline(const char *cmdline)
 		pr_notice("%s%s\n", KERNEL_CMDLINE_PREFIX, cmdline);
 }
 
+<<<<<<< HEAD   (69e1e941dbe1f38e288a4bbec9c3627248161081 ANDROID: GKI: Update xiaomi symbol list)
 asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
+||||||| BASE   (a43d5451ea751ef80da623619ed32592c571d520 ANDROID: GKI: Put vendor_data_pad behind CONFIG_GKI_DYNAMIC_)
+#ifdef CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT
+static void __init setup_arch_task_struct_size(void)
+{
+	arch_task_struct_size = sizeof(struct task_struct);
+}
+#endif
+
+asmlinkage __visible __init __no_sanitize_address __noreturn __no_stack_protector
+void start_kernel(void)
+=======
+#ifdef CONFIG_GKI_DYNAMIC_TASK_STRUCT_SIZE
+static void __init setup_arch_task_struct_size(void)
+{
+	arch_task_struct_size = sizeof(struct task_struct);
+}
+
+static int __init task_struct_vendor_size_setup(char *str)
+{
+	u64 size;
+
+	if (!str)
+		return -EINVAL;
+
+	size = memparse(str, &str);
+
+	if (size < 0 || size > CONFIG_GKI_TASK_STRUCT_VENDOR_SIZE_MAX)
+		return -EINVAL;
+
+	arch_task_struct_size = sizeof(struct task_struct) + size;
+
+	return 0;
+}
+early_param("android_arch_task_struct_size", task_struct_vendor_size_setup);
+#endif
+
+asmlinkage __visible __init __no_sanitize_address __noreturn __no_stack_protector
+void start_kernel(void)
+>>>>>>> CHANGE (e4f7662aea6a6a3d8015d702b2feb6c0fa18f8bb ANDROID: GKI: Guard dynamic task_struct size feature with co)
 {
 	char *command_line;
 	char *after_dashes;
@@ -1064,6 +1104,16 @@ asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
 	boot_cpu_init();
 	page_address_init();
 	pr_notice("%s", linux_banner);
+<<<<<<< HEAD   (69e1e941dbe1f38e288a4bbec9c3627248161081 ANDROID: GKI: Update xiaomi symbol list)
+||||||| BASE   (a43d5451ea751ef80da623619ed32592c571d520 ANDROID: GKI: Put vendor_data_pad behind CONFIG_GKI_DYNAMIC_)
+#ifdef CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT
+	setup_arch_task_struct_size();
+#endif
+=======
+#ifdef CONFIG_GKI_DYNAMIC_TASK_STRUCT_SIZE
+	setup_arch_task_struct_size();
+#endif
+>>>>>>> CHANGE (e4f7662aea6a6a3d8015d702b2feb6c0fa18f8bb ANDROID: GKI: Guard dynamic task_struct size feature with co)
 	early_security_init();
 	setup_arch(&command_line);
 	setup_boot_config();
