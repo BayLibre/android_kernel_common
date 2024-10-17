@@ -41,6 +41,12 @@
 #include "blk-mq-sched.h"
 #include "blk-rq-qos.h"
 
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+static bool block_graded_thread_enable;
+module_param_named(block_graded_thread_enable, block_graded_thread_enable, bool, 0660);
+static struct kthread_worker **blk_workers;
+#endif
+
 static DEFINE_PER_CPU(struct llist_head, blk_cpu_done);
 static DEFINE_PER_CPU(call_single_data_t, blk_cpu_csd);
 
@@ -2234,6 +2240,28 @@ select_cpu:
 	return next_cpu;
 }
 
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+extern void dm_bufio_shrink_scan_bypass(unsigned long task, bool *process);
+bool test_task_ux(struct task_struct *task)
+{
+	bool ux = false;
+
+	dm_bufio_shrink_scan_bypass((unsigned long)task, &ux);
+	return ux;
+}
+
+static inline bool need_high_pri_worker(struct request_queue *q)
+{
+	if (unlikely(block_graded_thread_enable == false))
+		return false;
+
+	if (test_task_ux(current) || task_is_realtime(current))
+		return true;
+	else
+		return false;
+}
+#endif
+
 /**
  * blk_mq_delay_run_hw_queue - Run a hardware queue asynchronously.
  * @hctx: Pointer to the hardware queue to run.
@@ -2243,8 +2271,25 @@ select_cpu:
  */
 void blk_mq_delay_run_hw_queue(struct blk_mq_hw_ctx *hctx, unsigned long msecs)
 {
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+	struct hctx_sched_entry *entry;
+	int cpu;
+#endif
 	if (unlikely(blk_mq_hctx_stopped(hctx)))
 		return;
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+	if (hctx->android_kabi_reserved1 && need_high_pri_worker(hctx->queue)) {
+		entry = (struct hctx_sched_entry *)hctx->android_kabi_reserved1;
+		cpu = blk_mq_hctx_next_cpu(hctx);
+		if (unlikely(cpu == WORK_CPU_UNBOUND))
+			kblockd_mod_delayed_work_on(blk_mq_hctx_next_cpu(hctx), &hctx->run_work,
+				msecs_to_jiffies(msecs));
+		else
+			kthread_mod_delayed_work(blk_workers[cpu],
+				&entry->dwork, msecs_to_jiffies(msecs));
+		return;
+	}
+#endif
 	kblockd_mod_delayed_work_on(blk_mq_hctx_next_cpu(hctx), &hctx->run_work,
 				    msecs_to_jiffies(msecs));
 }
@@ -2463,6 +2508,18 @@ static void blk_mq_run_work_fn(struct work_struct *work)
 	blk_mq_run_dispatch_ops(hctx->queue,
 				blk_mq_sched_dispatch_requests(hctx));
 }
+
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+static void blk_mq_thread_work(struct kthread_work *work)
+{
+	struct hctx_sched_entry *entry;
+
+	current->flags |= PF_MEMALLOC_NOIO;
+	entry = container_of(work, struct hctx_sched_entry, dwork.work);
+	blk_mq_run_dispatch_ops(entry->hctx->queue,
+				blk_mq_sched_dispatch_requests(entry->hctx));
+}
+#endif
 
 /**
  * blk_mq_request_bypass_insert - Insert a request at dispatch list.
@@ -3680,6 +3737,10 @@ static int blk_mq_init_hctx(struct request_queue *q,
 		struct blk_mq_tag_set *set,
 		struct blk_mq_hw_ctx *hctx, unsigned hctx_idx)
 {
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+	struct hctx_sched_entry *entry =
+			(struct hctx_sched_entry *)hctx->android_kabi_reserved1;
+#endif
 	hctx->queue_num = hctx_idx;
 
 	if (!(hctx->flags & BLK_MQ_F_STACKING))
@@ -3700,6 +3761,12 @@ static int blk_mq_init_hctx(struct request_queue *q,
 	if (xa_insert(&q->hctx_table, hctx_idx, hctx, GFP_KERNEL))
 		goto exit_flush_rq;
 
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+	if (entry) {
+		entry->hctx = hctx;
+		kthread_init_delayed_work(&entry->dwork, blk_mq_thread_work);
+	}
+#endif
 	return 0;
 
  exit_flush_rq:
@@ -3763,9 +3830,21 @@ blk_mq_alloc_hctx(struct request_queue *q, struct blk_mq_tag_set *set,
 		goto free_bitmap;
 
 	blk_mq_hctx_kobj_init(hctx);
-
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+	if (set->nr_hw_queues > 1) {
+		hctx->android_kabi_reserved1 =
+			(u64)kzalloc_node(sizeof(struct hctx_sched_entry),
+				gfp, hctx->numa_node);
+		if (!hctx->android_kabi_reserved1)
+			goto free_fq;
+	}
+#endif
 	return hctx;
-
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+ free_fq:
+	kfree(&hctx->fq->flush_rq);
+	kfree(&hctx->fq);
+#endif
  free_bitmap:
 	sbitmap_free(&hctx->ctx_map);
  free_ctxs:
@@ -4889,16 +4968,64 @@ void blk_mq_cancel_work_sync(struct request_queue *q)
 
 	cancel_delayed_work_sync(&q->requeue_work);
 
-	queue_for_each_hw_ctx(q, hctx, i)
+	queue_for_each_hw_ctx(q, hctx, i) {
 		cancel_delayed_work_sync(&hctx->run_work);
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+		if (hctx->android_kabi_reserved1) {
+			struct hctx_sched_entry *entry =
+				(struct hctx_sched_entry *)hctx->android_kabi_reserved1;
+			kthread_cancel_delayed_work_sync(&entry->dwork);
+		}
+#endif
+	}
 }
+
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+#define BLK_MQ_DTS_PATH "/soc/oplus,blk-mq"
+struct device_node;
+extern int of_property_read_string(const struct device_node *np, const char *propname,
+					const char **out_string);
+extern struct device_node *of_find_node_opts_by_path(const char *path,
+					const char **opts);
+static const char *of_blk_feature_read(char *name)
+{
+	const char *value = NULL;
+
+	if (name) {
+		struct device_node *np = of_find_node_opts_by_path(BLK_MQ_DTS_PATH, NULL);
+
+		if (np)
+			of_property_read_string(np, name, &value);
+	}
+
+	return value;
+}
+#endif
 
 static int __init blk_mq_init(void)
 {
 	int i;
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+	const char *config = of_blk_feature_read("block_graded_thread_enable");
 
-	for_each_possible_cpu(i)
+	if (config && strcmp(config, "y") == 0)
+		block_graded_thread_enable = true;
+	else
+		block_graded_thread_enable = false;
+	blk_workers = kmalloc_array(num_possible_cpus(),
+			sizeof(struct kthread_worker *), GFP_KERNEL);
+	if (!blk_workers)
+		return -ENOMEM;
+#endif
+	for_each_possible_cpu(i) {
 		init_llist_head(&per_cpu(blk_cpu_done, i));
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+		blk_workers[i] = kthread_create_worker_on_cpu(i, 0, "blk_run_queue%d", i);
+		if (IS_ERR(blk_workers[i]))
+			return -ENOMEM;
+		sched_set_fifo_low(blk_workers[i]->task);
+#endif
+	}
 	for_each_possible_cpu(i)
 		INIT_CSD(&per_cpu(blk_cpu_csd, i),
 			 __blk_mq_complete_request_remote, NULL);

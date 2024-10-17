@@ -46,7 +46,9 @@ void __blk_mq_unfreeze_queue(struct request_queue *q, bool force_atomic);
 void blk_queue_start_drain(struct request_queue *q);
 int __bio_queue_enter(struct request_queue *q, struct bio *bio);
 void submit_bio_noacct_nocheck(struct bio *bio);
-
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+bool test_task_ux(struct task_struct *task);
+#endif
 static inline bool blk_try_enter_queue(struct request_queue *q, bool pm)
 {
 	rcu_read_lock();

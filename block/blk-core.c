@@ -862,6 +862,10 @@ static void bio_set_ioprio(struct bio *bio)
 	if (IOPRIO_PRIO_CLASS(bio->bi_ioprio) == IOPRIO_CLASS_NONE)
 		bio->bi_ioprio = get_current_ioprio();
 	blkcg_set_ioprio(bio);
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+	if (test_task_ux(current))
+		bio->bi_ioprio =  IOPRIO_PRIO_VALUE(IOPRIO_CLASS_RT, 4);
+#endif
 }
 
 /**

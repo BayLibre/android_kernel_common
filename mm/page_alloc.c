@@ -257,6 +257,13 @@ EXPORT_SYMBOL(node_states);
 
 gfp_t gfp_allowed_mask __read_mostly = GFP_BOOT_MASK;
 
+#ifdef CONFIG_BLK_MQ_USE_LOCAL_THREAD
+void dm_bufio_shrink_scan_bypass(unsigned long task, bool *process)
+{
+	trace_android_vh_dm_bufio_shrink_scan_bypass((unsigned long)task, process);
+}
+#endif
+
 /*
  * A cached value of the page's pageblock's migratetype, used when the page is
  * put on a pcplist. Used to avoid the pageblock migratetype lookup when
