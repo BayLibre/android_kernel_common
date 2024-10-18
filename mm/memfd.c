@@ -134,7 +134,7 @@ static int memfd_wait_for_pins(struct address_space *mapping)
 	return error;
 }
 
-static unsigned int *memfd_file_seals_ptr(struct file *file)
+unsigned int *memfd_file_seals_ptr(struct file *file)
 {
 	if (shmem_file(file))
 		return &SHMEM_I(file_inode(file))->seals;
@@ -236,7 +236,7 @@ unlock:
 	return error;
 }
 
-static int memfd_get_seals(struct file *file)
+int memfd_get_seals(struct file *file)
 {
 	unsigned int *seals = memfd_file_seals_ptr(file);
 
@@ -291,9 +291,7 @@ static int check_sysctl_memfd_noexec(unsigned int *flags)
 	return 0;
 }
 
-SYSCALL_DEFINE2(memfd_create,
-		const char __user *, uname,
-		unsigned int, flags)
+int do_memfd_create(const char *uname, unsigned int flags, bool user)
 {
 	unsigned int *file_seals;
 	struct file *file;
@@ -325,8 +323,13 @@ SYSCALL_DEFINE2(memfd_create,
 	if (error < 0)
 		return error;
 
-	/* length includes terminating zero */
-	len = strnlen_user(uname, MFD_NAME_MAX_LEN + 1);
+	if (user) {
+		/* length includes terminating zero */
+		len = strnlen_user(uname, MFD_NAME_MAX_LEN + 1);
+	} else {
+		/* strnlen() does not include terminating zero, so account for it */
+		len = strnlen(uname, MFD_NAME_MAX_LEN) + 1;
+	}
 	if (len <= 0)
 		return -EFAULT;
 	if (len > MFD_NAME_MAX_LEN + 1)
@@ -337,7 +340,9 @@ SYSCALL_DEFINE2(memfd_create,
 		return -ENOMEM;
 
 	strcpy(name, MFD_NAME_PREFIX);
-	if (copy_from_user(&name[MFD_NAME_PREFIX_LEN], uname, len)) {
+	if (!user) {
+		strscpy(&name[MFD_NAME_PREFIX_LEN], uname, len);
+	} else if (copy_from_user(&name[MFD_NAME_PREFIX_LEN], uname, len)) {
 		error = -EFAULT;
 		goto err_name;
 	}
@@ -393,4 +398,11 @@ err_fd:
 err_name:
 	kfree(name);
 	return error;
+}
+
+SYSCALL_DEFINE2(memfd_create,
+		const char __user *, uname,
+		unsigned int, flags)
+{
+	return do_memfd_create(uname, flags, true);
 }
