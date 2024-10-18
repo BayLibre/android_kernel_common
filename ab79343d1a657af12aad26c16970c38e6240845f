@@ -39,6 +39,30 @@
       },
       "revId": "ab79343d1a657af12aad26c16970c38e6240845f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f385abf_4df1509d",
+        "filename": "mm/page_size_compat.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2024-10-18T20:20:40Z",
+      "side": 1,
+      "message": "This can happen if the mkswap tool hardcoded a 4096 instead of using getpagesize() or friends. Then there is nothing to do :)",
+      "parentUuid": "c94846b1_1fc11f0f",
+      "range": {
+        "startLine": 292,
+        "startChar": 0,
+        "endLine": 294,
+        "endChar": 18
+      },
+      "revId": "ab79343d1a657af12aad26c16970c38e6240845f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
