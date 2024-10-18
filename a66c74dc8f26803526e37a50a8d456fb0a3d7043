@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2eb71cea_c571e17e",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1759,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-10-18T17:26:23Z",
+      "side": 1,
+      "message": "Ok so I have a \u0027working\u0027 version of this patch locally (as in doesn\u0027t insta explode). Turns out this API is sub-optimal -- the mas_preallocate()/mas_store_prealloc() combo is preferable when inserting a single entry. However, the comment above is utterly wrong, I need stability of the tree across the allocation/insertion pair. And since the allocation can block, I need an outer lock, presumably an rw_semaphore. Argh.\n\nThis sucks because the other users of that tree are going to be painful to make aware of the new locking scheme -- all the pkvm_unmap*() stuff is deep into mmu notifier business with the mmu_lock already held. I need to think about it, but that is for next week...",
+      "range": {
+        "startLine": 1759,
+        "startChar": 1,
+        "endLine": 1759,
+        "endChar": 37
+      },
+      "revId": "a66c74dc8f26803526e37a50a8d456fb0a3d7043",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "450280c8_c24e35dd",
         "filename": "arch/arm64/kvm/mmu.c",
         "patchSetId": 2
