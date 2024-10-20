@@ -19,32 +19,59 @@
 
 #include "internal.h"
 
-bool dmabuf_hugetlb_debug;
-EXPORT_SYMBOL(dmabuf_hugetlb_debug);
+#define DMABUF_64K_SHIFT		16
+#define DMABUF_64K_SIZE			(1UL << DMABUF_64K_SHIFT)
+#define DMABUF_64K_MASK			(~(DMABUF_64K_SIZE-1))
+#define DMABUF_PMD_MAP			0
+
 atomic_long_t dmabuf_hugetlb_pmd_map = ATOMIC_LONG_INIT(0);
 EXPORT_SYMBOL(dmabuf_hugetlb_pmd_map);
+atomic_long_t dmabuf_hugetlb_contpte_map = ATOMIC_LONG_INIT(0);
+EXPORT_SYMBOL(dmabuf_hugetlb_contpte_map);
 atomic_long_t dmabuf_hugetlb_pmd_zap = ATOMIC_LONG_INIT(0);
 EXPORT_SYMBOL(dmabuf_hugetlb_pmd_zap);
 atomic_long_t dmabuf_hugetlb_pmd_split = ATOMIC_LONG_INIT(0);
 EXPORT_SYMBOL(dmabuf_hugetlb_pmd_split);
 
-static inline void dmabuf_hugetlb_debug_info(char *tag, unsigned long x)
+static int dmabuf_huge_remap_pte_range(struct mm_struct *mm, pmd_t *pmd,
+			unsigned long addr, unsigned long end,
+			unsigned long pfn, pgprot_t prot)
 {
-	if (dmabuf_hugetlb_debug)
-		pr_debug("dmabuf_hugetlb_debug: [%s]-[%d - %d - %s]-[%d - %d - %s]-[0x%lx]\n",
-				tag, current->pid, current->tgid, current->comm, \
-				current->group_leader->pid, current->group_leader->tgid, \
-				current->group_leader->comm, x);
+	pte_t *pte, *mapped_pte;
+	spinlock_t *ptl;
+	unsigned int nr_pages;
+	int err = 0;
+
+	mapped_pte = pte = pte_alloc_map_lock(mm, pmd, addr, &ptl);
+	if (!pte)
+		return -ENOMEM;
+	arch_enter_lazy_mmu_mode();
+
+	BUG_ON(!pte_none(*pte));
+	if (!pfn_modify_allowed(pfn, prot)) {
+		err = -EACCES;
+		goto out;
+	}
+
+	nr_pages = (end - addr) >> PAGE_SHIFT;
+	set_ptes(mm, addr, pte, pte_mkspecial(pfn_pte(pfn, prot)), nr_pages);
+	atomic_long_inc(&dmabuf_hugetlb_contpte_map);
+
+out:
+	arch_leave_lazy_mmu_mode();
+	pte_unmap_unlock(mapped_pte, ptl);
+	return err;
 }
 
 static inline int dmabuf_huge_remap_pmd_range(struct mm_struct *mm, pud_t *pud,
 			unsigned long addr, unsigned long end,
-			unsigned long pfn, pgprot_t prot)
+			unsigned long pfn, pgprot_t prot, unsigned int map_type)
 {
 	pmd_t *pmd;
 	spinlock_t *ptl;
 	pgtable_t pgtable;
 	unsigned long next;
+	int err = 0;
 
 	pfn -= addr >> PAGE_SHIFT;
 	pmd = pmd_alloc(mm, pud, addr);
@@ -52,25 +79,33 @@ static inline int dmabuf_huge_remap_pmd_range(struct mm_struct *mm, pud_t *pud,
 		return -ENOMEM;
 
 	do {
-		pgtable = pte_alloc_one(mm);
-		if (unlikely(!pgtable)) {
-			return -ENOMEM;
-		}
+		if (map_type == DMABUF_PMD_MAP) {
+			pgtable = pte_alloc_one(mm);
+			if (unlikely(!pgtable)) {
+				return -ENOMEM;
+			}
 
-		ptl = pmd_lock(mm, pmd);
-		pgtable_trans_huge_deposit(mm, pmd, pgtable);
-		mm_inc_nr_ptes(mm);
-		next = pmd_addr_end(addr, end);
-		pmd_set_huge(pmd, ((pfn + (addr >> PAGE_SHIFT)) << PAGE_SHIFT), prot);
-		spin_unlock(ptl);
-		atomic_long_inc(&dmabuf_hugetlb_pmd_map);
+			ptl = pmd_lock(mm, pmd);
+			pgtable_trans_huge_deposit(mm, pmd, pgtable);
+			mm_inc_nr_ptes(mm);
+			next = pmd_addr_end(addr, end);
+			pmd_set_huge(pmd, ((pfn + (addr >> PAGE_SHIFT)) << PAGE_SHIFT), prot);
+			spin_unlock(ptl);
+			atomic_long_inc(&dmabuf_hugetlb_pmd_map);
+		} else {
+			next = pmd_addr_end(addr, end);
+			err = dmabuf_huge_remap_pte_range(mm, pmd, addr, next,
+					pfn + (addr >> PAGE_SHIFT), prot);
+			if (err)
+				return err;
+		}
 	} while (pmd++, addr = next, addr != end);
 	return 0;
 }
 
 static inline int dmabuf_huge_remap_pud_range(struct mm_struct *mm, p4d_t *p4d,
 			unsigned long addr, unsigned long end,
-			unsigned long pfn, pgprot_t prot)
+			unsigned long pfn, pgprot_t prot, unsigned int map_type)
 {
 	pud_t *pud;
 	unsigned long next;
@@ -83,7 +118,7 @@ static inline int dmabuf_huge_remap_pud_range(struct mm_struct *mm, p4d_t *p4d,
 	do {
 		next = pud_addr_end(addr, end);
 		err = dmabuf_huge_remap_pmd_range(mm, pud, addr, next,
-				pfn + (addr >> PAGE_SHIFT), prot);
+				pfn + (addr >> PAGE_SHIFT), prot, map_type);
 		if (err)
 			return err;
 	} while (pud++, addr = next, addr != end);
@@ -92,7 +127,7 @@ static inline int dmabuf_huge_remap_pud_range(struct mm_struct *mm, p4d_t *p4d,
 
 static inline int dmabuf_huge_remap_p4d_range(struct mm_struct *mm, pgd_t *pgd,
 			unsigned long addr, unsigned long end,
-			unsigned long pfn, pgprot_t prot)
+			unsigned long pfn, pgprot_t prot, unsigned int map_type)
 {
 	p4d_t *p4d;
 	unsigned long next;
@@ -105,7 +140,7 @@ static inline int dmabuf_huge_remap_p4d_range(struct mm_struct *mm, pgd_t *pgd,
 	do {
 		next = p4d_addr_end(addr, end);
 		err = dmabuf_huge_remap_pud_range(mm, p4d, addr, next,
-				pfn + (addr >> PAGE_SHIFT), prot);
+				pfn + (addr >> PAGE_SHIFT), prot, map_type);
 		if (err)
 			return err;
 	} while (p4d++, addr = next, addr != end);
@@ -117,7 +152,7 @@ static inline int dmabuf_huge_remap_p4d_range(struct mm_struct *mm, pgd_t *pgd,
  * must have pre-validated the caching bits of the pgprot_t.
  */
 static int dmabuf_huge_remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
-		unsigned long pfn, unsigned long size, pgprot_t prot)
+		unsigned long pfn, unsigned long size, pgprot_t prot, unsigned int map_type)
 {
 	pgd_t *pgd;
 	unsigned long next;
@@ -154,7 +189,8 @@ static int dmabuf_huge_remap_pfn_range_notrack(struct vm_area_struct *vma, unsig
 	}
 
 	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
-	vm_flags_set(vma, VM_DMABUF_HUGETLB);
+	if (map_type == DMABUF_PMD_MAP)
+		vm_flags_set(vma, VM_DMABUF_HUGETLB);
 
 	BUG_ON(addr >= end);
 	pfn -= addr >> PAGE_SHIFT;
@@ -163,7 +199,7 @@ static int dmabuf_huge_remap_pfn_range_notrack(struct vm_area_struct *vma, unsig
 	do {
 		next = pgd_addr_end(addr, end);
 		err = dmabuf_huge_remap_p4d_range(mm, pgd, addr, next,
-				pfn + (addr >> PAGE_SHIFT), prot);
+				pfn + (addr >> PAGE_SHIFT), prot, map_type);
 		if (err)
 			return err;
 	} while (pgd++, addr = next, addr != end);
@@ -172,7 +208,7 @@ static int dmabuf_huge_remap_pfn_range_notrack(struct vm_area_struct *vma, unsig
 }
 
 int dmabuf_huge_remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
-		    unsigned long pfn, unsigned long size, pgprot_t prot)
+		    unsigned long pfn, unsigned long size, pgprot_t prot, unsigned int map_type)
 {
 	int err;
 
@@ -180,7 +216,7 @@ int dmabuf_huge_remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
 	if (err)
 		return -EINVAL;
 
-	err = dmabuf_huge_remap_pfn_range_notrack(vma, addr, pfn, size, prot);
+	err = dmabuf_huge_remap_pfn_range_notrack(vma, addr, pfn, size, prot, map_type);
 	if (err)
 		untrack_pfn(vma, pfn, PAGE_ALIGN(size), true);
 	return err;
@@ -242,7 +278,6 @@ static void __split_dmabuf_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pm
 	smp_wmb(); /* make pte visible before pmd */
 	pmd_populate(mm, pmd, pgtable);
 	atomic_long_inc(&dmabuf_hugetlb_pmd_split);
-	dmabuf_hugetlb_debug_info("__split_dmabuf_huge_pmd_locked", pmd_val(old_pmd));
 }
 
 void __split_dmabuf_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
@@ -283,7 +318,6 @@ out:
 void zap_split_dmabuf_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
 		unsigned long address, bool freeze, struct folio *folio)
 {
-	dmabuf_hugetlb_debug_info("zap_split_dmabuf_huge_pmd", 0);
 	__split_dmabuf_huge_pmd(vma, pmd, address, freeze, folio);
 }
 
@@ -316,8 +350,6 @@ void vma_adjust_dmabuf_huge(struct vm_area_struct *vma,
 			     unsigned long end,
 			     long adjust_next)
 {
-	dmabuf_hugetlb_debug_info("vma_adjust_dmabuf_huge", 0);
-
 	/* Check if we need to split start first. */
 	split_dmabuf_huge_pmd_if_needed(vma, start);
 
@@ -407,7 +439,6 @@ void __split_dmabuf_huge_range(struct vm_area_struct *vma)
 
 void split_dmabuf_huge_range(struct vm_area_struct *vma)
 {
-	dmabuf_hugetlb_debug_info("fork-split-pmd", 0);
 	__split_dmabuf_huge_range(vma);
 }
 
@@ -447,7 +478,6 @@ int zap_dmabuf_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
 	zap_dmabuf_hugetlb_deposited_table(tlb->mm, pmd);
 	spin_unlock(ptl);
 	atomic_long_inc(&dmabuf_hugetlb_pmd_zap);
-	dmabuf_hugetlb_debug_info("zap_dmabuf_huge_pmd", pmd_val(orig_pmd));
 
 	return 1;
 }
@@ -555,7 +585,8 @@ dmabuf_hugetlb_get_unmapped_area_bottomup(struct file *file, unsigned long addr,
 	info.length = len;
 	info.low_limit = current->mm->mmap_base;
 	info.high_limit = arch_get_mmap_end(addr, len, flags);
-	info.align_mask = (len >= PMD_SIZE) ? (~PMD_MASK) : 0;
+	info.align_mask = (len >= PMD_SIZE) ? (~PMD_MASK) : \
+					((len >= DMABUF_64K_SIZE) ? (~DMABUF_64K_MASK) : 0);
 	info.align_offset = 0;
 	return vm_unmapped_area(&info);
 }
@@ -570,7 +601,8 @@ dmabuf_hugetlb_get_unmapped_area_topdown(struct file *file, unsigned long addr,
 	info.length = len;
 	info.low_limit = max(PAGE_SIZE, mmap_min_addr);
 	info.high_limit = arch_get_mmap_base(addr, current->mm->mmap_base);
-	info.align_mask = (len >= PMD_SIZE) ? (~PMD_MASK) : 0;
+	info.align_mask = (len >= PMD_SIZE) ? (~PMD_MASK) : \
+					((len >= DMABUF_64K_SIZE) ? (~DMABUF_64K_MASK) : 0);
 	info.align_offset = 0;
 	addr = vm_unmapped_area(&info);
 
@@ -610,6 +642,8 @@ generic_dmabuf_hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
 	if (addr) {
 		if(len >= PMD_SIZE)
 			addr = ALIGN(addr, PMD_SIZE);
+		else if(len >= DMABUF_64K_SIZE)
+			addr = ALIGN(addr, DMABUF_64K_SIZE);
 		else
 			addr = PAGE_ALIGN(addr);
 		vma = find_vma_prev(mm, addr, &prev);

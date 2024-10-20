@@ -18,7 +18,7 @@ void zap_split_dmabuf_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
 void __split_dmabuf_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
 		unsigned long address, bool freeze, struct folio *folio);
 int dmabuf_huge_remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
-		    unsigned long pfn, unsigned long size, pgprot_t prot);
+		    unsigned long pfn, unsigned long size, pgprot_t prot, unsigned int map_type);
 unsigned long
 dma_buf_hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
 			  unsigned long len, unsigned long pgoff,
@@ -46,5 +46,4 @@ static inline int pmd_dmabuf_huge(pmd_t pmd)
 	return 0;
 }
 #endif /* CONFIG_XIAOMI_DMABUF_HUGETLB */
-
 #endif /* _LINUX_HUGETLB_DMABUF_H */
