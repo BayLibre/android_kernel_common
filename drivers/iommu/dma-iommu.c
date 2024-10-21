@@ -1634,6 +1634,8 @@ void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 dma_limit)
 		dev->dma_ops = &iommu_dma_ops;
 	}
 
+	trace_android_rvh_iommu_setup_dma_ops(dev);
+
 	return;
 out_err:
 	 pr_warn("Failed to set up IOMMU for device %s; retaining platform DMA ops\n",
