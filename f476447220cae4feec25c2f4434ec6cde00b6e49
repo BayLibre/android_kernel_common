@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "297de957_2510f15f",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1784,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-10-21T15:15:01Z",
+      "side": 1,
+      "message": "Is it really necessary to exit and re-fault, or can you clean up and go back to the retry: label above?",
+      "range": {
+        "startLine": 1784,
+        "startChar": 7,
+        "endLine": 1784,
+        "endChar": 17
+      },
+      "revId": "f476447220cae4feec25c2f4434ec6cde00b6e49",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f34fd32_abb57c7b",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1759,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-10-21T15:15:01Z",
+      "side": 0,
+      "message": "What do you gain by making this a read_lock()? It feels like any concurrency you enable here, is just going to backfire when then sequence count gets updated later.",
+      "range": {
+        "startLine": 1759,
+        "startChar": 1,
+        "endLine": 1759,
+        "endChar": 11
+      },
+      "revId": "745079a042887713eb8ea215927582425e6134f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
