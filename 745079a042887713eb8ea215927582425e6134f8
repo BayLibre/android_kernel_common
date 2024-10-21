@@ -94,6 +94,30 @@
       },
       "revId": "745079a042887713eb8ea215927582425e6134f8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3867c8ec_334d36c5",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1759,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-10-21T16:16:52Z",
+      "side": 0,
+      "message": "But I understand your point, the main concurrency bottlneck is here with multiple vcpus faulting in memory, so in this case yes I\u0027m just delaying the problem really. I\u0027ll change that to a write lock, it\u0027s probably simpler anyways.",
+      "parentUuid": "e12fe1c4_eda936ab",
+      "range": {
+        "startLine": 1759,
+        "startChar": 1,
+        "endLine": 1759,
+        "endChar": 11
+      },
+      "revId": "745079a042887713eb8ea215927582425e6134f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
