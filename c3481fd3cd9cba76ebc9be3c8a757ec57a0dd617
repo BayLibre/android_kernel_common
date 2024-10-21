@@ -51,6 +51,24 @@
       "parentUuid": "db1d4854_a75bb456",
       "revId": "c3481fd3cd9cba76ebc9be3c8a757ec57a0dd617",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c94fcfb7_416f0e6d",
+        "filename": "net/core/dev.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3636,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-21T17:55:42Z",
+      "side": 1,
+      "message": "No, this just adds technical debt with no benefit. If you need consistency with 6.6, then you can use `trace_net_dev_start_xmit` there too. This hook should not have been added to 6.6.",
+      "parentUuid": "d106b1af_0935a8a6",
+      "revId": "c3481fd3cd9cba76ebc9be3c8a757ec57a0dd617",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
