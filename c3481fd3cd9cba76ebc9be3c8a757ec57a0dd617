@@ -33,6 +33,24 @@
       "message": "this is not needed. Use the existing `trace_net_dev_start_xmit`",
       "revId": "c3481fd3cd9cba76ebc9be3c8a757ec57a0dd617",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d106b1af_0935a8a6",
+        "filename": "net/core/dev.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3636,
+      "author": {
+        "id": 3599418
+      },
+      "writtenOn": "2024-10-21T03:20:48Z",
+      "side": 1,
+      "message": "This is currently a unified solution for the historical platform, consistent with the 6.6 kernel. Can we consider using the \u0027trace_net_dev_start_xmit\u0027 hook solution on the next-generation platform\u0027s kernel?",
+      "parentUuid": "db1d4854_a75bb456",
+      "revId": "c3481fd3cd9cba76ebc9be3c8a757ec57a0dd617",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
