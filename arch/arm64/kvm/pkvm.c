@@ -329,6 +329,9 @@ static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 
 	WARN_ON(kvm_call_hyp_nvhe(__pkvm_start_teardown_vm, host_kvm->arch.pkvm.handle));
 
+	/* Make the mtree 'on stack' to disable lockdep -- mmu_lock is no longer needed */
+	mt_on_stack(&host_kvm->arch.pkvm.pinned_pages);
+
 	mt_for_each(&host_kvm->arch.pkvm.pinned_pages, ppage, ipa, ULONG_MAX) {
 		WARN_ON(pkvm_call_hyp_nvhe_ppage(ppage,
 						 __reclaim_dying_guest_page_call,

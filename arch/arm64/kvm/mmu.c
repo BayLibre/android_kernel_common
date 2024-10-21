@@ -1008,7 +1008,8 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
 	mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
 	mmfr1 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
 	kvm->arch.vtcr = kvm_get_vtcr(mmfr0, mmfr1, phys_shift);
-	mt_init(&kvm->arch.pkvm.pinned_pages);
+	mt_init_flags(&kvm->arch.pkvm.pinned_pages, MT_FLAGS_LOCK_EXTERN);
+	mt_set_external_lock(&kvm->arch.pkvm.pinned_pages, &kvm->mmu_lock);
 	mmu->arch = &kvm->arch;
 
 	if (is_protected_kvm_enabled())
