@@ -22,6 +22,30 @@
       },
       "revId": "f476447220cae4feec25c2f4434ec6cde00b6e49",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c499e62_e42ecc15",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1784,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-10-21T15:23:21Z",
+      "side": 1,
+      "message": "Good q, mas_preallocate() is very stateful, I need to understand if it can be re-entered safely. I\u0027ll go stare at maple_tree.c some more...",
+      "parentUuid": "297de957_2510f15f",
+      "range": {
+        "startLine": 1784,
+        "startChar": 7,
+        "endLine": 1784,
+        "endChar": 17
+      },
+      "revId": "f476447220cae4feec25c2f4434ec6cde00b6e49",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
