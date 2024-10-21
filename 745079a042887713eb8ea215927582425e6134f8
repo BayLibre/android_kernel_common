@@ -46,6 +46,30 @@
       },
       "revId": "745079a042887713eb8ea215927582425e6134f8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90284b86_6837c594",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1759,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-10-21T16:02:40Z",
+      "side": 0,
+      "message": "All threads end up taking the write_lock anyway, so I\u0027m not sure it makes a lot of difference, does it? My original point is that, if we have multiple threads in here, only one of them (the one bumping the sequence counter) is going to progress, so it seems simplest just to take the write_lock everywhere to me.",
+      "parentUuid": "254ab4ee_5e9e93cd",
+      "range": {
+        "startLine": 1759,
+        "startChar": 1,
+        "endLine": 1759,
+        "endChar": 11
+      },
+      "revId": "745079a042887713eb8ea215927582425e6134f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
