@@ -16,6 +16,24 @@
       "message": "we don\u0027t normally take FROM* patches into android-mainline since they should come to android-mainline via a merge from upstream. Can\u0027t this wait for the patch to land?",
       "revId": "7896fd3ac439e2aaffc3287c46753d62cf77217f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a09ab113_64c7ea29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-10-22T08:21:44Z",
+      "side": 1,
+      "message": "This patch will land for 6.13 in the next merge window. We can\u0027t wait for that because that would mean that the Rust build is going to be broken for the next six weeks.",
+      "parentUuid": "44558e2f_2babba83",
+      "revId": "7896fd3ac439e2aaffc3287c46753d62cf77217f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
