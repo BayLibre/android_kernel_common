@@ -16,6 +16,24 @@
       "message": "See my comments on the bug.",
       "revId": "ad68444cfdf4bbc6ef1f507b743c2cff55556110",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f20167b0_bd4ef39c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1659389
+      },
+      "writtenOn": "2024-10-22T01:38:49Z",
+      "side": 1,
+      "message": "I\u0027m not able to access the bug now, so I reply here.\n\nBelow code is the merge change, there is an \"if\" condition at the begin, if not meet the condition, the function should return 0;\nit should choose one of the two implement, but the merge delete both two of then, according to the follow up code, we should add \"if (!sdkp-\u003edevice-\u003emanage_start_stop)\" back(which is the old code implement).\n\n-       if (!sdkp-\u003edevice-\u003emanage_start_stop)\n -      if (!sd_do_start_stop(sdkp-\u003edevice, runtime)) {\n -              sdkp-\u003esuspended \u003d false;\n--              return 0;\n -      }\n--\n -      if (!sdkp-\u003edevice-\u003eno_start_on_resume) {\n -              sd_printk(KERN_NOTICE, sdkp, \"Starting disk\\n\");\n -              ret \u003d sd_start_stop_device(sdkp, 1);\n -      }\n +      sd_printk(KERN_NOTICE, sdkp, \"Starting disk\\n\");\n +      ret \u003d sd_start_stop_device(sdkp, 1);",
+      "parentUuid": "444f5c68_a65c5749",
+      "revId": "ad68444cfdf4bbc6ef1f507b743c2cff55556110",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
