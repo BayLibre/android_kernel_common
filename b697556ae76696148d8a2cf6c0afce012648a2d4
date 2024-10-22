@@ -16,6 +16,24 @@
       "message": "breaks the KMI. Please refactor the series to avoid any changes to `struct pci_dev`",
       "revId": "b697556ae76696148d8a2cf6c0afce012648a2d4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04a94003_8b51a55f",
+        "filename": "include/linux/pci.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 3640356
+      },
+      "writtenOn": "2024-10-22T11:28:41Z",
+      "side": 1,
+      "message": "Refactored changes to avoid changes to struct pci_dev. Only enabling L1ss save/restore when CONFIG_PCIEASPM is set",
+      "parentUuid": "87607d76_e95583e6",
+      "revId": "b697556ae76696148d8a2cf6c0afce012648a2d4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
