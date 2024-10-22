@@ -124,6 +124,24 @@
       "parentUuid": "27c4627d_9b17e245",
       "revId": "df8979c9403a97750c577ba00f50535817583c6e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e1772bb_7811a2d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-10-22T15:37:05Z",
+      "side": 1,
+      "message": "Because `struct dwc3` is part of the KMI, the meaning and use of the existing fields must be maintained, as, while this driver may no longer be using \"dwc-\u003eusbX_generic_phy[0]\", other vendors have drivers which rely on this field behaving the way it always has.\n\nYour current change is still breaking this KMI contract as this field is essentially abandoned in the dwc3 struct and moved to the vendor struct.",
+      "parentUuid": "84a72b65_f411cd54",
+      "revId": "df8979c9403a97750c577ba00f50535817583c6e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
