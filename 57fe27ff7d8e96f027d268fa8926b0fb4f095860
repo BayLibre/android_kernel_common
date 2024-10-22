@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "881ffb5e_bf6fa9d5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-22T23:54:17Z",
+      "side": 1,
+      "message": "are crashes due to `try_to_freeze_task` failures a common problem for you? Putting lots of hooks in the kernel to provide a tiny amount of information for very specific failures in rampdump debugging seems excessive. If this is a common issue, perhaps we should look at the root causes for why freeze is so unstable for you.",
+      "range": {
+        "startLine": 10,
+        "startChar": 5,
+        "endLine": 10,
+        "endChar": 24
+      },
+      "revId": "57fe27ff7d8e96f027d268fa8926b0fb4f095860",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c19107ed_79341ff0",
         "filename": "include/trace/hooks/power.h",
         "patchSetId": 2
@@ -38,6 +61,23 @@
           ]
         }
       ],
+      "revId": "57fe27ff7d8e96f027d268fa8926b0fb4f095860",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "469d447d_8bfc2346",
+        "filename": "kernel/power/process.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-22T23:54:17Z",
+      "side": 1,
+      "message": "since this is about debugging ramdumps, don\u0027t you already have the information either via `trace_`android_vh_try_to_freeze_todo` or via the `pr_info` in the else case?",
       "revId": "57fe27ff7d8e96f027d268fa8926b0fb4f095860",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
