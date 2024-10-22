@@ -52,6 +52,47 @@
       "parentUuid": "a098782d_75fd77e6",
       "revId": "4248fbbcda9af563b8896cb19a73924915c0e04c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2de128f1_9c9070d4",
+        "filename": "include/linux/memcontrol.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2024-10-22T16:46:04Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we define a stub as well in case `CONFIG_MEMCG` is not enabled?",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 375,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ed2e300b_e8bce689",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/memcontrol.h",
+              "range": {
+                "startLine": 371,
+                "startChar": 0,
+                "endLine": 375,
+                "endChar": 0
+              },
+              "replacement": "int mem_cgroup_move_account(struct folio *folio, bool compound,\n\t\t\t    struct mem_cgroup *from, struct mem_cgroup *to);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4248fbbcda9af563b8896cb19a73924915c0e04c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
