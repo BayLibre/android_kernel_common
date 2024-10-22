@@ -371854,6 +371854,15 @@ elf_symbol {
   full_name: "dw_pcie_find_ext_capability"
 }
 elf_symbol {
+  id: 0x20eccfb7
+  name: "dw_pcie_host_deinit"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x46c0ded0
+  type_id: 0x19fe25be
+  full_name: "dw_pcie_host_deinit"
+}
+elf_symbol {
   id: 0xb8395a3e
   name: "dw_pcie_host_init"
   is_defined: true
@@ -418795,6 +418804,7 @@ interface {
   symbol_id: 0x9bb960df
   symbol_id: 0xbf2af0d7
   symbol_id: 0xdc24b796
+  symbol_id: 0x20eccfb7
   symbol_id: 0xb8395a3e
   symbol_id: 0xa625950b
   symbol_id: 0x9d898d75
