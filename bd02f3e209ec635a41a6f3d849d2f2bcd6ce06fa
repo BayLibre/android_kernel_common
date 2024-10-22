@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3957a76_28145d8a",
+        "filename": "kernel/irq/manage.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-22T23:57:49Z",
+      "side": 1,
+      "message": "why does this get stuck? What is the root cause? This seems like a gratuitous use of hooks for ramdump debugging. Why is this such a common issue that it needs this kind of special casing for ramdumps? This seems like a path that will lead to 100s of hooks splattered all over the kernel to decorate the rampdump. Please provide a lot more context.",
+      "revId": "bd02f3e209ec635a41a6f3d849d2f2bcd6ce06fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
