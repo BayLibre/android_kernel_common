@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c19107ed_79341ff0",
+        "filename": "include/trace/hooks/power.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2024-10-22T11:22:39Z",
+      "side": 1,
+      "message": "odd parameter, please put the real name and variable here.",
+      "range": {
+        "startLine": 20,
+        "startChar": 46,
+        "endLine": 20,
+        "endChar": 50
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "eab56d50_eaa8395c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/power.h",
+              "range": {
+                "startLine": 20,
+                "startChar": 0,
+                "endLine": 22,
+                "endChar": 0
+              },
+              "replacement": "\tTP_PROTO(struct task_struct *p),\n\tTP_ARGS(p));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "57fe27ff7d8e96f027d268fa8926b0fb4f095860",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
