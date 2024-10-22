@@ -106,6 +106,24 @@
       "parentUuid": "2aa28d14_45059b6a",
       "revId": "df8979c9403a97750c577ba00f50535817583c6e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84a72b65_f411cd54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1957137
+      },
+      "writtenOn": "2024-10-22T08:05:20Z",
+      "side": 1,
+      "message": "\u003e Without looking in deeper, I have concerns that just initializing these would not be enough, it would be required to keep them in sync.\n\nMeaning ? IIUC, we are not using the variables at all.\n\nWe are using \"dwc-\u003eusbX_generic_phy[0]\" instead of them which are initialized properly.",
+      "parentUuid": "27c4627d_9b17e245",
+      "revId": "df8979c9403a97750c577ba00f50535817583c6e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
