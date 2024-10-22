@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2ff10a4c_9317f3f4",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1777,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-10-22T15:07:36Z",
+      "side": 1,
+      "message": "Ok, had a chat with Liam H. and it\u0027s not clear at all this can be done while the tree is being modified concurrently. I have an alternative though:\n\n 1. revert back to using the builting tree lock (that is, drop the next patch)\n 2. use mtree_insert_range() with a dummy value from here, and let the mtree code do all the allocs it wants\n 3. override the dummy entry from the critical section below which is then guaranteed not to require allocations\n 4. teach all the observers to ignore the dummy value\n \nThat means walking the tree twice, but I guess that is not a major problem in this case.",
+      "range": {
+        "startLine": 1777,
+        "startChar": 7,
+        "endLine": 1777,
+        "endChar": 23
+      },
+      "revId": "f476447220cae4feec25c2f4434ec6cde00b6e49",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "297de957_2510f15f",
         "filename": "arch/arm64/kvm/mmu.c",
         "patchSetId": 3
