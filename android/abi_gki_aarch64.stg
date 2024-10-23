@@ -321567,6 +321567,13 @@ function {
   parameter_id: 0x2cacacc0
 }
 function {
+  id: 0x986fdd44
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0xf1a6dfed
+  parameter_id: 0x1bf16028
+}
+function {
   id: 0x987085c9
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -327317,6 +327324,14 @@ function {
   parameter_id: 0x082be49e
   parameter_id: 0x6720d32f
   parameter_id: 0x2e18f543
+}
+function {
+  id: 0x9b977b1f
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x0a63398f
+  parameter_id: 0x4585663f
+  parameter_id: 0x0b30ee00
 }
 function {
   id: 0x9b999c4a
@@ -345996,6 +346011,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_aes_expandkey"
 }
 elf_symbol {
+  id: 0x666f7184
+  name: "__traceiter_android_vh_alloc_flags_cma_adjust"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x5ad2b656
+  type_id: 0x986fdd44
+  full_name: "__traceiter_android_vh_alloc_flags_cma_adjust"
+}
+elf_symbol {
   id: 0xd0b4a794
   name: "__traceiter_android_vh_alloc_oem_binder_struct"
   is_defined: true
@@ -347947,6 +347971,15 @@ elf_symbol {
   crc: 0x0e1493ac
   type_id: 0x9abcf489
   full_name: "__traceiter_android_vh_rmqueue_bulk_bypass"
+}
+elf_symbol {
+  id: 0x2a3fd420
+  name: "__traceiter_android_vh_rmqueue_cma_fallback"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xc59620af
+  type_id: 0x9b977b1f
+  full_name: "__traceiter_android_vh_rmqueue_cma_fallback"
 }
 elf_symbol {
   id: 0x8d62858f
@@ -350847,6 +350880,15 @@ elf_symbol {
   full_name: "__tracepoint_android_vh_aes_expandkey"
 }
 elf_symbol {
+  id: 0x74cce3b2
+  name: "__tracepoint_android_vh_alloc_flags_cma_adjust"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x1a999a97
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_alloc_flags_cma_adjust"
+}
+elf_symbol {
   id: 0xd7f9868e
   name: "__tracepoint_android_vh_alloc_oem_binder_struct"
   is_defined: true
@@ -352798,6 +352840,15 @@ elf_symbol {
   crc: 0x1cdf278d
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_rmqueue_bulk_bypass"
+}
+elf_symbol {
+  id: 0x10139f4a
+  name: "__tracepoint_android_vh_rmqueue_cma_fallback"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xeb80dd16
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_rmqueue_cma_fallback"
 }
 elf_symbol {
   id: 0x04365139
@@ -415932,6 +415983,7 @@ interface {
   symbol_id: 0x0556c9b1
   symbol_id: 0xa3ddabd2
   symbol_id: 0xf78be1c5
+  symbol_id: 0x666f7184
   symbol_id: 0xd0b4a794
   symbol_id: 0x33f9278c
   symbol_id: 0x2e343246
@@ -416149,6 +416201,7 @@ interface {
   symbol_id: 0xf10ce16f
   symbol_id: 0xa8cef421
   symbol_id: 0xd6100bd9
+  symbol_id: 0x2a3fd420
   symbol_id: 0x8d62858f
   symbol_id: 0xcef5d79f
   symbol_id: 0x91384eff
@@ -416471,6 +416524,7 @@ interface {
   symbol_id: 0x58e7634f
   symbol_id: 0x3a519484
   symbol_id: 0x7ea1f05b
+  symbol_id: 0x74cce3b2
   symbol_id: 0xd7f9868e
   symbol_id: 0x37776872
   symbol_id: 0xfc735654
@@ -416688,6 +416742,7 @@ interface {
   symbol_id: 0xd6904c6d
   symbol_id: 0xcad24ea3
   symbol_id: 0xfebada43
+  symbol_id: 0x10139f4a
   symbol_id: 0x04365139
   symbol_id: 0xd94bc301
   symbol_id: 0x3fc5ffc9
