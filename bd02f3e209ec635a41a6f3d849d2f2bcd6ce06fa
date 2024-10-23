@@ -16,6 +16,24 @@
       "message": "why does this get stuck? What is the root cause? This seems like a gratuitous use of hooks for ramdump debugging. Why is this such a common issue that it needs this kind of special casing for ramdumps? This seems like a path that will lead to 100s of hooks splattered all over the kernel to decorate the rampdump. Please provide a lot more context.",
       "revId": "bd02f3e209ec635a41a6f3d849d2f2bcd6ce06fa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edf604f8_06e947d1",
+        "filename": "kernel/irq/manage.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1982050
+      },
+      "writtenOn": "2024-10-23T05:43:02Z",
+      "side": 1,
+      "message": "For example, there is a suspend/resume hang case.\nThe call stack is as follows:\n```\n   \u003c0xFFFFFFC0081EF6C8\u003e __switch_to \n   \u003c0xFFFFFFC00923C664\u003e __schedule \n   \u003c0xFFFFFFC00923CA78\u003e schedule \n   \u003c0xFFFFFFC008335CB0\u003e synchronize_irq \n   \u003c0xFFFFFFC008346ED4\u003e suspend_device_irqs \n   \u003c0xFFFFFFC008ACF624\u003e dpm_suspend_noirq \n   \u003c0xFFFFFFC0083210AC\u003e suspend_devices_and_enter \n   \u003c0xFFFFFFC008321958\u003e enter_state \n   ...\n```\n\nThis problem is usually caused by a device driver\u0027s issue. However, we need to find out which device\u0027s IRQ it is waiting for first.\n\nAlthough it is possible to find IRQ information in a Ramdump, it takes a long time. Ramdump may be partially damaged or missing and cannot be analyzed.",
+      "parentUuid": "d3957a76_28145d8a",
+      "revId": "bd02f3e209ec635a41a6f3d849d2f2bcd6ce06fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
