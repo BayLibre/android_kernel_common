@@ -431,6 +431,14 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swapmem_gather_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_oom_swapmem_gather_init);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_oom_swapmem_gather_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_f2fs_file_open);
+<<<<<<< HEAD   (e113a0 ANDROID: GKI: enable CONFIG_TLS=m as a GKI module)
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_f2fs_down_read);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_f2fs_down_read);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_f2fs_improve_priority);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_f2fs_restore_priority);
+>>>>>>> CHANGE (b910ce ANDROID: vendor_hooks: add hooks for f2fs issue checkpoint)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_uplink_send_msg);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_inet_create);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sock_create);
