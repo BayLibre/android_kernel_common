@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2396a76b_db3baf8f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1982050
+      },
+      "writtenOn": "2024-10-23T10:23:33Z",
+      "side": 1,
+      "message": "I will review again if there is a need for more hooks in the try_to_freeze_task",
+      "parentUuid": "881ffb5e_bf6fa9d5",
+      "range": {
+        "startLine": 10,
+        "startChar": 5,
+        "endLine": 10,
+        "endChar": 24
+      },
+      "revId": "57fe27ff7d8e96f027d268fa8926b0fb4f095860",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c19107ed_79341ff0",
         "filename": "include/trace/hooks/power.h",
         "patchSetId": 2
@@ -67,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0ce6bc26_fc76148c",
+        "filename": "include/trace/hooks/power.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1982050
+      },
+      "writtenOn": "2024-10-23T10:23:33Z",
+      "side": 1,
+      "message": "Thanks. I think `todo` is not necessary because callee can count it.",
+      "parentUuid": "c19107ed_79341ff0",
+      "range": {
+        "startLine": 20,
+        "startChar": 46,
+        "endLine": 20,
+        "endChar": 50
+      },
+      "revId": "57fe27ff7d8e96f027d268fa8926b0fb4f095860",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "469d447d_8bfc2346",
         "filename": "kernel/power/process.c",
         "patchSetId": 2
@@ -78,6 +126,24 @@
       "writtenOn": "2024-10-22T23:54:17Z",
       "side": 1,
       "message": "since this is about debugging ramdumps, don\u0027t you already have the information either via `trace_`android_vh_try_to_freeze_todo` or via the `pr_info` in the else case?",
+      "revId": "57fe27ff7d8e96f027d268fa8926b0fb4f095860",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51d80042_943701fd",
+        "filename": "kernel/power/process.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1982050
+      },
+      "writtenOn": "2024-10-23T10:23:33Z",
+      "side": 1,
+      "message": "Let me consider how to utilize the existing `trace_android_vh_try_to_freeze_todo`. Thanks",
+      "parentUuid": "469d447d_8bfc2346",
       "revId": "57fe27ff7d8e96f027d268fa8926b0fb4f095860",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
