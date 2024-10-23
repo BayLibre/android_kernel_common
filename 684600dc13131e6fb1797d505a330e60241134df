@@ -70,6 +70,30 @@
       },
       "revId": "684600dc13131e6fb1797d505a330e60241134df",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5d711df_be1cd988",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2024-10-23T13:42:08Z",
+      "side": 1,
+      "message": "FYI this change implied:\n\n```\n+CONFIG_MFD_CORE\u003dy\n+CONFIG_MFD_INTEL_LPSS\u003dy\n+CONFIG_MFD_INTEL_LPSS_PCI\u003dy\n```\n\nPlease check whether any of this needs to remain in GKI defconfig (e.g., if core data structures are affected).",
+      "parentUuid": "15a803cf_6faa5d3b",
+      "range": {
+        "startLine": 412,
+        "startChar": 27,
+        "endLine": 412,
+        "endChar": 28
+      },
+      "revId": "684600dc13131e6fb1797d505a330e60241134df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
