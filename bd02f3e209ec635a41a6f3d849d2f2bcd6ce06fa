@@ -34,6 +34,24 @@
       "parentUuid": "d3957a76_28145d8a",
       "revId": "bd02f3e209ec635a41a6f3d849d2f2bcd6ce06fa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "927224a3_e943720c",
+        "filename": "kernel/irq/manage.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-23T17:54:26Z",
+      "side": 1,
+      "message": "but since we are talking about ramdump debugging, you have _irq_ in the stack frame which is easily converted to _\u0026irq_desc[irq]_. Like the other patches in this series... is this really so common that it requires this helper just for the ramdump debugging shortcut? If so, wouldn\u0027t it be better to enhance your ramdump analysis tools to make it easier since the information is all there?",
+      "parentUuid": "edf604f8_06e947d1",
+      "revId": "bd02f3e209ec635a41a6f3d849d2f2bcd6ce06fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
