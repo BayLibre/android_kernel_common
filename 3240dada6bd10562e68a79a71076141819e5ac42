@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "61707bec_9f5f6410",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1788,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-10-24T11:24:21Z",
+      "side": 1,
+      "message": "By spinning, you mean re-entering the loosing vCPU a bunch of times without being able to make progress because the winning vCPU is blocked and can\u0027t install the mapping it promised? That could happen, but should sort itself out eventually I think, so not sure it is that bad. Is that what you were thinking about?",
+      "parentUuid": "0d1a5d7d_05181ca0",
+      "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "49a3f14b_6a28adb7",
         "filename": "arch/arm64/kvm/pkvm.c",
         "patchSetId": 4
@@ -48,6 +66,24 @@
       "writtenOn": "2024-10-24T10:40:42Z",
       "side": 1,
       "message": "Is this possible here, when the VM is no longer runnable? Feels like we should be able to panic on this, which would also be nice to confirm no lingering dummy nodes.",
+      "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66bdcf18_80c9bf06",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-10-24T11:24:21Z",
+      "side": 1,
+      "message": "Right, so that\u0027s in fact due to my ignorance about signal handling, but I was worried about a vCPU thread getting killed in the middle of a KVM page-fault. I\u0027m not sure that can actually happen though :/",
+      "parentUuid": "49a3f14b_6a28adb7",
       "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
