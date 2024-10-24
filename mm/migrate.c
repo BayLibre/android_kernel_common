@@ -49,10 +49,6 @@
 
 #include <trace/events/migrate.h>
 
-#undef CREATE_TRACE_POINTS
-#include <trace/hooks/mm.h>
-#include <trace/hooks/vmscan.h>
-
 #include "internal.h"
 
 bool isolate_movable_page(struct page *page, isolate_mode_t mode)
@@ -688,8 +684,6 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
 	 */
 	if (folio_test_mappedtodisk(folio))
 		folio_set_mappedtodisk(newfolio);
-
-	trace_android_vh_look_around_migrate_folio(folio, newfolio);
 
 	/* Move dirty on pages not done by folio_migrate_mapping() */
 	if (folio_test_dirty(folio))
