@@ -52,6 +52,24 @@
       "parentUuid": "edf604f8_06e947d1",
       "revId": "bd02f3e209ec635a41a6f3d849d2f2bcd6ce06fa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8057cb90_cb92ac6b",
+        "filename": "kernel/irq/manage.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1982050
+      },
+      "writtenOn": "2024-10-24T00:07:59Z",
+      "side": 1,
+      "message": "The information saved here is used by the bootloader. It\u0027s not for Ramdump analysis.\nThe bootloader cannot figure out local variables from a stack frame.\n\nSo, when a reset occurs, the bootloader will generate a report using this kind of information on-device. In this case, it will include IRQ number, IRQ name, IRQ thread information in the report.",
+      "parentUuid": "927224a3_e943720c",
+      "revId": "bd02f3e209ec635a41a6f3d849d2f2bcd6ce06fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
