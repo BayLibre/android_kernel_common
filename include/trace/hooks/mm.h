@@ -37,11 +37,6 @@ struct compact_control;
 DECLARE_HOOK(android_vh_isolate_freepages,
 	TP_PROTO(struct compact_control *cc, struct page *page, bool *bypass),
 	TP_ARGS(cc, page, bypass));
-
-struct oom_control;
-DECLARE_HOOK(android_vh_oom_check_panic,
-	TP_PROTO(struct oom_control *oc, int *ret),
-	TP_ARGS(oc, ret));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
