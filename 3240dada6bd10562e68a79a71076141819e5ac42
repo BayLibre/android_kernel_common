@@ -73,6 +73,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09dbc1bd_07660bf7",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1797,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-10-24T12:27:18Z",
+      "side": 1,
+      "message": "Thinking about the dying-VM discussion brought me back here, as a potential way to leave a KVM_DUMMY_PPAGE dropping. But if we installed the KVM_DUMMY_PPAGE, we have an implicit lock on this guest IPA, and this call can\u0027t fail with EAGAIN, right? So I reckon we can BUG out on EAGAIN here.",
+      "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "49a3f14b_6a28adb7",
         "filename": "arch/arm64/kvm/pkvm.c",
         "patchSetId": 4
@@ -120,6 +137,24 @@
       "side": 1,
       "message": "Oh wow, that\u0027s admirably paranoid. Thinking about it, a task can\u0027t be considered dead until it reaches a kernel exit point. Otherwise it could die holding arbitrary kernel state (in this case, we have a kmalloc\u0027ed ppage on the stack). So as long as you\u0027re convinced the other vcpu tasks are toast, we should be good DYT?",
       "parentUuid": "66bdcf18_80c9bf06",
+      "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a027c29_7daa80dd",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-10-24T12:27:18Z",
+      "side": 1,
+      "message": "Also I\u0027m pretty sure all signal handling hangs off exit_to_user_mode(). But maybe no more sure than you. My previous comment feels more compelling. 😊",
+      "parentUuid": "7fb4d895_d7c185e6",
       "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
