@@ -290,6 +290,8 @@ static inline void count_mthp_stat(int order, enum mthp_stat_item item)
 }
 #endif
 
+unsigned long sum_mthp_stat(int order, enum mthp_stat_item item);
+
 #define transparent_hugepage_use_zero_page()				\
 	(transparent_hugepage_flags &					\
 	 (1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG))
