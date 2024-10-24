@@ -196,6 +196,24 @@
       "parentUuid": "f4165c9d_e3df8dc2",
       "revId": "df8979c9403a97750c577ba00f50535817583c6e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee6bb827_678e80d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2024-10-24T17:00:44Z",
+      "side": 1,
+      "message": "This is the reason for the KMI. This is a released kernel with a frozen KMI and devices have been built around the kernel working a certain way. This change breaks the KMI as the meaning of a field changes... I.E. is no longer used.\n\nI think we can work around the KMI in this way: only put the new fields in the vendor struct. Then when accessing the first phy, access it from the DWC3 struct, but for any additional phy, access it from the dwc3_vendor struct. This way, the existing fields remain the same.\n\nFor the vendor struct, we could size the array either DWC3_USBx_MAX_PORTS or DWC3_USBx_MAX_PORTS - 1, the former could result in cleaner accesses/code maintainability but at the expense of one struct phy\u0027s worth of memory. Then, for iterating through the phys, you just check if i\u003d0, access the dwc3-\u003eusb3_generic_phy, otherwise the vdwc-\u003eusb3_generic_phy[i]\n\nHopefully this makes sense, please let me know if you have any questions or concerns.",
+      "parentUuid": "88d452f6_b93e1aac",
+      "revId": "df8979c9403a97750c577ba00f50535817583c6e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
