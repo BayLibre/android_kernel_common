@@ -1476,6 +1476,7 @@ static void ____ip_mc_inc_group(struct in_device *in_dev, __be32 addr,
 	igmpv3_del_delrec(in_dev, im);
 #endif
 	igmp_group_added(im);
+	pr_err("%s: %s:%d: multicast address %x joined on interface %s, mc_count: %d", __func__, __FILE__, __LINE__, addr, in_dev->dev->name, in_dev->mc_count);
 	if (!in_dev->dead)
 		ip_rt_multicast_event(in_dev);
 out:
@@ -1689,6 +1690,7 @@ void __ip_mc_dec_group(struct in_device *in_dev, __be32 addr, gfp_t gfp)
 				*ip = i->next_rcu;
 				in_dev->mc_count--;
 				__igmp_group_dropped(i, gfp);
+				pr_err("%s: %s:%d: multicast address %x left on interface %s, mc_count: %d", __func__, __FILE__, __LINE__, addr, in_dev->dev->name, in_dev->mc_count);
 				ip_mc_clear_src(i);
 
 				if (!in_dev->dead)
