@@ -16,6 +16,40 @@
       "message": "I have serious doubts this patch is causing the CTS BT tests to fail, let\u0027s kick TH again.",
       "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d1a5d7d_05181ca0",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1788,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-10-24T10:40:42Z",
+      "side": 1,
+      "message": "Are we okay with spinning via this exit path? The competing vcpu could sleep before it reaches write_lock() below, and we could spin for a while. Very narrow race though tbf. I think we\u0027d need a new \"mem_abort mutex\" to serialise the tail of this function in a sleeping-friendly way, otherwise.",
+      "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49a3f14b_6a28adb7",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-10-24T10:40:42Z",
+      "side": 1,
+      "message": "Is this possible here, when the VM is no longer runnable? Feels like we should be able to panic on this, which would also be nice to confirm no lingering dummy nodes.",
+      "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
