@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "517a202c_5998fa39",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1788,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-10-24T12:17:59Z",
+      "side": 1,
+      "message": "Yes that\u0027s it.",
+      "parentUuid": "61707bec_9f5f6410",
+      "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "49a3f14b_6a28adb7",
         "filename": "arch/arm64/kvm/pkvm.c",
         "patchSetId": 4
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "Right, so that\u0027s in fact due to my ignorance about signal handling, but I was worried about a vCPU thread getting killed in the middle of a KVM page-fault. I\u0027m not sure that can actually happen though :/",
       "parentUuid": "49a3f14b_6a28adb7",
+      "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fb4d895_d7c185e6",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-10-24T12:17:59Z",
+      "side": 1,
+      "message": "Oh wow, that\u0027s admirably paranoid. Thinking about it, a task can\u0027t be considered dead until it reaches a kernel exit point. Otherwise it could die holding arbitrary kernel state (in this case, we have a kmalloc\u0027ed ppage on the stack). So as long as you\u0027re convinced the other vcpu tasks are toast, we should be good DYT?",
+      "parentUuid": "66bdcf18_80c9bf06",
       "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
