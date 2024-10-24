@@ -214,6 +214,24 @@
       "parentUuid": "88d452f6_b93e1aac",
       "revId": "df8979c9403a97750c577ba00f50535817583c6e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0060cee2_10838001",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1957137
+      },
+      "writtenOn": "2024-10-24T17:33:24Z",
+      "side": 1,
+      "message": "`DWC3_USBx_MAX_PORTS - 1, the former could result in cleaner accesses/code maintainability but at the expense of one struct phy\u0027s worth of memory.`\n\nOr, if it is single port we can use dwc-\u003eusbX_generic_phy and if it is multiport, we can use the ones in vendor struct.\n\nThat way no variable goes unused and vendor struct will be used only for Multiport controllers and its use is a NOP for single port controllers.\n\nLet me know if the plan sounds good, I will send the patches over the weekend.",
+      "parentUuid": "ee6bb827_678e80d5",
+      "revId": "df8979c9403a97750c577ba00f50535817583c6e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
