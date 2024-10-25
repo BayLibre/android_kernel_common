@@ -16,6 +16,23 @@
       "message": "This series has build issues:\n```\n\n        xmit_size \u003d kfifo_out_linear_ptr(\u0026tport-\u003exmit_fifo, \u0026tail,\n                    ^\n...ommon/drivers/tty/serial/qcom_geni_serial.c:659:7: error: call to undeclared function \u0027uart_fifo_out\u0027; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\n                if (uart_fifo_out(uport, \u0026c, 1) \u003d\u003d 1) {\n                    ^\n...4-6.1/out/bazel/output_user_root/27ef06e50cb42a9d447d7f2f757478b6/sandbox/linux-sandbox/31/execroot/__main__/common/drivers/tty/serial/qcom_geni_serial.c:659:7: note: did you mean \u0027uart_fifo_timeout\u0027?\n...-android14-6.1/out/bazel/output_user_root/27ef06e50cb42a9d447d7f2f757478b6/sandbox/linux-sandbox/31/execroot/__main__/common/include/linux/serial_core.h:769:29: note: \u0027uart_fifo_timeout\u0027 declared here\nstatic inline unsigned long uart_fifo_timeout(struct uart_port *port)\n                            ^\n...ommon/drivers/tty/serial/qcom_geni_serial.c:886:3: error: call to undeclared function \u0027uart_fifo_out\u0027; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\n                uart_fifo_out(uport, buf, tx_bytes);\n                ^\n3 errors generated.\n```\n\nPlease resolve and test before resubmitting.",
       "revId": "2e3cb25b9a5dc08b13bec9c3202ee89511fa379a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59f3d02f_b29c4fc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3684822
+      },
+      "writtenOn": "2024-10-25T01:20:17Z",
+      "side": 1,
+      "message": "Kmbl",
+      "revId": "2e3cb25b9a5dc08b13bec9c3202ee89511fa379a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
