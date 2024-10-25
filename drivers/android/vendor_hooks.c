@@ -521,6 +521,15 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_percpu_rwsem_down_read);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_percpu_rwsem_up_write);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_percpu_rwsem_wait_complete);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rwsem_read_trylock_failed);
+<<<<<<< HEAD   (4d2728 UPSTREAM: unicode: Don't special case ignorable code points)
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mglru_new_gen);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_cache_miss);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mglru_new_gen);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_io_statistics);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_cache_miss);
+>>>>>>> CHANGE (23ea46 ANDROID: fs: add vendor hook to collect IO statistics)
 /*
  * For type visibility
  */
