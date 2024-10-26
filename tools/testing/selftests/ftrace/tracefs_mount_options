@@ -1,0 +1,85 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Description: Test tracefs GID mount options
+set -e
+
+TRACEFS_MOUNT_POINT="/sys/kernel/tracing"
+
+find_alternate_gid() {
+	local original_gid=$1
+	tac /etc/group | grep -v ":$original_gid:" | head -1 | cut -d: -f3
+}
+
+mount_tracefs_with_gid() {
+	local mount_point=$1
+	local gid=$2
+
+	mount -t tracefs -o gid=$gid tracefs "$mount_point"
+}
+
+unmount_tracefs() {
+	local mount_point=$1
+
+	umount -f "$mount_point"
+}
+
+create_instance() {
+  local mount_point=$1
+  instance="$(mktemp -u test-XXXXXX)"
+
+	mkdir $mount_point/instances/$instance
+}
+
+create_synthetic_event() {
+  local mount_point=$1
+  local synthetic_events="$mount_point/synthetic_events"
+
+  # if CONFIG_SYNTH_EVENTS
+  if [ -d "$synthetic_events" ]; then
+    echo 'rss_stat_synthetic unsigned int mm_id; unsigned int curr; int member; long size; long bucket' >> $mount_point/synthetic_events
+  fi
+}
+
+check_recursive_gid() {
+	local mount_point=$1
+	local expected_gid=$2
+
+	echo "Checking permission group ..."
+
+	for file in `find "$mount_point"`; do
+		local gid=`stat -c "%g" $file`
+		if [ "$gid" -ne "$expected_gid" ]; then
+			echo "FAILED: $file - expected group: $expected_gid; got: $gid"
+			exit 1
+		fi
+	done
+}
+
+test_gid_mount_option() {
+	local mount_point=$TRACEFS_MOUNT_POINT
+	local original_group=`stat -c "%g" .`
+	local original_owner=`stat -c "%u" .`
+
+	local other_group=$(find_alternate_gid "$original_group")
+
+	# Unmount any existing tracefs instance and mount with new GID
+	unmount_tracefs "$mount_point"
+	mount_tracefs_with_gid "$mount_point" "$other_group"
+
+	# Enusure files created after the mount (synthetic events, instances)
+	# inherit the mount option gid
+	create_instance "$mount_point"
+	create_synthetic_event "$mount_point"
+
+	check_recursive_gid "$mount_point" "$other_group"
+
+	# Unmount and remount with the original GID
+	unmount_tracefs "$mount_point"
+	mount_tracefs_with_gid "$mount_point" "$original_group"
+	check_recursive_gid "$mount_point" "$original_group"
+}
+
+test_gid_mount_option
+
+echo "All tests passed."
+exit 0
