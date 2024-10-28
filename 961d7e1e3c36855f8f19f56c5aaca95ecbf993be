@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cabb438_6f9b431c",
+        "filename": "net/ipv4/udp_offload.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-10-28T10:12:03Z",
+      "side": 1,
+      "message": "This is the same condition twice. So the block below never gets executed. Is that the correct resolution?",
+      "range": {
+        "startLine": 291,
+        "startChar": 0,
+        "endLine": 295,
+        "endChar": 56
+      },
+      "revId": "961d7e1e3c36855f8f19f56c5aaca95ecbf993be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
