@@ -144,6 +144,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b186166_2e9014f3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-28T16:59:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec5a9824_8bb994bc",
+      "range": {
+        "startLine": 11,
+        "startChar": 13,
+        "endLine": 11,
+        "endChar": 34
+      },
+      "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c692280e_bcd5095c",
@@ -233,6 +257,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "a83ba0bf_e20831d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-28T16:59:56Z",
+      "side": 1,
+      "message": "How can you get to any of this code in kernel/module/core.c on an offline CPU? That is a valid concern in some subsystems (sched), but doesn\u0027t seem possible here. Can you provide a specific scenario where you need rvh due to an offline CPU?",
+      "parentUuid": "8ba2593a_494b6eef",
+      "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bd80b4f8_6c488fbe",
@@ -246,6 +288,23 @@
       "writtenOn": "2024-10-16T12:20:25Z",
       "side": 1,
       "message": "Hi Todd，we need to add vendor hook for kernel module init, so we can get required information to protect kernel module from malicious corrupting. Please review this patch when you have free time, thank you.",
+      "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b41fd4f_a46a341b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-28T16:59:56Z",
+      "side": 1,
+      "message": "Create a patch on top of this one to add the symbols to your symbol list",
       "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
