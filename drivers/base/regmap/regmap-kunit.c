@@ -59,9 +59,51 @@ static const struct regcache_types real_cache_types_list[] = {
 
 KUNIT_ARRAY_PARAM(real_cache_types, real_cache_types_list, case_to_desc);
 
+<<<<<<< HEAD   (a2c66c UPSTREAM: scsi: ufs: ufs-sysfs: Expose UFS power info)
 static const struct regcache_types sparse_cache_types_list[] = {
 	{ REGCACHE_RBTREE, "rbtree" },
 	{ REGCACHE_MAPLE, "maple" },
+||||||| BASE
+static const struct regmap_test_param real_cache_types_list[] = {
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0 },
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0, .fast_io = true },
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0x2001 },
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0x2002 },
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0x2003 },
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0x2004 },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0 },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0, .fast_io = true },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2001 },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2002 },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2003 },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2004 },
+	{ .cache = REGCACHE_MAPLE,  .from_reg = 0 },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0, .fast_io = true },
+	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2001 },
+	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2002 },
+	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2003 },
+	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2004 },
+=======
+static const struct regmap_test_param real_cache_types_list[] = {
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0 },
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0, .fast_io = true },
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0x2001 },
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0x2002 },
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0x2003 },
+	{ .cache = REGCACHE_FLAT,   .from_reg = 0x2004 },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0 },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0, .fast_io = true },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2001 },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2002 },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2003 },
+	{ .cache = REGCACHE_RBTREE, .from_reg = 0x2004 },
+	{ .cache = REGCACHE_MAPLE,  .from_reg = 0 },
+	{ .cache = REGCACHE_MAPLE,  .from_reg = 0, .fast_io = true },
+	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2001 },
+	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2002 },
+	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2003 },
+	{ .cache = REGCACHE_MAPLE,  .from_reg = 0x2004 },
+>>>>>>> CHANGE (51f840 FROMGIT: regmap: kunit: Fix repeated test param)
 };
 
 KUNIT_ARRAY_PARAM(sparse_cache_types, sparse_cache_types_list, case_to_desc);
