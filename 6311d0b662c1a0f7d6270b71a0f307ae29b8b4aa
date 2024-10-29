@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1f7be9e_4b252e6e",
+        "filename": "include/trace/hooks/topology.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-29T17:21:36Z",
+      "side": 1,
+      "message": "remove",
+      "fixSuggestions": [
+        {
+          "fixId": "179c86ab_cc8a98d1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/topology.h",
+              "range": {
+                "startLine": 14,
+                "startChar": 0,
+                "endLine": 15,
+                "endChar": 0
+              },
+              "replacement": "#if defined(CONFIG_ANDROID_VENDOR_HOOKS)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6311d0b662c1a0f7d6270b71a0f307ae29b8b4aa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ec918dc_bea4d4da",
+        "filename": "include/trace/hooks/topology.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-29T17:21:36Z",
+      "side": 1,
+      "message": "please remove",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 6
+      },
+      "revId": "6311d0b662c1a0f7d6270b71a0f307ae29b8b4aa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
