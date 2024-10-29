@@ -2463,3 +2463,28 @@ source "drivers/acpi/Kconfig"
 
 source "arch/arm64/kvm/Kconfig"
 
+menuconfig HYPERVISOR_GUEST
+	bool "Linux guest support"
+	help
+	  Say Y here to enable options for running Linux under various hyper-
+	  visors. This option enables basic hypervisor detection and platform
+	  setup.
+
+	  If you say N, all options in this submenu will be skipped and
+	  disabled, and Linux guest support won't be built in.
+
+if HYPERVISOR_GUEST
+
+config HARDENED_GUEST
+	bool "Harden Guest"
+	default n
+	select ARCH_HAS_CC_PLATFORM
+	help
+	  This option is useful for a Linux guest VM running confidential applications
+	  whose data integrity/confidentiality needs to be protected from entities outside the VM,
+	  which can include the hosting VM. This option activates various measures within
+	  such a guest VM to minimize possibilities of data corruption/loss.
+
+	  Say Y here if the intended use of Linux is for a confidential VM.
+
+endif # HYPERVISOR_GUEST
