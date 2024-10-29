@@ -2441,3 +2441,16 @@ source "drivers/acpi/Kconfig"
 
 source "arch/arm64/kvm/Kconfig"
 
+
+menuconfig HYPERVISOR_GUEST
+
+if HYPERVISOR_GUEST
+
+config HARDENED_GUEST
+	bool "Harden Guest"
+	default n
+	select ARCH_HAS_CC_PLATFORM
+	help
+	  Harden Guest configuration to protect against untrusted host
+
+endif # HYPERVISOR_GUEST
