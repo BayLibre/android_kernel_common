@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c5ff440_3755f72a",
+        "filename": "drivers/mtd/spi-nor/winbond.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3438682
+      },
+      "writtenOn": "2024-10-29T20:48:17Z",
+      "side": 1,
+      "message": "I know this looks bad, but it has to be this way unfortunately. This file had really big style and structure refactor between v6.6 and v6.12, so this patch will have to be submitted to the upstream in another form anyway. However we need this patch to make `futility` and `flashrom` work on devices with SELinux enforcement enabled as direct PCI does not work due to unchangable access enforcement.",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 42
+      },
+      "revId": "6e3576a5924b3dd916647e6dcc0e77cfcd24827d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
