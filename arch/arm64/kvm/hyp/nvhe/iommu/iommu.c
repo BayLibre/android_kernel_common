@@ -65,15 +65,23 @@ struct pkvm_hyp_vcpu *__get_ctxt(void)
 	return cur_context;
 }
 
-void *__kvm_iommu_donate_pages(struct hyp_pool *pool, u8 order, struct kvm_hyp_req *req)
+void *__kvm_iommu_donate_pages(struct hyp_pool *pool, u8 order, bool request)
 {
 	void *p;
+	struct kvm_hyp_req *req = this_cpu_ptr(&host_hyp_reqs);
+	struct pkvm_hyp_vcpu *ctxt = __get_ctxt();
 
 	p = hyp_alloc_pages(pool, order);
 	if (p)
 		return p;
 
-	if (req) {
+	if (request) {
+		if (__get_ctxt()) {
+			req = pkvm_hyp_req_reserve(ctxt, KVM_HYP_REQ_TYPE_MEM);
+			if(WARN_ON(!req))
+				return NULL;
+		}
+
 		req->type = KVM_HYP_REQ_TYPE_MEM;
 		req->mem.dest = REQ_MEM_DEST_HYP_IOMMU;
 		req->mem.sz_alloc = (1 << order) * PAGE_SIZE;
@@ -95,23 +103,15 @@ void __kvm_iommu_reclaim_pages(struct hyp_pool *pool, void *p, u8 order)
 
 void *kvm_iommu_donate_pages(u8 order, bool request)
 {
-	struct kvm_hyp_req *req = NULL;
 	struct pkvm_hyp_vcpu *ctxt = __get_ctxt();
 	struct hyp_pool *pool;
 
 	if (ctxt) {
 		pool = &pkvm_hyp_vcpu_to_hyp_vm(ctxt)->iommu_pool;
-		if (request) {
-			req = pkvm_hyp_req_reserve(ctxt, KVM_HYP_REQ_TYPE_MEM);
-			if(WARN_ON(!req))
-				return NULL;
-		}
 	} else {
 		pool = &iommu_host_pool;
-		if (request)
-			req = this_cpu_ptr(&host_hyp_reqs);
 	}
-	return __kvm_iommu_donate_pages(pool, order, req);
+	return __kvm_iommu_donate_pages(pool, order, request);
 }
 
 void kvm_iommu_reclaim_pages(void *p, u8 order)
