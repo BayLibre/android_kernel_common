@@ -4,6 +4,7 @@
 #include <linux/init.h>
 #include <linux/printk.h>
 #include <linux/cc_platform.h>
+#include <linux/virtio_anchor.h>
 
 static u64 arm64_cc_status;
 
@@ -74,6 +75,9 @@ static int __init aarch64_coco_init(void)
 {
 #ifdef CONFIG_HARDENED_GUEST
 	cc_platform_set(CC_ATTR_GUEST_HARDENED);
+
+	/* Set restricted memory access for virtio. */
+	virtio_set_mem_acc_cb(virtio_require_restricted_mem_acc);
 #endif
 	return 0;
 }
