@@ -293,6 +293,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "616f0dc0_55268bfc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-30T19:49:12Z",
+      "side": 1,
+      "message": "why do you need it to be non-detachable? No one ever has to detach a hook (and the reality is that no one ever does). Can\u0027t you just _not unload the module_? Please explain why this is important.\n\nThe commit message needs to contain this information, so you might as well replace the \"These hooks may be invoked in non-atomic context, so it\u0027s necessary to\nuse restricted ones.\" sentence (which isn\u0027t true) with the real reason rvh is needed.",
+      "parentUuid": "18e67b09_012d30d0",
+      "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bd80b4f8_6c488fbe",
