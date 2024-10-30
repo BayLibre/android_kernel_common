@@ -1061,6 +1061,11 @@ out:
 	return ret;
 }
 
+static bool pkvm_is_protected_vm(struct kvm *kvm)
+{
+	return kvm->arch.vm_type == KVM_X86_PROTECTED_VM;
+}
+
 static int add_device_to_pkvm(struct device *dev, void *data)
 {
 	struct kvm_protected_vm *pkvm = data;
@@ -1082,7 +1087,7 @@ int kvm_arch_add_device_to_pkvm(struct kvm *kvm, struct iommu_group *grp)
 
 	kvm_get_kvm(kvm);
 
-	if (kvm->arch.vm_type == KVM_X86_PROTECTED_VM)
+	if (pkvm_is_protected_vm(kvm))
 		ret = iommu_group_for_each_dev(grp, &kvm->pkvm,
 					       add_device_to_pkvm);
 
@@ -1227,7 +1232,7 @@ int pkvm_tlb_remote_flush(struct kvm *kvm)
 
 int pkvm_set_mmio_ve(struct kvm_vcpu *vcpu, unsigned long gfn)
 {
-	if (vcpu->kvm->arch.vm_type == KVM_X86_PROTECTED_VM) {
+	if (pkvm_is_protected_vm(vcpu->kvm)) {
 		kvm_hypercall1(PKVM_HC_SET_MMIO_VE, gfn);
 		return 1;
 	}
