@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce79a307_ea2d616f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438682
+      },
+      "writtenOn": "2024-10-30T11:16:38Z",
+      "side": 1,
+      "message": "\u003e In general I\u0027m OK with that patch if only we keep track its existence and hopefully do it right some day...\n\nThe plan is to send a patch to the kernel upstream but in a different form due to hefty refactoring this module got between v6.6 and v6.12. Hopefuly I will have time to do this after my 2 weeks of PTO.\n\n\u003e Question: do we need to add these flags to any other chips except Winbond?\n\nI checked CrOS DLM for used parts and it seems we do not have to change it for anything else. We are mostly using Winbond anyway and the other chip I found was GigaDevice which already has the correct configuration.",
+      "parentUuid": "7b45719c_9d6b70aa",
+      "revId": "6e3576a5924b3dd916647e6dcc0e77cfcd24827d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6c5ff440_3755f72a",
