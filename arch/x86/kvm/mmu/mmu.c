@@ -54,6 +54,7 @@
 #include <asm/io.h>
 #include <asm/set_memory.h>
 #include <asm/vmx.h>
+#include <asm/kvm_pkvm.h>
 
 #include "trace.h"
 
@@ -3055,7 +3056,7 @@ static void direct_pte_prefetch(struct kvm_vcpu *vcpu, u64 *sptep)
 	if (unlikely(vcpu->kvm->mmu_invalidate_in_progress))
 		return;
 
-	if (vcpu->kvm->arch.vm_type == KVM_X86_PROTECTED_VM)
+	if (pkvm_is_protected_vcpu(vcpu))
 		return;
 
 	__direct_pte_prefetch(vcpu, sp, sptep);
@@ -4546,7 +4547,7 @@ int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
 		}
 	}
 
-	if (vcpu->kvm->arch.vm_type == KVM_X86_PROTECTED_VM) {
+	if (pkvm_is_protected_vcpu(vcpu)) {
 		ppage = kmalloc(sizeof(*ppage), GFP_KERNEL_ACCOUNT);
 		if (!ppage)
 			return -ENOMEM;

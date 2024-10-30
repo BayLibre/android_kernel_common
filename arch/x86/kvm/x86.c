@@ -84,6 +84,7 @@
 #include <asm/intel_pt.h>
 #include <asm/emulate_prefix.h>
 #include <asm/sgx.h>
+#include <asm/kvm_pkvm.h>
 #include <clocksource/hyperv_timer.h>
 
 #define CREATE_TRACE_POINTS
@@ -9995,7 +9996,7 @@ int kvm_emulate_hypercall(struct kvm_vcpu *vcpu)
 	unsigned long nr, a0, a1, a2, a3, ret;
 	int op_64_bit;
 
-	if (vcpu->kvm->arch.vm_type == KVM_X86_PROTECTED_VM)
+	if (pkvm_is_protected_vcpu(vcpu))
 		return kvm_pkvm_hypercall(vcpu);
 
 	if (kvm_xen_hypercall_enabled(vcpu->kvm))
