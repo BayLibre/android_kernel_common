@@ -16,6 +16,92 @@
       "message": "Hi John,\n\nCould you please help review this?\n\nThanks!",
       "revId": "9c310f9e23294babc61dd91277f1841cb6688b24",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28027e18_c0c91a9f",
+        "filename": "include/trace/hooks/topology.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-30T19:14:01Z",
+      "side": 1,
+      "message": "Please remove this unnecessary conditional",
+      "fixSuggestions": [
+        {
+          "fixId": "3e915e63_99512892",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/topology.h",
+              "range": {
+                "startLine": 14,
+                "startChar": 0,
+                "endLine": 16,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/trace/hooks/topology.h",
+              "range": {
+                "startLine": 19,
+                "startChar": 0,
+                "endLine": 24,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "9c310f9e23294babc61dd91277f1841cb6688b24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e9c537f_005ecfbf",
+        "filename": "include/trace/hooks/topology.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-10-30T19:14:01Z",
+      "side": 1,
+      "message": "Please remove this unnecessary code",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 6
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "4179cc7b_18d4cbf3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/topology.h",
+              "range": {
+                "startLine": 19,
+                "startChar": 0,
+                "endLine": 23,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "9c310f9e23294babc61dd91277f1841cb6688b24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
