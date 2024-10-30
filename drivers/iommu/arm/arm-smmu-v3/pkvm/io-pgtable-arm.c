@@ -45,6 +45,7 @@ void __arm_lpae_free_pages(void *addr, size_t size, struct io_pgtable_cfg *cfg)
 	u8 order = get_order(size);
 	struct arm_lpae_io_pgtable *data = io_pgtable_cfg_to_data(cfg);
 
+	size = PAGE_ALIGN(size);
 	BUG_ON(size != (1 << order) * PAGE_SIZE);
 
 	if (!cfg->coherent_walk)
@@ -100,7 +101,7 @@ struct io_pgtable *kvm_arm_io_pgtable_alloc(struct io_pgtable_cfg *cfg,
 	if (ret)
 		goto out_free;
 
-	pgd_size = ARM_LPAE_PGD_SIZE(data);
+	pgd_size = PAGE_ALIGN(ARM_LPAE_PGD_SIZE(data));
 	data->pgd = __arm_lpae_alloc_pages(pgd_size, 0, &data->iop.cfg);
 	if (!data->pgd) {
 		ret = -ENOMEM;
