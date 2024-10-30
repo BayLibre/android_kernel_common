@@ -7,6 +7,9 @@
 
 bool noinstr cc_platform_has(enum cc_attr attr)
 {
+	if (attr == CC_ATTR_GUEST_HARDENED)
+		return true;
+
 	return false;
 }
 EXPORT_SYMBOL_GPL(cc_platform_has);
