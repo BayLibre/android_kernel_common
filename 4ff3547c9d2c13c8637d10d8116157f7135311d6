@@ -311,6 +311,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "806122f2_de94956a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3623314
+      },
+      "writtenOn": "2024-10-31T03:38:06Z",
+      "side": 1,
+      "message": "This is our idea, the first loaded kernel module registers these vendor hooks, so the hooks can be called when all the subsequent kernel modules are loaded. Since these hooks may be used to do security protection, the malicious attacker may try to detach these hooks, so we need to make these hooks non-detachable.\nI have updated the commit message about why rvh is needed, thank you for your advice.",
+      "parentUuid": "616f0dc0_55268bfc",
+      "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bd80b4f8_6c488fbe",
