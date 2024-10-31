@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8de4ef8_98015b66",
+        "filename": "arch/x86/configs/android-x86_64_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1952516
+      },
+      "writtenOn": "2024-10-31T04:02:24Z",
+      "side": 1,
+      "message": "Following the [discussion in 3311779](https://android-review.git.corp.google.com/c/kernel/common/+/3311779/comment/d2c3728f_74841073/), I don\u0027t think the v4 rpfilter config is required. I have tested that tethering seems to work with only the IPv6 rpfilter on a x86 device. Can you verify if tethering is not working without this config?",
+      "revId": "392e5823da50624571b5acb6a55f98ec41c27fc9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
