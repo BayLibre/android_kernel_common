@@ -571,6 +571,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dmabuf_page_pool_free_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_read_fault);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_read);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_map_pages);
+<<<<<<< HEAD   (c4bae9d43e074ae61de21c36b8157fcf3824c355 Reapply "BACKPORT: mm: add swappiness= arg to memory.reclaim)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_try_alloc_pages_gfp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_cache_readahead_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_cache_readahead_end);
@@ -692,3 +693,10 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_isolate_priv_lru);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_customize_pgdat_balanced);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_customize_file_is_tiny);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bio_add_page_merge_bypass);
+||||||| BASE   (f3367f466a0a31af82b47323a3275b813e20beed BACKPORT: usb: dwc3: Avoid waking up gadget during startxfer)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmc_blk_reset);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmc_attach_sd);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sdhci_get_cd);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmc_gpio_cd_irqt);
+>>>>>>> CHANGE (11512e4a72a654774c82bd70b8232331f87f84a4 ANDROID: mmc: Add vendor hooks for sdcard failure diagnostic)
