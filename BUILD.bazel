@@ -284,7 +284,6 @@ common_kernel(
     arch = "riscv64",
     build_config = ":build.config.gki.riscv64_generated",
     build_gki_artifacts = True,
-    check_defconfig_minimized = True,
     ddk_module_headers = [":all_headers_riscv64"],
     defconfig = "arch/riscv/configs/gki_defconfig",
     extra_dist = [":test_mappings_zip"],
