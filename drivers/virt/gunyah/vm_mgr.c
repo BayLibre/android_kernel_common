@@ -1029,7 +1029,7 @@ static void _gunyah_vm_put(struct kref *kref)
 	 * This call should always succeed though because the VM is in not
 	 * running and RM will let us reclaim all the memory.
 	 */
-	WARN_ON(gunyah_vm_reclaim_range(ghvm, 0, U64_MAX));
+	WARN_ON(gunyah_vm_reclaim_all(ghvm));
 
 	/* clang-format off */
 	gunyah_vm_remove_resource_ticket(ghvm, &ghvm->addrspace_ticket);

@@ -216,7 +216,8 @@ reclaim_host:
 }
 
 static int __gunyah_vm_reclaim_folio_locked(struct gunyah_vm *ghvm, void *entry,
-					    u64 gfn, const bool sync)
+					    u64 gfn, const bool sync,
+					    const bool unmap)
 {
 	u32 map_flags = BIT(GUNYAH_ADDRSPACE_MAP_FLAG_PARTIAL);
 	struct gunyah_resource *guest_extent, *host_extent, *addrspace;
@@ -254,16 +255,17 @@ static int __gunyah_vm_reclaim_folio_locked(struct gunyah_vm *ghvm, void *entry,
 	pa = PFN_PHYS(folio_pfn(folio));
 	size = folio_size(folio);
 
-	gunyah_error = gunyah_hypercall_addrspace_unmap(addrspace->capid,
-							guest_extent->capid,
-							gunyah_gfn_to_gpa(gfn),
-							map_flags, pa, size);
-	if (gunyah_error != GUNYAH_ERROR_OK) {
-		pr_err_ratelimited(
-			"Failed to unmap guest address 0x%016llx: %d\n",
-			gunyah_gfn_to_gpa(gfn), gunyah_error);
-		ret = gunyah_error_remap(gunyah_error);
-		goto err;
+	if (unmap) {
+		gunyah_error = gunyah_hypercall_addrspace_unmap(
+			addrspace->capid, guest_extent->capid,
+			gunyah_gfn_to_gpa(gfn), map_flags, pa, size);
+		if (gunyah_error != GUNYAH_ERROR_OK) {
+			pr_err_ratelimited(
+				"Failed to unmap guest address 0x%016llx: %d\n",
+				gunyah_gfn_to_gpa(gfn), gunyah_error);
+			ret = gunyah_error_remap(gunyah_error);
+			goto err;
+		}
 	}
 
 	gunyah_error = gunyah_hypercall_memextent_donate(
@@ -315,10 +317,11 @@ int gunyah_vm_reclaim_folio(struct gunyah_vm *ghvm, u64 gfn, struct folio *folio
 	if (folio != xa_untag_pointer(entry))
 		return -EAGAIN;
 
-	return __gunyah_vm_reclaim_folio_locked(ghvm, entry, gfn, true);
+	return __gunyah_vm_reclaim_folio_locked(ghvm, entry, gfn, true, true);
 }
 
-int gunyah_vm_reclaim_range(struct gunyah_vm *ghvm, u64 gfn, u64 nr)
+static int __gunyah_vm_reclaim_range(struct gunyah_vm *ghvm, u64 gfn, u64 nr,
+				     const bool unmap)
 {
 	unsigned long next = gfn, g;
 	struct folio *folio;
@@ -335,7 +338,8 @@ int gunyah_vm_reclaim_range(struct gunyah_vm *ghvm, u64 gfn, u64 nr)
 		folio_get(folio);
 		folio_lock(folio);
 		if (mtree_load(&ghvm->mm, g) == entry)
-			ret = __gunyah_vm_reclaim_folio_locked(ghvm, entry, g, sync);
+			ret = __gunyah_vm_reclaim_folio_locked(ghvm, entry, g,
+							       sync, unmap);
 		else
 			ret = -EAGAIN;
 		folio_unlock(folio);
@@ -345,6 +349,60 @@ int gunyah_vm_reclaim_range(struct gunyah_vm *ghvm, u64 gfn, u64 nr)
 	}
 
 	return ret2;
+}
+
+static int _gunyah_vm_unmap_all(struct gunyah_vm *ghvm, const bool share)
+{
+	struct gunyah_resource *guest_extent, *host_extent, *addrspace;
+	u32 map_flags = BIT(GUNYAH_ADDRSPACE_MAP_FLAG_NOSYNC);
+	enum gunyah_error gunyah_error;
+
+	addrspace = __first_resource(&ghvm->addrspace_ticket);
+	if (!addrspace)
+		return -ENODEV;
+
+	/* clang-format off */
+	if (share) {
+		guest_extent = __first_resource(&ghvm->guest_shared_extent_ticket);
+		host_extent = __first_resource(&ghvm->host_shared_extent_ticket);
+		map_flags |= BIT(GUNYAH_ADDRSPACE_MAP_FLAG_VMMIO);
+	} else {
+		guest_extent = __first_resource(&ghvm->guest_private_extent_ticket);
+		host_extent = __first_resource(&ghvm->host_private_extent_ticket);
+		map_flags |= BIT(GUNYAH_ADDRSPACE_MAP_FLAG_PRIVATE);
+	}
+	/* clang-format on */
+
+	if (!guest_extent || !host_extent)
+		return -ENODEV;
+
+	gunyah_error = gunyah_hypercall_addrspace_unmap(
+		addrspace->capid, guest_extent->capid, 0, map_flags, 0, 0);
+	if (gunyah_error != GUNYAH_ERROR_OK)
+		pr_err_ratelimited("Failed to unmap guest addressspace: %d\n",
+				   gunyah_error);
+
+	return gunyah_error_remap(gunyah_error);
+}
+
+int gunyah_vm_reclaim_all(struct gunyah_vm *ghvm)
+{
+	int ret;
+
+	/* Unmap memory in the shared extent */
+	ret = _gunyah_vm_unmap_all(ghvm, true);
+	if (ret)
+		return ret;
+
+	/* Unmap memory in the private extent. */
+	ret = _gunyah_vm_unmap_all(ghvm, false);
+	if (ret)
+		return ret;
+
+	/* Reclaim the memory from the extents and skip unmapping 
+	 * from address space
+	 */
+	return __gunyah_vm_reclaim_range(ghvm, 0, U64_MAX, false);
 }
 
 int gunyah_vm_binding_alloc(struct gunyah_vm *ghvm,

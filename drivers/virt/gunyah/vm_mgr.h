@@ -215,7 +215,7 @@ int gunyah_vm_reclaim_parcel(struct gunyah_vm *ghvm,
 int gunyah_vm_provide_folio(struct gunyah_vm *ghvm, struct folio *folio,
 			    u64 gfn, bool share, bool write);
 int gunyah_vm_reclaim_folio(struct gunyah_vm *ghvm, u64 gfn, struct folio *folio);
-int gunyah_vm_reclaim_range(struct gunyah_vm *ghvm, u64 gfn, u64 nr);
+int gunyah_vm_reclaim_all(struct gunyah_vm *ghvm);
 
 int gunyah_vm_binding_alloc(struct gunyah_vm *ghvm,
 			    struct gunyah_userspace_memory_region *region,
