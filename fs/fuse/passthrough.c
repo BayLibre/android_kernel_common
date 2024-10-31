@@ -18,7 +18,7 @@ static void fuse_file_accessed(struct file *file)
 	fuse_invalidate_atime(inode);
 }
 
-static void fuse_file_modified(struct file *file)
+static void fuse_passthrough_end_write(struct file *file, loff_t pos, ssize_t ret)
 {
 	struct inode *inode = file_inode(file);
 	struct fuse_conn *fc = get_fuse_conn(inode);
@@ -26,6 +26,7 @@ static void fuse_file_modified(struct file *file)
 	struct file *backing_file = fuse_file_passthrough(ff);
 	struct inode *backing_inode = file_inode(backing_file);
 
+<<<<<<< HEAD   (7dceab ANDROID: delete build.config.microdroid*.)
 	if (!fc->writeback_cache) {
 		fuse_invalidate_attr_mask(inode, FUSE_STATX_MODSIZE);
 	} else {
@@ -34,6 +35,11 @@ static void fuse_file_modified(struct file *file)
 		inode->i_blocks = backing_inode->i_blocks;
 		i_size_write(inode, i_size_read(backing_inode));
 	}
+||||||| BASE
+	fuse_invalidate_attr_mask(inode, FUSE_STATX_MODSIZE);
+=======
+	fuse_write_update_attr(inode, pos, ret);
+>>>>>>> BRANCH (819837 Linux 6.12-rc5)
 }
 
 ssize_t fuse_passthrough_read_iter(struct kiocb *iocb, struct iov_iter *iter)
@@ -74,7 +80,7 @@ ssize_t fuse_passthrough_write_iter(struct kiocb *iocb,
 	struct backing_file_ctx ctx = {
 		.cred = ff->cred,
 		.user_file = file,
-		.end_write = fuse_file_modified,
+		.end_write = fuse_passthrough_end_write,
 	};
 
 	pr_debug("%s: backing_file=0x%p, pos=%lld, len=%zu\n", __func__,
@@ -121,7 +127,7 @@ ssize_t fuse_passthrough_splice_write(struct pipe_inode_info *pipe,
 	struct backing_file_ctx ctx = {
 		.cred = ff->cred,
 		.user_file = out,
-		.end_write = fuse_file_modified,
+		.end_write = fuse_passthrough_end_write,
 	};
 
 	pr_debug("%s: backing_file=0x%p, pos=%lld, len=%zu, flags=0x%x\n", __func__,
@@ -249,7 +255,6 @@ int fuse_backing_open(struct fuse_conn *fc, struct fuse_backing_map *map)
 		goto out;
 
 	backing_sb = file_inode(file)->i_sb;
-	pr_info("%s: %x:%pD %i\n", __func__, backing_sb->s_dev, file, backing_sb->s_stack_depth);
 	res = -ELOOP;
 	if (backing_sb->s_stack_depth >= fc->max_stack_depth)
 		goto out_fput;

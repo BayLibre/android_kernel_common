@@ -29,6 +29,7 @@ trace_tg(struct sk_buff *skb, const struct xt_action_param *par)
 	return XT_CONTINUE;
 }
 
+<<<<<<< HEAD   (7dceab ANDROID: delete build.config.microdroid*.)
 static struct xt_target trace_tg_reg __read_mostly = {
 	.name		= "TRACE",
 	.revision	= 0,
@@ -38,6 +39,54 @@ static struct xt_target trace_tg_reg __read_mostly = {
 	.checkentry	= trace_tg_check,
 	.destroy	= trace_tg_destroy,
 	.me		= THIS_MODULE,
+||||||| BASE
+static struct xt_target trace_tg_reg[] __read_mostly = {
+	{
+		.name		= "TRACE",
+		.revision	= 0,
+		.family		= NFPROTO_IPV4,
+		.table		= "raw",
+		.target		= trace_tg,
+		.checkentry	= trace_tg_check,
+		.destroy	= trace_tg_destroy,
+		.me		= THIS_MODULE,
+	},
+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
+	{
+		.name		= "TRACE",
+		.revision	= 0,
+		.family		= NFPROTO_IPV6,
+		.table		= "raw",
+		.target		= trace_tg,
+		.checkentry	= trace_tg_check,
+		.destroy	= trace_tg_destroy,
+	},
+#endif
+=======
+static struct xt_target trace_tg_reg[] __read_mostly = {
+	{
+		.name		= "TRACE",
+		.revision	= 0,
+		.family		= NFPROTO_IPV4,
+		.table		= "raw",
+		.target		= trace_tg,
+		.checkentry	= trace_tg_check,
+		.destroy	= trace_tg_destroy,
+		.me		= THIS_MODULE,
+	},
+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
+	{
+		.name		= "TRACE",
+		.revision	= 0,
+		.family		= NFPROTO_IPV6,
+		.table		= "raw",
+		.target		= trace_tg,
+		.checkentry	= trace_tg_check,
+		.destroy	= trace_tg_destroy,
+		.me		= THIS_MODULE,
+	},
+#endif
+>>>>>>> BRANCH (819837 Linux 6.12-rc5)
 };
 
 static int __init trace_tg_init(void)

@@ -64,6 +64,7 @@ static void nflog_tg_destroy(const struct xt_tgdtor_param *par)
 	nf_logger_put(par->family, NF_LOG_TYPE_ULOG);
 }
 
+<<<<<<< HEAD   (7dceab ANDROID: delete build.config.microdroid*.)
 static struct xt_target nflog_tg_reg __read_mostly = {
 	.name       = "NFLOG",
 	.revision   = 0,
@@ -73,6 +74,55 @@ static struct xt_target nflog_tg_reg __read_mostly = {
 	.target     = nflog_tg,
 	.targetsize = sizeof(struct xt_nflog_info),
 	.me         = THIS_MODULE,
+||||||| BASE
+static struct xt_target nflog_tg_reg[] __read_mostly = {
+	{
+		.name       = "NFLOG",
+		.revision   = 0,
+		.family     = NFPROTO_IPV4,
+		.checkentry = nflog_tg_check,
+		.destroy    = nflog_tg_destroy,
+		.target     = nflog_tg,
+		.targetsize = sizeof(struct xt_nflog_info),
+		.me         = THIS_MODULE,
+	},
+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
+	{
+		.name       = "NFLOG",
+		.revision   = 0,
+		.family     = NFPROTO_IPV4,
+		.checkentry = nflog_tg_check,
+		.destroy    = nflog_tg_destroy,
+		.target     = nflog_tg,
+		.targetsize = sizeof(struct xt_nflog_info),
+		.me         = THIS_MODULE,
+	},
+#endif
+=======
+static struct xt_target nflog_tg_reg[] __read_mostly = {
+	{
+		.name       = "NFLOG",
+		.revision   = 0,
+		.family     = NFPROTO_IPV4,
+		.checkentry = nflog_tg_check,
+		.destroy    = nflog_tg_destroy,
+		.target     = nflog_tg,
+		.targetsize = sizeof(struct xt_nflog_info),
+		.me         = THIS_MODULE,
+	},
+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
+	{
+		.name       = "NFLOG",
+		.revision   = 0,
+		.family     = NFPROTO_IPV6,
+		.checkentry = nflog_tg_check,
+		.destroy    = nflog_tg_destroy,
+		.target     = nflog_tg,
+		.targetsize = sizeof(struct xt_nflog_info),
+		.me         = THIS_MODULE,
+	},
+#endif
+>>>>>>> BRANCH (819837 Linux 6.12-rc5)
 };
 
 static int __init nflog_tg_init(void)
