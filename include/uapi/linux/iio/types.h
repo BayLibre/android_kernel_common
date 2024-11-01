@@ -51,7 +51,14 @@ enum iio_chan_type {
 	IIO_DELTA_VELOCITY,
 	IIO_COLORTEMP,
 	IIO_CHROMATICITY,
+	IIO_ATTENTION,
 };
+
+#ifdef __KERNEL__
+#include <linux/android_kabi.h>
+
+ANDROID_KABI_ENUMERATOR_IGNORE(iio_chan_type, IIO_ATTENTION);
+#endif
 
 enum iio_modifier {
 	IIO_NO_MOD,
