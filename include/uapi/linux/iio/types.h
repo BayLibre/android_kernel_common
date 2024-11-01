@@ -11,6 +11,8 @@
 #ifndef _UAPI_IIO_TYPES_H_
 #define _UAPI_IIO_TYPES_H_
 
+#include <linux/android_kabi.h>
+
 enum iio_chan_type {
 	IIO_VOLTAGE,
 	IIO_CURRENT,
@@ -51,7 +53,9 @@ enum iio_chan_type {
 	IIO_DELTA_VELOCITY,
 	IIO_COLORTEMP,
 	IIO_CHROMATICITY,
+	IIO_ATTENTION,
 };
+ANDROID_KABI_ENUMERATOR_IGNORE(iio_chan_type, IIO_ATTENTION);
 
 enum iio_modifier {
 	IIO_NO_MOD,
