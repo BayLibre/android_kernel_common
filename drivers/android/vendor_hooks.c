@@ -74,6 +74,7 @@
 #include <trace/hooks/usb.h>
 #include <trace/hooks/sound.h>
 #include <trace/hooks/fuse.h>
+#include <trace/hooks/wakeupbypass.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -463,3 +464,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmc_blk_reset);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmc_attach_sd);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sdhci_get_cd);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmc_gpio_cd_irqt);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wakeup_bypass);
