@@ -1029,6 +1029,7 @@ kernel_build(
     build_config = "build.config.rockpi4",
     defconfig = "arch/arm64/configs/gki_defconfig",
     dtstree = "//common-modules/virtual-device:rockpi4_dts",
+    kmi_symbol_list_strict_mode = False,
     make_goals = [
         "Image",
         "modules",
@@ -1037,6 +1038,7 @@ kernel_build(
     makefile = ":Makefile",
     module_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64") + _ROCKPI4_MODULE_OUTS + _ROCKPI4_WATCHDOG_MODULE_OUTS,
     pre_defconfig_fragments = ["arch/arm64/configs/rockpi4_gki.fragment"],
+    trim_nonlisted_kmi = False,
     visibility = ["//visibility:private"],
 )
 
@@ -1056,6 +1058,7 @@ kernel_build(
     arch = "arm64",
     build_config = "build.config.rockpi4",
     dtstree = "//common-modules/virtual-device:rockpi4_dts",
+    kmi_symbol_list_strict_mode = False,
     make_goals = [
         "Image",
         "modules",
@@ -1063,6 +1066,7 @@ kernel_build(
     ],
     makefile = ":Makefile",
     module_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64") + _ROCKPI4_MODULE_OUTS,
+    trim_nonlisted_kmi = False,
     visibility = ["//visibility:private"],
 )
 
@@ -1082,6 +1086,7 @@ kernel_modules_install(
 initramfs(
     name = "rockpi4_initramfs",
     kernel_modules_install = ":rockpi4_modules_install",
+    ramdisk_compression = "lz4",
     visibility = ["//visibility:private"],
 )
 
