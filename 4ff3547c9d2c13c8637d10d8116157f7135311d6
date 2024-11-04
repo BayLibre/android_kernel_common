@@ -401,6 +401,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2798cdc8_c81d1e8c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-11-04T08:43:05Z",
+      "side": 1,
+      "message": "The fact that restricted hooks cannot be detached cannot be used as a security measure. If an attacker has sufficient privileges to detach a normal hook, it can also \u0027detach\u0027 a restricted hooks trivially -- there is no API to do it, but it can be done in a very unclean way by directly storing NULL in the array of callbacks for the hook.\n\nRestricted hooks don\u0027t provide any additional security, so if there is no functional reason to use one, please use a standard hook, thanks.",
+      "parentUuid": "9f3abbbf_83edc629",
+      "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bd80b4f8_6c488fbe",
