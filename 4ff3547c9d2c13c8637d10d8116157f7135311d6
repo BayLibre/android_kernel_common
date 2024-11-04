@@ -383,6 +383,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f3abbbf_83edc629",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3623314
+      },
+      "writtenOn": "2024-11-04T08:26:09Z",
+      "side": 1,
+      "message": "The protection set by stage2 page table can prevent attacker with root privilege to corrupt kernel code section and RO data section, since the attacker with root privilege can\u0027t corrupt stage2 page table managed by hypervisor in EL2.\nThe sentence \u0027The attacker may find some ways to circumvent our protection\u0027 is from a history view, developer put forward a way to do security protection, some time later, attacker may find a way to circumvent it, then developer find a new way to prevent attackers. This doesn\u0027t mean the attacker can break the protection now.",
+      "parentUuid": "88a4cb15_3c4eeffb",
+      "revId": "4ff3547c9d2c13c8637d10d8116157f7135311d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bd80b4f8_6c488fbe",
