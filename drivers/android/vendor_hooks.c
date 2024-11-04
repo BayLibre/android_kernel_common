@@ -249,6 +249,13 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_futex_wait_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_futex_wake_traverse_plist);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_futex_wake_this);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_futex_wake_up_q_finish);
+<<<<<<< HEAD   (47ec964a4f773199e3f5a42e6deaaaf170a45fc4 UPSTREAM: arm64: Apply dynamic shadow call stack patching in)
+||||||| BASE   (4e7ab1bbb15a5bb066d630b20c9e83bb4daf2520 BACKPORT: FROMGIT: usb: typec: tcpm: Add support for parsing)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_ctl_dirty_rate);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_futex_wait_queue_start);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_ctl_dirty_rate);
+>>>>>>> CHANGE (44abc109a16d33d0910fec980c8186e368113534 ANDROID: vendor_hooks: Add hook for futex)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sha256);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_expandkey);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_encrypt);
