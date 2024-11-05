@@ -1482,18 +1482,20 @@ static int __prepare_dmabuf(struct vb2_buffer *vb)
 			}
 			vb->planes[plane].dbuf_mapped = 1;
 		}
+	}
 
-		/*
-		 * Now that everything is in order, copy relevant information
-		 * provided by userspace.
-		 */
-		for (plane = 0; plane < vb->num_planes; ++plane) {
-			vb->planes[plane].bytesused = planes[plane].bytesused;
-			vb->planes[plane].length = planes[plane].length;
-			vb->planes[plane].m.fd = planes[plane].m.fd;
-			vb->planes[plane].data_offset = planes[plane].data_offset;
-		}
+	/*
+	 * Now that everything is in order, copy relevant information
+	 * provided by userspace.
+	 */
+	for (plane = 0; plane < vb->num_planes; ++plane) {
+		vb->planes[plane].bytesused = planes[plane].bytesused;
+		vb->planes[plane].length = planes[plane].length;
+		vb->planes[plane].m.fd = planes[plane].m.fd;
+		vb->planes[plane].data_offset = planes[plane].data_offset;
+	}
 
+	if (reacquired) {
 		/*
 		 * Call driver-specific initialization on the newly acquired buffer,
 		 * if provided.
