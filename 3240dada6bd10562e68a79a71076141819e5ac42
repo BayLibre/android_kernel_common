@@ -88,6 +88,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2575c2c4_e71e32cf",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1797,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-11-05T16:57:56Z",
+      "side": 1,
+      "message": "Ack, I added a WARN_ON() in here, which doesn\u0027t insta explode when running compos (don\u0027t really want to BUG() unless things are unrecoverable).",
+      "parentUuid": "09dbc1bd_07660bf7",
+      "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49a3f14b_6a28adb7",
@@ -155,6 +173,24 @@
       "side": 1,
       "message": "Also I\u0027m pretty sure all signal handling hangs off exit_to_user_mode(). But maybe no more sure than you. My previous comment feels more compelling. 😊",
       "parentUuid": "7fb4d895_d7c185e6",
+      "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a0911d5_d6471b39",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-11-05T16:57:56Z",
+      "side": 1,
+      "message": "Ditto.",
+      "parentUuid": "4a027c29_7daa80dd",
       "revId": "3240dada6bd10562e68a79a71076141819e5ac42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
