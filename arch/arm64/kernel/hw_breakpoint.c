@@ -431,35 +431,7 @@ static int arch_build_bp_info(struct perf_event *bp,
 		return -EINVAL;
 	}
 
-	/* Len */
-	switch (attr->bp_len) {
-	case HW_BREAKPOINT_LEN_1:
-		hw->ctrl.len = ARM_BREAKPOINT_LEN_1;
-		break;
-	case HW_BREAKPOINT_LEN_2:
-		hw->ctrl.len = ARM_BREAKPOINT_LEN_2;
-		break;
-	case HW_BREAKPOINT_LEN_3:
-		hw->ctrl.len = ARM_BREAKPOINT_LEN_3;
-		break;
-	case HW_BREAKPOINT_LEN_4:
-		hw->ctrl.len = ARM_BREAKPOINT_LEN_4;
-		break;
-	case HW_BREAKPOINT_LEN_5:
-		hw->ctrl.len = ARM_BREAKPOINT_LEN_5;
-		break;
-	case HW_BREAKPOINT_LEN_6:
-		hw->ctrl.len = ARM_BREAKPOINT_LEN_6;
-		break;
-	case HW_BREAKPOINT_LEN_7:
-		hw->ctrl.len = ARM_BREAKPOINT_LEN_7;
-		break;
-	case HW_BREAKPOINT_LEN_8:
-		hw->ctrl.len = ARM_BREAKPOINT_LEN_8;
-		break;
-	default:
-		return -EINVAL;
-	}
+	hw->ctrl.len = attr->bp_len;
 
 	/*
 	 * On AArch64, we only permit breakpoints of length 4, whereas

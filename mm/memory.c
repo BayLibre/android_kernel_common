@@ -159,7 +159,7 @@ EXPORT_SYMBOL(zero_pfn);
 
 unsigned long highest_memmap_pfn __read_mostly;
 
-static int create_watchpoint(unsigned long address) {
+static int create_watchpoint(unsigned long address, unsigned int len_mask) {
 	struct perf_event_attr pe;
 	struct perf_event *pevent;
 	int err;
@@ -168,8 +168,8 @@ static int create_watchpoint(unsigned long address) {
 	pe.type = PERF_TYPE_BREAKPOINT;
 	pe.size = sizeof(pe);
 	pe.bp_type = HW_BREAKPOINT_RW; // Trigger on both reads and writes
-	pe.bp_len = HW_BREAKPOINT_LEN_8;  // Watch 8 bytes
-	pe.bp_addr = (address & (~0UL << 14));
+	pe.bp_len = len_mask;  // watch 1 << len_mask bytes
+	pe.bp_addr = (address & (~0UL << len_mask));
 	pe.sample_period = 1;
 	pe.pinned = 1;
 	pe.precise_ip = 3;

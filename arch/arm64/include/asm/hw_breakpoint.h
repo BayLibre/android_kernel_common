@@ -32,8 +32,9 @@ struct arch_hw_breakpoint {
 
 static inline u32 encode_ctrl_reg(struct arch_hw_breakpoint_ctrl ctrl)
 {
-	u32 val = (ctrl.len << 5) | (ctrl.type << 3) | (ctrl.privilege << 1) |
-		ctrl.enabled;
+	u32 len = 0xff; // hardcode to 8 bytes as per TRM
+	u32 val = (len << 5) | (ctrl.type << 3) | (ctrl.privilege << 1) |
+		(ctrl.len << 24) | ctrl.enabled;
 
 	if (is_kernel_in_hyp_mode() && ctrl.privilege == AARCH64_BREAKPOINT_EL1)
 		val |= DBG_HMC_HYP;
