@@ -80,7 +80,7 @@
 #include <linux/sched/sysctl.h>
 #include <linux/set_memory.h>
 #include <linux/proc_fs.h>
-
+#include <linux/hw_breakpoint.h>
 #include <linux/hashtable.h>
 #include <linux/sort.h>
 #include <trace/events/kmem.h>
@@ -3834,9 +3834,48 @@ struct swapped_page_info {
     struct hlist_node node;
 };
 
+/*static void watchpoint_handler(struct perf_event *pevent,
+                              struct perf_sample_data *data,
+                              struct pt_regs *regs) {
+	trace_printk("hv %llx\n", pevent->attr.bp_addr);
+}*/
+
+static int create_watchpoint(unsigned long address) {
+  struct perf_event_attr pe;
+  struct perf_event *pevent;
+  int err;
+  // Configure perf_event for watchpoint
+  memset(&pe, 0, sizeof(pe));
+  pe.type = PERF_TYPE_BREAKPOINT;
+  pe.size = sizeof(pe);
+  pe.bp_type = HW_BREAKPOINT_RW; // Trigger on both reads and writes
+  pe.bp_len = HW_BREAKPOINT_LEN_8;  // Watch 8 bytes
+  pe.bp_addr = (address & (~0UL << 14));
+  pe.sample_period = 1;
+  pe.pinned = 1;
+  pe.precise_ip = 3;
+
+  pevent = perf_event_create_kernel_counter(&pe, -1, current,
+                                                NULL, NULL);
+  if (IS_ERR(pevent)) {
+	  err = PTR_ERR(pevent);
+	  pr_err("HRID perf_event_create_kernel_counter failed with error code: %d %lx\n", err, address);
+	  return 0;
+  } else {
+	  pr_info("HRID created watchpoint %lx\n", address);
+  }
+
+  // Enable the watchpoint
+  perf_event_enable(pevent);
+
+  return 0;
+}
+
+static int my_counter = 0;
 static void track_swapped_in_page(struct vm_fault *vmf)
 {
     struct swapped_page_info *info;
+    bool create = false;
 
     // Allocate a new node for the swapped page
     info = kmalloc(sizeof(*info), GFP_KERNEL);
@@ -3846,10 +3885,17 @@ static void track_swapped_in_page(struct vm_fault *vmf)
     info->vaddr = vmf->address;
     spin_lock(&swapped_pages_lock);
 
+    my_counter++;
+    if ((my_counter % 100 == 0) && (my_counter < 5000)) {
+	    create = true;
+    }
+
     // Insert into the hash table
     hash_add(swapped_pages_ht, &info->node, info->vaddr);
-
     spin_unlock(&swapped_pages_lock);
+
+    if (create == true)
+	create_watchpoint(vmf->address);
 }
 
 /*
