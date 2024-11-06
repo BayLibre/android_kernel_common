@@ -51,6 +51,24 @@
       "parentUuid": "efbd52ff_4a39294a",
       "revId": "752d3a478f115039fc66b2e05dc00248377ab4b1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af15cd36_33057133",
+        "filename": "kernel/futex/waitwake.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-11-06T22:29:00Z",
+      "side": 1,
+      "message": "but you have `trace_android_vh_futex_wait_end` to detect that case...and don\u0027t you have the same issue for this hook where you can take the `goto out` at line 670, 673 or 684? With so many hooks already here, please try to use the existing ones.",
+      "parentUuid": "7ae2bb5f_faf84d07",
+      "revId": "752d3a478f115039fc66b2e05dc00248377ab4b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
