@@ -33,6 +33,24 @@
       "message": "why is the hook at line 650 not sufficient?",
       "revId": "752d3a478f115039fc66b2e05dc00248377ab4b1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ae2bb5f_faf84d07",
+        "filename": "kernel/futex/waitwake.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 3525127
+      },
+      "writtenOn": "2024-11-06T10:03:55Z",
+      "side": 1,
+      "message": "line 659 function calling prepares to wait on the futex, but it may return nonzero value then trigger goto out, in the case the current task isn\u0027t enqueued to the waiting list and isn\u0027t blocked",
+      "parentUuid": "efbd52ff_4a39294a",
+      "revId": "752d3a478f115039fc66b2e05dc00248377ab4b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
