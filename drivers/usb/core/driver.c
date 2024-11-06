@@ -1411,6 +1411,10 @@ static int usb_suspend_both(struct usb_device *udev, pm_message_t msg)
 	if (bypass)
 		goto done;
 
+	trace_android_vh_usb_dev_suspend(udev, msg, &bypass);
+	if (bypass)
+		goto done;
+
 	/* Suspend all the interfaces and then udev itself */
 	if (udev->actconfig) {
 		n = udev->actconfig->desc.bNumInterfaces;
