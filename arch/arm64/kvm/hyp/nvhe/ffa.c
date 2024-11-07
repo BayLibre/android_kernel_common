@@ -39,6 +39,8 @@
 #include <nvhe/trap_handler.h>
 #include <nvhe/spinlock.h>
 
+#define VM_FFA_SUPPORTED(vcpu)		((vcpu)->kvm->arch.pkvm.ffa_support)
+
 /*
  * A buffer to hold the maximum descriptor size we can see from the host,
  * which is required when the SPMD returns a fragmented FFA_MEM_RETRIEVE_RESP
@@ -1187,6 +1189,12 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 		return true;
 	}
 
+	if (!VM_FFA_SUPPORTED(vcpu)) {
+		ffa_to_smccc_error(&res, FFA_RET_NOT_SUPPORTED);
+		ffa_set_retval(ctxt, &res);
+		return true;
+	}
+
 	switch (func_id) {
 	case FFA_FEATURES:
 		do_ffa_guest_features(&res, ctxt);
@@ -1278,6 +1286,9 @@ int kvm_reclaim_ffa_guest_pages(struct pkvm_hyp_vm *vm, pkvm_handle_t handle)
 	struct pkvm_hyp_vcpu *hyp_vcpu = vm->vcpus[0];
 	struct kvm_ffa_buffers *ffa_buf = &vm->ffa_buf;
 
+	if (!VM_FFA_SUPPORTED(&hyp_vcpu->vcpu))
+		return 0;
+
 	vm_handle = hyp_vcpu_to_ffa_handle(hyp_vcpu);
 	WARN_ON(vm_handle >= KVM_MAX_PVMS);
 
@@ -1313,6 +1324,18 @@ unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 
 	return ret;
+}
+
+u32 ffa_get_hypervisor_version(void)
+{
+	u32 version = 0;
+
+	hyp_spin_lock(&version_lock);
+	if (has_version_negotiated)
+		version = hyp_ffa_version;
+	hyp_spin_unlock(&version_lock);
+
+	return version;
 }
 
 int hyp_ffa_init(void *pages)
