@@ -251157,6 +251157,10 @@ enumeration {
       name: "X86_HYPER_ACRN"
       value: 7
     }
+    enumerator {
+      name: "X86_HYPER_PKVM"
+      value: 8
+    }
   }
 }
 enumeration {
@@ -315133,7 +315137,7 @@ elf_symbol {
   name: "x86_hyper_type"
   is_defined: true
   symbol_type: OBJECT
-  crc: 0x29ad8e33
+  crc: 0x852473fd
   type_id: 0x6b991ad5
   full_name: "x86_hyper_type"
 }
