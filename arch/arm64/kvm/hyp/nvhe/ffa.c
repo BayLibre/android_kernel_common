@@ -46,6 +46,7 @@
 #define HOST_FFA_ID	0
 
 #define REPLAY_FFA_CALL	BIT(63)
+#define VM_FFA_SUPPORTED(vcpu)		((vcpu)->kvm->arch.pkvm.ffa_support)
 
 /* The maximum number of secure partitions that can register for VM availability */
 #define FFA_MAX_REGISTERED_SP_IDS	(8)
@@ -1254,6 +1255,12 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 		return true;
 	}
 
+	if (!VM_FFA_SUPPORTED(vcpu)) {
+		ffa_to_smccc_error(&res, FFA_RET_NOT_SUPPORTED);
+		ffa_set_retval(ctxt, &res);
+		return true;
+	}
+
 	switch (func_id) {
 	case FFA_FEATURES:
 		if (!do_ffa_features(&res, ctxt))
@@ -1326,6 +1333,9 @@ int kvm_reclaim_ffa_guest_pages(struct pkvm_hyp_vm *vm, pkvm_handle_t handle)
 	struct pkvm_hyp_vcpu *hyp_vcpu = vm->vcpus[0];
 	struct kvm_ffa_buffers *ffa_buf = &vm->ffa_buf;
 
+	if (!VM_FFA_SUPPORTED(&hyp_vcpu->vcpu))
+		return 0;
+
 	vm_handle = FFA_HANDLE_FROM_HYP_VCPU(hyp_vcpu);
 	WARN_ON(vm_handle >= KVM_MAX_PVMS);
 
@@ -1365,6 +1375,17 @@ unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 
 	return ret;
+}
+
+u32 ffa_get_hypervisor_version(void)
+{
+	u32 version;
+
+	hyp_spin_lock(&version_lock);
+	version = hyp_ffa_version;
+	hyp_spin_unlock(&version_lock);
+
+	return version;
 }
 
 int hyp_ffa_init(void *pages)
