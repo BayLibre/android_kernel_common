@@ -15,6 +15,9 @@ Description:
 		A value of "shrinker" indicates that unpinned pages should be
 		freed by a shrinker if the system is under memory pressure.
 
+		A value of "immediately" indicates that calls to ASHMEM_UNPIN
+		should free the pages immediately.
+
 		A value of "ignore" indicates that calls to ASHMEM_UNPIN should
 		be ignored.
 
