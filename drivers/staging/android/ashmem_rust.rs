@@ -102,9 +102,12 @@ impl kernel::Module for AshmemModule {
         // SAFETY: Called once since this is the module initializer.
         unsafe { ashmem_range::ASHMEM_SHRINKER.init() };
 
+        // SAFETY: This method is safe to call once the mutexes have been initialized.
+        unsafe { bindings::ashmem_on_driver_loaded() };
+
         pr_info!("Using Rust implementation.");
 
-        ashmem_range::register_shrinker()?;
+        ashmem_range::reload_shrinker()?;
 
         Ok(Self {
             _misc: Box::pin_init(

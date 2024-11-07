@@ -12,7 +12,7 @@ use core::{
 };
 use kernel::{
     alloc::AllocError,
-    c_str,
+    bindings, c_str,
     list::{List, ListArc, ListLinks},
     page::PAGE_SIZE,
     prelude::*,
@@ -453,18 +453,30 @@ impl Shrinker for super::AshmemModule {
 }
 
 kernel::sync::global_lock! {
-    // SAFETY: We call `init` as the very first thing in the initialization of this module, so
-    // there are no calls to `lock` before `init` is called.
+    // SAFETY: The `ashmem_toggle.c` file never calls `ashmem_reload_shrinker` until after this
+    // mutex has been initialized.
     pub(crate) unsafe(uninit) static ASHMEM_SHRINKER: Mutex<Option<ShrinkerRegistration<AshmemModule>>> = None;
 }
 
-pub(crate) fn register_shrinker() -> Result<(), AllocError> {
+#[no_mangle]
+extern "C" fn ashmem_reload_shrinker() {
+    let _ = reload_shrinker();
+}
+
+pub(crate) fn reload_shrinker() -> Result<(), AllocError> {
     let mut lock = ASHMEM_SHRINKER.lock();
-    if lock.is_none() {
+
+    // SAFETY: It's always safe to call this C function.
+    let needs_shrinker = unsafe { bindings::ashmem_needs_shrinker() };
+
+    if needs_shrinker && (*lock).is_none() {
         let mut shrinker = ShrinkerBuilder::new(c_str!("android-ashmem"))?;
         shrinker.set_seeks(4 * shrinker::DEFAULT_SEEKS);
 
         *lock = Some(shrinker.register(()));
+    } else if !needs_shrinker {
+        *lock = None;
     }
+
     Ok(())
 }
