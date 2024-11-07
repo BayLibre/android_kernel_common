@@ -10,7 +10,7 @@ use crate::{
         ShrinkerRegistration,
     },
     shmem::ShmemFile,
-    AshmemModule,
+    AshmemModule, UNPIN_IMMEDIATELY,
 };
 use core::{
     mem::MaybeUninit,
@@ -462,10 +462,17 @@ pub(crate) fn unpin_set(value: &[u8]) -> Result<()> {
                 builder.set_seeks(4 * ashmem_shrinker::DEFAULT_SEEKS);
                 *shrinker = Some(builder.register(()));
             }
+            UNPIN_IMMEDIATELY.store(false, Ordering::Relaxed);
+            Ok(())
+        }
+        b"immediately" => {
+            *shrinker = None;
+            UNPIN_IMMEDIATELY.store(true, Ordering::Relaxed);
             Ok(())
         }
         b"ignore" => {
             *shrinker = None;
+            UNPIN_IMMEDIATELY.store(false, Ordering::Relaxed);
             Ok(())
         }
         _ => Err(EINVAL),
@@ -478,6 +485,8 @@ pub(crate) fn unpin_get() -> &'static CStr {
 
     if shrinker.is_some() {
         c_str!("shrinker\n")
+    } else if UNPIN_IMMEDIATELY.load(Ordering::Relaxed) {
+        c_str!("immediately\n")
     } else {
         c_str!("ignore\n")
     }
