@@ -6,10 +6,11 @@
 //!
 //! We don't have an abstraction for sysfs yet, so do it manually.
 
-use crate::ashmem_range;
+use crate::{ashmem_range, UNPIN_IMMEDIATELY};
 use core::{
     mem::{self, transmute},
     ptr::{self, addr_of},
+    sync::atomic::Ordering,
 };
 use kernel::{bindings, c_str, error::to_result, page::PAGE_SIZE, prelude::*};
 
@@ -80,13 +81,14 @@ unsafe extern "C" fn unpin_store(
     // SAFETY: The caller provides a valid buffer of size `count`.
     let buf = unsafe { core::slice::from_raw_parts(buf.cast::<u8>(), count) };
 
-    let enabled = match buf.trim_ascii() {
-        b"shrinker" => true,
-        b"ignore" => false,
+    let (enabled, unpin_immediately) = match buf.trim_ascii() {
+        b"shrinker" => (true, false),
+        b"ignore" => (false, false),
+        b"immediately" => (false, true),
         _ => return EINVAL.to_errno() as isize,
     };
 
-    match ashmem_range::set_shrinker_enabled(enabled) {
+    match ashmem_range::set_shrinker_enabled(enabled, unpin_immediately) {
         Ok(()) => count as isize,
         Err(err) => err.to_errno() as isize,
     }
@@ -98,9 +100,11 @@ unsafe extern "C" fn unpin_show(
     _attr: *mut bindings::kobj_attribute,
     buf: *mut u8,
 ) -> isize {
+    let unpin_immediately = UNPIN_IMMEDIATELY.load(Ordering::Relaxed);
     let value = match ashmem_range::get_shrinker_enabled() {
-        true => c_str!("shrinker\n"),
+        false if unpin_immediately => c_str!("immediately\n"),
         false => c_str!("ignore\n"),
+        true => c_str!("shrinker\n"),
     };
 
     // SAFETY: `buf` fits up to `PAGE_SIZE` bytes, so this write is not out of bounds.

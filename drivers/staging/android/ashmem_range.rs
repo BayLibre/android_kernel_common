@@ -10,7 +10,7 @@ use crate::{
         ShrinkerRegistration,
     },
     shmem::ShmemFile,
-    AshmemModule,
+    AshmemModule, UNPIN_IMMEDIATELY,
 };
 use core::{
     mem::MaybeUninit,
@@ -454,7 +454,7 @@ kernel::sync::global_lock! {
     pub(crate) unsafe(uninit) static ASHMEM_SHRINKER: Mutex<AshmemShrinkerType> = None;
 }
 
-pub(crate) fn set_shrinker_enabled(enabled: bool) -> Result<()> {
+pub(crate) fn set_shrinker_enabled(enabled: bool, unpin_immediately: bool) -> Result<()> {
     let mut shrinker = ASHMEM_SHRINKER.lock();
     if enabled {
         if shrinker.is_none() {
@@ -465,6 +465,7 @@ pub(crate) fn set_shrinker_enabled(enabled: bool) -> Result<()> {
     } else {
         *shrinker = None;
     }
+    UNPIN_IMMEDIATELY.store(unpin_immediately, Ordering::Relaxed);
     Ok(())
 }
 
