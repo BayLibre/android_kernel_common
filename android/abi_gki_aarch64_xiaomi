@@ -453,8 +453,15 @@ reclaim_pages
 __tracepoint_android_vh_alloc_flags_cma_adjust
 __traceiter_android_vh_alloc_flags_cma_adjust
 
+<<<<<<< PATCH SET (5f6ac7 ANDROID: GKI: update symbol list file for xiaomi)
+# required by xr-qi.ko
+__tracepoint_android_vh_futex_wait_queue_start
+__traceiter_android_vh_futex_wait_queue_start
+||||||| BASE
+=======
 # required by launch_boost driver
 __traceiter_android_vh_filemap_read
 __tracepoint_android_vh_filemap_read
 __traceiter_android_vh_filemap_map_pages_range
 __tracepoint_android_vh_filemap_map_pages_range
+>>>>>>> BASE      (98a36b ANDROID: vendor_hooks: Add hook for futex)
