@@ -69,6 +69,24 @@
       "parentUuid": "7ae2bb5f_faf84d07",
       "revId": "752d3a478f115039fc66b2e05dc00248377ab4b1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e509e716_41337048",
+        "filename": "kernel/futex/waitwake.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 3525127
+      },
+      "writtenOn": "2024-11-07T01:52:41Z",
+      "side": 1,
+      "message": "line670, 673, 684 is a little different from line659, for the former, futex_wait_queue is called, then the current will be enqueued into waiting list and if not timeout, schedule will be triggered. Further more, a vendor hook with uaddr parameter is what we want, since uaddr is the ID of the futex, we need to identify the futex in our work.",
+      "parentUuid": "af15cd36_33057133",
+      "revId": "752d3a478f115039fc66b2e05dc00248377ab4b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
