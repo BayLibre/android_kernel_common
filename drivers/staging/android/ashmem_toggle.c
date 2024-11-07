@@ -31,6 +31,11 @@ bool ashmem_needs_shrinker(void)
 	return READ_ONCE(unpin_behavior) == ASHMEM_UNPIN_SHRINKER;
 }
 
+bool ashmem_unpin_now(void)
+{
+	return READ_ONCE(unpin_behavior) == ASHMEM_UNPIN_IMMEDIATELY;
+}
+
 static int ashmem_unpin_set(const char *buffer, const struct kernel_param *kp)
 {
 	int set;
@@ -39,6 +44,8 @@ static int ashmem_unpin_set(const char *buffer, const struct kernel_param *kp)
 		set = ASHMEM_UNPIN_SHRINKER;
 	if (!strcmp(buffer, "ignore"))
 		set = ASHMEM_UNPIN_IGNORE;
+	if (!strcmp(buffer, "immediately"))
+		set = ASHMEM_UNPIN_IMMEDIATELY;
 	else
 		return -EINVAL;
 
@@ -59,6 +66,8 @@ static int ashmem_unpin_get(char *buffer, const struct kernel_param *kp)
 		strscpy(buffer, "shrinker\n", 4096);
 	else if (get == ASHMEM_UNPIN_IGNORE)
 		strscpy(buffer, "ignore\n", 4096);
+	else if (get == ASHMEM_UNPIN_IMMEDIATELY)
+		strscpy(buffer, "immediately\n", 4096);
 	else
 		strscpy(buffer, "\n", 4096);
 

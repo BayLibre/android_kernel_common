@@ -258,7 +258,12 @@ impl MiscDevice for Ashmem {
             bindings::ASHMEM_GET_PROT_MASK => me.get_prot_mask(),
             bindings::ASHMEM_GET_FILE_ID => me.get_file_id(UserSlice::new(arg, size).writer()),
             ASHMEM_PIN | ASHMEM_UNPIN | ASHMEM_GET_PIN_STATUS => {
-                me.pin_unpin(cmd, UserSlice::new(arg, size).reader())
+                let ret = me.pin_unpin(cmd, UserSlice::new(arg, size).reader())?;
+                // SAFETY: This FFI call is always safe.
+                if cmd == ASHMEM_UNPIN && unsafe { bindings::ashmem_unpin_now() } {
+                    me.post_unpin();
+                }
+                Ok(ret)
             }
             bindings::ASHMEM_PURGE_ALL_CACHES => me.purge_all_caches(),
             _ => Err(EINVAL),
@@ -440,6 +445,11 @@ impl Ashmem {
             }
             _ => unreachable!(),
         }
+    }
+
+    fn post_unpin(&self) {
+        let mut guard = AshmemGuard(ASHMEM_MUTEX.lock());
+        guard.free_lru(usize::MAX, &mut 0);
     }
 
     fn purge_all_caches(&self) -> Result<c_long> {
