@@ -1,0 +1,17 @@
+What:		/sys/kernel/ashmem/
+Date:		Feb 2025
+Contact:	Alice Ryhl <aliceryhl@google.com>
+Description:
+		/sys/kernel/ashmem/ contains a single node that can be used
+		to adjust different characteristics of the ashmem driver's
+		behavior.
+
+What:		/sys/kernel/ashmem/unpinning_enable
+Date:		Feb 2025
+Contact:	Alice Ryhl <aliceryhl@google.com>
+Description:
+		Determines whether the ASHMEM_UNPIN ioctl can be used.
+
+		If the value is set to 1, then unpinned pages may be freed by a
+		shrinker if the system is under memory pressure. Otherwise,
+		unpinning a page has no effect.
