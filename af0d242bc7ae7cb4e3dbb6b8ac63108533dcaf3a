@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e73d8260_17b2ff0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2024-11-07T12:28:48Z",
+      "side": 1,
+      "message": "I think we can drop this patch to avoid ABI issues. If you want you can change the thresholds to be 1024 which would effectively disable the feature but without having to apply the revert itself. I don\u0027t mind if current defaults stay the same myself. I\u0027ll leave it to you if you would like to effectively disable the feature to align with upstream.",
+      "revId": "af0d242bc7ae7cb4e3dbb6b8ac63108533dcaf3a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
