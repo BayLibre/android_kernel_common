@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64116ffe_6ca668b3",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-11-07T19:28:34Z",
+      "side": 1,
+      "message": "Should this report out the possibility of an alloc error so it can be propagated to `ashmem_unpin_set`?",
+      "revId": "3eabd814730ea42c37edd3f0adf8b8fca27d8f89",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb538b52_9609813a",
+        "filename": "drivers/staging/android/ashmem_toggle.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-11-07T19:28:34Z",
+      "side": 1,
+      "message": "Why is this in C rather than Rust? Are we just missing `kernel_param_ops` bindings?\n\nIf so, why not just implement `ashmem_unpin_get` and `ashmem_unpin_set` in Rust and export them, rather than having 3 callbacks and some state living in C?",
+      "revId": "3eabd814730ea42c37edd3f0adf8b8fca27d8f89",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d320b905_60aa7a1d",
+        "filename": "drivers/staging/android/ashmem_toggle.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-11-07T19:28:34Z",
+      "side": 1,
+      "message": "Maybe this isn\u0027t a big issue because this is a config switch that won\u0027t be flipped often, but as is, you could set `ASHMEM_UNPIN_IGNORE`, it would appear to take effect (`get` succeeds and prints the right thing), but ashmem could still be using no shrinker.",
+      "revId": "3eabd814730ea42c37edd3f0adf8b8fca27d8f89",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
