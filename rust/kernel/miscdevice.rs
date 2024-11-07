@@ -12,12 +12,13 @@ use crate::{
     bindings,
     device::Device,
     error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
-    ffi::{c_int, c_long, c_uint, c_ulong},
+    ffi::{c_int, c_long, c_uint, c_ulong, c_void},
     fs::{File, LocalFile},
     mm::virt::VmaNew,
     prelude::*,
     seq_file::SeqFile,
     str::CStr,
+    transmute::AsBytes,
     types::{ForeignOwnable, Opaque},
 };
 use core::{marker::PhantomData, mem::MaybeUninit, pin::Pin, ptr::NonNull};
@@ -148,6 +149,33 @@ impl IovIter {
     pub fn as_raw(&self) -> *mut bindings::iov_iter {
         self.inner.get()
     }
+
+    /// Copy bytes from this iterator.
+    pub fn copy_from_iter(&mut self, buf: &mut [u8]) -> usize {
+        // SAFETY: The local variable `out` is valid for writing `size_of::<T>()` bytes.
+        unsafe {
+            bindings::_copy_from_iter(
+                buf.as_mut_ptr().cast::<c_void>(),
+                buf.len(),
+                self.inner.get(),
+            )
+        }
+    }
+
+    /// Copy bytes to this iterator.
+    pub fn copy_to_iter<T: AsBytes>(&mut self, value: &T) -> Result<()> {
+        let len = size_of::<T>();
+        // SAFETY: The reference points to a value of type `T`, so it is valid for reading
+        // `size_of::<T>()` bytes.
+        let res = unsafe {
+            bindings::_copy_to_iter((value as *const T).cast::<c_void>(), len, self.inner.get())
+        };
+        if res == len {
+            Ok(())
+        } else {
+            Err(EFAULT)
+        }
+    }
 }
 
 /// Trait implemented by the private data of an open misc device.
@@ -194,6 +222,11 @@ pub trait MiscDevice: Sized {
 
     /// Read from this miscdevice.
     fn read_iter(_kiocb: Kiocb<'_, Self::Ptr>, _iov: &mut IovIter) -> Result<usize> {
+        build_error!(VTABLE_DEFAULT_ERROR)
+    }
+
+    /// Write to this miscdevice.
+    fn write_iter(_kiocb: Kiocb<'_, Self::Ptr>, _iov: &mut IovIter) -> Result<usize> {
         build_error!(VTABLE_DEFAULT_ERROR)
     }
 
@@ -342,6 +375,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
         let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
         // SAFETY:
         // * The file is valid for the duration of this call.
+
         // * We are inside an fdget_pos region, so there cannot be any active fdget_pos regions on
         //   other threads.
         let file = unsafe { LocalFile::from_raw_file(file) };
@@ -366,6 +400,25 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
         let iov = unsafe { &mut *iter.cast::<IovIter>() };
 
         match T::read_iter(kiocb, iov) {
+            Ok(res) => res as isize,
+            Err(err) => err.to_errno() as isize,
+        }
+    }
+
+    /// # Safety
+    ///
+    /// Arguments must be valid.
+    unsafe extern "C" fn write_iter(
+        kiocb: *mut bindings::kiocb,
+        iter: *mut bindings::iov_iter,
+    ) -> isize {
+        let kiocb = Kiocb {
+            inner: unsafe { NonNull::new_unchecked(kiocb) },
+            _phantom: PhantomData,
+        };
+        let iov = unsafe { &mut *iter.cast::<IovIter>() };
+
+        match T::write_iter(kiocb, iov) {
             Ok(res) => res as isize,
             Err(err) => err.to_errno() as isize,
         }
@@ -442,6 +495,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
         mmap: if T::HAS_MMAP { Some(Self::mmap) } else { None },
         llseek: if T::HAS_LLSEEK { Some(Self::llseek) } else { None },
         read_iter: if T::HAS_READ_ITER { Some(Self::read_iter) } else { None },
+        write_iter: if T::HAS_WRITE_ITER { Some(Self::write_iter) } else { None },
         unlocked_ioctl: if T::HAS_IOCTL {
             Some(Self::ioctl)
         } else {
