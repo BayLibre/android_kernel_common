@@ -47,6 +47,8 @@ use ashmem_range::{Area, AshmemGuard, NewRange, ASHMEM_MUTEX, LRU_COUNT};
 mod shmem;
 use shmem::ShmemFile;
 
+mod ashmem_toggle;
+
 /// Does PROT_READ imply PROT_EXEC for this task?
 fn read_implies_exec(task: &Task) -> bool {
     // SAFETY: Always safe to read.
@@ -76,6 +78,7 @@ module! {
 
 struct AshmemModule {
     _misc: Pin<Box<MiscDeviceRegistration<Ashmem>>>,
+    _kobj: ashmem_toggle::AshmemObj,
 }
 
 impl kernel::Module for AshmemModule {
@@ -89,9 +92,10 @@ impl kernel::Module for AshmemModule {
 
         pr_info!("Using Rust implementation.");
 
-        ashmem_range::register_shrinker()?;
+        ashmem_range::unpin_set(b"shrinker")?;
 
         Ok(Self {
+            _kobj: ashmem_toggle::AshmemObj::new()?,
             _misc: Box::pin_init(
                 MiscDeviceRegistration::register(MiscDeviceOptions {
                     name: c_str!("ashmem"),
