@@ -396,7 +396,7 @@ static inline unsigned int arm_smmu_cdtab_l2_idx(unsigned int ssid)
 /* Command queue */
 #define CMDQ_ENT_SZ_SHIFT		4
 #define CMDQ_ENT_DWORDS			((1 << CMDQ_ENT_SZ_SHIFT) >> 3)
-#define CMDQ_MAX_SZ_SHIFT		(Q_MAX_SZ_SHIFT - CMDQ_ENT_SZ_SHIFT)
+#define CMDQ_MAX_SZ_SHIFT		8
 
 #define CMDQ_CONS_ERR			GENMASK(30, 24)
 #define CMDQ_ERR_CERROR_NONE_IDX	0
@@ -466,7 +466,7 @@ static inline unsigned int arm_smmu_cdtab_l2_idx(unsigned int ssid)
 /* Event queue */
 #define EVTQ_ENT_SZ_SHIFT		5
 #define EVTQ_ENT_DWORDS			((1 << EVTQ_ENT_SZ_SHIFT) >> 3)
-#define EVTQ_MAX_SZ_SHIFT		(Q_MAX_SZ_SHIFT - EVTQ_ENT_SZ_SHIFT)
+#define EVTQ_MAX_SZ_SHIFT		8
 
 #define EVTQ_0_ID			GENMASK_ULL(7, 0)
 
