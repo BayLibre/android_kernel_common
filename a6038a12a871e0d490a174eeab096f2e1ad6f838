@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05bd9655_72c8814a",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-11-07T19:33:53Z",
+      "side": 1,
+      "message": "This method doesn\u0027t access `me`. Why are we passing it? Also, it seems a little weird to me that `post_unpin` is a conditional action, with the condition tested here.\n\nWould this not make more sense to just put at the end of `pin_unpin`? The only arg it needs to act is `cmd`, which `pin_unpin` has, and it even already has the lock acquired that we need.",
+      "revId": "a6038a12a871e0d490a174eeab096f2e1ad6f838",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
