@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "14113707_f97f3643",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-11-08T15:26:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64116ffe_6ca668b3",
+      "revId": "3eabd814730ea42c37edd3f0adf8b8fca27d8f89",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb538b52_9609813a",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "558477ea_c92ed0da",
+        "filename": "drivers/staging/android/ashmem_toggle.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-11-08T15:26:20Z",
+      "side": 1,
+      "message": "Yeah it\u0027s because of the difficulties involved in defining a module parameter from Rust. Supposedly there are abstractions on the list, but they\u0027re not quite what I need.\n\nI switched this to use sysfs instead. That sidesteps a lot of issues with module parametes.",
+      "parentUuid": "eb538b52_9609813a",
+      "revId": "3eabd814730ea42c37edd3f0adf8b8fca27d8f89",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d320b905_60aa7a1d",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-11-07T19:28:34Z",
       "side": 1,
       "message": "Maybe this isn\u0027t a big issue because this is a config switch that won\u0027t be flipped often, but as is, you could set `ASHMEM_UNPIN_IGNORE`, it would appear to take effect (`get` succeeds and prints the right thing), but ashmem could still be using no shrinker.",
+      "revId": "3eabd814730ea42c37edd3f0adf8b8fca27d8f89",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63ed585e_527fc9cf",
+        "filename": "drivers/staging/android/ashmem_toggle.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-11-08T15:26:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d320b905_60aa7a1d",
       "revId": "3eabd814730ea42c37edd3f0adf8b8fca27d8f89",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
