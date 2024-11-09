@@ -804,7 +804,13 @@ static int sdei_device_freeze(struct device *dev)
 	int err;
 
 	/* unregister private events */
+<<<<<<< HEAD   (b1c3b1 Merge branch 'android11-5.4' into android11-5.4-lts)
 	cpuhp_remove_state(CPUHP_AP_ARM_SDEI_STARTING);
+||||||| BASE
+	cpuhp_remove_state(sdei_entry_point);
+=======
+	cpuhp_remove_state(sdei_hp_state);
+>>>>>>> BRANCH (6b8cbb Linux 5.4.285)
 
 	err = sdei_unregister_shared();
 	if (err)
