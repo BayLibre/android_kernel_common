@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f59bdf92_fe082e7e",
+        "filename": "drivers/staging/android/toggle.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-11-09T00:42:38Z",
+      "side": 1,
+      "message": "Ick, have we filed an upstream bug for this? The hack you\u0027ve done here will only work because `-funsigned-char` is *always* set for the kernel, which is fine, but it should be doable with a cfg flag or something in general...",
+      "revId": "204169f18d1813c43d1a24cb23a3479489e6b3da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
