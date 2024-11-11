@@ -16,6 +16,24 @@
       "message": "Ick, have we filed an upstream bug for this? The hack you\u0027ve done here will only work because `-funsigned-char` is *always* set for the kernel, which is fine, but it should be doable with a cfg flag or something in general...",
       "revId": "204169f18d1813c43d1a24cb23a3479489e6b3da",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "187381dc_0fc9b2b7",
+        "filename": "drivers/staging/android/toggle.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-11-11T13:35:29Z",
+      "side": 1,
+      "message": "Upstream Linux is fixing this with [[PATCH 4/5] rust: map `long` to `isize` and `char` to `u8`][1]. We have not filed anything with upstream Rust, though I\u0027ve previously opened [this zulip thread][2] about `-funsigned-char`.\n\n[1]: https://lore.kernel.org/all/20240913213041.395655-5-gary@garyguo.net/\n[2]: https://rust-lang.zulipchat.com/#narrow/channel/x/topic/x/near/470131005",
+      "parentUuid": "f59bdf92_fe082e7e",
+      "revId": "204169f18d1813c43d1a24cb23a3479489e6b3da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
