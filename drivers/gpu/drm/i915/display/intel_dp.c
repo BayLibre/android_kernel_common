@@ -1172,12 +1172,20 @@ intel_dp_output_format(struct intel_connector *connector,
 	return output_format;
 }
 
-int intel_dp_min_bpp(enum intel_output_format output_format)
+int intel_dp_min_bpp(struct intel_dp *intel_dp,
+			enum intel_output_format output_format)
 {
-	if (output_format == INTEL_OUTPUT_FORMAT_RGB)
-		return 6 * 3;
-	else
-		return 8 * 3;
+	int bpc = output_format == INTEL_OUTPUT_FORMAT_RGB ? 6 : 8;
+
+	if (intel_dp->dfp.min_bpc)
+		bpc = max_t(int, bpc, intel_dp->dfp.min_bpc);
+
+	struct drm_connector_state *conn_state = intel_dp->attached_connector->base.state;
+
+	if (conn_state->min_requested_bpc)
+		bpc = max_t(int, bpc, conn_state->min_requested_bpc);
+
+	return bpc * 3;
 }
 
 int intel_dp_output_bpp(enum intel_output_format output_format, int bpp)
@@ -1206,8 +1214,9 @@ intel_dp_sink_format(struct intel_connector *connector,
 }
 
 static int
-intel_dp_mode_min_output_bpp(struct intel_connector *connector,
-			     const struct drm_display_mode *mode)
+intel_dp_mode_min_output_bpp(struct intel_dp *intel_dp,
+			struct intel_connector *connector,
+			const struct drm_display_mode *mode)
 {
 	enum intel_output_format output_format, sink_format;
 
@@ -1215,7 +1224,8 @@ intel_dp_mode_min_output_bpp(struct intel_connector *connector,
 
 	output_format = intel_dp_output_format(connector, sink_format);
 
-	return intel_dp_output_bpp(output_format, intel_dp_min_bpp(output_format));
+	return intel_dp_output_bpp(output_format,
+				   intel_dp_min_bpp(intel_dp, output_format));
 }
 
 static bool intel_dp_hdisplay_bad(struct intel_display *display,
@@ -1289,7 +1299,7 @@ intel_dp_mode_valid_downstream(struct intel_connector *connector,
 	if (intel_dp->dfp.pcon_max_frl_bw) {
 		int target_bw;
 		int max_frl_bw;
-		int bpp = intel_dp_mode_min_output_bpp(connector, mode);
+		int bpp = intel_dp_mode_min_output_bpp(intel_dp, connector, mode);
 
 		target_bw = bpp * target_clock;
 
@@ -1442,7 +1452,7 @@ intel_dp_mode_valid(struct drm_connector *_connector,
 	max_rate = intel_dp_max_link_data_rate(intel_dp, max_link_clock, max_lanes);
 
 	mode_rate = intel_dp_link_required(target_clock,
-					   intel_dp_mode_min_output_bpp(connector, mode));
+					   intel_dp_mode_min_output_bpp(intel_dp, connector, mode));
 
 	if (intel_dp_has_dsc(connector)) {
 		enum intel_output_format sink_format, output_format;
@@ -2190,8 +2200,16 @@ static
 bool is_dsc_pipe_bpp_sufficient(const struct link_config_limits *limits,
 				int pipe_bpp)
 {
-	return pipe_bpp >= limits->pipe.min_bpp &&
-	       pipe_bpp <= limits->pipe.max_bpp;
+	u8 dsc_max_bpc, dsc_min_bpc, dsc_max_pipe_bpp, dsc_min_pipe_bpp;
+
+	dsc_max_bpc = min(intel_dp_dsc_max_src_input_bpc(i915), conn_state->max_requested_bpc);
+	dsc_min_bpc = max(intel_dp_dsc_min_src_input_bpc(i915), conn_state->min_requested_bpc);
+
+	dsc_max_pipe_bpp = min(dsc_max_bpc * 3, limits->pipe.max_bpp);
+	dsc_min_pipe_bpp = max(dsc_min_bpc * 3, limits->pipe.min_bpp);
+
+	return pipe_bpp >= dsc_min_pipe_bpp &&
+	       pipe_bpp <= dsc_max_pipe_bpp;
 }
 
 static
@@ -2520,7 +2538,9 @@ intel_dp_compute_config_limits(struct intel_dp *intel_dp,
 	limits->min_lane_count = intel_dp_min_lane_count(intel_dp);
 	limits->max_lane_count = intel_dp_max_lane_count(intel_dp);
 
-	limits->pipe.min_bpp = intel_dp_min_bpp(crtc_state->output_format);
+	limits->pipe.min_bpp = intel_dp_min_bpp(intel_dp, crtc_state->output_format);
+	limits->pipe.max_bpp = intel_dp_max_bpp(intel_dp, crtc_state,
+						     respect_downstream_limits);
 	if (is_mst) {
 		/*
 		 * FIXME: If all the streams can't fit into the link with their
@@ -5528,6 +5548,8 @@ intel_dp_update_dfp(struct intel_dp *intel_dp,
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct intel_connector *connector = intel_dp->attached_connector;
 
+	intel_dp->dfp.min_bpc = 0;
+
 	intel_dp->dfp.max_bpc =
 		drm_dp_downstream_max_bpc(intel_dp->dpcd,
 					  intel_dp->downstream_ports, drm_edid);
@@ -5550,8 +5572,9 @@ intel_dp_update_dfp(struct intel_dp *intel_dp,
 					   intel_dp->downstream_ports);
 
 	drm_dbg_kms(display->drm,
-		    "[CONNECTOR:%d:%s] DFP max bpc %d, max dotclock %d, TMDS clock %d-%d, PCON Max FRL BW %dGbps\n",
+		    "[CONNECTOR:%d:%s] DFP min bpc %d, max bpc %d, max dotclock %d, TMDS clock %d-%d, PCON Max FRL BW %dGbps\n",
 		    connector->base.base.id, connector->base.name,
+		    intel_dp->dfp.min_bpc,
 		    intel_dp->dfp.max_bpc,
 		    intel_dp->dfp.max_dotclock,
 		    intel_dp->dfp.min_tmds_clock,
@@ -5644,6 +5667,7 @@ intel_dp_unset_edid(struct intel_dp *intel_dp)
 	drm_edid_free(connector->detect_edid);
 	connector->detect_edid = NULL;
 
+	intel_dp->dfp.min_bpc = 0;
 	intel_dp->dfp.max_bpc = 0;
 	intel_dp->dfp.max_dotclock = 0;
 	intel_dp->dfp.min_tmds_clock = 0;
@@ -6275,11 +6299,13 @@ intel_dp_add_properties(struct intel_dp *intel_dp, struct drm_connector *connect
 		intel_attach_force_audio_property(connector);
 
 	intel_attach_broadcast_rgb_property(connector);
-	if (HAS_GMCH(display))
+	if (HAS_GMCH(display)) {
 		drm_connector_attach_max_bpc_property(connector, 6, 10);
-	else if (DISPLAY_VER(display) >= 5)
+		drm_connector_attach_min_bpc_property(connector, 6, 10);
+	} else if (DISPLAY_VER(display) >= 5)
 		drm_connector_attach_max_bpc_property(connector, 6, 12);
-
+		drm_connector_attach_min_bpc_property(connector, 6, 12);
+	}
 	/* Register HDMI colorspace for case of lspcon */
 	if (intel_bios_encoder_is_lspcon(dp_to_dig_port(intel_dp)->base.devdata)) {
 		drm_connector_attach_content_type_property(connector);
