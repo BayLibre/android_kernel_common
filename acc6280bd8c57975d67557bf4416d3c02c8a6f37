@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f185ecec_c37d716a",
+        "filename": "net/sched/sch_api.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2024-11-12T16:31:45Z",
+      "side": 0,
+      "message": "IIUIC This removal is causing the error:\n\n```\nSymbols missing from the ksymtab:\n  __qdisc_calculate_pkt_len\n```",
+      "range": {
+        "startLine": 595,
+        "startChar": 0,
+        "endLine": 595,
+        "endChar": 41
+      },
+      "revId": "acc6280bd8c57975d67557bf4416d3c02c8a6f37",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
