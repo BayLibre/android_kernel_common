@@ -16,6 +16,24 @@
       "message": "We probably want to make `purge_all_caches` into a no-op too when the option is not set to `shrinker`.",
       "revId": "494cd3eb7b80b913ddbe3f4c97a0f0eda7b520cd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2407dfd8_ede63699",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-11-12T16:49:53Z",
+      "side": 1,
+      "message": "That could be a reasonable choice, but I can also see the current behavior as reasonable - setting it to `\"shrinker\"` can mean \"automatic shrinking\" and `\"ignore\"` can mean \"manual pruning only\".",
+      "parentUuid": "1e397c58_64a31ae1",
+      "revId": "494cd3eb7b80b913ddbe3f4c97a0f0eda7b520cd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
