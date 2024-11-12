@@ -16,6 +16,23 @@
       "message": "isaacmanjarres",
       "revId": "52e79d6a826ef2d37459ab5f43aa24ded4410908",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac73e809_a5569abc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2024-11-12T17:24:03Z",
+      "side": 1,
+      "message": "This might be fine if the primary purpose of this toggle is compatibility testing, but there are weird inconsistencies that can happen if you toggle the mode while a writable map exists that has had its mask downgraded.\n\n1. Start in ashmem mode\n2. Map a file writable\n3. set_prot_mask RO\n4. Mode is toggled to memfd mode\n5. set_prot_mask(fd, get_prot_mask(fd)) now errors, which should not ever happen in either mode.\n\nOne possible adjustment here is to change the check to see if `prot` is being downgraded rather than just if the permission is RO, but that then has the opposite inconsistency - `set_prot_mask(fd, RO)` would succeed in memfd mode in some cases while still mapped RW.\n\nIs there a reason that using a toggle is better than a module command line parameter? By making it not runtime adjustable, we\u0027d avoid the weirdness.\n\n(This may be all in accordance with what the kernel team would like, in which case feel free to ignore.)",
+      "revId": "52e79d6a826ef2d37459ab5f43aa24ded4410908",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
