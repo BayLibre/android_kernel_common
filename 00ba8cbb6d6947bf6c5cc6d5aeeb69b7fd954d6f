@@ -16,6 +16,24 @@
       "message": "This patch should be UPSTREAM by now, right? It was even scheduled for 6.5?!?\n\nAdditionally, this patch was reverted due to an issue found upstream ... Can you please clarify and/or also send the fixing patch?\n\nSee the entire conversation at https://lore.kernel.org/all/20230412093425.3659088-1-ajayagarwal@google.com/.",
       "revId": "00ba8cbb6d6947bf6c5cc6d5aeeb69b7fd954d6f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3f605b0_e84bee85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3633936
+      },
+      "writtenOn": "2024-11-13T16:54:16Z",
+      "side": 1,
+      "message": "Hello, yes the upstream patch got reverted as among the introduced changes it also added a goto statement to stop the link, in case the link doesn\u0027t come up inspite of start link function defined. This was breaking the boards with no device connected, This patch doesn\u0027t introduce this extra change or throwing error (or stop link) and ignores it just like upstream. We did try providing this fixed patch to upstream, but unfortunately it hasn\u0027t been accepted. Here is the link to the entire discussion : https://lore.kernel.org/all/20240112093006.2832105-1-ajayagarwal@google.com/. I should probably update the link in the description to point to this patch instead of the change that got reverted. For reference initial patch discussion : https://lore.kernel.org/all/20230412093425.3659088-1-ajayagarwal@google.com/ and Reverted  patch discussion : https://lore.kernel.org/all/20230706082610.26584-1-johan+linaro@kernel.org/",
+      "parentUuid": "a5a2bffd_63dd6a11",
+      "revId": "00ba8cbb6d6947bf6c5cc6d5aeeb69b7fd954d6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
