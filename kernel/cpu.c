@@ -1931,7 +1931,7 @@ int freeze_secondary_cpus(int primary)
 		}
 
 		trace_suspend_resume(TPS("CPU_OFF"), cpu, true);
-		error = _cpu_down(cpu, 1, CPUHP_OFFLINE);
+		error = _cpu_down(cpu, 1, CPUHP_WORKQUEUE_PREP);
 		trace_suspend_resume(TPS("CPU_OFF"), cpu, false);
 		if (!error)
 			cpumask_set_cpu(cpu, frozen_cpus);
