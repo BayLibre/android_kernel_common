@@ -16,6 +16,24 @@
       "message": "need remove static as there is build error ?",
       "revId": "bfc414392222642e9ea092e7a71fc2c5f9c73385",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48e459a4_bd343d1e",
+        "filename": "drivers/irqchip/irq-gic-v3.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 944,
+      "author": {
+        "id": 1902100
+      },
+      "writtenOn": "2024-11-14T09:43:18Z",
+      "side": 1,
+      "message": "fixed:\n  AR      drivers/phy/ralink/built-in.a\n../drivers/irqchip/irq-gic-v3.c:944:20: error: static declaration of ‘gic_v3_dist_init’ follows non-static declaration\n static void __init gic_v3_dist_init(void)\n                    ^~~~~~~~~~~~~~~~\nIn file included from ../drivers/irqchip/irq-gic-v3.c:29:0:\n../include/linux/irqchip/arm-gic-v3.h:659:6: note: previous declaration of ‘gic_v3_dist_init’ was here\n void gic_v3_dist_init(void);",
+      "parentUuid": "7c57eacb_3244b1b4",
+      "revId": "bfc414392222642e9ea092e7a71fc2c5f9c73385",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
