@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b125d9a5_1917e0f5",
+        "filename": "include/trace/hooks/mm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-11-14T09:36:09Z",
+      "side": 1,
+      "message": "The hook is not suitable and hence can be removed as nobody can actually use it with the long name. The ABI analysis will fail, but that can be overridden.",
+      "range": {
+        "startLine": 417,
+        "startChar": 0,
+        "endLine": 419,
+        "endChar": 24
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "02832a36_f1fb7a02",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/mm.h",
+              "range": {
+                "startLine": 416,
+                "startChar": 0,
+                "endLine": 420,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "374bf7cb8816b91ffba0d444e11addf2f61197bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
