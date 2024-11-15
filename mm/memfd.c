@@ -20,6 +20,7 @@
 #include <linux/memfd.h>
 #include <linux/pid_namespace.h>
 #include <uapi/linux/memfd.h>
+#include <linux/ashmem_compat.h>
 
 /*
  * We need a tag: a new tag would expand every xa_node by 8 bytes,
@@ -358,7 +359,7 @@ static char *memfd_create_name(const char *name, size_t name_len)
 	return file_name;
 }
 
-static struct file *memfd_filp_create(const char *name, unsigned int flags)
+static struct file *__memfd_filp_create(const char *name, unsigned int flags)
 {
 	unsigned int *file_seals;
 	struct file *file;
@@ -391,6 +392,34 @@ static struct file *memfd_filp_create(const char *name, unsigned int flags)
 			*file_seals &= ~F_SEAL_SEAL;
 	}
 
+	install_ashmem_compat_fops(file);
+	return file;
+}
+
+struct file *memfd_filp_create(const char *name, unsigned int flags)
+{
+	struct file *file;
+	char *file_name;
+	int ret;
+	size_t len;
+
+	if (!name)
+		return ERR_PTR(-EINVAL);
+
+	ret = memfd_check_flags(flags);
+	if (ret < 0)
+		return ERR_PTR(ret);
+
+	len = strnlen(name, MFD_NAME_MAX_LEN + 1);
+	if (len > MFD_NAME_MAX_LEN)
+		return ERR_PTR(-EINVAL);
+
+	file_name = memfd_create_name(name, len);
+	if (!file_name)
+		return ERR_PTR(-ENOMEM);
+
+	file = __memfd_filp_create(file_name, flags);
+	kfree(file_name);
 	return file;
 }
 
@@ -432,7 +461,7 @@ SYSCALL_DEFINE2(memfd_create,
 		goto err_name;
 	}
 
-	file = memfd_filp_create(name, flags);
+	file = __memfd_filp_create(name, flags);
 	if (IS_ERR(file)) {
 		error = PTR_ERR(file);
 		goto err_fd;
