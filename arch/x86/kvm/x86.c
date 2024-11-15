@@ -4720,8 +4720,8 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
 		break;
 	case KVM_CAP_VM_TYPES:
 		r = BIT(KVM_X86_DEFAULT_VM);
-		if (static_call(kvm_x86_is_vm_type_supported)(KVM_X86_PROTECTED_VM))
-			r |= BIT(KVM_X86_PROTECTED_VM);
+		if (static_call(kvm_x86_is_vm_type_supported)(KVM_X86_PKVM_PROTECTED_VM))
+			r |= BIT(KVM_X86_PKVM_PROTECTED_VM);
 		break;
 	default:
 		break;
@@ -9995,7 +9995,7 @@ int kvm_emulate_hypercall(struct kvm_vcpu *vcpu)
 	unsigned long nr, a0, a1, a2, a3, ret;
 	int op_64_bit;
 
-	if (vcpu->kvm->arch.vm_type == KVM_X86_PROTECTED_VM)
+	if (vcpu->kvm->arch.vm_type == KVM_X86_PKVM_PROTECTED_VM)
 		return kvm_pkvm_hypercall(vcpu);
 
 	if (kvm_xen_hypercall_enabled(vcpu->kvm))

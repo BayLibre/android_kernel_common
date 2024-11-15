@@ -1063,7 +1063,7 @@ out:
 
 static bool pkvm_is_protected_vm(struct kvm *kvm)
 {
-	return kvm->arch.vm_type == KVM_X86_PROTECTED_VM;
+	return kvm->arch.vm_type == KVM_X86_PKVM_PROTECTED_VM;
 }
 
 static int add_device_to_pkvm(struct device *dev, void *data)
