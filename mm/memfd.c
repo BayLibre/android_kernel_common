@@ -21,6 +21,8 @@
 #include <linux/pid_namespace.h>
 #include <uapi/linux/memfd.h>
 
+#include "ashmem_compat.h"
+
 /*
  * We need a tag: a new tag would expand every xa_node by 8 bytes,
  * so reuse a tag which we firmly believe is never set or cleared on tmpfs
@@ -327,7 +329,8 @@ static int check_sysctl_memfd_noexec(unsigned int *flags)
 	return 0;
 }
 
-static struct file *memfd_filp_create(const char *name, unsigned int flags)
+static struct file *__memfd_filp_create(const char *name, unsigned int flags,
+					bool ashmem_compatible)
 {
 	unsigned int *file_seals;
 	struct file *file;
@@ -360,6 +363,40 @@ static struct file *memfd_filp_create(const char *name, unsigned int flags)
 			*file_seals &= ~F_SEAL_SEAL;
 	}
 
+	install_ashmem_compat_fops(file, ashmem_compatible);
+	return file;
+}
+
+struct file *memfd_filp_create(const char *name, unsigned int flags, bool ashmem_compatible)
+{
+	struct file *file;
+	char *file_name;
+	size_t len, buf_len;
+
+	if (!name)
+		return ERR_PTR(-EINVAL);
+
+	if (!(flags &MFD_HUGETLB)) {
+		if (flags & ~(unsigned int)MFD_ALL_FLAGS)
+			return ERR_PTR(-EINVAL);
+	} else {
+		if (flags & ~(unsigned int)(MFD_ALL_FLAGS |
+				(MFD_HUGE_MASK << MFD_HUGE_SHIFT)))
+			return ERR_PTR(-EINVAL);
+	}
+
+	len = strnlen(name, MFD_NAME_MAX_LEN + 1);
+	if (len > MFD_NAME_MAX_LEN)
+		return ERR_PTR(-EINVAL);
+
+	buf_len = len + MFD_NAME_PREFIX_LEN + 1;
+	file_name = kmalloc(buf_len, GFP_KERNEL);
+	if (!file_name)
+		return ERR_PTR(-ENOMEM);
+
+	scnprintf(file_name, buf_len, "%s%s", MFD_NAME_PREFIX, name);
+	file = __memfd_filp_create(file_name, flags, ashmem_compatible);
+	kfree(file_name);
 	return file;
 }
 
@@ -419,7 +456,7 @@ SYSCALL_DEFINE2(memfd_create,
 		goto err_name;
 	}
 
-	file = memfd_filp_create(name, flags);
+	file = __memfd_filp_create(name, flags, false);
 	if (IS_ERR(file)) {
 		error = PTR_ERR(file);
 		goto err_fd;
