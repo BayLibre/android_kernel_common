@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e04a165e_cf1fb75c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2024-11-15T17:37:30Z",
+      "side": 0,
+      "message": "Mostafa raised that we need to retain the page-\u003eorder logic here as the order 0 allocation may in fact return a large page nowadays due to large external pages... That is arguably a problem on its own, but in the meantime this patch is entirely broken.",
+      "range": {
+        "startLine": 631,
+        "startChar": 2,
+        "endLine": 633,
+        "endChar": 72
+      },
+      "revId": "f67eff4d40307a08eecf5564192a0ca7835dca73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
