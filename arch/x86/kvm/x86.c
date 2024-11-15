@@ -4721,8 +4721,8 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
 		break;
 	case KVM_CAP_VM_TYPES:
 		r = BIT(KVM_X86_DEFAULT_VM);
-		if (static_call(kvm_x86_is_vm_type_supported)(KVM_X86_PROTECTED_VM))
-			r |= BIT(KVM_X86_PROTECTED_VM);
+		if (static_call(kvm_x86_is_vm_type_supported)(KVM_X86_PKVM_PROTECTED_VM))
+			r |= BIT(KVM_X86_PKVM_PROTECTED_VM);
 		break;
 	default:
 		break;

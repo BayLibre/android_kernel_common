@@ -7593,7 +7593,7 @@ free_vpid:
 static bool vmx_is_vm_type_supported(unsigned long type)
 {
 #ifdef CONFIG_PKVM_INTEL
-	if (type == KVM_X86_PROTECTED_VM)
+	if (type == KVM_X86_PKVM_PROTECTED_VM)
 		return enable_pkvm;
 #endif
 	return type == KVM_X86_DEFAULT_VM;
