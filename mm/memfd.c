@@ -327,16 +327,8 @@ static int check_sysctl_memfd_noexec(unsigned int *flags)
 	return 0;
 }
 
-SYSCALL_DEFINE2(memfd_create,
-		const char __user *, uname,
-		unsigned int, flags)
+static int memfd_check_flags(unsigned int flags)
 {
-	unsigned int *file_seals;
-	struct file *file;
-	int fd, error;
-	char *name;
-	long len;
-
 	if (!(flags & MFD_HUGETLB)) {
 		if (flags & ~(unsigned int)MFD_ALL_FLAGS)
 			return -EINVAL;
@@ -351,38 +343,38 @@ SYSCALL_DEFINE2(memfd_create,
 	if ((flags & MFD_EXEC) && (flags & MFD_NOEXEC_SEAL))
 		return -EINVAL;
 
-	error = check_sysctl_memfd_noexec(&flags);
-	if (error < 0)
-		return error;
+	return check_sysctl_memfd_noexec(&flags);
+}
 
-	/* length includes terminating zero */
-	len = strnlen_user(uname, MFD_NAME_MAX_LEN + 1);
-	if (len <= 0)
-		return -EFAULT;
+static char *memfd_create_name(const char *name, size_t name_len)
+{
+	size_t len = name_len + MFD_NAME_MAX_LEN + 1;
+	char *file_name = kmalloc(len, GFP_KERNEL);
+
+	if (!file_name)
+		return NULL;
+
+	scnprintf(file_name, len, "%s%s", MFD_NAME_PREFIX, name);
+	return file_name;
+}
+
+static struct file *memfd_filp_create(const char *name, size_t len, unsigned int flags)
+{
+	struct file *file;
+	int error;
+	char *file_name;
+	unsigned int *file_seals;
+
+	error = memfd_check_flags(flags);
+	if (error < 0)
+		return ERR_PTR(error);
+
 	if (len > MFD_NAME_MAX_LEN + 1)
 		return -EINVAL;
 
-	name = kmalloc(len + MFD_NAME_PREFIX_LEN, GFP_KERNEL);
-	if (!name)
-		return -ENOMEM;
-
-	strcpy(name, MFD_NAME_PREFIX);
-	if (copy_from_user(&name[MFD_NAME_PREFIX_LEN], uname, len)) {
-		error = -EFAULT;
-		goto err_name;
-	}
-
-	/* terminating-zero may have changed after strnlen_user() returned */
-	if (name[len + MFD_NAME_PREFIX_LEN - 1]) {
-		error = -EFAULT;
-		goto err_name;
-	}
-
-	fd = get_unused_fd_flags((flags & MFD_CLOEXEC) ? O_CLOEXEC : 0);
-	if (fd < 0) {
-		error = fd;
-		goto err_name;
-	}
+	file_name = memfd_create_name(name, len);
+	if (!file_name)
+		return ERR_PTR(-ENOMEM);
 
 	if (flags & MFD_HUGETLB) {
 		file = hugetlb_file_setup(name, 0, VM_NORESERVE,
@@ -391,10 +383,8 @@ SYSCALL_DEFINE2(memfd_create,
 					MFD_HUGE_MASK);
 	} else
 		file = shmem_file_setup(name, 0, VM_NORESERVE);
-	if (IS_ERR(file)) {
-		error = PTR_ERR(file);
-		goto err_fd;
-	}
+	if (IS_ERR(file))
+		goto out;
 	file->f_mode |= FMODE_LSEEK | FMODE_PREAD | FMODE_PWRITE;
 	file->f_flags |= O_LARGEFILE;
 
@@ -414,13 +404,41 @@ SYSCALL_DEFINE2(memfd_create,
 			*file_seals &= ~F_SEAL_SEAL;
 	}
 
+out:
+	kfree(file_name);
+	return file;
+}
+
+SYSCALL_DEFINE2(memfd_create,
+		const char __user *, uname,
+		unsigned int, flags)
+{
+	struct file *file;
+	int error, fd;
+	char tmp_name[MFD_NAME_MAX_LEN + 1];
+	long len;
+
+	/* length does not include terminating zero */
+	len = strncpy_from_user(tmp_name, uname, sizeof(tmp_name));
+	if (len < 0)
+		return -EFAULT;
+	else if (len > MFD_NAME_MAX_LEN)
+		return -EINVAL;
+
+	fd = get_unused_fd_flags((flags & MFD_CLOEXEC) ? O_CLOEXEC : 0);
+	if (fd < 0)
+		return fd;
+
+	file = memfd_filp_create(tmp_name, len, flags);
+	if (IS_ERR(file)) {
+		error = PTR_ERR(file);
+		goto err_fd;
+	}
+
 	fd_install(fd, file);
-	kfree(name);
 	return fd;
 
 err_fd:
 	put_unused_fd(fd);
-err_name:
-	kfree(name);
 	return error;
 }
