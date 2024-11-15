@@ -205,6 +205,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89f042f6_b7e09ebe",
+        "filename": "kmi/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2024-11-15T15:06:31Z",
+      "side": 1,
+      "message": "Even the ones \"natively\" supported by Kleaf are now expressed as source files (see [build/kernel/kleaf/impl/defconfig/](https://cs.android.com/android/kernel/superproject/+/common-android-mainline:build/kernel/kleaf/impl/defconfig/)).",
+      "parentUuid": "c4d3b5e1_9bafb3d9",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 13
+      },
+      "revId": "59baca42f76676ac5a6fe5f0d29e714c013f43df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e0d300fc_388880a0",
         "filename": "kmi/README.md",
         "patchSetId": 7
@@ -294,6 +318,47 @@
         "endLine": 28,
         "endChar": 58
       },
+      "revId": "59baca42f76676ac5a6fe5f0d29e714c013f43df",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5623a80d_943a37d6",
+        "filename": "kmi/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2024-11-15T15:06:31Z",
+      "side": 1,
+      "message": "nit: Remove to be consisten with the other terms in the document.",
+      "range": {
+        "startLine": 31,
+        "startChar": 6,
+        "endLine": 31,
+        "endChar": 7
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "23867047_93f7e315",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kmi/README.md",
+              "range": {
+                "startLine": 31,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": "   * `partner` - a symbol list file for a specific partner\n"
+            }
+          ]
+        }
+      ],
       "revId": "59baca42f76676ac5a6fe5f0d29e714c013f43df",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
