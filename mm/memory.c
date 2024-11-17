@@ -97,6 +97,7 @@
 #include "internal.h"
 #include "swap.h"
 #include <trace/hooks/mm.h>
+#include <linux/sysfs.h>
 
 #if defined(LAST_CPUPID_NOT_IN_PAGE_FLAGS) && !defined(CONFIG_COMPILE_TEST)
 #warning Unfortunate NUMA and NUMA Balancing config, growing page-frame for last_cpupid.
@@ -181,7 +182,7 @@ static int create_watchpoint(unsigned long address, unsigned int len_mask) {
 		pr_err("HRID perf_event_create_kernel_counter failed with error code: %d %lx\n", err, address);
 		return 0;
 	} else {
-		pr_info("HRID created watchpoint %lx\n", address);
+		pr_info("HRID created watchpoint %llx size %llx\n", pe.bp_addr, (1ULL << len_mask));
 	}
 
 	// Enable the watchpoint
@@ -6281,3 +6282,40 @@ int set_direct_map_range_uncached(unsigned long addr, unsigned long numpages)
 #endif
 }
 EXPORT_SYMBOL_GPL(set_direct_map_range_uncached);
+
+static ssize_t watchpoint_store(struct kobject *kobj, struct kobj_attribute *attr,
+                 const char *buf, size_t count) {
+    unsigned long address;
+    unsigned int len_mask;
+
+    if (sscanf(buf, "%lx,%u", &address, &len_mask) != 2)
+        return -EINVAL;
+
+    create_watchpoint(address, len_mask);
+
+    return count;
+}
+
+static struct kobj_attribute watchpoint_attr = __ATTR(watchpoint, 0220, NULL, watchpoint_store);
+
+static struct attribute *watchpoint_attrs[] = {
+    &watchpoint_attr.attr,
+    NULL,
+};
+
+static struct attribute_group watchpoint_attr_group = {
+    .attrs = watchpoint_attrs,
+};
+
+static int __init memory_init(void)
+{
+    int ret;
+
+    ret = sysfs_create_group(mm_kobj, &watchpoint_attr_group);
+    if (ret)
+        pr_err("Cannot create watchpoint sysfs\n");
+
+    return 0;
+}
+
+fs_initcall(memory_init);
