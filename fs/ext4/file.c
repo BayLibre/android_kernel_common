@@ -365,6 +365,25 @@ truncate:
 		if (inode->i_nlink)
 			ext4_orphan_del(NULL, inode);
 	}
+<<<<<<< HEAD   (b585ec Merge 05cc42d601e7 ("netfilter: ip6t_rpfilter: Fix regressio)
+||||||| BASE
+	/*
+	 * If i_disksize got extended due to writeback of delalloc blocks while
+	 * the DIO was running we could fail to cleanup the orphan list in
+	 * ext4_handle_inode_extension(). Do it now.
+	 */
+	if (!list_empty(&EXT4_I(inode)->i_orphan) && inode->i_nlink) {
+		handle_t *handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
+=======
+	/*
+	 * If i_disksize got extended either due to writeback of delalloc
+	 * blocks or extending truncate while the DIO was running we could fail
+	 * to cleanup the orphan list in ext4_handle_inode_extension(). Do it
+	 * now.
+	 */
+	if (!list_empty(&EXT4_I(inode)->i_orphan) && inode->i_nlink) {
+		handle_t *handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
+>>>>>>> BRANCH (491161 ext4: fix warning in ext4_dio_write_end_io())
 
 	return written;
 }
@@ -384,6 +403,7 @@ static int ext4_dio_write_end_io(struct kiocb *iocb, ssize_t size,
 			return error;
 	}
 	/*
+<<<<<<< HEAD   (b585ec Merge 05cc42d601e7 ("netfilter: ip6t_rpfilter: Fix regressio)
 	 * If we are extending the file, we have to update i_size here before
 	 * page cache gets invalidated in iomap_dio_rw(). Otherwise racing
 	 * buffered reads could zero out too much from page cache pages. Update
@@ -394,12 +414,40 @@ static int ext4_dio_write_end_io(struct kiocb *iocb, ssize_t size,
 	 * If the write was not extending, we cannot see pos > i_size here
 	 * because operations reducing i_size like truncate wait for all
 	 * outstanding DIO before updating i_size.
+||||||| BASE
+	 * Note that EXT4_I(inode)->i_disksize can get extended up to
+	 * inode->i_size while the I/O was running due to writeback of delalloc
+	 * blocks. But the code in ext4_iomap_alloc() is careful to use
+	 * zeroed/unwritten extents if this is possible; thus we won't leave
+	 * uninitialized blocks in a file even if we didn't succeed in writing
+	 * as much as we intended.
+=======
+	 * Note that EXT4_I(inode)->i_disksize can get extended up to
+	 * inode->i_size while the I/O was running due to writeback of delalloc
+	 * blocks. But the code in ext4_iomap_alloc() is careful to use
+	 * zeroed/unwritten extents if this is possible; thus we won't leave
+	 * uninitialized blocks in a file even if we didn't succeed in writing
+	 * as much as we intended. Also we can race with truncate or write
+	 * expanding the file so we have to be a bit careful here.
+>>>>>>> BRANCH (491161 ext4: fix warning in ext4_dio_write_end_io())
 	 */
+<<<<<<< HEAD   (b585ec Merge 05cc42d601e7 ("netfilter: ip6t_rpfilter: Fix regressio)
 	pos += size;
 	if (pos > i_size_read(inode))
 		i_size_write(inode, pos);
 
 	return 0;
+||||||| BASE
+	WARN_ON_ONCE(i_size_read(inode) < READ_ONCE(EXT4_I(inode)->i_disksize));
+	if (pos + size <= READ_ONCE(EXT4_I(inode)->i_disksize))
+		return size;
+	return ext4_handle_inode_extension(inode, pos, size);
+=======
+	if (pos + size <= READ_ONCE(EXT4_I(inode)->i_disksize) &&
+	    pos + size <= i_size_read(inode))
+		return size;
+	return ext4_handle_inode_extension(inode, pos, size);
+>>>>>>> BRANCH (491161 ext4: fix warning in ext4_dio_write_end_io())
 }
 
 static const struct iomap_dio_ops ext4_dio_write_ops = {
