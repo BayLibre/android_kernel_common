@@ -79,7 +79,7 @@
 #include <linux/vmalloc.h>
 #include <linux/sched/sysctl.h>
 #include <linux/set_memory.h>
-
+#include <linux/hw_breakpoint.h>
 #include <trace/events/kmem.h>
 #include <trace/hooks/mm.h>
 
@@ -158,6 +158,37 @@ unsigned long zero_pfn __read_mostly;
 EXPORT_SYMBOL(zero_pfn);
 
 unsigned long highest_memmap_pfn __read_mostly;
+
+static int create_watchpoint(unsigned long address) {
+	struct perf_event_attr pe;
+	struct perf_event *pevent;
+	int err;
+	// Configure perf_event for watchpoint
+	memset(&pe, 0, sizeof(pe));
+	pe.type = PERF_TYPE_BREAKPOINT;
+	pe.size = sizeof(pe);
+	pe.bp_type = HW_BREAKPOINT_RW; // Trigger on both reads and writes
+	pe.bp_len = HW_BREAKPOINT_LEN_8;  // Watch 8 bytes
+	pe.bp_addr = (address & (~0UL << 14));
+	pe.sample_period = 1;
+	pe.pinned = 1;
+	pe.precise_ip = 3;
+
+	pevent = perf_event_create_kernel_counter(&pe, -1, current,
+						  NULL, NULL);
+	if (IS_ERR(pevent)) {
+		err = PTR_ERR(pevent);
+		pr_err("HRID perf_event_create_kernel_counter failed with error code: %d %lx\n", err, address);
+		return 0;
+	} else {
+		pr_info("HRID created watchpoint %lx\n", address);
+	}
+
+	// Enable the watchpoint
+	perf_event_enable(pevent);
+
+	return 0;
+}
 
 /*
  * CONFIG_MMU architectures set up ZERO_PAGE in their paging_init()
