@@ -369,6 +369,7 @@ struct inode *ovl_inode_lower(struct inode *inode)
 
 	return lowerpath ? d_inode(lowerpath->dentry) : NULL;
 }
+EXPORT_SYMBOL_GPL(ovl_inode_lower);
 
 struct inode *ovl_inode_real(struct inode *inode)
 {
