@@ -15,19 +15,13 @@ fi
 # and then we should be able to use TARGET_PRODUCT directly.
 BUILD_FAMILY_NAME=$(basename $ANDROID_PRODUCT_OUT)
 
-# Prevent devs from accidentally using this legacy build script for devices
-# that should use Kleaf-based kernels.
-# TODO: b/379702641 - Once we are more confident that Kleaf-based prebuilts
-# produce good OS images, forbid building brya kernels via this legacy script.
+# TODO: b/379702641 - Once we are firmly building brya kernels via Kleaf,
+# upgrade this warning to a harder stop requiring user confirmation.
 if [ $BUILD_FAMILY_NAME = "brya" ]; then
   echo "WARNING: Brya devices are migrating to Kleaf-based kernel prebuilts."
-  echo "Building Brya kernels with the legacy system is deprecated."
-  echo -n "Are you sure you want to continue with the legacy build? [y/N] "
-  read -r response
-  if [[ ! "$response" =~ ^[yY]$ ]]; then
-    echo "Exiting build due to user cancellation."
-    exit 1
-  fi
+  echo "This script is still OK to use for now, but be warned that this script"
+  echo "will soon be deprecated for Brya."
+  echo "Instructions for building via Kleaf will be available at that time."
 fi
 
 # Determine the host architecture, and which default prebuilt tag we need.
