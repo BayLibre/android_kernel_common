@@ -15,6 +15,8 @@ fi
 # and then we should be able to use TARGET_PRODUCT directly.
 BUILD_FAMILY_NAME=$(basename $ANDROID_PRODUCT_OUT)
 
+OUTPUT=$ANDROID_BUILD_TOP/device/google/desktop/${BUILD_FAMILY_NAME}-kernels/6.6
+
 # TODO: b/379702641 - Once we are firmly building brya kernels via Kleaf,
 # upgrade this warning to a harder stop requiring user confirmation.
 if [ $BUILD_FAMILY_NAME = "brya" ]; then
@@ -22,6 +24,9 @@ if [ $BUILD_FAMILY_NAME = "brya" ]; then
   echo "This script is still OK to use for now, but be warned that this script"
   echo "will soon be deprecated for Brya."
   echo "Instructions for building via Kleaf will be available at that time."
+
+  # Update brya path to include legacy_kernel suffix.
+  OUTPUT=$OUTPUT/legacy_kernel
 fi
 
 # Determine the host architecture, and which default prebuilt tag we need.
@@ -39,10 +44,6 @@ case "$HOST_OS" in
         echo "ERROR: Unsupported OS: $HOST_OS"
         exit 1
 esac
-
-ARCH=$($ANDROID_BUILD_TOP/build/soong/soong_ui.bash --dumpvar-mode TARGET_ARCH)
-
-OUTPUT=$ANDROID_BUILD_TOP/device/google/desktop/${BUILD_FAMILY_NAME}-kernels/6.6/
 
 if [ ! -f include/linux/vermagic.h ]; then
     echo "ERROR: You must be in the top-level kernel source directory to run this script."
@@ -63,6 +64,7 @@ mkdir -p $OUTPUT
 
 ZIMAGE=zImage
 
+ARCH=$($ANDROID_BUILD_TOP/build/soong/soong_ui.bash --dumpvar-mode TARGET_ARCH)
 case $ARCH in
     x86|x86_64)
         ZIMAGE=bzImage
