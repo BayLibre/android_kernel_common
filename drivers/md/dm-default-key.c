@@ -229,6 +229,8 @@ static int default_key_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		 */
 		DMDEBUG("Zone append operations will be emulated");
 		ti->emulate_zone_append = true;
+		WARN_ON(dm_set_target_max_io_len(ti,
+			dkc->dev->bdev->bd_queue->limits.chunk_sectors));
 	}
 
 	/* optional arguments */
