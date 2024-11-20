@@ -16,6 +16,24 @@
       "message": "Somehow this merge doesn\u0027t try merge commit 689bd8b4 (aosp/3342751) but tries to merge commit 9cfb31e4. This looks incredibly strange.",
       "revId": "3526d9bda43c5b348be98ecc60cc0195b3c76811",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cd10e50_d5f5d0a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1956160
+      },
+      "writtenOn": "2024-11-20T15:08:57Z",
+      "side": 1,
+      "message": "I cherry-picked `689bd8b4` manually and it helped merge to work properly. Still don\u0027t understand, why merge throws the change in `689bd8b4` away.",
+      "parentUuid": "674dc09a_8ed24735",
+      "revId": "3526d9bda43c5b348be98ecc60cc0195b3c76811",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
