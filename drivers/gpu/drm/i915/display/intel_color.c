@@ -22,12 +22,14 @@
  *
  */
 
+#include "i915_drv.h"
 #include "i9xx_plane_regs.h"
 #include "intel_color.h"
 #include "intel_color_regs.h"
 #include "intel_de.h"
 #include "intel_display_types.h"
 #include "intel_dsb.h"
+#include "intel_vrr.h"
 
 struct intel_color_funcs {
 	int (*color_check)(struct intel_atomic_state *state,
@@ -1337,8 +1339,19 @@ static void ilk_lut_write(const struct intel_crtc_state *crtc_state,
 {
 	struct intel_display *display = to_intel_display(crtc_state);
 
-	if (crtc_state->dsb_color_vblank)
-		intel_dsb_reg_write(crtc_state->dsb_color_vblank, reg, val);
+	if (crtc_state->dsb_color)
+		intel_dsb_reg_write(crtc_state->dsb_color, reg, val);
+	else
+		intel_de_write_fw(display, reg, val);
+}
+
+static void ilk_lut_write_indexed(const struct intel_crtc_state *crtc_state,
+				  i915_reg_t reg, u32 val)
+{
+	struct intel_display *display = to_intel_display(crtc_state);
+
+	if (crtc_state->dsb_color)
+		intel_dsb_reg_write_indexed(crtc_state->dsb_color, reg, val);
 	else
 		intel_de_write_fw(display, reg, val);
 }
@@ -1376,7 +1389,7 @@ static void ilk_load_lut_8(const struct intel_crtc_state *crtc_state,
 	for (i = 0; i < 256; i++) {
 		ilk_lut_write(crtc_state, LGC_PALETTE(pipe, i),
 			      i9xx_lut_8(&lut[i]));
-		if (crtc_state->dsb_color_vblank)
+		if (crtc_state->dsb_color)
 			ilk_lut_write(crtc_state, LGC_PALETTE(pipe, i),
 				      i9xx_lut_8(&lut[i]));
 	}
@@ -1468,8 +1481,8 @@ static void bdw_load_lut_10(const struct intel_crtc_state *crtc_state,
 		      prec_index);
 
 	for (i = 0; i < lut_size; i++)
-		ilk_lut_write(crtc_state, PREC_PAL_DATA(pipe),
-			      ilk_lut_10(&lut[i]));
+		ilk_lut_write_indexed(crtc_state, PREC_PAL_DATA(pipe),
+				      ilk_lut_10(&lut[i]));
 
 	/*
 	 * Reset the index, otherwise it prevents the legacy palette to be
@@ -1622,16 +1635,16 @@ static void glk_load_degamma_lut(const struct intel_crtc_state *crtc_state,
 		 * ToDo: Extend to max 7.0. Enable 32 bit input value
 		 * as compared to just 16 to achieve this.
 		 */
-		ilk_lut_write(crtc_state, PRE_CSC_GAMC_DATA(pipe),
-			      DISPLAY_VER(display) >= 14 ?
-			      mtl_degamma_lut(&lut[i]) : glk_degamma_lut(&lut[i]));
+		ilk_lut_write_indexed(crtc_state, PRE_CSC_GAMC_DATA(pipe),
+				      DISPLAY_VER(display) >= 14 ?
+				      mtl_degamma_lut(&lut[i]) : glk_degamma_lut(&lut[i]));
 	}
 
 	/* Clamp values > 1.0. */
 	while (i++ < glk_degamma_lut_size(display))
-		ilk_lut_write(crtc_state, PRE_CSC_GAMC_DATA(pipe),
-			      DISPLAY_VER(display) >= 14 ?
-			      1 << 24 : 1 << 16);
+		ilk_lut_write_indexed(crtc_state, PRE_CSC_GAMC_DATA(pipe),
+				      DISPLAY_VER(display) >= 14 ?
+				      1 << 24 : 1 << 16);
 
 	ilk_lut_write(crtc_state, PRE_CSC_GAMC_INDEX(pipe), 0);
 }
@@ -1697,10 +1710,10 @@ icl_program_gamma_superfine_segment(const struct intel_crtc_state *crtc_state)
 	for (i = 0; i < 9; i++) {
 		const struct drm_color_lut *entry = &lut[i];
 
-		ilk_lut_write(crtc_state, PREC_PAL_MULTI_SEG_DATA(pipe),
-			      ilk_lut_12p4_ldw(entry));
-		ilk_lut_write(crtc_state, PREC_PAL_MULTI_SEG_DATA(pipe),
-			      ilk_lut_12p4_udw(entry));
+		ilk_lut_write_indexed(crtc_state, PREC_PAL_MULTI_SEG_DATA(pipe),
+				      ilk_lut_12p4_ldw(entry));
+		ilk_lut_write_indexed(crtc_state, PREC_PAL_MULTI_SEG_DATA(pipe),
+				      ilk_lut_12p4_udw(entry));
 	}
 
 	ilk_lut_write(crtc_state, PREC_PAL_MULTI_SEG_INDEX(pipe),
@@ -1736,10 +1749,10 @@ icl_program_gamma_multi_segment(const struct intel_crtc_state *crtc_state)
 	for (i = 1; i < 257; i++) {
 		entry = &lut[i * 8];
 
-		ilk_lut_write(crtc_state, PREC_PAL_DATA(pipe),
-			      ilk_lut_12p4_ldw(entry));
-		ilk_lut_write(crtc_state, PREC_PAL_DATA(pipe),
-			      ilk_lut_12p4_udw(entry));
+		ilk_lut_write_indexed(crtc_state, PREC_PAL_DATA(pipe),
+				      ilk_lut_12p4_ldw(entry));
+		ilk_lut_write_indexed(crtc_state, PREC_PAL_DATA(pipe),
+				      ilk_lut_12p4_udw(entry));
 	}
 
 	/*
@@ -1757,10 +1770,10 @@ icl_program_gamma_multi_segment(const struct intel_crtc_state *crtc_state)
 	for (i = 0; i < 256; i++) {
 		entry = &lut[i * 8 * 128];
 
-		ilk_lut_write(crtc_state, PREC_PAL_DATA(pipe),
-			      ilk_lut_12p4_ldw(entry));
-		ilk_lut_write(crtc_state, PREC_PAL_DATA(pipe),
-			      ilk_lut_12p4_udw(entry));
+		ilk_lut_write_indexed(crtc_state, PREC_PAL_DATA(pipe),
+				      ilk_lut_12p4_ldw(entry));
+		ilk_lut_write_indexed(crtc_state, PREC_PAL_DATA(pipe),
+				      ilk_lut_12p4_udw(entry));
 	}
 
 	ilk_lut_write(crtc_state, PREC_PAL_INDEX(pipe),
@@ -1904,7 +1917,7 @@ void intel_color_load_luts(const struct intel_crtc_state *crtc_state)
 {
 	struct intel_display *display = to_intel_display(crtc_state);
 
-	if (crtc_state->dsb_color_vblank)
+	if (crtc_state->dsb_color)
 		return;
 
 	display->funcs.color->load_luts(crtc_state);
@@ -1952,6 +1965,25 @@ void intel_color_modeset(const struct intel_crtc_state *crtc_state)
 	}
 }
 
+bool intel_color_uses_dsb(const struct intel_crtc_state *crtc_state)
+{
+	return crtc_state->dsb_color;
+}
+
+bool intel_color_uses_chained_dsb(const struct intel_crtc_state *crtc_state)
+{
+	struct intel_display *display = to_intel_display(crtc_state);
+
+	return crtc_state->dsb_color && !HAS_DOUBLE_BUFFERED_LUT(display);
+}
+
+bool intel_color_uses_gosub_dsb(const struct intel_crtc_state *crtc_state)
+{
+	struct intel_display *display = to_intel_display(crtc_state);
+
+	return crtc_state->dsb_color && HAS_DOUBLE_BUFFERED_LUT(display);
+}
+
 void intel_color_prepare_commit(struct intel_atomic_state *state,
 				struct intel_crtc *crtc)
 {
@@ -1969,42 +2001,52 @@ void intel_color_prepare_commit(struct intel_atomic_state *state,
 	if (!crtc_state->pre_csc_lut && !crtc_state->post_csc_lut)
 		return;
 
-	crtc_state->dsb_color_vblank = intel_dsb_prepare(state, crtc, INTEL_DSB_1, 1024);
-	if (!crtc_state->dsb_color_vblank)
+	if (HAS_DOUBLE_BUFFERED_LUT(display))
+		crtc_state->dsb_color = intel_dsb_prepare(state, crtc, INTEL_DSB_0, 1024);
+	else
+		crtc_state->dsb_color = intel_dsb_prepare(state, crtc, INTEL_DSB_1, 1024);
+
+	if (!intel_color_uses_dsb(crtc_state))
 		return;
 
 	display->funcs.color->load_luts(crtc_state);
 
-	intel_dsb_wait_vblank_delay(state, crtc_state->dsb_color_vblank);
-	intel_dsb_interrupt(crtc_state->dsb_color_vblank);
+	if (crtc_state->use_dsb && intel_color_uses_chained_dsb(crtc_state)) {
+		intel_vrr_send_push(crtc_state->dsb_color, crtc_state);
+		intel_dsb_wait_vblank_delay(state, crtc_state->dsb_color);
+		intel_vrr_check_push_sent(crtc_state->dsb_color, crtc_state);
+		intel_dsb_interrupt(crtc_state->dsb_color);
+	}
 
-	intel_dsb_finish(crtc_state->dsb_color_vblank);
+	if (intel_color_uses_gosub_dsb(crtc_state))
+		intel_dsb_gosub_finish(crtc_state->dsb_color);
+	else
+		intel_dsb_finish(crtc_state->dsb_color);
 }
 
 void intel_color_cleanup_commit(struct intel_crtc_state *crtc_state)
 {
-	if (crtc_state->dsb_color_vblank) {
-		intel_dsb_cleanup(crtc_state->dsb_color_vblank);
-		crtc_state->dsb_color_vblank = NULL;
+	if (crtc_state->dsb_color) {
+		intel_dsb_cleanup(crtc_state->dsb_color);
+		crtc_state->dsb_color = NULL;
 	}
 }
 
 void intel_color_wait_commit(const struct intel_crtc_state *crtc_state)
 {
-	if (crtc_state->dsb_color_vblank)
-		intel_dsb_wait(crtc_state->dsb_color_vblank);
-}
-
-bool intel_color_uses_dsb(const struct intel_crtc_state *crtc_state)
-{
-	return crtc_state->dsb_color_vblank;
+	if (crtc_state->dsb_color)
+		intel_dsb_wait(crtc_state->dsb_color);
 }
 
 static bool intel_can_preload_luts(struct intel_atomic_state *state,
 				   struct intel_crtc *crtc)
 {
+	struct intel_display *display = to_intel_display(state);
 	const struct intel_crtc_state *old_crtc_state =
 		intel_atomic_get_old_crtc_state(state, crtc);
+
+	if (HAS_DOUBLE_BUFFERED_LUT(display))
+		return false;
 
 	return !old_crtc_state->post_csc_lut &&
 		!old_crtc_state->pre_csc_lut;
