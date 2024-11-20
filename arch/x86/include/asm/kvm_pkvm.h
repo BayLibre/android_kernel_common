@@ -229,6 +229,7 @@ static inline unsigned long pkvm_host_shadow_iommu_pgtable_pages(int nr_pdev)
 u64 hyp_total_reserve_pages(void);
 
 int pkvm_init_shadow_vm(struct kvm *kvm);
+int pkvm_finalize_shadow_vm(struct kvm *kvm, struct kvm_vcpu *vcpu);
 void pkvm_teardown_shadow_vm(struct kvm *kvm);
 int pkvm_init_shadow_vcpu(struct kvm_vcpu *vcpu);
 void pkvm_teardown_shadow_vcpu(struct kvm_vcpu *vcpu);
@@ -240,6 +241,7 @@ int pkvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap);
 #else
 static inline void kvm_hyp_reserve(void) {}
 static inline int pkvm_init_shadow_vm(struct kvm *kvm) { return 0; }
+static inline int pkvm_finalize_shadow_vm(struct kvm *kvm, struct kvm_vcpu *vcpu) { return 0; }
 static inline void pkvm_teardown_shadow_vm(struct kvm *kvm) {}
 static inline int pkvm_init_shadow_vcpu(struct kvm_vcpu *vcpu) { return 0; }
 static inline void pkvm_teardown_shadow_vcpu(struct kvm_vcpu *vcpu) {}
