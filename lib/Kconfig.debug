@@ -440,6 +440,7 @@ config FRAME_WARN
 	default 2048 if PARISC
 	default 1536 if (!64BIT && XTENSA)
 	default 1280 if KASAN && !64BIT
+	default 2048 if IOMMU_IO_PGTABLE_LPAE_SELFTEST
 	default 1024 if !64BIT
 	default 2048 if 64BIT
 	help
