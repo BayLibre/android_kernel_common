@@ -1084,6 +1084,14 @@ struct dwc3_scratchpad_array {
  *			change quirk.
  * @dis_tx_ipgap_linecheck_quirk: set if we disable u2mac linestate
  *			check during HS transmit.
+<<<<<<< HEAD   (b14940 Revert "usb: dwc3: Decouple USB 2.0 L1 & L2 events")
+||||||| BASE
+ * @resume-hs-terminations: Set if we enable quirk for fixing improper crc
+ *			generation after resume from suspend.
+=======
+ * @resume_hs_terminations: Set if we enable quirk for fixing improper crc
+ *			generation after resume from suspend.
+>>>>>>> BRANCH (0ce9d8 clk: ti: dra7-atl: Fix leak of of_nodes)
  * @parkmode_disable_ss_quirk: set if we need to disable all SuperSpeed
  *			instances in park mode.
  * @tx_de_emphasis_quirk: set if we enable Tx de-emphasis quirk
