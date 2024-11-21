@@ -1170,6 +1170,14 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
 			u64_stats_update_begin(&rxsc_stats->syncp);
 			rxsc_stats->stats.InPktsNotUsingSA++;
 			u64_stats_update_end(&rxsc_stats->syncp);
+<<<<<<< HEAD   (012423 Merge 5.10.228 into android12-5.10-lts)
+||||||| BASE
+			DEV_STATS_INC(secy->netdev, rx_errors);
+			if (active_rx_sa)
+				this_cpu_inc(active_rx_sa->stats->InPktsNotUsingSA);
+=======
+			DEV_STATS_INC(secy->netdev, rx_errors);
+>>>>>>> BRANCH (02874c tracing: Consider the NULL character when validating the eve)
 			goto drop_nosa;
 		}
 
