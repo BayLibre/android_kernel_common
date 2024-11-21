@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed240c84_51973ee8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-11-21T04:38:24Z",
+      "side": 1,
+      "message": "This explains what you did but not why. Could you expand this commit message (or if sensitive, add it to the bug) to explain:\n\n1) What is the problem you are trying to address by adding these vendor hooks? What problem would arise if these were not merged?\n\n2) What benefit do you see by including these patches?\n\n3) What functionality, if included upstream, would resolve the need for these hooks and allow them to be deprecated in the future?",
+      "revId": "0a1e0f6ec22b78dbed30533838eb2ace099cb5b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45f16691_ddc19f6e",
+        "filename": "drivers/irqchip/irq-gic-v3.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-11-21T04:38:24Z",
+      "side": 1,
+      "message": "Why the renaming of functions through this patch? \n(I can guess it is due to wanting to export them and the fact there are already similarly named functions exporting that you might collide with? - this sort of reasoning should be in the commit message.)",
+      "revId": "0a1e0f6ec22b78dbed30533838eb2ace099cb5b1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
