@@ -73,6 +73,24 @@ static inline void mmap_assert_write_locked(struct mm_struct *mm)
 }
 
 #ifdef CONFIG_PER_VMA_LOCK
+static inline bool mmap_lock_speculate_try_begin(struct mm_struct *mm, unsigned int *seq)
+{
+	/*
+	 * Since mmap_lock is a sleeping lock, and waiting for it to become
+	 * unlocked is more or less equivalent with taking it ourselves, don't
+	 * bother with the speculative path if mmap_lock is already write-locked
+	 * and take the slow path, which takes the lock.
+	 */
+	*seq = smp_load_acquire(&mm->mm_lock_seq);
+	return !(*seq & 1);
+}
+
+static inline bool mmap_lock_speculate_retry(struct mm_struct *mm, unsigned int seq)
+{
+	smp_rmb();
+	return unlikely(READ_ONCE(mm->mm_lock_seq) != seq);
+}
+
 /*
  * Drop all currently-held per-VMA locks.
  * This is called from the mmap_lock implementation directly before releasing
@@ -94,6 +112,16 @@ static inline void vma_end_write_all(struct mm_struct *mm)
 	smp_store_release(&mm->mm_lock_seq, mm->mm_lock_seq + 1);
 }
 #else
+static inline bool mmap_lock_speculate_try_begin(struct mm_struct *mm, unsigned int *seq)
+{
+	return false;
+}
+
+static inline bool mmap_lock_speculate_retry(struct mm_struct *mm, unsigned int seq)
+{
+	return true;
+}
+
 static inline void vma_end_write_all(struct mm_struct *mm) {}
 #endif
 
