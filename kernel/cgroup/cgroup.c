@@ -1315,9 +1315,20 @@ static void cgroup_exit_root_id(struct cgroup_root *root)
 	idr_remove(&cgroup_hierarchy_idr, root->hierarchy_id);
 }
 
+static void __cgroup_free_root(struct rcu_head *rcu)
+{
+	kfree(container_of(rcu, struct cgroup_root, rcu));
+}
+
 void cgroup_free_root(struct cgroup_root *root)
 {
+<<<<<<< HEAD   (90ba53 UPSTREAM: cgroup: Protect css->cgroup write under css_set_lo)
 	kfree(root);
+||||||| BASE
+	kfree_rcu(root, rcu);
+=======
+	call_rcu(&root->rcu, __cgroup_free_root);
+>>>>>>> CHANGE (29065c ANDROID: fix ABI-break in struct cgroup_root)
 }
 
 static void cgroup_destroy_root(struct cgroup_root *root)
