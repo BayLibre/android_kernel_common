@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b01de62_4b9bac09",
+        "filename": "mm/memfd.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-11-23T00:21:40Z",
+      "side": 1,
+      "message": "So from the patch description I follow you\u0027re installing the ashmem_compat_fops, and you\u0027re exporting the memfd_flip_create for future use. But this big chunk prior to calling __memfd_flip_create() isn\u0027t trivially obvious. It seems like it duplicates some of the logic in memfd_create()? Should this be broken out to a separate helper added in a earlier patch instead?",
+      "revId": "aa24eb195d307828f25d82104394c0e6944e3548",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
