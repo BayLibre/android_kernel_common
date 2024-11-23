@@ -16,6 +16,24 @@
       "message": "So from the patch description I follow you\u0027re installing the ashmem_compat_fops, and you\u0027re exporting the memfd_flip_create for future use. But this big chunk prior to calling __memfd_flip_create() isn\u0027t trivially obvious. It seems like it duplicates some of the logic in memfd_create()? Should this be broken out to a separate helper added in a earlier patch instead?",
       "revId": "aa24eb195d307828f25d82104394c0e6944e3548",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4b3847f_deb6c33a",
+        "filename": "mm/memfd.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2024-11-23T01:41:06Z",
+      "side": 1,
+      "message": "Correct. The first portion of the function (L375-385) is duplicated from the first part of `memfd_create()`. My rationale for that is that since this is now available to the rest of the kernel, the arguments should be validated. This part could definitely be factored out into a helper.\n\nThe second portion of the function is similar to `memfd_create()`, but with the caveat that the given string is in the kernel\u0027s address space and not a userspace address. I wasn\u0027t sure how to factor that out without dropping the __user annotation from the name pointer. I could have two helpers that use some common knowledge:\n\n```\n/* Handles allocating the final name buffer and formatting the name */\nstatic char *memfd_create_name(char *name)\n\n/* Handles copying the name from userspace into a local buffer and calls memfd_create_name() */\nstatic char *memfd_create_name_user(const char __user *uname);\n```\n\nI wasn\u0027t sure if this was too clunky though.",
+      "parentUuid": "9b01de62_4b9bac09",
+      "revId": "aa24eb195d307828f25d82104394c0e6944e3548",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
