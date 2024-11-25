@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30b6c00f_b701ef66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-11-25T12:27:57Z",
+      "side": 1,
+      "message": "```\nfunction symbol changed from \u0027int genlmsg_multicast_allns(const struct genl_family*, struct sk_buff*, u32, unsigned int, gfp_t)\u0027 to \u0027int genlmsg_multicast_allns(const struct genl_family*, struct sk_buff*, u32, unsigned int)\u0027\n  CRC changed from 0xd8dc60d3 to 0x2b24fc13\n  type changed from \u0027int(const struct genl_family*, struct sk_buff*, u32, unsigned int, gfp_t)\u0027 to \u0027int(const struct genl_family*, struct sk_buff*, u32, unsigned int)\u0027\n    parameter 5 of type \u0027gfp_t\u0027 was removed\n```",
+      "revId": "da69fd608805afbfbe7b99f7fe8154ba65cdc9ac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
