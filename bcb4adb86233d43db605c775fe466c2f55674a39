@@ -16,6 +16,24 @@
       "message": "This sha does not appear to be upstream. Should this be a \"FROMGIT:\" instead? If so, is there a reason we can\u0027t wait for it to be accepted upstream?\n\nPlease see the contribution guidelines at https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
       "revId": "bcb4adb86233d43db605c775fe466c2f55674a39",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b588086_0a6106bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3731718
+      },
+      "writtenOn": "2024-11-26T00:52:12Z",
+      "side": 1,
+      "message": "I did cherry pick those commits form linux-next branch. However, these necessary patches will not be incorporated into the stable branch since there is no stable tag associated with the relevant commits. These patches are essential for our platform to meet the UVC requirements using the common kernel version 6.6.X in Android-15.\n\nhttps://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/?h\u003dnext-20241121",
+      "parentUuid": "9f70f53d_3a92318e",
+      "revId": "bcb4adb86233d43db605c775fe466c2f55674a39",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
