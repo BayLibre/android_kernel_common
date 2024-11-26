@@ -1537,9 +1537,17 @@ ddk_headers(
 ddk_headers(
     name = "all_headers_allowlist_aarch64",
     hdrs = [
+<<<<<<< HEAD   (c439cc FROMGIT: usb: typec: tcpci: fix NULL pointer issue on shared)
+||||||| BASE
+        "drivers/dma-buf/heaps/deferred-free-helper.h",
+=======
+        "drivers/dma-buf/heaps/deferred-free-helper.h",
+        "drivers/extcon/extcon.h",
+>>>>>>> CHANGE (dc1286 ANDROID: Add extcon.h and dwc3/core.h to aarch64 allowlist)
         "drivers/thermal/thermal_core.h",
         "drivers/thermal/thermal_debugfs.h",
         "drivers/thermal/thermal_netlink.h",
+        "drivers/usb/dwc3/core.h",
         "sound/usb/card.h",
         "sound/usb/usbaudio.h",
         ":all_headers_allowlist_aarch64_globs",
@@ -1552,7 +1560,15 @@ ddk_headers(
     linux_includes = [
         "arch/arm64/include",
         "arch/arm64/include/uapi",
+<<<<<<< HEAD   (c439cc FROMGIT: usb: typec: tcpci: fix NULL pointer issue on shared)
+||||||| BASE
+        "drivers/dma-buf",
+=======
+        "drivers/dma-buf",
+        "drivers/extcon",
+>>>>>>> CHANGE (dc1286 ANDROID: Add extcon.h and dwc3/core.h to aarch64 allowlist)
         "drivers/thermal",
+        "drivers/usb",
         "sound/usb",
         "include",
         "include/uapi",
