@@ -16,6 +16,23 @@
       "message": "Please provide more description. Why are they needed? What feature does this enable? Is it needed by a vendor hook and if so, which ones?",
       "revId": "9ba126e42b5c0b6f1f4aa84e94aa2e075f463fea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5e28288_510ffd18",
+        "filename": "kernel/time/sched_clock.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-11-26T16:53:17Z",
+      "side": 1,
+      "message": "These must be EXPORT_SYMBOL_GPL(). If you really need EXPORT_SYMBOL(), you must get that changed upstream.",
+      "revId": "9ba126e42b5c0b6f1f4aa84e94aa2e075f463fea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
