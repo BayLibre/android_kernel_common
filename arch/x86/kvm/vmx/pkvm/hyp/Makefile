@@ -15,6 +15,7 @@ lib-dir		:= lib
 lib2-dir	:= ../../../../../../lib
 pkvm-hyp-y	+= $(lib-dir)/memset_64.o
 pkvm-hyp-y	+= $(lib-dir)/memcpy_64.o
+pkvm-hyp-y	+= $(lib-dir)/string_helpers.o
 pkvm-hyp-y	+= $(lib2-dir)/find_bit.o
 pkvm-hyp-y	+= $(lib2-dir)/hweight.o
 pkvm-hyp-$(CONFIG_RETPOLINE)	+= $(lib-dir)/retpoline.o
