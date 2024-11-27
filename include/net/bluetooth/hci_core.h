@@ -676,7 +676,6 @@ struct hci_dev {
 	int (*get_codec_config_data)(struct hci_dev *hdev, __u8 type,
 				     struct bt_codec *codec, __u8 *vnd_len,
 				     __u8 **vnd_data);
-	void (*do_wakeup)(struct hci_dev *hdev);
 	u8 (*classify_pkt_type)(struct hci_dev *hdev, struct sk_buff *skb);
 
 	ANDROID_KABI_RESERVE(1);
