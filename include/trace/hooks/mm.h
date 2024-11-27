@@ -493,9 +493,20 @@ DECLARE_HOOK(android_vh_filemap_update_page,
 	TP_PROTO(struct address_space *mapping, struct folio *folio,
 		struct file *file),
 	TP_ARGS(mapping, folio, file));
+<<<<<<< HEAD
 DECLARE_HOOK(android_vh_folio_end_writeback,
 	TP_PROTO(struct folio *folio),
 	TP_ARGS(folio));
+=======
+DECLARE_HOOK(android_vh_lruvec_add_folio,
+	TP_PROTO(struct lruvec *lruvec, struct folio *folio, enum lru_list lru,
+		bool tail, bool *skip),
+	TP_ARGS(lruvec, folio, lru, tail, skip));
+DECLARE_HOOK(android_vh_lruvec_del_folio,
+	TP_PROTO(struct lruvec *lruvec, struct folio *folio, enum lru_list lru,
+		bool *skip),
+	TP_ARGS(lruvec, folio, lru, skip));
+>>>>>>> 9996464e05e1 (ANDROID: vendor_hooks: add hook when adding or deleting folios)
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
