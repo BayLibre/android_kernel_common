@@ -412,6 +412,9 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
 				vm_flags &= ~(VM_MAYWRITE | VM_SHARED);
 			else if (is_readonly_sealed(seals, vm_flags))
 				vm_flags &= ~VM_MAYWRITE;
+
+			if (is_nonexec_sealed(seals, vm_flags))
+				vm_flags &= ~VM_MAYEXEC;
 			fallthrough;
 		case MAP_PRIVATE:
 			if (!(file->f_mode & FMODE_READ))
