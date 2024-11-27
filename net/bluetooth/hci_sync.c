@@ -2240,9 +2240,6 @@ static bool is_interleave_scanning(struct hci_dev *hdev)
 
 static void cancel_interleave_scan(struct hci_dev *hdev)
 {
-	if (!is_interleave_scanning(hdev))
-		return;
-
 	bt_dev_dbg(hdev, "cancelling interleave scan");
 
 	cancel_delayed_work_sync(&hdev->interleave_scan);
@@ -6123,9 +6120,6 @@ int hci_suspend_sync(struct hci_dev *hdev)
 
 	/* Pause other advertisements */
 	hci_pause_advertising_sync(hdev);
-
-	/* Cancel interleaved scan */
-	cancel_interleave_scan(hdev);
 
 	/* Suspend monitor filters */
 	hci_suspend_monitor_sync(hdev);
