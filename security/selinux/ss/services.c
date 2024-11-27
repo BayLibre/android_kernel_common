@@ -48,6 +48,7 @@
 #include <linux/audit.h>
 #include <linux/vmalloc.h>
 #include <linux/lsm_hooks.h>
+#include <linux/parser.h>
 #include <net/netlabel.h>
 
 #include "flask.h"
@@ -2849,9 +2850,14 @@ static inline int __security_genfs_sid(struct selinux_policy *policy,
 		return -ENOENT;
 
 	for (c = genfs->head; c; c = c->next) {
+		// hack TODO(takayas): append * to the u.name in the first place if capability has wildcard
 		size_t len = strlen(c->u.name);
+		char *wildcard_path = kcalloc(len + 2, sizeof(char *), GFP_ATOMIC);
+		strscpy(wildcard_path, c->u.name, len + 2);
+		wildcard_path[len] = '*';
+		wildcard_path[len + 1] = '\0';
 		if ((!c->v.sclass || sclass == c->v.sclass) &&
-		    (strncmp(c->u.name, path, len) == 0))
+		    (match_wildcard(wildcard_path, path)))
 			break;
 	}
 
