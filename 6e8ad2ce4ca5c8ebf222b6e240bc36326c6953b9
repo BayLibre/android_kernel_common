@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aee1c886_4c0ddaed",
+        "filename": "drivers/platform/chrome/cros_typec_altmode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 2055842
+      },
+      "writtenOn": "2024-11-27T08:54:17Z",
+      "side": 1,
+      "message": "`typec_altmode_get_partner` might fail as well.",
+      "range": {
+        "startLine": 62,
+        "startChar": 3,
+        "endLine": 62,
+        "endChar": 28
+      },
+      "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa9b167e_accbe3c5",
         "filename": "drivers/platform/chrome/cros_typec_altmode.c",
         "patchSetId": 3
@@ -14,6 +37,29 @@
       "writtenOn": "2024-11-22T14:29:46Z",
       "side": 1,
       "message": "Why is this not `0` ?",
+      "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abd2696a_c8054a10",
+        "filename": "drivers/platform/chrome/cros_typec_altmode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 2055842
+      },
+      "writtenOn": "2024-11-27T08:54:17Z",
+      "side": 1,
+      "message": "As above - this might fail.",
+      "range": {
+        "startLine": 106,
+        "startChar": 3,
+        "endLine": 106,
+        "endChar": 28
+      },
       "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -65,6 +111,52 @@
       "writtenOn": "2024-11-22T14:29:46Z",
       "side": 1,
       "message": "param `count` not used.",
+      "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "457ebf83_b390d470",
+        "filename": "drivers/platform/chrome/cros_typec_altmode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 2055842
+      },
+      "writtenOn": "2024-11-27T08:54:17Z",
+      "side": 1,
+      "message": "Same here.",
+      "range": {
+        "startLine": 147,
+        "startChar": 3,
+        "endLine": 147,
+        "endChar": 28
+      },
+      "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18ad0a1d_57498baf",
+        "filename": "drivers/platform/chrome/cros_typec_altmode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 2055842
+      },
+      "writtenOn": "2024-11-27T08:54:17Z",
+      "side": 1,
+      "message": "Perhaps we could log here, that the command type was not recognized if this could happen.",
+      "range": {
+        "startLine": 192,
+        "startChar": 1,
+        "endLine": 192,
+        "endChar": 8
+      },
       "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
