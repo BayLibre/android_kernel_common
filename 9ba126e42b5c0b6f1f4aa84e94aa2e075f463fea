@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ce45a4ad_3fe475ca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1965279
+      },
+      "writtenOn": "2024-11-28T10:25:30Z",
+      "side": 1,
+      "message": "These interfaces can help to export cycle, time, freq at the same time. It can be used in vendor kernel module to get these information to know the offset between start of sched clock time and start of arch timer counter. Say that other subsystem also use arch timer counter as the clock source, the offset can be use to align timestamp between kernel and other subsystems.\nThe interface itself is already there in header file and used in arm_pmuv3 driver, but not exported yet.",
+      "parentUuid": "d3ae11d0_fdf006ab",
+      "revId": "9ba126e42b5c0b6f1f4aa84e94aa2e075f463fea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b5e28288_510ffd18",
         "filename": "kernel/time/sched_clock.c",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2024-11-26T16:53:17Z",
       "side": 1,
       "message": "These must be EXPORT_SYMBOL_GPL(). If you really need EXPORT_SYMBOL(), you must get that changed upstream.",
+      "revId": "9ba126e42b5c0b6f1f4aa84e94aa2e075f463fea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b29ddee2_badeada7",
+        "filename": "kernel/time/sched_clock.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1965279
+      },
+      "writtenOn": "2024-11-28T10:25:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5e28288_510ffd18",
       "revId": "9ba126e42b5c0b6f1f4aa84e94aa2e075f463fea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
