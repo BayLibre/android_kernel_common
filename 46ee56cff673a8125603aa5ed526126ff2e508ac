@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04b7fd5e_79a1d89b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2031040
+      },
+      "writtenOn": "2024-11-29T13:57:54Z",
+      "side": 1,
+      "message": "This does not build on `android15-6.6-desktop`, error is:\n```\n  CALL    scripts/checksyscalls.sh\n  CC      sound/soc/mediatek/mt8188/mt8188-mt6359.o\nsound/soc/mediatek/mt8188/mt8188-mt6359.c:1395:32: error: redefinition of \u0027mt8188_es8326_card\u0027 with a different type: \u0027struct mt8188_card_data\u0027 vs \u0027const struct mtk_soundcard_pdata\u0027\n 1395 | static struct mt8188_card_data mt8188_es8326_card \u003d {\n      |                                ^\nsound/soc/mediatek/mt8188/mt8188-mt6359.c:1384:41: note: previous definition is here\n 1384 | static const struct mtk_soundcard_pdata mt8188_es8326_card \u003d {\n      |                                         ^\n1 error generated.\n```\nThere\u0027s a need to reorder CLs: commit:\n```\nd3c79447e8cb - UPSTREAM: ASoC: mediatek: mt8188-mt6359: add es8326 support\n```\nshall be applied prior to:\n```\n1e764c829638 - UPSTREAM: ASoC: mediatek: mt8188: Migrate to mtk_soundcard_common_probe\n```\n(same as on `chromeos-6.6` branch)",
+      "revId": "46ee56cff673a8125603aa5ed526126ff2e508ac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
