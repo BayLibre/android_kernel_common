@@ -2860,10 +2860,36 @@ int hci_abort_conn(struct hci_conn *conn, u8 reason)
 		} else {
 			struct hci_cp_disconnect dc;
 
+<<<<<<< HEAD   (bb58b1 Merge 6.1.117 into android14-6.1-lts)
 			dc.handle = cpu_to_le16(conn->handle);
 			dc.reason = reason;
 			r = hci_send_cmd(conn->hdev, HCI_OP_DISCONNECT,
 					 sizeof(dc), &dc);
+||||||| BASE
+	/* If the connection is pending check the command opcode since that
+	 * might be blocking on hci_cmd_sync_work while waiting its respective
+	 * event so we need to hci_cmd_sync_cancel to cancel it.
+	 */
+	if (conn->state == BT_CONNECT && hdev->req_status == HCI_REQ_PEND) {
+		switch (hci_skb_event(hdev->sent_cmd)) {
+		case HCI_EV_LE_CONN_COMPLETE:
+		case HCI_EV_LE_ENHANCED_CONN_COMPLETE:
+		case HCI_EVT_LE_CIS_ESTABLISHED:
+			hci_cmd_sync_cancel(hdev, ECANCELED);
+			break;
+=======
+	/* If the connection is pending check the command opcode since that
+	 * might be blocking on hci_cmd_sync_work while waiting its respective
+	 * event so we need to hci_cmd_sync_cancel to cancel it.
+	 */
+	if (conn->state == BT_CONNECT && hdev->req_status == HCI_REQ_PEND) {
+		switch (hci_skb_event(hdev->sent_cmd)) {
+		case HCI_EV_LE_CONN_COMPLETE:
+		case HCI_EV_LE_ENHANCED_CONN_COMPLETE:
+		case HCI_EVT_LE_CIS_ESTABLISHED:
+			hci_cmd_sync_cancel(hdev, -ECANCELED);
+			break;
+>>>>>>> BRANCH (0625d7 Revert "Bluetooth: af_bluetooth: Fix deadlock")
 		}
 
 		conn->state = BT_DISCONN;

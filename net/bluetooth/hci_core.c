@@ -1453,8 +1453,14 @@ static void hci_cmd_timeout(struct work_struct *work)
 					    cmd_timer.work);
 
 	if (hdev->sent_cmd) {
+<<<<<<< HEAD   (bb58b1 Merge 6.1.117 into android14-6.1-lts)
 		struct hci_command_hdr *sent = (void *) hdev->sent_cmd->data;
 		u16 opcode = __le16_to_cpu(sent->opcode);
+||||||| BASE
+		u16 opcode = hci_skb_opcode(hdev->req_skb);
+=======
+		u16 opcode = hci_skb_opcode(hdev->sent_cmd);
+>>>>>>> BRANCH (0625d7 Revert "Bluetooth: af_bluetooth: Fix deadlock")
 
 		bt_dev_err(hdev, "command 0x%4.4x tx timeout", opcode);
 	} else {
@@ -4087,6 +4093,67 @@ static void hci_rx_work(struct work_struct *work)
 	}
 }
 
+<<<<<<< HEAD   (bb58b1 Merge 6.1.117 into android14-6.1-lts)
+||||||| BASE
+static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
+{
+	int err;
+
+	bt_dev_dbg(hdev, "skb %p", skb);
+
+	kfree_skb(hdev->sent_cmd);
+
+	hdev->sent_cmd = skb_clone(skb, GFP_KERNEL);
+	if (!hdev->sent_cmd) {
+		skb_queue_head(&hdev->cmd_q, skb);
+		queue_work(hdev->workqueue, &hdev->cmd_work);
+		return;
+	}
+
+	err = hci_send_frame(hdev, skb);
+	if (err < 0) {
+		hci_cmd_sync_cancel_sync(hdev, -err);
+		return;
+	}
+
+	if (hci_req_status_pend(hdev) &&
+	    !hci_dev_test_and_set_flag(hdev, HCI_CMD_PENDING)) {
+		kfree_skb(hdev->req_skb);
+		hdev->req_skb = skb_clone(hdev->sent_cmd, GFP_KERNEL);
+	}
+
+	atomic_dec(&hdev->cmd_cnt);
+}
+
+=======
+static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
+{
+	int err;
+
+	bt_dev_dbg(hdev, "skb %p", skb);
+
+	kfree_skb(hdev->sent_cmd);
+
+	hdev->sent_cmd = skb_clone(skb, GFP_KERNEL);
+	if (!hdev->sent_cmd) {
+		skb_queue_head(&hdev->cmd_q, skb);
+		queue_work(hdev->workqueue, &hdev->cmd_work);
+		return;
+	}
+
+	err = hci_send_frame(hdev, skb);
+	if (err < 0) {
+		hci_cmd_sync_cancel_sync(hdev, -err);
+		return;
+	}
+
+	if (hci_req_status_pend(hdev))
+		hci_dev_set_flag(hdev, HCI_CMD_PENDING);
+
+	atomic_dec(&hdev->cmd_cnt);
+}
+
+>>>>>>> BRANCH (0625d7 Revert "Bluetooth: af_bluetooth: Fix deadlock")
 static void hci_cmd_work(struct work_struct *work)
 {
 	struct hci_dev *hdev = container_of(work, struct hci_dev, cmd_work);
