@@ -317,6 +317,13 @@ struct usb_udc;
 struct usb_gadget_ops {
 	int	(*get_frame)(struct usb_gadget *);
 	int	(*wakeup)(struct usb_gadget *);
+<<<<<<< HEAD   (9efd69 Revert "genetlink: hold RCU in genlmsg_mcast()")
+||||||| BASE
+	int	(*set_remote_wakeup)(struct usb_gadget *, int set);
+=======
+	int	(*func_wakeup)(struct usb_gadget *gadget, int intf_id);
+	int	(*set_remote_wakeup)(struct usb_gadget *, int set);
+>>>>>>> BRANCH (073530 usb: dwc3: core: Fix system suspend on TI AM62 platforms)
 	int	(*set_selfpowered) (struct usb_gadget *, int is_selfpowered);
 	int	(*vbus_session) (struct usb_gadget *, int is_active);
 	int	(*vbus_draw) (struct usb_gadget *, unsigned mA);
