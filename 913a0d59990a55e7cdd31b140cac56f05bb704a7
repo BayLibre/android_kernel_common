@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb6e9133_361a62e9",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 2052564
+      },
+      "writtenOn": "2024-12-02T21:30:05Z",
+      "side": 1,
+      "message": "Embed the whole swap_info_struct here seems too invasive to me.\n\nYou can make array of swap_info_ext[MAX_SWAPFILES] and use the swap type to index into the device.\n\nTake a look at swap_cgroup.c\n\n```\nstatic struct swap_cgroup_ctrl swap_cgroup_ctrl[MAX_SWAPFILES];\n```\n\nWhich have a similar per swap device data structure extensions.\nWe can follow that pattern.\n\nThat is how it was done in the previous swap reserve patches as well. That would be less invasive.",
+      "range": {
+        "startLine": 58,
+        "startChar": 1,
+        "endLine": 58,
+        "endChar": 28
+      },
+      "revId": "913a0d59990a55e7cdd31b140cac56f05bb704a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
