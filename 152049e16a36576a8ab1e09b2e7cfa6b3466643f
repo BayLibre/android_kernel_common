@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "508ae48a_6a013c5d",
+        "filename": "arch/arm64/include/asm/simd.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-12-03T14:12:12Z",
+      "side": 1,
+      "message": "This is always true, so you can drop it (just like in the upstream commit)",
+      "range": {
+        "startLine": 33,
+        "startChar": 7,
+        "endLine": 33,
+        "endChar": 44
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ae30b15c_d1dd0c36",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/include/asm/simd.h",
+              "range": {
+                "startLine": 32,
+                "startChar": 0,
+                "endLine": 34,
+                "endChar": 0
+              },
+              "replacement": "\treturn !in_hardirq() \u0026\u0026 !irqs_disabled() \u0026\u0026 !in_nmi();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "152049e16a36576a8ab1e09b2e7cfa6b3466643f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
