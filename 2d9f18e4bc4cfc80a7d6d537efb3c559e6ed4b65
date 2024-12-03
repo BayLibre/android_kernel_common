@@ -16,6 +16,29 @@
       "message": "We have resubmitted the patch, please review it.",
       "revId": "2d9f18e4bc4cfc80a7d6d537efb3c559e6ed4b65",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb38bdb5_e724df28",
+        "filename": "arch/arm64/kernel/fpsimd.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-12-03T12:30:34Z",
+      "side": 1,
+      "message": "I don\u0027t think you need braces here. Can you just do:\n\n```\nDEFINE_PER_CPU(bool, fpsimd_context_busy) \u003d false;\n```\n\n?",
+      "range": {
+        "startLine": 212,
+        "startChar": 44,
+        "endLine": 212,
+        "endChar": 53
+      },
+      "revId": "2d9f18e4bc4cfc80a7d6d537efb3c559e6ed4b65",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
