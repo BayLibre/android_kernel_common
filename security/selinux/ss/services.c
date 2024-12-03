@@ -957,7 +957,8 @@ void services_compute_xperms_decision(struct extended_perms_decision *xpermd,
 					xpermd->driver))
 			return;
 	} else {
-		BUG();
+		// An unknown extended permission has been found. Ignore it.
+		return;
 	}
 
 	if (node->key.specified == AVTAB_XPERMS_ALLOWED) {
