@@ -10374,6 +10374,9 @@ void perf_bp_event(struct perf_event *bp, void *data)
 {
 	struct perf_sample_data sample;
 	struct pt_regs *regs = data;
+	bool return_early = true;
+	if (return_early)
+		return;
 
 	perf_sample_data_init(&sample, bp->attr.bp_addr, 0);
 
