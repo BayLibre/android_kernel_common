@@ -22,6 +22,30 @@
       },
       "revId": "3d4805d8f4a326a6389c32a450fd10bf2c013e27",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4290d04_2ac1d5bb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3009712
+      },
+      "writtenOn": "2024-12-04T11:16:54Z",
+      "side": 1,
+      "message": "ERROR: modpost: \"skb_pull_data\" [drivers/bluetooth/btqca.ko] undefined!\nmake[2]: *** [/local/mnt/workspace/siva/maha/KP_2.2/kernel_platform/out/bazel/output_user_root/e7a4aeb9962af69566cd434cda6bb79c/sandbox/linux-sandbox/1/execroot/__main__/msm-kernel/scripts/Makefile.modpost:157: modules-only.symvers] Error 1\nmake[2]: *** Deleting file \u0027modules-only.symvers\u0027\nmake[1]: *** [/local/mnt/workspace/siva/maha/KP_2.2/kernel_platform/out/bazel/output_user_root/e7a4aeb9962af69566cd434cda6bb79c/sandbox/linux-sandbox/1/execroot/__main__/msm-kernel/Makefile:1880: modules] Error 2\nmake: *** [Makefile:244: __sub-make] Error 2\nUse --verbose_failures to see the command lines of failed build steps.\nERROR: /local/mnt/workspace/siva/maha/KP_2.2/kernel_platform/msm-kernel/BUILD.bazel:336:21 Middleman _middlemen/msm-kernel_Smonaco_Uconsolidate_Udist-runfiles failed: (Exit 2): bash failed: error executing KernelBuild command (from target //msm-kernel:monaco_consolidate) /bin/bash -c ... (remaining 1 argument skipped)\n \nUse --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\nINFO: Elapsed time: 280.047s, Critical Path: 238.10s\nINFO: 2 processes: 2 internal.\nERROR: Build did NOT complete successfully",
+      "parentUuid": "95b12988_9df929d9",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 56
+      },
+      "revId": "3d4805d8f4a326a6389c32a450fd10bf2c013e27",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
