@@ -46,6 +46,30 @@
       },
       "revId": "58c950fa3bfd9db0a22adac2b60328077b72b49f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51a5974b_3a9a9221",
+        "filename": "arch/arm64/kernel/hw_breakpoint.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2024-12-04T12:44:11Z",
+      "side": 1,
+      "message": "Ah, sorry, I hadn\u0027t spotted that you changed that from \u002714\u0027 in a later patch! (and I was wondering what the 14 was for :).\n\nI still think it could potentially cause issues though, as you can end up with the watchpoint firing on all sorts of unrelated addresses. That might explain the multi-threaded slowdown if e.g. you\u0027re watching parts of the pthread library or atomics. It might also introduce high variability between runs depending things like ASLR.\n\nI think you\u0027re better off using MAP_FIXED to align the buffer allocation and then sizing the mask appropriately.",
+      "parentUuid": "56c8c196_c10f194f",
+      "range": {
+        "startLine": 534,
+        "startChar": 0,
+        "endLine": 536,
+        "endChar": 0
+      },
+      "revId": "58c950fa3bfd9db0a22adac2b60328077b72b49f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
