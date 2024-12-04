@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "31bf7276_4b1b6b09",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3769,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-04T04:38:40Z",
+      "side": 1,
+      "message": "I have done some (though not very recently). Handling anything !SMP is probably very rare, but historically proxy-exec was initially working on !SMP but was broken on SMP, so I\u0027m hesitant to switch it. Something I can raise next time I send it out to lkml",
+      "parentUuid": "f3aaf6f7_8c252d98",
+      "revId": "bd9c4787853af5c93dc7902837996a2850f50c07",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b7c63f1e_cbd38208",
         "filename": "kernel/sched/core.c",
         "patchSetId": 4
@@ -31,6 +49,24 @@
       "writtenOn": "2024-12-04T00:38:25Z",
       "side": 1,
       "message": "How are you tracking these _XXX_ comments? When do you think this will be resolved?",
+      "revId": "bd9c4787853af5c93dc7902837996a2850f50c07",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c075203b_e373bfa4",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6873,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-04T04:38:40Z",
+      "side": 1,
+      "message": "So this is mostly so that it catches Peter\u0027s eye when it takes a look at it. I think its correct but I\u0027d like to have someone double check it, which is why that line is there. If you\u0027d prefer I can drop it from the patch here.\n\nAs for tracking the XXX comments, it\u0027s mostly things I\u0027d hope would fall out as the patches are iterated on and move upstream.  So I\u0027m happy to remove them for the Android tree, but I also want to keep the patches here close to what I sent to the list.",
+      "parentUuid": "b7c63f1e_cbd38208",
       "revId": "bd9c4787853af5c93dc7902837996a2850f50c07",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
