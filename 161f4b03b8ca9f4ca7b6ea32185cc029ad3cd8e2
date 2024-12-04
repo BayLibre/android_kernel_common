@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "448d418d_e0b7366e",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 832,
+      "author": {
+        "id": 2052564
+      },
+      "writtenOn": "2024-12-04T22:15:04Z",
+      "side": 1,
+      "message": "Nit pick, same function use more than one SIE(si) should assign and reuse a local variable for sie. The READ_ONCE() will prevent the compiler to cache the memory load. Because the sie will not change inside this function. Share a local variable can reduce the load to only once rather than every time reference the SIE(si).",
+      "range": {
+        "startLine": 832,
+        "startChar": 29,
+        "endLine": 832,
+        "endChar": 37
+      },
+      "revId": "161f4b03b8ca9f4ca7b6ea32185cc029ad3cd8e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abdbbc35_c6251505",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 2052564
+      },
+      "writtenOn": "2024-12-04T22:15:04Z",
+      "side": 1,
+      "message": "Same here and other place that duplicate SIE(si) inside a function.",
+      "range": {
+        "startLine": 847,
+        "startChar": 18,
+        "endLine": 847,
+        "endChar": 25
+      },
+      "revId": "161f4b03b8ca9f4ca7b6ea32185cc029ad3cd8e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0006758_9f966e99",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 2052564
+      },
+      "writtenOn": "2024-12-04T22:15:04Z",
+      "side": 1,
+      "message": "Please use a local variable to reduce the READ_ONCE()",
+      "range": {
+        "startLine": 887,
+        "startChar": 22,
+        "endLine": 887,
+        "endChar": 29
+      },
+      "revId": "161f4b03b8ca9f4ca7b6ea32185cc029ad3cd8e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d89ff376_ff31dd38",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3264,
+      "author": {
+        "id": 2052564
+      },
+      "writtenOn": "2024-12-04T22:15:04Z",
+      "side": 1,
+      "message": "Please use a local variable for all SIE(p) inside the function.",
+      "range": {
+        "startLine": 3264,
+        "startChar": 18,
+        "endLine": 3264,
+        "endChar": 24
+      },
+      "revId": "161f4b03b8ca9f4ca7b6ea32185cc029ad3cd8e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
