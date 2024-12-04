@@ -200,6 +200,19 @@ unsigned long kallsyms_lookup_name(const char *name)
 	return module_kallsyms_lookup_name(name);
 }
 
+<<<<<<< HEAD   (a715d3 Merge a009e88cc976 ("tracing: Remove precision vsnprintf() c)
+||||||| BASE
+#ifdef CONFIG_LIVEPATCH
+/*
+ * Iterate over all symbols in vmlinux.  For symbols from modules use
+ * module_kallsyms_on_each_symbol instead.
+ */
+=======
+/*
+ * Iterate over all symbols in vmlinux.  For symbols from modules use
+ * module_kallsyms_on_each_symbol instead.
+ */
+>>>>>>> BRANCH (243181 ktest.pl: Avoid false positives with grub2 skip regex)
 int kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *,
 				      unsigned long),
 			    void *data)

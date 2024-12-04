@@ -904,4 +904,25 @@ static inline bool module_sig_ok(struct module *module)
 }
 #endif	/* CONFIG_MODULE_SIG */
 
+<<<<<<< HEAD   (a715d3 Merge a009e88cc976 ("tracing: Remove precision vsnprintf() c)
+||||||| BASE
+int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
+					     struct module *, unsigned long),
+				   void *data);
+
+=======
+#if defined(CONFIG_MODULES) && defined(CONFIG_KALLSYMS)
+int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
+					     struct module *, unsigned long),
+				   void *data);
+#else
+static inline int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
+						 struct module *, unsigned long),
+						 void *data)
+{
+	return -EOPNOTSUPP;
+}
+#endif  /* CONFIG_MODULES && CONFIG_KALLSYMS */
+
+>>>>>>> BRANCH (243181 ktest.pl: Avoid false positives with grub2 skip regex)
 #endif /* _LINUX_MODULE_H */
