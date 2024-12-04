@@ -466,7 +466,7 @@ impl Thread {
             try_pin_init!(Thread {
                 id,
                 process,
-                task: ARef::from(kernel::current!()),
+                task: ARef::from(&**kernel::current!()),
                 inner <- kernel::new_spinlock!(inner, "Thread::inner"),
                 prio_lock <- kernel::new_spinlock!(prio, "Thread::prio_lock"),
                 work_condvar <- kernel::new_poll_condvar!("Thread::work_condvar"),

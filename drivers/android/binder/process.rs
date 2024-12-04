@@ -12,7 +12,7 @@
 //! several binder contexts have several `Process` objects. This ensures that the contexts are
 //! fully separated.
 
-use core::{mem::take, pin::Pin};
+use core::mem::take;
 
 use kernel::{
     bindings,
@@ -1052,7 +1052,7 @@ impl Process {
         }
     }
 
-    fn create_mapping(&self, vma: &mm::virt::VmArea) -> Result {
+    fn create_mapping(&self, vma: &mm::virt::VmAreaNew) -> Result {
         use kernel::page::PAGE_SIZE;
         let size = usize::min(vma.end() - vma.start(), bindings::SZ_4M as usize);
         let mapping = Mapping::new(vma.start(), size);
@@ -1574,7 +1574,7 @@ impl Process {
     pub(crate) fn mmap(
         this: ArcBorrow<'_, Process>,
         _file: &File,
-        mut vma: Pin<&mut mm::virt::VmArea>,
+        vma: &mm::virt::VmAreaNew,
     ) -> Result {
         // We don't allow mmap to be used in a different process.
         if !core::ptr::eq(kernel::current!().group_leader(), &*this.task) {
@@ -1583,16 +1583,13 @@ impl Process {
         if vma.start() == 0 {
             return Err(EINVAL);
         }
-        let mut flags = vma.flags();
-        use mm::virt::flags::*;
-        if flags & WRITE != 0 {
-            return Err(EPERM);
-        }
-        flags |= DONTCOPY | MIXEDMAP;
-        flags &= !MAYWRITE;
-        vma.as_mut().set_flags(flags);
+
+        vma.try_clear_maywrite().map_err(|_| EPERM)?;
+        vma.set_dontcopy();
+        vma.set_mixedmap();
+
         // TODO: Set ops. We need to learn when the user unmaps so that we can stop using it.
-        this.create_mapping(&vma)
+        this.create_mapping(vma)
     }
 
     pub(crate) fn poll(

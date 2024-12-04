@@ -83,7 +83,7 @@ impl DeferredFdCloser {
         // SAFETY: This pointer offset operation does not go out-of-bounds.
         let file_field = unsafe { core::ptr::addr_of_mut!((*inner).file) };
 
-        let current = current.as_raw();
+        let current = current.as_ptr();
 
         // SAFETY: This function currently has exclusive access to the `DeferredFdCloserInner`, so
         // it is okay for us to perform unsynchronized writes to its `callback_head` field.

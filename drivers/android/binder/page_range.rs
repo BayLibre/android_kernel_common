@@ -252,7 +252,7 @@ impl ShrinkablePageRange {
         try_pin_init!(Self {
             shrinker,
             pid: kernel::current!().pid(),
-            mm: Mm::mmgrab_current().ok_or(ESRCH)?,
+            mm: ARef::from(&**kernel::current!().mm().ok_or(ESRCH)?),
             lock <- new_spinlock!(Inner {
                 pages: ptr::null_mut(),
                 size: 0,
@@ -263,14 +263,16 @@ impl ShrinkablePageRange {
     }
 
     /// Register a vma with this page range. Returns the size of the region.
-    pub(crate) fn register_with_vma(&self, vma: &virt::VmArea) -> Result<usize> {
+    pub(crate) fn register_with_vma(&self, vma: &virt::VmAreaNew) -> Result<usize> {
         let num_bytes = usize::min(vma.end() - vma.start(), bindings::SZ_4M as usize);
         let num_pages = num_bytes >> PAGE_SHIFT;
 
+        /* TODO: Add back.
         if !self.mm.is_same_mm(vma) {
             pr_debug!("Failed to register with vma: invalid vma->vm_mm");
             return Err(EINVAL);
         }
+        */
         if num_pages == 0 {
             pr_debug!("Failed to register with vma: size zero");
             return Err(EINVAL);
@@ -380,8 +382,8 @@ impl ShrinkablePageRange {
         //
         // Using `mmput_async` avoids this, because then the `mm` cleanup is instead queued to a
         // workqueue.
-        let mm = MmWithUser::use_mmput_async(self.mm.mmget_not_zero().ok_or(ESRCH)?);
-        let mut mmap_lock = mm.mmap_write_lock();
+        let mm = MmWithUser::into_mmput_async(self.mm.mmget_not_zero().ok_or(ESRCH)?);
+        let mmap_lock = mm.mmap_write_lock();
         let inner = self.lock.lock();
 
         // SAFETY: This pointer offset is in bounds.
@@ -404,7 +406,10 @@ impl ShrinkablePageRange {
         // Release the spinlock while we insert the page into the vma.
         drop(inner);
 
-        let vma = mmap_lock.vma_lookup(vma_addr).ok_or(ESRCH)?;
+        let vma = mmap_lock
+            .vma_lookup(vma_addr)
+            .and_then(virt::VmAreaRef::as_mixedmap_vma)
+            .ok_or(ESRCH)?;
 
         // No overflow since we stay in bounds of the vma.
         let user_page_addr = vma_addr + (i << PAGE_SHIFT);
@@ -693,7 +698,7 @@ unsafe extern "C" fn rust_shrink_free_page(
         let range = unsafe { &*((*info).range) };
 
         mm = match range.mm.mmget_not_zero() {
-            Some(mm) => MmWithUser::use_mmput_async(mm),
+            Some(mm) => MmWithUser::into_mmput_async(mm),
             None => return LRU_SKIP,
         };
 

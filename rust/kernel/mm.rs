@@ -8,16 +8,12 @@
 
 use crate::{
     bindings,
-    types::{ARef, AlwaysRefCounted, Opaque},
+    types::{ARef, AlwaysRefCounted, NotThreadSafe, Opaque},
 };
-
-use core::{
-    ops::Deref,
-    pin::Pin,
-    ptr::{self, NonNull},
-};
+use core::{ops::Deref, ptr::NonNull};
 
 pub mod virt;
+use virt::VmAreaRef;
 
 /// A wrapper for the kernel's `struct mm_struct`.
 ///
@@ -31,6 +27,7 @@ pub mod virt;
 /// Values of this type are always refcounted using `mmgrab`.
 ///
 /// [`mmget_not_zero`]: Mm::mmget_not_zero
+#[repr(transparent)]
 pub struct Mm {
     mm: Opaque<bindings::mm_struct>,
 }
@@ -42,11 +39,13 @@ unsafe impl Sync for Mm {}
 
 // SAFETY: By the type invariants, this type is always refcounted.
 unsafe impl AlwaysRefCounted for Mm {
+    #[inline]
     fn inc_ref(&self) {
         // SAFETY: The pointer is valid since self is a reference.
         unsafe { bindings::mmgrab(self.as_raw()) };
     }
 
+    #[inline]
     unsafe fn dec_ref(obj: NonNull<Self>) {
         // SAFETY: The caller is giving up their refcount.
         unsafe { bindings::mmdrop(obj.cast().as_ptr()) };
@@ -64,7 +63,7 @@ unsafe impl AlwaysRefCounted for Mm {
 /// # Invariants
 ///
 /// Values of this type are always refcounted using `mmget`. The value of `mm_users` is non-zero.
-/// #[repr(transparent)]
+#[repr(transparent)]
 pub struct MmWithUser {
     mm: Mm,
 }
@@ -76,11 +75,13 @@ unsafe impl Sync for MmWithUser {}
 
 // SAFETY: By the type invariants, this type is always refcounted.
 unsafe impl AlwaysRefCounted for MmWithUser {
+    #[inline]
     fn inc_ref(&self) {
         // SAFETY: The pointer is valid since self is a reference.
         unsafe { bindings::mmget(self.as_raw()) };
     }
 
+    #[inline]
     unsafe fn dec_ref(obj: NonNull<Self>) {
         // SAFETY: The caller is giving up their refcount.
         unsafe { bindings::mmput(obj.cast().as_ptr()) };
@@ -106,7 +107,6 @@ impl Deref for MmWithUser {
 /// # Invariants
 ///
 /// Values of this type are always refcounted using `mmget`. The value of `mm_users` is non-zero.
-/// #[repr(transparent)]
 #[repr(transparent)]
 pub struct MmWithUserAsync {
     mm: MmWithUser,
@@ -142,28 +142,6 @@ impl Deref for MmWithUserAsync {
 
 // These methods are safe to call even if `mm_users` is zero.
 impl Mm {
-    /// Call `mmgrab` on `current.mm`.
-    #[inline]
-    pub fn mmgrab_current() -> Option<ARef<Mm>> {
-        // SAFETY: It's safe to get the `mm` field from current.
-        let mm = unsafe {
-            let current = bindings::get_current();
-            (*current).mm
-        };
-
-        if mm.is_null() {
-            return None;
-        }
-
-        // SAFETY: The value of `current->mm` is guaranteed to be null or a valid `mm_struct`. We
-        // just checked that it's not null. Furthermore, the returned `&Mm` is valid only for the
-        // duration of this function, and `current->mm` will stay valid for that long.
-        let mm = unsafe { Mm::from_raw(mm) };
-
-        // This increments the refcount using `mmgrab`.
-        Some(ARef::from(mm))
-    }
-
     /// Returns a raw pointer to the inner `mm_struct`.
     #[inline]
     pub fn as_raw(&self) -> *mut bindings::mm_struct {
@@ -181,16 +159,6 @@ impl Mm {
         // SAFETY: Caller promises that the pointer is valid for 'a. Layouts are compatible due to
         // repr(transparent).
         unsafe { &*ptr.cast() }
-    }
-
-    /// Check whether this vma is associated with this mm.
-    #[inline]
-    pub fn is_same_mm(&self, area: &virt::VmArea) -> bool {
-        // SAFETY: The `vm_mm` field of the area is immutable, so we can read it without
-        // synchronization.
-        let vm_mm = unsafe { (*area.as_ptr()).vm_mm };
-
-        ptr::eq(vm_mm, self.as_raw())
     }
 
     /// Calls `mmget_not_zero` and returns a handle if it succeeds.
@@ -224,51 +192,66 @@ impl MmWithUser {
     }
 
     /// Use `mmput_async` when dropping this refcount.
-    pub fn use_mmput_async(me: ARef<MmWithUser>) -> ARef<MmWithUserAsync> {
+    #[inline]
+    pub fn into_mmput_async(me: ARef<MmWithUser>) -> ARef<MmWithUserAsync> {
         // SAFETY: The layouts and invariants are compatible.
         unsafe { ARef::from_raw(ARef::into_raw(me).cast()) }
     }
 
-    /// Lock the mmap write lock.
+    /// Attempt to access a vma using the vma read lock.
+    ///
+    /// This is an optimistic trylock operation, so it may fail if there is contention. In that
+    /// case, you should fall back to taking the mmap read lock.
+    ///
+    /// When per-vma locks are disabled, this always returns `None`.
     #[inline]
-    pub fn mmap_write_lock(&self) -> MmapWriteLock<'_> {
-        // SAFETY: The pointer is valid since self is a reference.
-        unsafe { bindings::mmap_write_lock(self.as_raw()) };
+    pub fn lock_vma_under_rcu(&self, vma_addr: usize) -> Option<VmaReadGuard<'_>> {
+        #[cfg(CONFIG_PER_VMA_LOCK)]
+        {
+            // SAFETY: Calling `bindings::lock_vma_under_rcu` is always okay given an mm where
+            // `mm_users` is non-zero.
+            let vma = unsafe { bindings::lock_vma_under_rcu(self.as_raw(), vma_addr as _) };
+            if !vma.is_null() {
+                return Some(VmaReadGuard {
+                    // SAFETY: If `lock_vma_under_rcu` returns a non-null ptr, then it points at a
+                    // valid vma. The vma is stable for as long as the vma read lock is held.
+                    vma: unsafe { VmAreaRef::from_raw(vma) },
+                    _nts: NotThreadSafe,
+                });
+            }
+        }
 
-        // INVARIANT: We just acquired the write lock.
-        MmapWriteLock { mm: self }
+        None
     }
 
     /// Lock the mmap read lock.
     #[inline]
-    pub fn mmap_read_lock(&self) -> MmapReadLock<'_> {
+    pub fn mmap_read_lock(&self) -> MmapReadGuard<'_> {
         // SAFETY: The pointer is valid since self is a reference.
         unsafe { bindings::mmap_read_lock(self.as_raw()) };
 
         // INVARIANT: We just acquired the read lock.
-        MmapReadLock { mm: self }
+        MmapReadGuard {
+            mm: self,
+            _nts: NotThreadSafe,
+        }
     }
 
     /// Try to lock the mmap read lock.
     #[inline]
-    pub fn mmap_read_trylock(&self) -> Option<MmapReadLock<'_>> {
+    pub fn mmap_read_trylock(&self) -> Option<MmapReadGuard<'_>> {
         // SAFETY: The pointer is valid since self is a reference.
         let success = unsafe { bindings::mmap_read_trylock(self.as_raw()) };
 
         if success {
             // INVARIANT: We just acquired the read lock.
-            Some(MmapReadLock { mm: self })
+            Some(MmapReadGuard {
+                mm: self,
+                _nts: NotThreadSafe,
+            })
         } else {
             None
         }
-    }
-}
-
-impl MmWithUserAsync {
-    /// Use `mmput` when dropping this refcount.
-    pub fn use_mmput(me: ARef<MmWithUserAsync>) -> ARef<MmWithUser> {
-        // SAFETY: The layouts and invariants are compatible.
-        unsafe { ARef::from_raw(ARef::into_raw(me).cast()) }
     }
 }
 
@@ -276,15 +259,17 @@ impl MmWithUserAsync {
 ///
 /// # Invariants
 ///
-/// This `MmapReadLock` guard owns the mmap read lock.
-pub struct MmapReadLock<'a> {
+/// This `MmapReadGuard` guard owns the mmap read lock.
+pub struct MmapReadGuard<'a> {
     mm: &'a MmWithUser,
+    // `mmap_read_lock` and `mmap_read_unlock` must be called on the same thread
+    _nts: NotThreadSafe,
 }
 
-impl<'a> MmapReadLock<'a> {
+impl<'a> MmapReadGuard<'a> {
     /// Look up a vma at the given address.
     #[inline]
-    pub fn vma_lookup(&self, vma_addr: usize) -> Option<&virt::VmArea> {
+    pub fn vma_lookup(&self, vma_addr: usize) -> Option<&virt::VmAreaRef> {
         // SAFETY: We hold a reference to the mm, so the pointer must be valid. Any value is okay
         // for `vma_addr`.
         let vma = unsafe { bindings::vma_lookup(self.mm.as_raw(), vma_addr as _) };
@@ -294,14 +279,13 @@ impl<'a> MmapReadLock<'a> {
         } else {
             // SAFETY: We just checked that a vma was found, so the pointer is valid. Furthermore,
             // the returned area will borrow from this read lock guard, so it can only be used
-            // while the read lock is still held. The returned reference is immutable, so the
-            // reference cannot be used to modify the area.
-            unsafe { Some(virt::VmArea::from_raw(vma)) }
+            // while the mmap read lock is still held.
+            unsafe { Some(virt::VmAreaRef::from_raw(vma)) }
         }
     }
 }
 
-impl Drop for MmapReadLock<'_> {
+impl Drop for MmapReadGuard<'_> {
     #[inline]
     fn drop(&mut self) {
         // SAFETY: We hold the read lock by the type invariants.
@@ -309,19 +293,65 @@ impl Drop for MmapReadLock<'_> {
     }
 }
 
+/// A guard for the vma read lock.
+///
+/// # Invariants
+///
+/// This `VmaReadGuard` guard owns the vma read lock.
+pub struct VmaReadGuard<'a> {
+    vma: &'a VmAreaRef,
+    // `vma_end_read` must be called on the same thread as where the lock was taken
+    _nts: NotThreadSafe,
+}
+
+// Make all `VmAreaRef` methods available on `VmaReadGuard`.
+impl Deref for VmaReadGuard<'_> {
+    type Target = VmAreaRef;
+
+    #[inline]
+    fn deref(&self) -> &VmAreaRef {
+        self.vma
+    }
+}
+
+impl Drop for VmaReadGuard<'_> {
+    #[inline]
+    fn drop(&mut self) {
+        // SAFETY: We hold the read lock by the type invariants.
+        unsafe { bindings::vma_end_read(self.vma.as_ptr()) };
+    }
+}
+
+impl MmWithUser {
+    /// Lock the mmap write lock.
+    #[inline]
+    pub fn mmap_write_lock(&self) -> MmapWriteGuard<'_> {
+        // SAFETY: The pointer is valid since self is a reference.
+        unsafe { bindings::mmap_write_lock(self.as_raw()) };
+
+        // INVARIANT: We just acquired the write lock.
+        MmapWriteGuard {
+            mm: self,
+            _nts: NotThreadSafe,
+        }
+    }
+}
+
 /// A guard for the mmap write lock.
 ///
 /// # Invariants
 ///
-/// This `MmapReadLock` guard owns the mmap write lock.
-pub struct MmapWriteLock<'a> {
+/// This `MmapWriteGuard` guard owns the mmap write lock.
+pub struct MmapWriteGuard<'a> {
     mm: &'a MmWithUser,
+    // `mmap_write_lock` and `mmap_write_unlock` must be called on the same thread
+    _nts: NotThreadSafe,
 }
 
-impl<'a> MmapWriteLock<'a> {
+impl<'a> MmapWriteGuard<'a> {
     /// Look up a vma at the given address.
     #[inline]
-    pub fn vma_lookup(&mut self, vma_addr: usize) -> Option<Pin<&mut virt::VmArea>> {
+    pub fn vma_lookup(&self, vma_addr: usize) -> Option<&virt::VmAreaRef> {
         // SAFETY: We hold a reference to the mm, so the pointer must be valid. Any value is okay
         // for `vma_addr`.
         let vma = unsafe { bindings::vma_lookup(self.mm.as_raw(), vma_addr as _) };
@@ -331,14 +361,13 @@ impl<'a> MmapWriteLock<'a> {
         } else {
             // SAFETY: We just checked that a vma was found, so the pointer is valid. Furthermore,
             // the returned area will borrow from this write lock guard, so it can only be used
-            // while the write lock is still held. We hold the write lock, so mutable operations on
-            // the area are okay.
-            unsafe { Some(virt::VmArea::from_raw_mut(vma)) }
+            // while the mmap write lock is still held.
+            unsafe { Some(virt::VmAreaRef::from_raw(vma)) }
         }
     }
 }
 
-impl Drop for MmapWriteLock<'_> {
+impl Drop for MmapWriteGuard<'_> {
     #[inline]
     fn drop(&mut self) {
         // SAFETY: We hold the write lock by the type invariants.

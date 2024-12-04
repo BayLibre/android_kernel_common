@@ -100,19 +100,19 @@ pub(crate) fn trace_write_done(ret: Result) {
 #[inline]
 pub(crate) fn trace_set_priority(thread: &Task, desired_prio: c_int, new_prio: c_int) {
     // SAFETY: The pointer to the task is valid for the duration of this call.
-    unsafe { rust_binder_set_priority(thread.as_raw(), desired_prio, new_prio) }
+    unsafe { rust_binder_set_priority(thread.as_ptr(), desired_prio, new_prio) }
 }
 
 #[inline]
 pub(crate) fn vh_set_priority(t: &Transaction, task: &Task) {
     // SAFETY: The pointers to `t` and `task` are valid.
-    unsafe { android_vh_rust_binder_set_priority(raw_transaction(t), task.as_raw()) }
+    unsafe { android_vh_rust_binder_set_priority(raw_transaction(t), task.as_ptr()) }
 }
 
 #[inline]
 pub(crate) fn vh_restore_priority(task: &Task) {
     // SAFETY: The pointer to `task` is valid.
-    unsafe { android_vh_rust_binder_restore_priority(task.as_raw()) }
+    unsafe { android_vh_rust_binder_restore_priority(task.as_ptr()) }
 }
 
 #[inline]
