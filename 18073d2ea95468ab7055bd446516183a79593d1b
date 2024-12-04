@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f792368_95999dbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-12-04T21:47:55Z",
+      "side": 1,
+      "message": "Breaks KMI. The KMI for android15-6.6 is frozen so these types cannot change. The patches must be refactored to avoid these changes to the interface:\n```\n1 function symbol(s) removed\n  \u0027long vfs_splice_read(struct file*, loff_t*, struct pipe_inode_info*, size_t, unsigned int)\u0027\n\nvariable symbol \u0027const struct dwc3* const ANDROID_GKI_struct_dwc3\u0027 changed\n  CRC changed from 0x231d8c6f to 0x34220fc5\n\nfunction symbol \u0027struct block_device* I_BDEV(struct inode*)\u0027 changed\n  CRC changed from 0xc364b4f to 0x5e9d3679\n\nfunction symbol \u0027void __ClearPageMovable(struct page*)\u0027 changed\n  CRC changed from 0x9dcd7a35 to 0xb7cf096b\n\n... 5532 omitted; 5535 symbols have only CRC changes\n\ntype \u0027struct inode\u0027 changed\n  byte size changed from 704 to 712\n  8 members (\u0027struct list_head i_devices\u0027 .. \u0027void* i_private\u0027) changed\n    offset changed by 64\n\ntype \u0027struct address_space\u0027 changed\n  byte size changed from 240 to 248\n  member \u0027u64 android_oem_data1\u0027 was added\n\ntype \u0027struct shmem_inode_info\u0027 changed\n  byte size changed from 856 to 864\n  member \u0027u64 android_vendor_data1\u0027 changed\n    offset changed by 64\n```",
+      "revId": "18073d2ea95468ab7055bd446516183a79593d1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
