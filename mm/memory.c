@@ -1442,7 +1442,7 @@ copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
 static inline bool should_zap_cows(struct zap_details *details)
 {
 	/* By default, zap all pages */
-	if (!details)
+	if (!details || details->reclaim_pt)
 		return true;
 
 	/* Or, we zap COWed pages only if the caller wants to */
@@ -1605,6 +1605,10 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
 	pte_t *start_pte;
 	pte_t *pte;
 	swp_entry_t entry;
+	pmd_t pmdval;
+	unsigned long start = addr;
+	bool can_reclaim_pt = reclaim_pt_is_enabled(start, end, details);
+	bool direct_reclaim = false;
 	int nr;
 	bool bypass = false;
 
@@ -1646,8 +1650,10 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
 		    is_device_exclusive_entry(entry)) {
 			page = pfn_swap_entry_to_page(entry);
 			folio = page_folio(page);
-			if (unlikely(!should_zap_folio(details, folio)))
+			if (unlikely(!should_zap_folio(details, folio))) {
+				can_reclaim_pt = false;
 				continue;
+			}
 			/*
 			 * Both device private/exclusive mappings should only
 			 * work with anonymous page so far, so we don't need to
@@ -1663,17 +1669,23 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
 			max_nr = (end - addr) / PAGE_SIZE;
 			nr = swap_pte_batch(pte, max_nr, ptent);
 			/* Genuine swap entries, hence a private anon pages */
-			if (!should_zap_cows(details))
+			if (!should_zap_cows(details)) {
+				can_reclaim_pt = false;
 				continue;
+			}
 			rss[MM_SWAPENTS] -= nr;
 			trace_android_vh_swapmem_gather_add_bypass(mm, entry, nr, &bypass);
-			if (bypass)
+			if (bypass) {
+				can_reclaim_pt = false;
 				goto skip;
+			}
 			free_swap_and_cache_nr(entry, nr);
 		} else if (is_migration_entry(entry)) {
 			folio = pfn_swap_entry_folio(entry);
-			if (!should_zap_folio(details, folio))
+			if (!should_zap_folio(details, folio)) {
+				can_reclaim_pt = false;
 				continue;
+			}
 			rss[mm_counter(folio)]--;
 		} else if (pte_marker_entry_uffd_wp(entry)) {
 			/*
@@ -1681,29 +1693,39 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
 			 * drop the marker if explicitly requested.
 			 */
 			if (!vma_is_anonymous(vma) &&
-			    !zap_drop_markers(details))
+			    !zap_drop_markers(details)) {
+				can_reclaim_pt = false;
 				continue;
+			}
 		} else if (is_guard_swp_entry(entry)) {
 			/*
 			 * Ordinary zapping should not remove guard PTE
 			 * markers. Only do so if we should remove PTE markers
 			 * in general.
 			 */
-			if (!zap_drop_markers(details))
+			if (!zap_drop_markers(details)) {
+				can_reclaim_pt = false;
 				continue;
+			}
 		} else if (is_hwpoison_entry(entry) ||
 			   is_poisoned_swp_entry(entry)) {
-			if (!should_zap_cows(details))
+			if (!should_zap_cows(details)) {
+				can_reclaim_pt = false;
 				continue;
+			}
 		} else {
 			/* We should have covered all the swap entry types */
 			pr_alert("unrecognized swap entry 0x%lx\n", entry.val);
 			WARN_ON_ONCE(1);
+			can_reclaim_pt = false;
 		}
 skip:
 		clear_not_present_full_ptes(mm, addr, pte, nr, tlb->fullmm);
 		zap_install_uffd_wp_if_needed(vma, addr, pte, nr, details, ptent);
 	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
+
+	if (can_reclaim_pt && addr == end)
+		direct_reclaim = try_get_and_clear_pmd(mm, pmd, &pmdval);
 
 	add_mm_rss_vec(mm, rss);
 	arch_leave_lazy_mmu_mode();
@@ -1723,6 +1745,13 @@ skip:
 	 */
 	if (force_flush)
 		tlb_flush_mmu(tlb);
+
+	if (can_reclaim_pt && addr == end) {
+		if (direct_reclaim)
+			free_pte(mm, start, tlb, pmdval);
+		else
+			try_to_free_pte(mm, pmd, start, tlb);
+	}
 
 	return addr;
 }
