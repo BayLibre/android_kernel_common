@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "787a8286_98fb9476",
+        "filename": "rust/kernel/error.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-12-05T17:46:41Z",
+      "side": 0,
+      "message": "IIUC, the conflict is from missing `5ed147473458 (\"rust: error: make conversion functions public\")` but it doesn\u0027t matter since you use `Err::to_ptr()` in subsequent patches?",
+      "range": {
+        "startLine": 136,
+        "startChar": 12,
+        "endLine": 136,
+        "endChar": 21
+      },
+      "revId": "06d75c6d725a878aebb9fb4f94f6069b13beb212",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
