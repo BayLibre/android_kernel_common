@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "bea8b308_787ae3e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-05T19:56:05Z",
+      "side": 1,
+      "message": "I don\u0027t think so, but there could be some difference. It\u0027s nicer to do the return migration in the wakeup path as the rq lock juggling is a little cleaner (ie: we\u0027re not taking additional locks). But doing the return migration from __schedule() means we have to drop the current_rq lock, acquire and drop the target_rq lock,and then re-acquire the current_rq lock, before starting the selection process again.\n\nBut technically the number of lock acquisitions should be the same (if ttwu was trying while __schedule was on another CPU, ttwu would have to wait for __schedule to drop the lock before it can proceed and __schedule would have to try again anyway).\n\nAdditionally, it only triggers to resolve the edge case I haven\u0027t sorted, so I\u0027m not expecting it to be frequent.",
+      "parentUuid": "89017a35_8b9a4124",
+      "range": {
+        "startLine": 34,
+        "startChar": 48,
+        "endLine": 35,
+        "endChar": 9
+      },
+      "revId": "81a81ca4682f940c5aa21fdc27314b801cacf72d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "63299078_0aa84725",
         "filename": "kernel/sched/core.c",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2024-12-05T16:05:45Z",
       "side": 1,
       "message": "Is this missing an \"are\"? What about the \"it\" following shouldn\u0027t it be plural for _tasks_?",
+      "range": {
+        "startLine": 3777,
+        "startChar": 10,
+        "endLine": 3777,
+        "endChar": 22
+      },
+      "revId": "81a81ca4682f940c5aa21fdc27314b801cacf72d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34fe974e_de7d130c",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3777,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-05T19:56:05Z",
+      "side": 1,
+      "message": "me grammar(and speling) good.\n\nI will respin to fix this.",
+      "parentUuid": "63299078_0aa84725",
       "range": {
         "startLine": 3777,
         "startChar": 10,
