@@ -34,6 +34,57 @@
       "parentUuid": "fb627e25_5f83ac0f",
       "revId": "3e4954600375347d2b16b16034cc24226602852a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90b80710_95164728",
+        "filename": "include/ufs/ufshcd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2024-12-05T23:00:02Z",
+      "side": 1,
+      "message": "I think this should be moved into `ufshcd_android_quirks`.",
+      "range": {
+        "startLine": 658,
+        "startChar": 1,
+        "endLine": 658,
+        "endChar": 27
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "9bf9feff_fe11ed4a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/ufs/ufshcd.h",
+              "range": {
+                "startLine": 656,
+                "startChar": 0,
+                "endLine": 659,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/ufs/ufshcd.h",
+              "range": {
+                "startLine": 697,
+                "startChar": 0,
+                "endLine": 697,
+                "endChar": 0
+              },
+              "replacement": "\n\t/* Set IID to one. */\n\tUFSHCD_ANDROID_QUIRK_SET_IID_TO_ONE\t\t\u003d 1 \u003c\u003c 4,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3e4954600375347d2b16b16034cc24226602852a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
