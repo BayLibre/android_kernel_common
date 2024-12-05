@@ -92072,6 +92072,13 @@ member {
   offset: 4672
 }
 member {
+  id: 0x985a5b16
+  name: "inactive"
+  type_id: 0x6d7f5ff6
+  offset: 96
+  bitsize: 1
+}
+member {
   id: 0xda403e43
   name: "inactive_timer"
   type_id: 0xcd7704bf
@@ -227974,11 +227981,12 @@ struct_union {
   kind: STRUCT
   name: "typec_altmode_desc"
   definition {
-    bytesize: 12
+    bytesize: 16
     member_id: 0x0faf2220
     member_id: 0x87b44752
     member_id: 0x9a455cdf
     member_id: 0x39f4cfd4
+    member_id: 0x985a5b16
   }
 }
 struct_union {
@@ -309649,7 +309657,7 @@ elf_symbol {
   name: "typec_partner_register_altmode"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc38f825d
+  crc: 0x44d7c852
   type_id: 0xd6e94dc1
   full_name: "typec_partner_register_altmode"
 }
@@ -309703,7 +309711,7 @@ elf_symbol {
   name: "typec_plug_register_altmode"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xbb8442ed
+  crc: 0x7d76b5ab
   type_id: 0xd5382f7a
   full_name: "typec_plug_register_altmode"
 }
@@ -309721,7 +309729,7 @@ elf_symbol {
   name: "typec_port_register_altmode"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x322fe618
+  crc: 0x72f2bfec
   type_id: 0xdf267053
   full_name: "typec_port_register_altmode"
 }
