@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d974eb7b_6eb32a17",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3769,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-12-05T17:38:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31bf7276_4b1b6b09",
+      "revId": "bd9c4787853af5c93dc7902837996a2850f50c07",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7c63f1e_cbd38208",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "So this is mostly so that it catches Peter\u0027s eye when it takes a look at it. I think its correct but I\u0027d like to have someone double check it, which is why that line is there. If you\u0027d prefer I can drop it from the patch here.\n\nAs for tracking the XXX comments, it\u0027s mostly things I\u0027d hope would fall out as the patches are iterated on and move upstream.  So I\u0027m happy to remove them for the Android tree, but I also want to keep the patches here close to what I sent to the list.",
       "parentUuid": "b7c63f1e_cbd38208",
+      "revId": "bd9c4787853af5c93dc7902837996a2850f50c07",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "843e2782_e7febb80",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6873,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-12-05T17:38:33Z",
+      "side": 1,
+      "message": "I think these patches should exactly match the upstream versions, so if those are for Peter, then keep them. This one caught my eye since it makes it sound like it isn\u0027t production ready.",
+      "parentUuid": "c075203b_e373bfa4",
       "revId": "bd9c4787853af5c93dc7902837996a2850f50c07",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
