@@ -1224,7 +1224,13 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
 
 	spin_lock(pmd_ptl);
 	BUG_ON(!pmd_none(*pmd));
+<<<<<<< HEAD   (1522ca Merge a1afee6c6f53 ("mm/khugepaged: convert alloc_charge_hpa)
 	folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSIVE);
+||||||| BASE
+	page_add_new_anon_rmap(hpage, vma, address);
+=======
+	folio_add_new_anon_rmap(folio, vma, address);
+>>>>>>> BRANCH (4ba708 mm: convert collapse_huge_page() to use a folio)
 	folio_add_lru_vma(folio, vma);
 	pgtable_trans_huge_deposit(mm, pmd, pgtable);
 	set_pmd_at(mm, address, pmd, _pmd);
