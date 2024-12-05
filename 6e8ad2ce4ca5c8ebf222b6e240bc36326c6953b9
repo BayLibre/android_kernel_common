@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1dfcd243_429f1d2a",
+        "filename": "drivers/platform/chrome/cros_typec_altmode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-12-05T14:42:53Z",
+      "side": 1,
+      "message": "FYI: Required ABI update for this CL: aosp/3390557\n\nIt can be generated with command sequence:\n```\ntools/bazel run //private/google-modules/linux/brya:brya_device_x86_64_abi_update_symbol_list\ntools/bazel run //common:kernel_x86_64_abi_update\n```",
+      "parentUuid": "ff39e29e_fc1c4a05",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 34
+      },
+      "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa9b167e_accbe3c5",
         "filename": "drivers/platform/chrome/cros_typec_altmode.c",
         "patchSetId": 3
