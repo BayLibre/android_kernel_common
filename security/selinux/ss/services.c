@@ -979,9 +979,20 @@ void services_compute_xperms_decision(struct extended_perms_decision *xpermd,
 		if (!security_xperm_test(node->datum.u.xperms->perms.p,
 					xpermd->driver))
 			return;
+<<<<<<< HEAD   (5d1fb1 Merge bf9aa14fc523 ("Merge tag 'timers-core-2024-11-18' of g)
 		break;
 	default:
 		BUG();
+||||||| BASE
+	} else {
+		BUG();
+=======
+	} else {
+		pr_warn_once(
+			"SELinux: unknown extended permission (%u) will be ignored\n",
+			node->datum.u.xperms->specified);
+		return;
+>>>>>>> CHANGE (623eca UPSTREAM: selinux: ignore unknown extended permissions)
 	}
 
 	if (node->key.specified == AVTAB_XPERMS_ALLOWED) {
@@ -1000,7 +1011,8 @@ void services_compute_xperms_decision(struct extended_perms_decision *xpermd,
 					    &node->datum.u.xperms->perms,
 					    xpermd->dontaudit);
 	} else {
-		BUG();
+		pr_warn_once("SELinux: unknown specified key (%u)\n",
+			     node->key.specified);
 	}
 }
 
