@@ -256444,6 +256444,12 @@ function {
   parameter_id: 0x305baabf
 }
 function {
+  id: 0x1c93cad8
+  return_type_id: 0x48b5725f
+  parameter_id: 0x36f998d3
+  parameter_id: 0x6d7f5ff6
+}
+function {
   id: 0x1c941374
   return_type_id: 0x2060db23
   parameter_id: 0x101b9aaa
@@ -309554,6 +309560,15 @@ elf_symbol {
   full_name: "typec_altmode_attention"
 }
 elf_symbol {
+  id: 0xe7fb597f
+  name: "typec_altmode_update_active"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x91dfb491
+  type_id: 0x1c93cad8
+  full_name: "typec_altmode_update_active"
+}
+elf_symbol {
   id: 0xe6cbb47e
   name: "typec_altmode_vdm"
   is_defined: true
@@ -317175,6 +317190,7 @@ interface {
   symbol_id: 0xaf7b86f3
   symbol_id: 0xe0d69cde
   symbol_id: 0xfb5efe2e
+  symbol_id: 0xe7fb597f
   symbol_id: 0xe6cbb47e
   symbol_id: 0xb8922fac
   symbol_id: 0x0d23e13a
