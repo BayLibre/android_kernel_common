@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b0c2427_a3a72c38",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-05T09:28:32Z",
+      "side": 1,
+      "message": "NIT: Please replace `kvm: Added ffa handling` with `KVM: Support FF-A handling for pVMs using the hvc conduit`",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 32
+      },
+      "revId": "f203a20554bbccde680726518bd426490ae84dac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fcdb8d7_0a51271b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-05T09:28:32Z",
+      "side": 1,
+      "message": "Nit: Please replace it with:\n\nWhen the guest VMs are presented with the `hvc` conduit from the device tree, the ARM FF-A driver chooses to use this over the `smc`. This restricts our ability to trap the FF-A calls from the VMs using the `hvc` conduit.\nHandle protected VM FF-A calls using the hvc conduit and dispatch the call to the appropriate handler.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 23
+      },
+      "revId": "f203a20554bbccde680726518bd426490ae84dac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dc605a3_9187b9e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-05T09:28:32Z",
+      "side": 1,
+      "message": "MAYBE: add bug label\n\nBug: 269285339 \nBug: 278749606",
+      "revId": "f203a20554bbccde680726518bd426490ae84dac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d9b4935_d9adecd4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1794,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-05T09:28:32Z",
+      "side": 1,
+      "message": "OUGHTTO: Remove these definitions(they are using the SMC conduit)",
+      "range": {
+        "startLine": 1784,
+        "startChar": 0,
+        "endLine": 1794,
+        "endChar": 29
+      },
+      "revId": "f203a20554bbccde680726518bd426490ae84dac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dda9ae65_84f62b5e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1795,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-05T09:28:32Z",
+      "side": 1,
+      "message": "OUGHTTO: Move this on the default label. Make `is_ffa_call` static inline in nvhe/ffa.h header and use it like this:\n\n```\n\tdefault:\n\t\tif (is_ffa_call(fn))\n\t\t\treturn kvm_guest_ffa_handler(..)\n\t\telse\n\t\t\treturn pkvm_handle_psci(..)\n```",
+      "range": {
+        "startLine": 1795,
+        "startChar": 9,
+        "endLine": 1795,
+        "endChar": 30
+      },
+      "revId": "f203a20554bbccde680726518bd426490ae84dac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03150117_84db68e5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1837,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-05T09:28:32Z",
+      "side": 1,
+      "message": "OUGHTTO: Please remove this as we don\u0027t support FF-A handling for non-protected VMs",
+      "range": {
+        "startLine": 1826,
+        "startChar": 0,
+        "endLine": 1837,
+        "endChar": 52
+      },
+      "revId": "f203a20554bbccde680726518bd426490ae84dac",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
