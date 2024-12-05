@@ -70,6 +70,30 @@
       },
       "revId": "58c950fa3bfd9db0a22adac2b60328077b72b49f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "417f7518_6a1a1f49",
+        "filename": "arch/arm64/kernel/hw_breakpoint.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1120612
+      },
+      "writtenOn": "2024-12-05T05:27:58Z",
+      "side": 1,
+      "message": "Ah ok, thanks Will, let me try this out. This might be a bit of a blocker for the swap analysis since I was hoping to cover 2GB with each watchpoint due to only having 4 of them. If I have to align the size with the swapped-in page\u0027s base address, I think it might severely limit the area I can monitor at a time :(",
+      "parentUuid": "51a5974b_3a9a9221",
+      "range": {
+        "startLine": 534,
+        "startChar": 0,
+        "endLine": 536,
+        "endChar": 0
+      },
+      "revId": "58c950fa3bfd9db0a22adac2b60328077b72b49f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
