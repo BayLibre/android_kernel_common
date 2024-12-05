@@ -70,6 +70,30 @@
       },
       "revId": "14ef29ec4c65a963df18cb2131780239c2c1446c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1bee53b_23219c66",
+        "filename": "drivers/platform/chrome/cros_ec_typec.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1865564
+      },
+      "writtenOn": "2024-12-05T09:32:14Z",
+      "side": 1,
+      "message": "Ok, I see.\n\nSo in the case, which one of the following actions is required:\n\na) Submit a separate CL (and current CL depends on it) for modifying `common/android/abi_gki_x86_64.stg` in `android15-6.6-desktop`\nb) Submit the stg changes along with this CL",
+      "parentUuid": "c00d48d3_cd791c54",
+      "range": {
+        "startLine": 684,
+        "startChar": 3,
+        "endLine": 684,
+        "endChar": 30
+      },
+      "revId": "14ef29ec4c65a963df18cb2131780239c2c1446c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
