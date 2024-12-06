@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cb7be8c_bf186ed0",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6781,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-06T20:42:53Z",
+      "side": 1,
+      "message": "Yeah, good point. That\u0027s a bad practice and I\u0027m surprised checkpatch doesn\u0027t catch it. I\u0027ve fix this in my pre-v15 tree.",
+      "parentUuid": "e801a198_02023b85",
+      "revId": "d13381b1a1acb08d0dbb12e76b8c393f16382977",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aee975b8_2071b247",
@@ -59,6 +77,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "900ca139_6be2b3e9",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6782,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-06T20:42:53Z",
+      "side": 1,
+      "message": "The trouble is proxy_deactivate() may have called proxy_resched_idle(rq), so we might have idle now setup to be the next task, even if proxy_deactivate() failed. So instead we set it RUNNABLE and return NULL forcing pick_next_task to be run again which hopefully will pick the now unblocked donor.\n\nBut you raise a good issue, that proxy_deactivate() having side-effects in its failure case is not ideal and makes this more subtle.  I\u0027ll see if I can rework this better in v15.",
+      "parentUuid": "aee975b8_2071b247",
+      "range": {
+        "startLine": 6782,
+        "startChar": 2,
+        "endLine": 6782,
+        "endChar": 40
+      },
+      "revId": "d13381b1a1acb08d0dbb12e76b8c393f16382977",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3096575_91817570",
@@ -72,6 +114,30 @@
       "writtenOn": "2024-12-06T13:27:55Z",
       "side": 1,
       "message": "we always return NULL?",
+      "range": {
+        "startLine": 6787,
+        "startChar": 1,
+        "endLine": 6787,
+        "endChar": 13
+      },
+      "revId": "d13381b1a1acb08d0dbb12e76b8c393f16382977",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55627233_3c199d0f",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6787,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-06T20:42:53Z",
+      "side": 1,
+      "message": "Here yes. At this stage in the patch series (note this patch is just the \"initial sketch\"), find_proxy_task() doesn\u0027t really do anything except deactivate the blocked donor task. This point is just helpful to validate we can correctly leave blocked tasks on the runequeue and then deactivate the blocked tasks chosen by pick_next_task().  I\u0027ve clarified this more in the comments in my pre-v15 tree.",
+      "parentUuid": "e3096575_91817570",
       "range": {
         "startLine": 6787,
         "startChar": 1,
