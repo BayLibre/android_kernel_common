@@ -22,6 +22,30 @@
       },
       "revId": "06d75c6d725a878aebb9fb4f94f6069b13beb212",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59ca6d1d_e5c74ec8",
+        "filename": "rust/kernel/error.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-12-06T09:49:45Z",
+      "side": 0,
+      "message": "Yeah, this is due to me not pulling in `commit 1f9ed1725456 (\"rust: start using the #[expect(...)] attribute\")`, which changed `#[allow(dead_code)]` to `#[expect(dead_code)]`. However, this patch just deletes the line that got modified, so I think it should be considered a clean cherry-pick.",
+      "parentUuid": "787a8286_98fb9476",
+      "range": {
+        "startLine": 136,
+        "startChar": 12,
+        "endLine": 136,
+        "endChar": 21
+      },
+      "revId": "06d75c6d725a878aebb9fb4f94f6069b13beb212",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
