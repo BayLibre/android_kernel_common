@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83288a4a_2015ba94",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6812,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2024-12-06T13:38:41Z",
+      "side": 1,
+      "message": "is this truly the only way? something to discuss on the list as well, but this only matters for RT and DL IIUC, so filtering this operation for them would be good as it\u0027s unnecessary hit for FAIR tasks. And maybe we can use migration_disabled() instead?",
+      "range": {
+        "startLine": 6811,
+        "startChar": 1,
+        "endLine": 6812,
+        "endChar": 60
+      },
+      "revId": "c825da0a3ec77381379da69eb04289cbe56f8e83",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
