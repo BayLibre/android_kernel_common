@@ -123,6 +123,24 @@
       "parentUuid": "843e2782_e7febb80",
       "revId": "bd9c4787853af5c93dc7902837996a2850f50c07",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bad6786c_222f2707",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6873,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-06T02:59:14Z",
+      "side": 1,
+      "message": "Backed out the earlier tweaks I made to similar comments so the FROMLIST portion of the series is an exact match to v14 that went out, and I\u0027ll leave this here for now (though I\u0027m happy to remove it since this is an ANDROID: patch).",
+      "parentUuid": "3aa02bca_b86c8a10",
+      "revId": "bd9c4787853af5c93dc7902837996a2850f50c07",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
