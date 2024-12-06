@@ -16,6 +16,70 @@
       "message": "Backed out the tweak I made to the comment so its an exact match to what was sent in v14",
       "revId": "d13381b1a1acb08d0dbb12e76b8c393f16382977",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e801a198_02023b85",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6781,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2024-12-06T13:27:55Z",
+      "side": 1,
+      "message": "nit: I think multi-line (rather than multi-statement) need to be wrapped with curly braces",
+      "parentUuid": "0b3a4b67_63002a5c",
+      "revId": "d13381b1a1acb08d0dbb12e76b8c393f16382977",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aee975b8_2071b247",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6782,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2024-12-06T13:27:55Z",
+      "side": 1,
+      "message": "we don\u0027t need to return the doner if it\u0027s running?",
+      "range": {
+        "startLine": 6782,
+        "startChar": 2,
+        "endLine": 6782,
+        "endChar": 40
+      },
+      "revId": "d13381b1a1acb08d0dbb12e76b8c393f16382977",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3096575_91817570",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6787,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2024-12-06T13:27:55Z",
+      "side": 1,
+      "message": "we always return NULL?",
+      "range": {
+        "startLine": 6787,
+        "startChar": 1,
+        "endLine": 6787,
+        "endChar": 13
+      },
+      "revId": "d13381b1a1acb08d0dbb12e76b8c393f16382977",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
