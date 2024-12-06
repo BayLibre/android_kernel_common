@@ -22,6 +22,30 @@
       },
       "revId": "c825da0a3ec77381379da69eb04289cbe56f8e83",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "084a5bed_a2da383f",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6812,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-06T23:31:20Z",
+      "side": 1,
+      "message": "Yeah. I\u0027m happy to discuss on the list more about this.  Usually w rely on the (singular) current task not being on the rq due to pick_next_task() dequeing it, but now since we may run some other task not chosen by pick_next_task() the chosen task is left on the rq, which puts it at risk for being migrated. So this dequeues and re-enqueues it so the logic that might put it on pushable tasks can avoid doing so.\n\nI\u0027m curious to hear more about what you\u0027re thinking could be done instead?",
+      "parentUuid": "83288a4a_2015ba94",
+      "range": {
+        "startLine": 6811,
+        "startChar": 1,
+        "endLine": 6812,
+        "endChar": 60
+      },
+      "revId": "c825da0a3ec77381379da69eb04289cbe56f8e83",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
