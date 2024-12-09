@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5096248_8a07854e",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3795,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2024-12-09T12:29:40Z",
+      "side": 1,
+      "message": "Could you document what this task is trying to check? It seems if a blocked task has woken up on na CPU it shouldn\u0027t be running on?",
+      "range": {
+        "startLine": 3795,
+        "startChar": 19,
+        "endLine": 3795,
+        "endChar": 37
+      },
+      "revId": "498de7c6984ee0a65d5923f4ee4bea20dc7353fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f4c69ef_eb4b6045",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6887,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2024-12-09T12:29:40Z",
+      "side": 1,
+      "message": "load_balance() tends to hold the two rqs when it migrates tasks. I\u0027m not sure if we can end up with races with load_balance() tries to do something with this task too.\n\nI assume this path can never trigger for a running task right? You intercept the wake up path to force the migration before we enqueue it. Just double checking.\n\nWhat about migrate_disable() sections? Seems out of the scope of this patch, but beside affinity, a task might need to stay on an CPU because it is on migrate_disable() section so we need to ensure it moves back to that CPU when it wakes up.\n\n(sorry have\u0027t looked at later patches yet if this is handled later)",
+      "range": {
+        "startLine": 6886,
+        "startChar": 1,
+        "endLine": 6887,
+        "endChar": 29
+      },
+      "revId": "498de7c6984ee0a65d5923f4ee4bea20dc7353fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
