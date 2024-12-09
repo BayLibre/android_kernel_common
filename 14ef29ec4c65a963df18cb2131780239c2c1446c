@@ -142,6 +142,30 @@
       },
       "revId": "14ef29ec4c65a963df18cb2131780239c2c1446c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47703127_1c900aad",
+        "filename": "drivers/platform/chrome/cros_ec_typec.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 2023081
+      },
+      "writtenOn": "2024-12-09T13:45:44Z",
+      "side": 1,
+      "message": "Actually it can be submitted in another commit (as a bulk) as it\u0027s part of the topic. I think that it was even suggested by Android to do this that way if we intend to cherry-pick the change (and avoid conflicts in the .stg file).\n\nSławek, do you mind merging those 3 commits into the single one?",
+      "parentUuid": "c5011400_befc7fbf",
+      "range": {
+        "startLine": 684,
+        "startChar": 3,
+        "endLine": 684,
+        "endChar": 30
+      },
+      "revId": "14ef29ec4c65a963df18cb2131780239c2c1446c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
