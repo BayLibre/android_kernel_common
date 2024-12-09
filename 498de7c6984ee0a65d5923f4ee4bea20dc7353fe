@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0caa1d8a_28e7fe7f",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3795,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-09T23:16:59Z",
+      "side": 1,
+      "message": "Yeah, basically if the blocked task has been migrated, we want to migrate it back before running it. I\u0027ve add some comments to v15 to explain this better.",
+      "parentUuid": "b5096248_8a07854e",
+      "range": {
+        "startLine": 3795,
+        "startChar": 19,
+        "endLine": 3795,
+        "endChar": 37
+      },
+      "revId": "498de7c6984ee0a65d5923f4ee4bea20dc7353fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f4c69ef_eb4b6045",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-12-09T12:29:40Z",
       "side": 1,
       "message": "load_balance() tends to hold the two rqs when it migrates tasks. I\u0027m not sure if we can end up with races with load_balance() tries to do something with this task too.\n\nI assume this path can never trigger for a running task right? You intercept the wake up path to force the migration before we enqueue it. Just double checking.\n\nWhat about migrate_disable() sections? Seems out of the scope of this patch, but beside affinity, a task might need to stay on an CPU because it is on migrate_disable() section so we need to ensure it moves back to that CPU when it wakes up.\n\n(sorry have\u0027t looked at later patches yet if this is handled later)",
+      "range": {
+        "startLine": 6886,
+        "startChar": 1,
+        "endLine": 6887,
+        "endChar": 29
+      },
+      "revId": "498de7c6984ee0a65d5923f4ee4bea20dc7353fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8f8e46e_61657087",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6887,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-09T23:16:59Z",
+      "side": 1,
+      "message": "So I have run with an mdelay(1) right here between the unlock and lock calls to try to tease out any potential races. So far I\u0027ve not hit anything.\n\nBut I\u0027ll need to look a bit more to see how load_balance might interact. \n\nWe never proxy_migrate_task() on a running task. Its always migrating from the current rq to the target, and we do the curr_in_chain check in find_proxy_task() in order to avoid trying to migrate current (when we do have to proxy_migrate current, we first proxy_resched_idle(), switch to idle\u0027s context, and come back in to migrate the blocked task chain.\n\nAnd yeah, the proxy_needs_return() and the task-\u003eblocked_on_state management makes sure we always return-migrate a proxy-migrated task before we run it.\n\nRegarding migrate_disable() sections, can you clarify what you\u0027re thinking of? I want to make sure I\u0027m not missing something. We do allow the task to be proxy-migrated as needed, but it will be BO_BLOCKED or BO_WAKING, not BO_RUNNABLE so it won\u0027t run, but it may be moved between runqueues in that blocked state. I want to make sure there\u0027s not some other requirement of migrate_disable() that I\u0027m missing that wants to preserve the task on the rq for some other reason.",
+      "parentUuid": "8f4c69ef_eb4b6045",
       "range": {
         "startLine": 6886,
         "startChar": 1,
