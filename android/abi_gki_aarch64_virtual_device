@@ -305,8 +305,11 @@
   param_ops_uint
   passthru_features_check
   pci_bus_type
+  pci_iomap_range
   pci_release_region
+  pci_release_selected_regions
   pci_request_region
+  pci_request_selected_regions
   __per_cpu_offset
   perf_trace_buf_alloc
   perf_trace_run_bpf_submit
@@ -1097,6 +1100,7 @@
   kthread_stop_put
   platform_bus
   sockfd_lookup
+  strchr
   sysfs_create_group
   sysfs_remove_group
   usb_speed_string
@@ -1329,10 +1333,20 @@
 # required by virtio_snd.ko
   snd_card_free
   snd_card_new
+  snd_card_register
+  snd_ctl_add
+  snd_ctl_new1
+  snd_ctl_notify
   snd_jack_new
   snd_jack_report
   snd_pcm_add_chmap_ctls
+  snd_pcm_format_physical_width
+  snd_pcm_hw_constraint_integer
   snd_pcm_lib_ioctl
+  snd_pcm_new
+  snd_pcm_period_elapsed
+  snd_pcm_set_managed_buffer_all
+  snd_pcm_set_ops
   wait_for_completion_interruptible_timeout
 
 # required by virtual-cpufreq.ko
@@ -1415,11 +1429,13 @@
   blk_mq_free_tag_set
   blk_mq_freeze_queue
   blk_mq_map_queues
+  blk_mq_quiesce_queue
   blk_mq_requeue_request
   blk_mq_start_request
   blk_mq_start_stopped_hw_queues
   blk_mq_stop_hw_queue
   blk_mq_unfreeze_queue
+  blk_mq_unquiesce_queue
   blk_mq_virtio_map_queues
   blk_queue_alignment_offset
   blk_queue_chunk_sectors
@@ -1445,9 +1461,16 @@
   cdev_alloc
   cdev_del
   __ClearPageMovable
+  cpufreq_cpu_get
+  cpufreq_cpu_put
+  cpu_scale
   del_gendisk
   device_add_disk
   device_destroy
+  dev_pm_opp_free_cpufreq_table
+  dev_pm_opp_get_opp_count
+  dev_pm_opp_init_cpufreq_table
+  dev_pm_opp_of_add_table
   disk_set_zoned
   fasync_helper
   get_device
@@ -1465,6 +1488,8 @@
   page_relinquish
   page_reporting_register
   page_reporting_unregister
+  page_shift_compat
+  page_shift_compat_enabled
   pci_alloc_irq_vectors_affinity
   pci_device_is_present
   pci_disable_sriov
@@ -1498,6 +1523,7 @@
   __splice_from_pipe
   string_get_size
   __sysfs_match_string
+  topology_update_thermal_pressure
   unlock_page
   unregister_blkdev
   __unregister_chrdev
