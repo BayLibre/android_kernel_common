@@ -2495,3 +2495,83 @@ int host_stage2_get_leaf(phys_addr_t phys, kvm_pte_t *ptep, s8 *level)
 
 	return ret;
 }
+
+u64 __pkvm_ptdump_get_config(pkvm_handle_t handle, enum pkvm_ptdump_ops op)
+{
+	struct pkvm_hyp_vm *vm;
+	u64 ret = 0;
+
+	vm = get_pkvm_hyp_vm(handle);
+	if (!vm)
+		return -EINVAL;
+
+	if (op == PKVM_PTDUMP_GET_LEVEL)
+		ret = vm->pgt.start_level;
+	else
+		ret = vm->pgt.ia_bits;
+
+	put_pkvm_hyp_vm(vm);
+	return ret;
+}
+
+struct pkvm_ptdump_data {
+	void *hyp_va_buff;
+	u64 write_index;
+};
+
+static int pkvm_ptdump_walker(const struct kvm_pgtable_visit_ctx *ctx,
+			      enum kvm_pgtable_walk_flags visit)
+{
+	struct pkvm_ptdump_data *data = ctx->arg;
+	struct pkvm_ptdump_log *log = (struct pkvm_ptdump_log *)(data->hyp_va_buff + data->write_index);
+
+	if (data->write_index + sizeof(struct pkvm_ptdump_log) >= PAGE_SIZE)
+		return -ENOMEM;
+
+	log->addr = ctx->addr;
+	log->level = ctx->level;
+	log->pte = ctx->old;
+
+	data->write_index += sizeof(struct pkvm_ptdump_log);
+	return 0;
+}
+
+u64 __pkvm_ptdump_walk_range(pkvm_handle_t handle, u64 addr, size_t nr_pages, u64 log_pfn)
+{
+	struct pkvm_hyp_vm *vm;
+	struct kvm_pgtable *pgt;
+	struct pkvm_ptdump_data data;
+	int ret;
+
+	struct kvm_pgtable_walker walker = {
+		.cb     = pkvm_ptdump_walker,
+		.flags  = KVM_PGTABLE_WALK_LEAF,
+		.arg    = &data,
+	};
+
+	vm = get_pkvm_hyp_vm(handle);
+	if (!vm)
+		return -EINVAL;
+
+	data.hyp_va_buff = hyp_phys_to_virt(log_pfn << PAGE_SHIFT);
+	data.write_index = 0;
+
+	ret = hyp_pin_shared_mem(data.hyp_va_buff, data.hyp_va_buff + PAGE_SIZE);
+	if (ret) {
+		put_pkvm_hyp_vm(vm);
+		return ret;
+	}
+
+	pgt = &vm->pgt;
+	host_lock_component();
+	guest_lock_component(vm);
+
+	kvm_pgtable_walk(pgt, addr, nr_pages * PAGE_SIZE, &walker);
+
+	guest_unlock_component(vm);
+	host_unlock_component();
+
+	hyp_unpin_shared_mem(data.hyp_va_buff, data.hyp_va_buff + PAGE_SIZE);
+	put_pkvm_hyp_vm(vm);
+	return data.write_index;
+}
