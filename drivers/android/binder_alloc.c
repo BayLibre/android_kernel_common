@@ -218,12 +218,158 @@ static void binder_lru_freelist_add(struct binder_alloc *alloc,
 	}
 }
 
+<<<<<<< HEAD   (dad6868f0c118913906b24f2bc7b56f73fd3dd62 ANDROID: Move SCX_OPS_DISABLING VH inside the scx_fork_rwsem)
+||||||| BASE   (24054c83eff937c6e8819c1206e817c62787c334 UPSTREAM: binder: replace alloc->vma with alloc->mapped)
+static inline
+void binder_alloc_set_mapped(struct binder_alloc *alloc, bool state)
+{
+	/* pairs with smp_load_acquire in binder_alloc_is_mapped() */
+	smp_store_release(&alloc->mapped, state);
+}
+
+static inline bool binder_alloc_is_mapped(struct binder_alloc *alloc)
+{
+	/* pairs with smp_store_release in binder_alloc_set_mapped() */
+	return smp_load_acquire(&alloc->mapped);
+}
+
+static struct page *binder_page_alloc(struct binder_alloc *alloc,
+				      unsigned long index)
+{
+	struct binder_shrinker_mdata *mdata;
+	struct page *page;
+
+	page = alloc_page(GFP_KERNEL | __GFP_HIGHMEM | __GFP_ZERO);
+	if (!page)
+		return NULL;
+
+	/* allocate and install shrinker metadata under page->private */
+	mdata = kzalloc(sizeof(*mdata), GFP_KERNEL);
+	if (!mdata) {
+		__free_page(page);
+		return NULL;
+	}
+
+	mdata->alloc = alloc;
+	mdata->page_index = index;
+	INIT_LIST_HEAD(&mdata->lru);
+	set_page_private(page, (unsigned long)mdata);
+
+	return page;
+}
+
+static void binder_free_page(struct page *page)
+{
+	kfree((struct binder_shrinker_mdata *)page_private(page));
+	__free_page(page);
+}
+
+=======
+static inline
+void binder_alloc_set_mapped(struct binder_alloc *alloc, bool state)
+{
+	/* pairs with smp_load_acquire in binder_alloc_is_mapped() */
+	smp_store_release(&alloc->mapped, state);
+}
+
+static inline bool binder_alloc_is_mapped(struct binder_alloc *alloc)
+{
+	/* pairs with smp_store_release in binder_alloc_set_mapped() */
+	return smp_load_acquire(&alloc->mapped);
+}
+
+static struct page *binder_page_lookup(struct binder_alloc *alloc,
+				       unsigned long addr)
+{
+	struct mm_struct *mm = alloc->mm;
+	struct page *page;
+	long npages = 0;
+
+	/*
+	 * Find an existing page in the remote mm. If missing,
+	 * don't attempt to fault-in just propagate an error.
+	 */
+	mmap_read_lock(mm);
+	if (binder_alloc_is_mapped(alloc))
+		npages = get_user_pages_remote(mm, addr, 1, FOLL_NOFAULT,
+					       &page, NULL);
+	mmap_read_unlock(mm);
+
+	return npages > 0 ? page : NULL;
+}
+
+static int binder_page_insert(struct binder_alloc *alloc,
+			      unsigned long addr,
+			      struct page *page)
+{
+	struct mm_struct *mm = alloc->mm;
+	struct vm_area_struct *vma;
+	int ret = -ESRCH;
+
+	/* attempt per-vma lock first */
+	vma = lock_vma_under_rcu(mm, addr);
+	if (vma) {
+		if (binder_alloc_is_mapped(alloc))
+			ret = vm_insert_page(vma, addr, page);
+		vma_end_read(vma);
+		return ret;
+	}
+
+	/* fall back to mmap_lock */
+	mmap_read_lock(mm);
+	vma = vma_lookup(mm, addr);
+	if (vma && binder_alloc_is_mapped(alloc))
+		ret = vm_insert_page(vma, addr, page);
+	mmap_read_unlock(mm);
+
+	return ret;
+}
+
+static struct page *binder_page_alloc(struct binder_alloc *alloc,
+				      unsigned long index)
+{
+	struct binder_shrinker_mdata *mdata;
+	struct page *page;
+
+	page = alloc_page(GFP_KERNEL | __GFP_HIGHMEM | __GFP_ZERO);
+	if (!page)
+		return NULL;
+
+	/* allocate and install shrinker metadata under page->private */
+	mdata = kzalloc(sizeof(*mdata), GFP_KERNEL);
+	if (!mdata) {
+		__free_page(page);
+		return NULL;
+	}
+
+	mdata->alloc = alloc;
+	mdata->page_index = index;
+	INIT_LIST_HEAD(&mdata->lru);
+	set_page_private(page, (unsigned long)mdata);
+
+	return page;
+}
+
+static void binder_free_page(struct page *page)
+{
+	kfree((struct binder_shrinker_mdata *)page_private(page));
+	__free_page(page);
+}
+
+>>>>>>> CHANGE (1573293d5d17e791fb3a4b556199f3574dfdeeba UPSTREAM: binder: use per-vma lock in page installation)
 static int binder_install_single_page(struct binder_alloc *alloc,
 				      struct binder_lru_page *lru_page,
 				      unsigned long addr)
 {
 	struct page *page;
+<<<<<<< HEAD   (dad6868f0c118913906b24f2bc7b56f73fd3dd62 ANDROID: Move SCX_OPS_DISABLING VH inside the scx_fork_rwsem)
 	int ret = 0;
+||||||| BASE   (24054c83eff937c6e8819c1206e817c62787c334 UPSTREAM: binder: replace alloc->vma with alloc->mapped)
+	long npages;
+	int ret;
+=======
+	int ret;
+>>>>>>> CHANGE (1573293d5d17e791fb3a4b556199f3574dfdeeba UPSTREAM: binder: use per-vma lock in page installation)
 
 	if (!mmget_not_zero(alloc->mm))
 		return -ESRCH;
@@ -249,17 +395,85 @@ static int binder_install_single_page(struct binder_alloc *alloc,
 		goto out;
 	}
 
+<<<<<<< HEAD   (dad6868f0c118913906b24f2bc7b56f73fd3dd62 ANDROID: Move SCX_OPS_DISABLING VH inside the scx_fork_rwsem)
 	ret = vm_insert_page(alloc->vma, addr, page);
 	if (ret) {
+||||||| BASE   (24054c83eff937c6e8819c1206e817c62787c334 UPSTREAM: binder: replace alloc->vma with alloc->mapped)
+	mmap_read_lock(alloc->mm);
+	vma = vma_lookup(alloc->mm, addr);
+	if (!vma || !binder_alloc_is_mapped(alloc)) {
+		binder_free_page(page);
+		pr_err("%d: %s failed, no vma\n", alloc->pid, __func__);
+		ret = -ESRCH;
+		goto unlock;
+	}
+
+	ret = vm_insert_page(vma, addr, page);
+	switch (ret) {
+	case -EBUSY:
+		/*
+		 * EBUSY is ok. Someone installed the pte first but the
+		 * alloc->pages[index] has not been updated yet. Discard
+		 * our page and look up the one already installed.
+		 */
+		ret = 0;
+		binder_free_page(page);
+		npages = get_user_pages_remote(alloc->mm, addr, 1,
+					       FOLL_NOFAULT, &page, NULL);
+		if (npages <= 0) {
+			pr_err("%d: failed to find page at offset %lx\n",
+			       alloc->pid, addr - alloc->buffer);
+			ret = -ESRCH;
+			break;
+		}
+		fallthrough;
+	case 0:
+		/* Mark page installation complete and safe to use */
+		binder_set_installed_page(alloc, index, page);
+		break;
+	default:
+		binder_free_page(page);
+=======
+	ret = binder_page_insert(alloc, addr, page);
+	switch (ret) {
+	case -EBUSY:
+		/*
+		 * EBUSY is ok. Someone installed the pte first but the
+		 * alloc->pages[index] has not been updated yet. Discard
+		 * our page and look up the one already installed.
+		 */
+		ret = 0;
+		binder_free_page(page);
+		page = binder_page_lookup(alloc, addr);
+		if (!page) {
+			pr_err("%d: failed to find page at offset %lx\n",
+			       alloc->pid, addr - alloc->buffer);
+			ret = -ESRCH;
+			break;
+		}
+		fallthrough;
+	case 0:
+		/* Mark page installation complete and safe to use */
+		binder_set_installed_page(alloc, index, page);
+		break;
+	default:
+		binder_free_page(page);
+>>>>>>> CHANGE (1573293d5d17e791fb3a4b556199f3574dfdeeba UPSTREAM: binder: use per-vma lock in page installation)
 		pr_err("%d: %s failed to insert page at offset %lx with %d\n",
 		       alloc->pid, __func__, addr - alloc->buffer, ret);
 		__free_page(page);
 		ret = -ENOMEM;
 		goto out;
 	}
+<<<<<<< HEAD   (dad6868f0c118913906b24f2bc7b56f73fd3dd62 ANDROID: Move SCX_OPS_DISABLING VH inside the scx_fork_rwsem)
 
 	/* Mark page installation complete and safe to use */
 	binder_set_installed_page(lru_page, page);
+||||||| BASE   (24054c83eff937c6e8819c1206e817c62787c334 UPSTREAM: binder: replace alloc->vma with alloc->mapped)
+unlock:
+	mmap_read_unlock(alloc->mm);
+=======
+>>>>>>> CHANGE (1573293d5d17e791fb3a4b556199f3574dfdeeba UPSTREAM: binder: use per-vma lock in page installation)
 out:
 	mmap_write_unlock(alloc->mm);
 	mmput_async(alloc->mm);
