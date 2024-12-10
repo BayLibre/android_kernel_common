@@ -413,4 +413,26 @@ int __pkvm_topup_hyp_alloc(unsigned long nr_pages);
 	} while (!__ret);						\
 	__ret;								\
 })
+
+enum pkvm_ptdump_ops {
+	PKVM_PTDUMP_GET_LEVEL,
+	PKVM_PTDUMP_GET_RANGE,
+	PKVM_PTDUMP_WALK_RANGE,
+};
+
+struct pkvm_ptdump_log {
+	u64	addr;
+	u64	pte;
+	s8	level;
+};
+
+#define INVALID_PTDUMP_PFN	(BIT(48) - 1)
+
+struct pkvm_ptdump_log_hdr {
+	/* The next page */
+	u64	pfn_next:48;
+	/* The write index in the log page */
+	u64	w_index:16;
+};
+
 #endif	/* __ARM64_KVM_PKVM_H__ */
