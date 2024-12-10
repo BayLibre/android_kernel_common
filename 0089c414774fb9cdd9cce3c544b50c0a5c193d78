@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49b2d1aa_a1874ed9",
+        "filename": "include/linux/thermal.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2024-12-10T12:10:21Z",
+      "side": 1,
+      "message": "This breaks KMI:\n\n```\ntype \u0027struct thermal_zone_device\u0027 changed\n  byte size changed from 1392 to 1424\n  member \u0027struct completion removal\u0027 was added\n  30 members (\u0027struct attribute_group trips_attribute_group\u0027 .. \u0027u64 android_kabi_reserved1\u0027) changed\n    offset changed by 256\n```",
+      "revId": "0089c414774fb9cdd9cce3c544b50c0a5c193d78",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
