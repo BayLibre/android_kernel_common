@@ -405,6 +405,9 @@ DECLARE_HOOK(android_vh_suitable_migration_target_bypass,
 DECLARE_HOOK(android_vh_swap_writepage,
 	TP_PROTO(unsigned long *sis_flags, struct page *page),
 	TP_ARGS(sis_flags, page));
+DECLARE_HOOK(android_vh_tune_fault_around_bytes,
+	TP_PROTO(unsigned long *fault_around_bytes),
+	TP_ARGS(fault_around_bytes));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
