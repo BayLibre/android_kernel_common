@@ -29,6 +29,7 @@
 #include <linux/jiffies.h>
 #include <linux/jump_label.h>
 #include <linux/mdio.h>
+#include <linux/memfd.h>
 #include <linux/miscdevice.h>
 #include <linux/mman.h>
 #include <linux/of_device.h>
