@@ -72,9 +72,17 @@ struct binder_lru_page {
 
 /**
  * struct binder_alloc - per-binder proc state for binder allocator
+<<<<<<< HEAD   (dad6868f0c118913906b24f2bc7b56f73fd3dd62 ANDROID: Move SCX_OPS_DISABLING VH inside the scx_fork_rwsem)
  * @lock:               protects binder_alloc fields
  * @vma:                vm_area_struct passed to mmap_handler
  *                      (invariant after mmap)
+||||||| BASE   (ab4f0cdc37a10ff0896105fe1f2057526df2bac2 BACKPORT: binder: store shrinker metadata under page->privat)
+ * @mutex:              protects binder_alloc fields
+ * @vma:                vm_area_struct passed to mmap_handler
+ *                      (invariant after mmap)
+=======
+ * @mutex:              protects binder_alloc fields
+>>>>>>> CHANGE (24054c83eff937c6e8819c1206e817c62787c334 UPSTREAM: binder: replace alloc->vma with alloc->mapped)
  * @mm:                 copy of task->mm (invariant after open)
  * @buffer:             base of per-proc address space mapped via mmap
  * @buffers:            list of all buffers for this proc
@@ -87,6 +95,8 @@ struct binder_lru_page {
  * @buffer_size:        size of address space specified via mmap
  * @pid:                pid for associated binder_proc (invariant after init)
  * @pages_high:         high watermark of offset in @pages
+ * @mapped:             whether the vm area is mapped, each binder instance is
+ *                      allowed a single mapping throughout its lifetime
  * @oneway_spam_detected: %true if oneway spam detection fired, clear that
  * flag once the async buffer has returned to a healthy state
  *
@@ -96,8 +106,15 @@ struct binder_lru_page {
  * struct binder_buffer objects used to track the user buffers
  */
 struct binder_alloc {
+<<<<<<< HEAD   (dad6868f0c118913906b24f2bc7b56f73fd3dd62 ANDROID: Move SCX_OPS_DISABLING VH inside the scx_fork_rwsem)
 	spinlock_t lock;
 	struct vm_area_struct *vma;
+||||||| BASE   (ab4f0cdc37a10ff0896105fe1f2057526df2bac2 BACKPORT: binder: store shrinker metadata under page->privat)
+	struct mutex mutex;
+	struct vm_area_struct *vma;
+=======
+	struct mutex mutex;
+>>>>>>> CHANGE (24054c83eff937c6e8819c1206e817c62787c334 UPSTREAM: binder: replace alloc->vma with alloc->mapped)
 	struct mm_struct *mm;
 	unsigned long buffer;
 	struct list_head buffers;
@@ -108,6 +125,7 @@ struct binder_alloc {
 	size_t buffer_size;
 	int pid;
 	size_t pages_high;
+	bool mapped;
 	bool oneway_spam_detected;
 	ANDROID_OEM_DATA(1);
 };
