@@ -190,6 +190,30 @@
       },
       "revId": "14ef29ec4c65a963df18cb2131780239c2c1446c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a2aa03f_65830ef4",
+        "filename": "drivers/platform/chrome/cros_ec_typec.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2024-12-10T15:51:18Z",
+      "side": 1,
+      "message": "@gprocida@google.com could you please take a look and give some advice how should we handle it? As I understand the patch which changes the ABI should always contain proper ABI updated (otherwise it doeas not make sense). Here, however, the patch which is going to be merged is not our but it comes from the mailing list, so I was wondering what is the best approach in this case. Should we modify the original patch anyway? If so, should we append `BACKPORT: ` prefix at the beginning of the commit message?\n\nThanks for help in advance.",
+      "parentUuid": "41535f5f_f2e0cf0d",
+      "range": {
+        "startLine": 684,
+        "startChar": 3,
+        "endLine": 684,
+        "endChar": 30
+      },
+      "revId": "14ef29ec4c65a963df18cb2131780239c2c1446c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
