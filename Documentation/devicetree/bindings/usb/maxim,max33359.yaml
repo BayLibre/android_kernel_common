@@ -69,6 +69,13 @@ examples:
                                        PDO_FIXED_DATA_SWAP |
                                        PDO_FIXED_DUAL_ROLE)
                                        PDO_FIXED(9000, 2000, 0)>;
+<<<<<<< HEAD   (7a8bff ANDROID: dissuade people from using some build configs.)
+||||||| BASE
+                sink-bc12-completion-time-ms = <500>;
+=======
+                sink-bc12-completion-time-ms = <500>;
+                pd-revision = /bits/ 8 <0x03 0x01 0x01 0x08>;
+>>>>>>> CHANGE (d0d632 FROMGIT: dt-bindings: connector: Add pd-revision property)
             };
         };
     };
