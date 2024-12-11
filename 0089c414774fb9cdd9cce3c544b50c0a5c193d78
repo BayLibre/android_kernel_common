@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b087919a_9d6d9439",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3232272
+      },
+      "writtenOn": "2024-12-11T15:59:33Z",
+      "side": 1,
+      "message": "Update for the comment point, please help",
+      "revId": "0089c414774fb9cdd9cce3c544b50c0a5c193d78",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49b2d1aa_a1874ed9",
@@ -14,6 +31,24 @@
       "writtenOn": "2024-12-10T12:10:21Z",
       "side": 1,
       "message": "This breaks KMI:\n\n```\ntype \u0027struct thermal_zone_device\u0027 changed\n  byte size changed from 1392 to 1424\n  member \u0027struct completion removal\u0027 was added\n  30 members (\u0027struct attribute_group trips_attribute_group\u0027 .. \u0027u64 android_kabi_reserved1\u0027) changed\n    offset changed by 256\n```",
+      "revId": "0089c414774fb9cdd9cce3c544b50c0a5c193d78",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e022ad0_7cd36848",
+        "filename": "include/linux/thermal.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 3232272
+      },
+      "writtenOn": "2024-12-11T15:59:33Z",
+      "side": 1,
+      "message": "Hi Matthias, \nThere are serious stability(hang/crash) risk in Android15-6.6 branch related to Thermal module and these patches are essential to pass our stability issues. \n\nLinux mainline/K6.6 branch already have these patches. \n\nCan you help suggest if any method or alternative approach to pass KMI checks?\ne.g. can we use ANDROID_KABI_RESERVE(1) for our completion field under \u0027thermal_zone_device\u0027 struct or some other method?\n\nPlease help for the same.\nThank you!",
+      "parentUuid": "49b2d1aa_a1874ed9",
       "revId": "0089c414774fb9cdd9cce3c544b50c0a5c193d78",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
