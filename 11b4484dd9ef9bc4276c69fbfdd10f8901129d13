@@ -22,6 +22,30 @@
       },
       "revId": "11b4484dd9ef9bc4276c69fbfdd10f8901129d13",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e249c68a_6bc3a8ff",
+        "filename": "drivers/iommu/kvm-iommu-stub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2024-12-11T09:51:03Z",
+      "side": 1,
+      "message": "Agree. In such case adding iommu specific compatible (for mtk) as we discussed offline could not be needed since `arm.pkvm.unsafe_iommu` could be set on board level.",
+      "parentUuid": "e4a3fbf8_f8f32474",
+      "range": {
+        "startLine": 34,
+        "startChar": 11,
+        "endLine": 34,
+        "endChar": 34
+      },
+      "revId": "11b4484dd9ef9bc4276c69fbfdd10f8901129d13",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
