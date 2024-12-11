@@ -122,6 +122,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "561eb566_b7b5525a",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-11T16:26:52Z",
+      "side": 1,
+      "message": "Sorry, I\u0027m not sure to follow. here if write_index is negative, you just exit the show right?\n\nAlso if you do the dump in several HVCs, that means the dump is not atomic and the dump can be inconsistent.",
+      "parentUuid": "455e3e7d_0f600dc0",
+      "revId": "e638429db575ac0d4f87f0d61a092859d9812081",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd4fa45f_52e84396",
