@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8d55f74f_8509498a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-11T14:14:59Z",
+      "side": 1,
+      "message": "`Just to clarify: is the lock only on the pointers themselves, or also on the data in the buffers?` - both: when the call is using the `FFA_MAP_RXTX` we end up setting the pointers which keep the hypervisor VAs in the rx/tx.\n\nTX - the channel from the host/guest -\u003e hypervisor -\u003e TZ\nRX - the channel from TZ -\u003e hypervisor -\u003e host/guest\n\nDuring the memory sharing calls all the transactions go through the hypervisors buffers (which is only one RX/TX pair). In other words for (TX - eg MEM_SHARE call) we have to copy the data from the guest/host buffers into the hypervisor buffers (which are mapped in EL3).\nOn the RX part is a bit tricky because we only copy the data coming from EL3 on behalf of a call (eg. memory reclaim).\n\nI don\u0027t know how the buffer ownership will solve this TBH",
+      "parentUuid": "e45e24f7_a9fdb5ee",
+      "revId": "b5de1d48728c1078fbbd58b73e7475f67781ade7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64481b1f_0d05571d",
         "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2024-12-11T01:58:33Z",
       "side": 1,
       "message": "Should this just be one big separate lock?",
+      "revId": "b5de1d48728c1078fbbd58b73e7475f67781ade7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ae8f94d_a205dc42",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-11T14:14:59Z",
+      "side": 1,
+      "message": "I guess this is one way to go and yes there will be lock contention if you have multiple VMs and the host is waiting for the hypervisor buffers lock. For the sake of simplicity I will like to stay with this and improve it in an upcoming patch.",
+      "parentUuid": "64481b1f_0d05571d",
       "revId": "b5de1d48728c1078fbbd58b73e7475f67781ade7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
