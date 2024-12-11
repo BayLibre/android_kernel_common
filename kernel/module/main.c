@@ -1972,8 +1972,54 @@ static int setup_load_info(struct load_info *info, int flags)
 			info->name ?: "(missing .modinfo section or name field)");
 		return -ENOEXEC;
 	}
+<<<<<<< HEAD   (7e96f2 UPSTREAM: cgroup: remove cgroup_rstat_flush_atomic())
 	/* This is temporary: point mod into copy of data. */
 	info->mod = (void *)info->hdr + info->sechdrs[info->index.mod].sh_offset;
+||||||| BASE
+
+	module_license_taint_check(mod, get_modinfo(info, "license"));
+
+	if (get_modinfo(info, "test")) {
+		if (!test_taint(TAINT_TEST))
+			pr_warn("%s: loading test module taints kernel.\n",
+				mod->name);
+		add_taint_module(mod, TAINT_TEST, LOCKDEP_STILL_OK);
+	}
+#ifdef CONFIG_MODULE_SIG
+	mod->sig_ok = info->sig_ok;
+	if (!mod->sig_ok) {
+		pr_notice_once("%s: module verification failed: signature "
+			       "and/or required key missing - tainting "
+			       "kernel\n", mod->name);
+		add_taint_module(mod, TAINT_UNSIGNED_MODULE, LOCKDEP_STILL_OK);
+	}
+#else
+	mod->sig_ok = 0;
+#endif
+=======
+
+	module_license_taint_check(mod, get_modinfo(info, "license"));
+
+	if (get_modinfo(info, "test")) {
+		if (!test_taint(TAINT_TEST))
+			pr_warn("%s: loading test module taints kernel.\n",
+				mod->name);
+		add_taint_module(mod, TAINT_TEST, LOCKDEP_STILL_OK);
+	}
+#ifdef CONFIG_MODULE_SIG
+	mod->sig_ok = info->sig_ok;
+#ifndef CONFIG_MODULE_SIG_PROTECT
+	if (!mod->sig_ok) {
+		pr_notice_once("%s: module verification failed: signature "
+			       "and/or required key missing - tainting "
+			       "kernel\n", mod->name);
+		add_taint_module(mod, TAINT_UNSIGNED_MODULE, LOCKDEP_STILL_OK);
+	}
+#endif
+#else
+	mod->sig_ok = 0;
+#endif
+>>>>>>> CHANGE (23313d ANDROID: GKI: load vendor modules without tainting the kerne)
 
 	/*
 	 * If we didn't load the .modinfo 'name' field earlier, fall back to
