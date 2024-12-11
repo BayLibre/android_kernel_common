@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e45e24f7_a9fdb5ee",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2024-12-11T01:58:33Z",
+      "side": 1,
+      "message": "Just to clarify: is the lock only on the pointers themselves, or also on the data in the buffers?\n\nIf it covers the data, then I\u0027m wondering if only the RX buffer needs to be covered. According to the spec, the TX buffer is owned by the callee/hypervisor until the FF-A call returns, and by the caller/Producer/VM the rest of the time.\n\nWe should also keep track of who owns the RX buffer, but I\u0027m not sure this lock can do that.",
+      "revId": "b5de1d48728c1078fbbd58b73e7475f67781ade7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64481b1f_0d05571d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2024-12-11T01:58:33Z",
+      "side": 1,
+      "message": "Should this just be one big separate lock?",
+      "revId": "b5de1d48728c1078fbbd58b73e7475f67781ade7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
