@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "536459a9_fb40b051",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-11T14:46:25Z",
+      "side": 1,
+      "message": "ptdump does not care about the hardware address. So how about we compress things a bit here with addr? I know it\u0027d be a bit more cumbersome, but then the whole page-table description is more likely to hold on a single page.\n\n```\nstruct pkvm_ptdump_log {\n    u64 addr: 52;\n    bool valid: 1;\n    bool r: 1;\n    bool w: 1;\n    bool xn: 1;\n    /* I don\u0027t believe we use AF */\n    bool blk: 1;\n    enum pkvm_page_state: 2;\n    s8 level;\n};\n```\n\nThis would save 64-bits per buffer entry.\n\nAlso as we know ptdump is a slow operation, we could __packed to save few more bits.\n\nIt would mean though we have to \"deserialize\" it into an original PTE to reuse \"note_page()\"",
+      "revId": "e638429db575ac0d4f87f0d61a092859d9812081",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82702631_74044763",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2539,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-11T14:46:25Z",
+      "side": 1,
+      "message": "\"pfn\" could let us think this is the phys for addr. \n\nProbably having something like \"buffer\" or \"output\" is easier to understand, or even \"log\".",
+      "revId": "e638429db575ac0d4f87f0d61a092859d9812081",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f66142cd_708d475b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2554,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-11T14:46:25Z",
+      "side": 1,
+      "message": "You need to pin this before using it to make sure this isn\u0027t an attack vector.\n\nAlternatively, you could donate_hyp and donate_host ... but at least sharing doesn\u0027t change the page-table so I believe sharing is the right thing to do here!",
+      "revId": "e638429db575ac0d4f87f0d61a092859d9812081",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e3ed490_fb139203",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-11T14:46:25Z",
+      "side": 1,
+      "message": "nit: do not need this \"else\" \n\nditto below",
+      "revId": "e638429db575ac0d4f87f0d61a092859d9812081",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1124840_0cad8149",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-11T14:46:25Z",
+      "side": 1,
+      "message": "what if that HVC returns -ENOMEM? :)\n\nAlso, that would be nice to \"retry\" with a bigger donation for the buffer. I guess it wouldn\u0027t be so surprising we need more than one page to store the entire page-table description, even compressed.",
+      "revId": "e638429db575ac0d4f87f0d61a092859d9812081",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd4fa45f_52e84396",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-11T14:46:25Z",
+      "side": 1,
+      "message": "As this is use only once, perhaps you can avoid this macro and test is_protected_kvm_enabled() directly into kvm_s2_ptdump_create_debugfs()",
+      "revId": "e638429db575ac0d4f87f0d61a092859d9812081",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
