@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4a3fbf8_f8f32474",
+        "filename": "drivers/iommu/kvm-iommu-stub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 2018217
+      },
+      "writtenOn": "2024-12-11T07:12:01Z",
+      "side": 1,
+      "message": "How about gating this by an extra kernel command flag e.g. `arm.pkvm.unsafe_iommu`? This way, we force people to be aware of what they are doing and on our end we can diverge by adding this flag.",
+      "range": {
+        "startLine": 34,
+        "startChar": 11,
+        "endLine": 34,
+        "endChar": 34
+      },
+      "revId": "11b4484dd9ef9bc4276c69fbfdd10f8901129d13",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
