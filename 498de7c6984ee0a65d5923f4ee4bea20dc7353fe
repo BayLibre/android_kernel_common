@@ -93,6 +93,30 @@
       },
       "revId": "498de7c6984ee0a65d5923f4ee4bea20dc7353fe",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf6b2cda_06b5a838",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6887,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2024-12-11T13:40:43Z",
+      "side": 1,
+      "message": "IIRC load_balance() tends to hold the src and target rq in specific order before doing the migration. And I\u0027m not sure, but maybe we need to do the same here.\n\n\u003e Regarding migrate_disable() sections, can you clarify what you\u0027re thinking of?\n\nI think this is unlikely a scenario we hit outside PREEMPT_RT as I don\u0027t recall seeing many users for preempt_disable(). But one of the blocked tasks could be in preempt_disabled() section. And similar to affinity where the chain can migrate to a CPU where it is not supposed to run on, we might need to ensure it moves back to the CPU it was supposed to run on when it wakes up.\n\nI think preempt_disable() is not something we likely hit in Android though.",
+      "parentUuid": "a8f8e46e_61657087",
+      "range": {
+        "startLine": 6886,
+        "startChar": 1,
+        "endLine": 6887,
+        "endChar": 29
+      },
+      "revId": "498de7c6984ee0a65d5923f4ee4bea20dc7353fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
