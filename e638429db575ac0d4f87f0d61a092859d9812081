@@ -104,6 +104,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "455e3e7d_0f600dc0",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-11T16:19:24Z",
+      "side": 1,
+      "message": "If the hvc returns ENOMEM we exit the loop.\n\nI would like to keep it simple and `share` a single page with the hypervisor even though this would require more back and forth through the hvc. Here you can see that I am advancing the range of the walk by looking at the last address from the buffer.",
+      "parentUuid": "a1124840_0cad8149",
+      "revId": "e638429db575ac0d4f87f0d61a092859d9812081",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd4fa45f_52e84396",
