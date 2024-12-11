@@ -142,6 +142,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a45ce4cf_0c39130f",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-11T16:47:22Z",
+      "side": 1,
+      "message": "Yes, if write_index is negative it means something went wrong while walking and we exit this otherwise this tells the number of descriptors stored in the shared buffer.\n\nI think it is important to note that this would be a problem even if you are using a larger memory buffer.",
+      "parentUuid": "561eb566_b7b5525a",
+      "revId": "e638429db575ac0d4f87f0d61a092859d9812081",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd4fa45f_52e84396",
         "filename": "arch/arm64/kvm/ptdump.c",
         "patchSetId": 1
