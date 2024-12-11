@@ -46,6 +46,30 @@
       },
       "revId": "c825da0a3ec77381379da69eb04289cbe56f8e83",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3804b962_e07c3391",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6812,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2024-12-11T13:30:05Z",
+      "side": 1,
+      "message": "Haven\u0027t thought this through, but I\u0027m wondering if putting the task in migration disabled section would suffice to prevent the migration. I think this operation is not necessary for fair tasks and if we can avoid the unnecessary enqueue/dequeue for them that would be preferable.",
+      "parentUuid": "084a5bed_a2da383f",
+      "range": {
+        "startLine": 6811,
+        "startChar": 1,
+        "endLine": 6812,
+        "endChar": 60
+      },
+      "revId": "c825da0a3ec77381379da69eb04289cbe56f8e83",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
