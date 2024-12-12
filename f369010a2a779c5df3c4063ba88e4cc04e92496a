@@ -16,6 +16,24 @@
       "message": "since this is upstream code, can we keep it and just suppress it for GKI builds? Maybe put it under `#ifdef CONFIG_GKI_HACKS_TO_FIX` or something else that indicates that this is a GKI specific change.",
       "revId": "f369010a2a779c5df3c4063ba88e4cc04e92496a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52105f5e_378c0e7b",
+        "filename": "kernel/module/main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2099,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2024-12-12T06:09:26Z",
+      "side": 0,
+      "message": "If we really wanted to get rid of the message, may be reuse the GKI module config (`CONFIG_MODULE_SIG_PROTECT`) as guard to compile it out. Help of that config can also serve as a documentation why it is being compiled out as an added benefit.\n\nhttps://cs.android.com/android/kernel/superproject/+/common-android-mainline:common/kernel/module/Kconfig;l\u003d234",
+      "parentUuid": "0b9543f9_389135d0",
+      "revId": "f369010a2a779c5df3c4063ba88e4cc04e92496a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
