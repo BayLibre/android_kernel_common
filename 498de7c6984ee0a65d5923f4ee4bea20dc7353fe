@@ -117,6 +117,30 @@
       },
       "revId": "498de7c6984ee0a65d5923f4ee4bea20dc7353fe",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68265cc2_d086e2f6",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6887,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-12T05:56:43Z",
+      "side": 1,
+      "message": "So yeah, I think you\u0027re talking about double_lock_balance() which grabs both rqs together (ordering by address, I believe so they avoid ABBA). I think that makes sense when you don\u0027t hold a rq lock and need to aquire both.\n\nBut in our case, we are already holding the current rq lock. So deactivating the task, dropping the rq lock, taking the target_rq lock, activating the task and dropping the target_rq lock seems reasonable here. \n\nThere\u0027s a number of places where the rq locks are taken and released separately in a similar fashion.\n\nActually, one example is active_load_balance_cpu_stop() [https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/sched/fair.c#n11987]is one of those. \n\nIt locks the busiest rq first:[https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/sched/fair.c#n11997], \n\ndeactivates the task:[https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/sched/fair.c#n12043] \n\nReleases the busiest rq lock:\n[https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/sched/fair.c#n12055],\n\nand then calls attach_one_task with the dst rq:\n[https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/sched/fair.c#n12058]\n\nwhich locks it and activates the task on the dst rq:\n[https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/sched/fair.c#n9649]\n\nThe gap you highlight here where we don\u0027t hold either rq and have a deactivated task does look concerning at first, but when the task is deactivated, it calls `WRITE_ONCE(p-\u003eon_rq, TASK_ON_RQ_MIGRATING);` before dequeuing, so the task is marked as in-process of migrating, so other CPUs won\u0027t try to manipulate it.\n\nWrt preempt_disable(), I\u0027m still not sure I understand your point.  My sense is that preempt_disable() is what prevents the current running task from being preempted. So things like the CPU stopper can\u0027t jump in to get that task switched off the CPU until preempt_enable is called. preempt_disable() effectively keeps current on the CPU, so its not a migratable task.\n\nBut again, please do clarify your concerns, as I want to make sure I\u0027m not misunderstanding you or somehow missing something here.",
+      "parentUuid": "bf6b2cda_06b5a838",
+      "range": {
+        "startLine": 6886,
+        "startChar": 1,
+        "endLine": 6887,
+        "endChar": 29
+      },
+      "revId": "498de7c6984ee0a65d5923f4ee4bea20dc7353fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
