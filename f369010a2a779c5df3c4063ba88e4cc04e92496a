@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b9543f9_389135d0",
+        "filename": "kernel/module/main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2099,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-12-12T02:01:27Z",
+      "side": 0,
+      "message": "since this is upstream code, can we keep it and just suppress it for GKI builds? Maybe put it under `#ifdef CONFIG_GKI_HACKS_TO_FIX` or something else that indicates that this is a GKI specific change.",
+      "revId": "f369010a2a779c5df3c4063ba88e4cc04e92496a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
