@@ -40,6 +40,7 @@
 /* Exported common interfaces */
 void call_rcu(struct rcu_head *head, rcu_callback_t func);
 void rcu_barrier_tasks(void);
+void rcu_barrier_tasks_rude(void);
 void synchronize_rcu(void);
 
 struct rcu_gp_oldstate;
@@ -213,6 +214,7 @@ do {									\
 } while (0)
 
 # ifdef CONFIG_TASKS_RUDE_RCU
+void call_rcu_tasks_rude(struct rcu_head *head, rcu_callback_t func);
 void synchronize_rcu_tasks_rude(void);
 void rcu_tasks_rude_torture_stats_print(char *tt, char *tf);
 # endif
