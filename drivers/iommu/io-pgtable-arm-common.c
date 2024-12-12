@@ -535,6 +535,13 @@ static int visit_pgtable_walk(struct io_pgtable_walk_data *walk_data, int lvl,
 	return 0;
 }
 
+static void visit_pgtable_post_table(struct arm_lpae_io_pgtable_walk_data *data,
+				     arm_lpae_iopte *ptep, int lvl)
+{
+	if (data->visit_post_table)
+		data->visit_post_table(data, ptep, lvl);
+}
+
 static int arm_lpae_pgtable_walk(struct io_pgtable_ops *ops, unsigned long iova,
 				 size_t size, struct io_pgtable_walk_common *walker)
 {
@@ -542,6 +549,7 @@ static int arm_lpae_pgtable_walk(struct io_pgtable_ops *ops, unsigned long iova,
 	struct io_pgtable_walk_data walk_data = {
 		.data = walker,
 		.visit = visit_pgtable_walk,
+		.visit_post_table = visit_pgtable_post_table,
 		.addr = iova,
 		.end = iova + size,
 	};
@@ -574,7 +582,12 @@ static int io_pgtable_visit(struct arm_lpae_io_pgtable *data,
 	}
 
 	ptep = iopte_deref(pte, data);
-	return __arm_lpae_iopte_walk(data, walk_data, ptep, lvl + 1);
+	ret = __arm_lpae_iopte_walk(data, walk_data, ptep, lvl + 1);
+
+	if (walk_data->visit_post_table)
+		walk_data->visit_post_table(data, ptep, lvl);
+
+	return ret;
 }
 
 static int __arm_lpae_iopte_walk(struct arm_lpae_io_pgtable *data,
