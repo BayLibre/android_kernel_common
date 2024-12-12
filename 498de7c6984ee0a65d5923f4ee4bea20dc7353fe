@@ -141,6 +141,30 @@
       },
       "revId": "498de7c6984ee0a65d5923f4ee4bea20dc7353fe",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce28ec16_52606315",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 6887,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2024-12-12T22:03:37Z",
+      "side": 1,
+      "message": "Okay. I don\u0027t see a problem with lock holding, but just wanted to make sure you considered that. I don\u0027t claim I know all the subtleties to be honest.\n\nAnd sorry for the typo, I meant migrate_disable(). I don\u0027t think we should encounter this in Android world. We can take this upstream too.",
+      "parentUuid": "68265cc2_d086e2f6",
+      "range": {
+        "startLine": 6886,
+        "startChar": 1,
+        "endLine": 6887,
+        "endChar": 29
+      },
+      "revId": "498de7c6984ee0a65d5923f4ee4bea20dc7353fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
