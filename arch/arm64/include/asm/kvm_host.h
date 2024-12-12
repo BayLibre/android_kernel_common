@@ -1669,4 +1669,23 @@ int kvm_iommu_init_hyp(struct kvm_iommu_ops *hyp_ops,
 int kvm_iommu_init_driver(void);
 void kvm_iommu_remove_driver(void);
 
+struct kvm_iommu_sg {
+	phys_addr_t phys;
+	size_t pgsize;
+	unsigned int pgcount;
+};
+
+static inline struct kvm_iommu_sg *kvm_iommu_sg_alloc(unsigned int nents, gfp_t gfp)
+{
+	return alloc_pages_exact(PAGE_ALIGN(nents * sizeof(struct kvm_iommu_sg)), gfp);
+}
+
+static inline void kvm_iommu_sg_free(struct kvm_iommu_sg *sg, unsigned int nents)
+{
+	free_pages_exact(sg, PAGE_ALIGN(nents * sizeof(struct kvm_iommu_sg)));
+}
+
+int kvm_iommu_share_hyp_sg(struct kvm_iommu_sg *sg, unsigned int nents);
+int kvm_iommu_unshare_hyp_sg(struct kvm_iommu_sg *sg, unsigned int nents);
+
 #endif /* __ARM64_KVM_HOST_H__ */
