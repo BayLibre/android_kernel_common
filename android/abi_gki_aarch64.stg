@@ -340263,6 +340263,17 @@ function {
   parameter_id: 0x6720d32f
 }
 function {
+  id: 0x9a2b6883
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x6720d32f
+  parameter_id: 0x6720d32f
+  parameter_id: 0x6720d32f
+  parameter_id: 0x1d19a9d5
+  parameter_id: 0x94ed3026
+  parameter_id: 0x38264f07
+}
+function {
   id: 0x9a2b6ade
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -365399,6 +365410,73 @@ elf_symbol {
   full_name: "__traceiter_android_vh_sd_setup_unmap_multi_segment"
 }
 elf_symbol {
+<<<<<<< HEAD   (0261db Revert "UPSTREAM: unicode: Don't special case ignorable code)
+||||||| BASE
+  id: 0xa3c925f8
+  name: "__traceiter_android_vh_set_mod_perm_after_init"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xbfda1e54
+  type_id: 0x9b585c8d
+  full_name: "__traceiter_android_vh_set_mod_perm_after_init"
+}
+elf_symbol {
+  id: 0xdb84678c
+  name: "__traceiter_android_vh_set_mod_perm_before_init"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x15d9df64
+  type_id: 0x9b585c8d
+  full_name: "__traceiter_android_vh_set_mod_perm_before_init"
+}
+elf_symbol {
+  id: 0x0b48ad7a
+  name: "__traceiter_android_vh_set_task_comm"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x01b7877e
+  type_id: 0x9bdbdcc4
+  full_name: "__traceiter_android_vh_set_task_comm"
+}
+elf_symbol {
+=======
+  id: 0xe1a703df
+  name: "__traceiter_android_vh_send_signal_locked"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x69e9d8cf
+  type_id: 0x9a2b6883
+  full_name: "__traceiter_android_vh_send_signal_locked"
+}
+elf_symbol {
+  id: 0xa3c925f8
+  name: "__traceiter_android_vh_set_mod_perm_after_init"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xbfda1e54
+  type_id: 0x9b585c8d
+  full_name: "__traceiter_android_vh_set_mod_perm_after_init"
+}
+elf_symbol {
+  id: 0xdb84678c
+  name: "__traceiter_android_vh_set_mod_perm_before_init"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x15d9df64
+  type_id: 0x9b585c8d
+  full_name: "__traceiter_android_vh_set_mod_perm_before_init"
+}
+elf_symbol {
+  id: 0x0b48ad7a
+  name: "__traceiter_android_vh_set_task_comm"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x01b7877e
+  type_id: 0x9bdbdcc4
+  full_name: "__traceiter_android_vh_set_task_comm"
+}
+elf_symbol {
+>>>>>>> CHANGE (edd715 ANDROID: GKI: Update symbol list for vivo)
   id: 0x874fcdb2
   name: "__traceiter_android_vh_set_tsk_need_resched_lazy"
   is_defined: true
@@ -370790,6 +370868,73 @@ elf_symbol {
   full_name: "__tracepoint_android_vh_sd_setup_unmap_multi_segment"
 }
 elf_symbol {
+<<<<<<< HEAD   (0261db Revert "UPSTREAM: unicode: Don't special case ignorable code)
+||||||| BASE
+  id: 0x3fb97a6a
+  name: "__tracepoint_android_vh_set_mod_perm_after_init"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x1ad0cf00
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_set_mod_perm_after_init"
+}
+elf_symbol {
+  id: 0x6ccc064e
+  name: "__tracepoint_android_vh_set_mod_perm_before_init"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x44123a43
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_set_mod_perm_before_init"
+}
+elf_symbol {
+  id: 0x1f07c260
+  name: "__tracepoint_android_vh_set_task_comm"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xc50d6787
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_set_task_comm"
+}
+elf_symbol {
+=======
+  id: 0x3894e481
+  name: "__tracepoint_android_vh_send_signal_locked"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x53990017
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_send_signal_locked"
+}
+elf_symbol {
+  id: 0x3fb97a6a
+  name: "__tracepoint_android_vh_set_mod_perm_after_init"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x1ad0cf00
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_set_mod_perm_after_init"
+}
+elf_symbol {
+  id: 0x6ccc064e
+  name: "__tracepoint_android_vh_set_mod_perm_before_init"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x44123a43
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_set_mod_perm_before_init"
+}
+elf_symbol {
+  id: 0x1f07c260
+  name: "__tracepoint_android_vh_set_task_comm"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xc50d6787
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_set_task_comm"
+}
+elf_symbol {
+>>>>>>> CHANGE (edd715 ANDROID: GKI: Update symbol list for vivo)
   id: 0xb6de2d88
   name: "__tracepoint_android_vh_set_tsk_need_resched_lazy"
   is_defined: true
@@ -430239,6 +430384,17 @@ interface {
   symbol_id: 0xb841c45e
   symbol_id: 0xe3b923c8
   symbol_id: 0x8a2c7656
+<<<<<<< HEAD   (0261db Revert "UPSTREAM: unicode: Don't special case ignorable code)
+||||||| BASE
+  symbol_id: 0xa3c925f8
+  symbol_id: 0xdb84678c
+  symbol_id: 0x0b48ad7a
+=======
+  symbol_id: 0xe1a703df
+  symbol_id: 0xa3c925f8
+  symbol_id: 0xdb84678c
+  symbol_id: 0x0b48ad7a
+>>>>>>> CHANGE (edd715 ANDROID: GKI: Update symbol list for vivo)
   symbol_id: 0x874fcdb2
   symbol_id: 0xaa3f6a65
   symbol_id: 0xa2fe718f
@@ -430838,6 +430994,17 @@ interface {
   symbol_id: 0xff2bccb8
   symbol_id: 0x5d163d02
   symbol_id: 0x5294a07c
+<<<<<<< HEAD   (0261db Revert "UPSTREAM: unicode: Don't special case ignorable code)
+||||||| BASE
+  symbol_id: 0x3fb97a6a
+  symbol_id: 0x6ccc064e
+  symbol_id: 0x1f07c260
+=======
+  symbol_id: 0x3894e481
+  symbol_id: 0x3fb97a6a
+  symbol_id: 0x6ccc064e
+  symbol_id: 0x1f07c260
+>>>>>>> CHANGE (edd715 ANDROID: GKI: Update symbol list for vivo)
   symbol_id: 0xb6de2d88
   symbol_id: 0xd7ceb15f
   symbol_id: 0x923147c1
