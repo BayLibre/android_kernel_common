@@ -97,6 +97,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
 	if (!vma->vm_mm)		/* vdso */
 		return 0;
 
+<<<<<<< HEAD   (753449 Merge 6.6.59 into android-6.6-lts)
 	/*
 	 * Explicitly disabled through madvise or prctl, or some
 	 * architectures may disable THP for some mappings, for
@@ -110,6 +111,24 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
 	 */
 	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED))
 		return 0;
+||||||| BASE
+	/*
+	 * Explicitly disabled through madvise or prctl, or some
+	 * architectures may disable THP for some mappings, for
+	 * example, s390 kvm.
+	 * */
+	if ((vm_flags & VM_NOHUGEPAGE) ||
+	    test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags))
+		return false;
+	/*
+	 * If the hardware/firmware marked hugepage support disabled.
+	 */
+	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED))
+		return false;
+=======
+	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags))
+		return false;
+>>>>>>> BRANCH (9b5aad Linux 6.6.60)
 
 	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
 	if (vma_is_dax(vma))
