@@ -537,8 +537,21 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_calculate_totalreserve_pages);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_madvise_cold_pageout_skip);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rmqueue_pcplist_override_batch);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_group_exit);
+<<<<<<< HEAD   (f5a89c FROMLIST: firmware: arm_scmi: Fix up turbo frequencies selec)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swapmem_gather_init);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swapmem_gather_add_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swapmem_gather_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_oom_swapmem_gather_init);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_oom_swapmem_gather_finish);
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_node_memcgs);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swap_writepage);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_queue_work);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_wake_idle_worker);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_node_memcgs);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swap_writepage);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_queue_work);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_wake_idle_worker);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_send_signal_locked);
+>>>>>>> CHANGE (d7df2f ANDROID: add hook for send signal debug)

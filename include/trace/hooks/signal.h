@@ -14,9 +14,17 @@ DECLARE_HOOK(android_vh_do_send_sig_info,
 DECLARE_HOOK(android_vh_killed_process,
 	TP_PROTO(struct task_struct *killer, struct task_struct *dst, bool *reap),
 	TP_ARGS(killer, dst, reap));
+<<<<<<< HEAD   (f5a89c FROMLIST: firmware: arm_scmi: Fix up turbo frequencies selec)
 DECLARE_HOOK(android_vh_exit_signal,
 	TP_PROTO(struct task_struct *task),
 	TP_ARGS(task));
+||||||| BASE
+=======
+DECLARE_HOOK(android_vh_send_signal_locked,
+	TP_PROTO(int result, int ret, int sig, struct task_struct *t,
+		enum pid_type type, struct kernel_siginfo *info),
+	TP_ARGS(result, ret, sig, t, type, info));
+>>>>>>> CHANGE (d7df2f ANDROID: add hook for send signal debug)
 #endif /* _TRACE_HOOK_SIGNAL_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
