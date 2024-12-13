@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a66bccf7_ab2e67c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1062708
+      },
+      "writtenOn": "2024-12-13T06:22:00Z",
+      "side": 1,
+      "message": "IS \u0027Reviewed-by\u0027 supposed to be added? \nI removed this line in the patch set #3. But if not, let me know and add \u0027Reviewd-by\u0027 as below. \n\n---------------------------------------------------------------------------------\nSome vendor modules will utilize useful parsing and endpoint management\nAPIs to start audio playback/capture.\n\nBug: 264371591\nBug: 381947987\nLink: https://lore.kernel.org/linux-usb/20241106193413.1730413-9-quic_wcheng@quicinc.com/\nChange-Id: Iabb7e4e5bff769ad436fc29d586311084f600cf6\nReviewed-by: Pierre-Louis Bossart \u003cpierre-louis.bossart@linux.intel.com\u003e\nSigned-off-by: Hongseock Kim \u003chongpooh.kim@samsung.com\u003e",
+      "parentUuid": "949e4148_05bb47f2",
+      "revId": "850f2abdfd87aa10f836fbbf3570752e325eee25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc56c73a_93fe5cbc",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-12-12T20:14:58Z",
       "side": 1,
       "message": "Again, the duplicate Signed-off-by is odd because its not in the patch you linked to. Don\u0027t add signed-off-by lines for others, only yourself. \n\nPlease drop this line and ideally add your own Signed-off-by line.",
+      "revId": "850f2abdfd87aa10f836fbbf3570752e325eee25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7a2466a_a2db5e8b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1062708
+      },
+      "writtenOn": "2024-12-13T06:22:00Z",
+      "side": 1,
+      "message": "I\u0027ve replaced the signed-off-by with mine in patch set #3",
+      "parentUuid": "cc56c73a_93fe5cbc",
       "revId": "850f2abdfd87aa10f836fbbf3570752e325eee25",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
