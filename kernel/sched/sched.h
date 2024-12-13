@@ -3278,4 +3278,33 @@ static inline void update_current_exec_runtime(struct task_struct *curr,
 }
 
 extern bool cpu_busy_with_softirqs(int cpu);
+<<<<<<< HEAD   (69e1e941dbe1f38e288a4bbec9c3627248161081 ANDROID: GKI: Update xiaomi symbol list)
+||||||| BASE   (e4f7662aea6a6a3d8015d702b2feb6c0fa18f8bb ANDROID: GKI: Guard dynamic task_struct size feature with co)
+#else
+static inline bool cpu_busy_with_softirqs(int cpu)
+{
+	return false;
+}
+#endif /* CONFIG_RT_SOFTIRQ_AWARE_SCHED */
+
+#ifdef CONFIG_GKI_DYNAMIC_TASK_STRUCT_SIZE
+static inline void *android_task_vendor_data(struct task_struct *p)
+{
+	if (p == &init_task)
+		return &vendor_data_pad[0];
+
+	return p + 1;
+}
+#endif
+
+=======
+#else
+static inline bool cpu_busy_with_softirqs(int cpu)
+{
+	return false;
+}
+#endif /* CONFIG_RT_SOFTIRQ_AWARE_SCHED */
+
+
+>>>>>>> CHANGE (4a373d05c4fcd68b73da4ecef9cbee57cca649bf ANDROID: GKI: Add initial dynamically task vendor size flow)
 #endif /* _KERNEL_SCHED_SCHED_H */
