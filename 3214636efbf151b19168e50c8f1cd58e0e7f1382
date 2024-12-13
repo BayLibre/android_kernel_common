@@ -88,6 +88,24 @@
       "parentUuid": "1a2ffe45_29757173",
       "revId": "3214636efbf151b19168e50c8f1cd58e0e7f1382",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3561f09_3d3ce3b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3522211
+      },
+      "writtenOn": "2024-12-13T23:07:17Z",
+      "side": 1,
+      "message": "Figured it out -- the answer is \"merge more than 200 CLs\". From http://b/379163848:\n\n\u003e Cause message: 400 Bad Request POST https://android-review.googlesource.com/a/projects/kernel%2Fcommon/create.change Topic \u0027am-6882d81ec48744dbbc858f4d1225d50c\u0027 already contains maximum number of allowed changes per \u0027topicLimit\u0027 server config value 200.",
+      "parentUuid": "e0bf42cc_105688fd",
+      "revId": "3214636efbf151b19168e50c8f1cd58e0e7f1382",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
