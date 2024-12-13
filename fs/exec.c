@@ -884,8 +884,15 @@ EXPORT_SYMBOL(transfer_args_to_stack);
  */
 static struct file *do_open_execat(int fd, struct filename *name, int flags)
 {
+<<<<<<< HEAD   (88d805 Merge ad34d9c738fe ("ext4: fix FS_IOC_GETFSMAP handling") in)
 	struct file *file;
 	int err;
+||||||| BASE
+	struct file *file;
+=======
+	int err;
+	struct file *file __free(fput) = NULL;
+>>>>>>> BRANCH (fa10f3 Linux 6.12.2)
 	struct open_flags open_exec_flags = {
 		.open_flag = O_LARGEFILE | O_RDONLY | __FMODE_EXEC,
 		.acc_mode = MAY_EXEC,
@@ -910,18 +917,24 @@ static struct file *do_open_execat(int fd, struct filename *name, int flags)
 	 * an invariant that all non-regular files error out before we get here.
 	 */
 	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode)) ||
-	    path_noexec(&file->f_path)) {
-		fput(file);
+	    path_noexec(&file->f_path))
 		return ERR_PTR(-EACCES);
-	}
 
 	err = deny_write_access(file);
+<<<<<<< HEAD   (88d805 Merge ad34d9c738fe ("ext4: fix FS_IOC_GETFSMAP handling") in)
 	if (err) {
 		fput(file);
 		return ERR_PTR(err);
 	}
 
 	return file;
+||||||| BASE
+=======
+	if (err)
+		return ERR_PTR(err);
+
+	return no_free_ptr(file);
+>>>>>>> BRANCH (fa10f3 Linux 6.12.2)
 }
 
 /**
