@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2207d1b4_265444d0",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2024-12-13T06:00:51Z",
+      "side": 1,
+      "message": "Right, the hypervisor buffers are only shared with the SPMC. According to the spec, the TX buffer is for sending data from the hypervisor to the SPMC, and the RX buffer is for the opposite direction.\n\nYeah I think we don\u0027t need a lock for the RX buffer, as long as the hypervisor calls FFA_RX_RELEASE when it\u0027s done with whatever data it got in the buffer.",
+      "parentUuid": "8d55f74f_8509498a",
+      "revId": "b5de1d48728c1078fbbd58b73e7475f67781ade7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64481b1f_0d05571d",
         "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
         "patchSetId": 1
