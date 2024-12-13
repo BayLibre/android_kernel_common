@@ -24,7 +24,11 @@
 #define NEW_ADDR		((block_t)-1)	/* used as block_t addresses */
 #define COMPRESS_ADDR		((block_t)-2)	/* used as compressed data flag */
 
+<<<<<<< HEAD   (458399 Merge da7df496b899 ("perf trace: Avoid garbage when not prin)
 #define F2FS_BLKSIZE_MASK		(F2FS_BLKSIZE - 1)
+||||||| BASE
+=======
+>>>>>>> BRANCH (ad34d9 ext4: fix FS_IOC_GETFSMAP handling)
 #define F2FS_BYTES_TO_BLK(bytes)	((unsigned long long)(bytes) >> F2FS_BLKSIZE_BITS)
 #define F2FS_BLK_TO_BYTES(blk)		((unsigned long long)(blk) << F2FS_BLKSIZE_BITS)
 #define F2FS_BLK_END_BYTES(blk)		(F2FS_BLK_TO_BYTES(blk + 1) - 1)

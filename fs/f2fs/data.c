@@ -1968,7 +1968,14 @@ next:
 	if (!compr_cluster && !(map.m_flags & F2FS_MAP_FLAGS)) {
 		start_blk = next_pgofs;
 
+<<<<<<< HEAD   (458399 Merge da7df496b899 ("perf trace: Avoid garbage when not prin)
 		if (F2FS_BLK_TO_BYTES(start_blk) < maxbytes)
+||||||| BASE
+		if (blks_to_bytes(inode, start_blk) < blks_to_bytes(inode,
+						max_inode_blocks(inode)))
+=======
+		if (blks_to_bytes(inode, start_blk) < maxbytes)
+>>>>>>> BRANCH (ad34d9 ext4: fix FS_IOC_GETFSMAP handling)
 			goto prep_next;
 
 		flags |= FIEMAP_EXTENT_LAST;
