@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3e8fef62_3c9e5f78",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-13T20:12:20Z",
+      "side": 1,
+      "message": "So with FROMLIST patches, you should be applying the patch from the mailing list (only making slight changes for it to apply), so the commit message should be identical to what is in the list submitted patch. Then you *append* the bug/link/changeid fields along with your signed off by.",
+      "parentUuid": "a66bccf7_ab2e67c1",
+      "revId": "850f2abdfd87aa10f836fbbf3570752e325eee25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc56c73a_93fe5cbc",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "I\u0027ve replaced the signed-off-by with mine in patch set #3",
       "parentUuid": "cc56c73a_93fe5cbc",
+      "revId": "850f2abdfd87aa10f836fbbf3570752e325eee25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea242120_b2f16506",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2024-12-13T20:12:20Z",
+      "side": 1,
+      "message": "No, not replace, you shouldn\u0027t remove anyone\u0027s Signed-off-by, but append yours afterwards.  I was only suggesting droping the duplicate signed-off-by that was added and wasn\u0027t in the patch from the list.",
+      "parentUuid": "b7a2466a_a2db5e8b",
       "revId": "850f2abdfd87aa10f836fbbf3570752e325eee25",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
