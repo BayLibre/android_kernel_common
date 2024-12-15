@@ -87,13 +87,17 @@ static int mmio_guard_ioremap_hook(phys_addr_t phys, size_t size,
 	end = phys + PAGE_ALIGN(size);
 
 	while (phys < end) {
+<<<<<<< HEAD   (39fc9c UPSTREAM: locking: rtmutex: Fix wake_q logic in task_blocks_)
 		const int func_id = ARM_SMCCC_VENDOR_HYP_KVM_MMIO_GUARD_MAP_FUNC_ID;
 		int err;
+||||||| BASE
+		const int func_id = ARM_SMCCC_VENDOR_HYP_KVM_MMIO_GUARD_FUNC_ID;
+		int err;
+=======
+		const int func_id = ARM_SMCCC_VENDOR_HYP_KVM_MMIO_GUARD_FUNC_ID;
+>>>>>>> BRANCH (7143ef Linux 6.12.5)
 
-		err = arm_smccc_do_one_page(func_id, phys);
-		if (err)
-			return err;
-
+		WARN_ON_ONCE(arm_smccc_do_one_page(func_id, phys));
 		phys += PAGE_SIZE;
 	}
 
