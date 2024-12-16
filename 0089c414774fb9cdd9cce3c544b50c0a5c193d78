@@ -51,6 +51,24 @@
       "parentUuid": "49b2d1aa_a1874ed9",
       "revId": "0089c414774fb9cdd9cce3c544b50c0a5c193d78",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38262824_e47e88f8",
+        "filename": "include/linux/thermal.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-12-16T19:09:46Z",
+      "side": 1,
+      "message": "You cannot use KABI reserve since that is exclusively for LTS merges. I\u0027m not an expert on the thermal code, but you can look int this as a way to work around the KMI breakage:\n\n1. Create a new struct to extend `struct thermal_zone_device`:\n```\nstruct ext_thermal_zone_device {\n\tstruct thermal_zone_device tz;\n\tstruct completion removal;\n};\n```\nI don\u0027t see `struct thermal_zone_device` embedded in any other structs, so change the 1 place it is allocated to allocate the additional size (verify that this is the only place):\n```\nstruct thermal_zone_device *\nthermal_zone_device_register_with_trips(...)\n{\n\tstruct thermal_zone_device *tz;\n\tstruct ext_thermal_zone_device *etz;\n\t...\n\tetz \u003d kzalloc(sizeof(*etz), GFP_KERNEL);\n\ttz \u003d \u0026etz-\u003etz;\n\t...\n}\n```\nUse `container_of()` to access the new field:\n```\nstatic void thermal_release(struct device *dev)\n{\n\tstruct thermal_zone_device *tz;\n\tstruct thermal_cooling_device *cdev;\n\n\tif (!strncmp(dev_name(dev), \"thermal_zone\",\n\t\t     sizeof(\"thermal_zone\") - 1)) {\n\t\ttz \u003d to_thermal_zone(dev);\n\t\tthermal_zone_destroy_device_groups(tz);\n\t\tmutex_destroy(\u0026tz-\u003elock);\n\t\tetz \u003d container_of(tz, struct ext_thermal_zone_device, tz);\n\t\tcomplete(\u0026etz-\u003eremoval);\n\t} else if (...)\n\t\t...\n\t}\n}\n```",
+      "parentUuid": "4e022ad0_7cd36848",
+      "revId": "0089c414774fb9cdd9cce3c544b50c0a5c193d78",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
