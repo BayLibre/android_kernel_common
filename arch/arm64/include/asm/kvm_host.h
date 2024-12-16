@@ -587,7 +587,9 @@ struct kvm_vcpu_arch {
 	/* Values of trap registers for the guest. */
 	u64 hcr_el2;
 	u64 mdcr_el2;
-	u64 cptr_el2;
+
+	/* This contained the value of cptr_el2, kept for the KMI. */
+	u64 ___unused_1;
 
 	/* Values of trap registers for the host before guest entry. */
 	u64 mdcr_el2_host;
