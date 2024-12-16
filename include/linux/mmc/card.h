@@ -298,6 +298,13 @@ struct mmc_card {
 #define MMC_QUIRK_BROKEN_HPI	(1<<13)		/* Disable broken HPI support */
 #define MMC_QUIRK_BROKEN_SD_DISCARD	(1<<14)	/* Disable broken SD discard support */
 #define MMC_QUIRK_BROKEN_SD_CACHE	(1<<15)	/* Disable broken SD cache support */
+<<<<<<< HEAD   (5c5666 Merge 749a916a9cd0 ("usb: dwc3: ep0: Don't clear ep0 DWC3_EP)
+||||||| BASE
+#define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
+=======
+#define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
+#define MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY	(1<<17) /* Disable broken SD poweroff notify support */
+>>>>>>> BRANCH (8379d0 mmc: core: Add SD card quirk for broken poweroff notificatio)
 
 	bool			reenable_cmdq;	/* Re-enable Command Queue */
 

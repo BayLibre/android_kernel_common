@@ -82,6 +82,7 @@ struct mmc_fixup {
 #define CID_MANFID_SANDISK_SD   0x3
 #define CID_MANFID_ATP          0x9
 #define CID_MANFID_TOSHIBA      0x11
+#define CID_MANFID_GIGASTONE    0x12
 #define CID_MANFID_MICRON       0x13
 #define CID_MANFID_SAMSUNG      0x15
 #define CID_MANFID_APACER       0x27
@@ -280,4 +281,22 @@ static inline int mmc_card_broken_sd_cache(const struct mmc_card *c)
 	return c->quirks & MMC_QUIRK_BROKEN_SD_CACHE;
 }
 
+<<<<<<< HEAD   (5c5666 Merge 749a916a9cd0 ("usb: dwc3: ep0: Don't clear ep0 DWC3_EP)
+||||||| BASE
+static inline int mmc_card_broken_cache_flush(const struct mmc_card *c)
+{
+	return c->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH;
+}
+=======
+static inline int mmc_card_broken_cache_flush(const struct mmc_card *c)
+{
+	return c->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH;
+}
+
+static inline int mmc_card_broken_sd_poweroff_notify(const struct mmc_card *c)
+{
+	return c->quirks & MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY;
+}
+
+>>>>>>> BRANCH (8379d0 mmc: core: Add SD card quirk for broken poweroff notificatio)
 #endif
