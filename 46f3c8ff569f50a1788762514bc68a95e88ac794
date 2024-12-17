@@ -22,6 +22,30 @@
       },
       "revId": "46f3c8ff569f50a1788762514bc68a95e88ac794",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c729178_06155808",
+        "filename": "android/abi_gki_protected_exports_aarch64",
+        "patchSetId": 8
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1874054
+      },
+      "writtenOn": "2024-12-17T02:25:50Z",
+      "side": 1,
+      "message": "The compilation rules seem to have changed, and a new command has been added: tools/bazel run @@//common:kernel_aarch64_abi_update_protected_exports, which causing the file to be updated automatically. I am trying to figure out the new rules.",
+      "parentUuid": "938d3106_8a670d5e",
+      "range": {
+        "startLine": 461,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 20
+      },
+      "revId": "46f3c8ff569f50a1788762514bc68a95e88ac794",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
