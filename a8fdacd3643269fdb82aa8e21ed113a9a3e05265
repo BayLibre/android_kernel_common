@@ -16,6 +16,24 @@
       "message": "nit: I would also recommend you to just squash this commit with CL:3336778, since it looks like you are just adding some things and immediately deleting them...",
       "revId": "a8fdacd3643269fdb82aa8e21ed113a9a3e05265",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff27a064_49407a31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2024-12-17T02:44:35Z",
+      "side": 1,
+      "message": "Also, please consider splitting the change into multiple based on subsystems. Each change can explain in the commit message why these private headers need to be exposed (e.g. \"Add additional thermal headers to the unsafe list which are needed by vendor thermal drivers.\"). With that, it is easier to keep track when we look at the Git history. Thank you!",
+      "parentUuid": "fd12a5b7_2fc08efb",
+      "revId": "a8fdacd3643269fdb82aa8e21ed113a9a3e05265",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
