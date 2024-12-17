@@ -263,6 +263,40 @@ common_kernel(
     visibility = ["//visibility:public"],
 )
 
+common_kernel(
+    name = "kernel_aarch64_autofdo",
+    outs = DEFAULT_GKI_OUTS,
+    arch = "arm64",
+    build_config = ":build.config.gki.aarch64_generated",
+    build_gki_artifacts = True,
+    clang_autofdo_profile = "//toolchain/pgo-profiles/kernel:aarch64/6.12.0/kernel.afdo",
+    ddk_headers_archive = ":kernel_aarch64_ddk_headers_archive",
+    ddk_module_headers = [":all_headers_aarch64"],
+    defconfig = "arch/arm64/configs/gki_defconfig",
+    extra_dist = [
+        ":test_mappings_zip",
+        ":tests_zip_arm64",
+    ],
+    gki_boot_img_sizes = _GKI_AARCH64_BOOT_IMAGE_SIZES,
+    gki_system_dlkm_modules = ":gki_system_dlkm_modules_arm64",
+    make_goals = _GKI_AARCH64_MAKE_GOALS,
+    makefile = ":Makefile",
+    module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64"),
+    visibility = ["//visibility:public"],
+
+    # Symbol lists and module lists
+    # kmi_symbol_list = None,
+    # additional_kmi_symbol_lists = [],
+    # kmi_symbol_list_strict_mode = False,
+    # protected_exports_list = None,
+    # protected_modules_list = None,
+    # trim_nonlisted_kmi = False,
+
+    # ABI
+    # abi_definition_stg = None,
+    # kmi_enforced = False,
+)
+
 # Temp target to fork form build.config.gki.x86_64 which may potentially be
 # used elsewhere.
 # TODO(b/236012223): Delete this once we have build-config-less builds for GKI.
