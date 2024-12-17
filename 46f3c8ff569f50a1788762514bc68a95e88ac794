@@ -46,6 +46,30 @@
       },
       "revId": "46f3c8ff569f50a1788762514bc68a95e88ac794",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90a35268_4b4cece3",
+        "filename": "android/abi_gki_protected_exports_aarch64",
+        "patchSetId": 8
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2024-12-17T19:09:49Z",
+      "side": 1,
+      "message": "This looks like getting added due to rcent conversion of the `virtio-pci` from unprotected to protected. Protected exports list needs to be upto date as there is a check for it in the ABI update command. Not sure, check is now replaced with the update command but overall this looks OK.\n\n@umendez@google.com @sidnayyar@google.com @gprocida@google.com for viz ^^^",
+      "parentUuid": "4c729178_06155808",
+      "range": {
+        "startLine": 461,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 20
+      },
+      "revId": "46f3c8ff569f50a1788762514bc68a95e88ac794",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
