@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "770c18c0_d5f7922b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-18T12:59:15Z",
+      "side": 1,
+      "message": "For simplicity I will keep this patch as it is but I agree with you that there is room for improvement here. I am a bit nervous TBH to rely on the `FFA_RX_RELEASE` to do the proper thing.",
+      "parentUuid": "2207d1b4_265444d0",
+      "revId": "b5de1d48728c1078fbbd58b73e7475f67781ade7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64481b1f_0d05571d",
