@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c89cf4cc_82ed3995",
+        "filename": "arch/arm64/Kconfig",
+        "patchSetId": 4
+      },
+      "lineNbr": 2481,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-12-18T09:40:26Z",
+      "side": 1,
+      "message": "It would make sense to select ARCH_HAS_CC_PLATFORM on HYPERVISOR_GUEST, rather than the more specific HARDENED_GUEST. Parts of the CC platform can then depend on HARDENED_GUEST being configured.",
+      "revId": "9a544c36c38e8d04f467d88e40bdf4d1a239ac86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d4ec7f5_cbbf8e92",
+        "filename": "arch/arm64/coco/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2024-12-18T09:40:26Z",
+      "side": 1,
+      "message": "Should provide empty cc_platform_set and cc_platform_clear to complete the API?",
+      "revId": "9a544c36c38e8d04f467d88e40bdf4d1a239ac86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
