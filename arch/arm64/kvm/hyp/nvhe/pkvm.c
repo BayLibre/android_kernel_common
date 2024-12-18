@@ -1761,5 +1761,5 @@ u32 hyp_vcpu_to_ffa_handle(struct pkvm_hyp_vcpu *hyp_vcpu)
 		return HOST_FFA_ID;
 
 	vm_handle = hyp_vcpu->vcpu.kvm->arch.pkvm.handle;
-	return vm_handle_to_idx(vm_handle) + 1;
+	return vm_handle_to_idx(vm_handle) + 1 + HOST_FFA_ID;
 }
