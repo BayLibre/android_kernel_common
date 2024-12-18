@@ -12,11 +12,9 @@
 #define FFA_MIN_FUNC_NUM 0x60
 #define FFA_MAX_FUNC_NUM 0xFF
 
-/*
- * "ID value 0 must be returned at the Non-secure physical FF-A instance"
- * We share this ID with the host.
- */
-#define HOST_FFA_ID	0
+#define HYP_FFA_ID	0
+#define HOST_FFA_ID	1
+#define IS_HOST_HANDLE(handle)		((handle) == HOST_FFA_ID)
 
 struct ffa_mem_transfer {
 	struct list_head node;
