@@ -1760,6 +1760,7 @@ u32 hyp_vcpu_to_ffa_handle(struct pkvm_hyp_vcpu *hyp_vcpu)
 	if (!hyp_vcpu)
 		return HOST_FFA_ID;
 
+	BUILD_BUG_ON(KVM_MAX_PVMS + HOST_FFA_ID > U16_MAX);
 	vm_handle = hyp_vcpu->vcpu.kvm->arch.pkvm.handle;
-	return vm_handle_to_idx(vm_handle) + 1;
+	return vm_handle_to_idx(vm_handle) + 1 + HOST_FFA_ID;
 }
