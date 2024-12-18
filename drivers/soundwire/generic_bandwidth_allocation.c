@@ -170,6 +170,7 @@ static void _sdw_compute_port_params(struct sdw_bus *bus,
 }
 
 static int sdw_compute_group_params(struct sdw_bus *bus,
+				    struct sdw_stream_runtime *stream,
 				    struct sdw_group_params *params,
 				    struct sdw_group *group)
 {
@@ -316,8 +317,9 @@ static int sdw_get_group_count(struct sdw_bus *bus,
  * sdw_compute_port_params: Compute transport and port parameters
  *
  * @bus: SDW Bus instance
+ * @stream: Soundwire stream
  */
-static int sdw_compute_port_params(struct sdw_bus *bus)
+static int sdw_compute_port_params(struct sdw_bus *bus, struct sdw_stream_runtime *stream)
 {
 	struct sdw_group_params *params = NULL;
 	struct sdw_group group;
@@ -337,7 +339,7 @@ static int sdw_compute_port_params(struct sdw_bus *bus)
 	}
 
 	/* Compute transport parameters for grouped streams */
-	ret = sdw_compute_group_params(bus, params, &group);
+	ret = sdw_compute_group_params(bus, stream, params, &group);
 	if (ret < 0)
 		goto free_params;
 
@@ -446,8 +448,9 @@ static int sdw_compute_bus_params(struct sdw_bus *bus)
  * sdw_compute_params: Compute bus, transport and port parameters
  *
  * @bus: SDW Bus instance
+ * @stream: Soundwire stream
  */
-int sdw_compute_params(struct sdw_bus *bus)
+int sdw_compute_params(struct sdw_bus *bus, struct sdw_stream_runtime *stream)
 {
 	int ret;
 
@@ -457,7 +460,7 @@ int sdw_compute_params(struct sdw_bus *bus)
 		return ret;
 
 	/* Compute transport and port params */
-	ret = sdw_compute_port_params(bus);
+	ret = sdw_compute_port_params(bus, stream);
 	if (ret < 0) {
 		dev_err(bus->dev, "Compute transport params failed: %d\n", ret);
 		return ret;
