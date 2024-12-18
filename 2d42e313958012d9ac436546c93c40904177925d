@@ -34,6 +34,24 @@
       "parentUuid": "a8dc0671_e4873db4",
       "revId": "2d42e313958012d9ac436546c93c40904177925d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdbf4db7_aab79262",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2024-12-18T18:32:40Z",
+      "side": 1,
+      "message": "I\u0027m not saying there is a logical dependency. The fact is the cherry-pick does not apply cleanly here because missing commit `310c8387c638` changes the context and because you had to resolve such conflicts that warrants a BACKPORT tag.",
+      "parentUuid": "be6904bc_9c04f517",
+      "revId": "2d42e313958012d9ac436546c93c40904177925d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
