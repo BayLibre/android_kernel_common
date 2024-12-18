@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b983628_e26dc649",
+        "filename": "android/abi_gki_protected_exports_aarch64",
+        "patchSetId": 5
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2024-12-18T18:52:14Z",
+      "side": 1,
+      "message": "I guess these are needed to enable CONFIG_TLS as a GKI module. I followed the instructions here: https://source.android.com/docs/core/architecture/kernel/convert-or-add#configure-new\n\nThese were added after running `tools/bazel run //common:kernel_aarch64_abi_update_protected_exports`",
+      "parentUuid": "3c919a43_ce6fe644",
+      "revId": "aba0adbbf67466281acdd158d849301eaced1796",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2f9728ff_b5c4368b",
         "filename": "net/tls/Kconfig",
         "patchSetId": 5
@@ -31,6 +49,24 @@
       "writtenOn": "2024-12-18T18:45:54Z",
       "side": 1,
       "message": "Fix indentation to suppress the KernelCheckPatch warning.",
+      "revId": "aba0adbbf67466281acdd158d849301eaced1796",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b6ab07a_19a6fac8",
+        "filename": "net/tls/Kconfig",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2024-12-18T18:52:14Z",
+      "side": 1,
+      "message": "Indenting is correct. I need to check what the error is. Maybe number of lines for the help message?",
+      "parentUuid": "2f9728ff_b5c4368b",
       "revId": "aba0adbbf67466281acdd158d849301eaced1796",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
