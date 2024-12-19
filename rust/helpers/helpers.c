@@ -15,6 +15,7 @@
 #include "err.c"
 #include "fs.c"
 #include "jump_label.c"
+#include "io.c"
 #include "kunit.c"
 #include "mutex.c"
 #include "page.c"
