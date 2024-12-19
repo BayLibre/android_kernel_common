@@ -537,6 +537,17 @@ int pwm_apply_state(struct pwm_device *pwm, const struct pwm_state *state)
 }
 EXPORT_SYMBOL_GPL(pwm_apply_state);
 
+/*
+ * pwm_apply_might_sleep() - atomically apply a new state to a PWM device
+ * @pwm: PWM device
+ * @state: new state to apply
+ */
+int  pwm_apply_might_sleep(struct pwm_device *pwm, const struct pwm_state *state)
+{
+	return pwm_apply_state(pwm, state);
+}
+EXPORT_SYMBOL_GPL(pwm_apply_might_sleep);
+
 /**
  * pwm_capture() - capture and report a PWM signal
  * @pwm: PWM device
