@@ -99,6 +99,7 @@ extern int shmem_zero_setup(struct vm_area_struct *);
 extern unsigned long shmem_get_unmapped_area(struct file *, unsigned long addr,
 		unsigned long len, unsigned long pgoff, unsigned long flags);
 extern int shmem_lock(struct file *file, int lock, struct ucounts *ucounts);
+extern int shmem_mmap(struct file *file, struct vm_area_struct *vma);
 #ifdef CONFIG_SHMEM
 bool shmem_mapping(struct address_space *mapping);
 #else
