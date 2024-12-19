@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ac187f23_12c0d728",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-19T11:45:56Z",
+      "side": 1,
+      "message": "Yes but we will have to zero out the page after each retry, with this field I am avoiding this.",
+      "parentUuid": "28803bfc_37f385af",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bae9f2fe_f2020f3e",
         "filename": "arch/arm64/kvm/ptdump.c",
         "patchSetId": 4
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fd1413be_15622481",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-19T11:45:56Z",
+      "side": 1,
+      "message": "sure, we can adjust this number as we need. I didn\u0027t want to keep a separate field to keep track of the number of allocated pages but I can introduce this. Are you ok with this ?",
+      "parentUuid": "bae9f2fe_f2020f3e",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7be1f581_8710dd02",
         "filename": "arch/arm64/kvm/ptdump.c",
         "patchSetId": 4
@@ -48,6 +84,24 @@
       "writtenOn": "2024-12-19T10:56:31Z",
       "side": 1,
       "message": "Have you considered a memcache here?",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3181e4ef_d8407a8a",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-19T11:45:56Z",
+      "side": 1,
+      "message": "Yes, in fact the previous version(from android15) was written using a memcache. There are some fields that I don\u0027t need from that structure and the chain is preserved.",
+      "parentUuid": "7be1f581_8710dd02",
       "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
