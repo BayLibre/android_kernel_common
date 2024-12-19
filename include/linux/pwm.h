@@ -318,6 +318,13 @@ struct pwm_chip {
 int pwm_apply_state(struct pwm_device *pwm, const struct pwm_state *state);
 int pwm_adjust_config(struct pwm_device *pwm);
 
+/*
+ * pwm_apply_might_sleep() - atomically apply a new state to a PWM device
+ * @pwm: PWM device
+ * @state: new state to apply
+ */
+int  pwm_apply_might_sleep(struct pwm_device *pwm, const struct pwm_state *state);
+
 /**
  * pwm_config() - change a PWM device configuration
  * @pwm: PWM device
