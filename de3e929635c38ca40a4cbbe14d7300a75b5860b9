@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28803bfc_37f385af",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-19T10:56:31Z",
+      "side": 1,
+      "message": "Do we really need this member? If the donated pages are zeroed, we could just stop the reading whenever we hit a blank entry?",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bae9f2fe_f2020f3e",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-19T10:56:31Z",
+      "side": 1,
+      "message": "That\u0027s quite a lot of pages 😊\n\nAlso, should it be a \"MAX\" and and you just double on each failure? To not start straight with a such big number?",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7be1f581_8710dd02",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-19T10:56:31Z",
+      "side": 1,
+      "message": "Have you considered a memcache here?",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
