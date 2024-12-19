@@ -19,6 +19,7 @@
 #include "mutex.c"
 #include "page.c"
 #include "rbtree.c"
+#include "rcu.c"
 #include "refcount.c"
 #include "security.c"
 #include "signal.c"
