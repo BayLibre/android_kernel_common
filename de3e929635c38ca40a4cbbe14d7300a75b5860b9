@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6858d93_3979a28a",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-19T14:07:10Z",
+      "side": 1,
+      "message": "Fair enough! Especially as you have folded it into a single u64.",
+      "parentUuid": "ac187f23_12c0d728",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bae9f2fe_f2020f3e",
@@ -73,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ea006fb5_5c98ccf0",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-19T14:07:10Z",
+      "side": 1,
+      "message": "I guess you don\u0027t need to add any field as you store all the pages as a linked list? The hypervisor can just walk that list until it reaches the end?",
+      "parentUuid": "fd1413be_15622481",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7be1f581_8710dd02",
         "filename": "arch/arm64/kvm/ptdump.c",
         "patchSetId": 4
@@ -102,6 +138,24 @@
       "side": 1,
       "message": "Yes, in fact the previous version(from android15) was written using a memcache. There are some fields that I don\u0027t need from that structure and the chain is preserved.",
       "parentUuid": "7be1f581_8710dd02",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57511136_845e724e",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2024-12-19T14:07:10Z",
+      "side": 1,
+      "message": "Ok, so the idea is to spare some unused fields in the page header.",
+      "parentUuid": "3181e4ef_d8407a8a",
       "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
