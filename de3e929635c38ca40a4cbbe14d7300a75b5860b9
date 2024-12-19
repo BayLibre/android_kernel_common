@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "69c2c95d_9cad017f",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2024-12-19T14:13:34Z",
+      "side": 1,
+      "message": "We would have to walk it till the end in the kernel (not in the hyp) on each hvc retry.",
+      "parentUuid": "ea006fb5_5c98ccf0",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7be1f581_8710dd02",
         "filename": "arch/arm64/kvm/ptdump.c",
         "patchSetId": 4
