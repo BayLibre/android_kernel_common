@@ -12,7 +12,6 @@
 
 #include <kvm/iommu.h>
 #include <nvhe/alloc_mgt.h>
-#include <nvhe/gfp.h>
 #include <nvhe/iommu.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/mm.h>
@@ -705,7 +704,7 @@ int kvm_iommu_init(struct kvm_iommu_ops *ops, struct kvm_hyp_memcache *atomic_mc
 	if (ret)
 		return ret;
 
-	ret = hyp_pool_init_empty(&iommu_system_pool, 64 /* order =6*/);
+	ret = hyp_pool_init_empty(&iommu_system_pool, 64 /* order = 6*/);
 	if (ret)
 		return ret;
 

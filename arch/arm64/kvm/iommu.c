@@ -12,7 +12,7 @@
 
 struct kvm_iommu_driver *iommu_driver;
 extern struct kvm_iommu_ops *kvm_nvhe_sym(kvm_iommu_ops);
-extern u64 kvm_nvhe_sym(cma_base);
+extern phys_addr_t kvm_nvhe_sym(cma_base);
 extern size_t kvm_nvhe_sym(cma_size);
 
 int kvm_iommu_register_driver(struct kvm_iommu_driver *kern_ops)
