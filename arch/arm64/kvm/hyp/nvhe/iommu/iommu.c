@@ -33,6 +33,9 @@ DEFINE_PER_CPU(struct pkvm_hyp_vcpu *, __cur_context);
 static struct hyp_pool iommu_host_pool;
 static bool iommu_pools_ready;
 
+phys_addr_t cma_base;
+size_t cma_size;
+
 /*
  * We support multiple drivers for the host kernel, but only one for the guest,
  * this can be registered from the driver.
