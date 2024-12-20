@@ -69,6 +69,24 @@
       "parentUuid": "8d4ec7f5_cbbf8e92",
       "revId": "9a544c36c38e8d04f467d88e40bdf4d1a239ac86",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38c462a8_1189ab78",
+        "filename": "arch/arm64/coco/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1984376
+      },
+      "writtenOn": "2024-12-20T05:35:17Z",
+      "side": 1,
+      "message": "Hmm on further thoughts, I can provide cc_platform_set()/clear() API and use it to set CC_ATTR_GUEST_HARDENED attribute when only CONFIG_HARDENED_GUEST is enabled.",
+      "parentUuid": "a5829778_53c72ffb",
+      "revId": "9a544c36c38e8d04f467d88e40bdf4d1a239ac86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
