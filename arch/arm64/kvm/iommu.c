@@ -5,11 +5,15 @@
  */
 
 #include <asm/kvm_mmu.h>
+#include <linux/cma.h>
+#include <linux/dma-map-ops.h>
 #include <linux/kvm_host.h>
 #include <kvm/iommu.h>
 
 struct kvm_iommu_driver *iommu_driver;
 extern struct kvm_iommu_ops *kvm_nvhe_sym(kvm_iommu_ops);
+extern u64 kvm_nvhe_sym(cma_base);
+extern size_t kvm_nvhe_sym(cma_size);
 
 int kvm_iommu_register_driver(struct kvm_iommu_driver *kern_ops)
 {
@@ -42,6 +46,10 @@ int kvm_iommu_init_driver(void)
 			 " workloads in virtual machines\n");
 		return -ENODEV;
 	}
+
+	kvm_nvhe_sym(cma_base) = cma_get_base(dma_contiguous_default_area);
+	kvm_nvhe_sym(cma_size) = cma_get_size(dma_contiguous_default_area);
+
 	/*
 	 * init_driver is optional as the driver already registered it self.
 	 * This call mainly notify the driver we are about to drop privilege.
