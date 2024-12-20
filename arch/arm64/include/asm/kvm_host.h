@@ -1332,6 +1332,9 @@ bool kvm_arm_vcpu_stopped(struct kvm_vcpu *vcpu);
 int kvm_iommu_init_driver(void);
 void kvm_iommu_remove_driver(void);
 
+struct page *kvm_iommu_cma_alloc(void);
+bool kvm_iommu_cma_release(struct page *p);
+
 int pkvm_iommu_suspend(struct device *dev);
 int pkvm_iommu_resume(struct device *dev);
 
