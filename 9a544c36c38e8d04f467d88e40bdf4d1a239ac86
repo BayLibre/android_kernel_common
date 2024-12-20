@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f1fb1fe_48c08cbe",
+        "filename": "arch/arm64/Kconfig",
+        "patchSetId": 4
+      },
+      "lineNbr": 2481,
+      "author": {
+        "id": 1984376
+      },
+      "writtenOn": "2024-12-20T04:43:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c89cf4cc_82ed3995",
+      "revId": "9a544c36c38e8d04f467d88e40bdf4d1a239ac86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d4ec7f5_cbbf8e92",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-12-18T09:40:26Z",
       "side": 1,
       "message": "Should provide empty cc_platform_set and cc_platform_clear to complete the API?",
+      "revId": "9a544c36c38e8d04f467d88e40bdf4d1a239ac86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5829778_53c72ffb",
+        "filename": "arch/arm64/coco/core.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1984376
+      },
+      "writtenOn": "2024-12-20T04:43:37Z",
+      "side": 1,
+      "message": "I am not sure if its strictly necessary. Generic kernel code largely relies on cc_platform_has() API. cc_platform_set/clear APIs are used by platform/arch specific code to distinguish platforms within an arch (for ex: AMD/Intel). I also checked the (proposed) ARM64 CC implementation, which provides only cc_platform_has() API.\n\nhttps://patchwork.kernel.org/project/kvm/patch/20240701095505.165383-10-steven.price@arm.com/\n\nhttps://git.gitlab.arm.com/linux-arm/linux-cca.git cca-guest/v7\n\nI can add cc_platform_set/clear API if you still insist!",
+      "parentUuid": "8d4ec7f5_cbbf8e92",
       "revId": "9a544c36c38e8d04f467d88e40bdf4d1a239ac86",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
