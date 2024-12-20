@@ -11,6 +11,9 @@
 
 #include <iommu-pages.h>
 
+#include <linux/cma.h>
+#include <linux/of_reserved_mem.h>
+
 /* HVCs returning an error code or 0: handle pending hyp_req and retry */
 #define kvm_call_hyp_nvhe_mc(...)							\
 ({											\
@@ -41,6 +44,52 @@ extern size_t kvm_nvhe_sym(hyp_kvm_iommu_pages);
 static DEFINE_MUTEX(kvm_iommu_reg_lock);
 /* Protected by kvm_iommu_reg_lock. */
 static LIST_HEAD(kvm_iommu_drivers);
+
+static struct cma *kvm_iommu_cma;
+extern phys_addr_t kvm_nvhe_sym(cma_base);
+extern size_t kvm_nvhe_sym(cma_size);
+
+static int __init pkvm_iommu_cma_setup(struct reserved_mem *rmem)
+{
+	int err;
+
+	if (!IS_ALIGNED(rmem->base | rmem->size, PMD_SIZE))
+		kvm_info("pKVM IOMMU reserved memory not PMD-aligned\n");
+
+	err = cma_init_reserved_mem(rmem->base, rmem->size, 0, rmem->name,
+				    &kvm_iommu_cma, false);
+	if (err) {
+		kvm_err("Failed to init pKVM IOMMU reserved memory\n");
+		kvm_iommu_cma = NULL;
+		return err;
+	}
+
+	kvm_nvhe_sym(cma_base) = cma_get_base(kvm_iommu_cma);
+	kvm_nvhe_sym(cma_size) = cma_get_size(kvm_iommu_cma);
+
+	return 0;
+}
+RESERVEDMEM_OF_DECLARE(pkvm_cma, "pkvm,iommu-cma", pkvm_iommu_cma_setup);
+
+static const u8 pmd_order = PMD_SHIFT - PAGE_SHIFT;
+
+struct page *kvm_iommu_cma_alloc(void)
+{
+	if (!kvm_iommu_cma)
+		return NULL;
+
+	return cma_alloc(kvm_iommu_cma, (1 << pmd_order), pmd_order, true);
+}
+EXPORT_SYMBOL(kvm_iommu_cma_alloc);
+
+bool kvm_iommu_cma_release(struct page *p)
+{
+	if (!kvm_iommu_cma || !p)
+		return false;
+
+	return cma_release(kvm_iommu_cma, p, 1 << pmd_order);
+}
+EXPORT_SYMBOL(kvm_iommu_cma_release);
 
 int kvm_iommu_register_driver(struct kvm_iommu_driver *kern_ops, size_t pool_pages)
 {
