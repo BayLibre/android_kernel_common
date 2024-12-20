@@ -2597,7 +2597,7 @@ unsigned long shmem_get_unmapped_area(struct file *file,
 		int order = 0;
 
 		if (file) {
-			VM_BUG_ON(file->f_op != &shmem_file_operations);
+			VM_BUG_ON(!shmem_file(file));
 			sb = file_inode(file)->i_sb;
 		} else {
 			/*
