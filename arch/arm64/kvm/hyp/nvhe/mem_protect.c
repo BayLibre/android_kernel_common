@@ -16,7 +16,6 @@
 #include <hyp/fault.h>
 
 #include <nvhe/gfp.h>
-#include <nvhe/iommu.h>
 #include <nvhe/memory.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/mm.h>
@@ -829,16 +828,11 @@ static int handle_host_perm_fault(struct kvm_cpu_context *host_ctxt, u64 esr, u6
 	return handled ? 0 : -EPERM;
 }
 
-static bool is_dabt(u64 esr)
-{
-	return ESR_ELx_EC(esr) == ESR_ELx_EC_DABT_LOW;
-}
-
 void handle_host_mem_abort(struct kvm_cpu_context *host_ctxt)
 {
 	struct kvm_vcpu_fault_info fault;
 	u64 esr, addr;
-	int ret = -EPERM;
+	int ret = 0;
 
 	esr = read_sysreg_el2(SYS_ESR);
 	if (!__get_fault_info(esr, &fault)) {
@@ -852,15 +846,7 @@ void handle_host_mem_abort(struct kvm_cpu_context *host_ctxt)
 	}
 
 	addr = (fault.hpfar_el2 & HPFAR_MASK) << 8;
-	addr |= fault.far_el2 & FAR_MASK;
-
-	if (is_dabt(esr) && !addr_is_memory(addr) &&
-	    kvm_iommu_host_dabt_handler(host_ctxt, esr, addr))
-		goto return_to_host;
-
-	/* If not handled, attempt to map the page. */
-	if (ret == -EPERM)
-		ret = host_stage2_idmap(addr);
+	ret = host_stage2_idmap(addr);
 
 	if ((esr & ESR_ELx_FSC_TYPE) == ESR_ELx_FSC_PERM)
 		ret = handle_host_perm_fault(host_ctxt, esr, addr);
@@ -870,7 +856,6 @@ void handle_host_mem_abort(struct kvm_cpu_context *host_ctxt)
 	else
 		BUG_ON(ret && ret != -EAGAIN);
 
-return_to_host:
 	trace_host_mem_abort(esr, addr);
 }
 
