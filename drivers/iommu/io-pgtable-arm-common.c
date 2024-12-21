@@ -488,8 +488,7 @@ struct iova_to_phys_data {
 static int visit_iova_to_phys(struct io_pgtable_walk_data *walk_data, int lvl,
 			      arm_lpae_iopte *ptep, size_t size)
 {
-	struct io_pgtable_walk_common *walker = walk_data->data;
-	struct iova_to_phys_data *data = walker->data;
+	struct iova_to_phys_data *data = walk_data->data;
 	data->pte = *ptep;
 	data->lvl = lvl;
 	return 0;
@@ -500,11 +499,8 @@ static phys_addr_t arm_lpae_iova_to_phys(struct io_pgtable_ops *ops,
 {
 	struct arm_lpae_io_pgtable *data = io_pgtable_ops_to_data(ops);
 	struct iova_to_phys_data d;
-	struct io_pgtable_walk_common walker = {
-		.data = &d,
-	};
 	struct io_pgtable_walk_data walk_data = {
-		.data = &walker,
+		.data = &d,
 		.visit = visit_iova_to_phys,
 		.addr = iova,
 		.end = iova + 1,
@@ -522,24 +518,22 @@ static phys_addr_t arm_lpae_iova_to_phys(struct io_pgtable_ops *ops,
 static int visit_pgtable_walk(struct io_pgtable_walk_data *walk_data, int lvl,
 			      arm_lpae_iopte *ptep, size_t size)
 {
-	struct io_pgtable_walk_common *walker = walk_data->data;
-	struct arm_lpae_io_pgtable_walk_data *data = walker->data;
-
-	data->ptes[lvl] = *ptep;
-	data->level = lvl + 1;
+	struct arm_lpae_io_pgtable_walk_data *data = walk_data->data;
+	data->ptes[data->level++] = *ptep;
 	return 0;
 }
 
-static int arm_lpae_pgtable_walk(struct io_pgtable_ops *ops, unsigned long iova,
-				 size_t size, struct io_pgtable_walk_common *walker)
+static int arm_lpae_pgtable_walk(struct io_pgtable_ops *ops, unsigned long iova, void *wd)
 {
 	struct arm_lpae_io_pgtable *data = io_pgtable_ops_to_data(ops);
 	struct io_pgtable_walk_data walk_data = {
-		.data = walker,
+		.data = wd,
 		.visit = visit_pgtable_walk,
 		.addr = iova,
-		.end = iova + size,
+		.end = iova + 1,
 	};
+
+	((struct arm_lpae_io_pgtable_walk_data *)wd)->level = 0;
 
 	return __arm_lpae_iopte_walk(data, &walk_data, data->pgd, data->start_level);
 }
@@ -550,7 +544,6 @@ static int io_pgtable_visit(struct arm_lpae_io_pgtable *data,
 {
 	struct io_pgtable *iop = &data->iop;
 	arm_lpae_iopte pte = READ_ONCE(*ptep);
-	struct io_pgtable_walk_common *walker = walk_data->data;
 
 	size_t size = ARM_LPAE_BLOCK_SIZE(lvl, data);
 	int ret = walk_data->visit(walk_data, lvl, ptep, size);
@@ -558,8 +551,6 @@ static int io_pgtable_visit(struct arm_lpae_io_pgtable *data,
 		return ret;
 
 	if (iopte_leaf(pte, lvl, iop->fmt)) {
-		if (walker->visit_leaf)
-			walker->visit_leaf(iopte_to_paddr(pte, data), size, walker, ptep);
 		walk_data->addr += size;
 		return 0;
 	}
