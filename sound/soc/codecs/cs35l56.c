@@ -1394,9 +1394,13 @@ int cs35l56_common_probe(struct cs35l56_private *cs35l56)
 	}
 
 	ret = cs35l56_get_speaker_id(&cs35l56->base);
+<<<<<<< HEAD   (17c213 ANDROID: pkvm: x86: De-hardcode vm_type size in __pkvm_init_)
 	if (ACPI_COMPANION(cs35l56->base.dev) && cs35l56->sdw_peripheral && (ret == -ENOENT))
 		ret = cs35l56_try_get_broken_sdca_spkid_gpio(cs35l56);
 
+||||||| BASE
+=======
+>>>>>>> BRANCH (d92a21 ANDROID: mthp: Fixup ABI for reclaim_work)
 	if ((ret < 0) && (ret != -ENOENT))
 		goto err;
 
