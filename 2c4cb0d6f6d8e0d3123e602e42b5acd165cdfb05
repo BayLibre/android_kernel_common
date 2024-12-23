@@ -16,6 +16,23 @@
       "message": "\"UPSTREAM\"?",
       "revId": "2c4cb0d6f6d8e0d3123e602e42b5acd165cdfb05",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df8bf79e_e1f3adc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2024-12-23T18:24:56Z",
+      "side": 1,
+      "message": "Build break:\n```\nsandbox/27/execroot/__main__/common/include/linux/wait.h:233:9: error: \u0027wake_up_sync\u0027 macro redefined [-Werror,-Wmacro-redefined]\n#define wake_up_sync(x)                 __wake_up_sync((x), TASK_NORMAL)\n        ^\n/mnt/disks/build-disk/src/android/common-android14-6.1/out/bazel/output_user_root/27ef06e50cb42a9d447d7f2f757478b6/sandbox/linux-sandbox/27/execroot/__main__/common/include/linux/wait.h:227:9: note: previous definition is here\n#define wake_up_sync(x)                 __wake_up_sync(x, TASK_NORMAL)\n        ^\n1 error generated.\n```",
+      "revId": "2c4cb0d6f6d8e0d3123e602e42b5acd165cdfb05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
