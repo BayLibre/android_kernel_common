@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63597ccc_32c73ef7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-12-24T17:12:44Z",
+      "side": 1,
+      "message": "Thanks for the patch. I\u0027ll look more closely into the changes but an immediate questions I got is why do you need command line option for this feature? We use them only when we can\u0027t use vendor hooks (usually because the condition happens before modules are loaded) but that does not seem to be the case here. Can you use a vendor hook instead?",
+      "revId": "5010853e69aa357fa7b53266616d59650f6df595",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
