@@ -247,6 +247,7 @@ int pkvm_tlb_remote_flush(struct kvm *kvm);
 int pkvm_tlb_remote_flush_with_range(struct kvm *kvm,
 				     gfn_t gfn, gfn_t nr_pages);
 int pkvm_set_mmio_ve(struct kvm_vcpu *vcpu, unsigned long gfn);
+int pkvm_map_guest(u64 gfn, u64 pfn, u64 nr_pages);
 int pkvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap);
 #else
 static inline void kvm_hyp_reserve(void) {}
@@ -258,6 +259,7 @@ static inline void pkvm_teardown_shadow_vm(struct kvm *kvm) {}
 static inline int pkvm_init_shadow_vcpu(struct kvm_vcpu *vcpu) { return 0; }
 static inline void pkvm_teardown_shadow_vcpu(struct kvm_vcpu *vcpu) {}
 static inline int pkvm_set_mmio_ve(struct kvm_vcpu *vcpu, unsigned long gfn) { return 0; }
+static inline int pkvm_map_guest(u64 gfn, u64 pfn, u64 nr_pages) { return -EINVAL; }
 static inline int pkvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
 { return -EINVAL; }
 #endif

@@ -4509,7 +4509,10 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
 	if (is_page_fault_stale(vcpu, fault))
 		goto out_unlock;
 
-	r = kvm_tdp_mmu_map(vcpu, fault);
+	if (enable_pkvm && likely(fault->slot))
+		r = pkvm_map_guest(fault->gfn, fault->pfn, KVM_PAGES_PER_HPAGE(fault->req_level));
+	else
+		r = kvm_tdp_mmu_map(vcpu, fault);
 
 out_unlock:
 	kvm_set_page_accessed(fault->accessed_page);

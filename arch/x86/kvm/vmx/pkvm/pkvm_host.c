@@ -1284,6 +1284,11 @@ int pkvm_set_mmio_ve(struct kvm_vcpu *vcpu, unsigned long gfn)
 	return 0;
 }
 
+int pkvm_map_guest(u64 gfn, u64 pfn, u64 nr_pages)
+{
+	return kvm_hypercall3(PKVM_HC_MAP_GUEST, gfn, pfn, nr_pages);
+}
+
 static int pkvm_vm_ioctl_set_fw_gpa(struct kvm *kvm, u64 gpa)
 {
 	if (!cmdline_pvmfw_present)
