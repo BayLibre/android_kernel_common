@@ -915,6 +915,9 @@ fastpath_t kvm_vcpu_enter_guest(struct kvm_vcpu *vcpu, bool force_immediate_exit
 
 		/* Vmeixt is handled by the pkvm hypervisor */
 		exit_fastpath = EXIT_FASTPATH_EXIT_HANDLED;
+
+		if (unlikely(force_immediate_exit))
+			break;
 	}
 
 	vcpu->arch.host_debugctl = get_debugctlmsr();
