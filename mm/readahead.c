@@ -260,8 +260,15 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
 			continue;
 		}
 
+<<<<<<< HEAD   (1fd0b4 ANDROID: fs: Add ANDROID OEM DATA ARRAY in struct bdi_writeb)
 		folio = filemap_alloc_folio(gfp_mask,
 					    mapping_min_folio_order(mapping));
+||||||| BASE
+		folio = filemap_alloc_folio(gfp_mask, 0);
+=======
+		trace_android_vh_io_statistics(mapping, index + i, 1, true, false);
+		folio = filemap_alloc_folio(gfp_mask, 0);
+>>>>>>> CHANGE (affce3 ANDROID: fs: add vendor hook to collect IO statistics)
 		if (!folio)
 			break;
 
