@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6e5f719_c4f902b6",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 15
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-12-26T23:52:27Z",
+      "side": 1,
+      "message": "The return value of this function is weird, it returns `false` if it successfully reclaimed requested number of objects. Please consider either changing that or add a comment explaining return values.",
+      "range": {
+        "startLine": 390,
+        "startChar": 18,
+        "endLine": 390,
+        "endChar": 26
+      },
+      "revId": "96c4719bac5d0a0c4e3958e4286076798c831344",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee91a0b2_f7e8688b",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 15
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2024-12-26T23:52:27Z",
+      "side": 1,
+      "message": "If C implementation we return the number of reclaimed objects even when we stop early. Is that different for Rust shrinkers?",
+      "range": {
+        "startLine": 443,
+        "startChar": 12,
+        "endLine": 443,
+        "endChar": 29
+      },
+      "revId": "96c4719bac5d0a0c4e3958e4286076798c831344",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
