@@ -22,7 +22,15 @@
 #include <trace/events/f2fs.h>
 #include <trace/hooks/fs.h>
 
+<<<<<<< HEAD   (66182c ANDROID: ABI: Update pixel symbol list)
 #define DEFAULT_CHECKPOINT_IOPRIO (IOPRIO_PRIO_VALUE(IOPRIO_CLASS_RT, 3))
+||||||| BASE
+#define DEFAULT_CHECKPOINT_IOPRIO (IOPRIO_PRIO_VALUE(IOPRIO_CLASS_BE, 3))
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_write_checkpoint);
+
+#define DEFAULT_CHECKPOINT_IOPRIO (IOPRIO_PRIO_VALUE(IOPRIO_CLASS_BE, 3))
+>>>>>>> CHANGE (c03da7 ANDROID: vendor_hooks: export tracepoint symbols)
 
 static struct kmem_cache *ino_entry_slab;
 struct kmem_cache *f2fs_inode_entry_slab;
