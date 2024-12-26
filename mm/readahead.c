@@ -132,6 +132,9 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/readahead.h>
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/mm.h>
+
 #include "internal.h"
 
 /*
@@ -272,6 +275,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
 			continue;
 		}
 
+		trace_android_vh_io_statistics(mapping, index + i, 1, true, false);
 		folio = ractl_alloc_folio(ractl, gfp_mask,
 					mapping_min_folio_order(mapping));
 		if (!folio)
