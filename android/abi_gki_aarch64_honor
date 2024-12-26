@@ -47,6 +47,8 @@
   drop_super
   filp_open_block
   mm_trace_rss_stat
+  percpu_ref_init
+  percpu_ref_exit
   __kfifo_len_r
   __traceiter_android_vh_killed_process
   __tracepoint_android_vh_killed_process
@@ -108,3 +110,5 @@
   __tracepoint_android_vh_filemap_map_pages
   __traceiter_android_rvh_do_read_fault
   __tracepoint_android_rvh_do_read_fault
+  __traceiter_android_vh_io_statistics
+  __tracepoint_android_vh_io_statistics
