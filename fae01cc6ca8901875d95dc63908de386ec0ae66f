@@ -22,6 +22,30 @@
       },
       "revId": "fae01cc6ca8901875d95dc63908de386ec0ae66f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dfc10c5_9acaf90a",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2024-12-27T19:25:21Z",
+      "side": 1,
+      "message": "No, everything from `ANDROID: ashmem_rust: add toggle functionality` and up is novel to Rust Ashmem.\n\nThe purpose of these options is to make the behavior of ashmem closer to the memfd wrapper, so that you can try them out in dogfood experiments.",
+      "parentUuid": "e860574b_3db29e64",
+      "range": {
+        "startLine": 474,
+        "startChar": 10,
+        "endLine": 474,
+        "endChar": 21
+      },
+      "revId": "fae01cc6ca8901875d95dc63908de386ec0ae66f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
