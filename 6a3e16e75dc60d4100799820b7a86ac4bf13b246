@@ -93,6 +93,30 @@
       },
       "revId": "6a3e16e75dc60d4100799820b7a86ac4bf13b246",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41c0bdbc_a1ded47a",
+        "filename": "mm/memfd.c",
+        "patchSetId": 18
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2024-12-28T02:18:59Z",
+      "side": 1,
+      "message": "I changed https://android-review.googlesource.com/c/kernel/common/+/3349339 to move as much of the checks as I could into memfd_create_filp(). I didn\u0027t move the length check in there because it seemed silly for the function to recompute the length of the string even though the caller has it and will always be internal to the file.",
+      "parentUuid": "b9a2c05d_819899c4",
+      "range": {
+        "startLine": 401,
+        "startChar": 0,
+        "endLine": 419,
+        "endChar": 26
+      },
+      "revId": "6a3e16e75dc60d4100799820b7a86ac4bf13b246",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
