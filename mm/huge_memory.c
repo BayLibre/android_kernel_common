@@ -917,8 +917,6 @@ void folio_prep_large_rmappable(struct folio *folio)
 {
 	if (!folio || !folio_test_large(folio))
 		return;
-	if (folio_order(folio) > 1)
-		INIT_LIST_HEAD(&folio->_deferred_list);
 	folio_set_large_rmappable(folio);
 }
 
@@ -3417,6 +3415,7 @@ int split_huge_page_to_list(struct page *page, struct list_head *list)
 
 	/* Prevent deferred_split_scan() touching ->_refcount */
 	spin_lock(&ds_queue->split_queue_lock);
+<<<<<<< HEAD   (5e0040 Merge e8769509d622 ("mm: support order-1 folios in the page )
 	if (folio_order(folio) > 1 &&
 	    !list_empty(&folio->_deferred_list)) {
 		ds_queue->split_queue_len--;
@@ -3425,6 +3424,27 @@ int split_huge_page_to_list(struct page *page, struct list_head *list)
 	spin_unlock(&ds_queue->split_queue_lock);
 	if (mapping) {
 		int nr = folio_nr_pages(folio);
+||||||| BASE
+	if (folio_ref_freeze(folio, 1 + extra_pins)) {
+		if (folio_order(folio) > 1 &&
+		    !list_empty(&folio->_deferred_list)) {
+			ds_queue->split_queue_len--;
+			list_del(&folio->_deferred_list);
+		}
+		spin_unlock(&ds_queue->split_queue_lock);
+		if (mapping) {
+			int nr = folio_nr_pages(folio);
+=======
+	if (folio_ref_freeze(folio, 1 + extra_pins)) {
+		if (folio_order(folio) > 1 &&
+		    !list_empty(&folio->_deferred_list)) {
+			ds_queue->split_queue_len--;
+			list_del_init(&folio->_deferred_list);
+		}
+		spin_unlock(&ds_queue->split_queue_lock);
+		if (mapping) {
+			int nr = folio_nr_pages(folio);
+>>>>>>> BRANCH (0275e4 mm: always initialise folio->_deferred_list)
 
 		xas_split(&xas, folio, folio_order(folio));
 		if (folio_test_pmd_mappable(folio)) {
