@@ -3281,6 +3281,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
 	ra->async_size = ra->ra_pages / 4;
 	trace_android_vh_tune_mmap_readaround(ra->ra_pages, vmf->pgoff,
 			&ra->start, &ra->size, &ra->async_size);
+	trace_android_vh_do_sync_mmap_readahead(vmf, ra);
 	ractl._index = ra->start;
 	trace_android_vh_page_cache_readahead_start(file, vmf->pgoff,
 			ra->size, true);
@@ -3302,6 +3303,11 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
 	DEFINE_READAHEAD(ractl, file, ra, file->f_mapping, vmf->pgoff);
 	struct file *fpin = NULL;
 	unsigned int mmap_miss;
+	bool skip = false;
+
+	trace_android_vh_do_async_mmap_readahead(vmf, folio, &skip);
+	if (skip)
+		return fpin;
 
 	/* If we don't want any read-ahead, don't bother */
 	if (vmf->vma->vm_flags & VM_RAND_READ || !ra->ra_pages)
