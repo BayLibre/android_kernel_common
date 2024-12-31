@@ -51,6 +51,24 @@
       "parentUuid": "b8d85494_c4c30ef9",
       "revId": "669fd3291c033fd9a945bc24b05a486476992f7a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7003df7_19dd24b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3810161
+      },
+      "writtenOn": "2024-12-31T07:35:43Z",
+      "side": 1,
+      "message": "During fuzz testing, we found that the sel_write_load() function in SELinux did not check if count was zero in vmalloc(count), causing system panics. We then synced all related code commits from the selinuxfs.c file on the android15-6.6-lts branch following your community submission. Currently, we\u0027re only focusing on the android15-6.6 and android15-6.6-2024-08 branches.",
+      "parentUuid": "9d094b42_23482e50",
+      "revId": "669fd3291c033fd9a945bc24b05a486476992f7a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
