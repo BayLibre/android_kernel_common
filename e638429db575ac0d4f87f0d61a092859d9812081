@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f64f332_cc666e37",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-02T16:36:43Z",
+      "side": 1,
+      "message": "Implemented the packed format but I am getting a weird value entry at the end of the host stage-2 ptdump:\n\n```\n0x0000008000000000-0x0000000000000000   17179868672G 1   R W X    BLK\n```",
+      "parentUuid": "5e61eb6b_ddaf209c",
+      "revId": "e638429db575ac0d4f87f0d61a092859d9812081",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82702631_74044763",
