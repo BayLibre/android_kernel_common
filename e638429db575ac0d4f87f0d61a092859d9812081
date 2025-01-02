@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60b08736_fa27359e",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-02T17:05:50Z",
+      "side": 1,
+      "message": "Fixed this, I know what was causing it:\n\n```\ndiff --git a/arch/arm64/include/asm/kvm_pkvm.h b/arch/arm64/include/asm/kvm_pkvm.h\nindex 7fb1b70194a9..1e8e62b0f8c1 100644\n--- a/arch/arm64/include/asm/kvm_pkvm.h\n+++ b/arch/arm64/include/asm/kvm_pkvm.h\n@@ -421,7 +421,7 @@ enum pkvm_ptdump_ops {\n };\n \n struct pkvm_ptdump_log {\n-       u64     pfn: 40;\n+       u64     pfn: 48;\n        bool    valid: 1;\n        bool    r: 1;\n        bool    w: 1;\n```",
+      "parentUuid": "0f64f332_cc666e37",
+      "revId": "e638429db575ac0d4f87f0d61a092859d9812081",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82702631_74044763",
