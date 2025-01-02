@@ -248,6 +248,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a24f74ae_d0bdfac2",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-02T14:20:14Z",
+      "side": 1,
+      "message": "I updated the CL to start with `MAX_LOG_PAGES` which is set to 10 and then we double it on each retry. I added one more argument in `pkvm_ptdump_alloc_page` to return the size of the linked list.",
+      "parentUuid": "c39b5742_4fd3c34a",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7be1f581_8710dd02",
