@@ -88,6 +88,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3966641a_bc7a4f20",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2579,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-02T12:02:45Z",
+      "side": 1,
+      "message": "I guess we can drop this argument as we will always walk the entire range",
+      "parentUuid": "fc8a2cb6_aa06ce81",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b1893e7_77cbefc0",
@@ -101,6 +119,24 @@
       "writtenOn": "2024-12-19T15:30:43Z",
       "side": 1,
       "message": "Probably not necessary as we only walk the guest pgt?",
+      "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba22dae7_7fec4625",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2602,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-02T12:02:45Z",
+      "side": 1,
+      "message": "Dropped this",
+      "parentUuid": "5b1893e7_77cbefc0",
       "revId": "de3e929635c38ca40a4cbbe14d7300a75b5860b9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
