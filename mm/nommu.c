@@ -652,8 +652,19 @@ static void delete_vma_from_mm(struct vm_area_struct *vma)
  */
 static void delete_vma(struct mm_struct *mm, struct vm_area_struct *vma)
 {
+<<<<<<< HEAD   (da6f49 Merge 105d04c88e5c ("mm: avoid unsafe VMA hook invocation wh)
 	if (vma->vm_ops && vma->vm_ops->close)
 		vma->vm_ops->close(vma);
+||||||| BASE
+	if (vma->vm_ops && vma->vm_ops->close)
+		vma->vm_ops->close(vma);
+	if (vma->vm_file)
+		fput(vma->vm_file);
+=======
+	vma_close(vma);
+	if (vma->vm_file)
+		fput(vma->vm_file);
+>>>>>>> BRANCH (a08241 mm: unconditionally close VMAs on error)
 	put_nommu_region(vma->vm_region);
 	/* fput(vma->vm_file) happens within vm_area_free() */
 	vm_area_free(vma);
