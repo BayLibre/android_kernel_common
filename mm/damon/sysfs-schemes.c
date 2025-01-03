@@ -1687,8 +1687,16 @@ static struct damos *damon_sysfs_mk_scheme(
 		.low = sysfs_wmarks->low,
 	};
 
+<<<<<<< HEAD   (1b6187 Merge 0a326fbc8f72 ("drm/amd/display: Adjust VSDB parser for)
 	scheme = damon_new_scheme(&pattern, sysfs_scheme->action,
 			sysfs_scheme->apply_interval_us, &quota, &wmarks);
+||||||| BASE
+	scheme = damon_new_scheme(&pattern, sysfs_scheme->action, &quota,
+			&wmarks);
+=======
+	scheme = damon_new_scheme(&pattern, sysfs_scheme->action, 0, &quota,
+			&wmarks);
+>>>>>>> BRANCH (973739 mm/damon/core: implement scheme-specific apply interval)
 	if (!scheme)
 		return NULL;
 

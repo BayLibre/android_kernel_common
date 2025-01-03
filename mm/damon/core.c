@@ -1092,6 +1092,14 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
 		if (c->passed_sample_intervals != s->next_apply_sis)
 			continue;
 
+<<<<<<< HEAD   (1b6187 Merge 0a326fbc8f72 ("drm/amd/display: Adjust VSDB parser for)
+||||||| BASE
+=======
+		s->next_apply_sis +=
+			(s->apply_interval_us ? s->apply_interval_us :
+			 c->attrs.aggr_interval) / sample_interval;
+
+>>>>>>> BRANCH (973739 mm/damon/core: implement scheme-specific apply interval)
 		if (!s->wmarks.activated)
 			continue;
 
