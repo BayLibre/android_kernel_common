@@ -17,6 +17,7 @@
 
 static bool enabled;
 
+#ifndef MODULE
 static int __init early_enabled_cfg(char *arg)
 {
 	if (!arg)
@@ -28,6 +29,9 @@ static int __init early_enabled_cfg(char *arg)
 }
 
 early_param("kvm-arm.unsafe_iommu", early_enabled_cfg);
+#else
+module_param_named(unsafe_iommu, enabled, bool, 0444);
+#endif
 
 static int init_driver(void)
 {
