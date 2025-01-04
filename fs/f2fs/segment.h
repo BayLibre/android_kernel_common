@@ -225,10 +225,18 @@ struct sec_entry {
 	unsigned int valid_blocks;	/* # of valid blocks in a section */
 };
 
+<<<<<<< HEAD   (65982f ANDROID: fix up crc problems 5.15.174)
 struct segment_allocation {
 	int (*allocate_segment)(struct f2fs_sb_info *, int, bool);
 };
 
+||||||| BASE
+struct segment_allocation {
+	void (*allocate_segment)(struct f2fs_sb_info *, int, bool);
+};
+
+=======
+>>>>>>> BRANCH (4bd3d7 f2fs: check curseg->inited before write_sum_page in change_c)
 #define MAX_SKIP_GC_COUNT			16
 
 struct revoke_entry {
@@ -238,8 +246,6 @@ struct revoke_entry {
 };
 
 struct sit_info {
-	const struct segment_allocation *s_ops;
-
 	block_t sit_base_addr;		/* start block address of SIT area */
 	block_t sit_blocks;		/* # of blocks used by SIT area */
 	block_t written_valid_blocks;	/* # of valid blocks in main area */

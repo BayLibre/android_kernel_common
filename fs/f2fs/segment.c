@@ -2712,7 +2712,13 @@ bool f2fs_segment_has_free_slot(struct f2fs_sb_info *sbi, int segno)
  * This function always allocates a used segment(from dirty seglist) by SSR
  * manner, so it should recover the existing segment information of valid blocks
  */
+<<<<<<< HEAD   (65982f ANDROID: fix up crc problems 5.15.174)
 static int change_curseg(struct f2fs_sb_info *sbi, int type, bool flush)
+||||||| BASE
+static void change_curseg(struct f2fs_sb_info *sbi, int type, bool flush)
+=======
+static void change_curseg(struct f2fs_sb_info *sbi, int type)
+>>>>>>> BRANCH (4bd3d7 f2fs: check curseg->inited before write_sum_page in change_c)
 {
 	struct dirty_seglist_info *dirty_i = DIRTY_I(sbi);
 	struct curseg_info *curseg = CURSEG_I(sbi, type);
@@ -2720,9 +2726,8 @@ static int change_curseg(struct f2fs_sb_info *sbi, int type, bool flush)
 	struct f2fs_summary_block *sum_node;
 	struct page *sum_page;
 
-	if (flush)
-		write_sum_page(sbi, curseg->sum_blk,
-					GET_SUM_BLOCK(sbi, curseg->segno));
+	if (curseg->inited)
+		write_sum_page(sbi, curseg->sum_blk, GET_SUM_BLOCK(sbi, curseg->segno));
 
 	__set_test_and_inuse(sbi, new_segno);
 
@@ -2763,7 +2768,13 @@ static int get_atssr_segment(struct f2fs_sb_info *sbi, int type,
 		struct seg_entry *se = get_seg_entry(sbi, curseg->next_segno);
 
 		curseg->seg_type = se->type;
+<<<<<<< HEAD   (65982f ANDROID: fix up crc problems 5.15.174)
 		ret = change_curseg(sbi, type, true);
+||||||| BASE
+		change_curseg(sbi, type, true);
+=======
+		change_curseg(sbi, type);
+>>>>>>> BRANCH (4bd3d7 f2fs: check curseg->inited before write_sum_page in change_c)
 	} else {
 		/* allocate cold segment by default */
 		curseg->seg_type = CURSEG_COLD_DATA;
@@ -2910,16 +2921,28 @@ static int get_ssr_segment(struct f2fs_sb_info *sbi, int type,
 	return 0;
 }
 
+<<<<<<< HEAD   (65982f ANDROID: fix up crc problems 5.15.174)
 /*
  * flush out current segment and replace it with new segment
  * This function should be returned with success, otherwise BUG
  */
 static int allocate_segment_by_default(struct f2fs_sb_info *sbi,
 						int type, bool force)
+||||||| BASE
+/*
+ * flush out current segment and replace it with new segment
+ * This function should be returned with success, otherwise BUG
+ */
+static void allocate_segment_by_default(struct f2fs_sb_info *sbi,
+						int type, bool force)
+=======
+static bool need_new_seg(struct f2fs_sb_info *sbi, int type)
+>>>>>>> BRANCH (4bd3d7 f2fs: check curseg->inited before write_sum_page in change_c)
 {
 	struct curseg_info *curseg = CURSEG_I(sbi, type);
 	int ret = 0;
 
+<<<<<<< HEAD   (65982f ANDROID: fix up crc problems 5.15.174)
 	if (force)
 		ret = new_curseg(sbi, type, true);
 	else if (!is_set_ckpt_flags(sbi, CP_CRC_RECOVERY_FLAG) &&
@@ -2937,6 +2960,35 @@ static int allocate_segment_by_default(struct f2fs_sb_info *sbi,
 
 	stat_inc_seg_type(sbi, curseg);
 	return ret;
+||||||| BASE
+	if (force)
+		new_curseg(sbi, type, true);
+	else if (!is_set_ckpt_flags(sbi, CP_CRC_RECOVERY_FLAG) &&
+					curseg->seg_type == CURSEG_WARM_NODE)
+		new_curseg(sbi, type, false);
+	else if (curseg->alloc_type == LFS &&
+			is_next_segment_free(sbi, curseg, type) &&
+			likely(!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
+		new_curseg(sbi, type, false);
+	else if (f2fs_need_SSR(sbi) &&
+			get_ssr_segment(sbi, type, SSR, 0))
+		change_curseg(sbi, type, true);
+	else
+		new_curseg(sbi, type, false);
+
+	stat_inc_seg_type(sbi, curseg);
+=======
+	if (!is_set_ckpt_flags(sbi, CP_CRC_RECOVERY_FLAG) &&
+	    curseg->seg_type == CURSEG_WARM_NODE)
+		return true;
+	if (curseg->alloc_type == LFS &&
+	    is_next_segment_free(sbi, curseg, type) &&
+	    likely(!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
+		return true;
+	if (!f2fs_need_SSR(sbi) || !get_ssr_segment(sbi, type, SSR, 0))
+		return true;
+	return false;
+>>>>>>> BRANCH (4bd3d7 f2fs: check curseg->inited before write_sum_page in change_c)
 }
 
 int f2fs_allocate_segment_for_resize(struct f2fs_sb_info *sbi, int type,
@@ -2955,7 +3007,13 @@ int f2fs_allocate_segment_for_resize(struct f2fs_sb_info *sbi, int type,
 		goto unlock;
 
 	if (f2fs_need_SSR(sbi) && get_ssr_segment(sbi, type, SSR, 0))
+<<<<<<< HEAD   (65982f ANDROID: fix up crc problems 5.15.174)
 		ret = change_curseg(sbi, type, true);
+||||||| BASE
+		change_curseg(sbi, type, true);
+=======
+		change_curseg(sbi, type);
+>>>>>>> BRANCH (4bd3d7 f2fs: check curseg->inited before write_sum_page in change_c)
 	else
 		ret = new_curseg(sbi, type, true);
 
@@ -2992,9 +3050,16 @@ static int __allocate_new_segment(struct f2fs_sb_info *sbi, int type,
 		return ret;
 alloc:
 	old_segno = curseg->segno;
+<<<<<<< HEAD   (65982f ANDROID: fix up crc problems 5.15.174)
 	ret = SIT_I(sbi)->s_ops->allocate_segment(sbi, type, true);
 	if (ret)
 		return ret;
+||||||| BASE
+	SIT_I(sbi)->s_ops->allocate_segment(sbi, type, true);
+=======
+	new_curseg(sbi, type, true);
+	stat_inc_seg_type(sbi, curseg);
+>>>>>>> BRANCH (4bd3d7 f2fs: check curseg->inited before write_sum_page in change_c)
 	locate_dirty_segment(sbi, old_segno);
 	return ret;
 }
@@ -3028,10 +3093,6 @@ int f2fs_allocate_new_segments(struct f2fs_sb_info *sbi)
 
 	return err;
 }
-
-static const struct segment_allocation default_salloc_ops = {
-	.allocate_segment = allocate_segment_by_default,
-};
 
 bool f2fs_exist_trim_candidates(struct f2fs_sb_info *sbi,
 						struct cp_control *cpc)
@@ -3452,14 +3513,38 @@ int f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
 	update_sit_entry(sbi, old_blkaddr, -1);
 
 	if (!__has_curseg_space(sbi, curseg)) {
+<<<<<<< HEAD   (65982f ANDROID: fix up crc problems 5.15.174)
 		if (from_gc)
 			ret = get_atssr_segment(sbi, type, se->type,
+||||||| BASE
+		if (from_gc)
+			get_atssr_segment(sbi, type, se->type,
+=======
+		/*
+		 * Flush out current segment and replace it with new segment.
+		 */
+		if (from_gc) {
+			get_atssr_segment(sbi, type, se->type,
+>>>>>>> BRANCH (4bd3d7 f2fs: check curseg->inited before write_sum_page in change_c)
 						AT_SSR, se->mtime);
+<<<<<<< HEAD   (65982f ANDROID: fix up crc problems 5.15.174)
 		else
 			ret = sit_i->s_ops->allocate_segment(sbi, type, false);
 
 		if (ret)
 			goto out_err;
+||||||| BASE
+		else
+			sit_i->s_ops->allocate_segment(sbi, type, false);
+=======
+		} else {
+			if (need_new_seg(sbi, type))
+				new_curseg(sbi, type, false);
+			else
+				change_curseg(sbi, type);
+			stat_inc_seg_type(sbi, curseg);
+		}
+>>>>>>> BRANCH (4bd3d7 f2fs: check curseg->inited before write_sum_page in change_c)
 	}
 	/*
 	 * segment dirty status should be updated after segment allocation,
@@ -3721,8 +3806,8 @@ void f2fs_do_replace_block(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
 		}
 	}
 
-	f2fs_bug_on(sbi, !IS_DATASEG(type));
 	curseg = CURSEG_I(sbi, type);
+	f2fs_bug_on(sbi, !IS_DATASEG(curseg->seg_type));
 
 	mutex_lock(&curseg->curseg_mutex);
 	down_write(&sit_i->sentry_lock);
@@ -3734,8 +3819,14 @@ void f2fs_do_replace_block(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
 	/* change the current segment */
 	if (segno != curseg->segno) {
 		curseg->next_segno = segno;
+<<<<<<< HEAD   (65982f ANDROID: fix up crc problems 5.15.174)
 		if (change_curseg(sbi, type, true))
 			goto out_unlock;
+||||||| BASE
+		change_curseg(sbi, type, true);
+=======
+		change_curseg(sbi, type);
+>>>>>>> BRANCH (4bd3d7 f2fs: check curseg->inited before write_sum_page in change_c)
 	}
 
 	curseg->next_blkoff = GET_BLKOFF_FROM_SEG0(sbi, new_blkaddr);
@@ -3763,8 +3854,14 @@ void f2fs_do_replace_block(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
 	if (recover_curseg) {
 		if (old_cursegno != curseg->segno) {
 			curseg->next_segno = old_cursegno;
+<<<<<<< HEAD   (65982f ANDROID: fix up crc problems 5.15.174)
 			if (change_curseg(sbi, type, true))
 				goto out_unlock;
+||||||| BASE
+			change_curseg(sbi, type, true);
+=======
+			change_curseg(sbi, type);
+>>>>>>> BRANCH (4bd3d7 f2fs: check curseg->inited before write_sum_page in change_c)
 		}
 		curseg->next_blkoff = old_blkoff;
 		curseg->alloc_type = old_alloc_type;
@@ -4459,9 +4556,6 @@ static int build_sit_info(struct f2fs_sb_info *sbi)
 	if (!sit_i->invalid_segmap)
 		return -ENOMEM;
 #endif
-
-	/* init SIT information */
-	sit_i->s_ops = &default_salloc_ops;
 
 	sit_i->sit_base_addr = le32_to_cpu(raw_super->sit_blkaddr);
 	sit_i->sit_blocks = sit_segs << sbi->log_blocks_per_seg;
