@@ -4,7 +4,6 @@
  */
 #include <linux/cpufreq_times.h>
 #include <trace/hooks/sched.h>
-#undef TRACE_INCLUDE_PATH
 
 #ifdef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
  #include <asm/cputime.h>
