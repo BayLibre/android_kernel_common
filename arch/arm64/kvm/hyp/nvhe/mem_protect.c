@@ -509,20 +509,6 @@ bool addr_is_memory(phys_addr_t phys)
 	return !!find_mem_range(phys, &range);
 }
 
-static bool is_range_refcounted(phys_addr_t addr, u64 nr_pages)
-{
-	struct hyp_page *p;
-	int i;
-
-	for (i = 0 ; i < nr_pages ; ++i) {
-		p = hyp_phys_to_page(addr + i * PAGE_SIZE);
-		if (hyp_refcount_get(p->refcount))
-			return true;
-	}
-
-	return false;
-}
-
 static bool addr_is_allowed_memory(phys_addr_t phys)
 {
 	struct memblock_region *reg;
@@ -977,6 +963,7 @@ static int ___host_check_page_state_range(u64 addr, u64 size,
 		.get_page_state	= host_get_mmio_page_state,
 	};
 	u64 end = addr + size;
+	struct hyp_page *p;
 
 	hyp_assert_lock_held(&host_mmu.lock);
 
@@ -988,8 +975,11 @@ static int ___host_check_page_state_range(u64 addr, u64 size,
 		return -EPERM;
 
 	for (; addr < end; addr += PAGE_SIZE) {
-		if (hyp_phys_to_page(addr)->host_state != state)
+		p = hyp_phys_to_page(addr);
+		if (p->host_state != state)
 			return -EPERM;
+		if (state == PKVM_PAGE_OWNED && hyp_refcount_get(p->refcount))
+			return -EINVAL;
 	}
 
 	/*
@@ -1036,9 +1026,6 @@ static int host_request_owned_transition(u64 *completer_addr,
 {
 	u64 size = tx->nr_pages * PAGE_SIZE;
 	u64 addr = tx->initiator.addr;
-
-	if (range_is_memory(addr, addr + size) && is_range_refcounted(addr, tx->nr_pages))
-		return -EINVAL;
 
 	*completer_addr = tx->initiator.host.completer_addr;
 	return __host_check_page_state_range(addr, size, PKVM_PAGE_OWNED);
