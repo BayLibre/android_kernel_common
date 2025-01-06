@@ -33,6 +33,23 @@
       "message": "Build break:\n```\nsandbox/27/execroot/__main__/common/include/linux/wait.h:233:9: error: \u0027wake_up_sync\u0027 macro redefined [-Werror,-Wmacro-redefined]\n#define wake_up_sync(x)                 __wake_up_sync((x), TASK_NORMAL)\n        ^\n/mnt/disks/build-disk/src/android/common-android14-6.1/out/bazel/output_user_root/27ef06e50cb42a9d447d7f2f757478b6/sandbox/linux-sandbox/27/execroot/__main__/common/include/linux/wait.h:227:9: note: previous definition is here\n#define wake_up_sync(x)                 __wake_up_sync(x, TASK_NORMAL)\n        ^\n1 error generated.\n```",
       "revId": "2c4cb0d6f6d8e0d3123e602e42b5acd165cdfb05",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5040b6a_21e0884d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2044797
+      },
+      "writtenOn": "2025-01-06T15:09:07Z",
+      "side": 1,
+      "message": "Greg KH pulled this into 6.12, 6.6, and 6.1 stable kernels, so depending on how long it takes for AOSP to pick it up this can likely be closed.",
+      "revId": "2c4cb0d6f6d8e0d3123e602e42b5acd165cdfb05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
