@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cefc732_bd65d163",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 14
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1944400
+      },
+      "writtenOn": "2025-01-07T02:47:30Z",
+      "side": 1,
+      "message": "the C implementation doesn\u0027t seem to error in this case, i think it truncates the name. maybe no one relies on that and it is OK to change",
+      "range": {
+        "startLine": 91,
+        "startChar": 62,
+        "endLine": 91,
+        "endChar": 78
+      },
+      "revId": "85afc5b0d623fd643272ed104db3bb6f96a35394",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0330fb70_fcb23396",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 14
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1944400
+      },
+      "writtenOn": "2025-01-07T02:47:30Z",
+      "side": 1,
+      "message": "either `local_name[len]` is already zero or this is an array OOB access",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 28
+      },
+      "revId": "85afc5b0d623fd643272ed104db3bb6f96a35394",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
