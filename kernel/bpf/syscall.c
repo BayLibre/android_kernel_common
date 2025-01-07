@@ -2868,12 +2868,24 @@ void bpf_link_inc(struct bpf_link *link)
 	atomic64_inc(&link->refcnt);
 }
 
+static void bpf_link_dealloc(struct bpf_link *link)
+{
+	/* now that we know that bpf_link itself can't be reached, put underlying BPF program */
+	if (link->prog)
+		bpf_prog_put(link->prog);
+
+	/* free bpf_link and its containing memory */
+	if (link->ops->dealloc_deferred)
+		link->ops->dealloc_deferred(link);
+	else
+		link->ops->dealloc(link);
+}
+
 static void bpf_link_defer_dealloc_rcu_gp(struct rcu_head *rcu)
 {
 	struct bpf_link *link = container_of(rcu, struct bpf_link, rcu);
 
-	/* free bpf_link and its containing memory */
-	link->ops->dealloc_deferred(link);
+	bpf_link_dealloc(link);
 }
 
 static void bpf_link_defer_dealloc_mult_rcu_gp(struct rcu_head *rcu)
@@ -2893,8 +2905,15 @@ static void bpf_link_free(struct bpf_link *link)
 	if (link->prog) {
 		sleepable = link->prog->aux->sleepable;
 		/* detach BPF program, clean up used resources */
+<<<<<<< HEAD   (b3ec1f Merge c3799292d639 ("scsi: ufs: core: Add ufshcd_send_bsg_ui)
 		link->ops->release(link);
 		bpf_prog_put(link->prog);
+||||||| BASE
+		ops->release(link);
+		bpf_prog_put(link->prog);
+=======
+		ops->release(link);
+>>>>>>> BRANCH (8f149b sched/numa: fix memory leak due to the overwritten vma->numa)
 	}
 	if (link->ops->dealloc_deferred) {
 		/* schedule BPF link deallocation; if underlying BPF program
@@ -2905,9 +2924,18 @@ static void bpf_link_free(struct bpf_link *link)
 			call_rcu_tasks_trace(&link->rcu, bpf_link_defer_dealloc_mult_rcu_gp);
 		else
 			call_rcu(&link->rcu, bpf_link_defer_dealloc_rcu_gp);
+<<<<<<< HEAD   (b3ec1f Merge c3799292d639 ("scsi: ufs: core: Add ufshcd_send_bsg_ui)
 	}
 	if (link->ops->dealloc)
 		link->ops->dealloc(link);
+||||||| BASE
+	} else if (ops->dealloc)
+		ops->dealloc(link);
+=======
+	} else if (ops->dealloc) {
+		bpf_link_dealloc(link);
+	}
+>>>>>>> BRANCH (8f149b sched/numa: fix memory leak due to the overwritten vma->numa)
 }
 
 static void bpf_link_put_deferred(struct work_struct *work)
