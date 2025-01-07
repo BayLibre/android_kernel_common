@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f33f704d_5f72f338",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 15
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-01-07T12:34:23Z",
+      "side": 1,
+      "message": "Re other comment we no longer have users of the return value, so I changed it to return `freed` instead of an out parameter.",
+      "parentUuid": "a6e5f719_c4f902b6",
+      "range": {
+        "startLine": 390,
+        "startChar": 18,
+        "endLine": 390,
+        "endChar": 26
+      },
+      "revId": "96c4719bac5d0a0c4e3958e4286076798c831344",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee91a0b2_f7e8688b",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-12-26T23:52:27Z",
       "side": 1,
       "message": "If C implementation we return the number of reclaimed objects even when we stop early. Is that different for Rust shrinkers?",
+      "range": {
+        "startLine": 443,
+        "startChar": 12,
+        "endLine": 443,
+        "endChar": 29
+      },
+      "revId": "96c4719bac5d0a0c4e3958e4286076798c831344",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a88febef_b5766584",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 15
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-01-07T12:34:23Z",
+      "side": 1,
+      "message": "No, the API should match. I\u0027m not convinced that C ashmem uses the shrinker API correctly, but I updated Rust to match for now.",
+      "parentUuid": "ee91a0b2_f7e8688b",
       "range": {
         "startLine": 443,
         "startChar": 12,
