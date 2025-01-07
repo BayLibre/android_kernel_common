@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad818e1b_da8a794f",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-07T18:25:54Z",
+      "side": 1,
+      "message": "Arg, I believe we can have 52-bit wide VA space can\u0027t we?",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8dd078b_45f1c67b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1700,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-07T18:25:54Z",
+      "side": 1,
+      "message": "I guess would could make this shorter and just says \"__pkvm_ptdump\"?",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65198699_b8af395d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1704,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-07T18:25:54Z",
+      "side": 1,
+      "message": "I believe this addr is now always 0. Let\u0027s get rid of it?",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88ad1b35_d6242506",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2651,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-07T18:25:54Z",
+      "side": 1,
+      "message": "Any chance to drop the w_index to avoid having to donate the pages and do a fast and transparent sharing instead?\n\nThe number of pages you can admit could be fixed to a maximum (16?) \n\n(note, you would have to cache the values for pfn_next before the page is shared with the hyp)",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23117000_c062ebb7",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-07T18:25:54Z",
+      "side": 1,
+      "message": "Nit: you could use get_zeroed_page().",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ab15801_b6a80383",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-07T18:25:54Z",
+      "side": 1,
+      "message": "It is a bit of a shame to have to iterate that list all the time. You could just cache the number of pages into kvm_ptdump_guest_state, just like a memcache would do and then you just use a stack.",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0a9b284_825c5347",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-07T18:25:54Z",
+      "side": 1,
+      "message": "IIRC, this function can be called several times if we overflow seq_file?\n\nIf that\u0027s the case we could do that heavy call several times for nothing. How about doing it in the open directly? The show would just parse what the hyp has dumped?",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa7fe781_40eb68fe",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-07T18:25:54Z",
+      "side": 1,
+      "message": "Instead of returning an error, perhaps printing what we could dump and a message to the user we ran out of memory?",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c205162_81ec8cb2",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-07T18:25:54Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we start with a single page first? Especially for guests where the page-table is rather small?",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
