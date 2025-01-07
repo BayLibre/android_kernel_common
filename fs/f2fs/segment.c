@@ -1187,6 +1187,11 @@ static void __init_discard_policy(struct f2fs_sb_info *sbi,
 	dpolicy->granularity = granularity;
 
 	dpolicy->max_requests = dcc->max_discard_request;
+#ifdef CONFIG_F2FS_FASTDISCARD
+	if (f2fs_support_fastdiscard(sbi)) {
+		dpolicy->max_requests = dcc->fastdiscard_request;
+	}
+#endif
 	dpolicy->io_aware_gran = dcc->discard_io_aware_gran;
 	dpolicy->timeout = false;
 
@@ -1214,6 +1219,11 @@ static void __init_discard_policy(struct f2fs_sb_info *sbi,
 	} else if (discard_type == DPOLICY_FSTRIM) {
 		dpolicy->io_aware = false;
 	} else if (discard_type == DPOLICY_UMOUNT) {
+#ifdef CONFIG_F2FS_FASTDISCARD
+		if (f2fs_support_fastdiscard(sbi)) {
+			dpolicy->max_requests = dcc->fastdiscard_request_umount;
+		}
+#endif
 		dpolicy->io_aware = false;
 		/* we need to issue all to keep CP_TRIMMED_FLAG */
 		dpolicy->granularity = MIN_DISCARD_GRANULARITY;
@@ -2331,6 +2341,11 @@ static int create_discard_cmd_control(struct f2fs_sb_info *sbi)
 	dcc->nr_discards = 0;
 	dcc->max_discards = SEGS_TO_BLKS(sbi, MAIN_SEGS(sbi));
 	dcc->max_discard_request = DEF_MAX_DISCARD_REQUEST;
+#ifdef CONFIG_F2FS_FASTDISCARD
+	dcc->fastdiscard_control = 0;
+	dcc->fastdiscard_request = DEF_FASTDISCARD_REQUEST;
+	dcc->fastdiscard_request_umount = DEF_FASTDISCARD_REQUEST_UMOUNT;
+#endif
 	dcc->min_discard_issue_time = DEF_MIN_DISCARD_ISSUE_TIME;
 	dcc->mid_discard_issue_time = DEF_MID_DISCARD_ISSUE_TIME;
 	dcc->max_discard_issue_time = DEF_MAX_DISCARD_ISSUE_TIME;

@@ -252,6 +252,11 @@ enum {
 #define DEF_DISABLE_INTERVAL		5	/* 5 secs */
 #define DEF_DISABLE_QUICK_INTERVAL	1	/* 1 secs */
 #define DEF_UMOUNT_DISCARD_TIMEOUT	5	/* 5 secs */
+#ifdef CONFIG_F2FS_FASTDISCARD
+#define DEF_FASTDISCARD_MAX_REQUEST	64	/* fastdiscard max request */
+#define DEF_FASTDISCARD_REQUEST		16	/* fastdiscard request */
+#define DEF_FASTDISCARD_REQUEST_UMOUNT	128	/* fastdiscard request when UMOUNT */
+#endif
 
 struct cp_control {
 	int reason;
@@ -429,6 +434,11 @@ struct discard_cmd_control {
 	unsigned int discard_io_aware;		/* io_aware policy */
 	unsigned int undiscard_blks;		/* # of undiscard blocks */
 	unsigned int next_pos;			/* next discard position */
+#ifdef CONFIG_F2FS_FASTDISCARD
+	unsigned int fastdiscard_control;	/* sys/fs/f2fs fastdiscard enable */
+	unsigned int fastdiscard_request;
+	unsigned int fastdiscard_request_umount;
+#endif
 	atomic_t issued_discard;		/* # of issued discard */
 	atomic_t queued_discard;		/* # of queued discard */
 	atomic_t discard_cmd_cnt;		/* # of cached cmd count */

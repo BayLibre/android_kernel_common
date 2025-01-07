@@ -987,3 +987,16 @@ wake_up:
 	dcc->discard_wake = true;
 	wake_up_interruptible_all(&dcc->discard_wait_queue);
 }
+
+#ifdef CONFIG_F2FS_FASTDISCARD
+static inline bool f2fs_support_fastdiscard(struct f2fs_sb_info *sbi)
+{
+	struct discard_cmd_control *dcc = SM_I(sbi)->dcc_info;
+
+	if (dcc->fastdiscard_control &&
+		queue_max_discard_segments(bdev_get_queue(sbi->sb->s_bdev)) > 1)
+		return true;
+	else
+		return false;
+}
+#endif

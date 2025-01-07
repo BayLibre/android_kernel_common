@@ -210,6 +210,14 @@ config BLK_INLINE_ENCRYPTION_FALLBACK
 
 source "block/partitions/Kconfig"
 
+config SCSI_FASTDISCARD
+	bool
+	depends on BLOCK
+	default y
+	help
+	  support unmapping one or more LBA range in single
+          UNMAP command as SPEC.
+
 config BLK_MQ_PCI
 	def_bool PCI
 

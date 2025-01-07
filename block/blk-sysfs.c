@@ -20,6 +20,11 @@
 #include "blk-cgroup.h"
 #include "blk-throttle.h"
 
+#ifdef CONFIG_SCSI_FASTDISCARD
+#define UFS_QUEUE_MIN_DISCARD_SEGMENTS 1
+#define UFS_QUEUE_FASTDISCARD_SEGMENTS 16
+#endif
+
 struct queue_sysfs_entry {
 	struct attribute attr;
 	ssize_t (*show)(struct request_queue *, char *);
@@ -117,6 +122,26 @@ static ssize_t queue_max_discard_segments_show(struct request_queue *q,
 {
 	return queue_var_show(queue_max_discard_segments(q), page);
 }
+
+#ifdef CONFIG_SCSI_FASTDISCARD
+static ssize_t queue_max_discard_segments_store(struct request_queue *q,
+				       const char *page, size_t count)
+{
+	unsigned long max_discard_segments;
+	unsigned long origin_discard_segments = q->limits.max_discard_segments;
+	ssize_t ret = queue_var_store(&max_discard_segments, page, count);
+
+	if (ret < 0)
+		return ret;
+	if (max_discard_segments != UFS_QUEUE_MIN_DISCARD_SEGMENTS)
+		return -EINVAL;
+
+	if (origin_discard_segments >= UFS_QUEUE_FASTDISCARD_SEGMENTS)
+		q->limits.max_discard_segments = UFS_QUEUE_MIN_DISCARD_SEGMENTS;
+
+	return ret;
+}
+#endif
 
 static ssize_t queue_max_integrity_segments_show(struct request_queue *q, char *page)
 {
@@ -501,7 +526,11 @@ QUEUE_RO_ENTRY(queue_chunk_sectors, "chunk_sectors");
 QUEUE_RO_ENTRY(queue_io_min, "minimum_io_size");
 QUEUE_RO_ENTRY(queue_io_opt, "optimal_io_size");
 
+#ifdef CONFIG_SCSI_FASTDISCARD
+QUEUE_RW_ENTRY(queue_max_discard_segments, "max_discard_segments");
+#else
 QUEUE_RO_ENTRY(queue_max_discard_segments, "max_discard_segments");
+#endif
 QUEUE_RO_ENTRY(queue_discard_granularity, "discard_granularity");
 QUEUE_RO_ENTRY(queue_discard_max_hw, "discard_max_hw_bytes");
 QUEUE_RW_ENTRY(queue_discard_max, "discard_max_bytes");

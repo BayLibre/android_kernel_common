@@ -119,6 +119,59 @@ static ssize_t ovp_segments_show(struct f2fs_attr *a,
 			(unsigned long long)(overprovision_segments(sbi)));
 }
 
+#ifdef CONFIG_F2FS_FASTDISCARD
+static ssize_t big_discard_blocks_show(struct f2fs_attr *a,
+		struct f2fs_sb_info *sbi, char *buf)
+{
+	struct discard_cmd_control *dcc = SM_I(sbi)->dcc_info;
+	struct list_head *pend_list;
+	struct discard_cmd *dc;
+	unsigned long big_discard_blocks = 0;
+	int i;
+
+	mutex_lock(&dcc->cmd_lock);
+	for (i = MAX_PLIST_NUM - 1; i >= (DEFAULT_DISCARD_GRANULARITY-1); i--) {
+		pend_list = &dcc->pend_list[i];
+		if (list_empty(pend_list))
+			continue;
+		list_for_each_entry(dc, pend_list, list)
+			big_discard_blocks += dc->di.len;
+	}
+	mutex_unlock(&dcc->cmd_lock);
+
+	return sprintf(buf, "%lu\n", big_discard_blocks);
+}
+
+static ssize_t small_discard_blocks_show(struct f2fs_attr *a,
+		struct f2fs_sb_info *sbi, char *buf)
+{
+	struct discard_cmd_control *dcc = SM_I(sbi)->dcc_info;
+	struct list_head *pend_list;
+	struct discard_cmd *dc;
+	unsigned long small_discard_blocks = 0;
+	int i;
+
+	mutex_lock(&dcc->cmd_lock);
+	for (i = 0; i < (DEFAULT_DISCARD_GRANULARITY-1); i++) {
+		pend_list = &dcc->pend_list[i];
+		if (list_empty(pend_list))
+			continue;
+		list_for_each_entry(dc, pend_list, list)
+			small_discard_blocks += dc->di.len;
+	}
+	mutex_unlock(&dcc->cmd_lock);
+
+	return sprintf(buf, "%lu\n", small_discard_blocks);
+}
+
+static ssize_t fastdiscard_enable_show(struct f2fs_attr *a,
+		struct f2fs_sb_info *sbi, char *buf)
+{
+	return sprintf(buf, "%lu\n",
+		(unsigned long)f2fs_support_fastdiscard(sbi));
+}
+#endif
+
 static ssize_t lifetime_write_kbytes_show(struct f2fs_attr *a,
 		struct f2fs_sb_info *sbi, char *buf)
 {
@@ -576,6 +629,31 @@ out:
 		*ui = t ? true : false;
 		return count;
 	}
+
+#ifdef CONFIG_F2FS_FASTDISCARD
+	if (!strcmp(a->attr.name, "fastdiscard_control")) {
+		if (t > 1)
+			return -EINVAL;
+		*ui = t;
+		return count;
+	}
+	if (!strcmp(a->attr.name, "fastdiscard_request")) {
+		if (t == 0 || t > DEF_FASTDISCARD_MAX_REQUEST)
+			return -EINVAL;
+		if (t == *ui)
+			return count;
+		*ui = t;
+		return count;
+	}
+	if (!strcmp(a->attr.name, "fastdiscard_request_umount")) {
+		if (t == 0 || t > DEF_FASTDISCARD_REQUEST_UMOUNT)
+			return -EINVAL;
+		if (t == *ui)
+			return count;
+		*ui = t;
+		return count;
+	}
+#endif
 
 	if (!strcmp(a->attr.name, "migration_granularity")) {
 		if (t == 0 || t > SEGS_PER_SEC(sbi))
@@ -1086,6 +1164,14 @@ DCC_INFO_GENERAL_RW_ATTR(discard_urgent_util);
 DCC_INFO_GENERAL_RW_ATTR(discard_granularity);
 DCC_INFO_GENERAL_RW_ATTR(max_ordered_discard);
 DCC_INFO_GENERAL_RW_ATTR(discard_io_aware);
+#ifdef CONFIG_F2FS_FASTDISCARD
+DCC_INFO_GENERAL_RW_ATTR(fastdiscard_control);
+DCC_INFO_GENERAL_RW_ATTR(fastdiscard_request);
+DCC_INFO_GENERAL_RW_ATTR(fastdiscard_request_umount);
+F2FS_GENERAL_RO_ATTR(fastdiscard_enable);
+F2FS_GENERAL_RO_ATTR(small_discard_blocks);
+F2FS_GENERAL_RO_ATTR(big_discard_blocks);
+#endif
 
 /* NM_INFO ATTR */
 NM_INFO_RW_ATTR(max_roll_forward_node_blocks, max_rf_node_blocks);
@@ -1244,6 +1330,14 @@ static struct attribute *f2fs_attrs[] = {
 	ATTR_LIST(discard_io_aware_gran),
 	ATTR_LIST(discard_urgent_util),
 	ATTR_LIST(discard_granularity),
+#ifdef CONFIG_F2FS_FASTDISCARD
+	ATTR_LIST(fastdiscard_control),
+	ATTR_LIST(fastdiscard_request),
+	ATTR_LIST(fastdiscard_request_umount),
+	ATTR_LIST(fastdiscard_enable),
+	ATTR_LIST(small_discard_blocks),
+	ATTR_LIST(big_discard_blocks),
+#endif
 	ATTR_LIST(max_ordered_discard),
 	ATTR_LIST(discard_io_aware),
 	ATTR_LIST(pending_discard),
