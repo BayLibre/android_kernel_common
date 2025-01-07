@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a9781c4_ef803a1b",
+        "filename": "rust/kernel/mm/virt.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1944400
+      },
+      "writtenOn": "2025-01-07T23:59:09Z",
+      "side": 1,
+      "message": "i think this ought to be `*mut`. i realize it might seem redundant with the precondition and you\u0027ll probably need to cast it to `const` internally, but i\u0027d say that is an ok tradeoff so that the API correctly communicates that its going to mutate the argument\n\nfwiw, the only caller i see already has a `*mut` anyways",
+      "range": {
+        "startLine": 201,
+        "startChar": 37,
+        "endLine": 201,
+        "endChar": 42
+      },
+      "revId": "8ce254d8d1aa57d879e6999c2d52825d4f48985c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
