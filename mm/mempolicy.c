@@ -1081,6 +1081,20 @@ static int migrate_to_node(struct mm_struct *mm, int source, int dest,
 	nodes_clear(nmask);
 	node_set(source, nmask);
 
+<<<<<<< HEAD   (3e8c4d Merge cc424890b06b ("mempolicy: fix migrate_pages(2) syscall)
+||||||| BASE
+	VM_BUG_ON(!(flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)));
+	vma = find_vma(mm, 0);
+
+=======
+	VM_BUG_ON(!(flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)));
+	vma = find_vma(mm, 0);
+	if (unlikely(!vma)) {
+		mmap_read_unlock(mm);
+		return 0;
+	}
+
+>>>>>>> BRANCH (a13b2b mm/mempolicy: fix migrate_to_node() assuming there is at lea)
 	/*
 	 * This does not "check" the range but isolates all pages that
 	 * need migration.  Between passing in the full user address
