@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c690399_01540482",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 14
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1944400
+      },
+      "writtenOn": "2025-01-07T03:09:37Z",
+      "side": 1,
+      "message": "APIs like `vm_mmap` use `unsigned long` for `prot`. would `c_ulong` make sense here? i suppose the ioctl signature has the same cross langauge type mismatch as well, so maybe it is intentional",
+      "range": {
+        "startLine": 22,
+        "startChar": 17,
+        "endLine": 22,
+        "endChar": 22
+      },
+      "revId": "7d5c7f90017c83b8d06f0f84a712d6421e72920c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
