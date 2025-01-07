@@ -6644,6 +6644,7 @@ again:
 		spin_lock_irqsave(hba->host->host_lock, flags);
 		if (!hba->saved_err && !needs_restore)
 			goto skip_err_handling;
+		ufshcd_vops_dbg_register_dump(hba);
 	}
 
 	hba->silence_err_logs = true;
