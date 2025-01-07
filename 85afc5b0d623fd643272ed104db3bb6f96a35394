@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f83bcc2e_ec8fea1e",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 14
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-01-07T12:33:49Z",
+      "side": 1,
+      "message": "I updated it to truncate the name.",
+      "parentUuid": "7cefc732_bd65d163",
+      "range": {
+        "startLine": 91,
+        "startChar": 62,
+        "endLine": 91,
+        "endChar": 78
+      },
+      "revId": "85afc5b0d623fd643272ed104db3bb6f96a35394",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0330fb70_fcb23396",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-07T02:47:30Z",
       "side": 1,
       "message": "either `local_name[len]` is already zero or this is an array OOB access",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 28
+      },
+      "revId": "85afc5b0d623fd643272ed104db3bb6f96a35394",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa5d48d9_69cef200",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 14
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-01-07T12:33:49Z",
+      "side": 1,
+      "message": "I refactored this code to return EINVAL if the name is too long, though with a comment that it shouldn\u0027t happen in practice.",
+      "parentUuid": "0330fb70_fcb23396",
       "range": {
         "startLine": 109,
         "startChar": 0,
