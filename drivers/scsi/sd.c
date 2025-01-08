@@ -73,6 +73,9 @@
 #include "sd.h"
 #include "scsi_priv.h"
 #include "scsi_logging.h"
+#ifdef CONFIG_SCSI_DISCARD
+#include "ufs/ufshcd.h"
+#endif
 
 MODULE_AUTHOR("Eric Youngdale");
 MODULE_DESCRIPTION("SCSI disk (sd) driver");
@@ -631,6 +634,82 @@ max_retries_show(struct device *dev, struct device_attribute *attr,
 
 static DEVICE_ATTR_RW(max_retries);
 
+#ifdef CONFIG_SCSI_DISCARD
+static ssize_t fastunmap_cmd_count_show(struct device *dev,
+				   struct device_attribute *attr,
+				   char *buf)
+{
+	struct ufs_hba *hba;
+	struct scsi_disk *sdkp = to_scsi_disk(dev);
+	struct scsi_device *sdp = sdkp->device;
+
+	if (strncmp(sdp->host->hostt->name, UFSHCD, strlen(UFSHCD)) == 0) {
+		hba = (struct ufs_hba *)sdkp->device->host->hostdata;
+		if (hba->android_oem_data1 != 0) {
+			struct xiaomi_feature_info *feature_info =
+				(struct xiaomi_feature_info *)hba->android_oem_data1;
+			struct xiaomi_fastdiscard_info *fastdiscard_info =
+				feature_info->fast_discard_info;
+			return snprintf(buf, 20, "%d\n",
+					fastdiscard_info->max_unmap_descriptors);
+		}
+	}
+
+	return 0;
+}
+static ssize_t fastunmap_cmd_count_store(struct device *dev,
+					 struct device_attribute *attr,
+					 const char *buf, size_t count)
+{
+	struct ufs_hba *hba;
+	struct scsi_disk *sdkp = to_scsi_disk(dev);
+	struct scsi_device *sdp = sdkp->device;
+
+	if (strncmp(sdp->host->hostt->name, UFSHCD, strlen(UFSHCD)) == 0) {
+		hba = (struct ufs_hba *)sdkp->device->host->hostdata;
+		if (hba->android_oem_data1 != 0) {
+			struct xiaomi_feature_info *feature_info =
+				(struct xiaomi_feature_info *)hba->android_oem_data1;
+			struct xiaomi_fastdiscard_info *fastdiscard_info =
+				feature_info->fast_discard_info;
+			unsigned long value;
+
+			if (kstrtoul(buf, 10, &value)) {
+				pr_err("get value error\n");
+				return -EINVAL;
+			}
+			fastdiscard_info->max_unmap_descriptors = value;
+		}
+	}
+	return count;
+}
+static DEVICE_ATTR_RW(fastunmap_cmd_count);
+static ssize_t multi_unmap_len_max_show(struct device *dev,
+				   struct device_attribute *attr,
+					char *buf)
+{
+	struct ufs_hba *hba;
+	struct scsi_disk *sdkp = to_scsi_disk(dev);
+	struct scsi_device *sdp = sdkp->device;
+
+	if (strncmp(sdp->host->hostt->name, UFSHCD, strlen(UFSHCD)) == 0) {
+		hba = (struct ufs_hba *)sdkp->device->host->hostdata;
+		if (hba->android_oem_data1 != 0) {
+			struct xiaomi_feature_info *feature_info =
+				(struct xiaomi_feature_info *)hba->android_oem_data1;
+			struct xiaomi_fastdiscard_info *fastdiscard_info =
+				feature_info->fast_discard_info;
+
+			return sysfs_emit(buf, "%lu\n",
+					fastdiscard_info->multi_unmap_len_max);
+		}
+	}
+
+	return 0;
+}
+static DEVICE_ATTR_RO(multi_unmap_len_max);
+#endif
+
 static struct attribute *sd_disk_attrs[] = {
 	&dev_attr_cache_type.attr,
 	&dev_attr_FUA.attr,
@@ -649,6 +728,10 @@ static struct attribute *sd_disk_attrs[] = {
 	&dev_attr_max_medium_access_timeouts.attr,
 	&dev_attr_zoned_cap.attr,
 	&dev_attr_max_retries.attr,
+#ifdef CONFIG_SCSI_DISCARD
+	&dev_attr_fastunmap_cmd_count.attr,
+	&dev_attr_multi_unmap_len_max.attr,
+#endif
 	NULL,
 };
 ATTRIBUTE_GROUPS(sd_disk);
@@ -826,6 +909,29 @@ static void sd_config_discard(struct scsi_disk *sdkp, unsigned int mode)
 	struct request_queue *q = sdkp->disk->queue;
 	unsigned int logical_block_size = sdkp->device->sector_size;
 	unsigned int max_blocks = 0;
+#ifdef CONFIG_SCSI_DISCARD
+	unsigned int max_segments = 1;
+	unsigned int max_unmap_descriptors = 0;
+	unsigned int fastdiscard_enable = 0;
+	struct ufs_hba *hba;
+	struct scsi_device *sdp = sdkp->device;
+
+	if (strncmp(sdp->host->hostt->name, UFSHCD, strlen(UFSHCD)) == 0) {
+		hba = (struct ufs_hba *)sdkp->device->host->hostdata;
+		if (hba->android_oem_data1 != 0) {
+			struct xiaomi_feature_info *feature_info =
+				(struct xiaomi_feature_info *)hba->android_oem_data1;
+			struct xiaomi_fastdiscard_info *fastdiscard_info =
+				feature_info->fast_discard_info;
+			if (fastdiscard_info->fastdiscard_enable == 1) {
+				fastdiscard_enable = 1;
+				max_unmap_descriptors =
+					fastdiscard_info->max_unmap_descriptors;
+			}
+		}
+	}
+	pr_info("[FASTDISCARD debug] %d\n", fastdiscard_enable);
+#endif
 
 	q->limits.discard_alignment =
 		sdkp->unmap_alignment * logical_block_size;
@@ -839,11 +945,22 @@ static void sd_config_discard(struct scsi_disk *sdkp, unsigned int mode)
 	case SD_LBP_FULL:
 	case SD_LBP_DISABLE:
 		blk_queue_max_discard_sectors(q, 0);
+#ifdef CONFIG_SCSI_DISCARD
+		blk_queue_max_discard_segments(q, 0);
+#endif
 		return;
 
 	case SD_LBP_UNMAP:
 		max_blocks = min_not_zero(sdkp->max_unmap_blocks,
 					  (u32)SD_MAX_WS16_BLOCKS);
+#ifdef CONFIG_SCSI_DISCARD
+		if (fastdiscard_enable == 1) {
+			max_segments = clamp(max_unmap_descriptors, 1U,
+					(u32)SD_MAX_UNMAP_DESCS);
+			pr_err("[FASTDISCARD debug] max_segments  %d-%d\n",
+			       max_segments, max_unmap_descriptors);
+		}
+#endif
 		break;
 
 	case SD_LBP_WS16:
@@ -871,6 +988,9 @@ static void sd_config_discard(struct scsi_disk *sdkp, unsigned int mode)
 	}
 
 	blk_queue_max_discard_sectors(q, max_blocks * (logical_block_size >> 9));
+#ifdef CONFIG_SCSI_DISCARD
+	blk_queue_max_discard_segments(q, max_segments);
+#endif
 }
 
 static void *sd_set_special_bvec(struct request *rq, unsigned int data_len)
@@ -891,9 +1011,29 @@ static blk_status_t sd_setup_unmap_cmnd(struct scsi_cmnd *cmd)
 	struct scsi_device *sdp = cmd->device;
 	struct request *rq = scsi_cmd_to_rq(cmd);
 	struct scsi_disk *sdkp = scsi_disk(rq->q->disk);
+#ifdef CONFIG_SCSI_DISCARD
+	struct xiaomi_feature_info *feature_info;
+	struct xiaomi_fastdiscard_info *fastdiscard_info;
+	struct ufs_hba *hba;
+
+	if (strncmp(sdp->host->hostt->name, UFSHCD, strlen(UFSHCD)) == 0) {
+		hba = (struct ufs_hba *)sdkp->device->host->hostdata;
+		if (hba->android_oem_data1 != 0) {
+			feature_info =
+				(struct xiaomi_feature_info *)hba->android_oem_data1;
+			fastdiscard_info = feature_info->fast_discard_info;
+		}
+	}
+	unsigned short segments = blk_rq_nr_discard_segments(rq);
+	unsigned int data_len = 8 + 16 * segments;
+	unsigned int descriptor_offset = 8;
+	u32 nr_block_count = 0;
+	struct bio *bio;
+#else
 	u64 lba = sectors_to_logical(sdp, blk_rq_pos(rq));
 	u32 nr_blocks = sectors_to_logical(sdp, blk_rq_sectors(rq));
 	unsigned int data_len = 24;
+#endif
 	char *buf;
 
 	buf = sd_set_special_bvec(rq, data_len);
@@ -902,12 +1042,40 @@ static blk_status_t sd_setup_unmap_cmnd(struct scsi_cmnd *cmd)
 
 	cmd->cmd_len = 10;
 	cmd->cmnd[0] = UNMAP;
-	cmd->cmnd[8] = 24;
+#ifdef CONFIG_SCSI_DISCARD
+	cmd->cmnd[7] = data_len>>8;
+	cmd->cmnd[8] = data_len & 0xff;
 
+	buf = page_address(rq->special_vec.bv_page);
+	put_unaligned_be16(6 + 16 * segments, &buf[0]);
+	put_unaligned_be16(16 * segments, &buf[2]);
+
+	__rq_for_each_bio(bio, rq) {
+		u64 lba = sectors_to_logical(sdp, bio->bi_iter.bi_sector);
+		u32 nr_blocks = sectors_to_logical(sdp, bio_sectors(bio));
+
+		put_unaligned_be64(lba, &buf[descriptor_offset]);
+		put_unaligned_be32(nr_blocks, &buf[descriptor_offset + 8]);
+		descriptor_offset += 16;
+		nr_block_count += nr_blocks;
+	}
+
+	if (strncmp(sdp->host->hostt->name, UFSHCD, strlen(UFSHCD)) == 0) {
+		if (hba->android_oem_data1 != 0) {
+			fastdiscard_info->multi_unmap_len_max =
+				(fastdiscard_info->multi_unmap_len_max >
+				nr_block_count) ?
+					fastdiscard_info->multi_unmap_len_max :
+					nr_block_count;
+		}
+	}
+#else
+	cmd->cmnd[8] = 24;
 	put_unaligned_be16(6 + 16, &buf[0]);
 	put_unaligned_be16(16, &buf[2]);
 	put_unaligned_be64(lba, &buf[8]);
 	put_unaligned_be32(nr_blocks, &buf[16]);
+#endif
 
 	cmd->allowed = sdkp->max_retries;
 	cmd->transfersize = data_len;
@@ -3052,7 +3220,23 @@ static void sd_read_app_tag_own(struct scsi_disk *sdkp, unsigned char *buffer)
 static void sd_read_block_limits(struct scsi_disk *sdkp)
 {
 	struct scsi_vpd *vpd;
+#ifdef CONFIG_SCSI_DISCARD
+	struct scsi_device *sdp = sdkp->device;
+	struct ufs_hba *hba;
+	struct xiaomi_feature_info *feature_info;
+	struct xiaomi_fastdiscard_info *fastdiscard_info;
 
+	if (strncmp(sdp->host->hostt->name, UFSHCD, strlen(UFSHCD)) == 0) {
+		hba = (struct ufs_hba *)sdp->host->hostdata;
+		if (hba->android_oem_data1 != 0) {
+			feature_info =
+				(struct xiaomi_feature_info *)hba->android_oem_data1;
+			fastdiscard_info = feature_info->fast_discard_info;
+			pr_info("[FASTDISCARD debug] fastdiscard_enable=[%d]\n",
+				fastdiscard_info->fastdiscard_enable);
+		}
+	}
+#endif
 	rcu_read_lock();
 
 	vpd = rcu_dereference(sdkp->device->vpd_pgb0);
@@ -3074,8 +3258,20 @@ static void sd_read_block_limits(struct scsi_disk *sdkp)
 		lba_count = get_unaligned_be32(&vpd->data[20]);
 		desc_count = get_unaligned_be32(&vpd->data[24]);
 
+#ifdef CONFIG_SCSI_DISCARD
+		if (lba_count && desc_count) {
+			sdkp->max_unmap_blocks = lba_count;
+			if (strncmp(sdp->host->hostt->name, UFSHCD, strlen(UFSHCD)) == 0) {
+				if (hba->android_oem_data1 != 0) {
+					fastdiscard_info->max_unmap_descriptors =
+						desc_count;
+				}
+			}
+		}
+#else
 		if (lba_count && desc_count)
 			sdkp->max_unmap_blocks = lba_count;
+#endif
 
 		sdkp->unmap_granularity = get_unaligned_be32(&vpd->data[28]);
 

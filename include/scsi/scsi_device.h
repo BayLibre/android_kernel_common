@@ -101,6 +101,18 @@ struct scsi_vpd {
 	unsigned char	data[];
 };
 
+#ifdef CONFIG_SCSI_DISCARD
+struct xiaomi_fastdiscard_info {
+	u32 fastdiscard_enable;
+	u32 max_unmap_descriptors;
+	unsigned long multi_unmap_len_max;
+};
+
+struct xiaomi_feature_info {
+	void *fast_discard_info;
+};
+#endif
+
 struct scsi_device {
 	struct Scsi_Host *host;
 	struct request_queue *request_queue;

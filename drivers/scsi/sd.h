@@ -49,6 +49,9 @@ enum {
 	SD_MAX_XFER_BLOCKS = 0xffffffff,
 	SD_MAX_WS10_BLOCKS = 0xffff,
 	SD_MAX_WS16_BLOCKS = 0x7fffff,
+#ifdef CONFIG_SCSI_DISCARD
+	SD_MAX_UNMAP_DESCS = 0xffff,
+#endif
 };
 
 enum {
