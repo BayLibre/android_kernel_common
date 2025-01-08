@@ -95,6 +95,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35ea4307_f166d233",
+        "filename": "drivers/platform/chrome/cros_typec_altmode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1064639
+      },
+      "writtenOn": "2025-01-08T02:20:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aee1c886_4c0ddaed",
+      "range": {
+        "startLine": 62,
+        "startChar": 3,
+        "endLine": 62,
+        "endChar": 28
+      },
+      "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa9b167e_accbe3c5",
@@ -153,6 +177,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fcedfd3_a08d90ae",
+        "filename": "drivers/platform/chrome/cros_typec_altmode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1064639
+      },
+      "writtenOn": "2025-01-08T02:20:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abd2696a_c8054a10",
+      "range": {
+        "startLine": 106,
+        "startChar": 3,
+        "endLine": 106,
+        "endChar": 28
+      },
+      "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b686cd7_74b862fd",
@@ -183,6 +231,24 @@
       "writtenOn": "2024-11-22T14:29:46Z",
       "side": 1,
       "message": "Same comment as above",
+      "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34cee3b9_5c4ecc61",
+        "filename": "drivers/platform/chrome/cros_typec_altmode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1064639
+      },
+      "writtenOn": "2025-01-08T02:20:46Z",
+      "side": 1,
+      "message": "Yep. See USB PD 6.4.4.3.4 Enter Mode Command\n\nNumber of 1 is mandatory by the spec, to account for the header object.",
+      "parentUuid": "ba9fd973_4babd9bb",
       "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -227,6 +293,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c51db07_b7c3eefc",
+        "filename": "drivers/platform/chrome/cros_typec_altmode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1064639
+      },
+      "writtenOn": "2025-01-08T02:20:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "457ebf83_b390d470",
+      "range": {
+        "startLine": 147,
+        "startChar": 3,
+        "endLine": 147,
+        "endChar": 28
+      },
+      "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18ad0a1d_57498baf",
@@ -240,6 +330,30 @@
       "writtenOn": "2024-11-27T08:54:17Z",
       "side": 1,
       "message": "Perhaps we could log here, that the command type was not recognized if this could happen.",
+      "range": {
+        "startLine": 192,
+        "startChar": 1,
+        "endLine": 192,
+        "endChar": 8
+      },
+      "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66f8e7b2_3c84723b",
+        "filename": "drivers/platform/chrome/cros_typec_altmode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1064639
+      },
+      "writtenOn": "2025-01-08T02:20:46Z",
+      "side": 1,
+      "message": "I\u0027ve looked into this, and I\u0027m not sure it\u0027s actually something we should log, as it\u0027s not exactly unexpected. cmd_types other than CMDT_INIT are either CMDT_RSP_ACK CMDT_RSP_NAK or CMDT_RSP_BUSY. I think in those other cases, transparently and quietly falling through is appropriate.",
+      "parentUuid": "18ad0a1d_57498baf",
       "range": {
         "startLine": 192,
         "startChar": 1,
