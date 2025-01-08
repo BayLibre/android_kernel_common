@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa1458a8_a75a1e0a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1076,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-01-08T13:36:05Z",
+      "side": 1,
+      "message": "Took me a while to figure out why we had this change of semantics here, which IIUC is because we\u0027ll expect a NOPAGE state for the MMIO_GUARD calls.\n\nNot a big deal but it\u0027d be nicer to have that in the MMIO_GUARD patch later. Also wht -EINVAL and not -EPERM like before?",
+      "range": {
+        "startLine": 1075,
+        "startChar": 1,
+        "endLine": 1076,
+        "endChar": 51
+      },
+      "revId": "61b2616dc32980c65c2e6f57f84ed1aeb169cb0c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b686c437_b1cc2310",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1094,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-01-08T13:36:05Z",
+      "side": 1,
+      "message": "Nit: you should be able to check the validity of the [kvm_pte_to_phys(data-\u003epte_start), kvm_pte_to_phys(data-\u003epte_start) + size] range from the if (!data-\u003esize) block above and drop this check here. That would save a b-search of the memblock list for every PTE we visit.",
+      "range": {
+        "startLine": 1094,
+        "startChar": 2,
+        "endLine": 1094,
+        "endChar": 36
+      },
+      "revId": "61b2616dc32980c65c2e6f57f84ed1aeb169cb0c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
