@@ -112,6 +112,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89b0b7b7_0c83af56",
+        "filename": "drivers/platform/chrome/cros_typec_altmode.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1064639
+      },
+      "writtenOn": "2025-01-08T01:48:24Z",
+      "side": 1,
+      "message": "Hi Daniel,\n\nUSB Power Delivery Specification R3.2 V1.1, Section 6.4.4.3.4 Enter Mode Command\n\n\n\u003e The Number of Data Objects field in the Command response Shall be set to 1 since an Enter Mode Command response (ACK, NAK) Shall Not contain any VDOs.\n\n\nThe number 1 is necessary because the response object counts the header object.",
+      "parentUuid": "aa9b167e_accbe3c5",
+      "revId": "6e8ad2ce4ca5c8ebf222b6e240bc36326c6953b9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "abd2696a_c8054a10",
