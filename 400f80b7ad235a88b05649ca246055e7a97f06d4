@@ -16,6 +16,24 @@
       "message": "Why do we need this again? Is the unmap call actively causing a problem?",
       "revId": "400f80b7ad235a88b05649ca246055e7a97f06d4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "865b0a1e_0327434d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-08T17:42:21Z",
+      "side": 1,
+      "message": "Not causing any problem. But that\u0027s just code that is not necessary. This patch just removes one simple line but if I\u0027d had to bring the range here too, that would be much bigger. So overall it felt less risky to just kill all this portion.",
+      "parentUuid": "f7eaffd9_82f49321",
+      "revId": "400f80b7ad235a88b05649ca246055e7a97f06d4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
