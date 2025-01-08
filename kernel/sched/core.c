@@ -2296,6 +2296,13 @@ void wakeup_preempt(struct rq *rq, struct task_struct *p, int flags)
 	if (task_on_rq_queued(rq->curr) && test_tsk_need_resched(rq->curr))
 		rq_clock_skip_update(rq);
 }
+
+// ANDROID: preserve the check_preempt_curr() symbol for external modules that
+// wanted to poke around in scheduler internals for some reason.
+void check_preempt_curr(struct rq *rq, struct task_struct *p, int flags)
+{
+	wakeup_preempt(rq, p, flags);
+}
 EXPORT_SYMBOL_GPL(check_preempt_curr);
 
 static __always_inline
