@@ -22,6 +22,30 @@
       },
       "revId": "78ce934b0b9e9e0e71be1710e9405a967247c52b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "298c5759_feb9bdd8",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1395,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-08T18:03:26Z",
+      "side": 1,
+      "message": "Hum, I would expect nr_shared pages to be the actual number of __shared__ pages. __pkvm_guest_share_host() does not set it unless it returns 0.\n\nAlso in practice I don\u0027t think this would happen a region we want to share half-faulted.\n\nFinally, the gain would be really minimum as the map function in the host would look at the pinned pages to skip what has been already mapped.\n\nWDYS?",
+      "parentUuid": "c3b167f2_f9d10a9a",
+      "range": {
+        "startLine": 1395,
+        "startChar": 22,
+        "endLine": 1395,
+        "endChar": 26
+      },
+      "revId": "78ce934b0b9e9e0e71be1710e9405a967247c52b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
