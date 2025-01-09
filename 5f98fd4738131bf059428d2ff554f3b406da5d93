@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3b15d38_c1e55ec1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-01-09T21:04:34Z",
+      "side": 1,
+      "message": "Breaks KMI so cannot be accepted in current state. See comments for a possible workaround.",
+      "revId": "5f98fd4738131bf059428d2ff554f3b406da5d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98efff62_25d622d0",
+        "filename": "include/linux/sbitmap.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-01-09T21:04:34Z",
+      "side": 1,
+      "message": "This breaks KMI. It looks like the only place this is allocated is sbitmap.c:132, so I\u0027m pretty sure you can work around this by defining a containing struct:\n```\nstruct ext_sbitmap_word {\n  struct sbitmap_word sbitmap_word;\n  spinlock_t swap_lock;\n};\n```\nand then use container_of() to gain access to `swap_lock` (see other comments for how).",
+      "fixSuggestions": [
+        {
+          "fixId": "e0a72355_7cf0ed71",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/sbitmap.h",
+              "range": {
+                "startLine": 43,
+                "startChar": 0,
+                "endLine": 44,
+                "endChar": 0
+              },
+              "replacement": "\tstruct {\n\t\tspinlock_t lock;\n\t} swap_lock;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5f98fd4738131bf059428d2ff554f3b406da5d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d89006d6_d6aea7b5",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-01-09T21:04:34Z",
+      "side": 1,
+      "message": "see comment at line 139 for example of how to access swap_lock using container_of().",
+      "revId": "5f98fd4738131bf059428d2ff554f3b406da5d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb448067_73290a12",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-01-09T21:04:34Z",
+      "side": 1,
+      "message": "`sizeof(struct ext_sbitmap_word)`",
+      "range": {
+        "startLine": 132,
+        "startChar": 38,
+        "endLine": 132,
+        "endChar": 54
+      },
+      "revId": "5f98fd4738131bf059428d2ff554f3b406da5d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84b29641_81fc726b",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-01-09T21:04:34Z",
+      "side": 1,
+      "message": "```\nfor (i \u003d 0; i \u003c sb-\u003emap_nr; i++) {\n   struct ext_sbitmap_word *ext_map \u003d container_of(\u0026sb-\u003emap[i],\n                                                    struct ext_sbitmap_word,\n                                                    sbitmap_word);\n   spin_lock_init(ext_map-\u003eswap_lock);\n}\n```",
+      "range": {
+        "startLine": 138,
+        "startChar": 2,
+        "endLine": 139,
+        "endChar": 40
+      },
+      "revId": "5f98fd4738131bf059428d2ff554f3b406da5d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
