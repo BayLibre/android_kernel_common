@@ -320,6 +320,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3e5a7e69_f433e46e",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-09T14:12:19Z",
+      "side": 1,
+      "message": "Ok, I understand your point. IMO that\u0027s debatable what a userspace client can expect here.\n\nBut then if you want to keep the dump in the first show, you could save if `seq_has_overflow()` at the end of the _show() function and to not re-dump if it has overflowed?",
+      "parentUuid": "b920890b_b8195f1f",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fa7fe781_40eb68fe",
         "filename": "arch/arm64/kvm/ptdump.c",
         "patchSetId": 9
@@ -402,6 +420,23 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "8c205162_81ec8cb2",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5db567c_375de4e1",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-09T14:12:19Z",
+      "side": 1,
+      "message": "I don\u0027t think we support lseek as we always dump the entire pgtable with single. \n\nAnd then the probably the upstream version `kvm_ptdump_guest_fops` would need to remove it as well.",
       "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
