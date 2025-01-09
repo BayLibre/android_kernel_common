@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11326e7e_7c6f154b",
+        "filename": "include/linux/sbitmap.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2025-01-09T21:51:06Z",
+      "side": 1,
+      "message": "How about moving the `struct sbitmap_word` definition into a new header file in the lib/ directory and keeping only a forward declaration in include/linux/sbitmap.h? As far as I can tell that struct definition is not needed anywhere outside lib/sbitmap.c.",
+      "parentUuid": "98efff62_25d622d0",
+      "revId": "5f98fd4738131bf059428d2ff554f3b406da5d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d89006d6_d6aea7b5",
         "filename": "lib/sbitmap.c",
         "patchSetId": 4
