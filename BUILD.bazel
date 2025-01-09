@@ -1211,8 +1211,8 @@ kernel_build(
         "vmlinux.symvers",
     ],
     arch = "arm64",
-    build_config = "build.config.common",
     defconfig = "arch/arm64/configs/gki_defconfig",
+    kcflags = COMMON_KCFLAGS,
     make_goals = [
         "Image",
         "modules",
@@ -1243,8 +1243,8 @@ kernel_build(
         "vmlinux.symvers",
     ],
     arch = "arm64",
-    build_config = "build.config.common",
     defconfig = "arch/arm64/configs/gki_defconfig",
+    kcflags = COMMON_KCFLAGS,
     make_goals = [
         "Image",
         "modules",
