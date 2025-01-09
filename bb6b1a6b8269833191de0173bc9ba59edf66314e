@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ef86dc5_71374727",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1326,
+      "author": {
+        "id": 2018217
+      },
+      "writtenOn": "2025-01-09T10:40:53Z",
+      "side": 1,
+      "message": "Should we clear this flag in `pkvm_firmware_rmem_clear()`?\n\nIf anything fails in `pkvm_init()` as part of error handling `pkvm_firmware_rmem_clear()` will be called but `pvmfw_present` will remain `true`",
+      "range": {
+        "startLine": 1326,
+        "startChar": 1,
+        "endLine": 1326,
+        "endChar": 32
+      },
+      "revId": "bb6b1a6b8269833191de0173bc9ba59edf66314e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2858a5e2_edc125c4",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1346,
+      "author": {
+        "id": 2018217
+      },
+      "writtenOn": "2025-01-09T10:40:53Z",
+      "side": 1,
+      "message": "Is it needed if we call `memunmap()` in the following line?",
+      "range": {
+        "startLine": 1346,
+        "startChar": 1,
+        "endLine": 1346,
+        "endChar": 33
+      },
+      "revId": "bb6b1a6b8269833191de0173bc9ba59edf66314e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
