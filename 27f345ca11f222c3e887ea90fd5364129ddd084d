@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3c88b980_3ec99303",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-09T11:52:18Z",
+      "side": 1,
+      "message": "Haa yes of course. I would put a comment somewhere though to explain why this value.\n\nAnd actually how about we improve it? The worst case scenario is 52-bit VA and 4kB pages right? so How about we use 40 here?\n\nFinally, perhaps this struct could be __packed() if it\u0027s smaller than 64-bits, we could save a bit more space per page!",
+      "parentUuid": "5784433c_c7e40041",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e8dd078b_45f1c67b",
         "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
         "patchSetId": 9
@@ -137,6 +155,24 @@
       "side": 1,
       "message": "I plan to do this re-work in the ticket that I mentioned earlier b/387289497",
       "parentUuid": "88ad1b35_d6242506",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4de3b8fc_d9620831",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2651,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-09T11:52:18Z",
+      "side": 1,
+      "message": "Does that mean we won\u0027t have this for Android16?",
+      "parentUuid": "2cbaa4e8_9ac26441",
       "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -248,6 +284,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8af87746_4733dd1f",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-09T11:52:18Z",
+      "side": 1,
+      "message": "I don\u0027t think showing the snapshot from the open time is a problem, there\u0027s no sync mechanism at stake. We don\u0027t keep any lock between the snapshot and the print in a first place, so even doing it during the -\u003eshow wouldn\u0027t assure that what you\u0027ve print is not out of date.\n\nHowever doing it solely in the open would potentially save one (or more!) costly dump!\n\nI have a test where I dump every few seconds the page-table. If I\u0027m unlucky enough and it never fits the first seq_file attempt it means I\u0027ll do twice more dump than necessary won\u0027t it?",
+      "parentUuid": "946db0d1_a3774cb7",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fa7fe781_40eb68fe",
         "filename": "arch/arm64/kvm/ptdump.c",
         "patchSetId": 9
@@ -277,6 +331,24 @@
       "side": 1,
       "message": "I don\u0027t think it would be of any help to print the partial ranges but let me know if you have a different view. We didn\u0027t do that in the previous version. For example when we don\u0027t have memory to extend the seq_file buffer what is the behaviour, do we dump what we have or we don\u0027t dump at all ?",
       "parentUuid": "fa7fe781_40eb68fe",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2f4cecb_e4a6df7b",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-09T11:52:18Z",
+      "side": 1,
+      "message": "It would be \"best-effort\", if you\u0027re lucky enough you have what you care about.\n\nIt\u0027s like for tracing where we print some events are missing.\n\nBut anyway, that was just a suggestion. I believe there are more important things to improve first.",
+      "parentUuid": "d5cd0399_e80db44c",
       "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
