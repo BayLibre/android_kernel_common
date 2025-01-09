@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d69ecc74_8ab6d75c",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1273,
+      "author": {
+        "id": 2018217
+      },
+      "writtenOn": "2025-01-09T14:10:48Z",
+      "side": 1,
+      "message": "Why we need `smp_store_release()` here? ARM in similar place does not use it...",
+      "range": {
+        "startLine": 1273,
+        "startChar": 1,
+        "endLine": 1273,
+        "endChar": 18
+      },
+      "revId": "cb3a5ed1e0408f209368f974969d2b3d34a3a21d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc9d0784_72fa8ab2",
         "filename": "arch/x86/kvm/x86.c",
         "patchSetId": 5
