@@ -34,6 +34,24 @@
       "parentUuid": "f7eaffd9_82f49321",
       "revId": "400f80b7ad235a88b05649ca246055e7a97f06d4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96fdd24f_99a61479",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-01-09T12:16:48Z",
+      "side": 1,
+      "message": "I guess I\u0027m being overly cautious in that a guest could theoretically:\n\n1. setup an MMIO_GUARD region on top of a memslot that it has never accessed (hence pKVM would happily accept the MMIO guard region)\n2. use that MMIO region and expect register content to be visible to the host upon load/store\n3. unmap that MMIO region\n4. start accessing the same PA under the assumption it will now be backed by memory that it can rely on being private\n\nA guest doing the above with this patch now applied would have the unpleasant surprise of 3. being silently skipped, meaning the subsequent accesses on 4. will _not_ be to private memory. That should however classify as a guest doing stupid things, so it gets to keep the pieces. Let\u0027s not worry about it too much.",
+      "parentUuid": "865b0a1e_0327434d",
+      "revId": "400f80b7ad235a88b05649ca246055e7a97f06d4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
