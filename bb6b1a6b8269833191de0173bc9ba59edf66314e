@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e19d6ba4_69581708",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1326,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2025-01-10T14:27:19Z",
+      "side": 1,
+      "message": "It does match ARM logic where the pvmfw is still advertised as present even if it gets zapped. Maybe that\u0027s a good enough reason to leave as is.",
+      "parentUuid": "4ef86dc5_71374727",
+      "range": {
+        "startLine": 1326,
+        "startChar": 1,
+        "endLine": 1326,
+        "endChar": 32
+      },
+      "revId": "bb6b1a6b8269833191de0173bc9ba59edf66314e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2858a5e2_edc125c4",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 10
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-09T10:40:53Z",
       "side": 1,
       "message": "Is it needed if we call `memunmap()` in the following line?",
+      "range": {
+        "startLine": 1346,
+        "startChar": 1,
+        "endLine": 1346,
+        "endChar": 33
+      },
+      "revId": "bb6b1a6b8269833191de0173bc9ba59edf66314e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd4c9c0a_aac9a03c",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1346,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2025-01-10T14:27:19Z",
+      "side": 1,
+      "message": "Again matches ARM side, where it protects against later snooping of the physical memory locations via incoherent mappings or DMA transfers.",
+      "parentUuid": "2858a5e2_edc125c4",
       "range": {
         "startLine": 1346,
         "startChar": 1,
