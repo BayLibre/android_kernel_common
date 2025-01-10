@@ -7466,6 +7466,14 @@ nfs4_state_shutdown_net(struct net *net)
 	struct list_head *pos, *next, reaplist;
 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
 
+<<<<<<< HEAD   (ce60eb Merge 5.10.232 into android12-5.10-lts)
+||||||| BASE
+	unregister_shrinker(&nn->nfsd_client_shrinker);
+	cancel_work(&nn->nfsd_shrinker_work);
+=======
+	unregister_shrinker(&nn->nfsd_client_shrinker);
+	cancel_work_sync(&nn->nfsd_shrinker_work);
+>>>>>>> BRANCH (14c02f Linux 5.10.233)
 	cancel_delayed_work_sync(&nn->laundromat_work);
 	locks_end_grace(&nn->nfsd4_manager);
 
