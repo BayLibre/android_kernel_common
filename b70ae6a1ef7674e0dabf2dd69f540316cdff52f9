@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac054e5d_84bd28b2",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-10T15:44:52Z",
+      "side": 1,
+      "message": "Why do you restore `prev` like this instead of just doing something like:\n\n```\nkvm_iommu_lock(iommu);\nerr \u003d kvm_iommu_ops-\u003eresume ? kvm_iommu_ops-\u003eresume(iommu) : 0;\nif (!err)\n\tiommu-\u003epower_is_off \u003d false;\nkvm_iommu_unlock(iommu);\n```",
+      "range": {
+        "startLine": 430,
+        "startChar": 0,
+        "endLine": 430,
+        "endChar": 29
+      },
+      "revId": "b70ae6a1ef7674e0dabf2dd69f540316cdff52f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
