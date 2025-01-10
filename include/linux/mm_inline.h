@@ -9,6 +9,7 @@
 #include <linux/string.h>
 #include <linux/userfaultfd_k.h>
 #include <linux/swapops.h>
+#include <linux/mm.h>
 
 /**
  * folio_is_file_lru - Should the folio be on a file LRU or anon LRU?
@@ -327,6 +328,8 @@ void lruvec_add_folio(struct lruvec *lruvec, struct folio *folio)
 			folio_nr_pages(folio));
 	if (lru != LRU_UNEVICTABLE)
 		list_add(&folio->lru, &lruvec->lists[lru]);
+	else if (folio_is_file_lru(folio))
+		update_unevictable_file_pages_count(folio_nr_pages(folio));
 }
 
 static __always_inline
@@ -353,6 +356,8 @@ void lruvec_del_folio(struct lruvec *lruvec, struct folio *folio)
 
 	if (lru != LRU_UNEVICTABLE)
 		list_del(&folio->lru);
+	else if (folio_is_file_lru(folio))
+		update_unevictable_file_pages_count(-folio_nr_pages(folio));
 	update_lru_size(lruvec, lru, folio_zonenum(folio),
 			-folio_nr_pages(folio));
 }

@@ -31,6 +31,13 @@ static void show_val_kb(struct seq_file *m, const char *s, unsigned long num)
 	seq_write(m, " kB\n", 4);
 }
 
+static atomic_long_t unevictable_file_pages = ATOMIC_LONG_INIT(0);
+
+void update_unevictable_file_pages_count(long nr_pages)
+{
+	atomic_long_add(nr_pages, &unevictable_file_pages);
+}
+
 static int meminfo_proc_show(struct seq_file *m, void *v)
 {
 	struct sysinfo i;
@@ -162,6 +169,8 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
 	show_val_kb(m, "Unaccepted:     ",
 		    global_zone_page_state(NR_UNACCEPTED));
 #endif
+
+	show_val_kb(m, "UnevictableFile:", atomic_long_read(&unevictable_file_pages));
 
 	hugetlb_report_meminfo(m);
 
