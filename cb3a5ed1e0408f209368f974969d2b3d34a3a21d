@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5207123b_d42c6777",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1273,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-01-10T23:06:55Z",
+      "side": 1,
+      "message": "It is to provide a memory barrier to prevent a very unlikely but theoretically possible race: the VMM in thread 1 sets `pvmfw_load_addr` via the `KVM_CAP_X86_PROTECTED_VM_FLAGS_SET_FW_GPA` ioctl and then in thread 2 on another CPU makes the `PKVM_HC_FINALIZE_SHADOW_VM` hypercall, and `__pkvm_finalize_shadow_vm()` on that CPU sees the old value of `pvmfw_load_addr` instead of the new value set by thread 1.\n\nIn ARM code the memory barrier is provided by `mutex_unlock(\u0026kvm-\u003elock)`, while here in x86 code we don\u0027t lock `kvm-\u003elock` since we don\u0027t have a particular need to lock it.",
+      "parentUuid": "d69ecc74_8ab6d75c",
+      "range": {
+        "startLine": 1273,
+        "startChar": 1,
+        "endLine": 1273,
+        "endChar": 18
+      },
+      "revId": "cb3a5ed1e0408f209368f974969d2b3d34a3a21d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc9d0784_72fa8ab2",
         "filename": "arch/x86/kvm/x86.c",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-09T12:23:22Z",
       "side": 1,
       "message": "These look redundant.",
+      "range": {
+        "startLine": 6384,
+        "startChar": 0,
+        "endLine": 6390,
+        "endChar": 17
+      },
+      "revId": "cb3a5ed1e0408f209368f974969d2b3d34a3a21d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b448b19_3733fbd7",
+        "filename": "arch/x86/kvm/x86.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6390,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-01-10T23:06:55Z",
+      "side": 1,
+      "message": "Yeah, good point. The above `switch` is basically copied as is from pKVM-ARM. It seems better to remove the `default` case from it here.",
+      "parentUuid": "dc9d0784_72fa8ab2",
       "range": {
         "startLine": 6384,
         "startChar": 0,
