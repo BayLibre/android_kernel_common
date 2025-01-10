@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df38de94_39e7f520",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-10T17:50:32Z",
+      "side": 1,
+      "message": "What prevents us from taking the same interrupt immediately? We\u0027ve not done anything to de-assert it afaict (because we\u0027re avoiding the MMIO).",
+      "range": {
+        "startLine": 561,
+        "startChar": 9,
+        "endLine": 561,
+        "endChar": 20
+      },
+      "revId": "bd3d6ef887d04ce9bc91c2c0f6a54356f9d3deca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
