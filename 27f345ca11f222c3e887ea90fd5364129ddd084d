@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ec2090_0944c39c",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-10T10:27:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c88b980_3ec99303",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8dd078b_45f1c67b",
@@ -336,6 +354,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b6b0e58_d2ad9ede",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-10T10:27:48Z",
+      "side": 1,
+      "message": "Let\u0027s keep the behaviour as it is",
+      "parentUuid": "3e5a7e69_f433e46e",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa7fe781_40eb68fe",
@@ -389,6 +425,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "978adec4_ef408bc9",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-10T10:27:48Z",
+      "side": 1,
+      "message": "I will add this suggestion as part of the improvement ticket (for android16)",
+      "parentUuid": "c2f4cecb_e4a6df7b",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c205162_81ec8cb2",
@@ -437,6 +491,24 @@
       "writtenOn": "2025-01-09T14:12:19Z",
       "side": 1,
       "message": "I don\u0027t think we support lseek as we always dump the entire pgtable with single. \n\nAnd then the probably the upstream version `kvm_ptdump_guest_fops` would need to remove it as well.",
+      "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cec57e14_3d31b811",
+        "filename": "arch/arm64/kvm/ptdump.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-10T10:27:48Z",
+      "side": 1,
+      "message": "Thanks, I removed the other occurences from the host patch and I\u0027ll make a note to remove it from upstream as well.",
+      "parentUuid": "f5db567c_375de4e1",
       "revId": "27f345ca11f222c3e887ea90fd5364129ddd084d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
