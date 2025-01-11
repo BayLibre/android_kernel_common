@@ -287,8 +287,13 @@ static inline u32 arm_smmu_strtab_l2_idx(u32 sid)
 #define STRTAB_STE_1_STRW_NSEL1		0UL
 #define STRTAB_STE_1_STRW_EL2		2UL
 
+#define STRTAB_STE_1_MEMATTR		GENMASK_ULL(35, 32)
+
+#define STRTAB_STE_1_MTCFG		(1UL << 36)
+
 #define STRTAB_STE_1_SHCFG		GENMASK_ULL(45, 44)
 #define STRTAB_STE_1_SHCFG_INCOMING	1UL
+#define STRTAB_STE_1_SHCFG_ISH		3UL
 
 #define STRTAB_STE_1_INSTCFG		GENMASK_ULL(51, 50)
 #define STRTAB_STE_1_INSTCFG_INCOMING	0UL
@@ -862,6 +867,7 @@ struct arm_smmu_master {
 	bool				ats_enabled : 1;
 	bool				ste_ats_enabled : 1;
 	bool				stall_enabled;
+	bool				force_cacheable;
 	unsigned int			ssid_bits;
 	unsigned int			iopf_refcount;
 };
@@ -927,7 +933,8 @@ void arm_smmu_write_entry(struct arm_smmu_entry_writer *writer, __le64 *cur,
 			  const __le64 *target);
 void arm_smmu_get_cd_used(const __le64 *ent, __le64 *used_bits);
 void arm_smmu_make_bypass_ste(struct arm_smmu_device *smmu,
-			      struct arm_smmu_ste *target);
+			      struct arm_smmu_ste *target,
+			      struct arm_smmu_master *master);
 void arm_smmu_make_cdtable_ste(struct arm_smmu_ste *target,
 			       struct arm_smmu_master *master, bool ats_enabled,
 			       unsigned int s1dss);

@@ -800,7 +800,9 @@ void arm_smmu_get_ste_used(const __le64 *ent, __le64 *used_bits)
 	}
 
 	if (cfg == STRTAB_STE_0_CFG_BYPASS)
-		used_bits[1] |= cpu_to_le64(STRTAB_STE_1_SHCFG);
+		used_bits[1] |= cpu_to_le64(STRTAB_STE_1_SHCFG |
+					    STRTAB_STE_1_MEMATTR |
+					    STRTAB_STE_1_MTCFG);
 }
 EXPORT_SYMBOL_IF_KUNIT(arm_smmu_get_ste_used);
 
@@ -1283,16 +1285,24 @@ static void arm_smmu_write_ste(struct arm_smmu_master *master, u32 sid,
 
 VISIBLE_IF_KUNIT
 void arm_smmu_make_bypass_ste(struct arm_smmu_device *smmu,
-			      struct arm_smmu_ste *target)
+			      struct arm_smmu_ste *target,
+			      struct arm_smmu_master *master)
 {
 	memset(target, 0, sizeof(*target));
 	target->data[0] = cpu_to_le64(
 		STRTAB_STE_0_V |
 		FIELD_PREP(STRTAB_STE_0_CFG, STRTAB_STE_0_CFG_BYPASS));
 
-	if (smmu->features & ARM_SMMU_FEAT_ATTR_TYPES_OVR)
-		target->data[1] = cpu_to_le64(FIELD_PREP(STRTAB_STE_1_SHCFG,
-							 STRTAB_STE_1_SHCFG_INCOMING));
+	if (smmu->features & ARM_SMMU_FEAT_ATTR_TYPES_OVR) {
+		if (master && master->force_cacheable)
+			target->data[1] = cpu_to_le64(
+			    FIELD_PREP(STRTAB_STE_1_SHCFG, STRTAB_STE_1_SHCFG_ISH) |
+			    FIELD_PREP(STRTAB_STE_1_MEMATTR, ARM_SMMU_MEMATTR_OIWB) |
+			    STRTAB_STE_1_MTCFG);
+		else
+			target->data[1] = cpu_to_le64(FIELD_PREP(
+			    STRTAB_STE_1_SHCFG, STRTAB_STE_1_SHCFG_INCOMING));
+	}
 }
 EXPORT_SYMBOL_IF_KUNIT(arm_smmu_make_bypass_ste);
 EXPORT_SYMBOL_IF_KUNIT(arm_smmu_make_abort_ste);
@@ -2615,7 +2625,7 @@ static int arm_smmu_attach_dev_identity(struct iommu_domain *domain,
 	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
 
 	arm_smmu_master_clear_vmaster(master);
-	arm_smmu_make_bypass_ste(master->smmu, &ste);
+	arm_smmu_make_bypass_ste(master->smmu, &ste, master);
 	arm_smmu_attach_dev_ste(domain, dev, &ste, STRTAB_STE_1_S1DSS_BYPASS);
 	return 0;
 }
@@ -2811,6 +2821,7 @@ static struct iommu_device *arm_smmu_probe_device(struct device *dev)
 
 	device_property_read_u32(dev, "pasid-num-bits", &master->ssid_bits);
 	master->ssid_bits = min(smmu->ssid_bits, master->ssid_bits);
+	master->force_cacheable = device_property_read_bool(dev, "iommu-force-cacheable");
 
 	/*
 	 * Note that PASID must be enabled before, and disabled after ATS:
@@ -3200,7 +3211,7 @@ static void arm_smmu_rmr_install_bypass_ste(struct arm_smmu_device *smmu)
 			 * arm_smmu_initial_bypass_stes()
 			 */
 			arm_smmu_make_bypass_ste(smmu,
-				arm_smmu_get_step_for_sid(smmu, rmr->sids[i]));
+				arm_smmu_get_step_for_sid(smmu, rmr->sids[i]), NULL);
 		}
 	}
 
