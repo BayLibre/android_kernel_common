@@ -620,7 +620,7 @@ static struct kunit_case arm_smmu_v3_test_cases[] = {
 
 static int arm_smmu_v3_test_suite_init(struct kunit_suite *test)
 {
-	arm_smmu_make_bypass_ste(&smmu, &bypass_ste);
+	arm_smmu_make_bypass_ste(&smmu, &bypass_ste, NULL);
 	arm_smmu_make_abort_ste(&abort_ste);
 	return 0;
 }
