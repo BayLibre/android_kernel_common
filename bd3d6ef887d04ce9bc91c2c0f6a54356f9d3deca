@@ -46,6 +46,30 @@
       },
       "revId": "bd3d6ef887d04ce9bc91c2c0f6a54356f9d3deca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c2ea464_2d1575b9",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-13T15:15:02Z",
+      "side": 1,
+      "message": "Hmm. Assuming that the SMMU can\u0027t generate interrupts while it\u0027s powered down (please confirm!), then getting here implies a race between an event being generated and the SMMU being powered off.\n\nI think that means that you\u0027re right -- we need to enable the SMMU, which should restore the register state so that we can handle the interrupt.",
+      "parentUuid": "27fa7f93_0197cc7f",
+      "range": {
+        "startLine": 561,
+        "startChar": 9,
+        "endLine": 561,
+        "endChar": 20
+      },
+      "revId": "bd3d6ef887d04ce9bc91c2c0f6a54356f9d3deca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
