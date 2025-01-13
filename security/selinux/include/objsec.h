@@ -161,7 +161,7 @@ static inline struct file_security_struct *selinux_file(const struct file *file)
 static inline struct inode_security_struct *selinux_inode(
 						const struct inode *inode)
 {
-	if (unlikely(!inode->i_security))
+	if (unlikely(!inode || !inode->i_security))
 		return NULL;
 	return inode->i_security + selinux_blob_sizes.lbs_inode;
 }
