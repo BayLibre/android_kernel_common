@@ -22,6 +22,30 @@
       },
       "revId": "b70ae6a1ef7674e0dabf2dd69f540316cdff52f9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "528dad6b_d873ca12",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-01-13T11:47:28Z",
+      "side": 1,
+      "message": "With the current approach, `iommu-\u003epower_is_off` is managed exclusivly by the core IOMMU code. Otherwise, the driver resume/suspend handlers have to set it, so it propgates correcly (for ex in SMMUv3 driver, to access the command queue this variable is checked).\nAlso, in that case either the core code or the driver still need a copy to restore the value in case of failure.",
+      "parentUuid": "ac054e5d_84bd28b2",
+      "range": {
+        "startLine": 430,
+        "startChar": 0,
+        "endLine": 430,
+        "endChar": 29
+      },
+      "revId": "b70ae6a1ef7674e0dabf2dd69f540316cdff52f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
