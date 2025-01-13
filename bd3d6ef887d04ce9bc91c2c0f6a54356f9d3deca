@@ -22,6 +22,30 @@
       },
       "revId": "bd3d6ef887d04ce9bc91c2c0f6a54356f9d3deca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27fa7f93_0197cc7f",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-01-13T12:14:54Z",
+      "side": 1,
+      "message": "Yep, maybe we have to use `pm_runtime_get_sync` and enable the device in that case. What do you think?",
+      "parentUuid": "df38de94_39e7f520",
+      "range": {
+        "startLine": 561,
+        "startChar": 9,
+        "endLine": 561,
+        "endChar": 20
+      },
+      "revId": "bd3d6ef887d04ce9bc91c2c0f6a54356f9d3deca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
