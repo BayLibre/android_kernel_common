@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9114b714_027eb1fc",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1273,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-01-13T15:35:18Z",
+      "side": 1,
+      "message": "I\u0027ve realized that we also need a corresponding `smp_load_acquire()` barrier when reading `pvmfw_load_addr` in `pkvm_finalize_shadow_vm()`. (Somehow I was assuming that `pkvm_spin_lock(\u0026vm-\u003elock)` in `__pkvm_finalize_shadow_vm()` provided the read-side barrier, but `__pkvm_finalize_shadow_vm()` deals with a copy of `pvmfw_load_addr` passed to it as an argument to the hypercall, not with the original value stored via `smp_store_release()`.)\n\n\u003e In ARM code the memory barrier is provided by mutex_unlock(\u0026kvm-\u003elock), while here in x86 code we don\u0027t lock kvm-\u003elock since we don\u0027t have a particular need to lock it.\n\nMore precisely: in the ARM code:\n```\n\tmutex_lock(\u0026kvm-\u003elock);\n\tif (kvm-\u003earch.pkvm.handle) {\n\t\tret \u003d -EBUSY;\n\t\tgoto out_unlock;\n\t}\n\n\tkvm-\u003earch.pkvm.pvmfw_load_addr \u003d ipa;\nout_unlock:\n\tmutex_unlock(\u0026kvm-\u003elock);\n```\n\nthanks to the `kvm-\u003earch.pkvm.handle` check, if the VMM tries to set `pvmfw_load_addr` via the ioctl after a vCPU has already run, KVM will return -EBUSY error. While here in x86 code, we have a slightly worse error diagnostics in this case: this wrongly set `pvmfw_load_addr` value will be \"successfully\" set but pKVM will ignore it, but the ioctl will return success to the VMM. So we could try and improve it (though I\u0027m not sure it\u0027s worth doing at this point, since the uAPI is temporary...).",
+      "parentUuid": "5207123b_d42c6777",
+      "range": {
+        "startLine": 1273,
+        "startChar": 1,
+        "endLine": 1273,
+        "endChar": 18
+      },
+      "revId": "cb3a5ed1e0408f209368f974969d2b3d34a3a21d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc9d0784_72fa8ab2",
         "filename": "arch/x86/kvm/x86.c",
         "patchSetId": 5
