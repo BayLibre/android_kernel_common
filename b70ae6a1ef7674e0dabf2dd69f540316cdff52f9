@@ -94,6 +94,30 @@
       },
       "revId": "b70ae6a1ef7674e0dabf2dd69f540316cdff52f9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e449e7c1_3d3630bf",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-13T15:18:33Z",
+      "side": 1,
+      "message": "Yuck! Having to update the state before the callback and then unwinding it on failure is horrible. Can we avoid that? If it\u0027s a PITA, then we can go with what you have, but it would be nice to untangle it if we can.",
+      "parentUuid": "b50f574c_6476dd23",
+      "range": {
+        "startLine": 430,
+        "startChar": 0,
+        "endLine": 430,
+        "endChar": 29
+      },
+      "revId": "b70ae6a1ef7674e0dabf2dd69f540316cdff52f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
