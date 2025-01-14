@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41568c2c_67790289",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-14T14:48:31Z",
+      "side": 1,
+      "message": "Just a reminder as we\u0027ve discussed offline (so we don\u0027t forget before we merge this patch), this should be 40! (worst VA_BIT case - wors PAGE_SHIFT case) \n\nIt\u0027s likely the bug is hidden somewhere else!",
+      "fixSuggestions": [
+        {
+          "fixId": "6f231488_4c9010d1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/include/asm/kvm_pkvm.h",
+              "range": {
+                "startLine": 424,
+                "startChar": 0,
+                "endLine": 425,
+                "endChar": 0
+              },
+              "replacement": "\tu64\tpfn: 40;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fba86610fd8348fa3643fc4f7cb9033ad2c6ba77",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
