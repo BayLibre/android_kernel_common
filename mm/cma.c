@@ -40,9 +40,14 @@
 #include "cma.h"
 
 #undef CREATE_TRACE_POINTS
+<<<<<<< HEAD   (74346c ANDROID: Enable PM_USERSPACE_AUTOSLEEP in gki_defconfig)
 #ifndef __GENKSYMS__
 #include <trace/hooks/mm.h>
 #endif
+||||||| BASE
+=======
+#include <trace/hooks/mm.h>
+>>>>>>> CHANGE (e81a5b ANDROID: mm/cma: add vendor_hook in cma_alloc to record info)
 
 struct cma cma_areas[MAX_CMA_AREAS];
 unsigned cma_area_count;
@@ -549,7 +554,14 @@ struct page *__cma_alloc(struct cma *cma, unsigned long count,
 			page_kasan_tag_reset(nth_page(page, i));
 	}
 
+<<<<<<< HEAD   (74346c ANDROID: Enable PM_USERSPACE_AUTOSLEEP in gki_defconfig)
 	if (ret && !(gfp_mask & __GFP_NOWARN)) {
+||||||| BASE
+	if (ret && !(gfp & __GFP_NOWARN)) {
+=======
+	if (ret && !(gfp & __GFP_NOWARN)) {
+		trace_android_vh_cma_alloc_fail(cma->name, cma->count, count);
+>>>>>>> CHANGE (e81a5b ANDROID: mm/cma: add vendor_hook in cma_alloc to record info)
 		pr_err_ratelimited("%s: %s: alloc failed, req-size: %lu pages, ret: %d\n",
 				   __func__, cma->name, count, ret);
 		cma_debug_show_areas(cma);

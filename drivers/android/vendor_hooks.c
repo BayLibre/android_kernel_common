@@ -250,6 +250,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_preempt_enable);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_irqs_disable);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_irqs_enable);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_is_fpsimd_save);
+<<<<<<< HEAD   (74346c ANDROID: Enable PM_USERSPACE_AUTOSLEEP in gki_defconfig)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_slab_folio_alloced);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_process_madvise_begin);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_process_madvise_iter);
@@ -625,3 +626,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_compaction_begin);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_compaction_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_read_fault);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_private_mod);
+||||||| BASE
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_fail);
+>>>>>>> CHANGE (e81a5b ANDROID: mm/cma: add vendor_hook in cma_alloc to record info)

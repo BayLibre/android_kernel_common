@@ -369,6 +369,7 @@ DECLARE_HOOK(android_vh_lock_folio_drop_mmap_start,
 		struct folio *folio, struct file *file),
 	TP_ARGS(tsk, vmf, folio, file));
 
+<<<<<<< HEAD   (74346c ANDROID: Enable PM_USERSPACE_AUTOSLEEP in gki_defconfig)
 DECLARE_HOOK(android_vh_lock_folio_drop_mmap_end,
 	TP_PROTO(bool success, struct task_struct **tsk, struct vm_fault *vmf,
 		struct folio *folio, struct file *file),
@@ -501,6 +502,16 @@ DECLARE_HOOK(android_vh_copy_page_from_user,
 DECLARE_HOOK(android_vh_page_private_mod,
 	TP_PROTO(struct page *page, unsigned long private),
 	TP_ARGS(page, private));
+||||||| BASE
+*/
+=======
+*/
+
+DECLARE_HOOK(android_vh_cma_alloc_fail,
+	TP_PROTO(char *name, unsigned long count, unsigned long req_count),
+	TP_ARGS(name, count, req_count));
+
+>>>>>>> CHANGE (e81a5b ANDROID: mm/cma: add vendor_hook in cma_alloc to record info)
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
