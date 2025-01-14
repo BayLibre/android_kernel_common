@@ -38,6 +38,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7c09b8f0_88489c6e",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-14T15:02:33Z",
+      "side": 1,
+      "message": "Arg this triggers:\n\n/arch/arm64/include/asm/kvm_pkvm.h:436:1: note: offset of packed bit-field ‘level’ has changed in GCC 4.4 \n\nThere\u0027s a way of suppressing this warning \"no-packed-bitfield-compat\" but perhaps just changing the fields to 16-bits wide type is better?",
+      "revId": "fba86610fd8348fa3643fc4f7cb9033ad2c6ba77",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "263900ed_512728b1",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 12
