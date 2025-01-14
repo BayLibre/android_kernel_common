@@ -390,7 +390,7 @@ static int sanitize_flags(unsigned int *flags_ptr)
 	return check_sysctl_memfd_noexec(flags_ptr);
 }
 
-static char *alloc_name(const char __user *uname)
+static char *alloc_name(const char *filename, bool user)
 {
 	int error;
 	char *name;
@@ -401,14 +401,25 @@ static char *alloc_name(const char __user *uname)
 		return ERR_PTR(-ENOMEM);
 
 	strcpy(name, MFD_NAME_PREFIX);
-	/* returned length does not include terminating zero */
-	len = strncpy_from_user(&name[MFD_NAME_PREFIX_LEN], uname, MFD_NAME_MAX_LEN + 1);
-	if (len < 0) {
-		error = -EFAULT;
-		goto err_name;
-	} else if (len > MFD_NAME_MAX_LEN) {
-		error = -EINVAL;
-		goto err_name;
+
+	if (user) {
+		const char __user *uname = filename;
+		/* returned length does not include terminating zero */
+		len = strncpy_from_user(&name[MFD_NAME_PREFIX_LEN], uname, MFD_NAME_MAX_LEN + 1);
+		if (len < 0) {
+			error = -EFAULT;
+			goto err_name;
+		} else if (len > MFD_NAME_MAX_LEN) {
+			error = -EINVAL;
+			goto err_name;
+		}
+	} else {
+		/* returned length does not include terminating zero */
+		len = strscpy(&name[MFD_NAME_PREFIX_LEN], filename, MFD_NAME_MAX_LEN + 1);
+		if (len < 0) {
+			error = len;
+			goto err_name;
+		}
 	}
 
 	return name;
@@ -455,6 +466,28 @@ static struct file *alloc_file(const char *name, unsigned int flags)
 	return file;
 }
 
+struct file *memfd_alloc_file(const char *name, unsigned int flags)
+{
+	struct file *file;
+	int error;
+	char *filename;
+
+	if (!name)
+		return ERR_PTR(-EINVAL);
+
+	error = sanitize_flags(&flags);
+	if (error < 0)
+		return ERR_PTR(error);
+
+	filename = alloc_name(name, false);
+	if (IS_ERR(filename))
+		return ERR_CAST(filename);
+
+	file = alloc_file(filename, flags);
+	kfree(filename);
+	return file;
+}
+
 SYSCALL_DEFINE2(memfd_create,
 		const char __user *, uname,
 		unsigned int, flags)
@@ -467,7 +500,7 @@ SYSCALL_DEFINE2(memfd_create,
 	if (error < 0)
 		return error;
 
-	name = alloc_name(uname);
+	name = alloc_name(uname, true);
 	if (IS_ERR(name))
 		return PTR_ERR(name);
 
