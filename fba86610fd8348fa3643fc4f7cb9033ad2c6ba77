@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f929a2b_7fdf0dfd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-14T15:08:51Z",
+      "side": 1,
+      "message": "I see with a protected VM:\n\n0x0000000080000000-0x0000000082a00000          42M 2   R W      BLK\n\nI would expect to see RWX. I vaguely remember fixing that for Android-15",
+      "revId": "fba86610fd8348fa3643fc4f7cb9033ad2c6ba77",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41568c2c_67790289",
