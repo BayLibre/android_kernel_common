@@ -23,7 +23,6 @@ extern int debug;
 extern int dump_dies;
 extern int dump_die_map;
 extern int dump_types;
-extern int dump_versions;
 extern int symtypes;
 
 /*
@@ -96,7 +95,6 @@ static inline unsigned int addr_hash(uintptr_t addr)
 enum symbol_state {
 	SYMBOL_UNPROCESSED,
 	SYMBOL_MAPPED,
-	SYMBOL_PROCESSED
 };
 
 struct symbol_addr {
@@ -111,7 +109,6 @@ struct symbol {
 	struct hlist_node name_hash;
 	enum symbol_state state;
 	uintptr_t die_addr;
-	unsigned long crc;
 };
 
 typedef void (*symbol_callback_t)(struct symbol *, void *arg);
@@ -119,10 +116,6 @@ typedef void (*symbol_callback_t)(struct symbol *, void *arg);
 void symbol_read_exports(FILE *file);
 void symbol_read_symtab(int fd);
 struct symbol *symbol_get(const char *name);
-void symbol_set_die(struct symbol *sym, Dwarf_Die *die);
-void symbol_set_crc(struct symbol *sym, unsigned long crc);
-void symbol_for_each(symbol_callback_t func, void *arg);
-void symbol_print_versions(void);
 void symbol_free(void);
 
 /*
@@ -133,8 +126,7 @@ enum die_state {
 	DIE_INCOMPLETE,
 	DIE_UNEXPANDED,
 	DIE_COMPLETE,
-	DIE_SYMBOL,
-	DIE_LAST = DIE_SYMBOL
+	DIE_LAST = DIE_COMPLETE
 };
 
 enum die_fragment_type {
@@ -164,7 +156,6 @@ static inline const char *die_state_name(enum die_state state)
 	CASE_CONST_TO_STR(DIE_INCOMPLETE)
 	CASE_CONST_TO_STR(DIE_UNEXPANDED)
 	CASE_CONST_TO_STR(DIE_COMPLETE)
-	CASE_CONST_TO_STR(DIE_SYMBOL)
 	}
 
 	error("unexpected die_state: %d", state);
@@ -261,6 +252,6 @@ void process_cu(Dwarf_Die *cudie);
  * types.c
  */
 
-void generate_symtypes_and_versions(FILE *file);
+void generate_symtypes(FILE *file);
 
 #endif /* __GENDWARFKSYMS_H */
