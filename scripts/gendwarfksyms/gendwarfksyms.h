@@ -236,12 +236,6 @@ struct expansion_state {
 	const char *current_fqn;
 };
 
-struct kabi_state {
-	int members;
-	Dwarf_Die placeholder;
-	const char *orig_name;
-};
-
 struct state {
 	struct symbol *sym;
 	Dwarf_Die die;
@@ -252,9 +246,6 @@ struct state {
 	/* Structure expansion */
 	struct expansion_state expand;
 	struct cache expansion_cache;
-
-	/* Reserved or ignored members */
-	struct kabi_state kabi;
 };
 
 typedef int (*die_callback_t)(struct state *state, struct die *cache,
