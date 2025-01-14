@@ -120,14 +120,11 @@ static bool is_definition_private(Dwarf_Die *die)
 	return !!res;
 }
 
-static bool is_kabi_definition(struct die *cache, Dwarf_Die *die)
+static bool is_kabi_definition(Dwarf_Die *die)
 {
 	bool value;
 
 	if (get_flag_attr(die, DW_AT_declaration, &value) && value)
-		return false;
-
-	if (kabi_is_declonly(cache->fqn))
 		return false;
 
 	return !is_definition_private(die);
@@ -518,10 +515,9 @@ static void __process_structure_type(struct state *state, struct die *cache,
 	process(cache, " {");
 	process_linebreak(cache, 1);
 
-	expand = state->expand.expand && is_kabi_definition(cache, die);
+	expand = state->expand.expand && is_kabi_definition(die);
 
 	if (expand) {
-		state->expand.current_fqn = cache->fqn;
 		check(process_die_container(state, cache, die, process_func,
 					    match_func));
 	}
@@ -552,26 +548,13 @@ DEFINE_PROCESS_STRUCTURE_TYPE(union)
 static void process_enumerator_type(struct state *state, struct die *cache,
 				    Dwarf_Die *die)
 {
-	bool overridden = false;
 	Dwarf_Word value;
-
-	if (stable) {
-		/* Get the fqn before we process anything */
-		update_fqn(cache, die);
-
-		if (kabi_is_enumerator_ignored(state->expand.current_fqn,
-					       cache->fqn))
-			return;
-
-		overridden = kabi_get_enumerator_value(
-			state->expand.current_fqn, cache->fqn, &value);
-	}
 
 	process_list_comma(state, cache);
 	process(cache, "enumerator");
 	process_fqn(cache, die);
 
-	if (overridden || get_udata_attr(die, DW_AT_const_value, &value)) {
+	if (get_udata_attr(die, DW_AT_const_value, &value)) {
 		process(cache, " = ");
 		process_fmt(cache, "%" PRIu64, value);
 	}
@@ -637,7 +620,6 @@ static void process_cached(struct state *state, struct die *cache,
 static void state_init(struct state *state)
 {
 	state->expand.expand = true;
-	state->expand.current_fqn = NULL;
 	cache_init(&state->expansion_cache);
 }
 
@@ -645,7 +627,6 @@ static void expansion_state_restore(struct expansion_state *state,
 				    struct expansion_state *saved)
 {
 	state->expand = saved->expand;
-	state->current_fqn = saved->current_fqn;
 }
 
 static void expansion_state_save(struct expansion_state *state,
