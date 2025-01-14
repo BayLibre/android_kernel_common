@@ -15,6 +15,7 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx);
  * to by vm_flags_ptr.
  */
 int memfd_check_seals_mmap(struct file *file, unsigned long *vm_flags_ptr);
+struct file *memfd_alloc_file(const char *name, unsigned int flags);
 #else
 static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned int a)
 {
@@ -28,6 +29,10 @@ static inline int memfd_check_seals_mmap(struct file *file,
 					 unsigned long *vm_flags_ptr)
 {
 	return 0;
+}
+static inline struct file *memfd_alloc_file(const char *name, unsigned int flags)
+{
+	return ERR_PTR(-EINVAL);
 }
 #endif
 

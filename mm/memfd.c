@@ -455,6 +455,26 @@ static struct file *alloc_file(const char *name, unsigned int flags)
 	return file;
 }
 
+struct file *memfd_alloc_file(const char *name, unsigned int flags)
+{
+	int error;
+	ssize_t len;
+	char filename[NAME_MAX + 1] = MFD_NAME_PREFIX;
+
+	if (!name)
+		return ERR_PTR(-EINVAL);
+
+	error = sanitize_flags(&flags);
+	if (error < 0)
+		return ERR_PTR(error);
+
+	len = strscpy(&filename[MFD_NAME_PREFIX_LEN], name, MFD_NAME_MAX_LEN + 1);
+	if (len < 0)
+		return ERR_PTR(len);
+
+	return alloc_file(filename, flags);
+}
+
 SYSCALL_DEFINE2(memfd_create,
 		const char __user *, uname,
 		unsigned int, flags)
