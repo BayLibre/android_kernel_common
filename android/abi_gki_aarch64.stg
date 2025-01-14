@@ -20104,9 +20104,9 @@ pointer_reference {
   pointee_type_id: 0x9204ce69
 }
 pointer_reference {
-  id: 0x2e11757b
+  id: 0x2e1179eb
   kind: POINTER
-  pointee_type_id: 0x92053373
+  pointee_type_id: 0x92050131
 }
 pointer_reference {
   id: 0x2e11eea4
@@ -181879,9 +181879,9 @@ member {
   offset: 320
 }
 member {
-  id: 0xd1a721b7
+  id: 0xd1a721bb
   name: "set_auto_vbus_discharge_threshold"
-  type_id: 0x2e11757b
+  type_id: 0x2e1179eb
   offset: 1280
 }
 member {
@@ -272463,7 +272463,7 @@ struct_union {
     member_id: 0x161603e0
     member_id: 0x796c0b23
     member_id: 0x1518267c
-    member_id: 0xd1a721b7
+    member_id: 0xd1a721bb
     member_id: 0xedef04ab
     member_id: 0x2a47c19a
     member_id: 0xca196e18
@@ -325461,11 +325461,12 @@ function {
   parameter_id: 0x3e10b518
 }
 function {
-  id: 0x92053373
+  id: 0x92050131
   return_type_id: 0x6720d32f
   parameter_id: 0x396fe4f8
   parameter_id: 0x7194a543
   parameter_id: 0x6d7f5ff6
+  parameter_id: 0xc9082b19
   parameter_id: 0xc9082b19
 }
 function {
@@ -419753,7 +419754,7 @@ elf_symbol {
   name: "tcpm_register_port"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xec9ec5db
+  crc: 0x40e55ff7
   type_id: 0x890995ba
   full_name: "tcpm_register_port"
 }
