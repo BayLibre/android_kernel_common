@@ -334,8 +334,8 @@ static int pkvm_unmap_guest(struct kvm *kvm, struct kvm_pinned_page *ppage)
 }
 
 #define for_ppage_node_in_range(kvm, start, end, __ppage, __tmp)				\
-	for (__ppage = kvm_pinned_pages_iter_first(&(kvm)->arch.pkvm.pinned_pages, start, end);	\
-	     __ppage && ({ __tmp = kvm_pinned_pages_iter_next(__ppage, start, end); 1; });	\
+	for (__ppage = kvm_pinned_pages_iter_first(&(kvm)->arch.pkvm.pinned_pages, start, end - 1);	\
+	     __ppage && ({ __tmp = kvm_pinned_pages_iter_next(__ppage, start, end - 1); 1; });	\
 	     __ppage = __tmp)
 
 static int pkvm_unmap_range(struct kvm *kvm, u64 start, u64 end)
