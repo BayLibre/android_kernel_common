@@ -6,7 +6,7 @@
 PHONY := __modinst
 __modinst:
 
-include $(objtree)/include/config/auto.conf
+include include/config/auto.conf
 include $(srctree)/scripts/Kbuild.include
 
 install-y :=
