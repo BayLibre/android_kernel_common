@@ -72,19 +72,17 @@ static bool match_export_symbol(struct state *state, Dwarf_Die *die)
 /*
  * Type string processing
  */
-static void process(struct die *cache, const char *s)
+static void process(const char *s)
 {
 	s = s ?: "<null>";
 
 	if (dump_dies)
 		fputs(s, stderr);
-
-	die_map_add_string(cache, s);
 }
 
 #define MAX_FMT_BUFFER_SIZE 128
 
-static void process_fmt(struct die *cache, const char *fmt, ...)
+static void process_fmt(const char *fmt, ...)
 {
 	char buf[MAX_FMT_BUFFER_SIZE];
 	va_list args;
@@ -94,7 +92,7 @@ static void process_fmt(struct die *cache, const char *fmt, ...)
 	if (checkp(vsnprintf(buf, sizeof(buf), fmt, args)) >= sizeof(buf))
 		error("vsnprintf overflow: increase MAX_FMT_BUFFER_SIZE");
 
-	process(cache, buf);
+	process(buf);
 	va_end(args);
 }
 
@@ -167,28 +165,18 @@ done:
 	return fqn;
 }
 
-static void update_fqn(struct die *cache, Dwarf_Die *die)
+static void process_fqn(Dwarf_Die *die)
 {
-	if (!cache->fqn)
-		cache->fqn = get_fqn(die) ?: "";
+	process(" ");
+	process(get_fqn(die) ?: "");
 }
 
-static void process_fqn(struct die *cache, Dwarf_Die *die)
-{
-	update_fqn(cache, die);
-	if (*cache->fqn)
-		process(cache, " ");
-	process(cache, cache->fqn);
-}
-
-#define DEFINE_PROCESS_UDATA_ATTRIBUTE(attribute)                          \
-	static void process_##attribute##_attr(struct die *cache,          \
-					       Dwarf_Die *die)             \
-	{                                                                  \
-		Dwarf_Word value;                                          \
-		if (get_udata_attr(die, DW_AT_##attribute, &value))        \
-			process_fmt(cache, " " #attribute "(%" PRIu64 ")", \
-				    value);                                \
+#define DEFINE_PROCESS_UDATA_ATTRIBUTE(attribute)                           \
+	static void process_##attribute##_attr(Dwarf_Die *die)              \
+	{                                                                   \
+		Dwarf_Word value;                                           \
+		if (get_udata_attr(die, DW_AT_##attribute, &value))         \
+			process_fmt(" " #attribute "(%" PRIu64 ")", value); \
 	}
 
 DEFINE_PROCESS_UDATA_ATTRIBUTE(alignment)
@@ -200,9 +188,8 @@ bool match_all(Dwarf_Die *die)
 	return true;
 }
 
-int process_die_container(struct state *state, struct die *cache,
-			  Dwarf_Die *die, die_callback_t func,
-			  die_match_callback_t match)
+int process_die_container(struct state *state, Dwarf_Die *die,
+			  die_callback_t func, die_match_callback_t match)
 {
 	Dwarf_Die current;
 	int res;
@@ -211,7 +198,7 @@ int process_die_container(struct state *state, struct die *cache,
 	while (!res) {
 		if (match(&current)) {
 			/* <0 = error, 0 = continue, >0 = stop */
-			res = checkp(func(state, cache, &current));
+			res = checkp(func(state, &current));
 			if (res)
 				return res;
 		}
@@ -222,77 +209,38 @@ int process_die_container(struct state *state, struct die *cache,
 	return 0;
 }
 
-static int process_type(struct state *state, struct die *parent,
-			Dwarf_Die *die);
+static int process_type(struct state *state, Dwarf_Die *die);
 
-static void process_type_attr(struct state *state, struct die *cache,
-			      Dwarf_Die *die)
+static void process_type_attr(struct state *state, Dwarf_Die *die)
 {
 	Dwarf_Die type;
 
 	if (get_ref_die_attr(die, DW_AT_type, &type)) {
-		check(process_type(state, cache, &type));
+		check(process_type(state, &type));
 		return;
 	}
 
 	/* Compilers can omit DW_AT_type -- print out 'void' to clarify */
-	process(cache, "base_type void");
+	process("base_type void");
 }
 
-static void process_base_type(struct state *state, struct die *cache,
-			      Dwarf_Die *die)
+static void process_base_type(struct state *state, Dwarf_Die *die)
 {
-	process(cache, "base_type");
-	process_fqn(cache, die);
-	process_byte_size_attr(cache, die);
-	process_encoding_attr(cache, die);
-	process_alignment_attr(cache, die);
+	process("base_type");
+	process_fqn(die);
+	process_byte_size_attr(die);
+	process_encoding_attr(die);
+	process_alignment_attr(die);
 }
 
-static void process_cached(struct state *state, struct die *cache,
-			   Dwarf_Die *die)
-{
-	struct die_fragment *df;
-	Dwarf_Die child;
-
-	list_for_each_entry(df, &cache->fragments, list) {
-		switch (df->type) {
-		case FRAGMENT_STRING:
-			process(NULL, df->data.str);
-			break;
-		case FRAGMENT_DIE:
-			if (!dwarf_die_addr_die(dwarf_cu_getdwarf(die->cu),
-						(void *)df->data.addr, &child))
-				error("dwarf_die_addr_die failed");
-			check(process_type(state, NULL, &child));
-			break;
-		default:
-			error("empty die_fragment");
-		}
-	}
-}
-
-#define PROCESS_TYPE(type)                                \
-	case DW_TAG_##type##_type:                        \
-		process_##type##_type(state, cache, die); \
+#define PROCESS_TYPE(type)                         \
+	case DW_TAG_##type##_type:                 \
+		process_##type##_type(state, die); \
 		break;
 
-static int process_type(struct state *state, struct die *parent, Dwarf_Die *die)
+static int process_type(struct state *state, Dwarf_Die *die)
 {
-	struct die *cache;
 	int tag = dwarf_tag(die);
-
-	/*
-	 * If we have the DIE already cached, use it instead of walking
-	 * through DWARF.
-	 */
-	cache = die_map_get(die, DIE_COMPLETE);
-
-	if (cache->state == DIE_COMPLETE) {
-		process_cached(state, cache, die);
-		die_map_add_die(parent, cache);
-		return 0;
-	}
 
 	switch (tag) {
 	PROCESS_TYPE(base)
@@ -300,11 +248,6 @@ static int process_type(struct state *state, struct die *parent, Dwarf_Die *die)
 		debug("unimplemented type: %x", tag);
 		break;
 	}
-
-	/* Update cache state and append to the parent (if any) */
-	cache->tag = tag;
-	cache->state = DIE_COMPLETE;
-	die_map_add_die(parent, cache);
 
 	return 0;
 }
@@ -316,15 +259,14 @@ static void process_symbol(struct state *state, Dwarf_Die *die,
 			   die_callback_t process_func)
 {
 	debug("%s", state->sym->name);
-	check(process_func(state, NULL, die));
+	check(process_func(state, die));
 	if (dump_dies)
 		fputs("\n", stderr);
 }
 
-static int __process_subprogram(struct state *state, struct die *cache,
-				Dwarf_Die *die)
+static int __process_subprogram(struct state *state, Dwarf_Die *die)
 {
-	process(cache, "subprogram");
+	process("subprogram");
 	return 0;
 }
 
@@ -333,11 +275,10 @@ static void process_subprogram(struct state *state, Dwarf_Die *die)
 	process_symbol(state, die, __process_subprogram);
 }
 
-static int __process_variable(struct state *state, struct die *cache,
-			      Dwarf_Die *die)
+static int __process_variable(struct state *state, Dwarf_Die *die)
 {
-	process(cache, "variable ");
-	process_type_attr(state, cache, die);
+	process("variable ");
+	process_type_attr(state, die);
 	return 0;
 }
 
@@ -346,8 +287,7 @@ static void process_variable(struct state *state, Dwarf_Die *die)
 	process_symbol(state, die, __process_variable);
 }
 
-static int process_exported_symbols(struct state *unused, struct die *cache,
-				    Dwarf_Die *die)
+static int process_exported_symbols(struct state *unused, Dwarf_Die *die)
 {
 	int tag = dwarf_tag(die);
 
@@ -357,7 +297,7 @@ static int process_exported_symbols(struct state *unused, struct die *cache,
 	case DW_TAG_class_type:
 	case DW_TAG_structure_type:
 		return check(process_die_container(
-			NULL, cache, die, process_exported_symbols, match_all));
+			NULL, die, process_exported_symbols, match_all));
 
 	/* Possible exported symbols */
 	case DW_TAG_subprogram:
@@ -381,6 +321,6 @@ static int process_exported_symbols(struct state *unused, struct die *cache,
 
 void process_cu(Dwarf_Die *cudie)
 {
-	check(process_die_container(NULL, NULL, cudie, process_exported_symbols,
+	check(process_die_container(NULL, cudie, process_exported_symbols,
 				    match_all));
 }
