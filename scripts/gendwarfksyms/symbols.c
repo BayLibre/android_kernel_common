@@ -92,7 +92,6 @@ void symbol_read_exports(FILE *file)
 		sym = xcalloc(1, sizeof(struct symbol));
 		sym->name = name;
 		sym->addr.section = SHN_UNDEF;
-		sym->state = SYMBOL_UNPROCESSED;
 
 		hash_add(symbol_names, &sym->name_hash, hash_str(sym->name));
 		++nsym;
@@ -108,8 +107,7 @@ static void get_symbol(struct symbol *sym, void *arg)
 {
 	struct symbol **res = arg;
 
-	if (sym->state == SYMBOL_UNPROCESSED)
-		*res = sym;
+	*res = sym;
 }
 
 struct symbol *symbol_get(const char *name)
