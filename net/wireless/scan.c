@@ -1485,12 +1485,13 @@ static bool cfg80211_bss_type_match(u16 capability,
 }
 
 /* Returned bss is reference counted and must be cleaned up appropriately. */
-struct cfg80211_bss *cfg80211_get_bss(struct wiphy *wiphy,
-				      struct ieee80211_channel *channel,
-				      const u8 *bssid,
-				      const u8 *ssid, size_t ssid_len,
-				      enum ieee80211_bss_type bss_type,
-				      enum ieee80211_privacy privacy)
+struct cfg80211_bss *__cfg80211_get_bss(struct wiphy *wiphy,
+					struct ieee80211_channel *channel,
+					const u8 *bssid,
+					const u8 *ssid, size_t ssid_len,
+					enum ieee80211_bss_type bss_type,
+					enum ieee80211_privacy privacy,
+					u32 use_for)
 {
 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
 	struct cfg80211_internal_bss *bss, *res = NULL;
@@ -1515,6 +1516,8 @@ struct cfg80211_bss *cfg80211_get_bss(struct wiphy *wiphy,
 			continue;
 		if (!is_valid_ether_addr(bss->pub.bssid))
 			continue;
+		if ((bss->pub.use_for & use_for) != use_for)
+			continue;
 		/* Don't get expired BSS structs */
 		if (time_after(now, bss->ts + IEEE80211_SCAN_RESULT_EXPIRE) &&
 		    !atomic_read(&bss->hold))
@@ -1532,7 +1535,7 @@ struct cfg80211_bss *cfg80211_get_bss(struct wiphy *wiphy,
 	trace_cfg80211_return_bss(&res->pub);
 	return &res->pub;
 }
-EXPORT_SYMBOL(cfg80211_get_bss);
+EXPORT_SYMBOL(EXPORT_SYMBOL(__cfg80211_get_bss);
 
 static bool rb_insert_bss(struct cfg80211_registered_device *rdev,
 			  struct cfg80211_internal_bss *bss)
@@ -1781,6 +1784,8 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
 	ether_addr_copy(known->parent_bssid, new->parent_bssid);
 	known->pub.max_bssid_indicator = new->pub.max_bssid_indicator;
 	known->pub.bssid_index = new->pub.bssid_index;
+	known->pub.use_for &= new->pub.use_for;
+	known->pub.cannot_use_reasons = new->pub.cannot_use_reasons;
 
 	return true;
 }
@@ -2031,6 +2036,9 @@ struct cfg80211_inform_single_bss_data {
 	struct cfg80211_bss *source_bss;
 	u8 max_bssid_indicator;
 	u8 bssid_index;
+
+	u8 use_for;
+	u64 cannot_use_reasons;
 };
 
 /* Returned bss is reference counted and must be cleaned up appropriately. */
@@ -2069,6 +2077,8 @@ cfg80211_inform_single_bss_data(struct wiphy *wiphy,
 	tmp.ts_boottime = drv_data->boottime_ns;
 	tmp.parent_tsf = drv_data->parent_tsf;
 	ether_addr_copy(tmp.parent_bssid, drv_data->parent_bssid);
+	tmp.pub.use_for = data->use_for;
+	tmp.pub.cannot_use_reasons = data->cannot_use_reasons;
 
 	if (data->source_bss) {
 		tmp.pub.transmitted_bss = data->source_bss;
@@ -2233,6 +2243,8 @@ cfg80211_parse_mbssid_data(struct wiphy *wiphy,
 		.tsf = tx_data->tsf,
 		.beacon_interval = tx_data->beacon_interval,
 		.source_bss = source_bss,
+		.use_for = tx_data->use_for,
+		.cannot_use_reasons = tx_data->cannot_use_reasons,
 	};
 	const u8 *mbssid_index_ie;
 	const struct element *elem, *sub;
@@ -2357,6 +2369,10 @@ cfg80211_inform_bss_data(struct wiphy *wiphy,
 		.beacon_interval = beacon_interval,
 		.ie = ie,
 		.ielen = ielen,
+		.use_for = data->restrict_use ?
+				data->use_for :
+				NL80211_BSS_USE_FOR_ALL,
+				.cannot_use_reasons = data->cannot_use_reasons,
 	};
 	struct cfg80211_bss *res;
 
@@ -2486,6 +2502,11 @@ cfg80211_inform_single_bss_frame_data(struct wiphy *wiphy,
 	tmp.pub.chains = data->chains;
 	memcpy(tmp.pub.chain_signal, data->chain_signal, IEEE80211_MAX_CHAINS);
 	ether_addr_copy(tmp.parent_bssid, data->parent_bssid);
+	tmp.pub.use_for = data->restrict_use ?
+				data->use_for :
+				NL80211_BSS_USE_FOR_ALL;
+	tmp.pub.cannot_use_reasons = data->cannot_use_reasons;
+
 
 	signal_valid = data->chan == channel;
 	res = cfg80211_bss_update(wiphy_to_rdev(wiphy), &tmp, signal_valid,
@@ -2509,6 +2530,10 @@ cfg80211_inform_bss_frame_data(struct wiphy *wiphy,
 		.ie = mgmt->u.probe_resp.variable,
 		.ielen = len - offsetof(struct ieee80211_mgmt,
 					u.probe_resp.variable),
+		.use_for = data->restrict_use ?
+				data->use_for :
+				NL80211_BSS_USE_FOR_ALL,
+		.cannot_use_reasons = data->cannot_use_reasons,
 	};
 	struct cfg80211_bss *res;
 	const u8 *ie = mgmt->u.probe_resp.variable;
