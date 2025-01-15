@@ -1093,7 +1093,12 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
 		if (attr->ia_size < old_size)
 			inode_dio_wait(inode);
 
+<<<<<<< HEAD   (47bd98 Merge 6.6.69 into android15-6.6-lts)
 		f2fs_down_write(&fi->i_gc_rwsem[WRITE]);
+||||||| BASE
+=======
+		f2fs_down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
+>>>>>>> BRANCH (1acb10 Linux 6.6.70)
 		filemap_invalidate_lock(inode->i_mapping);
 
 		truncate_setsize(inode, attr->ia_size);
