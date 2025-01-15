@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e7d7277_586a5136",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2025-01-15T10:57:55Z",
+      "side": 1,
+      "message": "I wonder if you should also add\n```\n\t*vcpu_pc(vcpu) \u003d read_sysreg_el2(SYS_ELR);\n\tvcpu_write_sys_reg(vcpu, read_sysreg(VBAR_EL1), VBAR_EL1);\n```",
+      "revId": "cd64954438031f488b667bfe35cbe9966aaa0798",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
