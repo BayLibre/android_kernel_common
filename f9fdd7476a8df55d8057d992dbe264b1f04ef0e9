@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3540c062_84de0e87",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pkvm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 2018217
+      },
+      "writtenOn": "2025-01-15T15:45:50Z",
+      "side": 1,
+      "message": "How about making sure size does not cross the pvmfw boundaries?\n`+ size \u003d min(size, pvmfw_size - offset);  ???`",
+      "revId": "f9fdd7476a8df55d8057d992dbe264b1f04ef0e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
