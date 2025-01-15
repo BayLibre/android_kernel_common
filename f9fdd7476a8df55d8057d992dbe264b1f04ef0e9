@@ -16,6 +16,24 @@
       "message": "How about making sure size does not cross the pvmfw boundaries?\n`+ size \u003d min(size, pvmfw_size - offset);  ???`",
       "revId": "f9fdd7476a8df55d8057d992dbe264b1f04ef0e9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "499e5dd4_d6eb337e",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pkvm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-01-15T19:31:12Z",
+      "side": 1,
+      "message": "Yep, we can do that, at least to stay in sync with the ARM version.",
+      "parentUuid": "3540c062_84de0e87",
+      "revId": "f9fdd7476a8df55d8057d992dbe264b1f04ef0e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
