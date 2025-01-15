@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "328b2d02_6938d263",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2025-01-15T11:07:44Z",
+      "side": 1,
+      "message": "You can drop the CPSR jargon and use PSTATE consistently everywhere. This is 32bit legacy.",
+      "revId": "cd64954438031f488b667bfe35cbe9966aaa0798",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6e7d7277_586a5136",
         "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
         "patchSetId": 2
@@ -14,6 +31,24 @@
       "writtenOn": "2025-01-15T10:57:55Z",
       "side": 1,
       "message": "I wonder if you should also add\n```\n\t*vcpu_pc(vcpu) \u003d read_sysreg_el2(SYS_ELR);\n\tvcpu_write_sys_reg(vcpu, read_sysreg(VBAR_EL1), VBAR_EL1);\n```",
+      "revId": "cd64954438031f488b667bfe35cbe9966aaa0798",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b79c620f_3ae28316",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1729538
+      },
+      "writtenOn": "2025-01-15T11:07:44Z",
+      "side": 1,
+      "message": "why would that be needed at this stage? does taking a debug exception bypass all the rest of the state switch? Disclaimer, this code doesn\u0027t seem to be upstream, so I may well be missing some context here.",
+      "parentUuid": "6e7d7277_586a5136",
       "revId": "cd64954438031f488b667bfe35cbe9966aaa0798",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
