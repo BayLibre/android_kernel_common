@@ -72,6 +72,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ed7866a_f6800f53",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1273,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-01-15T22:57:06Z",
+      "side": 1,
+      "message": "\u003e I\u0027ve realized that we also need a corresponding smp_load_acquire() barrier when reading pvmfw_load_addr in pkvm_finalize_shadow_vm().\n\nDone in aosp/3372234",
+      "parentUuid": "9114b714_027eb1fc",
+      "range": {
+        "startLine": 1273,
+        "startChar": 1,
+        "endLine": 1273,
+        "endChar": 18
+      },
+      "revId": "cb3a5ed1e0408f209368f974969d2b3d34a3a21d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc9d0784_72fa8ab2",
@@ -109,6 +133,30 @@
       "side": 1,
       "message": "Yeah, good point. The above `switch` is basically copied as is from pKVM-ARM. It seems better to remove the `default` case from it here.",
       "parentUuid": "dc9d0784_72fa8ab2",
+      "range": {
+        "startLine": 6384,
+        "startChar": 0,
+        "endLine": 6390,
+        "endChar": 17
+      },
+      "revId": "cb3a5ed1e0408f209368f974969d2b3d34a3a21d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fd62d46_db9b2fc6",
+        "filename": "arch/x86/kvm/x86.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6390,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-01-15T22:57:06Z",
+      "side": 1,
+      "message": "Or rather, remove this `if`, to have it exactly like in pKVM-ARM: https://android.googlesource.com/kernel/common/+/39e66da69481f1ba70d5cfb6cdf23ba07e2377ef%5E%21/#F2\n\nDone.",
+      "parentUuid": "2b448b19_3733fbd7",
       "range": {
         "startLine": 6384,
         "startChar": 0,
