@@ -118,6 +118,30 @@
       },
       "revId": "b70ae6a1ef7674e0dabf2dd69f540316cdff52f9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69a64b61_e4105393",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-15T14:45:58Z",
+      "side": 1,
+      "message": "Maybe an easy first step would be to move this logic into the SMMUv3 driver in a wrapper function, rather than plumb `smmu_reset_device` directly?",
+      "parentUuid": "e449e7c1_3d3630bf",
+      "range": {
+        "startLine": 430,
+        "startChar": 0,
+        "endLine": 430,
+        "endChar": 29
+      },
+      "revId": "b70ae6a1ef7674e0dabf2dd69f540316cdff52f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
