@@ -127,6 +127,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "62135dd3_235d99dc",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-16T16:25:53Z",
+      "side": 1,
+      "message": "For what\u0027s worth you could also use \"level\" to save some space. \n\nBut anyway just for 1 bit we can keep it as 41. However I would really add a comment to say \n\n/* VA_BIT - PAGE_SHIFT + 1 (INVALID_PTDUMP_PFN) */\n\nSo we remember why on earth we have this value that looks completely arbitrary!",
+      "parentUuid": "ca32d345_92852a4b",
+      "revId": "fba86610fd8348fa3643fc4f7cb9033ad2c6ba77",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7c09b8f0_88489c6e",
         "filename": "arch/arm64/include/asm/kvm_pkvm.h",
         "patchSetId": 12
@@ -191,6 +209,24 @@
       "side": 1,
       "message": "I don\u0027t think it should be replaced with the guest\u0027s we are referring to the guest stage-2 which is irrespective of the stage1 granule (we need to PAGE_SHIFT it again with the same value in the host).",
       "parentUuid": "263900ed_512728b1",
+      "revId": "fba86610fd8348fa3643fc4f7cb9033ad2c6ba77",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db84a37e_af9e1d3b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 2652,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-16T16:25:53Z",
+      "side": 1,
+      "message": "Haaa yes of course my bad!",
+      "parentUuid": "2a45fe90_b01ba476",
       "revId": "fba86610fd8348fa3643fc4f7cb9033ad2c6ba77",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
