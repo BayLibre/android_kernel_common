@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06f32614_6cf91f46",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2025-01-16T12:55:21Z",
+      "side": 1,
+      "message": "this should be a constant (or a flag) and rather not be hardcoded here. Either coming from a bazel build flag with default in a `.bazelrc file` (Cc: @elsk@google.com), `build.config.constants` or `build.config.common`",
+      "range": {
+        "startLine": 272,
+        "startChar": 69,
+        "endLine": 272,
+        "endChar": 75
+      },
+      "revId": "e15a7b45b8f734f291b0f20bd5ab5737a5415b86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
