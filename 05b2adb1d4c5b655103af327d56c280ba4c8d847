@@ -22,6 +22,30 @@
       },
       "revId": "05b2adb1d4c5b655103af327d56c280ba4c8d847",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68b13b5d_328b4cdd",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-01-16T16:45:38Z",
+      "side": 1,
+      "message": "I actually think this is cleaner. In my previous suggestion with the new struct, all the places where sb-\u003emap is indexed would have to be modified to index ext_sbitmap_word which makes me a little nervous about new code that operations on sb-\u003emap which might be introduced accidentally. Allocating the array of spinlocks after the array of maps allows the old map to work without any code modifications and we just need to convert to ext_sbitmap_word (using `sbitmap_spinlock()` when we need to access the lock.\n\nWhat is missing here are some comments to explain what is happening and why. Please add comments to the code to explain what you are doing.\n\nBart, if comments are added to explain and justify, would this be acceptible to you?",
+      "parentUuid": "9a6cae15_cf1bc34a",
+      "range": {
+        "startLine": 145,
+        "startChar": 38,
+        "endLine": 145,
+        "endChar": 77
+      },
+      "revId": "05b2adb1d4c5b655103af327d56c280ba4c8d847",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
