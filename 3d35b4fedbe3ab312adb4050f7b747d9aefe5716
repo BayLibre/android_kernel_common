@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "783a0561_4ac1dd9f",
+        "filename": "arch/arm64/include/asm/kvm_pgtable.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 932,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-16T11:43:14Z",
+      "side": 1,
+      "message": "SUPERNIT: Please match the name in the definion, ditto for the second definition below",
+      "range": {
+        "startLine": 932,
+        "startChar": 3,
+        "endLine": 932,
+        "endChar": 24
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e730cdc0_77f61485",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/include/asm/kvm_pgtable.h",
+              "range": {
+                "startLine": 932,
+                "startChar": 0,
+                "endLine": 933,
+                "endChar": 0
+              },
+              "replacement": " * kvm_pgtable_stage2_get_pages() - Raise the refcount for each entry and unmap them.\n"
+            },
+            {
+              "path": "arch/arm64/include/asm/kvm_pgtable.h",
+              "range": {
+                "startLine": 944,
+                "startChar": 0,
+                "endLine": 945,
+                "endChar": 0
+              },
+              "replacement": " * kvm_pgtable_stage2_put_pages() - Drop the refcount for each entry. This is the\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3d35b4fedbe3ab312adb4050f7b747d9aefe5716",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2201a279_f1f0a58b",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1281,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-16T11:43:14Z",
+      "side": 1,
+      "message": "As we discussed offline this creates the same level of fragmentation as the donation (because we force install an invalid level-3 mapping) which is counted. Please update the commit message with : \"We avoid using a donation to keep the state tracking in the vmemmap.\"",
+      "range": {
+        "startLine": 1281,
+        "startChar": 11,
+        "endLine": 1281,
+        "endChar": 27
+      },
+      "revId": "3d35b4fedbe3ab312adb4050f7b747d9aefe5716",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "207c0734_da50d263",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-16T11:43:14Z",
+      "side": 1,
+      "message": "With this we just give the hyp modules the ability to manipulate the entire host stage-2 refcounting. It will be great to at least restrict the range on which they can operate.",
+      "range": {
+        "startLine": 1309,
+        "startChar": 4,
+        "endLine": 1309,
+        "endChar": 32
+      },
+      "revId": "3d35b4fedbe3ab312adb4050f7b747d9aefe5716",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
