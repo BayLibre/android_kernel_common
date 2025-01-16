@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f812f34f_642d0269",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-01-16T09:51:52Z",
+      "side": 1,
+      "message": "Removed this from `Test:` to fix chechpatch failure ERROR:DIFF_IN_COMMIT_MSG, copying it here since it may still be useful:\n\n```\nIn the\nabsense of pvmfw implementation and/or bootloader support for it, it can\nbe simulated as follows:\n1. Add \"pvmfw\u003d4M@0x100000 memmap\u003d4M$0x100000\" to kernel command line.\n2. Add the following hack to pKVM (to put \"jmp *%rdi\" instruction at the\npvmfw entry point, to immediately jump to the pVM payload):\n\n  --- a/arch/x86/kvm/vmx/pkvm/hyp/init_finalise.c\n  +++ b/arch/x86/kvm/vmx/pkvm/hyp/init_finalise.c\n  @@ -189,7 +189,7 @@ static int create_mmu_mapping(const struct pkvm_section sections[],\n   \tif (pvmfw_present) {\n   \t\tret \u003d pkvm_mmu_map((unsigned long)__pkvm_va(pvmfw_base),\n   \t\t\t\t   pvmfw_base, pvmfw_size, 0,\n  -\t\t\t\t   (u64)pgprot_val(PAGE_KERNEL_RO));\n  +\t\t\t\t   (u64)pgprot_val(PAGE_KERNEL));\n   \t\tif (ret)\n   \t\t\treturn ret;\n   \t}\n  @@ -199,6 +199,9 @@ static int create_mmu_mapping(const struct pkvm_section sections[],\n\n   \tpkvm_later_mmu_init(pkvm_mmu_pgt_base, nr_pages);\n\n  +\t*((u8 *)__pkvm_va(pvmfw_base)) \u003d 0xff;\n  +\t*((u8 *)__pkvm_va(pvmfw_base + 1)) \u003d 0xe7;\n  +\n   \treturn 0;\n   }\n\n\n```",
+      "revId": "2d79403f6cb5c01ec472245a596ae72c0be9587d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
