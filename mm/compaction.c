@@ -2215,6 +2215,7 @@ static enum compact_result __compact_finished(struct compact_control *cc)
 	const int migratetype = cc->migratetype;
 	int ret;
 	bool abort_compact = false;
+	bool compact_enough = false;
 
 	/* Compaction run completes if the migrate and free scanner meet */
 	if (compact_scanners_met(cc)) {
@@ -2255,8 +2256,13 @@ static enum compact_result __compact_finished(struct compact_control *cc)
 		goto out;
 	}
 
-	if (is_via_compact_memory(cc->order))
+	if (is_via_compact_memory(cc->order)) {
+		trace_android_vh_compact_enough(&compact_enough, cc);
+		if (compact_enough)
+			return COMPACT_SUCCESS;
+
 		return COMPACT_CONTINUE;
+	}
 
 	/*
 	 * Always finish scanning a pageblock to reduce the possibility of
