@@ -71,6 +71,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd44d580_3a8279f7",
+        "filename": "include/linux/sbitmap.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-01-16T21:33:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11326e7e_7c6f154b",
+      "revId": "5f98fd4738131bf059428d2ff554f3b406da5d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d89006d6_d6aea7b5",
@@ -84,6 +102,24 @@
       "writtenOn": "2025-01-09T21:04:34Z",
       "side": 1,
       "message": "see comment at line 139 for example of how to access swap_lock using container_of().",
+      "revId": "5f98fd4738131bf059428d2ff554f3b406da5d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "408d88a1_3a9ff368",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-01-16T21:33:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d89006d6_d6aea7b5",
       "revId": "5f98fd4738131bf059428d2ff554f3b406da5d93",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -111,6 +147,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dd697c2_1096ec86",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-01-16T21:33:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb448067_73290a12",
+      "range": {
+        "startLine": 132,
+        "startChar": 38,
+        "endLine": 132,
+        "endChar": 54
+      },
+      "revId": "5f98fd4738131bf059428d2ff554f3b406da5d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84b29641_81fc726b",
@@ -124,6 +184,30 @@
       "writtenOn": "2025-01-09T21:04:34Z",
       "side": 1,
       "message": "```\nfor (i \u003d 0; i \u003c sb-\u003emap_nr; i++) {\n   struct ext_sbitmap_word *ext_map \u003d container_of(\u0026sb-\u003emap[i],\n                                                    struct ext_sbitmap_word,\n                                                    sbitmap_word);\n   spin_lock_init(ext_map-\u003eswap_lock);\n}\n```",
+      "range": {
+        "startLine": 138,
+        "startChar": 2,
+        "endLine": 139,
+        "endChar": 40
+      },
+      "revId": "5f98fd4738131bf059428d2ff554f3b406da5d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd5ab818_d833556e",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-01-16T21:33:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84b29641_81fc726b",
       "range": {
         "startLine": 138,
         "startChar": 2,
