@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1df3e688_30acd0b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-16T15:34:03Z",
+      "side": 1,
+      "message": "good catch !",
+      "parentUuid": "6e7764da_2c4619d1",
+      "revId": "fba86610fd8348fa3643fc4f7cb9033ad2c6ba77",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41568c2c_67790289",
@@ -89,6 +107,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca32d345_92852a4b",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-16T15:34:03Z",
+      "side": 1,
+      "message": "I will keep it 41 because I am using `INVALID_PTDUMP_PFN  as   (BIT(41) - 1)`",
+      "parentUuid": "41568c2c_67790289",
+      "revId": "fba86610fd8348fa3643fc4f7cb9033ad2c6ba77",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c09b8f0_88489c6e",
@@ -106,6 +142,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1138dd1_a593286a",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-16T15:34:03Z",
+      "side": 1,
+      "message": "Changed it to 16 bit wide.",
+      "parentUuid": "7c09b8f0_88489c6e",
+      "revId": "fba86610fd8348fa3643fc4f7cb9033ad2c6ba77",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "263900ed_512728b1",
@@ -119,6 +173,24 @@
       "writtenOn": "2025-01-14T14:52:40Z",
       "side": 1,
       "message": "Should this PAGE_SHIFT be replaced by the guest\u0027s?",
+      "revId": "fba86610fd8348fa3643fc4f7cb9033ad2c6ba77",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a45fe90_b01ba476",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 2652,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-16T15:34:03Z",
+      "side": 1,
+      "message": "I don\u0027t think it should be replaced with the guest\u0027s we are referring to the guest stage-2 which is irrespective of the stage1 granule (we need to PAGE_SHIFT it again with the same value in the host).",
+      "parentUuid": "263900ed_512728b1",
       "revId": "fba86610fd8348fa3643fc4f7cb9033ad2c6ba77",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
