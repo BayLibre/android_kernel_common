@@ -147,6 +147,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaf5efc3_739e8086",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1281,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-17T11:44:31Z",
+      "side": 1,
+      "message": "Thanks for the explanation now I get it.",
+      "parentUuid": "1d18f50d_15afb01c",
+      "range": {
+        "startLine": 1281,
+        "startChar": 11,
+        "endLine": 1281,
+        "endChar": 27
+      },
+      "revId": "3d35b4fedbe3ab312adb4050f7b747d9aefe5716",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "207c0734_da50d263",
@@ -184,6 +208,30 @@
       "side": 1,
       "message": "Modules are calling __pkvm_host_lazy_pte() which make sure we don\u0027t unmap MMIO or memory which is not OWNED, so this range is already restricted. Were there any other restriction you had in mind?\n\nBeside there\u0027s already plenty of things modules can do to shoot themselves in the foot. After all they already runs at EL2.",
       "parentUuid": "207c0734_da50d263",
+      "range": {
+        "startLine": 1309,
+        "startChar": 4,
+        "endLine": 1309,
+        "endChar": 32
+      },
+      "revId": "3d35b4fedbe3ab312adb4050f7b747d9aefe5716",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2dfce0f_e418b5f1",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-01-17T11:44:31Z",
+      "side": 1,
+      "message": "Right but we don\u0027t restrict it to one particular pool. Of course nothing prevents them from shooting themselves into the foot (unless they are running the modules in their own address space - as Mark was suggesting)",
+      "parentUuid": "844d70f5_d726a5e0",
       "range": {
         "startLine": 1309,
         "startChar": 4,
