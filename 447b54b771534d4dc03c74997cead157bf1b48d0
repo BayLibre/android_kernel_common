@@ -70,6 +70,30 @@
       },
       "revId": "447b54b771534d4dc03c74997cead157bf1b48d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "673c9189_6d3f23f4",
+        "filename": "mm/memfd.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-01-17T22:36:16Z",
+      "side": 1,
+      "message": "That will cause a failure, as opposed to before, where it would work. However, without setting a size on the file before accessing, accessing the mapping without setting a size would cause the kernel to send the process a `SIGBUS`. So having the vma range and size check changes where the failure is happening.\n\nYes, the user will encounter an error on mmap() when the size is 0 or bigger than the file.\n\nI\u0027m not super concerned about the case where the size is not set before mmap() because the documentation suggests that the size should be set right after the file is created: https://man7.org/linux/man-pages/man2/memfd_create.2.html.\n\nSize being set just once would only apply to those who invoked ashmem_set_size ioctl. Otherwise, the size can be changed freely as many times as needed until the caller seals the memfd with `fcntl()`.",
+      "parentUuid": "2d64e00a_428f33e3",
+      "range": {
+        "startLine": 456,
+        "startChar": 0,
+        "endLine": 456,
+        "endChar": 34
+      },
+      "revId": "447b54b771534d4dc03c74997cead157bf1b48d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
