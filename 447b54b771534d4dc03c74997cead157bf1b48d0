@@ -46,6 +46,30 @@
       },
       "revId": "447b54b771534d4dc03c74997cead157bf1b48d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d64e00a_428f33e3",
+        "filename": "mm/memfd.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-01-17T22:28:05Z",
+      "side": 1,
+      "message": "Is that ok? What happens if someone does memfd_create() and then tries to mmap it (with knowing of the ashmem-ism).\n\nDo I understand correctly that will only affect the memfd if the size is zero (0) else will use the inode size?\n\nBut the size being set just once would only apply to those who explicitly did ashmem set_size ioctl not all memfds? Is that correct?",
+      "parentUuid": "fbd6c9bc_bc8c9547",
+      "range": {
+        "startLine": 456,
+        "startChar": 0,
+        "endLine": 456,
+        "endChar": 34
+      },
+      "revId": "447b54b771534d4dc03c74997cead157bf1b48d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
