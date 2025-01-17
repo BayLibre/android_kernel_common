@@ -240,6 +240,30 @@
       },
       "revId": "3d35b4fedbe3ab312adb4050f7b747d9aefe5716",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c02a0747_96fac4c0",
+        "filename": "arch/arm64/kvm/hyp/pgtable.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-17T17:55:56Z",
+      "side": 1,
+      "message": "You mean CMA pool? If that is the case it would have to be vendor-defined anyway and they could simply give the whole IPA space! So I don\u0027t believe that would bring much.",
+      "parentUuid": "a2dfce0f_e418b5f1",
+      "range": {
+        "startLine": 1309,
+        "startChar": 4,
+        "endLine": 1309,
+        "endChar": 32
+      },
+      "revId": "3d35b4fedbe3ab312adb4050f7b747d9aefe5716",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
