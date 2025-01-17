@@ -266,12 +266,16 @@ static struct inode *f2fs_new_inode(struct mnt_idmap *idmap,
 							F2FS_DEF_PROJID);
 
 	err = fscrypt_prepare_new_inode(dir, inode, &encrypt);
-	if (err)
+	if (err) {
+		f2fs_warn(sbi, "fscrypt new inode failed, %u", ino);
 		goto fail_drop;
+	}
 
 	err = f2fs_dquot_initialize(inode);
-	if (err)
+	if (err) {
+		f2fs_warn(sbi, "dquot initialize failed, %u", ino);
 		goto fail_drop;
+	}
 
 	set_inode_flag(inode, FI_NEW_INODE);
 
@@ -698,8 +702,11 @@ static int f2fs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
 		return err;
 
 	inode = f2fs_new_inode(idmap, dir, S_IFDIR | mode, NULL);
-	if (IS_ERR(inode))
+	if (IS_ERR(inode)) {
+		f2fs_warn(sbi, "failed to create a new inode: name=%s errno=%d",
+			dentry->d_name.name, PTR_ERR(inode));
 		return PTR_ERR(inode);
+	}
 
 	inode->i_op = &f2fs_dir_inode_operations;
 	inode->i_fop = &f2fs_dir_operations;

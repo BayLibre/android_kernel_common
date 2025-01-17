@@ -610,8 +610,10 @@ fscrypt_setup_encryption_info(struct inode *inode,
 	int res;
 
 	res = fscrypt_initialize(inode->i_sb);
-	if (res)
+	if (res) {
+		printk("%s: initialize failed: %d", __func__, res);
 		return res;
+	}
 
 	crypt_info = kmem_cache_zalloc(fscrypt_inode_info_cachep, GFP_KERNEL);
 	if (!crypt_info)
@@ -624,6 +626,7 @@ fscrypt_setup_encryption_info(struct inode *inode,
 	mode = select_encryption_mode(&crypt_info->ci_policy, inode);
 	if (IS_ERR(mode)) {
 		res = PTR_ERR(mode);
+		printk("%s: encryption_mode failed: %d", __func__, res);
 		goto out;
 	}
 	WARN_ON_ONCE(mode->ivsize > FSCRYPT_MAX_IV_SIZE);
@@ -635,8 +638,10 @@ fscrypt_setup_encryption_info(struct inode *inode,
 		inode->i_blkbits - crypt_info->ci_data_unit_bits;
 
 	res = setup_file_encryption_key(crypt_info, need_dirhash_key, &mk);
-	if (res)
+	if (res) {
+		printk("%s: encryption_key failed: %d", __func__, res);
 		goto out;
+	}
 
 	/*
 	 * For existing inodes, multiple tasks may race to set ->i_crypt_info.
@@ -761,14 +766,20 @@ int fscrypt_prepare_new_inode(struct inode *dir, struct inode *inode,
 	policy = fscrypt_policy_to_inherit(dir);
 	if (policy == NULL)
 		return 0;
-	if (IS_ERR(policy))
+	if (IS_ERR(policy)) {
+		printk("%s: policy error, %d", __func__, (int)PTR_ERR(policy));
 		return PTR_ERR(policy);
+	}
 
-	if (WARN_ON_ONCE(inode->i_blkbits == 0))
+	if (WARN_ON_ONCE(inode->i_blkbits == 0)) {
+		printk("%s: blkbits", __func__,);
 		return -EINVAL;
+	}
 
-	if (WARN_ON_ONCE(inode->i_mode == 0))
+	if (WARN_ON_ONCE(inode->i_mode == 0)) {
+		printk("%s: i_mode", __func__,);
 		return -EINVAL;
+	}
 
 	/*
 	 * Only regular files, directories, and symlinks are encrypted.
