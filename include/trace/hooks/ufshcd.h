@@ -96,6 +96,11 @@ DECLARE_HOOK(android_vh_ufs_err_check_ctrl,
 		 bool *err_check),
 	TP_ARGS(hba, err_check));
 
+DECLARE_RESTRICTED_HOOK(android_rvh_ufs_wb_toggle_buf_flush,
+	TP_PROTO(struct ufs_hba *hba,
+		 unsigned int enable, ssize_t *err),
+	TP_ARGS(hba, enable, err), 1);
+
 #endif /* _TRACE_HOOK_UFSHCD_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>

@@ -10,6 +10,8 @@
 #include "ufs-sysfs.h"
 #include "ufshcd-priv.h"
 
+#include <trace/hooks/ufshcd.h>
+
 static const char *ufshcd_uic_link_state_to_string(
 			enum uic_link_state state)
 {
@@ -295,6 +297,9 @@ static ssize_t enable_wb_buf_flush_store(struct device *dev,
 
 out:
 	up(&hba->host_sem);
+
+	trace_android_rvh_ufs_wb_toggle_buf_flush(hba, enable_wb_buf_flush, &res);
+
 	return res < 0 ? res : count;
 }
 
