@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1938967c_6ac3bdcb",
+        "filename": "mm/mincore.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-01-17T18:33:26Z",
+      "side": 1,
+      "message": "Hi Juan,\n\nThe access_ok() is to check the user space mincore vec.\n\n`pages` are calculated as 4KiB pages in the kernel (from len)\n\nbut the userspace vector will only have sufficient space for 1/4 of that since userspace thinks the page size is 16KB. So userspace is only  required to allocate sufficient vector space for X 16KB pages that cover the length.",
+      "parentUuid": "7f5420f5_3fc30c1e",
+      "range": {
+        "startLine": 270,
+        "startChar": 6,
+        "endLine": 270,
+        "endChar": 41
+      },
+      "revId": "973bd8ef73744252873bd20dc27e6ea3bb0b3b21",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27ac16d4_edfd8684",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-17T17:48:14Z",
       "side": 1,
       "message": "I think you need `__GFP_ZERO` unless `GFP_USER` elready includes that? In `__collapse_mincore_result` you do `|\u003d`, so you should start with 0\u0027ed buffer.",
+      "range": {
+        "startLine": 278,
+        "startChar": 33,
+        "endLine": 278,
+        "endChar": 41
+      },
+      "revId": "973bd8ef73744252873bd20dc27e6ea3bb0b3b21",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5865007c_62927291",
+        "filename": "mm/mincore.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-01-17T18:33:26Z",
+      "side": 1,
+      "message": "Thanks Suren, done.",
+      "parentUuid": "27ac16d4_edfd8684",
       "range": {
         "startLine": 278,
         "startChar": 33,
