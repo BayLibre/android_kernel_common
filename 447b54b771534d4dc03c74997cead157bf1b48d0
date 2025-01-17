@@ -94,6 +94,30 @@
       },
       "revId": "447b54b771534d4dc03c74997cead157bf1b48d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb5b15f9_7eb69b7f",
+        "filename": "mm/memfd.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-01-17T22:41:21Z",
+      "side": 1,
+      "message": "Ok that makes.\n\nThough IIRC there are some kenrel tests that expect the SIGBUS behavior when taking a fault off the end of the mapping where there is no backing file (which isn\u0027t possible with the additional check). Not sure what the usecse for that may be. Maybe it\u0027s not important in the case of memfd.",
+      "parentUuid": "673c9189_6d3f23f4",
+      "range": {
+        "startLine": 456,
+        "startChar": 0,
+        "endLine": 456,
+        "endChar": 34
+      },
+      "revId": "447b54b771534d4dc03c74997cead157bf1b48d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
