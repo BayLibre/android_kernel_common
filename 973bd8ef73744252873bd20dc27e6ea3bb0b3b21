@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27ac16d4_edfd8684",
+        "filename": "mm/mincore.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-01-17T17:48:14Z",
+      "side": 1,
+      "message": "I think you need `__GFP_ZERO` unless `GFP_USER` elready includes that? In `__collapse_mincore_result` you do `|\u003d`, so you should start with 0\u0027ed buffer.",
+      "range": {
+        "startLine": 278,
+        "startChar": 33,
+        "endLine": 278,
+        "endChar": 41
+      },
+      "revId": "973bd8ef73744252873bd20dc27e6ea3bb0b3b21",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
