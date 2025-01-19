@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * Android Vendor LMK Support
+ * Android Vendor Low Memory Killer Support
  *
  * Copyright 2025 Google LLC
  */
