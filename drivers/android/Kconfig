@@ -102,4 +102,9 @@ config ANDROID_VENDOR_OEM_DATA
 
 	  If even slightly unsure, say Y.
 
+config ANDROID_VENDOR_LMK_EVENT
+	bool "Vendor LMK event support"
+	help
+	  This supports vendor lmk events.
+
 endmenu
