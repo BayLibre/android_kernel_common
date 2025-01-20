@@ -46,6 +46,30 @@
       },
       "revId": "e15a7b45b8f734f291b0f20bd5ab5737a5415b86",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11deb154_f0d97c6a",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2025-01-20T13:58:51Z",
+      "side": 1,
+      "message": "My concern is that this is hard-coded in the middle of the build file.\n\nWho is changing it once we branch into, say, android16-6.12-2025-02 where we should use a different profile?\n\nThe branch name has a single location already, https://android.googlesource.com/kernel/common/+/refs/heads/android15-6.6/build.config.common#5, but in practice it is not update for release branches as there were no users. Now with users we could update this single location. But I rather have that updated (and referred to from) build.config.common instead of line 272 in BUILD.bazel.",
+      "parentUuid": "f63d6526_113867b1",
+      "range": {
+        "startLine": 272,
+        "startChar": 69,
+        "endLine": 272,
+        "endChar": 75
+      },
+      "revId": "e15a7b45b8f734f291b0f20bd5ab5737a5415b86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
