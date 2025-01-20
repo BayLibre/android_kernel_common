@@ -70,6 +70,30 @@
       },
       "revId": "bd3d6ef887d04ce9bc91c2c0f6a54356f9d3deca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "281080d6_c8e32e00",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-01-20T12:56:42Z",
+      "side": 1,
+      "message": "\u003e then getting here implies a race between an event being generated and the SMMU being powered off.\n\nYes, the irqs are asynchrounse we can\u0027t gurantee the state of SMMU at this point.\n\nOne problem here, is that in the irq context, we can\u0027t use pm_runtime_get_sync() as it can block.\n\nI looked at other IOMMU drivers and many of them that use PM runtime, just ignore that case in IRQs and access HW directly (including SMMUv3), while rockchip uses pm_runtime_get_if_in_use()\n\nSo assuming interrupts should be triggered while HW is on and they should be \"fast\", and we never allow access to device when powered down, that should be enough in that case?",
+      "parentUuid": "3c2ea464_2d1575b9",
+      "range": {
+        "startLine": 561,
+        "startChar": 9,
+        "endLine": 561,
+        "endChar": 20
+      },
+      "revId": "bd3d6ef887d04ce9bc91c2c0f6a54356f9d3deca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
