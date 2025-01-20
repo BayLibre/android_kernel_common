@@ -94,6 +94,30 @@
       },
       "revId": "bd3d6ef887d04ce9bc91c2c0f6a54356f9d3deca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17e94bb4_92749386",
+        "filename": "drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-kvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-20T14:55:26Z",
+      "side": 1,
+      "message": "I\u0027m not convinced either of those assumptions are valid but, at the very least, we should return `IRQ_NONE` if we refuse to handle the interrupt. I think that will result in a screaming interrupt being masked at the GIC (eventually).",
+      "parentUuid": "281080d6_c8e32e00",
+      "range": {
+        "startLine": 561,
+        "startChar": 9,
+        "endLine": 561,
+        "endChar": 20
+      },
+      "revId": "bd3d6ef887d04ce9bc91c2c0f6a54356f9d3deca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
