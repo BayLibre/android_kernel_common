@@ -118,6 +118,30 @@
       },
       "revId": "05b2adb1d4c5b655103af327d56c280ba4c8d847",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beadfdf5_5ebd02ef",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-01-21T20:41:42Z",
+      "side": 1,
+      "message": "That would be a KMI break. Is there a way to guarantee that no partners are referenceing -\u003emap[]?\n\nHow about if `sbitmap_spinlock()` asserts proper alignment before returning the pointer to the spinlock? Then we couldn\u0027t inadvertantly break the assumption you are concerned about.",
+      "parentUuid": "5a17038e_c0935651",
+      "range": {
+        "startLine": 145,
+        "startChar": 38,
+        "endLine": 145,
+        "endChar": 77
+      },
+      "revId": "05b2adb1d4c5b655103af327d56c280ba4c8d847",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
