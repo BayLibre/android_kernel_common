@@ -1999,6 +1999,29 @@ int pkvm_mem_abort_range(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa, size_t si
 	return err;
 }
 
+static u16 pkvm_prefault __read_mostly;
+
+static int __init early_pkvm_prefault_cfg(char *buf)
+{
+	return kstrtou16(buf, 10, &pkvm_prefault);
+}
+early_param("kvm-arm.protected_prefault", early_pkvm_prefault_cfg);
+
+int pkvm_mem_abort_prefault(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+			    struct kvm_memory_slot *memslot)
+{
+	phys_addr_t memslot_start = memslot->base_gfn << PAGE_SHIFT;
+	size_t size = (1 << min(pkvm_prefault, 9)) << PAGE_SHIFT;
+
+	fault_ipa = ALIGN_DOWN(fault_ipa, size);
+	if (fault_ipa < memslot_start) {
+		size -= memslot_start - fault_ipa;
+		fault_ipa = memslot_start;
+	}
+
+	return pkvm_mem_abort(vcpu, fault_ipa, size, memslot);
+}
+
 static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
 			  struct kvm_s2_trans *nested,
 			  struct kvm_memory_slot *memslot,
@@ -2477,7 +2500,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
 	}
 
 	if (kvm_vm_is_protected(vcpu->kvm))
-		ret = pkvm_mem_abort(vcpu, fault_ipa, PAGE_SIZE, memslot);
+		ret = pkvm_mem_abort_prefault(vcpu, fault_ipa, memslot);
 	else
 		ret = user_mem_abort(vcpu, fault_ipa, nested, memslot,
 				     esr_fsc_is_permission_fault(esr));
