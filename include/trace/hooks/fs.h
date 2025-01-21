@@ -69,6 +69,11 @@ DECLARE_HOOK(android_vh_vfs_fsync_range,
 DECLARE_RESTRICTED_HOOK(android_rvh_do_fcntl,
 	TP_PROTO(struct file *filp, unsigned int cmd, unsigned long arg, long *err),
 	TP_ARGS(filp, cmd, arg, err), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_f2fs_down_read,
+	TP_PROTO(wait_queue_head_t *read_waiters, struct rw_semaphore *rwsem, bool *skip),
+	TP_ARGS(read_waiters, rwsem, skip), 1);
+
 #endif /* _TRACE_HOOK_FS_H */
 
 /* This part must be outside protection */
