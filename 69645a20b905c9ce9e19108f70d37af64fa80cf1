@@ -45,6 +45,29 @@
       },
       "revId": "69645a20b905c9ce9e19108f70d37af64fa80cf1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba91a5f7_2c96d71a",
+        "filename": "drivers/thermal/thermal_netlink.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-01-21T18:01:23Z",
+      "side": 1,
+      "message": "All the diffs in this \"backport\" are because because of missing commit `cba00d16a2b0 (\"thermal: core: Add and use thermal zone guard\")` correct? Also, It seems the original commit applies cleanly. So I think it would be best to apply the original commit as is (e.g. UPSTREAM) and then do all the modifications on the `tz-\u003elock` on a separate `ANDROID` patch in order to document the diff better. Could you please do this?",
+      "range": {
+        "startLine": 695,
+        "startChar": 1,
+        "endLine": 695,
+        "endChar": 23
+      },
+      "revId": "69645a20b905c9ce9e19108f70d37af64fa80cf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
