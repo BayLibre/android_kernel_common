@@ -751,6 +751,38 @@ struct kvm_hyp_req {
 };
 
 #define KVM_HYP_REQ_MAX (PAGE_SIZE / sizeof(struct kvm_hyp_req))
+
+/*
+ * Hypervisor version of kvm_pinned_page. Typically stored in per-vCPU hyp_req
+ * page.
+ */
+struct kvm_hyp_pinned_page {
+	u64	pfn;
+	u64	gfn;
+	u8	order;
+};
+
+/*
+ * Get the kvm_hyp_pinned_page after @ppage for the array starting at @start.
+ * Also check the entry when @valid is set (useful to read the array).
+ */
+static inline struct kvm_hyp_pinned_page *
+next_kvm_hyp_pinned_page(void *start, struct kvm_hyp_pinned_page *ppage, bool valid)
+{
+	if (!ppage)
+		ppage = (struct kvm_hyp_pinned_page *)start;
+	else
+		ppage++;
+
+	if ((void *)ppage >= (start + PAGE_SIZE))
+		return NULL;
+
+	if (valid && (ppage->order == 0xFF))
+		return NULL;
+
+	return ppage;
+}
+
 /*
  * De-serialize request from SMCCC return.
  * See hyp-main.c for serialization.
