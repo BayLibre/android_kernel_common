@@ -34,6 +34,115 @@
       "parentUuid": "5df28232_5460a080",
       "revId": "ed9d65b5a9dd2966eb1efc91d48f925beaa5a5d3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d4990b6_7d5bb3fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-01-21T17:18:54Z",
+      "side": 1,
+      "message": "I recommend 2 commits here, the first being the original that breaks the ABI, and the second your changes on top of that that then fixes the ABI.  That way we can properly review what portions is yours vs. what portions came from upstream, and should be much simpler to handle.",
+      "revId": "ed9d65b5a9dd2966eb1efc91d48f925beaa5a5d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77d3b38b_4aae1f0c",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-01-21T17:18:54Z",
+      "side": 1,
+      "message": "what is this from?  Or for?",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 13
+      },
+      "revId": "ed9d65b5a9dd2966eb1efc91d48f925beaa5a5d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4530d49e_4bdf0bbd",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-01-21T17:18:54Z",
+      "side": 1,
+      "message": "properly document this function, this isn\u0027t the correct kernel doc format.",
+      "range": {
+        "startLine": 62,
+        "startChar": 3,
+        "endLine": 62,
+        "endChar": 19
+      },
+      "revId": "ed9d65b5a9dd2966eb1efc91d48f925beaa5a5d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a43c169_369b616c",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-01-21T17:18:54Z",
+      "side": 1,
+      "message": "what does this mean?  Please properly reference the original commit, reading this comment in a few weeks is just going to confuse everyone.",
+      "range": {
+        "startLine": 178,
+        "startChar": 14,
+        "endLine": 178,
+        "endChar": 22
+      },
+      "revId": "ed9d65b5a9dd2966eb1efc91d48f925beaa5a5d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d93a189e_6ed32406",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-01-21T17:18:54Z",
+      "side": 1,
+      "message": "\" \" needed before \"Due\"",
+      "range": {
+        "startLine": 178,
+        "startChar": 3,
+        "endLine": 178,
+        "endChar": 6
+      },
+      "revId": "ed9d65b5a9dd2966eb1efc91d48f925beaa5a5d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
