@@ -1882,11 +1882,93 @@ static int __pkvm_topup_stage2_memcache(struct kvm_vcpu *vcpu,
 	return 0;
 }
 
+static bool __pkvm_ppage_is_fault(struct kvm_pinned_page *ppage, u64 fault_gfn)
+{
+	u64 gfn = ppage->ipa >> PAGE_SHIFT;
+
+	return fault_gfn >= gfn && fault_gfn < (gfn + (1 << ppage->order));
+}
+
+static int __pkvm_host_map_guest_sglist(struct kvm *kvm, u64 fault_gfn,
+					struct list_head *ppages)
+{
+	struct kvm_hyp_pinned_page *hyp_ppages, *hyp_ppage = NULL;
+	bool sglist_has_fault, fault_mapped = false;
+	struct kvm_pinned_page *tmp, *ppage;
+	int ret, nr_ppages, p;
+
+	hyp_ppages = (struct kvm_hyp_pinned_page *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+	if (!hyp_ppages)
+		return -ENOMEM;
+
+again:
+	sglist_has_fault = false;
+	hyp_ppage = NULL;
+	nr_ppages = 0;
+
+	list_for_each_entry(ppage, ppages, list_node) {
+		u64 pfn = page_to_pfn(ppage->page);
+		gfn_t gfn = ppage->ipa >> PAGE_SHIFT;
+
+		hyp_ppage = next_kvm_hyp_pinned_page(hyp_ppages, hyp_ppage, false);
+		if (!hyp_ppage) {
+			ret = -ENOMEM;
+			goto end;
+		}
+
+		hyp_ppage->pfn = pfn;
+		hyp_ppage->gfn = gfn;
+		hyp_ppage->order = ppage->order;
+		sglist_has_fault |= __pkvm_ppage_is_fault(ppage, fault_gfn);
+		nr_ppages++;
+
+		/* Limit the time spent at EL2 */
+		if (nr_ppages >= 32)
+			break;
+	}
+
+	hyp_ppage = next_kvm_hyp_pinned_page(hyp_ppages, hyp_ppage, false);
+
+	if (!hyp_ppage) {
+		ret = -ENOMEM;
+		goto end;
+	}
+
+	hyp_ppage->order = ~((u8)0);
+
+	ret = kvm_call_hyp_nvhe(__pkvm_host_map_guest_sglist,
+				(unsigned long)hyp_ppages);
+	if (ret)
+		goto end;
+
+	p = 0;
+	list_for_each_entry_safe(ppage, tmp, ppages, list_node) {
+		if (p++ >= nr_ppages)
+			break;
+
+		list_del(&ppage->list_node);
+		ppage->node.rb_right = ppage->node.rb_left = NULL;
+		WARN_ON(insert_ppage(kvm, ppage));
+	}
+
+	fault_mapped |= sglist_has_fault;
+
+	if (!list_empty(ppages))
+		goto again;
+
+end:
+	free_pages((unsigned long)hyp_ppages, 0);
+	return fault_mapped ? 0 : ret;
+}
+
 static int __pkvm_host_map_guest(struct kvm *kvm, u64 fault_gfn,
 				 struct list_head *ppages,
 				 enum kvm_pgtable_prot prot)
 {
 	struct kvm_pinned_page *ppage, *tmp;
+
+	if (ppages->next != ppages->prev && kvm->arch.pkvm.enabled)
+		return __pkvm_host_map_guest_sglist(kvm, fault_gfn, ppages);
 
 	list_for_each_entry_safe(ppage, tmp, ppages, list_node) {
 		u64 pfn = page_to_pfn(ppage->page);
@@ -1896,8 +1978,7 @@ static int __pkvm_host_map_guest(struct kvm *kvm, u64 fault_gfn,
 		ret = kvm_call_hyp_nvhe(__pkvm_host_map_guest, pfn, gfn,
 					1 << ppage->order, prot);
 		/* Return an error only if the original fault can't be mapped */
-		if (ret && (fault_gfn >= gfn &&
-			    fault_gfn < gfn + (1 << ppage->order)))
+		if (ret && __pkvm_ppage_is_fault(ppage, fault_gfn))
 			return ret;
 
 		list_del(&ppage->list_node);
