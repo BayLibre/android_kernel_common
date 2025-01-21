@@ -16,6 +16,7 @@ DECLARE_HOOK(android_vh_ep_create_wakeup_source,
 	TP_PROTO(char *name, int len),
 	TP_ARGS(name, len));
 
+<<<<<<< HEAD   (7eef4547a5cba44e35a00b5583d2eaa0608978d2 UPSTREAM: rust: bitops: add __rust_helper to helpers)
 DECLARE_HOOK(android_vh_timerfd_create,
 	TP_PROTO(char *name, int len),
 	TP_ARGS(name, len));
@@ -69,6 +70,17 @@ DECLARE_HOOK(android_vh_vfs_fsync_range,
 DECLARE_RESTRICTED_HOOK(android_rvh_do_fcntl,
 	TP_PROTO(struct file *filp, unsigned int cmd, unsigned long arg, long *err),
 	TP_ARGS(filp, cmd, arg, err), 1);
+||||||| BASE   (7a9cbd82c8b5f839a256b5b24b9775b2b09c7cf5 ANDROID: vendor_hooks: add hooks for f2fs down read)
+=======
+DECLARE_HOOK(android_vh_f2fs_improve_priority,
+	TP_PROTO(struct task_struct *p, int *saved_prio, bool *skip),
+	TP_ARGS(p, saved_prio, skip));
+
+DECLARE_HOOK(android_vh_f2fs_restore_priority,
+	TP_PROTO(struct task_struct *p, int saved_prio),
+	TP_ARGS(p, saved_prio));
+
+>>>>>>> CHANGE (55f8f63a4cfd028fed65c1e26df59dc56b581923 ANDROID: vendor_hooks: add hooks for f2fs issue checkpoint)
 #endif /* _TRACE_HOOK_FS_H */
 
 /* This part must be outside protection */
