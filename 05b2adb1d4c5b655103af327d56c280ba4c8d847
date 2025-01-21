@@ -94,6 +94,30 @@
       },
       "revId": "05b2adb1d4c5b655103af327d56c280ba4c8d847",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a17038e_c0935651",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2025-01-21T17:27:01Z",
+      "side": 1,
+      "message": "The chosen approach is not acceptable in my opinion because it may lead to incorrect alignment of the spinlocks. I don\u0027t see what guarantees that __alignof__(struct sbitmap_word) is a multiple of __alignof__(spinlock_t)? Even if that requirement would be met today, any future change in either data structure could break the alignment assumption. I think that it would be much cleaner to move the `struct sbitmap_word` definition into a private header file and to add a spinlock_t member in that data structure.",
+      "parentUuid": "ec7e38e9_5635508f",
+      "range": {
+        "startLine": 145,
+        "startChar": 38,
+        "endLine": 145,
+        "endChar": 77
+      },
+      "revId": "05b2adb1d4c5b655103af327d56c280ba4c8d847",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
