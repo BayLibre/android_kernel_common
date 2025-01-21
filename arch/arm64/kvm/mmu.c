@@ -1895,19 +1895,9 @@ static int __pkvm_host_map_guest(struct kvm *kvm, u64 fault_gfn,
 
 		ret = kvm_call_hyp_nvhe(__pkvm_host_map_guest, pfn, gfn,
 					1 << ppage->order, prot);
-		/*
-		 * Getting -EPERM at this point implies that the pfn has already been
-		 * mapped. This should only ever happen when two vCPUs faulted on the
-		 * same page, and the current one lost the race to do the mapping...
-		 *
-		 * ...or if we've tried to map a region containing an already mapped
-		 * entry.
-		 */
-		if (ret == -EPERM)
-		       continue;
 		/* Return an error only if the original fault can't be mapped */
-		else if (ret && (fault_gfn >= gfn &&
-				 fault_gfn < gfn + (1 << ppage->order)))
+		if (ret && (fault_gfn >= gfn &&
+			    fault_gfn < gfn + (1 << ppage->order)))
 			return ret;
 
 		list_del(&ppage->list_node);
@@ -1931,6 +1921,12 @@ static int pkvm_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa, size_t s
 	long ret, nr_pages;
 
 	write_lock(&kvm->mmu_lock);
+
+	/* We've lost the race with another vCPU */
+	if (find_ppage(kvm, fault_ipa)) {
+		ret = 0;
+		goto unlock;
+	}
 
 	nr_pages = __pkvm_align_memslot(kvm, memslot, gfn, size);
 	if (nr_pages < 0) {
