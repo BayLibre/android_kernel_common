@@ -1856,6 +1856,8 @@ static int pkvm_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa, size_t s
 	if (WARN_ON(!kvm->arch.pkvm.enabled))
 		return -EINVAL;
 
+	printk("%s: fault_ipa=0x%llx size=%lx\n", __func__, fault_ipa, size);
+
 	nr_pages = __pkvm_align_memslot(kvm, memslot, gfn, size);
 	if (nr_pages < 0)
 		return nr_pages;
