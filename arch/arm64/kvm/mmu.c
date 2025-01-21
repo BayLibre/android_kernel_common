@@ -1805,9 +1805,84 @@ static int __pkvm_topup_stage2_memcache(struct kvm_vcpu *vcpu, struct list_head 
 	return topup_hyp_memcache_account(vcpu->kvm, hyp_memcache, nr_stage2_pages, 0);
 }
 
+static int __pkvm_host_donate_guest_sglist(struct kvm *kvm, struct list_head *ppages)
+{
+	struct kvm_hyp_pinned_page *hyp_ppages;
+	int ret;
+
+	hyp_ppages = (struct kvm_hyp_pinned_page *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+	if (!hyp_ppages)
+		return -ENOMEM;
+
+	do {
+		struct kvm_hyp_pinned_page *hyp_ppage = NULL;
+		struct kvm_pinned_page *tmp, *ppage;
+		int p, nr_ppages = 0;
+
+		hyp_ppage = NULL;
+
+		list_for_each_entry(ppage, ppages, list_node) {
+			u64 pfn = page_to_pfn(ppage->page);
+			gfn_t gfn = ppage->ipa >> PAGE_SHIFT;
+
+			hyp_ppage = next_kvm_hyp_pinned_page(hyp_ppages, hyp_ppage, false);
+			if (!hyp_ppage) {
+				ret = -ENOMEM;
+				goto end;
+			}
+
+			hyp_ppage->pfn = pfn;
+			hyp_ppage->gfn = gfn;
+			hyp_ppage->order = ppage->order;
+			nr_ppages++;
+
+			/* Limit the time spent at EL2 */
+			if (nr_ppages >= 32)
+				break;
+		}
+
+		hyp_ppage = next_kvm_hyp_pinned_page(hyp_ppages, hyp_ppage, false);
+		if (!hyp_ppage) {
+			ret = -ENOMEM;
+			goto end;
+		}
+
+		hyp_ppage->order = ~((u8)0);
+
+		ret = kvm_call_hyp_nvhe(__pkvm_host_donate_guest_sglist,
+					(unsigned long)hyp_ppages);
+		/* See __pkvm_host_donate_guest() -EPERM comment */
+		if (ret == -EPERM) {
+			ret = 0;
+			goto end;
+		} else if (ret) {
+			goto end;
+		}
+
+		p = 0;
+		write_lock(&kvm->mmu_lock);
+		list_for_each_entry_safe(ppage, tmp, ppages, list_node) {
+			if (p++ >= nr_ppages)
+				break;
+
+			list_del(&ppage->list_node);
+			ppage->node.rb_right = ppage->node.rb_left = NULL;
+			WARN_ON(insert_ppage(kvm, ppage));
+		}
+		write_unlock(&kvm->mmu_lock);
+	} while (!list_empty(ppages));
+
+end:
+	free_pages((unsigned long)hyp_ppages, 0);
+	return ret;
+}
+
 static int __pkvm_host_donate_guest(struct kvm *kvm, struct list_head *ppages)
 {
 	struct kvm_pinned_page *ppage, *tmp;
+
+	if (ppages->next != ppages->prev && kvm->arch.pkvm.enabled)
+		return __pkvm_host_donate_guest_sglist(kvm, ppages);
 
 	list_for_each_entry_safe(ppage, tmp, ppages, list_node) {
 		u64 pfn = page_to_pfn(ppage->page);
