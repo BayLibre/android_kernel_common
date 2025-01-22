@@ -92,6 +92,30 @@
       },
       "revId": "af3c2a21d82d19241fee50417a7fb0cd4a994ab1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21d8856a_d4eea2da",
+        "filename": "mm/oom_kill.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-01-22T18:30:41Z",
+      "side": 1,
+      "message": "I see, makes sense.\n\nI think it problable would be cleaner to leave `mark_oom_victim()` intact though and just populate oom_mm here? The `__mark_oom_victim()` is kinda misleading. wdyt?",
+      "parentUuid": "c56ffa85_4d5626a2",
+      "range": {
+        "startLine": 1291,
+        "startChar": 2,
+        "endLine": 1291,
+        "endChar": 19
+      },
+      "revId": "af3c2a21d82d19241fee50417a7fb0cd4a994ab1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
