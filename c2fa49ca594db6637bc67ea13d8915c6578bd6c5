@@ -160,6 +160,24 @@
       "parentUuid": "6e721fd1_8ce3c61e",
       "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4accca71_1d37146e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1962300
+      },
+      "writtenOn": "2025-01-22T13:11:56Z",
+      "side": 1,
+      "message": "We control the bluetooth device through the HCI_USER_CHANNEL raw socket, compose / serialize the packets in userspace and the kernel just forwards it to the chip.\n\nWe can\u0027t export this function through that socket because the protocol is defined in the Bluetooth core specification. Moreover, this sysfs reset function aims to recover the Bluetooth chip in a out-of-band way when the socket is not responding e.g. due to the chip firmware issue.",
+      "parentUuid": "435a40a3_d1ebad73",
+      "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
