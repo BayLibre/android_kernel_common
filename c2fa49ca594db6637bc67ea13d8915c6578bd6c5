@@ -16,6 +16,24 @@
       "message": "What prevents any user from triggering this?",
       "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47a9f15f_5efca68f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1962300
+      },
+      "writtenOn": "2025-01-22T08:57:56Z",
+      "side": 1,
+      "message": "Sorry I don\u0027t get it. Is it your concern that arbitrary users could trigger the reset and break the Bluetooth functionality?\nIn our previous project we used to chown the attribute with udev rule, so only the Bluetooth daemon user could access the attribute.",
+      "parentUuid": "c1b2b382_6bb4704a",
+      "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
