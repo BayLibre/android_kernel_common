@@ -68,6 +68,30 @@
       },
       "revId": "af3c2a21d82d19241fee50417a7fb0cd4a994ab1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c56ffa85_4d5626a2",
+        "filename": "mm/oom_kill.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-01-22T17:37:43Z",
+      "side": 1,
+      "message": "mark_oom_victim() would make it look as if OOM happened (incrementing oom_victims, trace_mark_victim(), etc.) while the goal of `add_to_oom_reaper()` is to simply reap a process which received a SIGKILL.",
+      "parentUuid": "7abd8a47_4332dd16",
+      "range": {
+        "startLine": 1291,
+        "startChar": 2,
+        "endLine": 1291,
+        "endChar": 19
+      },
+      "revId": "af3c2a21d82d19241fee50417a7fb0cd4a994ab1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
