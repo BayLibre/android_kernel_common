@@ -52,6 +52,24 @@
       "parentUuid": "47a9f15f_5efca68f",
       "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0268e767_441c9b78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1962300
+      },
+      "writtenOn": "2025-01-22T10:45:59Z",
+      "side": 1,
+      "message": "BlueZ handles that in the kernel space and they prefer not to export a MGMT interface for non-BlueZ usecase. In order to talk to the drivers directly from userspace, I don\u0027t think we have many options.",
+      "parentUuid": "966daa24_8d2ed688",
+      "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
