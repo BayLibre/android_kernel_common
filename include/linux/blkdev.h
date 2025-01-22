@@ -195,7 +195,7 @@ struct gendisk {
 	unsigned int		nr_zones;
 	unsigned int		zone_capacity;
 	unsigned int		last_zone_capacity;
-	unsigned long		*conv_zones_bitmap;
+	unsigned long __rcu	*conv_zones_bitmap;
 	unsigned int            zone_wplugs_hash_bits;
 	spinlock_t              zone_wplugs_lock;
 	struct mempool_s	*zone_wplugs_pool;
@@ -576,6 +576,10 @@ struct request_queue {
 	struct throtl_data *td;
 #endif
 	struct rcu_head		rcu_head;
+#ifdef CONFIG_LOCKDEP
+	struct task_struct	*mq_freeze_owner;
+	int			mq_freeze_owner_depth;
+#endif
 	wait_queue_head_t	mq_freeze_wq;
 	/*
 	 * Protect concurrent access to q_usage_counter by
@@ -944,6 +948,7 @@ queue_limits_start_update(struct request_queue *q)
 int queue_limits_commit_update(struct request_queue *q,
 		struct queue_limits *lim);
 int queue_limits_set(struct request_queue *q, struct queue_limits *lim);
+int blk_validate_limits(struct queue_limits *lim);
 
 /**
  * queue_limits_cancel_update - cancel an atomic update of queue limits
@@ -1001,6 +1006,11 @@ extern void blk_put_queue(struct request_queue *);
 
 void blk_mark_disk_dead(struct gendisk *disk);
 
+struct rq_list {
+	struct request *head;
+	struct request *tail;
+};
+
 #ifdef CONFIG_BLOCK
 /*
  * blk_plug permits building a queue of related requests by holding the I/O
@@ -1014,10 +1024,10 @@ void blk_mark_disk_dead(struct gendisk *disk);
  * blk_flush_plug() is called.
  */
 struct blk_plug {
-	struct request *mq_list; /* blk-mq requests */
+	struct rq_list mq_list; /* blk-mq requests */
 
 	/* if ios_left is > 1, we can batch tag/rq allocations */
-	struct request *cached_rq;
+	struct rq_list cached_rqs;
 	u64 cur_ktime;
 	unsigned short nr_ios;
 
@@ -1380,6 +1390,33 @@ static inline bool bdev_is_zone_start(struct block_device *bdev,
 	return bdev_offset_from_zone_start(bdev, sector) == 0;
 }
 
+/**
+ * bdev_zone_is_seq - check if a sector belongs to a sequential write zone
+ * @bdev:	block device to check
+ * @sector:	sector number
+ *
+ * Check if @sector on @bdev is contained in a sequential write required zone.
+ */
+static inline bool bdev_zone_is_seq(struct block_device *bdev, sector_t sector)
+{
+	bool is_seq = false;
+
+#if IS_ENABLED(CONFIG_BLK_DEV_ZONED)
+	if (bdev_is_zoned(bdev)) {
+		struct gendisk *disk = bdev->bd_disk;
+		unsigned long *bitmap;
+
+		rcu_read_lock();
+		bitmap = rcu_dereference(disk->conv_zones_bitmap);
+		is_seq = !bitmap ||
+			!test_bit(disk_zone_no(disk, sector), bitmap);
+		rcu_read_unlock();
+	}
+#endif
+
+	return is_seq;
+}
+
 static inline int queue_dma_alignment(const struct request_queue *q)
 {
 	return q->limits.dma_alignment;
@@ -1652,7 +1689,7 @@ int bdev_thaw(struct block_device *bdev);
 void bdev_fput(struct file *bdev_file);
 
 struct io_comp_batch {
-	struct request *req_list;
+	struct rq_list req_list;
 	bool need_ts;
 	void (*complete)(struct io_comp_batch *);
 };
