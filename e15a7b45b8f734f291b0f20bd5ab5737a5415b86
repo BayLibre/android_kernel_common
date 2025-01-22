@@ -70,6 +70,30 @@
       },
       "revId": "e15a7b45b8f734f291b0f20bd5ab5737a5415b86",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cd54069_b540aaf5",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2025-01-22T00:34:33Z",
+      "side": 1,
+      "message": "You could technically load BRANCH, see this example: https://cs.android.com/android/kernel/superproject/+/common-android-mainline:build/kernel/kleaf/tests/kernel_build_test/kernel_toolchain_test.bzl;l\u003d19;drc\u003dcc7d090878395200613fe86f029484964ba299ec\n\nThough, whether this is the correct thing to do is a different question. It also only has \"android16-6.12\"; I don\u0027t think it has the patch number or the year/month.",
+      "parentUuid": "11deb154_f0d97c6a",
+      "range": {
+        "startLine": 272,
+        "startChar": 69,
+        "endLine": 272,
+        "endChar": 75
+      },
+      "revId": "e15a7b45b8f734f291b0f20bd5ab5737a5415b86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
