@@ -106,6 +106,24 @@
       "parentUuid": "a1a0ef00_9cbd26a1",
       "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ebcd2a5_a6c0a2d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-01-22T12:29:35Z",
+      "side": 1,
+      "message": "But sysfs is NOT the current bluetooth user/kernel api, why is this ok to do it this way for JUST this one function?  Just add it through the normal user/kernel api instead of placing random sysfs files in userspace with no protection from users breaking things.",
+      "parentUuid": "74334492_6f51cac8",
+      "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
