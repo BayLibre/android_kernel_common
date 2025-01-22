@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9431143f_5e02ec5d",
+        "filename": "kernel/signal.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1459,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-01-22T17:19:46Z",
+      "side": 1,
+      "message": "Wouldn\u0027t vendor code already have access to `current`? Why do you need to pass it as a parameter here?",
+      "range": {
+        "startLine": 1459,
+        "startChar": 35,
+        "endLine": 1459,
+        "endChar": 42
+      },
+      "revId": "af3c2a21d82d19241fee50417a7fb0cd4a994ab1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9f085d6_1613c2f9",
+        "filename": "mm/oom_kill.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-01-22T17:19:46Z",
+      "side": 1,
+      "message": "nit: please drop unecessary braces for single statement.",
+      "range": {
+        "startLine": 757,
+        "startChar": 46,
+        "endLine": 757,
+        "endChar": 48
+      },
+      "revId": "af3c2a21d82d19241fee50417a7fb0cd4a994ab1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7abd8a47_4332dd16",
+        "filename": "mm/oom_kill.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-01-22T17:19:46Z",
+      "side": 1,
+      "message": "I don\u0027t quite understand why isn\u0027t `mark_oom_victim()` called here directly? What part of that function creates a conflict?",
+      "range": {
+        "startLine": 1291,
+        "startChar": 2,
+        "endLine": 1291,
+        "endChar": 19
+      },
+      "revId": "af3c2a21d82d19241fee50417a7fb0cd4a994ab1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
