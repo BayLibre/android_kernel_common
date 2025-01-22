@@ -66,6 +66,7 @@ static inline bool is_via_compact_memory(int order) { return false; }
 #undef CREATE_TRACE_POINTS
 
 #include <trace/hooks/vmscan.h>
+#include <trace/hooks/compaction.h>
 
 #define block_start_pfn(pfn, order)	round_down(pfn, 1UL << (order))
 #define block_end_pfn(pfn, order)	ALIGN((pfn) + 1, 1UL << (order))
@@ -3216,8 +3217,12 @@ static int kcompactd(void *p)
 		timeout = default_timeout;
 		if (should_proactive_compact_node(pgdat)) {
 			unsigned int prev_score, score;
+			bool bypass = false;
 
 			prev_score = fragmentation_score_node(pgdat);
+			trace_android_vh_proactive_compact_bypass(prev_score, &bypass);
+			if (bypass)
+				goto out;
 			compact_node(pgdat, true);
 			score = fragmentation_score_node(pgdat);
 			/*
@@ -3228,6 +3233,7 @@ static int kcompactd(void *p)
 				timeout =
 				   default_timeout << COMPACT_MAX_DEFER_SHIFT;
 		}
+out:
 		if (unlikely(pgdat->proactive_compact_trigger))
 			pgdat->proactive_compact_trigger = false;
 	}
