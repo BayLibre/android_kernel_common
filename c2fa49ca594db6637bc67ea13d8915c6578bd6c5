@@ -124,6 +124,24 @@
       "parentUuid": "74334492_6f51cac8",
       "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e721fd1_8ce3c61e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1962300
+      },
+      "writtenOn": "2025-01-22T12:35:18Z",
+      "side": 1,
+      "message": "There is no so-called \"normal\" user/kernel api for Bluetooth. The MGMT api is used for BlueZ\u0027s userspace part to communicate with its kernel space part, and it\u0027s just not suitable with other usecase. We don\u0027t use BlueZ in Android.",
+      "parentUuid": "8ebcd2a5_a6c0a2d5",
+      "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
