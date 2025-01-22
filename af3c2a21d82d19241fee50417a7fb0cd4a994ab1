@@ -116,6 +116,30 @@
       },
       "revId": "af3c2a21d82d19241fee50417a7fb0cd4a994ab1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c5000f1_70ac414d",
+        "filename": "mm/oom_kill.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-01-22T18:42:39Z",
+      "side": 1,
+      "message": "Yeah, we are kinda piggy-backing on the oom reaper thread here. I think your suggestion makes sense but I\u0027m fine either way. Maybe keep the cherry-pick as is since the code was in previous kernels and changing it now might lead to new bugs?",
+      "parentUuid": "21d8856a_d4eea2da",
+      "range": {
+        "startLine": 1291,
+        "startChar": 2,
+        "endLine": 1291,
+        "endChar": 19
+      },
+      "revId": "af3c2a21d82d19241fee50417a7fb0cd4a994ab1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
