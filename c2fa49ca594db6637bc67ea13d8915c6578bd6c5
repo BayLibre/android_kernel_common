@@ -214,6 +214,24 @@
       "parentUuid": "c3765603_84d4e3c1",
       "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "323dc130_14a1f49b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1962300
+      },
+      "writtenOn": "2025-01-22T14:48:37Z",
+      "side": 1,
+      "message": "\u003e What about all of the custom \"non spec\" ioctls in `hci_sock_ioctl()`?\n\nSo they are not \"non spec\". They will be transferred into the standard HCI commands and sent to the chip. They are part of the BlueZ api used by BlueZ\u0027s debugging tools.\n\n\u003e And doesn\u0027t `HCIDEVRESET` cover this already?\n\nNo it doesn\u0027t. It only triggers the in-band recovery command defined in the Bluetooth core spec. We want an out-of-band one that can be helpful when the in-band one is not working.",
+      "parentUuid": "60aa07f9_36bf823c",
+      "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
