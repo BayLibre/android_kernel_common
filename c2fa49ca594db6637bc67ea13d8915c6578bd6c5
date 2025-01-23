@@ -250,6 +250,24 @@
       "parentUuid": "323dc130_14a1f49b",
       "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8619e5f_714adc59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1962300
+      },
+      "writtenOn": "2025-01-23T16:42:25Z",
+      "side": 1,
+      "message": "\u003e If the in-band reset does not work, how will the out-of-band one work instead?\n\nBecause it is literally out-of-band. For example the packets could be send through UART, but this function could reset the chip through something that is entirely unrelated to UART like a special reset pin connected to GPIO.\n\n\u003e The code paths are the same here in the end, so why do you now have to support two of them?\n\nNo they are not the same. If they are the same then I won\u0027t need to send out this patch and the upstream owner won\u0027t accept this for sure.\n\n\u003e And once you go down this \"out of band\" api, where does it stop?\n\nThe out-of-band reset would usually cause the BT chip to entirely disappear from the bus, reconnect, and all driver initialization code are re-run.\n\n\u003e Making random new user/kernel apis does not seem like a good idea\n\nCould you please kindly tell what is a good api? IMO this is not so bad and there are some similar api in sysfs as well like the rfkill module, which simply allows the user to turn on/off the wireless antenna. And I just found I was wrong in the beginning - The attribute acl is set to root:root 0200 by default, so it can\u0027t be written by arbitrary user. Do you feel this api any better then?\n\n\u003e (also, how are you properly mapping the sysfs directory to the socket you are talking on?)\n\nAll connected BT chip has a index. When we create the socket we need to specify the index, and we can always find the device under /sys/class/bluetooth/hci\u003cindex\u003e.",
+      "parentUuid": "2ae7aad1_e6e5955f",
+      "revId": "c2fa49ca594db6637bc67ea13d8915c6578bd6c5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
