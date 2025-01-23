@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4533a36_8314b87d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-01-23T23:55:42Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by KernelCommit: Cherry pick is not clean. Checked against UPSTREAM.\n\nAnalyzer Description: Ensures that kernel commit messages follow the guidelines.\nOwner: android-kernel-team@google.com\n\nCherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/d23b5c577715892c87533b13923306acc6243f93) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003dd23b5c577715892c87533b13923306acc6243f93).\n\n```\n      ## include/linux/cgroup-defs.h ##\n     @@ include/linux/cgroup-defs.h: struct cgroup_root {\n    @@ kernel/cgroup/cgroup.c: static void cgroup_exit_root_id(struct cgroup_root *root\n     @@ kernel/cgroup/cgroup.c: static void cgroup_destroy_root(struct cgroup_root *root)\n      \tspin_unlock_irq(\u0026css_set_lock);\n      \n    - \tWARN_ON_ONCE(list_empty(\u0026root-\u003eroot_list));\n    --\tlist_del(\u0026root-\u003eroot_list);\n    -+\tlist_del_rcu(\u0026root-\u003eroot_list);\n    - \tcgroup_root_count--;\n    + \tif (!list_empty(\u0026root-\u003eroot_list)) {\n    +-\t\tlist_del(\u0026root-\u003eroot_list);\n    ++\t\tlist_del_rcu(\u0026root-\u003eroot_list);\n    + \t\tcgroup_root_count--;\n    + \t}\n      \n    - \tif (!have_favordynmods)\n     @@ kernel/cgroup/cgroup.c: static inline struct cgroup *__cset_cgroup_from_root(struct css_set *cset,\n      \t\t}\n      \t}\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "range": {
+        "startLine": 0,
+        "startChar": 0,
+        "endLine": 0,
+        "endChar": 0
+      },
+      "revId": "8a0e4485a773c4e075808005bffd89e5002c3ebf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fabdb5b_01711baa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-01-23T23:55:42Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by KernelCommit: Can not find the original change on base branch (android15-6.6) for this change.\n\nAnalyzer Description: Ensures that kernel commit messages follow the guidelines.\nOwner: android-kernel-team@google.com\n\nCan not find the original change on base branch (android15-6.6) for this change.\nPlease ensure that the Change-Id of this change is same as the original change on the base branch.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "range": {
+        "startLine": 0,
+        "startChar": 0,
+        "endLine": 0,
+        "endChar": 0
+      },
+      "revId": "8a0e4485a773c4e075808005bffd89e5002c3ebf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5ee71bba_fd2c1c01",
@@ -14,6 +60,23 @@
       "writtenOn": "2025-01-23T23:09:17Z",
       "side": 1,
       "message": "I reordered the patch series, so this problematic one is last.",
+      "revId": "8a0e4485a773c4e075808005bffd89e5002c3ebf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31d8c753_4064cd05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-01-23T23:55:42Z",
+      "side": 1,
+      "message": "This needs to be on the original base branch first. Also, the cherry-pick is not clean with no explanation of the conflict resolution. Lastly, there is no rationale behind this _specific_ cherry-pick. What issue does this _specific_ patch fixes for you? Note: \"General stability issues around cgroups\" is not a valid explanation.",
       "revId": "8a0e4485a773c4e075808005bffd89e5002c3ebf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
