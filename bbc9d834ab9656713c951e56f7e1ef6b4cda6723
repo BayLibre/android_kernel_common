@@ -22,6 +22,52 @@
       },
       "revId": "bbc9d834ab9656713c951e56f7e1ef6b4cda6723",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f48a1393_790f0a48",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-01-24T23:18:15Z",
+      "side": 1,
+      "message": "Was this cherr-picked form older kernels? If so please keep the same Change-Id.",
+      "range": {
+        "startLine": 13,
+        "startChar": 11,
+        "endLine": 13,
+        "endChar": 52
+      },
+      "revId": "bbc9d834ab9656713c951e56f7e1ef6b4cda6723",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04c11055_9f0fd6b2",
+        "filename": "mm/vmstat.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1693,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-01-24T23:18:15Z",
+      "side": 1,
+      "message": "Build fails. I think you are missing header inclusion.\n```\n...in/common/mm/vmstat.c:1693:2: error: call to undeclared function \u0027trace_android_vh_pagetypeinfo_show\u0027; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\n 1693 |         trace_android_vh_pagetypeinfo_show(m);\n      |         ^\n1 error generated.\n```",
+      "range": {
+        "startLine": 1693,
+        "startChar": 1,
+        "endLine": 1693,
+        "endChar": 35
+      },
+      "revId": "bbc9d834ab9656713c951e56f7e1ef6b4cda6723",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
