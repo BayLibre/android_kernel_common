@@ -1690,6 +1690,7 @@ static int pagetypeinfo_show(struct seq_file *m, void *arg)
 	pagetypeinfo_showfree(m, pgdat);
 	pagetypeinfo_showblockcount(m, pgdat);
 	pagetypeinfo_showmixedcount(m, pgdat);
+	trace_android_vh_pagetypeinfo_show(m);
 
 	return 0;
 }
