@@ -22,6 +22,30 @@
       },
       "revId": "acbba71d4c530e81cc11c7f9d5566b1d742b7cc2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13298051_328d740c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2025-01-24T12:18:48Z",
+      "side": 1,
+      "message": "Because here we copy the host\u0027s arch.flags, so no need to specify the MTE one.",
+      "parentUuid": "f3c789c1_7b98c020",
+      "range": {
+        "startLine": 430,
+        "startChar": 1,
+        "endLine": 430,
+        "endChar": 45
+      },
+      "revId": "acbba71d4c530e81cc11c7f9d5566b1d742b7cc2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
