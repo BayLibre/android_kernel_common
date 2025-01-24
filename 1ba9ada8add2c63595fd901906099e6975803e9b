@@ -16,6 +16,24 @@
       "message": "This seems to endeavour to make delta_boot fit in a u32. And in that case the existing do_div should work, since it is d64/d32 -\u003e q64:r32.",
       "revId": "1ba9ada8add2c63595fd901906099e6975803e9b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3687740_b726d751",
+        "filename": "arch/arm64/kvm/hyp_trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-01-24T09:43:48Z",
+      "side": 1,
+      "message": "duh, you\u0027re right I can\u0027t even remember I wrote that. I guess the best solution would be just to get rid of that attempt of limiting the divisor for a proper 64-bits version.",
+      "parentUuid": "8efc1b8e_24ba8485",
+      "revId": "1ba9ada8add2c63595fd901906099e6975803e9b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
