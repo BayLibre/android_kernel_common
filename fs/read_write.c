@@ -16,6 +16,7 @@
 #include <linux/export.h>
 #include <linux/syscalls.h>
 #include <linux/pagemap.h>
+#include <linux/page_size_compat.h>
 #include <linux/splice.h>
 #include <linux/compat.h>
 #include <linux/mount.h>
@@ -672,7 +673,18 @@ ssize_t ksys_pread64(unsigned int fd, char __user *buf, size_t count,
 SYSCALL_DEFINE4(pread64, unsigned int, fd, char __user *, buf,
 			size_t, count, loff_t, pos)
 {
-	return ksys_pread64(fd, buf, count, pos);
+	bool is_pagemap = __pagemap_pread(&fd, &count, &pos);
+
+	ssize_t nr_read = ksys_pread64(fd, buf, count, pos);
+
+	if (unlikely(is_pagemap)) {
+		int nr_subpages = __PAGE_SIZE / PAGE_SIZE;
+
+		if (nr_read > 0)
+			nr_read /= nr_subpages;
+	}
+
+	return nr_read;
 }
 
 #if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_PREAD64)

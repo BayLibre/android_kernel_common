@@ -357,3 +357,54 @@ static int __init init_sysctl_perf_event_mlock(void)
 }
 core_initcall(init_sysctl_perf_event_mlock);
 #endif
+
+bool __pagemap_pread(unsigned int* fd, size_t* count, loff_t* pos) {
+	int nr_subpages = __PAGE_SIZE / PAGE_SIZE;
+	struct file *file;
+	struct fd f;
+	char *path;
+	char *buf;
+	bool ret;
+
+	if (likely(nr_subpages == 1))
+		return false;
+
+	buf = kmalloc(PATH_MAX, GFP_KERNEL);
+	if (!buf)
+		return false;
+
+	f = fdget(*fd);
+	if (!f.file) {
+		ret = false;
+		goto free_buf;
+	}
+
+	file = f.file;
+
+	path = d_path(&file->f_path, buf, PATH_MAX);
+	if (IS_ERR(path)) {
+		ret = false;
+		goto fd_put;
+	}
+
+	/* Check if the path starts with "/proc/" and ends with "/pagemap" */
+	ret = !strncmp(path, "/proc/", 6) && !strcmp(path + strlen(path) - 8, "/pagemap");
+
+	if (!ret)
+		goto fd_put;
+
+	/*
+	* Userspace thinks the pages are larger than they actually are, so adjust the
+	* offset and count to compensate.
+	*/
+	*pos *= nr_subpages;
+	*count *= nr_subpages;
+
+fd_put:
+	fdput(f);
+
+free_buf:
+	kfree(buf);
+
+	return ret;
+}
