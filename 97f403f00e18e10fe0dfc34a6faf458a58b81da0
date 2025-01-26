@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab86ed40_e7ae2f08",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3616462
+      },
+      "writtenOn": "2025-01-26T10:00:56Z",
+      "side": 1,
+      "message": "Modified to \u0027add vendor hook for reserve highatomic page\u0027",
+      "parentUuid": "44a766cc_5578e2fc",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "97f403f00e18e10fe0dfc34a6faf458a58b81da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60ca71b7_69ebef9c",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-24T22:27:10Z",
       "side": 1,
       "message": "Is this a cherry-pick from earlier kernels? If so please keep the same Change-Id.",
+      "range": {
+        "startLine": 13,
+        "startChar": 11,
+        "endLine": 13,
+        "endChar": 52
+      },
+      "revId": "97f403f00e18e10fe0dfc34a6faf458a58b81da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8209a86_2145fdb0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3616462
+      },
+      "writtenOn": "2025-01-26T10:00:56Z",
+      "side": 1,
+      "message": "This is a new modification, not a cherry-pick.\nJust the hook function name is similar to the existing function.\nnew：trace_android_vh_reserve_highatomic_bypass\nOriginal：trace_android_vh_unreserve_highatomic_bypass",
+      "parentUuid": "60ca71b7_69ebef9c",
       "range": {
         "startLine": 13,
         "startChar": 11,
