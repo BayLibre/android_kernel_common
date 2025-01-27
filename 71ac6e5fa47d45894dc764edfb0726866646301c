@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4b2d5a1_844e6c3b",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2025-01-27T11:01:43Z",
+      "side": 1,
+      "message": "So... this is skipping the explicit list of sections (which are EL2 sections) which will have reduced permissions, and scanning the rest, which continues to be mapped at and hence scannable from EL1? I\u0027d appreciate a code comment. LGTM otherwise.",
+      "revId": "71ac6e5fa47d45894dc764edfb0726866646301c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
