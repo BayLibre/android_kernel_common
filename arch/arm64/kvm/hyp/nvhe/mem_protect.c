@@ -2172,6 +2172,38 @@ bool __pkvm_check_ioguard_page(struct pkvm_hyp_vcpu *hyp_vcpu)
 	return ret;
 }
 
+int __pkvm_remove_ioguard_page(struct pkvm_hyp_vcpu *hyp_vcpu, u64 ipa)
+{
+	struct pkvm_hyp_vm *vm = pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu);
+	struct guest_request_walker_data data =
+		GUEST_WALKER_DATA_INIT(PKVM_NOPAGE | PKVM_MMIO);
+	struct kvm_pgtable_walker walker = {
+		.cb     = guest_request_walker,
+		.flags  = KVM_PGTABLE_WALK_LEAF,
+		.arg    = (void *)&data,
+	};
+	u64 size = PAGE_SIZE;
+	int ret;
+
+	if (!test_bit(KVM_ARCH_FLAG_MMIO_GUARD, &vm->kvm.arch.flags))
+		return -EINVAL;
+
+	if (!PAGE_ALIGNED(ipa))
+		return -EINVAL;
+
+	guest_lock_component(vm);
+
+	ret = kvm_pgtable_walk(&vm->pgt, ipa, size, &walker);
+	if (ret)
+		goto unlock;
+
+	ret = kvm_pgtable_stage2_unmap(&vm->pgt, data.ipa_start, size);
+
+unlock:
+	guest_unlock_component(vm);
+	return WARN_ON(ret);
+}
+
 int host_stage2_get_leaf(phys_addr_t phys, kvm_pte_t *ptep, s8 *level)
 {
 	int ret;
