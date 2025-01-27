@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11301968_769fb8d8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1903606
+      },
+      "writtenOn": "2025-01-27T18:21:47Z",
+      "side": 1,
+      "message": "will update it",
+      "parentUuid": "f3e4eb24_e105b13a",
+      "range": {
+        "startLine": 0,
+        "startChar": 0,
+        "endLine": 0,
+        "endChar": 0
+      },
+      "revId": "69645a20b905c9ce9e19108f70d37af64fa80cf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba91a5f7_2c96d71a",
         "filename": "drivers/thermal/thermal_netlink.c",
         "patchSetId": 1
@@ -60,6 +84,30 @@
       "writtenOn": "2025-01-21T18:01:23Z",
       "side": 1,
       "message": "All the diffs in this \"backport\" are because because of missing commit `cba00d16a2b0 (\"thermal: core: Add and use thermal zone guard\")` correct? Also, It seems the original commit applies cleanly. So I think it would be best to apply the original commit as is (e.g. UPSTREAM) and then do all the modifications on the `tz-\u003elock` on a separate `ANDROID` patch in order to document the diff better. Could you please do this?",
+      "range": {
+        "startLine": 695,
+        "startChar": 1,
+        "endLine": 695,
+        "endChar": 23
+      },
+      "revId": "69645a20b905c9ce9e19108f70d37af64fa80cf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbc3dcc4_8bf50369",
+        "filename": "drivers/thermal/thermal_netlink.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 1903606
+      },
+      "writtenOn": "2025-01-27T18:21:47Z",
+      "side": 1,
+      "message": "Yes, that is correct, above patch is missing in 6.12, the original commit applies cleanly, but it will be a compilation issue for original upstream commit. my understanding is it shouldn\u0027t breaking compilation at any commit, correct me otherwise ?",
+      "parentUuid": "ba91a5f7_2c96d71a",
       "range": {
         "startLine": 695,
         "startChar": 1,
