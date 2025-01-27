@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe82dc51_eeef3d48",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3616462
+      },
+      "writtenOn": "2025-01-27T03:14:42Z",
+      "side": 1,
+      "message": "done, thank you",
+      "parentUuid": "3890e0f9_4d266ef5",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "bbc9d834ab9656713c951e56f7e1ef6b4cda6723",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f48a1393_790f0a48",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32af57cd_97370218",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3616462
+      },
+      "writtenOn": "2025-01-27T03:14:42Z",
+      "side": 1,
+      "message": "no, it is a new patch",
+      "parentUuid": "f48a1393_790f0a48",
+      "range": {
+        "startLine": 13,
+        "startChar": 11,
+        "endLine": 13,
+        "endChar": 52
+      },
+      "revId": "bbc9d834ab9656713c951e56f7e1ef6b4cda6723",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04c11055_9f0fd6b2",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-01-24T23:18:15Z",
       "side": 1,
       "message": "Build fails. I think you are missing header inclusion.\n```\n...in/common/mm/vmstat.c:1693:2: error: call to undeclared function \u0027trace_android_vh_pagetypeinfo_show\u0027; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\n 1693 |         trace_android_vh_pagetypeinfo_show(m);\n      |         ^\n1 error generated.\n```",
+      "range": {
+        "startLine": 1693,
+        "startChar": 1,
+        "endLine": 1693,
+        "endChar": 35
+      },
+      "revId": "bbc9d834ab9656713c951e56f7e1ef6b4cda6723",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4ae7fe4_a7ad72e0",
+        "filename": "mm/vmstat.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1693,
+      "author": {
+        "id": 3616462
+      },
+      "writtenOn": "2025-01-27T03:14:42Z",
+      "side": 1,
+      "message": "在vmstat.c 中添加了#include \u003ctrace/hooks/mm.h\u003e",
+      "parentUuid": "04c11055_9f0fd6b2",
       "range": {
         "startLine": 1693,
         "startChar": 1,
