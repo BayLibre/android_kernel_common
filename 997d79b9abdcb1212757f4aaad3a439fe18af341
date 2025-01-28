@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79e6040c_c1323fc7",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-28T14:23:41Z",
+      "side": 1,
+      "message": "Your change means that we *do* lock the hyp buffers explicitly, so this isn\u0027t quite right. In fact, looking ahead, it seems that we _only_ use `hyp_buffers.lock`. How about we remove the `.lock` field from `struct kvm_ffa_buffers` and have a global `static hyp_spinlock_t kvm_ffa_hyp_lock;` in `nvhe/ffa.c` instead?",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 70
+      },
+      "revId": "997d79b9abdcb1212757f4aaad3a439fe18af341",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
