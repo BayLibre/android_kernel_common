@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9ff5cda_c42723ae",
+        "filename": "include/net/netns/ipv4.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-01-28T05:48:16Z",
+      "side": 1,
+      "message": "might want to document that these are moved here due to the padding hole you found?",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 20
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bf4ce17d_5004e81c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/net/netns/ipv4.h",
+              "range": {
+                "startLine": 126,
+                "startChar": 0,
+                "endLine": 126,
+                "endChar": 0
+              },
+              "replacement": "/* These are moved here due to the padding hole found in the original\n * netns_ipv4 structure.\n */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4bbd72d18ba8b080db0bee10f6ccceb009e8b7d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
