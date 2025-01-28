@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73893797_bb9e8fd4",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-28T18:44:41Z",
+      "side": 1,
+      "message": "There\u0027s that `count` function I mentioned on the previous CL. And again, I think you could ditch this and rewrite the following `for` loop as a `while`.",
+      "range": {
+        "startLine": 122,
+        "startChar": 8,
+        "endLine": 122,
+        "endChar": 22
+      },
+      "revId": "81317844f2b050723606bd08e77452bd3a698f94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a3e6bd7_1d73d327",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-28T18:44:41Z",
+      "side": 1,
+      "message": "Why are you now assigning this earlier? The function can fail after this, although I suppose you\u0027ll need to pass `i` into `register_moveable_fdt_resource`. Hmm...",
+      "range": {
+        "startLine": 163,
+        "startChar": 14,
+        "endLine": 163,
+        "endChar": 35
+      },
+      "revId": "81317844f2b050723606bd08e77452bd3a698f94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
