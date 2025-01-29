@@ -63,6 +63,8 @@ struct xe_exec_queue {
 	char name[MAX_FENCE_NAME_LEN];
 	/** @width: width (number BB submitted per exec) of this exec queue */
 	u16 width;
+	/** @msix_vec: MSI-X vector (for platforms that support it) */
+	u16 msix_vec;
 	/** @fence_irq: fence IRQ used to signal job completion */
 	struct xe_hw_fence_irq *fence_irq;
 
@@ -130,6 +132,8 @@ struct xe_exec_queue {
 
 	/** @pxp: PXP info tracking */
 	struct {
+		/** @pxp.type: PXP session type used by this queue */
+		u8 type;
 		/** @pxp.link: link into the list of PXP exec queues */
 		struct list_head link;
 	} pxp;
