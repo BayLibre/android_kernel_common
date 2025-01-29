@@ -15,7 +15,7 @@ bool intel_bo_is_tiled(struct drm_gem_object *obj)
 bool intel_bo_is_userptr(struct drm_gem_object *obj)
 {
 	/* xe does not have userptr bos */
-	return false;
+	return xe_bo_is_protected(gem_to_xe_bo(obj));
 }
 
 bool intel_bo_is_shmem(struct drm_gem_object *obj)
