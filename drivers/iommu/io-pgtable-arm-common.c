@@ -466,9 +466,8 @@ static size_t __arm_lpae_unmap(struct arm_lpae_io_pgtable *data,
 				/* Also flush any partial walks */
 				io_pgtable_tlb_flush_walk(iop, iova + i * size, size,
 							  ARM_LPAE_GRANULE(data));
-				if (!(iop->cfg.quirks & IO_PGTABLE_QUIRK_UNMAP_INVAL))
-					__arm_lpae_free_pgtable(data, lvl + 1,
-								iopte_deref(pte, data));
+				__arm_lpae_free_pgtable(data, lvl + 1,
+							iopte_deref(pte, data));
 			}
 		}
 
