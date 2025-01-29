@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d8d1a0a_f4d6d85f",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-01-29T10:49:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73893797_bb9e8fd4",
+      "range": {
+        "startLine": 122,
+        "startChar": 8,
+        "endLine": 122,
+        "endChar": 22
+      },
+      "revId": "81317844f2b050723606bd08e77452bd3a698f94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a3e6bd7_1d73d327",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-28T18:44:41Z",
       "side": 1,
       "message": "Why are you now assigning this earlier? The function can fail after this, although I suppose you\u0027ll need to pass `i` into `register_moveable_fdt_resource`. Hmm...",
+      "range": {
+        "startLine": 163,
+        "startChar": 14,
+        "endLine": 163,
+        "endChar": 35
+      },
+      "revId": "81317844f2b050723606bd08e77452bd3a698f94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9e8e95e_a147af94",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-01-29T10:49:56Z",
+      "side": 1,
+      "message": "Yes, also `register_moveable_fdt_resource` update the `pkvm_moveable_regs_nr`, so we need a way to propagate that.\nI think, it simpler to reset `pkvm_moveable_regs_nr` in the fail path in that case, I updated the patch.",
+      "parentUuid": "5a3e6bd7_1d73d327",
       "range": {
         "startLine": 163,
         "startChar": 14,
