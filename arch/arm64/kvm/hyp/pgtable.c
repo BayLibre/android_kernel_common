@@ -378,6 +378,7 @@ enum kvm_pgtable_prot kvm_pgtable_hyp_pte_prot(kvm_pte_t pte)
 {
 	enum kvm_pgtable_prot prot = pte & KVM_PTE_LEAF_ATTR_HI_SW;
 	u32 ap;
+	u32 mtype;
 
 	if (!kvm_pte_valid(pte))
 		return prot;
@@ -390,6 +391,12 @@ enum kvm_pgtable_prot kvm_pgtable_hyp_pte_prot(kvm_pte_t pte)
 		prot |= KVM_PGTABLE_PROT_R;
 	else if (ap == KVM_PTE_LEAF_ATTR_LO_S1_AP_RW)
 		prot |= KVM_PGTABLE_PROT_RW;
+
+	mtype = FIELD_GET(KVM_PTE_LEAF_ATTR_LO_S1_ATTRIDX, pte);
+	if (mtype == MT_DEVICE_nGnRE)
+		prot |= KVM_PGTABLE_PROT_DEVICE;
+	else if (mtype == MT_NORMAL_NC)
+		prot |= KVM_PGTABLE_PROT_NORMAL_NC;
 
 	return prot;
 }

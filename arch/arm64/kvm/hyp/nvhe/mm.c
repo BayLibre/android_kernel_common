@@ -672,14 +672,28 @@ int pkvm_remap_range(void *va, int nr_pages, bool nc)
 {
 	size_t size = nr_pages << PAGE_SHIFT;
 	phys_addr_t phys = hyp_virt_to_phys(va);
-	enum kvm_pgtable_prot prot = PAGE_HYP;
-	int ret;
+	enum kvm_pgtable_prot prot = PAGE_HYP, current_prot;
+	int ret = 0;
+	kvm_pte_t pte;
 
 	if (nc)
 		prot |= KVM_PGTABLE_PROT_NORMAL_NC;
 	hyp_spin_lock(&pkvm_pgd_lock);
+	/*
+	 * Check if the current range is already mapped using the requested attr,
+	 * this assumes that the whole range is consistently mapped.
+	 */
+	WARN_ON(kvm_pgtable_get_leaf(&pkvm_pgtable, (u64)va, &pte, NULL));
+	WARN_ON(!kvm_pte_valid(pte));
+
+	current_prot = kvm_pgtable_hyp_pte_prot(pte);
+	if ((current_prot & KVM_PGTABLE_PROT_NORMAL_NC) == (prot & KVM_PGTABLE_PROT_NORMAL_NC))
+		goto out_unlock;
+
 	WARN_ON(kvm_pgtable_hyp_unmap(&pkvm_pgtable, (u64)va, size) != size);
 	ret = kvm_pgtable_hyp_map(&pkvm_pgtable, (u64)va, size, phys, prot);
+
+out_unlock:
 	hyp_spin_unlock(&pkvm_pgd_lock);
 	return ret;
 }
