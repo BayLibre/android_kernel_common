@@ -402,8 +402,22 @@ static size_t arm_lpae_split_blk_unmap(struct arm_lpae_io_pgtable *data,
 
 	for (i = 0; i < ptes_per_table; i++, blk_paddr += split_sz) {
 		/* Unmap! */
-		if (i >= unmap_idx_start && i < (unmap_idx_start + num_entries))
+		if (i >= unmap_idx_start && i < (unmap_idx_start + num_entries)) {
+			arm_lpae_iopte invalid_pte = pte;
+
+			/*
+			 * Populate an invalid entry with that have the old mapping so
+			 * when the caller walk the table after, it can find the old mapping
+			 * and update the it's metadata properly.
+			 */
+			if (cfg->quirks & IO_PGTABLE_QUIRK_UNMAP_INVAL) {
+				if (data->iop.fmt != ARM_MALI_LPAE && lvl == ARM_LPAE_MAX_LEVELS - 1)
+					invalid_pte |= 0x2;
+				invalid_pte |= paddr_to_iopte(blk_paddr, data);
+				WRITE_ONCE(tablep[i], invalid_pte);
+			}
 			continue;
+		}
 
 		__arm_lpae_init_pte(data, blk_paddr, pte, lvl, 1, &tablep[i]);
 	}
