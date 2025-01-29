@@ -25,6 +25,7 @@
 #include "xe_sched_job.h"
 
 #define XE_EXECLIST_HANG_LIMIT 1
+#define XE_IRQ_DEFAULT_MSIX 1
 
 #define SW_CTX_ID_SHIFT 37
 #define SW_CTX_ID_WIDTH 11
@@ -265,7 +266,7 @@ struct xe_execlist_port *xe_execlist_port_create(struct xe_device *xe,
 
 	port->hwe = hwe;
 
-	port->lrc = xe_lrc_create(hwe, NULL, SZ_16K);
+	port->lrc = xe_lrc_create(hwe, NULL, SZ_16K, XE_IRQ_DEFAULT_MSIX, 0);
 	if (IS_ERR(port->lrc)) {
 		err = PTR_ERR(port->lrc);
 		goto err;
