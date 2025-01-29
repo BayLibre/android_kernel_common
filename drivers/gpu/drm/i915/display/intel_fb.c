@@ -2212,3 +2212,8 @@ err:
 	kfree(intel_fb);
 	return ERR_PTR(ret);
 }
+
+struct drm_gem_object *intel_fb_bo(const struct drm_framebuffer *fb)
+{
+	return fb ? fb->obj[0] : NULL;
+}
