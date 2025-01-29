@@ -16,6 +16,24 @@
       "message": "Please resolve the checkpatch issue:\n```\nWARNING:COMMIT_LOG_USE_LINK: Unknown link reference \u0027Context:\u0027, use \u0027Link:\u0027 or \u0027Closes:\u0027 instead\n```\nAlso, please include more about the upstreaming plan. Is the \"Context\" the patch that would replace these hooks if it were merged upstream?",
       "revId": "0c987db5a071e2e590bd2ec55ddb054ece77b99a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48e7718f_916e296c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2025-01-29T23:26:30Z",
+      "side": 1,
+      "message": "Fixed the checkpatch. \n\n\u003e Also, please include more about the upstreaming plan. Is the \"Context\" the patch that would replace these hooks if it were merged upstream?\n\nupdated the commit description for oag/3143217 and b/206108037 for this vendor hook.\n\nWe will be revisiting oag/3143219 given that Android allows mounting debugfs during bugreport generation to see if we can find a possible solution.",
+      "parentUuid": "b785d694_f9dd2717",
+      "revId": "0c987db5a071e2e590bd2ec55ddb054ece77b99a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
