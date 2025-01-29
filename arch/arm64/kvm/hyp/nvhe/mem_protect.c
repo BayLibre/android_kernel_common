@@ -1452,6 +1452,49 @@ unlock:
 	return ret;
 }
 
+int __pkvm_guest_share_ffa_page(struct pkvm_hyp_vcpu *vcpu, u64 ipa, phys_addr_t *out_addr)
+{
+	int ret;
+	struct pkvm_hyp_vm *vm = pkvm_hyp_vcpu_to_hyp_vm(vcpu);
+	kvm_pte_t pte;
+	u64 nr_pages = 1;
+
+	guest_lock_component(vm);
+	ret = __guest_request_page_transition(ipa, &pte, &nr_pages, vcpu, PKVM_PAGE_OWNED);
+	if (!ret) {
+		WARN_ON(nr_pages != 1);
+
+		ret = __guest_initiate_page_transition(ipa, pte, nr_pages, vcpu, PKVM_PAGE_SHARED_OWNED);
+		if (!ret && out_addr)
+			*out_addr = kvm_pte_to_phys(pte);
+	}
+	guest_unlock_component(vm);
+
+	return ret;
+}
+
+/*
+ * The caller is responsible for tracking the FFA state and that this function
+ *  should only be called for IPAs that have previously been shared with FFA.
+ */
+int __pkvm_guest_unshare_ffa_page(struct pkvm_hyp_vcpu *vcpu, u64 ipa)
+{
+	int ret;
+	struct pkvm_hyp_vm *vm = pkvm_hyp_vcpu_to_hyp_vm(vcpu);
+	kvm_pte_t pte;
+	u64 nr_pages = 1;
+
+	guest_lock_component(vm);
+	ret = __guest_request_page_transition(ipa, &pte, &nr_pages, vcpu, PKVM_PAGE_SHARED_OWNED);
+	if (!ret) {
+		WARN_ON(nr_pages != 1);
+		ret = __guest_initiate_page_transition(ipa, pte, nr_pages, vcpu, PKVM_PAGE_OWNED);
+	}
+	guest_unlock_component(vm);
+
+	return ret;
+}
+
 int __pkvm_host_donate_hyp(u64 pfn, u64 nr_pages)
 {
 	return ___pkvm_host_donate_hyp(pfn, nr_pages, false);
