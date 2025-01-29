@@ -16,6 +16,24 @@
       "message": "1. The `android` directory has been retired in favour of `gki`, please read gki/README.md and adjust your change.\n2. You will need to add your list to `BUILD.bazel`.\n3. Please try be break this update into more digestible pieces for review.\n\nWe also need to do some preparatory work before accepting initial symbol lists, so there may be some delay before we can review your change.",
       "revId": "e94f7688fbfd207ec4dbb7841d3a51392b2a6b69",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75a4d017_e79aa239",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2024627
+      },
+      "writtenOn": "2025-01-29T23:26:25Z",
+      "side": 1,
+      "message": "1. Ack.\n2. Ack, will wait for symbol list acceptance to add qcom symbol list to BUILD.bazel\n3. abi_gki_aarch64_qcom is our current downstream symbol list. I\u0027m not entirely sure how I could break this up. All listed symbols are present in the Android kernel.\n\nThank you for your review.",
+      "parentUuid": "e1922ff2_dda045f8",
+      "revId": "e94f7688fbfd207ec4dbb7841d3a51392b2a6b69",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
