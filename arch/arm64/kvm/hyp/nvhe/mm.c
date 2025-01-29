@@ -675,8 +675,11 @@ int pkvm_remap_range(void *va, int nr_pages, bool nc)
 	enum kvm_pgtable_prot prot = PAGE_HYP;
 	int ret;
 
-	if (nc)
+	if (nc) {
+		/* Make sure all data written before converting to nc. */
+		kvm_flush_dcache_to_poc(va, size);
 		prot |= KVM_PGTABLE_PROT_NORMAL_NC;
+	}
 	hyp_spin_lock(&pkvm_pgd_lock);
 	WARN_ON(kvm_pgtable_hyp_unmap(&pkvm_pgtable, (u64)va, size) != size);
 	ret = kvm_pgtable_hyp_map(&pkvm_pgtable, (u64)va, size, phys, prot);
