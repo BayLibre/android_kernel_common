@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9a84638a_25d937f9",
+        "filename": "drivers/vfio/group.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 838,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-01-30T22:17:48Z",
+      "side": 1,
+      "message": "AFAICT, no, VFIO export this function only for SPAPR with no alternative, I guess one interface that can elminate part of the changes in kvm-vfio will be `iommufd`, but that will be a long term goal to converge with it.",
+      "parentUuid": "b64a2e63_773d52e7",
+      "range": {
+        "startLine": 837,
+        "startChar": 37,
+        "endLine": 838,
+        "endChar": 30
+      },
+      "revId": "6fae24a5590d6bcda3daf29074fa9e0b37bbe14f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "af5fdd99_acc8bccb",
         "filename": "virt/kvm/vfio.c",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-29T13:02:17Z",
       "side": 1,
       "message": "We\u0027ve already taken a reference to the file and added it to the file list, so this looks like it\u0027s leaking those and might be racy too.",
+      "range": {
+        "startLine": 226,
+        "startChar": 7,
+        "endLine": 226,
+        "endChar": 17
+      },
+      "revId": "6fae24a5590d6bcda3daf29074fa9e0b37bbe14f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1815688_6d1bb23b",
+        "filename": "virt/kvm/vfio.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-01-30T22:17:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af5fdd99_acc8bccb",
       "range": {
         "startLine": 226,
         "startChar": 7,
