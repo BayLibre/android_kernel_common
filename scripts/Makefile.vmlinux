@@ -19,7 +19,33 @@ quiet_cmd_cc_o_c = CC      $@
 
 ifdef CONFIG_MODULES
 targets += .vmlinux.export.o
+<<<<<<< HEAD   (4f20e2 ANDROID: generate protected-exports.c from modpost)
 vmlinux: .vmlinux.export.o
+||||||| BASE
+$(vmlinux-final): .vmlinux.export.o
+endif
+
+ifdef CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX
+$(vmlinux-final): arch/$(SRCARCH)/tools/vmlinux.arch.o
+
+arch/$(SRCARCH)/tools/vmlinux.arch.o: vmlinux.o FORCE
+	$(Q)$(MAKE) $(build)=arch/$(SRCARCH)/tools $@
+=======
+$(vmlinux-final): .vmlinux.export.o
+
+ifdef CONFIG_MODULE_SIG_PROTECT
+targets += .vmlinux.protected-exports.o
+$(vmlinux-final): .vmlinux.protected-exports.o
+endif
+
+endif
+
+ifdef CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX
+$(vmlinux-final): arch/$(SRCARCH)/tools/vmlinux.arch.o
+
+arch/$(SRCARCH)/tools/vmlinux.arch.o: vmlinux.o FORCE
+	$(Q)$(MAKE) $(build)=arch/$(SRCARCH)/tools $@
+>>>>>>> CHANGE (67bdf8 ANDROID: compile and link protected-exports.o into vmlinux)
 endif
 
 ARCH_POSTLINK := $(wildcard $(srctree)/arch/$(SRCARCH)/Makefile.postlink)
