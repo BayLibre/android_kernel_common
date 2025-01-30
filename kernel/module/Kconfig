@@ -242,6 +242,25 @@ config MODULE_SIG_ALL
 comment "Do not forget to sign required modules with scripts/sign-file"
 	depends on MODULE_SIG_FORCE && !MODULE_SIG_ALL
 
+config MODULE_SIG_PROTECT
+	bool "Protect symbols exported by signed modules"
+	depends on MODULE_SIG && !MODULE_SIG_FORCE
+	help
+	  Enables symbol export protection support.  This option prevents
+	  unsigned modules to export symbols which only signed modules are
+	  allowed to export.  Any unsigned module which tries to export such a
+	  symbol will be rejected at load time.
+
+config MODULE_SIG_UNPROTECT_LIST
+	string "List of signed modules that do not require export protection"
+	depends on MODULE_SIG_PROTECT
+	help
+	  Disables symbol export protection for modules listed in the file.
+
+	  The value to set here is the path to a text file containing the list
+	  of symbols, one per line. The path can be absolute, or relative to the
+	  kernel source or obj tree.
+
 choice
 	prompt "Hash algorithm to sign modules"
 	depends on MODULE_SIG || IMA_APPRAISE_MODSIG
