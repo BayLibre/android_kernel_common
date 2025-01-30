@@ -20,6 +20,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <errno.h>
+#include <stdlib.h>
 
 #include <hash.h>
 #include <hashtable.h>
@@ -62,6 +63,8 @@ static bool extra_warn;
 
 bool target_is_big_endian;
 bool host_is_big_endian;
+
+static unsigned int nr_module_exported_symbols;
 
 /*
  * Cut off the warnings when there are too many. This typically occurs when
@@ -112,6 +115,11 @@ const char *get_basename(const char *path)
 	const char *tail = strrchr(path, '/');
 
 	return tail ? tail + 1 : path;
+}
+
+static int symbol_cmp(const void *a, const void *b)
+{
+	return strcmp(*(const char **)a, *(const char **)b);
 }
 
 char *read_text_file(const char *filename)
@@ -371,6 +379,9 @@ static struct symbol *sym_add_exported(const char *name, struct module *mod,
 	s->namespace = xstrdup(namespace);
 	list_add_tail(&s->list, &mod->exported_symbols);
 	hash_add_symbol(s);
+	if (!mod->is_vmlinux && !mod->dump_file) {
+		++nr_module_exported_symbols;
+	}
 
 	return s;
 }
@@ -2252,17 +2263,65 @@ static void check_host_endian(void)
 	}
 }
 
+static void handle_protected_modules_list(const char *fname)
+{
+	char *buf, *p, *name;
+
+	buf = read_text_file(fname);
+	p = buf;
+
+	while ((name = strsep(&p, "\n"))) {
+		struct module *mod = find_module(NULL, name);
+
+		if (mod)
+			mod->is_protected = true;
+	}
+
+	free(buf);
+}
+
+static void write_protected_exports_c_file(void)
+{
+	const char* symbols[nr_module_exported_symbols];
+	unsigned int symbols_size = 0;
+	unsigned int i;
+	struct module *mod;
+	struct symbol *sym;
+	struct buffer buf = {};
+
+	list_for_each_entry(mod, &modules, list) {
+		if (mod->is_vmlinux || mod->dump_file || !mod->is_protected)
+			continue;
+
+		list_for_each_entry(sym, &mod->exported_symbols, list) {
+			symbols[symbols_size++] = sym->name;
+		}
+	}
+	qsort(symbols, symbols_size, sizeof(const char*), symbol_cmp);
+
+	buf_printf(&buf, "#include \"../kernel/module/internal.h\"\n\n");
+	buf_printf(&buf, "size_t protected_symbol_exports_count = %d;\n\n", symbols_size);
+	buf_printf(&buf, "const char *const protected_symbol_exports[] = {\n");
+	for (i=0; i<symbols_size; ++i) {
+		buf_printf(&buf, "\t\"%s\",\n", symbols[i]);
+	}
+	buf_printf(&buf, "};\n");
+	write_if_changed(&buf, ".vmlinux.protected-exports.c");
+	free(buf.p);
+}
+
 int main(int argc, char **argv)
 {
 	struct module *mod;
 	char *missing_namespace_deps = NULL;
 	char *unused_exports_white_list = NULL;
+	char *protected_modules_list = NULL;
 	char *dump_write = NULL, *files_source = NULL;
 	int opt;
 	LIST_HEAD(dump_lists);
 	struct dump_list *dl, *dl2;
 
-	while ((opt = getopt(argc, argv, "ei:MmnT:to:au:WwENd:xbv:")) != -1) {
+	while ((opt = getopt(argc, argv, "ei:MmnT:to:au:WwENd:xbv:p:")) != -1) {
 		switch (opt) {
 		case 'e':
 			external_module = true;
@@ -2320,6 +2379,9 @@ int main(int argc, char **argv)
 		case 'v':
 			strncpy(module_scmversion, optarg, sizeof(module_scmversion) - 1);
 			break;
+		case 'p':
+			protected_modules_list = optarg;
+			break;
 		default:
 			exit(1);
 		}
@@ -2374,6 +2436,11 @@ int main(int argc, char **argv)
 	if (nr_unresolved > MAX_UNRESOLVED_REPORTS)
 		warn("suppressed %u unresolved symbol warnings because there were too many)\n",
 		     nr_unresolved - MAX_UNRESOLVED_REPORTS);
+
+	if (protected_modules_list) {
+		handle_protected_modules_list(protected_modules_list);
+		write_protected_exports_c_file();
+	}
 
 	return error_occurred ? 1 : 0;
 }
