@@ -124,6 +124,7 @@ struct module {
 	bool seen;
 	bool has_init;
 	bool has_cleanup;
+	bool is_protected;  /* true if module exports are protected */
 	char	     srcversion[25];
 	// Missing namespace dependencies
 	struct list_head missing_namespaces;
