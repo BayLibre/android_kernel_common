@@ -56,6 +56,12 @@ endif
 ifdef CONFIG_MODULES
 targets += .vmlinux.export.o
 vmlinux: .vmlinux.export.o
+
+ifdef CONFIG_MODULE_SIG_PROTECT
+targets += .vmlinux.protected-exports.o
+vmlinux: .vmlinux.protected-exports.o
+endif
+
 endif
 
 ifdef CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX
