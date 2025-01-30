@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f4bbd08_279457cf",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1773,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-30T13:32:17Z",
+      "side": 1,
+      "message": "How can we get this far if we don\u0027t have a slot? `pkvm_mem_abort_range()` has already resolved the memslot for us, afaict.  In fact, we have the hva, so why isn\u0027t this just `hva_to_pfn()`?",
+      "range": {
+        "startLine": 1770,
+        "startChar": 0,
+        "endLine": 1773,
+        "endChar": 0
+      },
+      "revId": "b2e8354c2c148a32e4e0223e66d762eba64344ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e30e141_d8e2e56b",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1776,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-30T13:32:17Z",
+      "side": 1,
+      "message": "Do we really need this in the `device` case? I don\u0027t think we\u0027d have a `struct page` then.",
+      "range": {
+        "startLine": 1776,
+        "startChar": 0,
+        "endLine": 1776,
+        "endChar": 29
+      },
+      "revId": "b2e8354c2c148a32e4e0223e66d762eba64344ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f9037c5_22cc2d02",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1778,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-30T13:32:17Z",
+      "side": 1,
+      "message": "What prevents this racing on two vCPUs trying to donate the same pfn? In that case, I\u0027ll think one of them will incorrectly return an error which might go out to userspace (?)",
+      "range": {
+        "startLine": 1778,
+        "startChar": 9,
+        "endLine": 1778,
+        "endChar": 30
+      },
+      "revId": "b2e8354c2c148a32e4e0223e66d762eba64344ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
