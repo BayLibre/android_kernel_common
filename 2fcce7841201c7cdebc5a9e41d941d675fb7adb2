@@ -16,6 +16,24 @@
       "message": "You added a .h file but never use it.  You can do this in your out-of-tree code just as simply as it can be done here, no need for a kernel change for it, right?",
       "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9a93bc4_2343410f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1323232
+      },
+      "writtenOn": "2025-01-30T14:31:42Z",
+      "side": 1,
+      "message": "I\u0027m not sure I understand. Are you suggesting we move the tracepoint definition and creation code to the Pixel-specific kernel code?  If so, would vendors who want to use this feature also need to create the tracepoint in their own vendor driver kernel code? Thanks.",
+      "parentUuid": "11968c9e_fd3d716d",
+      "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
