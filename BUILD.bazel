@@ -191,8 +191,8 @@ common_kernel(
     # Symbol lists and module lists
     protected_modules_list = ":gki_aarch64_protected_modules",
     protected_exports_list = "gki/aarch64/protected_exports",
-    # kmi_symbol_list = None,
-    # additional_kmi_symbol_lists = [],
+    kmi_symbol_list = "gki/aarch64/symbols/base",
+    additional_kmi_symbol_lists = [],
     # kmi_symbol_list_strict_mode = False,
     # trim_nonlisted_kmi = False,
 
