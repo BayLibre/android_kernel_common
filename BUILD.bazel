@@ -22,6 +22,7 @@ load(
     "ddk_headers",
     "ddk_headers_archive",
     "initramfs",
+    "kernel_abi",
     "kernel_build",
     "kernel_compile_commands",
     "kernel_kythe",
@@ -822,6 +823,8 @@ kernel_build(
     base_kernel = ":kernel_aarch64",
     build_config = "build.config.db845c",
     defconfig = "arch/arm64/configs/gki_defconfig",
+    collect_unstripped_modules = True,
+    kmi_symbol_list = "gki/aarch64/symbols/db845c",
     make_goals = [
         "modules",
         "qcom/qrb5165-rb5.dtb",
@@ -880,6 +883,11 @@ alias(
         "//build/kernel/kleaf:kgdb_is_true": "db845c_with_kgdb",
         "//conditions:default": "db845c_no_kgdb",
     }),
+)
+
+kernel_abi(
+    name = "db845c_abi",
+    kernel_build = ":db845c",
 )
 
 kernel_modules_install(
