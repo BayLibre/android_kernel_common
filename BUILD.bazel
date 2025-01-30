@@ -179,6 +179,7 @@ filegroup(
 )
 
 common_kernel(
+    # do not sort
     name = "kernel_aarch64",
     outs = DEFAULT_GKI_OUTS,
     additional_kmi_symbol_lists = [":aarch64_additional_kmi_symbol_lists"],
@@ -199,8 +200,8 @@ common_kernel(
     make_goals = _GKI_AARCH64_MAKE_GOALS,
     makefile = ":Makefile",
     module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64"),
-    protected_exports_list = "gki/aarch64/protected_exports",
     protected_modules_list = ":gki_aarch64_protected_modules",
+    protected_exports_list = "gki/aarch64/protected_exports",
     trim_nonlisted_kmi = True,
     visibility = ["//visibility:public"],
 
