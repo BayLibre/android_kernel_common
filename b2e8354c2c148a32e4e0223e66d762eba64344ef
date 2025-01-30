@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d3287c1_c2557377",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1773,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-01-30T15:19:22Z",
+      "side": 1,
+      "message": "`hva_to_pfn` is declared in `virt/kvm/kvm_mm.h` which seems awkard to include, also I don\u0027t see any arch file including it, maybe `__gfn_to_pfn_memslot` is a better fit, as its called from `user_mem_abort`\n\nAlso, with that, the `user_mem_abort` still checks for `is_error_noslot_pfn(pfn)`, I guess that might be becuase of races",
+      "parentUuid": "6f4bbd08_279457cf",
+      "range": {
+        "startLine": 1770,
+        "startChar": 0,
+        "endLine": 1773,
+        "endChar": 0
+      },
+      "revId": "b2e8354c2c148a32e4e0223e66d762eba64344ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1e30e141_d8e2e56b",
         "filename": "arch/arm64/kvm/mmu.c",
         "patchSetId": 3
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "beff09f2_4847193d",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1776,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-01-30T15:19:22Z",
+      "side": 1,
+      "message": "But we don\u0027t know at this point if it\u0027s a device or not.",
+      "parentUuid": "1e30e141_d8e2e56b",
+      "range": {
+        "startLine": 1776,
+        "startChar": 0,
+        "endLine": 1776,
+        "endChar": 29
+      },
+      "revId": "b2e8354c2c148a32e4e0223e66d762eba64344ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5f9037c5_22cc2d02",
         "filename": "arch/arm64/kvm/mmu.c",
         "patchSetId": 3
@@ -60,6 +108,30 @@
       "writtenOn": "2025-01-30T13:32:17Z",
       "side": 1,
       "message": "What prevents this racing on two vCPUs trying to donate the same pfn? In that case, I\u0027ll think one of them will incorrectly return an error which might go out to userspace (?)",
+      "range": {
+        "startLine": 1778,
+        "startChar": 9,
+        "endLine": 1778,
+        "endChar": 30
+      },
+      "revId": "b2e8354c2c148a32e4e0223e66d762eba64344ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84b302de_17366081",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1778,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-01-30T15:19:22Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be triggered directly from guest access, but from hvc to `request`, so if the guest raced with multiple requests, AFAICT `pkvm_host_map_guest_mmio` will fail in `__pkvm_remove_ioguard_page` which would be visible to user space that the guest failed accessing this address.\n\nI think, this case shouldn\u0027t happen as guest verifcation path which issues requests is serialized. However if we don\u0027t trust the guest, maybe we can return -EAGAIN, same as we do with memory?",
+      "parentUuid": "5f9037c5_22cc2d02",
       "range": {
         "startLine": 1778,
         "startChar": 9,
