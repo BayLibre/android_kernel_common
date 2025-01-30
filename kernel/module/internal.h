@@ -410,3 +410,14 @@ static inline int same_magic(const char *amagic, const char *bmagic, bool has_cr
 	return strcmp(amagic, bmagic) == 0;
 }
 #endif /* CONFIG_MODVERSIONS */
+
+/* Symbol export protection */
+int _nr_protected_symbol_exports(void);
+
+#ifdef CONFIG_MODULE_SIG_PROTECT
+#define NR_PROTECTED_SYMBOL_EXPORTS _nr_protected_symbol_exports()
+#else
+#define NR_PROTECTED_SYMBOL_EXPORTS 0
+#endif
+
+const char *const protected_symbol_exports[];
