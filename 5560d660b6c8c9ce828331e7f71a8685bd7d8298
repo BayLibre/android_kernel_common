@@ -16,6 +16,24 @@
       "message": "allmodconfig build breaks. Please fix:\n```\n/mnt/disks/build-disk/src/android/common-android16-6.12/out/bazel/output_user_root/4cfd4b4d530262c9404da8567df5caec/sandbox/linux-sandbox/146/execroot/_main/common/drivers/usb/host/xhci-sideband.c:83:2: error: call to undeclared function \u0027xhci_stop_endpoint_sync\u0027; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\n   83 |         xhci_stop_endpoint_sync(sb-\u003exhci, ep, 0, GFP_KERNEL);\n      |         ^\n/mnt/disks/build-disk/src/android/common-android16-6.12/out/bazel/output_user_root/4cfd4b4d530262c9404da8567df5caec/sandbox/linux-sandbox/146/execroot/_main/common/drivers/usb/host/xhci-sideband.c:193:36: error: too few arguments to function call, expected 2, have 1\n  193 |         xhci_initialize_ring_info(ep-\u003ering);\n      |         ~~~~~~~~~~~~~~~~~~~~~~~~~         ^\n/mnt/disks/build-disk/src/android/common-android16-6.12/out/bazel/output_user_root/4cfd4b4d530262c9404da8567df5caec/sandbox/linux-sandbox/146/execroot/_main/common/drivers/usb/host/xhci.h:1803:6: note: \u0027xhci_initialize_ring_info\u0027 declared here\n 1803 | void xhci_initialize_ring_info(struct xhci_ring *ring,\n      |      ^                         ~~~~~~~~~~~~~~~~~~~~~~~\n 1804 |                         unsigned int cycle_state);\n      |                         ~~~~~~~~~~~~~~~~~~~~~~~~\n/mnt/disks/build-disk/src/android/common-android16-6.12/out/bazel/output_user_root/4cfd4b4d530262c9404da8567df5caec/sandbox/linux-sandbox/146/execroot/_main/common/drivers/usb/host/xhci-sideband.c:213:9: error: call to undeclared function \u0027xhci_stop_endpoint_sync\u0027; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\n  213 |         return xhci_stop_endpoint_sync(sb-\u003exhci, ep, 0, GFP_KERNEL);\n      |                ^\n3 errors generated.\n```",
       "revId": "5560d660b6c8c9ce828331e7f71a8685bd7d8298",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f5a519d_41185882",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1901900
+      },
+      "writtenOn": "2025-01-30T22:33:38Z",
+      "side": 1,
+      "message": "thanks Todd, started running the allmodconfig now before submitting.  didn\u0027t know about this until you mentioned it.  fixed the build issues and resubmitted.",
+      "parentUuid": "9a25af2d_e4ba8329",
+      "revId": "5560d660b6c8c9ce828331e7f71a8685bd7d8298",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
