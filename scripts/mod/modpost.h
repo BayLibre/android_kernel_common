@@ -89,6 +89,7 @@ struct module {
 	bool seen;
 	bool has_init;
 	bool has_cleanup;
+	bool is_unprotected;  /* true if module exports are not protected */
 	struct buffer dev_table_buf;
 	char	     srcversion[25];
 	// Missing namespace dependencies
