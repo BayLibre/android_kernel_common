@@ -118,6 +118,30 @@
       },
       "revId": "4bc8e6da286ac4192fe43969ec4dc2573a443017",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42f54a72_5cc2797f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3485565
+      },
+      "writtenOn": "2025-01-30T16:56:25Z",
+      "side": 1,
+      "message": "Hi David, we have discussed this with Tomasz offline and our conclusion is that we should wait with merging this change until we switch to Kleaf builds. Currently, the kernel is running on a legacy build system (make \u0026 bash scripts), and we want to make a switch soon so that Kleaf is the only supported way. This is a big change on its own, and we would like to limit the number of variables introduced. Once it lands and is confirmed to work, we can move on with IWL7000 incorporation.\n\nWe are free to develop on 6.12, tho.",
+      "parentUuid": "0eafbbda_43433470",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 5
+      },
+      "revId": "4bc8e6da286ac4192fe43969ec4dc2573a443017",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
