@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1562508d_088e1aa4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T16:02:01Z",
+      "side": 1,
+      "message": "Probably just a naming thing, but having a function called `pkvm_devices_get_context()` that returns an error when it finds the context is really confusing!\n\nIf the refcount is only used by the host, maybe having a host context would be better? I suppose this will become clearer in subsequent patches.",
+      "range": {
+        "startLine": 342,
+        "startChar": 5,
+        "endLine": 342,
+        "endChar": 14
+      },
+      "revId": "1001111f0bf3428e0dce57f09039a0a8e08500ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a11927ee_7c813739",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T16:02:01Z",
+      "side": 1,
+      "message": "Does this actually need to be atomic?",
+      "range": {
+        "startLine": 345,
+        "startChar": 3,
+        "endLine": 345,
+        "endChar": 19
+      },
+      "revId": "1001111f0bf3428e0dce57f09039a0a8e08500ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f00626b5_b723d630",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T16:02:01Z",
+      "side": 1,
+      "message": "nit: whitespace",
+      "range": {
+        "startLine": 345,
+        "startChar": 2,
+        "endLine": 345,
+        "endChar": 3
+      },
+      "revId": "1001111f0bf3428e0dce57f09039a0a8e08500ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
