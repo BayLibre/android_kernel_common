@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af48594b_5dbf92af",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T16:19:53Z",
+      "side": 1,
+      "message": "Wait, `endpoint_id` was a `u64` a couple of patches back. Please be consistent with types.",
+      "range": {
+        "startLine": 47,
+        "startChar": 52,
+        "endLine": 47,
+        "endChar": 63
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "598d3872_a47aa274",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+              "range": {
+                "startLine": 21,
+                "startChar": 0,
+                "endLine": 22,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t u64 endpoint_id, u32 pasid, u32 pasid_bits);\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+              "range": {
+                "startLine": 23,
+                "startChar": 0,
+                "endLine": 24,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t u64 endpoint_id, u32 pasid);\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+              "range": {
+                "startLine": 47,
+                "startChar": 0,
+                "endLine": 48,
+                "endChar": 0
+              },
+              "replacement": "int kvm_iommu_block_dev(pkvm_handle_t iommu_id, u64 endpoint_id, struct pkvm_hyp_vm *vm);\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+              "range": {
+                "startLine": 55,
+                "startChar": 0,
+                "endLine": 56,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t  u64 endpoint_id, u32 pasid, u32 pasid_bits);\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+              "range": {
+                "startLine": 57,
+                "startChar": 0,
+                "endLine": 58,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t  u64 endpoint_id, u32 pasid);\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+              "range": {
+                "startLine": 72,
+                "startChar": 0,
+                "endLine": 73,
+                "endChar": 0
+              },
+              "replacement": "\tint (*block_dev)(struct kvm_hyp_iommu *iommu, u64 endpoint_id,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a6fe4a0f2426b8b806cf960d7c1c8e379a2b77b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36b32ce6_c4167c63",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T16:19:53Z",
+      "side": 1,
+      "message": "Use consistent naming with the argument to the reset function in module_ops?",
+      "range": {
+        "startLine": 73,
+        "startChar": 9,
+        "endLine": 73,
+        "endChar": 22
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a5724358_af12b110",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+              "range": {
+                "startLine": 73,
+                "startChar": 0,
+                "endLine": 74,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t bool is_host_to_guest);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a6fe4a0f2426b8b806cf960d7c1c8e379a2b77b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "933aaef5_f9628237",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T16:19:53Z",
+      "side": 1,
+      "message": "What happens in this case? It seems like a very bad situation to be in if we\u0027ve partially blocked a device\u0027s DMA traffic.",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 14
+      },
+      "revId": "a6fe4a0f2426b8b806cf960d7c1c8e379a2b77b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d681358_07ab891a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T16:19:53Z",
+      "side": 1,
+      "message": "No need for the local",
+      "range": {
+        "startLine": 544,
+        "startChar": 5,
+        "endLine": 544,
+        "endChar": 8
+      },
+      "revId": "a6fe4a0f2426b8b806cf960d7c1c8e379a2b77b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10edb098_a7967e17",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T16:19:53Z",
+      "side": 1,
+      "message": "Why isn\u0027t this mandatory?",
+      "range": {
+        "startLine": 546,
+        "startChar": 24,
+        "endLine": 546,
+        "endChar": 48
+      },
+      "revId": "a6fe4a0f2426b8b806cf960d7c1c8e379a2b77b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
