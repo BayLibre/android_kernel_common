@@ -117,6 +117,30 @@
       },
       "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6ddfc2e_63546bce",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1323232
+      },
+      "writtenOn": "2025-01-31T14:18:45Z",
+      "side": 1,
+      "message": "BTW, I have tried to put android_vendor_lmk.h to hooks/ folder. However, I got Lint -1 since it seems to complain I shouldn\u0027t use #include \u003clinux/tracepoint.h\u003e in my android_vendor_lmk.h (sorry, I couldn\u0027t find Lint -1 histroy details). I guess that is because I\u0027m using normal trace event instead of some real vendor hooks\u0027 stuff. Thus, I moved it to normal linux trace events\u0027 folder.",
+      "parentUuid": "19d78427_59815d1a",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 22
+      },
+      "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
