@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97d41f92_b2e4d668",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1323232
+      },
+      "writtenOn": "2025-01-31T13:59:35Z",
+      "side": 1,
+      "message": "Do you mean vendor_hooks.c that I created a tracepoint there? Or something else ? Sorry, if there is a rule I should follow for this case, please let me know. Thanks.",
+      "parentUuid": "b3c5d2c5_df3f8254",
+      "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f55506fb_c994ac5a",
         "filename": "drivers/android/vendor_hooks.c",
         "patchSetId": 3
@@ -67,6 +85,30 @@
       "writtenOn": "2025-01-31T10:36:27Z",
       "side": 1,
       "message": "why \"events\"?",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 22
+      },
+      "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19d78427_59815d1a",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1323232
+      },
+      "writtenOn": "2025-01-31T13:59:35Z",
+      "side": 1,
+      "message": "Do you mean I shouldn\u0027t put android_vendor_lmk.h under events folder? what would be a proper folder I should move to ? Thanks.",
+      "parentUuid": "f55506fb_c994ac5a",
       "range": {
         "startLine": 78,
         "startChar": 16,
