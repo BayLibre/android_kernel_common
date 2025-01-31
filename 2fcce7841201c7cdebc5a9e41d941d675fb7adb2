@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "383bca78_8cef578f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-01-31T16:22:54Z",
+      "side": 1,
+      "message": "The tracepoint will be created in the vendor module where events will be generated. LMKD will be receiving the generated events via a BPF program attached to this tracepoint.",
+      "parentUuid": "97d41f92_b2e4d668",
+      "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f55506fb_c994ac5a",
         "filename": "drivers/android/vendor_hooks.c",
         "patchSetId": 3
@@ -181,6 +199,30 @@
       "side": 1,
       "message": "IOW, we defined the normal trace event and borrow vendor_hook.c (as discuss with Suren so we don\u0027t need to create a new c file to create it) to create the trace point. \n\nTherefore, the header file is put in trace/events folder and the tracepoint creation is in vendor_hook.c.  Please let me know if any other good structs you prefer. Thanks.",
       "parentUuid": "be91e35d_95ba267d",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 22
+      },
+      "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba8d7336_4451181c",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-01-31T16:22:54Z",
+      "side": 1,
+      "message": "About the error you got:\n```The header files in include/trace/hooks should not include the kernel header file with the type definitions to avoid CRC changes which break the KMI. Instead forward declare the types.```\n\nWhich kernel headers do you need to include for this hook? From what I see it uses only standard types.",
+      "parentUuid": "dbbfed35_1df06f6d",
       "range": {
         "startLine": 78,
         "startChar": 16,
