@@ -102,6 +102,26 @@ int __pkvm_create_private_mapping(phys_addr_t phys, size_t size,
 	return err;
 }
 
+<<<<<<< HEAD   (17c227d12e456a693ccebaf2dec991df3930589e ANDROID: ABI: Update the symbol list for mtk)
+||||||| BASE   (8ed377e0cd9c337d8d3d9ec0e20fa24680fde307 Revert "ANDROID: add task_dma_buf_record and allocation prel)
+int __hyp_allocator_map(unsigned long va, phys_addr_t phys)
+{
+	return __pkvm_create_mappings(va, PAGE_SIZE, phys, PAGE_HYP);
+}
+
+=======
+int __hyp_allocator_map(unsigned long va, phys_addr_t phys)
+{
+	int ret = __pkvm_create_mappings(va, PAGE_SIZE, phys, PAGE_HYP);
+
+	/* Let's not confuse the hyp_alloc callers who will try to top-up pointlessly on -ENOMEM */
+	if (ret == -ENOMEM)
+		ret = -EBUSY;
+
+	return ret;
+}
+
+>>>>>>> CHANGE (12ecd209ee833aebf5bc933f6157865ca5baf8e2 ANDROID: KVM: arm64: Handle hyp s1 allocation failures grace)
 #ifdef CONFIG_NVHE_EL2_DEBUG
 static unsigned long mod_range_start = ULONG_MAX;
 static unsigned long mod_range_end;

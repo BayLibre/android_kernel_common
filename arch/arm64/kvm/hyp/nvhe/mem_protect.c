@@ -1566,10 +1566,21 @@ static int __do_share(struct pkvm_mem_share *share)
 		ret = host_complete_share(completer_addr, tx, share->completer_prot);
 		break;
 	case PKVM_ID_HYP:
+<<<<<<< HEAD   (17c227d12e456a693ccebaf2dec991df3930589e ANDROID: ABI: Update the symbol list for mtk)
 		ret = hyp_complete_share(completer_addr, tx, share->completer_prot);
 		break;
 	case PKVM_ID_GUEST:
 		ret = guest_complete_share(completer_addr, tx, share->completer_prot);
+||||||| BASE   (8ed377e0cd9c337d8d3d9ec0e20fa24680fde307 Revert "ANDROID: add task_dma_buf_record and allocation prel)
+		ret = hyp_complete_share(checked_tx, tx->completer.prot);
+=======
+		ret = hyp_complete_share(checked_tx, tx->completer.prot);
+		if (ret == -ENOMEM) {
+			WARN_ON(tx->initiator.id != PKVM_ID_HOST);
+			WARN_ON(host_initiate_unshare(checked_tx));
+			return ret;
+		}
+>>>>>>> CHANGE (12ecd209ee833aebf5bc933f6157865ca5baf8e2 ANDROID: KVM: arm64: Handle hyp s1 allocation failures grace)
 		break;
 	case PKVM_ID_FFA:
 		/*
@@ -1582,7 +1593,7 @@ static int __do_share(struct pkvm_mem_share *share)
 		ret = -EINVAL;
 	}
 
-	return ret;
+	return WARN_ON(ret);
 }
 
 /*
@@ -1602,7 +1613,25 @@ static int do_share(struct pkvm_mem_share *share)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD   (17c227d12e456a693ccebaf2dec991df3930589e ANDROID: ABI: Update the symbol list for mtk)
 	return WARN_ON(__do_share(share));
+||||||| BASE   (8ed377e0cd9c337d8d3d9ec0e20fa24680fde307 Revert "ANDROID: add task_dma_buf_record and allocation prel)
+	ret = __do_share(share, &checked_tx);
+	if (WARN_ON(ret))
+		return ret;
+
+	*nr_shared = checked_tx.nr_pages;
+
+	return ret;
+=======
+	ret = __do_share(share, &checked_tx);
+	if (ret)
+		return ret;
+
+	*nr_shared = checked_tx.nr_pages;
+
+	return ret;
+>>>>>>> CHANGE (12ecd209ee833aebf5bc933f6157865ca5baf8e2 ANDROID: KVM: arm64: Handle hyp s1 allocation failures grace)
 }
 
 static int check_unshare(struct pkvm_mem_share *share)
@@ -1764,6 +1793,16 @@ static int __do_donate(struct pkvm_mem_donation *donation)
 		break;
 	case PKVM_ID_HYP:
 		ret = hyp_complete_donation(completer_addr, tx);
+		if (ret == -ENOMEM) {
+			struct pkvm_mem_transition abort = {
+				.nr_pages = tx->nr_pages,
+				.completer.id = PKVM_ID_HOST,
+			};
+
+			WARN_ON(tx->initiator.id != PKVM_ID_HOST);
+			WARN_ON(host_complete_donation(completer_addr, &abort));
+			return -ENOMEM;
+		}
 		break;
 	case PKVM_ID_GUEST:
 		ret = guest_complete_donation(completer_addr, tx);
@@ -1772,7 +1811,7 @@ static int __do_donate(struct pkvm_mem_donation *donation)
 		ret = -EINVAL;
 	}
 
-	return ret;
+	return WARN_ON(ret);
 }
 
 /*
@@ -1792,7 +1831,7 @@ static int do_donate(struct pkvm_mem_donation *donation)
 	if (ret)
 		return ret;
 
-	return WARN_ON(__do_donate(donation));
+	return __do_donate(donation);
 }
 
 int __pkvm_host_share_hyp(u64 pfn)
