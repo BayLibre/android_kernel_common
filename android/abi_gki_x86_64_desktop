@@ -26,7 +26,6 @@
   acpi_device_get_match_data
   acpi_device_hid
   acpi_device_set_power
-  acpi_device_update_power
   acpi_dev_install_notify_handler
   acpi_dev_present
   acpi_dev_remove_driver_gpios
@@ -64,9 +63,6 @@
   acpi_install_address_space_handler
   acpi_install_notify_handler
   acpi_is_video_device
-  acpi_lpat_free_conversion_table
-  acpi_lpat_get_conversion_table
-  acpi_lpat_raw_to_temp
   acpi_match_device
   acpi_match_device_ids
   acpi_notifier_call_chain
@@ -84,13 +80,10 @@
   acpi_put_table
   acpi_quirk_skip_acpi_ac_and_battery
   acpi_reduced_hardware
-  acpi_register_gsi
   acpi_release_mutex
   acpi_remove_address_space_handler
   acpi_remove_notify_handler
-  acpi_run_osc
   acpi_target_system_state
-  acpi_unregister_gsi
   acpi_video_backlight_string
   acpi_walk_namespace
   add_device_randomness
@@ -1108,7 +1101,6 @@
   _find_first_zero_bit
   find_iova
   _find_next_bit
-  find_next_clump8
   _find_next_zero_bit
   find_vma
   finish_open
@@ -1503,10 +1495,8 @@
   intel_pinctrl_suspend_noirq
   intel_scu_ipc_dev_command_with_size
   intel_scu_ipc_dev_simple_command
-  intel_tcc_get_offset
   intel_tcc_get_temp
   intel_tcc_get_tjmax
-  intel_tcc_set_offset
   intlog10
   int_sqrt
   invalidate_bdev
@@ -1529,7 +1519,6 @@
   iosf_mbi_read
   iosf_mbi_register_pmic_bus_access_notifier
   iosf_mbi_unregister_pmic_bus_access_notifier_unlocked
-  iosf_mbi_write
   iounmap
   iova_cache_get
   iova_cache_put
@@ -2235,10 +2224,6 @@
   pnp_range_reserved
   pnp_register_driver
   pnp_unregister_driver
-  powercap_register_control_type
-  powercap_register_zone
-  powercap_unregister_control_type
-  powercap_unregister_zone
   power_group_name
   power_supply_changed
   power_supply_get_drvdata
@@ -2610,7 +2595,6 @@
   skip_spaces
   smp_call_function_any
   smp_call_function_many
-  smp_call_function_single
   smp_call_function_single_async
   snd_card_disconnect
   snd_card_free
@@ -2933,7 +2917,6 @@
   sysfs_merge_group
   sysfs_notify
   sysfs_remove_bin_file
-  sysfs_remove_file_ns
   sysfs_remove_files
   sysfs_remove_group
   sysfs_remove_link
@@ -2957,19 +2940,12 @@
   tasklet_unlock_wait
   __task_pid_nr_ns
   test_taint
-  thermal_acpi_active_trip_temp
-  thermal_acpi_critical_trip_temp
-  thermal_acpi_hot_trip_temp
-  thermal_acpi_passive_trip_temp
   thermal_clear_package_intr_status
   thermal_cooling_device_register
   thermal_cooling_device_unregister
-  thermal_tripless_zone_device_register
-  thermal_zone_device
   thermal_zone_device_enable
   thermal_zone_device_priv
   thermal_zone_device_register_with_trips
-  thermal_zone_device_type
   thermal_zone_device_unregister
   thermal_zone_device_update
   this_cpu_off
