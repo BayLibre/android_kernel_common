@@ -1371,6 +1371,17 @@ void *__symbol_get(const char *symbol)
 }
 EXPORT_SYMBOL_GPL(__symbol_get);
 
+static int cmp_string(const void *a, const void *b)
+{
+	return strcmp(*(const char **)a, *(const char **)b);
+}
+
+static bool is_protected_symbol_export(const char *name)
+{
+	return bsearch(name, protected_symbol_exports,
+	               NR_PROTECTED_SYMBOL_EXPORTS, 1, cmp_string) != NULL;
+}
+
 /*
  * Ensure that an exported symbol [global namespace] does not already exist
  * in the kernel or in some other module's exported symbol table.
@@ -1402,6 +1413,13 @@ static int verify_exported_symbols(struct module *mod)
 				       module_name(fsa.owner));
 				return -ENOEXEC;
 			}
+#ifdef CONFIG_MODULE_SIG_PROTECT
+			if (!mod->sig_ok && is_protected_symbol_export(kernel_symbol_name(s))) {
+				pr_err("%s: exports protected symbol %s\n",
+				       mod->name, kernel_symbol_name(s));
+				return -EACCES;
+			}
+#endif
 		}
 	}
 	return 0;
@@ -2436,12 +2454,16 @@ static void module_augment_kernel_taints(struct module *mod, struct load_info *i
 	}
 #ifdef CONFIG_MODULE_SIG
 	mod->sig_ok = info->sig_ok;
+#ifndef CONFIG_MODULE_SIG_PROTECT
 	if (!mod->sig_ok) {
 		pr_notice_once("%s: module verification failed: signature "
 			       "and/or required key missing - tainting "
 			       "kernel\n", mod->name);
 		add_taint_module(mod, TAINT_UNSIGNED_MODULE, LOCKDEP_STILL_OK);
 	}
+#endif
+#else
+	mod->sig_ok = 0;
 #endif
 
 	/*
