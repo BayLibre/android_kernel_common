@@ -34,6 +34,47 @@
       "parentUuid": "11968c9e_fd3d716d",
       "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3c5d2c5_df3f8254",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-01-31T10:36:27Z",
+      "side": 1,
+      "message": "You do not create a real tracepoint here, only a trace event.  Shouldn\u0027t there be a .c file somewhere?  If not, why is this change even neede at all?",
+      "parentUuid": "d9a93bc4_2343410f",
+      "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f55506fb_c994ac5a",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-01-31T10:36:27Z",
+      "side": 1,
+      "message": "why \"events\"?",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 22
+      },
+      "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
