@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0c99b00_43b9e489",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T14:18:24Z",
+      "side": 1,
+      "message": "Should you call `guest_lock_component(vm)` first?",
+      "range": {
+        "startLine": 231,
+        "startChar": 7,
+        "endLine": 231,
+        "endChar": 27
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94adcd28_99400b35",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T14:18:24Z",
+      "side": 1,
+      "message": "Can we fail for any other reason? If so, should we handle those error codes differently rather than get stuck in a map-request loop?",
+      "range": {
+        "startLine": 233,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 40
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e604ba03_e15e4d31",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T14:18:24Z",
+      "side": 1,
+      "message": "This is basically an open-coded copy of `pkvm_handle_empty_memcache()`",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 243,
+        "endChar": 0
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfbc8c43_56658ff6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T14:18:24Z",
+      "side": 1,
+      "message": "I strongly recomment that you require unused arguments to be zero so that you can extend the hypercall in the future.",
+      "range": {
+        "startLine": 256,
+        "startChar": 11,
+        "endLine": 256,
+        "endChar": 25
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69f35cae_f08294ec",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T14:18:24Z",
+      "side": 1,
+      "message": "Why not enforce that this is PAGE_ALIGNED here (like we do in `pkvm_memshare_call()`? Then you can drop the `PAGE_MASK` masking in the function above.",
+      "range": {
+        "startLine": 256,
+        "startChar": 5,
+        "endLine": 256,
+        "endChar": 8
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48964a61_81b4c091",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T14:18:24Z",
+      "side": 1,
+      "message": "Don\u0027t you need to return an error to the guest in this case? (i.e. call `smccc_set_retval()`)",
+      "range": {
+        "startLine": 261,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 15
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0474db64_470bb5ee",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1663,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-01-31T14:18:24Z",
+      "side": 1,
+      "message": "Please add documentation for this (I think we have examples for the other hypercalls we expose)",
+      "range": {
+        "startLine": 1663,
+        "startChar": 6,
+        "endLine": 1663,
+        "endChar": 51
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
