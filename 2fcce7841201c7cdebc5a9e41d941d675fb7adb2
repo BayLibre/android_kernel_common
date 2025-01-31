@@ -141,6 +141,30 @@
       },
       "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be91e35d_95ba267d",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1323232
+      },
+      "writtenOn": "2025-01-31T14:49:49Z",
+      "side": 1,
+      "message": "Okay, I managered to get the error message I got before as below. Thus, I moved it out of hooks/ folder.\n```\nThe header files in include/trace/hooks should not include the kernel header file with the type definitions to avoid CRC changes which break the KMI. Instead forward declare the types.\n\nhttps://source.android.com/docs/core/architecture/kernel/kernel-code#defining-vendor-hooks\n```",
+      "parentUuid": "d6ddfc2e_63546bce",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 22
+      },
+      "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
