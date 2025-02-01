@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "963524db_4e1393b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-01T19:49:18Z",
+      "side": 1,
+      "message": "I discussed this with Greg offline. Martin, please expand the changelog of this patch to explain why this trace event is needed and how partners can use to communication with LMKD. Something like this:\n\n```\nAdd android_trigger_vendor_lmk_kill() trace event which can be used by\nvendor modules to send LMKD kill requests. This hook can be used\nby Android partners to implement custom kill decision strategies in\ntheir modules and to send kill requests to LMKD, utilizing existing\nlibmemevent and BPF infrastructure. The event contains custom kill\nreason and min_score_adj.\n```",
+      "parentUuid": "c1940aff_11c75bc9",
+      "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f55506fb_c994ac5a",
         "filename": "drivers/android/vendor_hooks.c",
         "patchSetId": 3
