@@ -16,6 +16,24 @@
       "message": "Please split this up into drivers/subsystems and submit it as a patch series so they can be properly reviewed that way.  There\u0027s just too many new symbols being added here at once for a proper review.",
       "revId": "146efb647d7dfc3be4d758bd20750d00899198ee",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0855c00a_70947d93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-02-03T13:23:28Z",
+      "side": 1,
+      "message": "If you are struggling to do this, here are some tips:\n\nCreate a stack of changes by incrementally adding sets of vendor modules and running update symbols after each one (starting from an empty symbol list).\n\nIf are unable to make this work, then extract the undefined symbols from all your vendor modules at once (with `nm -o -u`). You can then use this information to split the additions into smaller chunks.\n\nIf you are still struggling, then attach the `nm` output to the bug and I should be able to do it.",
+      "parentUuid": "09c7bfbd_c4407da5",
+      "revId": "146efb647d7dfc3be4d758bd20750d00899198ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
