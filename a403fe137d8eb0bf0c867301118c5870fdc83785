@@ -70,6 +70,30 @@
       },
       "revId": "a403fe137d8eb0bf0c867301118c5870fdc83785",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d96ce124_6b6247ef",
+        "filename": "gki/aarch64/symbols/pixel",
+        "patchSetId": 4
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-02-03T16:52:48Z",
+      "side": 1,
+      "message": "zram was unprotected in 14 and 15.\n\nIf it\u0027s always unprotected... should it even be a GKI module?",
+      "parentUuid": "4442e260_738bea2a",
+      "range": {
+        "startLine": 949,
+        "startChar": 0,
+        "endLine": 949,
+        "endChar": 2
+      },
+      "revId": "a403fe137d8eb0bf0c867301118c5870fdc83785",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
