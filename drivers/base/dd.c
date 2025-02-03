@@ -136,7 +136,7 @@ void driver_deferred_probe_add(struct device *dev)
 
 	mutex_lock(&deferred_probe_mutex);
 	if (list_empty(&dev->p->deferred_probe)) {
-		dev_dbg(dev, "Added to deferred list\n");
+		dev_info(dev, "IJM Added to deferred list\n");
 		list_add_tail(&dev->p->deferred_probe, &deferred_probe_pending_list);
 	}
 	mutex_unlock(&deferred_probe_mutex);
@@ -953,7 +953,7 @@ static int __device_attach_driver(struct device_driver *drv, void *_data)
 		/* no match */
 		return 0;
 	} else if (ret == -EPROBE_DEFER) {
-		dev_dbg(dev, "Device match requests probe deferral\n");
+		dev_info(dev, "IJM Device match requests probe deferral\n");
 		dev->can_match = true;
 		driver_deferred_probe_add(dev);
 		/*
@@ -993,6 +993,7 @@ static void __device_attach_async_helper(void *_dev, async_cookie_t cookie)
 		.want_async	= true,
 	};
 
+	dev_info(dev, "IJM async probe begin\n");
 	device_lock(dev);
 
 	/*
@@ -1008,7 +1009,7 @@ static void __device_attach_async_helper(void *_dev, async_cookie_t cookie)
 		pm_runtime_get_sync(dev->parent);
 
 	bus_for_each_drv(dev->bus, NULL, &data, __device_attach_driver);
-	dev_dbg(dev, "async probe completed\n");
+	dev_info(dev, "IJM async probe completed\n");
 
 	pm_request_idle(dev);
 
@@ -1168,6 +1169,7 @@ static void __driver_attach_async_helper(void *_dev, async_cookie_t cookie)
 	__device_driver_lock(dev, dev->parent);
 	drv = dev->p->async_driver;
 	dev->p->async_driver = NULL;
+	dev_info(dev, "driver %s async attach begin\n", drv->name);
 	ret = driver_probe_device(drv, dev);
 	__device_driver_unlock(dev, dev->parent);
 
@@ -1222,7 +1224,7 @@ static int __driver_attach(struct device *dev, void *data)
 		 * We only take the device lock here in order to guarantee
 		 * that the dev->driver and async_driver fields are protected
 		 */
-		dev_dbg(dev, "probing driver %s asynchronously\n", drv->name);
+		dev_info(dev, "IJM probing driver %s asynchronously\n", drv->name);
 		device_lock(dev);
 		if (!dev->driver && !dev->p->async_driver) {
 			get_device(dev);
