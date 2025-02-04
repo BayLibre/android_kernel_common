@@ -8,7 +8,6 @@ This module contains a full list of kernel modules
 
 _COMMON_GKI_MODULES_LIST = [
     # keep sorted
-    "drivers/block/virtio_blk.ko",
     "drivers/block/zram/zram.ko",
     "drivers/bluetooth/btbcm.ko",
     "drivers/bluetooth/btqca.ko",
@@ -48,9 +47,6 @@ _COMMON_GKI_MODULES_LIST = [
     "drivers/usb/serial/ftdi_sio.ko",
     "drivers/usb/serial/usbserial.ko",
     "drivers/virtio/virtio_balloon.ko",
-    "drivers/virtio/virtio_pci.ko",
-    "drivers/virtio/virtio_pci_legacy_dev.ko",
-    "drivers/virtio/virtio_pci_modern_dev.ko",
     "fs/netfs/netfs.ko",
     "kernel/kheaders.ko",
     "lib/crypto/libarc4.ko",
