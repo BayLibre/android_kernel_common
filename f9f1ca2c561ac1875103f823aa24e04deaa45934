@@ -16,6 +16,24 @@
       "message": "Seems OK to me. I provided a Reviewed-by upstream. I assume this will eventually make it into the main Android trees via stable channel. If this is urgent then we could land it now, though I don\u0027t personally have +2.\n\nDo you know if there a process for tracking the progress of upstream patches here to make sure this eventually lands upstream like there is on ChromeOS?",
       "revId": "f9f1ca2c561ac1875103f823aa24e04deaa45934",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6896996_cd7cf965",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2025-02-04T21:05:29Z",
+      "side": 1,
+      "message": "AFAIK, not really. Our process is to generally not allow FROMLIST to be merged because the patch may be changed before it is upstreamed, and reconciling the differences later can be difficult (even if we had a tool). It\u0027s nearly always better to wait, then use UPSTREAM/BACKPORT. If you do want to do it anyway, the official process is to open an issue to track it (go/ack-oot-bug provides a nice template), and add that Bug to your change. The bug is closed when the necessary upstreaming/reconciliation is done, on a feature-by-feature basis.",
+      "parentUuid": "369d1c9b_d8e3ce26",
+      "revId": "f9f1ca2c561ac1875103f823aa24e04deaa45934",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
