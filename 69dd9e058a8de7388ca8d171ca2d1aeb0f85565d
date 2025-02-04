@@ -45,6 +45,54 @@
       },
       "revId": "69dd9e058a8de7388ca8d171ca2d1aeb0f85565d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ebaa32f_d1c5d2a3",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:28:27Z",
+      "side": 1,
+      "message": "Yes, as we only call for one page, and this function is reused from Android15, I can remove the arg.",
+      "parentUuid": "cfc8c957_a4434ce6",
+      "range": {
+        "startLine": 209,
+        "startChar": 67,
+        "endLine": 209,
+        "endChar": 79
+      },
+      "revId": "69dd9e058a8de7388ca8d171ca2d1aeb0f85565d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "469665e7_0b7ea010",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:28:27Z",
+      "side": 1,
+      "message": "At this point it should be fine as the only guest pgt is altered, so the host can just recalim with reclaim hypercall.",
+      "parentUuid": "3a6e6155_63a50f46",
+      "range": {
+        "startLine": 209,
+        "startChar": 7,
+        "endLine": 209,
+        "endChar": 33
+      },
+      "revId": "69dd9e058a8de7388ca8d171ca2d1aeb0f85565d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

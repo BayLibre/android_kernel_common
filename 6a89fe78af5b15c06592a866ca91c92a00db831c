@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1a97b8d6_990fd2af",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:28:27Z",
+      "side": 1,
+      "message": "Agh, yes, it\u0027s static for mem_protect.c, I will see move part of that there.",
+      "parentUuid": "c0c99b00_43b9e489",
+      "range": {
+        "startLine": 231,
+        "startChar": 7,
+        "endLine": 231,
+        "endChar": 27
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94adcd28_99400b35",
         "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
         "patchSetId": 4
@@ -60,6 +84,30 @@
       "writtenOn": "2025-01-31T14:18:24Z",
       "side": 1,
       "message": "This is basically an open-coded copy of `pkvm_handle_empty_memcache()`",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 243,
+        "endChar": 0
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1500f28_e85c8484",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:28:27Z",
+      "side": 1,
+      "message": "Not really as this requests a map and the other requests memory, but I can standardize this part as it\u0027s not specific for device assignement.",
+      "parentUuid": "e604ba03_e15e4d31",
       "range": {
         "startLine": 234,
         "startChar": 0,
@@ -116,6 +164,54 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e420503_d241ea7c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:28:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfbc8c43_56658ff6",
+      "range": {
+        "startLine": 256,
+        "startChar": 11,
+        "endLine": 256,
+        "endChar": 25
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feb7bc2b_5d268345",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:28:27Z",
+      "side": 1,
+      "message": "`PAGE_MASK` was added incase we have blocks, but I doubt that can be true with the MMIO guard stuff we have now, let me double check",
+      "parentUuid": "69f35cae_f08294ec",
+      "range": {
+        "startLine": 256,
+        "startChar": 5,
+        "endLine": 256,
+        "endChar": 8
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48964a61_81b4c091",
@@ -141,6 +237,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "55470ffe_1d52364e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:28:27Z",
+      "side": 1,
+      "message": "No, that returns to the host and then it would reply the HVC, setting retval would corrupt the guest state.",
+      "parentUuid": "48964a61_81b4c091",
+      "range": {
+        "startLine": 261,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 15
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0474db64_470bb5ee",
         "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
         "patchSetId": 4
@@ -152,6 +272,30 @@
       "writtenOn": "2025-01-31T14:18:24Z",
       "side": 1,
       "message": "Please add documentation for this (I think we have examples for the other hypercalls we expose)",
+      "range": {
+        "startLine": 1663,
+        "startChar": 6,
+        "endLine": 1663,
+        "endChar": 51
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "916db981_d7f6697c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1663,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:28:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0474db64_470bb5ee",
       "range": {
         "startLine": 1663,
         "startChar": 6,
