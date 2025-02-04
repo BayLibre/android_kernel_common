@@ -112,6 +112,7 @@
 	 FIELD_PREP(FFA_MINOR_VERSION_MASK, (minor)))
 #define FFA_VERSION_1_0		FFA_PACK_VERSION_INFO(1, 0)
 #define FFA_VERSION_1_1		FFA_PACK_VERSION_INFO(1, 1)
+#define FFA_VERSION_1_2		FFA_PACK_VERSION_INFO(1, 2)
 
 /**
  * FF-A specification mentions explicitly about '4K pages'. This should
@@ -454,15 +455,17 @@ struct ffa_cpu_ops {
 };
 
 typedef void (*ffa_sched_recv_cb)(u16 vcpu, bool is_per_vcpu, void *cb_data);
-typedef void (*ffa_notifier_cb)(int notify_id, void *cb_data);
+typedef void (*ffa_notifier_cb)(int notify_id, void *cb_data, void *buf);
 
 struct ffa_notifier_ops {
 	int (*sched_recv_cb_register)(struct ffa_device *dev,
 				      ffa_sched_recv_cb cb, void *cb_data);
 	int (*sched_recv_cb_unregister)(struct ffa_device *dev);
 	int (*notify_request)(struct ffa_device *dev, bool per_vcpu,
-			      ffa_notifier_cb cb, void *cb_data, int notify_id);
-	int (*notify_relinquish)(struct ffa_device *dev, int notify_id);
+			      ffa_notifier_cb cb, void *cb_data, int notify_id,
+			      bool is_framework);
+	int (*notify_relinquish)(struct ffa_device *dev, int notify_id,
+				 bool is_framework);
 	int (*notify_send)(struct ffa_device *dev, int notify_id, bool per_vcpu,
 			   u16 vcpu);
 };
