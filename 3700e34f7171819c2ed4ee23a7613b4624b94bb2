@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "355b0b90_f82beee6",
+        "filename": "drivers/vfio/vfio_pkvm_iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:33:45Z",
+      "side": 1,
+      "message": "No, `VFIO_IOMMU` is the type of the group which means that the device is backed by physical IOMMU as opposed to `VFIO_EMULATED_IOMMU`",
+      "parentUuid": "77708bc9_ec10b00d",
+      "range": {
+        "startLine": 17,
+        "startChar": 18,
+        "endLine": 17,
+        "endChar": 28
+      },
+      "revId": "3700e34f7171819c2ed4ee23a7613b4624b94bb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9b00d178_2dc3bc5a",
         "filename": "drivers/vfio/vfio_pkvm_iommu.c",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-31T16:37:47Z",
       "side": 1,
       "message": "Why?",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 0
+      },
+      "revId": "3700e34f7171819c2ed4ee23a7613b4624b94bb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5d4270d_25c13f5d",
+        "filename": "drivers/vfio/vfio_pkvm_iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:33:45Z",
+      "side": 1,
+      "message": "The host shouldn\u0027t be able to map/unmap anything to the VFIO container as the guest should be the one doing this",
+      "parentUuid": "9b00d178_2dc3bc5a",
       "range": {
         "startLine": 42,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aed7b589_45466f9a",
+        "filename": "drivers/vfio/vfio_pkvm_iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:33:45Z",
+      "side": 1,
+      "message": "That\u0027s part of VFIO core code, so not sure it\u0027s worth add extra complexity looking into groups as we know it should be correct.",
+      "parentUuid": "082eebf8_26ca45d5",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 67
+      },
+      "revId": "3700e34f7171819c2ed4ee23a7613b4624b94bb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5b8ac77_3da816de",
         "filename": "drivers/vfio/vfio_pkvm_iommu.c",
         "patchSetId": 4
@@ -83,6 +155,30 @@
       "writtenOn": "2025-02-04T13:50:31Z",
       "side": 1,
       "message": "checkpatch doesn\u0027t like this",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 25
+      },
+      "revId": "3700e34f7171819c2ed4ee23a7613b4624b94bb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddaf0f72_af942956",
+        "filename": "drivers/vfio/vfio_pkvm_iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:33:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5b8ac77_3da816de",
       "range": {
         "startLine": 106,
         "startChar": 0,
@@ -106,6 +202,30 @@
       "writtenOn": "2025-01-31T16:37:47Z",
       "side": 1,
       "message": "Is it worth moving this out of the way to reduce the chance of conflicts with upstream?",
+      "range": {
+        "startLine": 69,
+        "startChar": 26,
+        "endLine": 69,
+        "endChar": 28
+      },
+      "revId": "3700e34f7171819c2ed4ee23a7613b4624b94bb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1a5503b_ec45037d",
+        "filename": "include/uapi/linux/vfio.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:33:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8729fe86_32874f43",
       "range": {
         "startLine": 69,
         "startChar": 26,
