@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6fc27603_7a9df80b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:30:09Z",
+      "side": 1,
+      "message": "Yes, with pvIOMMU, this changes to have a VM as arguments where the check becomes as\n```\nif (dev-\u003ectxt !\u003d vm)\n\tret \u003d -EPERM;\n```",
+      "parentUuid": "1562508d_088e1aa4",
+      "range": {
+        "startLine": 342,
+        "startChar": 5,
+        "endLine": 342,
+        "endChar": 14
+      },
+      "revId": "1001111f0bf3428e0dce57f09039a0a8e08500ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a11927ee_7c813739",
         "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
         "patchSetId": 4
@@ -65,6 +89,54 @@
         "startChar": 2,
         "endLine": 345,
         "endChar": 3
+      },
+      "revId": "1001111f0bf3428e0dce57f09039a0a8e08500ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b88e8cf_91a24102",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:30:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f00626b5_b723d630",
+      "range": {
+        "startLine": 345,
+        "startChar": 2,
+        "endLine": 345,
+        "endChar": 3
+      },
+      "revId": "1001111f0bf3428e0dce57f09039a0a8e08500ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02ab30be_dfc681c1",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:30:09Z",
+      "side": 1,
+      "message": "No, but using the refcount API is handy for overflows.",
+      "parentUuid": "a11927ee_7c813739",
+      "range": {
+        "startLine": 345,
+        "startChar": 3,
+        "endLine": 345,
+        "endChar": 19
       },
       "revId": "1001111f0bf3428e0dce57f09039a0a8e08500ae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
