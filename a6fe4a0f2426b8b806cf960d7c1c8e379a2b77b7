@@ -94,6 +94,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cba71e36_3d4c0faf",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:32:59Z",
+      "side": 1,
+      "message": "`endpoint_id` is `u32` for all IOMMU ops, let me check if it is not somewere else",
+      "parentUuid": "af48594b_5dbf92af",
+      "range": {
+        "startLine": 47,
+        "startChar": 52,
+        "endLine": 47,
+        "endChar": 63
+      },
+      "revId": "a6fe4a0f2426b8b806cf960d7c1c8e379a2b77b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36b32ce6_c4167c63",
         "filename": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
         "patchSetId": 4
@@ -133,6 +157,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05437a5c_d13218f8",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:32:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36b32ce6_c4167c63",
+      "range": {
+        "startLine": 73,
+        "startChar": 9,
+        "endLine": 73,
+        "endChar": 22
+      },
+      "revId": "a6fe4a0f2426b8b806cf960d7c1c8e379a2b77b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "933aaef5_f9628237",
@@ -146,6 +194,30 @@
       "writtenOn": "2025-01-31T16:19:53Z",
       "side": 1,
       "message": "What happens in this case? It seems like a very bad situation to be in if we\u0027ve partially blocked a device\u0027s DMA traffic.",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 14
+      },
+      "revId": "a6fe4a0f2426b8b806cf960d7c1c8e379a2b77b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e410069a_139aa646",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:32:59Z",
+      "side": 1,
+      "message": "There is no much we can do, we can `save/restore` semantics. However, VFIO should already attached `BLOCKING` domain at this point, and when assignement fails, it would detach it and attach new translating one, so the IOMMU driver should be able to handle that.\nFor SMMUv3 that is already the case (as block_dev doesn\u0027t actually block, but check double checks the expected state.)",
+      "parentUuid": "933aaef5_f9628237",
       "range": {
         "startLine": 148,
         "startChar": 0,
@@ -179,6 +251,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dd7f761_984c3b1e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:32:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d681358_07ab891a",
+      "range": {
+        "startLine": 544,
+        "startChar": 5,
+        "endLine": 544,
+        "endChar": 8
+      },
+      "revId": "a6fe4a0f2426b8b806cf960d7c1c8e379a2b77b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10edb098_a7967e17",
@@ -192,6 +288,30 @@
       "writtenOn": "2025-01-31T16:19:53Z",
       "side": 1,
       "message": "Why isn\u0027t this mandatory?",
+      "range": {
+        "startLine": 546,
+        "startChar": 24,
+        "endLine": 546,
+        "endChar": 48
+      },
+      "revId": "a6fe4a0f2426b8b806cf960d7c1c8e379a2b77b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "432ae22f_c06029ce",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-04T16:32:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10edb098_a7967e17",
       "range": {
         "startLine": 546,
         "startChar": 24,
