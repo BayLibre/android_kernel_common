@@ -93,6 +93,30 @@
       },
       "revId": "81317844f2b050723606bd08e77452bd3a698f94",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6473999_4ac4076e",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-04T18:35:39Z",
+      "side": 1,
+      "message": "Perhaps, but now `pkvm_moveable_regs_nr` gets set in a different place depending on whether or not `register_moveable_fdt_resource` succeeds. I won\u0027t argue strongly though, as this is getting into nit-picking territory.",
+      "parentUuid": "d9e8e95e_a147af94",
+      "range": {
+        "startLine": 163,
+        "startChar": 14,
+        "endLine": 163,
+        "endChar": 35
+      },
+      "revId": "81317844f2b050723606bd08e77452bd3a698f94",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
