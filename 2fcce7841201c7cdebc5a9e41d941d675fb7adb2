@@ -349,6 +349,30 @@
       },
       "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dec043f_6539b846",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-04T00:17:03Z",
+      "side": 1,
+      "message": "/include/trace/hooks/vendor_hooks.h contains this inclusion:\n```\n#ifndef __GENKSYMS__\n#include \u003clinux/tracepoint.h\u003e\n#endif\n```\nso, looks like headers in /include/trace/hooks/ can include linux/tracepoint.h. I think moving this file into /include/trace/hooks/ would be cleaner.",
+      "parentUuid": "25546952_cc14fad2",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 22
+      },
+      "revId": "2fcce7841201c7cdebc5a9e41d941d675fb7adb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
