@@ -121,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a864fd45_f8bba3e2",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1776,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-05T16:45:35Z",
+      "side": 1,
+      "message": "What I mean is, can we instead do:\n```\ndevice \u003d kvm_is_device_pfn(pfn);\nif (device) {\n\t...\n} else {\n\tkvm_release_pfn_clean(pfn);\n}\n```",
+      "parentUuid": "beff09f2_4847193d",
+      "range": {
+        "startLine": 1776,
+        "startChar": 0,
+        "endLine": 1776,
+        "endChar": 29
+      },
+      "revId": "b2e8354c2c148a32e4e0223e66d762eba64344ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5f9037c5_22cc2d02",
         "filename": "arch/arm64/kvm/mmu.c",
         "patchSetId": 3
@@ -156,6 +180,30 @@
       "side": 1,
       "message": "This shouldn\u0027t be triggered directly from guest access, but from hvc to `request`, so if the guest raced with multiple requests, AFAICT `pkvm_host_map_guest_mmio` will fail in `__pkvm_remove_ioguard_page` which would be visible to user space that the guest failed accessing this address.\n\nI think, this case shouldn\u0027t happen as guest verifcation path which issues requests is serialized. However if we don\u0027t trust the guest, maybe we can return -EAGAIN, same as we do with memory?",
       "parentUuid": "5f9037c5_22cc2d02",
+      "range": {
+        "startLine": 1778,
+        "startChar": 9,
+        "endLine": 1778,
+        "endChar": 30
+      },
+      "revId": "b2e8354c2c148a32e4e0223e66d762eba64344ef",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bb64422_5fba49e8",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1778,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-05T16:45:35Z",
+      "side": 1,
+      "message": "As discussed offline, we should return to the guest in the case that the device has already been mapped into the guest (checking the ctxt should be enough).",
+      "parentUuid": "84b302de_17366081",
       "range": {
         "startLine": 1778,
         "startChar": 9,
