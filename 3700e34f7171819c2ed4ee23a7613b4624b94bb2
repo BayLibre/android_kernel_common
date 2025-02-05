@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc7ed0d9_36ab2394",
+        "filename": "drivers/vfio/vfio_pkvm_iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-05T17:50:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "355b0b90_f82beee6",
+      "range": {
+        "startLine": 17,
+        "startChar": 18,
+        "endLine": 17,
+        "endChar": 28
+      },
+      "revId": "3700e34f7171819c2ed4ee23a7613b4624b94bb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b00d178_2dc3bc5a",
@@ -97,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b45451c6_ba225ef5",
+        "filename": "drivers/vfio/vfio_pkvm_iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-05T17:50:27Z",
+      "side": 1,
+      "message": "If we need to co-exist with the VFIO ioctl namespace, then we need to handle all of the cmds (e.g. `VFIO_IOMMU_ENABLE`). I think it would be easier to ignore them all, but please check what other drivers do...",
+      "parentUuid": "d5d4270d_25c13f5d",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 0
+      },
+      "revId": "3700e34f7171819c2ed4ee23a7613b4624b94bb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "082eebf8_26ca45d5",
         "filename": "drivers/vfio/vfio_pkvm_iommu.c",
         "patchSetId": 4
@@ -132,6 +180,30 @@
       "side": 1,
       "message": "That\u0027s part of VFIO core code, so not sure it\u0027s worth add extra complexity looking into groups as we know it should be correct.",
       "parentUuid": "082eebf8_26ca45d5",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 67
+      },
+      "revId": "3700e34f7171819c2ed4ee23a7613b4624b94bb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b6a9305_0474a295",
+        "filename": "drivers/vfio/vfio_pkvm_iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-05T17:50:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "aed7b589_45466f9a",
       "range": {
         "startLine": 55,
         "startChar": 0,
