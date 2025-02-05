@@ -287,6 +287,13 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmc_update_mmc_queue);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rwsem_downgrade_wake_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rwsem_wake_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_meminfo_proc_show);
+<<<<<<< HEAD   (c0eeae ANDROID: abi_gki_aarch64_honor: whitelist symbols added for )
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_meminfo_proc_show);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_meminfo_proc_show);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_pagetypeinfo_show);
+>>>>>>> CHANGE (d42461 ANDROID: mm: add a hook to amend /proc/pagetypeinfo output)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_mm);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_show_mem);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_print_slabinfo_header);
