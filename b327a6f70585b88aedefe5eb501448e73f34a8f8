@@ -34,6 +34,23 @@
       "parentUuid": "127180ba_15cc20eb",
       "revId": "b327a6f70585b88aedefe5eb501448e73f34a8f8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "531f5848_ad656670",
+        "filename": "include/linux/hrtimer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-02-05T19:54:15Z",
+      "side": 1,
+      "message": "this breaks the KMI and cannot be accepted. Please refactor to avoid changing hrtimer_cpu_base.",
+      "revId": "b327a6f70585b88aedefe5eb501448e73f34a8f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
