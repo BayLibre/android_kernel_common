@@ -1397,7 +1397,7 @@ static void fuse_dio_unlock(struct kiocb *iocb, bool exclusive)
 		inode_unlock(inode);
 	} else {
 		/* Allow opens in caching mode after last parallel dio end */
-		fuse_inode_uncached_io_end(fi);
+		fuse_inode_uncached_io_end(fi, false);
 		inode_unlock_shared(inode);
 	}
 }
@@ -3378,6 +3378,7 @@ void fuse_init_file_inode(struct inode *inode, unsigned int flags)
 	INIT_LIST_HEAD(&fi->queued_writes);
 	fi->writectr = 0;
 	fi->iocachectr = 0;
+	fi->iopassctr = 0;
 	init_waitqueue_head(&fi->page_waitq);
 	init_waitqueue_head(&fi->direct_io_waitq);
 	fi->writepages = RB_ROOT;
