@@ -57,7 +57,9 @@ struct fault_info {
 
 static const struct fault_info fault_info[];
 static struct fault_info debug_fault_info[];
+extern pid_t swap_tracked_pid;
 
+extern void track_fault(unsigned long fault_addr);
 static inline const struct fault_info *esr_to_fault_info(unsigned long esr)
 {
 	return fault_info + (esr & ESR_ELx_FSC);
@@ -394,7 +396,6 @@ static void __do_kernel_fault(unsigned long addr, unsigned long esr,
 
 	if (is_el1_mte_sync_tag_check_fault(esr)) {
 		do_tag_recovery(addr, esr, regs);
-
 		return;
 	}
 
@@ -655,7 +656,6 @@ retry:
 		goto retry;
 	}
 	mmap_read_unlock(mm);
-
 done:
 	/*
 	 * Handle the "normal" (no error) case first.
@@ -778,18 +778,78 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
 	return 0;
 }
 
-static int do_tag_check_fault(unsigned long far, unsigned long esr,
+static struct page *find_user_page(unsigned long user_addr) {
+	struct mm_struct *mm = current->mm;
+	struct vm_area_struct *vma;
+	struct page *page;
+	int flags = FOLL_GET;
+	user_addr = untagged_addr(user_addr);
+	track_fault(user_addr);
+	down_read(&mm->mmap_lock);
+	vma = find_vma(mm, user_addr);
+	if (!vma || user_addr < vma->vm_start) {
+		up_read(&mm->mmap_lock);
+		pr_err("No vma found\n");
+		return NULL;
+	}
+
+	page = follow_page(vma, user_addr, flags);
+	up_read(&mm->mmap_lock);
+
+	if (!page) {
+		pr_err("failed to get page for %lx\n", user_addr);
+		return NULL;
+	}
+
+	return page;
+}
+
+#define FAULT_BUCKET_SIZE_IN_BYTES 256
+static int fix_tag_check_fault(unsigned long far, unsigned long esr,
+		struct pt_regs *regs)
+{
+	struct page* page;
+	unsigned long offset;
+	void * kernel_addr;
+	u8 tag;
+
+
+	tag = (u8)(far >> MTE_TAG_SHIFT);
+
+	offset = far & (PAGE_SIZE - 1 );
+	offset = offset & ~(FAULT_BUCKET_SIZE_IN_BYTES - 1);
+
+	page = find_user_page(far);
+	if (!page)
+		return -1;
+
+	kernel_addr = page_address(page) + offset;
+
+	/* This can race with another fault in the same bucket on another cpu core
+	 * but it does not affect the correctness of our results since they will both
+	 * get tracked. At worst, if the tags are different, this bucket will continue
+	 * to get faults but for our purposes, that is fine since we are only interested
+	 * in the first access after the swap-out.
+	 */
+	mte_set_mem_tag_range(kernel_addr, FAULT_BUCKET_SIZE_IN_BYTES, tag, false);
+
+	put_page(page);
+
+	return 0;
+}
+
+
+ static int do_tag_check_fault(unsigned long far, unsigned long esr,
 			      struct pt_regs *regs)
 {
-	/*
-	 * The architecture specifies that bits 63:60 of FAR_EL1 are UNKNOWN
-	 * for tag check faults. Set them to corresponding bits in the untagged
-	 * address.
-	 */
+	if (current->mm->owner->pid == swap_tracked_pid)
+		return fix_tag_check_fault(far, esr, regs);
+
 	far = (__untagged_addr(far) & ~MTE_TAG_MASK) | (far & MTE_TAG_MASK);
 	do_bad_area(far, esr, regs);
 	return 0;
 }
+
 
 static const struct fault_info fault_info[] = {
 	{ do_bad,		SIGKILL, SI_KERNEL,	"ttbr address size fault"	},

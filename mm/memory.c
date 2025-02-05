@@ -101,6 +101,13 @@
 #include "swap.h"
 #include <trace/hooks/mm.h>
 
+
+#include <linux/proc_fs.h>
+#include <linux/uaccess.h>
+#include <linux/spinlock.h>
+#include <linux/slab.h>
+#include <linux/percpu.h>
+
 #if defined(LAST_CPUPID_NOT_IN_PAGE_FLAGS) && !defined(CONFIG_COMPILE_TEST)
 #warning Unfortunate NUMA and NUMA Balancing config, growing page-frame for last_cpupid.
 #endif
@@ -124,6 +131,58 @@ static vm_fault_t do_fault(struct vm_fault *vmf);
  */
 void *high_memory;
 EXPORT_SYMBOL(high_memory);
+
+#define FAULT_HASH_SIZE   64    // Hash table bucket count (adjustable)
+#define BUCKET_COUNT 64   // 64-bucket tracking per page
+
+struct fault_entry {
+    unsigned long page_addr;
+    uint64_t bucket_bitmap;  // 64-bit bitmap for 64 buckets in a 16k page
+    struct hlist_node hnode;
+};
+
+// Per-CPU fault tracking table
+struct fault_hashtable {
+    spinlock_t lock;
+    struct hlist_head buckets[FAULT_HASH_SIZE];
+};
+
+static DEFINE_PER_CPU(struct fault_hashtable, fault_ht);
+
+static inline int hash_page_addr(unsigned long addr) {
+    return (addr >> 12) % FAULT_HASH_SIZE;  // Use page-aligned address
+}
+
+// Function to track a fault in the appropriate bucket
+void track_fault(unsigned long fault_addr) {
+    //int cpu = smp_processor_id();
+    struct fault_hashtable *ht = this_cpu_ptr(&fault_ht);
+    struct fault_entry *entry;
+    int index = hash_page_addr(fault_addr);
+    int bucket_idx = (fault_addr & (PAGE_SIZE - 1)) / (PAGE_SIZE / BUCKET_COUNT);
+    uint64_t bucket_mask = 1 << bucket_idx;
+
+    spin_lock(&ht->lock);
+    hlist_for_each_entry(entry, &ht->buckets[index], hnode) {
+        if (entry->page_addr == (fault_addr & PAGE_MASK)) {
+            entry->bucket_bitmap |= bucket_mask;
+            spin_unlock(&ht->lock);
+            return;
+        }
+    }
+
+    // Allocate new entry
+    entry = kmalloc(sizeof(*entry), GFP_ATOMIC);
+    if (!entry) {
+        spin_unlock(&ht->lock);
+        return;
+    }
+    entry->page_addr = fault_addr & PAGE_MASK;
+    entry->bucket_bitmap = bucket_mask;
+    hlist_add_head(&entry->hnode, &ht->buckets[index]);
+    spin_unlock(&ht->lock);
+}
+
 
 /*
  * Randomize the address space (stacks, mmaps, brk, etc.).
@@ -3820,7 +3879,7 @@ static vm_fault_t handle_pte_marker(struct vm_fault *vmf)
 	return VM_FAULT_SIGBUS;
 }
 
-static pid_t swap_tracked_pid = -1;
+pid_t swap_tracked_pid = -1;
 
 // spin lock to protect the hash-table holding the swapped pages info
 static DEFINE_SPINLOCK(swapped_pages_lock);
@@ -3833,6 +3892,32 @@ struct swapped_page_info {
     unsigned long vaddr;   // Virtual address of swapped-in page
     struct hlist_node node;
 };
+
+static void noinline modify_address_tags(struct vm_fault *vmf, struct folio *folio) {
+	long i, nr;
+	void * tag;
+	if (!system_supports_mte()) {
+		pr_err("system does not support MTE\n");
+		return;
+	}
+
+	tag = kmalloc(MTE_PAGE_TAG_STORAGE, GFP_KERNEL);
+	if (!tag) {
+		pr_err("unable to allocate tag storage\n");
+		return;
+	}
+
+	for (i = 0; i < MTE_PAGE_TAG_STORAGE; i++) {
+		((char *)tag)[i] ^= 0x11;
+	}
+	nr = folio_nr_pages(folio);
+	for (i = 0; i < nr; i++) {
+		mte_restore_page_tags(page_address(folio_page(folio, i)), tag);
+		set_page_mte_tagged(folio_page(folio, i));
+	}
+	kfree(tag);
+
+}
 
 static void track_swapped_in_page(struct vm_fault *vmf)
 {
@@ -3873,6 +3958,12 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 	pte_t pte;
 	vm_fault_t ret = 0;
 	void *shadow = NULL;
+	bool modify_tags = false;
+
+	if ((vma->vm_mm->owner->pid == swap_tracked_pid) && !vma->vm_file) {
+		modify_tags = true;
+		track_swapped_in_page(vmf);
+	}
 
 	if (!pte_unmap_same(vmf))
 		goto out;
@@ -4004,10 +4095,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 		ret = VM_FAULT_MAJOR;
 		count_vm_event(PGMAJFAULT);
 		count_memcg_event_mm(vma->vm_mm, PGMAJFAULT);
-		if (vmf->vma->vm_mm->owner->pid == swap_tracked_pid) {
-			// This is a swap-in for the process we are tracking
-			track_swapped_in_page(vmf);
-		}
 	} else if (PageHWPoison(page)) {
 		/*
 		 * hwpoisoned dirty swapcache pages are kept for killing
@@ -4128,7 +4215,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 	 * so this must be called before swap_free().
 	 */
 	arch_swap_restore(entry, folio);
-
 	/*
 	 * Remove the swap entry and conditionally try to free up the swapcache.
 	 * We're already holding a reference on the page but haven't mapped it
@@ -4177,8 +4263,12 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 
 	VM_BUG_ON(!folio_test_anon(folio) ||
 			(pte_write(pte) && !PageAnonExclusive(page)));
+
 	set_pte_at(vma->vm_mm, vmf->address, vmf->pte, pte);
 	arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_pte);
+	if (modify_tags) {
+			modify_address_tags(vmf, folio);
+	}
 
 	folio_unlock(folio);
 	if (folio != swapcache && swapcache) {
@@ -4203,6 +4293,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 
 	/* No need to invalidate - it was non-present before */
 	update_mmu_cache(vma, vmf->address, vmf->pte);
+
 unlock:
 	pte_unmap_unlock(vmf->pte, vmf->ptl);
 out:
@@ -4211,6 +4302,7 @@ out:
 		swapcache_clear(si, entry);
 	if (si)
 		put_swap_device(si);
+
 	return ret;
 out_nomap:
 	pte_unmap_unlock(vmf->pte, vmf->ptl);
@@ -6443,6 +6535,33 @@ static ssize_t swapped_pages_read(struct file *file, char __user *buffer,
 	kfree(output_buffer);
 	return ret;
 }
+static int memtracker_show(struct seq_file *m, void *v) {
+    int cpu;
+    struct fault_entry *entry;
+    struct hlist_node *tmp;
+
+    seq_puts(m, "Tracked Faulting Addresses:\n");
+    seq_puts(m, "Page Address      Bitmap (64-buckets)    CPU\n");
+
+    for_each_online_cpu(cpu) {
+        struct fault_hashtable *ht = per_cpu_ptr(&fault_ht, cpu);
+        int found = 0;
+
+        spin_lock(&ht->lock);
+        for (int i = 0; i < FAULT_HASH_SIZE; i++) {
+            hlist_for_each_entry_safe(entry, tmp, &ht->buckets[i], hnode) {
+                if (!found) {
+                    seq_printf(m, "\n[CPU %d]\n", cpu);
+                    found = 1;
+                }
+                seq_printf(m, "0x%lx      0x%0llx\n", entry->page_addr, entry->bucket_bitmap);
+            }
+        }
+        spin_unlock(&ht->lock);
+    }
+    return 0;
+}
+DEFINE_PROC_SHOW_ATTRIBUTE(memtracker);
 
 // Define proc_ops for the proc file
 static const struct proc_ops swapped_pages_ops = {
@@ -6451,7 +6570,7 @@ static const struct proc_ops swapped_pages_ops = {
 
 // Initialize procfs entry at kernel boot
 static int __init init_proc_track_swap_usage(void) {
-	// Create a sysfs entry
+	int cpu;
 	int retval = sysfs_create_file(kernel_kobj, &swap_tracked_pid_attribute.attr);
 	if (retval)
 		pr_err("Failed to create sysfs file\n");
@@ -6462,7 +6581,19 @@ static int __init init_proc_track_swap_usage(void) {
 		pr_err("Failed to create /proc/swapped_in_for_tracked_pid\n");
 		return -ENOMEM;
 	}
+	proc_entry = proc_create("memtracker", 0444, NULL, &memtracker_proc_ops);
+	if (!proc_entry) {
+		pr_err("Failed to create /proc/memtracker\n");
+		return -ENOMEM;
+	}
 
+	for_each_possible_cpu(cpu) {
+		struct fault_hashtable *ht = per_cpu_ptr(&fault_ht, cpu);
+		int i;
+		spin_lock_init(&ht->lock);
+		for (i = 0; i < FAULT_HASH_SIZE; i++)
+			INIT_HLIST_HEAD(&ht->buckets[i]);
+	}
 	pr_info("/proc/swapped_in_for_tracked_pid created\n");
 	return retval;
 }
