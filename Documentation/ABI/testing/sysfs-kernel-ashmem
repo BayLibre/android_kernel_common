@@ -1,0 +1,22 @@
+What:		/sys/kernel/ashmem/
+Date:		Feb 2025
+Contact:	Isaac J. Manjarres <isaacmanjarres@google.com>
+Description:
+		/sys/kernel/ashmem/ contains a single node that can be used
+		to adjust different characteristics of the ashmem driver's
+		behavior.
+
+What:		/sys/kernel/ashmem/unpinning_enable
+Date:		Feb 2025
+Contact:	Isaac J. Manjarres <isaacmanjarres@google.com>
+Description:
+		Can be used to configure if ashmem's memory unpinning feature
+		is enabled.
+
+		A value of 0 indicates that the feature is disabled.
+
+		When the unpinning feature is disabled, unpin requests are
+		nops, and the ashmem shrinker will not run.
+
+		A value of 1 indicates that the feature is enabled, and
+		operating as expected.
