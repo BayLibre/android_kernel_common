@@ -104,6 +104,11 @@ static struct kmem_cache *ashmem_range_cachep __read_mostly;
  */
 static struct lock_class_key backing_shmem_inode_class;
 
+/* Enable unpinning feature by default to retain compatibility with existing behavior. */
+static bool unpinning_enabled = true;
+module_param(unpinning_enabled, bool, 0644);
+MODULE_PARM_DESC(unpinning_enabled, "Enable/disable ashmem buffer unpinning. Enabled by default.");
+
 static inline unsigned long range_size(struct ashmem_range *range)
 {
 	return range->pgend - range->pgstart + 1;
@@ -483,6 +488,9 @@ ashmem_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
 	if (!(sc->gfp_mask & __GFP_FS))
 		return SHRINK_STOP;
 
+	if (!unpinning_enabled)
+		return 0;
+
 	if (!mutex_trylock(&ashmem_mutex))
 		return -1;
 
@@ -524,7 +532,7 @@ ashmem_shrink_count(struct shrinker *shrink, struct shrink_control *sc)
 	 * objects on the list. This means the scan function needs to return the
 	 * number of pages freed, not the number of objects scanned.
 	 */
-	return lru_count;
+	return unpinning_enabled ? lru_count : 0;
 }
 
 static struct shrinker ashmem_shrinker = {
@@ -802,7 +810,7 @@ static int ashmem_pin_unpin(struct ashmem_area *asma, unsigned long cmd,
 		ret = ashmem_pin(asma, pgstart, pgend, &range);
 		break;
 	case ASHMEM_UNPIN:
-		ret = ashmem_unpin(asma, pgstart, pgend, &range);
+		ret = unpinning_enabled ? ashmem_unpin(asma, pgstart, pgend, &range) : 0;
 		break;
 	case ASHMEM_GET_PIN_STATUS:
 		ret = ashmem_get_pin_status(asma, pgstart, pgend);

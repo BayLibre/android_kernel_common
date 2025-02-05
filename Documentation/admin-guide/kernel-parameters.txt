@@ -376,6 +376,13 @@
 			      useful so that a dump capture kernel won't be
 			      shot down by NMI
 
+	ashmem.unpinning_enabled=
+			Whether the ashmem driver's unpinning feature is
+			enabled. Disabling the feature causes all unpinning
+			requests to behave as nops, and the ashmem shrinker
+			will not run.
+			Default: enabled
+
 	autoconf=	[IPV6]
 			See Documentation/networking/ipv6.rst.
 
