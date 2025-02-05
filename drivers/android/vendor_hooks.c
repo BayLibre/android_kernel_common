@@ -131,9 +131,20 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rproc_recovery);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rproc_recovery_set);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timer_calc_index);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_is_fpsimd_save);
+<<<<<<< HEAD   (7ed53ee648b3e8820605cf1fb53ca209b9918075 ANDROID: ABI: update symbol list for honor)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_shmem_get_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tcp_write_timeout_estab_retrans);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_ftrace_format_check);
+||||||| BASE   (d24f931f618483651c7fd9d00018e2accb987c3c ANDROID: mm: add hooks for mem_cgroup online and offline)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_process_madvise_begin);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_process_madvise_iter);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_show_task);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_process_madvise_begin);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_process_madvise_iter);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_show_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_pagetypeinfo_show);
+>>>>>>> CHANGE (da614c9705cedd3453f5a04076a9791875e809b0 ANDROID: mm: add a hook to amend /proc/pagetypeinfo output)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_uninterruptible_tasks);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_uninterruptible_tasks_dn);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alter_mutex_list_add);
