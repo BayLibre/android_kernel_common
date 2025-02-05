@@ -212,6 +212,24 @@
       "parentUuid": "4b48fdbe_e5645354",
       "revId": "1fc76198f117069358fc9073939a0a3fd1a200b7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f133657_3544d029",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2025-02-05T20:28:13Z",
+      "side": 1,
+      "message": "The other changes look fine to me. I had to double take the fb_notify changes but I see for some reason it\u0027s build as a separate module, even though I can\u0027t see any symbol upstream except menuconfig FB that selects it, so I don\u0027t know why it\u0027s not part of fb_core.",
+      "parentUuid": "4b48fdbe_e5645354",
+      "revId": "1fc76198f117069358fc9073939a0a3fd1a200b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
