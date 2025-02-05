@@ -230,6 +230,24 @@
       "parentUuid": "4b48fdbe_e5645354",
       "revId": "1fc76198f117069358fc9073939a0a3fd1a200b7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81791009_d4423f62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1293738
+      },
+      "writtenOn": "2025-02-05T20:34:24Z",
+      "side": 1,
+      "message": "The symbols required by fb.ko do look like things we probably wouldn\u0027t want to allow, like the console driver API. It\u0027s unfortunate. Looking at vivid in more detail I can see this is quite an old driver and very much an fbdev based implementation, which unfortunately does seem at odds with the policy for graphics/display drivers for GKI.",
+      "parentUuid": "0f133657_3544d029",
+      "revId": "1fc76198f117069358fc9073939a0a3fd1a200b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
