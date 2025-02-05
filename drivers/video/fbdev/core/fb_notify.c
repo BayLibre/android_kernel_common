@@ -11,6 +11,7 @@
  * for more details.
  */
 #include <linux/fb.h>
+#include <linux/module.h>
 #include <linux/notifier.h>
 #include <linux/export.h>
 
@@ -52,3 +53,7 @@ int fb_notifier_call_chain(unsigned long val, void *v)
 	return blocking_notifier_call_chain(&fb_notifier_list, val, v);
 }
 EXPORT_SYMBOL_GPL(fb_notifier_call_chain);
+
+MODULE_AUTHOR("Antonino Daplas <adaplas@pol.net>");
+MODULE_DESCRIPTION("FB notifier");
+MODULE_LICENSE("GPL");
