@@ -16,6 +16,29 @@
       "message": "Suren this was the change we ahve checked internaly with positive results. Please have a look",
       "revId": "856ae6716978b161bf6a45074ecefca7d7513aff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "091c399f_71836790",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-05T18:18:27Z",
+      "side": 1,
+      "message": "IIUC, the current version in 6.1 is implemented as restricted, so please keep it the same. IOW, `restrict_cma_redirect` should be true by default.",
+      "range": {
+        "startLine": 224,
+        "startChar": 0,
+        "endLine": 224,
+        "endChar": 47
+      },
+      "revId": "856ae6716978b161bf6a45074ecefca7d7513aff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0bf95b4_0631c858",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3187,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-05T18:18:27Z",
+      "side": 0,
+      "message": "You removed a vendor hook which is probably used by another partner. Please restore it.",
+      "range": {
+        "startLine": 3186,
+        "startChar": 1,
+        "endLine": 3187,
+        "endChar": 60
+      },
+      "revId": "7658169f5f5f923490921ce2092c559acd69a148",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68440238_c60fda42",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3207,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-05T18:18:27Z",
+      "side": 0,
+      "message": "You effectively removed this trace. Please restore this function and try to keep the changes to the minimum required.",
+      "range": {
+        "startLine": 3204,
+        "startChar": 2,
+        "endLine": 3207,
+        "endChar": 0
+      },
+      "revId": "7658169f5f5f923490921ce2092c559acd69a148",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc30e7fe_2dc741ef",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3237,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-05T18:18:27Z",
+      "side": 0,
+      "message": "Why not just change this to:\n```\nif (is_migrate_cma(migratetype)) {\n    if (cma_redirect_restricted())\n        page \u003d __rmqueue_cma(zone, order, migratetype, alloc_flags);\n    else\n        page \u003d __rmqueue_cma_fallback(zone, order);\n}\n```\n?",
+      "range": {
+        "startLine": 3234,
+        "startChar": 2,
+        "endLine": 3237,
+        "endChar": 0
+      },
+      "revId": "7658169f5f5f923490921ce2092c559acd69a148",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "952e2701_8d5f61b6",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3883,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-05T18:18:27Z",
+      "side": 0,
+      "message": "Are you removing this condition for cma_redirect_restricted\u003d\u003dtrue case?",
+      "range": {
+        "startLine": 3883,
+        "startChar": 34,
+        "endLine": 3883,
+        "endChar": 64
+      },
+      "revId": "7658169f5f5f923490921ce2092c559acd69a148",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f094f96_8b3ddaf2",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3884,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-05T18:18:27Z",
+      "side": 0,
+      "message": "__rmqueue_cma() and __rmqueue_cma_fallback() are not the same (see the comment about tracepoint), so you can\u0027t simply replace them.",
+      "range": {
+        "startLine": 3884,
+        "startChar": 11,
+        "endLine": 3884,
+        "endChar": 24
+      },
+      "revId": "7658169f5f5f923490921ce2092c559acd69a148",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08b71975_c31d200a",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3927,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-05T18:18:27Z",
+      "side": 0,
+      "message": "Are you removing this condition for cma_redirect_restricted\u003d\u003dtrue case?",
+      "range": {
+        "startLine": 3927,
+        "startChar": 6,
+        "endLine": 3927,
+        "endChar": 36
+      },
+      "revId": "7658169f5f5f923490921ce2092c559acd69a148",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
