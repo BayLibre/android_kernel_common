@@ -22,6 +22,30 @@
       },
       "revId": "33fb1c00fc3841185cd965b8a87b77e270eacd93",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9d9113c_a35c6648",
+        "filename": "mm/shmem.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4844,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-02-05T17:45:36Z",
+      "side": 1,
+      "message": "I don\u0027t think we have to, because if `CONFIG_MEMFD_ASHMEM_SHIM` is not defined, the stub implementations of these functions [1] will kick in, and I implemented them such that they return as if they weren\u0027t defined (e.g. if `.ioctl()` isn\u0027t defined for a file, the fs code does return `-ENOTTY`).\n\n[1] https://android.googlesource.com/kernel/common/+/d43bc741a9317f3d6ca574fe6d7e60176c8a52e7/mm/memfd-ashmem-shim.h#27",
+      "parentUuid": "7dcb591e_8ad94c64",
+      "range": {
+        "startLine": 4838,
+        "startChar": 0,
+        "endLine": 4844,
+        "endChar": 6
+      },
+      "revId": "33fb1c00fc3841185cd965b8a87b77e270eacd93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
