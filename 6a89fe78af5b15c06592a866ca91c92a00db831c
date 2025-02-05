@@ -71,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b77ab2b_b719544c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-05T15:22:26Z",
+      "side": 1,
+      "message": "AFAICT, It should have `ret\u003d0` with an invalid `pte`, I update the patch.",
+      "parentUuid": "94adcd28_99400b35",
+      "range": {
+        "startLine": 233,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 40
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e604ba03_e15e4d31",
@@ -212,6 +236,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a501c99_de98f198",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-05T15:22:26Z",
+      "side": 1,
+      "message": "Ah, that comment is wrong, I fixed it.",
+      "parentUuid": "feb7bc2b_5d268345",
+      "range": {
+        "startLine": 256,
+        "startChar": 5,
+        "endLine": 256,
+        "endChar": 8
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48964a61_81b4c091",
@@ -249,6 +297,30 @@
       "side": 1,
       "message": "No, that returns to the host and then it would reply the HVC, setting retval would corrupt the guest state.",
       "parentUuid": "48964a61_81b4c091",
+      "range": {
+        "startLine": 261,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 15
+      },
+      "revId": "6a89fe78af5b15c06592a866ca91c92a00db831c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "182606e0_93acc4e7",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-05T15:22:26Z",
+      "side": 1,
+      "message": "I separated the return code from going to the host and guest",
+      "parentUuid": "55470ffe_1d52364e",
       "range": {
         "startLine": 261,
         "startChar": 0,
