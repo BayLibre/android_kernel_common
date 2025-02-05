@@ -412,6 +412,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
 #endif
 	return x;
 }
+EXPORT_SYMBOL_GPL(lruvec_page_state_local);
 
 /* Subset of vm_event_item to report for memcg event stats */
 static const unsigned int memcg_vm_event_stat[] = {
