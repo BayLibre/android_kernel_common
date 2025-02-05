@@ -223,6 +223,9 @@ DECLARE_HOOK(android_vh_page_add_new_anon_rmap,
 DECLARE_HOOK(android_vh_meminfo_proc_show,
 	TP_PROTO(struct seq_file *m),
 	TP_ARGS(m));
+DECLARE_HOOK(android_vh_pagetypeinfo_show,
+	TP_PROTO(struct seq_file *m),
+	TP_ARGS(m));
 DECLARE_HOOK(android_vh_exit_mm,
 	TP_PROTO(struct mm_struct *mm),
 	TP_ARGS(mm));
