@@ -29,6 +29,17 @@ DECLARE_RESTRICTED_HOOK(android_rvh_set_readahead_gfp_mask,
 			TP_ARGS(flags), 1);
 
 */
+DECLARE_HOOK(android_vh_mem_cgroup_id_remove,
+	TP_PROTO(struct mem_cgroup *memcg),
+	TP_ARGS(memcg));
+struct cgroup_subsys_state;
+DECLARE_HOOK(android_vh_mem_cgroup_css_online,
+	TP_PROTO(struct cgroup_subsys_state *css, struct mem_cgroup *memcg),
+	TP_ARGS(css, memcg));
+DECLARE_HOOK(android_vh_mem_cgroup_css_offline,
+	TP_PROTO(struct cgroup_subsys_state *css, struct mem_cgroup *memcg),
+	TP_ARGS(css, memcg));
+
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
