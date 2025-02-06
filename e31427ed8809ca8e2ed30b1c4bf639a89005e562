@@ -1,0 +1,79 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6fe2b2d_144bd987",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-02-06T00:06:23Z",
+      "side": 1,
+      "message": "this file is only for hooks.",
+      "revId": "e31427ed8809ca8e2ed30b1c4bf639a89005e562",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "379cc612_e220ad28",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-02-06T00:06:23Z",
+      "side": 1,
+      "message": "No, this file is for hooks. So far all you\u0027ve done is define an event macro...where is the event going to be placed? That should be in this patch too and this export should go in that file.",
+      "revId": "e31427ed8809ca8e2ed30b1c4bf639a89005e562",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b7bee72_701837f6",
+        "filename": "include/trace/events/android_vendor_lmk.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-02-06T00:06:23Z",
+      "side": 1,
+      "message": "why are these needed?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "4ffda815_8a91a476",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/events/android_vendor_lmk.h",
+              "range": {
+                "startLine": 8,
+                "startChar": 0,
+                "endLine": 10,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "e31427ed8809ca8e2ed30b1c4bf639a89005e562",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
