@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43ca4064_c4db39a5",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3187,
+      "author": {
+        "id": 3863509
+      },
+      "writtenOn": "2025-02-06T10:17:35Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "f0bf95b4_0631c858",
+      "range": {
+        "startLine": 3186,
+        "startChar": 1,
+        "endLine": 3187,
+        "endChar": 60
+      },
+      "revId": "7658169f5f5f923490921ce2092c559acd69a148",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "68440238_c60fda42",
         "filename": "mm/page_alloc.c",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-05T18:18:27Z",
       "side": 0,
       "message": "You effectively removed this trace. Please restore this function and try to keep the changes to the minimum required.",
+      "range": {
+        "startLine": 3204,
+        "startChar": 2,
+        "endLine": 3207,
+        "endChar": 0
+      },
+      "revId": "7658169f5f5f923490921ce2092c559acd69a148",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4544ce9d_4d296739",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3207,
+      "author": {
+        "id": 3863509
+      },
+      "writtenOn": "2025-02-06T10:17:35Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "68440238_c60fda42",
       "range": {
         "startLine": 3204,
         "startChar": 2,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c61c9ab_8a1b95e1",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3237,
+      "author": {
+        "id": 3863509
+      },
+      "writtenOn": "2025-02-06T10:17:35Z",
+      "side": 0,
+      "message": "Not sure I understand this, but the difference between __rmqueue_cma and __rmqueue_cma_fallback is just the added trace.\nWhy would using any of the above be dependent on cma_redirect_restricted?\nAlso this is exactly how it is implemented in the patch for 6.6 and 6.12.\n\nI guess what I need to update is to use __rmqueue_cma instead of __rmqueue_cma_fallback since I am bringing that one back.",
+      "parentUuid": "dc30e7fe_2dc741ef",
+      "range": {
+        "startLine": 3234,
+        "startChar": 2,
+        "endLine": 3237,
+        "endChar": 0
+      },
+      "revId": "7658169f5f5f923490921ce2092c559acd69a148",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "952e2701_8d5f61b6",
         "filename": "mm/page_alloc.c",
         "patchSetId": 3
@@ -83,6 +155,30 @@
       "writtenOn": "2025-02-05T18:18:27Z",
       "side": 0,
       "message": "Are you removing this condition for cma_redirect_restricted\u003d\u003dtrue case?",
+      "range": {
+        "startLine": 3883,
+        "startChar": 34,
+        "endLine": 3883,
+        "endChar": 64
+      },
+      "revId": "7658169f5f5f923490921ce2092c559acd69a148",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcf0c722_9d369a86",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3883,
+      "author": {
+        "id": 3863509
+      },
+      "writtenOn": "2025-02-06T10:17:35Z",
+      "side": 0,
+      "message": "I can bring back the condition, but as I see it, ALLOC_CMA is only set for MIGRATE_MOVABLE migration type.\nAt the same time I understand your direction to keep the number of changes to minimum, so I will bring it back.",
+      "parentUuid": "952e2701_8d5f61b6",
       "range": {
         "startLine": 3883,
         "startChar": 34,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ebc40fca_f2cb9ccd",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3884,
+      "author": {
+        "id": 3863509
+      },
+      "writtenOn": "2025-02-06T10:17:35Z",
+      "side": 0,
+      "message": "Acknowledged, will replace with __rmqueue_cma()",
+      "parentUuid": "1f094f96_8b3ddaf2",
+      "range": {
+        "startLine": 3884,
+        "startChar": 11,
+        "endLine": 3884,
+        "endChar": 24
+      },
+      "revId": "7658169f5f5f923490921ce2092c559acd69a148",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "08b71975_c31d200a",
         "filename": "mm/page_alloc.c",
         "patchSetId": 3
@@ -129,6 +249,30 @@
       "writtenOn": "2025-02-05T18:18:27Z",
       "side": 0,
       "message": "Are you removing this condition for cma_redirect_restricted\u003d\u003dtrue case?",
+      "range": {
+        "startLine": 3927,
+        "startChar": 6,
+        "endLine": 3927,
+        "endChar": 36
+      },
+      "revId": "7658169f5f5f923490921ce2092c559acd69a148",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ff723ca_85db6e10",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3927,
+      "author": {
+        "id": 3863509
+      },
+      "writtenOn": "2025-02-06T10:17:35Z",
+      "side": 0,
+      "message": "Will bring it back.",
+      "parentUuid": "08b71975_c31d200a",
       "range": {
         "startLine": 3927,
         "startChar": 6,
