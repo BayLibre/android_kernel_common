@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27d9db83_064f0ac2",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1986720
+      },
+      "writtenOn": "2025-02-06T01:00:36Z",
+      "side": 1,
+      "message": "Done. Thanks for catching that.",
+      "parentUuid": "bc7a4dd4_754ec452",
+      "range": {
+        "startLine": 80,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 20
+      },
+      "revId": "ea9717bf477209e25b5a32f785cbbd3819ce695d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1cb046ec_07837d6e",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-06T00:06:43Z",
       "side": 1,
       "message": "`DMA_BUF`",
+      "range": {
+        "startLine": 97,
+        "startChar": 39,
+        "endLine": 97,
+        "endChar": 47
+      },
+      "revId": "ea9717bf477209e25b5a32f785cbbd3819ce695d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b9b47b4_bf9cf82a",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1986720
+      },
+      "writtenOn": "2025-02-06T01:00:36Z",
+      "side": 1,
+      "message": "We are using the MINIDUMP namespace here because this is being exported specifically for minidump.",
+      "parentUuid": "1cb046ec_07837d6e",
       "range": {
         "startLine": 97,
         "startChar": 39,
