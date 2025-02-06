@@ -752,6 +752,7 @@ static void do_ffa_part_get(struct arm_smccc_res *res,
 	DECLARE_REG(u32, flags, ctxt, 5);
 	u32 count, partition_sz, copy_sz;
 	struct kvm_ffa_buffers *ffa_buf;
+	struct arm_smccc_res res1;
 
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
 	ffa_buf = ffa_get_buffers(ctxt, vm_handle);
@@ -789,6 +790,8 @@ static void do_ffa_part_get(struct arm_smccc_res *res,
 	}
 
 	memcpy(ffa_buf->rx, hyp_buffers.rx, copy_sz);
+	ffa_rx_release(&res1);
+
 out_unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 }
