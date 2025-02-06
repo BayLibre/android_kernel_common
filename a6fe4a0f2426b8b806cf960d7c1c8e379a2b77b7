@@ -118,6 +118,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef436266_d3c90178",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-06T16:02:27Z",
+      "side": 1,
+      "message": "Ah, I see what happened, every part of IOMMU code is `u32` but only `struct pkvm_dev_iommu` have it as u64, I can have a separate patch for that.",
+      "parentUuid": "cba71e36_3d4c0faf",
+      "range": {
+        "startLine": 47,
+        "startChar": 52,
+        "endLine": 47,
+        "endChar": 63
+      },
+      "revId": "a6fe4a0f2426b8b806cf960d7c1c8e379a2b77b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36b32ce6_c4167c63",
         "filename": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
         "patchSetId": 4
