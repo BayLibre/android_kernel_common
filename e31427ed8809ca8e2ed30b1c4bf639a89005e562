@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f2a4c728_16f6a6ed",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1323232
+      },
+      "writtenOn": "2025-02-06T07:48:54Z",
+      "side": 1,
+      "message": "add the explanation why we need this.",
+      "parentUuid": "d6fe2b2d_144bd987",
+      "revId": "e31427ed8809ca8e2ed30b1c4bf639a89005e562",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "379cc612_e220ad28",
         "filename": "drivers/android/vendor_hooks.c",
         "patchSetId": 4
@@ -31,6 +49,24 @@
       "writtenOn": "2025-02-06T00:06:23Z",
       "side": 1,
       "message": "No, this file is for hooks. So far all you\u0027ve done is define an event macro...where is the event going to be placed? That should be in this patch too and this export should go in that file.",
+      "revId": "e31427ed8809ca8e2ed30b1c4bf639a89005e562",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f95794e4_a0361f17",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 1323232
+      },
+      "writtenOn": "2025-02-06T07:48:54Z",
+      "side": 1,
+      "message": "I added more explanation in the commit message to explain why we need tracepoint and how vendors can use this to interact with LMKD. Please let me know if there is anything is unclar. Thanks a lot.",
+      "parentUuid": "379cc612_e220ad28",
       "revId": "e31427ed8809ca8e2ed30b1c4bf639a89005e562",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
