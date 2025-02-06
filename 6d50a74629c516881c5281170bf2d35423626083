@@ -69,6 +69,24 @@
       "parentUuid": "82ee3507_e154355f",
       "revId": "6d50a74629c516881c5281170bf2d35423626083",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "228cec46_3574b93b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3485565
+      },
+      "writtenOn": "2025-02-06T13:26:20Z",
+      "side": 1,
+      "message": "Then IPU6 qualifies as a vendor module, and we need to submit it to another location. PTAL here: https://docs.google.com/document/d/18eNEc_oQa9oF546E-MdeEReFhCvSb6Fv00vTBquRzjU/edit?tab\u003dt.vfys45g7pjia#heading\u003dh.bcab7b3az0xh\n\nFrom 6.12 onwards, we have a split of the kernel into core (this location) and vendor modules. You can read go/al-gki-contributing for more details. In your particular case, to turn IPU6 psys to an out-of-tree vendor module with downstream changes, please follow go/al-gki-vmm",
+      "parentUuid": "2babc30e_e0ce61d9",
+      "revId": "6d50a74629c516881c5281170bf2d35423626083",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
