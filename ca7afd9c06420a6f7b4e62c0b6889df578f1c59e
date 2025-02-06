@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fde0d778_05ba65ab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-02-06T18:07:59Z",
+      "side": 1,
+      "message": "Could you elaborate which functions are those and which parts of KVM code use them? `grep -ri CMA arch/arm64/kvm/ arch/arm64/include/ virt/kvm/ include/kvm/ include/linux/kvm*` doesn\u0027t seem to show anything.\n\nGenerally, if KVM really cannot compile without CMA, it should be reflected in Kconfig dependencies?",
+      "revId": "ca7afd9c06420a6f7b4e62c0b6889df578f1c59e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
