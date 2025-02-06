@@ -241,6 +241,7 @@ int pkvm_host_map_guest_mmio(struct pkvm_hyp_vcpu *hyp_vcpu, u64 pfn, u64 gfn)
 	int ret = 0;
 	struct pkvm_device *dev = pkvm_get_device_by_addr(hyp_pfn_to_phys(pfn));
 	struct pkvm_hyp_vm *vm = pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu);
+	u64 ipa = gfn << PAGE_SHIFT;
 
 	if (!dev)
 		return -ENODEV;
@@ -265,9 +266,20 @@ int pkvm_host_map_guest_mmio(struct pkvm_hyp_vcpu *hyp_vcpu, u64 pfn, u64 gfn)
 	 * That makes it clear that the guest knows these are MMIO pages
 	 * and it's not tricked to access memory.
 	 */
-	ret = __pkvm_remove_ioguard_page(hyp_vcpu, gfn << PAGE_SHIFT);
-	if (ret)
+	ret = __pkvm_remove_ioguard_page(hyp_vcpu, ipa);
+	if (ret) {
+		phys_addr_t pa;
+
+		/* We may have raced with another CPU, make sure it's mapped as expected. */
+		ret = __pkvm_guest_get_valid_phys_page(vm, &pa, ipa);
+		if (!ret) {
+			/* Something is wrong with the host. */
+			if (pfn != hyp_phys_to_pfn(pa))
+				ret = -EINVAL;
+		}
 		goto out_ret;
+	}
+
 	ret = pkvm_hyp_donate_guest(hyp_vcpu, pfn, gfn);
 
 out_ret:
