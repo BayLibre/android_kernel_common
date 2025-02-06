@@ -16,6 +16,23 @@
       "message": "FYI: the presubmit failure is unrelated and seems to be known issue b/394127073",
       "revId": "d3cb95139d2127a8581728899901a99659bd79d7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09654fed_c32a6206",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1132673
+      },
+      "writtenOn": "2025-02-06T00:54:31Z",
+      "side": 1,
+      "message": "The failed test `testDormantAndDormantSuspend` is very unstable. Failure rate is 79%. I will try once more, and if presubmit still blocks on it, I will override.",
+      "revId": "d3cb95139d2127a8581728899901a99659bd79d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
