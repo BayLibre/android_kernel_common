@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f1cf4ea_f12febef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2025-02-06T15:55:19Z",
+      "side": 1,
+      "message": "This is a temporary, lower risk solution for the bug, while I work on the proper solution. The proper solution is to split the initialization of each hyp vcpu so that it happens after the full initialization of the host vcpu.\n\nThis particular bug doesn\u0027t affect Android 15, nor prior versions.",
+      "revId": "c8c5445bcef4851e45dd39a0cea0454df84da29b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
