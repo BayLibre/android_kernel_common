@@ -93,6 +93,30 @@
       },
       "revId": "ea9717bf477209e25b5a32f785cbbd3819ce695d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79dce190_d3180033",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2025-02-06T01:02:30Z",
+      "side": 1,
+      "message": "It is not used only by minidump. Other OEMs have complained about this. Please change it to the namespace used for the rest of the exports in this file.",
+      "parentUuid": "4b9b47b4_bf9cf82a",
+      "range": {
+        "startLine": 97,
+        "startChar": 39,
+        "endLine": 97,
+        "endChar": 47
+      },
+      "revId": "ea9717bf477209e25b5a32f785cbbd3819ce695d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
