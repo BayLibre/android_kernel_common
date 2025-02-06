@@ -74,6 +74,30 @@
       ],
       "revId": "e31427ed8809ca8e2ed30b1c4bf639a89005e562",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "040c0eca_85ae5dd1",
+        "filename": "include/trace/events/android_vendor_lmk.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1323232
+      },
+      "writtenOn": "2025-02-06T01:31:24Z",
+      "side": 1,
+      "message": "That is beauce other vendor hooks\u0027 header files before this already change TRACE_INCLUDE_PATH. Without this will result in build break.\n\naosp/include/trace/define_trace.h:95:10: fatal error: \u0027trace/hooks/android_vendor_lmk.h\u0027 file not found\n#include TRACE_INCLUDE(TRACE_INCLUDE_FILE)\n         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+      "parentUuid": "6b7bee72_701837f6",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 0
+      },
+      "revId": "e31427ed8809ca8e2ed30b1c4bf639a89005e562",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
