@@ -16,6 +16,47 @@
       "message": "Sorry, but no, please fix the out-of-tree code to work properly here instead, don\u0027t move these back to where they used to be because we will have merge issues with upstream over the support lifetime.",
       "revId": "fcb2b98d45c93bea9ec22dfd70d483c77ae2cabb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da0461fe_bf1e56ec",
+        "filename": "mm/slab.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-06T21:11:29Z",
+      "side": 1,
+      "message": "Cuuld you please explain (here or in the bug) why you need a direct access to this structure?",
+      "range": {
+        "startLine": 670,
+        "startChar": 0,
+        "endLine": 679,
+        "endChar": 2
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ffe0c5fe_c8139374",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/slab.h",
+              "range": {
+                "startLine": 675,
+                "startChar": 0,
+                "endLine": 675,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * These counters are atomic because they are accessed from\n\t * different CPUs.\n\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fcb2b98d45c93bea9ec22dfd70d483c77ae2cabb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
