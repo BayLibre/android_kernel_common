@@ -16,6 +16,24 @@
       "message": "Please explain more why you need specifically non-hierarchical stats, IOW why you need to export lruvec_page_state_local() instead of lruvec_page_state()",
       "revId": "94900c39ea6ebe09333f187a6c1cfa39e0853bb4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86fa905f_da1dd5f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3616462
+      },
+      "writtenOn": "2025-02-07T03:55:45Z",
+      "side": 1,
+      "message": "I understand that compared to lruvec_page_state(), lruvec_page_state_local reduces cross-CPU lock contention and is more efficient. We use lruvec_page_state_local in scenarios where precise page values are not required.",
+      "parentUuid": "d72ca839_da12edbe",
+      "revId": "94900c39ea6ebe09333f187a6c1cfa39e0853bb4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
