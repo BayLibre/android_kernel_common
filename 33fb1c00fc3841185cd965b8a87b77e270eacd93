@@ -46,6 +46,30 @@
       },
       "revId": "33fb1c00fc3841185cd965b8a87b77e270eacd93",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8ae1449_866d2462",
+        "filename": "mm/shmem.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4844,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-07T16:40:31Z",
+      "side": 1,
+      "message": "I agree with Alice that `#ifdef CONFIG_MEMFD_ASHMEM_SHIM` here is preferable for a couple of reasons:\n1. better documents what we are doing;\n2. avoid extra function call (I think might also be an additional trampoline). Note that even though [1] declares the function as inline, it won\u0027t be inlined because we store the address of this function.\n3. IIUC this is the only place where memfd_ashmem_shim_ioctl() and others are being used. This lets us remove the stubs and additional #ifdefs at [1].",
+      "parentUuid": "e9d9113c_a35c6648",
+      "range": {
+        "startLine": 4838,
+        "startChar": 0,
+        "endLine": 4844,
+        "endChar": 6
+      },
+      "revId": "33fb1c00fc3841185cd965b8a87b77e270eacd93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
