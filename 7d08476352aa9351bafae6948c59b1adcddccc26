@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f0f2538_d2fcfdac",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 1781,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-07T12:03:35Z",
+      "side": 1,
+      "message": "I guess this would be clearer as:\n\n```\nif (ret \u003d\u003d -EEXIST)\n\tret \u003d 0; /* We might have raced with another vCPU. */\nelse if (!ret \u0026\u0026 size)\n\t*size \u003d PAGE_SIZE;\n```",
+      "range": {
+        "startLine": 1777,
+        "startChar": 3,
+        "endLine": 1781,
+        "endChar": 12
+      },
+      "revId": "7d08476352aa9351bafae6948c59b1adcddccc26",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
