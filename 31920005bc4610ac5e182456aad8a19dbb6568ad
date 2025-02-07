@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d445b12_2af1213e",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-07T11:24:43Z",
+      "side": 1,
+      "message": "I was worried about locking here, but it looks like the `config_lock` protects us.",
+      "range": {
+        "startLine": 416,
+        "startChar": 2,
+        "endLine": 416,
+        "endChar": 23
+      },
+      "revId": "31920005bc4610ac5e182456aad8a19dbb6568ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
