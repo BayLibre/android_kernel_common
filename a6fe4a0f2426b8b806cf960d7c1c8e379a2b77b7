@@ -142,6 +142,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "394be967_adcd6b63",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-02-07T09:14:50Z",
+      "side": 1,
+      "message": "As disucssed, I missed `pkvm_get_device_by_iommu` which no changed to `u32`",
+      "parentUuid": "ef436266_d3c90178",
+      "range": {
+        "startLine": 47,
+        "startChar": 52,
+        "endLine": 47,
+        "endChar": 63
+      },
+      "revId": "a6fe4a0f2426b8b806cf960d7c1c8e379a2b77b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36b32ce6_c4167c63",
         "filename": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
         "patchSetId": 4
