@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01453cb0_15abf0d8",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1323232
+      },
+      "writtenOn": "2025-02-07T01:41:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2a4c728_16f6a6ed",
+      "revId": "e31427ed8809ca8e2ed30b1c4bf639a89005e562",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "379cc612_e220ad28",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "I added more explanation in the commit message to explain why we need tracepoint and how vendors can use this to interact with LMKD. Please let me know if there is anything is unclar. Thanks a lot.",
       "parentUuid": "379cc612_e220ad28",
+      "revId": "e31427ed8809ca8e2ed30b1c4bf639a89005e562",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d28e7829_a464ce95",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 1323232
+      },
+      "writtenOn": "2025-02-07T01:41:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f95794e4_a0361f17",
       "revId": "e31427ed8809ca8e2ed30b1c4bf639a89005e562",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -126,6 +162,30 @@
       "side": 1,
       "message": "That is beauce other vendor hooks\u0027 header files before this already change TRACE_INCLUDE_PATH. Without this will result in build break.\n\naosp/include/trace/define_trace.h:95:10: fatal error: \u0027trace/hooks/android_vendor_lmk.h\u0027 file not found\n#include TRACE_INCLUDE(TRACE_INCLUDE_FILE)\n         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
       "parentUuid": "6b7bee72_701837f6",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 0
+      },
+      "revId": "e31427ed8809ca8e2ed30b1c4bf639a89005e562",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "291b302d_dde0c003",
+        "filename": "include/trace/events/android_vendor_lmk.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1323232
+      },
+      "writtenOn": "2025-02-07T01:41:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "040c0eca_85ae5dd1",
       "range": {
         "startLine": 8,
         "startChar": 0,
