@@ -16,6 +16,24 @@
       "message": "what is the status of this upstream? Last comments look like last April.",
       "revId": "b7adb05f753fb338ffd2517a3390946df02ce59a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91b56ed2_5cee7dee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2025-02-07T01:53:40Z",
+      "side": 1,
+      "message": "it can\u0027t go upstream because it is hard to fix the problem and we need proxy execution. so this is a temporary band aid until proxy execution is ready and is connected to futex_pi syscall. without users who set PTHREAD_PRIO_INHERIT in pthread_mutex will find that it is a NOP for SCHED_NORMAL (which as we know suffers from starvation and inversion problems). This patch makes it work but it doesn\u0027t handle corner cases like SCHED_IDLE or inheriting cgroup shares. We need porxy execution for that.",
+      "parentUuid": "35c89efb_fa93ae14",
+      "revId": "b7adb05f753fb338ffd2517a3390946df02ce59a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
