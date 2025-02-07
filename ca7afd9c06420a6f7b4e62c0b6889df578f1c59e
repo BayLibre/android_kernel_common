@@ -16,6 +16,24 @@
       "message": "Could you elaborate which functions are those and which parts of KVM code use them? `grep -ri CMA arch/arm64/kvm/ arch/arm64/include/ virt/kvm/ include/kvm/ include/linux/kvm*` doesn\u0027t seem to show anything.\n\nGenerally, if KVM really cannot compile without CMA, it should be reflected in Kconfig dependencies?",
       "revId": "ca7afd9c06420a6f7b4e62c0b6889df578f1c59e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "989a7acd_9d4d1393",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 2055842
+      },
+      "writtenOn": "2025-02-07T05:37:25Z",
+      "side": 1,
+      "message": "Currently on the android15-6.6-desktop branch the kvm doesn\u0027t use cma, that\u0027s correct. The problematic part is after merging the android15-6.6 branch (which is a part of a 3-way merge process of syncing android15-6.6-dsktop branch) where kvm uses `cma_alloc` function - take a look here:\n\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android15-6.6/arch/arm64/kvm/iommu.c#73\n\n\nOnce I merge this branch the compilation for arm64 fails on linking as these functions can\u0027t be found.\nAs per the dependencies - I was wondering about it too, shouldn\u0027t there be an entry here:\n\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android15-6.6/arch/arm64/kvm/Kconfig#23\n\nwith `select CONFIG_CMA` to provide all required dependencies?",
+      "parentUuid": "fde0d778_05ba65ab",
+      "revId": "ca7afd9c06420a6f7b4e62c0b6889df578f1c59e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
