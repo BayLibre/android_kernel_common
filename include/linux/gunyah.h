@@ -151,7 +151,25 @@ enum gh_api_feature {
 
 bool arch_is_gh_guest(void);
 
+<<<<<<< HEAD   (c750dc582629811994978507b7055b679be149f0 ANDROID: gunyah: Fix use-after-free in gunyah_vm_clean_resou)
 #define GH_API_V1			1
+||||||| BASE   (ae558bb0944a6219098a07f58de365668aff2efd ANDROID: virt: gunyah: Add addrspace_find_info_area hypercal)
+#define GUNYAH_API_V1 1
+=======
+enum gunyah_info_owner {
+	/* clang-format off */
+	GUNYAH_INFO_OWNER_INVALID	= 0,
+	GUNYAH_INFO_OWNER_HYP		= 1,
+	GUNYAH_INFO_OWNER_ROOTVM	= 2,
+	GUNYAH_INFO_OWNER_RM		= 3,
+	GUNYAH_INFO_OWNER_QCRM		= 16,
+	/* clang-format on */
+};
+
+void *gunyah_get_info(u16 owner, u16 id, size_t *size);
+
+#define GUNYAH_API_V1 1
+>>>>>>> CHANGE (0df02d448aa677ff20a8f5004a881cae48dd885e ANDROID: virt: gunyah: Probe for the info_area page)
 
 /* Other bits reserved for future use and will be zero */
 #define GH_API_INFO_API_VERSION_MASK	GENMASK_ULL(13, 0)
