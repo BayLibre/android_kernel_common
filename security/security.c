@@ -1045,6 +1045,19 @@ int security_binder_transfer_file(const struct cred *from,
 }
 
 /**
+ * security_binder_setup_report() - Check if process allowed to listen to binder reports.
+ * @to: receiving process
+ *
+ * Check whether @to is allowed to receive binder reports.
+ *
+ * Return: Returns 0 if permission is granted.
+ */
+int security_binder_setup_report(const struct cred *to)
+{
+	return call_int_hook(binder_setup_report, to);
+}
+
+/**
  * security_ptrace_access_check() - Check if tracing is allowed
  * @child: target process
  * @mode: PTRACE_MODE flags
