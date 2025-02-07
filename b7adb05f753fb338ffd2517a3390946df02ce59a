@@ -51,6 +51,24 @@
       "message": "No regressions seen with geekbench: https://data.corp.google.com/sites/android-nextgen-testing/ack_performance_metrics_comparison/?p\u003dcomp_build_id:P89696046\u0026f\u003datp_test_name:in:v2%2Fandroid-gki%2Fmain_pixel6_geekbenchmark6\u0026f\u003dmetric_key:in:Benchmark_Summary_Single-Core_Score,Benchmark_Summary_Vulkan_Score,Benchmark_Summary_Multi-Core_Score\u0026fb\u003dbuild_creation_timestamp:bt:1737878400000000,1738915199999999\u0026fh\u003deJx9zTGqwzAMxvG7aM7a4eUGnTOGYPRsQVUsx7U_DaX07rEv0FHox_ffP6SJVvp3zSnEJgw9S4CadLBVWiie2a38NnhXGUJLdYwzMXirEu9z2oS7NzEpCOk01hLmP_QB5vyDGybc6e956-lFx0LmGbpJlgha0VxGQpFng77HBU0MQFQ.",
       "revId": "b7adb05f753fb338ffd2517a3390946df02ce59a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8343b2df_bec558f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-02-07T20:16:28Z",
+      "side": 1,
+      "message": "If we are giving up on getting this upstream, then let\u0027s flip it to ANDROID: (but leave the Link: so we can see that it was attempted).\n\nCan you add the above context to the commit message so it is clear that we don\u0027t need this once P-E lands. Are you going to revert this when P-E is turned on in 6.12?",
+      "parentUuid": "91b56ed2_5cee7dee",
+      "revId": "b7adb05f753fb338ffd2517a3390946df02ce59a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
