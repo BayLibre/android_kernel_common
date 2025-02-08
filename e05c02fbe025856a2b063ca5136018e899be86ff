@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0ca5052_fb3d55ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3485565
+      },
+      "writtenOn": "2025-02-08T07:47:54Z",
+      "side": 1,
+      "message": "Hi Jameson,\n\nUCSI classifies as a module. From 6.12 onwards, we have a split of the kernel into core (the repo you commit right now) and vendor modules. You can read more about the design here: go/al-gki-6.12-design.\n\nPTAL at go/al-gki-contributing for guideliens. In your particular case, to turn UCSI to an out-of-tree vendor module with downstream changes, please follow go/al-gki-vmm. If you have issues with that, feel free to ask questions at http://go/al-gki-6.12-chat\n\nFYI: I\u0027ll be out-of-office next week, you can add as reviewer of DDK module @korneld instead or wait until I\u0027m back.",
+      "revId": "e05c02fbe025856a2b063ca5136018e899be86ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
