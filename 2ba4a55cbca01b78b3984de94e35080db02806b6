@@ -164,6 +164,30 @@
       },
       "revId": "2ba4a55cbca01b78b3984de94e35080db02806b6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a01da403_e7b55dbd",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-02-08T23:12:36Z",
+      "side": 1,
+      "message": "For reference, first version of this patch was aosp/3391868 where Greg\u0027s comment was: \"what does this mean? Please properly reference the original commit, reading this comment in a few weeks is just going to confuse everyone.\".\n\nYou should resolve this by properly citing the patch as:\n```\n72d04bdcf3f7 (\"sbitmap: fix io hung due to race on sbitmap_word::cleared\")\n```\nThis makes it clear what patch you are discussing as \"original\".\n\nAnd when you resolve it, please make sure the Change-Id matches this patch so this becomes a new version of this CL in gerrit. If you don\u0027t do that, then you create a whole new CL which is why you don\u0027t see Greg\u0027s comment here ... it is in aosp/3391868. Along the way you have created 9 new versions of this...see https://android-review.git.corp.google.com/q/%22sbitmap:+fix+io+hung+due+to+race+on+sbitmap_word::cleared+%22. We\u0027ve abandoned the 8 obsolete versions. Please don\u0027t create any more.",
+      "parentUuid": "fe25a509_2850374f",
+      "range": {
+        "startLine": 178,
+        "startChar": 3,
+        "endLine": 178,
+        "endChar": 6
+      },
+      "revId": "2ba4a55cbca01b78b3984de94e35080db02806b6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
