@@ -51,6 +51,24 @@
       "message": "this breaks the KMI and cannot be accepted. Please refactor to avoid changing hrtimer_cpu_base.",
       "revId": "b327a6f70585b88aedefe5eb501448e73f34a8f8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82a12bb6_fc336ca1",
+        "filename": "include/linux/hrtimer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 3794271
+      },
+      "writtenOn": "2025-02-08T06:47:56Z",
+      "side": 1,
+      "message": "declared the csd with a new global variable, hrtimer_base_csd, in hrtimer.c",
+      "parentUuid": "531f5848_ad656670",
+      "revId": "b327a6f70585b88aedefe5eb501448e73f34a8f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
