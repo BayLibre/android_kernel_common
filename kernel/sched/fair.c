@@ -4146,29 +4146,6 @@ static inline void update_cfs_group(struct sched_entity *se)
 }
 #endif /* CONFIG_FAIR_GROUP_SCHED */
 
-static inline void cfs_rq_util_change(struct cfs_rq *cfs_rq, int flags)
-{
-	struct rq *rq = rq_of(cfs_rq);
-
-	if (&rq->cfs == cfs_rq) {
-		/*
-		 * There are a few boundary cases this might miss but it should
-		 * get called often enough that that should (hopefully) not be
-		 * a real problem.
-		 *
-		 * It will not get called when we go idle, because the idle
-		 * thread is a different class (!fair), nor will the utilization
-		 * number include things like RT tasks.
-		 *
-		 * As is, the util number is not freq-invariant (we'd have to
-		 * implement arch_scale_freq_capacity() for that).
-		 *
-		 * See cpu_util_cfs().
-		 */
-		cpufreq_update_util(rq, flags);
-	}
-}
-
 #ifdef CONFIG_SMP
 static inline bool load_avg_is_decayed(struct sched_avg *sa)
 {
@@ -4848,8 +4825,6 @@ static void attach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *s
 
 	add_tg_cfs_propagate(cfs_rq, se->avg.load_sum);
 
-	cfs_rq_util_change(cfs_rq, 0);
-
 	trace_pelt_cfs_tp(cfs_rq);
 }
 
@@ -4879,8 +4854,6 @@ static void detach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *s
 					      cfs_rq->avg.runnable_avg * PELT_MIN_DIVIDER);
 
 	add_tg_cfs_propagate(cfs_rq, -se->avg.load_sum);
-
-	cfs_rq_util_change(cfs_rq, 0);
 
 	trace_pelt_cfs_tp(cfs_rq);
 }
@@ -4930,12 +4903,16 @@ static inline void update_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *s
 		 */
 		detach_entity_load_avg(cfs_rq, se);
 		update_tg_load_avg(cfs_rq);
-	} else if (decayed) {
-		cfs_rq_util_change(cfs_rq, 0);
-
-		if (flags & UPDATE_TG)
-			update_tg_load_avg(cfs_rq);
+	} else if (decayed && (flags & UPDATE_TG)) {
+		update_tg_load_avg(cfs_rq);
 	}
+
+	/*
+	 * If this is the root cfs_rq, set the decayed flag to let the world
+	 * know a cpufreq update is required.
+	 */
+	if (cfs_rq == &rq_of(cfs_rq)->cfs)
+		cfs_rq->decayed |= decayed;
 }
 
 /*
@@ -5013,6 +4990,7 @@ static inline unsigned long task_util_est(struct task_struct *p)
 static inline void util_est_enqueue(struct cfs_rq *cfs_rq,
 				    struct task_struct *p)
 {
+	unsigned int task_util_est;
 	unsigned int enqueued;
 
 	if (!sched_feat(UTIL_EST))
@@ -5020,7 +4998,10 @@ static inline void util_est_enqueue(struct cfs_rq *cfs_rq,
 
 	/* Update root cfs_rq's estimated utilization */
 	enqueued  = cfs_rq->avg.util_est;
-	enqueued += _task_util_est(p);
+	task_util_est = _task_util_est(p);
+	if (task_util_est)
+		rq_of(cfs_rq)->cfs.decayed = true;
+	enqueued += task_util_est;
 	WRITE_ONCE(cfs_rq->avg.util_est, enqueued);
 
 	trace_sched_util_est_cfs_tp(cfs_rq);
@@ -5338,7 +5319,6 @@ static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
 
 static inline void update_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se, int not_used1)
 {
-	cfs_rq_util_change(cfs_rq, 0);
 }
 
 static inline void remove_entity_load_avg(struct sched_entity *se) {}
@@ -7132,14 +7112,6 @@ enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
 		requeue_delayed_entity(se);
 		return;
 	}
-
-	/*
-	 * If in_iowait is set, the code below may not trigger any cpufreq
-	 * utilization updates, so do it here explicitly with the IOWAIT flag
-	 * passed.
-	 */
-	if (p->in_iowait)
-		cpufreq_update_util(rq, SCHED_CPUFREQ_IOWAIT);
 
 	if (task_new)
 		h_nr_delayed = !!se->sched_delayed;
@@ -8971,10 +8943,10 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int 
 	bool preempt = false;
 
 	if (unlikely(se == pse))
-		return;
+		goto nopreempt;
 	trace_android_rvh_check_preempt_wakeup_ignore(donor, &ignore);
 	if (ignore)
-		return;
+		goto nopreempt;
 
 	/*
 	 * This is possible from callers such as attach_tasks(), in which we
@@ -8983,7 +8955,7 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int 
 	 * next-buddy nomination below.
 	 */
 	if (unlikely(throttled_hierarchy(cfs_rq_of(pse))))
-		return;
+		goto nopreempt;
 
 	if (sched_feat(NEXT_BUDDY) && !(wake_flags & WF_FORK) && !pse->sched_delayed) {
 		set_next_buddy(pse);
@@ -9000,10 +8972,10 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int 
 	 * below.
 	 */
 	if (test_tsk_need_resched(rq->curr))
-		return;
+		goto nopreempt;
 
 	if (!sched_feat(WAKEUP_PREEMPTION))
-		return;
+		goto nopreempt;
 
 	find_matching_se(&se, &pse);
 	WARN_ON_ONCE(!pse);
@@ -9018,13 +8990,13 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int 
 	if (cse_is_idle && !pse_is_idle)
 		goto preempt;
 	if (cse_is_idle != pse_is_idle)
-		return;
+		goto nopreempt;
 
 	/*
 	 * BATCH and IDLE tasks do not preempt others.
 	 */
 	if (unlikely(!normal_policy(p->policy)))
-		return;
+		goto nopreempt;
 
 	cfs_rq = cfs_rq_of(se);
 	update_curr(cfs_rq);
@@ -9033,7 +9005,7 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int 
 	if (preempt)
 		goto preempt;
 	if (ignore)
-		return;
+		goto nopreempt;
 	/*
 	 * If @p has a shorter slice than current and @p is eligible, override
 	 * current's slice protection in order to allow preemption.
@@ -9050,6 +9022,13 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int 
 	if (pick_eevdf(cfs_rq) == pse)
 		goto preempt;
 
+nopreempt:
+	if (rq->cfs.h_nr_running > 1) {
+#ifdef CONFIG_SMP
+		if (rq->cfs.decayed)
+#endif
+		cpufreq_update_util(rq, SCHED_CPUFREQ_TASK_ENQUEUED);
+	}
 	return;
 
 preempt:
@@ -13354,6 +13333,15 @@ static void task_tick_fair(struct rq *rq, struct task_struct *curr, int queued)
 
 	update_misfit_status(curr, rq);
 	check_update_overutilized_status(task_rq(curr));
+
+#ifdef CONFIG_SMP
+	if (rq->cfs.decayed) {
+		rq->cfs.decayed = false;
+		cpufreq_update_util(rq, 0);
+	}
+#else
+	cpufreq_update_util(rq, 0);
+#endif
 
 	task_tick_core(rq, curr);
 }
