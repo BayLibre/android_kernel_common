@@ -28,7 +28,6 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <include/vdso/time64.h>
 #include "../kselftest.h"
 
 #define CLOCK_REALTIME			0
@@ -45,6 +44,8 @@
 #define CLOCK_TAI			11
 #define NR_CLOCKIDS			12
 
+
+#define NSEC_PER_SEC 1000000000ULL
 #define UNRESONABLE_LATENCY 40000000 /* 40ms in nanosecs */
 
 #define TIMER_SECS 1
