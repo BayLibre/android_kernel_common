@@ -34,6 +34,24 @@
       "parentUuid": "d72ca839_da12edbe",
       "revId": "94900c39ea6ebe09333f187a6c1cfa39e0853bb4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b262808_9888ba25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-10T20:12:22Z",
+      "side": 1,
+      "message": "The only difference between lruvec_page_state() and lruvec_page_state_local() is that the former is reading lruvec_stats_percpu.state instead of lruvec_stats_percpu.state_local. These are simple counters (see: https://elixir.bootlin.com/linux/v6.13.1/source/mm/memcontrol.c#L367) and there should be no performance difference when you read them. The difference is that lruvec_page_state() is calculated for the memcg and its children and lruvec_page_state_local() is for memcg only.",
+      "parentUuid": "86fa905f_da1dd5f6",
+      "revId": "94900c39ea6ebe09333f187a6c1cfa39e0853bb4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
