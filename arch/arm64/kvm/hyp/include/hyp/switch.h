@@ -324,8 +324,6 @@ static void kvm_hyp_handle_fpsimd_host(struct kvm_vcpu *vcpu)
 		/* Still trap SVE since it's handled by hyp in pKVM. */
 		if (!vcpu_has_sve(vcpu))
 			sysreg_clear_set(cptr_el2, 0, CPTR_EL2_TZ);
-	} else {
-		__fpsimd_save_state(get_host_fpsimd_state(vcpu));
 	}
 }
 
@@ -386,7 +384,7 @@ static bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
 	isb();
 
 	/* Write out the host state if it's in the registers */
-	if (vcpu->arch.fp_state == FP_STATE_HOST_OWNED)
+	if (is_protected_kvm_enabled() && vcpu->arch.fp_state == FP_STATE_HOST_OWNED)
 		kvm_hyp_handle_fpsimd_host(vcpu);
 
 	/* Restore the guest state */
