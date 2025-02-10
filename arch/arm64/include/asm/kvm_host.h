@@ -597,7 +597,6 @@ struct kvm_vcpu_arch {
 	/* Ownership of the FP regs */
 	enum {
 		FP_STATE_FREE,
-		FP_STATE_HOST_OWNED,
 		FP_STATE_GUEST_OWNED,
 	} fp_state;
 
@@ -635,8 +634,6 @@ struct kvm_vcpu_arch {
 	struct kvm_guest_debug_arch *debug_ptr;
 	struct kvm_guest_debug_arch vcpu_debug_state;
 	struct kvm_guest_debug_arch external_debug_state;
-
-	struct user_fpsimd_state *host_fpsimd_state;	/* hyp VA */
 
 	struct {
 		/* {Break,watch}point registers */
