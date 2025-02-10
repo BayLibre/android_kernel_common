@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4433e42d_cbb7ddfe",
+        "filename": "drivers/staging/android/ashmem_range.rs",
+        "patchSetId": 20
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-10T18:35:27Z",
+      "side": 1,
+      "message": "The placement of these funcitons seem to be a bit off. I would expect these to be in the `ashmem_toggle.rs`. Maybe keep register_shrinker() here, move unpin_{set|get} into ashmem_toggle.rs and call register_shrinker() from there?",
+      "range": {
+        "startLine": 454,
+        "startChar": 0,
+        "endLine": 485,
+        "endChar": 0
+      },
+      "revId": "dc33c4b195027ace5c196d74648063fd5ed7f7a5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
