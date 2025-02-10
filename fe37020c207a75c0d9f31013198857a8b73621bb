@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d8dfed8_e4afca3f",
+        "filename": "drivers/staging/android/ashmem_shrinker.rs",
+        "patchSetId": 27
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-10T18:13:09Z",
+      "side": 1,
+      "message": "Is anything in this file really ashmem-specific? If not, maybe this should be in a more generic place, like `mm` and not called `ashmem_shrinker.rs`?",
+      "range": {
+        "startLine": 6,
+        "startChar": 4,
+        "endLine": 6,
+        "endChar": 42
+      },
+      "revId": "fe37020c207a75c0d9f31013198857a8b73621bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
