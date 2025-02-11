@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e65dc36_0f0f9e29",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-11T14:52:44Z",
+      "side": 1,
+      "message": "I haven\u0027t fully checked whether or not this is reachable from the guest hypercall interface, but generally I think we might want to be a little less trigger-happy with the WARN_ON()/BUG_ON() code when guests are involved. Unlike the host, a guest shouldn\u0027t be able to crash the system so if we\u0027re able to fail gracefully (even if that leaves the guest in an unrecoverable state), then we should.",
+      "range": {
+        "startLine": 516,
+        "startChar": 2,
+        "endLine": 516,
+        "endChar": 9
+      },
+      "revId": "9cfa2ec787000fc655293154f2d14c62b1a87cb5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de21b80c_0c6ae56a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-11T14:52:44Z",
+      "side": 1,
+      "message": "Why is this `void **` instead of `void *` (or better, `u64 *`)? `ffa_guest_share_with_cb` would need updating as well.",
+      "range": {
+        "startLine": 542,
+        "startChar": 73,
+        "endLine": 542,
+        "endChar": 82
+      },
+      "revId": "9cfa2ec787000fc655293154f2d14c62b1a87cb5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}

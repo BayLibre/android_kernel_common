@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f38e7da3_261db7a6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-11T14:52:44Z",
+      "side": 1,
+      "message": "Either propagate the error or make the return type `void`",
+      "range": {
+        "startLine": 503,
+        "startChar": 7,
+        "endLine": 503,
+        "endChar": 10
+      },
+      "revId": "e1eec970df4aceb14018c162754259617f181a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40e914fb_56c0a176",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-11T14:52:44Z",
+      "side": 1,
+      "message": "Why is this only unsharing a single page? Shouldn\u0027t we iterate over the pages in the range, like we do on the `ffa_guest_share_ranges()` path?",
+      "range": {
+        "startLine": 516,
+        "startChar": 10,
+        "endLine": 516,
+        "endChar": 39
+      },
+      "revId": "e1eec970df4aceb14018c162754259617f181a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd459437_15b5c68b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-11T14:52:44Z",
+      "side": 1,
+      "message": "This looks wrong as `ffa_guest_unshare_ranges` uses this to index `ranges[]`",
+      "range": {
+        "startLine": 562,
+        "startChar": 31,
+        "endLine": 562,
+        "endChar": 45
+      },
+      "revId": "e1eec970df4aceb14018c162754259617f181a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a290e6b5_58b12491",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-11T14:52:44Z",
+      "side": 1,
+      "message": "Perhaps \"translated_sz\" might be more intuitive than \"painted_sz\"?",
+      "range": {
+        "startLine": 750,
+        "startChar": 9,
+        "endLine": 750,
+        "endChar": 19
+      },
+      "revId": "e1eec970df4aceb14018c162754259617f181a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72f7b582_ba208b7e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-11T14:52:44Z",
+      "side": 1,
+      "message": "Curious, but why do you need an additional buffer here? Is it not possible to convert the descriptors in-place?",
+      "range": {
+        "startLine": 758,
+        "startChar": 2,
+        "endLine": 758,
+        "endChar": 10
+      },
+      "revId": "e1eec970df4aceb14018c162754259617f181a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e0adf63_7c94b617",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-11T14:52:44Z",
+      "side": 1,
+      "message": "Why isn\u0027t this the same as the total page count of the original descriptor (which we already checked)?",
+      "range": {
+        "startLine": 769,
+        "startChar": 4,
+        "endLine": 769,
+        "endChar": 13
+      },
+      "revId": "e1eec970df4aceb14018c162754259617f181a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92b87931_8faf85d6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-11T14:52:44Z",
+      "side": 1,
+      "message": "Move this block into a helper function?",
+      "range": {
+        "startLine": 745,
+        "startChar": 0,
+        "endLine": 775,
+        "endChar": 0
+      },
+      "revId": "e1eec970df4aceb14018c162754259617f181a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
