@@ -697,6 +697,7 @@ static void ufshcd_print_pwr_info(struct ufs_hba *hba)
 static void ufshcd_device_reset(struct ufs_hba *hba)
 {
 	int err;
+	ktime_t start = ktime_get();
 
 	err = ufshcd_vops_device_reset(hba);
 
@@ -709,6 +710,9 @@ static void ufshcd_device_reset(struct ufs_hba *hba)
 	}
 	if (err != -EOPNOTSUPP)
 		ufshcd_update_evt_hist(hba, UFS_EVT_DEV_RESET, err);
+
+		dev_info(hba->dev, "reset device took %lld usec\n",
+			ktime_to_us(ktime_sub(ktime_get(), start)));
 }
 
 void ufshcd_delay_us(unsigned long us, unsigned long tolerance)
@@ -4600,14 +4604,21 @@ int ufshcd_config_pwr_mode(struct ufs_hba *hba,
 {
 	struct ufs_pa_layer_attr final_params = { 0 };
 	int ret;
+	ktime_t start;
 
+	start = ktime_get();
 	ret = ufshcd_vops_pwr_change_notify(hba, PRE_CHANGE,
 					desired_pwr_mode, &final_params);
+	dev_info(hba->dev, "reprogram crypto key took %lld usec\n",
+			ktime_to_us(ktime_sub(ktime_get(), start)));
 
 	if (ret)
 		memcpy(&final_params, desired_pwr_mode, sizeof(final_params));
 
+	start = ktime_get();
 	ret = ufshcd_change_power_mode(hba, &final_params);
+	dev_info(hba->dev, "change power mode took %lld usec\n",
+			ktime_to_us(ktime_sub(ktime_get(), start)));
 
 	if (!ret)
 		ufshcd_vops_pwr_change_notify(hba, POST_CHANGE, NULL,
@@ -4630,6 +4641,7 @@ static int ufshcd_complete_dev_init(struct ufs_hba *hba)
 	int err;
 	bool flag_res = true;
 	ktime_t timeout;
+	ktime_t start = ktime_get();
 
 	err = ufshcd_query_flag_retry(hba, UPIU_QUERY_OPCODE_SET_FLAG,
 		QUERY_FLAG_IDN_FDEVICEINIT, 0, NULL);
@@ -4661,6 +4673,8 @@ static int ufshcd_complete_dev_init(struct ufs_hba *hba)
 		err = -EBUSY;
 	}
 out:
+	dev_info(hba->dev, "complete device init took %lld usec\n",
+		ktime_to_us(ktime_sub(ktime_get(), start)));
 	return err;
 }
 
@@ -4907,6 +4921,7 @@ static int ufshcd_link_startup(struct ufs_hba *hba)
 	int ret;
 	int retries = DME_LINKSTARTUP_RETRIES;
 	bool link_startup_again = false;
+	ktime_t start;
 
 	/*
 	 * If UFS device isn't active then we will have to issue link startup
@@ -4917,9 +4932,15 @@ static int ufshcd_link_startup(struct ufs_hba *hba)
 
 link_startup:
 	do {
+		start = ktime_get();
 		ufshcd_vops_link_startup_notify(hba, PRE_CHANGE);
+		dev_info(hba->dev, "PHY initialization took %lld usec\n",
+				ktime_to_us(ktime_sub(ktime_get(), start)));
 
+		start = ktime_get();
 		ret = ufshcd_dme_link_startup(hba);
+		dev_info(hba->dev, "link startup took %lld usec\n",
+				ktime_to_us(ktime_sub(ktime_get(), start)));
 
 		/* check if device is detected by inter-connect layer */
 		if (!ret && !ufshcd_is_device_present(hba)) {
@@ -4970,6 +4991,7 @@ link_startup:
 
 	/* Include any host controller configuration via UIC commands */
 	ret = ufshcd_vops_link_startup_notify(hba, POST_CHANGE);
+
 	if (ret)
 		goto out;
 
@@ -5002,6 +5024,7 @@ static int ufshcd_verify_dev_init(struct ufs_hba *hba)
 {
 	int err = 0;
 	int retries;
+	ktime_t start = ktime_get();
 
 	ufshcd_hold(hba);
 	mutex_lock(&hba->dev_cmd.lock);
@@ -5019,6 +5042,10 @@ static int ufshcd_verify_dev_init(struct ufs_hba *hba)
 
 	if (err)
 		dev_err(hba->dev, "%s: NOP OUT failed %d\n", __func__, err);
+
+	dev_info(hba->dev, "verify device init took %lld usec\n",
+		ktime_to_us(ktime_sub(ktime_get(), start)));
+
 	return err;
 }
 
@@ -5820,14 +5847,20 @@ out:
  */
 static void ufshcd_force_reset_auto_bkops(struct ufs_hba *hba)
 {
+	ktime_t start = ktime_get();
+
 	if (ufshcd_keep_autobkops_enabled_except_suspend(hba)) {
 		hba->auto_bkops_enabled = false;
 		hba->ee_ctrl_mask |= MASK_EE_URGENT_BKOPS;
 		ufshcd_enable_auto_bkops(hba);
+		dev_info(hba->dev, "enable auto BKOPS took %lld usec\n",
+			ktime_to_us(ktime_sub(ktime_get(), start)));
 	} else {
 		hba->auto_bkops_enabled = true;
 		hba->ee_ctrl_mask &= ~MASK_EE_URGENT_BKOPS;
 		ufshcd_disable_auto_bkops(hba);
+		dev_info(hba->dev, "disable auto BKOPS took %lld usec\n",
+			ktime_to_us(ktime_sub(ktime_get(), start)));
 	}
 	hba->urgent_bkops_lvl = BKOPS_STATUS_PERF_IMPACT;
 	hba->is_urgent_bkops_lvl_checked = false;
@@ -8458,6 +8491,8 @@ out:
 
 static void ufshcd_tune_unipro_params(struct ufs_hba *hba)
 {
+	ktime_t start = ktime_get();
+
 	if (ufshcd_is_unipro_pa_params_tuning_req(hba)) {
 		ufshcd_tune_pa_tactivate(hba);
 		ufshcd_tune_pa_hibern8time(hba);
@@ -8471,6 +8506,9 @@ static void ufshcd_tune_unipro_params(struct ufs_hba *hba)
 
 	if (hba->dev_quirks & UFS_DEVICE_QUIRK_HOST_PA_TACTIVATE)
 		ufshcd_quirk_tune_host_pa_tactivate(hba);
+
+	dev_info(hba->dev, "tune Unipro params took %lld usec\n",
+		ktime_to_us(ktime_sub(ktime_get(), start)));
 }
 
 static void ufshcd_clear_dbg_ufs_stats(struct ufs_hba *hba)
@@ -8809,7 +8847,10 @@ static int ufshcd_device_init(struct ufs_hba *hba, bool init_dev_params)
 	 * parameters are associated with UFS descriptors.
 	 */
 	if (init_dev_params) {
+		ktime_t start = ktime_get();
 		ret = ufshcd_device_params_init(hba);
+		dev_info(hba->dev, "device params init took %lld usec\n",
+			ktime_to_us(ktime_sub(ktime_get(), start)));
 		if (ret)
 			return ret;
 		if (is_mcq_supported(hba) && !hba->scsi_host_added) {
