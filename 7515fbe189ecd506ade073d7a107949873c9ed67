@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd9c0e81_3a1bdd94",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-11T19:29:06Z",
+      "side": 1,
+      "message": "build failure: ```/mnt/disks/build-disk/src/android/common-android16-6.12/out/bazel/output_user_root/4cfd4b4d530262c9404da8567df5caec/sandbox/linux-sandbox/543/execroot/_main/common/mm/vmscan.c:1271:6: error: call to undeclared function \u0027trace_android_vh_split_large_folio_bypass\u0027; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]```\n\nYou should add `#include \u003ctrace/hooks/mm.h\u003e`",
+      "range": {
+        "startLine": 1271,
+        "startChar": 5,
+        "endLine": 1271,
+        "endChar": 56
+      },
+      "revId": "7515fbe189ecd506ade073d7a107949873c9ed67",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
