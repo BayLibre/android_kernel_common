@@ -22,6 +22,30 @@
       },
       "revId": "fe37020c207a75c0d9f31013198857a8b73621bb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e4baaf1_cb7d2ce7",
+        "filename": "drivers/staging/android/ashmem_shrinker.rs",
+        "patchSetId": 27
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-02-11T12:06:49Z",
+      "side": 1,
+      "message": "No. The file used to be a separate FROMLIST patch. We only need this file temporarily until we merge aosp/3464815, so I wanted to prioritize my upstreaming efforts on other patches. That\u0027s why I vendored it into the ashmem driver.",
+      "parentUuid": "5d8dfed8_e4afca3f",
+      "range": {
+        "startLine": 6,
+        "startChar": 4,
+        "endLine": 6,
+        "endChar": 42
+      },
+      "revId": "fe37020c207a75c0d9f31013198857a8b73621bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
