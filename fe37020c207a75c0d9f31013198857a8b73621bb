@@ -70,6 +70,30 @@
       },
       "revId": "fe37020c207a75c0d9f31013198857a8b73621bb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "589dd5eb_e0bbd7c3",
+        "filename": "drivers/staging/android/ashmem_shrinker.rs",
+        "patchSetId": 27
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-02-11T21:03:40Z",
+      "side": 1,
+      "message": "Binder also has a shrinker, but it doesn\u0027t use this interface. I would like to move it over, but I can\u0027t right now because it needs support for list_lru too, which this interface does not have.",
+      "parentUuid": "cacf5618_4a001914",
+      "range": {
+        "startLine": 6,
+        "startChar": 4,
+        "endLine": 6,
+        "endChar": 42
+      },
+      "revId": "fe37020c207a75c0d9f31013198857a8b73621bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
