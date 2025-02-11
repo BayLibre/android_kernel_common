@@ -16,6 +16,29 @@
       "message": "@Suren please have a look",
       "revId": "de598e7296e9236d7682165078bc18ca913bbc04",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea318287_174fadd5",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3233,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-11T19:22:31Z",
+      "side": 1,
+      "message": "You should probably skip this if trace_android_vh_rmqueue_cma_fallback() already returned you a valid page.\nCan we simply do this?\n```\n\t/*\n\t * let normal GFP_MOVABLE has chance to try MIGRATE_CMA\n\t */\n\tif (unlikely(!page) \u0026\u0026 (migratetype \u003d\u003d MIGRATE_MOVABLE))\n\t\ttrace_android_vh_rmqueue_cma_fallback(zone, order, \u0026page);\n\n+\tif (!cma_redirect_restricted() \u0026\u0026 !page \u0026\u0026 alloc_flags \u0026 ALLOC_CMA)\n+\t\tpage \u003d __rmqueue_cma_fallback(zone, order);\n\n\tif (unlikely(!page) \u0026\u0026 __rmqueue_fallback(zone, order, migratetype,\n\t\t\t\t\t\t  alloc_flags))\n\t\tgoto retry;\n\n```",
+      "range": {
+        "startLine": 3233,
+        "startChar": 2,
+        "endLine": 3233,
+        "endChar": 60
+      },
+      "revId": "de598e7296e9236d7682165078bc18ca913bbc04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
