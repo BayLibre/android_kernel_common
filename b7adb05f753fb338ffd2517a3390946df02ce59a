@@ -69,6 +69,47 @@
       "parentUuid": "91b56ed2_5cee7dee",
       "revId": "b7adb05f753fb338ffd2517a3390946df02ce59a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c4c71dc_77d1a729",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-02-11T18:19:49Z",
+      "side": 1,
+      "message": "So this primarily affects SCHED_NORMAL tasks that use the pi-futexes (as well as in-kernel rt-mutex contention between SCHED_NORMAL tasks). \n\nProxy-Exec currently resloves normal mutex priority inversion. So the need for in-kerenel use of rt-mutexes would decline, but proxy-exec currently isn\u0027t connected to futex behavior, so it can\u0027t yet help there.\n\nSo this is for the moment complementary, as while its not as deep a solution as proxy-exec, it covers some of the cases proxy-exec doesn\u0027t yet address.",
+      "parentUuid": "8343b2df_bec558f8",
+      "revId": "b7adb05f753fb338ffd2517a3390946df02ce59a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37cf1773_c6c589f1",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8211,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-02-11T18:19:49Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by KernelCheckPatch: WARNING:LINE_SPACING: Missing a blank line after declarations\n\nAnalyzer Description: Ensures that kernel patches follow the guidelines.\nOwner: estaats@google.com\n\nWARNING:LINE_SPACING: Missing a blank line after declarations",
+      "range": {
+        "startLine": 8211,
+        "startChar": 0,
+        "endLine": 8211,
+        "endChar": 0
+      },
+      "revId": "b7adb05f753fb338ffd2517a3390946df02ce59a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
