@@ -1594,166 +1594,177 @@ static inline int zap_present_ptes(struct mmu_gather *tlb,
 }
 
 static unsigned long zap_pte_range(struct mmu_gather *tlb,
-				struct vm_area_struct *vma, pmd_t *pmd,
-				unsigned long addr, unsigned long end,
-				struct zap_details *details)
+                struct vm_area_struct *vma, pmd_t *pmd,
+                unsigned long addr, unsigned long end,
+                struct zap_details *details)
 {
-	bool force_flush = false, force_break = false;
-	struct mm_struct *mm = tlb->mm;
-	int rss[NR_MM_COUNTERS];
-	spinlock_t *ptl;
-	pte_t *start_pte;
-	pte_t *pte;
-	swp_entry_t entry;
-	pmd_t pmdval;
-	unsigned long start = addr;
-	bool can_reclaim_pt = reclaim_pt_is_enabled(start, end, details);
-	bool direct_reclaim = false;
-	int nr;
-	bool bypass = false;
+    bool force_flush = false, force_break = false;
+    struct mm_struct *mm = tlb->mm;
+    int rss[NR_MM_COUNTERS];
+    spinlock_t *ptl;
+    pte_t *start_pte;
+    pte_t *pte;
+    swp_entry_t entry;
+    pmd_t pmdval;
+    unsigned long start = addr;
+    bool can_reclaim_pt = reclaim_pt_is_enabled(start, end, details);
+    bool direct_reclaim = true;
+    int nr;
+    bool bypass = false;
 
-	tlb_change_page_size(tlb, PAGE_SIZE);
-	init_rss_vec(rss);
-	start_pte = pte = pte_offset_map_lock(mm, pmd, addr, &ptl);
-	if (!pte)
-		return addr;
+    tlb_change_page_size(tlb, PAGE_SIZE);
+    init_rss_vec(rss);
+    start_pte = pte = pte_offset_map_lock(mm, pmd, addr, &ptl);
+    if (!pte)
+        return addr;
 
-	flush_tlb_batched_pending(mm);
-	arch_enter_lazy_mmu_mode();
-	do {
-		pte_t ptent = ptep_get(pte);
-		struct folio *folio;
-		struct page *page;
-		int max_nr;
+    flush_tlb_batched_pending(mm);
+    arch_enter_lazy_mmu_mode();
+    do {
+        pte_t ptent = ptep_get(pte);
+        struct folio *folio;
+        struct page *page;
+        int max_nr;
 
-		nr = 1;
-		if (pte_none(ptent))
-			continue;
+        nr = 1;
+        if (pte_none(ptent))
+            continue;
 
-		if (need_resched())
-			break;
+        if (need_resched()) {
+            direct_reclaim = false;
+            break;
+        }
 
-		if (pte_present(ptent)) {
-			max_nr = (end - addr) / PAGE_SIZE;
-			nr = zap_present_ptes(tlb, vma, pte, ptent, max_nr,
-					      addr, details, rss, &force_flush,
-					      &force_break);
-			if (unlikely(force_break)) {
-				addr += nr * PAGE_SIZE;
-				break;
-			}
-			continue;
-		}
+        if (pte_present(ptent)) {
+            max_nr = (end - addr) / PAGE_SIZE;
+            nr = zap_present_ptes(tlb, vma, pte, ptent, max_nr,
+                          addr, details, rss, &force_flush,
+                          &force_break);
+            if (unlikely(force_break)) {
+                addr += nr * PAGE_SIZE;
+                direct_reclaim = false;
+                break;
+            }
+            continue;
+        }
 
-		entry = pte_to_swp_entry(ptent);
-		if (is_device_private_entry(entry) ||
-		    is_device_exclusive_entry(entry)) {
-			page = pfn_swap_entry_to_page(entry);
-			folio = page_folio(page);
-			if (unlikely(!should_zap_folio(details, folio))) {
-				can_reclaim_pt = false;
-				continue;
-			}
-			/*
-			 * Both device private/exclusive mappings should only
-			 * work with anonymous page so far, so we don't need to
-			 * consider uffd-wp bit when zap. For more information,
-			 * see zap_install_uffd_wp_if_needed().
-			 */
-			WARN_ON_ONCE(!vma_is_anonymous(vma));
-			rss[mm_counter(folio)]--;
-			if (is_device_private_entry(entry))
-				folio_remove_rmap_pte(folio, page, vma);
-			folio_put(folio);
-		} else if (!non_swap_entry(entry)) {
-			max_nr = (end - addr) / PAGE_SIZE;
-			nr = swap_pte_batch(pte, max_nr, ptent);
-			/* Genuine swap entries, hence a private anon pages */
-			if (!should_zap_cows(details)) {
-				can_reclaim_pt = false;
-				continue;
-			}
-			rss[MM_SWAPENTS] -= nr;
-			trace_android_vh_swapmem_gather_add_bypass(mm, entry, nr, &bypass);
-			if (bypass) {
-				can_reclaim_pt = false;
-				goto skip;
-			}
-			free_swap_and_cache_nr(entry, nr);
-		} else if (is_migration_entry(entry)) {
-			folio = pfn_swap_entry_folio(entry);
-			if (!should_zap_folio(details, folio)) {
-				can_reclaim_pt = false;
-				continue;
-			}
-			rss[mm_counter(folio)]--;
-		} else if (pte_marker_entry_uffd_wp(entry)) {
-			/*
-			 * For anon: always drop the marker; for file: only
-			 * drop the marker if explicitly requested.
-			 */
-			if (!vma_is_anonymous(vma) &&
-			    !zap_drop_markers(details)) {
-				can_reclaim_pt = false;
-				continue;
-			}
-		} else if (is_guard_swp_entry(entry)) {
-			/*
-			 * Ordinary zapping should not remove guard PTE
-			 * markers. Only do so if we should remove PTE markers
-			 * in general.
-			 */
-			if (!zap_drop_markers(details)) {
-				can_reclaim_pt = false;
-				continue;
-			}
-		} else if (is_hwpoison_entry(entry) ||
-			   is_poisoned_swp_entry(entry)) {
-			if (!should_zap_cows(details)) {
-				can_reclaim_pt = false;
-				continue;
-			}
-		} else {
-			/* We should have covered all the swap entry types */
-			pr_alert("unrecognized swap entry 0x%lx\n", entry.val);
-			WARN_ON_ONCE(1);
-			can_reclaim_pt = false;
-		}
+        entry = pte_to_swp_entry(ptent);
+        if (is_device_private_entry(entry) ||
+            is_device_exclusive_entry(entry)) {
+            page = pfn_swap_entry_to_page(entry);
+            folio = page_folio(page);
+            if (unlikely(!should_zap_folio(details, folio))) {
+                can_reclaim_pt = false;
+                continue;
+            }
+            /*
+             * Both device private/exclusive mappings should only
+             * work with anonymous page so far, so we don't need to
+             * consider uffd-wp bit when zap. For more information,
+             * see zap_install_uffd_wp_if_needed().
+             */
+            WARN_ON_ONCE(!vma_is_anonymous(vma));
+            rss[mm_counter(folio)]--;
+            if (is_device_private_entry(entry))
+                folio_remove_rmap_pte(folio, page, vma);
+            folio_put(folio);
+        } else if (!non_swap_entry(entry)) {
+            max_nr = (end - addr) / PAGE_SIZE;
+            nr = swap_pte_batch(pte, max_nr, ptent);
+            /* Genuine swap entries, hence a private anon pages */
+            if (!should_zap_cows(details)) {
+                can_reclaim_pt = false;
+                continue;
+            }
+            rss[MM_SWAPENTS] -= nr;
+            trace_android_vh_swapmem_gather_add_bypass(mm, entry, nr, &bypass);
+            if (bypass) {
+                can_reclaim_pt = false;
+                goto skip;
+            }
+            free_swap_and_cache_nr(entry, nr);
+        } else if (is_migration_entry(entry)) {
+            folio = pfn_swap_entry_folio(entry);
+            if (!should_zap_folio(details, folio)) {
+                can_reclaim_pt = false;
+                continue;
+            }
+            rss[mm_counter(folio)]--;
+        } else if (pte_marker_entry_uffd_wp(entry)) {
+            /*
+             * For anon: always drop the marker; for file: only
+             * drop the marker if explicitly requested.
+             */
+            if (!vma_is_anonymous(vma) &&
+                !zap_drop_markers(details)) {
+                can_reclaim_pt = false;
+                continue;
+            }
+        } else if (is_guard_swp_entry(entry)) {
+            /*
+             * Ordinary zapping should not remove guard PTE
+             * markers. Only do so if we should remove PTE markers
+             * in general.
+             */
+            if (!zap_drop_markers(details)) {
+                can_reclaim_pt = false;
+                continue;
+            }
+        } else if (is_hwpoison_entry(entry) ||
+               is_poisoned_swp_entry(entry)) {
+            if (!should_zap_cows(details)) {
+                can_reclaim_pt = false;
+                continue;
+            }
+        } else {
+            /* We should have covered all the swap entry types */
+            pr_alert("unrecognized swap entry 0x%lx\n", entry.val);
+            WARN_ON_ONCE(1);
+            can_reclaim_pt = false;
+        }
 skip:
-		clear_not_present_full_ptes(mm, addr, pte, nr, tlb->fullmm);
-		zap_install_uffd_wp_if_needed(vma, addr, pte, nr, details, ptent);
-	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
+        clear_not_present_full_ptes(mm, addr, pte, nr, tlb->fullmm);
+        zap_install_uffd_wp_if_needed(vma, addr, pte, nr, details, ptent);
+    } while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
 
-	if (can_reclaim_pt && addr == end)
-		direct_reclaim = try_get_and_clear_pmd(mm, pmd, &pmdval);
+    /*
+     * Fast path: try to hold the pmd lock and unmap the PTE page.
+     *
+     * If the pte lock was released midway (retry case), or if the attempt
+     * to hold the pmd lock failed, then we need to recheck all pte entries
+     * to ensure they are still none, thereby preventing the pte entries
+     * from being repopulated by another thread.
+     */
+    if (can_reclaim_pt && direct_reclaim && addr == end)
+        direct_reclaim = try_get_and_clear_pmd(mm, pmd, &pmdval);
 
-	add_mm_rss_vec(mm, rss);
-	arch_leave_lazy_mmu_mode();
+    add_mm_rss_vec(mm, rss);
+    arch_leave_lazy_mmu_mode();
 
-	/* Do the actual TLB flush before dropping ptl */
-	if (force_flush) {
-		tlb_flush_mmu_tlbonly(tlb);
-		tlb_flush_rmaps(tlb, vma);
-	}
-	pte_unmap_unlock(start_pte, ptl);
+    /* Do the actual TLB flush before dropping ptl */
+    if (force_flush) {
+        tlb_flush_mmu_tlbonly(tlb);
+        tlb_flush_rmaps(tlb, vma);
+    }
+    pte_unmap_unlock(start_pte, ptl);
 
-	/*
-	 * If we forced a TLB flush (either due to running out of
-	 * batch buffers or because we needed to flush dirty TLB
-	 * entries before releasing the ptl), free the batched
-	 * memory too. Come back again if we didn't do everything.
-	 */
-	if (force_flush)
-		tlb_flush_mmu(tlb);
+    /*
+     * If we forced a TLB flush (either due to running out of
+     * batch buffers or because we needed to flush dirty TLB
+     * entries before releasing the ptl), free the batched
+     * memory too. Come back again if we didn't do everything.
+     */
+    if (force_flush)
+        tlb_flush_mmu(tlb);
 
-	if (can_reclaim_pt && addr == end) {
-		if (direct_reclaim)
-			free_pte(mm, start, tlb, pmdval);
-		else
-			try_to_free_pte(mm, pmd, start, tlb);
-	}
+    if (can_reclaim_pt && addr == end) {
+        if (direct_reclaim)
+            free_pte(mm, start, tlb, pmdval);
+        else
+            try_to_free_pte(mm, pmd, start, tlb);
+    }
 
-	return addr;
+    return addr;
 }
 
 static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
