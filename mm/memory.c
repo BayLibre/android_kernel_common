@@ -1608,7 +1608,7 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
 	pmd_t pmdval;
 	unsigned long start = addr;
 	bool can_reclaim_pt = reclaim_pt_is_enabled(start, end, details);
-	bool direct_reclaim = false;
+	bool direct_reclaim = true;
 	int nr;
 	bool bypass = false;
 
@@ -1630,8 +1630,10 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
 		if (pte_none(ptent))
 			continue;
 
-		if (need_resched())
+		if (need_resched()) {
+			direct_reclaim = false;
 			break;
+		}
 
 		if (pte_present(ptent)) {
 			max_nr = (end - addr) / PAGE_SIZE;
@@ -1640,6 +1642,7 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
 					      &force_break);
 			if (unlikely(force_break)) {
 				addr += nr * PAGE_SIZE;
+				direct_reclaim = false;
 				break;
 			}
 			continue;
@@ -1724,7 +1727,15 @@ skip:
 		zap_install_uffd_wp_if_needed(vma, addr, pte, nr, details, ptent);
 	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
 
-	if (can_reclaim_pt && addr == end)
+	/*
+	 * Fast path: try to hold the pmd lock and unmap the PTE page.
+	 *
+	 * If the pte lock was released midway (retry case), or if the attempt
+	 * to hold the pmd lock failed, then we need to recheck all pte entries
+	 * to ensure they are still none, thereby preventing the pte entries
+	 * from being repopulated by another thread.
+	 */
+	if (can_reclaim_pt && direct_reclaim && addr == end)
 		direct_reclaim = try_get_and_clear_pmd(mm, pmd, &pmdval);
 
 	add_mm_rss_vec(mm, rss);
