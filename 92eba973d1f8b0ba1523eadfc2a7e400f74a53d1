@@ -34,6 +34,24 @@
       "parentUuid": "470b7e91_ce9ca3cd",
       "revId": "92eba973d1f8b0ba1523eadfc2a7e400f74a53d1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09f17c42_91b3b466",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-02-11T07:39:50Z",
+      "side": 1,
+      "message": "No external driver should be holding a file reference that they do not own, that way is ripe for memory leaks and race conditions 😞\n\nAnd please use the normal ftrace hooks instead of making custom ones like this, it\u0027s easier to maintain over time.",
+      "parentUuid": "d89b0420_8a5d005e",
+      "revId": "92eba973d1f8b0ba1523eadfc2a7e400f74a53d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
