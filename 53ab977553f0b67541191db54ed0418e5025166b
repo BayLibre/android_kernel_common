@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60a2f3d8_df01d918",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-02-12T19:57:56Z",
+      "side": 1,
+      "message": "I\u0027m not sure why we are getting these two test failures. Looking into it. Meanwhile there is one issue to fix.",
+      "revId": "53ab977553f0b67541191db54ed0418e5025166b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60438552_774c9c72",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-02-12T19:57:56Z",
+      "side": 1,
+      "message": "please add an assertion here that the alignment of this pointer is consistent with the alignment of spinlock_t since we are converting a `struct sbinmap_word` into a spinlock_t.",
+      "revId": "53ab977553f0b67541191db54ed0418e5025166b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
