@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5b0e5ad_f6561837",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-02-12T16:47:23Z",
+      "side": 1,
+      "message": "What members of \u0027policy-\u003e*\u0027 are you using for this calculation? It might be better to use those individually to avoid locking down the whole `struct cpufreq_policy` structure for KMI freeze.",
+      "range": {
+        "startLine": 181,
+        "startChar": 61,
+        "endLine": 181,
+        "endChar": 67
+      },
+      "revId": "627209094ab76aba439d93e522d5e4d89f68c3d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
