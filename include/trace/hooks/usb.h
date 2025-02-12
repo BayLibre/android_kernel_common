@@ -10,6 +10,7 @@
 #include <trace/hooks/vendor_hooks.h>
 
 struct usb_device;
+struct acc_dev;
 
 DECLARE_HOOK(android_vh_configfs_uevent_work,
 		TP_PROTO(bool connected, bool disconnected, bool configured, bool uevent_sent),
@@ -30,6 +31,10 @@ DECLARE_HOOK(android_vh_usb_dev_resume,
 DECLARE_HOOK(android_vh_usb_new_device_added,
 	TP_PROTO(struct usb_device *udev, int *err),
 	TP_ARGS(udev, err));
+
+DECLARE_HOOK(android_vh_accessory_ss_endpoint_setup,
+	TP_PROTO(struct acc_dev *dev),
+	TP_ARGS(dev));
 
 #endif /*  _TRACE_HOOK_USB_H */
 /*  This part must be outside protection */

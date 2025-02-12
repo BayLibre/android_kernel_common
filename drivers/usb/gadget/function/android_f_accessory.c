@@ -33,6 +33,8 @@
 #include <linux/configfs.h>
 #include <linux/usb/composite.h>
 
+#include <trace/hooks/usb.h>
+
 #define MAX_INST_NAME_LEN 40
 #define BULK_BUFFER_SIZE 16384
 
@@ -1608,6 +1610,9 @@ static struct usb_function *acc_alloc(struct usb_function_instance *fi)
 	dev->function.hs_descriptors = hs_acc_descs;
 	dev->function.ss_descriptors = ss_acc_descs;
 	dev->function.ssp_descriptors = ssp_acc_descs;
+
+	trace_android_vh_accessory_ss_endpoint_setup(dev);
+
 	dev->function.bind = acc_function_bind_configfs;
 	dev->function.unbind = acc_function_unbind;
 	dev->function.set_alt = acc_function_set_alt;
