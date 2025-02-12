@@ -74,12 +74,14 @@ struct samsung_clk_provider * __init samsung_clk_init(struct device *dev,
 	if (!ctx)
 		panic("could not allocate clock provider context.\n");
 
-	for (i = 0; i < nr_clks; ++i)
+	ctx->clk_data.num = nr_clks;
+
+	for (i = 0; i < nr_clks; ++i) {
 		ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
+	}
 
 	ctx->dev = dev;
 	ctx->reg_base = base;
-	ctx->clk_data.num = nr_clks;
 	spin_lock_init(&ctx->lock);
 
 	return ctx;

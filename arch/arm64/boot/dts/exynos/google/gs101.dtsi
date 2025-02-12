@@ -1294,7 +1294,7 @@
 			#size-cells = <1>;
 			status = "disabled";
 
-			usbdrd31_dwc3: usb@0 {
+			usbdrd31_dwc3: dwc3 {
 				compatible = "snps,dwc3";
 				reg = <0x0 0x10000>;
 				clocks = <&cmu_hsi0 CLK_GOUT_HSI0_USB31DRD_I_USB31DRD_REF_CLK_40>;
