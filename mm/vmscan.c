@@ -6448,6 +6448,7 @@ retry:
 		if (sc->priority < DEF_PRIORITY - 2)
 			sc->may_writepage = 1;
 	} while (--sc->priority >= 0);
+	trace_mm_vmscan_direct_scmetrics(sc->priority, sc->nr_reclaimed, sc->nr_to_reclaim);
 
 	last_pgdat = NULL;
 	for_each_zone_zonelist_nodemask(zone, z, zonelist, sc->reclaim_idx,
@@ -7201,6 +7202,8 @@ restart:
 		pgdat->kswapd_failures++;
 
 out:
+	trace_mm_vmscan_kswapd_scmetrics(sc.priority, sc.nr_reclaimed, sc.nr_to_reclaim);
+
 	clear_reclaim_active(pgdat, highest_zoneidx);
 
 	/* If reclaim was boosted, account for the reclaim done in this pass */

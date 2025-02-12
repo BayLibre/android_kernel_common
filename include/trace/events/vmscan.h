@@ -490,6 +490,54 @@ TRACE_EVENT(mm_vmscan_throttled,
 		__entry->usec_delayed,
 		show_throttle_flags(__entry->reason))
 );
+
+TRACE_EVENT(mm_vmscan_kswapd_scmetrics,
+
+       TP_PROTO(s8 min_priority, unsigned long nr_reclaimed, unsigned long nr_to_reclaim),
+
+       TP_ARGS(min_priority, nr_reclaimed, nr_to_reclaim),
+
+       TP_STRUCT__entry(
+               __field(s8, min_priority)
+               __field(unsigned long, nr_reclaimed)
+               __field(unsigned long, nr_to_reclaim)
+       ),
+
+       TP_fast_assign(
+               __entry->min_priority = min_priority;
+               __entry->nr_reclaimed = nr_reclaimed;
+               __entry->nr_to_reclaim = nr_to_reclaim;
+       ),
+
+       TP_printk("min_priority=%d nr_reclaimed=%lu nr_to_reclaim=%lu",
+               __entry->min_priority,
+               __entry->nr_reclaimed,
+               __entry->nr_to_reclaim)
+);
+
+TRACE_EVENT(mm_vmscan_direct_scmetrics,
+
+       TP_PROTO(s8 min_priority, unsigned long nr_reclaimed, unsigned long nr_to_reclaim),
+
+       TP_ARGS(min_priority, nr_reclaimed, nr_to_reclaim),
+
+       TP_STRUCT__entry(
+               __field(s8, min_priority)
+               __field(unsigned long, nr_reclaimed)
+               __field(unsigned long, nr_to_reclaim)
+       ),
+
+       TP_fast_assign(
+               __entry->min_priority = min_priority;
+               __entry->nr_reclaimed = nr_reclaimed;
+               __entry->nr_to_reclaim = nr_to_reclaim;
+       ),
+
+       TP_printk("min_priority=%d nr_reclaimed=%lu nr_to_reclaim=%lu",
+               __entry->min_priority,
+               __entry->nr_reclaimed,
+               __entry->nr_to_reclaim)
+);
 #endif /* _TRACE_VMSCAN_H */
 
 /* This part must be outside protection */
