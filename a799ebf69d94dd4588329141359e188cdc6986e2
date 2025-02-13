@@ -16,6 +16,24 @@
       "message": "This patch doesn\u0027t seem to build in numerous configs:\n\n```\nINFO: Analyzed target //common:db845c_dist (59 packages loaded, 104552 targets configured).\n...l (db845c_gki.fragment) //common:db845c_no_kgdb failed: (Exit 2): bash failed: error executing KernelBuild command (from target //common:db845c_no_kgdb) /bin/bash -c ... (remaining 1 argument skipped)\n\nUse --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\n...ain/common/net/wireless/nl80211.c:16578:9: error: call to undeclared function \u0027nl80211_process_links\u0027; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\n 16578 |                 err \u003d nl80211_process_links(rdev, links, NULL, 0, info);\n       |                       ^\n...android16-6.12/out/bazel/output_user_root/4cfd4b4d530262c9404da8567df5caec/sandbox/linux-sandbox/168/execroot/_main/common/net/wireless/nl80211.c:16578:9: note: did you mean \u0027nl80211_probe_mesh_link\u0027?\n...ndroid16-6.12/out/bazel/output_user_root/4cfd4b4d530262c9404da8567df5caec/sandbox/linux-sandbox/168/execroot/_main/common/net/wireless/nl80211.c:15994:12: note: \u0027nl80211_probe_mesh_link\u0027 declared here\n 15994 | static int nl80211_probe_mesh_link(struct sk_buff *skb, struct genl_info *info)\n       |            ^\n1 error generated.\n```\n\n```\n...l_device_aarch64 failed: (Exit 2): bash failed: error executing KernelBuild command (from target //common-modules/virtual-device:virtual_device_aarch64) /bin/bash -c ... (remaining 1 argument skipped)\n\nUse --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\n...ain/common/net/wireless/nl80211.c:16578:9: error: call to undeclared function \u0027nl80211_process_links\u0027; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\n 16578 |                 err \u003d nl80211_process_links(rdev, links, NULL, 0, info);\n       |                       ^\n...android16-6.12/out/bazel/output_user_root/4cfd4b4d530262c9404da8567df5caec/sandbox/linux-sandbox/478/execroot/_main/common/net/wireless/nl80211.c:16578:9: note: did you mean \u0027nl80211_probe_mesh_link\u0027?\n...ndroid16-6.12/out/bazel/output_user_root/4cfd4b4d530262c9404da8567df5caec/sandbox/linux-sandbox/478/execroot/_main/common/net/wireless/nl80211.c:15994:12: note: \u0027nl80211_probe_mesh_link\u0027 declared here\n 15994 | static int nl80211_probe_mesh_link(struct sk_buff *skb, struct genl_info *info)\n       |            ^\n1 error generated.\n```\n\nPlease fix before resubmitting.",
       "revId": "a799ebf69d94dd4588329141359e188cdc6986e2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dce19654_e146322d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3755739
+      },
+      "writtenOn": "2025-02-13T08:53:52Z",
+      "side": 1,
+      "message": "Fixed it. I missed one commit. please review now. Thanks",
+      "parentUuid": "7d18b4a7_0ebe07c2",
+      "revId": "a799ebf69d94dd4588329141359e188cdc6986e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
