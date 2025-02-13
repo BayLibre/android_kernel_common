@@ -22,6 +22,30 @@
       },
       "revId": "627209094ab76aba439d93e522d5e4d89f68c3d9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7b95215_9e0ac23e",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 3823279
+      },
+      "writtenOn": "2025-02-13T06:10:59Z",
+      "side": 1,
+      "message": "Dear Carlos,\n  non-fixed members.\n  We use different members rely on chip provided by QCOM or Mediatek.\n  We use \"policy-\u003egovernor_data/related_cpus member\" on QCOM platform,and use \"policy-\u003ecpus/related_cpus\" on Mediatek platform.\nThanks",
+      "parentUuid": "d5b0e5ad_f6561837",
+      "range": {
+        "startLine": 181,
+        "startChar": 61,
+        "endLine": 181,
+        "endChar": 67
+      },
+      "revId": "627209094ab76aba439d93e522d5e4d89f68c3d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
