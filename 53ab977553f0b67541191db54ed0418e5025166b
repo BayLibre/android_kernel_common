@@ -33,6 +33,23 @@
       "message": "please add an assertion here that the alignment of this pointer is consistent with the alignment of spinlock_t since we are converting a `struct sbinmap_word` into a spinlock_t.",
       "revId": "53ab977553f0b67541191db54ed0418e5025166b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "addc27e9_bff7a163",
+        "filename": "lib/sbitmap.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-02-13T00:39:18Z",
+      "side": 1,
+      "message": "Please fix the checkpatch issue:\n```\nWARNING:LINE_SPACING: Missing a blank line after declarations\n```",
+      "revId": "53ab977553f0b67541191db54ed0418e5025166b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
