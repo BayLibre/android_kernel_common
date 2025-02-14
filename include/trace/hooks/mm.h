@@ -450,12 +450,21 @@ DECLARE_HOOK(android_vh_mm_may_oom_exit,
 DECLARE_HOOK(android_vh_calculate_totalreserve_pages,
 	TP_PROTO(bool *skip),
 	TP_ARGS(skip));
+<<<<<<< PATCH SET (de74b9 ANDROID: mm: add a new vendor hook in filemap_map_pages)
+
+DECLARE_HOOK(android_vh_filemap_map_pages_range,
+	TP_PROTO(struct file *file, pgoff_t orig_start_pgoff,
+		pgoff_t last_pgoff, vm_fault_t ret),
+	TP_ARGS(file, orig_start_pgoff, last_pgoff, ret));
+||||||| BASE
+=======
 DECLARE_HOOK(android_vh_compact_finished,
 	TP_PROTO(bool *abort_compact),
 	TP_ARGS(abort_compact));
 DECLARE_HOOK(android_vh_madvise_cold_or_pageout_abort,
 	TP_PROTO(struct vm_area_struct *vma, bool *abort_madvise),
 	TP_ARGS(vma, abort_madvise));
+>>>>>>> BASE      (d761f8 ANDROID: vh: move the build_perf_domains rvh to sched_is_eas)
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
