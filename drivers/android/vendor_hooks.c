@@ -485,6 +485,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_adjust_swap_info_flags);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_direct_reclaim_begin);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_direct_reclaim_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_read_fault);
+<<<<<<< HEAD   (5f0aee UPSTREAM: xhci: dbgtty: Improve performance by handling rece)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_alloc_pages_reclaim_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_alloc_pages_reclaim_cycle_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_throttle_direct_reclaim_bypass);
@@ -515,3 +516,21 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_direct_reclaim_enter);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_direct_reclaim_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_may_oom_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_calculate_totalreserve_pages);
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_private_mod);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_fail);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_log);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_proactive_compact_wmark_high);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_trigger_vendor_lmk_kill);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_private_mod);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_fail);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_log);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_proactive_compact_wmark_high);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_trigger_vendor_lmk_kill);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_map_pages_range);
+>>>>>>> CHANGE (2a0173 ANDROID: mm: add a new vendor hook in filemap_map_pages)
