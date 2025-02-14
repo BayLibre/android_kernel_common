@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9b545ab_5156cadc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-02-14T23:32:15Z",
+      "side": 1,
+      "message": "Given all this patch now does is add:\nEXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_runtime);\n\nThis commit message should be reworked.",
+      "revId": "bb6f5cc95c91569eb2faedf184a6fe88b6155e1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "121dc2aa_e4c28bb7",
@@ -14,6 +31,23 @@
       "writtenOn": "2025-02-14T07:38:30Z",
       "side": 1,
       "message": "Hi John\nWe confirmed that hook trace_android_vh_sched_stat_runtime_rt is no longer used. sched_stat_runtime is still necessary. Please review again. Thanks.",
+      "revId": "bb6f5cc95c91569eb2faedf184a6fe88b6155e1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4481f43_5a628d43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-02-14T23:32:15Z",
+      "side": 1,
+      "message": "The commit message should reflect both what the patch does and why. Please update the commit message (and subject) and submit again.",
       "revId": "bb6f5cc95c91569eb2faedf184a6fe88b6155e1b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
