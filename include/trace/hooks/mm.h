@@ -392,6 +392,10 @@ DECLARE_HOOK(android_vh_customize_pmd_gfp_bypass,
 DECLARE_HOOK(android_vh_page_private_mod,
 	TP_PROTO(struct page *page, unsigned long private),
 	TP_ARGS(page, private));
+DECLARE_HOOK(android_vh_filemap_map_pages_range,
+	TP_PROTO(struct file *file, pgoff_t orig_start_pgoff,
+		pgoff_t last_pgoff, vm_fault_t ret),
+	TP_ARGS(file, orig_start_pgoff, last_pgoff, ret));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
