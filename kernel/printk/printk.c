@@ -2722,6 +2722,7 @@ skip:
 			 * directly to the console when we received it, and
 			 * record that has level above the console loglevel.
 			 */
+			trace_android_vh_printk_console_unlock(&r);
 			console_seq++;
 			goto skip;
 		}
