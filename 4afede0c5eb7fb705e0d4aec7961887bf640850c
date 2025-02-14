@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5cdb841_b33415af",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 2023081
+      },
+      "writtenOn": "2025-02-14T12:29:21Z",
+      "side": 1,
+      "message": "This comment implies some functional change - if it was skipped, the comment should be skipped as well",
+      "range": {
+        "startLine": 301,
+        "startChar": 0,
+        "endLine": 306,
+        "endChar": 50
+      },
+      "revId": "4afede0c5eb7fb705e0d4aec7961887bf640850c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7eb20e33_5eaf33b8",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 2023081
+      },
+      "writtenOn": "2025-02-14T12:29:21Z",
+      "side": 1,
+      "message": "Isn\u0027t this code a duplication from #311 to #318?",
+      "range": {
+        "startLine": 321,
+        "startChar": 0,
+        "endLine": 328,
+        "endChar": 43
+      },
+      "revId": "4afede0c5eb7fb705e0d4aec7961887bf640850c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "906b69cb_d32e6dac",
+        "filename": "kernel/bpf/syscall.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2923,
+      "author": {
+        "id": 2023081
+      },
+      "writtenOn": "2025-02-14T12:29:21Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we reuse the `bpf_link_dealloc` function there?\n```suggestion\n\t\tbpf_link_dealloc(link);\n```",
+      "revId": "4afede0c5eb7fb705e0d4aec7961887bf640850c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
