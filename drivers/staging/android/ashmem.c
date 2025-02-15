@@ -103,6 +103,15 @@ static struct lock_class_key backing_shmem_inode_class;
 /* Enable unpinning feature by default to retain compatibility with existing behavior. */
 static bool unpinning_enable = true;
 
+/*
+ * memfd does not allow removing permissions to map a buffer with PROT_READ. This variable
+ * is exposed as a tunable so that it can be used to make ashmem behave more like memfd for
+ * test purposes.
+ *
+ * It is set to false by default to retain compatibility with the original behavior of the driver.
+ */
+static bool ignore_unset_prot_read;
+
 static inline unsigned long range_size(struct ashmem_range *range)
 {
 	return range->pgend - range->pgstart + 1;
@@ -584,6 +593,10 @@ static int set_prot_mask(struct ashmem_area *asma, unsigned long prot)
 
 	mutex_lock(&ashmem_mutex);
 
+	/* Ensure the buffer can only be mapped with PROT_READ iff it has that permission. */
+	if (ignore_unset_prot_read)
+		prot |= asma->prot_mask & PROT_READ;
+
 	/* the user can only remove, not add, protection bits */
 	if ((asma->prot_mask & prot) != prot) {
 		ret = -EINVAL;
@@ -985,9 +998,11 @@ static struct miscdevice ashmem_misc = {
 };
 
 DEFINE_BOOL_RW_SYSFS_ATTR(unpinning_enable);
+DEFINE_BOOL_RW_SYSFS_ATTR(ignore_unset_prot_read);
 
 static const struct attribute *ashmem_attrs[] = {
 	&unpinning_enable_attr.attr,
+	&ignore_unset_prot_read_attr.attr,
 	NULL,
 };
 
