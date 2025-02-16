@@ -157,6 +157,7 @@ define_common_kernels(target_configs = {
         "protected_exports_list": "android/abi_gki_protected_exports_aarch64",
         "protected_modules_list": "android/gki_aarch64_protected_modules",
         "make_goals": _GKI_AARCH64_MAKE_GOALS,
+<<<<<<< HEAD   (ccc915 ANDROID: cma: Add restrict_cma_redirect boot parameter)
     },
     "kernel_aarch64_debug": {
         "kmi_symbol_list_strict_mode": False,
@@ -173,6 +174,20 @@ define_common_kernels(target_configs = {
         "kmi_symbol_list_strict_mode": False,
         "module_implicit_outs": get_gki_modules_list("riscv64"),
         "make_goals": _GKI_RISCV64_MAKE_GOALS,
+||||||| BASE
+        "ddk_headers_archive": ":kernel_aarch64_ddk_headers_archive",
+        "extra_dist": [
+            ":test_mappings_zip",
+            ":tests_zip_arm64",
+        ],
+=======
+        "ddk_headers_archive": ":kernel_aarch64_ddk_headers_archive",
+        "page_size": "16k",
+        "extra_dist": [
+            ":test_mappings_zip",
+            ":tests_zip_arm64",
+        ],
+>>>>>>> CHANGE (59115b ANDROID: Add page_size config to kernel_aarch64_16k target)
     },
     "kernel_x86_64": {
         "kmi_symbol_list_strict_mode": False,
