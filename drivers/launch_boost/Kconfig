@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# launch boost driver configuration
+#
+
+menuconfig XRING_LB
+	bool "APP launch boost support"
+	help
+	  Enable this option to activate APP launch boost support, which is designed
+	  to enhance the performance of application launches by pre-reading necessary
+	  files into memory. This feature can significantly reduce the time it takes
+	  for applications to start.
+
+	  When enabled, the system will monitor application launch requests and
+	  pre-load the required files into memory, allowing for faster access and
+	  reduced latency. This can be particularly beneficial for frequently used
+	  applications or those with large resource files.
