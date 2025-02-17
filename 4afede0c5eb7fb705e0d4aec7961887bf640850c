@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a7acbd19_71cca696",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 2055842
+      },
+      "writtenOn": "2025-02-17T09:27:26Z",
+      "side": 1,
+      "message": "Right, the change itself shouldn\u0027t be skipped and this comment should stay. I\u0027ll upload the next patchset fixing this.",
+      "parentUuid": "e5cdb841_b33415af",
+      "range": {
+        "startLine": 301,
+        "startChar": 0,
+        "endLine": 306,
+        "endChar": 50
+      },
+      "revId": "4afede0c5eb7fb705e0d4aec7961887bf640850c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7eb20e33_5eaf33b8",
         "filename": "drivers/block/zram/zram_drv.c",
         "patchSetId": 1
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f8dbaeb4_b852af65",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 2055842
+      },
+      "writtenOn": "2025-02-17T09:27:26Z",
+      "side": 1,
+      "message": "Yes, the conflict is not resolved properly. Let me upload next patchset.",
+      "parentUuid": "7eb20e33_5eaf33b8",
+      "range": {
+        "startLine": 321,
+        "startChar": 0,
+        "endLine": 328,
+        "endChar": 43
+      },
+      "revId": "4afede0c5eb7fb705e0d4aec7961887bf640850c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "906b69cb_d32e6dac",
         "filename": "kernel/bpf/syscall.c",
         "patchSetId": 1
@@ -60,6 +108,24 @@
       "writtenOn": "2025-02-14T12:29:21Z",
       "side": 1,
       "message": "Shouldn\u0027t we reuse the `bpf_link_dealloc` function there?\n```suggestion\n\t\tbpf_link_dealloc(link);\n```",
+      "revId": "4afede0c5eb7fb705e0d4aec7961887bf640850c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ab9e957_6dfe7303",
+        "filename": "kernel/bpf/syscall.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2923,
+      "author": {
+        "id": 2055842
+      },
+      "writtenOn": "2025-02-17T09:27:26Z",
+      "side": 1,
+      "message": "Yes, the conflict was wronlgy addressed. The `bpf_link_dealloc` calls `ops-\u003edealloc` itself and thus should be here. I\u0027ll upload the next patchset soon - I\u0027m testing it currently.",
+      "parentUuid": "906b69cb_d32e6dac",
       "revId": "4afede0c5eb7fb705e0d4aec7961887bf640850c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }

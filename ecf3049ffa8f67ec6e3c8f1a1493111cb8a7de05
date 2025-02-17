@@ -16,6 +16,24 @@
       "message": "`orig_pfn` remains unused?\n\nLooks like we now have a mix of the upstream patch https://lore.kernel.org/all/20241208083830.77587-1-kniv@yandex-team.ru/ with our FROMLIST patch https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/5359867 while we only need one of the two. See this note in https://lore.kernel.org/all/20241208083830.77587-1-kniv@yandex-team.ru/ :\n\n```\nNo bug in upstream as it was solved fundamentally by\ncommit 8dd861cc07e2 (\"KVM: x86/mmu: Put refcounted pages instead of blindly releasing pfns\")\nand related patch series.\n```\n\nand David\u0027s comments b/265081912#comment30 and b/265081912#comment31.\n\nSo looks like we should either just drop this upstream patch, or alternatively revert the FROMLIST patch (and then probably the entire series https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/5359867 series as well).",
       "revId": "ecf3049ffa8f67ec6e3c8f1a1493111cb8a7de05",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59ee4afb_3ea7cdcd",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4448,
+      "author": {
+        "id": 2055842
+      },
+      "writtenOn": "2025-02-17T09:27:26Z",
+      "side": 0,
+      "message": "Good catch, thanks - since the FROMLIST pathset is already applied I decided to drop the upstream patch. I\u0027ll upload the fix soon.",
+      "parentUuid": "7a886d8d_b2fe3390",
+      "revId": "ecf3049ffa8f67ec6e3c8f1a1493111cb8a7de05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
