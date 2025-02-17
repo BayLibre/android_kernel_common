@@ -248,6 +248,10 @@ struct ffa_partition_info {
 #define FFA_PARTITION_HYP_DESTROY_VM	BIT(7)
 /* partition runs in the AArch64 execution state. */
 #define FFA_PARTITION_AARCH64_EXEC	BIT(8)
+/* partition supports receipt of direct request2 */
+#define FFA_PARTITION_DIRECT_REQ2_RECV	BIT(9)
+/* partition can send direct request2. */
+#define FFA_PARTITION_DIRECT_REQ2_SEND	BIT(10)
 	u32 properties;
 	uuid_t uuid;
 };
@@ -269,6 +273,10 @@ bool ffa_partition_check_property(struct ffa_device *dev, u32 property)
 
 #define ffa_partition_supports_direct_recv(dev)	\
 	ffa_partition_check_property(dev, FFA_PARTITION_DIRECT_RECV)
+
+#define ffa_partition_supports_direct_req2_recv(dev)	\
+	(ffa_partition_check_property(dev, FFA_PARTITION_DIRECT_REQ2_RECV) && \
+	 !dev->mode_32bit)
 
 #define FFA_SRC_ENDPOINT_MASK	GENMASK(31, 16)
 
