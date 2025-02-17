@@ -16,6 +16,24 @@
       "message": "Symbol removal is not allowed once the KMI is frozen. If you use `kernel_abi` Bazel rule for symbol list generation, please use `kmi_symbol_list_add_only \u003d True` option there. See https://source.android.com/docs/core/architecture/kernel/howto-symbol-lists",
       "revId": "ccffb98611ee3e4f2d95843e11dacfde97b47691",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90050485_9085ff4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1956160
+      },
+      "writtenOn": "2025-02-17T15:25:58Z",
+      "side": 1,
+      "message": "Sorry, I noticed \"preserved by --additions-only\" in the list, so there should be no symbol removals. Let me have a look again.",
+      "parentUuid": "0b4ddf17_cdbe6e1c",
+      "revId": "ccffb98611ee3e4f2d95843e11dacfde97b47691",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
