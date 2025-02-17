@@ -106,6 +106,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "065d3e81_7b1216c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2025-02-17T13:32:19Z",
+      "side": 1,
+      "message": "\u003e Can you add the above context to the commit message so it is clear that we don\u0027t need this once P-E lands. Are you going to revert this when P-E is turned on in 6.12?\n\nSure. Done. Once PE connects to futex_pi this patch will no longer be necessary. Turning PE on is not sufficient yet as John explained.",
+      "parentUuid": "4c4c71dc_77d1a729",
+      "revId": "b7adb05f753fb338ffd2517a3390946df02ce59a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37cf1773_c6c589f1",
