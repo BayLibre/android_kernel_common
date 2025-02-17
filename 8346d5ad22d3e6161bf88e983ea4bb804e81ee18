@@ -16,6 +16,24 @@
       "message": "nit: not sure about the need for the WARN_ON. After all we can gracefully return an error here, nothing has been compromised.",
       "revId": "8346d5ad22d3e6161bf88e983ea4bb804e81ee18",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2664b7f1_c32619d4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1974,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-02-17T10:12:24Z",
+      "side": 1,
+      "message": "The code landed upstream like that, so I\u0027d prefer to keep it as-is 😊",
+      "parentUuid": "e704a341_e6346071",
+      "revId": "8346d5ad22d3e6161bf88e983ea4bb804e81ee18",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
