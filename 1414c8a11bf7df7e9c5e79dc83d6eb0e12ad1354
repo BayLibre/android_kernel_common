@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab27c2e8_ed6ec949",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3843898
+      },
+      "writtenOn": "2025-02-18T00:08:21Z",
+      "side": 1,
+      "message": "Thank you for the comment.\nAs I explain the usage of this vendor hook in the IT 396580116 (the page 3rd of the attached PPTX , vh_ignore_loglevel_trylock_example_usage.patch ),\nwe will use this vendor hook with this module and this module uses\n  spin_trylock_irqsave();\n  spin_unlock_irqrestore();\n  stop_critical_timings();\n  start_critical_timings();\n  etc.\nDo we need to add these symbol lists in android/abi_gki_aarch64_sony, too?",
+      "parentUuid": "11ad85fa_2356a173",
+      "revId": "1414c8a11bf7df7e9c5e79dc83d6eb0e12ad1354",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b1b2421b_17df633f",
         "filename": "android/abi_gki_aarch64_sony",
         "patchSetId": 1
@@ -66,6 +84,30 @@
       "writtenOn": "2025-02-17T13:35:45Z",
       "side": 1,
       "message": "Those appear to be invalid symbols.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 47
+      },
+      "revId": "1414c8a11bf7df7e9c5e79dc83d6eb0e12ad1354",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4926bbe_b81b7674",
+        "filename": "android/abi_gki_aarch64_sony",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3843898
+      },
+      "writtenOn": "2025-02-18T00:08:21Z",
+      "side": 1,
+      "message": "To fix these invalid symbols, we need to build this ticket with the 3496835. \nhttps://android-review.googlesource.com/c/kernel/common/+/3496835\n\nCould I kwnow the procedure to do the Presubmit-Verify with the 3496835?",
+      "parentUuid": "b1b2421b_17df633f",
       "range": {
         "startLine": 2,
         "startChar": 0,
