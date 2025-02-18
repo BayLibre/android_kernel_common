@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c16abd3f_d74f286b",
+        "filename": "Documentation/ABI/testing/sysfs-kernel-mm-ashmem-rust",
+        "patchSetId": 26
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-02-18T20:56:51Z",
+      "side": 1,
+      "message": "Judging from the pattern under `Documentation/ABI/testing/*`, I think the pattern is to have the file name match the path on device, so I think this file should be `sysfs-kernel-ashmem-rust`?",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 26
+      },
+      "revId": "dfe94e8311f5c1aa594cccab2b03f53f499e9399",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "951abf2c_38a3f527",
+        "filename": "Documentation/ABI/testing/sysfs-kernel-mm-ashmem-rust",
+        "patchSetId": 26
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-02-18T20:56:51Z",
+      "side": 1,
+      "message": "perhaps we can name this `unpin_enable`?",
+      "range": {
+        "startLine": 9,
+        "startChar": 26,
+        "endLine": 9,
+        "endChar": 31
+      },
+      "revId": "dfe94e8311f5c1aa594cccab2b03f53f499e9399",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3243278_2991d4c9",
+        "filename": "Documentation/ABI/testing/sysfs-kernel-mm-ashmem-rust",
+        "patchSetId": 26
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-02-18T20:56:51Z",
+      "side": 1,
+      "message": "I think it is okay to drop support for `immediately`, so this can be made to take in a boolean value. I\u0027ve implemented these in the past with `kstrtobool()` which accepts a variety of input: https://archive.kernel.org/oldlinux/htmldocs/kernel-api/API-kstrtobool.html\n\nIs it possible to implement this and subsequent toggles accordingly please?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 13
+      },
+      "revId": "dfe94e8311f5c1aa594cccab2b03f53f499e9399",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
