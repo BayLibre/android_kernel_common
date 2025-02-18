@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "99c7ed3c_fc10342d",
+        "filename": "Documentation/ABI/testing/sysfs-kernel-mm-ashmem-rust",
+        "patchSetId": 26
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-02-18T22:12:01Z",
+      "side": 1,
+      "message": "I removed the `-mm` part. To match the file on device, we\u0027d also need to drop the `-rust` part.",
+      "parentUuid": "c16abd3f_d74f286b",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 26
+      },
+      "revId": "dfe94e8311f5c1aa594cccab2b03f53f499e9399",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "951abf2c_38a3f527",
         "filename": "Documentation/ABI/testing/sysfs-kernel-mm-ashmem-rust",
         "patchSetId": 26
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-18T20:56:51Z",
       "side": 1,
       "message": "perhaps we can name this `unpin_enable`?",
+      "range": {
+        "startLine": 9,
+        "startChar": 26,
+        "endLine": 9,
+        "endChar": 31
+      },
+      "revId": "dfe94e8311f5c1aa594cccab2b03f53f499e9399",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ac81dc9_793a7f58",
+        "filename": "Documentation/ABI/testing/sysfs-kernel-mm-ashmem-rust",
+        "patchSetId": 26
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-02-18T22:12:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "951abf2c_38a3f527",
       "range": {
         "startLine": 9,
         "startChar": 26,
@@ -60,6 +108,30 @@
       "writtenOn": "2025-02-18T20:56:51Z",
       "side": 1,
       "message": "I think it is okay to drop support for `immediately`, so this can be made to take in a boolean value. I\u0027ve implemented these in the past with `kstrtobool()` which accepts a variety of input: https://archive.kernel.org/oldlinux/htmldocs/kernel-api/API-kstrtobool.html\n\nIs it possible to implement this and subsequent toggles accordingly please?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 13
+      },
+      "revId": "dfe94e8311f5c1aa594cccab2b03f53f499e9399",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3d6b9dd_08b5051f",
+        "filename": "Documentation/ABI/testing/sysfs-kernel-mm-ashmem-rust",
+        "patchSetId": 26
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-02-18T22:12:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3243278_2991d4c9",
       "range": {
         "startLine": 15,
         "startChar": 0,
