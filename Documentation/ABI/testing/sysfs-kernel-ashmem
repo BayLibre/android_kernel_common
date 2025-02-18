@@ -33,3 +33,16 @@ Description:
 
 		A value of 1 will silently ignore the request to remove
 		PROT_READ.
+
+What:		/sys/kernel/ashmem/ignore_unset_prot_exec
+Date:		Feb 2025
+Contact:	Isaac J. Manjarres <isaacmanjarres@google.com>
+Description:
+		Can be used to control if ashmem allows clients to remove
+		PROT_EXEC from a buffer's mapping permissions set.
+
+		A value of 0 indicates that ashmem will allow a client to
+		remove PROT_EXEC from a buffer's mapping permissions set.
+
+		A value of 1 will silently ignore the request to remove
+		PROT_EXEC.

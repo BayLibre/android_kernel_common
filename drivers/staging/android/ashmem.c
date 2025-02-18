@@ -104,13 +104,15 @@ static struct lock_class_key backing_shmem_inode_class;
 static bool unpinning_enable = true;
 
 /*
- * memfd does not allow removing permissions to map a buffer with PROT_READ. This variable
- * is exposed as a tunable so that it can be used to make ashmem behave more like memfd for
- * test purposes.
+ * memfd does not allow removing permissions to map a buffer with PROT_READ or PROT_EXEC. These
+ * variables are exposed as tunables so that they can be used to make ashmem behave more like memfd
+ * for test purposes.
  *
- * It is set to false by default to retain compatibility with the original behavior of the driver.
+ * They are set to false by default to retain compatibility with the original behavior of the
+ * driver.
  */
 static bool ignore_unset_prot_read;
+static bool ignore_unset_prot_exec;
 
 static inline unsigned long range_size(struct ashmem_range *range)
 {
@@ -157,7 +159,7 @@ static inline bool range_before_page(struct ashmem_range *range,
 #define DEFINE_BOOL_SYSFS_ATTR_SHOW(attrname)							\
 static ssize_t attrname##_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)	\
 {												\
-	return sysfs_emit(buf, "%d\n", attr ? 1 : 0);						\
+	return sysfs_emit(buf, "%d\n", attrname ? 1 : 0);					\
 }
 
 #define DEFINE_BOOL_SYSFS_ATTR_STORE(attrname)							\
@@ -597,6 +599,10 @@ static int set_prot_mask(struct ashmem_area *asma, unsigned long prot)
 	if (ignore_unset_prot_read)
 		prot |= asma->prot_mask & PROT_READ;
 
+	/* Ensure the buffer can only be mapped with PROT_EXEC iff it has that permission. */
+	if (ignore_unset_prot_exec)
+		prot |= asma->prot_mask & PROT_EXEC;
+
 	/* the user can only remove, not add, protection bits */
 	if ((asma->prot_mask & prot) != prot) {
 		ret = -EINVAL;
@@ -999,10 +1005,12 @@ static struct miscdevice ashmem_misc = {
 
 DEFINE_BOOL_RW_SYSFS_ATTR(unpinning_enable);
 DEFINE_BOOL_RW_SYSFS_ATTR(ignore_unset_prot_read);
+DEFINE_BOOL_RW_SYSFS_ATTR(ignore_unset_prot_exec);
 
 static const struct attribute *ashmem_attrs[] = {
 	&unpinning_enable_attr.attr,
 	&ignore_unset_prot_read_attr.attr,
+	&ignore_unset_prot_exec_attr.attr,
 	NULL,
 };
 
