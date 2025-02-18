@@ -1038,7 +1038,7 @@ kernel_build(
     makefile = ":Makefile",
     module_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64") + _ROCKPI4_MODULE_OUTS + _ROCKPI4_WATCHDOG_MODULE_OUTS,
     pre_defconfig_fragments = ["arch/arm64/configs/rockpi4_gki.fragment"],
-    trim_nonlisted_kmi = False,
+    trim_nonlisted_kmi = True,
     visibility = ["//visibility:private"],
 )
 
