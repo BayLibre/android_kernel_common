@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f41d5d2c_5e2f1a58",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 28
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-02-19T18:36:04Z",
+      "side": 1,
+      "message": "then debugfs?  That\u0027s there for you to muck around in.  Having to create whole bindings to kobjects and sysfs just for some knobs like this feels way too complex.  Why not just add a control-plane to the misc device itself?  Or yet-another-misc device that implements that?  Then there\u0027s no new infrastructure needed to be added here at the very least.",
+      "parentUuid": "f0a0f77a_98dd7f26",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 49
+      },
+      "revId": "a5a0a60517448e3709f33dbf4c3e15a5cf3d246d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7824a3bb_b56ba8fe",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 28
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "I was suggesting module params but was told that those should not be used. What would be the best way here? We want to be able to enable/disable certain ashmem functionality at runtime so that it can be controlled when we run experiments in the field. Once we know disabling these features does not cause issues we will deprecate them and remove these controls.",
       "parentUuid": "7824a3bb_b56ba8fe",
+      "revId": "a5a0a60517448e3709f33dbf4c3e15a5cf3d246d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cb8af3a_c0842188",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-02-19T18:36:04Z",
+      "side": 1,
+      "message": "debugfs?  procfs (isn\u0027t there already a proc file for ashmem present?)  another char device?  Another ioctl for a control plane?",
+      "parentUuid": "eb007f59_507a2b2a",
       "revId": "a5a0a60517448e3709f33dbf4c3e15a5cf3d246d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
