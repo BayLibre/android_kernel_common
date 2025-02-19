@@ -498,6 +498,7 @@ static const struct dma_heap_ops system_heap_ops = {
 	.allocate = system_heap_allocate,
 };
 
+<<<<<<< HEAD   (bf6f27 Revert "ANDROID: overlayfs: inode_owner_or_capable called du)
 static struct dma_buf *system_uncached_heap_allocate(struct dma_heap *heap,
 						     unsigned long len,
 						     u32 fd_flags,
@@ -521,6 +522,11 @@ static struct dma_heap_ops system_uncached_heap_ops = {
 };
 
 static int system_heap_create(void)
+||||||| BASE
+static int system_heap_create(void)
+=======
+static int __init system_heap_create(void)
+>>>>>>> BRANCH (be4202 Merge tag 'x86_tdx_for_6.13-rc1' of git://git.kernel.org/pub)
 {
 	struct dma_heap_export_info exp_info;
 
