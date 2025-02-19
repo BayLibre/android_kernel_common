@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "928fbf3f_0a4149cd",
+        "filename": "mm/shmem.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2327,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-19T18:33:48Z",
+      "side": 1,
+      "message": "If we follow the pattern for `shmem_suitable_orders`/`trace_android_rvh_shmem_fill_suitable_orders` this should be `trace_android_rvh_shmem_fill_allowable_huge_orders`.\n\nI would suggest simpler naming:\n```\ntrace_android_rvh_shmem_suitable_orders\ntrace_android_rvh_shmem_allowable_huge_orders\n```",
+      "range": {
+        "startLine": 2327,
+        "startChar": 1,
+        "endLine": 2327,
+        "endChar": 36
+      },
+      "revId": "27487b251c1057ccf6cf7825078f3ac6e15a601e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
