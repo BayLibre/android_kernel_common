@@ -43,6 +43,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eb007f59_507a2b2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-02-19T17:56:02Z",
+      "side": 1,
+      "message": "I was suggesting module params but was told that those should not be used. What would be the best way here? We want to be able to enable/disable certain ashmem functionality at runtime so that it can be controlled when we run experiments in the field. Once we know disabling these features does not cause issues we will deprecate them and remove these controls.",
+      "parentUuid": "7824a3bb_b56ba8fe",
+      "revId": "a5a0a60517448e3709f33dbf4c3e15a5cf3d246d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6873dc5e_660188f2",
         "filename": "drivers/staging/android/ashmem_toggle.rs",
         "patchSetId": 28
