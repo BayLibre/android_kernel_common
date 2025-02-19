@@ -3660,7 +3660,17 @@ static int __swap_duplicate(swp_entry_t entry, unsigned char usage, int nr)
 	unsigned char has_cache;
 	int err, i;
 
+<<<<<<< HEAD   (4e0ffc Revert "ANDROID: Prune default dependencies for kernel_build)
 	si = swp_swap_info(entry);
+||||||| BASE
+	p = swp_swap_info(entry);
+=======
+	p = swp_swap_info(entry);
+	if (WARN_ON_ONCE(!p)) {
+		pr_err("%s%08lx\n", Bad_file, entry.val);
+		return -EINVAL;
+	}
+>>>>>>> CHANGE (f4a549 BACKPORT: mm: fix possible NULL pointer dereference in __swa)
 
 	offset = swp_offset(entry);
 	VM_WARN_ON(nr > SWAPFILE_CLUSTER - offset % SWAPFILE_CLUSTER);
