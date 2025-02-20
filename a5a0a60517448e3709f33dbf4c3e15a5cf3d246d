@@ -181,6 +181,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c021e90a_4e0793dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-02-20T17:18:00Z",
+      "side": 1,
+      "message": "Normally I\u0027d be ok with adding a sysfs file for this type of thing, but this really is an abuse of sysfs, don\u0027t you agree?  Also, the issue is that now you have to add a bunch of kobject and sysfs \"raw\" bindings that shouldn\u0027t be required just because this is in rust.\n\nYour rc scripts can do the same thing to write to a `/dev/ashmem_debug_control_will_be_removed_soon_ignore_this` device node just as easily as they can to a sysfs file.  And bonus, the rust bindings to do that is already present in the tree so your code will be much smaller overall 😊",
+      "parentUuid": "68c56cff_22247dde",
+      "revId": "a5a0a60517448e3709f33dbf4c3e15a5cf3d246d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6873dc5e_660188f2",
         "filename": "drivers/staging/android/ashmem_toggle.rs",
         "patchSetId": 28
