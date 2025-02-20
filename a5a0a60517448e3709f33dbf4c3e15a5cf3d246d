@@ -72,6 +72,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a64a0ee2_4f6a9d6f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 28
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-02-20T17:34:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f41d5d2c_5e2f1a58",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 49
+      },
+      "revId": "a5a0a60517448e3709f33dbf4c3e15a5cf3d246d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7824a3bb_b56ba8fe",
@@ -193,6 +217,24 @@
       "side": 1,
       "message": "Normally I\u0027d be ok with adding a sysfs file for this type of thing, but this really is an abuse of sysfs, don\u0027t you agree?  Also, the issue is that now you have to add a bunch of kobject and sysfs \"raw\" bindings that shouldn\u0027t be required just because this is in rust.\n\nYour rc scripts can do the same thing to write to a `/dev/ashmem_debug_control_will_be_removed_soon_ignore_this` device node just as easily as they can to a sysfs file.  And bonus, the rust bindings to do that is already present in the tree so your code will be much smaller overall 😊",
       "parentUuid": "68c56cff_22247dde",
+      "revId": "a5a0a60517448e3709f33dbf4c3e15a5cf3d246d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a58d6f0_6912714b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-02-20T17:34:34Z",
+      "side": 1,
+      "message": "Fair enough. Given that there are only 3 such attributes, and they\u0027re straightforward to use, I think device files should be fine. Thanks for the feedback! \n\nP.S.: The C version of these patches are here: https://android-review.git.corp.google.com/q/topic:%22ashmem-memfd-compat-impl-2%22",
+      "parentUuid": "c021e90a_4e0793dc",
       "revId": "a5a0a60517448e3709f33dbf4c3e15a5cf3d246d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
