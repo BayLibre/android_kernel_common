@@ -145,6 +145,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c85f4b72_6d45f448",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-02-20T10:11:46Z",
+      "side": 1,
+      "message": "There is a `/proc` api in the C version of ashmem, is that not being emulated in the rust version as well?\n\nAnd do you all have some sort of document saying what you want to use this new api for?  Having it be present for all userspace builds, and then somehow interacting with it on a running system must imply that there\u0027s a userspace tool here for it, right?  😊\n\nand if you want to use a sysctl, sure, but again, why not just a control function on the misc device itself?  No new rust infrastructure will be needed to be built at the very least, AND you should already have access to the proper device node through the selinux protection rules, so no need to modify/add/remove them as well.\n\nBut again, some sort of documet for how you all think this will be used would be great to have, especially for a new user/kernel api that you are wanting to add to all devices.",
+      "parentUuid": "983dfc28_54912949",
+      "revId": "a5a0a60517448e3709f33dbf4c3e15a5cf3d246d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6873dc5e_660188f2",
         "filename": "drivers/staging/android/ashmem_toggle.rs",
         "patchSetId": 28
