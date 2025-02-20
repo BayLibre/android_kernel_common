@@ -163,6 +163,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "68c56cff_22247dde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-02-20T16:58:00Z",
+      "side": 1,
+      "message": "Are you referring to this callback [1]? If so, all that does is to serve as a hook to add more information to the output of `/proc/pid/fdinfo/fd` when fd corresponds to an ashmem buffer; it\u0027s not something we use to configure the driver. `/proc/pid/fdinfo/fd` exists for all fds as well, so it\u0027s not a node that ashmem exposes.\n\nThe initial thought was to have these sysfs nodes and leverage the rc scripts that already run very early during init to write to the nodes to configure the ashmem driver to behave differently than the default behavior. This would be less involved than introducing a new userspace process that would have to be launched early during boot to use `ioctl()` to configure the driver.\n\nWe don\u0027t have a document for this, but I\u0027m happy to draw one up and share one. However, I\u0027d just like to emphasize that these sysfs nodes are not meant to be used in production or by any clients. They are solely meant for us to configure the driver\u0027s behavior to slowly approximate memfd\u0027s behavior on dogfood builds so we can safely deprecate these features. Once we\u0027ve determined that these features can be deprecated, we plan on removing these toggles.\n\n[1] https://cs.android.com/android/kernel/superproject/+/common-android-mainline:common/drivers/staging/android/ashmem.c;l\u003d917",
+      "parentUuid": "c85f4b72_6d45f448",
+      "revId": "a5a0a60517448e3709f33dbf4c3e15a5cf3d246d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6873dc5e_660188f2",
         "filename": "drivers/staging/android/ashmem_toggle.rs",
         "patchSetId": 28
