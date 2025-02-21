@@ -16,6 +16,24 @@
       "message": "please submit needed functionality like this upstream first.",
       "revId": "99c69b7a03d59e91dc1e0e1bc69f4bb301586128",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef0fda3b_0f547c94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2025-02-21T17:55:44Z",
+      "side": 1,
+      "message": "We can try, but I don\u0027t think this has much hope of being accpeted, since there is no in-tree (or even open-source) user as long as it\u0027s used by only Android vendor modules.\n\nWe might be able to just export `debugfs_list_mutex` and `debugfs_list` though. Would that solution be ok with you Oreoluwa?",
+      "parentUuid": "2fbd5ed9_4ce506f6",
+      "revId": "99c69b7a03d59e91dc1e0e1bc69f4bb301586128",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
