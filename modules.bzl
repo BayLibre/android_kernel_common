@@ -9,7 +9,6 @@ This module contains a full list of kernel modules
 _COMMON_GKI_MODULES_LIST = [
     # keep sorted
     "drivers/block/virtio_blk.ko",
-    "drivers/block/zram/zram.ko",
     "drivers/bluetooth/btbcm.ko",
     "drivers/bluetooth/btqca.ko",
     "drivers/bluetooth/btsdio.ko",
@@ -23,11 +22,8 @@ _COMMON_GKI_MODULES_LIST = [
     "drivers/net/mii.ko",
     "drivers/net/ppp/bsd_comp.ko",
     "drivers/net/ppp/ppp_deflate.ko",
-    "drivers/net/ppp/ppp_generic.ko",
-    "drivers/net/ppp/ppp_mppe.ko",
     "drivers/net/ppp/pppox.ko",
     "drivers/net/ppp/pptp.ko",
-    "drivers/net/slip/slhc.ko",
     "drivers/net/usb/aqc111.ko",
     "drivers/net/usb/asix.ko",
     "drivers/net/usb/ax88179_178a.ko",
@@ -39,10 +35,6 @@ _COMMON_GKI_MODULES_LIST = [
     "drivers/net/usb/rtl8150.ko",
     "drivers/net/usb/usbnet.ko",
     "drivers/net/wwan/wwan.ko",
-    "drivers/pps/pps_core.ko",
-    "drivers/ptp/ptp.ko",
-    "drivers/usb/class/cdc-acm.ko",
-    "drivers/usb/mon/usbmon.ko",
     "drivers/usb/serial/ftdi_sio.ko",
     "drivers/usb/serial/usbserial.ko",
     "drivers/virtio/virtio_balloon.ko",
@@ -50,8 +42,6 @@ _COMMON_GKI_MODULES_LIST = [
     "drivers/virtio/virtio_pci_legacy_dev.ko",
     "drivers/virtio/virtio_pci_modern_dev.ko",
     "kernel/kheaders.ko",
-    "lib/crypto/libarc4.ko",
-    "mm/zsmalloc.ko",
     "net/6lowpan/6lowpan.ko",
     "net/6lowpan/nhc_dest.ko",
     "net/6lowpan/nhc_fragment.ko",
@@ -77,7 +67,6 @@ _COMMON_GKI_MODULES_LIST = [
     "net/l2tp/l2tp_ppp.ko",
     "net/mac802154/mac802154.ko",
     "net/nfc/nfc.ko",
-    "net/rfkill/rfkill.ko",
     "net/tipc/diag.ko",
     "net/tipc/tipc.ko",
     "net/tls/tls.ko",
@@ -97,7 +86,6 @@ _ARM64_GKI_MODULES_LIST = [
     "arch/arm64/geniezone/gzvm.ko",
     "drivers/char/hw_random/cctrng.ko",
     "drivers/misc/open-dice.ko",
-    "drivers/ptp/ptp_kvm.ko",
 ]
 
 _X86_GKI_MODULES_LIST = [
