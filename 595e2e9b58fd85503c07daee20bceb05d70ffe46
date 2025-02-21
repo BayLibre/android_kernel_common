@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf33f8b9_aef6742e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2025-02-21T11:58:12Z",
+      "side": 1,
+      "message": "\u003e which is VM\n\nVM as in arcvm?\n\n\u003e Why it has to be reverted? \n\nWe recently found out that virtio video was included into chromeos (crrev/c/6275685 + cherry-picks) kernels and that\u0027s probably how it made it to desktop v6.6. Whereas that driver has only been needed for arcvm guest (v5.10-arcvm) kernel.",
+      "parentUuid": "31306af9_ece79eb4",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 48
+      },
+      "revId": "595e2e9b58fd85503c07daee20bceb05d70ffe46",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "60a28f08_f5290c7d",
