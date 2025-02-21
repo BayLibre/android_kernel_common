@@ -16,6 +16,92 @@
       "message": "Please fix this ERROR reported by KernelCommit: Commit does not refer to the upstream commit.\n\nAnalyzer Description: Ensures that kernel commit messages follow the guidelines.\nOwner: android-kernel-team@google.com\n\nCommit does not refer to the upstream commit.\nPlease add a line like \u0027(cherry picked from commit \u003cfull-sha1\u003e \u003crepo\u003e \u003cbranch\u003e)\u0027.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
       "revId": "7ec043576a1c0711fbd712cd360d94ee8a1dd22c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c235d61a_d1f6c10d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-02-21T18:57:12Z",
+      "side": 1,
+      "message": "I am not sure what that really means",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 68
+      },
+      "revId": "7ec043576a1c0711fbd712cd360d94ee8a1dd22c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57511c11_264bc23f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-02-21T18:57:12Z",
+      "side": 1,
+      "message": "My latest changes in pKVM would allow negotating a custom version between the hypervisor and the protected VM but please keep in mind that we won\u0027t let a guest to directly negotiate its version with TZ.",
+      "range": {
+        "startLine": 14,
+        "startChar": 25,
+        "endLine": 16,
+        "endChar": 28
+      },
+      "revId": "7ec043576a1c0711fbd712cd360d94ee8a1dd22c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94e7c521_5a49c80e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-02-21T18:57:12Z",
+      "side": 1,
+      "message": "Based on [this](\nhttps://android.googlesource.com/kernel/common/#requirements-for-other-backports) you cannot get changes from linux-next",
+      "range": {
+        "startLine": 21,
+        "startChar": 84,
+        "endLine": 21,
+        "endChar": 98
+      },
+      "revId": "7ec043576a1c0711fbd712cd360d94ee8a1dd22c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec3c667e_6b2a2b6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-02-21T18:57:12Z",
+      "side": 1,
+      "message": "Hey,\n\nI wonder if it would be better to move this change to common-modules/ (https://android.googlesource.com/kernel/common-modules/) rather than having it in the kernel/common. This would mean moving the arm_ffa driver in that path, and you can built it from there as you build th etrusty drivers.",
+      "revId": "7ec043576a1c0711fbd712cd360d94ee8a1dd22c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
