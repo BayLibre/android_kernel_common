@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95ea64f7_06bfc7eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3845079
+      },
+      "writtenOn": "2025-02-21T06:52:04Z",
+      "side": 1,
+      "message": "One more symbol (__stack_chk_fail) is needed for our module.\nSorry for frequent updates. \nI checked that no more missing symbol with below command result.\n$ aarch64-linux-gnu-objdump -t vh_ignore_loglevel.ko | grep UND\nPlease check the Patchset 6 | 3934442.",
+      "parentUuid": "ff96c4ec_b7c60a0c",
+      "revId": "1414c8a11bf7df7e9c5e79dc83d6eb0e12ad1354",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b1b2421b_17df633f",
         "filename": "android/abi_gki_aarch64_sony",
         "patchSetId": 1
