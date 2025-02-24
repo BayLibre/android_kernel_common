@@ -768,6 +768,10 @@ struct cfg80211_chan_def {
 	u32 center_freq2;
 	struct ieee80211_edmg edmg;
 	u16 freq1_offset;
+#ifndef __GENKSYMS__
+	/* use hole to maintain the struct size */
+	u16 punctured;
+#endif
 };
 
 /*

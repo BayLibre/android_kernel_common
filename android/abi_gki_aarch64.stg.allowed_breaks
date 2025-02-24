@@ -101,3 +101,6 @@ type 'struct cgroup_root' changed
   'struct tracepoint __tracepoint_android_vh_mutex_unlock_slowpath_before_wakeq'
   'struct tracepoint __tracepoint_android_vh_suitable_migration_target_bypass'
 
+type 'struct cfg80211_chan_def' changed
+  member 'u16 punctured' was added
+
