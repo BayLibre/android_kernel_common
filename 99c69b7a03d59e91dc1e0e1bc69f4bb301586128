@@ -52,6 +52,24 @@
       "parentUuid": "ef0fda3b_0f547c94",
       "revId": "99c69b7a03d59e91dc1e0e1bc69f4bb301586128",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa5148b0_f4a3c8b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2025-02-24T17:21:16Z",
+      "side": 1,
+      "message": "\u003e If this is NOT open source at all\n\nI was wrong here... the module which needs this is obviously GPL. The current minidump code upstream just doesn\u0027t call it.\n\n\u003e this is NOT for non-in-kernel-code at all.\n\nHuh? Every Android vendor hook implementation that we export symbols for is not in-tree.",
+      "parentUuid": "a47fbe3a_59dd47c6",
+      "revId": "99c69b7a03d59e91dc1e0e1bc69f4bb301586128",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
