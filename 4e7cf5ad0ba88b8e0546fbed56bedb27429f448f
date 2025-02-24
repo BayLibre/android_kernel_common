@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a2b6763_e2d08d10",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-24T21:38:56Z",
+      "side": 1,
+      "message": "I wonder if it would cleaner to drop this clever optimisation and suck up the extra TLBI by:\n\n(1) Block \u003d\u003e fully populated table\n(2) Unmap the part that we don\u0027t want\n\nWould that mean we can avoid extra tricks with the invalid ptes?",
+      "range": {
+        "startLine": 404,
+        "startChar": 5,
+        "endLine": 404,
+        "endChar": 10
+      },
+      "revId": "4e7cf5ad0ba88b8e0546fbed56bedb27429f448f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44363a91_88b8afb8",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-24T21:38:56Z",
+      "side": 1,
+      "message": "I can\u0027t parse this",
+      "range": {
+        "startLine": 409,
+        "startChar": 6,
+        "endLine": 410,
+        "endChar": 42
+      },
+      "revId": "4e7cf5ad0ba88b8e0546fbed56bedb27429f448f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b4d2635_882c7590",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-24T21:38:56Z",
+      "side": 1,
+      "message": "You don\u0027t need the apostrophe",
+      "range": {
+        "startLine": 411,
+        "startChar": 23,
+        "endLine": 411,
+        "endChar": 24
+      },
+      "revId": "4e7cf5ad0ba88b8e0546fbed56bedb27429f448f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9ae3d3c_40b92107",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-24T21:38:56Z",
+      "side": 1,
+      "message": "This is horrible 😊",
+      "range": {
+        "startLine": 415,
+        "startChar": 20,
+        "endLine": 415,
+        "endChar": 23
+      },
+      "revId": "4e7cf5ad0ba88b8e0546fbed56bedb27429f448f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb6f7040_f39bd1f0",
+        "filename": "drivers/iommu/io-pgtable-arm-common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-02-24T21:38:56Z",
+      "side": 1,
+      "message": "I don\u0027t think you need the `WRITE_ONCE()` here, as the existing entry is all zeroes and we\u0027re writing an invalid entry over the top.",
+      "range": {
+        "startLine": 417,
+        "startChar": 4,
+        "endLine": 417,
+        "endChar": 14
+      },
+      "revId": "4e7cf5ad0ba88b8e0546fbed56bedb27429f448f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
