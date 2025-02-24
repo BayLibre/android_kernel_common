@@ -225,5 +225,7 @@ int gunyah_gup_share_parcel(struct gunyah_vm *ghvm,
 			      struct gunyah_rm_mem_parcel *parcel,
 			      u64 *gfn, u64 *nr);
 int gunyah_gup_demand_page(struct gunyah_vm *ghvm, u64 gpa, bool write);
+int gunyah_cma_mem_init(void);
+void gunyah_cma_mem_exit(void);
 
 #endif
