@@ -39,8 +39,13 @@
 #include <nvhe/trap_handler.h>
 #include <nvhe/spinlock.h>
 
+/*
+ * "ID value 0 must be returned at the Non-secure physical FF-A instance"
+ * We share this ID with the host.
+ */
+#define HOST_FFA_ID	0
+
 #define REPLAY_FFA_CALL	BIT(63)
-#define VM_FFA_SUPPORTED(vcpu)		((vcpu)->kvm->arch.pkvm.ffa_support)
 
 /* The maximum number of secure partitions that can register for VM availability */
 #define FFA_MAX_REGISTERED_SP_IDS	(8)
@@ -158,7 +163,7 @@ static void ffa_mem_frag_rx(struct arm_smccc_res *res, u32 handle_lo,
 			     u32 handle_hi, u32 fragoff)
 {
 	arm_smccc_1_1_smc(FFA_MEM_FRAG_RX,
-			  handle_lo, handle_hi, fragoff, HYP_FFA_ID,
+			  handle_lo, handle_hi, fragoff, HOST_FFA_ID,
 			  0, 0, 0,
 			  res);
 }
@@ -879,7 +884,7 @@ static void do_ffa_mem_reclaim(struct arm_smccc_res *res,
 
 	buf = hyp_buffers.tx;
 	*buf = (struct ffa_mem_region) {
-		.sender_id	= HYP_FFA_ID,
+		.sender_id	= HOST_FFA_ID,
 		.handle		= handle,
 	};
 
@@ -1020,7 +1025,7 @@ static int hyp_ffa_post_init(void)
 	if (res.a0 != FFA_SUCCESS)
 		return -EOPNOTSUPP;
 
-	if (res.a2 != HYP_FFA_ID)
+	if (res.a2 != HOST_FFA_ID)
 		return -EINVAL;
 
 	arm_smccc_1_1_smc(FFA_FEATURES, FFA_FN64_RXTX_MAP,
@@ -1159,29 +1164,6 @@ out_unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 }
 
-static void do_ffa_direct_msg(struct arm_smccc_res *res,
-			      struct kvm_cpu_context *ctxt,
-			      u64 vm_handle)
-{
-	DECLARE_REG(u32, func_id, ctxt, 0);
-	DECLARE_REG(u32, endp, ctxt, 1);
-	DECLARE_REG(u32, msg_flags, ctxt, 2);
-	DECLARE_REG(u32, w3, ctxt, 3);
-	DECLARE_REG(u32, w4, ctxt, 4);
-	DECLARE_REG(u32, w5, ctxt, 5);
-	DECLARE_REG(u32, w6, ctxt, 6);
-	DECLARE_REG(u32, w7, ctxt, 7);
-
-	if (FIELD_GET(FFA_SRC_ENDPOINT_MASK, endp) != vm_handle) {
-		ffa_to_smccc_res(res, FFA_RET_INVALID_PARAMETERS);
-		return;
-	}
-
-	arm_smccc_1_1_smc(func_id, endp, msg_flags, w3,
-			  w4, w5, w6, w7,
-			  res);
-}
-
 bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 {
 	struct arm_smccc_res res;
@@ -1239,13 +1221,6 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 	case FFA_PARTITION_INFO_GET:
 		do_ffa_part_get(&res, host_ctxt, NULL);
 		goto out_handled;
-	case FFA_ID_GET:
-		ffa_to_smccc_res_prop(&res, FFA_RET_SUCCESS, HOST_FFA_ID);
-		goto out_handled;
-	case FFA_MSG_SEND_DIRECT_REQ:
-	case FFA_FN64_MSG_SEND_DIRECT_REQ:
-		do_ffa_direct_msg(&res, host_ctxt, HOST_FFA_ID);
-		goto out_handled;
 	}
 
 	if (ffa_call_supported(func_id))
@@ -1268,12 +1243,6 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 
 	if (!is_ffa_call(func_id)) {
 		smccc_set_retval(vcpu, SMCCC_RET_NOT_SUPPORTED, 0, 0, 0);
-		return true;
-	}
-
-	if (!VM_FFA_SUPPORTED(vcpu)) {
-		ffa_to_smccc_error(&res, FFA_RET_NOT_SUPPORTED);
-		ffa_set_retval(ctxt, &res);
 		return true;
 	}
 
@@ -1307,10 +1276,6 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 		break;
 	case FFA_PARTITION_INFO_GET:
 		do_ffa_part_get(&res, ctxt, hyp_vcpu);
-		break;
-	case FFA_MSG_SEND_DIRECT_REQ:
-	case FFA_FN64_MSG_SEND_DIRECT_REQ:
-		do_ffa_direct_msg(&res, ctxt, FFA_HANDLE_FROM_HYP_VCPU(hyp_vcpu));
 		break;
 	default:
 		if (ffa_call_supported(func_id))
@@ -1353,9 +1318,6 @@ int kvm_reclaim_ffa_guest_pages(struct pkvm_hyp_vm *vm, pkvm_handle_t handle)
 	struct pkvm_hyp_vcpu *hyp_vcpu = vm->vcpus[0];
 	struct kvm_ffa_buffers *ffa_buf = &vm->ffa_buf;
 
-	if (!VM_FFA_SUPPORTED(&hyp_vcpu->vcpu))
-		return 0;
-
 	vm_handle = FFA_HANDLE_FROM_HYP_VCPU(hyp_vcpu);
 	WARN_ON(vm_handle >= KVM_MAX_PVMS);
 
@@ -1395,17 +1357,6 @@ unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 
 	return ret;
-}
-
-u32 ffa_get_hypervisor_version(void)
-{
-	u32 version;
-
-	hyp_spin_lock(&version_lock);
-	version = hyp_ffa_version;
-	hyp_spin_unlock(&version_lock);
-
-	return version;
 }
 
 int hyp_ffa_init(void *pages)
