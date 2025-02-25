@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3ed21fd_0dc2c9e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3346748
+      },
+      "writtenOn": "2025-02-25T02:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5375c8a_83ba703c",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 45
+      },
+      "revId": "e2d2430a4c98b82f7b61e236d3c5a405b7764d25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e18f6948_0f697b2a",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-25T00:55:49Z",
       "side": 1,
       "message": "You have two traces only for _reply() and another one for _trans(). They are placed in an odd spot for statistics and optimization though. I\u0027m curious why don\u0027t you have a single trace point that passes a `bool reply` instead?",
+      "range": {
+        "startLine": 3288,
+        "startChar": 2,
+        "endLine": 3288,
+        "endChar": 31
+      },
+      "revId": "e2d2430a4c98b82f7b61e236d3c5a405b7764d25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7746c158_89ae729a",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3288,
+      "author": {
+        "id": 3346748
+      },
+      "writtenOn": "2025-02-25T02:06:02Z",
+      "side": 1,
+      "message": "This was cherry-picked from android12-5.10 to maintain consistency with the historical versions.",
+      "parentUuid": "e18f6948_0f697b2a",
       "range": {
         "startLine": 3288,
         "startChar": 2,
