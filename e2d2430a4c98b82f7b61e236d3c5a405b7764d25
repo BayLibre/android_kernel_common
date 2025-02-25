@@ -93,6 +93,30 @@
       },
       "revId": "e2d2430a4c98b82f7b61e236d3c5a405b7764d25",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abe594d8_5ac704f3",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3288,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-02-25T03:17:48Z",
+      "side": 1,
+      "message": "If there is no reason (other than historical) it would be better to improve things moving forward. Would you have any issues merging the two into a single call? And placing the trace point at a spot that makes better sense for your stats?",
+      "parentUuid": "7746c158_89ae729a",
+      "range": {
+        "startLine": 3288,
+        "startChar": 2,
+        "endLine": 3288,
+        "endChar": 31
+      },
+      "revId": "e2d2430a4c98b82f7b61e236d3c5a405b7764d25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
