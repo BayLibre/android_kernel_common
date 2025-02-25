@@ -184,6 +184,47 @@ struct pv_mmu_ops {
 #endif
 } __no_randomize_layout;
 
+struct arch_spinlock;
+#ifdef CONFIG_SMP
+#include <asm/spinlock_types.h>
+#endif
+
+struct qspinlock;
+
+struct pv_lock_ops {
+	void (*queued_spin_lock_slowpath)(struct qspinlock *lock, u32 val);
+	struct paravirt_callee_save queued_spin_unlock;
+
+	void (*wait)(u8 *ptr, u8 val);
+	void (*kick)(int cpu);
+
+	struct paravirt_callee_save vcpu_is_preempted;
+} __no_randomize_layout;
+
+struct pv_mmio_ops {
+	unsigned char (*raw_readb)(const volatile void __iomem *addr);
+	unsigned short (*raw_readw)(const volatile void __iomem *addr);
+	unsigned int (*raw_readl)(const volatile void __iomem *addr);
+	unsigned char (*raw_readb_relaxed)(const volatile void __iomem *addr);
+	unsigned short (*raw_readw_relaxed)(const volatile void __iomem *addr);
+	unsigned int (*raw_readl_relaxed)(const volatile void __iomem *addr);
+
+	void (*raw_writeb)(unsigned char val, volatile void __iomem *addr);
+	void (*raw_writew)(unsigned short val, volatile void __iomem *addr);
+	void (*raw_writel)(unsigned int val, volatile void __iomem *addr);
+	void (*raw_writeb_relaxed)(unsigned char val, volatile void __iomem *addr);
+	void (*raw_writew_relaxed)(unsigned short val, volatile void __iomem *addr);
+	void (*raw_writel_relaxed)(unsigned int val, volatile void __iomem *addr);
+
+#ifdef CONFIG_X86_64
+	u64 (*raw_readq)(const volatile void __iomem *addr);
+	u64 (*raw_readq_relaxed)(const volatile void __iomem *addr);
+	void (*raw_writeq)(u64 val, volatile void __iomem *addr);
+	void (*raw_writeq_relaxed)(u64 val, volatile void __iomem *addr);
+#endif
+} __no_randomize_layout;
+
+
 /* This contains all the paravirt structures: we get a convenient
  * number for each function using the offset which we use to indicate
  * what to patch. */
@@ -191,6 +232,8 @@ struct paravirt_patch_template {
 	struct pv_cpu_ops	cpu;
 	struct pv_irq_ops	irq;
 	struct pv_mmu_ops	mmu;
+	struct pv_lock_ops	lock;
+	struct pv_mmio_ops	mmio;
 } __no_randomize_layout;
 
 extern struct paravirt_patch_template pv_ops;
