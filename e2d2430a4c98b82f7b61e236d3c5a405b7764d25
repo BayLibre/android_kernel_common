@@ -117,6 +117,30 @@
       },
       "revId": "e2d2430a4c98b82f7b61e236d3c5a405b7764d25",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28d83a91_9d2ca756",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3288,
+      "author": {
+        "id": 3346748
+      },
+      "writtenOn": "2025-02-25T08:49:32Z",
+      "side": 1,
+      "message": "We need to process immediately when acquiring the target_proc, therefore requiring trace point in binder_transaction (not just in binder_reply).",
+      "parentUuid": "abe594d8_5ac704f3",
+      "range": {
+        "startLine": 3288,
+        "startChar": 2,
+        "endLine": 3288,
+        "endChar": 31
+      },
+      "revId": "e2d2430a4c98b82f7b61e236d3c5a405b7764d25",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
