@@ -294,13 +294,32 @@ void __init x86_flattree_get_config(void)
 			map_len = size;
 		}
 
+<<<<<<< HEAD   (1c2d05 ANDROID: GKI: x86: Fix ADB DbC after migrating to GKI prebui)
 		early_init_dt_verify(dt);
+||||||| BASE
+	dt = early_memremap(initial_dtb, map_len);
+	size = fdt_totalsize(dt);
+	if (map_len < size) {
+		early_memunmap(dt, map_len);
+		dt = early_memremap(initial_dtb, size);
+		map_len = size;
+=======
+		early_init_dt_verify(dt, __pa(dt));
+>>>>>>> BRANCH (2aa57d FROMGIT: usb: typec: tcpm: Add new AMS for Get_Revision resp)
 	}
 
 	unflatten_and_copy_device_tree();
 
 	if (initial_dtb)
 		early_memunmap(dt, map_len);
+<<<<<<< HEAD   (1c2d05 ANDROID: GKI: x86: Fix ADB DbC after migrating to GKI prebui)
+||||||| BASE
+static inline void x86_flattree_get_config(void) { }
+=======
+}
+#else
+static inline void x86_flattree_get_config(void) { }
+>>>>>>> BRANCH (2aa57d FROMGIT: usb: typec: tcpm: Add new AMS for Get_Revision resp)
 #endif
 	if (of_have_populated_dt())
 		x86_init.mpparse.parse_smp_cfg = x86_dtb_parse_smp_config;
