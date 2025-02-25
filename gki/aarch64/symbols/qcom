@@ -33,6 +33,7 @@
   amba_bustype
   amba_driver_unregister
   android_rvh_probe_register
+  android_vh_rproc_recovery
   anon_inode_getfile
   arc4_crypt
   arc4_setkey
@@ -231,6 +232,25 @@
   cdev_device_add
   cdev_device_del
   cdev_init
+  cfg80211_any_usable_channels
+  cfg80211_assoc_comeback
+  cfg80211_assoc_failure
+  cfg80211_background_cac_abort
+  cfg80211_bss_color_notify
+  cfg80211_bss_flush
+  cfg80211_bss_iter
+  cfg80211_control_port_tx_status
+  cfg80211_crit_proto_stopped
+  cfg80211_get_ies_channel_number
+  cfg80211_get_iftype_ext_capa
+  cfg80211_get_station
+  cfg80211_mgmt_tx_status_ext
+  cfg80211_pmsr_complete
+  cfg80211_pmsr_report
+  __cfg80211_radar_event
+  cfg80211_register_netdevice
+  cfg80211_rx_mgmt_ext
+  cfg80211_sched_scan_stopped_locked
   cgroup_path_ns
   cgroup_taskset_first
   cgroup_taskset_next
@@ -1208,6 +1228,7 @@
   get_unused_fd_flags
   get_user_ifreq
   get_user_pages
+  get_wiphy_regdom
   gov_attr_set_init
   gov_attr_set_put
   governor_sysfs_ops
@@ -1401,6 +1422,74 @@
   idr_preload
   idr_remove
   idr_replace
+  ieee80211_ave_rssi
+  ieee80211_beacon_set_cntdwn
+  ieee80211_calc_rx_airtime
+  ieee80211_calc_tx_airtime
+  ieee80211_channel_switch_disconnect
+  ieee80211_color_change_finish
+  ieee80211_ctstoself_duration
+  ieee80211_ctstoself_get
+  ieee80211_disable_rssi_reports
+  ieee80211_disconnect
+  ieee80211_enable_rssi_reports
+  ieee80211_find_sta_by_link_addrs
+  ieee80211_generic_frame_duration
+  ieee80211_get_bssid
+  ieee80211_get_fils_discovery_tmpl
+  ieee80211_get_key_rx_seq
+  ieee80211_get_mesh_hdrlen
+  ieee80211_get_num_supported_channels
+  ieee80211_get_response_rate
+  ieee80211_get_tkip_p1k_iv
+  ieee80211_get_tkip_p2k
+  ieee80211_get_tkip_rx_p1k
+  ieee80211_get_unsol_bcast_probe_resp_tmpl
+  ieee80211_get_vht_max_nss
+  ieee80211_gtk_rekey_add
+  ieee80211_gtk_rekey_notify
+  ieee80211_hw_restart_disconnect
+  ieee80211_iterate_active_interfaces_mtx
+  ieee80211_iter_keys
+  ieee80211_iter_keys_rcu
+  ieee80211_key_mic_failure
+  ieee80211_key_replay
+  ieee80211_mark_rx_ba_filtered_frames
+  ieee80211_nan_func_match
+  ieee80211_nan_func_terminated
+  ieee80211_parse_p2p_noa
+  ieee80211_queue_stopped
+  ieee80211_rate_control_register
+  ieee80211_rate_control_unregister
+  ieee80211_remove_key
+  ieee80211_report_wowlan_wakeup
+  ieee80211_request_smps
+  ieee80211_reserve_tid
+  ieee80211_resume_disconnect
+  ieee80211_rts_duration
+  ieee80211_rts_get
+  ieee80211_rx_ba_timer_expired
+  ieee80211_rx_list
+  ieee80211_s1g_channel_width
+  ieee80211_send_bar
+  ieee80211_send_eosp_nullfunc
+  ieee80211_set_active_links
+  ieee80211_set_active_links_async
+  ieee80211_set_key_rx_seq
+  ieee80211_sta_block_awake
+  ieee80211_sta_eosp
+  ieee80211_sta_pspoll
+  ieee80211_sta_recalc_aggregates
+  ieee80211_start_tx_ba_session
+  ieee80211_sta_set_buffered
+  ieee80211_sta_uapsd_trigger
+  ieee80211_stop_tx_ba_session
+  ieee80211_tkip_add_iv
+  ieee80211_txq_airtime_check
+  ieee80211_unreserve_tid
+  ieee80211_update_mu_groups
+  ieee80211_update_p2p_noa
+  ieee80211_vif_to_wdev
   ieee802154_alloc_hw
   ieee802154_configure_durations
   ieee802154_free_hw
@@ -1644,6 +1733,8 @@
   kmalloc_trace
   kmem_cache_destroy
   kmem_cache_free
+  kmemdup_array
+  kmemdup_noprof
   kmemdup_nul
   kmsg_dump_get_buffer
   kmsg_dump_get_line
@@ -1771,6 +1862,7 @@
   list_sort
   llist_add_batch
   llist_reverse_order
+  __local_bh_disable_ip
   __local_bh_enable_ip
   lock_sock_nested
   log_post_read_mmio
@@ -1952,6 +2044,7 @@
   netif_tx_unlock
   netif_tx_wake_queue
   netlink_broadcast
+  netlink_broadcast_filtered
   netlink_capable
   __netlink_dump_start
   __netlink_kernel_create
@@ -2456,6 +2549,7 @@
   radix_tree_lookup
   radix_tree_next_chunk
   radix_tree_tagged
+  rate_control_set_rates
   ___ratelimit
   rational_best_approximation
   raw_notifier_call_chain
@@ -2581,6 +2675,7 @@
   regmap_read
   regmap_update_bits_base
   regmap_write
+  reg_query_regdb_wmm
   regulator_allow_bypass
   regulator_bulk_disable
   regulator_bulk_enable
@@ -2613,6 +2708,7 @@
   regulator_set_voltage
   regulator_set_voltage_sel_regmap
   regulator_unregister_notifier
+  regulatory_set_wiphy_regd_sync
   release_firmware
   __release_region
   release_sock
@@ -2662,6 +2758,7 @@
   rhashtable_walk_next
   rhashtable_walk_start_check
   rhashtable_walk_stop
+  rhltable_init_noprof
   __rht_bucket_nested
   rht_bucket_nested
   rht_bucket_nested_insert
@@ -2857,6 +2954,7 @@
   single_open_size
   single_release
   sk_alloc
+  skb_add_rx_frag_netmem
   skb_append_pagefrags
   skb_checksum
   skb_checksum_help
@@ -2877,6 +2975,7 @@
   skb_ensure_writable
   __skb_flow_dissect
   skb_free_datagram
+  __skb_get_hash_net
   __skb_gso_segment
   __skb_pad
   skb_page_frag_refill
@@ -2909,6 +3008,7 @@
   __sk_receive_skb
   sk_reset_timer
   sk_setup_caps
+  sk_skb_reason_drop
   sk_stop_timer
   slhc_compress
   slhc_free
@@ -3849,6 +3949,10 @@
   wakeup_source_unregister
   __wake_up_sync_key
   __warn_printk
+  wdev_chandef
+  wdev_to_ieee80211_vif
+  wiphy_rfkill_set_hw_state_reason
+  wiphy_rfkill_start_polling
   wireless_nlevent_flush
   wireless_send_event
   woken_wake_function
