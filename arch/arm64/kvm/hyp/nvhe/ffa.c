@@ -1296,10 +1296,8 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 		ffa_to_smccc_error(&res, FFA_RET_NOT_SUPPORTED);
 	}
 
-	if (ret >= 0)
-		ffa_set_retval(ctxt, &res);
-
-	return ret >= 0;
+	ffa_set_retval(ctxt, &res);
+	return true;
 unhandled:
 	__kvm_hyp_host_forward_smc(ctxt);
 	return true;
