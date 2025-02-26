@@ -16,6 +16,24 @@
       "message": "I think you should do something like this:\n\n```\ndiff --git a/drivers/staging/android/Kconfig b/drivers/staging/android/Kconfig\nindex c138a246dfaf93..62a90f5b0316b6 100644\n--- a/drivers/staging/android/Kconfig\n+++ b/drivers/staging/android/Kconfig\n@@ -4,7 +4,7 @@ menu \"Android\"\n config ANDROID_STAGING\n        bool\n \n-config ASHMEM\n+menuconfig ASHMEM\n        bool \"Enable the Anonymous Shared Memory Subsystem\"\n        depends on SHMEM\n        select ANDROID_STAGING\n@@ -16,6 +16,8 @@ config ASHMEM\n          It is, in theory, a good memory allocator for low-memory devices,\n          because it can discard shared memory units when under memory pressure.\n \n+if ASHMEM\n+\n config ASHMEM_RUST\n        bool \"Use the Rust implementation of Ashmem\"\n        depends on RUST\n@@ -23,4 +25,5 @@ config ASHMEM_RUST\n config ASHMEM_C\n        def_bool ASHMEM \u0026\u0026 !ASHMEM_RUST\nendif\n```\n\nas it stands, you can disable `CONFIG_ASHMEM`, but `CONFIG_ASHMEM_RUST` stays enabled, which doesn\u0027t make much sense.\n\nSee menuconfig section: https://docs.kernel.org/kbuild/kconfig-language.html#kconfig-syntax",
       "revId": "79c7e8281d78d80a89652428840ae8a5e67fc942",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c8ecf93_a67e86e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-02-26T10:06:52Z",
+      "side": 1,
+      "message": "I added a `depends on ASHMEM` which should be equivalent to your suggestion with the exception of how it is rendered in menuconfig. I found my version to be easier to use in menuconfig, so I went with that.",
+      "parentUuid": "efceced3_ef9f182c",
+      "revId": "79c7e8281d78d80a89652428840ae8a5e67fc942",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
