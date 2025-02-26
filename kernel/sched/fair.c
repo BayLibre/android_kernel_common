@@ -771,7 +771,7 @@ static int vruntime_eligible(struct cfs_rq *cfs_rq, u64 vruntime)
 	struct sched_entity *curr = cfs_rq->curr;
 	s64 avg = cfs_rq->avg_vruntime;
 	long load = cfs_rq->avg_load;
-
+	bool ret;
 	if (curr && curr->on_rq) {
 		unsigned long weight = scale_load_down(curr->load.weight);
 
@@ -779,7 +779,9 @@ static int vruntime_eligible(struct cfs_rq *cfs_rq, u64 vruntime)
 		load += weight;
 	}
 
-	return avg >= (s64)(vruntime - cfs_rq->min_vruntime) * load;
+	ret = avg >= (s64)(vruntime - cfs_rq->min_vruntime) * load;
+	trace_printk("DBG: rq: %i ret: %i  (avg: %lld  >?= (vrunt: %lld  - cfs_rq->min_vrunt: %lld)*load: %ld = %lld)\n", cpu_of(rq_of(cfs_rq)), ret, avg, vruntime, cfs_rq->min_vruntime, load,  (s64)(vruntime - cfs_rq->min_vruntime) * load);
+	return ret;
 }
 
 int entity_eligible(struct cfs_rq *cfs_rq, struct sched_entity *se)
@@ -943,6 +945,8 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
 	if (sched_feat(RUN_TO_PARITY) && curr && curr->vlag == curr->deadline)
 		return curr;
 
+	trace_printk("DBG: rq: %i Started with se: %p ------------>\n", cpu_of(rq_of(cfs_rq)), se);
+
 	/* Pick the leftmost entity if it's eligible */
 	if (se && entity_eligible(cfs_rq, se)) {
 		best = se;
@@ -959,6 +963,8 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
 		 * Eligible entities in left subtree are always better
 		 * choices, since they have earlier deadlines.
 		 */
+		if (left)
+			trace_printk("DBG: rq: %i evaluating left se: 0x%p", cpu_of(rq_of(cfs_rq)), __node_2_se(left));
 		if (left && vruntime_eligible(cfs_rq,
 					__node_2_se(left)->min_vruntime)) {
 			node = left;
@@ -967,6 +973,7 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
 
 		se = __node_2_se(node);
 
+		trace_printk("DBG: rq: %i evaluating node se: 0x%p", cpu_of(rq_of(cfs_rq)), se);
 		/*
 		 * The left subtree either is empty or has no eligible
 		 * entity, so check the current node since it is the one
@@ -989,9 +996,13 @@ found:
 	 * Return leftmost entity as a backup(it is guaranteed
 	 * the tree is not NULL.
 	 */
-	if (!best)
+	trace_printk("DBG: rq: %i returning se: 0x%p  <------------\n", cpu_of(rq_of(cfs_rq)), best);
+	if (!best) {
+		printk("ERROR: %s hit NULL best. Would fixup to 0x%p.\n", __func__, leftmost);
+		ftrace_dump(DUMP_ORIG);
 		best = leftmost;
-
+		BUG();
+	}
 	return best;
 }
 
