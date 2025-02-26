@@ -291,15 +291,23 @@ err_unshare_tx:
 	return ret;
 }
 
-static int kvm_notify_vm_availability(uint16_t vm_handle, u32 availability_msg)
+static int kvm_notify_vm_availability(uint16_t vm_handle, struct kvm_ffa_buffers *ffa_buf,
+				      u32 availability_msg)
 {
 	int i;
 	struct arm_smccc_res res;
+	u64 avail_bit = availability_msg != FFA_VM_DESTRUCTION_MSG;
 
 	if (!num_registered_sp_ids)
 		return FFA_RET_SUCCESS;
 
 	for (i = 0; i < num_registered_sp_ids; i++) {
+		u64 sp_mask = 1UL << i;
+		u64 avail_value = avail_bit << i;
+
+		if ((ffa_buf->vm_avail_bitmap & sp_mask) == avail_value)
+			continue;
+
 		arm_smccc_1_1_smc(FFA_MSG_SEND_DIRECT_REQ, sp_ids[i], availability_msg,
 				  0, 0, vm_handle, 0, 0, &res);
 		if (res.a0 != FFA_MSG_SEND_DIRECT_RESP)
@@ -307,6 +315,9 @@ static int kvm_notify_vm_availability(uint16_t vm_handle, u32 availability_msg)
 
 		if (res.a3 != FFA_RET_SUCCESS)
 			return res.a3;
+
+		ffa_buf->vm_avail_bitmap &= ~sp_mask;
+		ffa_buf->vm_avail_bitmap |= avail_value;
 	}
 
 	return FFA_RET_SUCCESS;
@@ -334,16 +345,16 @@ static int do_ffa_rxtx_map(struct arm_smccc_res *res,
 		goto out;
 	}
 
-	ret = kvm_notify_vm_availability(FFA_HANDLE_FROM_HYP_VCPU(hyp_vcpu), FFA_VM_CREATION_MSG);
-	if (ret != FFA_RET_SUCCESS)
-		goto out;
-
 	hyp_spin_lock(&kvm_ffa_hyp_lock);
 	ffa_buf = ffa_get_buffers(hyp_vcpu);
 	if (ffa_buf->tx) {
 		ret = FFA_RET_DENIED;
 		goto out_unlock;
 	}
+
+	ret = kvm_notify_vm_availability(FFA_HANDLE_FROM_HYP_VCPU(hyp_vcpu), ffa_buf, FFA_VM_CREATION_MSG);
+	if (ret != FFA_RET_SUCCESS)
+		goto out_unlock;
 
 	if (!hyp_vcpu)
 		ret = ffa_map_host_buffers(&tx_va, &rx_va, tx, rx, npages);
@@ -1308,7 +1319,7 @@ int kvm_reclaim_ffa_guest_pages(struct pkvm_hyp_vm *vm, pkvm_handle_t handle)
 	if (!guest_has_ffa)
 		goto unlock;
 
-	ret = kvm_notify_vm_availability(vm_handle, FFA_VM_DESTRUCTION_MSG);
+	ret = kvm_notify_vm_availability(vm_handle, ffa_buf, FFA_VM_DESTRUCTION_MSG);
 	if (ret != FFA_RET_SUCCESS) {
 		ret = ffa_to_linux_errno(ret);
 		goto unlock;
