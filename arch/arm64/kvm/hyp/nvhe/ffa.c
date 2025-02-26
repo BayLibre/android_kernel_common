@@ -1309,8 +1309,10 @@ int kvm_reclaim_ffa_guest_pages(struct pkvm_hyp_vm *vm, pkvm_handle_t handle)
 		goto unlock;
 
 	ret = kvm_notify_vm_availability(vm_handle, FFA_VM_DESTRUCTION_MSG);
-	if (ret != FFA_RET_SUCCESS)
+	if (ret != FFA_RET_SUCCESS) {
+		ret = ffa_to_linux_errno(ret);
 		goto unlock;
+	}
 
 	list_for_each_entry_safe(transfer, tmp, &ffa_buf->xfer_list, node) {
 		ffa_mem_reclaim(&res,
