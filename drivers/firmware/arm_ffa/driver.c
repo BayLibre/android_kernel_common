@@ -163,10 +163,12 @@ static int ffa_rxtx_map(phys_addr_t tx_buf, phys_addr_t rx_buf, u32 pg_cnt)
 {
 	ffa_value_t ret;
 
-	invoke_ffa_fn((ffa_value_t){
-		      .a0 = FFA_FN_NATIVE(RXTX_MAP),
-		      .a1 = tx_buf, .a2 = rx_buf, .a3 = pg_cnt,
-		      }, &ret);
+	do {
+		invoke_ffa_fn((ffa_value_t){
+			      .a0 = FFA_FN_NATIVE(RXTX_MAP),
+			      .a1 = tx_buf, .a2 = rx_buf, .a3 = pg_cnt,
+			      }, &ret);
+	} while (ret.a0 == FFA_ERROR && (int)ret.a2 == FFA_RET_RETRY);
 
 	if (ret.a0 == FFA_ERROR)
 		return ffa_to_linux_errno((int)ret.a2);
@@ -229,11 +231,13 @@ __ffa_partition_info_get(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
 		flags = PARTITION_INFO_GET_RETURN_COUNT_ONLY;
 
 	mutex_lock(&drv_info->rx_lock);
-	invoke_ffa_fn((ffa_value_t){
-		      .a0 = FFA_PARTITION_INFO_GET,
-		      .a1 = uuid0, .a2 = uuid1, .a3 = uuid2, .a4 = uuid3,
-		      .a5 = flags,
-		      }, &partition_info);
+	do {
+		invoke_ffa_fn((ffa_value_t){
+			      .a0 = FFA_PARTITION_INFO_GET,
+			      .a1 = uuid0, .a2 = uuid1, .a3 = uuid2, .a4 = uuid3,
+			      .a5 = flags,
+			      }, &partition_info);
+	} while (partition_info.a0 == FFA_ERROR && (int)partition_info.a2 == FFA_RET_RETRY);
 
 	if (partition_info.a0 == FFA_ERROR) {
 		mutex_unlock(&drv_info->rx_lock);
