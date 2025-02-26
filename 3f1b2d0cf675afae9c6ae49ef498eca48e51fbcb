@@ -22,6 +22,30 @@
       },
       "revId": "3f1b2d0cf675afae9c6ae49ef498eca48e51fbcb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e3077b0_7b4f1bfa",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1986720
+      },
+      "writtenOn": "2025-02-26T18:39:23Z",
+      "side": 1,
+      "message": "I tested this in our module and was able to verify that we can access both symbols by exporting them this way.\n\nThis change exports the symbols to the DMA_BUF namespace, hence by importing the namespace into our module, we are able to access them.",
+      "parentUuid": "cdf7314b_de55617c",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 33
+      },
+      "revId": "3f1b2d0cf675afae9c6ae49ef498eca48e51fbcb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
