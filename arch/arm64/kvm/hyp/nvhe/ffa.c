@@ -1408,7 +1408,6 @@ int hyp_ffa_init(void *pages)
 		.rx	= rx,
 	};
 
-	version_lock = __HYP_SPIN_LOCK_UNLOCKED;
 	INIT_LIST_HEAD(&host_buffers.xfer_list);
 
 	return 0;
