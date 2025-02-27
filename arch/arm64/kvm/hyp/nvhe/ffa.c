@@ -67,6 +67,7 @@ static struct kvm_ffa_buffers hyp_buffers;
 static struct kvm_ffa_buffers host_buffers;
 static u32 hyp_ffa_version;
 static bool has_version_negotiated;
+static bool has_ffa_supported;
 
 static DEFINE_HYP_SPINLOCK(version_lock);
 static DEFINE_HYP_SPINLOCK(kvm_ffa_hyp_lock);
@@ -111,30 +112,18 @@ static void ffa_set_retval(struct kvm_cpu_context *ctxt,
 	cpu_reg(ctxt, 3) = res->a3;
 }
 
-static int ffa_map_hyp_buffers(u64 ffa_page_count)
+static int ffa_map_hyp_buffers(void)
 {
 	struct arm_smccc_res res;
 
 	arm_smccc_1_1_smc(FFA_FN64_RXTX_MAP,
 			  hyp_virt_to_phys(hyp_buffers.tx),
 			  hyp_virt_to_phys(hyp_buffers.rx),
-			  ffa_page_count,
+			  KVM_FFA_MBOX_NR_PAGES,
 			  0, 0, 0, 0,
 			  &res);
 
-	return res.a0 == FFA_SUCCESS ? FFA_RET_SUCCESS : res.a2;
-}
-
-static int ffa_unmap_hyp_buffers(void)
-{
-	struct arm_smccc_res res;
-
-	arm_smccc_1_1_smc(FFA_RXTX_UNMAP,
-			  HOST_FFA_ID,
-			  0, 0, 0, 0, 0, 0,
-			  &res);
-
-	return res.a0 == FFA_SUCCESS ? FFA_RET_SUCCESS : res.a2;
+	return res.a0 == FFA_SUCCESS ? 0 : ffa_to_linux_errno(res.a2);
 }
 
 static void ffa_mem_frag_tx(struct arm_smccc_res *res, u32 handle_lo,
@@ -215,14 +204,6 @@ static void do_ffa_rxtx_map(struct arm_smccc_res *res,
 		ret = FFA_RET_DENIED;
 		goto out_unlock;
 	}
-
-	/*
-	 * Map our hypervisor buffers into the SPMD before mapping and
-	 * pinning the host buffers in our own address space.
-	 */
-	ret = ffa_map_hyp_buffers(npages);
-	if (ret)
-		goto out_unlock;
 
 	ret = __pkvm_host_share_hyp(hyp_phys_to_pfn(tx));
 	if (ret) {
@@ -354,8 +335,6 @@ static void do_ffa_rxtx_unmap(struct arm_smccc_res *res,
 
 		hyp_unpin_shared_mem(ffa_buf->rx, ffa_buf->rx + 1);
 		WARN_ON(__pkvm_host_unshare_hyp(hyp_virt_to_pfn(ffa_buf->rx)));
-
-		ffa_unmap_hyp_buffers();
 	} else {
 		WARN_ON(__pkvm_guest_unshare_hyp_page(hyp_vcpu, ffa_buf->tx_ipa));
 		WARN_ON(__pkvm_guest_unshare_hyp_page(hyp_vcpu, ffa_buf->rx_ipa));
@@ -1144,6 +1123,11 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 	if (!is_ffa_call(func_id))
 		return false;
 
+	if (!has_ffa_supported) {
+		ffa_to_smccc_error(&res, FFA_RET_NOT_SUPPORTED);
+		goto out_handled;
+	}
+
 	if (func_id != FFA_VERSION &&
 	    !smp_load_acquire(&has_version_negotiated)) {
 		ffa_to_smccc_error(&res, FFA_RET_INVALID_PARAMETERS);
@@ -1429,6 +1413,16 @@ int hyp_ffa_init(void *pages)
 
 	version_lock = __HYP_SPIN_LOCK_UNLOCKED;
 	INIT_LIST_HEAD(&host_buffers.xfer_list);
+
+	/*
+	 * Map our hypervisor buffers into the SPMD before mapping and
+	 * pinning the host buffers in our own address space.
+	 */
+	ret = ffa_map_hyp_buffers();
+	if (ret)
+		return ret;
+
+	has_ffa_supported = true;
 
 	return 0;
 }
