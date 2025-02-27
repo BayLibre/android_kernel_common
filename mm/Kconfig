@@ -995,6 +995,13 @@ config GCMA
         bool "GCMA (Guaranteed Contiguous Memory Allocator)"
         depends on CLEANCACHE
 
+config GCMA_SYSFS
+	bool "GCMA information through sysfs interface"
+	depends on GCMA && SYSFS
+	help
+	  This option exposes some sysfs attributes to get information
+	  from GCMA.
+
 config MEM_SOFT_DIRTY
 	bool "Track memory changes"
 	depends on CHECKPOINT_RESTORE && HAVE_ARCH_SOFT_DIRTY && PROC_FS
