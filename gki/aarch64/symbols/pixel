@@ -170,6 +170,7 @@
   cpu_latency_qos_add_request
   cpu_latency_qos_remove_request
   cpu_latency_qos_update_request
+  cpumask_local_spread
   __cpu_online_mask
   cpu_pm_register_notifier
   cpu_pm_unregister_notifier
@@ -634,6 +635,7 @@
   drm_self_refresh_helper_alter_state
   drm_send_event
   drm_send_event_locked
+  drm_sysfs_connector_property_event
   drm_universal_plane_init
   drm_vblank_init
   drm_writeback_connector_init

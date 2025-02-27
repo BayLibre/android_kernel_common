@@ -281288,6 +281288,12 @@ function {
   parameter_id: 0x6720d32f
 }
 function {
+  id: 0x1c5ca425
+  return_type_id: 0x48b5725f
+  parameter_id: 0x31b5a66f
+  parameter_id: 0x2a670b41
+}
+function {
   id: 0x1c5ec399
   return_type_id: 0x48b5725f
   parameter_id: 0x31b5a66f
@@ -320022,6 +320028,15 @@ elf_symbol {
   full_name: "cpumask_any_and_distribute"
 }
 elf_symbol {
+  id: 0xd53a5822
+  name: "cpumask_local_spread"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x18e4cd71
+  type_id: 0xde26a438
+  full_name: "cpumask_local_spread"
+}
+elf_symbol {
   id: 0xb1469ae6
   name: "cpumask_next_wrap"
   is_defined: true
@@ -327848,6 +327863,15 @@ elf_symbol {
   crc: 0x36ab58fa
   type_id: 0x15401a81
   full_name: "drm_syncobj_replace_fence"
+}
+elf_symbol {
+  id: 0x83a57856
+  name: "drm_sysfs_connector_property_event"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1f70b0dd
+  type_id: 0x1c5ca425
+  full_name: "drm_sysfs_connector_property_event"
 }
 elf_symbol {
   id: 0xb8f84f03
@@ -356747,6 +356771,7 @@ interface {
   symbol_id: 0x474c5b56
   symbol_id: 0x9b056e94
   symbol_id: 0xd878ab56
+  symbol_id: 0xd53a5822
   symbol_id: 0xb1469ae6
   symbol_id: 0x3afbe534
   symbol_id: 0x2cc0b276
@@ -357615,6 +357640,7 @@ interface {
   symbol_id: 0xfad82b0b
   symbol_id: 0xb11bdc47
   symbol_id: 0x3b60a5fe
+  symbol_id: 0x83a57856
   symbol_id: 0xb8f84f03
   symbol_id: 0xad1fada2
   symbol_id: 0x7993ff4e
