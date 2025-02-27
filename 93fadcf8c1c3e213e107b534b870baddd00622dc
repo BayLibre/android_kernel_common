@@ -16,6 +16,24 @@
       "message": "Does this depend on CL:3469220?",
       "revId": "93fadcf8c1c3e213e107b534b870baddd00622dc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11b0e021_ef15b673",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-02-27T14:05:21Z",
+      "side": 1,
+      "message": "No. We can do them in either order.\n\n* trimming without enforcement - symbol protection but no stability / monitoring\n* enforcement without trimming - stability / monitoring but no symbol protection\n\nI think it\u0027s more important to get the stability / monitoring done first at this stage because we can and it will exercise our tooling.\n\nTrimming is blocked as you know.",
+      "parentUuid": "6681ded3_24eb0995",
+      "revId": "93fadcf8c1c3e213e107b534b870baddd00622dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
