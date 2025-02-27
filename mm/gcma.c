@@ -13,6 +13,7 @@
 #include <linux/idr.h>
 #include <linux/slab.h>
 #include <linux/xarray.h>
+#include "gcma_sysfs.h"
 
 /*
  * page->page_type : area id
@@ -355,6 +356,7 @@ static struct page *gcma_alloc_page(void)
 		ClearPageGCMAFree(page);
 		set_page_count(page, 1);
 		spin_unlock(&area->free_pages_lock);
+		gcma_stat_inc(CACHED_PAGE);
 		break;
 	}
 
@@ -375,6 +377,7 @@ static void __gcma_free_page(struct page *page)
 static void gcma_free_page(struct page *page)
 {
 	__gcma_free_page(page);
+	gcma_stat_dec(CACHED_PAGE);
 }
 
 static inline void gcma_get_page(struct page *page)
@@ -468,6 +471,7 @@ static void isolate_gcma_page(struct gcma_inode *inode, struct page *page)
 	page_area_lock(page);
 	reset_gcma_page(page);
 	page_area_unlock(page);
+	gcma_stat_dec(CACHED_PAGE);
 }
 
 /*
@@ -579,6 +583,7 @@ again:
 		xa_unlock(&inode->pages);
 
 		isolate_gcma_page(inode, page);
+		gcma_stat_inc(DISCARDED_PAGE);
 		put_gcma_inode(inode);
 	}
 	local_irq_enable();
@@ -703,6 +708,8 @@ static void evict_gcma_lru_pages(unsigned long nr_request)
 		}
 		nr_evicted += isolated;
 	}
+
+	gcma_stat_add(EVICTED_PAGE, nr_evicted);
 }
 
 static void evict_gcma_pages(struct work_struct *work)
@@ -799,6 +806,7 @@ copy:
 	else
 		rotate_lru_page(g_page);
 
+	gcma_stat_inc(STORED_PAGE);
 out_unlock:
 	/*
 	 * If inode was just created but failed to add gcma page,
@@ -844,6 +852,7 @@ static int gcma_cc_load_page(int hash_id, struct cleancache_filekey key,
 	xa_unlock_irq(&inode->pages);
 
 	put_gcma_inode(inode);
+	gcma_stat_inc(LOADED_PAGE);
 
 	return 0;
 }
