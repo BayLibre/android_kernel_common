@@ -16,6 +16,23 @@
       "message": "Respin Bug: b/399279288",
       "revId": "5ced399feb1642568de9da43bb91920b8d243e92",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c76a2f2a_cbdf00cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-02-28T17:58:22Z",
+      "side": 1,
+      "message": "This is a build-break:\n```\nSymbols missing from the ksymtab:\n  of_update_property\n```\nYour symbol hasn\u0027t been exported from the kernel. Don\u0027t you at least build before submitting?",
+      "revId": "5ced399feb1642568de9da43bb91920b8d243e92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
