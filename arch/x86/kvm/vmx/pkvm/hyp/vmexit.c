@@ -128,6 +128,9 @@ static unsigned long handle_vmcall(struct kvm_vcpu *vcpu)
 	case PKVM_HC_KVM_CALL:
 		ret = handle_kvm_call(a0, a1, a2, a3);
 		break;
+	case PKVM_HC_MAP_GUEST:
+		ret = pkvm_map_shadow_ept(vcpu, a0, a1, a2);
+		break;
 	default:
 		ret = -EINVAL;
 	}
