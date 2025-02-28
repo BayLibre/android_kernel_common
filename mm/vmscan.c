@@ -856,6 +856,7 @@ static unsigned long do_shrink_slab(struct shrink_control *shrinkctl,
 	unsigned long freed = 0;
 	unsigned long long delta;
 	long total_scan;
+	bool do_sync = false;
 	long freeable;
 	long nr;
 	long new_nr;
@@ -867,6 +868,14 @@ static unsigned long do_shrink_slab(struct shrink_control *shrinkctl,
 	trace_android_vh_do_shrink_slab(shrinker, &freeable);
 	if (freeable == 0 || freeable == SHRINK_EMPTY)
 		return freeable;
+
+	trace_android_vh_shrink_slab_async(shrinkctl, shrinker, freeable, &do_sync, priority);
+	if (do_sync) {
+        /*
+         * We are currently unable to gather data on the number of free occurrences
+         */
+		return 0;
+	}
 
 	/*
 	 * copy the current shrinker scan count into a local variable
