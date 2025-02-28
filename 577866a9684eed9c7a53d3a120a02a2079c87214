@@ -22,6 +22,30 @@
       },
       "revId": "577866a9684eed9c7a53d3a120a02a2079c87214",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5bbf872_24e1e411",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1809582
+      },
+      "writtenOn": "2025-02-28T03:00:51Z",
+      "side": 1,
+      "message": "That\u0027s right; the direct message only queues up the work (with interrupts disabled). Trusty needs an FFA_RUN to do the actual operations.\n\nFor now this is needed for Trusty, but it\u0027s possible other TEEs might have the same requirement.",
+      "parentUuid": "55f244bd_ae9f8e9f",
+      "range": {
+        "startLine": 329,
+        "startChar": 3,
+        "endLine": 329,
+        "endChar": 60
+      },
+      "revId": "577866a9684eed9c7a53d3a120a02a2079c87214",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
