@@ -856,6 +856,7 @@ static unsigned long do_shrink_slab(struct shrink_control *shrinkctl,
 	unsigned long freed = 0;
 	unsigned long long delta;
 	long total_scan;
+	bool do_sync = false;
 	long freeable;
 	long nr;
 	long new_nr;
@@ -865,6 +866,7 @@ static unsigned long do_shrink_slab(struct shrink_control *shrinkctl,
 
 	freeable = shrinker->count_objects(shrinker, shrinkctl);
 	trace_android_vh_do_shrink_slab(shrinker, &freeable);
+	trace_android_vh_do_shrink_slab_ex(shrinkctl, shrinker, &freeable, priority);
 	if (freeable == 0 || freeable == SHRINK_EMPTY)
 		return freeable;
 
