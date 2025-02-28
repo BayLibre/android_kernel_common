@@ -44,6 +44,7 @@ pkvm_handle_shadow_ept_violation(struct shadow_vcpu_state *shadow_vcpu, u64 l2_g
 void pkvm_invalidate_shadow_ept(struct shadow_ept_desc *desc);
 void pkvm_invalidate_shadow_ept_with_range(struct shadow_ept_desc *desc,
 					   unsigned long vaddr, unsigned long size);
+int pkvm_map_shadow_ept(struct kvm_vcpu *vcpu, u64 gfn, u64 pfn, u64 nr_pages);
 void pkvm_flush_shadow_ept(struct shadow_ept_desc *desc);
 void pkvm_shadow_clear_suppress_ve(struct kvm_vcpu *vcpu, unsigned long gfn);
 

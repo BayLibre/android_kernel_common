@@ -1018,6 +1018,29 @@ out:
 	return ret;
 }
 
+int pkvm_map_shadow_ept(struct kvm_vcpu *vcpu, u64 gfn, u64 pfn, u64 nr_pages)
+{
+	struct pkvm_host_vcpu *pkvm_hvcpu = to_pkvm_hvcpu(vcpu);
+	struct shadow_vcpu_state *shadow_vcpu = pkvm_hvcpu->current_shadow_vcpu;
+	struct pkvm_shadow_vm *vm = shadow_vcpu->vm;
+	struct shadow_ept_desc *desc = &vm->sept_desc;
+	struct pkvm_pgtable *sept = &desc->sept;
+	int ret;
+	u64 gpa = gfn << PAGE_SHIFT;
+	u64 hpa = pfn << PAGE_SHIFT;
+	u64 size = nr_pages << PAGE_SHIFT;
+
+	pkvm_spin_lock(&vm->lock);
+
+	if (!allow_shadow_ept_mapping(vm, gpa, hpa, size))
+		ret = -EPERM;
+	else
+		ret = pkvm_pgtable_map(sept, gpa, hpa, size, 0, HOST_EPT_DEF_MEM_PROT | EPT_PROT_DEF, NULL);
+
+	pkvm_spin_unlock(&vm->lock);
+	return ret;
+}
+
 void pkvm_flush_shadow_ept(struct shadow_ept_desc *desc)
 {
 	if (!is_valid_eptp(desc->shadow_eptp))
