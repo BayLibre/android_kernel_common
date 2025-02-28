@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fee014b_c75ae012",
+        "filename": "arch/arm64/configs/autofdo_gki.fragment",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2025-02-28T22:15:14Z",
+      "side": 1,
+      "message": "Not sure if this file should be below common/android (in this branch) or common/gki (in android16-6.12 and mainline)",
+      "revId": "4cf68250e9d3e792fad3bd83d4a2a324d5c677e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d84398f1_6357d038",
+        "filename": "scripts/Makefile.lib",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2025-02-28T22:15:14Z",
+      "side": 1,
+      "message": "Could you please split this change in another change? This looks like it could cause conflicts in the future, so splitting the change improves the process of merging upstream changes.\n\nAlso, is there a way to avoid changes to Makefile.lib?",
+      "revId": "4cf68250e9d3e792fad3bd83d4a2a324d5c677e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
