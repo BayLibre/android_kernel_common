@@ -22,6 +22,7 @@
 #define PKVM_HC_TLB_REMOTE_FLUSH_RANGE	9
 #define PKVM_HC_SET_MMIO_VE		10
 #define PKVM_HC_ADD_PTDEV		11
+#define PKVM_HC_MAP_GUEST		12
 
 /*
  * 15bits for PASID, DO NOT change it, based on it,

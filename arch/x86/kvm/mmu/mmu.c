@@ -4684,17 +4684,20 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
 {
 	kvm_pfn_t orig_pfn;
 	int r;
+	bool pvmmu = enable_pkvm && likely(fault->slot);	/* non-MMIO memory only */
 
-	if (page_fault_handle_page_track(vcpu, fault))
-		return RET_PF_WRITE_PROTECTED;
+	if (!pvmmu) {
+		if (page_fault_handle_page_track(vcpu, fault))
+			return RET_PF_WRITE_PROTECTED;
 
-	r = fast_page_fault(vcpu, fault);
-	if (r != RET_PF_INVALID)
-		return r;
+		r = fast_page_fault(vcpu, fault);
+		if (r != RET_PF_INVALID)
+			return r;
 
-	r = mmu_topup_memory_caches(vcpu, false);
-	if (r)
-		return r;
+		r = mmu_topup_memory_caches(vcpu, false);
+		if (r)
+			return r;
+	}
 
 	r = kvm_faultin_pfn(vcpu, fault, ACC_ALL);
 	if (r != RET_PF_CONTINUE)
@@ -4705,10 +4708,15 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
 	r = RET_PF_RETRY;
 	read_lock(&vcpu->kvm->mmu_lock);
 
-	if (is_page_fault_stale(vcpu, fault))
+	if (!pvmmu && is_page_fault_stale(vcpu, fault))
 		goto out_unlock;
 
-	r = kvm_tdp_mmu_map(vcpu, fault);
+	if (pvmmu) {
+		kvm_mmu_hugepage_adjust(vcpu, fault);
+		r = pkvm_map_guest(fault->gfn, fault->pfn, KVM_PAGES_PER_HPAGE(fault->req_level));
+	} else {
+		r = kvm_tdp_mmu_map(vcpu, fault);
+	}
 
 out_unlock:
 	read_unlock(&vcpu->kvm->mmu_lock);
