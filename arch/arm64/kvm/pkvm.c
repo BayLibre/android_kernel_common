@@ -465,6 +465,13 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 
 	kvm_account_pgtable_pages(pgd, pgd_sz >> PAGE_SHIFT);
 
+retry:
+	ret = kvm_call_hyp_nvhe(__pkvm_notify_vm_creation, host_kvm->arch.pkvm.handle);
+	if (ret == -EAGAIN) {
+		cond_resched();
+		goto retry;
+	}
+
 	return 0;
 free_pgd:
 	free_pages_exact(pgd, pgd_sz);
@@ -661,6 +668,7 @@ static int __init finalize_pkvm(void)
 		return 0;
 	}
 
+retry_notify:
 	/*
 	 * Modules can play an essential part in the pKVM protection. All of
 	 * them must properly load to enable protected VMs.
@@ -698,6 +706,16 @@ static int __init finalize_pkvm(void)
 	ret = pkvm_drop_host_privileges();
 	if (ret) {
 		pr_err("Failed to finalize Hyp protection: %d\n", ret);
+		kvm_iommu_remove_driver();
+	}
+
+	ret = kvm_call_hyp_nvhe(__pkvm_notify_vm_creation, 0);
+	if (ret == -EAGAIN) {
+		cond_resched();
+		goto retry_notify;
+	}
+	if (ret) {
+		pr_err("Failed to notify VM creation: %d\n", ret);
 		kvm_iommu_remove_driver();
 	}
 
