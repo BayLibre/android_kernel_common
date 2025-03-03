@@ -16,6 +16,24 @@
       "message": "You must do a bunch of power measurements first, increasing HZ has a noticable power change and this would be a major change in how Android kernels work.  Be very careful here, and please get lots of numbers and proof that this will be safe for all GKI kernel users.",
       "revId": "aaf565e7e06274febd545f9b41ddd05f2c9e4a41",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b914260b_f10b33b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-03-03T11:31:57Z",
+      "side": 1,
+      "message": "Also, a way to \"solve\" this is to not sleep for any time, but rather give up your timeslice in userspace properly for when you do not need to do anymore work on it.",
+      "parentUuid": "663fb7ad_8b6c25c9",
+      "revId": "aaf565e7e06274febd545f9b41ddd05f2c9e4a41",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
