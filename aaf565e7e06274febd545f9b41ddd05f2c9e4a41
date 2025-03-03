@@ -34,6 +34,23 @@
       "parentUuid": "663fb7ad_8b6c25c9",
       "revId": "aaf565e7e06274febd545f9b41ddd05f2c9e4a41",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16106e5f_39cd57bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-03-03T17:23:53Z",
+      "side": 1,
+      "message": "Yeah. I\u0027ve got a similar patch (https://r.android.com/3166257) I was hoping to land last summer but it ran into power regression reports.\n\nFor some details, see slide 10 from Saravana\u0027s presentation from lpc last year:\nhttps://lpc.events/event/18/contributions/1842/attachments/1476/3126/LPC%202024%20-%20Wattson.pdf\n\nSome deeper analysis is needed there to better understand the cause. But I\u0027m also looking at a dynamic HZ approach (setting HZ\u003d1000, but allowing the actual interrupt frequency to come in at a slower rate - defaulting to 250hz, and handling batches of ticks together), but it will need some further effort before it is ready for use:\nhttps://lore.kernel.org/lkml/20250128063301.3879317-1-jstultz@google.com/",
+      "revId": "aaf565e7e06274febd545f9b41ddd05f2c9e4a41",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
