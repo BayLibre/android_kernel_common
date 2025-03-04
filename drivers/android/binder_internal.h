@@ -17,6 +17,9 @@
 #include "binder_alloc.h"
 #include "dbitmap.h"
 
+extern bool binder_use_rust;
+void unload_binderfs(void);
+
 struct binder_context {
 	struct binder_node *binder_context_mgr_node;
 	struct mutex context_mgr_node_lock;

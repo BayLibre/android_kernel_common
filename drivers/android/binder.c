@@ -7175,34 +7175,6 @@ const struct binder_debugfs_entry binder_debugfs_entries[] = {
 	{} /* terminator */
 };
 
-bool binder_use_rust;
-EXPORT_SYMBOL_GPL(binder_use_rust);
-
-static int binder_impl_param_set(const char *buffer, const struct kernel_param *kp)
-{
-	if (!strcmp(buffer, "rust"))
-		binder_use_rust = true;
-	else if (!strcmp(buffer, "c"))
-		binder_use_rust = false;
-	else
-		return -EINVAL;
-
-	return 0;
-}
-
-static int binder_impl_param_get(char *buffer, const struct kernel_param *kp)
-{
-	/* The buffer is 4k bytes, so this will not overflow. */
-	return sprintf(buffer, "%s\n", binder_use_rust ? "rust" : "c");
-}
-
-static const struct kernel_param_ops binder_impl_param_ops = {
-	.set = binder_impl_param_set,
-	.get = binder_impl_param_get,
-};
-
-module_param_cb(impl, &binder_impl_param_ops, NULL, 0444);
-
 static int __init init_binder_device(const char *name)
 {
 	int ret;
@@ -7240,9 +7212,6 @@ static int __init binder_init(void)
 	struct hlist_node *tmp;
 	char *device_names = NULL;
 	const struct binder_debugfs_entry *db_entry;
-
-	if (binder_use_rust)
-		return 0;
 
 	ret = binder_alloc_shrinker_init();
 	if (ret)
@@ -7306,6 +7275,54 @@ err_alloc_device_names_failed:
 }
 
 device_initcall(binder_init);
+
+bool binder_use_rust;
+EXPORT_SYMBOL_GPL(binder_use_rust);
+
+/*
+ * Called by Rust Binder to unload the C Binder driver.
+ *
+ * If you have started using the Binder driver, this will fail as mounting
+ * binderfs unsets binder_use_rust, which can't be set.
+ */
+int unload_binder(void)
+{
+	if (!IS_ENABLED(CONFIG_ANDROID_BINDERFS))
+		return -EINVAL;
+	if (!binder_use_rust)
+		return -EINVAL;
+	unload_binderfs();
+	debugfs_remove_recursive(binder_debugfs_dir_entry_root);
+	binder_alloc_shrinker_exit();
+
+	return 0;
+}
+EXPORT_SYMBOL_GPL(unload_binder);
+
+static int binder_impl_param_set(const char *buffer, const struct kernel_param *kp)
+{
+	if (!strcmp(buffer, "rust"))
+		binder_use_rust = true;
+	else if (!strcmp(buffer, "c"))
+		binder_use_rust = false;
+	else
+		return -EINVAL;
+
+	return 0;
+}
+
+static int binder_impl_param_get(char *buffer, const struct kernel_param *kp)
+{
+	/* The buffer is 4k bytes, so this will not overflow. */
+	return sprintf(buffer, "%s\n", binder_use_rust ? "rust" : "c");
+}
+
+static const struct kernel_param_ops binder_impl_param_ops = {
+	.set = binder_impl_param_set,
+	.get = binder_impl_param_get,
+};
+
+module_param_cb(impl, &binder_impl_param_ops, NULL, 0444);
 
 #define CREATE_TRACE_POINTS
 #include "binder_trace.h"
