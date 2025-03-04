@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f34a16f_375b1304",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2025-03-04T23:22:06Z",
+      "side": 1,
+      "message": "It fails because Makefile.modfinal manually filters out $(CFLAGS_KCSAN), which includes -mllvm, leaving -improved-fs-discriminator\u003dtrue unrecognized. It is fixed by backporting https://android-review.git.corp.google.com/c/kernel/common/+/3525112.",
+      "parentUuid": "537e8344_178c0a6c",
+      "revId": "4cf68250e9d3e792fad3bd83d4a2a324d5c677e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fee014b_c75ae012",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c71ee01b_9c9af7e7",
+        "filename": "arch/arm64/configs/autofdo_gki.fragment",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2025-03-04T23:22:06Z",
+      "side": 1,
+      "message": "This config was added by default in android16-6.12, in https://android-review.git.corp.google.com/c/kernel/common/+/3404523.\nFor kernel 6.6, since it is already released and we want to minimize the impact on the default build, this config is only added to the AUTOFDO build. For the place to add, common/android is all about exported symbols, while common/arch/arm64/config contains several *_gki.fragment files. So I feel common/arch/arm64/config is more suitable.",
+      "parentUuid": "9fee014b_c75ae012",
+      "revId": "4cf68250e9d3e792fad3bd83d4a2a324d5c677e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d84398f1_6357d038",
@@ -48,6 +84,24 @@
       "writtenOn": "2025-02-28T22:15:14Z",
       "side": 1,
       "message": "Could you please split this change in another change? This looks like it could cause conflicts in the future, so splitting the change improves the process of merging upstream changes.\n\nAlso, is there a way to avoid changes to Makefile.lib?",
+      "revId": "4cf68250e9d3e792fad3bd83d4a2a324d5c677e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f512be66_77556f3e",
+        "filename": "scripts/Makefile.lib",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2025-03-04T23:22:06Z",
+      "side": 1,
+      "message": "Done. splited it to https://android-review.git.corp.google.com/c/kernel/common/+/3525113/1.",
+      "parentUuid": "d84398f1_6357d038",
       "revId": "4cf68250e9d3e792fad3bd83d4a2a324d5c677e5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
