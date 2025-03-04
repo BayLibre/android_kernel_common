@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4905ebf5_18bad8e1",
+        "filename": "drivers/of/of_reserved_mem.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1996690
+      },
+      "writtenOn": "2025-03-04T08:01:04Z",
+      "side": 1,
+      "message": "I have one question about this change. Do we need to enable `CONFIG_CMA` as mandatory to utilize `of_reserved_mem`? I guess this line should be branched by `#ifdef CONFIG_DMA` block. This change actually broke our team\u0027s GKI use cases unfortunately.",
+      "range": {
+        "startLine": 180,
+        "startChar": 18,
+        "endLine": 180,
+        "endChar": 45
+      },
+      "revId": "cb268664c36e97586b7d5c3836c2027339dcc91f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
