@@ -690,6 +690,13 @@ static void verity_work(struct work_struct *w)
 	verity_finish_io(io, errno_to_blk_status(verity_verify_io(io)));
 }
 
+static atomic64_t num_hardirq_big;
+static atomic64_t num_hardirq_small;
+static atomic64_t num_softirq_big;
+static atomic64_t num_softirq_small;
+static atomic64_t num_other_big;
+static atomic64_t num_other_small;
+
 static void verity_end_io(struct bio *bio)
 {
 	struct dm_verity_io *io = bio->bi_private;
@@ -700,6 +707,31 @@ static void verity_end_io(struct bio *bio)
 	     (bio->bi_opf & REQ_RAHEAD))) {
 		verity_finish_io(io, bio->bi_status);
 		return;
+	}
+
+	if (in_serving_softirq()) {
+		if (io->n_blocks == 1) {
+			atomic64_inc(&num_softirq_small);
+			if (atomic64_read(&num_softirq_small) % 512 == 0) {
+				pr_info("num_softirq_small=%llu num_softirq_big=%llu\n",
+					atomic64_read(&num_softirq_small), atomic64_read(&num_softirq_big));
+				pr_info("num_hardirq_small=%llu num_hardirq_big=%llu\n",
+					atomic64_read(&num_hardirq_small), atomic64_read(&num_hardirq_big));
+				pr_info("num_other_small=%llu num_other_big=%llu\n",
+					atomic64_read(&num_other_small), atomic64_read(&num_other_big));
+			}
+		} else
+			atomic64_inc(&num_softirq_big);
+	} else if (in_hardirq()) {
+		if (io->n_blocks == 1)
+			atomic64_inc(&num_hardirq_small);
+		else
+			atomic64_inc(&num_hardirq_big);
+	} else {
+		if (io->n_blocks == 1)
+			atomic64_inc(&num_other_small);
+		else
+			atomic64_inc(&num_other_big);
 	}
 
 	INIT_WORK(&io->work, verity_work);
