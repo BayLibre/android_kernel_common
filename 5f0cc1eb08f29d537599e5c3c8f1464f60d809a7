@@ -34,6 +34,24 @@
       "parentUuid": "3687253f_d9163ee5",
       "revId": "5f0cc1eb08f29d537599e5c3c8f1464f60d809a7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43d89763_182b83e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-03-04T17:03:57Z",
+      "side": 1,
+      "message": "Just to clarify a few things...\n\n* Build-time ABI failuers are due to the build-time checks by Kleaf. These are controlled by `BUILD.bazel`. Configuration for architectures (actually targets) is very much separate. It\u0027s up to the `-desktop` branch owners how they configure each target. More on this below.\n* ABI monitoring that appears in Gerrit is separate and serves a variety of purposes. The details are in go/abi:gerrit. Here we can also configure some things (typically commit-commit ABI change reporting and perhaps build-commit ABI compliance) separately. Also Build ABI monitoring is always-on but purely informational.\n\nIf ABI files and symbol files exist we would typically check that the built GKI\u0027s symbol-filtered ABI is the same as that in the file, i.e., turn on build-time checks and ABI Compliance. \n\nNow we have the situation here. In GKI land, this change would have to wait until the next coordinated KMI update to land (currently 2025-03-19). You probably don\u0027t want this.\n\nOptions:\n\n1. have build-time checks and (Ackomator) ABI Compliance monitoring, keep the `aarch64` ABI up to date; but turn down (you may have already) ABI Compatibility; for changes like this, fix up the ABI\n2. make your `aarch64` build a non-ABI build (remove references to the ABI file, turn off symbol checks, symbol trimming, etc.) - the `aarch64` builds will no longer fail purely for ABI reasons and there will be no need or mechanism for updating the ABI anymore\n3. turn off your `aarch64` targets (do you want to support `aarch64` devices?) altogether\n\nIt sounds like you wanted / were on the first option, but Ackomator hasn\u0027t run, hmmm.",
+      "parentUuid": "84363ebb_4bc05ec7",
+      "revId": "5f0cc1eb08f29d537599e5c3c8f1464f60d809a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
