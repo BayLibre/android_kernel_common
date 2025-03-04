@@ -21,6 +21,7 @@
 #include <linux/reboot.h>
 #include <linux/scatterlist.h>
 #include <linux/string.h>
+#include <linux/jiffies.h>
 #include <linux/jump_label.h>
 #include <linux/security.h>
 
@@ -44,6 +45,18 @@
 
 #define DM_VERITY_OPTS_MAX		(5 + DM_VERITY_OPTS_FEC + \
 					 DM_VERITY_ROOT_HASH_VERIFICATION_OPTS)
+
+/* Upper bound for inline request verification size:
+ * Regardless of the value provided by userspace, do not process
+ * requests bigger than 4MB in-line.
+ */
+#define DM_VERITY_MAX_INLINE_VERIFICATION_SIZE (1<<22)
+/* Upper bound for inline request verification time:
+ * Regardless of the value provided by userspace, do not process
+ * requests for longer than 2ms. That is the upper bound defined in
+ * kernel/softirq.c for spending in softirq (MAX_SOFTIRQ_TIME).
+ */
+#define DM_VERITY_MAX_TIME_IN_SOFTIRQ_USEC (2000)
 
 static unsigned int dm_verity_prefetch_cluster = DM_VERITY_DEFAULT_PREFETCH_SIZE;
 
@@ -728,6 +741,14 @@ static void verity_bh_work(struct work_struct *w)
 	int err;
 
 	io->in_bh = true;
+	/* If not yet set for this request, determine the deadline for in-line
+	 * processing of this request.
+	 */
+	if (in_serving_softirq() && io->end_softirq_proccessing_jiffies == 0
+	    && io->v->max_inline_processing_time_usec > 0) {
+		io->end_softirq_proccessing_jiffies = jiffies +
+				usecs_to_jiffies(io->v->max_inline_processing_time_usec);
+	}
 	err = verity_verify_io(io);
 	if (err == -EAGAIN || err == -ENOMEM) {
 		/* fallback to retrying with work-queue */
@@ -751,9 +772,41 @@ static void verity_end_io(struct bio *bio)
 		return;
 	}
 
+	/* Note the different behaviour for the use_bh_wq parameter if
+	 * max_inline_processing_size is specified:
+	 * * If not specified, the behaviour of use_bh_wq remains: The request
+	 *   will be queued on the bh_wq.
+	 * * If specified, and conditions are met, the request will be processed
+	 *   in-line - in the softirq context.
+	 */
 	if (static_branch_unlikely(&use_bh_wq_enabled) && io->v->use_bh_wq) {
+		const unsigned int block_size = 1 << io->v->data_dev_block_bits;
+		unsigned int total_bytes_to_process = block_size * io->n_blocks;
+		printk(KERN_INFO "use_bh_wq on, block size: %d total %d\n",
+		       block_size, total_bytes_to_process);
 		INIT_WORK(&io->bh_work, verity_bh_work);
-		queue_work(system_bh_wq, &io->bh_work);
+		bool process_inline_due_to_size = io->v->max_inline_processing_size > 0 &&
+				total_bytes_to_process <= io->v->max_inline_processing_size;
+		printk(KERN_INFO "Timing info: in softirq %d max_inline_processing_time_usec %d end time %lu jiffies %lu",
+		       (in_serving_softirq() != 0), io->v->max_inline_processing_time_usec, io->end_softirq_proccessing_jiffies,
+		       jiffies);
+		bool process_inline_due_to_softirq_time =
+				// Not in softirq - no limit.
+				!in_serving_softirq() ||
+				// Default: No time limit specified.
+				io->v->max_inline_processing_time_usec == 0 ||
+				// Not started a previous transaction in softirq context.
+				io->end_softirq_proccessing_jiffies == 0 ||
+				// Started a previous transaction but there's still time budget in
+				// softirq context.
+				io->end_softirq_proccessing_jiffies > jiffies;
+		if (process_inline_due_to_size && process_inline_due_to_softirq_time) {
+			printk(KERN_INFO "Total size %d below threshold, verifying in-line\n", total_bytes_to_process);
+			verity_bh_work(&io->bh_work);
+		} else {
+			printk(KERN_INFO "Total size %d ABOVE threshold, verifying in bh wq\n", total_bytes_to_process);
+			queue_work(system_bh_wq, &io->bh_work);
+		}
 	} else {
 		INIT_WORK(&io->work, verity_work);
 		queue_work(io->v->verify_wq, &io->work);
@@ -1311,11 +1364,62 @@ static int verity_parse_opt_args(struct dm_arg_set *as, struct dm_verity *v,
 				return r;
 			continue;
 
-		} else if (!strcasecmp(arg_name, DM_VERITY_OPT_TASKLET_VERIFY)) {
+		} else if (!strncasecmp(arg_name, DM_VERITY_OPT_TASKLET_VERIFY,
+                                        strlen(DM_VERITY_OPT_TASKLET_VERIFY))) {
 			v->use_bh_wq = true;
 			static_branch_inc(&use_bh_wq_enabled);
+			char *extra_verify_args = strchr(arg_name, '=');
+			if (extra_verify_args == NULL) {
+				printk(KERN_INFO "No extra arguments to try_verify_in_tasklet.\n");
+				continue;
+			}
+			char *inline_verify_block_size = extra_verify_args + 1;
+			char *comma_separator_location = strchr(inline_verify_block_size, ',');
+			/* If both max size and time are present, separate
+			 * them.
+			 */
+			if (comma_separator_location != NULL) {
+				*comma_separator_location = 0;
+			}
+			int max_inline_verify_block_size = 0;
+			int kstrtoint_res = kstrtoint(
+					inline_verify_block_size, 10,
+					&max_inline_verify_block_size);
+			if (kstrtoint_res != 0) {
+				printk(KERN_WARNING "Failed to parse max block size to verify inline: "
+				       "%d from %s\n", kstrtoint_res, extra_verify_args);
+				v->max_inline_processing_size = 0;
+			} else {
+				if (max_inline_verify_block_size < 0 ||
+				    max_inline_verify_block_size > DM_VERITY_MAX_INLINE_VERIFICATION_SIZE) {
+					printk(KERN_WARNING "Size %d is not in permitted range.\n", max_inline_verify_block_size);
+					v->max_inline_processing_size = 0;
+				} else {
+					v->max_inline_processing_size = (unsigned int) max_inline_verify_block_size;
+					printk(KERN_INFO "Setting inline max block processing size to %d.\n", max_inline_verify_block_size);
+				}
+			}
+			if (comma_separator_location != NULL) {
+				int max_inline_processing_time_usec = 0;
+				int kstrtoint_res = kstrtoint(
+						comma_separator_location + 1, 10,
+						&max_inline_processing_time_usec);
+				if (kstrtoint_res != 0) {
+					printk(KERN_WARNING "Failed to parse max time in softirq: %d from %s\n",
+					       kstrtoint_res, extra_verify_args);
+					v->max_inline_processing_time_usec = 0;
+				} else {
+					if (max_inline_processing_time_usec < 0 ||
+					    max_inline_processing_time_usec > DM_VERITY_MAX_TIME_IN_SOFTIRQ_USEC) {
+						printk(KERN_WARNING "Time %d is not in permitted range.\n", max_inline_processing_time_usec);
+						v->max_inline_processing_time_usec = 0;
+					} else {
+						v->max_inline_processing_time_usec = (unsigned int) max_inline_processing_time_usec;
+						printk(KERN_INFO "Setting max time in softirq to %d.\n", max_inline_processing_time_usec);
+					}
+				}
+			}
 			continue;
-
 		} else if (verity_is_fec_opt_arg(arg_name)) {
 			if (only_modifier_opts)
 				continue;
