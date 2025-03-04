@@ -192,6 +192,7 @@
   tcp_hashinfo
   tcp_reno_undo_cwnd
   touch_atime
+  __traceiter_android_rvh_do_madvise_bypass
   __traceiter_android_rvh_post_init_entity_util_avg
   __traceiter_android_rvh_rtmutex_force_update
   __traceiter_android_rvh_set_cpus_allowed_comm
@@ -347,6 +348,7 @@
   __traceiter_sched_stat_wait
   __traceiter_sched_waking
   __traceiter_task_rename
+  __tracepoint_android_rvh_do_madvise_bypass
   __tracepoint_android_rvh_post_init_entity_util_avg
   __tracepoint_android_rvh_rtmutex_force_update
   __tracepoint_android_rvh_set_cpus_allowed_comm
@@ -554,3 +556,4 @@
   contpte_ptep_get
   contpte_ptep_set_access_flags
   __ptep_set_access_flags
+  madvise_vma_behavior
