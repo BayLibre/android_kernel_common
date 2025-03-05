@@ -70,6 +70,24 @@
       "parentUuid": "43d89763_182b83e3",
       "revId": "5f0cc1eb08f29d537599e5c3c8f1464f60d809a7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5228329_46415df1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1969731
+      },
+      "writtenOn": "2025-03-05T07:47:54Z",
+      "side": 1,
+      "message": "\u003e have build-time checks and (Ackomator) ABI Compliance monitoring, keep the aarch64 ABI up to date; but turn down (you may have already) ABI Compatibility; for changes like this, fix up the ABI\n\nI updated the patch with aarch64 ABI, is this correct?\nThis change adds a field to `trace_array` but that is internal data structure. The `include/linux/ftrace.h` exposed it as an incomplete type, so user can not access its fields.\nThus, I think it should not break the ABI compatibility.",
+      "parentUuid": "4817e25c_65002f24",
+      "revId": "5f0cc1eb08f29d537599e5c3c8f1464f60d809a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
