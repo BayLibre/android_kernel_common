@@ -6001,8 +6001,21 @@ ssize_t tracing_resize_ring_buffer(struct trace_array *tr,
 	return __tracing_resize_ring_buffer(tr, size, cpu_id);
 }
 
+struct trace_scratch {
+	unsigned long		kaslr_addr;
+};
+
+struct trace_scratch *trace_array_scratch(struct trace_array *tr, unsigned int *size)
+{
+	if (!tr->range_addr_start || !tr->range_addr_size)
+		return NULL;
+	return (struct trace_scratch *)ring_buffer_meta_scratch(tr->array_buffer.buffer, size);
+}
+
 static void update_last_data(struct trace_array *tr)
 {
+	struct trace_scratch *tscratch;
+
 	if (!(tr->flags & TRACE_ARRAY_FL_LAST_BOOT))
 		return;
 
@@ -6017,6 +6030,16 @@ static void update_last_data(struct trace_array *tr)
 	/* Using current data now */
 	tr->text_delta = 0;
 
+	tscratch = trace_array_scratch(tr, NULL);
+	if (!tscratch)
+		return;
+
+	/* Set the persistent ring buffer meta data to this address */
+#ifdef CONFIG_RANDOMIZE_BASE
+	tscratch->kaslr_addr = kaslr_offset();
+#else
+	tscratch->kaslr_addr = 0;
+#endif
 	tr->flags &= ~TRACE_ARRAY_FL_LAST_BOOT;
 }
 
@@ -6831,6 +6854,7 @@ static ssize_t
 tracing_last_boot_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
 {
 	struct trace_array *tr = filp->private_data;
+	struct trace_scratch *tscratch = trace_array_scratch(tr, NULL);
 	struct seq_buf seq;
 	char buf[64];
 
@@ -6843,8 +6867,8 @@ tracing_last_boot_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t 
 	 * Otherwise it shows the KASLR address from the previous boot which
 	 * should not be the same as the current boot.
 	 */
-	if (tr->flags & TRACE_ARRAY_FL_LAST_BOOT)
-		seq_buf_printf(&seq, "%lx\t[kernel]\n", tr->kaslr_addr);
+	if (tscratch && (tr->flags & TRACE_ARRAY_FL_LAST_BOOT))
+		seq_buf_printf(&seq, "%lx\t[kernel]\n", tscratch->kaslr_addr);
 	else
 		seq_buf_puts(&seq, "# Current\n");
 
@@ -9229,6 +9253,8 @@ static int
 allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, int size)
 {
 	enum ring_buffer_flags rb_flags;
+	struct trace_scratch *tscratch;
+	unsigned int scratch_size;
 
 	rb_flags = tr->trace_flags & TRACE_ITER_OVERWRITE ? RB_FL_OVERWRITE : 0;
 
@@ -9237,12 +9263,17 @@ allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, int size
 	if (tr->range_addr_start && tr->range_addr_size) {
 		buf->buffer = ring_buffer_alloc_range(size, rb_flags, get_order(__PAGE_SIZE),
 						      tr->range_addr_start,
-						      tr->range_addr_size, 0);
+						      tr->range_addr_size,
+						      sizeof(*tscratch));
+
+		tscratch = ring_buffer_meta_scratch(buf->buffer, &scratch_size);
+		if (tscratch) {
 
 #ifdef CONFIG_RANDOMIZE_BASE
-		if (ring_buffer_last_boot_delta(buf->buffer, &tr->kaslr_addr))
-			tr->text_delta = kaslr_offset() - tr->kaslr_addr;
+			if (tscratch->kaslr_addr)
+				tr->text_delta = kaslr_offset() - tscratch->kaslr_addr;
 #endif
+		}
 		/*
 		 * This is basically the same as a mapped buffer,
 		 * with the same restrictions.
