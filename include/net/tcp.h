@@ -42,6 +42,7 @@
 #include <net/dst.h>
 #include <net/mptcp.h>
 #include <net/xfrm.h>
+KABI_DECLONLY(udp_table);
 
 #include <linux/seq_file.h>
 #include <linux/memcontrol.h>
