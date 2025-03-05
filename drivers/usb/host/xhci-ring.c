@@ -381,7 +381,12 @@ static void xhci_handle_stopped_cmd_ring(struct xhci_hcd *xhci,
 	    !(xhci->xhc_state & XHCI_STATE_DYING)) {
 		xhci->current_cmd = cur_cmd;
 		if (cur_cmd)
+<<<<<<< HEAD   (b3026e Merge branch 'android14-6.1' into android14-6.1-lts)
 			xhci_mod_cmd_timer(xhci, XHCI_CMD_DEFAULT_TIMEOUT);
+||||||| BASE
+=======
+			xhci_mod_cmd_timer(xhci);
+>>>>>>> BRANCH (3a8358 Linux 6.1.129)
 		xhci_ring_cmd_db(xhci);
 	}
 }
