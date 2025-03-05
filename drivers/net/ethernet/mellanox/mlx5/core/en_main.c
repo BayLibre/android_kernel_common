@@ -5980,9 +5980,7 @@ static void mlx5e_remove(struct auxiliary_device *adev)
 	mlx5e_dcbnl_delete_app(priv);
 	unregister_netdev(priv->netdev);
 	mlx5e_suspend(adev, state);
-	/* Avoid cleanup if profile rollback failed. */
-	if (priv->profile)
-		priv->profile->cleanup(priv);
+	priv->profile->cleanup(priv);
 	mlx5e_devlink_port_unregister(priv);
 	mlx5e_destroy_netdev(priv);
 }
