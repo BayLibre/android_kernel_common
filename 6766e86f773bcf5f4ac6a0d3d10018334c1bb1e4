@@ -34,6 +34,24 @@
       "parentUuid": "e7cb02d4_482db29f",
       "revId": "6766e86f773bcf5f4ac6a0d3d10018334c1bb1e4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05ea9f9a_02422227",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2025-03-05T16:08:15Z",
+      "side": 1,
+      "message": "Yeah I suppose only one critical section under mmu_lock should drop the count to zero, but we could see that twice in the check on this line (in 15-6.6). Then I think you should backport this aspect of the patch.",
+      "parentUuid": "2dc96c0e_38330e2b",
+      "revId": "6766e86f773bcf5f4ac6a0d3d10018334c1bb1e4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
