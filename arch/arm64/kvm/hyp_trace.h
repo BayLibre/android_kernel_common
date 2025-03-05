@@ -14,6 +14,7 @@ void hyp_trace_init_event_tracefs(struct dentry *parent);
 bool hyp_trace_init_event_early(void);
 int hyp_trace_init_mod_events(struct hyp_event *event,
 			      struct hyp_event_id *event_id, int nr_events);
+void hyp_trace_dump(void);
 #else
 static inline int hyp_trace_init_tracefs(void) { return 0; }
 static inline int hyp_trace_init_events(void) { return 0; }
@@ -23,5 +24,6 @@ hyp_trace_init_mod_events(struct hyp_event *event,
 {
 	return 0;
 }
+void hyp_trace_dump(void) { }
 #endif
 #endif

@@ -546,7 +546,7 @@ again:
 	return ret;
 }
 
-static void hyp_trace_buffer_printk(struct hyp_trace_buffer *hyp_buffer);
+static void hyp_trace_buffer_printk(struct ht_iterator *iter);
 
 static void __poll_writer(struct work_struct *work)
 {
@@ -557,7 +557,8 @@ static void __poll_writer(struct work_struct *work)
 
 	ring_buffer_poll_writer(iter->hyp_buffer->trace_buffer, iter->cpu);
 
-	hyp_trace_buffer_printk(iter->hyp_buffer);
+	if (iter->hyp_buffer->printk_on)
+		hyp_trace_buffer_printk(iter);
 
 	schedule_delayed_work((struct delayed_work *)work,
 			      msecs_to_jiffies(RB_POLL_MS));
@@ -786,12 +787,9 @@ unlock:
 	return ret;
 }
 
-static void hyp_trace_buffer_printk(struct hyp_trace_buffer *hyp_buffer)
+static void hyp_trace_buffer_printk(struct ht_iterator *ht_iter)
 {
-	struct ht_iterator *ht_iter = hyp_buffer->printk_iter;
-
-	if (!hyp_trace_buffer.printk_on)
-		return;
+	struct hyp_trace_buffer *hyp_buffer = ht_iter->hyp_buffer;
 
 	trace_seq_init(&ht_iter->seq);
 
@@ -809,6 +807,33 @@ static void hyp_trace_buffer_printk(struct hyp_trace_buffer *hyp_buffer)
 		ring_buffer_consume(hyp_buffer->trace_buffer, ht_iter->ent_cpu,
 				    NULL, NULL);
 	}
+}
+
+void hyp_trace_dump(void)
+{
+	struct hyp_trace_buffer *hyp_buffer = &hyp_trace_buffer;
+	struct ht_iterator *ht_iter;
+
+	/* Do not conflict with cmdline hyp_trace_printk option */
+	if (hyp_trace_buffer->printk_on)
+		return;
+
+	mutex_lock(&hyp_buffer->lock);
+	if (!hyp_trace_buffer_loaded(hyp_buffer)) {
+		pr_warn("%s: Tracing not loaded\n", __func__);
+		goto end;
+	}
+
+	ht_iter = ht_iterator_create(hyp_buffer, RING_BUFFER_ALL_CPUS);
+	if (!ht_iter) {
+		pr_warn("%s: Failed to create iterator\n", __func__);
+		goto end;
+	}
+
+	hyp_trace_buffer_printk(ht_iter);
+
+end:
+	mutex_unlock(&hyp_buffer->lock);
 }
 
 int hyp_trace_init_tracefs(void)
