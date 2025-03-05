@@ -33,6 +33,9 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/alarmtimer.h>
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/alarmtimer.h>
+
 /**
  * struct alarm_base - Alarm timer bases
  * @lock:		Lock for syncrhonized access to the base
@@ -162,6 +165,7 @@ static void alarmtimer_enqueue(struct alarm_base *base, struct alarm *alarm)
 		timerqueue_del(&base->timerqueue, &alarm->node);
 
 	timerqueue_add(&base->timerqueue, &alarm->node);
+	trace_android_vh_alarmtimer_enqueue(alarm);
 	alarm->state |= ALARMTIMER_STATE_ENQUEUED;
 }
 

@@ -17,6 +17,9 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/rtc.h>
 
+#undef CREATE_TRACE_POINTS
+#include <trace/hooks/rtc.h>
+
 static int rtc_timer_enqueue(struct rtc_device *rtc, struct rtc_timer *timer);
 static void rtc_timer_remove(struct rtc_device *rtc, struct rtc_timer *timer);
 
@@ -823,6 +826,7 @@ static int rtc_timer_enqueue(struct rtc_device *rtc, struct rtc_timer *timer)
 
 	timerqueue_add(&rtc->timerqueue, &timer->node);
 	trace_rtc_timer_enqueue(timer);
+	trace_android_vh_rtc_timer_enqueue(timer);
 	if (!next || ktime_before(timer->node.expires, next->expires)) {
 		struct rtc_wkalrm alarm;
 
