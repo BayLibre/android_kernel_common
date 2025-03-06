@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b611670_41111601",
+        "filename": "drivers/bluetooth/btintel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-03-06T23:31:42Z",
+      "side": 1,
+      "message": "nit: Remove whitespace\n\nThis doesn\u0027t appear to be in the upstream patch:\n\nhttps://lore.kernel.org/all/20250129025817.65224-1-kiran.k@intel.com/\n\n```\n@@ -56,6 +56,7 @@ struct intel_tlv {\n #define BTINTEL_CNVI_BLAZARIW\t\t0x901\n #define BTINTEL_CNVI_GAP\t\t0x910\n #define BTINTEL_CNVI_BLAZARU\t\t0x930\n+ #define BTINTEL_CNVI_SCP\t\t0xA00\n```",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 1
+      },
+      "revId": "0f7c568c5dc6773e6de5662cddcb5bf7aa1a586f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
