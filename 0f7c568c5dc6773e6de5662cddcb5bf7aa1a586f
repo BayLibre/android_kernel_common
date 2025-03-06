@@ -46,6 +46,30 @@
       },
       "revId": "0f7c568c5dc6773e6de5662cddcb5bf7aa1a586f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a227c26d_aad916d1",
+        "filename": "drivers/bluetooth/btintel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-03-06T23:54:37Z",
+      "side": 1,
+      "message": "If you look at the earlier `UPSTREAM` CLs, that type of checking appears to be present already: ag/3522276\n\n\u003e KernelCommit Cherry pick is clean. Checked against UPSTREAM\n\nI\u0027m not sure if that\u0027s done with `FROMGIT` CLs, but it doesn\u0027t seem so. I think there\u0027s been discussion of doing something with seanbot, but I\u0027m not sure if that\u0027s going anywhere.",
+      "parentUuid": "63910212_8e980b99",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 1
+      },
+      "revId": "0f7c568c5dc6773e6de5662cddcb5bf7aa1a586f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
