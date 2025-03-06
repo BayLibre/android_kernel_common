@@ -16,6 +16,24 @@
       "message": "Any build time penalty as the profile needs to be opened for all files?",
       "revId": "2f7c1a205ca8f31b86cc317361bc408591ee497b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1f36706_1518b1a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2025-03-06T00:40:30Z",
+      "side": 1,
+      "message": "is-kernel-object includes all kernel builtin and module source files. I feel there are not many files not belonging to is-kernel-object. In android16-6.12, the build time is almost the same with/without this patch (replacing is-kernel-object with y), both about 3m 50s.",
+      "parentUuid": "1b07e659_78e27261",
+      "revId": "2f7c1a205ca8f31b86cc317361bc408591ee497b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
