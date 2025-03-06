@@ -320823,6 +320823,14 @@ function {
   parameter_id: 0x3b461cc8
 }
 function {
+  id: 0x9b43c1ce
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x39182992
+  parameter_id: 0x2170d06d
+  parameter_id: 0x11cfee5a
+}
+function {
   id: 0x9b43c222
   return_type_id: 0x6720d32f
   parameter_id: 0x1d19a9d5
@@ -336812,6 +336820,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_account_task_time"
 }
 elf_symbol {
+  id: 0x95da1cfe
+  name: "__traceiter_android_vh_add_lazyfree_bypass"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x3f7e0a5c
+  type_id: 0x9b43c1ce
+  full_name: "__traceiter_android_vh_add_lazyfree_bypass"
+}
+elf_symbol {
   id: 0xf71b3e6c
   name: "__traceiter_android_vh_adjust_alloc_flags"
   is_defined: true
@@ -338835,6 +338852,15 @@ elf_symbol {
   crc: 0x7c5aa8a7
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_account_task_time"
+}
+elf_symbol {
+  id: 0xe5fbea44
+  name: "__tracepoint_android_vh_add_lazyfree_bypass"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_add_lazyfree_bypass"
 }
 elf_symbol {
   id: 0x8f23a62a
@@ -384509,6 +384535,7 @@ interface {
   symbol_id: 0x13c17b96
   symbol_id: 0xebcd0234
   symbol_id: 0x86527a4e
+  symbol_id: 0x95da1cfe
   symbol_id: 0xf71b3e6c
   symbol_id: 0x0556c9b1
   symbol_id: 0xa3ddabd2
@@ -384734,6 +384761,7 @@ interface {
   symbol_id: 0xa68c0f10
   symbol_id: 0xdcf22716
   symbol_id: 0xe1489e0c
+  symbol_id: 0xe5fbea44
   symbol_id: 0x8f23a62a
   symbol_id: 0x58e7634f
   symbol_id: 0x3a519484
