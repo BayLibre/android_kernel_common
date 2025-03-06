@@ -1668,9 +1668,16 @@ static int cdns_i3c_master_remove(struct platform_device *pdev)
 	struct cdns_i3c_master *master = platform_get_drvdata(pdev);
 	int ret;
 
+<<<<<<< HEAD   (3d37b3 Merge e10b392a7495 ("net: usb: rtl8150: enable basic endpoin)
 	ret = i3c_master_unregister(&master->base);
 	if (ret)
 		return ret;
+||||||| BASE
+	i3c_master_unregister(&master->base);
+=======
+	cancel_work_sync(&master->hj_work);
+	i3c_master_unregister(&master->base);
+>>>>>>> BRANCH (3a8358 Linux 6.1.129)
 
 	clk_disable_unprepare(master->sysclk);
 	clk_disable_unprepare(master->pclk);
