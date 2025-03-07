@@ -381,7 +381,12 @@ static void xhci_handle_stopped_cmd_ring(struct xhci_hcd *xhci,
 	    !(xhci->xhc_state & XHCI_STATE_DYING)) {
 		xhci->current_cmd = cur_cmd;
 		if (cur_cmd)
+<<<<<<< HEAD   (9fb903 Merge e10b392a7495 ("net: usb: rtl8150: enable basic endpoin)
 			xhci_mod_cmd_timer(xhci, XHCI_CMD_DEFAULT_TIMEOUT);
+||||||| BASE
+=======
+			xhci_mod_cmd_timer(xhci);
+>>>>>>> BRANCH (93a56d drivers/card_reader/rtsx_usb: Restore interrupt based detect)
 		xhci_ring_cmd_db(xhci);
 	}
 }
