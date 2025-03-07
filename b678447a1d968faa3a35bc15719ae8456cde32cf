@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3c28dbff_31fdb639",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3910417
+      },
+      "writtenOn": "2025-03-07T06:24:50Z",
+      "side": 1,
+      "message": "OK, this is the patch for honor symbol list update: I501e42c73170c7c0f4ded2dd123a73ebfb700eda",
+      "parentUuid": "24de8ee5_2471bf69",
+      "revId": "b678447a1d968faa3a35bc15719ae8456cde32cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8ffc5535_507662fc",
         "filename": "mm/backing-dev.c",
         "patchSetId": 3
@@ -48,6 +66,24 @@
       "writtenOn": "2025-03-06T18:54:47Z",
       "side": 1,
       "message": "do you also need bdi_lock to safely use bdi_list?",
+      "revId": "b678447a1d968faa3a35bc15719ae8456cde32cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a4c8f00_01099497",
+        "filename": "mm/backing-dev.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3910417
+      },
+      "writtenOn": "2025-03-07T06:24:50Z",
+      "side": 1,
+      "message": "Thank for advice. We will not update bdi_list/bdi_tree in module, but only read bdi_list through rcu lock.\n\n\u003e /*\n\u003e\n\u003e  \\* bdi_lock protects bdi_tree and updates to bdi_list. bdi_list has RCU\n\u003e\n\u003e  \\* reader side locking.\n\u003e\n\u003e  */\n\u003e\n\u003e DEFINE_SPINLOCK(bdi_lock);",
+      "parentUuid": "8ffc5535_507662fc",
       "revId": "b678447a1d968faa3a35bc15719ae8456cde32cf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
