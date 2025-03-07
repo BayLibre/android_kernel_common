@@ -1668,9 +1668,16 @@ static int cdns_i3c_master_remove(struct platform_device *pdev)
 	struct cdns_i3c_master *master = platform_get_drvdata(pdev);
 	int ret;
 
+<<<<<<< HEAD   (6e376e Merge 17d426628cfd ("usb: typec: tcpm: set SRC_SEND_CAPABILI)
 	ret = i3c_master_unregister(&master->base);
 	if (ret)
 		return ret;
+||||||| BASE
+	i3c_master_unregister(&master->base);
+=======
+	cancel_work_sync(&master->hj_work);
+	i3c_master_unregister(&master->base);
+>>>>>>> BRANCH (3a8358 Linux 6.1.129)
 
 	clk_disable_unprepare(master->sysclk);
 	clk_disable_unprepare(master->pclk);

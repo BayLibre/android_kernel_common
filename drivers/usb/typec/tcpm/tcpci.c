@@ -341,7 +341,8 @@ static int tcpci_enable_auto_vbus_discharge(struct tcpc_dev *dev, bool enable)
 }
 
 static int tcpci_set_auto_vbus_discharge_threshold(struct tcpc_dev *dev, enum typec_pwr_opmode mode,
-						   bool pps_active, u32 requested_vbus_voltage_mv)
+						   bool pps_active, u32 requested_vbus_voltage_mv,
+						   u32 apdo_min_voltage_mv)
 {
 	struct tcpci *tcpci = tcpc_to_tcpci(dev);
 	unsigned int pwr_ctrl, threshold = 0;
@@ -367,7 +368,12 @@ static int tcpci_set_auto_vbus_discharge_threshold(struct tcpc_dev *dev, enum ty
 			 * To prevent disconnect when the source is in Current Limit Mode.
 			 * Set the threshold to the lowest possible voltage vPpsShutdown (min)
 			 */
+<<<<<<< HEAD   (6e376e Merge 17d426628cfd ("usb: typec: tcpm: set SRC_SEND_CAPABILI)
 			threshold = VPPS_SHUTDOWN_MIN_PERCENT * requested_vbus_voltage_mv / 100 -
+||||||| BASE
+=======
+			threshold = VPPS_SHUTDOWN_MIN_PERCENT * apdo_min_voltage_mv / 100 -
+>>>>>>> BRANCH (3a8358 Linux 6.1.129)
 				    VSINKPD_MIN_IR_DROP_MV;
 		else
 			threshold = ((VSRC_NEW_MIN_PERCENT * requested_vbus_voltage_mv / 100) -
