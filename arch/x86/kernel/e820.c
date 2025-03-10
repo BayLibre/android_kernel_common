@@ -1153,6 +1153,66 @@ static bool __init do_mark_busy(enum e820_type type, struct resource *res)
 
 static struct resource __initdata *e820_res;
 
+static void split_resource(struct resource *e820_res, resource_size_t start, resource_size_t end)
+{
+	struct resource *res_end, *rsv_res;
+	resource_size_t e820_res_end;
+
+	if (e820_res->start == start && e820_res->end == end) {
+		e820_res->flags = IORESOURCE_MEM;
+		return;
+	}
+
+	rsv_res = memblock_alloc(sizeof(*rsv_res), SMP_CACHE_BYTES);
+	if (!rsv_res)
+		panic("%s: Failed to allocate %zu bytes\n", __func__, sizeof(*rsv_res));
+
+	rsv_res->name  = "DT Reserved";
+	rsv_res->flags = IORESOURCE_MEM;
+	rsv_res->start = start;
+	rsv_res->end = end;
+
+	if (e820_res->start == rsv_res->start) {
+		adjust_resource(e820_res, rsv_res->end, e820_res->end - rsv_res->end);
+		insert_resource(&iomem_resource, rsv_res);
+		return;
+	}
+
+	if (e820_res->start < rsv_res->start) {
+		e820_res_end = e820_res->end;
+
+		adjust_resource(e820_res, e820_res->start, rsv_res->start - e820_res->start);
+		insert_resource(&iomem_resource, rsv_res);
+
+		if (rsv_res->end < e820_res_end) {
+			res_end = memblock_alloc(sizeof(*res_end), SMP_CACHE_BYTES);
+			res_end->name = e820_res->name;
+			res_end->end = e820_res_end;
+			res_end->start = rsv_res->end + 1;
+			res_end->flags = e820_res->flags;
+			insert_resource(&iomem_resource, res_end);
+		}
+	}
+}
+
+static void split_if_overlaps_with_dt_reserved(struct resource *e820_res)
+{
+	struct memblock_region *region;
+	resource_size_t start, end;
+
+	for_each_mem_region(region) {
+		if (memblock_is_nomap(region)) {
+			start = __pfn_to_phys(memblock_region_reserved_base_pfn(region));
+			end = __pfn_to_phys(memblock_region_reserved_end_pfn(region)) - 1;
+
+			/* If overlaps with existing region, rearrange resources */
+			if (start <= e820_res->end && end >= e820_res->start) {
+				split_resource(e820_res, start, end);
+			}
+		}
+	}
+}
+
 void __init e820__reserve_resources(void)
 {
 	int i;
@@ -1186,6 +1246,10 @@ void __init e820__reserve_resources(void)
 		 * pcibios_resource_survey():
 		 */
 		if (do_mark_busy(entry->type, res)) {
+
+			if (entry->type == E820_TYPE_RAM)
+				split_if_overlaps_with_dt_reserved(res);
+
 			res->flags |= IORESOURCE_BUSY;
 			insert_resource(&iomem_resource, res);
 		}
