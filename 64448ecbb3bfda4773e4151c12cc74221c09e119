@@ -16,6 +16,24 @@
       "message": "Thanks for this!  I\u0027ll add it to the series when the lts stuff gets merged, but it really should go to the -lts branch, not this branch, I\u0027ll cherry-pick it there.",
       "revId": "64448ecbb3bfda4773e4151c12cc74221c09e119",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dab13f2_31104882",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-03-10T09:25:47Z",
+      "side": 1,
+      "message": "Sounds good! You\u0027ll also need to add\n```\n$(obj)/ffi.o: private skip_gendwarfksyms \u003d 1\n```\nin `rust/Makefile`. I couldn\u0027t include that in this diff because `ffi.o` doesn\u0027t exist in the branch right now.",
+      "parentUuid": "87739478_cc73f7de",
+      "revId": "64448ecbb3bfda4773e4151c12cc74221c09e119",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
