@@ -34,6 +34,12 @@ DECLARE_HOOK(android_vh_mglru_should_abort_scan,
 	TP_PROTO(unsigned long nr_reclaimed, unsigned long nr_to_reclaim,
 	unsigned int order, bool *bypass),
 	TP_ARGS(nr_to_reclaim, nr_reclaimed, order, bypass));
+struct mem_cgroup_reclaim_cookie;
+struct scan_control;
+DECLARE_HOOK(android_vh_shrink_node_memcgs_bypass,
+	TP_PROTO(struct mem_cgroup_reclaim_cookie *partial,
+		struct scan_control *sc, bool *bypass),
+	TP_ARGS(partial, sc, bypass));
 DECLARE_HOOK(android_vh_should_memcg_bypass,
 	TP_PROTO(struct mem_cgroup *memcg, int priority, bool *bypass),
 	TP_ARGS(memcg, priority, bypass));

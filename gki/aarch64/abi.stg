@@ -199,6 +199,11 @@ pointer_reference {
   pointee_type_id: 0x28e34a3d
 }
 pointer_reference {
+  id: 0x00abf683
+  kind: POINTER
+  pointee_type_id: 0x28ef3c91
+}
+pointer_reference {
   id: 0x00b71a51
   kind: POINTER
   pointee_type_id: 0x289c8fda
@@ -10324,6 +10329,11 @@ pointer_reference {
   pointee_type_id: 0x4334f3ba
 }
 pointer_reference {
+  id: 0x1a5ea01f
+  kind: POINTER
+  pointee_type_id: 0x433a66e1
+}
+pointer_reference {
   id: 0x1a61f607
   kind: POINTER
   pointee_type_id: 0x43c73e81
@@ -20367,6 +20377,11 @@ pointer_reference {
   id: 0x2e61f032
   kind: POINTER
   pointee_type_id: 0x93c72655
+}
+pointer_reference {
+  id: 0x2e64265f
+  kind: POINTER
+  pointee_type_id: 0x93d07fe3
 }
 pointer_reference {
   id: 0x2e64e8af
@@ -32652,6 +32667,11 @@ typedef {
   id: 0x89ec69cf
   name: "pfn_t"
   referred_type_id: 0x0b8d77a1
+}
+typedef {
+  id: 0x28ef3c91
+  name: "pg_data_t"
+  referred_type_id: 0x264eeece
 }
 typedef {
   id: 0xaf12ea2c
@@ -97917,6 +97937,12 @@ member {
   offset: 64
 }
 member {
+  id: 0x69b9f940
+  name: "generation"
+  type_id: 0x6720d32f
+  offset: 64
+}
+member {
   id: 0x69c7a9e1
   name: "generation"
   type_id: 0x197d511c
@@ -152985,6 +153011,11 @@ member {
   name: "pgd_phys"
   type_id: 0xbdd18903
   offset: 64
+}
+member {
+  id: 0x2d248ccd
+  name: "pgdat"
+  type_id: 0x00abf683
 }
 member {
   id: 0x2d2729c1
@@ -252222,6 +252253,16 @@ struct_union {
   }
 }
 struct_union {
+  id: 0x433a66e1
+  kind: STRUCT
+  name: "mem_cgroup_reclaim_cookie"
+  definition {
+    bytesize: 16
+    member_id: 0x2d248ccd
+    member_id: 0x69b9f940
+  }
+}
+struct_union {
   id: 0xc24d58cd
   kind: STRUCT
   name: "mem_cgroup_reclaim_iter"
@@ -263613,6 +263654,11 @@ struct_union {
     member_id: 0xd7cf17f8
     member_id: 0xa361a9ef
   }
+}
+struct_union {
+  id: 0x93d07fe3
+  kind: STRUCT
+  name: "scan_control"
 }
 struct_union {
   id: 0xc440583a
@@ -332329,6 +332375,14 @@ function {
   parameter_id: 0x33756485
 }
 function {
+  id: 0x9bcd1ed5
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x1a5ea01f
+  parameter_id: 0x2e64265f
+  parameter_id: 0x11cfee5a
+}
+function {
   id: 0x9bcd4bf2
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -349219,6 +349273,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_show_suspend_epoch_val"
 }
 elf_symbol {
+  id: 0x08ba7287
+  name: "__traceiter_android_vh_shrink_node_memcgs_bypass"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x0c766b20
+  type_id: 0x9bcd1ed5
+  full_name: "__traceiter_android_vh_shrink_node_memcgs_bypass"
+}
+elf_symbol {
   id: 0x69c3749b
   name: "__traceiter_android_vh_si_mem_available_adjust"
   is_defined: true
@@ -351674,6 +351737,15 @@ elf_symbol {
   crc: 0x7c5aa8a7
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_show_suspend_epoch_val"
+}
+elf_symbol {
+  id: 0xec82f33d
+  name: "__tracepoint_android_vh_shrink_node_memcgs_bypass"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_shrink_node_memcgs_bypass"
 }
 elf_symbol {
   id: 0xc8a7ac69
@@ -404048,6 +404120,7 @@ interface {
   symbol_id: 0x4d31a413
   symbol_id: 0xe7f6f975
   symbol_id: 0x6d9f8b13
+  symbol_id: 0x08ba7287
   symbol_id: 0x69c3749b
   symbol_id: 0x3d0fc76c
   symbol_id: 0x58e7556b
@@ -404321,6 +404394,7 @@ interface {
   symbol_id: 0x823654f5
   symbol_id: 0x42ad45a3
   symbol_id: 0x8712dd01
+  symbol_id: 0xec82f33d
   symbol_id: 0xc8a7ac69
   symbol_id: 0x5ef059ce
   symbol_id: 0x39e68fed
