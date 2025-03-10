@@ -16,6 +16,24 @@
       "message": "this CL caused a compiler error on complaining the label \"alloced\" is defined but not used when CONFIG_TRANSPARENT_HUGEPAGE is n",
       "revId": "add2b5a560c69b21c09e79e7d808ad0215c61797",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d856984_c2dc154c",
+        "filename": "mm/shmem.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2345,
+      "author": {
+        "id": 2021383
+      },
+      "writtenOn": "2025-03-10T07:09:05Z",
+      "side": 1,
+      "message": "also seeing defined but not used for `limit_gfp_mask` function",
+      "parentUuid": "6b931b28_cd7a5565",
+      "revId": "add2b5a560c69b21c09e79e7d808ad0215c61797",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
