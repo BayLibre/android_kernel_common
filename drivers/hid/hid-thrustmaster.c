@@ -170,6 +170,26 @@ static void thrustmaster_interrupts(struct hid_device *hdev)
 	ep = &usbif->cur_altsetting->endpoint[1];
 	b_ep = ep->desc.bEndpointAddress;
 
+<<<<<<< HEAD   (c17ae6 ANDROID: Update the ABI symbol list)
+||||||| BASE
+	/* Are the expected endpoints present? */
+	u8 ep_addr[1] = {b_ep};
+
+	if (!usb_check_int_endpoints(usbif, ep_addr)) {
+		hid_err(hdev, "Unexpected non-int endpoint\n");
+		return;
+	}
+
+=======
+	/* Are the expected endpoints present? */
+	u8 ep_addr[2] = {b_ep, 0};
+
+	if (!usb_check_int_endpoints(usbif, ep_addr)) {
+		hid_err(hdev, "Unexpected non-int endpoint\n");
+		return;
+	}
+
+>>>>>>> CHANGE (1a79d1 Merge a298df1bbe3e ("usb: dwc3: Fix timeout issue during con)
 	for (i = 0; i < ARRAY_SIZE(setup_arr); ++i) {
 		memcpy(send_buf, setup_arr[i], setup_arr_sizes[i]);
 
