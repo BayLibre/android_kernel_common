@@ -16,6 +16,24 @@
       "message": "Shouldn\u0027t this be `gfp | __GFP_NOFAIL`? Upstream doesn\u0027t have `__GFP_NOFAIL` because of the commit 2349d2fa02db19ebc5e9033ddc3ed09e22c4abb5 \"erofs: sunset unneeded NOFAILs\". Here we need to keep gfp flags which will be used in __erofs_allocpage() if we cannot satisfy from reserve pool.",
       "revId": "0fa279886f67294ebc8ffd618beb9aaf9cdb05f5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e13a9188_8fed77f6",
+        "filename": "fs/erofs/zdata.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1521,
+      "author": {
+        "id": 1961260
+      },
+      "writtenOn": "2025-03-10T01:51:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "686f6014_9dda6f39",
+      "revId": "0fa279886f67294ebc8ffd618beb9aaf9cdb05f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
