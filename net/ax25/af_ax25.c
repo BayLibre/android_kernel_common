@@ -685,6 +685,15 @@ static int ax25_setsockopt(struct socket *sock, int level, int optname,
 			break;
 		}
 
+		if (ax25->ax25_dev) {
+			if (dev == ax25->ax25_dev->dev) {
+				rcu_read_unlock();
+				break;
+			}
+			netdev_put(ax25->ax25_dev->dev, &ax25->dev_tracker);
+			ax25_dev_put(ax25->ax25_dev);
+		}
+
 		ax25->ax25_dev = ax25_dev_ax25dev(dev);
 		if (!ax25->ax25_dev) {
 			rtnl_unlock();
@@ -692,7 +701,15 @@ static int ax25_setsockopt(struct socket *sock, int level, int optname,
 			break;
 		}
 		ax25_fillin_cb(ax25, ax25->ax25_dev);
+<<<<<<< HEAD   (c17ae6 ANDROID: Update the ABI symbol list)
 		rtnl_unlock();
+||||||| BASE
+		rcu_read_unlock();
+=======
+		netdev_hold(dev, &ax25->dev_tracker, GFP_ATOMIC);
+		ax25_dev_hold(ax25->ax25_dev);
+		rcu_read_unlock();
+>>>>>>> CHANGE (1a79d1 Merge a298df1bbe3e ("usb: dwc3: Fix timeout issue during con)
 		break;
 
 	default:
