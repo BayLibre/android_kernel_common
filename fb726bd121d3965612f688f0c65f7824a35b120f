@@ -50,6 +50,57 @@
       "message": "Please remove the symbol update and STG change from this patch and create a patch on top of this one for the symbol update. Mixing symbol and code patches makes it difficult to cherry-pick in the future.",
       "revId": "fb726bd121d3965612f688f0c65f7824a35b120f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e24bb37f_7519d26b",
+        "filename": "include/trace/hooks/vmscan.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-03-11T00:28:14Z",
+      "side": 1,
+      "message": "Move these to line 11",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 20
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ce914af0_a2003bf5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/vmscan.h",
+              "range": {
+                "startLine": 37,
+                "startChar": 0,
+                "endLine": 39,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/trace/hooks/vmscan.h",
+              "range": {
+                "startLine": 61,
+                "startChar": 0,
+                "endLine": 61,
+                "endChar": 0
+              },
+              "replacement": "\nstruct mem_cgroup_reclaim_cookie;\nstruct scan_control;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fb726bd121d3965612f688f0c65f7824a35b120f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
