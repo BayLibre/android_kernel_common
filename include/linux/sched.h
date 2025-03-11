@@ -743,6 +743,9 @@ struct task_struct {
 	/* saved state for "spinlock sleepers" */
 	unsigned int			saved_state;
 
+	/* debug flag */
+	unsigned int			debug;
+
 	/*
 	 * This begins the randomizable portion of task_struct. Only
 	 * scheduling-critical items should be added above here.
