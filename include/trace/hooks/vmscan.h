@@ -41,6 +41,9 @@ DECLARE_HOOK(android_vh_mglru_aging_bypass,
 	TP_PROTO(struct lruvec *lruvec, unsigned long max_seq,
 	bool can_swap, bool *bypass, bool *young),
 	TP_ARGS(lruvec, max_seq, can_swap, bypass, young));
+DECLARE_HOOK(android_vh_mglru_should_abort_isolate,
+	TP_PROTO(int swappiness, int type, bool *bypass),
+	TP_ARGS(swappiness, type, bypass));
 DECLARE_HOOK(android_vh_shrink_node_memcgs_bypass,
 	TP_PROTO(u64 *ext, struct mem_cgroup_reclaim_cookie *partial,
 	unsigned long nr_to_reclaim, unsigned long nr_reclaimed,

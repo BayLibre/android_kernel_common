@@ -4575,6 +4575,7 @@ static int isolate_folios(struct lruvec *lruvec, struct scan_control *sc, int sw
 	int scanned;
 	int tier = -1;
 	DEFINE_MIN_SEQ(lruvec);
+	bool bypass = false;
 
 	/*
 	 * Try to make the obvious choice first, and if anon and file are both
@@ -4603,6 +4604,11 @@ static int isolate_folios(struct lruvec *lruvec, struct scan_control *sc, int sw
 
 		scanned = scan_folios(lruvec, sc, type, tier, list);
 		if (scanned)
+			break;
+
+		trace_android_vh_mglru_should_abort_isolate(swappiness,
+			type, &bypass);
+		if (bypass)
 			break;
 
 		type = !type;
