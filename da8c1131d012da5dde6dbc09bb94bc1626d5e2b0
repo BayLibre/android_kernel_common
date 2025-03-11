@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c86fdc5_016aa510",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3518,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-03-11T20:56:33Z",
+      "side": 1,
+      "message": "Hi @yuzhao@google.com, \n\nWas there a reason to use the `pte_offset_map_rw_ nolock()` upstream? It seems we don\u0027t check if the pte or pmd has changed. So it would have sufficed to use `pte_offset_map_ro_nolock()?",
+      "range": {
+        "startLine": 3518,
+        "startChar": 7,
+        "endLine": 3518,
+        "endChar": 28
+      },
+      "revId": "da8c1131d012da5dde6dbc09bb94bc1626d5e2b0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fedd6a8d_474322d8",
         "filename": "mm/vmscan.c",
         "patchSetId": 8
