@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1913d93_8ff22b44",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7286,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-03-11T02:47:45Z",
+      "side": 1,
+      "message": "The rust binder will now require binderfs right? Otherwise without CONFIG_BINDERFS this strategy won\u0027t work.",
+      "range": {
+        "startLine": 7286,
+        "startChar": 3,
+        "endLine": 7286,
+        "endChar": 11
+      },
+      "revId": "c22192bbc98417fd374ba89c2e3250e283094785",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40f31a68_74cda39b",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7294,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-03-11T02:47:45Z",
+      "side": 1,
+      "message": "I think this might break the build with !CONFIG_BINDERFS because I don\u0027t see an alternative \"emtpy\" definition e.g. `static inline void unload_binderfs(void) {}`",
+      "range": {
+        "startLine": 7294,
+        "startChar": 1,
+        "endLine": 7294,
+        "endChar": 16
+      },
+      "revId": "c22192bbc98417fd374ba89c2e3250e283094785",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99e70ef0_55ff34ff",
+        "filename": "drivers/android/binderfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-03-11T02:47:45Z",
+      "side": 1,
+      "message": "I suppose this means first `mount()`.",
+      "range": {
+        "startLine": 769,
+        "startChar": 4,
+        "endLine": 769,
+        "endChar": 26
+      },
+      "revId": "c22192bbc98417fd374ba89c2e3250e283094785",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09564682_7722aa1c",
+        "filename": "drivers/android/binderfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-03-11T02:47:45Z",
+      "side": 1,
+      "message": "hmm, this seems to me like it can still race with `unload_binder()` e.g. this call to `mount()` could complete and then `unregister_filesystem()` would come next. I dont\u0027 know what happens then.\n```\nint unload_binder(void)\n{\n\tif (!IS_ENABLED(CONFIG_ANDROID_BINDERFS))\n\t\treturn -EINVAL;\n\tif (!binder_use_rust)\n\t\treturn -EINVAL;\n\t\t\n\t/* This gets scheduled out and then mount() starts and\n\t * completes in a separate thread. Now we continue?\n\t */\n\t\n\tunload_binderfs();\n\tdebugfs_remove_recursive(binder_debugfs_dir_entry_root);\n\tbinder_alloc_shrinker_exit();\n\n\treturn 0;\n}\n```",
+      "range": {
+        "startLine": 772,
+        "startChar": 1,
+        "endLine": 772,
+        "endChar": 16
+      },
+      "revId": "c22192bbc98417fd374ba89c2e3250e283094785",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56454b18_d92df4df",
+        "filename": "drivers/android/binderfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-03-11T02:47:45Z",
+      "side": 1,
+      "message": "How does this playout with `mount()`? I would expect there will be races. Also, there is a window in which no \"binder\" fs type will be registered and a `mount -t binder` will fail no? I guess this would crash the boot.",
+      "range": {
+        "startLine": 844,
+        "startChar": 1,
+        "endLine": 844,
+        "endChar": 22
+      },
+      "revId": "c22192bbc98417fd374ba89c2e3250e283094785",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
