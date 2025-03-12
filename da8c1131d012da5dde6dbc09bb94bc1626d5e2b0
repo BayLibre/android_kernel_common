@@ -69,6 +69,30 @@
       },
       "revId": "da8c1131d012da5dde6dbc09bb94bc1626d5e2b0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0ee6d83_3774b2c4",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3544,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-03-12T12:43:25Z",
+      "side": 1,
+      "message": "I think this is ok for 6.12 becuase before the conversion we weren\u0027t checking if the pmd_t racily changed:\n\nhttps://lore.kernel.org/all/7e9c194a5efacc9609cfd31abb9c7df88b53b530.1727332572.git.zhengqi.arch@bytedance.com/T/#u\n\n\nIf we want `rw|ro_nolock()` I\u0027ll need to restore all thise conversions which I previously abandoned to the series:\n\nhttps://r.android.com/3472650",
+      "parentUuid": "45c241cd_58fb4906",
+      "range": {
+        "startLine": 3544,
+        "startChar": 7,
+        "endLine": 3544,
+        "endChar": 30
+      },
+      "revId": "da8c1131d012da5dde6dbc09bb94bc1626d5e2b0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
