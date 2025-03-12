@@ -70,6 +70,24 @@
       "parentUuid": "b7dc09eb_30892ca7",
       "revId": "41e4f810f3f339c73907aa258bd5403cb833b364",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bb8d06b_ecb2e442",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2025-03-12T05:43:01Z",
+      "side": 1,
+      "message": "But this function is not used when MGLRU is enabled, except for manual proactive reclaim outside of the root where fairness is not provided by the memcg LRU.\n\nIf you\u0027re not using MGLRU this patch makes sense.\n\nSo I guess you\u0027re saying that some of your devices use MGLRU (which the next couple of patches are for), and other devices don\u0027t use MGLRU (which this patch is for) and both use this same kernel?",
+      "parentUuid": "f989e200_5c7c4bfb",
+      "revId": "41e4f810f3f339c73907aa258bd5403cb833b364",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
