@@ -16,6 +16,24 @@
       "message": "Hi Qianfeng,\n\nWill you still need this after: https://r.android.com/3472358 ?\n\nThat will land in 6.12 on 2025-03-19 with the next KMI update.",
       "revId": "411e0b909d3ff63c87fa59bb80f86d868ec302f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ddef14d_7a26a839",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1867527
+      },
+      "writtenOn": "2025-03-12T02:16:44Z",
+      "side": 1,
+      "message": "Hi Kalesh,\n\n#define for_each_evictable_type(type, swappiness)\t\t\t\\\n\tfor ((type) \u003d !(swappiness); (type) \u003c\u003d ((swappiness) \u003c\u003d MAX_SWAPPINESS); (type)++)\n\t\nThe patch contains the above code. Does it mean that as long as the swappiness I pass in is \u003e MAX_SWAPPINESS, the file page will not be reclaimed? If so, the vendor hook I submitted is not needed, please abandon this patch. \n\nThanks",
+      "parentUuid": "3cbbc6d1_a5de26a4",
+      "revId": "411e0b909d3ff63c87fa59bb80f86d868ec302f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
