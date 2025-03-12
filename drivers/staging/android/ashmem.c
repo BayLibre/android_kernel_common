@@ -26,6 +26,10 @@
 #include <linux/shmem_fs.h>
 #include "ashmem.h"
 
+#define CREATE_TRACE_POINTS
+#include <trace/events/ashmem.h>
+#undef CREATE_TRACE_POINTS
+
 #define ASHMEM_NAME_PREFIX "dev/ashmem/"
 #define ASHMEM_NAME_PREFIX_LEN (sizeof(ASHMEM_NAME_PREFIX) - 1)
 #define ASHMEM_FULL_NAME_LEN (ASHMEM_NAME_LEN + ASHMEM_NAME_PREFIX_LEN)
@@ -560,6 +564,11 @@ static int set_prot_mask(struct ashmem_area *asma, unsigned long prot)
 
 	mutex_lock(&ashmem_mutex);
 
+	/* These cannot be unset when using memfd, so log any users here. */
+	if (!(prot & PROT_EXEC) || !(prot & PROT_READ))
+		trace_deprecated_feat_unset_prot(current, ~prot & (PROT_EXEC | PROT_READ),
+						 asma->name);
+
 	/* Ensure the buffer can only be mapped with PROT_READ iff it has that permission. */
 	if (ignore_unset_prot_read)
 		prot |= asma->prot_mask & PROT_READ;
@@ -803,6 +812,8 @@ static int ashmem_pin_unpin(struct ashmem_area *asma, unsigned long cmd,
 	mutex_lock(&ashmem_mutex);
 	wait_event(ashmem_shrink_wait, !atomic_read(&ashmem_shrink_inflight));
 
+	trace_deprecated_feat_unpin_cmd(current, cmd, asma->name);
+
 	if (!asma->file)
 		goto out_unlock;
 
@@ -879,6 +890,7 @@ static long ashmem_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		ret = ashmem_pin_unpin(asma, cmd, (void __user *)arg);
 		break;
 	case ASHMEM_PURGE_ALL_CACHES:
+		trace_deprecated_feat_unpin_cmd(current, cmd, "N/A");
 		ret = -EPERM;
 		if (capable(CAP_SYS_ADMIN)) {
 			struct shrink_control sc = {
@@ -1034,7 +1046,7 @@ static const struct file_operations ignore_unset_prot_read_fops = {
 static const struct file_operations ignore_unset_prot_exec_fops = {
 	.owner = THIS_MODULE,
 	.open = ignore_unset_prot_exec_open,
-	.read= attr_read,
+	.read = attr_read,
 	.write = attr_write,
 };
 

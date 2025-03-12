@@ -12,6 +12,7 @@
 #include <linux/fs.h>
 #include <linux/memfd.h>
 #include <linux/uaccess.h>
+#include <trace/events/ashmem.h>
 
 #include "memfd-ashmem-shim.h"
 #include "memfd-ashmem-shim-internal.h"
@@ -82,6 +83,14 @@ static long set_prot_mask(struct file *file, unsigned long prot)
 		return curr_prot;
 
 	/*
+	 * Don't strip the memfd prefix, so we can differentiate if the buffer is an ashmem buffer
+	 * or memfd buffer.
+	 */
+	if (!(prot & PROT_EXEC) || !(prot & PROT_READ))
+		trace_deprecated_feat_unset_prot(current, ~prot & (PROT_EXEC | PROT_READ),
+						 get_memfd_name(file) ? : "N/A");
+
+	/*
 	 * memfds are always readable and executable; there is no way to remove either mapping
 	 * permission, nor is there a known usecase that requires it.
 	 *
@@ -107,6 +116,18 @@ static long set_prot_mask(struct file *file, unsigned long prot)
 		ret = memfd_fcntl(file, F_ADD_SEALS, F_SEAL_FUTURE_WRITE);
 
 	return ret;
+}
+
+static long handle_unpinning_cmds(unsigned int cmd)
+{
+	if (cmd == ASHMEM_PIN)
+		return ASHMEM_NOT_PURGED;
+	else if (cmd == ASHMEM_UNPIN)
+		return 0;
+	else if (cmd == ASHMEM_GET_PIN_STATUS)
+		return ASHMEM_IS_PINNED;
+
+	return -EINVAL;
 }
 
 /*
@@ -177,16 +198,14 @@ long memfd_ashmem_shim_ioctl(struct file *file, unsigned int cmd, unsigned long 
 	 * 2. Requests to unpin memory (make it a candidate for being freed) are ignored.
 	 */
 	case ASHMEM_PIN:
-		ret = ASHMEM_NOT_PURGED;
-		break;
 	case ASHMEM_UNPIN:
-		ret = 0;
-		break;
 	case ASHMEM_GET_PIN_STATUS:
-		ret = ASHMEM_IS_PINNED;
+		ret = handle_unpinning_cmds(cmd);
+		trace_deprecated_feat_unpin_cmd(current, cmd, get_memfd_name(file) ? : "N/A");
 		break;
 	case ASHMEM_PURGE_ALL_CACHES:
 		ret = capable(CAP_SYS_ADMIN) ? 0 : -EPERM;
+		trace_deprecated_feat_unpin_cmd(current, cmd, "N/A");
 		break;
 	case ASHMEM_GET_FILE_ID:
 		inode_nr = file_inode(file)->i_ino;
