@@ -22,6 +22,30 @@
       },
       "revId": "2201337d9350fbd3d0ac485b4e39121b4e1ba812",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76bf3bd1_768c4f30",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-03-12T16:52:17Z",
+      "side": 1,
+      "message": "There was code in `virt/kvm` which was accessing some pkvm structures which I had to wrap under CONFIG_PKVM_INTEL. While at it, I thought it would be better to clean some of the arch specific data structures as well around it. pkvm code in x86 arch is currently not fully wrapped in PKVM_INTEL and I just cleaned up the portions I touched while fixing ABI. But it caused this breakage. You are right, it was not needed right away, but I feel it is needed longterm to be upstreamable to have PKVM_INTEL code isolated even in the arch code.\n\nSince the ABI fixes is alread merged, I think this change is needed to fix the breakage. What do you think?",
+      "parentUuid": "9e7cb3bd_b79d6240",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 35
+      },
+      "revId": "2201337d9350fbd3d0ac485b4e39121b4e1ba812",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
