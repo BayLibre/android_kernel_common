@@ -823,7 +823,17 @@ static void __vsock_release(struct sock *sk, int level)
 	 */
 	lock_sock_nested(sk, level);
 
+<<<<<<< HEAD   (0b74ac BACKPORT: FROMGIT: cgroup/cpuset: Make cpuset hotplug proces)
 	sock_orphan(sk);
+||||||| BASE
+=======
+	/* Indicate to vsock_remove_sock() that the socket is being released and
+	 * can be removed from the bound_table. Unlike transport reassignment
+	 * case, where the socket must remain bound despite vsock_remove_sock()
+	 * being called from the transport release() callback.
+	 */
+	sock_set_flag(sk, SOCK_DEAD);
+>>>>>>> BRANCH (3f0a21 Merge 6.6.82 into android15-6.6-lts)
 
 	if (vsk->transport)
 		vsk->transport->release(vsk);
@@ -1178,6 +1188,9 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
 static int vsock_read_skb(struct sock *sk, skb_read_actor_t read_actor)
 {
 	struct vsock_sock *vsk = vsock_sk(sk);
+
+	if (WARN_ON_ONCE(!vsk->transport))
+		return -ENODEV;
 
 	return vsk->transport->read_skb(vsk, read_actor);
 }
