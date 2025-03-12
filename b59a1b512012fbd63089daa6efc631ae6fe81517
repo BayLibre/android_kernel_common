@@ -26,6 +26,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1cdfb7bf_cf1c9e97",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-03-12T01:37:21Z",
+      "side": 1,
+      "message": "age",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 5
+      },
+      "revId": "b59a1b512012fbd63089daa6efc631ae6fe81517",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52c7183d_cd4642d5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-03-12T01:37:21Z",
+      "side": 1,
+      "message": "Can you explain why the increase does not affect memory usage? Do these structures require some alignment which creates unused holes in them?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 40
+      },
+      "revId": "b59a1b512012fbd63089daa6efc631ae6fe81517",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "09e634a3_7eeaf006",
         "filename": "include/linux/mmzone.h",
         "patchSetId": 1
@@ -42,6 +88,29 @@
         "startChar": 1,
         "endLine": 463,
         "endChar": 30
+      },
+      "revId": "b59a1b512012fbd63089daa6efc631ae6fe81517",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "581fed17_aacac591",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4800,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-03-12T01:37:21Z",
+      "side": 1,
+      "message": "This is used to stop the scan IIRC. In that case let\u0027s call it `stop` instead of `young` so that it reflects the action that it controls.",
+      "range": {
+        "startLine": 4800,
+        "startChar": 22,
+        "endLine": 4800,
+        "endChar": 27
       },
       "revId": "b59a1b512012fbd63089daa6efc631ae6fe81517",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
