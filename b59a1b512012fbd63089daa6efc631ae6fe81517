@@ -142,6 +142,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c1e7b1f_50b1041d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-03-12T15:57:48Z",
+      "side": 1,
+      "message": "Ok, so you are saying that `kmalloc_index(sizeof(struct mem_cgroup_per_node))` before and after this change stays the same. Ok, makes sense.",
+      "parentUuid": "74852634_b83a37ae",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 40
+      },
+      "revId": "b59a1b512012fbd63089daa6efc631ae6fe81517",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09e634a3_7eeaf006",
@@ -226,6 +250,30 @@
       "side": 1,
       "message": "If we return -1 here, shrink_one() will recognize that MEMCG_LRU_YOUNG will continue to be returned, which is mainly used for the memcg lru strategy.",
       "parentUuid": "581fed17_aacac591",
+      "range": {
+        "startLine": 4800,
+        "startChar": 22,
+        "endLine": 4800,
+        "endChar": 27
+      },
+      "revId": "b59a1b512012fbd63089daa6efc631ae6fe81517",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7d5f2f1_07519b03",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4800,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-03-12T15:57:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fb5232dd_4b9d8016",
       "range": {
         "startLine": 4800,
         "startChar": 22,
