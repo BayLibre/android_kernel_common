@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c6d54d8e_ffbd70aa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1867527
+      },
+      "writtenOn": "2025-03-12T03:53:31Z",
+      "side": 1,
+      "message": "Sorry, I\u0027ll correct it later.",
+      "parentUuid": "0028db18_dacfe143",
+      "range": {
+        "startLine": 7,
+        "startChar": 36,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "b59a1b512012fbd63089daa6efc631ae6fe81517",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1cdfb7bf_cf1c9e97",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2025-03-12T01:37:21Z",
       "side": 1,
       "message": "age",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 5
+      },
+      "revId": "b59a1b512012fbd63089daa6efc631ae6fe81517",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43fa1b56_f366c245",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1867527
+      },
+      "writtenOn": "2025-03-12T03:53:31Z",
+      "side": 1,
+      "message": "Sorry, I\u0027ll correct it later.",
+      "parentUuid": "1cdfb7bf_cf1c9e97",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74852634_b83a37ae",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1867527
+      },
+      "writtenOn": "2025-03-12T03:53:31Z",
+      "side": 1,
+      "message": "Sorry, I forgot to consider \"struct mem_cgroup_per_node\". What I meant is that the size of \"struct lru_gen_folio\" only affects the size of \"struct lruvec\", and the size of \"struct lruvec\" only affects the size of \"struct mem_cgroup_per_node\".\n\n\"struct mem_cgroup_per_node\" is alloc for in alloc_mem_cgroup_per_node_info() using kzalloc_node(). The size of \"struct mem_cgroup_per_node\" is 2896Byte. Due to alignment reasons, the memory size of allocate is 4KB. Adding 6 u64s will not increase the allocate size.\n\nsizeof(struct lru_gen_folio) is 1360Byte\nsizeof(struct lruvec) is 1600Byte\nsizeof(struct mem_cgroup_per_node) is 2896Byte",
+      "parentUuid": "52c7183d_cd4642d5",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 40
+      },
+      "revId": "b59a1b512012fbd63089daa6efc631ae6fe81517",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "09e634a3_7eeaf006",
         "filename": "include/linux/mmzone.h",
         "patchSetId": 1
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c994e02b_86b8bc0e",
+        "filename": "include/linux/mmzone.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1867527
+      },
+      "writtenOn": "2025-03-12T03:53:31Z",
+      "side": 1,
+      "message": "The two u64 parameters are used to tell kswapd how to age this lrugen, for example, whether the lrugen is skipped, what is the max_seq that was skipped last time, etc.\n\nThe other four u64s are used for two list heads to store some special pages, such as the file pages that have just been pre-read or the pages with high access frequency.",
+      "parentUuid": "09e634a3_7eeaf006",
+      "range": {
+        "startLine": 463,
+        "startChar": 1,
+        "endLine": 463,
+        "endChar": 30
+      },
+      "revId": "b59a1b512012fbd63089daa6efc631ae6fe81517",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "581fed17_aacac591",
         "filename": "mm/vmscan.c",
         "patchSetId": 1
@@ -106,6 +202,30 @@
       "writtenOn": "2025-03-12T01:37:21Z",
       "side": 1,
       "message": "This is used to stop the scan IIRC. In that case let\u0027s call it `stop` instead of `young` so that it reflects the action that it controls.",
+      "range": {
+        "startLine": 4800,
+        "startChar": 22,
+        "endLine": 4800,
+        "endChar": 27
+      },
+      "revId": "b59a1b512012fbd63089daa6efc631ae6fe81517",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb5232dd_4b9d8016",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4800,
+      "author": {
+        "id": 1867527
+      },
+      "writtenOn": "2025-03-12T03:53:31Z",
+      "side": 1,
+      "message": "If we return -1 here, shrink_one() will recognize that MEMCG_LRU_YOUNG will continue to be returned, which is mainly used for the memcg lru strategy.",
+      "parentUuid": "581fed17_aacac591",
       "range": {
         "startLine": 4800,
         "startChar": 22,
