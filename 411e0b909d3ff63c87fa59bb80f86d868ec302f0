@@ -34,6 +34,24 @@
       "parentUuid": "3cbbc6d1_a5de26a4",
       "revId": "411e0b909d3ff63c87fa59bb80f86d868ec302f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4486b453_8ac63e8f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-03-12T13:20:00Z",
+      "side": 1,
+      "message": "Hi Qianfeng,\n\nYes it\u0027s true if you pass `MAX_SWAPPINESS + 1` then only anon type will be evictable.\n\nThough I am not sure if you can set `swappiness \u003e MAX_SWAPPINESS`.\n\nThe macro can be modified so that anon is the only evictable type if `swappiness \u003d\u003d MAX_SWAPPINESS`.\n\n`(type) \u003c\u003d ((swappiness) \u003c MAX_SWAPPINESS)`\n\nBut I think the idea is that file pages can always be reclaimed while the anon pages could be stalled on swap full.",
+      "parentUuid": "6ddef14d_7a26a839",
+      "revId": "411e0b909d3ff63c87fa59bb80f86d868ec302f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
