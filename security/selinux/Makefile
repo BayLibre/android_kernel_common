@@ -13,7 +13,7 @@ obj-$(CONFIG_SECURITY_SELINUX) := selinux.o
 ccflags-y := -I$(srctree)/security/selinux -I$(srctree)/security/selinux/include
 
 selinux-y := avc.o hooks.o selinuxfs.o netlink.o nlmsgtab.o netif.o \
-	     netnode.o netport.o status.o \
+	     netnode.o netport.o status.o realpath.o \
 	     ss/ebitmap.o ss/hashtab.o ss/symtab.o ss/sidtab.o ss/avtab.o \
 	     ss/policydb.o ss/services.o ss/conditional.o ss/mls.o ss/context.o
 

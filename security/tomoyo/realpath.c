@@ -284,8 +284,6 @@ encode:
 		break;
 	}
 	kfree(buf);
-	if (!name)
-		tomoyo_warn_oom(__func__);
 	return name;
 }
 
