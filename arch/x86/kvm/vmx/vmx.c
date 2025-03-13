@@ -8525,19 +8525,6 @@ __init int vmx_hardware_setup(void)
 	}
 #endif
 
-#if IS_ENABLED(CONFIG_PKVM_INTEL)
-	if (enable_pkvm) {
-		if (!enable_ept || x86_ops->flush_remote_tlbs ||
-				x86_ops->flush_remote_tlbs_range) {
-			pr_err_ratelimited("kvm: EPT or flush_remote_tlbs ops not available to pKVM-IA\n");
-			return -EOPNOTSUPP;
-		}
-		x86_ops->flush_remote_tlbs = pkvm_tlb_remote_flush;
-		x86_ops->flush_remote_tlbs_range =
-				pkvm_tlb_remote_flush_with_range;
-	}
-#endif
-
 	if (!cpu_has_vmx_ple()) {
 		ple_gap = 0;
 		ple_window = 0;
