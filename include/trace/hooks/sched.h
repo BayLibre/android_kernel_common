@@ -445,6 +445,27 @@ DECLARE_HOOK(android_vh_cpu_cgroup_css_free,
 	TP_PROTO(struct cgroup_subsys_state *css),
 	TP_ARGS(css));
 
+DECLARE_HOOK(android_vh_task_should_scx,
+	TP_PROTO(int *should_scx, int policy, int prio),
+	TP_ARGS(should_scx, policy, prio));
+DECLARE_HOOK(android_vh_scx_ops_consider_migration,
+	TP_PROTO(bool *consider_migration),
+	TP_ARGS(consider_migration));
+DECLARE_HOOK(android_vh_fix_prev_keep_slice,
+	TP_PROTO(struct task_struct *p),
+	TP_ARGS(p));
+DECLARE_HOOK(android_vh_scx_ops_enable_state,
+	TP_PROTO(int state),
+	TP_ARGS(state));
+DECLARE_HOOK(android_vh_scx_enabled,
+	TP_PROTO(int enabled),
+	TP_ARGS(enabled));
+DECLARE_HOOK(android_vh_set_cpus_allowed_scx,
+	TP_PROTO(struct task_struct *p, struct affinity_context *ac, int *done),
+	TP_ARGS(p, ac, done));
+DECLARE_HOOK(android_vh_task_switch_finish,
+	TP_PROTO(struct task_struct *p, int enable),
+	TP_ARGS(p, enable));
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */
