@@ -5816,6 +5816,25 @@ int kvm_mmu_load(struct kvm_vcpu *vcpu)
 {
 	int r;
 
+	if (enable_pkvm) {
+		write_lock(&vcpu->kvm->mmu_lock);
+
+		/*
+		 * Fake valid hpa just to make the checks in kvm_mmu_load_pgd()
+		 * and kvm_mmu_page_fault() happy.
+		 */
+		vcpu->arch.mmu->root.hpa = 0;
+
+		/*
+		 * Note: among the things done in vmx_load_mmu_pgd() we actually
+		 * only need GUEST_CR3 update.
+		 */
+		kvm_mmu_load_pgd(vcpu);
+
+		write_unlock(&vcpu->kvm->mmu_lock);
+		return 0;
+	}
+
 	r = mmu_topup_memory_caches(vcpu, !vcpu->arch.mmu->root_role.direct);
 	if (r)
 		goto out;
@@ -5848,6 +5867,13 @@ out:
 void kvm_mmu_unload(struct kvm_vcpu *vcpu)
 {
 	struct kvm *kvm = vcpu->kvm;
+
+	if (enable_pkvm) {
+		write_lock(&vcpu->kvm->mmu_lock);
+		vcpu->arch.mmu->root.hpa = INVALID_PAGE;
+		write_unlock(&vcpu->kvm->mmu_lock);
+		return;
+	}
 
 	kvm_mmu_free_roots(kvm, &vcpu->arch.root_mmu, KVM_MMU_ROOTS_ALL);
 	WARN_ON_ONCE(VALID_PAGE(vcpu->arch.root_mmu.root.hpa));
