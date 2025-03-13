@@ -37,9 +37,6 @@ void pkvm_flush_host_ept(void);
 int pkvm_shadow_ept_pool_init(void *ept_pool_base, unsigned long ept_pool_pages);
 int pkvm_shadow_ept_init(struct shadow_ept_desc *desc);
 void pkvm_shadow_ept_deinit(struct shadow_ept_desc *desc);
-void pkvm_invalidate_shadow_ept(struct shadow_ept_desc *desc);
-void pkvm_invalidate_shadow_ept_with_range(struct shadow_ept_desc *desc,
-					   unsigned long vaddr, unsigned long size);
 int pkvm_map_shadow_ept(struct kvm_vcpu *vcpu, u64 gfn, u64 pfn);
 void pkvm_flush_shadow_ept(struct shadow_ept_desc *desc);
 void pkvm_shadow_clear_suppress_ve(struct kvm_vcpu *vcpu, unsigned long gfn);
