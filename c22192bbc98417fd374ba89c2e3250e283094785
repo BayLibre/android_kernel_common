@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c08beca_38b245e7",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7286,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-03-13T13:27:32Z",
+      "side": 1,
+      "message": "Yes.",
+      "parentUuid": "c1913d93_8ff22b44",
+      "range": {
+        "startLine": 7286,
+        "startChar": 3,
+        "endLine": 7286,
+        "endChar": 11
+      },
+      "revId": "c22192bbc98417fd374ba89c2e3250e283094785",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40f31a68_74cda39b",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-03-11T02:47:45Z",
       "side": 1,
       "message": "I think this might break the build with !CONFIG_BINDERFS because I don\u0027t see an alternative \"emtpy\" definition e.g. `static inline void unload_binderfs(void) {}`",
+      "range": {
+        "startLine": 7294,
+        "startChar": 1,
+        "endLine": 7294,
+        "endChar": 16
+      },
+      "revId": "c22192bbc98417fd374ba89c2e3250e283094785",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a611a9e5_2f5da46f",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7294,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-03-13T13:27:32Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "40f31a68_74cda39b",
       "range": {
         "startLine": 7294,
         "startChar": 1,
@@ -70,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8db5793_c49ab461",
+        "filename": "drivers/android/binderfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-03-13T13:27:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99e70ef0_55ff34ff",
+      "range": {
+        "startLine": 769,
+        "startChar": 4,
+        "endLine": 769,
+        "endChar": 26
+      },
+      "revId": "c22192bbc98417fd374ba89c2e3250e283094785",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09564682_7722aa1c",
@@ -93,6 +165,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cee4d68_d4c5ebe9",
+        "filename": "drivers/android/binderfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-03-13T13:27:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09564682_7722aa1c",
+      "range": {
+        "startLine": 772,
+        "startChar": 1,
+        "endLine": 772,
+        "endChar": 16
+      },
+      "revId": "c22192bbc98417fd374ba89c2e3250e283094785",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56454b18_d92df4df",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-03-11T02:47:45Z",
       "side": 1,
       "message": "How does this playout with `mount()`? I would expect there will be races. Also, there is a window in which no \"binder\" fs type will be registered and a `mount -t binder` will fail no? I guess this would crash the boot.",
+      "range": {
+        "startLine": 844,
+        "startChar": 1,
+        "endLine": 844,
+        "endChar": 22
+      },
+      "revId": "c22192bbc98417fd374ba89c2e3250e283094785",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ecd4942_ce9db92c",
+        "filename": "drivers/android/binderfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-03-13T13:27:32Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "56454b18_d92df4df",
       "range": {
         "startLine": 844,
         "startChar": 1,
