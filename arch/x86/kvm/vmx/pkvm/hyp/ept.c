@@ -788,39 +788,6 @@ void pkvm_shadow_sl_iommu_pgt_update_coherency(struct pkvm_pgtable *pgt, bool co
 		pkvm_pgtable_set_mm_ops(pgt, &shadow_sl_iommu_pgt_mm_ops_noncoherency);
 }
 
-/*
- * virtual_ept_mm_ops is used as the ops for the ept constructed by
- * KVM high in host.
- * The physical address in this ept is the host VM GPA, which is
- * the same with HPA.
- */
-struct pkvm_mm_ops virtual_ept_mm_ops = {
-	.phys_to_virt = host_gpa2hva,
-};
-
-void pkvm_guest_ept_deinit(struct shadow_vcpu_state *shadow_vcpu)
-{
-	struct pkvm_pgtable *vept = &shadow_vcpu->vept;
-
-	memset(vept, 0, sizeof(struct pkvm_pgtable));
-}
-
-void pkvm_guest_ept_init(struct shadow_vcpu_state *shadow_vcpu, u64 guest_eptp)
-{
-	/*
-	 * TODO: we just assume guest will use page level the HW supported,
-	 * it actually need align with KVM high
-	 */
-	struct pkvm_pgtable_cap cap = {
-		.level = pkvm_hyp->ept_cap.level,
-		.allowed_pgsz = pkvm_hyp->ept_cap.allowed_pgsz,
-		.table_prot = pkvm_hyp->ept_cap.table_prot,
-	};
-
-	pkvm_pgtable_init(&shadow_vcpu->vept, &virtual_ept_mm_ops, &ept_ops, &cap, false);
-	shadow_vcpu->vept.root_pa = host_gpa2hpa(guest_eptp & SPTE_BASE_ADDR_MASK);
-}
-
 static int populate_pgstate_pgt(struct pkvm_pgtable *pgt)
 {
 	struct pkvm_shadow_vm *vm = pgstate_pgt_to_shadow_vm(pgt);

@@ -745,16 +745,8 @@ static void nested_vmx_run(struct kvm_vcpu *vcpu, bool launch)
 
 static void setup_guest_ept(struct shadow_vcpu_state *shadow_vcpu, u64 guest_eptp)
 {
-	struct vmcs12 *vmcs12 = (struct vmcs12 *)shadow_vcpu->cached_vmcs12;
 	struct pkvm_shadow_vm *vm = shadow_vcpu->vm;
 	bool invalidate = false;
-
-	if (!is_valid_eptp(guest_eptp))
-		pkvm_guest_ept_deinit(shadow_vcpu);
-	else if (vmcs12->ept_pointer != guest_eptp) {
-		pkvm_guest_ept_deinit(shadow_vcpu);
-		pkvm_guest_ept_init(shadow_vcpu, guest_eptp);
-	}
 
 	pkvm_spin_lock(&vm->lock);
 	if (vm->sept_desc.last_guest_eptp != guest_eptp) {
