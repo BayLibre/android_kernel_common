@@ -814,22 +814,6 @@ void pkvm_guest_ept_init(struct shadow_vcpu_state *shadow_vcpu, u64 guest_eptp)
 	shadow_vcpu->vept.root_pa = host_gpa2hpa(guest_eptp & SPTE_BASE_ADDR_MASK);
 }
 
-static bool is_access_violation(u64 ept_entry, u64 exit_qual)
-{
-	bool access_violation = false;
-
-	if (/* Caused by data read */
-	    (((exit_qual & 0x1UL) != 0UL) && ((ept_entry & VMX_EPT_READABLE_MASK) == 0)) ||
-	    /* Caused by data write */
-	    (((exit_qual & 0x2UL) != 0UL) && ((ept_entry & VMX_EPT_WRITABLE_MASK) == 0)) ||
-	    /* Caused by instruction fetch */
-	    (((exit_qual & 0x4UL) != 0UL) && ((ept_entry & VMX_EPT_EXECUTABLE_MASK) == 0))) {
-		access_violation = true;
-	}
-
-	return access_violation;
-}
-
 static int populate_pgstate_pgt(struct pkvm_pgtable *pgt)
 {
 	struct pkvm_shadow_vm *vm = pgstate_pgt_to_shadow_vm(pgt);
@@ -960,57 +944,6 @@ static bool allow_shadow_ept_mapping(struct pkvm_shadow_vm *vm,
 	return true;
 }
 
-enum sept_handle_ret
-pkvm_handle_shadow_ept_violation(struct shadow_vcpu_state *shadow_vcpu, u64 l2_gpa, u64 exit_quali)
-{
-	struct pkvm_shadow_vm *vm = shadow_vcpu->vm;
-	struct shadow_ept_desc *desc = &vm->sept_desc;
-	struct pkvm_pgtable *sept = &desc->sept;
-	struct pkvm_pgtable_ops *pgt_ops = sept->pgt_ops;
-	struct pkvm_pgtable *vept = &shadow_vcpu->vept;
-	enum sept_handle_ret ret = PKVM_NOT_HANDLED;
-	unsigned long phys;
-	int level;
-	u64 gprot, rsvd_chk_gprot;
-
-	pkvm_spin_lock(&vm->lock);
-
-	pkvm_pgtable_lookup(vept, l2_gpa, &phys, &gprot, &level);
-	if (phys == INVALID_ADDR)
-		/* Geust EPT not valid, back to kvm-high */
-		goto out;
-
-	if (is_access_violation(gprot, exit_quali))
-		/* Guest EPT error, refuse to handle in shadow ept */
-		goto out;
-
-	rsvd_chk_gprot = gprot;
-	/* is_rsvd_spte() need based on PAGE_SIZE bit */
-	if (level != PG_LEVEL_4K)
-		pgt_ops->pgt_entry_mkhuge(&rsvd_chk_gprot);
-
-	if (is_rsvd_spte(&ept_zero_check, rsvd_chk_gprot, level)) {
-		ret = PKVM_INJECT_EPT_MISC;
-	} else {
-		unsigned long level_size = pgt_ops->pgt_level_to_size(level);
-		unsigned long gpa = ALIGN_DOWN(l2_gpa, level_size);
-		unsigned long hpa = ALIGN_DOWN(host_gpa2hpa(phys), level_size);
-		/*
-		 * Still set SUPPRESS_VE bit here as some mapping may still
-		 * cause EPT_VIOLATION and we want these EPT_VIOLATION to cause
-		 * vmexit.
-		 */
-		u64 prot = (gprot & EPT_PROT_MASK) | EPT_PROT_DEF;
-
-		if (allow_shadow_ept_mapping(vm, gpa, hpa, level_size) &&
-		    !pkvm_pgtable_map(sept, gpa, hpa, level_size, 0, prot, NULL))
-			ret = PKVM_HANDLED;
-	}
-out:
-	pkvm_spin_unlock(&vm->lock);
-	return ret;
-}
-
 int pkvm_map_shadow_ept(struct kvm_vcpu *vcpu, u64 gfn, u64 pfn)
 {
 	/* HACK: assume single page mapping */
@@ -1060,34 +993,6 @@ void pkvm_shadow_clear_suppress_ve(struct kvm_vcpu *vcpu, unsigned long gfn)
 	 * "Suppress #VE" bit cleared. Accessing this pte will trigger #VE.
 	 */
 	pkvm_pgtable_annotate(sept, gpa, PAGE_SIZE, SHADOW_EPT_MMIO_ENTRY);
-}
-
-int pkvm_handle_guest_ept_violation(struct kvm_vcpu *vcpu, u64 gpa)
-{
-	struct shadow_vcpu_state *shadow_vcpu = kvm_vcpu_to_shadow(vcpu);
-	struct vcpu_vmx *vmx = to_vmx(vcpu);
-	enum sept_handle_ret ret;
-	int handled = 0;
-
-	ret = pkvm_handle_shadow_ept_violation(shadow_vcpu,
-					       gpa, vmx->exit_qualification);
-	switch (ret) {
-	case PKVM_INJECT_EPT_MISC:
-		/*
-		 * Inject EPT_MISCONFIG vmexit reason if can directly modify
-		 * the read-only fields. Otherwise still deliver EPT_VIOLATION
-		 * for simplification.
-		 */
-		vmx->exit_reason.full = EXIT_REASON_EPT_MISCONFIG;
-		break;
-	case PKVM_HANDLED:
-		handled = 1;
-		break;
-	default:
-		break;
-	}
-
-	return handled;
 }
 
 void pkvm_setup_virtual_ept(struct kvm_vcpu *vcpu, u64 veptp)
