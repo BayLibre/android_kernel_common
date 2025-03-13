@@ -4684,7 +4684,7 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
 {
 	kvm_pfn_t orig_pfn;
 	int r;
-	bool pvmmu = enable_pkvm && likely(fault->slot);	/* non-MMIO memory only */
+	bool pvmmu = enable_pkvm;
 
 	if (!pvmmu) {
 		if (page_fault_handle_page_track(vcpu, fault))
@@ -4713,7 +4713,12 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
 
 	if (pvmmu) {
 		kvm_mmu_hugepage_adjust(vcpu, fault);
-		r = pkvm_map_guest(fault->gfn, fault->pfn, KVM_PAGES_PER_HPAGE(fault->req_level));
+		if (likely(fault->slot))
+			r = pkvm_map_guest(fault->gfn, fault->pfn, KVM_PAGES_PER_HPAGE(fault->req_level));
+		else if (pkvm_is_protected_vcpu(vcpu))
+			pkvm_set_mmio_ve(vcpu, fault->gfn);
+		else
+			r = RET_PF_EMULATE;
 	} else {
 		r = kvm_tdp_mmu_map(vcpu, fault);
 	}
