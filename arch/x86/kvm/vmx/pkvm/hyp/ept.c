@@ -962,23 +962,6 @@ void pkvm_shadow_clear_suppress_ve(struct kvm_vcpu *vcpu, unsigned long gfn)
 	pkvm_pgtable_annotate(sept, gpa, PAGE_SIZE, SHADOW_EPT_MMIO_ENTRY);
 }
 
-void pkvm_setup_virtual_ept(struct kvm_vcpu *vcpu, u64 veptp)
-{
-	struct shadow_vcpu_state *shadow_vcpu = kvm_vcpu_to_shadow(vcpu);
-	struct pkvm_shadow_vm *vm = shadow_vcpu->vm;
-	bool invalidate = false;
-
-	pkvm_spin_lock(&vm->lock);
-	if (vm->sept_desc.last_guest_eptp != veptp) {
-		vm->sept_desc.last_guest_eptp = veptp;
-		invalidate = true;
-	}
-	pkvm_spin_unlock(&vm->lock);
-
-	if (invalidate)
-		pkvm_invalidate_shadow_ept(&vm->sept_desc);
-}
-
 void pkvm_invalidate_guest_ept(int shadow_vm_handle, u64 start_gpa, u64 size)
 {
 	struct pkvm_vm *pkvm_vm = get_pkvm_vm(shadow_vm_handle);
