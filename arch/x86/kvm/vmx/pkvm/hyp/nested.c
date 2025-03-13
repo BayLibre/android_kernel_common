@@ -743,22 +743,6 @@ static void nested_vmx_run(struct kvm_vcpu *vcpu, bool launch)
 	}
 }
 
-static void setup_guest_ept(struct shadow_vcpu_state *shadow_vcpu, u64 guest_eptp)
-{
-	struct pkvm_shadow_vm *vm = shadow_vcpu->vm;
-	bool invalidate = false;
-
-	pkvm_spin_lock(&vm->lock);
-	if (vm->sept_desc.last_guest_eptp != guest_eptp) {
-		vm->sept_desc.last_guest_eptp = guest_eptp;
-		invalidate = true;
-	}
-	pkvm_spin_unlock(&vm->lock);
-
-	if (invalidate)
-		pkvm_invalidate_shadow_ept(&vm->sept_desc);
-}
-
 int handle_vmxon(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_vmx *vmx = to_vmx(vcpu);
@@ -989,9 +973,6 @@ int handle_vmwrite(struct kvm_vcpu *vcpu)
 			 */
 			if (field >= GUEST_ES_AR_BYTES && field <= GUEST_TR_AR_BYTES)
 				value &= 0x1f0ff;
-
-			if (field == EPT_POINTER)
-				setup_guest_ept(cur_shadow_vcpu, value);
 
 			vmcs12_write_any(vmcs12, field, offset, value);
 
