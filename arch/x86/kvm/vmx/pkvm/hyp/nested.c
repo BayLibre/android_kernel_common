@@ -1270,39 +1270,6 @@ int handle_invvpid(struct kvm_vcpu *vcpu)
 	return 0;
 }
 
-static bool nested_handle_ept_violation(struct shadow_vcpu_state *shadow_vcpu,
-					u64 l2_gpa, u64 exit_quali)
-{
-	enum sept_handle_ret ret = pkvm_handle_shadow_ept_violation(shadow_vcpu,
-								    l2_gpa, exit_quali);
-	bool handled = false;
-
-	switch (ret) {
-	case PKVM_INJECT_EPT_MISC: {
-		/*
-		 * Inject EPT_MISCONFIG vmexit reason if can directly modify
-		 * the read-only fields. Otherwise still deliver EPT_VIOLATION
-		 * for simplification.
-		 */
-		if (vmx_has_vmwrite_any_field())
-			vmcs_write32(VM_EXIT_REASON, EXIT_REASON_EPT_MISCONFIG);
-		break;
-	}
-	case PKVM_HANDLED:
-		handled = true;
-		break;
-	default:
-		break;
-	}
-
-	if (handled && (vmcs_read32(IDT_VECTORING_INFO_FIELD) &
-			VECTORING_INFO_VALID_MASK))
-		/* pending interrupt, back to kvm-high to inject */
-		handled = false;
-
-	return handled;
-}
-
 static void pkvm_get_ve_info(struct kvm_vcpu *vcpu)
 {
 	struct shadow_vcpu_state *shadow_vcpu = to_pkvm_hvcpu(vcpu)->current_shadow_vcpu;
@@ -1399,13 +1366,6 @@ int nested_vmexit(struct kvm_vcpu *vcpu, bool *skip_instruction)
 	struct vmcs12 *vmcs12 = (struct vmcs12 *)cur_shadow_vcpu->cached_vmcs12;
 
 	switch (vmx->exit_reason.full) {
-	case EXIT_REASON_EPT_VIOLATION:
-		/* EPT violation can be handled by pkvm, no need back to kvm-high */
-		if (nested_handle_ept_violation(cur_shadow_vcpu,
-						vmcs_read64(GUEST_PHYSICAL_ADDRESS),
-						vmx->exit_qualification))
-			return 0;
-		break;
 	case EXIT_REASON_VMCALL:
 		if (nested_handle_vmcall(vcpu)) {
 			*skip_instruction = true;

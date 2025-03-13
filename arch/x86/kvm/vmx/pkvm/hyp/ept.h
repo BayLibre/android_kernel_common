@@ -39,8 +39,6 @@ int pkvm_shadow_ept_init(struct shadow_ept_desc *desc);
 void pkvm_shadow_ept_deinit(struct shadow_ept_desc *desc);
 void pkvm_guest_ept_init(struct shadow_vcpu_state *shadow_vcpu, u64 guest_eptp);
 void pkvm_guest_ept_deinit(struct shadow_vcpu_state *shadow_vcpu);
-enum sept_handle_ret
-pkvm_handle_shadow_ept_violation(struct shadow_vcpu_state *shadow_vcpu, u64 l2_gpa, u64 exit_quali);
 void pkvm_invalidate_shadow_ept(struct shadow_ept_desc *desc);
 void pkvm_invalidate_shadow_ept_with_range(struct shadow_ept_desc *desc,
 					   unsigned long vaddr, unsigned long size);
