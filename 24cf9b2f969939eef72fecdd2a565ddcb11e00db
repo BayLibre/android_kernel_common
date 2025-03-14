@@ -34,6 +34,24 @@
       "parentUuid": "a15f3d97_3cab0a48",
       "revId": "24cf9b2f969939eef72fecdd2a565ddcb11e00db",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d99e02b7_bd6e43fb",
+        "filename": "security/security.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1000,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-03-14T19:21:12Z",
+      "side": 1,
+      "message": "All these are called directly by the built-in C driver to audit certain operations, so they need to exported in order to be used by the rust module through the wrappers, right?",
+      "parentUuid": "c7e25a1f_dc01bc35",
+      "revId": "24cf9b2f969939eef72fecdd2a565ddcb11e00db",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
