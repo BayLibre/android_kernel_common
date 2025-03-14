@@ -103,6 +103,7 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
 static bool sugov_update_next_freq(struct sugov_policy *sg_policy, u64 time,
 				   unsigned int next_freq)
 {
+<<<<<<< HEAD   (fc9aa8 Merge 51b342267a54 ("leds: netxbig: Fix an OF node reference)
 	if (!sg_policy->need_freq_update) {
 		s64 delta_ns = time - sg_policy->last_freq_update_time;
 		trace_android_vh_update_next_freq(sg_policy->policy, sg_policy->next_freq,
@@ -110,8 +111,17 @@ static bool sugov_update_next_freq(struct sugov_policy *sg_policy, u64 time,
 		if (sg_policy->next_freq == next_freq)
 			return false;
 	} else {
+||||||| BASE
+	if (!sg_policy->need_freq_update) {
+		if (sg_policy->next_freq == next_freq)
+			return false;
+	} else {
+=======
+	if (sg_policy->need_freq_update)
+>>>>>>> BRANCH (9d091e cpufreq: schedutil: Simplify sugov_update_next_freq())
 		sg_policy->need_freq_update = cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS);
-	}
+	else if (sg_policy->next_freq == next_freq)
+		return false;
 
 	sg_policy->next_freq = next_freq;
 	sg_policy->last_freq_update_time = time;
