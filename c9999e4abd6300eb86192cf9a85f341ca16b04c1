@@ -16,6 +16,24 @@
       "message": "config changes must be for all supported gki_defconfig targets.",
       "revId": "c9999e4abd6300eb86192cf9a85f341ca16b04c1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a30d7bf_52ce2d57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1943561
+      },
+      "writtenOn": "2025-03-14T20:16:18Z",
+      "side": 1,
+      "message": "The mmd feature is still in development and we want to enable it in Desktop devices for testing first (Desktop has a different release schedule for now). Do you think I should make this change in the Desktop release branch instead, and then upstream to all gki_defconfig once we can verify it working properly? Or is it still preferable to have this type of change upstream first?",
+      "parentUuid": "f35c5970_0594e60a",
+      "revId": "c9999e4abd6300eb86192cf9a85f341ca16b04c1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
