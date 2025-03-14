@@ -1232,6 +1232,12 @@ static int smmu_detach_dev(struct kvm_hyp_iommu *iommu, struct kvm_hyp_iommu_dom
 				}
 			} else {
 				cd = smmu_get_cd_ptr(cd_table, pasid);
+				if (!(cd[0] & CTXDESC_CD_0_V)) {
+					/* The device is not actually attached! */
+					ret = -ENOENT;
+					goto out_unlock;
+				}
+
 				cd[0] = 0;
 				smmu_sync_cd(smmu, cd, sid, pasid);
 				cd[1] = 0;
@@ -1243,6 +1249,11 @@ static int smmu_detach_dev(struct kvm_hyp_iommu *iommu, struct kvm_hyp_iommu_dom
 		}
 	}
 	/* For stage-2 and pasid = 0 */
+	if (!(dst[0] & STRTAB_STE_0_V)) {
+		/* The device is not actually attached! */
+		ret = -ENOENT;
+		goto out_unlock;
+	}
 	dst[0] = 0;
 	ret = smmu_sync_ste(smmu, dst, sid);
 	if (ret)
