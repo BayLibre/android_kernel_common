@@ -300,8 +300,11 @@ void __init x86_flattree_get_config(void)
 
 	unflatten_and_copy_device_tree();
 
-	if (initial_dtb)
+	if (initial_dtb) {
 		early_memunmap(dt, map_len);
+
+		early_init_fdt_scan_reserved_mem();
+	}
 #endif
 	if (acpi_disabled && of_have_populated_dt())
 		x86_init.mpparse.parse_smp_cfg = x86_dtb_parse_smp_config;
