@@ -16,6 +16,52 @@
       "message": "Do we have to initialize this?\n\nWhat if `kvm_iommu_map_pages` returns before writing to `mapped`?",
       "revId": "980023c79df574d1407b670329297029e840013f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8dc7aa0_1a24987b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2025-03-15T03:52:43Z",
+      "side": 1,
+      "message": "Now that we are re-definiting the return value, should we return `-ENODEV` or similar error codes?",
+      "range": {
+        "startLine": 487,
+        "startChar": 9,
+        "endLine": 487,
+        "endChar": 10
+      },
+      "revId": "980023c79df574d1407b670329297029e840013f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c575e657_816d52a4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2025-03-15T03:52:43Z",
+      "side": 1,
+      "message": "Consider propagating `ret`.",
+      "range": {
+        "startLine": 502,
+        "startChar": 9,
+        "endLine": 502,
+        "endChar": 10
+      },
+      "revId": "980023c79df574d1407b670329297029e840013f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
