@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39e2c981_e3c94524",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9028,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-03-16T00:13:15Z",
+      "side": 1,
+      "message": "This warning suggests this logic probably needs a clear comment. \n\n\nPlease fix this WARNING reported by KernelCheckPatch: WARNING:SUSPECT_CODE_INDENT: suspect code indent for conditional statements (16, 16)\n\nAnalyzer Description: Ensures that kernel patches follow the guidelines.\nOwner: estaats@google.com\n\nWARNING:SUSPECT_CODE_INDENT: suspect code indent for conditional statements (16, 16)",
+      "range": {
+        "startLine": 9028,
+        "startChar": 0,
+        "endLine": 9028,
+        "endChar": 0
+      },
+      "revId": "ae396af3d3e912f7a1c19d33ac3c74349fb9da84",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
