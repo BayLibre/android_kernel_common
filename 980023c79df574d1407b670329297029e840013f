@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d4770f0_a376570f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1553,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2025-03-17T16:29:17Z",
+      "side": 1,
+      "message": "My preference would be to initialize it here for two reasons:\n\n1. The reader can convince themselves that this is safe by looking at only at this particular function. As it stands, they have to look up the definition of `kvm_iommu_map_pages` which is in a different file. Also, if someone were to edit `kvm_iommu_map_pages`, they might not realize that the caller relies on this initialization.\n\n2. Initializing `mapped` here would align with `__iommu_map` in `drivers/iommu/iommu.c` which initializes `mapped`, because the callee doesn\u0027t necessarily write to it in error conditions.",
+      "parentUuid": "b640ba16_9484ea10",
+      "revId": "980023c79df574d1407b670329297029e840013f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8dc7aa0_1a24987b",
         "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
         "patchSetId": 1
