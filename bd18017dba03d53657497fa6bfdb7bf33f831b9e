@@ -16,6 +16,24 @@
       "message": "Nit: Perhaps should use \"id\" consistently everywhere instead of \"idx\"?",
       "revId": "bd18017dba03d53657497fa6bfdb7bf33f831b9e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a72fc677_e1a20867",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1717,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-03-17T11:02:30Z",
+      "side": 1,
+      "message": "Index here is differenet from id, where `id` referes to an indentifer for an IOMMU which is defined by the driver, this used to have a way to identify IOMMUs between the kernel and the hypervisor (to be used for hypercalls)\n\nAnd idx is an actual index to one of the endpoints of a device connected to an IOMMU. This is used to hide the actual value of an endpoint from userspace and instead use index instead (similar to how KVM deals with irqs)",
+      "parentUuid": "cfce3962_50fbea91",
+      "revId": "bd18017dba03d53657497fa6bfdb7bf33f831b9e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
