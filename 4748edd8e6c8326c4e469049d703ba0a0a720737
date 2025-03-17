@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "138ff216_10a4141c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/pviommu-host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-03-17T11:34:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c7f2f86_e5e49837",
+      "revId": "4748edd8e6c8326c4e469049d703ba0a0a720737",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99b32506_7de4e62a",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-03-11T08:35:22Z",
       "side": 1,
       "message": "Can this legit happen? Doesn\u0027t seem so. Better to BUG, or leave it as a NULL deref and crash.",
+      "revId": "4748edd8e6c8326c4e469049d703ba0a0a720737",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "126c81ae_4d438865",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/pviommu-host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-03-17T11:34:02Z",
+      "side": 1,
+      "message": "It shouldn\u0027t happen, as this is called from the hypervisor, typical with a stack variabl, I removed the check.",
+      "parentUuid": "99b32506_7de4e62a",
       "revId": "4748edd8e6c8326c4e469049d703ba0a0a720737",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
