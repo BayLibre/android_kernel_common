@@ -393,5 +393,8 @@ int sync_shadow_id(struct pkvm_iommu *iommu, unsigned long vaddr,
 #endif
 
 extern void root_tbl_walk(struct pkvm_iommu *iommu);
+extern void pkvm_dump_domain_pgt(unsigned long phys, unsigned long bdf, unsigned long pasid);
+extern void domain_translation_struct_show(struct pkvm_iommu *iommu, u16 bdf, u32 pasid);
+extern void pkvm_dump_dmar_tr_struct(void);
 
 #endif
