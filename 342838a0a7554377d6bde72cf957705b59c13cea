@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee4acbdb_a1bcb283",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2025-03-18T21:02:00Z",
+      "side": 1,
+      "message": "This is how I am understanding this comment: `aarch64`\u0027s `abi.stg` shouldn\u0027t be re-used for this target. Based on this removing this line until the `abi.stg` is available for this target.",
+      "parentUuid": "b298ee1c_d6671b05",
+      "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3dadb91b_b547c039",
         "filename": "BUILD.bazel",
         "patchSetId": 2
@@ -106,6 +124,78 @@
         "startChar": 33,
         "endLine": 295,
         "endChar": 52
+      },
+      "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d209879c_709c66e4",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2025-03-18T21:02:00Z",
+      "side": 1,
+      "message": "@vmartensson@google.com mentioned that `pre_defconfig` doesn\u0027t work; so I tried it and it indeed doesn\u0027t work.\n\n`Error: common_kernel() got unexpected keyword argument: pre_defconfig_fragments (did you mean \u0027post_defconfig_fragments\u0027?)`\n\nFull log:\n\n```\n~/repos/android16-6.12$ tools/bazel run //common:kernel_aarch64_tv_dist\nERROR: Traceback (most recent call last):\n\tFile \"/usr/local/google/home/ramjiyani/repos/android16-6.12/common/BUILD.bazel\", line 272, column 14, in \u003ctoplevel\u003e\n\t\tcommon_kernel(\n\tFile \"/usr/local/google/home/ramjiyani/repos/android16-6.12/build/kernel/kleaf/common_kernels.bzl\", line 59, column 5, in common_kernel\n\t\tdef common_kernel(\nError: common_kernel() got unexpected keyword argument: pre_defconfig_fragments (did you mean \u0027post_defconfig_fragments\u0027?)\nWARNING: Target pattern parsing failed.\nERROR: Skipping \u0027//common:kernel_aarch64_tv_dist\u0027: no such target \u0027//common:kernel_aarch64_tv_dist\u0027: target \u0027kernel_aarch64_tv_dist\u0027 not declared in package \u0027common\u0027 defined by /usr/local/google/home/ramjiyani/repos/android16-6.12/common/BUILD.bazel (did you mean kernel_aarch64_16k_dist, kernel_aarch64_abi_dist, kernel_aarch64_dist, or kernel_aarch64_test?)\nERROR: no such target \u0027//common:kernel_aarch64_tv_dist\u0027: target \u0027kernel_aarch64_tv_dist\u0027 not declared in package \u0027common\u0027 defined by /usr/local/google/home/ramjiyani/repos/android16-6.12/common/BUILD.bazel (did you mean kernel_aarch64_16k_dist, kernel_aarch64_abi_dist, kernel_aarch64_dist, or kernel_aarch64_test?)\n```",
+      "parentUuid": "d3ec98f0_97b112cb",
+      "range": {
+        "startLine": 295,
+        "startChar": 4,
+        "endLine": 295,
+        "endChar": 28
+      },
+      "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77c9430f_83d7f9dc",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2025-03-18T21:02:00Z",
+      "side": 1,
+      "message": "Filed: http://b/404598434 for discussing this.",
+      "parentUuid": "4ae443cc_aa9397f0",
+      "range": {
+        "startLine": 295,
+        "startChar": 33,
+        "endLine": 295,
+        "endChar": 52
+      },
+      "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3db1fd6_e58ee617",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2025-03-18T21:02:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ad647f3_016fb523",
+      "range": {
+        "startLine": 295,
+        "startChar": 52,
+        "endLine": 295,
+        "endChar": 66
       },
       "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
