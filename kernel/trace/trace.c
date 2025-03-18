@@ -6021,6 +6021,7 @@ struct trace_scratch *trace_array_scratch(struct trace_array *tr, unsigned int *
 
 static DEFINE_MUTEX(scratch_mutex);
 
+#ifdef CONFIG_MODULES
 static int save_mod(struct module *mod, void *data)
 {
 	struct trace_array *tr = data;
@@ -6044,6 +6045,12 @@ static int save_mod(struct module *mod, void *data)
 
 	return 0;
 }
+#else
+static int save_mod(struct module *mod, void *data)
+{
+	return 0;
+}
+#endif
 
 static void update_last_data(struct trace_array *tr)
 {
