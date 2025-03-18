@@ -199,6 +199,30 @@
       },
       "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63f37d6e_e01bad4c",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2025-03-18T21:03:57Z",
+      "side": 1,
+      "message": "Change I tried:\n\n```\n~/repos/android16-6.12/common$ git diff\ndiff --git a/BUILD.bazel b/BUILD.bazel\nindex ec68c828e1e6..26640b19fd2b 100644\n--- a/BUILD.bazel\n+++ b/BUILD.bazel\n@@ -288,7 +288,7 @@ common_kernel(\n     make_goals \u003d _GKI_AARCH64_MAKE_GOALS,\n     makefile \u003d \":Makefile\",\n     module_implicit_outs \u003d get_gki_modules_list(\"arm64\") + get_kunit_modules_list(\"arm64\"),\n-    post_defconfig_fragments \u003d [\"arch/arm64/configs/tv_gki.fragment\"],\n+    pre_defconfig_fragments \u003d [\"arch/arm64/configs/tv_gki.fragment\"],\n     protected_exports_list \u003d \"gki/aarch64/protected_exports\",\n     protected_modules_list \u003d \":gki_aarch64_protected_modules\",\n     system_dlkm_extra_archive_files \u003d [\":generate_gki_module_info_arm64\"],\n```",
+      "parentUuid": "d209879c_709c66e4",
+      "range": {
+        "startLine": 295,
+        "startChar": 4,
+        "endLine": 295,
+        "endChar": 28
+      },
+      "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
