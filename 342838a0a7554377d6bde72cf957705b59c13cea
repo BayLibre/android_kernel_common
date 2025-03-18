@@ -271,6 +271,30 @@
       },
       "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8e0d03f_9dbb1cec",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2025-03-18T23:06:57Z",
+      "side": 1,
+      "message": "It doesn\u0027t look like that straight forward.\n\nChanges I made are here: https://r.android.com/3548916 (Feel free to take over and make it work)\n\nErrors:\n\n```\nError in fail: kernel_aarch64_tv: check_defconfig\u003d\"minimized\" requires the following:\n- defconfig is set and not phony_defconfig (but it is common/arch/arm64/configs/gki_defconfig)\n- pre_defconfig_fragments is not set (but it is [\"common/arch/arm64/configs/tv_gki.fragment\"])\n```",
+      "parentUuid": "789c6226_191d64ec",
+      "range": {
+        "startLine": 295,
+        "startChar": 4,
+        "endLine": 295,
+        "endChar": 28
+      },
+      "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
