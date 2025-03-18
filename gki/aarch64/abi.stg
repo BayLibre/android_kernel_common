@@ -390412,6 +390412,24 @@ elf_symbol {
   full_name: "round_jiffies_up"
 }
 elf_symbol {
+  id: 0x641a30d7
+  name: "rpmsg_chrdev_eptdev_destroy"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xe5ef73b0
+  type_id: 0x9d7428e0
+  full_name: "rpmsg_chrdev_eptdev_destroy"
+}
+elf_symbol {
+  id: 0x28967786
+  name: "rpmsg_class"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x4c032320
+  type_id: 0xfccdbf80
+  full_name: "rpmsg_class"
+}
+elf_symbol {
   id: 0xa3ee1393
   name: "rpmsg_create_channel"
   is_defined: true
@@ -390428,6 +390446,15 @@ elf_symbol {
   crc: 0xc0fff66a
   type_id: 0x4cd21214
   full_name: "rpmsg_create_ept"
+}
+elf_symbol {
+  id: 0xfd36afa6
+  name: "rpmsg_destroy_ept"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x6c5e187a
+  type_id: 0x1fc886d7
+  full_name: "rpmsg_destroy_ept"
 }
 elf_symbol {
   id: 0x988f4d92
@@ -390500,6 +390527,15 @@ elf_symbol {
   crc: 0xf4c1d992
   type_id: 0x92ab09cb
   full_name: "rpmsg_trysend"
+}
+elf_symbol {
+  id: 0xba0a2474
+  name: "rpmsg_trysendto"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xc434fc50
+  type_id: 0x92a82deb
+  full_name: "rpmsg_trysendto"
 }
 elf_symbol {
   id: 0xab5f4767
@@ -410851,8 +410887,11 @@ interface {
   symbol_id: 0x0e66eaf7
   symbol_id: 0x81bce56b
   symbol_id: 0x01a1f5e7
+  symbol_id: 0x641a30d7
+  symbol_id: 0x28967786
   symbol_id: 0xa3ee1393
   symbol_id: 0x492407e0
+  symbol_id: 0xfd36afa6
   symbol_id: 0x988f4d92
   symbol_id: 0x1bdc5aa0
   symbol_id: 0x8b5859cf
@@ -410861,6 +410900,7 @@ interface {
   symbol_id: 0xa4ceb82a
   symbol_id: 0x47a1f086
   symbol_id: 0x8c26ec8b
+  symbol_id: 0xba0a2474
   symbol_id: 0xab5f4767
   symbol_id: 0xd056ad1b
   symbol_id: 0x2104bead
