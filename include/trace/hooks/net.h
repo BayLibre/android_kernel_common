@@ -80,6 +80,24 @@ DECLARE_HOOK(android_vh_tcp_rcv_established_fast_path,
 	TP_PROTO(struct sock *sk), TP_ARGS(sk));
 DECLARE_HOOK(android_vh_tcp_rcv_established_slow_path,
 	TP_PROTO(struct sock *sk), TP_ARGS(sk));
+<<<<<<< HEAD   (6e70aaa6c473ee3c01f2fcaf3bf4bbc9c768c74f ANDROID: GKI: Update symbol list for honor)
+||||||| BASE   (38e16e87bf0d2d540bbaafd8162ee543ec06738d ANDROID: gki_defconfig: Enable CONFIG_CGROUP_NET_CLASSID)
+struct net_device;
+DECLARE_HOOK(android_vh_dc_send_copy,
+	TP_PROTO(struct sk_buff *skb, struct net_device *dev), TP_ARGS(skb, dev));
+DECLARE_HOOK(android_vh_dc_receive,
+	TP_PROTO(struct sk_buff *skb, int *flag), TP_ARGS(skb, flag));
+=======
+DECLARE_HOOK(android_vh_receive_sock,
+	TP_PROTO(struct sock *sk), TP_ARGS(sk));
+DECLARE_HOOK(android_vh_task_get_classid,
+	TP_PROTO(const struct sk_buff *skb, u32 *classid), TP_ARGS(skb, classid));
+struct net_device;
+DECLARE_HOOK(android_vh_dc_send_copy,
+	TP_PROTO(struct sk_buff *skb, struct net_device *dev), TP_ARGS(skb, dev));
+DECLARE_HOOK(android_vh_dc_receive,
+	TP_PROTO(struct sk_buff *skb, int *flag), TP_ARGS(skb, flag));
+>>>>>>> CHANGE (17b3b0979f0e61048b85b9b3fee244892941a604 ANDROID: GKI: net: add vendor hook to get the correct classi)
 DECLARE_HOOK(android_vh_tcp_rcv_rtt_update,
 	TP_PROTO(struct tcp_sock *tp, u32 sample, int win_dep), TP_ARGS(tp, sample, win_dep));
 /* macro versions of hooks are no longer required */
