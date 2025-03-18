@@ -16,6 +16,52 @@
       "message": "That should not be authoritative for the kernel_aarch64 ABI representation.",
       "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dadb91b_b547c039",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2025-03-18T10:46:00Z",
+      "side": 1,
+      "message": "I was looking at other targets (`db845c`, `yukawa`, `rockpi4`) defined in common/ and they all use `pre_defconfig_fragments`, and just wanted to raise the comment here in case it\u0027s relevant. \n\nhttps://android.googlesource.com/kernel/build/+/refs/heads/main/kleaf/docs/kernel_config.md#internals-of-configuring-the-kernel contains more info about the apply order for each fragment.\n\ncc: @elsk@google.com",
+      "range": {
+        "startLine": 295,
+        "startChar": 4,
+        "endLine": 295,
+        "endChar": 28
+      },
+      "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ad647f3_016fb523",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2025-03-18T10:46:00Z",
+      "side": 1,
+      "message": "nit: Other fragments in that directory follow the following naming scheme:\n\n * `\u003cname\u003e_gki.fragment`",
+      "range": {
+        "startLine": 295,
+        "startChar": 52,
+        "endLine": 295,
+        "endChar": 66
+      },
+      "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
