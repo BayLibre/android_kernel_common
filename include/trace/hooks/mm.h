@@ -447,6 +447,9 @@ DECLARE_HOOK(android_vh_swap_writepage,
 DECLARE_HOOK(android_vh_alloc_flags_cma_adjust,
 	TP_PROTO(gfp_t gfp_mask, unsigned int *alloc_flags),
 	TP_ARGS(gfp_mask, alloc_flags));
+DECLARE_HOOK(android_vh_alloc_swap_slot_cache,
+	TP_PROTO(void *cache),
+	TP_ARGS(cache));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
