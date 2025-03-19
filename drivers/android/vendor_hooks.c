@@ -607,3 +607,38 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_queue_work);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_wake_idle_worker);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_send_signal_locked);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_do_read_fault);
+<<<<<<< HEAD   (4fe704 UPSTREAM: mm: avoid unconditional one-tick sleep when swapca)
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_private_mod);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_fail);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_log);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_proactive_compact_wmark_high);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_trigger_vendor_lmk_kill);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_map_pages_range);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_swap_folio_gfp);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_replace_anon_vma_name);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_get_swap_pages_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_should_split_folio_to_list);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_should_skip_zone);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_update_unmapped_area_info);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_reuse_whole_anon_folio);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_page_private_mod);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cma_alloc_fail);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_store_partner_src_caps);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_modify_src_caps);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_typec_tcpm_log);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_proactive_compact_wmark_high);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_trigger_vendor_lmk_kill);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_map_pages_range);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_swap_folio_gfp);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_replace_anon_vma_name);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_get_swap_pages_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_should_split_folio_to_list);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_should_skip_zone);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_update_unmapped_area_info);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_reuse_whole_anon_folio);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_swap_slot_cache);
+>>>>>>> CHANGE (577df9 ANDROID: vendor hooks: avoid disable interrupt long time)
