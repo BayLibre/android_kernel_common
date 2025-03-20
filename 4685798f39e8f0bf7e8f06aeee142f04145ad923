@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d08654f0_31b9930c",
+        "filename": "drivers/android/Makefile",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-03-20T03:08:05Z",
+      "side": 1,
+      "message": "I think ideally this could have done\n```\nrust_binder_objs +\u003d binder/\n```\nand then declare the objects within binder/Makefile\n\nHowever, this is fine.",
+      "range": {
+        "startLine": 11,
+        "startChar": 20,
+        "endLine": 11,
+        "endChar": 26
+      },
+      "revId": "4685798f39e8f0bf7e8f06aeee142f04145ad923",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
