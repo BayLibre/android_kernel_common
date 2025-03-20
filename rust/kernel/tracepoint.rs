@@ -20,7 +20,12 @@ macro_rules! declare_trace {
                 // SAFETY: It's always okay to query the static key for a tracepoint.
                 let should_trace = unsafe {
                     $crate::macros::paste! {
+<<<<<<< HEAD   (b38eeb ANDROID: rust_binder: fix nullptr deref in binderfs)
                         $crate::static_key::static_key_false!(
+||||||| BASE
+=======
+                        $crate::jump_label::static_branch_unlikely!(
+>>>>>>> BRANCH (cae6b5 Revert "ANDROID: Don't add image to all target with KBUILD_M)
                             $crate::bindings::[< __tracepoint_ $name >],
                             $crate::bindings::tracepoint,
                             key
