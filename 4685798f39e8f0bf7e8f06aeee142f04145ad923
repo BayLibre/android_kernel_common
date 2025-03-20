@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "035b91bd_328fc193",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-03-20T16:42:03Z",
+      "side": 1,
+      "message": "Interesting. I wonder what causes this? Maybe the usage of binder/\u003cobject\u003e path? Maybe something broken/different with CONFIG_RUST? I dunno. I think ideally this should have been:\n```\nobj-$(CONFIG_ANDROID_BINDER_IPC_RUST) +\u003d binder/\n```\n... then in `drivers/anrdoid/binder/Makefile`\n```\nobj-y \u003d rust_binder.o\nrust_binder +\u003d ...\n```\nHowever, this is fine for now.",
+      "parentUuid": "1515524b_aa7ed079",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 22
+      },
+      "revId": "4685798f39e8f0bf7e8f06aeee142f04145ad923",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d08654f0_31b9930c",
         "filename": "drivers/android/Makefile",
         "patchSetId": 4

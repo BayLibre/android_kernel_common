@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7c3cce9_61927315",
+        "filename": "drivers/android/Kconfig",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-03-20T16:42:03Z",
+      "side": 1,
+      "message": "It seems this \"if\" at the beginning is triggering the \"false-positive\" checkpatch warn.",
+      "range": {
+        "startLine": 47,
+        "startChar": 3,
+        "endLine": 47,
+        "endChar": 6
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f638b161_f51f91ad",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/android/Kconfig",
+              "range": {
+                "startLine": 47,
+                "startChar": 0,
+                "endLine": 48,
+                "endChar": 0
+              },
+              "replacement": "\t  the binder.impl\u003drust kernel command-line parameter can be used to\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2ac6571a474e6a9c2147daadc99a2372e008a8b7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
