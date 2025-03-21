@@ -34,6 +34,24 @@
       "parentUuid": "9826d275_65509794",
       "revId": "adb1ae3329c10cc868d4dec378126b38477e9175",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49f50663_8cbff57b",
+        "filename": "drivers/gpu/drm/xe/xe_tuning.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2025-03-21T19:50:07Z",
+      "side": 1,
+      "message": "small correction to my last comment: the added line was `#include \"xe_device_types.h\"`, not `xe_driver_types.h`. Just misremembered when typing the comment.\n\nIt\u0027s documented in the commit message.",
+      "parentUuid": "f4be65a0_baf8fc94",
+      "revId": "adb1ae3329c10cc868d4dec378126b38477e9175",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
