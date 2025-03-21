@@ -597,7 +597,6 @@ struct kvm_vcpu_arch {
 	/* Ownership of the FP regs */
 	enum {
 		FP_STATE_FREE,
-		FP_STATE_HOST_OWNED,
 		FP_STATE_GUEST_OWNED,
 	} fp_state;
 
