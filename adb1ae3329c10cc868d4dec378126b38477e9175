@@ -16,6 +16,24 @@
       "message": "Has this change been upstreamed yet, which we can pull in here? Or are the builds fixed some other way?",
       "revId": "adb1ae3329c10cc868d4dec378126b38477e9175",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4be65a0_baf8fc94",
+        "filename": "drivers/gpu/drm/xe/xe_tuning.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2025-03-21T19:48:35Z",
+      "side": 1,
+      "message": "The functional parts of this change are already in maintainer branch, thus this is a `FROMGIT:`. The only part of this that makes it `BACKPORT:` is one added `#include \"xe_driver_types.h\"`.\n\ndrm-xe-next is near mainline (6.14+), so the Xe driver diverges quite a bit from what we have in ACK (6.12.y). \n\nThere\u0027s no single CL we can backport just to resolve this missing include. The reason that mainline builds fine is that it probably just has a tangled web of:\nfile 1, includes file 2, includes \"xe_device_types.h\". \n\nNot worth untangling that just to avoid a one-line \"#include\" to get this patch working in 6.12.y, IMO.",
+      "parentUuid": "9826d275_65509794",
+      "revId": "adb1ae3329c10cc868d4dec378126b38477e9175",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
