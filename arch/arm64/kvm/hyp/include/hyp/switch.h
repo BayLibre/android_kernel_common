@@ -308,8 +308,6 @@ static inline void __hyp_sve_restore_guest(struct kvm_vcpu *vcpu)
 	sve_cond_update_zcr_vq(vcpu_sve_max_vq(vcpu) - 1ULL, SYS_ZCR_EL2);
 }
 
-static void kvm_hyp_handle_fpsimd_host(struct kvm_vcpu *vcpu);
-
 static void __deactivate_fpsimd_traps(struct kvm_vcpu *vcpu)
 {
 	u64 reg;
@@ -364,10 +362,6 @@ static bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
 	/* First disable enough traps to allow us to update the registers */
 	__deactivate_fpsimd_traps(vcpu);
 	isb();
-
-	/* Write out the host state if it's in the registers */
-	if (vcpu->arch.fp_state == FP_STATE_HOST_OWNED)
-		kvm_hyp_handle_fpsimd_host(vcpu);
 
 	/* Restore the guest state */
 	if (sve_guest)
