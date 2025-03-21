@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97148c94_9e03043d",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2025-03-21T12:06:04Z",
+      "side": 1,
+      "message": "It should _not_ need a smaller surface as that would mean we are introducing a separate set of symbol lists. As I understand it, the intention is to disable features that affect the ABI (e.g. less padding) in order to optimize for the TV use case.",
+      "parentUuid": "cd8ac9c5_a69cdbb5",
+      "revId": "342838a0a7554377d6bde72cf957705b59c13cea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3dadb91b_b547c039",
         "filename": "BUILD.bazel",
         "patchSetId": 2
