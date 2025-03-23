@@ -1,0 +1,30 @@
+From 26db8a52819c3c53a210db90df1f3c460b224544 Mon Sep 17 00:00:00 2001
+From: Wen-jie Pan <Wen-jie.Pan@mediatek.com>
+Date: Thu, 27 Feb 2025 14:16:18 +0800
+Subject: [PATCH] [ALPS09446372] v4l2: add device number
+
+[Description]
+increase v4l2 device number
+
+[Test]
+build pass
+
+CR-Id: ALPS09446372
+Signed-off-by: Wen-jie Pan <Wen-jie.Pan@mediatek.com>
+Feature: [Android Default] Camera Application Basic Functions
+Change-Id: I3688011ffbaa1940d3fae13a4ad758d439fa88f0
+---
+
+diff --git a/drivers/media/v4l2-core/v4l2-dev.c b/drivers/media/v4l2-core/v4l2-dev.c
+index 3d7711c..2504a04 100644
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -31,7 +31,7 @@
+ #include <media/v4l2-ioctl.h>
+ #include <media/v4l2-event.h>
+ 
+-#define VIDEO_NUM_DEVICES	256
++#define VIDEO_NUM_DEVICES	512
+ #define VIDEO_NAME              "video4linux"
+ 
+ #define dprintk(fmt, arg...) do {					\
