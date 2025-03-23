@@ -22,6 +22,7 @@
 #include <linux/scatterlist.h>
 #include <linux/string.h>
 #include <linux/jump_label.h>
+#include <trace/hooks/blk.h>
 
 #define DM_MSG_PREFIX			"verity"
 
@@ -706,6 +707,21 @@ static void verity_end_io(struct bio *bio)
 	     (bio->bi_opf & REQ_RAHEAD))) {
 		verity_finish_io(io, bio->bi_status);
 		return;
+	}
+
+
+	if (static_branch_unlikely(&use_tasklet_enabled) && io->v->use_tasklet) {
+		bool use_tasklet = false;
+		trace_android_vh_verity_use_tasklet(bio, &use_tasklet);
+		if (use_tasklet) {
+			int err;
+			io->in_tasklet = true;
+			err = verity_verify_io(io);
+			if (err == 0 || (err != -EAGAIN && err != -ENOMEM)) {
+				verity_finish_io(io, errno_to_blk_status(err));
+				return;
+			}
+		}
 	}
 
 	INIT_WORK(&io->work, verity_work);
