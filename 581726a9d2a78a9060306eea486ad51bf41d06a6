@@ -53,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "558ee5c3_9f7b13ab",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2025-03-24T20:51:52Z",
+      "side": 1,
+      "message": "Also, remvoed this: `additional_kmi_symbol_lists \u003d [\":aarch64_additional_kmi_symbol_lists\"],`",
+      "parentUuid": "5e04a8ef_fac3fe78",
+      "revId": "581726a9d2a78a9060306eea486ad51bf41d06a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8437b3b_691e9290",
@@ -66,6 +84,24 @@
       "writtenOn": "2025-03-24T17:44:53Z",
       "side": 1,
       "message": "Add this please to make it as close to `kernel_aarch64` as possible:\n\n```suggestion\n    system_dlkm_extra_archive_files \u003d [\":generate_gki_module_info_arm64\"],\n    trim_nonlisted_kmi \u003d True,\n```",
+      "revId": "581726a9d2a78a9060306eea486ad51bf41d06a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c364abb2_1ede08f2",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1889091
+      },
+      "writtenOn": "2025-03-24T20:51:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8437b3b_691e9290",
       "revId": "581726a9d2a78a9060306eea486ad51bf41d06a6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
