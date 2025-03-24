@@ -59,6 +59,8 @@ DECLARE_RESTRICTED_HOOK(android_rvh_bpf_skb_load_bytes,
 	TP_ARGS(skb, offset, to, len, handled, err), 1);
 DECLARE_RESTRICTED_HOOK(android_rvh_tcp_rcv_spurious_retrans,
 	TP_PROTO(struct sock *sk), TP_ARGS(sk), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_tcp_send_dupack,
+	TP_PROTO(struct sock *sk), TP_ARGS(sk), 1);
 DECLARE_HOOK(android_vh_tcp_sock_error,
 	TP_PROTO(struct sock *sk), TP_ARGS(sk));
 DECLARE_HOOK(android_vh_tcp_fastsyn,
