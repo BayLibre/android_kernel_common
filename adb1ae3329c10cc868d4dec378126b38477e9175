@@ -52,6 +52,24 @@
       "parentUuid": "f4be65a0_baf8fc94",
       "revId": "adb1ae3329c10cc868d4dec378126b38477e9175",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "317ea1fb_373f3bc3",
+        "filename": "drivers/gpu/drm/xe/xe_tuning.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-03-24T21:13:56Z",
+      "side": 1,
+      "message": "\u003e The only part of this that makes it BACKPORT: is one added #include \"xe_driver_types.h\".\n\nRight, this is the part I\u0027m curious about.\n\nI\u0027m fine with this being a backport if upstream is building fine, I just wanted to make sure we aren\u0027t hanging on to a fix the rest of the world may want also.",
+      "parentUuid": "49f50663_8cbff57b",
+      "revId": "adb1ae3329c10cc868d4dec378126b38477e9175",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
