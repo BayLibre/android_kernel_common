@@ -4611,6 +4611,8 @@ static void tcp_send_dupack(struct sock *sk, const struct sk_buff *skb)
 		}
 	}
 
+    trace_android_rvh_tcp_send_dupack(sk);
+
 	tcp_send_ack(sk);
 }
 
