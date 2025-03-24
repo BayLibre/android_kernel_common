@@ -16,6 +16,128 @@
       "message": "hi, can you have review for this change ? It break downstream.",
       "revId": "ac2a3206e96ad0a5340c7747e8f8f6e6805e1f1b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bb180eb_fe8ee9e2",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 5
+      },
+      "lineNbr": 1211,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-03-24T15:58:25Z",
+      "side": 1,
+      "message": "what is this needed for? Please answer in the commit message.",
+      "fixSuggestions": [
+        {
+          "fixId": "4e1eaa7f_791fb7b0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gki/aarch64/symbols/qcom",
+              "range": {
+                "startLine": 1211,
+                "startChar": 0,
+                "endLine": 1212,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "ac2a3206e96ad0a5340c7747e8f8f6e6805e1f1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3924b954_f878fd2f",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 5
+      },
+      "lineNbr": 1231,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-03-24T15:58:25Z",
+      "side": 1,
+      "message": "what is this needed for? Please answer in the commit message.",
+      "revId": "ac2a3206e96ad0a5340c7747e8f8f6e6805e1f1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23ec77fd_45bc80f7",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 5
+      },
+      "lineNbr": 1821,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-03-24T15:58:25Z",
+      "side": 1,
+      "message": "what is this needed for? Please answer in the commit message.",
+      "fixSuggestions": [
+        {
+          "fixId": "c5b43226_980919b0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gki/aarch64/symbols/qcom",
+              "range": {
+                "startLine": 1821,
+                "startChar": 0,
+                "endLine": 1822,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "ac2a3206e96ad0a5340c7747e8f8f6e6805e1f1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb7515a6_7332cefc",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 5
+      },
+      "lineNbr": 2768,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-03-24T15:58:25Z",
+      "side": 1,
+      "message": "why are these needed? What context are they called in?\n\nComment in the code:\n```\n * This function must only be called from the critical\n * section in sched_clock(). It relies on the read_seqcount_retry()\n * at the end of the critical section to be sure we observe the\n * correct copy of \u0027epoch_cyc\u0027.\n```\nPlease answer in the commit message",
+      "fixSuggestions": [
+        {
+          "fixId": "d0723f0c_92cafb1a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gki/aarch64/symbols/qcom",
+              "range": {
+                "startLine": 2768,
+                "startChar": 0,
+                "endLine": 2768,
+                "endChar": 0
+              },
+              "replacement": "  /* This function must only be called from the critical\n   * section in sched_clock(). It relies on the read_seqcount_retr\n   * function being called before it.\n   */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ac2a3206e96ad0a5340c7747e8f8f6e6805e1f1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
