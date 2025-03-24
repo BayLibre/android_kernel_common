@@ -34,6 +34,40 @@
       "parentUuid": "fa9b33b5_7a980f29",
       "revId": "581726a9d2a78a9060306eea486ad51bf41d06a6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e04a8ef_fac3fe78",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1956160
+      },
+      "writtenOn": "2025-03-24T17:44:53Z",
+      "side": 1,
+      "message": "Add this please to make it as close to `kernel_aarch64` as possible:\n\n```suggestion\n    kcflags \u003d COMMON_KCFLAGS,\n    # We don\u0027t guarantee ABI stability for TV target\n    kmi_enforced \u003d False,\n    kmi_symbol_list \u003d \"gki/aarch64/symbols/base\",\n    kmi_symbol_list_strict_mode \u003d True,\n```",
+      "revId": "581726a9d2a78a9060306eea486ad51bf41d06a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8437b3b_691e9290",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1956160
+      },
+      "writtenOn": "2025-03-24T17:44:53Z",
+      "side": 1,
+      "message": "Add this please to make it as close to `kernel_aarch64` as possible:\n\n```suggestion\n    system_dlkm_extra_archive_files \u003d [\":generate_gki_module_info_arm64\"],\n    trim_nonlisted_kmi \u003d True,\n```",
+      "revId": "581726a9d2a78a9060306eea486ad51bf41d06a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
