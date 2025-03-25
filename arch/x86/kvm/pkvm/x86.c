@@ -890,6 +890,8 @@ fastpath_t kvm_vcpu_enter_guest(struct kvm_vcpu *vcpu, bool force_immediate_exit
 				kvm_vcpu_flush_tlb_current(vcpu);
 		}
 
+		kvm_x86_call(prepare_switch_to_guest)(vcpu);
+
 		/*
 		 * Make sure vcpu->mode is changed to IN_GUEST_MODE before
 		 * running to mark this vcpu should be kicked for any new
@@ -919,6 +921,8 @@ fastpath_t kvm_vcpu_enter_guest(struct kvm_vcpu *vcpu, bool force_immediate_exit
 		if (unlikely(force_immediate_exit))
 			break;
 	}
+
+	kvm_x86_call(prepare_switch_to_host)(vcpu);
 
 	vcpu->arch.host_debugctl = get_debugctlmsr();
 
