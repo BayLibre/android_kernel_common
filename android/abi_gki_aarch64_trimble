@@ -4,3 +4,18 @@
 # required by qmi_wwan.ko
   netdev_stats_to_stats64
   netdev_upper_get_next_dev_rcu
+#required by i2c_hid.ko
+  __hid_register_driver
+  hid_field_extract
+  hid_hw_start
+  hid_hw_open
+  hid_hw_stop
+  device_add_groups
+  hid_debug
+  hid_open_report
+  hid_report_raw_event
+  device_reprobe
+  hid_unregister_driver
+  __hid_request
+#required by mhitty
+  tty_register_device
