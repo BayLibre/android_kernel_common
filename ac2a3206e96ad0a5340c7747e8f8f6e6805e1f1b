@@ -53,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f4f87c0_7c7b0989",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 5
+      },
+      "lineNbr": 1211,
+      "author": {
+        "id": 2024627
+      },
+      "writtenOn": "2025-03-25T22:28:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bb180eb_fe8ee9e2",
+      "revId": "ac2a3206e96ad0a5340c7747e8f8f6e6805e1f1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3924b954_f878fd2f",
@@ -66,6 +84,24 @@
       "writtenOn": "2025-03-24T15:58:25Z",
       "side": 1,
       "message": "what is this needed for? Please answer in the commit message.",
+      "revId": "ac2a3206e96ad0a5340c7747e8f8f6e6805e1f1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28d51a05_168c0355",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 5
+      },
+      "lineNbr": 1231,
+      "author": {
+        "id": 2024627
+      },
+      "writtenOn": "2025-03-25T22:28:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3924b954_f878fd2f",
       "revId": "ac2a3206e96ad0a5340c7747e8f8f6e6805e1f1b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -136,6 +172,24 @@
           ]
         }
       ],
+      "revId": "ac2a3206e96ad0a5340c7747e8f8f6e6805e1f1b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa9fcad9_d53b74ce",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 5
+      },
+      "lineNbr": 2768,
+      "author": {
+        "id": 2024627
+      },
+      "writtenOn": "2025-03-25T22:28:00Z",
+      "side": 1,
+      "message": "I believe you\u0027re referring to suspended_sched_clock_read with above commented code?\nWe are using sched_clock_read_being and read_retry to align time between different VMs.",
+      "parentUuid": "cb7515a6_7332cefc",
       "revId": "ac2a3206e96ad0a5340c7747e8f8f6e6805e1f1b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
