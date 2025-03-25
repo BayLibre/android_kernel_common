@@ -111,9 +111,9 @@ static inline void arm64_mops_reset_regs(struct user_pt_regs *regs, unsigned lon
 	int sizereg = ESR_ELx_MOPS_ISS_SIZEREG(esr);
 	unsigned long dst, src, size;
 
-	dst = regs->regs[dstreg];
-	src = regs->regs[srcreg];
-	size = regs->regs[sizereg];
+	dst = user_pt_regs_read_reg(regs, dstreg);
+	src = user_pt_regs_read_reg(regs, srcreg);
+	size = user_pt_regs_read_reg(regs, sizereg);
 
 	/*
 	 * Put the registers back in the original format suitable for a
@@ -124,8 +124,8 @@ static inline void arm64_mops_reset_regs(struct user_pt_regs *regs, unsigned lon
 		/* SET* instruction */
 		if (option_a ^ wrong_option) {
 			/* Format is from Option A; forward set */
-			regs->regs[dstreg] = dst + size;
-			regs->regs[sizereg] = -size;
+			user_pt_regs_write_reg(regs, dstreg, dst + size);
+			user_pt_regs_write_reg(regs, sizereg, -size);
 		}
 	} else {
 		/* CPY* instruction */
@@ -133,16 +133,16 @@ static inline void arm64_mops_reset_regs(struct user_pt_regs *regs, unsigned lon
 			/* Format is from Option B */
 			if (regs->pstate & PSR_N_BIT) {
 				/* Backward copy */
-				regs->regs[dstreg] = dst - size;
-				regs->regs[srcreg] = src - size;
+				user_pt_regs_write_reg(regs, dstreg, dst - size);
+				user_pt_regs_write_reg(regs, srcreg, src - size);
 			}
 		} else {
 			/* Format is from Option A */
 			if (size & BIT(63)) {
 				/* Forward copy */
-				regs->regs[dstreg] = dst + size;
-				regs->regs[srcreg] = src + size;
-				regs->regs[sizereg] = -size;
+				user_pt_regs_write_reg(regs, dstreg, dst + size);
+				user_pt_regs_write_reg(regs, srcreg, src + size);
+				user_pt_regs_write_reg(regs, sizereg, -size);
 			}
 		}
 	}

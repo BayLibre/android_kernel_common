@@ -269,13 +269,26 @@ static inline u64 regs_get_register(struct pt_regs *regs, unsigned int offset)
 	return val;
 }
 
+static inline unsigned long user_pt_regs_read_reg(const struct user_pt_regs *regs, int r)
+{
+	return (r == 31) ? 0 : regs->regs[r];
+}
+
+
+static inline void user_pt_regs_write_reg(struct user_pt_regs *regs, int r,
+				     unsigned long val)
+{
+	if (r != 31)
+		regs->regs[r] = val;
+}
+
 /*
  * Read a register given an architectural register index r.
  * This handles the common case where 31 means XZR, not SP.
  */
 static inline unsigned long pt_regs_read_reg(const struct pt_regs *regs, int r)
 {
-	return (r == 31) ? 0 : regs->regs[r];
+	return user_pt_regs_read_reg(&regs->user_regs, r);
 }
 
 /*
@@ -285,8 +298,7 @@ static inline unsigned long pt_regs_read_reg(const struct pt_regs *regs, int r)
 static inline void pt_regs_write_reg(struct pt_regs *regs, int r,
 				     unsigned long val)
 {
-	if (r != 31)
-		regs->regs[r] = val;
+	return user_pt_regs_write_reg(&regs->user_regs, r, val);
 }
 
 /* Valid only for Kernel mode traps. */
