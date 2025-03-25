@@ -74,6 +74,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f48f2e01_ffd9e84c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-03-25T17:32:26Z",
+      "side": 1,
+      "message": "oh I think I now what the issue might be here. There is a name collision between your kernel module and the main rust_binder.c file. That\u0027s the reason you need to be explicit about the objects name. Anyway, this LGTM.",
+      "parentUuid": "035b91bd_328fc193",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 22
+      },
+      "revId": "4685798f39e8f0bf7e8f06aeee142f04145ad923",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d08654f0_31b9930c",
         "filename": "drivers/android/Makefile",
         "patchSetId": 4
