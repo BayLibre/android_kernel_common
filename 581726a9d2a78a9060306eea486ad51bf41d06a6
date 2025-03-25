@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1328e1ab_c02a6341",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1956160
+      },
+      "writtenOn": "2025-03-25T12:30:25Z",
+      "side": 1,
+      "message": "\u003e Also, remvoed this:\n\nBut why? Now TV has almost none of the symbols exported. For now we can reuse all symbol lists from `kernel_aarch64`, given requirements from b/401254795:\n* All symbols that will be added for TV should also be added to `kernel_aarch64` symbol lists.\n* TV configuration is not expected to disable something in config that makes any symbol from `kernel_aarch64` symbol lists not exportable. However if that will be the case, we will create separate symbol lists for TV, that will be a subset of `kernel_aarch64` symbol lists.\n\nCould you get it back?",
+      "parentUuid": "558ee5c3_9f7b13ab",
+      "revId": "581726a9d2a78a9060306eea486ad51bf41d06a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e8437b3b_691e9290",
         "filename": "BUILD.bazel",
         "patchSetId": 4
