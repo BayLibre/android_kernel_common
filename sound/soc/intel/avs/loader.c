@@ -306,7 +306,17 @@ avs_hda_init_rom(struct avs_dev *adev, unsigned int dma_id, bool purge)
 	}
 
 	/* await ROM init */
+<<<<<<< HEAD   (2a1381 Revert "drm/mediatek: stop selecting foreign drivers")
 	ret = snd_hdac_adsp_readl_poll(adev, spec->sram->rom_status_offset, reg,
+||||||| BASE
+<<<<<<< OURS
+	ret = snd_hdac_adsp_readq_poll(adev, spec->sram->rom_status_offset, reg,
+=======
+	ret = snd_hdac_adsp_readl_poll(adev, spec->sram->rom_status_offset, reg,
+>>>>>>> THEIRS
+=======
+	ret = snd_hdac_adsp_readq_poll(adev, spec->sram->rom_status_offset, reg,
+>>>>>>> BRANCH (374929 CHROMIUM: spi: mtk-nor: Fix clock selection)
 				       (reg & 0xF) == AVS_ROM_INIT_DONE ||
 				       (reg & 0xF) == APL_ROM_FW_ENTERED,
 				       AVS_ROM_INIT_POLLING_US, APL_ROM_INIT_TIMEOUT_US);
