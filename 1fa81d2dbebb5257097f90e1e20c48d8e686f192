@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5eccebae_d1afa33d",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 8
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-03-26T14:31:03Z",
+      "side": 1,
+      "message": "these should not be exported at all!  If they are, they need a new name as they refer to the dma subsystem, NOT the debugfs subsystem.",
+      "range": {
+        "startLine": 477,
+        "startChar": 2,
+        "endLine": 478,
+        "endChar": 20
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b7b8f76c_4af80759",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gki/aarch64/symbols/qcom",
+              "range": {
+                "startLine": 477,
+                "startChar": 0,
+                "endLine": 482,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "1fa81d2dbebb5257097f90e1e20c48d8e686f192",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
