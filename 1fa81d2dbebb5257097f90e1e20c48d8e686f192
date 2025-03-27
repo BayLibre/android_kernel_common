@@ -112,6 +112,30 @@
       },
       "revId": "1fa81d2dbebb5257097f90e1e20c48d8e686f192",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b981f841_576b86d5",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 8
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1956160
+      },
+      "writtenOn": "2025-03-27T20:26:18Z",
+      "side": 1,
+      "message": "These symbols were never included before you changes. You have had these symbols in your symbol list and `.stg` file in previous patchsets of this change. So when you removed this, ABI update command will show you the difference between your previous state of `.stg` file and the new state.",
+      "parentUuid": "c6611e7c_7e67c2ef",
+      "range": {
+        "startLine": 477,
+        "startChar": 2,
+        "endLine": 478,
+        "endChar": 20
+      },
+      "revId": "1fa81d2dbebb5257097f90e1e20c48d8e686f192",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
