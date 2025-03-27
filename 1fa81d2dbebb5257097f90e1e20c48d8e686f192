@@ -64,6 +64,30 @@
       },
       "revId": "1fa81d2dbebb5257097f90e1e20c48d8e686f192",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2bd7147_50046035",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 8
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1902100
+      },
+      "writtenOn": "2025-03-27T08:12:26Z",
+      "side": 1,
+      "message": "Hi， I found this file export the symbols.and it cause build error as follow when I run the command as follow in keystone\n(is this the right command ?)\n\ncommon\\drivers\\dma-buf\\dma-buf.c\nEXPORT_SYMBOL_NS_GPL(debugfs_list_mutex, DMA_BUF);\n\nLIST_HEAD(debugfs_list);\nEXPORT_SYMBOL_NS_GPL(debugfs_list, DMA_BUF);\n\nShould we add them back ?\n\n./tools/bazel run //common:kernel_aarch64_abi_update_symbol_list \u0026\u0026  ./tools/bazel  run //common:kernel_aarch64_abi_update\n\n\nERROR: ABI DIFFERENCES HAVE BEEN DETECTED!\nERROR: Report summary:\n\n2 variable symbol(s) removed\n  \u0027struct list_head debugfs_list\u0027\n  \u0027struct mutex debugfs_list_mutex\u0027\n\nINFO: Found 1 target...\nTarget //common:kernel_aarch64_abi_update up-to-date:\n  bazel-bin/common/kernel_aarch64_abi_update.sh\nINFO: Elapsed time: 501.119s, Critical Path: 499.44s\nINFO: 193 processes: 6 action cache hit, 178 internal, 15 linux-sandbox.\nINFO: Build completed successfully, 193 total actions\nINFO: Running command line: bazel-bin/common/kernel_aarch64_abi_update.sh\nERROR: ABI DIFFERENCES HAVE BEEN DETECTED!\nERROR: Report summary:",
+      "parentUuid": "b5c4b081_8541c5fa",
+      "range": {
+        "startLine": 477,
+        "startChar": 2,
+        "endLine": 478,
+        "endChar": 20
+      },
+      "revId": "1fa81d2dbebb5257097f90e1e20c48d8e686f192",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
