@@ -12,6 +12,13 @@
 DECLARE_RESTRICTED_HOOK(android_rvh_set_balance_anon_file_reclaim,
 			TP_PROTO(bool *balance_anon_file_reclaim),
 			TP_ARGS(balance_anon_file_reclaim), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_direct_reclaim_skip,
+			TP_PROTO(int order, gfp_t gfp_mask, nodemask_t *nodemask,
+				 unsigned long *nr_reclaimed, bool *skip),
+			TP_ARGS(order, gfp_mask, nodemask, nr_reclaimed, skip), 4);
+DECLARE_RESTRICTED_HOOK(android_rvh_kswapd_shrink_node,
+			TP_PROTO(unsigned long *nr_reclaimed),
+			TP_ARGS(nr_reclaimed), 1);
 DECLARE_HOOK(android_vh_tune_swappiness,
 	TP_PROTO(int *swappiness),
 	TP_ARGS(swappiness));
@@ -52,6 +59,18 @@ DECLARE_HOOK(android_vh_inode_lru_isolate,
 DECLARE_HOOK(android_vh_invalidate_mapping_pagevec,
 	TP_PROTO(struct address_space *mapping, bool *skip),
 	TP_ARGS(mapping, skip));
+DECLARE_HOOK(android_vh_keep_reclaimed_folio,
+	TP_PROTO(struct folio *folio, int *refcount, bool *keep),
+	TP_ARGS(folio, refcount, keep));
+DECLARE_HOOK(android_vh_clear_reclaimed_folio,
+	TP_PROTO(struct folio *folio, bool reclaimed),
+	TP_ARGS(folio, reclaimed));
+DECLARE_HOOK(android_vh_stop_try_to_free_pages,
+	TP_PROTO(unsigned long *nr_reclaimed, bool *stop),
+	TP_ARGS(nr_reclaimed, stop));
+DECLARE_HOOK(android_vh_evict_folios_bypass,
+	TP_PROTO(struct folio *folio, bool *bypass),
+	TP_ARGS(folio, bypass));
 
 enum scan_balance;
 DECLARE_HOOK(android_vh_tune_scan_type,

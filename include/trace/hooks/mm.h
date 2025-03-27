@@ -398,7 +398,16 @@ DECLARE_HOOK(android_vh_filemap_update_page,
 	TP_PROTO(struct address_space *mapping, struct folio *folio,
 		struct file *file),
 	TP_ARGS(mapping, folio, file));
+DECLARE_HOOK(android_vh_filemap_pages,
+	TP_PROTO(struct folio *folio),
+	TP_ARGS(folio));
 
+DECLARE_HOOK(android_vh_lru_gen_add_folio_skip,
+	TP_PROTO(struct lruvec *lruvec, struct folio *folio, bool *skip),
+	TP_ARGS(lruvec, folio, skip));
+DECLARE_HOOK(android_vh_lru_gen_del_folio_skip,
+	TP_PROTO(struct lruvec *lruvec, struct folio *folio, bool *skip),
+	TP_ARGS(lruvec, folio, skip));
 DECLARE_HOOK(android_vh_lruvec_add_folio,
 	TP_PROTO(struct lruvec *lruvec, struct folio *folio, enum lru_list lru,
 		bool tail, bool *skip),

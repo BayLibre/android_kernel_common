@@ -1479,8 +1479,15 @@ static int __remove_mapping(struct address_space *mapping, struct folio *folio,
 		 * same address_space.
 		 */
 		if (reclaimed && folio_is_file_lru(folio) &&
-		    !mapping_exiting(mapping) && !dax_mapping(mapping))
+		    !mapping_exiting(mapping) && !dax_mapping(mapping)) {
+			bool keep = false;
+
 			shadow = workingset_eviction(folio, target_memcg);
+			trace_android_vh_keep_reclaimed_folio(folio, &refcount, &keep);
+			if (keep)
+				goto cannot_free;
+		}
+		trace_android_vh_clear_reclaimed_folio(folio, reclaimed);
 		__filemap_remove_folio(folio, shadow);
 		xa_unlock_irq(&mapping->i_pages);
 		if (mapping_shrinkable(mapping))
@@ -5354,6 +5361,12 @@ retry:
 			type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
 
 	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
+		bool bypass = false;
+
+		trace_android_vh_evict_folios_bypass(folio, &bypass);
+		if (bypass)
+			continue;
+
 		if (!folio_evictable(folio)) {
 			list_del(&folio->lru);
 			folio_putback_lru(folio);
@@ -7037,6 +7050,7 @@ static unsigned long do_try_to_free_pages(struct zonelist *zonelist,
 	pg_data_t *last_pgdat;
 	struct zoneref *z;
 	struct zone *zone;
+	bool stop = false;
 
 	modify_scan_control(sc);
 retry:
@@ -7051,6 +7065,10 @@ retry:
 					sc->priority);
 		sc->nr_scanned = 0;
 		shrink_zones(zonelist, sc);
+
+		trace_android_vh_stop_try_to_free_pages(&sc->nr_reclaimed, &stop);
+		if (stop)
+			break;
 
 		if (sc->nr_reclaimed >= sc->nr_to_reclaim)
 			break;
@@ -7272,6 +7290,7 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
 	};
 	bool skip_swap = false;
 	int prio = 0;
+	bool skip = false;
 
 	/*
 	 * scan_control uses s8 fields for order, priority, and reclaim_idx.
@@ -7288,6 +7307,11 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
 	 */
 	if (throttle_direct_reclaim(sc.gfp_mask, zonelist, nodemask))
 		return 1;
+
+	trace_android_rvh_direct_reclaim_skip(order, sc.gfp_mask, nodemask,
+					      &nr_reclaimed, &skip);
+	if (skip)
+		return nr_reclaimed;
 
 	trace_android_vh_tune_scan_control(&skip_swap);
 	if (skip_swap)
@@ -7549,6 +7573,8 @@ static bool kswapd_shrink_node(pg_data_t *pgdat,
 
 		sc->nr_to_reclaim += max(high_wmark_pages(zone), SWAP_CLUSTER_MAX);
 	}
+
+	trace_android_rvh_kswapd_shrink_node(&sc->nr_to_reclaim);
 
 	/*
 	 * Historically care was taken to put equal pressure on all zones but
