@@ -16,6 +16,8 @@ hyp-obj-$(CONFIG_LIST_HARDENED) += list_debug.o
 hyp-obj-$(CONFIG_TRACING) += clock.o events.o trace.o
 hyp-obj-$(CONFIG_PKVM_FTRACE) += ftrace.o
 hyp-obj-$(CONFIG_MODULES) += modules.o
+hyp-obj-$(CONFIG_KASAN) += kasan.o
+
 hyp-obj-y += $(lib-objs)
 
 #Only for built-in, not modules
@@ -37,4 +39,11 @@ CFLAGS_REMOVE_events.nvhe.o := -fpatchable-function-entry=3
 CFLAGS_REMOVE_ftrace.nvhe.o := -fpatchable-function-entry=3
 CFLAGS_REMOVE_setup.nvhe.o := -fpatchable-function-entry=3
 
+
 obj-y := kvm_nvhe.o
+KASAN_SANITIZE_kasan.nvhe.o := n
+KASAN_SANITIZE_setup.nvhe.o := n
+KASAN_SANITIZE_host.nvhe.o := n
+KASAN_SANITIZE_stacktrace.nvhe.o := n
+KASAN_SANITIZE_alloc.nvhe.o := n
+KASAN_SANITIZE_serial.nvhe.o := n
