@@ -1558,6 +1558,7 @@ config AMD_MEM_ENCRYPT
 	select ARCH_HAS_CC_PLATFORM
 	select X86_MEM_ENCRYPT
 	select UNACCEPTED_MEMORY
+	select CRYPTO_LIB_AESGCM
 	help
 	  Say yes to enable support for the encryption of system memory.
 	  This requires an AMD processor that supports Secure Memory
@@ -3127,6 +3128,10 @@ config TS5500
 endif # X86_32
 
 config AMD_NB
+	def_bool y
+	depends on AMD_NODE
+
+config AMD_NODE
 	def_bool y
 	depends on CPU_SUP_AMD && PCI
 
