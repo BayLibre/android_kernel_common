@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f262ee9_e3fe2745",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-03-31T18:54:31Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by KernelCommit: This branch is no longer respin eligible from 2025-02-01, unless for security patches cited in the Android Security Bulletin (ASB).\n\nAnalyzer Description: Ensures that kernel commit messages follow the guidelines.\nOwner: android-kernel-team@google.com\n\nThis branch is no longer respin eligible from 2025-02-01, unless for security patches cited in the Android Security Bulletin (ASB).\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "d3735b22dfcf126154585b446e12214ba455ad05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b16669ad_5d496faa",
@@ -14,6 +31,23 @@
       "writtenOn": "2025-03-31T02:56:28Z",
       "side": 1,
       "message": "Respin Bug: b/407429180",
+      "revId": "d3735b22dfcf126154585b446e12214ba455ad05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "067517c9_f11329e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-03-31T18:54:31Z",
+      "side": 1,
+      "message": "Looks like this branch (2024-07) isn\u0027t open for respins any longer. So I\u0027m going to -1 this for now. If this is a security patch cited in ABS, please let me know.",
       "revId": "d3735b22dfcf126154585b446e12214ba455ad05",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
