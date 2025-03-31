@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7adf5861_1fb3a15b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-03-31T11:54:08Z",
+      "side": 1,
+      "message": "I removed the `WARN_ON` from here and I set an error. The behaviour will be that the hypervisor tries to unshare the remaining pages if the translation is not found, even though a not found translation is a bad sign (memory correuption in the hyp).",
+      "parentUuid": "5e65dc36_0f0f9e29",
+      "range": {
+        "startLine": 516,
+        "startChar": 2,
+        "endLine": 516,
+        "endChar": 9
+      },
+      "revId": "9cfa2ec787000fc655293154f2d14c62b1a87cb5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de21b80c_0c6ae56a",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-11T14:52:44Z",
       "side": 1,
       "message": "Why is this `void **` instead of `void *` (or better, `u64 *`)? `ffa_guest_share_with_cb` would need updating as well.",
+      "range": {
+        "startLine": 542,
+        "startChar": 73,
+        "endLine": 542,
+        "endChar": 82
+      },
+      "revId": "9cfa2ec787000fc655293154f2d14c62b1a87cb5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40c841af_c1c6d0d5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-03-31T11:54:08Z",
+      "side": 1,
+      "message": "This is sorted from a prev CL.",
+      "parentUuid": "de21b80c_0c6ae56a",
       "range": {
         "startLine": 542,
         "startChar": 73,

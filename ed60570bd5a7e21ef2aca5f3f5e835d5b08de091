@@ -22,6 +22,30 @@
       },
       "revId": "ed60570bd5a7e21ef2aca5f3f5e835d5b08de091",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34bbbfca_d5748f15",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-03-31T11:54:08Z",
+      "side": 0,
+      "message": "Fixed this, I think it was lost during rebasing: added `buf-\u003esender_id !\u003d FFA_HANDLE_FROM_HYP_VCPU(hyp_vcpu)`.",
+      "parentUuid": "c06c1ceb_e200aa02",
+      "range": {
+        "startLine": 614,
+        "startChar": 38,
+        "endLine": 614,
+        "endChar": 67
+      },
+      "revId": "ed60570bd5a7e21ef2aca5f3f5e835d5b08de091",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
