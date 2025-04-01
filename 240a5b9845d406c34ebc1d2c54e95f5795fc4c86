@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a69be5a_07d59c90",
+        "filename": "fs/kernel_read_file.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 3950955
+      },
+      "writtenOn": "2025-04-01T23:52:52Z",
+      "side": 1,
+      "message": "The reason for this change is to avoid referencing the data type of the zram module driver, which may not be used within the kernel itself.",
+      "range": {
+        "startLine": 191,
+        "startChar": 34,
+        "endLine": 191,
+        "endChar": 46
+      },
+      "revId": "240a5b9845d406c34ebc1d2c54e95f5795fc4c86",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
