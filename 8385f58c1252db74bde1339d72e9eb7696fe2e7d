@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdb6bed9_5c5d5371",
+        "filename": "drivers/ufs/core/ufshcd.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2918,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2025-04-01T17:35:52Z",
+      "side": 1,
+      "message": "In the future, please Cc me on UFS driver patches. Is this error path perhaps broken? It seems to me that a `ufshcd_release()` call is missing. Additionally, \"heuristic\" is misspelled in this CL.",
+      "range": {
+        "startLine": 2917,
+        "startChar": 0,
+        "endLine": 2918,
+        "endChar": 11
+      },
+      "revId": "8385f58c1252db74bde1339d72e9eb7696fe2e7d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
