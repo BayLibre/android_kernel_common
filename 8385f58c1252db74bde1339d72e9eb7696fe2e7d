@@ -22,6 +22,30 @@
       },
       "revId": "8385f58c1252db74bde1339d72e9eb7696fe2e7d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d82c0ebb_9fe56210",
+        "filename": "drivers/ufs/core/ufshcd.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2918,
+      "author": {
+        "id": 3232272
+      },
+      "writtenOn": "2025-04-01T18:52:56Z",
+      "side": 1,
+      "message": "Ok Bart, I will CC you on UFS driver patches in the future. \n\nDuring the earlier review process, it was decided to call ufshcd_release() from the VH implementer side to maintain the cleanliness of the GKI code, ensuring that the error path remains intact. \n\nI acknowledge the misspelling of \"heuristic\" and will correct this typo in the upcoming GKI patchset.",
+      "parentUuid": "fdb6bed9_5c5d5371",
+      "range": {
+        "startLine": 2917,
+        "startChar": 0,
+        "endLine": 2918,
+        "endChar": 11
+      },
+      "revId": "8385f58c1252db74bde1339d72e9eb7696fe2e7d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
