@@ -22,6 +22,30 @@
       },
       "revId": "1d8086f094ac892af8f6adbf153b872075415e81",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d558e0a1_0cc4784c",
+        "filename": "kernel/module/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2025-04-02T18:38:36Z",
+      "side": 1,
+      "message": "If I use /dev/null I am not sure how L43 would behave; so I\u0027ll stick with this for now.\n\nAs a follow up, I would prefer to move all of L35~L61 to Bazel actions, then feed include/generated/gki_module_protected_exports.h and include/generated/gki_module_unprotected.h as an input to Kbuild.",
+      "parentUuid": "dc50d730_db60f30c",
+      "range": {
+        "startLine": 38,
+        "startChar": 34,
+        "endLine": 38,
+        "endChar": 53
+      },
+      "revId": "1d8086f094ac892af8f6adbf153b872075415e81",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
