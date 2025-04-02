@@ -9334,6 +9334,11 @@ pointer_reference {
   pointee_type_id: 0x79accc5f
 }
 pointer_reference {
+  id: 0x14fd99be
+  kind: POINTER
+  pointee_type_id: 0x79b68067
+}
+pointer_reference {
   id: 0x14fe2ad8
   kind: POINTER
   pointee_type_id: 0x79b84dfe
@@ -16617,6 +16622,11 @@ pointer_reference {
   id: 0x2ca5fa72
   kind: POINTER
   pointee_type_id: 0x98d70f54
+}
+pointer_reference {
+  id: 0x2ca7622a
+  kind: POINTER
+  pointee_type_id: 0x98dd6e34
 }
 pointer_reference {
   id: 0x2ca7a402
@@ -120301,6 +120311,11 @@ member {
   type_id: 0x2f932a1e
 }
 member {
+  id: 0x207aadcc
+  name: "key"
+  type_id: 0x2ca7622a
+}
+member {
   id: 0x209f059a
   name: "key"
   type_id: 0xc9082b19
@@ -129757,6 +129772,12 @@ member {
   id: 0xa81cfee6
   name: "mask"
   type_id: 0x2f932a1e
+  offset: 64
+}
+member {
+  id: 0xa81fcaae
+  name: "mask"
+  type_id: 0x2ca7622a
   offset: 64
 }
 member {
@@ -246513,6 +246534,16 @@ struct_union {
   }
 }
 struct_union {
+  id: 0x98dd6e34
+  kind: STRUCT
+  name: "flow_dissector_key_ipv6_addrs"
+  definition {
+    bytesize: 32
+    member_id: 0x445b4fe5
+    member_id: 0xbb9c8500
+  }
+}
+struct_union {
   id: 0x493badd2
   kind: STRUCT
   name: "flow_dissector_key_ports"
@@ -246572,6 +246603,16 @@ struct_union {
     bytesize: 16
     member_id: 0x204725ae
     member_id: 0xa82242cc
+  }
+}
+struct_union {
+  id: 0x79b68067
+  kind: STRUCT
+  name: "flow_match_ipv6_addrs"
+  definition {
+    bytesize: 16
+    member_id: 0x207aadcc
+    member_id: 0xa81fcaae
   }
 }
 struct_union {
@@ -318401,6 +318442,12 @@ function {
   parameter_id: 0x4585663f
 }
 function {
+  id: 0x1d56aeb3
+  return_type_id: 0x48b5725f
+  parameter_id: 0x3674251b
+  parameter_id: 0x14fd99be
+}
+function {
   id: 0x1d597589
   return_type_id: 0x48b5725f
   parameter_id: 0x3704906b
@@ -384717,6 +384764,15 @@ elf_symbol {
   full_name: "flow_rule_match_ipv4_addrs"
 }
 elf_symbol {
+  id: 0x2e6c0438
+  name: "flow_rule_match_ipv6_addrs"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1bda54b6
+  type_id: 0x1d56aeb3
+  full_name: "flow_rule_match_ipv6_addrs"
+}
+elf_symbol {
   id: 0x6097dede
   name: "flow_rule_match_ports"
   is_defined: true
@@ -427369,6 +427425,7 @@ interface {
   symbol_id: 0xdf189e23
   symbol_id: 0x73d9659a
   symbol_id: 0xae6c6645
+  symbol_id: 0x2e6c0438
   symbol_id: 0x6097dede
   symbol_id: 0x7c9e554a
   symbol_id: 0x9d180521
