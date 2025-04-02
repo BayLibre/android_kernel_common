@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8798cbd4_0756c07d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1042384
+      },
+      "writtenOn": "2025-04-02T13:04:27Z",
+      "side": 1,
+      "message": "Presubmit is failing because of an unrelated failure(https://android-build.corp.google.com/test_investigate/invocation/I18500010383259341/test/TR86529683032415056/?blocking\u003dblocking\u0026status\u003dnone): https://android-bug-tool.corp.google.com/bug_tool/?url\u003dhttps://android-build.googleplex.com/builds/I18500010383259341/P93893291%252Ftest-mapping-kernel-presubmit%252Finv_12445815036487246632%252Fhost_log_10618487358734826599.txt\u0026source\u003dABDX\n\n```\n04-02 07:45:47 D/RunUtil: Running command [adb, -s, 26211FDF6001VD, shell, cmd, -w, wifi, status] with timeout: 2m 0s\n04-02 07:45:47 W/NativeDevice: Failed to enable wifi\n04-02 07:45:47 E/NativeDevice: Failed to connect to wifi after 300000 ms. Aborting.\n```\n\nCan we bypass presubmit given that multiple runs have failed with the same reason ?",
+      "revId": "743e84c8b91ecedc67b89893a09fa46df57bb783",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
