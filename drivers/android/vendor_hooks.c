@@ -84,6 +84,7 @@
 #include <trace/hooks/typec.h>
 #include <trace/events/android_vendor_lmk.h>
 #include <trace/hooks/swapfile.h>
+#include <trace/hooks/experiments.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -652,3 +653,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_should_split_folio_to_list);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_should_skip_zone);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_update_unmapped_area_info);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_reuse_whole_anon_folio);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_uname_trace);
