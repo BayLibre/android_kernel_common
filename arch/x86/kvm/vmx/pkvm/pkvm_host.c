@@ -5,6 +5,7 @@
 
 #include <linux/kernel.h>
 #include <linux/module.h>
+#include <linux/jump_label.h>
 #include <linux/dmar.h>
 #include <../drivers/iommu/intel/iommu.h>
 #include <linux/pci.h>
@@ -20,6 +21,8 @@
 #include "pkvm_constants.h"
 
 MODULE_LICENSE("GPL");
+
+DEFINE_STATIC_KEY_FALSE(pkvm_enabled_key);
 
 bool __read_mostly enable_pkvm = false;
 
@@ -66,7 +69,6 @@ struct pkvm_deprivilege_param {
 	struct pkvm_hyp *pkvm;
 	int ret;
 };
-DEFINE_PER_CPU_READ_MOSTLY(bool, pkvm_enabled);
 
 static const struct pkvm_iommu_driver *iommu_driver;
 
@@ -980,7 +982,6 @@ static __init void pkvm_host_reprivilege_cpu(void *data)
 	pkvm_host_clear_vmx(&hvcpu->vmx);
 	vcpu = &hvcpu->vmx.vcpu;
 	vcpu->mode = OUTSIDE_GUEST_MODE;
-	this_cpu_write(pkvm_enabled, false);
 
 	pr_info("%s: CPU%d back in host mode\n", __func__, cpu);
 
@@ -1054,11 +1055,7 @@ static __init int pkvm_host_deprivilege_cpus(struct pkvm_hyp *pkvm)
  */
 static int __this_cpu_do_finalise_hc(struct pkvm_section *sections, unsigned long size)
 {
-	int ret = kvm_hypercall2(PKVM_HC_INIT_FINALISE, (unsigned long)sections, size);
-	if (!ret)
-		this_cpu_write(pkvm_enabled, true);
-
-	return ret;
+	return kvm_hypercall2(PKVM_HC_INIT_FINALISE, (unsigned long)sections, size);
 }
 
 /* Called with preemption disabled but interrupts enabled. */
@@ -1413,6 +1410,13 @@ static void __init pkvm_host_rollback(void)
 		kvm_hypercall1(__PKVM_HC_COMMIT_FINALISE, false);
 
 	/*
+	 * Rollback would have allowed host to access memory and MMIO
+	 * range, we can mark pkvm disabled so that host directly accesses
+	 * MMIO and memory instead of hypercall.
+	 */
+	static_branch_disable(&pkvm_enabled_key);
+
+	/*
 	 * Reprivilege cpus
 	 */
 	for_each_possible_cpu(cpu) {
@@ -1534,7 +1538,9 @@ int __init vmx_pkvm_init(void)
 
 	vmx_ret = __vmx_pkvm_init();
 
-	if (vmx_ret)
+	if (!vmx_ret)
+		static_branch_enable(&pkvm_enabled_key);
+	else
 		pkvm_host_rollback();
 
 	/*
