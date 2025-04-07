@@ -223,6 +223,7 @@ common_kernel(
     outs = DEFAULT_GKI_OUTS,
     abi_definition_stg = "gki/aarch64/abi.stg",
     additional_kmi_symbol_lists = [":aarch64_additional_kmi_symbol_lists"],
+    clang_autofdo_profile = "//common:kernel.afdo",
     arch = "arm64",
     build_gki_artifacts = True,
     ddk_headers_archive = ":kernel_aarch64_ddk_headers_archive",
