@@ -16,6 +16,24 @@
       "message": "This header should not be used by any ufs host driver. Please explain why you need it. Feel free to add details in the bug.",
       "revId": "c9c66d9ca4bfc328eaf95b3a4f5144d72b326b85",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "843dab14_cc834a0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3259487
+      },
+      "writtenOn": "2025-04-07T01:36:09Z",
+      "side": 1,
+      "message": "I make ufs module and check device information by Samsung Mobile policy.\nIt uses ufshcd_read_desc_param(), ufshcd_ufshcd_rpm_get_sync(), ufshcd_rpm_put_sync() and so on.\ne.g.) DEVICE_HEALTH_DESCRIPTOR\nHowever, these functions are only declared in ufshcd-priv.h.\nSo, I need to add this header.",
+      "parentUuid": "bd9734c8_ceaab4d6",
+      "revId": "c9c66d9ca4bfc328eaf95b3a4f5144d72b326b85",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
