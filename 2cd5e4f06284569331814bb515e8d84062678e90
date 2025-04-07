@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97f743a4_bb12af66",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 34
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-04-07T11:59:57Z",
+      "side": 1,
+      "message": "Why not walking the translation list instead here? That would avoid a ton of lookups in the list and simplify the logic, or is there something else that would break with that?",
+      "range": {
+        "startLine": 482,
+        "startChar": 1,
+        "endLine": 482,
+        "endChar": 30
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "188ddde3_8d57977c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 460,
+                "startChar": 0,
+                "endLine": 473,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 479,
+                "startChar": 0,
+                "endLine": 481,
+                "endChar": 0
+              },
+              "replacement": "\tint ret \u003d FFA_RET_SUCCESS;\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 482,
+                "startChar": 0,
+                "endLine": 491,
+                "endChar": 0
+              },
+              "replacement": "\tlist_for_each_entry_safe(translation, \u0026transfer-\u003etranslations, node) {\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 492,
+                "startChar": 0,
+                "endLine": 493,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "2cd5e4f06284569331814bb515e8d84062678e90",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e85ca32a_573df1cc",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 34
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-04-07T11:59:57Z",
+      "side": 1,
+      "message": "Why does this need to be done inline here? Could we check at the beginning of the function using the total_pg_count instead?",
+      "range": {
+        "startLine": 533,
+        "startChar": 3,
+        "endLine": 533,
+        "endChar": 76
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a996981f_4840830b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 513,
+                "startChar": 0,
+                "endLine": 513,
+                "endChar": 0
+              },
+              "replacement": "\tif (nranges * sizeof(struct ffa_mem_region_addr_range) \u003e reg_len) {\n\t\tret \u003d FFA_RET_INVALID_PARAMETERS;\n\t\tgoto unshare;\n\t}\n\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 516,
+                "startChar": 0,
+                "endLine": 521,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 531,
+                "startChar": 0,
+                "endLine": 535,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t}\t\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 539,
+                "startChar": 0,
+                "endLine": 544,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "2cd5e4f06284569331814bb515e8d84062678e90",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
