@@ -3281,7 +3281,7 @@ int __init intel_iommu_init(void)
 	 * Do not ignore any dmars if pkvm is enabled so as to
 	 * guarantee memory protection from devices.
 	 */
-	if (!enable_pkvm)
+	if (!pkvm_enabled())
 		init_no_remapping_devices();
 
 	ret = init_dmars();
