@@ -5,6 +5,7 @@
 
 #include <linux/kernel.h>
 #include <linux/module.h>
+#include <linux/jump_label.h>
 #include <linux/dmar.h>
 #include <../drivers/iommu/intel/iommu.h>
 #include <linux/pci.h>
@@ -20,6 +21,8 @@
 #include "pkvm_constants.h"
 
 MODULE_LICENSE("GPL");
+
+DEFINE_STATIC_KEY_FALSE(pkvm_enabled_key);
 
 bool __read_mostly enable_pkvm = false;
 
@@ -65,7 +68,6 @@ struct pkvm_deprivilege_param {
 	struct pkvm_hyp *pkvm;
 	int ret;
 };
-DEFINE_PER_CPU_READ_MOSTLY(bool, pkvm_enabled);
 
 struct pkvm_tlb_range {
 	u64 start_gfn;
@@ -1018,8 +1020,6 @@ static __init int pkvm_host_deprivilege_cpus(struct pkvm_hyp *pkvm)
 static __init int this_cpu_do_finalise_hc(struct pkvm_section *sections, unsigned long size)
 {
 	int ret = kvm_hypercall2(PKVM_HC_INIT_FINALISE, (unsigned long)sections, size);
-	if (!ret)
-		this_cpu_write(pkvm_enabled, true);
 
 	if (ret) {
 		struct pkvm_deprivilege_param p = {
@@ -1455,6 +1455,8 @@ int __init vmx_pkvm_init(void)
 	ret = pkvm_init_finalise();
 	if (ret)
 		goto out;
+
+	static_branch_enable(&pkvm_enabled_key);
 
 	return ret;
 
