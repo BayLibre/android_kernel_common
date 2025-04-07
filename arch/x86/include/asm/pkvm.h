@@ -34,6 +34,10 @@
 
 #ifndef __PKVM_HYP__
 extern bool __read_mostly enable_pkvm;	/* kernel command-line flag */
+
+extern struct static_key_false pkvm_ia_enabled_key;
+
+#define pkvm_ia_enabled() (bool)static_branch_likely(&pkvm_ia_enabled_key)
 #endif
 
 DECLARE_PER_CPU_READ_MOSTLY(bool, pkvm_enabled);
@@ -139,6 +143,11 @@ static inline void pkvm_update_iommu_virtual_caps(u64 *cap, u64 *ecap)
 		 */
 		*ecap &= ~(1UL << 2);
 	}
+}
+#else
+static inline bool pkvm_ia_enabled(void)
+{
+	return false;
 }
 #endif
 
