@@ -417,24 +417,31 @@ static int vm_module_tags_populate(void)
 				 (vm_module_tags->nr_pages << PAGE_SHIFT);
 	unsigned long new_end = module_tags.start_addr + module_tags.size;
 
+	struct page **next_page;
+	unsigned long nr;
 	if (phys_end < new_end) {
-		struct page **next_page = vm_module_tags->pages + vm_module_tags->nr_pages;
+		next_page = vm_module_tags->pages + vm_module_tags->nr_pages;
 		unsigned long old_shadow_end = ALIGN(phys_end, MODULE_ALIGN);
 		unsigned long new_shadow_end = ALIGN(new_end, MODULE_ALIGN);
-		unsigned long more_pages;
-		unsigned long nr;
+		unsigned long more_pages = more_pages = ALIGN(new_end - phys_end, PAGE_SIZE) >> PAGE_SHIFT;
+		nr = 0;
 
-		more_pages = ALIGN(new_end - phys_end, PAGE_SIZE) >> PAGE_SHIFT;
-		nr = alloc_pages_bulk_array_node(GFP_KERNEL | __GFP_NOWARN,
-						 NUMA_NO_NODE, more_pages, next_page);
-		if (nr < more_pages ||
-		    vmap_pages_range(phys_end, phys_end + (nr << PAGE_SHIFT), PAGE_KERNEL,
-				     next_page, PAGE_SHIFT) < 0) {
-			/* Clean up and error out */
-			for (int i = 0; i < nr; i++)
-				__free_page(next_page[i]);
-			return -ENOMEM;
+		/*
+		 * Bulk allocation is not guaranteed to succeed for the entire number
+		 * of requested pages, and may return fewer.
+		 */
+		while (nr < more_pages) {
+			unsigned long bulk_pages =
+				alloc_pages_bulk_array_node(GFP_KERNEL | __GFP_NOWARN, NUMA_NO_NODE,
+							    more_pages - nr, next_page + nr);
+			if (unlikely(!bulk_pages))
+				goto free_pages;
+			nr += bulk_pages;
 		}
+
+		if (vmap_pages_range(phys_end, phys_end + (nr << PAGE_SHIFT), PAGE_KERNEL,
+				     next_page, PAGE_SHIFT) < 0)
+			goto free_pages;
 
 		vm_module_tags->nr_pages += nr;
 
@@ -460,6 +467,11 @@ static int vm_module_tags_populate(void)
 				KASAN_VMALLOC_PROT_NORMAL);
 
 	return 0;
+
+free_pages:
+	for (int i = 0; i < nr; i++)
+		__free_page(next_page[i]);
+	return -ENOMEM;
 }
 
 static void *reserve_module_tags(struct module *mod, unsigned long size,
