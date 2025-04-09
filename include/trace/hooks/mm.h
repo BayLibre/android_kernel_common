@@ -247,6 +247,12 @@ DECLARE_HOOK(android_vh_filemap_fault_end,
 DECLARE_HOOK(android_vh_free_unref_folios_to_pcp_bypass,
 	TP_PROTO(struct folio_batch *folios, bool *bypass),
 	TP_ARGS(folios, bypass));
+<<<<<<< PATCH SET (574452a127bf6f4aab0ccde682738d352d78f330 ANDROID: mm: Add vendor hook in swapon())
+DECLARE_HOOK(android_vh_adjust_swap_info_flags,
+	TP_PROTO(unsigned long *flags),
+	TP_ARGS(flags));
+||||||| BASE      (ef7d4a521daad57d990bcd5ba62987af5c054aac ANDROID: GKI: Update symbol list for honor)
+=======
 DECLARE_HOOK(android_vh_drain_all_pages_bypass,
 	TP_PROTO(gfp_t gfp_mask, unsigned int order, unsigned long alloc_flags,
 		int migratetype, unsigned long did_some_progress,
@@ -264,6 +270,7 @@ DECLARE_HOOK(android_vh_customize_alloc_gfp,
 DECLARE_HOOK(android_vh_init_adjust_zone_wmark,
 	TP_PROTO(struct zone *zone, u64 interval),
 	TP_ARGS(zone, interval));
+>>>>>>> BASE      (32d3f32fbc53db0e7d79a02923d9e2c455dbfb8d ANDROID: GKI: Update symbols to symbol list)
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */

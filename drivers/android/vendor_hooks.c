@@ -327,7 +327,12 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_binder_trans);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resume_begin);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resume_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_early_resume_begin);
+<<<<<<< PATCH SET (574452a127bf6f4aab0ccde682738d352d78f330 ANDROID: mm: Add vendor hook in swapon())
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_adjust_swap_info_flags);
+||||||| BASE      (ef7d4a521daad57d990bcd5ba62987af5c054aac ANDROID: GKI: Update symbol list for honor)
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_vmscan_kswapd_done);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_customize_alloc_gfp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fsnotify_open);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_init_adjust_zone_wmark);
+>>>>>>> BASE      (32d3f32fbc53db0e7d79a02923d9e2c455dbfb8d ANDROID: GKI: Update symbols to symbol list)
