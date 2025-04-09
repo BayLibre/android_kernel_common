@@ -69,6 +69,17 @@ struct pkvm_deprivilege_param {
 };
 DEFINE_PER_CPU_READ_MOSTLY(bool, pkvm_enabled);
 
+struct pkvm_iommu_driver *iommu_driver = NULL;
+
+int pkvm_iommu_register_driver(struct pkvm_iommu_driver *kern_ops)
+{
+	if (WARN_ON(!kern_ops))
+		return -EINVAL;
+
+	return cmpxchg_release(&iommu_driver, NULL, kern_ops) ? -EBUSY : 0;
+}
+EXPORT_SYMBOL(pkvm_iommu_register_driver);
+
 struct pkvm_tlb_range {
 	u64 start_gfn;
 	u64 pages;
@@ -1086,7 +1097,6 @@ static __init int pkvm_init_finalise(void)
 					       NULL, true);
 	}
 
-	ret = kvm_hypercall0(PKVM_HC_ACTIVATE_IOMMU);
 out:
 	put_cpu();
 
@@ -1415,6 +1425,14 @@ static int __init pkvm_firmware_rmem_clear(void)
 	return 0;
 }
 
+static int pkvm_iommu_driver_init(void)
+{
+	if (!smp_load_acquire(&iommu_driver))
+		return 0;
+
+	return iommu_driver->init_driver();
+}
+
 int __init pkvm_init(void)
 {
 	int ret = 0, cpu;
@@ -1424,13 +1442,13 @@ int __init pkvm_init(void)
 		return ret;
 
 	if (!enable_pkvm) {
-		pkvm_firmware_rmem_clear();
-		return 0;
+		goto out;
 	}
 
 	if (pkvm_sym(pkvm_hyp)) {
 		pr_err("pkvm hypervisor is running!");
-		return -EBUSY;
+		ret = -EBUSY;
+		goto out;
 	}
 
 	if (!hyp_mem_base) {
@@ -1487,14 +1505,23 @@ int __init pkvm_init(void)
 
 	ret = pkvm_init_finalise();
 	if (ret)
-		pkvm_firmware_rmem_clear();
+		goto fw_rmem_clear;
 
 	static_branch_enable(&pkvm_ia_enabled_key);
 
+fw_rmem_clear:
+	ret = pkvm_iommu_driver_init();
+	pkvm_firmware_rmem_clear();
 	return ret;
 
 out:
 	pkvm_firmware_rmem_clear();
 	pkvm_sym(pkvm_hyp) = NULL;
+
+	/*
+	 * We need to initialize iommu driver on failure as well
+	 * so as to let the host use iommu.
+	 */
+	pkvm_iommu_driver_init();
 	return ret;
 }
