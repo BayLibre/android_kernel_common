@@ -96,6 +96,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a7b4e07_cf43d8e6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 34
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-04-09T17:45:22Z",
+      "side": 1,
+      "message": "Thanks for the suggestion, this simplified the logic quite a lot !",
+      "parentUuid": "e69c4c50_d3ff7a87",
+      "range": {
+        "startLine": 482,
+        "startChar": 1,
+        "endLine": 482,
+        "endChar": 30
+      },
+      "revId": "2cd5e4f06284569331814bb515e8d84062678e90",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e85ca32a_573df1cc",
@@ -181,6 +205,30 @@
       "side": 1,
       "message": "Because that will rely on having the `total_pg_count` sanitized from a different path, from the caller and with this I am doing it locally in this function. I realized that I need to drop one of the checks.",
       "parentUuid": "e85ca32a_573df1cc",
+      "range": {
+        "startLine": 533,
+        "startChar": 3,
+        "endLine": 533,
+        "endChar": 76
+      },
+      "revId": "2cd5e4f06284569331814bb515e8d84062678e90",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c21ce982_7b9dcd8c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 34
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-04-09T17:45:22Z",
+      "side": 1,
+      "message": "I kept this for the moment, let me know if you are ok with it. Feel free to re-open this if needed.",
+      "parentUuid": "cca05505_ef3a32ef",
       "range": {
         "startLine": 533,
         "startChar": 3,
