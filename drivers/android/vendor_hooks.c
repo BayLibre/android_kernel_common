@@ -282,3 +282,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_fault_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_signal_whether_wake);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_check);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_freeze_whether_wake);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_adjust_swap_info_flags);
