@@ -66,6 +66,16 @@ struct pkvm_deprivilege_param {
 };
 DEFINE_PER_CPU_READ_MOSTLY(bool, pkvm_enabled);
 
+static const struct pkvm_iommu_driver *iommu_driver = NULL;
+
+int pkvm_iommu_register_driver(const struct pkvm_iommu_driver *kern_ops)
+{
+	if (WARN_ON(!kern_ops))
+		return -EINVAL;
+
+	return cmpxchg_release(&iommu_driver, NULL, kern_ops) ? -EBUSY : 0;
+}
+
 struct pkvm_tlb_range {
 	u64 start_gfn;
 	u64 pages;
@@ -1135,7 +1145,6 @@ static __init int pkvm_init_finalise(void)
 		}
 	}
 
-	ret = kvm_hypercall0(PKVM_HC_ACTIVATE_IOMMU);
 out:
 	put_cpu();
 
@@ -1376,7 +1385,23 @@ static void __init setup_pkvm_syms(void)
 	pkvm_sym(x86_pred_cmd) = x86_pred_cmd;
 }
 
-int __init vmx_pkvm_init(void)
+static int __init pkvm_iommu_driver_prepare(void)
+{
+	if (!smp_load_acquire(&iommu_driver))
+		return -ENOENT;
+
+	return iommu_driver->prepare_driver();
+}
+
+static int __init pkvm_iommu_driver_init(void)
+{
+	if (!smp_load_acquire(&iommu_driver))
+		return -ENOENT;
+
+	return iommu_driver->init_driver();
+}
+
+static int __init __vmx_pkvm_init(void)
 {
 	int ret = 0, cpu;
 
@@ -1461,4 +1486,46 @@ out:
 	pkvm_sym(pkvm_hyp) = NULL;
 	/* TODO: Revisit if the memory resource may be reused here */
 	return ret;
+}
+
+int __init vmx_pkvm_init(void)
+{
+	int vmx_ret, iommu_ret;
+
+	/*
+	 * IOMMU initialization is spread across multiple places
+	 * in the host. pkvm expects the drhd structures to be filled
+	 * before pkvm initialization. So we let the host initialize
+	 * those structure before continuing with pkvm initialization.
+	 */
+	iommu_ret = pkvm_iommu_driver_prepare();
+	if (iommu_ret)
+		return iommu_ret;
+
+	vmx_ret = __vmx_pkvm_init();
+
+	/*
+	 * Initialize iommu regardless of whether pkvm initialization
+	 * succeeded or not.
+	 */
+	iommu_ret = pkvm_iommu_driver_init();
+
+	/*
+	 * If iommu initialization fails, pkvm is not able to provide its
+	 * security guarentees. So disable pkvm and proceed.
+	 */
+	if (iommu_ret && !vmx_ret) {
+		pr_warn("IOMMU initialization failed. Disabling pkvm!\n");
+		pkvm_firmware_rmem_clear();
+		/*
+		 * TODO: make this work!
+		 *      This doesn't work mainly because reprivilege hypercall
+		 *      is disabled after finalize. But there are other issues
+		 *      with iommu host state as well which we need to debug.
+		 */
+		// static_branch_disable(&pkvm_enabled_key);
+		// pkvm_host_reprivilege_cpus(pkvm);
+	}
+
+	return vmx_ret ? vmx_ret : iommu_ret;
 }

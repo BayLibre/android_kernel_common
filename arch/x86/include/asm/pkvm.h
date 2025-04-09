@@ -15,10 +15,9 @@
 #define PKVM_HC_INIT_FINALISE		1
 #define PKVM_HC_FINALIZE_SHADOW_VM	4
 #define PKVM_HC_MMIO_ACCESS		7
-#define PKVM_HC_ACTIVATE_IOMMU		8
-#define PKVM_HC_TLB_REMOTE_FLUSH_RANGE	9
-#define PKVM_HC_SET_MMIO_VE		10
-#define PKVM_HC_ADD_PTDEV		11
+#define PKVM_HC_TLB_REMOTE_FLUSH_RANGE	8
+#define PKVM_HC_SET_MMIO_VE		9
+#define PKVM_HC_ADD_PTDEV		10
 
 #define PKVM_HC_DUMP_DMAR_TR_STRUCT	20
 #define PKVM_HC_DUMP_DOMAIN_PGT		21
@@ -32,6 +31,11 @@
 #define PKVM_MAX_PASID_BITS	15
 #define PKVM_MAX_PASID		(1 << PKVM_MAX_PASID_BITS)
 
+struct pkvm_iommu_driver {
+	int (*prepare_driver)(void);
+	int (*init_driver)(void);
+};
+
 #ifdef CONFIG_PKVM_INTEL
 
 #ifndef __PKVM_HYP__
@@ -39,6 +43,8 @@ extern bool __read_mostly enable_pkvm;	/* kernel command-line flag */
 #endif
 
 DECLARE_PER_CPU_READ_MOSTLY(bool, pkvm_enabled);
+
+int pkvm_iommu_register_driver(const struct pkvm_iommu_driver *kern_ops);
 
 static inline long pkvm_dump_dmar_translation_struct(void)
 {
@@ -156,6 +162,13 @@ static inline void pkvm_update_iommu_virtual_caps(u64 *cap, u64 *ecap)
 		 */
 		*ecap &= ~(1UL << 2);
 	}
+}
+#else
+#define enable_pkvm false
+
+static inline int pkvm_iommu_register_driver(const struct pkvm_iommu_driver *kern_ops)
+{
+	return -EPERM;
 }
 #endif
 
