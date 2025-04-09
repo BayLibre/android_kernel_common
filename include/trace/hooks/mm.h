@@ -399,6 +399,9 @@ DECLARE_HOOK(android_vh_customize_alloc_gfp,
 DECLARE_HOOK(android_vh_mm_kcompactd_cpu_online,
 	TP_PROTO(int cpu),
 	TP_ARGS(cpu));
+DECLARE_HOOK(android_vh_adjust_swap_info_flags,
+	TP_PROTO(unsigned long *flags),
+	TP_ARGS(flags));
 
 #endif /* _TRACE_HOOK_MM_H */
 
