@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d912b26c_a7c3ac43",
+        "filename": "kernel/sched/ext.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5428,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2025-04-10T16:36:38Z",
+      "side": 1,
+      "message": "Can we have `TAINT_GKI_UNSUPPORTED` as a new taint in `panic.h` ? Otherwise I am sure we will see people confused when bug reports report the kernel is tainted due to an OOT module as almost all GKI kernels will run with OOT modules.\n\n@jstultz@google.com, wdyt?",
+      "range": {
+        "startLine": 5428,
+        "startChar": 11,
+        "endLine": 5428,
+        "endChar": 27
+      },
+      "revId": "fc232271f6d8b1364f6f6554b200fe3a07b3f338",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
