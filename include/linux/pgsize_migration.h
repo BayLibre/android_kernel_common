@@ -28,8 +28,6 @@ extern void madvise_vma_pad_pages(struct vm_area_struct *vma,
 
 extern struct vm_area_struct *get_pad_vma(struct vm_area_struct *vma);
 
-extern struct vm_area_struct *get_data_vma(struct vm_area_struct *vma);
-
 extern void show_map_pad_vma(struct vm_area_struct *vma,
 			     struct vm_area_struct *pad,
 			     struct seq_file *m, void *func, bool smaps);
