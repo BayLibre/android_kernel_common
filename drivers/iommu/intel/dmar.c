@@ -916,6 +916,47 @@ dmar_validate_one_drhd(struct acpi_dmar_header *entry, void *arg)
 	return 0;
 }
 
+static inline void __setup_iommu_callback(void)
+{
+	x86_init.iommu.iommu_init = intel_iommu_init;
+	x86_platform.iommu_shutdown = intel_iommu_shutdown;
+}
+
+#ifdef CONFIG_PKVM_INTEL
+struct pkvm_iommu_driver kern_ops = {
+	.prepare_driver = dmar_table_init,
+	.init_driver = intel_iommu_init,
+	.fini_driver = intel_iommu_shutdown,
+};
+
+static int intel_iommu_init_nop(void) { return 0; }
+
+static inline void __setup_pkvm_iommu_callback(void)
+{
+	if (enable_pkvm) {
+		pkvm_iommu_register_driver(&kern_ops);
+		/*
+		 * iommu_init happens during pkvm initialization and hence
+		 * this should be a nop here.
+		 */
+		x86_init.iommu.iommu_init = intel_iommu_init_nop;
+		/*
+		 * pkvm won't get a chance to shutdown iommu cleanly
+		 * on reboot as we don't reprivilege at reboot. So,
+		 * let the host do it in its normal shutdown flow.
+		 */
+		x86_platform.iommu_shutdown = intel_iommu_shutdown;
+	} else {
+		__setup_iommu_callback();
+	}
+}
+#else
+static inline void __setup_pkvm_iommu_callback(void)
+{
+	__setup_iommu_callback();
+}
+#endif
+
 void __init detect_intel_iommu(void)
 {
 	int ret;
@@ -937,11 +978,8 @@ void __init detect_intel_iommu(void)
 	}
 
 #ifdef CONFIG_X86
-	if (!ret) {
-		x86_init.iommu.iommu_init = intel_iommu_init;
-		x86_platform.iommu_shutdown = intel_iommu_shutdown;
-	}
-
+	if (!ret)
+		__setup_pkvm_iommu_callback();
 #endif
 
 	if (dmar_tbl) {
