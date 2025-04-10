@@ -916,6 +916,15 @@ dmar_validate_one_drhd(struct acpi_dmar_header *entry, void *arg)
 	return 0;
 }
 
+#ifdef CONFIG_PKVM_INTEL
+struct pkvm_iommu_driver kern_ops = {
+	.prepare_driver = dmar_table_init,
+	.init_driver = intel_iommu_init,
+};
+
+static int intel_iommu_init_nop(void) { return 0; }
+#endif
+
 void __init detect_intel_iommu(void)
 {
 	int ret;
@@ -938,8 +947,19 @@ void __init detect_intel_iommu(void)
 
 #ifdef CONFIG_X86
 	if (!ret) {
+#ifdef CONFIG_PKVM_INTEL
+		pkvm_iommu_register_driver(&kern_ops);
+		x86_init.iommu.iommu_init = intel_iommu_init_nop;
+		/*
+		 * pkvm won't get a chance to shutdown iommu cleanly
+		 * on reboot as we don't reprivilege at reboot. So,
+		 * let the host do it in its normal shutdown flow.
+		 */
+		x86_platform.iommu_shutdown = intel_iommu_shutdown;
+#else
 		x86_init.iommu.iommu_init = intel_iommu_init;
 		x86_platform.iommu_shutdown = intel_iommu_shutdown;
+#endif
 	}
 
 #endif
