@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "4be11258_64c7bd50",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2025-04-10T16:30:57Z",
+      "side": 1,
+      "message": "Cherry pick is not clean. Checked against UPSTREAM.\nUPSTREAM commit: [googlesource](https://android.googlesource.com/kernel/common/+/6b839b3b76cf17296ebd4a893841f32cae08229c) [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003d6b839b3b76cf17296ebd4a893841f32cae08229c).\n\n```\n    - ## fs/binfmt_elf.c ##\n    -@@ fs/binfmt_elf.c: static void free_note_info(struct elf_note_info *info)\n    - \t\tthreads \u003d t-\u003enext;\n    - \t\tWARN_ON(t-\u003enotes[0].data \u0026\u0026 t-\u003enotes[0].data !\u003d \u0026t-\u003eprstatus);\n    - \t\tfor (i \u003d 1; i \u003c info-\u003ethread_notes; ++i)\n    --\t\t\tkfree(t-\u003enotes[i].data);\n    -+\t\t\tkvfree(t-\u003enotes[i].data);\n    - \t\tkfree(t);\n    - \t}\n    - \tkfree(info-\u003epsinfo.data);\n    +    Signed-off-by: Seiya Wang \u003cseiya.wang@mediatek.com\u003e\n    +    (cherry picked from commit 6b839b3b76cf17296ebd4a893841f32cae08229c\n    +     https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master)\n    +    Change-Id: I42c9bcb78bde782b0b52432086c6b3e9e95ab6d3\n     \n      ## kernel/regset.c ##\n     @@ kernel/regset.c: static int __regset_get(struct task_struct *target,\n```\n\nShould this rather be `BACKPORT` ?\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "e73fe6b674a814981670ba8275b56a1eca617db7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "9d7ecdb6_0a433d3a",
