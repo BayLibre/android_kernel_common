@@ -1898,12 +1898,20 @@ int __pkvm_host_use_dma(phys_addr_t phys_addr, size_t size)
 		prot = pkvm_mkstate(PKVM_HOST_MMIO_PROT, PKVM_PAGE_TAINTED);
 		ret = host_stage2_idmap_locked(phys_addr, size, prot, false);
 	} else {
-		ret = ___host_check_page_state_range(phys_addr, size, PKVM_PAGE_OWNED, reg, false);
-		if (ret)
-			goto out_ret;
+		for (i = 0; i < nr_pages; i++) {
+			enum pkvm_page_state state;
+			phys_addr_t this_addr = phys_addr + i * PAGE_SIZE;
 
-		for (i = 0; i < nr_pages; i++)
-			__pkvm_host_use_dma_page(phys_addr + i * PAGE_SIZE);
+			state = hyp_phys_to_page(this_addr)->host_state;
+			if (state != PKVM_PAGE_OWNED) {
+				ret = -EPERM;
+				break;
+			}
+			__pkvm_host_use_dma_page(this_addr);
+		}
+		while (i--) {
+			__pkvm_host_unuse_dma_page(phys_addr + i * PAGE_SIZE);
+		}
 	}
 
 out_ret:
