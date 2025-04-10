@@ -2395,22 +2395,16 @@ free_iommu:
 	return ret;
 }
 
+/*
+ * Determine if any DMARs can be ignored.
+ * Do not ignore any dmars if pkvm is enabled so as to
+ * guarentee memory protection from devices.
+ */
 static void __init init_no_remapping_devices(void)
 {
 	struct dmar_drhd_unit *drhd;
 	struct device *dev;
 	int i;
-
-	for_each_drhd_unit(drhd) {
-		if (!drhd->include_all) {
-			for_each_active_dev_scope(drhd->devices,
-						  drhd->devices_cnt, i, dev)
-				break;
-			/* ignore DMAR unit if no devices exist */
-			if (i == drhd->devices_cnt)
-				drhd->ignored = 1;
-		}
-	}
 
 	for_each_active_drhd_unit(drhd) {
 		if (drhd->include_all)
@@ -2426,8 +2420,26 @@ static void __init init_no_remapping_devices(void)
 		/* This IOMMU has *only* gfx devices. Either bypass it or
 		   set the gfx_mapped flag, as appropriate */
 		drhd->gfx_dedicated = 1;
-		if (disable_igfx_iommu)
-			drhd->ignored = 1;
+		if (disable_igfx_iommu) {
+			if (enable_pkvm)
+				pr_warn("pkvm enabled, Ignoring disable_igfx_iommu!\n");
+			else
+				drhd->ignored = 1;
+		}
+	}
+
+	if (enable_pkvm)
+		return;
+
+	for_each_drhd_unit(drhd) {
+		if (!drhd->include_all) {
+			for_each_active_dev_scope(drhd->devices,
+						  drhd->devices_cnt, i, dev)
+				break;
+			/* ignore DMAR unit if no devices exist */
+			if (i == drhd->devices_cnt)
+				drhd->ignored = 1;
+		}
 	}
 }
 
