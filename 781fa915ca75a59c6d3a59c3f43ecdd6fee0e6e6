@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bbdb23b_80e08073",
+        "filename": "rust/Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-04-11T11:55:55Z",
+      "side": 1,
+      "message": "In upstream, the order of these two lines is reversed.\n```\n$(obj)/uapi.o: private rustc_target_flags \u003d --extern ffi\n$(obj)/uapi.o: private skip_gendwarfksyms \u003d 1\n```",
+      "revId": "781fa915ca75a59c6d3a59c3f43ecdd6fee0e6e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96c17cbe_3e440be3",
+        "filename": "rust/kernel/task.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-04-11T11:55:55Z",
+      "side": 1,
+      "message": "This imports some items twice. I suggest this resolution, which matches upstream:\n```suggestion\nuse crate::{\n    bindings,\n    ffi::{c_int, c_long, c_uint},\n    mm::MmWithUser,\n    types::{NotThreadSafe, Opaque},\n};\nuse core::{\n    cmp::{Eq, PartialEq},\n    ops::Deref,\n    ptr,\n};\n```",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 30
+      },
+      "revId": "781fa915ca75a59c6d3a59c3f43ecdd6fee0e6e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
