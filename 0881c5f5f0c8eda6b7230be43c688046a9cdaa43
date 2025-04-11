@@ -40,6 +40,30 @@
       ],
       "revId": "0881c5f5f0c8eda6b7230be43c688046a9cdaa43",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1c820f4_4e2fe722",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 38
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-04-11T13:30:48Z",
+      "side": 1,
+      "message": "I wanted to keep it as a further improvement because the patch already gives a lot to get a grasp on.\n\nStoring it in an array is useful because we would overcome the small individual allocations, but this is a detail IMO and we can probably improve the allocator to handle small objects differently. It also adds more state tracking to count how many are used from the array.\n\neg. the size of a `struct ffa_translation` \u003d 32 bytes and the hyp metadata for the object is sizeof(struct chunk_hdr) \u003d 28. (not a suggestion as part of this patch but) For small objects we can create a separate hyp pool with a different header structure where we can save up to 10 bytes of metadata.",
+      "parentUuid": "0409600c_99e64c96",
+      "range": {
+        "startLine": 422,
+        "startChar": 1,
+        "endLine": 422,
+        "endChar": 72
+      },
+      "revId": "0881c5f5f0c8eda6b7230be43c688046a9cdaa43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
