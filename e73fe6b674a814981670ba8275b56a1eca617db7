@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "186d5866_bbd9f060",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083383
+      },
+      "writtenOn": "2025-04-11T02:05:39Z",
+      "side": 1,
+      "message": "I missed one file in the patch before. Now it should be fine. Thank you.",
+      "parentUuid": "83ebc8a8_6f068ff0",
+      "revId": "e73fe6b674a814981670ba8275b56a1eca617db7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9d7ecdb6_0a433d3a",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -49,6 +67,24 @@
       "writtenOn": "2025-04-10T15:03:59Z",
       "side": 1,
       "message": "I don\u0027t have +2 (so you\u0027ll need someone else to approve), but LGTM. It\u0027s probably also wise to take commit 2813926261e4 (\"arm64/sve: Lower the maximum allocation for the SVE ptrace regset\").\n\nIMHO both CLs could also be picked to 6.1. You can see both were picked to ChromeOS back in the day in:\n* [FROMGIT: regset: use kvzalloc() for regset_get_alloc() (5493868)](https://crrev.com/c/5493868)\n* [FROMGIT: arm64/sve: Lower the maximum allocation for the SVE ptrace regset (5301978)](https://crrev.com/c/5301978)",
+      "revId": "e73fe6b674a814981670ba8275b56a1eca617db7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04d13e2a_9a65638e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083383
+      },
+      "writtenOn": "2025-04-11T02:05:39Z",
+      "side": 1,
+      "message": "The patch\nFROMGIT: arm64/sve: Lower the maximum allocation for the SVE ptrace regset (5301978)\nhas existed in android15-6.6 branch so no need to pick it again. Thanks.",
+      "parentUuid": "9d7ecdb6_0a433d3a",
       "revId": "e73fe6b674a814981670ba8275b56a1eca617db7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
