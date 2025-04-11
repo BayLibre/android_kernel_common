@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0409600c_99e64c96",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 38
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-04-11T12:45:11Z",
+      "side": 1,
+      "message": "What about the idea of storing these in an array instead?",
+      "range": {
+        "startLine": 422,
+        "startChar": 1,
+        "endLine": 422,
+        "endChar": 72
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b6bf4fda_435ba2a5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 420,
+                "startChar": 0,
+                "endLine": 420,
+                "endChar": 0
+              },
+              "replacement": "/*\n * TODO: Consider using a fixed-size array instead of a linked list to\n * reduce the number of allocations.\n */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0881c5f5f0c8eda6b7230be43c688046a9cdaa43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
