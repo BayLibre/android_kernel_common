@@ -87,6 +87,57 @@
       "message": "Pending performance/memory review, we want these ready to merge and use in microdroid EOD.",
       "revId": "b5180dabc96c53563508b8e155e18faeedfc8745",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b7370a9_85e2dce7",
+        "filename": "drivers/virtio/virtio_balloon.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 894,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-04-11T21:40:32Z",
+      "side": 1,
+      "message": "nit: kstrtobool() is the standard function to parse yes/no toggle values.",
+      "range": {
+        "startLine": 894,
+        "startChar": 1,
+        "endLine": 894,
+        "endChar": 43
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "814e6c03_3a800a96",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/virtio/virtio_balloon.c",
+              "range": {
+                "startLine": 21,
+                "startChar": 0,
+                "endLine": 21,
+                "endChar": 0
+              },
+              "replacement": "#include \u003clinux/string.h\u003e\n"
+            },
+            {
+              "path": "drivers/virtio/virtio_balloon.c",
+              "range": {
+                "startLine": 894,
+                "startChar": 0,
+                "endLine": 895,
+                "endChar": 0
+              },
+              "replacement": "\tint ret;\n\n\tret \u003d kstrtobool(buf, \u0026vb-\u003ebail_on_out_of_puff);\n\tif (ret)\n\t\treturn -EINVAL;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b5180dabc96c53563508b8e155e18faeedfc8745",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
