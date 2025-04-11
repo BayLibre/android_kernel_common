@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19bfba3e_781f64b0",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 751,
+      "author": {
+        "id": 1078064
+      },
+      "writtenOn": "2025-04-11T08:27:20Z",
+      "side": 1,
+      "message": "Done on both accounts:\n(1) added a target-wide time counter.\n(2) using microseconds and ktime_get_ns.",
+      "parentUuid": "d97663cf_b416ea64",
+      "range": {
+        "startLine": 747,
+        "startChar": 0,
+        "endLine": 751,
+        "endChar": 2
+      },
+      "revId": "b642182bf68bda780866e56413c866d82cf08b5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e60ced7_897373a4",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e1b27de_5eab0b28",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1371,
+      "author": {
+        "id": 1078064
+      },
+      "writtenOn": "2025-04-11T08:27:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e60ced7_897373a4",
+      "range": {
+        "startLine": 1371,
+        "startChar": 0,
+        "endLine": 1371,
+        "endChar": 51
+      },
+      "revId": "b642182bf68bda780866e56413c866d82cf08b5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d70c6941_40885ee8",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-03-04T18:24:40Z",
       "side": 1,
       "message": "I don\u0027t see a reason to support two different implementations of doing the work in softirq context.  Inline verification should replace what was previously the BH workqueue.  Inline verification with limits should just be better, so there should be no need to keep the old implementation, which has no known users anyway.  (Just a reminder, BH workqueue is a convenience interface to softirq; it is not the same as a regular workqueue.)",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 52
+      },
+      "revId": "b642182bf68bda780866e56413c866d82cf08b5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d220f6e0_3bd8a79c",
+        "filename": "drivers/md/dm-verity.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1078064
+      },
+      "writtenOn": "2025-04-11T08:27:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d70c6941_40885ee8",
       "range": {
         "startLine": 70,
         "startChar": 0,
