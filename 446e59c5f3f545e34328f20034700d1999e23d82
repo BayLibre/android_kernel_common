@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8d61cf8_7bab7664",
+        "filename": "rust/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-04-11T12:48:31Z",
+      "side": 1,
+      "message": "```suggestion\n$(obj)/ffi.o: private skip_gendwarfksyms \u003d 1\n$(obj)/ffi.o: $(src)/ffi.rs $(obj)/compiler_builtins.o FORCE\n```",
+      "revId": "446e59c5f3f545e34328f20034700d1999e23d82",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
