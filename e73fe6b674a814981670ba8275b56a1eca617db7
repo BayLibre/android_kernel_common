@@ -56,6 +56,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c46b8a3f_7f60b4df",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2025-04-11T02:30:46Z",
+      "side": 1,
+      "message": "Indeed. `git patch-id` now agrees that they are equivalent:\n```\n$ git show FETCH_HEAD | git patch-id\n6ddba18ab26bf214b7ff40a27e7ae5ca5c5c0312 d2e285c51dacce9bb602905b860ec47a01c50c04\n$ git show 6b839b3b76cf17296ebd4a893841f32cae08229c | git patch-id\n6ddba18ab26bf214b7ff40a27e7ae5ca5c5c0312 6b839b3b76cf17296ebd4a893841f32cae08229c\n```",
+      "parentUuid": "186d5866_bbd9f060",
+      "revId": "e73fe6b674a814981670ba8275b56a1eca617db7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9d7ecdb6_0a433d3a",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -85,6 +103,24 @@
       "side": 1,
       "message": "The patch\nFROMGIT: arm64/sve: Lower the maximum allocation for the SVE ptrace regset (5301978)\nhas existed in android15-6.6 branch so no need to pick it again. Thanks.",
       "parentUuid": "9d7ecdb6_0a433d3a",
+      "revId": "e73fe6b674a814981670ba8275b56a1eca617db7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6aba78ed_e7dfdd39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2025-04-11T02:30:46Z",
+      "side": 1,
+      "message": "Ah, indeed. It came in through stable. I guess even with that the order 5 allocation still causes problems just like I predicted in this commit message. Maybe this patch should go to stable@ too then. ;-)",
+      "parentUuid": "04d13e2a_9a65638e",
       "revId": "e73fe6b674a814981670ba8275b56a1eca617db7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
