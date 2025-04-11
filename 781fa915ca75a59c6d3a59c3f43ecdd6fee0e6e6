@@ -39,6 +39,72 @@
       },
       "revId": "781fa915ca75a59c6d3a59c3f43ecdd6fee0e6e6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65c12b68_d0b16e41",
+        "filename": "rust/kernel/task.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-04-11T12:06:39Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "96c17cbe_3e440be3",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 30
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "0cb18efa_3cdba495",
+          "description": "User suggestion",
+          "replacements": [
+            {
+              "path": "rust/kernel/task.rs",
+              "range": {
+                "startLine": 7,
+                "startChar": 0,
+                "endLine": 19,
+                "endChar": 30
+              },
+              "replacement": "use crate::{\n    bindings,\n    ffi::{c_int, c_long, c_uint},\n    mm::MmWithUser,\n    types::{NotThreadSafe, Opaque},\n};\nuse core::{\n    cmp::{Eq, PartialEq},\n    ops::Deref,\n    ptr,\n};"
+            }
+          ]
+        }
+      ],
+      "revId": "781fa915ca75a59c6d3a59c3f43ecdd6fee0e6e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69bf9b96_f050d8b4",
+        "filename": "rust/kernel/task.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-04-11T12:06:39Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "96c17cbe_3e440be3",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 30
+      },
+      "revId": "781fa915ca75a59c6d3a59c3f43ecdd6fee0e6e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
