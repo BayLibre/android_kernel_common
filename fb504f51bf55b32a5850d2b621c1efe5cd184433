@@ -22,6 +22,29 @@
       },
       "revId": "fb504f51bf55b32a5850d2b621c1efe5cd184433",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "412050f8_017d4928",
+        "filename": "drivers/usb/host/xhci.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1927,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-04-12T17:47:35Z",
+      "side": 1,
+      "message": "actually the cherry-pick should be clean but the problem seems to be the ordering of these two functions. These should be aligned with upstream, let me fix that.",
+      "range": {
+        "startLine": 1927,
+        "startChar": 5,
+        "endLine": 1927,
+        "endChar": 31
+      },
+      "revId": "fb504f51bf55b32a5850d2b621c1efe5cd184433",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
