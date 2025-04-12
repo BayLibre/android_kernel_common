@@ -10,6 +10,12 @@ pkvm-hyp-y	:= vmx_asm.o vmexit.o memory.o page_alloc.o early_alloc.o pgtable.o m
 		   init_finalise.o ept.o idt.o irq.o nested.o vmx.o vmsr.o mem_protect.o lapic.o \
 		   iommu.o iommu_debug.o ptdev.o iommu_spgt.o io_emulate.o pci.o trace.o
 
+ifdef CONFIG_PKVM_INTEL_PVIOMMU
+pkvm-hyp-y += pv_iommu.o
+else
+pkvm-hyp-y += shadow_iommu.o
+endif
+
 ifndef CONFIG_PKVM_INTEL_DEBUG
 lib-dir		:= lib
 lib2-dir	:= ../../../../../../lib
