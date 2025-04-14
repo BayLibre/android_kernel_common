@@ -1917,8 +1917,14 @@ config RUST
 	depends on !GCC_PLUGINS
 	depends on !RANDSTRUCT
 	depends on !SHADOW_CALL_STACK
+<<<<<<< HEAD   (5e5e14 Merge 6168ec87bf12 ("io_uring: unify io_pin_pages()") into a)
 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
 	select CONSTRUCTORS
+||||||| BASE
+	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+=======
+	depends on !DEBUG_INFO_BTF || (PAHOLE_HAS_LANG_EXCLUDE && !LTO)
+>>>>>>> BRANCH (4b6a8f Linux 6.6.84)
 	help
 	  Enables Rust support in the kernel.
 
