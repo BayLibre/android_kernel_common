@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
   USB Driver for GSM modems
-
+caishijie
   Copyright (C) 2005  Matthias Urlichs <smurf@smurf.noris.de>
 
   Portions copied from the Keyspan driver by Hugh Blemings <hugh@blemings.org>
