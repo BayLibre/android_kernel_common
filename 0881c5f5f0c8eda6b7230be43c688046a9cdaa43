@@ -64,6 +64,30 @@
       },
       "revId": "0881c5f5f0c8eda6b7230be43c688046a9cdaa43",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9aa2694_ed5880c7",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 38
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-04-14T08:32:35Z",
+      "side": 1,
+      "message": "Happy to keep this a separate optimisation patch, but I do think switching to an array instead of a list is the way to go, regardless of any hyp_alloc optimisation we could do. The array-based approach is better because less pointer chasing / better cache locality, you can remove the list_node from struct ffa_translation (16 bytes less), we\u0027d call in the allocator only once so less run-time overhead, etc etc. But yes, let\u0027s keep that separate.",
+      "parentUuid": "d1c820f4_4e2fe722",
+      "range": {
+        "startLine": 422,
+        "startChar": 1,
+        "endLine": 422,
+        "endChar": 72
+      },
+      "revId": "0881c5f5f0c8eda6b7230be43c688046a9cdaa43",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
