@@ -14,9 +14,11 @@
 #define PKVM_HC_KVM_CALL		0
 #define PKVM_HC_INIT_FINALISE		1
 #define PKVM_HC_MMIO_ACCESS		7
-#define PKVM_HC_TLB_REMOTE_FLUSH_RANGE	8
-#define PKVM_HC_SET_MMIO_VE		9
-#define PKVM_HC_ADD_PTDEV		10
+#define PKVM_HC_IOMMU_SET_RTA		8
+#define PKVM_HC_IOMMU_UPDATE_CE		9
+#define PKVM_HC_TLB_REMOTE_FLUSH_RANGE	10
+#define PKVM_HC_SET_MMIO_VE		11
+#define PKVM_HC_ADD_PTDEV		12
 
 /*
  * Internal hypercall to commit the pkvm initialization
@@ -97,6 +99,30 @@ static inline void pkvm_writel(void __iomem *reg, unsigned long reg_phys,
 			       reg_phys + offset, (u64)val);
 	else
 		writel(val, reg + offset);
+}
+
+static inline long pkvm_set_iommu_root(unsigned long reg_phys, unsigned long root_addr)
+{
+	long ret = 0;
+	if (pkvm_enabled())
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_SET_RTA, reg_phys, root_addr);
+
+	return ret;
+}
+
+static inline long pkvm_update_context_entry(unsigned long reg_phys, unsigned long bdf,
+		unsigned long root_entry, unsigned long ce_hi, unsigned long ce_lo)
+{
+	long ret = 0;
+	if (pkvm_enabled()) {
+		/*
+		 * Encode bdf in the high 32 bits of ce_hi as it is not used.
+		 */
+		ce_hi |= (bdf << 32);
+		ret = kvm_hypercall4(PKVM_HC_IOMMU_UPDATE_CE, reg_phys, root_entry, ce_hi, ce_lo);
+	}
+
+	return ret;
 }
 #endif /* __PKVM_HYP__ */
 
