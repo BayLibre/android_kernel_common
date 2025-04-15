@@ -309116,6 +309116,13 @@ function {
   parameter_id: 0x33756485
 }
 function {
+  id: 0x4ea1f8b1
+  return_type_id: 0x18ea6ae3
+  parameter_id: 0x3a8e2ac6
+  parameter_id: 0x6720d32f
+  parameter_id: 0x30650ba6
+}
+function {
   id: 0x4eab8455
   return_type_id: 0x92233392
   parameter_id: 0x6720d32f
@@ -317885,6 +317892,13 @@ function {
   id: 0x9316efbb
   return_type_id: 0x6720d32f
   parameter_id: 0x3a583251
+}
+function {
+  id: 0x93176597
+  return_type_id: 0x6720d32f
+  parameter_id: 0x3e10b518
+  parameter_id: 0x4585663f
+  parameter_id: 0x16f99983
 }
 function {
   id: 0x93177804
@@ -364437,6 +364451,15 @@ elf_symbol {
   full_name: "delayed_work_timer_fn"
 }
 elf_symbol {
+  id: 0xd5335bc5
+  name: "dentry_open"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x7b254059
+  type_id: 0x4ea1f8b1
+  full_name: "dentry_open"
+}
+elf_symbol {
   id: 0x431b7cda
   name: "dentry_path_raw"
   is_defined: true
@@ -383278,6 +383301,15 @@ elf_symbol {
   crc: 0xd3bcf9ed
   type_id: 0x66e18f45
   full_name: "kern_mount"
+}
+elf_symbol {
+  id: 0xc29558ef
+  name: "kern_path"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x42cc150a
+  type_id: 0x93176597
+  full_name: "kern_path"
 }
 elf_symbol {
   id: 0x3b31be3d
@@ -420578,6 +420610,7 @@ interface {
   symbol_id: 0xf666562b
   symbol_id: 0xa5179b7b
   symbol_id: 0xc1583575
+  symbol_id: 0xd5335bc5
   symbol_id: 0x431b7cda
   symbol_id: 0x1ef313dc
   symbol_id: 0x67daf3cf
@@ -422669,6 +422702,7 @@ interface {
   symbol_id: 0x9bfc3a5e
   symbol_id: 0xc750a072
   symbol_id: 0xbccf7511
+  symbol_id: 0xc29558ef
   symbol_id: 0x3b31be3d
   symbol_id: 0x88704b49
   symbol_id: 0x8cd9004f
