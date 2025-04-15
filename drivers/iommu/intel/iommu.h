@@ -584,6 +584,27 @@ struct context_entry {
 	u64 hi;
 };
 
+#define ROOT_ENTRY_NR (VTD_PAGE_SIZE/sizeof(struct root_entry))
+
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+struct pkvm_ce_node {
+	u16 bdf;
+	struct context_entry ce;
+	struct rhash_head node;
+};
+
+struct pkvm_root_entry {
+	/*
+	 * vaddr of context table pages
+	 */
+	void *context_ptr[ROOT_ENTRY_NR];
+	/*
+	 * key = bdf, value = context entry.
+	 */
+	struct rhashtable context_entries;
+};
+#endif
+
 struct iommu_domain_info {
 	struct intel_iommu *iommu;
 	unsigned int refcnt;		/* Refcount of devices per iommu */
@@ -735,6 +756,9 @@ struct intel_iommu {
 	unsigned long	*copied_tables; /* bitmap of copied tables */
 	spinlock_t	lock; /* protect context, domain ids */
 	struct root_entry *root_entry; /* virtual address */
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+	struct pkvm_root_entry *pv_root_entry;
+#endif
 
 	struct iommu_flush flush;
 #endif
@@ -1318,6 +1342,8 @@ static inline void intel_iommu_debugfs_remove_dev(struct device_domain_info *inf
 static inline void intel_iommu_debugfs_create_dev_pasid(struct dev_pasid_info *dev_pasid) {}
 static inline void intel_iommu_debugfs_remove_dev_pasid(struct dev_pasid_info *dev_pasid) {}
 #endif /* CONFIG_INTEL_IOMMU_DEBUGFS */
+
+void iommu_root_entry(struct intel_iommu *iommu, u8 bus, struct root_entry *re);
 
 extern const struct attribute_group *intel_iommu_groups[];
 struct context_entry *iommu_context_addr(struct intel_iommu *iommu, u8 bus,
