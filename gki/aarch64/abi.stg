@@ -431976,6 +431976,15 @@ elf_symbol {
   full_name: "wakeup_source_unregister"
 }
 elf_symbol {
+  id: 0x8595353e
+  name: "wakeup_sources_stats_open"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x901d73fa
+  type_id: 0x9b022eae
+  full_name: "wakeup_sources_stats_open"
+}
+elf_symbol {
   id: 0x36d0e118
   name: "wakeup_sources_walk_next"
   is_defined: true
@@ -440934,6 +440943,7 @@ interface {
   symbol_id: 0x1e98f8ba
   symbol_id: 0x700cd224
   symbol_id: 0xfff68651
+  symbol_id: 0x8595353e
   symbol_id: 0x36d0e118
   symbol_id: 0x96e52cc0
   symbol_id: 0x5942369c
