@@ -364,6 +364,13 @@ void iommu_put_page(void *vaddr);
 void iommu_flush_cache(void *ptep, unsigned int size);
 
 int initialize_iommu_pgt(struct pkvm_iommu *iommu);
+struct pkvm_iommu *find_iommu_by_reg_phys(unsigned long phys);
+int activate_iommu(struct pkvm_iommu *iommu);
+void flush_iotlb(struct pkvm_iommu *iommu, u16 did, u64 addr,
+			unsigned int size_order, u64 type);
+void flush_context_cache(struct pkvm_iommu *iommu, u16 did,
+				u16 sid, u8 fm, u64 type);
+
 #ifdef CONFIG_PKVM_INTEL_PVIOMMU
 static inline int handle_descriptor(struct pkvm_iommu *iommu, struct qi_desc *desc)
 {
