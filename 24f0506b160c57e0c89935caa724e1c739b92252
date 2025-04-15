@@ -22,6 +22,30 @@
       },
       "revId": "24f0506b160c57e0c89935caa724e1c739b92252",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85cc9bd8_ca34a5a4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 3953550
+      },
+      "writtenOn": "2025-04-15T23:05:24Z",
+      "side": 1,
+      "message": "HI Jameson Thies, The TBT devices are enumerated fine with this series.  fatcat:/ # echo 1 \u003e /sys/bus/thunderbolt/devices/ \n0-0/      0-0:1.1/  0-1/      1-0/      domain0/  domain1/ \nfatcat:/ # echo 1 \u003e /sys/bus/thunderbolt/devices/0- \n0-0/      0-0:1.1/  0-1/ \nfatcat:/ # echo 1 \u003e /sys/bus/thunderbolt/devices/0-1/authorized \nfatcat:/ # cat /sys/bus/thunderbolt/devices/0-1/authorized \n1 \nfatcat:/ # cat /sys/bus/thunderbolt/devices/0-1/de \ndevice       device_name \nfatcat:/ # cat /sys/bus/thunderbolt/devices/0-1/device_name \nPro Thunderbolt 4 Dock \nfatcat:/ # cat /sys/bus/thunderbolt/devices/0-1/generation \n4 \nfatcat:/ # cat /sys/bus/thunderbolt/devices/0-1/tx \ntx_lanes  tx_speed \nfatcat:/ # cat /sys/bus/thunderbolt/devices/0-1/tx_speed \n20.0 Gb/s \nfatcat:/ # cat /sys/bus/thunderbolt/devices/0-1/rx \nrx_lanes  rx_speed \nfatcat:/ # cat /sys/bus/thunderbolt/devices/0-1/rx_ \nrx_lanes  rx_speed \nfatcat:/ # cat /sys/bus/thunderbolt/devices/0-1/rx_speed \n20.0 Gb/s \nfatcat:/ # cat /sys/bus/thunderbolt/devices/0-1/vendor \n0x13 \nfatcat:/ # cat /sys/bus/thunderbolt/devices/0-1/vendor_name \nBelkin International",
+      "parentUuid": "ebb641f1_bf1d883d",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 4
+      },
+      "revId": "24f0506b160c57e0c89935caa724e1c739b92252",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
