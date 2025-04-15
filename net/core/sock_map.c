@@ -411,16 +411,25 @@ static void *sock_map_lookup_sys(struct bpf_map *map, void *key)
 static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
 			     struct sock **psk)
 {
-	struct sock *sk;
+	struct sock *sk = NULL;
 	int err = 0;
 	unsigned long flags;
 
 	if (irqs_disabled())
 		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
 
+<<<<<<< HEAD   (34dddb Merge 5.15.179 into android14-5.15-lts)
 	raw_spin_lock_irqsave(&stab->lock, flags);
 	sk = *psk;
 	if (!sk_test || sk_test == sk)
+||||||| BASE
+	raw_spin_lock_bh(&stab->lock);
+	sk = *psk;
+	if (!sk_test || sk_test == sk)
+=======
+	raw_spin_lock_bh(&stab->lock);
+	if (!sk_test || sk_test == *psk)
+>>>>>>> BRANCH (f7347f Linux 5.15.180)
 		sk = xchg(psk, NULL);
 
 	if (likely(sk))

@@ -963,10 +963,17 @@ void wake_up_q(struct wake_q_head *head)
 		struct task_struct *task;
 
 		task = container_of(node, struct task_struct, wake_q);
-		/* Task can safely be re-inserted now: */
 		node = node->next;
+<<<<<<< HEAD   (34dddb Merge 5.15.179 into android14-5.15-lts)
 		task->wake_q.next = NULL;
 		task->wake_q_count = head->count;
+||||||| BASE
+		task->wake_q.next = NULL;
+=======
+		/* pairs with cmpxchg_relaxed() in __wake_q_add() */
+		WRITE_ONCE(task->wake_q.next, NULL);
+		/* Task can safely be re-inserted now. */
+>>>>>>> BRANCH (f7347f Linux 5.15.180)
 
 		/*
 		 * wake_up_process() executes a full barrier, which pairs with
