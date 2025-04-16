@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8869186d_61b80746",
+        "filename": "drivers/dma-buf/sync_file.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-04-16T18:48:58Z",
+      "side": 1,
+      "message": "How are we drawing the line between what `dma_fence` data is still valid or not once this flag is signalled?\n\nFrom this change, `ops` is no good, but other fields like `flags`, `context`, `seqno` are still valid?",
+      "revId": "0921cdd7cd3f52671dde60b41e7becddd765955b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
