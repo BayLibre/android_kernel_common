@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a86e4c83_c602bcad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-04-16T19:55:19Z",
+      "side": 1,
+      "message": "I\u0027ll leave CR+2 to Ryan.",
+      "revId": "0921cdd7cd3f52671dde60b41e7becddd765955b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8869186d_61b80746",
@@ -32,6 +49,24 @@
       "side": 1,
       "message": "My understanding is `dma_fence` hasn\u0027t been torn down and all of its field are valid.\n\nFor `ops`, the function pointers are still valid, the issue is that the driver\u0027s function call accesses data like these names that are stored by the driver and *have* been torn down by the drivers internal lifecycle. So this CL tries to avoid any calls to `ops` functions after it has signaled to prevent that.",
       "parentUuid": "8869186d_61b80746",
+      "revId": "0921cdd7cd3f52671dde60b41e7becddd765955b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b388a12c_2eea502e",
+        "filename": "drivers/dma-buf/sync_file.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-04-16T19:55:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "544384aa_cd4e2ae9",
       "revId": "0921cdd7cd3f52671dde60b41e7becddd765955b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
