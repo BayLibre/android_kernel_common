@@ -16,6 +16,24 @@
       "message": "How are we drawing the line between what `dma_fence` data is still valid or not once this flag is signalled?\n\nFrom this change, `ops` is no good, but other fields like `flags`, `context`, `seqno` are still valid?",
       "revId": "0921cdd7cd3f52671dde60b41e7becddd765955b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "544384aa_cd4e2ae9",
+        "filename": "drivers/dma-buf/sync_file.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 3470500
+      },
+      "writtenOn": "2025-04-16T19:00:11Z",
+      "side": 1,
+      "message": "My understanding is `dma_fence` hasn\u0027t been torn down and all of its field are valid.\n\nFor `ops`, the function pointers are still valid, the issue is that the driver\u0027s function call accesses data like these names that are stored by the driver and *have* been torn down by the drivers internal lifecycle. So this CL tries to avoid any calls to `ops` functions after it has signaled to prevent that.",
+      "parentUuid": "8869186d_61b80746",
+      "revId": "0921cdd7cd3f52671dde60b41e7becddd765955b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
