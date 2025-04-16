@@ -70,58 +70,9 @@ const struct bpf_verifier_ops fuse_verifier_ops = {
 const struct bpf_prog_ops fuse_prog_ops = {
 };
 
-struct bpf_prog *fuse_get_bpf_prog(struct file *file)
+bool fuse_get_bpf_prog(struct file *file)
 {
-	struct bpf_prog *bpf_prog = ERR_PTR(-EINVAL);
-
-	if (!file || IS_ERR(file))
-		return bpf_prog;
-	/**
-	 * Two ways of getting a bpf prog from another task's fd, since
-	 * bpf_prog_get_type_dev only works with an fd
-	 *
-	 * 1) Duplicate a little of the needed code. Requires access to
-	 *    bpf_prog_fops for validation, which is not exported for modules
-	 * 2) Insert the bpf_file object into a fd from the current task
-	 *    Stupidly complex, but I think OK, as security checks are not run
-	 *    during the existence of the handle
-	 *
-	 * Best would be to upstream 1) into kernel/bpf/syscall.c and export it
-	 * for use here. Failing that, we have to use 2, since fuse must be
-	 * compilable as a module.
-	 */
-#if 1
-	if (file->f_op != &bpf_prog_fops)
-		goto out;
-
-	bpf_prog = file->private_data;
-	if (bpf_prog->type == BPF_PROG_TYPE_FUSE)
-		bpf_prog_inc(bpf_prog);
-	else
-		bpf_prog = ERR_PTR(-EINVAL);
-
-#else
-	{
-		int task_fd = get_unused_fd_flags(file->f_flags);
-
-		if (task_fd < 0)
-			goto out;
-
-		fd_install(task_fd, file);
-
-		bpf_prog = bpf_prog_get_type_dev(task_fd, BPF_PROG_TYPE_FUSE,
-						 false);
-
-		/* Close the fd, which also closes the file */
-		__close_fd(current->files, task_fd);
-		file = NULL;
-	}
-#endif
-
-out:
-	if (file)
-		fput(file);
-	return bpf_prog;
+	return file && !IS_ERR(file);
 }
 EXPORT_SYMBOL(fuse_get_bpf_prog);
 

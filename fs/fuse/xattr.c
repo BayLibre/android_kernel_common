@@ -116,14 +116,10 @@ ssize_t fuse_listxattr(struct dentry *entry, char *list, size_t size)
 	ssize_t ret;
 
 #ifdef CONFIG_FUSE_BPF
-	struct fuse_err_ret fer;
-
-	fer = fuse_bpf_backing(inode, struct fuse_getxattr_io,
-			       fuse_listxattr_initialize,
-			       fuse_listxattr_backing, fuse_listxattr_finalize,
-			       entry, list, size);
-	if (fer.ret)
-		return PTR_ERR(fer.result);
+	struct fuse_dentry *fuse_dentry = get_fuse_dentry(entry);
+	if (fuse_dentry && fuse_dentry->backing_path.dentry)
+		return vfs_listxattr(fuse_dentry->backing_path.dentry,
+			list, size);
 #endif
 
 	if (fuse_is_bad(inode))
@@ -194,14 +190,10 @@ static int fuse_xattr_get(const struct xattr_handler *handler,
 			 const char *name, void *value, size_t size)
 {
 #ifdef CONFIG_FUSE_BPF
-	struct fuse_err_ret fer;
-
-	fer = fuse_bpf_backing(inode, struct fuse_getxattr_io,
-			       fuse_getxattr_initialize, fuse_getxattr_backing,
-			       fuse_getxattr_finalize,
-			       dentry, name, value, size);
-	if (fer.ret)
-		return PTR_ERR(fer.result);
+	struct fuse_dentry *fuse_dentry = get_fuse_dentry(dentry);
+	if (fuse_dentry && fuse_dentry->backing_path.dentry)
+		return vfs_getxattr(&nop_mnt_idmap, fuse_dentry->backing_path.dentry,
+			name, value, size);
 #endif
 
 	if (fuse_is_bad(inode))
@@ -217,21 +209,14 @@ static int fuse_xattr_set(const struct xattr_handler *handler,
 			  int flags)
 {
 #ifdef CONFIG_FUSE_BPF
-	struct fuse_err_ret fer;
-
-	if (value)
-		fer = fuse_bpf_backing(inode, struct fuse_setxattr_in,
-			       fuse_setxattr_initialize, fuse_setxattr_backing,
-			       fuse_setxattr_finalize, dentry, name, value,
-			       size, flags);
-	else
-		fer = fuse_bpf_backing(inode, struct fuse_dummy_io,
-				       fuse_removexattr_initialize,
-				       fuse_removexattr_backing,
-				       fuse_removexattr_finalize,
-				       dentry, name);
-	if (fer.ret)
-		return PTR_ERR(fer.result);
+	struct fuse_dentry *fuse_dentry = get_fuse_dentry(dentry);
+	if (fuse_dentry && fuse_dentry->backing_path.dentry) {
+		if (value)
+			return vfs_setxattr(&nop_mnt_idmap, fuse_dentry->backing_path.dentry,
+				name, value, size, flags);
+		else
+			return vfs_removexattr(&nop_mnt_idmap, fuse_dentry->backing_path.dentry, name);
+	}
 #endif
 
 	if (fuse_is_bad(inode))

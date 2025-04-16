@@ -98,7 +98,7 @@ static struct inode *fuse_alloc_inode(struct super_block *sb)
 	fi->inval_mask = ~0;
 #ifdef CONFIG_FUSE_BPF
 	fi->backing_inode = NULL;
-	fi->bpf = NULL;
+	fi->android_magic = false;
 #endif
 
 	fi->nodeid = 0;
@@ -140,10 +140,6 @@ static void fuse_free_inode(struct inode *inode)
 	if (IS_ENABLED(CONFIG_FUSE_PASSTHROUGH))
 		fuse_backing_put(fuse_inode_backing(fi));
 
-#ifdef CONFIG_FUSE_BPF
-	if (fi->bpf)
-		bpf_prog_put(fi->bpf);
-#endif
 	kmem_cache_free(fuse_inode_cachep, fi);
 }
 
@@ -724,7 +720,7 @@ static int fuse_statfs(struct dentry *dentry, struct kstatfs *buf)
 	struct fuse_statfs_out outarg;
 	int err;
 #ifdef CONFIG_FUSE_BPF
-	struct fuse_err_ret fer;
+	struct fuse_inode *fuse_inode;
 #endif
 
 	if (!fuse_allow_current_process(fm->fc)) {
@@ -733,12 +729,19 @@ static int fuse_statfs(struct dentry *dentry, struct kstatfs *buf)
 	}
 
 #ifdef CONFIG_FUSE_BPF
-	fer = fuse_bpf_backing(dentry->d_inode, struct fuse_statfs_out,
-			       fuse_statfs_initialize, fuse_statfs_backing,
-			       fuse_statfs_finalize,
-			       dentry, buf);
-	if (fer.ret)
-		return PTR_ERR(fer.result);
+	fuse_inode = get_fuse_inode(dentry->d_inode);
+	if (fuse_inode && fuse_inode->backing_inode) {
+		struct path backing_path;
+		int err = -EBADF;
+
+		get_fuse_backing_path(dentry, &backing_path);
+		if (backing_path.dentry) {
+			err = vfs_statfs(&backing_path, buf);
+			path_put(&backing_path);
+		}
+
+		return err;
+	}
 #endif
 
 	memset(&outarg, 0, sizeof(outarg));
@@ -1164,9 +1167,7 @@ static struct inode *fuse_get_root_inode(struct super_block *sb,
 		return NULL;
 
 #ifdef CONFIG_FUSE_BPF
-	get_fuse_inode(inode)->bpf = root_bpf;
-	if (root_bpf)
-		bpf_prog_inc(root_bpf);
+	get_fuse_inode(inode)->android_magic = root_bpf != NULL;
 
 	if (backing_fd) {
 		get_fuse_inode(inode)->backing_inode = backing_fd->f_inode;
