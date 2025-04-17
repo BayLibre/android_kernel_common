@@ -2100,6 +2100,7 @@ void enqueue_task(struct rq *rq, struct task_struct *p, int flags)
 	 * in ->enqueue_task().
 	 */
 	uclamp_rq_inc(rq, p, flags);
+
 	trace_android_rvh_enqueue_task(rq, p, flags);
 	p->sched_class->enqueue_task(rq, p, flags);
 	trace_android_rvh_after_enqueue_task(rq, p, flags);
