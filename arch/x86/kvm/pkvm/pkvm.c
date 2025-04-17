@@ -1571,6 +1571,11 @@ static unsigned long pkvm_vcpu_add_fpstate(struct pkvm_vcpu *pkvm_vcpu,
 	/* Save the fpsize in fpstate->size. See comments in pkvm_vcpu_create */
 	vcpu->arch.guest_fpu.fpstate->size = fpsize;
 	pkvm_init_guest_fpu(&vcpu->arch.guest_fpu);
+	/*
+	 * As only the pVM will be here, set the fpstate confidential
+	 * unconditionally
+	 */
+	fpstate_set_confidential(&vcpu->arch.guest_fpu);
 
 	if (old_fps) {
 		fpsize = PAGE_ALIGNED(old_fps->size);
