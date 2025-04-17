@@ -66,6 +66,12 @@ _GKI_X86_64_BOOT_IMAGE_SIZES = {
     "": "67108864",
 }
 
+# Extra generated headers below $OUT_DIR for external modules.
+_GENERATED_HEADERS_FOR_MODULE = [
+    "security/selinux/flask.h",
+    "security/selinux/av_permissions.h",
+]
+
 checkpatch(
     name = "checkpatch",
     checkpatch_pl = "scripts/checkpatch.pl",
@@ -213,6 +219,7 @@ common_kernel(
     makefile = ":Makefile",
     module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64"),
     system_dlkm_extra_archive_files = [":generate_gki_module_info_arm64"],
+    generated_headers_for_module = _GENERATED_HEADERS_FOR_MODULE,
     visibility = ["//visibility:public"],
 
     # Symbol lists and module lists
@@ -248,6 +255,7 @@ common_kernel(
     module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64"),
     page_size = "16k",
     system_dlkm_extra_archive_files = [":generate_gki_module_info_arm64"],
+    generated_headers_for_module = _GENERATED_HEADERS_FOR_MODULE,
     visibility = ["//visibility:public"],
 )
 
@@ -287,6 +295,7 @@ common_kernel(
     makefile = ":Makefile",
     module_implicit_outs = get_gki_modules_list("x86_64") + get_kunit_modules_list("x86_64"),
     system_dlkm_extra_archive_files = [":generate_gki_module_info_x86_64"],
+    generated_headers_for_module = _GENERATED_HEADERS_FOR_MODULE,
     visibility = ["//visibility:public"],
 )
 
