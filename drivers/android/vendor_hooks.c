@@ -9,6 +9,8 @@
 #include <linux/pm_qos.h>
 #include <linux/futex.h>
 
+#include <linux/inetdevice.h>
+
 #define CREATE_TRACE_POINTS
 #include <trace/hooks/vendor_hooks.h>
 #include <linux/tracepoint.h>
