@@ -31,5 +31,10 @@ source "lib/Kconfig.debug"
 
 source "Documentation/Kconfig"
 
+<<<<<<< HEAD   (1064be Revert "ANDROID: Add padding to kunit structures exposed on )
 # ANDROID: Set KCONFIG_EXT_PREFIX to decend into an external project.
 source "$(KCONFIG_EXT_PREFIX)Kconfig.ext"
+||||||| BASE
+=======
+source "io_uring/Kconfig"
+>>>>>>> BRANCH (0c86b4 Merge tag 'drm-next-2025-03-28' of https://gitlab.freedeskto)
