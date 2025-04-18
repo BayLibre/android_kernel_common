@@ -110,6 +110,142 @@
       ],
       "revId": "4bd6cb19a25ca82df3fdf8f5f68fc21458fe2218",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a40ccdba_0af32e6f",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1433,
+      "author": {
+        "id": 3616462
+      },
+      "writtenOn": "2025-04-18T07:05:31Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "815b9b4e_6bac6b96",
+      "range": {
+        "startLine": 1416,
+        "startChar": 1,
+        "endLine": 1433,
+        "endChar": 0
+      },
+      "revId": "4bd6cb19a25ca82df3fdf8f5f68fc21458fe2218",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44abab52_893dbd6b",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1433,
+      "author": {
+        "id": 3616462
+      },
+      "writtenOn": "2025-04-18T07:05:31Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "815b9b4e_6bac6b96",
+      "range": {
+        "startLine": 1416,
+        "startChar": 1,
+        "endLine": 1433,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bc38ec50_9477ed1d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 1395,
+                "startChar": 0,
+                "endLine": 1395,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            },
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 1396,
+                "startChar": 0,
+                "endLine": 1398,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 1416,
+                "startChar": 0,
+                "endLine": 1423,
+                "endChar": 0
+              },
+              "replacement": "\n\ttrace_android_vh_free_unref_page_bypass(page, order,\n\t\t\tget_pfnblock_migratetype(page, pfn),\n\t\t\t\u0026skip_free_unref_page);\n"
+            },
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 1426,
+                "startChar": 0,
+                "endLine": 1433,
+                "endChar": 0
+              },
+              "replacement": "\tfree_one_page(zone, page, pfn, order, fpi_flags);\n"
+            },
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 2643,
+                "startChar": 0,
+                "endLine": 2644,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 2656,
+                "startChar": 0,
+                "endLine": 2660,
+                "endChar": 0
+              },
+              "replacement": "\tmigratetype \u003d get_pfnblock_migratetype(page, pfn);\t\n"
+            },
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 2694,
+                "startChar": 0,
+                "endLine": 2695,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 2715,
+                "startChar": 0,
+                "endLine": 2719,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "4bd6cb19a25ca82df3fdf8f5f68fc21458fe2218",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
