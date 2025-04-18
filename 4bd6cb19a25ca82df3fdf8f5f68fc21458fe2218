@@ -270,6 +270,30 @@
       },
       "revId": "4bd6cb19a25ca82df3fdf8f5f68fc21458fe2218",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "280ec7ff_0381eab1",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1433,
+      "author": {
+        "id": 3616462
+      },
+      "writtenOn": "2025-04-18T08:27:44Z",
+      "side": 1,
+      "message": "Why remove these two hook points? This may disrupt the expected results for the vendor.\ntrace_android_vh_free_unref_page_bypass(page, order, migratetype, \u0026skip_free_unref_page);\ntrace_android_vh_free_unref_page_list_bypass(list, \u0026skip_free);",
+      "parentUuid": "7b332a16_81a8d043",
+      "range": {
+        "startLine": 1416,
+        "startChar": 1,
+        "endLine": 1433,
+        "endChar": 0
+      },
+      "revId": "4bd6cb19a25ca82df3fdf8f5f68fc21458fe2218",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
