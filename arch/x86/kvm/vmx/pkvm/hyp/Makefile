@@ -11,7 +11,7 @@ pkvm-hyp-y	:= vmx_asm.o vmexit.o memory.o page_alloc.o early_alloc.o pgtable.o m
 		   iommu.o iommu_debug.o ptdev.o iommu_spgt.o io_emulate.o pci.o trace.o
 
 ifdef CONFIG_PKVM_INTEL_PVIOMMU
-pkvm-hyp-y += pv_iommu.o
+pkvm-hyp-y += pv_iommu.o iommu_domain.o
 else
 pkvm-hyp-y += shadow_iommu.o
 endif
