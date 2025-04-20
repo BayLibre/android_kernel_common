@@ -17,6 +17,8 @@
 #define PKVM_HC_TLB_REMOTE_FLUSH_RANGE	8
 #define PKVM_HC_SET_MMIO_VE		9
 #define PKVM_HC_ADD_PTDEV		10
+#define PKVM_HC_DUMP_DMAR_TR_STRUCT	20
+#define PKVM_HC_DUMP_DOMAIN_PGT		21
 
 /*
  * Internal hypercall to commit the pkvm initialization
@@ -58,6 +60,21 @@ static inline bool pkvm_enabled(void)
 }
 
 int pkvm_iommu_register_driver(const struct pkvm_iommu_driver *kern_ops);
+
+static inline long pkvm_dump_dmar_translation_struct(void)
+{
+	if (pkvm_enabled())
+		return kvm_hypercall0(PKVM_HC_DUMP_DMAR_TR_STRUCT);
+	return 0;
+}
+
+static inline long pkvm_dump_domain_translation_struct(
+		unsigned long phys, unsigned long bdf, unsigned long pasid)
+{
+	if (pkvm_enabled())
+		return kvm_hypercall3(PKVM_HC_DUMP_DOMAIN_PGT, phys, bdf, pasid);
+	return 0;
+}
 
 static inline u64 pkvm_readq(void __iomem *reg, unsigned long reg_phys,
 			     unsigned long offset)
