@@ -54,6 +54,7 @@ _COMMON_GKI_MODULES_LIST = [
     "fs/netfs/netfs.ko",
     "kernel/kheaders.ko",
     "lib/crypto/libarc4.ko",
+    "lib/crc-ccitt.ko",
     "mm/zsmalloc.ko",
     "net/6lowpan/6lowpan.ko",
     "net/6lowpan/nhc_dest.ko",
