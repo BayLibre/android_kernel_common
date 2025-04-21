@@ -1223,6 +1223,79 @@ next:
 				   (void *)++last_pte - (void *)first_pte);
 }
 
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+static void pv_domain_unmap(struct dmar_domain *domain, unsigned long start_pfn,
+			 unsigned long last_pfn, struct list_head *freelist)
+{
+	struct pkvm_iommu_unmap_param param = { 0 };
+	struct pkvm_iommu_page_donation *donation = &param.donation;
+	int i = 0;
+
+	if (WARN_ON(!pkvm_ia_enabled()))
+		return;
+
+	param.pgd_gpa = virt_to_phys(domain->pgd);
+	param.start_pfn = start_pfn;
+	param.last_pfn = last_pfn;
+	pkvm_iommu_unmap_pages(&param);
+	pr_info("IOMMU: %s adding %d pages to gatherlist\n", __func__, donation->nr_returned);
+	for (i = 0; i < donation->nr_returned; i++) {
+		struct page *pg = pfn_to_page(donation->pages[i] >> PAGE_SHIFT);
+		list_add_tail(&pg->lru, freelist);
+	}
+}
+
+static int pv_domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
+		 unsigned long phys_pfn, unsigned long nr_pages, int prot, int gfp)
+{
+	int level = agaw_to_level(domain->agaw);
+	struct pkvm_iommu_map_param param = { 0 };
+	struct pkvm_iommu_page_donation *donation = &param.donation;
+	int i = 0, ret;
+
+	if (WARN_ON(!pkvm_ia_enabled()))
+		return -EINVAL;
+
+	param.pgd_gpa = virt_to_phys(domain->pgd);
+	param.iov_pfn = iov_pfn;
+	param.phys_pfn = phys_pfn;
+	param.nr_pages = nr_pages;
+	param.prot = prot;
+	/*
+	 * XXX: This is a naive and inefficient implementation.
+	 * We should be keeping track of pages allocated for a mapping and donate
+	 * pages only if we feel that it is needed.
+	 * TODO: use and efficient algorithm.
+	 */
+	for (i = 0; i < level; i++) {
+		donation->pages[i] = virt_to_phys(iommu_alloc_page_node(domain->nid, gfp));
+		if (!donation->pages[i]) {
+			int j;
+			for (j = 0; j < i; j++)
+				iommu_free_page(phys_to_virt(donation->pages[i]));
+			return -ENOMEM;
+		}
+	}
+	pr_info("IOMMU: %s donating %d pages\n", __func__, i);
+	donation->nr_donated = i;
+	ret = pkvm_iommu_map_pages(&param);
+	pr_info("IOMMU: %s freeing %d pages\n", __func__, donation->nr_returned);
+	for (i = 0; i < donation->nr_returned; i++)
+		iommu_free_page(phys_to_virt(donation->pages[i]));
+
+	return ret;
+}
+#else
+static inline void pv_domain_unmap(struct dmar_domain *domain, unsigned long start_pfn,
+			 unsigned long last_pfn, struct list_head *freelist) {}
+
+static int pv_domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
+		 unsigned long phys_pfn, unsigned long nr_pages, int prot, int gfp)
+{
+	return 0;
+}
+#endif
+
 /* We can't just free the pages because the IOMMU may still be walking
    the page tables, and may have cached the intermediate levels. The
    pages can only be freed after the IOTLB flush has been done. */
@@ -1232,6 +1305,11 @@ static void domain_unmap(struct dmar_domain *domain, unsigned long start_pfn,
 	if (WARN_ON(!domain_pfn_supported(domain, last_pfn)) ||
 	    WARN_ON(start_pfn > last_pfn))
 		return;
+
+	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_ia_enabled()) {
+		pv_domain_unmap(domain, start_pfn, last_pfn, freelist);
+		return;
+	}
 
 	/* we don't need lock here; nobody else touches the iova range */
 	dma_pte_clear_level(domain, agaw_to_level(domain->agaw),
@@ -2032,6 +2110,10 @@ __domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
 	}
 
 	domain->has_mappings = true;
+
+	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_ia_enabled()) {
+		return pv_domain_mapping(domain, iov_pfn, phys_pfn, nr_pages, prot, gfp);
+	}
 
 	pteval = ((phys_addr_t)phys_pfn << VTD_PAGE_SHIFT) | attr;
 
@@ -3950,9 +4032,20 @@ static size_t intel_iommu_unmap(struct iommu_domain *domain,
 
 	/* Cope with horrid API which requires us to unmap more than the
 	   size argument if it happens to be a large-page mapping. */
-	if (unlikely(!pfn_to_dma_pte(dmar_domain, iova >> VTD_PAGE_SHIFT,
+	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_ia_enabled()) {
+		struct pkvm_iommu_iova2phys_param param = {
+			.pgd_gpa = virt_to_phys(dmar_domain->pgd),
+			.iova = iova,
+		};
+		pkvm_iommu_iova_to_phys(&param);
+		if (!param.phys)
+			return 0;
+		level = param.level;
+	} else {
+		if (unlikely(!pfn_to_dma_pte(dmar_domain, iova >> VTD_PAGE_SHIFT,
 				     &level, GFP_ATOMIC)))
-		return 0;
+			return 0;
+	}
 
 	if (size < VTD_PAGE_SIZE << level_to_offset_bits(level))
 		size = VTD_PAGE_SIZE << level_to_offset_bits(level);
@@ -3994,7 +4087,7 @@ static void intel_iommu_tlb_sync(struct iommu_domain *domain,
 	iommu_put_pages_list(&gather->freelist);
 }
 
-static phys_addr_t intel_iommu_iova_to_phys(struct iommu_domain *domain,
+static phys_addr_t __intel_iommu_iova_to_phys(struct iommu_domain *domain,
 					    dma_addr_t iova)
 {
 	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
@@ -4011,7 +4104,33 @@ static phys_addr_t intel_iommu_iova_to_phys(struct iommu_domain *domain,
 
 	return phys;
 }
-
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+static phys_addr_t pv_iommu_iova_to_phys(struct iommu_domain *domain,
+					    dma_addr_t iova)
+{
+	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
+	struct pkvm_iommu_iova2phys_param param = {
+		.pgd_gpa = virt_to_phys(dmar_domain->pgd),
+		.iova = iova,
+	};
+	pkvm_iommu_iova_to_phys(&param);
+	return param.phys;
+}
+#else
+static phys_addr_t pv_iommu_iova_to_phys(struct iommu_domain *domain,
+					    dma_addr_t iova)
+{
+	return __intel_iommu_iova_to_phys(domain, iova);
+}
+#endif
+static phys_addr_t intel_iommu_iova_to_phys(struct iommu_domain *domain,
+					    dma_addr_t iova)
+{
+	if (pkvm_ia_enabled()) {
+		return pv_iommu_iova_to_phys(domain, iova);
+	}
+	return __intel_iommu_iova_to_phys(domain, iova);
+}
 static bool domain_support_force_snooping(struct dmar_domain *domain)
 {
 	struct device_domain_info *info;
