@@ -294,6 +294,30 @@
       },
       "revId": "4bd6cb19a25ca82df3fdf8f5f68fc21458fe2218",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c64b85e3_a691e419",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1433,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-04-21T19:03:28Z",
+      "side": 1,
+      "message": "I have no idea why you removed `trace_android_vh_free_unref_page_list_bypass`, I don\u0027t think I ever suggested that. As for `trace_android_vh_free_unref_page_bypass`, you seem to made the change differently from what I suggested, I suspect you simply applied \"AI-suggested fix\" which was completely bogus. I suggest you go back to `Patchset 1` version of this patch which I was reviewing and apply the change I suggested:\n\n```\n    spin_lock_irqsave(\u0026zone-\u003elock, flags);\n    migratetype \u003d get_pfnblock_migratetype(page, pfn);\n    trace_android_vh_free_unref_page_bypass(page, order, migratetype, \u0026skip_free_unref_page);\n    if (skip_free_unref_page) {\n        spin_unlock_irqrestore(\u0026zone-\u003elock, flags);\n        return;\n    }\n\n    if (unlikely(has_isolate_pageblock(zone) ||\n        is_migrate_isolate(migratetype))) {\n        migratetype \u003d get_pfnblock_migratetype(page, pfn);\n    }\n    __free_one_page(page, pfn, zone, order, migratetype, fpi_flags);\n    spin_unlock_irqrestore(\u0026zone-\u003elock, flags);\n```",
+      "parentUuid": "280ec7ff_0381eab1",
+      "range": {
+        "startLine": 1416,
+        "startChar": 1,
+        "endLine": 1433,
+        "endChar": 0
+      },
+      "revId": "4bd6cb19a25ca82df3fdf8f5f68fc21458fe2218",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
