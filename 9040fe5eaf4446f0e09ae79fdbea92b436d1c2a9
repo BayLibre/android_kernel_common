@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95a6d1dd_85b8a573",
+        "filename": "mm/cma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2025-04-21T16:58:54Z",
+      "side": 1,
+      "message": "There\u0027s no `out`. So whatever issues you have here, probably should just be resolved",
+      "range": {
+        "startLine": 434,
+        "startChar": 0,
+        "endLine": 434,
+        "endChar": 11
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "51fd1f0c_613d6f64",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/cma.c",
+              "range": {
+                "startLine": 434,
+                "startChar": 0,
+                "endLine": 435,
+                "endChar": 0
+              },
+              "replacement": "\t\treturn NULL;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9040fe5eaf4446f0e09ae79fdbea92b436d1c2a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
