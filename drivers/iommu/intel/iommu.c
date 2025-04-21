@@ -1223,6 +1223,171 @@ next:
 				   (void *)++last_pte - (void *)first_pte);
 }
 
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+static void pv_domain_unmap(struct dmar_domain *domain, unsigned long start_pfn,
+			 unsigned long last_pfn, struct list_head *freelist)
+{
+	struct pkvm_iommu_page_donation *donation;
+	int nr_req_pages = agaw_to_level(domain->agaw);
+	unsigned long flags;
+	int i = 0;
+
+	if (WARN_ON(!pkvm_enabled()))
+		return;
+
+	local_irq_save(flags);
+	donation = (struct pkvm_iommu_page_donation *)this_cpu_ptr(domain->donation);
+
+	pkvm_iommu_unmap_pages(virt_to_phys(domain->pgd), start_pfn, last_pfn,  donation);
+	pr_debug("IOMMU: %s free  pages: %d, %d pages to gatherlist\n",
+			__func__, donation->nr_pages,
+			donation->nr_pages > nr_req_pages ? donation->nr_pages > nr_req_pages : 0);
+
+	/*
+	 * Maintain upto 'level' pages in the cache for normal operation.
+	 * But if we are exiting the domain, free all the pages.
+	 */
+	if (start_pfn == 0 && last_pfn == DOMAIN_MAX_PFN(domain->gaw)) {
+		nr_req_pages = 0;
+	}
+	for (i = donation->nr_pages - 1; i >= nr_req_pages; donation->nr_pages--, i--) {
+		struct page *pg = pfn_to_page(donation->pages[i] >> PAGE_SHIFT);
+		list_add_tail(&pg->lru, freelist);
+	}
+	local_irq_restore(flags);
+
+}
+
+static int __pv_domain_mapping_slow(struct dmar_domain *domain,
+				  struct pkvm_iommu_map_param *param, int gfp)
+{
+	struct pkvm_iommu_page_donation donation = { 0 };
+	int lvl = agaw_to_level(domain->agaw);
+	int nr_alloc_pages = lvl;
+	int ret = 0, i;
+	int retries = 3;
+
+	if (lvl_to_nr_pages(lvl) > param->nr_pages) {
+		nr_alloc_pages = lvl * 2;
+		pr_debug("%s: slowpath increasing the number of pages to %d\n", __func__, nr_alloc_pages);
+	}
+retry:
+	for (i = 0; i < nr_alloc_pages; i++) {
+		void *tmp_page = iommu_alloc_page_node(domain->nid, gfp);
+		if (!tmp_page) {
+			pr_err("%s: failed to allocated %dth page\n", __func__, i);
+			donation.nr_pages = i;
+			ret = -ENOMEM;
+			goto out;
+		}
+		donation.pages[i] = virt_to_phys(tmp_page);
+	}
+	donation.nr_pages = i;
+	pr_debug("IOMMU: %s slowpath [pgd:%llx] donating %d pages\n", __func__, param->pgd_gpa, i);
+	ret = pkvm_iommu_map_pages(param, &donation);
+
+	if(donation.nr_pages < 0) {
+		pr_debug("%s: slowpath pkvm needs more pages, donating %d pages!\n",
+				__func__, nr_alloc_pages);
+		/*
+		 * Lets retry by donating nr_alloc_pages more.
+		 */
+		retries--;
+		if (retries)
+			goto retry;
+
+		// TODO: Its actually not about no memory, but retrying infinitely.
+		// Testing did not show this function more than retrying once.
+		// We should not hit here ever.
+		WARN_ON_ONCE(1);
+		ret = -ENOMEM;
+	}
+
+out:
+	/*
+	 * Free up the unused pages
+	 */
+	for (i = 0; i < donation.nr_pages; i++) {
+		iommu_free_page(phys_to_virt(donation.pages[i]));
+	}
+
+	return ret;
+}
+
+static int pv_domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
+		 unsigned long phys_pfn, unsigned long nr_pages, int prot, int gfp)
+{
+	struct pkvm_iommu_page_donation *donation;
+	struct pkvm_iommu_map_param param = { 0 };
+	int lvl = agaw_to_level(domain->agaw);
+	unsigned long flags;
+	int nr_alloc_pages = lvl;
+	int ret = 0, i;
+	bool retry_slow = false;
+
+	if (lvl_to_nr_pages(lvl) > param.nr_pages) {
+		nr_alloc_pages = lvl * 2;
+		pr_debug("%s: increasing the number of pages to %d\n", __func__, nr_alloc_pages);
+	}
+
+	if (WARN_ON(!pkvm_enabled()))
+		return -EINVAL;
+
+	param.pgd_gpa = virt_to_phys(domain->pgd);
+	param.iov_pfn = iov_pfn;
+	param.phys_pfn = phys_pfn;
+	param.nr_pages = nr_pages;
+	param.prot = prot;
+
+	local_irq_save(flags);
+	donation = (struct pkvm_iommu_page_donation *)this_cpu_ptr(domain->donation);
+
+	for (i = donation->nr_pages; i < nr_alloc_pages; i++) {
+		/*
+		 * Since preemption is disabled, We should not sleep.
+		 */
+		void *tmp_page = iommu_alloc_page_node(domain->nid, GFP_ATOMIC);
+		if (!tmp_page) {
+			donation->nr_pages = i;
+			local_irq_restore(flags);
+			if (gfp & GFP_ATOMIC)
+				return -ENOMEM;
+			else
+				/*
+				 * Lets try once again with gfp flags.
+				 */
+				return __pv_domain_mapping_slow(domain, &param, gfp);
+
+		}
+		donation->pages[i] = virt_to_phys(tmp_page);
+	}
+
+	donation->nr_pages = i;
+	ret = pkvm_iommu_map_pages(&param, donation);
+	if (donation->nr_pages < 0) {
+		donation->nr_pages = 0;
+		retry_slow = true;
+	}
+	local_irq_restore(flags);
+
+	if (retry_slow) {
+		pr_debug("%s: pkvm needs more pages, try slow path!\n", __func__);
+		ret = __pv_domain_mapping_slow(domain, &param, gfp);
+	}
+
+	return ret;
+}
+#else
+static inline void pv_domain_unmap(struct dmar_domain *domain, unsigned long start_pfn,
+			 unsigned long last_pfn, struct list_head *freelist) {}
+
+static int pv_domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
+		 unsigned long phys_pfn, unsigned long nr_pages, int prot, int gfp)
+{
+	return 0;
+}
+#endif
+
 /* We can't just free the pages because the IOMMU may still be walking
    the page tables, and may have cached the intermediate levels. The
    pages can only be freed after the IOTLB flush has been done. */
@@ -1232,6 +1397,11 @@ static void domain_unmap(struct dmar_domain *domain, unsigned long start_pfn,
 	if (WARN_ON(!domain_pfn_supported(domain, last_pfn)) ||
 	    WARN_ON(start_pfn > last_pfn))
 		return;
+
+	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled()) {
+		pv_domain_unmap(domain, start_pfn, last_pfn, freelist);
+		return;
+	}
 
 	/* we don't need lock here; nobody else touches the iova range */
 	dma_pte_clear_level(domain, agaw_to_level(domain->agaw),
@@ -2048,6 +2218,10 @@ __domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
 	}
 
 	domain->has_mappings = true;
+
+	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled()) {
+		return pv_domain_mapping(domain, iov_pfn, phys_pfn, nr_pages, prot, gfp);
+	}
 
 	pteval = ((phys_addr_t)phys_pfn << VTD_PAGE_SHIFT) | attr;
 
@@ -3650,9 +3824,33 @@ void device_block_translation(struct device *dev)
 	info->domain = NULL;
 }
 
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+static int pkvm_domain_init_donation(struct dmar_domain *domain)
+{
+	int cpu;
+
+	domain->donation = alloc_percpu(struct pkvm_iommu_page_donation);
+	if (!domain->donation)
+		return -ENOMEM;
+
+	for_each_possible_cpu(cpu) {
+		struct pkvm_iommu_page_donation *donation = per_cpu_ptr(domain->donation, cpu);
+		memset(donation, 0, sizeof(*donation));
+	}
+
+	return 0;
+}
+#else
+static inline int pkvm_domain_init_donation(struct dmar_domain *domain)
+{
+	return 0;
+}
+#endif
+
 static int md_domain_init(struct dmar_domain *domain, int guest_width)
 {
 	int adjust_width;
+	int ret = 0;
 
 	/* calculate AGAW */
 	domain->gaw = guest_width;
@@ -3663,12 +3861,28 @@ static int md_domain_init(struct dmar_domain *domain, int guest_width)
 	domain->iommu_superpage = 0;
 	domain->max_addr = 0;
 
+	ret = pkvm_domain_init_donation(domain);
+	if (ret)
+		return ret;
+
 	/* always allocate the top pgd */
 	domain->pgd = iommu_alloc_page_node(domain->nid, GFP_ATOMIC);
 	if (!domain->pgd)
 		return -ENOMEM;
 	domain_flush_cache(domain, domain->pgd, PAGE_SIZE);
-	return 0;
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+	if (pkvm_enabled()) {
+		struct pkvm_iommu_domalloc_param param = {
+			.pgd_gpa = virt_to_phys(domain->pgd),
+			.domain_gaw = domain->gaw,
+			.domain_agaw = domain->agaw,
+			.iommu_coherency = domain->iommu_coherency,
+			.iommu_superpage = domain->iommu_superpage,
+		};
+		pkvm_iommu_alloc_domain(&param);
+	}
+#endif
+	return ret;
 }
 
 static int blocking_domain_attach_dev(struct iommu_domain *domain,
@@ -3753,6 +3967,18 @@ static struct dmar_domain *paging_domain_alloc(struct device *dev, bool first_st
 		return ERR_PTR(-ENOMEM);
 	}
 	domain_flush_cache(domain, domain->pgd, PAGE_SIZE);
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+	if (pkvm_enabled()) {
+		struct pkvm_iommu_domalloc_param param = {
+			.pgd_gpa = virt_to_phys(domain->pgd),
+			.domain_gaw = domain->gaw,
+			.domain_agaw = domain->agaw,
+			.iommu_coherency = domain->iommu_coherency,
+			.iommu_superpage = domain->iommu_superpage,
+		};
+		pkvm_iommu_alloc_domain(&param);
+	}
+#endif
 
 	return domain;
 }
@@ -3980,9 +4206,20 @@ static size_t intel_iommu_unmap(struct iommu_domain *domain,
 
 	/* Cope with horrid API which requires us to unmap more than the
 	   size argument if it happens to be a large-page mapping. */
-	if (unlikely(!pfn_to_dma_pte(dmar_domain, iova >> VTD_PAGE_SHIFT,
+	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled()) {
+		struct pkvm_iommu_iova2phys_param param = {
+			.pgd_gpa = virt_to_phys(dmar_domain->pgd),
+			.iova = iova,
+		};
+		pkvm_iommu_iova_to_phys(&param);
+		if (!param.phys)
+			return 0;
+		level = param.level;
+	} else {
+		if (unlikely(!pfn_to_dma_pte(dmar_domain, iova >> VTD_PAGE_SHIFT,
 				     &level, GFP_ATOMIC)))
-		return 0;
+			return 0;
+	}
 
 	if (size < VTD_PAGE_SIZE << level_to_offset_bits(level))
 		size = VTD_PAGE_SIZE << level_to_offset_bits(level);
@@ -4024,7 +4261,7 @@ static void intel_iommu_tlb_sync(struct iommu_domain *domain,
 	iommu_put_pages_list(&gather->freelist);
 }
 
-static phys_addr_t intel_iommu_iova_to_phys(struct iommu_domain *domain,
+static phys_addr_t __intel_iommu_iova_to_phys(struct iommu_domain *domain,
 					    dma_addr_t iova)
 {
 	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
@@ -4041,7 +4278,33 @@ static phys_addr_t intel_iommu_iova_to_phys(struct iommu_domain *domain,
 
 	return phys;
 }
-
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+static phys_addr_t pv_iommu_iova_to_phys(struct iommu_domain *domain,
+					    dma_addr_t iova)
+{
+	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
+	struct pkvm_iommu_iova2phys_param param = {
+		.pgd_gpa = virt_to_phys(dmar_domain->pgd),
+		.iova = iova,
+	};
+	pkvm_iommu_iova_to_phys(&param);
+	return param.phys;
+}
+#else
+static phys_addr_t pv_iommu_iova_to_phys(struct iommu_domain *domain,
+					    dma_addr_t iova)
+{
+	return __intel_iommu_iova_to_phys(domain, iova);
+}
+#endif
+static phys_addr_t intel_iommu_iova_to_phys(struct iommu_domain *domain,
+					    dma_addr_t iova)
+{
+	if (pkvm_enabled()) {
+		return pv_iommu_iova_to_phys(domain, iova);
+	}
+	return __intel_iommu_iova_to_phys(domain, iova);
+}
 static bool domain_support_force_snooping(struct dmar_domain *domain)
 {
 	struct device_domain_info *info;
