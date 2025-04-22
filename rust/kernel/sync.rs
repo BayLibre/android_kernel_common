@@ -29,6 +29,7 @@ pub struct LockClassKey(Opaque<bindings::lock_class_key>);
 unsafe impl Sync for LockClassKey {}
 
 impl LockClassKey {
+<<<<<<< HEAD   (2dffbd Merge ccffb475c133 ("USB: serial: option: match on interface)
     /// Creates a new lock class key.
     pub const fn new() -> Self {
         Self(Opaque::uninit())
@@ -36,13 +37,17 @@ impl LockClassKey {
 
     /// Returns a raw pointer to the lock class key.
     pub fn as_ptr(&self) -> *mut bindings::lock_class_key {
-        self.0.get()
+||||||| BASE
+    /// Creates a new lock class key.
+    pub const fn new() -> Self {
+        Self(Opaque::uninit())
     }
-}
 
-impl Default for LockClassKey {
-    fn default() -> Self {
-        Self::new()
+    pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+=======
+    pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+>>>>>>> BRANCH (677088 rust: init: fix `Zeroable` implementation for `Option<NonNul)
+        self.0.get()
     }
 }
 
@@ -51,7 +56,10 @@ impl Default for LockClassKey {
 #[macro_export]
 macro_rules! static_lock_class {
     () => {{
-        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
+        static CLASS: $crate::sync::LockClassKey =
+            // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
+            // lock_class_key
+            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
         &CLASS
     }};
 }
