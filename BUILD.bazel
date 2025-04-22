@@ -241,6 +241,23 @@ kernel_build(
     page_size = "16k",
 )
 
+kernel_build(
+    name = "kernel_aarch64_microdroid_nodebug",
+    srcs = ["//common:kernel_aarch64_sources"],
+    outs = [
+        "Image",
+        "System.map",
+        "modules.builtin",
+        "modules.builtin.modinfo",
+        "vmlinux",
+        "vmlinux.symvers",
+    ],
+    build_config = "build.config.microdroid_nodebug.aarch64",
+    make_goals = [
+        "Image",
+    ],
+)
+
 copy_to_dist_dir(
     name = "kernel_aarch64_microdroid_16k_dist",
     data = [
@@ -257,6 +274,16 @@ copy_to_dist_dir(
         ":kernel_aarch64_microdroid",
     ],
     dist_dir = "out/kernel_aarch64_microdroid/dist",
+    flat = True,
+    log = "info",
+)
+
+copy_to_dist_dir(
+    name = "kernel_aarch64_microdroid_nodebug_dist",
+    data = [
+        ":kernel_aarch64_microdroid_nodebug",
+    ],
+    dist_dir = "out/kernel_aarch64_microdroid_nodebug/dist",
     flat = True,
     log = "info",
 )
