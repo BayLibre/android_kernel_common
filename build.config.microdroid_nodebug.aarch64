@@ -1,0 +1,7 @@
+KERNEL_DIR=common
+. ${ROOT_DIR}/${KERNEL_DIR}/build.config.common
+. ${ROOT_DIR}/${KERNEL_DIR}/build.config.aarch64
+DEFCONFIG=microdroid_nodebug_defconfig
+
+# No modules
+IN_KERNEL_MODULES=
