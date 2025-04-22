@@ -170,7 +170,7 @@ bool
 xfs_zoned_need_gc(
 	struct xfs_mount	*mp)
 {
-	s64			available, free;
+	u64			available, free, rem;
 
 	if (!xfs_group_marked(mp, XG_TYPE_RTG, XFS_RTG_RECLAIMABLE))
 		return false;
@@ -183,7 +183,12 @@ xfs_zoned_need_gc(
 		return true;
 
 	free = xfs_estimate_freecounter(mp, XC_FREE_RTEXTENTS);
-	if (available < mult_frac(free, mp->m_zonegc_low_space, 100))
+
+	rem = do_div(free, 100);
+	free = free * mp->m_zonegc_low_space +
+		div_u64(rem * mp->m_zonegc_low_space, 100);
+
+	if (available < free)
 		return true;
 
 	return false;
