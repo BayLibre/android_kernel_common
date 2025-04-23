@@ -12,6 +12,7 @@
 #include <linux/stddef.h>
 #include <linux/types.h>
 #include <linux/uidgid.h>
+#include <linux/android_kabi.h>
 #include <linux/android_vendor.h>
 #include <uapi/linux/android/binderfs.h>
 #include "binder_alloc.h"
@@ -177,6 +178,8 @@ struct binder_work {
 
 	ANDROID_OEM_DATA(1);
 };
+
+ANDROID_KABI_ENUMERATOR_IGNORE(binder_work_type, BINDER_WORK_HARDER);
 
 struct binder_error {
 	struct binder_work work;
