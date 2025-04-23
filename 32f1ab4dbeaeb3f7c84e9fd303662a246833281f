@@ -16,6 +16,24 @@
       "message": "I believe the lint finding to be spurious because the `rust_binder.ko` module does not export any symbols, and all Rust symbols exported by the kernel are in the `core` or `kernel` crate, which no module should ever be providing a member of, so this cannot export symbol which some other module is already exporting.",
       "revId": "32f1ab4dbeaeb3f7c84e9fd303662a246833281f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08b69ca4_5e25de81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2025-04-23T18:37:51Z",
+      "side": 1,
+      "message": "Please follow the recommendation from the analyzer:\n\n\u003e If this does not apply, add `\u0027NO_IFTTT\u003dsome reason...\u0027` to your commit message.",
+      "parentUuid": "3926f3e6_1e44513a",
+      "revId": "32f1ab4dbeaeb3f7c84e9fd303662a246833281f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
