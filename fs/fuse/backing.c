@@ -6,6 +6,7 @@
 
 #include "fuse_i.h"
 
+#include <linux/backing-file.h>
 #include <linux/fdtable.h>
 #include <linux/filelock.h>
 #include <linux/filter.h>
@@ -27,43 +28,6 @@ static struct kmem_cache *fuse_bpf_aio_request_cachep;
 
 static void fuse_stat_to_attr(struct fuse_conn *fc, struct inode *inode,
 		struct kstat *stat, struct fuse_attr *attr);
-
-static void fuse_copyattr(struct file *dst_file, struct file *src_file)
-{
-	struct inode *dst = file_inode(dst_file);
-	struct inode *src = file_inode(src_file);
-
-	inode_set_mtime_to_ts(dst, inode_get_mtime(src));
-	inode_set_ctime_to_ts(dst, inode_get_ctime(src));
-	inode_set_atime_to_ts(dst, inode_get_atime(src));
-	i_size_write(dst, i_size_read(src));
-}
-
-static void fuse_file_accessed(struct file *dst_file, struct file *src_file)
-{
-	struct inode *dst_inode;
-	struct inode *src_inode;
-	struct timespec64 dst_ctime, src_ctime, dst_mtime, src_mtime;
-
-	if (dst_file->f_flags & O_NOATIME)
-		return;
-
-	dst_inode = file_inode(dst_file);
-	src_inode = file_inode(src_file);
-
-	dst_ctime = inode_get_ctime(dst_inode);
-	src_ctime = inode_get_ctime(src_inode);
-	dst_mtime = inode_get_mtime(dst_inode);
-	src_mtime = inode_get_mtime(src_inode);
-	if (!timespec64_equal(&dst_mtime, &src_mtime) ||
-	    !timespec64_equal(&dst_ctime, &src_ctime)) {
-		// Why not just call these two unconditionally?
-		inode_set_mtime_to_ts(dst_inode, inode_get_mtime(src_inode));
-		inode_set_ctime_to_ts(dst_inode, inode_get_ctime(src_inode));
-	}
-
-	touch_atime(&dst_file->f_path);
-}
 
 int fuse_open_backing(struct inode *inode, struct file *file, bool isdir)
 {
@@ -272,117 +236,87 @@ int fuse_fsync_backing(struct file *file, int datasync)
 	return vfs_fsync(backing_file, datasync);
 }
 
-static inline void fuse_bpf_aio_put(struct fuse_bpf_aio_req *aio_req)
+static void fuse_file_accessed(struct file *file)
 {
-	if (refcount_dec_and_test(&aio_req->ref))
-		kmem_cache_free(fuse_bpf_aio_request_cachep, aio_req);
+	struct inode *inode = file_inode(file);
+
+	fuse_invalidate_atime(inode);
 }
 
-static void fuse_bpf_aio_cleanup_handler(struct fuse_bpf_aio_req *aio_req)
+static void fuse_passthrough_end_write(struct file *file, loff_t pos, ssize_t ret)
 {
-	struct kiocb *iocb = &aio_req->iocb;
-	struct kiocb *iocb_orig = aio_req->iocb_orig;
+	struct inode *inode = file_inode(file);
+	struct fuse_conn *fc = get_fuse_conn(inode);
+	struct fuse_file *ff = file->private_data;
+	struct file *backing_file = fuse_file_passthrough(ff);
+	struct inode *backing_inode = file_inode(backing_file);
 
-	if (iocb->ki_flags & IOCB_WRITE) {
-		kiocb_end_write(iocb);
-		fuse_copyattr(iocb_orig->ki_filp, iocb->ki_filp);
+	if (!fc->writeback_cache) {
+		fuse_write_update_attr(inode, pos, ret);
+	} else {
+		inode_set_mtime_to_ts(inode, inode_get_mtime(backing_inode));
+		inode_set_ctime_to_ts(inode, inode_get_ctime(backing_inode));
+		inode->i_blocks = backing_inode->i_blocks;
+		i_size_write(inode, i_size_read(backing_inode));
 	}
-	iocb_orig->ki_pos = iocb->ki_pos;
-	fuse_bpf_aio_put(aio_req);
+	if (ret > 0) {
+		invalidate_inode_pages2_range(inode->i_mapping,
+				(pos - ret) >> PAGE_SHIFT, pos >> PAGE_SHIFT);
+	}
 }
 
-static void fuse_bpf_aio_rw_complete(struct kiocb *iocb, long res)
-{
-	struct fuse_bpf_aio_req *aio_req =
-		container_of(iocb, struct fuse_bpf_aio_req, iocb);
-	struct kiocb *iocb_orig = aio_req->iocb_orig;
-
-	fuse_bpf_aio_cleanup_handler(aio_req);
-	iocb_orig->ki_complete(iocb_orig, res);
-}
-
-int fuse_file_read_iter_backing(struct kiocb *iocb, struct iov_iter *to)
+int fuse_file_read_iter_backing(struct kiocb *iocb, struct iov_iter *iter)
 {
 	struct file *file = iocb->ki_filp;
 	struct fuse_file *ff = file->private_data;
+	struct file *backing_file = ff->backing_file;
+	size_t count = iov_iter_count(iter);
 	ssize_t ret;
+	struct backing_file_ctx ctx = {
+		.cred = current_cred(),
+		.user_file = file,
+		.accessed = fuse_file_accessed,
+	};
 
-	if (!iov_iter_count(to))
+	printk("Paul: %s: backing_file=0x%p, pos=%lld, len=%zu\n", __func__,
+		 backing_file, iocb->ki_pos, count);
+
+	if (!count)
 		return 0;
 
-	if ((iocb->ki_flags & IOCB_DIRECT) &&
-	    (!ff->backing_file->f_mapping->a_ops ||
-	     !ff->backing_file->f_mapping->a_ops->direct_IO))
-		return -EINVAL;
-
-	/* TODO This just plain ignores any change to fuse_read_in */
-	if (is_sync_kiocb(iocb)) {
-		ret = vfs_iter_read(ff->backing_file, to, &iocb->ki_pos,
-				iocb->ki_flags & FUSE_BPF_IOCB_MASK);
-	} else {
-		struct fuse_bpf_aio_req *aio_req;
-
-		ret = -ENOMEM;
-		aio_req = kmem_cache_zalloc(fuse_bpf_aio_request_cachep, GFP_KERNEL);
-		if (!aio_req)
-			goto out;
-
-		aio_req->iocb_orig = iocb;
-		kiocb_clone(&aio_req->iocb, iocb, ff->backing_file);
-		aio_req->iocb.ki_complete = fuse_bpf_aio_rw_complete;
-		refcount_set(&aio_req->ref, 2);
-		ret = vfs_iocb_iter_read(ff->backing_file, &aio_req->iocb, to);
-		fuse_bpf_aio_put(aio_req);
-		if (ret != -EIOCBQUEUED)
-			fuse_bpf_aio_cleanup_handler(aio_req);
-	}
-
-out:
-	fuse_file_accessed(file, ff->backing_file);
+	/* Flush any dirtied cache pages from fuse cache */
+	write_inode_now(file_inode(file), 1);
+	ret = backing_file_read_iter(backing_file, iter, iocb, iocb->ki_flags,
+				     &ctx);
 
 	return ret;
 }
 
-int fuse_file_write_iter_backing(struct kiocb *iocb, struct iov_iter *from)
+int fuse_file_write_iter_backing(struct kiocb *iocb, struct iov_iter *iter)
 {
 	struct file *file = iocb->ki_filp;
+	struct inode *inode = file_inode(file);
 	struct fuse_file *ff = file->private_data;
+	struct file *backing_file = ff->backing_file;
+	size_t count = iov_iter_count(iter);
 	ssize_t ret;
+	struct backing_file_ctx ctx = {
+		.cred = current_cred(),
+		.user_file = file,
+		.end_write = fuse_passthrough_end_write,
+	};
 
-	if (!iov_iter_count(from))
+	printk("Paul: %s: backing_file=0x%p, pos=%lld, len=%zu\n", __func__,
+		 backing_file, iocb->ki_pos, count);
+
+	if (!count)
 		return 0;
 
-	inode_lock(file_inode(file));
+	inode_lock(inode);
+	ret = backing_file_write_iter(backing_file, iter, iocb, iocb->ki_flags,
+				      &ctx);
+	inode_unlock(inode);
 
-	fuse_copyattr(file, ff->backing_file);
-
-	if (is_sync_kiocb(iocb)) {
-		ret = vfs_iter_write(ff->backing_file, from, &iocb->ki_pos,
-					   iocb->ki_flags & FUSE_BPF_IOCB_MASK);
-
-		/* Must reflect change in size of backing file to upper file */
-		if (ret > 0)
-			fuse_copyattr(file, ff->backing_file);
-	} else {
-		struct fuse_bpf_aio_req *aio_req;
-
-		ret = -ENOMEM;
-		aio_req = kmem_cache_zalloc(fuse_bpf_aio_request_cachep, GFP_KERNEL);
-		if (!aio_req)
-			goto out;
-
-		aio_req->iocb_orig = iocb;
-		kiocb_clone(&aio_req->iocb, iocb, ff->backing_file);
-		aio_req->iocb.ki_complete = fuse_bpf_aio_rw_complete;
-		refcount_set(&aio_req->ref, 2);
-		ret = vfs_iocb_iter_write(ff->backing_file, &aio_req->iocb, from);
-		fuse_bpf_aio_put(aio_req);
-		if (ret != -EIOCBQUEUED)
-			fuse_bpf_aio_cleanup_handler(aio_req);
-	}
-
-out:
-	inode_unlock(file_inode(file));
 	return ret;
 }
 
@@ -390,27 +324,43 @@ ssize_t fuse_splice_read_backing(struct file *in, loff_t *ppos,
 		struct pipe_inode_info *pipe, size_t len, unsigned long flags)
 {
 	struct fuse_file *ff = in->private_data;
-	ssize_t ret;
+	struct file *backing_file = ff->backing_file;
+	struct backing_file_ctx ctx = {
+		.cred = current_cred(),
+		.user_file = in,
+		.accessed = fuse_file_accessed,
+	};
 
-	ret = vfs_splice_read(ff->backing_file, ppos, pipe, len, flags);
-	fuse_file_accessed(in, ff->backing_file);
+	printk("Paul: %s: backing_file=0x%p, pos=%lld, len=%zu, flags=0x%lx\n", __func__,
+		 backing_file, ppos ? *ppos : 0, len, flags);
 
-	return ret;
+	/* Flush any dirtied cache pages from fuse cache */
+	write_inode_now(file_inode(in), 1);
+	return backing_file_splice_read(backing_file, ppos, pipe, len, flags,
+					&ctx);
 }
 
 ssize_t fuse_splice_write_backing(struct pipe_inode_info *pipe,
 		struct file *out, loff_t *ppos, size_t len, unsigned long flags)
 {
-	ssize_t ret;
 	struct fuse_file *ff = out->private_data;
+	struct file *backing_file = ff->backing_file;
+	struct inode *inode = file_inode(out);
+	ssize_t ret;
+	struct backing_file_ctx ctx = {
+		.cred = current_cred(),
+		.user_file = out,
+		.end_write = fuse_passthrough_end_write,
+	};
 
-	inode_lock(file_inode(out));
-	file_start_write(ff->backing_file);
-	ret = iter_file_splice_write(pipe, ff->backing_file, ppos, len, flags);
-	file_end_write(ff->backing_file);
-	if (ret > 0)
-		fuse_copyattr(out, ff->backing_file);
-	inode_unlock(file_inode(out));
+	printk("Paul: %s: backing_file=0x%p, pos=%lld, len=%zu, flags=0x%lx\n", __func__,
+		 backing_file, ppos ? *ppos : 0, len, flags);
+
+	inode_lock(inode);
+	ret = backing_file_splice_write(pipe, backing_file, ppos, len, flags,
+					&ctx);
+	inode_unlock(inode);
+
 	return ret;
 }
 
@@ -443,44 +393,18 @@ int fuse_file_flock_backing(struct file *file, int cmd, struct file_lock *fl)
 
 ssize_t fuse_backing_mmap(struct file *file, struct vm_area_struct *vma)
 {
-	int ret;
 	struct fuse_file *ff = file->private_data;
-	struct inode *fuse_inode = file_inode(file);
 	struct file *backing_file = ff->backing_file;
-	struct inode *backing_inode = file_inode(backing_file);
-	struct timespec64 fuse_inode_ctime, backing_inode_ctime;
-	struct timespec64 fuse_inode_mtime, backing_inode_mtime;
+	struct backing_file_ctx ctx = {
+		.cred = current_cred(),
+		.user_file = file,
+		.accessed = fuse_file_accessed,
+	};
 
-	if (!backing_file->f_op->mmap)
-		return -ENODEV;
+	printk("Paul: %s: backing_file=0x%p, start=%lu, end=%lu\n", __func__,
+		 backing_file, vma->vm_start, vma->vm_end);
 
-	if (WARN_ON(file != vma->vm_file))
-		return -EIO;
-
-	vma->vm_file = get_file(backing_file);
-
-	ret = call_mmap(vma->vm_file, vma);
-
-	if (ret)
-		fput(backing_file);
-	else
-		fput(file);
-
-	if (file->f_flags & O_NOATIME)
-		return ret;
-
-	fuse_inode_ctime = inode_get_ctime(fuse_inode);
-	backing_inode_ctime = inode_get_ctime(backing_inode);
-	fuse_inode_mtime = inode_get_mtime(fuse_inode);
-	backing_inode_mtime = inode_get_mtime(backing_inode);
-	if ((!timespec64_equal(&fuse_inode_mtime, &backing_inode_mtime) ||
-	     !timespec64_equal(&fuse_inode_ctime, &backing_inode_ctime))) {
-		inode_set_mtime_to_ts(fuse_inode, backing_inode_mtime);
-		inode_set_ctime_to_ts(fuse_inode, backing_inode_ctime);
-	}
-	touch_atime(&file->f_path);
-
-	return ret;
+	return backing_file_mmap(backing_file, vma, &ctx);
 }
 
 int fuse_file_fallocate_backing(struct file *file, int mode, loff_t offset,
