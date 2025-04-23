@@ -184,6 +184,7 @@ ANDROID_KABI_ENUMERATOR_IGNORE(binder_work_type, BINDER_WORK_HARDER);
 struct binder_error {
 	struct binder_work work;
 	uint32_t cmd;
+	uint32_t and_conquer;
 };
 
 /**
