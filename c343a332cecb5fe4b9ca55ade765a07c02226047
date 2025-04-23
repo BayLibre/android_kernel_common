@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89b27608_92542568",
+        "filename": "tools/testing/kunit/android/tradefed_configs/config_arm64.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1123518
+      },
+      "writtenOn": "2025-04-23T19:40:44Z",
+      "side": 1,
+      "message": "You can add opton per-binary-timeout to increase the module load time (test execution time. For example\n    \u003coption name\u003d\"per-binary-timeout\" value\u003d\"10m\" /\u003e",
+      "range": {
+        "startLine": 25,
+        "startChar": 54,
+        "endLine": 25,
+        "endChar": 69
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f3e4bce7_bf650798",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/testing/kunit/android/tradefed_configs/config_arm64.xml",
+              "range": {
+                "startLine": 28,
+                "startChar": 0,
+                "endLine": 28,
+                "endChar": 0
+              },
+              "replacement": "        \u003coption name\u003d\"per-binary-timeout\" value\u003d\"10m\" /\u003e\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c343a332cecb5fe4b9ca55ade765a07c02226047",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
