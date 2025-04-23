@@ -41,3 +41,6 @@ type 'struct sk_buff' changed
           member 'u64 __kabi_reserved1' was removed
           member 'union { void* sekret; struct { u64 __kabi_reserved1; }; union { }; }' was added
 
+type 'enum binder_work_type' changed
+  enumerator 'BINDER_WORK_HARDER' (12) was added
+
