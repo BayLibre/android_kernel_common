@@ -2631,6 +2631,14 @@ scsi_device_quiesce(struct scsi_device *sdev)
 {
 	struct request_queue *q = sdev->request_queue;
 	int err;
+	bool print_log = false;
+	ktime_t freeze_q_start;
+
+	if (strcmp(sdev->sdev_dev.kobj.name, "0:0:0:0") == 0 ||
+	    strcmp(sdev->sdev_dev.kobj.name, "0:0:0:1") == 0 ||
+	    strcmp(sdev->sdev_dev.kobj.name, "0:0:0:2") == 0 ||
+	    strcmp(sdev->sdev_dev.kobj.name, "0:0:0:3") == 0)
+		print_log = true;
 
 	/*
 	 * It is allowed to call scsi_device_quiesce() multiple times from
@@ -2644,7 +2652,17 @@ scsi_device_quiesce(struct scsi_device *sdev)
 
 	blk_set_pm_only(q);
 
+	if (print_log)
+		freeze_q_start = ktime_get();
+
 	blk_mq_freeze_queue(q);
+
+	if (print_log)
+		printk(KERN_ERR
+		       "(%s) finishes blk_mq_freeze_queue, it takes %lld usec\n",
+		       sdev->sdev_dev.kobj.name,
+		       ktime_to_us(ktime_sub(ktime_get(), freeze_q_start)));
+
 	/*
 	 * Ensure that the effect of blk_set_pm_only() will be visible
 	 * for percpu_ref_tryget() callers that occur after the queue
