@@ -51,6 +51,14 @@ enum pkvm_psci_notification {
  *				new mapping is visible.
  * @fixmap_unmap:		Unmap a page from the hypervisor fixmap. This
  * 				call is required between each @fixmap_map().
+ * @fixblock_map:		Map a PMD-size large page into a CPU-shared
+ *				fixmap. This can be used to replace and speed-up
+ *				a set of @fixmap_map. @fixblock_unmap must be
+ *				called between each mappings to do cache
+ *				maintenance and ensure the new mapping is visible.
+ * @fixblock_unmap:		Unmap a PMD-size large page from the hypervisor
+ *				fixmap. This call is required between each
+ *				@fixblock_map.
  * @linear_map_early:		Map a large portion of memory into the
  *				hypervisor linear VA space. This is intended to
  *				be used only for module bootstrap and must be
@@ -252,8 +260,8 @@ struct pkvm_module_ops {
 	int (*hyp_smp_processor_id)(void);
 	int (*device_register_reset)(u64 phys, void *cookie,
 				     int (*cb)(void *cookie, bool host_to_guest));
-	ANDROID_KABI_RESERVE(1);
-	ANDROID_KABI_RESERVE(2);
+	ANDROID_KABI_USE(1,	void *(*fixblock_map)(phys_addr_t phys));
+	ANDROID_KABI_USE(2,	void (*fixblock_unmap)(void));
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);
 	ANDROID_KABI_RESERVE(5);
