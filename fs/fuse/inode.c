@@ -719,30 +719,22 @@ static int fuse_statfs(struct dentry *dentry, struct kstatfs *buf)
 	FUSE_ARGS(args);
 	struct fuse_statfs_out outarg;
 	int err;
-#ifdef CONFIG_FUSE_BPF
-	struct fuse_inode *fuse_inode;
-#endif
 
 	if (!fuse_allow_current_process(fm->fc)) {
 		buf->f_type = FUSE_SUPER_MAGIC;
 		return 0;
 	}
 
-#ifdef CONFIG_FUSE_BPF
-	fuse_inode = get_fuse_inode(dentry->d_inode);
-	if (fuse_inode && fuse_inode->backing_inode) {
+	if (fuse_inode_has_backing(dentry->d_inode)) {
 		struct path backing_path;
-		int err = -EBADF;
+		int err;
 
 		get_fuse_backing_path(dentry, &backing_path);
-		if (backing_path.dentry) {
-			err = vfs_statfs(&backing_path, buf);
-			path_put(&backing_path);
-		}
-
+		err = vfs_statfs(&backing_path, buf);
+		path_put(&backing_path);
+		buf->f_type = FUSE_SUPER_MAGIC;
 		return err;
 	}
-#endif
 
 	memset(&outarg, 0, sizeof(outarg));
 	args.in_numargs = 0;

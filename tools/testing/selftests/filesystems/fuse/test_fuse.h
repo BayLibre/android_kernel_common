@@ -67,6 +67,8 @@ int s_rename(struct s oldpathname, struct s newpathname);
 int s_mount(struct s source, struct s target, struct s filesystem,
 	    unsigned long mountflags, struct s data);
 int s_umount(struct s target);
+int s_chown(struct s pathname, int owner, int group);
+int s_chmod(struct s pathname, int mode);
 
 struct s tracing_folder(void);
 int tracing_on(void);

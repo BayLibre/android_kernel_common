@@ -109,6 +109,7 @@ static void fuse_file_put(struct inode *inode, struct fuse_file *ff, bool sync)
 
 		if (fuse_inode_has_backing(inode)) {
 			fuse_release_end(ff->fm, args, 0);
+			fput(ff->backing_file);
 		} else {
 			if (ra && ra->inode)
 				fuse_file_io_release(ff, ra->inode);

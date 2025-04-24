@@ -417,6 +417,33 @@ int s_umount(struct s target)
 	return res;
 }
 
+int s_chown(struct s pathname, int owner, int group)
+{
+	int res;
+
+	if (!pathname.s) {
+		errno = ENOMEM;
+		return -1;
+	}
+	res = chown(pathname.s, owner, group);
+	free(pathname.s);
+	return res;
+}
+
+int s_chmod(struct s pathname, int mode)
+{
+	int res;
+
+	if (!pathname.s) {
+		errno = ENOMEM;
+		return -1;
+	}
+	res = chmod(pathname.s, mode);
+	free(pathname.s);
+	return res;
+}
+
+
 int s_fuse_attr(struct s pathname, struct fuse_attr *fuse_attr_out)
 {
 

@@ -66,7 +66,8 @@ int fuse_open_backing(struct inode *inode, struct file *file, bool isdir)
 	if (retval)
 		goto outerr;
 
-	backing_file = dentry_open(&fd->backing_path, flags, current_cred());
+	backing_file = backing_file_open(&file->f_path, file->f_flags,
+		&fd->backing_path, current_cred());
 
 	if (IS_ERR(backing_file)) {
 		retval = PTR_ERR(backing_file);
@@ -97,15 +98,14 @@ static int fuse_open_file_backing(struct inode *inode, struct file *file)
 		return -ENOMEM;
 	file->private_data = fuse_file;
 
-	backing_file = dentry_open(&fuse_dentry->backing_path, file->f_flags,
-				   current_cred());
+	backing_file = backing_file_open(&file->f_path, file->f_flags,
+		&fuse_dentry->backing_path, current_cred());
 	if (IS_ERR(backing_file)) {
 		fuse_file_free(fuse_file);
 		file->private_data = NULL;
 		return PTR_ERR(backing_file);
 	}
 	fuse_file->backing_file = backing_file;
-
 	return 0;
 }
 
@@ -209,6 +209,8 @@ int fuse_lseek_backing(struct file *file, loff_t offset, int whence)
 	backing_file->f_pos = file->f_pos;
 	ret = vfs_llseek(backing_file, offset, whence);
 	inode_unlock(file->f_inode);
+	if (ret >= 0)
+		file->f_pos = ret;
 	return ret;
 }
 
@@ -248,7 +250,7 @@ static void fuse_passthrough_end_write(struct file *file, loff_t pos, ssize_t re
 	struct inode *inode = file_inode(file);
 	struct fuse_conn *fc = get_fuse_conn(inode);
 	struct fuse_file *ff = file->private_data;
-	struct file *backing_file = fuse_file_passthrough(ff);
+	struct file *backing_file = ff->backing_file;
 	struct inode *backing_inode = file_inode(backing_file);
 
 	if (!fc->writeback_cache) {
@@ -442,7 +444,7 @@ int fuse_lookup_initialize(struct fuse_bpf_args *fa, struct fuse_lookup_io *fli,
 		},
 	};
 
-	printk("Lookup: %llx %s", fa->nodeid, entry->d_name.name);
+	printk("Lookup: %.*s", entry->d_name.len, entry->d_name.name);
 
 	return 0;
 }

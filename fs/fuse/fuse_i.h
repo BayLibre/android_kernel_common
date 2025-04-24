@@ -1862,6 +1862,7 @@ static inline bool fuse_bpf_run(struct fuse_bpf_args *fa)
 ({									\
 	void *result;							\
 	struct fuse_bpf_args fa = {0};					\
+	struct fuse_bpf_args fa_backup = {0};				\
 	bool initialized = false;					\
 									\
 	do {								\
@@ -1876,6 +1877,7 @@ static inline bool fuse_bpf_run(struct fuse_bpf_args *fa)
 			break;						\
 		initialized = true;					\
 									\
+		fa_backup = fa;						\
 		result = ERR_PTR(backing(&fa, args));			\
 		if (IS_ERR(result))					\
 			fa.error_in = PTR_ERR(result);			\
@@ -1891,6 +1893,10 @@ static inline bool fuse_bpf_run(struct fuse_bpf_args *fa)
 				};					\
 		if (!fuse_bpf_run(&fa))					\
 			break;						\
+									\
+		fa.out_args[0].size = fa_backup.out_args[0].size;	\
+		fa.out_args[1].size = fa_backup.out_args[1].size;	\
+		fa.out_numargs = fa_backup.out_numargs;			\
 									\
 		locked = fuse_lock_inode(inode);			\
 		res = fuse_bpf_simple_request(fm, &fa);			\
