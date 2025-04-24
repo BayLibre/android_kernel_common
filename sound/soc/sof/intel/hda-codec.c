@@ -454,7 +454,13 @@ int hda_codec_i915_exit(struct snd_sof_dev *sdev)
 }
 EXPORT_SYMBOL_NS_GPL(hda_codec_i915_exit, SND_SOC_SOF_HDA_AUDIO_CODEC_I915);
 
+<<<<<<< PATCH SET (0f1382 ANDROID: Fatcat-Fix to enable Ocelot ALC256 HDA codec)
+MODULE_SOFTDEP("pre: snd_hda_codec_realtek");
+
+||||||| BASE
+=======
 MODULE_SOFTDEP("pre: snd-hda-codec-hdmi");
+>>>>>>> BASE      (8e9b9a ANDROID: tvgki: disabling CONFIG_DEBUG_INFO_BTF in tvgki am:)
 #endif
 
 MODULE_LICENSE("Dual BSD/GPL");
