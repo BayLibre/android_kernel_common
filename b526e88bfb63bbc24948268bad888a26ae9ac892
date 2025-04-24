@@ -118,6 +118,30 @@
       },
       "revId": "b526e88bfb63bbc24948268bad888a26ae9ac892",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfbbf88f_184df911",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 909,
+      "author": {
+        "id": 1953271
+      },
+      "writtenOn": "2025-04-24T16:17:55Z",
+      "side": 1,
+      "message": "Please ignore this failure. `py_library` is not global in android16-6.12 and android-mainline branches only. Unfortunately Buildifier is unable to account for this being an older branch.",
+      "parentUuid": "9b781c7e_b670f560",
+      "range": {
+        "startLine": 909,
+        "startChar": 0,
+        "endLine": 909,
+        "endChar": 10
+      },
+      "revId": "b526e88bfb63bbc24948268bad888a26ae9ac892",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
