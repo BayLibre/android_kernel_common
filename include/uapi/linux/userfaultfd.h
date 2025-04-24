@@ -331,7 +331,12 @@ struct uffdio_move {
 	 * to move same src folio. It's a KMI workaround and cannot be relied
 	 * upon by userspace.
 	 */
+<<<<<<< HEAD   (0c0f97 ANDROID: userfaultfd: add MOVE ioctl mode to confirm bug-fix)
 #define UFFDIO_MOVE_MODE_CONFIRM_FIXED		((__u64)1<<63)
+||||||| BASE
+=======
+#define UFFDIO_MOVE_MODE_CONFIRM_FIXED		((__u64)1<<62)
+>>>>>>> CHANGE (f12b3a ANDROID: userfaultfd: adjust MOVE ioctl mode to confirm bug-)
 	__u64 mode;
 	/*
 	 * "move" is written by the ioctl and must be at the end: the
