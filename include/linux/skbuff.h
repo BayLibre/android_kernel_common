@@ -38,7 +38,12 @@
 #include <net/net_debug.h>
 #include <net/dropreason-core.h>
 #include <net/netmem.h>
+<<<<<<< PATCH SET (fc017b ANDROID: add KABI padding to sk_buff)
+#include <linux/android_kabi.h>
+||||||| BASE
+=======
 #include <linux/android_vendor.h>
+>>>>>>> BASE      (345d5b ANDROID: fix up KABI break - hide member addition)
 
 /**
  * DOC: skb checksums
@@ -1069,6 +1074,9 @@ struct sk_buff {
 #ifdef CONFIG_KCOV
 	u64			kcov_handle;
 #endif
+
+	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_RESERVE(2);
 
 	); /* end headers group */
 
