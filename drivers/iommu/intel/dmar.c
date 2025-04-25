@@ -1392,7 +1392,7 @@ static int qi_check_fault(struct intel_iommu *iommu, int index, int wait_index)
  * hardware has completed the invalidation before return. Wait descriptors
  * can be part of the submission but it will not be polled for completion.
  */
-int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
+static int __qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
 		   unsigned int count, unsigned long options)
 {
 	struct q_inval *qi = iommu->qi;
@@ -1518,6 +1518,15 @@ restart:
 				ktime_to_ns(ktime_get()) - iec_start_ktime);
 
 	return rc;
+}
+
+int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
+		unsigned int count, unsigned long options)
+{
+	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled())
+		return pkvm_qi_submit_sync(iommu->reg_phys, (unsigned long)desc, count);
+	else
+		return __qi_submit_sync(iommu, desc, count, options);
 }
 
 /*
@@ -1716,8 +1725,11 @@ int dmar_enable_qi(struct intel_iommu *iommu)
 	/*
 	 * queued invalidation is already setup and enabled.
 	 */
-	if (iommu->qi)
+	if (iommu->qi) {
+		if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled())
+			pkvm_set_qi_desc_status(iommu->reg_phys, virt_to_phys(iommu->qi->desc_status));
 		return 0;
+	}
 
 	iommu->qi = kmalloc(sizeof(*qi), GFP_ATOMIC);
 	if (!iommu->qi)
@@ -1739,7 +1751,7 @@ int dmar_enable_qi(struct intel_iommu *iommu)
 
 	qi->desc = desc;
 
-	qi->desc_status = kcalloc(QI_LENGTH, sizeof(int), GFP_ATOMIC);
+	qi->desc_status = iommu_alloc_pages_node(iommu->node, GFP_ATOMIC, 0);
 	if (!qi->desc_status) {
 		iommu_free_page(qi->desc);
 		kfree(qi);
@@ -1748,6 +1760,13 @@ int dmar_enable_qi(struct intel_iommu *iommu)
 	}
 
 	raw_spin_lock_init(&qi->q_lock);
+
+	/*
+	 * TODO: See if pkvm_set_qi_desc_status hypercall and GCMD QIES hypercall
+	 * can be combined to avoid multiple vmexits.
+	 */
+	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled())
+		pkvm_set_qi_desc_status(iommu->reg_phys, virt_to_phys(iommu->qi->desc_status));
 
 	__dmar_enable_qi(iommu);
 
