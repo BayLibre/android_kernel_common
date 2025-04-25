@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f268ff51_946e0ab9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-04-25T20:30:43Z",
+      "side": 1,
+      "message": "We can\u0027t enable all of those BRCM-specific configs without a bunch of analysis. All SoC specific code needs to be in vendor modules, not the core kernel. I suspect that some of those configs are nothing more than shorthand to select groups of other configs - please explicitly enable each of the underlying configs instead (ideally making them tristate if possible).\nCan you generate a complete list of configs that are actually needed? (eg, a diff of .config with your change vs .config before your change and whether they are tristate). \n\nHow much memory is consumed by the code enabled by these configs on all the devices that don\u0027t need them?\n\nIs this for TV? If so, should it go into tv_gki.fragment instead of gki_defconfig?",
+      "revId": "701f180518c25508ccddb133cb4dd4c7c0c027b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
