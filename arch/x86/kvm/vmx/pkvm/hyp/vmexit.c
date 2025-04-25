@@ -116,6 +116,12 @@ static unsigned long handle_vmcall(struct kvm_vcpu *vcpu)
 	case PKVM_HC_IOMMU_UNMAP_PAGES:
 		ret = pkvm_iommu_domain_unmap(vcpu, a0, a1, a2, a3);
 		break;
+	case PKVM_HC_SUBMIT_QI:
+		pkvm_iommu_submit_qi(vcpu, a0, a1, a2);
+		break;
+	case PKVM_HC_SET_QI_DESC_STATUS:
+		pkvm_set_qi_desc_status_addr(a0, a1);
+		break;
 #endif
 	case PKVM_HC_TLB_REMOTE_FLUSH_RANGE:
 		pkvm_invalidate_guest_ept(a0, a1, a2);
