@@ -34,6 +34,24 @@
       "parentUuid": "f268ff51_946e0ab9",
       "revId": "701f180518c25508ccddb133cb4dd4c7c0c027b8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a556176_65c225b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1099639
+      },
+      "writtenOn": "2025-04-25T21:18:09Z",
+      "side": 1,
+      "message": "\u003e Is this for TV? If so, should it go into tv_gki.fragment instead of gki_defconfig?\n\nthe BCMSTB is a set-top-box, so not a TV, but it does run AndroidTV, is that is what you had in mind.  i see that the tv_gki.defconfig is relatively new and completely unused, is there someone who can give us some details on the intended usage/support for this target?  we could use that if that is preferred from GKI point of view, would it be maintained similar to the GKI kernel?  i see one of the main difference seem to be it does not enforce KMI (even though our integration is KMI compliant, so it does not matter to us as such).  would google produce monthly images for this target as well?\n\nthanks",
+      "parentUuid": "7c5ff0be_0ac0a886",
+      "revId": "701f180518c25508ccddb133cb4dd4c7c0c027b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
