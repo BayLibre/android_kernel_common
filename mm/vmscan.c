@@ -2351,6 +2351,54 @@ enum scan_balance {
 	SCAN_FILE,
 };
 
+static void common_file_is_tiny(pg_data_t *pgdat, struct scan_control *sc)
+{
+	unsigned long total_high_wmark = 0;
+	unsigned long free, anon;
+	unsigned long file;
+	int z;
+
+	mem_cgroup_flush_stats_ratelimited(sc->target_mem_cgroup);
+
+	if (cgroup_reclaim(sc))
+		return;
+
+	/*
+	 * Prevent the reclaimer from falling into the cache trap: as
+	 * cache pages start out inactive, every cache fault will tip
+	 * the scan balance towards the file LRU.  And as the file LRU
+	 * shrinks, so does the window for rotation from references.
+	 * This means we have a runaway feedback loop where a tiny
+	 * thrashing file LRU becomes infinitely more attractive than
+	 * anon pages.  Try to detect this based on file LRU size.
+	 */
+
+	free = sum_zone_node_page_state(pgdat->node_id, NR_FREE_PAGES);
+	file = node_page_state(pgdat, NR_ACTIVE_FILE) +
+			node_page_state(pgdat, NR_INACTIVE_FILE);
+
+	for (z = 0; z < MAX_NR_ZONES; z++) {
+		struct zone *zone = &pgdat->node_zones[z];
+
+		if (!managed_zone(zone))
+			continue;
+
+		total_high_wmark += high_wmark_pages(zone);
+	}
+
+	/*
+	 * Consider anon: if that's low too, this isn't a
+	 * runaway file reclaim problem, but rather just
+	 * extreme pressure. Reclaim as per usual then.
+	 */
+	anon = node_page_state(pgdat, NR_INACTIVE_ANON);
+
+	sc->file_is_tiny =
+		file + free <= total_high_wmark &&
+		!(sc->may_deactivate & DEACTIVATE_ANON) &&
+		anon >> sc->priority;
+}
+
 static void prepare_scan_control(pg_data_t *pgdat, struct scan_control *sc)
 {
 	unsigned long file;
@@ -2418,45 +2466,7 @@ static void prepare_scan_control(pg_data_t *pgdat, struct scan_control *sc)
 	else
 		sc->cache_trim_mode = 0;
 
-	/*
-	 * Prevent the reclaimer from falling into the cache trap: as
-	 * cache pages start out inactive, every cache fault will tip
-	 * the scan balance towards the file LRU.  And as the file LRU
-	 * shrinks, so does the window for rotation from references.
-	 * This means we have a runaway feedback loop where a tiny
-	 * thrashing file LRU becomes infinitely more attractive than
-	 * anon pages.  Try to detect this based on file LRU size.
-	 */
-	if (!cgroup_reclaim(sc)) {
-		unsigned long total_high_wmark = 0;
-		unsigned long free, anon;
-		int z;
-
-		free = sum_zone_node_page_state(pgdat->node_id, NR_FREE_PAGES);
-		file = node_page_state(pgdat, NR_ACTIVE_FILE) +
-			   node_page_state(pgdat, NR_INACTIVE_FILE);
-
-		for (z = 0; z < MAX_NR_ZONES; z++) {
-			struct zone *zone = &pgdat->node_zones[z];
-
-			if (!managed_zone(zone))
-				continue;
-
-			total_high_wmark += high_wmark_pages(zone);
-		}
-
-		/*
-		 * Consider anon: if that's low too, this isn't a
-		 * runaway file reclaim problem, but rather just
-		 * extreme pressure. Reclaim as per usual then.
-		 */
-		anon = node_page_state(pgdat, NR_INACTIVE_ANON);
-
-		sc->file_is_tiny =
-			file + free <= total_high_wmark &&
-			!(sc->may_deactivate & DEACTIVATE_ANON) &&
-			anon >> sc->priority;
-	}
+	common_file_is_tiny(pgdat, sc);
 }
 
 /*
@@ -4143,6 +4153,9 @@ static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
 		unsigned long seq;
 
 		for (seq = min_seq[type]; seq <= max_seq; seq++) {
+			if (sc->file_is_tiny && type)
+				continue;
+
 			gen = lru_gen_from_seq(seq);
 
 			for (zone = 0; zone < MAX_NR_ZONES; zone++)
@@ -4158,6 +4171,7 @@ static bool lruvec_is_reclaimable(struct lruvec *lruvec, struct scan_control *sc
 				  unsigned long min_ttl)
 {
 	int gen;
+	int min_seq_nr;
 	unsigned long birth;
 	int swappiness = get_swappiness(lruvec, sc);
 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
@@ -4169,7 +4183,12 @@ static bool lruvec_is_reclaimable(struct lruvec *lruvec, struct scan_control *sc
 	if (!lruvec_is_sizable(lruvec, sc))
 		return false;
 
-	gen = lru_gen_from_seq(evictable_min_seq(min_seq, swappiness));
+	if (sc->file_is_tiny)
+		min_seq_nr = min_seq[LRU_GEN_ANON];
+	else
+		min_seq_nr = evictable_min_seq(min_seq, swappiness);
+
+	gen = lru_gen_from_seq(min_seq_nr);
 	birth = READ_ONCE(lruvec->lrugen.timestamps[gen]);
 
 	return time_is_before_jiffies(birth + min_ttl);
@@ -5096,8 +5115,6 @@ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *
 	blk_start_plug(&plug);
 
 	set_mm_walk(pgdat, sc->proactive);
-
-	set_initial_priority(pgdat, sc);
 
 	if (current_is_kswapd())
 		sc->nr_reclaimed = 0;
@@ -6094,6 +6111,7 @@ static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
 	bool reclaimable = false;
 
 	if (lru_gen_enabled() && root_reclaim(sc)) {
+		common_file_is_tiny(pgdat, sc);
 		memset(&sc->nr, 0, sizeof(sc->nr));
 		lru_gen_shrink_node(pgdat, sc);
 		return;
