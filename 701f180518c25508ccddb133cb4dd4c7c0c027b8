@@ -124,6 +124,24 @@
       "parentUuid": "598674c3_a1ab7f64",
       "revId": "701f180518c25508ccddb133cb4dd4c7c0c027b8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2b9e913_a8849ab9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-04-25T21:58:20Z",
+      "side": 1,
+      "message": "Ok thanks. That context helps. And most of this patch is inhibiting other configs that default\u003dy. In the end, it looks like it only really enables CONFIG_SOC_BRCMSTB, CONFIG_ARCH_BCM, CONFIG_ARCH_BRCMSTB.\n\nI suspect we had a conversation like this when the android14-6.1 version was submitted. Next time, please cherry-pick it so the previous conversation is discoverable.\n\nI suspect this will break KMI, but we\u0027ll go ahead with presubmit and see.",
+      "parentUuid": "5596d0cd_4247bb0e",
+      "revId": "701f180518c25508ccddb133cb4dd4c7c0c027b8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
