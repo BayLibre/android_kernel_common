@@ -24,6 +24,8 @@
 #define PKVM_HC_TLB_REMOTE_FLUSH_RANGE	14
 #define PKVM_HC_SET_MMIO_VE		15
 #define PKVM_HC_ADD_PTDEV		16
+#define PKVM_HC_SUBMIT_QI       17
+#define PKVM_HC_SET_QI_DESC_STATUS  18
 
 #define PKVM_HC_DUMP_DMAR_TR_STRUCT	20
 #define PKVM_HC_DUMP_DOMAIN_PGT		21
@@ -183,6 +185,20 @@ static inline long pkvm_set_iommu_root(unsigned long reg_phys, unsigned long roo
 		ret = kvm_hypercall2(PKVM_HC_IOMMU_SET_RTA, reg_phys, root_addr);
 
 	return ret;
+}
+
+static inline void pkvm_set_qi_desc_status(unsigned long reg_phys, unsigned long desc_status_addr)
+{
+	if (pkvm_enabled())
+		kvm_hypercall2(PKVM_HC_SET_QI_DESC_STATUS, reg_phys, desc_status_addr);
+}
+
+static inline int pkvm_qi_submit_sync(unsigned long reg_phys, unsigned long desc,
+		unsigned int count)
+{
+	if (pkvm_enabled())
+		kvm_hypercall3(PKVM_HC_SUBMIT_QI, reg_phys, desc, count);
+	return 0;
 }
 
 static inline long pkvm_iommu_alloc_domain(struct pkvm_iommu_domalloc_param *param)
