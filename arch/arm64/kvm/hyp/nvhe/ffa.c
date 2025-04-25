@@ -1076,7 +1076,28 @@ static void do_ffa_version(struct arm_smccc_res *res,
 
 	hyp_spin_lock(&version_lock);
 	if (has_version_negotiated) {
-		res->a0 = hyp_ffa_version;
+		/*
+		 * FF-A implementations with the same major version must interoperate
+		 * with earlier minor per DEN0077A 1.2 REL0 13.2.1 but FF-A v1.2 makes a
+		 * breaking change by switching the calling convention to SMCCC 1.2.
+		 *
+		 * According to DEN0028 1.6 G BET0 Appendix F:
+		 * * SMCCC 1.1: Mandates preservation of registers X4–X17 across a SMC/HVC call.
+		 * * SMCCC 1.2: Permits calls to use X4–X17 as return and argument registers.
+		 *
+		 * However, the hypervisor has already negotiated a version with the firmware
+		 * and cannot be changed for the lifetime of the hypervisor (DEN0077A 1.2 REL0
+		 * 13.2.1).
+		 *
+		 * Do not let the host downgrade the hypervisor when it requires a switch
+		 * between incompatible calling conventions.
+		 */
+		if (FFA_MINOR_VERSION(ffa_req_version) < FFA_MINOR_VERSION(hyp_ffa_version) &&
+			FFA_MINOR_VERSION(ffa_req_version) < 2) {
+			res->a0 = FFA_RET_NOT_SUPPORTED;
+		} else {
+			res->a0 = hyp_ffa_version;
+		}
 		goto unlock;
 	}
 
