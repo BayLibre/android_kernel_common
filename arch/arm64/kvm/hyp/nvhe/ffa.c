@@ -1131,8 +1131,22 @@ static void do_ffa_guest_version(struct arm_smccc_res *res, struct kvm_cpu_conte
 	}
 
 	hyp_spin_lock(&version_lock);
-	if (has_version_negotiated)
-		res->a0 = hyp_ffa_version;
+	if (has_version_negotiated) {
+		/*
+		* If hypervisor is at FF-A 1.2 or later, require the same of guests. While
+		* guests on older FF-A versions can be supported, it is non-trivial due to
+		* non-backwards compatible changes between SMC calling conventions 1.1 and
+		* 1.2.
+		*/
+		if (FFA_MINOR_VERSION(ffa_req_version) < 2 && FFA_MINOR_VERSION(hyp_ffa_version) >= 2) {
+			res->a0 = FFA_RET_NOT_SUPPORTED;
+		} else if (FFA_MINOR_VERSION(ffa_req_version) < FFA_MINOR_VERSION(hyp_ffa_version)) {
+			res->a0 = ffa_req_version;
+		} else {
+			res->a0 = hyp_ffa_version;
+		}
+
+	}
 	else
 		res->a0 = FFA_RET_NOT_SUPPORTED;
 	hyp_spin_unlock(&version_lock);
