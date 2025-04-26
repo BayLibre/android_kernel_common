@@ -957,7 +957,7 @@ static int pkvm_vm_ioctl_ffa_support(struct kvm *kvm, u32 enable)
 	 * don't enable the FF-A capability.
 	 */
 	if (FFA_MAJOR_VERSION(ffa_version) != 1 ||
-		FFA_MINOR_VERSION(ffa_version) < FFA_MINOR_VERSION(FFA_VERSION_1_1)) {
+		FFA_MINOR_VERSION(ffa_version) < FFA_MINOR_VERSION(FFA_VERSION_1_2)) {
 		return -EINVAL;
 	}
 
