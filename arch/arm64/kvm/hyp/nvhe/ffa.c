@@ -1066,6 +1066,12 @@ static void do_ffa_guest_version(struct arm_smccc_res *res, struct kvm_cpu_conte
 		return;
 	}
 
+	/* For now, FF-A 1.2 is the minimum required guest version */
+	if (FFA_MINOR_VERSION(ffa_req_version) < 2) {
+		res->a0 = FFA_RET_NOT_SUPPORTED;
+		return;
+	}
+
 	hyp_spin_lock(&version_lock);
 	if (has_version_negotiated)
 		res->a0 = hyp_ffa_version;
