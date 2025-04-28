@@ -2389,6 +2389,8 @@ int vprintk_store(int facility, int level,
 		memcpy(&r.info->dev_info, dev_info, sizeof(r.info->dev_info));
 	printk_store_execution_ctx(r.info);
 
+	trace_android_rvh_logbuf(prb, &r);
+
 	/* A message without a trailing newline can be continued. */
 	if (!(flags & LOG_NEWLINE))
 		prb_commit(&e);
