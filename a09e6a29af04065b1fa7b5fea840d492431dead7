@@ -16,6 +16,24 @@
       "message": "Shouldn\u0027t the real driver issue be fixed instead?  multi-touch is kind of important for many devices.",
       "revId": "a09e6a29af04065b1fa7b5fea840d492431dead7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "504d0467_355a0137",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3485565
+      },
+      "writtenOn": "2025-04-28T09:42:36Z",
+      "side": 1,
+      "message": "Hi Greg - great that you\u0027ve responded here as we have some questions.\n\nLet\u0027s start with some background - this change is disabling hid-multitouch on Android Desktop only in fact to make it possible to be enabled as a vendor module.\n\nIn another location, we add rules to define it a DDK module (pa/3213458), point our build files to this new location (pa/3213437), and add a necessary fix to the functionality (pa/3213457)\n\nOkey, so to the point:\n\nWhile this patch is to Android Desktop, we also need to think about long term strategy - **Would Android accept converting hid-multitouch module to a tristate? That is, convert `\u003dy` into `\u003dm`.**\n\nThe key place that puts as red flag is this line:\n- https://android.googlesource.com/kernel/common/+/refs/heads/android16-6.12-desktop/drivers/hid/hid-quirks.c#542\n\notherwise as far as I can see this module is not protected.",
+      "parentUuid": "740143ab_cfc515de",
+      "revId": "a09e6a29af04065b1fa7b5fea840d492431dead7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
