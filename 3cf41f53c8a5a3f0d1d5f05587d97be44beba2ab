@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8307f08e_090946b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-04-28T15:24:27Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by KernelCommit: Commit needs to contain a properly formatted Bug: or Fixes: line. There needs to be a space between \"Bug:\" and the BugID.\n\nAnalyzer Description: Ensures that kernel commit messages follow the guidelines.\nOwner: android-kernel-team@google.com\n\nCommit needs to contain a properly formatted Bug: or Fixes: line.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "3cf41f53c8a5a3f0d1d5f05587d97be44beba2ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3e32b1d_7cbcacef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-04-28T15:24:27Z",
+      "side": 1,
+      "message": "there is no vendor hook in this patch. See https://source.android.com/docs/core/architecture/kernel/kernel-code#vendor-hooks",
+      "revId": "3cf41f53c8a5a3f0d1d5f05587d97be44beba2ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b97f58b7_84760139",
+        "filename": "drivers/input/keyboard/gpio_keys.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-04-28T15:24:27Z",
+      "side": 1,
+      "message": "Is this fixing a bug in upstream Linux? Please provide a lot more description of the issue and why this fixes it. If it is an upstream bug, you MUST submit this to upstream Linux first and then when it is accepted (merged into a maintainer tree) we can take it here as FROMGIT (or even better, wait until it lands in Linus\u0027 tree and take it as UPSTREAM). See https://source.android.com/docs/core/architecture/kernel/kernel-code#patch-requirements",
+      "fixSuggestions": [
+        {
+          "fixId": "e3aa07d6_5d93e78a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/input/keyboard/gpio_keys.c",
+              "range": {
+                "startLine": 433,
+                "startChar": 0,
+                "endLine": 433,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t * Without input_sync() call, the input event\n\t\t\t * may not be delivered to the user space\n\t\t\t * application before the system resumes.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3cf41f53c8a5a3f0d1d5f05587d97be44beba2ab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
