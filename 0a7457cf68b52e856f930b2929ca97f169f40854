@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ed35ad3_5ef1b804",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-04-28T18:36:49Z",
+      "side": 1,
+      "message": "This fails to build:\n\n....12/out/bazel/output_user_root/4ae1ecebbb2cc2fc13a373ed8dc8fd56/sandbox/linux-sandbox/545/execroot/_main/aosp/kernel/cgroup/cpuset.c:1069:47: error: no member named \u0027cpus_requested\u0027 in \u0027struct cpuset\u0027\n 1069 |         trace_android_rvh_update_cpus_allowed(p, cs-\u003ecpus_requested, new_mask, \u0026ret);\n      |                                                  ~~  ^\n1 error generated.",
+      "revId": "0a7457cf68b52e856f930b2929ca97f169f40854",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
