@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44f3464a_1dddff43",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1076,
+      "author": {
+        "id": 1856745
+      },
+      "writtenOn": "2025-04-29T19:03:04Z",
+      "side": 1,
+      "message": "maybe add a todo bug that describe the need to check for the requested version being lower to the negotiated, and requiring pKVM to track each guest VM version and support the backward compatible conversion.",
+      "fixSuggestions": [
+        {
+          "fixId": "8bdfd9bc_62814974",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 1076,
+                "startChar": 0,
+                "endLine": 1076,
+                "endChar": 0
+              },
+              "replacement": "\t/* TODO(b/324565898): Check for requested version being lower than negotiated. */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "568f42456b850fd1207442d743d72f39450a37d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
