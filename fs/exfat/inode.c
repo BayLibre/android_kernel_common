@@ -376,8 +376,50 @@ static int exfat_get_block(struct inode *inode, sector_t iblock,
 			exfat_fs_error_ratelimit(sb,
 					"b_data(%p) != folio_addr(%p)",
 					bh_result->b_data, addr);
+<<<<<<< HEAD   (1f20a7 Merge 49b0a6ab8e52 ("exfat: fix random stack corruption afte)
 			err = -EINVAL;
 			goto done;
+||||||| BASE
+				err = -EINVAL;
+				goto done;
+			}
+
+			/* Read a block */
+			err = bh_read(bh_result, 0);
+			if (err < 0)
+				goto done;
+
+			/* Zero unwritten part of a block */
+			memset(bh_result->b_data + size, 0,
+			       bh_result->b_size - size);
+		} else {
+			/*
+			 * The range has not been written, clear the mapped flag
+			 * to only zero the cache and do not read from disk.
+			 */
+			clear_buffer_mapped(bh_result);
+=======
+				err = -EINVAL;
+				goto done;
+			}
+
+			/* Read a block */
+			err = bh_read(bh_result, 0);
+			if (err < 0)
+				goto done;
+
+			/* Zero unwritten part of a block */
+			memset(bh_result->b_data + size, 0,
+			       bh_result->b_size - size);
+
+			err = 0;
+		} else {
+			/*
+			 * The range has not been written, clear the mapped flag
+			 * to only zero the cache and do not read from disk.
+			 */
+			clear_buffer_mapped(bh_result);
+>>>>>>> BRANCH (37c987 exfat: fix potential wrong error return from get_block)
 		}
 
 		/* Read a block */
