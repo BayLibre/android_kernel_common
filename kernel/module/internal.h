@@ -421,3 +421,14 @@ int _nr_protected_symbol_exports(void);
 #endif
 
 const char *const protected_symbol_exports[];
+
+/* Symbol import permission */
+int _nr_permitted_symbol_imports(void);
+
+#ifdef TRIM_UNUSED_KSYMS
+#define NR_PERMITTED_SYMBOL_IMPORTS _nr_permitted_symbol_imports()
+#else
+#define NR_PERMITTED_SYMBOL_IMPORTS 0
+#endif
+
+const char *const permitted_symbol_imports[];
