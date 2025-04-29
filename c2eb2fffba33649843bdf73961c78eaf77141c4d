@@ -16,6 +16,24 @@
       "message": "Differs from its original in 6.6: https://android-review.googlesource.com/c/kernel/common/+/2985272 with no note and explanation why.",
       "revId": "c2eb2fffba33649843bdf73961c78eaf77141c4d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "097c9a6a_8f587629",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1986720
+      },
+      "writtenOn": "2025-04-29T22:40:00Z",
+      "side": 1,
+      "message": "Hi Suren,\n\nHere are the changes from 6.6 kernel:\n\n1. split_map_pages() was renamed to split_free_pages() and is now defined in mm/page_alloc as a static function. [1]\nHence isolate_and_split_free_page() was moved into mm/page_alloc as well to be able to make use of split_free_pages(). The list argument is also now an array of lists based on page order on account of switching to the split_free_pages API.\n\n2. isolate_lru_page was also deprecated. Hence isolate_anon_lru_page() is now using folio_isolate_lru() which is the folio equivalent.\n\nThanks!",
+      "parentUuid": "6bbe9b16_b2ff3406",
+      "revId": "c2eb2fffba33649843bdf73961c78eaf77141c4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
