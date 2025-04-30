@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "037384c5_2b2d4583",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-04-30T13:05:59Z",
+      "side": 1,
+      "message": "No need to mention the first one.",
+      "range": {
+        "startLine": 9,
+        "startChar": 54,
+        "endLine": 9,
+        "endChar": 85
+      },
+      "revId": "29258057d630fdd647623829a9d30e5ccd251fbf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a96183f3_e4054cbf",
+        "filename": "scripts/Makefile.modpost",
+        "patchSetId": 6
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-04-30T13:05:59Z",
+      "side": 1,
+      "message": "What does this do?",
+      "range": {
+        "startLine": 178,
+        "startChar": 20,
+        "endLine": 178,
+        "endChar": 133
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "1253216c_c054fb6d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "scripts/Makefile.modpost",
+              "range": {
+                "startLine": 178,
+                "startChar": 0,
+                "endLine": 178,
+                "endChar": 0
+              },
+              "replacement": "# Prepend $(srctree)/ to mod-protect-list if it\u0027s a relative path and the file\n# exists in the source tree.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "29258057d630fdd647623829a9d30e5ccd251fbf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
