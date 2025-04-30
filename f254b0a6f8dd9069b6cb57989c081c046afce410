@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "091e6fcf_8d1279d0",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-04-30T23:20:55Z",
+      "side": 1,
+      "message": "Could you move this whole block you are adding after these functions are defined (to Line 6966) so that these forward declarations are not needed?",
+      "range": {
+        "startLine": 472,
+        "startChar": 0,
+        "endLine": 473,
+        "endChar": 53
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c898d573_bc2d3e03",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 472,
+                "startChar": 0,
+                "endLine": 500,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 2659,
+                "startChar": 0,
+                "endLine": 2659,
+                "endChar": 0
+              },
+              "replacement": "\nint __isolate_free_page(struct page *page, unsigned int order);\nstatic void split_free_pages(struct list_head *list);\n\n#ifdef CONFIG_COMPACTION\nunsigned long isolate_and_split_free_page(struct page *page,\n\t\tstruct list_head *list)\n{\n\tunsigned long isolated;\n\tunsigned int order;\n\n\tif (!PageBuddy(page))\n\t\treturn 0;\n\n\torder \u003d buddy_order(page);\n\tisolated \u003d __isolate_free_page(page, order);\n\tif (!isolated)\n\t\treturn 0;\n\n\tset_page_private(page, order);\n\tlist_add(\u0026page-\u003elru, \u0026list[order]);\n\n\tsplit_free_pages(list);\n\n\treturn isolated;\n}\nEXPORT_SYMBOL_GPL(isolate_and_split_free_page);\n#endif\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f254b0a6f8dd9069b6cb57989c081c046afce410",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
