@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9f9fe77_2d8cea0c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1891742
+      },
+      "writtenOn": "2025-04-30T07:52:15Z",
+      "side": 1,
+      "message": "Fixed",
+      "parentUuid": "ba181e00_6c83fd14",
+      "revId": "7ec043576a1c0711fbd712cd360d94ee8a1dd22c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c235d61a_d1f6c10d",
@@ -149,6 +167,30 @@
       "side": 1,
       "message": "It does, however, need a valid `cherry picked from...\u0027 line rather than a `Link:` tag.",
       "parentUuid": "076e0c23_5b7ae8f0",
+      "range": {
+        "startLine": 21,
+        "startChar": 84,
+        "endLine": 21,
+        "endChar": 98
+      },
+      "revId": "7ec043576a1c0711fbd712cd360d94ee8a1dd22c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a9c7f52_44cb7619",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1891742
+      },
+      "writtenOn": "2025-04-30T07:52:15Z",
+      "side": 1,
+      "message": "I added the `cherry picked from` line. This commit is now in mainline Linux so it only has the full sha1 hash and I switched `FROMGIT` in the commit title to `UPSTREAM`.",
+      "parentUuid": "a36d80b7_0876acd8",
       "range": {
         "startLine": 21,
         "startChar": 84,
