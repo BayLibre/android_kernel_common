@@ -77,6 +77,30 @@
       ],
       "revId": "fcff4e2c34bc92571579c99af635d9a8ee524625",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e86fbcf4_15552d40",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1522,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2025-04-30T22:36:46Z",
+      "side": 1,
+      "message": "I actually think adding vendor-specific list allows better merge conflict resolutions (especially if there are multiple vendors modifying the list simultaneously). This also allows us to know who to contact when removing items from the list.",
+      "parentUuid": "14a5e513_72264a69",
+      "range": {
+        "startLine": 1522,
+        "startChar": 10,
+        "endLine": 1522,
+        "endChar": 38
+      },
+      "revId": "fcff4e2c34bc92571579c99af635d9a8ee524625",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
