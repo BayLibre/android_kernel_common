@@ -1,0 +1,65 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14a5e513_72264a69",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1522,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2025-04-30T13:17:34Z",
+      "side": 1,
+      "message": "I don\u0027t think we need a vendor-specific list here as it anyway applies to all binaries. Consider adding the files just to _this_ list, right before the more specific globs. Alternatively, split them up e.g. for sched and binder.",
+      "range": {
+        "startLine": 1522,
+        "startChar": 10,
+        "endLine": 1522,
+        "endChar": 38
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c30b7d5c_5639cc38",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 1518,
+                "startChar": 0,
+                "endLine": 1518,
+                "endChar": 0
+              },
+              "replacement": "        \"drivers/android/binder_alloc.h\",\n        \"drivers/android/binder_internal.h\",\n        \"drivers/android/binder_trace.h\",\n        \"drivers/android/dbitmap.h\",\n        \"kernel/sched/cpudeadline.h\",\n        \"kernel/sched/cpupri.h\",\n        \"kernel/sched/ext.h\",\n        \"kernel/sched/features.h\",\n        \"kernel/sched/sched.h\",\n        \"kernel/sched/stats.h\",\n        \"kernel/workqueue_internal.h\",\n"
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 1522,
+                "startChar": 0,
+                "endLine": 1523,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 1629,
+                "startChar": 0,
+                "endLine": 1647,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "fcff4e2c34bc92571579c99af635d9a8ee524625",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
