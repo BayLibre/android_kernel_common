@@ -14,6 +14,7 @@
 #include "vkms_drv.h"
 #include <kunit/visibility.h>
 #include "vkms_composer.h"
+#include "vkms_luts.h"
 
 static u16 pre_mul_blend_channel(u16 src, u16 dst, u16 alpha)
 {
@@ -165,6 +166,274 @@ static void apply_lut(const struct vkms_crtc_state *crtc_state, struct line_buff
 		pixel->g = apply_lut_to_channel_value(&crtc_state->gamma_lut, pixel->g, LUT_GREEN);
 		pixel->b = apply_lut_to_channel_value(&crtc_state->gamma_lut, pixel->b, LUT_BLUE);
 	}
+}
+
+static void apply_colorop(struct pixel_argb_u16 *pixel, struct drm_colorop *colorop)
+{
+	struct drm_colorop_state *colorop_state = colorop->state;
+	struct drm_device *dev = colorop->dev;
+
+	if (colorop->type == DRM_COLOROP_1D_CURVE) {
+		switch (colorop_state->curve_1d_type) {
+		case DRM_COLOROP_1D_CURVE_SRGB_INV_EOTF:
+			pixel->r = apply_lut_to_channel_value(&srgb_inv_eotf, pixel->r, LUT_RED);
+			pixel->g = apply_lut_to_channel_value(&srgb_inv_eotf, pixel->g, LUT_GREEN);
+			pixel->b = apply_lut_to_channel_value(&srgb_inv_eotf, pixel->b, LUT_BLUE);
+			break;
+		case DRM_COLOROP_1D_CURVE_SRGB_EOTF:
+			pixel->r = apply_lut_to_channel_value(&srgb_eotf, pixel->r, LUT_RED);
+			pixel->g = apply_lut_to_channel_value(&srgb_eotf, pixel->g, LUT_GREEN);
+			pixel->b = apply_lut_to_channel_value(&srgb_eotf, pixel->b, LUT_BLUE);
+			break;
+		default:
+			drm_WARN_ONCE(dev, true,
+				      "unknown colorop 1D curve type %d\n",
+				      colorop_state->curve_1d_type);
+			break;
+		}
+	}
+}
+
+static void pre_blend_color_transform(const struct vkms_plane_state *plane_state,
+				      struct line_buffer *output_buffer)
+{
+	for (size_t x = 0; x < output_buffer->n_pixels; x++) {
+		struct drm_colorop *colorop = plane_state->base.base.color_pipeline;
+
+		while (colorop) {
+			struct drm_colorop_state *colorop_state;
+
+			colorop_state = colorop->state;
+
+			if (!colorop_state)
+				return;
+
+			if (!colorop_state->bypass)
+				apply_colorop(&output_buffer->pixels[x], colorop);
+
+			colorop = colorop->next;
+		}
+	}
+}
+
+/**
+ * direction_for_rotation() - Get the correct reading direction for a given rotation
+ *
+ * @rotation: Rotation to analyze. It correspond the field @frame_info.rotation.
+ *
+ * This function will use the @rotation setting of a source plane to compute the reading
+ * direction in this plane which correspond to a "left to right writing" in the CRTC.
+ * For example, if the buffer is reflected on X axis, the pixel must be read from right to left
+ * to be written from left to right on the CRTC.
+ */
+static enum pixel_read_direction direction_for_rotation(unsigned int rotation)
+{
+	struct drm_rect tmp_a, tmp_b;
+	int x, y;
+
+	/*
+	 * Points A and B are depicted as zero-size rectangles on the CRTC.
+	 * The CRTC writing direction is from A to B. The plane reading direction
+	 * is discovered by inverse-transforming A and B.
+	 * The reading direction is computed by rotating the vector AB (top-left to top-right) in a
+	 * 1x1 square.
+	 */
+
+	tmp_a = DRM_RECT_INIT(0, 0, 0, 0);
+	tmp_b = DRM_RECT_INIT(1, 0, 0, 0);
+	drm_rect_rotate_inv(&tmp_a, 1, 1, rotation);
+	drm_rect_rotate_inv(&tmp_b, 1, 1, rotation);
+
+	x = tmp_b.x1 - tmp_a.x1;
+	y = tmp_b.y1 - tmp_a.y1;
+
+	if (x == 1 && y == 0)
+		return READ_LEFT_TO_RIGHT;
+	else if (x == -1 && y == 0)
+		return READ_RIGHT_TO_LEFT;
+	else if (y == 1 && x == 0)
+		return READ_TOP_TO_BOTTOM;
+	else if (y == -1 && x == 0)
+		return READ_BOTTOM_TO_TOP;
+
+	WARN_ONCE(true, "The inverse of the rotation gives an incorrect direction.");
+	return READ_LEFT_TO_RIGHT;
+}
+
+/**
+ * clamp_line_coordinates() - Compute and clamp the coordinate to read and write during the blend
+ * process.
+ *
+ * @direction: direction of the reading
+ * @current_plane: current plane blended
+ * @src_line: source line of the reading. Only the top-left coordinate is used. This rectangle
+ * must be rotated and have a shape of 1*pixel_count if @direction is vertical and a shape of
+ * pixel_count*1 if @direction is horizontal.
+ * @src_x_start: x start coordinate for the line reading
+ * @src_y_start: y start coordinate for the line reading
+ * @dst_x_start: x coordinate to blend the read line
+ * @pixel_count: number of pixels to blend
+ *
+ * This function is mainly a safety net to avoid reading outside the source buffer. As the
+ * userspace should never ask to read outside the source plane, all the cases covered here should
+ * be dead code.
+ */
+static void clamp_line_coordinates(enum pixel_read_direction direction,
+				   const struct vkms_plane_state *current_plane,
+				   const struct drm_rect *src_line, int *src_x_start,
+				   int *src_y_start, int *dst_x_start, int *pixel_count)
+{
+	/* By default the start points are correct */
+	*src_x_start = src_line->x1;
+	*src_y_start = src_line->y1;
+	*dst_x_start = current_plane->frame_info->dst.x1;
+
+	/* Get the correct number of pixel to blend, it depends of the direction */
+	switch (direction) {
+	case READ_LEFT_TO_RIGHT:
+	case READ_RIGHT_TO_LEFT:
+		*pixel_count = drm_rect_width(src_line);
+		break;
+	case READ_BOTTOM_TO_TOP:
+	case READ_TOP_TO_BOTTOM:
+		*pixel_count = drm_rect_height(src_line);
+		break;
+	}
+
+	/*
+	 * Clamp the coordinates to avoid reading outside the buffer
+	 *
+	 * This is mainly a security check to avoid reading outside the buffer, the userspace
+	 * should never request to read outside the source buffer.
+	 */
+	switch (direction) {
+	case READ_LEFT_TO_RIGHT:
+	case READ_RIGHT_TO_LEFT:
+		if (*src_x_start < 0) {
+			*pixel_count += *src_x_start;
+			*dst_x_start -= *src_x_start;
+			*src_x_start = 0;
+		}
+		if (*src_x_start + *pixel_count > current_plane->frame_info->fb->width)
+			*pixel_count = max(0, (int)current_plane->frame_info->fb->width -
+				*src_x_start);
+		break;
+	case READ_BOTTOM_TO_TOP:
+	case READ_TOP_TO_BOTTOM:
+		if (*src_y_start < 0) {
+			*pixel_count += *src_y_start;
+			*dst_x_start -= *src_y_start;
+			*src_y_start = 0;
+		}
+		if (*src_y_start + *pixel_count > current_plane->frame_info->fb->height)
+			*pixel_count = max(0, (int)current_plane->frame_info->fb->height -
+				*src_y_start);
+		break;
+	}
+}
+
+/**
+ * blend_line() - Blend a line from a plane to the output buffer
+ *
+ * @current_plane: current plane to work on
+ * @y: line to write in the output buffer
+ * @crtc_x_limit: width of the output buffer
+ * @stage_buffer: temporary buffer to convert the pixel line from the source buffer
+ * @output_buffer: buffer to blend the read line into.
+ */
+static void blend_line(struct vkms_plane_state *current_plane, int y,
+		       int crtc_x_limit, struct line_buffer *stage_buffer,
+		       struct line_buffer *output_buffer)
+{
+	int src_x_start, src_y_start, dst_x_start, pixel_count;
+	struct drm_rect dst_line, tmp_src, src_line;
+
+	/* Avoid rendering useless lines */
+	if (y < current_plane->frame_info->dst.y1 ||
+	    y >= current_plane->frame_info->dst.y2)
+		return;
+
+	/*
+	 * dst_line is the line to copy. The initial coordinates are inside the
+	 * destination framebuffer, and then drm_rect_* helpers are used to
+	 * compute the correct position into the source framebuffer.
+	 */
+	dst_line = DRM_RECT_INIT(current_plane->frame_info->dst.x1, y,
+				 drm_rect_width(&current_plane->frame_info->dst),
+				 1);
+
+	drm_rect_fp_to_int(&tmp_src, &current_plane->frame_info->src);
+
+	/*
+	 * [1]: Clamping src_line to the crtc_x_limit to avoid writing outside of
+	 * the destination buffer
+	 */
+	dst_line.x1 = max_t(int, dst_line.x1, 0);
+	dst_line.x2 = min_t(int, dst_line.x2, crtc_x_limit);
+	/* The destination is completely outside of the crtc. */
+	if (dst_line.x2 <= dst_line.x1)
+		return;
+
+	src_line = dst_line;
+
+	/*
+	 * Transform the coordinate x/y from the crtc to coordinates into
+	 * coordinates for the src buffer.
+	 *
+	 * - Cancel the offset of the dst buffer.
+	 * - Invert the rotation. This assumes that
+	 *   dst = drm_rect_rotate(src, rotation) (dst and src have the
+	 *   same size, but can be rotated).
+	 * - Apply the offset of the source rectangle to the coordinate.
+	 */
+	drm_rect_translate(&src_line, -current_plane->frame_info->dst.x1,
+			   -current_plane->frame_info->dst.y1);
+	drm_rect_rotate_inv(&src_line, drm_rect_width(&tmp_src),
+			    drm_rect_height(&tmp_src),
+			    current_plane->frame_info->rotation);
+	drm_rect_translate(&src_line, tmp_src.x1, tmp_src.y1);
+
+	/* Get the correct reading direction in the source buffer. */
+
+	enum pixel_read_direction direction =
+		direction_for_rotation(current_plane->frame_info->rotation);
+
+	/* [2]: Compute and clamp the number of pixel to read */
+	clamp_line_coordinates(direction, current_plane, &src_line, &src_x_start, &src_y_start,
+			       &dst_x_start, &pixel_count);
+
+	if (pixel_count <= 0) {
+		/* Nothing to read, so avoid multiple function calls */
+		return;
+	}
+
+	/*
+	 * Modify the starting point to take in account the rotation
+	 *
+	 * src_line is the top-left corner, so when reading READ_RIGHT_TO_LEFT or
+	 * READ_BOTTOM_TO_TOP, it must be changed to the top-right/bottom-left
+	 * corner.
+	 */
+	if (direction == READ_RIGHT_TO_LEFT) {
+		// src_x_start is now the right point
+		src_x_start += pixel_count - 1;
+	} else if (direction == READ_BOTTOM_TO_TOP) {
+		// src_y_start is now the bottom point
+		src_y_start += pixel_count - 1;
+	}
+
+	/*
+	 * Perform the conversion and the blending
+	 *
+	 * Here we know that the read line (x_start, y_start, pixel_count) is
+	 * inside the source buffer [2] and we don't write outside the stage
+	 * buffer [1].
+	 */
+	current_plane->pixel_read_line(current_plane, src_x_start, src_y_start, direction,
+				       pixel_count, &stage_buffer->pixels[dst_x_start]);
+	pre_blend_color_transform(current_plane, stage_buffer);
+	pre_mul_alpha_blend(stage_buffer, output_buffer,
+			    dst_x_start, pixel_count);
 }
 
 /**
