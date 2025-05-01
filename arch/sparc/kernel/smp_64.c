@@ -1538,7 +1538,7 @@ void __init setup_per_cpu_areas(void)
 	int rc = -EINVAL;
 
 	if (pcpu_chosen_fc != PCPU_FC_PAGE) {
-		rc = pcpu_embed_first_chunk(PERCPU_MODULE_RESERVE,
+		rc = pcpu_embed_first_chunk(get_pcpu_module_reserve_size(),
 					    PERCPU_DYNAMIC_RESERVE, 4 << 20,
 					    pcpu_cpu_distance,
 					    pcpu_cpu_to_node);
@@ -1548,7 +1548,7 @@ void __init setup_per_cpu_areas(void)
 				pcpu_fc_names[pcpu_chosen_fc], rc);
 	}
 	if (rc < 0)
-		rc = pcpu_page_first_chunk(PERCPU_MODULE_RESERVE,
+		rc = pcpu_page_first_chunk(get_pcpu_module_reserve_size(),
 					   pcpu_cpu_to_node);
 	if (rc < 0)
 		panic("cannot initialize percpu area (err=%d)", rc);

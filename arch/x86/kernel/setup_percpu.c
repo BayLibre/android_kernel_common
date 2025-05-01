@@ -45,7 +45,7 @@ EXPORT_SYMBOL(__per_cpu_offset);
  * address anywhere.  No need to reserve space in the first chunk.
  */
 #ifdef CONFIG_X86_64
-#define PERCPU_FIRST_CHUNK_RESERVE	PERCPU_MODULE_RESERVE
+#define PERCPU_FIRST_CHUNK_RESERVE	get_pcpu_module_reserve_size()
 #else
 #define PERCPU_FIRST_CHUNK_RESERVE	0
 #endif
@@ -134,7 +134,7 @@ void __init setup_per_cpu_areas(void)
 #endif
 	rc = -EINVAL;
 	if (pcpu_chosen_fc != PCPU_FC_PAGE) {
-		const size_t dyn_size = PERCPU_MODULE_RESERVE +
+		const size_t dyn_size = get_pcpu_module_reserve_size() +
 			PERCPU_DYNAMIC_RESERVE - PERCPU_FIRST_CHUNK_RESERVE;
 		size_t atom_size;
 

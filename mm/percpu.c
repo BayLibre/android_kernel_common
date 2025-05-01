@@ -2769,6 +2769,40 @@ static int __init percpu_alloc_setup(char *str)
 }
 early_param("percpu_alloc", percpu_alloc_setup);
 
+static unsigned long pcpu_module_reserve_size = 0;
+#define PCPU_MODULE_RESERVE_LIMIT (2 * 1024 *1024) // 2MB
+#define PCPU_MODULE_RESERVE_ALIGN 8
+
+static int __init parse_pcpu_module_reserve_size(char *arg)
+{
+	pcpu_module_reserve_size = memparse(arg, &arg);
+	pcpu_module_reserve_size = ALIGN_DOWN(pcpu_module_reserve_size, PCPU_MODULE_RESERVE_ALIGN);
+
+	if (pcpu_module_reserve_size >= PCPU_MODULE_RESERVE_LIMIT)
+		pcpu_module_reserve_size = 0;
+
+	pr_notice("Percpu module reserve size change to %lu bytes\n", pcpu_module_reserve_size);
+	return 0;
+}
+early_param("pcpu_module_reserve", parse_pcpu_module_reserve_size);
+
+unsigned long get_pcpu_module_reserve_size(void)
+{
+	unsigned long ret = 0;
+
+#ifdef CONFIG_MODULES
+	if (pcpu_module_reserve_size != 0)
+		return pcpu_module_reserve_size;
+
+#ifdef CONFIG_MEM_ALLOC_PROFILING
+	ret = 8 << 13;
+#else
+	ret = 8 << 10;
+#endif
+#endif
+	return ret;
+}
+
 /*
  * pcpu_embed_first_chunk() is used by the generic percpu setup.
  * Build it if needed by the arch config or the generic setup is going
@@ -3330,7 +3364,7 @@ void __init setup_per_cpu_areas(void)
 	 * Always reserve area for module percpu variables.  That's
 	 * what the legacy allocator did.
 	 */
-	rc = pcpu_embed_first_chunk(PERCPU_MODULE_RESERVE, PERCPU_DYNAMIC_RESERVE,
+	rc = pcpu_embed_first_chunk(get_pcpu_module_reserve_size(), PERCPU_DYNAMIC_RESERVE,
 				    PAGE_SIZE, NULL, NULL);
 	if (rc < 0)
 		panic("Failed to initialize percpu areas.");
