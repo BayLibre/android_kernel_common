@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71df38f2_37cc2f7c",
+        "filename": "drivers/android/binder_alloc.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-05-01T22:13:36Z",
+      "side": 1,
+      "message": "Huh? why is the CRC of this changing? `struct binder_alloc` and `struct binder_buffer` are not modified. Are maybe the headers impacting this?",
+      "range": {
+        "startLine": 175,
+        "startChar": 4,
+        "endLine": 175,
+        "endChar": 33
+      },
+      "revId": "c9657998a396b8947624af33f27e0eb13980b709",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
