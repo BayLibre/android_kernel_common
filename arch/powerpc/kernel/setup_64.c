@@ -834,7 +834,7 @@ DEFINE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
 
 void __init setup_per_cpu_areas(void)
 {
-	const size_t dyn_size = PERCPU_MODULE_RESERVE + PERCPU_DYNAMIC_RESERVE;
+	const size_t dyn_size = get_pcpu_module_reserve_size() + PERCPU_DYNAMIC_RESERVE;
 	size_t atom_size;
 	unsigned long delta;
 	unsigned int cpu;

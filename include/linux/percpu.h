@@ -165,4 +165,5 @@ extern phys_addr_t per_cpu_ptr_to_phys(void *addr);
 
 extern unsigned long pcpu_nr_pages(void);
 
+extern unsigned long get_pcpu_module_reserve_size(void);
 #endif /* __LINUX_PERCPU_H */

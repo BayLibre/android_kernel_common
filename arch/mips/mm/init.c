@@ -543,7 +543,7 @@ void __init setup_per_cpu_areas(void)
 	 * Always reserve area for module percpu variables.  That's
 	 * what the legacy allocator did.
 	 */
-	rc = pcpu_embed_first_chunk(PERCPU_MODULE_RESERVE,
+	rc = pcpu_embed_first_chunk(get_pcpu_module_reserve_size(),
 				    PERCPU_DYNAMIC_RESERVE, PAGE_SIZE,
 				    pcpu_cpu_distance,
 				    pcpu_cpu_to_node);
