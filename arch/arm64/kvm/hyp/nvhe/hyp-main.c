@@ -65,6 +65,9 @@ static inline void hyp_reqs_smccc_encode(unsigned long ret, struct kvm_cpu_conte
 
 void __kvm_hyp_host_forward_smc(struct kvm_cpu_context *host_ctxt);
 
+static void fpsimd_host_save(struct pkvm_hyp_vcpu *hyp_vcpu);
+static void fpsimd_host_restore(struct pkvm_hyp_vcpu *hyp_vcpu);
+
 static bool (*default_host_smc_handler)(struct user_pt_regs *regs);
 static bool (*default_trap_handler)(struct user_pt_regs *regs);
 static bool (*unmask_serror)(void);
@@ -715,6 +718,9 @@ static void flush_hyp_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu)
 		BUG();
 	}
 
+	if (pkvm_hyp_vcpu_is_protected(hyp_vcpu))
+		fpsimd_host_save(hyp_vcpu);
+
 	hyp_vcpu->exit_code = 0;
 }
 
@@ -723,6 +729,9 @@ static void sync_hyp_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu, u32 exit_reason)
 	struct kvm_vcpu *host_vcpu = hyp_vcpu->host_vcpu;
 	hyp_entry_exit_handler_fn ec_handler;
 	u8 esr_ec;
+
+	if (pkvm_hyp_vcpu_is_protected(hyp_vcpu))
+		fpsimd_host_restore(hyp_vcpu);
 
 	if (!pkvm_hyp_vcpu_is_protected(hyp_vcpu))
 		sync_debug_state(hyp_vcpu);
@@ -788,8 +797,33 @@ static void __hyp_sve_restore_host(struct kvm_vcpu *vcpu)
 	sve_cond_update_zcr_vq(ZCR_ELx_LEN_MASK, SYS_ZCR_EL2);
 }
 
-static void fpsimd_host_restore(void)
+static void fpsimd_host_save(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
+	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+
+	if (system_supports_sve()) {
+		struct kvm_host_sve_state *sve_state = get_host_sve_state(vcpu);
+		u64 zcr_el2 = sve_vq_from_vl(kvm_host_sve_max_vl) - 1;
+
+		sve_state->zcr_el1 = read_sysreg_el1(SYS_ZCR);
+		sve_cond_update_zcr_vq(zcr_el2, SYS_ZCR_EL2);
+		__sve_save_state(sve_state->sve_regs +
+				 sve_ffr_offset(kvm_host_sve_max_vl),
+				 &sve_state->fpsr);
+	} else {
+		__fpsimd_save_state(get_host_fpsimd_state(vcpu));
+	}
+
+	hyp_vcpu->vcpu.arch.fp_state = FP_STATE_FREE;
+}
+
+static void fpsimd_host_restore(struct pkvm_hyp_vcpu *hyp_vcpu)
+{
+	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+
+	if (hyp_vcpu->vcpu.arch.fp_state != FP_STATE_GUEST_OWNED)
+		return;
+
 	if (has_hvhe())
 		sysreg_clear_set(cpacr_el1, 0,
 				 (CPACR_EL1_ZEN_EL1EN | CPACR_EL1_ZEN_EL0EN |
@@ -798,22 +832,17 @@ static void fpsimd_host_restore(void)
 		sysreg_clear_set(cptr_el2, CPTR_EL2_TZ | CPTR_EL2_TFP, 0);
 	isb();
 
-	if (unlikely(is_protected_kvm_enabled())) {
-		struct pkvm_hyp_vcpu *hyp_vcpu = pkvm_get_loaded_hyp_vcpu();
-		struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+	if (vcpu_has_sve(vcpu))
+		__hyp_sve_save_guest(vcpu);
+	else
+		__fpsimd_save_state(&vcpu->arch.ctxt.fp_regs);
 
-		if (vcpu_has_sve(vcpu))
-			__hyp_sve_save_guest(vcpu);
-		else
-			__fpsimd_save_state(&vcpu->arch.ctxt.fp_regs);
+	if (system_supports_sve())
+		__hyp_sve_restore_host(vcpu);
+	else
+		__fpsimd_restore_state(get_host_fpsimd_state(vcpu));
 
-		if (system_supports_sve())
-			__hyp_sve_restore_host(vcpu);
-		else
-			__fpsimd_restore_state(get_host_fpsimd_state(vcpu));
-
-		hyp_vcpu->vcpu.arch.fp_state = FP_STATE_HOST_OWNED;
-	}
+	hyp_vcpu->vcpu.arch.fp_state = FP_STATE_FREE;
 }
 
 static void handle___pkvm_vcpu_load(struct kvm_cpu_context *host_ctxt)
@@ -844,14 +873,15 @@ static void handle___pkvm_vcpu_load(struct kvm_cpu_context *host_ctxt)
 		*last_ran = hyp_vcpu->vcpu.vcpu_id;
 	}
 
-	hyp_vcpu->vcpu.arch.fp_state = FP_STATE_HOST_OWNED;
-
 	if (pkvm_hyp_vcpu_is_protected(hyp_vcpu)) {
 		/* Propagate WFx trapping flags, trap ptrauth */
 		hyp_vcpu->vcpu.arch.hcr_el2 &= ~(HCR_TWE | HCR_TWI |
 						     HCR_API | HCR_APK);
 		hyp_vcpu->vcpu.arch.hcr_el2 |= hcr_el2 & (HCR_TWE | HCR_TWI);
 	}
+
+	if (!pkvm_hyp_vcpu_is_protected(hyp_vcpu))
+		fpsimd_host_save(hyp_vcpu);
 }
 
 static void handle___pkvm_vcpu_put(struct kvm_cpu_context *host_ctxt)
@@ -865,11 +895,9 @@ static void handle___pkvm_vcpu_put(struct kvm_cpu_context *host_ctxt)
 	if (hyp_vcpu) {
 		struct kvm_vcpu *host_vcpu = hyp_vcpu->host_vcpu;
 
-		if (hyp_vcpu->vcpu.arch.fp_state == FP_STATE_GUEST_OWNED)
-			fpsimd_host_restore();
-
 		if (!pkvm_hyp_vcpu_is_protected(hyp_vcpu) &&
 		    !vcpu_get_flag(host_vcpu, PKVM_HOST_STATE_DIRTY)) {
+			fpsimd_host_restore(hyp_vcpu);
 			__sync_hyp_vcpu(hyp_vcpu);
 		}
 
@@ -885,12 +913,10 @@ static void handle___pkvm_vcpu_sync_state(struct kvm_cpu_context *host_ctxt)
 		return;
 
 	hyp_vcpu = pkvm_get_loaded_hyp_vcpu();
-	if (!hyp_vcpu || pkvm_hyp_vcpu_is_protected(hyp_vcpu))
+	if (!hyp_vcpu  || pkvm_hyp_vcpu_is_protected(hyp_vcpu))
 		return;
 
-	if (hyp_vcpu->vcpu.arch.fp_state == FP_STATE_GUEST_OWNED)
-		fpsimd_host_restore();
-
+	fpsimd_host_restore(hyp_vcpu);
 	__sync_hyp_vcpu(hyp_vcpu);
 }
 
@@ -1734,8 +1760,9 @@ static void handle_host_smc(struct kvm_cpu_context *host_ctxt)
 	bool handled;
 
 	hyp_vcpu = pkvm_get_loaded_hyp_vcpu();
-	if (hyp_vcpu && hyp_vcpu->vcpu.arch.fp_state == FP_STATE_GUEST_OWNED)
-		fpsimd_host_restore();
+
+	if (hyp_vcpu && !pkvm_hyp_vcpu_is_protected(hyp_vcpu))
+		fpsimd_host_restore(hyp_vcpu);
 
 	func_id &= ~ARM_SMCCC_CALL_HINTS;
 
@@ -1769,10 +1796,14 @@ void handle_trap(struct kvm_cpu_context *host_ctxt)
 	case ESR_ELx_EC_SMC64:
 		handle_host_smc(host_ctxt);
 		break;
-	case ESR_ELx_EC_FP_ASIMD:
 	case ESR_ELx_EC_SVE:
-	case ESR_ELx_EC_SME:
-		fpsimd_host_restore();
+		if (has_hvhe())
+			sysreg_clear_set(cpacr_el1, 0, (CPACR_EL1_ZEN_EL1EN |
+							CPACR_EL1_ZEN_EL0EN));
+		else
+			sysreg_clear_set(cptr_el2, CPTR_EL2_TZ, 0);
+		isb();
+		sve_cond_update_zcr_vq(ZCR_ELx_LEN_MASK, SYS_ZCR_EL2);
 		break;
 	case ESR_ELx_EC_IABT_LOW:
 	case ESR_ELx_EC_DABT_LOW:
