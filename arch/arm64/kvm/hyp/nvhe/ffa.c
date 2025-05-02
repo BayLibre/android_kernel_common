@@ -201,18 +201,14 @@ static void ffa_set_retval(struct kvm_cpu_context *ctxt,
 	/*
 	 * DEN0028C 2.6: SMC32/HVC32 call from aarch64 must preserve x8-x30.
 	 *
-	 * The most straightforward approach is to look at the function ID
-	 * sent by the caller. However, the caller could send FFA_MSG_WAIT
-	 * which is a 32-bit interface but the reply could very well be 64-bit
-	 * such as FFA_FN64_MSG_SEND_DIRECT_REQ or FFA_MSG_SEND_DIRECT_REQ2.
-	 *
-	 * Instead, we could look at the function ID in the response (a0) but
-	 * that doesn't work either as FFA_VERSION responses put the version
-	 * number (or error code) in w0.
-	 *
-	 * Set x8-x17 iff response contains 64-bit function ID in a0.
+	 * We rely on the the function ID sent by the caller but note that there
+	 * are cases where a 32-bit interface can have a 64-bit response in FF-A
+	 * 1.2 (e.g. FFA_MSG_WAIT or FFA_RUN). This will be addressed in a future
+	 * version of the FF-A spec. Moreover, these corner cases are not relevant
+	 * on this code path (FFA_RUN is passed through [not proxied] by the
+	 * hypervisor and FFA_MSG_WAIT calls are made from the secure partition).
 	 */
-	if (func_id != FFA_VERSION && ARM_SMCCC_IS_64(res->a0)) {
+	if (ARM_SMCCC_IS_64(func_id)) {
 		cpu_reg(ctxt, 8) = res->a8;
 		cpu_reg(ctxt, 9) = res->a9;
 		cpu_reg(ctxt, 10) = res->a10;
@@ -1276,6 +1272,12 @@ static bool ffa_call_supported(u64 func_id)
 	case FFA_NOTIFICATION_SET:
 	case FFA_NOTIFICATION_GET:
 	case FFA_NOTIFICATION_INFO_GET:
+	/* Unimplemented interfaces added in FF-A 1.2 */
+	case FFA_MSG_SEND_DIRECT_REQ2:
+	case FFA_MSG_SEND_DIRECT_RESP2:
+	case FFA_CONSOLE_LOG:
+	case FFA_PARTITION_INFO_GET_REGS:
+	case FFA_EL3_INTR_HANDLE:
 		return false;
 	}
 
@@ -1415,7 +1417,7 @@ static int hyp_ffa_post_init(void)
 	if (res.a0 != FFA_SUCCESS)
 		return -EOPNOTSUPP;
 
-	switch (res.a2) {
+	switch (res.a2 & FFA_FEAT_RXTX_MIN_SZ_MASK) {
 	case FFA_FEAT_RXTX_MIN_SZ_4K:
 		min_rxtx_sz = SZ_4K;
 		break;
@@ -1884,10 +1886,12 @@ int hyp_ffa_init(void *pages)
 	if (kvm_host_psci_config.smccc_version < ARM_SMCCC_VERSION_1_1)
 		return 0;
 
+	__hyp_exit();
 	arm_smccc_1_2_smc(&(struct arm_smccc_1_2_regs) {
 		.a0 = FFA_VERSION,
-		.a1 = FFA_VERSION_1_1,
+		.a1 = FFA_VERSION_1_2,
 	}, &res);
+	__hyp_enter();
 	if (res.a0 == FFA_RET_NOT_SUPPORTED)
 		return 0;
 
@@ -1908,11 +1912,10 @@ int hyp_ffa_init(void *pages)
 		return -EOPNOTSUPP;
 
 	/* See do_ffa_guest_version before bumping maximum supported version. */
-	if (FFA_MINOR_VERSION(res.a0) < FFA_MINOR_VERSION(FFA_VERSION_1_1))
+	if (FFA_MINOR_VERSION(res.a0) < FFA_MINOR_VERSION(FFA_VERSION_1_2))
 		hyp_ffa_version = res.a0;
-
 	else
-		hyp_ffa_version = FFA_VERSION_1_1;
+		hyp_ffa_version = FFA_VERSION_1_2;
 
 	tx = pages;
 	pages += KVM_FFA_MBOX_NR_PAGES * PAGE_SIZE;
