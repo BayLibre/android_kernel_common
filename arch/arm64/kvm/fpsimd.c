@@ -54,6 +54,10 @@ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
 	if (!system_supports_fpsimd())
 		return;
 
+	/* pKVM is responsible for the host/guest fpsimd state. */
+	if (is_protected_kvm_enabled())
+		return;
+
 	/*
 	 * Ensure that any host FPSIMD/SVE/SME state is saved and unbound such
 	 * that the host kernel is responsible for restoring this state upon
