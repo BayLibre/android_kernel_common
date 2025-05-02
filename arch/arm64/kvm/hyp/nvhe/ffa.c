@@ -1807,6 +1807,12 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 	case FFA_FN64_MSG_SEND_DIRECT_REQ:
 		do_ffa_direct_msg(&regs, ctxt, hyp_vcpu_to_ffa_handle(hyp_vcpu));
 		goto out_guest;
+	case FFA_MSG_SEND_DIRECT_REQ2:
+		if (hyp_ffa_version >= FFA_VERSION_1_2) {
+			do_ffa_direct_msg2(&regs, ctxt, hyp_vcpu_to_ffa_handle(hyp_vcpu));
+			goto out_guest;
+		}
+		fallthrough;
 	default:
 		ret = -EOPNOTSUPP;
 		break;
