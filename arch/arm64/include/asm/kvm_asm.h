@@ -116,6 +116,11 @@ enum __kvm_host_smccc_func {
 	__KVM_HOST_SMCCC_FUNC___pkvm_host_hvc_pd,
 	__KVM_HOST_SMCCC_FUNC___pkvm_stage2_snapshot,
 	__KVM_HOST_SMCCC_FUNC___pkvm_host_iommu_iotlb_sync_map,
+	__KVM_HOST_SMCCC_FUNC___pkvm_host_iommu_attach_dev_nested,
+	__KVM_HOST_SMCCC_FUNC___pkvm_host_iommu_detach_dev_nested,
+	__KVM_HOST_SMCCC_FUNC___pkvm_host_iommu_iotlb_inv_nested_domain,
+	__KVM_HOST_SMCCC_FUNC___pkvm_host_iommu_iotlb_inv_nested_domain_range,
+	__KVM_HOST_SMCCC_FUNC___pkvm_host_iommu_cache_invalidate,
 
 	/*
 	 * Start of the dynamically registered hypercalls. Start a bit
