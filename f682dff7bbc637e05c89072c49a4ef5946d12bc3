@@ -22,6 +22,30 @@
       },
       "revId": "f682dff7bbc637e05c89072c49a4ef5946d12bc3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10c95113_1fc6212c",
+        "filename": "include/linux/page_size_compat.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-05-05T09:31:28Z",
+      "side": 1,
+      "message": "Hi Alice, I now removed the rust specific helper, instead I used the static key binding to reimplement the macros in rust in the preceding patch (aosp/3617429)",
+      "parentUuid": "7e3400ab_85f79d06",
+      "range": {
+        "startLine": 191,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 37
+      },
+      "revId": "f682dff7bbc637e05c89072c49a4ef5946d12bc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
