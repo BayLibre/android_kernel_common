@@ -10,6 +10,8 @@ int __pkvm_register_guest_smc_handler(bool (*cb)(struct arm_smccc_1_2_regs *,
 						 struct arm_smccc_res *res,
 						 pkvm_handle_t handle),
 				      pkvm_handle_t handle);
+int __pkvm_register_guest_hvc_handler(bool (*cb)(struct arm_smccc_1_2_regs *,
+						 struct arm_smccc_res *res));
 int __pkvm_register_default_trap_handler(bool (*cb)(struct user_pt_regs *));
 int __pkvm_register_illegal_abt_notifier(void (*cb)(struct user_pt_regs *));
 int __pkvm_register_hyp_panic_notifier(void (*cb)(struct user_pt_regs *));

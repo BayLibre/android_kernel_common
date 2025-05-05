@@ -1742,6 +1742,34 @@ int __pkvm_register_guest_smc_handler(bool (*cb)(struct arm_smccc_1_2_regs *,
 	return ret;
 }
 
+static bool (*default_guest_hvc_handler)(struct arm_smccc_1_2_regs *,
+					 struct arm_smccc_res *res);
+
+int __pkvm_register_guest_hvc_handler(bool (*cb)(struct arm_smccc_1_2_regs *,
+						 struct arm_smccc_res *res))
+{
+	return cmpxchg_release(&default_guest_hvc_handler, NULL, cb) ? -EBUSY :
+								       0;
+}
+
+static bool call_default_guest_hvc_handler(struct kvm_vcpu *vcpu)
+{
+	struct kvm_cpu_context *ctxt = &vcpu->arch.ctxt;
+	struct arm_smccc_1_2_regs regs;
+	struct arm_smccc_res res;
+	bool handled = false;
+
+	if (smp_load_acquire(&default_guest_hvc_handler)) {
+		memcpy(&regs, &ctxt->regs, sizeof(regs));
+
+		handled = default_guest_hvc_handler(&regs, &res);
+
+		smccc_set_retval(vcpu, res.a0, res.a1, res.a2, res.a3);
+	}
+
+	return handled;
+}
+
 /*
  * Handler for protected VM HVC calls.
  *
@@ -1801,12 +1829,17 @@ bool kvm_handle_pvm_hvc64(struct kvm_vcpu *vcpu, u64 *exit_code)
 		return pkvm_memrelinquish_call(hyp_vcpu, exit_code);
 	case ARM_SMCCC_TRNG_VERSION ... ARM_SMCCC_TRNG_RND32:
 	case ARM_SMCCC_TRNG_RND64:
-		if (smccc_trng_available)
+		if (0 /* NOTE: for testing purposes smccc_trng_available */)
 			return pkvm_forward_trng(vcpu);
 		break;
 	default:
-		return pkvm_handle_psci(hyp_vcpu);
+		if (pkvm_handle_psci(hyp_vcpu))
+			return true;
+		break;
 	}
+
+	if (call_default_guest_hvc_handler(vcpu))
+		return true;
 
 	smccc_set_retval(vcpu, val[0], val[1], val[2], val[3]);
 	return true;

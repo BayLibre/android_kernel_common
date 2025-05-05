@@ -236,7 +236,9 @@ struct pkvm_module_ops {
 						     struct arm_smccc_res *res,
 						     pkvm_handle_t handle),
 					  pkvm_handle_t handle));
-	ANDROID_KABI_RESERVE(5);
+	ANDROID_KABI_USE(5, int (*register_guest_hvc_handler)(
+				    bool (*cb)(struct arm_smccc_1_2_regs *,
+					       struct arm_smccc_res *res)));
 	ANDROID_KABI_RESERVE(6);
 	ANDROID_KABI_RESERVE(7);
 	ANDROID_KABI_RESERVE(8);

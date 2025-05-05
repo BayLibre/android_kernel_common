@@ -125,6 +125,7 @@ const struct pkvm_module_ops module_ops = {
 	.host_stage2_get_leaf = host_stage2_get_leaf,
 	.register_host_smc_handler = __pkvm_register_host_smc_handler,
 	.register_guest_smc_handler = __pkvm_register_guest_smc_handler,
+	.register_guest_hvc_handler = __pkvm_register_guest_hvc_handler,
 	.register_default_trap_handler = __pkvm_register_default_trap_handler,
 	.register_illegal_abt_notifier = __pkvm_register_illegal_abt_notifier,
 	.register_psci_notifier = __pkvm_register_psci_notifier,
