@@ -62,6 +62,8 @@ struct pkvm_iommu_driver {
  * allocates pages and updates nr_donated for the map hypercall. pkvm
  * updates nr_returned with the pages not used or freed during map/unmap
  * hypercalls.
+ * This is also used in update_ce hypercall to give back the pages when
+ * pagetable is trimmed due to change in agaw(levels).
  */
 struct pkvm_iommu_page_donation {
 	int nr_pages;
@@ -72,6 +74,8 @@ struct pkvm_iommu_page_donation {
  * Parameters passed by the host for UPDATE_CE hypercall.
  */
 struct pkvm_update_ce_param {
+	u64 pgd;
+	u64 reg_phys;
 	u16 bdf;
 	u16 domain_gaw;
 	u16 domain_agaw;
@@ -184,11 +188,14 @@ static inline long pkvm_iommu_alloc_domain(struct pkvm_iommu_domalloc_param *par
 	return ret;
 }
 
-static inline long pkvm_update_context_entry(unsigned long reg_phys, struct pkvm_update_ce_param *param)
+static inline long pkvm_update_context_entry(struct pkvm_update_ce_param *param,
+		struct pkvm_iommu_page_donation *donation)
 {
 	long ret = 0;
-	if (pkvm_enabled())
-		ret = kvm_hypercall2(PKVM_HC_IOMMU_UPDATE_CE, reg_phys, (unsigned long)param);
+	if (pkvm_enabled()) {
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_UPDATE_CE,
+				(unsigned long)param, (unsigned long)donation);
+	}
 
 	return ret;
 }
