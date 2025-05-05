@@ -90,16 +90,17 @@ static inline bool __valid_paging_pgd(u64 pgd)
 	return pgd && (pgd != pkvm_host_ept_pgd());
 }
 
-unsigned long pkvm_iommu_update_ce(struct kvm_vcpu *hvcpu, unsigned long phys, unsigned long param_gva)
+unsigned long pkvm_iommu_update_ce(struct kvm_vcpu *hvcpu, unsigned long param_gva, unsigned long donation_gva)
 {
-	struct pkvm_iommu *iommu = find_iommu_by_reg_phys(phys);
-	unsigned long old_ce_pgd, new_ce_pgd;
+	struct pkvm_iommu_page_donation donation;
 	struct pkvm_update_ce_param param;
 	struct context_entry *context;
 	struct root_entry *root_entry;
 	struct context_entry *ce;
-	struct x86_exception e;
+	struct pkvm_iommu *iommu;
 	struct root_entry *root;
+	struct x86_exception e;
+	u64 old_ce_pgd, new_ce_pgd;
 	unsigned long ret;
 	u8 bus, devfn;
 	u64 old_rte, new_rte;
@@ -111,6 +112,16 @@ unsigned long pkvm_iommu_update_ce(struct kvm_vcpu *hvcpu, unsigned long phys, u
 				__func__, param_gva);
 		return ret;
 	}
+
+	ret = read_gva(hvcpu, donation_gva, &donation, sizeof(struct pkvm_iommu_page_donation), &e);
+	if (ret < 0) {
+		pkvm_err("pkvm: %s Failed to read donation(gva: %lx from host!\n",
+				__func__, donation_gva);
+		return ret;
+	}
+
+	iommu = find_iommu_by_reg_phys(param.reg_phys);
+	PKVM_ASSERT(iommu);
 
 	root_entry = pkvm_phys_to_virt(iommu->pgt.root_pa);
 	context = pkvm_phys_to_virt(param.rte & VTD_PAGE_MASK);
@@ -187,23 +198,24 @@ unsigned long pkvm_iommu_update_ce(struct kvm_vcpu *hvcpu, unsigned long phys, u
 		if (__valid_paging_pgd(new_ce_pgd)) {
 			domain = pkvm_get_iommu_domain(new_ce_pgd);
 			PKVM_ASSERT(domain);
-			if (domain) {
-				PKVM_ASSERT(domain->iommu_coherency == iommu_coherency(iommu->iommu.ecap));
-				PKVM_ASSERT(domain->iommu_superpage == param.iommu_superpage);
-				PKVM_ASSERT(domain->gaw == param.domain_gaw);
-				PKVM_ASSERT(domain->agaw == param.domain_agaw);
-			} else {
+
+			new_ce_pgd = pkvm_domain_update_pgd(domain,
+					&donation, param.domain_agaw);
+			if (new_ce_pgd != domain->pgd) {
+				pkvm_dbg("pkvm: %s, domain changed pgd [%llx] => [%llx]\n",
+					__func__, domain->pgd, new_ce_pgd);
+				pkvm_put_iommu_domain(domain);
 				domain = pkvm_alloc_iommu_domain(new_ce_pgd);
-				PKVM_ASSERT(domain);
-				/*
-				 * TODO: The following values has to be computed by pkvm
-				 *       instead of being passed from the host.
-				 */
-				domain->iommu_coherency = param.iommu_coherency;
-				domain->iommu_superpage = param.iommu_superpage;
-				domain->gaw = param.domain_gaw;
-				domain->agaw = param.domain_agaw;
+				param.pgd = new_ce_pgd;
+				context_lm_set_slptr(ce, new_ce_pgd);
+				domain = pkvm_get_iommu_domain(new_ce_pgd);
 			}
+
+			domain->iommu_coherency = param.iommu_coherency;
+			domain->iommu_superpage = param.iommu_superpage;
+			domain->gaw = param.domain_gaw;
+			domain->agaw = param.domain_agaw;
+
 			pkvm_domain_attach_iommu(domain, iommu);
 			PKVM_ASSERT(!iommu_find_ptdev(iommu, param.bdf, 0));
 			ptdev = iommu_add_ptdev(iommu, param.bdf, 0);
@@ -224,6 +236,20 @@ unsigned long pkvm_iommu_update_ce(struct kvm_vcpu *hvcpu, unsigned long phys, u
 	flush_context_cache(iommu, 0, param.bdf, DMA_CCMD_MASK_NOBIT, DMA_CCMD_DEVICE_INVL);
 	flush_iotlb(iommu, did, 0, 0, DMA_TLB_DSI_FLUSH);
 	pkvm_spin_unlock(&iommu->lock);
+
+	ret = write_gva(hvcpu, donation_gva, &donation, sizeof(struct pkvm_iommu_page_donation), &e);
+	if (ret < 0) {
+		pkvm_err("pkvm: %s Failed to write donation (gva: %lx) tp host!\n",
+				__func__, donation_gva);
+		return ret;
+	}
+
+	ret = write_gva(hvcpu, param_gva, &param, sizeof(struct pkvm_update_ce_param), &e);
+	if (ret < 0) {
+		pkvm_err("pkvm: %s Failed to write param (gva: %lx) tp host!\n",
+				__func__, param_gva);
+		return ret;
+	}
 
 	return ret;
 }
