@@ -2188,6 +2188,19 @@ static ssize_t fuse_dev_do_write(struct fuse_dev *fud,
 		path[req->args->out_args[0].size - 1] = 0;
 		req->out.h.error =
 			kern_path(path, 0, req->args->canonical_path);
+
+	if (!err && req->in.h.opcode == FUSE_LOOKUP &&
+			req->args->out_args[1].size ==
+			sizeof(struct fuse_entry_backing_out)) {
+		struct fuse_entry_backing_out *febo =
+			(struct fuse_entry_backing_out *)
+				req->args->out_args[1].value;
+		struct fuse_entry_backing *feb =
+			container_of(febo, struct fuse_entry_backing, out);
+
+		feb->backing_file = fget(febo->backing_fd);
+		if (!feb->backing_file)
+			err = -EBADFD;
 	}
 
 	spin_lock(&fpq->lock);
