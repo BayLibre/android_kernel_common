@@ -326814,6 +326814,12 @@ function {
   parameter_id: 0x2b79f509
 }
 function {
+  id: 0x1debca12
+  return_type_id: 0x48b5725f
+  parameter_id: 0x36f998d3
+  parameter_id: 0x337f6d5e
+}
+function {
   id: 0x1ded15a3
   return_type_id: 0x48b5725f
   parameter_id: 0x35d510c3
@@ -335882,6 +335888,11 @@ function {
   return_type_id: 0x6720d32f
   parameter_id: 0x347303b4
   parameter_id: 0x312b639e
+}
+function {
+  id: 0x9058feb4
+  return_type_id: 0x6720d32f
+  parameter_id: 0x3760766d
 }
 function {
   id: 0x905a52d9
@@ -362347,6 +362358,11 @@ function {
   return_type_id: 0x0ab51f0d
   parameter_id: 0x1efad3bd
   parameter_id: 0x6720d32f
+}
+function {
+  id: 0xc446f809
+  return_type_id: 0x3760766d
+  parameter_id: 0x36f998d3
 }
 function {
   id: 0xc44c8212
@@ -431497,6 +431513,15 @@ elf_symbol {
   full_name: "tty_wakeup"
 }
 elf_symbol {
+  id: 0x15f59e38
+  name: "typec_altmode2port"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x4e997a6c
+  type_id: 0xc446f809
+  full_name: "typec_altmode2port"
+}
+elf_symbol {
   id: 0xfb5efe2e
   name: "typec_altmode_attention"
   is_defined: true
@@ -431513,6 +431538,15 @@ elf_symbol {
   crc: 0xeed09f5b
   type_id: 0x90f57fd0
   full_name: "typec_altmode_notify"
+}
+elf_symbol {
+  id: 0xe4a7a1d3
+  name: "typec_altmode_set_ops"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xe258fe48
+  type_id: 0x1debca12
+  full_name: "typec_altmode_set_ops"
 }
 elf_symbol {
   id: 0xe7fb597f
@@ -431567,6 +431601,15 @@ elf_symbol {
   crc: 0xd32b89fe
   type_id: 0x5b4eac6a
   full_name: "typec_get_drvdata"
+}
+elf_symbol {
+  id: 0xab1410be
+  name: "typec_get_negotiated_svdm_version"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x8aa2c175
+  type_id: 0x9058feb4
+  full_name: "typec_get_negotiated_svdm_version"
 }
 elf_symbol {
   id: 0xb8c4fc82
@@ -447128,14 +447171,17 @@ interface {
   symbol_id: 0xe0d69cde
   symbol_id: 0x6590f3a5
   symbol_id: 0x8e95f895
+  symbol_id: 0x15f59e38
   symbol_id: 0xfb5efe2e
   symbol_id: 0x58687602
+  symbol_id: 0xe4a7a1d3
   symbol_id: 0xe7fb597f
   symbol_id: 0xe6cbb47e
   symbol_id: 0x0d23e13a
   symbol_id: 0xd02d0c21
   symbol_id: 0xe9d634b5
   symbol_id: 0x84b20708
+  symbol_id: 0xab1410be
   symbol_id: 0xb8c4fc82
   symbol_id: 0x8fafe0a6
   symbol_id: 0x6d4f7368
