@@ -33,6 +33,47 @@
       "message": "3539341: ANDROID: mm/memfd-ashmem-shim: Simplify buffer name retrieval | https://android-review.googlesource.com/c/kernel/common/+/3539341",
       "revId": "7b89b57429c2ec59cc879a864d6c5480ef6f3606",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f81f055_cd4fe016",
+        "filename": "mm/memfd-ashmem-shim.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-05-05T18:11:14Z",
+      "side": 1,
+      "message": "Si, if the file was deleted this will be NULL instead of \"(deleted)\"?",
+      "range": {
+        "startLine": 26,
+        "startChar": 25,
+        "endLine": 26,
+        "endChar": 57
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "69b5b393_fef7bbcc",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/memfd-ashmem-shim.c",
+              "range": {
+                "startLine": 25,
+                "startChar": 0,
+                "endLine": 26,
+                "endChar": 0
+              },
+              "replacement": "\tif (!file-\u003ef_path.dentry)\n\t\treturn NULL;\n\n\tif (!file-\u003ef_path.dentry-\u003ed_name.name)\n\t\treturn NULL;\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7b89b57429c2ec59cc879a864d6c5480ef6f3606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
