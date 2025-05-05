@@ -16,6 +16,23 @@
       "message": "From 7b89b57429c2ec59cc879a864d6c5480ef6f3606 Mon Sep 17 00:00:00 2001\nFrom: Isaac J. Manjarres \u003cisaacmanjarres@google.com\u003e\nDate: Tue, 11 Mar 2025 23:16:10 -0700\nSubject: [PATCH] ANDROID: mm/memfd-ashmem-shim: Simplify buffer name retrieval\n\nThe current way of getting the name for a buffer always requires a\nbuffer to be allocated for the name to be copied into. This is\ninefficient, as names for shmem buffers are always stored in the\nsame field, and they do not change.\n\nTherefore, simplify the name retrieval to just read the buffer name\nfrom the field it is always stored in for shmem buffers. This also\naligns the code to what is present on the android16-6.12 branch.\n\nBug: 401214613\nBug: 111903542\nChange-Id: Idd7b2d16601c890b78bd5705c92842bee470e75c\nSigned-off-by: Isaac J. Manjarres \u003cisaacmanjarres@google.com\u003e\n---\n\ndiff --git a/mm/memfd-ashmem-shim.c b/mm/memfd-ashmem-shim.c\nindex e09d95a..258498cc 100644\n--- a/mm/memfd-ashmem-shim.c\n+++ b/mm/memfd-ashmem-shim.c\n@@ -16,58 +16,31 @@\n #include \"memfd-ashmem-shim.h\"\n #include \"memfd-ashmem-shim-internal.h\"\n \n-/* file_path() returns the path of the file including the root, hence the additional \"/\". */\n-#define MEMFD_PATH_PREFIX \"/memfd:\"\n-#define MEMFD_PATH_PREFIX_LEN (sizeof(MEMFD_PATH_PREFIX) - 1)\n+/* memfd file names all start with memfd: */\n+#define MEMFD_PREFIX \"memfd:\"\n+#define MEMFD_PREFIX_LEN (sizeof(MEMFD_PREFIX) - 1)\n \n-/* All memfd files are unlinked, and are therefore suffixed with the \" (deleted)\" string. */\n-#define UNLINKED_FILE_SUFFIX \" (deleted)\"\n-#define UNLINKED_FILE_SUFFIX_LEN (sizeof(UNLINKED_FILE_SUFFIX) - 1)\n-\n-/*\n- * 1 character for the start of the path (/), NAME_MAX for the maximum length of a full memfd file\n- * name, UNLINKED_FILE_SUFFIX_LEN for the \" (deleted)\" suffix, and 1 for the NUL terminating\n- * character.\n- */\n-#define MAX_FILE_PATH_SIZE (1 + NAME_MAX + UNLINKED_FILE_SUFFIX_LEN + 1)\n-\n-static char *get_memfd_file_name(struct file *file, char *buf, size_t size)\n+static const char *get_memfd_name(struct file *file)\n {\n-\tchar *name_end;\n-\tchar *path \u003d file_path(file, buf, size);\n+\t/* This pointer is always valid, so no need to check if it\u0027s NULL. */\n+\tconst char *file_name \u003d file-\u003ef_path.dentry-\u003ed_name.name;\n \n-\tif (IS_ERR(path))\n-\t\treturn path;\n+\tif (file_name !\u003d strstr(file_name, MEMFD_PREFIX))\n+\t\treturn NULL;\n \n-\t/* Only handle memfds; we cannot make assumptions about other file names. */\n-\tname_end \u003d strstr(path, UNLINKED_FILE_SUFFIX);\n-\tif ((strstr(path, MEMFD_PATH_PREFIX) !\u003d path) || !name_end)\n-\t\treturn ERR_PTR(-EINVAL);\n-\n-\t/*\n-\t * Since file_path() returns the full path of the file, including the root, the format will\n-\t * be:\n-\t *\n-\t * \"/memfd:testbuf (deleted)\"\n-\t *\n-\t * But the ASHMEM_GET_NAME ioctl only returns the name of the buffer without any prefixes\n-\t * or suffixes. So, terminate the string at the start of the \" (deleted)\" suffix so that\n-\t * strlen() can be used on it from the start of the name.\n-\t */\n-\t*name_end \u003d \u0027\\0\u0027;\n-\n-\t/* return a pointer to the start of the name */\n-\treturn \u0026path[MEMFD_PATH_PREFIX_LEN];\n+\treturn file_name;\n }\n \n static long get_name(struct file *file, void __user *name)\n {\n-\tchar buf[MAX_FILE_PATH_SIZE];\n-\tchar *file_name \u003d get_memfd_file_name(file, buf, sizeof(buf));\n+\tconst char *file_name \u003d get_memfd_name(file);\n \tsize_t len;\n \n-\tif (IS_ERR(file_name))\n-\t\treturn PTR_ERR(file_name);\n+\tif (!file_name)\n+\t\treturn -EINVAL;\n+\n+\t/* Strip MEMFD_PREFIX to retain compatibility with ashmem driver. */\n+\tfile_name \u003d \u0026file_name[MEMFD_PREFIX_LEN];\n \n \t/*\n \t * The expectation is that the user provided buffer is ASHMEM_NAME_LEN in size, which is",
       "revId": "7b89b57429c2ec59cc879a864d6c5480ef6f3606",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "630a5227_e4bf07ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4042377
+      },
+      "writtenOn": "2025-05-05T15:25:41Z",
+      "side": 1,
+      "message": "3539341: ANDROID: mm/memfd-ashmem-shim: Simplify buffer name retrieval | https://android-review.googlesource.com/c/kernel/common/+/3539341",
+      "revId": "7b89b57429c2ec59cc879a864d6c5480ef6f3606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
