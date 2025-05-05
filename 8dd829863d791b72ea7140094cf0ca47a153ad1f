@@ -16,6 +16,24 @@
       "message": "The Linter states this CP is clean.\n\nWas there actually a conflict, or can this be marked `UPSTREAM` and the `Conflicts:` line below removed?",
       "revId": "8dd829863d791b72ea7140094cf0ca47a153ad1f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7db82062_9cf86531",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4043531
+      },
+      "writtenOn": "2025-05-05T02:57:06Z",
+      "side": 1,
+      "message": "Hi Tim, I am still getting below conflict \nkraj@cs2n3:~/aluminium-kernel/common$  git diff\ndiff --cc drivers/gpu/drm/xe/display/xe_display.c\nindex 6796d3c71e10,b8bfb666ebe8..000000000000\n--- a/drivers/gpu/drm/xe/display/xe_display.c\n+++ b/drivers/gpu/drm/xe/display/xe_display.c\n@@@ -476,14 -478,12 +482,19 @@@ static void __xe_display_pm_resume(stru\n        intel_hpd_init(xe);\n\n        if (!runtime \u0026\u0026 has_display(xe)) {\n-               intel_display_driver_resume(xe);\n+               intel_display_driver_resume(display);\n                drm_kms_helper_poll_enable(\u0026xe-\u003edrm);\n++\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD\n +              intel_display_driver_enable_user_access(xe);\n++\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n+               intel_display_driver_enable_user_access(display);\n+               intel_hpd_poll_disable(xe);\n++\u003e\u003e\u003e\u003e\u003e\u003e\u003e f5d38d4fa884 (drm/i915/display: convert intel_display_driver.[ch] to struct intel_display)\n        }\n\n +      if (has_display(xe))\n +              intel_hpd_poll_disable(xe);\n +\n        intel_opregion_resume(display);\n\n        if (!runtime)\nkraj@cs2n3:~/aluminium-kernel/common$",
+      "parentUuid": "f7bfbe04_8f7d0b27",
+      "revId": "8dd829863d791b72ea7140094cf0ca47a153ad1f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
