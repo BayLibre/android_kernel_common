@@ -74,6 +74,30 @@
       ],
       "revId": "7b89b57429c2ec59cc879a864d6c5480ef6f3606",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5b4592b_caba18b9",
+        "filename": "mm/memfd-ashmem-shim.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-05-05T19:00:33Z",
+      "side": 1,
+      "message": "I don\u0027t think you can delete a memfd? Or do you mean if all instances of it are closed via the close() system call? If it\u0027s the latter, there\u0027s reference counting in the ioctl() syscall to make sure that the files under \u0027file\u0027 aren\u0027t freed until the last reference is dropped, which would happen at the end of the ioctl syscall.",
+      "parentUuid": "1f81f055_cd4fe016",
+      "range": {
+        "startLine": 26,
+        "startChar": 25,
+        "endLine": 26,
+        "endChar": 57
+      },
+      "revId": "7b89b57429c2ec59cc879a864d6c5480ef6f3606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
