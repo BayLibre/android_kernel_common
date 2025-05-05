@@ -122,6 +122,29 @@
       },
       "revId": "7b89b57429c2ec59cc879a864d6c5480ef6f3606",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92729630_096e96b2",
+        "filename": "mm/memfd-ashmem-shim.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-05-05T21:35:30Z",
+      "side": 1,
+      "message": "So you use d_name.name directly as we don\u0027t need to copy and don\u0027t need the full path and \"(deleted)\" from dentry_ops-\u003ed_name()? LGTM",
+      "range": {
+        "startLine": 26,
+        "startChar": 53,
+        "endLine": 26,
+        "endChar": 57
+      },
+      "revId": "7b89b57429c2ec59cc879a864d6c5480ef6f3606",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
