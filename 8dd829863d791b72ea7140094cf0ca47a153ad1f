@@ -52,6 +52,24 @@
       "parentUuid": "7db82062_9cf86531",
       "revId": "8dd829863d791b72ea7140094cf0ca47a153ad1f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19433c84_a334a1f3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3845040
+      },
+      "writtenOn": "2025-05-06T13:03:43Z",
+      "side": 1,
+      "message": "original patch is expecting intel_hpd_poll_disable(xe) below where its changing xe arg to display arg https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/gpu/drm/xe/display/xe_display.c?id\u003df5d38d4fa88441bc4f96e185bce7426790e32949\n\nthis is not present . So git cherry-pick will throw conflict error . So BACKPORT tag is expected . \n\n-\t\tintel_display_driver_enable_user_access(xe);\n+\t\tintel_display_driver_enable_user_access(display);\n \t\tintel_hpd_poll_disable(xe);",
+      "parentUuid": "841bc8f5_eda3fddc",
+      "revId": "8dd829863d791b72ea7140094cf0ca47a153ad1f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
