@@ -600,6 +600,19 @@ out_unpin_mem:
 	return ret;
 }
 
+int kvm_iommu_page_response(pkvm_handle_t drv_id, pkvm_handle_t iommu_id, u32 endpoint_id,
+			    u32 pasid, u32 grpid, u32 status_code)
+{
+	struct kvm_iommu_ops *kvm_iommu_ops;
+
+	kvm_iommu_ops = get_drv(drv_id);
+	if (!kvm_iommu_ops || !kvm_iommu_ops->page_response)
+		return -ENODEV;
+
+	kvm_iommu_ops->page_response(iommu_id, endpoint_id, pasid, grpid, status_code);
+	return 0;
+}
+
 int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 			 u32 endpoint_id, u32 pasid, u32 pasid_bits, unsigned long flags)
 {
