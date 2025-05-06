@@ -448,4 +448,15 @@ EXPORT_SYMBOL_NS_GPL(hda_codec_i915_exit, SND_SOC_SOF_HDA_AUDIO_CODEC_I915);
 MODULE_SOFTDEP("pre: snd-hda-codec-hdmi");
 #endif
 
+// TODO(nicholasbishop): needed on the T14.
+//
+// See b/412215393#comment10 for the source of this workaround.
+MODULE_SOFTDEP("pre: snd_hda_codec_realtek");
+
+// TODO(nicholasbishop): needed on the T14.
+//
+// Without this, `snd_sof_load_topology` fails due to
+// `snd_ctl_led_request` failing.
+MODULE_SOFTDEP("pre: snd_ctl_led");
+
 MODULE_LICENSE("Dual BSD/GPL");
