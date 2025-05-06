@@ -359,6 +359,7 @@ sector_t swap_page_sector(struct page *page)
 	sector = se->start_block + (offset - se->start_page);
 	return sector << (PAGE_SHIFT - 9);
 }
+EXPORT_SYMBOL_GPL(swap_page_sector);
 
 /*
  * swap allocation tell device that a cluster of swap can now be discarded,

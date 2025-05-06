@@ -343,6 +343,7 @@ int blk_queue_enter(struct request_queue *q, blk_mq_req_flags_t flags)
 
 	return 0;
 }
+EXPORT_SYMBOL_GPL(blk_queue_enter);
 
 int __bio_queue_enter(struct request_queue *q, struct bio *bio)
 {
@@ -382,6 +383,7 @@ void blk_queue_exit(struct request_queue *q)
 {
 	percpu_ref_put(&q->q_usage_counter);
 }
+EXPORT_SYMBOL_GPL(blk_queue_exit);
 
 static void blk_queue_usage_counter_release(struct percpu_ref *ref)
 {

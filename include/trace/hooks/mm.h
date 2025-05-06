@@ -533,6 +533,14 @@ DECLARE_HOOK(android_vh_migration_target_bypass,
 DECLARE_HOOK(android_vh_swap_writepage,
 	TP_PROTO(unsigned long *sis_flags, struct page *page),
 	TP_ARGS(sis_flags, page));
+DECLARE_HOOK(android_vh_swap_bdev_writepage,
+	TP_PROTO(struct page *page, struct swap_info_struct *sis,
+		bool *written),
+	TP_ARGS(page, sis, written));
+DECLARE_HOOK(android_vh_swap_bdev_readpage,
+	TP_PROTO(struct page *page, struct swap_info_struct *sis,
+		bool *read),
+	TP_ARGS(page, sis, read));
 DECLARE_HOOK(android_vh_alloc_flags_cma_adjust,
 	TP_PROTO(gfp_t gfp_mask, unsigned int *alloc_flags),
 	TP_ARGS(gfp_mask, alloc_flags));

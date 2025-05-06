@@ -472,6 +472,7 @@ void clean_page_buffers(struct page *page)
 {
 	clean_buffers(page, ~0U);
 }
+EXPORT_SYMBOL_GPL(clean_page_buffers);
 
 static int __mpage_writepage(struct folio *folio, struct writeback_control *wbc,
 		      void *data)

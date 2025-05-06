@@ -175,6 +175,16 @@ bad_bmap:
 	goto out;
 }
 
+static inline void count_swpout_vm_event(struct folio *folio)
+{
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+	if (unlikely(folio_test_pmd_mappable(folio)))
+		count_vm_event(THP_SWPOUT);
+	count_mthp_stat(folio_order(folio), MTHP_STAT_SWPOUT);
+#endif
+	count_vm_events(PSWPOUT, folio_nr_pages(folio));
+}
+
 /*
  * We may have stale swap cache pages in memory: notice
  * them here and get rid of the unnecessary final write.
@@ -183,6 +193,7 @@ int swap_writepage(struct page *page, struct writeback_control *wbc)
 {
 	struct folio *folio = page_folio(page);
 	int ret;
+	bool written = false;
 
 	if (folio_free_swap(folio)) {
 		folio_unlock(folio);
@@ -204,18 +215,14 @@ int swap_writepage(struct page *page, struct writeback_control *wbc)
 		folio_end_writeback(folio);
 		return 0;
 	}
-	__swap_writepage(&folio->page, wbc);
-	return 0;
-}
 
-static inline void count_swpout_vm_event(struct folio *folio)
-{
-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-	if (unlikely(folio_test_pmd_mappable(folio)))
-		count_vm_event(THP_SWPOUT);
-	count_mthp_stat(folio_order(folio), MTHP_STAT_SWPOUT);
-#endif
-	count_vm_events(PSWPOUT, folio_nr_pages(folio));
+	trace_android_vh_swap_bdev_writepage(page, page_swap_info(page),
+					     &written);
+	if (written)
+		count_swpout_vm_event(folio);
+	else
+		__swap_writepage(&folio->page, wbc);
+	return 0;
 }
 
 #if defined(CONFIG_MEMCG) && defined(CONFIG_BLK_CGROUP)
@@ -526,7 +533,12 @@ void swap_readpage(struct page *page, bool synchronous, struct swap_iocb **plug)
 	} else if (data_race(sis->flags & SWP_FS_OPS)) {
 		swap_readpage_fs(page, plug);
 	} else if (synchronous || (sis->flags & SWP_SYNCHRONOUS_IO)) {
-		swap_readpage_bdev_sync(folio, sis);
+		bool read = false;
+		trace_android_vh_swap_bdev_readpage(page, sis, &read);
+		if (read)
+			count_vm_events(PSWPIN, folio_nr_pages(folio));
+		else
+			swap_readpage_bdev_sync(folio, sis);
 	} else {
 		swap_readpage_bdev_async(folio, sis);
 	}
