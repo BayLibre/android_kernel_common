@@ -123,6 +123,7 @@ enum __kvm_host_smccc_func {
 	__KVM_HOST_SMCCC_FUNC___pkvm_host_iommu_iotlb_inv_nested_domain,
 	__KVM_HOST_SMCCC_FUNC___pkvm_host_iommu_iotlb_inv_nested_domain_range,
 	__KVM_HOST_SMCCC_FUNC___pkvm_host_iommu_cache_invalidate,
+	__KVM_HOST_SMCCC_FUNC___pkvm_host_iommu_page_response,
 
 	/*
 	 * Start of the dynamically registered hypercalls. Start a bit

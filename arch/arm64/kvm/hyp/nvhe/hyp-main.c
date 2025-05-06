@@ -1545,6 +1545,19 @@ static void handle___pkvm_host_iommu_cache_invalidate(struct kvm_cpu_context *ho
 	hyp_reqs_smccc_encode(ret, host_ctxt, this_cpu_ptr(&host_hyp_reqs));
 }
 
+static void handle___pkvm_host_iommu_page_response(struct kvm_cpu_context *host_ctxt)
+{
+	int ret;
+	DECLARE_REG(pkvm_handle_t, iommu, host_ctxt, 1);
+	DECLARE_REG(unsigned int, endpoint, host_ctxt, 2);
+	DECLARE_REG(void *, page_response_desc_hva, host_ctxt, 3);
+	DECLARE_REG(size_t, page_response_desc_size, host_ctxt, 4);
+
+	ret = kvm_iommu_page_response(iommu, endpoint, page_response_desc_hva,
+				      page_response_desc_size);
+	hyp_reqs_smccc_encode(ret, host_ctxt, this_cpu_ptr(&host_hyp_reqs));
+}
+
 static void handle___pkvm_host_iommu_attach_dev(struct kvm_cpu_context *host_ctxt)
 {
 	int ret;
@@ -1764,6 +1777,7 @@ static const hcall_t host_hcall[] = {
 	HANDLE_FUNC(__pkvm_host_iommu_iotlb_inv_nested_domain),
 	HANDLE_FUNC(__pkvm_host_iommu_iotlb_inv_nested_domain_range),
 	HANDLE_FUNC(__pkvm_host_iommu_cache_invalidate),
+	HANDLE_FUNC(__pkvm_host_iommu_page_response),
 };
 
 static void handle_host_hcall(struct kvm_cpu_context *host_ctxt)

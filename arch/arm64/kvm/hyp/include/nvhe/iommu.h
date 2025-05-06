@@ -40,6 +40,8 @@ int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 			 u32 endpoint_id, u32 pasid, u32 pasid_bits);
 int kvm_iommu_detach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 			 u32 endpoint_id, u32 pasid);
+int kvm_iommu_page_response(pkvm_handle_t iommu_id, u32 endpoint_id,
+			    void *page_response_desc_hva, size_t page_response_desc_size);
 int kvm_iommu_map_pages(pkvm_handle_t domain_id, unsigned long iova,
 			phys_addr_t paddr, size_t pgsize,
 			size_t pgcount, int prot, unsigned long *mapped);
@@ -169,7 +171,9 @@ struct kvm_iommu_ops {
 								size_t granule, bool leaf));
 	ANDROID_KABI_USE(6, int (*cache_invalidate)(struct kvm_hyp_iommu *iommu, void *cmd_desc,
 						    size_t cmd_desc_size));
-	ANDROID_KABI_RESERVE(7);
+
+	ANDROID_KABI_USE(7, void (*page_response)(struct kvm_hyp_iommu *iommu, u32 endpoint_id,
+						  void *page_response_desc_hva));
 	ANDROID_KABI_RESERVE(8);
 };
 

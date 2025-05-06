@@ -558,6 +558,30 @@ out_unpin:
 	return ret;
 }
 
+int kvm_iommu_page_response(pkvm_handle_t iommu_id, u32 endpoint_id,
+			    void *page_response_desc_hva, size_t page_response_desc_size)
+{
+	struct kvm_hyp_iommu *iommu;
+	void *page_response_desc_hyp_va = kern_hyp_va(page_response_desc_hva);
+	void *page_response_desc_end_hyp_va = page_response_desc_hyp_va + page_response_desc_size;
+	int ret = hyp_pin_shared_mem(page_response_desc_hyp_va, page_response_desc_end_hyp_va);
+
+	if (ret)
+		return ret;
+
+	iommu = kvm_iommu_ops->get_iommu_by_id(iommu_id);
+	if (!iommu) {
+		ret = -EINVAL;
+		goto out_unpin;
+	}
+
+	kvm_iommu_ops->page_response(iommu, endpoint_id, page_response_desc_hyp_va);
+
+out_unpin:
+	hyp_unpin_shared_mem(page_response_desc_hyp_va, page_response_desc_end_hyp_va);
+	return ret;
+}
+
 int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 			 u32 endpoint_id, u32 pasid, u32 pasid_bits)
 {
