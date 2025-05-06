@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7f737408_41469177",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2025-05-06T00:46:41Z",
+      "side": 1,
+      "message": "If we allow guests to use version 1.1 now, then we have to add conversion code to still allow that VM to work when the host moves to version 1.2. Limiting the guest to 1.2 avoids the need for this unless or until a future ff-a version breaks compatibility again.",
+      "parentUuid": "8d38c3b2_6e254d00",
+      "range": {
+        "startLine": 1069,
+        "startChar": 0,
+        "endLine": 1073,
+        "endChar": 2
+      },
+      "revId": "db15bce479ef0b32e0b4c0a73b8e62f7761ff3d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7cfa497d_5eb88f24",
         "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
         "patchSetId": 4
