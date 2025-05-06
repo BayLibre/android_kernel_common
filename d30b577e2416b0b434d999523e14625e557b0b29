@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91cd5bd9_671d13b8",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 2202,
+      "author": {
+        "id": 1956160
+      },
+      "writtenOn": "2025-05-06T11:15:42Z",
+      "side": 1,
+      "message": "This symbol is not present in `android16-6.12`. Please cherry-pick the implementation to this branch or remove it from the list.",
+      "fixSuggestions": [
+        {
+          "fixId": "ffa53144_7292671b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gki/aarch64/symbols/qcom",
+              "range": {
+                "startLine": 2202,
+                "startChar": 0,
+                "endLine": 2203,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "d30b577e2416b0b434d999523e14625e557b0b29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
