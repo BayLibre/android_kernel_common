@@ -428,6 +428,47 @@ out_unlock:
 	return ret;
 }
 
+int kvm_iommu_block_sva_pasid(pkvm_handle_t iommu_id, pkvm_handle_t domain_id, u32 sid, u32 pasid)
+{
+	int ret;
+	struct kvm_hyp_iommu *iommu;
+	struct kvm_hyp_iommu_domain *domain;
+
+	iommu = kvm_iommu_ops->get_iommu_by_id(iommu_id);
+	if (!iommu)
+		return -EINVAL;
+
+	domain = handle_to_domain(domain_id);
+	if (!domain || domain_get(domain))
+		return -EINVAL;
+
+	ret = kvm_iommu_ops->block_sva_pasid(iommu, domain, sid, pasid);
+	if (ret)
+		domain_put(domain);
+	return ret;
+}
+
+int kvm_iommu_sva_bind_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id, u32 sid, u32 pasid,
+			   unsigned long sva_desc_hva)
+{
+	int ret;
+	struct kvm_hyp_iommu *iommu;
+	struct kvm_hyp_iommu_domain *domain;
+
+	iommu = kvm_iommu_ops->get_iommu_by_id(iommu_id);
+	if (!iommu)
+		return -EINVAL;
+
+	domain = handle_to_domain(domain_id);
+	if (!domain || domain_get(domain))
+		return -EINVAL;
+
+	ret = kvm_iommu_ops->sva_bind_dev(iommu, domain, sid, pasid, sva_desc_hva);
+	if (ret)
+		domain_put(domain);
+	return ret;
+}
+
 int kvm_iommu_attach_dev_nested(pkvm_handle_t iommu_id, pkvm_handle_t domain_id, u32 endpoint_id,
 				u32 pasid, u32 pasid_bits)
 {
@@ -488,6 +529,47 @@ int kvm_iommu_detach_dev_nested(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 	domain_put(idmap_domain);
 	domain_put(domain);
 	return ret;
+}
+
+int kvm_iommu_iotlb_inv_range(pkvm_handle_t domain_id, unsigned long iova, size_t size,
+			      size_t granule)
+{
+	struct kvm_hyp_iommu_domain *domain;
+
+	domain = handle_to_domain(domain_id);
+	if (!domain || domain_get(domain))
+		return -EINVAL;
+
+	kvm_iommu_ops->iotlb_inv_range(domain, iova, size, granule);
+	domain_put(domain);
+	return 0;
+}
+
+int kvm_iommu_iotlb_inv_domain(pkvm_handle_t domain_id)
+{
+	struct kvm_hyp_iommu_domain *domain;
+
+	domain = handle_to_domain(domain_id);
+	if (!domain || domain_get(domain))
+		return -EINVAL;
+
+	kvm_iommu_ops->iotlb_inv_domain(domain);
+	domain_put(domain);
+	return 0;
+}
+
+int kvm_iommu_page_response(pkvm_handle_t iommu_id, u32 endpoint_id,
+			    unsigned long page_response_desc_hva)
+{
+	struct kvm_hyp_iommu *iommu;
+
+	iommu = kvm_iommu_ops->get_iommu_by_id(iommu_id);
+	if (!iommu)
+		return -EINVAL;
+
+	kvm_iommu_ops->page_response(iommu, endpoint_id, page_response_desc_hva);
+	return 0;
+
 }
 
 int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
