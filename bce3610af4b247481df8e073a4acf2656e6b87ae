@@ -40,6 +40,30 @@
       ],
       "revId": "bce3610af4b247481df8e073a4acf2656e6b87ae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdb12c53_b1269062",
+        "filename": "fs/proc/task_mmu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1941,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-05-07T06:52:10Z",
+      "side": 1,
+      "message": "Becuase we only ever walk [PAGEMAP_WALK_SIZE](https://android.googlesource.com/kernel/common/+/cedbc9e5ecd751d39bc3fa1197b7bbfcb0f227c2/fs/proc/task_mmu.c#1636) which is the PMD_SIZE (at most 512 pages) at once, int suffices for the number of entries. \n\nhttps://android.googlesource.com/kernel/common/+/cedbc9e5ecd751d39bc3fa1197b7bbfcb0f227c2/fs/proc/task_mmu.c#2021",
+      "parentUuid": "de1adc90_189138b9",
+      "range": {
+        "startLine": 1941,
+        "startChar": 1,
+        "endLine": 1941,
+        "endChar": 13
+      },
+      "revId": "bce3610af4b247481df8e073a4acf2656e6b87ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
