@@ -904,6 +904,11 @@ static int acc_open(struct inode *ip, struct file *fp)
 	if (!dev)
 		return -ENODEV;
 
+	if (atomic_xchg(&dev->open_excl, 1)) {
+		put_acc_dev(dev);
+		return -EBUSY;
+	}
+
 	dev->disconnected = false;
 	fp->private_data = dev;
 	return 0;
