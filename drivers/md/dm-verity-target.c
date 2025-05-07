@@ -42,6 +42,7 @@
 #define DM_VERITY_OPT_IGN_ZEROES	"ignore_zero_blocks"
 #define DM_VERITY_OPT_AT_MOST_ONCE	"check_at_most_once"
 #define DM_VERITY_OPT_TASKLET_VERIFY	"try_verify_in_tasklet"
+#define DM_VERITY_OPT_INLINE_VERIFY	"try_verify_inline"
 
 #define DM_VERITY_OPTS_MAX		(5 + DM_VERITY_OPTS_FEC + \
 					 DM_VERITY_ROOT_HASH_VERIFICATION_OPTS)
@@ -1342,7 +1343,8 @@ static int verity_parse_opt_args(struct dm_arg_set *as, struct dm_verity *v,
 				return r;
 			continue;
 
-		} else if (!strcasecmp(arg_name, DM_VERITY_OPT_TASKLET_VERIFY)) {
+		} else if (!strcasecmp(arg_name, DM_VERITY_OPT_TASKLET_VERIFY) ||
+			   !strcasecmp(arg_name, DM_VERITY_OPT_INLINE_VERIFY)) {
 			v->use_bh_wq = true;
 			static_branch_inc(&use_bh_wq_enabled);
 			continue;
@@ -1736,10 +1738,10 @@ static int verity_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	 * Using WQ_HIGHPRI improves throughput and completion latency by
 	 * reducing wait times when reading from a dm-verity device.
 	 *
-	 * Also as required for the "try_verify_in_tasklet" feature: WQ_HIGHPRI
-	 * allows verify_wq to preempt softirq since verification in BH workqueue
-	 * will fall-back to using it for error handling (or if the bufio cache
-	 * doesn't have required hashes).
+	 * Also as required for the "try_verify_in_tasklet" /
+	 * "try_verify_inline" feature: WQ_HIGHPRI allows verify_wq to preempt
+	 * softirq since inline verification will fall-back to using it for
+	 * error handling (or if the bufio cache doesn't have required hashes).
 	 */
 	v->verify_wq = alloc_workqueue("kverityd", WQ_MEM_RECLAIM | WQ_HIGHPRI, 0);
 	if (!v->verify_wq) {
