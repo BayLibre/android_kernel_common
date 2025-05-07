@@ -64,6 +64,30 @@
       },
       "revId": "bce3610af4b247481df8e073a4acf2656e6b87ae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "043c81e7_b3fcc037",
+        "filename": "fs/proc/task_mmu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1941,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2025-05-07T16:04:35Z",
+      "side": 1,
+      "message": "If that is the case, why is `entries` a `unsigned long`? should it be `unsigned int` instead?",
+      "parentUuid": "fdb12c53_b1269062",
+      "range": {
+        "startLine": 1941,
+        "startChar": 1,
+        "endLine": 1941,
+        "endChar": 13
+      },
+      "revId": "bce3610af4b247481df8e073a4acf2656e6b87ae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
