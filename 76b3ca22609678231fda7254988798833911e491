@@ -1,0 +1,264 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7647f3d5_5cd62485",
+        "filename": "block/blk-core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2025-05-07T17:44:45Z",
+      "side": 1,
+      "message": "I think we don\u0027t need to export these APIs",
+      "range": {
+        "startLine": 346,
+        "startChar": 18,
+        "endLine": 346,
+        "endChar": 33
+      },
+      "revId": "76b3ca22609678231fda7254988798833911e491",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "067dd155_9c27b579",
+        "filename": "fs/mpage.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2025-05-07T17:44:45Z",
+      "side": 1,
+      "message": "Maybe, we don\u0027t need this API.",
+      "range": {
+        "startLine": 475,
+        "startChar": 18,
+        "endLine": 475,
+        "endChar": 36
+      },
+      "revId": "76b3ca22609678231fda7254988798833911e491",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a25b853f_bf34d957",
+        "filename": "include/trace/hooks/mm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2025-05-07T17:44:45Z",
+      "side": 1,
+      "message": "struct block_device sector_t sector, struct page *page);",
+      "range": {
+        "startLine": 537,
+        "startChar": 10,
+        "endLine": 537,
+        "endChar": 27
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "d464741c_360e4db9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/mm.h",
+              "range": {
+                "startLine": 537,
+                "startChar": 0,
+                "endLine": 540,
+                "endChar": 0
+              },
+              "replacement": "\tTP_PROTO(struct block_device *bdev, sector_t sector,\n\t\tstruct page *page, struct swap_info_struct *sis, bool *written),\n\tTP_ARGS(bdev, sector, page, sis, written));\n"
+            },
+            {
+              "path": "include/trace/hooks/mm.h",
+              "range": {
+                "startLine": 541,
+                "startChar": 0,
+                "endLine": 544,
+                "endChar": 0
+              },
+              "replacement": "\tTP_PROTO(struct block_device *bdev, sector_t sector,\n\t\tstruct page *page, struct swap_info_struct *sis, bool *read),\n\tTP_ARGS(bdev, sector, page, sis, read));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "76b3ca22609678231fda7254988798833911e491",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "669ef326_e17ba623",
+        "filename": "mm/page_io.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2025-05-07T17:44:45Z",
+      "side": 1,
+      "message": "We can move this into swap_writepage_bdev_async. Then we don\u0027t need churn of count_swpout_vm_event.\n\nShouldn\u0027t we pass sis-\u003ebdev and swap_page_sector(page) as parameters?",
+      "range": {
+        "startLine": 219,
+        "startChar": 1,
+        "endLine": 219,
+        "endChar": 38
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c43cea24_10c34e35",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/page_io.c",
+              "range": {
+                "startLine": 219,
+                "startChar": 0,
+                "endLine": 225,
+                "endChar": 0
+              },
+              "replacement": "\t__swap_writepage(\u0026folio-\u003epage, wbc);\n"
+            },
+            {
+              "path": "mm/page_io.c",
+              "range": {
+                "startLine": 367,
+                "startChar": 0,
+                "endLine": 367,
+                "endChar": 0
+              },
+              "replacement": "\n\tbool written \u003d false;\n\ttrace_android_vh_swap_bdev_writepage(page, sis-\u003ebdev,\n\t\t\t\t\t     swap_page_sector(page), \u0026written);\n\tif (written) {\n\t\tfolio_unlock(folio);\n\t\tcount_swpout_vm_event(folio);\n\t\treturn;\n\t}\n"
+            },
+            {
+              "path": "mm/page_io.c",
+              "range": {
+                "startLine": 538,
+                "startChar": 0,
+                "endLine": 539,
+                "endChar": 0
+              },
+              "replacement": "\t\tif (read) {\n\t\t\tfolio_unlock(folio);\n"
+            },
+            {
+              "path": "mm/page_io.c",
+              "range": {
+                "startLine": 540,
+                "startChar": 0,
+                "endLine": 541,
+                "endChar": 0
+              },
+              "replacement": "\t\t} else\n"
+            }
+          ]
+        }
+      ],
+      "revId": "76b3ca22609678231fda7254988798833911e491",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb135a5e_e8c1bbcc",
+        "filename": "mm/page_io.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2025-05-07T17:44:45Z",
+      "side": 1,
+      "message": "How about doing it in the swap_readpage_bdev_sync?",
+      "range": {
+        "startLine": 537,
+        "startChar": 2,
+        "endLine": 537,
+        "endChar": 37
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "09c0e523_dcce461f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/page_io.c",
+              "range": {
+                "startLine": 479,
+                "startChar": 0,
+                "endLine": 479,
+                "endChar": 0
+              },
+              "replacement": "\n\tbool read \u003d false;\n\ttrace_android_vh_swap_bdev_readpage(\u0026folio-\u003epage, sis, \u0026read);\n\tif (read) {\n\t\tfolio_unlock(folio);\n\t\tcount_vm_events(PSWPIN, folio_nr_pages(folio));\n\t\treturn;\n\t}\n"
+            },
+            {
+              "path": "mm/page_io.c",
+              "range": {
+                "startLine": 536,
+                "startChar": 0,
+                "endLine": 542,
+                "endChar": 0
+              },
+              "replacement": "\t\tswap_readpage_bdev_sync(folio, sis);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "76b3ca22609678231fda7254988798833911e491",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bdb82fb_d8c0f205",
+        "filename": "mm/swapfile.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2025-05-07T17:44:45Z",
+      "side": 1,
+      "message": "We may not need this.",
+      "range": {
+        "startLine": 362,
+        "startChar": 18,
+        "endLine": 362,
+        "endChar": 34
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b11617a0_ad114c3f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/swapfile.c",
+              "range": {
+                "startLine": 362,
+                "startChar": 0,
+                "endLine": 363,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "76b3ca22609678231fda7254988798833911e491",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
