@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c72bfce_758446bb",
+        "filename": "drivers/usb/gadget/function/android_f_accessory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 907,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-05-07T06:24:10Z",
+      "side": 1,
+      "message": "any type of this \"only open once\" logic in the kernel will always fail, enforce this in userspace please as it is a policy decision that must be done there.",
+      "range": {
+        "startLine": 907,
+        "startChar": 0,
+        "endLine": 907,
+        "endChar": 39
+      },
+      "revId": "472f65eec2cbcbb7312d30d502d30fe29b21eade",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
