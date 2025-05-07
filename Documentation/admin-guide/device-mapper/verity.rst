@@ -141,16 +141,23 @@ root_hash_sig_key_desc <key_description>
     also gain new certificates at run time if they are signed by a certificate
     already in the secondary trusted keyring.
 
-try_verify_in_tasklet
+try_verify_inline
     If verity hashes are in cache and the IO size does not exceed the limit,
-    verify data blocks in bottom half instead of workqueue. This option can
-    reduce IO latency. The size limits can be configured via
+    verify data blocks directly in the context of the I/O completion, or in
+    an immediately following softirq (if the context is a hardirq),
+    instead of a worker thread. This avoids an extra trip through the system
+    scheduler.
+    This option can reduce IO latency. The size limits can be configured via
     /sys/module/dm_verity/parameters/use_bh_bytes. The four parameters
     correspond to limits for IOPRIO_CLASS_NONE, IOPRIO_CLASS_RT,
     IOPRIO_CLASS_BE and IOPRIO_CLASS_IDLE in turn.
     For example:
     <none>,<rt>,<be>,<idle>
     4096,4096,4096,4096
+
+try_verify_in_tasklet
+    This is a deprecated alias for try_verify_inline. The implementation no
+    longer uses tasklets.
 
 Theory of operation
 ===================
