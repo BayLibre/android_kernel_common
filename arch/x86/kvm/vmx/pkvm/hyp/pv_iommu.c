@@ -209,7 +209,7 @@ unsigned long pkvm_iommu_update_ce(struct kvm_vcpu *hvcpu, unsigned long param_g
 			domain->gaw = param.domain_gaw;
 			domain->agaw = param.domain_agaw;
 
-			pkvm_domain_attach_iommu(domain, iommu);
+			pkvm_domain_attach_iommu(domain, iommu, did);
 			PKVM_ASSERT(!iommu_find_ptdev(iommu, param.bdf, 0));
 			ptdev = iommu_add_ptdev(iommu, param.bdf, 0);
 			pkvm_setup_ptdev_did(ptdev, did);
