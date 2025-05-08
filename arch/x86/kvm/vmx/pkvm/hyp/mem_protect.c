@@ -361,7 +361,7 @@ static int do_donate(const struct pkvm_mem_transition *donation)
 	return WARN_ON(__do_donate(donation));
 }
 
-int __pkvm_host_donate_hyp(u64 hpa, u64 size)
+int __pkvm_host_donate_hyp_noflush(u64 hpa, u64 size)
 {
 	int ret;
 	u64 hyp_addr = (u64)__pkvm_va(hpa);
@@ -387,10 +387,13 @@ int __pkvm_host_donate_hyp(u64 hpa, u64 size)
 
 	host_ept_unlock();
 
-	/*
-	 * Also need to flush the IOTLB as host EPT is used
-	 * as second-stage IOMMU page table for some devices.
-	 */
+	return ret;
+}
+
+int __pkvm_host_donate_hyp(u64 hpa, u64 size)
+{
+	int ret =  __pkvm_host_donate_hyp_noflush(hpa, size);
+
 	pkvm_iommu_flush_iotlb(pkvm_hyp->host_vm.ept, hpa, size);
 
 	return ret;
