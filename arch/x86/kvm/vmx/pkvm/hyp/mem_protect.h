@@ -67,6 +67,25 @@ struct pkvm_pgtable;
  * in the pte in host ept. For hyp mmu, it will do nothing as hyp mmu can
  * access all the memory by default, but modifying host ept is necessary because
  * a page used by pkvm is private and can't be accessed by host.
+ *
+ * This API caters to usecases where callers perform iotlb flush after this call.
+ * Avoids the extra flush and potential locking issues(ept lock vs iommu lock)
+ */
+int __pkvm_host_donate_hyp_noflush(u64 hpa, u64 size);
+
+/*
+ * __pkvm_host_donate_hyp() - Donate pages from host to hyp, then host cannot
+ * access these donated pages. Also flush the iotlb as ept is used for iommu
+ * pagetables for devices configured as passthrough.
+ *
+ * @hpa:	Start hpa of being donated pages, must be continuous.
+ * @size:	The size of memory to be donated.
+ *
+ * A range of pages [hpa, hpa + size) will be donated from host to hyp. And
+ * this will unmap these pages from host ept and set the page owner as hyp_id
+ * in the pte in host ept. For hyp mmu, it will do nothing as hyp mmu can
+ * access all the memory by default, but modifying host ept is necessary because
+ * a page used by pkvm is private and can't be accessed by host.
  */
 int __pkvm_host_donate_hyp(u64 hpa, u64 size);
 
