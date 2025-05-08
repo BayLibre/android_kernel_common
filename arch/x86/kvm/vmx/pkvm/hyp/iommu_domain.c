@@ -24,7 +24,6 @@ static DECLARE_BITMAP(iommu_domains_bitmap, MAX_IOMMU_DOMAIN_NUM);
 static struct pkvm_iommu_domain iommu_domains[MAX_IOMMU_DOMAIN_NUM];
 static pkvm_spinlock_t iommu_domain_lock = __PKVM_SPINLOCK_UNLOCKED;
 
-
 static inline struct pkvm_iommu_domain *__pkvm_get_iommu_domain_locked(u64 pgd)
 {
 	struct pkvm_iommu_domain *domain = NULL, *tmp;
@@ -97,31 +96,50 @@ out:
 	return domain;
 }
 
+#define MAX_PTDEV_NUM	(PKVM_MAX_PDEV_NUM + PKVM_MAX_PASID_PDEV_NUM)
+static DECLARE_BITMAP(iommu_domain_infos_bitmap, MAX_PTDEV_NUM);
+static struct pkvm_iommu_domain_info iommu_domain_infos[MAX_PTDEV_NUM];
+
+static struct pkvm_iommu_domain_info *pkvm_alloc_iommu_domain_info(void)
+{
+	struct pkvm_iommu_domain_info *info = NULL;
+	unsigned long index;
+
+	index = find_next_zero_bit(iommu_domain_infos_bitmap, MAX_PTDEV_NUM, 0);
+	if (index < MAX_PTDEV_NUM) {
+		__set_bit(index, iommu_domain_infos_bitmap);
+		info = &iommu_domain_infos[index];
+		info->index = index;
+		INIT_LIST_HEAD(&info->node);
+	}
+
+	return info;
+}
+
 /*
  * Attach an IOMMU to the domain and maintain reference count.
  */
-int pkvm_domain_attach_iommu(struct pkvm_iommu_domain *domain, struct pkvm_iommu *iommu)
+void pkvm_domain_attach_iommu(struct pkvm_iommu_domain *domain, struct pkvm_iommu *iommu, int did)
 {
-	int ret = 0;
+	struct pkvm_iommu_domain_info *info;
 
-	pkvm_spin_lock(&iommu->lock);
-	if (!iommu->domain) {
-		iommu->domain = domain;
-		pkvm_spin_lock(&domain->lock);
-		list_add_tail(&iommu->domain_node, &domain->iommu_head);
-		pkvm_spin_unlock(&domain->lock);
-	} else if (iommu->domain != domain) {
-		/*
-		 * IOMMU is part of a different domain.
-		 */
-		ret = -EINVAL;
-		goto out;
+	pkvm_spin_lock(&domain->lock);
+	list_for_each_entry(info, &domain->iommu_head, node) {
+		if (info->iommu == iommu) {
+			PKVM_ASSERT(info->did == did);
+			info->refcnt++;
+			goto out;
+		}
 	}
-	iommu->domain_refcount++;
 
+	info = pkvm_alloc_iommu_domain_info();
+	PKVM_ASSERT(info);
+	info->refcnt = 1;
+	info->iommu = iommu;
+	info->did = did;
+	list_add_tail(&info->node, &domain->iommu_head);
 out:
-	pkvm_spin_unlock(&iommu->lock);
-	return ret;
+	pkvm_spin_unlock(&domain->lock);
 }
 
 /*
@@ -129,19 +147,21 @@ out:
  */
 void pkvm_domain_detach_iommu(struct pkvm_iommu_domain *domain, struct pkvm_iommu *iommu)
 {
-	PKVM_ASSERT(iommu->domain && iommu->domain == domain);
+	struct pkvm_iommu_domain_info *info;
 
-	pkvm_spin_lock(&iommu->lock);
-	PKVM_ASSERT(iommu->domain_refcount > 0);
-	iommu->domain_refcount--;
-	if (!iommu->domain_refcount) {
-		pkvm_spin_lock(&domain->lock);
-		list_del_init(&iommu->domain_node);
-		pkvm_spin_unlock(&domain->lock);
-		iommu->domain = NULL;
+	pkvm_spin_lock(&domain->lock);
+	list_for_each_entry(info, &domain->iommu_head, node) {
+		if (info->iommu == iommu) {
+			info->refcnt--;
+			if(!info->refcnt) {
+				list_del(&info->node);
+				__clear_bit(info->index, iommu_domain_infos_bitmap);
+			}
+			goto out;
+		}
 	}
-
-	pkvm_spin_unlock(&iommu->lock);
+out:
+	pkvm_spin_unlock(&domain->lock);
 }
 
 unsigned long pkvm_domain_update_pgd(struct pkvm_iommu_domain *domain,
@@ -163,30 +183,76 @@ unsigned long pkvm_domain_update_pgd(struct pkvm_iommu_domain *domain,
 	return pgd;
 }
 
-void pkvm_domain_flush_iotlb_range(struct pkvm_iommu_domain *domain, unsigned long addr, int size)
+static unsigned long calculate_psi_aligned_address(unsigned long start,
+						   unsigned long end,
+						   unsigned long *_mask)
 {
-	int size_order = ilog2(__roundup_pow_of_two(size >> VTD_PAGE_SHIFT));
-	struct pkvm_iommu *iommu;
-	struct iotlb_flush_data data = {
-		.desired_root_pa = domain->pgd,
-		.addr = ALIGN_DOWN(addr, (1ULL << (VTD_PAGE_SHIFT + size_order))),
-		.size_order = size_order,
-	};
+	unsigned long pages = aligned_nrpages(start, end - start + 1);
+	unsigned long aligned_pages = __roundup_pow_of_two(pages);
+	unsigned long bitmask = aligned_pages - 1;
+	unsigned long mask = ilog2(aligned_pages);
+	unsigned long pfn = IOVA_PFN(start);
 
-	data.desc = iommu_zalloc_pages(PKVM_QI_DESC_ALIGNED_SIZE);
-	if (data.desc)
-		/* Reserve space for one wait desc and one desc between head and tail */
-		data.desc_max_index = PKVM_QI_DESC_ALIGNED_SIZE / sizeof(struct qi_desc) - 2;
+	/*
+	 * PSI masks the low order bits of the base address. If the
+	 * address isn't aligned to the mask, then compute a mask value
+	 * needed to ensure the target range is flushed.
+	 */
+	if (unlikely(bitmask & pfn)) {
+		unsigned long end_pfn = pfn + pages - 1, shared_bits;
 
-	list_for_each_entry(iommu, &domain->iommu_head, domain_node) {
-		memset(data.desc, 0, PKVM_QI_DESC_ALIGNED_SIZE);
-		pkvm_spin_lock(&iommu->lock);
-		iommu_flush_iotlb(iommu, &data);
-		pkvm_spin_unlock(&iommu->lock);
-
+		/*
+		 * Since end_pfn <= pfn + bitmask, the only way bits
+		 * higher than bitmask can differ in pfn and end_pfn is
+		 * by carrying. This means after masking out bitmask,
+		 * high bits starting with the first set bit in
+		 * shared_bits are all equal in both pfn and end_pfn.
+		 */
+		shared_bits = ~(pfn ^ end_pfn) & ~bitmask;
+		mask = shared_bits ? __ffs(shared_bits) : MAX_AGAW_PFN_WIDTH;
+		aligned_pages = 1UL << mask;
 	}
-	if (data.desc)
-		iommu_put_page(data.desc);
+
+	*_mask = mask;
+
+	return ALIGN_DOWN(start, VTD_PAGE_SIZE << mask);
+}
+
+static void pkvm_domain_flush_iotlb_range(struct pkvm_iommu_domain *domain, unsigned long start,
+						unsigned long end)
+{
+	struct pkvm_iommu_domain_info *info;
+	struct pkvm_iommu *iommu;
+	struct qi_desc *desc;
+	unsigned long mask, addr;
+
+	addr = calculate_psi_aligned_address(start, end, &mask);
+
+	/* TODO: Move the desc struct inside pkvm_iommu_domain
+	 * so that it never fails.
+	 */
+	desc = iommu_zalloc_pages(PKVM_QI_DESC_ALIGNED_SIZE);
+	PKVM_ASSERT(desc);
+
+	list_for_each_entry(info, &domain->iommu_head, node) {
+		memset(desc, 0, sizeof(struct qi_desc));
+
+		iommu = info->iommu;
+
+		if (cap_pgsel_inv(iommu->iommu.cap) &&
+		    mask <= cap_max_amask_val(iommu->iommu.cap))
+			setup_iotlb_qi_desc(iommu, desc, info->did, addr,
+					mask, DMA_TLB_PSI_FLUSH);
+		else
+			setup_iotlb_qi_desc(iommu, desc, info->did, 0, 0,
+					    DMA_TLB_DSI_FLUSH);
+
+		pkvm_spin_lock(&iommu->lock);
+			submit_qi(iommu, desc, 1);
+		pkvm_spin_unlock(&iommu->lock);
+	}
+
+	iommu_put_page(desc);
 }
 
 /*

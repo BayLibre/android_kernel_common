@@ -38,13 +38,6 @@ struct pkvm_iommu {
 	pkvm_spinlock_t qi_lock;
 	u64 piommu_iqa;
 
-	/* domain to which this IOMMU is attached. */
-	struct pkvm_iommu_domain *domain;
-	/* Reference to this IOMMU by domain devices */
-	int domain_refcount;
-	/* list of IOMMUs for attached domain */
-	struct list_head domain_node;
-
 	/* Link ptdev information of this IOMMU */
 	struct list_head ptdev_head;
 };
@@ -389,6 +382,9 @@ struct iotlb_flush_data {
 	int desc_max_index;
 };
 void iommu_flush_iotlb(struct pkvm_iommu *iommu, struct iotlb_flush_data *data);
+void submit_qi(struct pkvm_iommu *iommu, struct qi_desc *base, int count);
+void setup_iotlb_qi_desc(struct pkvm_iommu *iommu, struct qi_desc *desc, u16 did, u64 addr,
+		unsigned int size_order, u64 type);
 
 #ifdef CONFIG_PKVM_INTEL_PVIOMMU
 static inline int handle_descriptor(struct pkvm_iommu *iommu, struct qi_desc *desc)
