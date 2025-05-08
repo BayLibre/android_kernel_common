@@ -18,6 +18,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "878c3661_b96e2b1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2025-05-08T16:58:44Z",
+      "side": 1,
+      "message": "I\u0027ll drop this then...",
+      "revId": "1e233b959e2ceeb4ef00d1d1a310706828510f63",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58a2e24f_c6173dd4",
@@ -41,6 +58,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb55b633_153aa902",
+        "filename": "arch/arm64/kvm/fpsimd.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2025-05-08T16:58:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "58a2e24f_c6173dd4",
+      "range": {
+        "startLine": 57,
+        "startChar": 1,
+        "endLine": 60,
+        "endChar": 2
+      },
+      "revId": "1e233b959e2ceeb4ef00d1d1a310706828510f63",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "413b1eea_bffde325",
@@ -54,6 +95,30 @@
       "writtenOn": "2025-05-08T16:56:07Z",
       "side": 1,
       "message": "When `system_supports_fpsimd() \u0026\u0026 is_protected_kvm_enabled()`, and we skip this assignment, is `*host_data_ptr(fp_owner)` guaranteed to be in a specific state upon return from `kvm_arch_vcpu_load_fp()`?\n\nI *think* we\u0027re relying upon this being (implicitly) initialized to FP_STATE_FREE by virtue of that being zero, and never being assigned to.",
+      "range": {
+        "startLine": 70,
+        "startChar": 1,
+        "endLine": 70,
+        "endChar": 42
+      },
+      "revId": "1e233b959e2ceeb4ef00d1d1a310706828510f63",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc811827_d1e887a9",
+        "filename": "arch/arm64/kvm/fpsimd.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2025-05-08T16:58:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "413b1eea_bffde325",
       "range": {
         "startLine": 70,
         "startChar": 1,
