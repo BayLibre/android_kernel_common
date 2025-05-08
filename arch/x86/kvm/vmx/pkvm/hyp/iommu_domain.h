@@ -6,6 +6,16 @@
 
 #include "pkvm_hyp.h"
 
+struct pkvm_iommu_domain_info {
+	struct list_head node;
+	struct pkvm_iommu *iommu;
+	unsigned int refcnt;		/* Refcount of devices per iommu */
+	unsigned int index;
+	u16 did;			/* Domain ids per IOMMU. Use u16 since
+					 * domain ids are 16 bit wide according
+					 * to VT-d spec, section 9.3 */
+};
+
 /*
  * Represents a host iommu_domain/dmar_domain
  * Main function is to manage IO page tables.
@@ -50,10 +60,8 @@ void pkvm_put_iommu_domain(struct pkvm_iommu_domain *iommu_domain);
 
 unsigned long pkvm_domain_update_pgd(struct pkvm_iommu_domain *domain,
 		struct pkvm_iommu_page_donation *donation, int agaw);
-int pkvm_domain_attach_iommu(struct pkvm_iommu_domain *domain, struct pkvm_iommu *iommu);
+void pkvm_domain_attach_iommu(struct pkvm_iommu_domain *domain, struct pkvm_iommu *iommu, int did);
 void pkvm_domain_detach_iommu(struct pkvm_iommu_domain *domain, struct pkvm_iommu *iommu);
-
-void pkvm_domain_flush_iotlb_range(struct pkvm_iommu_domain *domain, unsigned long addr, int size);
 
 unsigned long pkvm_iommu_domain_map(struct kvm_vcpu *hvcpu, unsigned long param_gva,
 					unsigned long donation_gva);
