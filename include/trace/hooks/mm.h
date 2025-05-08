@@ -365,6 +365,9 @@ DECLARE_HOOK(android_vh_zs_shrinker_bypass,
 DECLARE_HOOK(android_vh_adjust_nr_reclaimed,
 	TP_PROTO(struct folio *folio, unsigned int *nr_reclaimed),
 	TP_ARGS(folio, nr_reclaimed));
+DECLARE_HOOK(android_vh_rmqueue_pcplist_override_batch,
+	TP_PROTO(int *batch),
+	TP_ARGS(batch));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
