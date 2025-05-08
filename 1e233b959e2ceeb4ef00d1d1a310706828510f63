@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7ed40b3_f3990ce5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4048445
+      },
+      "writtenOn": "2025-05-08T16:56:07Z",
+      "side": 1,
+      "message": "I think that this is unsafe as-is, and could cause `VCPU_RUN` to fail unexpectedly based on SME state of (unrelated) host tasks.\n\nIt might be sufficient to check SVCR, but I\u0027m not entirely sure.",
+      "revId": "1e233b959e2ceeb4ef00d1d1a310706828510f63",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58a2e24f_c6173dd4",
+        "filename": "arch/arm64/kvm/fpsimd.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 4048445
+      },
+      "writtenOn": "2025-05-08T16:56:07Z",
+      "side": 1,
+      "message": "This isn\u0027t safe if the host is using SME. At this point the CPU may have `SVCR.{SM,ZA}!\u003d{0,0}`, and due to preemption that may be state from a task other than `current`.\n\nBeing in that state will cause `handle___kvm_vcpu_run()` to bail out when it checks SVCR:\n\n```\n/*\n * KVM (and pKVM) doesn\u0027t support SME guests for now, and\n * ensures that SME features aren\u0027t enabled in pstate when\n * loading a vcpu. Therefore, if SME features enabled the host\n * is misbehaving.\n */\nif (unlikely(system_supports_sme() \u0026\u0026 read_sysreg_s(SYS_SVCR)))\n        goto out;\n``\n\n\nWe might be able to check SVCR here, and only save the state when that\u0027s non-zero, but I\u0027m not immediately sure if that\u0027s sufficient, or if we need to also mess with `fp_owner`, as described in the other comment below.\n\nsuspect that may lead to other problems -- see below comment about `fp_owner`.",
+      "range": {
+        "startLine": 57,
+        "startChar": 1,
+        "endLine": 60,
+        "endChar": 2
+      },
+      "revId": "1e233b959e2ceeb4ef00d1d1a310706828510f63",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "413b1eea_bffde325",
+        "filename": "arch/arm64/kvm/fpsimd.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 4048445
+      },
+      "writtenOn": "2025-05-08T16:56:07Z",
+      "side": 1,
+      "message": "When `system_supports_fpsimd() \u0026\u0026 is_protected_kvm_enabled()`, and we skip this assignment, is `*host_data_ptr(fp_owner)` guaranteed to be in a specific state upon return from `kvm_arch_vcpu_load_fp()`?\n\nI *think* we\u0027re relying upon this being (implicitly) initialized to FP_STATE_FREE by virtue of that being zero, and never being assigned to.",
+      "range": {
+        "startLine": 70,
+        "startChar": 1,
+        "endLine": 70,
+        "endChar": 42
+      },
+      "revId": "1e233b959e2ceeb4ef00d1d1a310706828510f63",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
