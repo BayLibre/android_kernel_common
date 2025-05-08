@@ -142,9 +142,6 @@ int pkvm_init_iommu(unsigned long mem_base, unsigned long nr_pages)
 
 		INIT_LIST_HEAD(&piommu->ptdev_head);
 
-		INIT_LIST_HEAD(&piommu->domain_node);
-		piommu->domain_refcount = 0;
-
 		pkvm_spin_lock_init(&piommu->lock);
 		piommu->iommu.reg_phys = info->reg_phys;
 		piommu->iommu.reg_size = info->reg_size;
@@ -388,7 +385,7 @@ static void __submit_qi(struct pkvm_iommu *iommu, struct qi_desc *base, int coun
 	pkvm_spin_unlock(&iommu->qi_lock);
 }
 
-static void submit_qi(struct pkvm_iommu *iommu, struct qi_desc *base, int count)
+void submit_qi(struct pkvm_iommu *iommu, struct qi_desc *base, int count)
 {
 	int max_len = IQ_DESC_LEN(iommu->piommu_iqa) - 2;
 	int submit_count;
@@ -424,7 +421,7 @@ static void flush_pasid_cache(struct pkvm_iommu *iommu, u16 did,
 	submit_qi(iommu, &desc, 1);
 }
 
-static void setup_iotlb_qi_desc(struct pkvm_iommu *iommu,
+void setup_iotlb_qi_desc(struct pkvm_iommu *iommu,
 				struct qi_desc *desc, u16 did,
 				u64 addr, unsigned int size_order,
 				u64 type)
