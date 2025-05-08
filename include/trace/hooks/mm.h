@@ -25,6 +25,9 @@ DECLARE_RESTRICTED_HOOK(android_rvh_set_readahead_gfp_mask,
 DECLARE_HOOK(android_vh_adjust_swap_info_flags,
 	TP_PROTO(unsigned long *flags),
 	TP_ARGS(flags));
+DECLARE_HOOK(android_vh_rmqueue_pcplist_override_batch,
+	TP_PROTO(int *batch),
+	TP_ARGS(batch));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */

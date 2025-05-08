@@ -89,3 +89,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rproc_recovery_set);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_timer_calc_index);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_is_fpsimd_save);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_adjust_swap_info_flags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rmqueue_pcplist_override_batch);
