@@ -413,8 +413,7 @@ static void __lru_cache_activate_folio(struct folio *folio)
 }
 
 #ifdef CONFIG_LRU_GEN
-
-static void lru_gen_inc_refs(struct folio *folio)
+static void folio_inc_refs(struct folio *folio)
 {
 	unsigned long new_flags, old_flags = READ_ONCE(folio->flags);
 
@@ -441,34 +440,10 @@ static void lru_gen_inc_refs(struct folio *folio)
 		new_flags |= old_flags & ~LRU_REFS_MASK;
 	} while (!try_cmpxchg(&folio->flags, &old_flags, new_flags));
 }
-
-static bool lru_gen_clear_refs(struct folio *folio)
-{
-	struct lru_gen_folio *lrugen;
-	int gen = folio_lru_gen(folio);
-	int type = folio_is_file_lru(folio);
-
-	if (gen < 0)
-		return true;
-
-	set_mask_bits(&folio->flags, LRU_REFS_MASK | LRU_REFS_FLAGS, 0);
-
-	lrugen = &folio_lruvec(folio)->lrugen;
-	/* whether can do without shuffling under the LRU lock */
-	return gen == lru_gen_from_seq(READ_ONCE(lrugen->min_seq[type]));
-}
-
-#else /* !CONFIG_LRU_GEN */
-
-static void lru_gen_inc_refs(struct folio *folio)
+#else
+static void folio_inc_refs(struct folio *folio)
 {
 }
-
-static bool lru_gen_clear_refs(struct folio *folio)
-{
-	return false;
-}
-
 #endif /* CONFIG_LRU_GEN */
 
 /**
@@ -487,7 +462,7 @@ static bool lru_gen_clear_refs(struct folio *folio)
 void folio_mark_accessed(struct folio *folio)
 {
 	if (lru_gen_enabled()) {
-		lru_gen_inc_refs(folio);
+		folio_inc_refs(folio);
 		return;
 	}
 
@@ -583,7 +558,7 @@ void folio_add_lru_vma(struct folio *folio, struct vm_area_struct *vma)
  */
 static void lru_deactivate_file(struct lruvec *lruvec, struct folio *folio)
 {
-	bool active = folio_test_active(folio) || lru_gen_enabled();
+	bool active = folio_test_active(folio);
 	long nr_pages = folio_nr_pages(folio);
 
 	if (folio_test_unevictable(folio))
@@ -649,10 +624,7 @@ static void lru_lazyfree(struct lruvec *lruvec, struct folio *folio)
 
 	lruvec_del_folio(lruvec, folio);
 	folio_clear_active(folio);
-	if (lru_gen_enabled())
-		lru_gen_clear_refs(folio);
-	else
-		folio_clear_referenced(folio);
+	folio_clear_referenced(folio);
 	/*
 	 * Lazyfree folios are clean anonymous folios.  They have
 	 * the swapbacked flag cleared, to distinguish them from normal
@@ -722,9 +694,6 @@ void deactivate_file_folio(struct folio *folio)
 	if (folio_test_unevictable(folio))
 		return;
 
-	if (lru_gen_enabled() && lru_gen_clear_refs(folio))
-		return;
-
 	folio_batch_add_and_move(folio, lru_deactivate_file, true);
 }
 
@@ -738,10 +707,7 @@ void deactivate_file_folio(struct folio *folio)
  */
 void folio_deactivate(struct folio *folio)
 {
-	if (folio_test_unevictable(folio))
-		return;
-
-	if (lru_gen_enabled() ? lru_gen_clear_refs(folio) : !folio_test_active(folio))
+	if (folio_test_unevictable(folio) || !(folio_test_active(folio) || lru_gen_enabled()))
 		return;
 
 	folio_batch_add_and_move(folio, lru_deactivate, true);
