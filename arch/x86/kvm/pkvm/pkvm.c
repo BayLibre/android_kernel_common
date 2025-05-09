@@ -564,6 +564,7 @@ static bool is_kvm_vcpu_accessible(struct kvm_vcpu *vcpu, unsigned long fn)
 	case __pkvm__post_set_cr3:
 	case __pkvm__cache_reg:
 	case __pkvm__update_exception_bitmap:
+	case __pkvm__vcpu_add_fpstate:
 		/*
 		 * As the host needs to pre-configure the pVM's vcpu state for
 		 * booting, the protection is only enforced by the pkvm hypervisor
@@ -1525,6 +1526,82 @@ static void pkvm_update_exception_bitmap(struct pkvm_vcpu *pkvm_vcpu)
 	kvm_x86_call(update_exception_bitmap)(vcpu);
 }
 
+static unsigned long pkvm_vcpu_add_fpstate(struct pkvm_vcpu *pkvm_vcpu,
+					   unsigned long new_fps_gpa,
+					   unsigned long fpsize)
+{
+	struct pkvm_memcache mc = {
+		.head = INVALID_PAGE,
+		.nr_pages = 0,
+	};
+	struct fpstate *old_fps;
+	struct kvm_vcpu *vcpu;
+	unsigned long fpspa;
+	void *free_fps;
+
+	if (!VALID_PAGE(new_fps_gpa) ||
+	    !PAGE_ALIGNED(new_fps_gpa) ||
+	    !PAGE_ALIGNED(fpsize) ||
+	    !fpsize)
+		return INVALID_PAGE;
+
+	fpspa = host_gpa2hpa(new_fps_gpa);
+	free_fps = __pkvm_va(fpspa);
+
+	if (WARN_ON_ONCE(!pkvm_vcpu))
+		goto free;
+
+	vcpu = to_kvm_vcpu(pkvm_vcpu);
+	/*
+	 * The npVM's FPU state is managed by the host, it is not necessary to
+	 * swap the fpstate in the pkvm hypervisor. The fpstate size should be
+	 * checked for the pVM. See comments in pkvm_vcpu_create.
+	 */
+	if (!pkvm_is_protected_vcpu(vcpu) ||
+	    (fpsize < (fpu_kernel_cfg.default_size +
+		       ALIGN(offsetof(struct fpstate, regs), 64))))
+		goto free;
+
+	if (__pkvm_host_donate_hyp(fpspa, fpsize))
+		goto free;
+
+	old_fps = vcpu->arch.guest_fpu.fpstate;
+	vcpu->arch.guest_fpu.fpstate = __pkvm_va(fpspa);
+	memset(vcpu->arch.guest_fpu.fpstate, 0, fpsize);
+	/* Save the fpsize in fpstate->size. See comments in pkvm_vcpu_create */
+	vcpu->arch.guest_fpu.fpstate->size = fpsize;
+	pkvm_init_guest_fpu(&vcpu->arch.guest_fpu);
+
+	if (old_fps) {
+		fpsize = PAGE_ALIGNED(old_fps->size);
+		memset(old_fps, 0, fpsize);
+		free_fps = old_fps;
+	} else {
+		fpsize = 0;
+		free_fps = NULL;
+	}
+
+	/* Undonate and free the old fpstate memory pages */
+	if (fpsize)
+		__pkvm_hyp_donate_host(pkvm_virt_to_phys(free_fps), fpsize);
+free:
+	for (; fpsize > 0; free_fps += PAGE_SIZE, fpsize -= PAGE_SIZE)
+		push_pkvm_memcache(&mc, free_fps, pkvm_virt_to_host_gpa);
+
+	if (VALID_PAGE(mc.head)) {
+		/*
+		 * Store the nr_page in the first page of the teardowned memory
+		 * at the offset of sizeof(phys_addr_t) bytes, which is used to
+		 * store the next page physical address.
+		 */
+		unsigned long *nr_pages = __pkvm_va(mc.head) + sizeof(phys_addr_t);
+
+		*nr_pages = mc.nr_pages;
+	}
+
+	return mc.head;
+}
+
 static unsigned long pkvm_vcpu_handle_kvm_call(unsigned long fn,
 					       struct kvm_vcpu *shared_vcpu,
 					       unsigned long p2, unsigned  long p3)
@@ -1693,6 +1770,9 @@ static unsigned long pkvm_vcpu_handle_kvm_call(unsigned long fn,
 		break;
 	case __pkvm__update_exception_bitmap:
 		pkvm_update_exception_bitmap(pkvm_vcpu);
+		break;
+	case __pkvm__vcpu_add_fpstate:
+		ret = pkvm_vcpu_add_fpstate(pkvm_vcpu, p2, p3);
 		break;
 	default:
 		ret = -EINVAL;
