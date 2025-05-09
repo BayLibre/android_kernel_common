@@ -1780,6 +1780,36 @@ static void pkvm_get_exit_info(struct kvm_vcpu *vcpu, u32 *reason, u64 *info1,
 	}
 }
 
+static int pkvm_vcpu_realloc_fpstate(struct kvm_vcpu *vcpu)
+{
+	unsigned long old_fpspa;
+	size_t fpsize;
+	void *fps;
+
+	fpsize = PAGE_ALIGN(vcpu->arch.guest_fpu.fpstate->size +
+			    ALIGN(offsetof(struct fpstate, regs), 64));
+	fps = alloc_pages_exact(fpsize, GFP_KERNEL_ACCOUNT);
+	if (!fps)
+		return -ENOMEM;
+
+	/*
+	 * Store the fpsize in the fps memory page, to align the usage
+	 * of pkvm_vcpu_create, so that the pkvm hypervisor can leverage
+	 * the same code to donate the fpu state memory. This also simplifies
+	 * the returning path, i.e., no need to store the size to the fpu state
+	 * memory if the returned memory address is __pa(fps).
+	 */
+	*(size_t *)fps = fpsize;
+	old_fpspa = kvm_call_pkvm(vcpu_add_fpstate, vcpu, __pa(fps));
+	if (VALID_PAGE(old_fpspa)) {
+		fps = __va(old_fpspa);
+		fpsize = *(size_t *)fps;
+		free_pages_exact(fps, fpsize);
+	}
+
+	return 0;
+}
+
 static void pkvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
 {
 	struct kvm_cpuid_entry2 *e2 = vcpu->arch.cpuid_entries;
@@ -1800,6 +1830,19 @@ static void pkvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
 	kvm_governed_feature_check_and_set(vcpu, X86_FEATURE_LAM);
 
 	if (vcpu->arch.guest_state_protected || !e2 || !nent)
+		return;
+
+	/*
+	 * With expoing the FPU dynamica feature via the cpuid, the fpstate
+	 * allocated when creating the vcpu may not be sufficient for the
+	 * guest. As the pVM's FPU state is managed by the pkvm hypervisor
+	 * while the npVM's FPU state is managed by the host, re-allocating the
+	 * fpstate is only necessary for the pVM, and should be done before
+	 * adding the new cpuid entries to the pkvm hypervisor.
+	 */
+	if ((vcpu->arch.guest_fpu.xfeatures & XFEATURE_MASK_USER_DYNAMIC) &&
+	    pkvm_is_protected_vcpu(vcpu) &&
+	    pkvm_vcpu_realloc_fpstate(vcpu))
 		return;
 
 	size = sizeof(struct kvm_cpuid_entry2) * nent;

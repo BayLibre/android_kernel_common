@@ -614,6 +614,7 @@ static bool is_kvm_vcpu_accessible(struct kvm_vcpu *vcpu, unsigned long fn)
 	case __pkvm__post_set_cr3:
 	case __pkvm__cache_reg:
 	case __pkvm__update_exception_bitmap:
+	case __pkvm__vcpu_add_fpstate:
 		/*
 		 * As the host needs to pre-configure the pVM's vcpu state for
 		 * booting, the protection is only enforced by the pkvm hypervisor
@@ -1589,6 +1590,48 @@ static void pkvm_update_exception_bitmap(struct pkvm_vcpu *pkvm_vcpu)
 	kvm_x86_call(update_exception_bitmap)(vcpu);
 }
 
+static unsigned long pkvm_vcpu_add_fpstate(struct pkvm_vcpu *pkvm_vcpu,
+					   unsigned long gpa)
+{
+	struct fpstate *new, *old;
+	struct kvm_vcpu *vcpu;
+	size_t size = 0;
+
+	/*
+	 * As the size used by the host to free memory is already stored in the
+	 * GPA memory by the host before sending to the pkvm hypervisor, it is
+	 * ok to return this GPA back for the host to free.
+	 */
+	if (WARN_ON_ONCE(!pkvm_vcpu))
+		return gpa;
+
+	vcpu = to_kvm_vcpu(pkvm_vcpu);
+	/*
+	 * Expect the host uses this PV interface for pVM only, otherwise
+	 * return this GPA for the host to free.
+	 */
+	if (!pkvm_is_protected_vcpu(vcpu) || donate_fpu(&new, gpa, true))
+		return gpa;
+
+	old = vcpu->arch.guest_fpu.fpstate;
+	vcpu->arch.guest_fpu.fpstate = new;
+	pkvm_init_guest_fpu(&vcpu->arch.guest_fpu);
+
+	if (!old)
+		return INVALID_PAGE;
+
+	size = old->size;
+	memset(old, 0, size);
+	/*
+	 * Store the size in the beginning of the memory page to be freed, which
+	 * the host will use to determine how much memory to free.
+	 */
+	*(size_t *)old = size;
+	__pkvm_hyp_donate_host(__pkvm_pa(old), size);
+
+	return __pkvm_pa(old);
+}
+
 static unsigned long pkvm_vcpu_handle_kvm_call(unsigned long fn,
 					       struct kvm_vcpu *shared_vcpu,
 					       unsigned long p2, unsigned  long p3)
@@ -1757,6 +1800,9 @@ static unsigned long pkvm_vcpu_handle_kvm_call(unsigned long fn,
 		break;
 	case __pkvm__update_exception_bitmap:
 		pkvm_update_exception_bitmap(pkvm_vcpu);
+		break;
+	case __pkvm__vcpu_add_fpstate:
+		ret = pkvm_vcpu_add_fpstate(pkvm_vcpu, p2);
 		break;
 	default:
 		ret = -EINVAL;
