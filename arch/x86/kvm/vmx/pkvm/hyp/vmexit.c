@@ -7,6 +7,7 @@
 #include <asm/kvm_pkvm.h>
 #include <vmx/x86_ops.h>
 #include <pkvm/pkvm.h>
+#include <pkvm/fpu/fpu.h>
 #include <pkvm.h>
 #include "trace.h"
 #include "vmexit.h"

@@ -843,10 +843,10 @@ static void pkvm_vm_destroy(struct kvm *kvm)
 
 static int pkvm_vcpu_create(struct kvm_vcpu *vcpu)
 {
+	size_t pkvm_vcpu_sz, fpu_sz;
+	void *pkvm_vcpu, *fpu;
 	struct vcpu_vmx *vmx;
-	size_t pkvm_vcpu_sz;
 	struct page *page;
-	void *pkvm_vcpu;
 	int ret;
 
 	BUILD_BUG_ON(offsetof(struct vcpu_vmx, vcpu) != 0);
@@ -892,17 +892,47 @@ static int pkvm_vcpu_create(struct kvm_vcpu *vcpu)
 	if (!pkvm_vcpu)
 		goto free_ve;
 
+	if (pkvm_is_protected_vcpu(vcpu))
+		/*
+		 * The pVM FPU registers will be switched by the pkvm
+		 * hypervisor. Allocate the fpstate regs memory according
+		 * to the real guest_fpu.fpstate size.
+		 */
+		fpu_sz = PAGE_ALIGN(vcpu->arch.guest_fpu.fpstate->size +
+				    ALIGN(offsetof(struct fpstate, regs), 64));
+	else
+		/*
+		 * The npVM FPU registers will be switched by the host. No need
+		 * to count the real guest_fpu.fpstate size but just strcut
+		 * fpstate size except for the regs.
+		 */
+		fpu_sz = PAGE_ALIGN(ALIGN(offsetof(struct fpstate, regs), 64));
+
+	fpu = alloc_pages_exact(fpu_sz, GFP_KERNEL_ACCOUNT);
+	if (!fpu)
+		goto free_vcpu;
+
+	/*
+	 * Store the pkvm_vcpu and fpu state size in beginning of its own memory
+	 * for the pkvm hypervisor to retrieve, so that to reduce the amount of
+	 * the inputs for the vcpu_create PV interface.
+	 */
+	*(size_t *)pkvm_vcpu = pkvm_vcpu_sz;
+	*(size_t *)fpu = fpu_sz;
+
 	/* TODO: share struct vcpu_vmx with pkvm */
 
-	ret = kvm_call_pkvm(vcpu_create, vcpu, __pa(pkvm_vcpu));
+	ret = kvm_call_pkvm(vcpu_create, vcpu, __pa(pkvm_vcpu), __pa(fpu));
 	if (ret < 0)
-		goto free_pages;
+		goto free_fpu;
 
 	vcpu->arch.pkvm_vcpu_handle = ret;
 
 	return 0;
 
-free_pages:
+free_fpu:
+	free_pages_exact(fpu, fpu_sz);
+free_vcpu:
 	free_pages_exact(pkvm_vcpu, pkvm_vcpu_sz);
 free_ve:
 	free_ve_info(vmx);
