@@ -314836,52 +314836,60 @@ enumeration {
       value: 63
     }
     enumerator {
-      name: "POWER_SUPPLY_PROP_TYPE"
+      name: "POWER_SUPPLY_PROP_USBIF_VENDOR_ID"
       value: 64
     }
     enumerator {
-      name: "POWER_SUPPLY_PROP_USB_TYPE"
+      name: "POWER_SUPPLY_PROP_USBIF_PRODUCT_ID"
       value: 65
     }
     enumerator {
-      name: "POWER_SUPPLY_PROP_SCOPE"
+      name: "POWER_SUPPLY_PROP_TYPE"
       value: 66
     }
     enumerator {
-      name: "POWER_SUPPLY_PROP_PRECHARGE_CURRENT"
+      name: "POWER_SUPPLY_PROP_USB_TYPE"
       value: 67
     }
     enumerator {
-      name: "POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT"
+      name: "POWER_SUPPLY_PROP_SCOPE"
       value: 68
     }
     enumerator {
-      name: "POWER_SUPPLY_PROP_CALIBRATE"
+      name: "POWER_SUPPLY_PROP_PRECHARGE_CURRENT"
       value: 69
     }
     enumerator {
-      name: "POWER_SUPPLY_PROP_MANUFACTURE_YEAR"
+      name: "POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT"
       value: 70
     }
     enumerator {
-      name: "POWER_SUPPLY_PROP_MANUFACTURE_MONTH"
+      name: "POWER_SUPPLY_PROP_CALIBRATE"
       value: 71
     }
     enumerator {
-      name: "POWER_SUPPLY_PROP_MANUFACTURE_DAY"
+      name: "POWER_SUPPLY_PROP_MANUFACTURE_YEAR"
       value: 72
     }
     enumerator {
-      name: "POWER_SUPPLY_PROP_MODEL_NAME"
+      name: "POWER_SUPPLY_PROP_MANUFACTURE_MONTH"
       value: 73
     }
     enumerator {
-      name: "POWER_SUPPLY_PROP_MANUFACTURER"
+      name: "POWER_SUPPLY_PROP_MANUFACTURE_DAY"
       value: 74
     }
     enumerator {
-      name: "POWER_SUPPLY_PROP_SERIAL_NUMBER"
+      name: "POWER_SUPPLY_PROP_MODEL_NAME"
       value: 75
+    }
+    enumerator {
+      name: "POWER_SUPPLY_PROP_MANUFACTURER"
+      value: 76
+    }
+    enumerator {
+      name: "POWER_SUPPLY_PROP_SERIAL_NUMBER"
+      value: 77
     }
   }
 }
@@ -373737,7 +373745,7 @@ elf_symbol {
   name: "__hid_register_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9e8a2c8b
+  crc: 0xd11545d0
   type_id: 0x9d760cc4
   full_name: "__hid_register_driver"
 }
@@ -398088,7 +398096,7 @@ elf_symbol {
   name: "devm_power_supply_get_by_phandle"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x75a10eb1
+  crc: 0x547301e7
   type_id: 0x3b90ab8c
   full_name: "devm_power_supply_get_by_phandle"
 }
@@ -398097,7 +398105,7 @@ elf_symbol {
   name: "devm_power_supply_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7f631206
+  crc: 0xb678f019
   type_id: 0x3bb8868a
   full_name: "devm_power_supply_register"
 }
@@ -409745,7 +409753,7 @@ elf_symbol {
   name: "hid_add_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9528b804
+  crc: 0x238441cf
   type_id: 0x9ef9d283
   full_name: "hid_add_device"
 }
@@ -409754,7 +409762,7 @@ elf_symbol {
   name: "hid_allocate_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xca0a5743
+  crc: 0xd8aea3bd
   type_id: 0x98aacbd0
   full_name: "hid_allocate_device"
 }
@@ -409763,7 +409771,7 @@ elf_symbol {
   name: "hid_destroy_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6c254e70
+  crc: 0x463b18b0
   type_id: 0x13e1603f
   full_name: "hid_destroy_device"
 }
@@ -409772,7 +409780,7 @@ elf_symbol {
   name: "hid_hw_request"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x58e1af8b
+  crc: 0x4f0bc6e5
   type_id: 0x137a1cdc
   full_name: "hid_hw_request"
 }
@@ -409781,7 +409789,7 @@ elf_symbol {
   name: "hid_ignore"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xba765903
+  crc: 0x6a7727f5
   type_id: 0xfddd6aa8
   full_name: "hid_ignore"
 }
@@ -409790,7 +409798,7 @@ elf_symbol {
   name: "hid_input_report"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x94e6fae1
+  crc: 0x355ed967
   type_id: 0x9d13a27c
   full_name: "hid_input_report"
 }
@@ -409799,7 +409807,7 @@ elf_symbol {
   name: "hid_parse_report"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3afde21f
+  crc: 0xb25bbfd7
   type_id: 0x9e321b3f
   full_name: "hid_parse_report"
 }
@@ -409808,7 +409816,7 @@ elf_symbol {
   name: "hid_unregister_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8e2892c3
+  crc: 0x594c7e14
   type_id: 0x104da524
   full_name: "hid_unregister_driver"
 }
@@ -426735,7 +426743,7 @@ elf_symbol {
   name: "power_supply_am_i_supplied"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x857eddbb
+  crc: 0x87f3afa1
   type_id: 0x9b85a048
   full_name: "power_supply_am_i_supplied"
 }
@@ -426744,7 +426752,7 @@ elf_symbol {
   name: "power_supply_changed"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2c49b1b9
+  crc: 0x85e0ec2b
   type_id: 0x169d12f4
   full_name: "power_supply_changed"
 }
@@ -426753,7 +426761,7 @@ elf_symbol {
   name: "power_supply_get_by_name"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf25244a7
+  crc: 0x4ac69029
   type_id: 0x347afa45
   full_name: "power_supply_get_by_name"
 }
@@ -426762,7 +426770,7 @@ elf_symbol {
   name: "power_supply_get_by_phandle"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4fe45117
+  crc: 0xa764f790
   type_id: 0x361a553a
   full_name: "power_supply_get_by_phandle"
 }
@@ -426771,7 +426779,7 @@ elf_symbol {
   name: "power_supply_get_by_phandle_array"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7934fa9a
+  crc: 0x024d408a
   type_id: 0x9064137a
   full_name: "power_supply_get_by_phandle_array"
 }
@@ -426780,7 +426788,7 @@ elf_symbol {
   name: "power_supply_get_drvdata"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xde75462d
+  crc: 0x36f6bf72
   type_id: 0x5093f296
   full_name: "power_supply_get_drvdata"
 }
@@ -426789,7 +426797,7 @@ elf_symbol {
   name: "power_supply_get_property"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x29c145c8
+  crc: 0x50db517c
   type_id: 0x9ba3144f
   full_name: "power_supply_get_property"
 }
@@ -426807,7 +426815,7 @@ elf_symbol {
   name: "power_supply_put"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2c49b1b9
+  crc: 0x85e0ec2b
   type_id: 0x169d12f4
   full_name: "power_supply_put"
 }
@@ -426825,7 +426833,7 @@ elf_symbol {
   name: "power_supply_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7f631206
+  crc: 0xb678f019
   type_id: 0x3bb8868a
   full_name: "power_supply_register"
 }
@@ -426834,7 +426842,7 @@ elf_symbol {
   name: "power_supply_set_property"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x93da1478
+  crc: 0xd323e89f
   type_id: 0x9bad5a77
   full_name: "power_supply_set_property"
 }
@@ -426852,7 +426860,7 @@ elf_symbol {
   name: "power_supply_unregister"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2c49b1b9
+  crc: 0x85e0ec2b
   type_id: 0x169d12f4
   full_name: "power_supply_unregister"
 }
@@ -442237,7 +442245,7 @@ elf_symbol {
   name: "ucsi_connector_change"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3a300443
+  crc: 0x381ca918
   type_id: 0x1bd0b1ab
   full_name: "ucsi_connector_change"
 }
@@ -442246,7 +442254,7 @@ elf_symbol {
   name: "ucsi_create"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x50041df5
+  crc: 0xc68da7bb
   type_id: 0x3dc04d04
   full_name: "ucsi_create"
 }
@@ -442255,7 +442263,7 @@ elf_symbol {
   name: "ucsi_destroy"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x19620188
+  crc: 0x63e46da4
   type_id: 0x1b75c063
   full_name: "ucsi_destroy"
 }
@@ -442264,7 +442272,7 @@ elf_symbol {
   name: "ucsi_get_drvdata"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb4803c47
+  crc: 0xc57d7534
   type_id: 0x5d7b2001
   full_name: "ucsi_get_drvdata"
 }
@@ -442273,7 +442281,7 @@ elf_symbol {
   name: "ucsi_notify_common"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x99206e21
+  crc: 0x659bcaf0
   type_id: 0x1851e0cf
   full_name: "ucsi_notify_common"
 }
@@ -442282,7 +442290,7 @@ elf_symbol {
   name: "ucsi_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd44e28fd
+  crc: 0x42beeafa
   type_id: 0x966d72df
   full_name: "ucsi_register"
 }
@@ -442291,7 +442299,7 @@ elf_symbol {
   name: "ucsi_send_command"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x00c48881
+  crc: 0x15087b51
   type_id: 0x9420019d
   full_name: "ucsi_send_command"
 }
@@ -442300,7 +442308,7 @@ elf_symbol {
   name: "ucsi_set_drvdata"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3f410922
+  crc: 0xc98efdbc
   type_id: 0x1b1735f7
   full_name: "ucsi_set_drvdata"
 }
@@ -442309,7 +442317,7 @@ elf_symbol {
   name: "ucsi_sync_control_common"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x12f70e4c
+  crc: 0x05b67ffb
   type_id: 0x9425fe11
   full_name: "ucsi_sync_control_common"
 }
@@ -442318,7 +442326,7 @@ elf_symbol {
   name: "ucsi_unregister"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x19620188
+  crc: 0x63e46da4
   type_id: 0x1b75c063
   full_name: "ucsi_unregister"
 }
