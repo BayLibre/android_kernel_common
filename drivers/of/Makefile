@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0
++ccflags-y += -DDYNAMIC_DEBUG_MODULE
 obj-y = base.o cpu.o device.o module.o platform.o property.o
 obj-$(CONFIG_OF_KOBJ) += kobj.o
 obj-$(CONFIG_OF_DYNAMIC) += dynamic.o
