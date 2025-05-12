@@ -16,6 +16,24 @@
       "message": "Although this config is of type `bool` it should be possible to enable it from the vendor fragment (in the same way as CHROME_PLATFORMS support is enabled).",
       "revId": "41ac1f875eb31b20a7b27a8dfd75ba1ba9a52493",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b4c70db_2513f961",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2025-05-12T11:50:52Z",
+      "side": 1,
+      "message": "Just noticed the following dependecy in built-in drm:\n```\ndrivers/gpu/drm/Makefile:drm-$(CONFIG_DRM_ACCEL) +\u003d ../../accel/drm_accel.o\ndrivers/gpu/drm/drm_drv.c:#if IS_ENABLED(CONFIG_DRM_ACCEL)\ninclude/drm/drm_accel.h:#if IS_ENABLED(CONFIG_DRM_ACCEL)\ninclude/drm/drm_accel.h:#endif /* IS_ENABLED(CONFIG_DRM_ACCEL) */\n```\nso it looks like it cannot be enabled from the vendor. Please make sure that enabling CONFIG_DRM_ACCEL as built-in does not enable any additional module by default (I mean drivers from drivers/accel/ subtree):\n```\ndrivers/Makefile:obj-$(CONFIG_DRM_ACCEL)                +\u003d accel/\n```\nIf anything is enabled, please add proper `# is not set` to gki_defconfig.",
+      "parentUuid": "c64d905e_16851a55",
+      "revId": "41ac1f875eb31b20a7b27a8dfd75ba1ba9a52493",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
