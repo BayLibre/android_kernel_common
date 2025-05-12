@@ -387,6 +387,8 @@ void hda_codec_device_remove(struct snd_sof_dev *sdev)
 }
 EXPORT_SYMBOL_NS_GPL(hda_codec_device_remove, SND_SOC_SOF_HDA_AUDIO_CODEC);
 
+MODULE_SOFTDEP("pre: snd_hda_codec_realtek");
+
 #endif /* CONFIG_SND_SOC_SOF_HDA_AUDIO_CODEC */
 
 #if IS_ENABLED(CONFIG_SND_SOC_SOF_HDA_AUDIO_CODEC) && IS_ENABLED(CONFIG_SND_HDA_CODEC_HDMI)
