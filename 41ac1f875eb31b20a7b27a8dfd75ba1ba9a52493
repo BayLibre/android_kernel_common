@@ -34,6 +34,24 @@
       "parentUuid": "c64d905e_16851a55",
       "revId": "41ac1f875eb31b20a7b27a8dfd75ba1ba9a52493",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6fb15ca_dda6a267",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3485565
+      },
+      "writtenOn": "2025-05-12T12:45:23Z",
+      "side": 1,
+      "message": "These are the modules that could have gotten enabled:\n\n```\nobj-$(CONFIG_DRM_ACCEL_AMDXDNA)\t\t+\u003d amdxdna/\nobj-$(CONFIG_DRM_ACCEL_HABANALABS)\t+\u003d habanalabs/\nobj-$(CONFIG_DRM_ACCEL_IVPU)\t\t+\u003d ivpu/\nobj-$(CONFIG_DRM_ACCEL_QAIC)\t\t+\u003d qaic/\n```\n\nwith `grep -A 10 -R --include\u003d\"Kconfig\" DRM_ACCEL common`, I have checked that all those variables `depend on DRM_ACCEL`, but are not `select`ed.",
+      "parentUuid": "9b4c70db_2513f961",
+      "revId": "41ac1f875eb31b20a7b27a8dfd75ba1ba9a52493",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
