@@ -33,6 +33,24 @@
       "message": "Do these values need to be added here in the middle of the enum, or could they be added to the end? This would likely improve the chances you don\u0027t break KABI",
       "revId": "d905da805de47a0685845ccb1426f9ae7bf1f284",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44aa225a_475a439f",
+        "filename": "include/linux/power_supply.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 2026720
+      },
+      "writtenOn": "2025-05-12T22:55:36Z",
+      "side": 1,
+      "message": "The only reason why I added these properties here is for semantic purposes. The ones in this change return \"ints\" consistent with the other properties above these. While the properties at the end return string type.",
+      "parentUuid": "ea7fa5b1_9d66422e",
+      "revId": "d905da805de47a0685845ccb1426f9ae7bf1f284",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
