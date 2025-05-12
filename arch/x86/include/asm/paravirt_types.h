@@ -250,6 +250,13 @@ struct pv_mmio_ops {
 	void (*raw_writeq)(u64 val, volatile void __iomem *addr);
 	void (*raw_writeq_relaxed)(u64 val, volatile void __iomem *addr);
 #endif
+	unsigned char (*pci_mmcfg_readb)(void __iomem *addr);
+	unsigned short (*pci_mmcfg_readw)(void __iomem *addr);
+	unsigned int (*pci_mmcfg_readl)(void __iomem *addr);
+
+	void (*pci_mmcfg_writeb)(unsigned char val, void __iomem *addr);
+	void (*pci_mmcfg_writew)(unsigned short val, void __iomem *addr);
+	void (*pci_mmcfg_writel)(unsigned int val, void __iomem *addr);
 } __no_randomize_layout;
 
 
