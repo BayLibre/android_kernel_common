@@ -16,6 +16,23 @@
       "message": "So this has KMI impact. So we probably need to queue it up for the last merge window before we freeze.",
       "revId": "d905da805de47a0685845ccb1426f9ae7bf1f284",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea7fa5b1_9d66422e",
+        "filename": "include/linux/power_supply.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-05-12T22:29:49Z",
+      "side": 1,
+      "message": "Do these values need to be added here in the middle of the enum, or could they be added to the end? This would likely improve the chances you don\u0027t break KABI",
+      "revId": "d905da805de47a0685845ccb1426f9ae7bf1f284",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
