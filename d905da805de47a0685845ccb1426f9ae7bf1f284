@@ -51,6 +51,24 @@
       "parentUuid": "ea7fa5b1_9d66422e",
       "revId": "d905da805de47a0685845ccb1426f9ae7bf1f284",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecaece2d_e08a1660",
+        "filename": "include/linux/power_supply.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-05-13T00:02:35Z",
+      "side": 1,
+      "message": "For upstream that\u0027s probably a good way to go, but for android trees where we have to maintain KABI we don\u0027t want to be re-enumerating the enums.  I can\u0027t promise that\u0027s the only KABI issue, but its likely one of them.",
+      "parentUuid": "44aa225a_475a439f",
+      "revId": "d905da805de47a0685845ccb1426f9ae7bf1f284",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
