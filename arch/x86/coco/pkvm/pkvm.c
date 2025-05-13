@@ -181,6 +181,36 @@ static void pkvm_mmio_writeq(u64 v, volatile void __iomem *addr)
 	pkvm_virt_mmio(8, true, (unsigned long)addr, &val);
 }
 
+static unsigned char pkvm_pci_mmcfg_readb(void __iomem *addr)
+{
+	return pkvm_mmio_readb(addr);
+}
+
+static unsigned short pkvm_pci_mmcfg_readw(void __iomem *addr)
+{
+	return pkvm_mmio_readw(addr);
+}
+
+static unsigned int pkvm_pci_mmcfg_readl(void __iomem *addr)
+{
+	return pkvm_mmio_readl(addr);
+}
+
+static void pkvm_pci_mmcfg_writeb(unsigned char v, void __iomem *addr)
+{
+	pkvm_mmio_writeb(v, addr);
+}
+
+static void pkvm_pci_mmcfg_writew(unsigned short v, void __iomem *addr)
+{
+	pkvm_mmio_writew(v, addr);
+}
+
+static void pkvm_pci_mmcfg_writel(unsigned int v, void __iomem *addr)
+{
+	pkvm_mmio_writel(v, addr);
+}
+
 __init void pkvm_guest_init_coco(void)
 {
 	cc_vendor = CC_VENDOR_PKVM;
@@ -210,4 +240,10 @@ __init void pkvm_guest_init_coco(void)
 	pv_ops.mmio.raw_writeq = pkvm_mmio_writeq;
 	pv_ops.mmio.raw_writeq_relaxed = pkvm_mmio_writeq;
 #endif
+	pv_ops.mmio.pci_mmcfg_readb = pkvm_pci_mmcfg_readb;
+	pv_ops.mmio.pci_mmcfg_readw = pkvm_pci_mmcfg_readw;
+	pv_ops.mmio.pci_mmcfg_readl = pkvm_pci_mmcfg_readl;
+	pv_ops.mmio.pci_mmcfg_writeb = pkvm_pci_mmcfg_writeb;
+	pv_ops.mmio.pci_mmcfg_writew = pkvm_pci_mmcfg_writew;
+	pv_ops.mmio.pci_mmcfg_writel = pkvm_pci_mmcfg_writel;
 }
