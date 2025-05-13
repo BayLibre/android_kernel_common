@@ -180,6 +180,9 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_MODEL_NAME,
 	POWER_SUPPLY_PROP_MANUFACTURER,
 	POWER_SUPPLY_PROP_SERIAL_NUMBER,
+	/* Vendor defined properties (any type) */
+	POWER_SUPPLY_PROP_VENDOR1,
+	POWER_SUPPLY_PROP_VENDOR2,
 };
 
 enum power_supply_type {

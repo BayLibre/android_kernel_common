@@ -213,6 +213,11 @@ TIME_TO_FULL
   seconds left for battery to be considered full
   (i.e. while battery is charging)
 
+VENDOR1
+  Field reserved for vendor usage
+VENDOR2
+  Field reserved for vendor usage
+
 
 Battery <-> external power supply interaction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -793,3 +793,21 @@ Description:
 
 		Access: Read
 		Valid values: 1-31
+
+What:		/sys/class/power_supply/<supply_name>/vendor1
+Date:		May 2025
+Contact:	pixel_usb_typec_pd_triage@google.com
+Description:
+		Reserved for vendor usage.
+
+		Access: Read
+		Valid values: 0x0-0xffff
+
+What:		/sys/class/power_supply/<supply_name>/vendor2
+Date:		May 2025
+Contact:	pixel_usb_typec_pd_triage@google.com
+Description:
+		Reserved for vendor usage.
+
+		Access: Read
+		Valid values: 0x0-0xffff

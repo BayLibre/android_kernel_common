@@ -222,6 +222,9 @@ static struct power_supply_attr power_supply_attrs[] = {
 	POWER_SUPPLY_ATTR(MODEL_NAME),
 	POWER_SUPPLY_ATTR(MANUFACTURER),
 	POWER_SUPPLY_ATTR(SERIAL_NUMBER),
+	/* Vendor defined properties (any type) */
+	POWER_SUPPLY_ATTR(VENDOR1),
+	POWER_SUPPLY_ATTR(VENDOR2),
 };
 #define POWER_SUPPLY_ATTR_CNT ARRAY_SIZE(power_supply_attrs)
 
