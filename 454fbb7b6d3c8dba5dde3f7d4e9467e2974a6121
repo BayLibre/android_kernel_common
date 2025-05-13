@@ -16,6 +16,47 @@
       "message": "Please see comments on aosp/3623178",
       "revId": "454fbb7b6d3c8dba5dde3f7d4e9467e2974a6121",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf8e3383_7727eb32",
+        "filename": "include/linux/power_supply.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2025-05-13T17:47:58Z",
+      "side": 1,
+      "message": "Probably need to add vendor properties for padding here if we aren\u0027t making the KMI freeze window.",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "efddd94b_f3081f7b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/power_supply.h",
+              "range": {
+                "startLine": 189,
+                "startChar": 0,
+                "endLine": 189,
+                "endChar": 0
+              },
+              "replacement": "\tPOWER_SUPPLY_PROP_VENDOR_ID,\n\tPOWER_SUPPLY_PROP_VENDOR_MODEL_ID,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "454fbb7b6d3c8dba5dde3f7d4e9467e2974a6121",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
