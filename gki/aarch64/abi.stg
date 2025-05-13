@@ -3104,6 +3104,11 @@ pointer_reference {
   pointee_type_id: 0x00c72527
 }
 pointer_reference {
+  id: 0x0aa2374e
+  kind: POINTER
+  pointee_type_id: 0x00c83ba6
+}
+pointer_reference {
   id: 0x0aa5309c
   kind: POINTER
   pointee_type_id: 0x00d424ec
@@ -355576,6 +355581,12 @@ function {
   parameter_id: 0x13580d6c
 }
 function {
+  id: 0x9b8532be
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x0aa2374e
+}
+function {
   id: 0x9b858538
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -356319,6 +356330,12 @@ function {
   parameter_id: 0x06835e9c
   parameter_id: 0x6720d32f
   parameter_id: 0x11cfee5a
+}
+function {
+  id: 0x9bac9a8d
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x00c83ba6
 }
 function {
   id: 0x9bad311a
@@ -376682,6 +376699,24 @@ elf_symbol {
   full_name: "__traceiter_android_vh_direct_reclaim_end"
 }
 elf_symbol {
+  id: 0x8dc41da8
+  name: "__traceiter_android_vh_dma_buf_attr_show_end"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x2573cbab
+  type_id: 0x9bac9a8d
+  full_name: "__traceiter_android_vh_dma_buf_attr_show_end"
+}
+elf_symbol {
+  id: 0x5f33b294
+  name: "__traceiter_android_vh_dma_buf_attr_show_start"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xc2b1879b
+  type_id: 0x9b8532be
+  full_name: "__traceiter_android_vh_dma_buf_attr_show_start"
+}
+elf_symbol {
   id: 0x94b48bb0
   name: "__traceiter_android_vh_dma_heap_buffer_alloc_end"
   is_defined: true
@@ -381990,6 +382025,24 @@ elf_symbol {
   crc: 0x7c5aa8a7
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_direct_reclaim_end"
+}
+elf_symbol {
+  id: 0xd020303e
+  name: "__tracepoint_android_vh_dma_buf_attr_show_end"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dma_buf_attr_show_end"
+}
+elf_symbol {
+  id: 0xe829284e
+  name: "__tracepoint_android_vh_dma_buf_attr_show_start"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dma_buf_attr_show_start"
 }
 elf_symbol {
   id: 0x30442e2e
@@ -448864,6 +448917,8 @@ interface {
   symbol_id: 0xc8db6e69
   symbol_id: 0x17df4128
   symbol_id: 0x5db6a094
+  symbol_id: 0x8dc41da8
+  symbol_id: 0x5f33b294
   symbol_id: 0x94b48bb0
   symbol_id: 0xbcd1a27c
   symbol_id: 0xd593b3ef
@@ -449454,6 +449509,8 @@ interface {
   symbol_id: 0xaab0786f
   symbol_id: 0x749563a6
   symbol_id: 0x694ad7a6
+  symbol_id: 0xd020303e
+  symbol_id: 0xe829284e
   symbol_id: 0x30442e2e
   symbol_id: 0x9d32ef5e
   symbol_id: 0x9fe99d05
