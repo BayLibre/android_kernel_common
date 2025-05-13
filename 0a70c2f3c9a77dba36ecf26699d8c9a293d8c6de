@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3dd1b31_b260f968",
+        "filename": "sound/soc/sof/intel/hda-codec.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 3266585
+      },
+      "writtenOn": "2025-05-13T06:22:59Z",
+      "side": 1,
+      "message": "I am thinking we should be putting this somewhere in a higher level of hierarchy so I2S codecs can also benefit from them.",
+      "fixSuggestions": [
+        {
+          "fixId": "ce9f55f6_3a14344c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "sound/soc/sof/intel/hda-codec.c",
+              "range": {
+                "startLine": 390,
+                "startChar": 0,
+                "endLine": 393,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "sound/soc/sof/intel/hda-codec.c",
+              "range": {
+                "startLine": 451,
+                "startChar": 0,
+                "endLine": 452,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "0a70c2f3c9a77dba36ecf26699d8c9a293d8c6de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
