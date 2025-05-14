@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd731132_603767e9",
+        "filename": "mm/pgsize_migration.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2025-05-14T20:03:39Z",
+      "side": 1,
+      "message": "what would happen if an obfuscator also has the `linker64` name?",
+      "range": {
+        "startLine": 208,
+        "startChar": 32,
+        "endLine": 208,
+        "endChar": 40
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5acb74d0_5df7235d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/pgsize_migration.c",
+              "range": {
+                "startLine": 206,
+                "startChar": 0,
+                "endLine": 207,
+                "endChar": 0
+              },
+              "replacement": "\t\t * Check the base name (linker64). This is a heuristic to\n\t\t * identify the dynamic linker, and it is not a perfect\n\t\t * solution. However, it is the best we can do without\n\t\t * introducing a new syscall or a new kernel configuration.\n"
+            },
+            {
+              "path": "mm/pgsize_migration.c",
+              "range": {
+                "startLine": 257,
+                "startChar": 0,
+                "endLine": 258,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * Only bionic\u0027s dynamic linker needs to hint padding pages.\n\t * This is a heuristic to identify the dynamic linker, and it is\n\t * not a perfect solution. However, it is the best we can do\n\t * without introducing a new syscall or a new kernel configuration.\n\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "947ab9e66acc182e5d4543d748392ac7656c41bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
