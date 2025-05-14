@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d9473e7_0e08560c",
+        "filename": "include/linux/power_supply.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-05-14T13:38:32Z",
+      "side": 1,
+      "message": "This should be `#ifndef` as you are trying to hide these enum additions from the genksyms tool.",
+      "range": {
+        "startLine": 183,
+        "startChar": 1,
+        "endLine": 183,
+        "endChar": 6
+      },
+      "revId": "43b58632711303c65c4f762b4c146a77d56fc87e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
