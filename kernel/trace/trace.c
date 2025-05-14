@@ -6008,6 +6008,7 @@ struct trace_mod_entry {
 };
 
 struct trace_scratch {
+	unsigned int		clock_id;
 	unsigned long		text_addr;
 	unsigned long		nr_entries;
 	struct trace_mod_entry	entries[];
@@ -6069,6 +6070,7 @@ static void update_last_data(struct trace_array *tr)
 	/* Reset the module list and reload them */
 	tscratch = trace_array_scratch(tr, NULL);
 	if (tscratch) {
+		tscratch->clock_id = tr->clock_id;
 		memset(tscratch->entries, 0,
 		       flex_array_size(tscratch, entries, tscratch->nr_entries));
 		tscratch->nr_entries = 0;
@@ -7214,6 +7216,7 @@ static int tracing_clock_show(struct seq_file *m, void *v)
 
 int tracing_set_clock(struct trace_array *tr, const char *clockstr)
 {
+	struct trace_scratch *tscratch;
 	int i;
 
 	for (i = 0; i < ARRAY_SIZE(trace_clocks); i++) {
@@ -7240,6 +7243,11 @@ int tracing_set_clock(struct trace_array *tr, const char *clockstr)
 		ring_buffer_set_clock(tr->max_buffer.buffer, trace_clocks[i].func);
 	tracing_reset_online_cpus(&tr->max_buffer);
 #endif
+
+	tscratch = trace_array_scratch(tr, NULL);
+	if (tscratch && !(tr->flags & TRACE_ARRAY_FL_LAST_BOOT)) {
+		tscratch->clock_id = i;
+	}
 
 	mutex_unlock(&trace_types_lock);
 
@@ -9407,6 +9415,15 @@ static void setup_trace_scratch(struct trace_array *tr,
 		}
 		if (n == MODULE_NAME_LEN)
 			goto reset;
+	}
+
+	/* Set trace_clock as the same of the previous boot. */
+	if (tscratch->clock_id != tr->clock_id) {
+		if (tscratch->clock_id >= ARRAY_SIZE(trace_clocks) ||
+		    tracing_set_clock(tr, trace_clocks[tscratch->clock_id].name) < 0) {
+			pr_info("the previous trace_clock info is not valid.");
+			goto reset;
+		}
 	}
 	return;
  reset:
