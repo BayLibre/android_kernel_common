@@ -115,6 +115,24 @@
       "parentUuid": "c3dd1b31_b260f968",
       "revId": "0a70c2f3c9a77dba36ecf26699d8c9a293d8c6de",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "565ff7ff_fb59b89b",
+        "filename": "sound/soc/sof/intel/hda-codec.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 3266585
+      },
+      "writtenOn": "2025-05-14T05:27:16Z",
+      "side": 1,
+      "message": "I am only thinking moving `snd_ctl_led` dependency to `sound/soc/sof/intel/hda.c` but not sure if that works since that is the entry point (I think) for HDA/I2S/Soundwire",
+      "parentUuid": "cb5952d0_75beca71",
+      "revId": "0a70c2f3c9a77dba36ecf26699d8c9a293d8c6de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
