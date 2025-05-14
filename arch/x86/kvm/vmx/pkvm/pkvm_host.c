@@ -1307,6 +1307,10 @@ static void __init setup_pkvm_syms(void)
 	pkvm_sym(x86_pred_cmd) = x86_pred_cmd;
 	pkvm_sym(fpu_kernel_cfg) = fpu_kernel_cfg;
 	pkvm_sym(fpu_user_cfg) = fpu_user_cfg;
+#ifdef CONFIG_X86_64
+	if (static_branch_unlikely(&__fpu_state_size_dynamic))
+		static_branch_enable(&pkvm_sym(__fpu_state_size_dynamic));
+#endif
 }
 
 int __init vmx_pkvm_init(void)
