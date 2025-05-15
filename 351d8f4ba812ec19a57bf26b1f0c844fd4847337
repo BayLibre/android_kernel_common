@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8bd7be0_788d1548",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2025-05-15T17:59:13Z",
+      "side": 1,
+      "message": "Every FF-A version since 1.0 requires SMCCC 1.2. However before FF-A 1.2 only x0-x7 were used, and x8+ must be preserved. FF-A 1.2 and up uses x0-x17 so the registers that needs to be preserved depend on the FF-A version, not the SMCCC version.",
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
