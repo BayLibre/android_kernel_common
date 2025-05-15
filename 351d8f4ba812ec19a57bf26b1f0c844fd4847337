@@ -16,6 +16,23 @@
       "message": "Every FF-A version since 1.0 requires SMCCC 1.2. However before FF-A 1.2 only x0-x7 were used, and x8+ must be preserved. FF-A 1.2 and up uses x0-x17 so the registers that needs to be preserved depend on the FF-A version, not the SMCCC version.",
       "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c22fd76_8339b822",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1148,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2025-05-15T19:49:14Z",
+      "side": 1,
+      "message": "What does this do? Does `arm_smccc_1_2_smc` not overwrite all of `resp`? If you are using FF-A version 1.1 or below (or version 1.2 and up with a 32 bit call), x8-x17 will be preserved across the SMC, but the values that are preserved come from `req` not `resp`.",
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
