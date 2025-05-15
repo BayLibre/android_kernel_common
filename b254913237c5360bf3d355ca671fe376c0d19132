@@ -56,6 +56,30 @@
       },
       "revId": "b254913237c5360bf3d355ca671fe376c0d19132",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e3f4a08_126e98cc",
+        "filename": "sound/soc/sof/intel/hda-codec.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 3303355
+      },
+      "writtenOn": "2025-05-15T16:21:51Z",
+      "side": 1,
+      "message": "I\u0027m not sure that we do need to find an upstreamable solution. Pending the outcome of discussions on b/374919978#comment35, I\u0027m hopeful that we won\u0027t end up needing any of these softdeps. So this CL is more of a short-term workaround that we\u0027ll end up reverting. That said, we do still want this workaround in place for now, to unblock other testing.",
+      "parentUuid": "6f5e1dcc_768aa675",
+      "range": {
+        "startLine": 390,
+        "startChar": 21,
+        "endLine": 390,
+        "endChar": 42
+      },
+      "revId": "b254913237c5360bf3d355ca671fe376c0d19132",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
