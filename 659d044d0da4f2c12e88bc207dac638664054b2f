@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b54aa2b_da15378c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-05-15T13:25:14Z",
+      "side": 1,
+      "message": "Cherry pick is clean:\n\n```\n1:  5e8ce74fb041 ! 1:  659d044d0da4 Revert \"Bluetooth: hci_core: Fix sleeping function called from invalid context\"\n    @@ Commit message\n     \n         [1] Link: https://lore.kernel.org/linux-bluetooth/877c55ci1r.wl-tiwai@suse.de/T/#t\n         Fixes: 4d94f0555827 (\"Bluetooth: hci_core: Fix sleeping function called from invalid context\")\n    +    Bug: 417862441\n    +    Change-Id: Ib66cd2dd3470123bd22a7cf28be90c904c2c36d7\n         Signed-off-by: Luiz Augusto von Dentz \u003cluiz.von.dentz@intel.com\u003e\n         Signed-off-by: Sasha Levin \u003csashal@kernel.org\u003e\n    +    (cherry picked from commit 5e8ce74fb04151ef415ecbedb3af17eed1ead1f5)\n    +    Signed-off-by: Srinivasarao Pathipati \u003cquic_c_spathi@quicinc.com\u003e\n     \n      ## include/net/bluetooth/hci_core.h ##\n     @@ include/net/bluetooth/hci_core.h: struct hci_conn_params {\n    @@ include/net/bluetooth/hci_core.h: struct hci_cb {\n     +                                                          __u8 encrypt);\n        void (*key_change_cfm)  (struct hci_conn *conn, __u8 status);\n        void (*role_switch_cfm) (struct hci_conn *conn, __u8 status, __u8 role);\n    + \n    +   ANDROID_KABI_RESERVE(1);\n      };\n      \n     -static inline void hci_cb_lookup(struct hci_conn *conn, struct list_head *list)\n```",
+      "revId": "659d044d0da4f2c12e88bc207dac638664054b2f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
