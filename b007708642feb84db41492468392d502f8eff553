@@ -22,6 +22,30 @@
       },
       "revId": "b007708642feb84db41492468392d502f8eff553",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5e2dcbf_f02a18ad",
+        "filename": "kernel/trace/ring_buffer.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5304,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-05-16T09:17:14Z",
+      "side": 0,
+      "message": "I do not have any easy way of knowing here if the hyp has panic\u0027ed. That\u0027s why I thought we might just as well be good without it. Especially there is a warning above if the HVC has failed anyway, it is very unlikely the second WARN would trigger without the first one.",
+      "parentUuid": "27042f6f_c3edd298",
+      "range": {
+        "startLine": 5304,
+        "startChar": 0,
+        "endLine": 5304,
+        "endChar": 58
+      },
+      "revId": "b007708642feb84db41492468392d502f8eff553",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
