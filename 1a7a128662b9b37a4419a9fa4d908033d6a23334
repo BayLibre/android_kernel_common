@@ -70,6 +70,30 @@
       },
       "revId": "1a7a128662b9b37a4419a9fa4d908033d6a23334",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "facfc689_954f36ea",
+        "filename": "gki/aarch64/abi.stg",
+        "patchSetId": 5
+      },
+      "lineNbr": 55401,
+      "author": {
+        "id": 3485565
+      },
+      "writtenOn": "2025-05-16T05:01:27Z",
+      "side": 0,
+      "message": "Did you generate the stg files on your own? I suggest to discard the change and regenerate it following https://docs.google.com/document/d/18eNEc_oQa9oF546E-MdeEReFhCvSb6Fv00vTBquRzjU/edit?tab\u003dt.pk1lw6tntelq#heading\u003dh.p4kuwdn6mr5b\n\nif again `aarch64` is changed, then maybe indeed the DRM structures are altering some offsets",
+      "parentUuid": "2af0cb9b_fa9ab91d",
+      "range": {
+        "startLine": 55401,
+        "startChar": 0,
+        "endLine": 55401,
+        "endChar": 16
+      },
+      "revId": "1a7a128662b9b37a4419a9fa4d908033d6a23334",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
