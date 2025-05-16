@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4ad7553_6b0b8b57",
+        "filename": "arch/arm64/kvm/Kconfig",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-05-16T12:22:27Z",
+      "side": 1,
+      "message": "What does this line achieve?\n\nI thought, perhaps, that it would mean that selecting `PKVM_DEBUG` would cause `PTDUMP_STAGE2_DEBUGFS` to be selected too if its dependencies were met, but in my local testing that doesn\u0027t seem to be the case (selecting `PKVM_DEBUG` leaves `PTDUMP_STAGE2_DEBUGFS` unselected)",
+      "range": {
+        "startLine": 73,
+        "startChar": 1,
+        "endLine": 73,
+        "endChar": 28
+      },
+      "revId": "3d56e418b9db94cc3f2736ded6365909b3ea23fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
