@@ -18,6 +18,7 @@
 #include "bus.h"
 #include "class.h"
 #include "pd.h"
+#include "mode_selection.h"
 
 static DEFINE_IDA(typec_index_ida);
 
@@ -444,11 +445,45 @@ svid_show(struct device *dev, struct device_attribute *attr, char *buf)
 }
 static DEVICE_ATTR_RO(svid);
 
+static ssize_t priority_store(struct device *dev,
+			       struct device_attribute *attr,
+			       const char *buf, size_t size)
+{
+	struct typec_altmode *adev = to_typec_altmode(dev);
+	unsigned int val;
+	int err = kstrtouint(buf, 10, &val);
+
+	if (!err) {
+		err = typec_mode_set_priority(to_typec_port(adev->dev.parent),
+			typec_svid_to_altmode(adev->svid), val);
+		if (!err)
+			return size;
+	}
+
+	return err;
+}
+
+static ssize_t priority_show(struct device *dev,
+			      struct device_attribute *attr, char *buf)
+{
+	struct typec_altmode *adev = to_typec_altmode(dev);
+	int val;
+	const int err = typec_mode_get_priority(to_typec_port(adev->dev.parent),
+			typec_svid_to_altmode(adev->svid), &val);
+
+	if (err)
+		return err;
+
+	return sprintf(buf, "%d\n", val);
+}
+static DEVICE_ATTR_RW(priority);
+
 static struct attribute *typec_altmode_attrs[] = {
 	&dev_attr_active.attr,
 	&dev_attr_mode.attr,
 	&dev_attr_svid.attr,
 	&dev_attr_vdo.attr,
+	&dev_attr_priority.attr,
 	NULL
 };
 
@@ -457,7 +492,7 @@ static umode_t typec_altmode_attr_is_visible(struct kobject *kobj,
 {
 	struct typec_altmode *adev = to_typec_altmode(kobj_to_dev(kobj));
 
-	if (attr == &dev_attr_active.attr)
+	if (attr == &dev_attr_active.attr) {
 		if (!is_typec_port(adev->dev.parent)) {
 			struct typec_partner *partner =
 				to_typec_partner(adev->dev.parent);
@@ -468,6 +503,15 @@ static umode_t typec_altmode_attr_is_visible(struct kobject *kobj,
 				!adev->ops->activate)
 				return 0444;
 		}
+	} else if (attr == &dev_attr_priority.attr) {
+		if (is_typec_port(adev->dev.parent))  {
+			struct typec_port *port = to_typec_port(adev->dev.parent);
+
+			if (!port->alt_mode_override)
+				return 0;
+		} else
+			return 0;
+	}
 
 	return attr->mode;
 }
@@ -1936,6 +1980,44 @@ static ssize_t orientation_show(struct device *dev,
 }
 static DEVICE_ATTR_RO(orientation);
 
+static ssize_t mode_priorities_show(struct device *dev,
+			      struct device_attribute *attr, char *buf)
+{
+	return typec_mode_get_priority_list(to_typec_port(dev), buf);
+}
+static DEVICE_ATTR_RO(mode_priorities);
+
+static ssize_t usb4_priority_show(struct device *dev,
+			      struct device_attribute *attr, char *buf)
+{
+	struct typec_port *port = to_typec_port(dev);
+	int val;
+	const int err = typec_mode_get_priority(port, TYPEC_USB4_MODE, &val);
+
+	if (err)
+		return err;
+
+	return sprintf(buf, "%d\n", val);
+}
+
+static ssize_t usb4_priority_store(struct device *dev,
+				  struct device_attribute *attr,
+				  const char *buf, size_t size)
+{
+	struct typec_port *port = to_typec_port(dev);
+	unsigned int val;
+	int err = kstrtouint(buf, 10, &val);
+
+	if (!err) {
+		err = typec_mode_set_priority(port, TYPEC_USB4_MODE, val);
+		if (!err)
+			return size;
+	}
+
+	return err;
+}
+static DEVICE_ATTR_RW(usb4_priority);
+
 static struct attribute *typec_attrs[] = {
 	&dev_attr_data_role.attr,
 	&dev_attr_power_operation_mode.attr,
@@ -1948,6 +2030,8 @@ static struct attribute *typec_attrs[] = {
 	&dev_attr_port_type.attr,
 	&dev_attr_orientation.attr,
 	&dev_attr_usb_capability.attr,
+	&dev_attr_mode_priorities.attr,
+	&dev_attr_usb4_priority.attr,
 	NULL,
 };
 
@@ -1986,6 +2070,13 @@ static umode_t typec_attr_is_visible(struct kobject *kobj,
 			return 0;
 		if (!port->ops || !port->ops->default_usb_mode_set)
 			return 0444;
+	} else if (attr == &dev_attr_mode_priorities.attr) {
+		if (!port->alt_mode_override)
+			return 0;
+	} else if (attr == &dev_attr_usb4_priority.attr) {
+		if (!port->alt_mode_override ||
+			!(port->cap->usb_capability & USB_CAPABILITY_USB4))
+			return 0;
 	}
 
 	return attr->mode;
@@ -2023,6 +2114,7 @@ static void typec_release(struct device *dev)
 	typec_mux_put(port->mux);
 	typec_retimer_put(port->retimer);
 	kfree(port->cap);
+	typec_mode_selection_destroy(port);
 	kfree(port);
 }
 
@@ -2483,6 +2575,8 @@ typec_port_register_altmode(struct typec_port *port,
 		to_altmode(adev)->retimer = retimer;
 	}
 
+	typec_mode_set_priority(port, typec_svid_to_altmode(adev->svid), -1);
+
 	return adev;
 }
 EXPORT_SYMBOL_GPL(typec_port_register_altmode);
@@ -2631,9 +2725,12 @@ struct typec_port *typec_register_port(struct device *parent,
 	port->con.attach = typec_partner_attach;
 	port->con.deattach = typec_partner_deattach;
 
-	if (cap->usb_capability & USB_CAPABILITY_USB4)
+	typec_mode_selection_init(port);
+
+	if (cap->usb_capability & USB_CAPABILITY_USB4) {
 		port->usb_mode = USB_MODE_USB4;
-	else if (cap->usb_capability & USB_CAPABILITY_USB3)
+		typec_mode_set_priority(port, TYPEC_USB4_MODE, -1);
+	} else if (cap->usb_capability & USB_CAPABILITY_USB3)
 		port->usb_mode = USB_MODE_USB3;
 	else if (cap->usb_capability & USB_CAPABILITY_USB2)
 		port->usb_mode = USB_MODE_USB2;
