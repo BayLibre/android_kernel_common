@@ -43,6 +43,10 @@ struct typec_partner {
 
 	struct usb_power_delivery	*pd;
 
+	struct list_head		mode_list;
+	struct mutex			mode_list_lock;
+	struct delayed_work		mode_selection_work;
+
 	void (*attach)(struct typec_partner *partner, struct device *dev);
 	void (*deattach)(struct typec_partner *partner, struct device *dev);
 	ANDROID_KABI_RESERVE(1);
