@@ -128481,10 +128481,10 @@ member {
   offset: 128
 }
 member {
-  id: 0xb82c8b76
+  id: 0xb82c85e5
   name: "len"
   type_id: 0x295c7202
-  offset: 40
+  offset: 48
 }
 member {
   id: 0xb8405030
@@ -155946,6 +155946,11 @@ member {
   offset: 32
 }
 member {
+  id: 0x9bb72a8b
+  name: "offset"
+  type_id: 0xabf64f28
+}
+member {
   id: 0x9bc1bbe9
   name: "offset"
   type_id: 0xdd6eef0a
@@ -156030,11 +156035,6 @@ member {
   id: 0x9bfce125
   name: "offset"
   type_id: 0xe03de1c1
-}
-member {
-  id: 0x9bff77f6
-  name: "offset"
-  type_id: 0xe3ab3231
 }
 member {
   id: 0x40f4440f
@@ -274056,8 +274056,8 @@ struct_union {
   name: "nf_ct_ext"
   definition {
     bytesize: 16
-    member_id: 0x9bff77f6
-    member_id: 0xb82c8b76
+    member_id: 0x9bb72a8b
+    member_id: 0xb82c85e5
     member_id: 0xa36a9456
     member_id: 0xff5807ff
   }
@@ -377425,7 +377425,7 @@ elf_symbol {
   name: "__skb_flow_dissect"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xfd726f14
+  crc: 0xfe7331a2
   type_id: 0xf1510018
   full_name: "__skb_flow_dissect"
 }
@@ -377434,7 +377434,7 @@ elf_symbol {
   name: "__skb_get_hash_net"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb76ebe83
+  crc: 0xa8e4e3ba
   type_id: 0x1f8b5856
   full_name: "__skb_get_hash_net"
 }
@@ -422667,7 +422667,7 @@ elf_symbol {
   name: "nf_conntrack_find_get"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9fd37524
+  crc: 0x8b91efde
   type_id: 0x65a73fe6
   full_name: "nf_conntrack_find_get"
 }
@@ -422685,7 +422685,7 @@ elf_symbol {
   name: "nf_ct_delete"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc7eb0df2
+  crc: 0xbc0218ef
   type_id: 0xf33b99db
   full_name: "nf_ct_delete"
 }
@@ -422703,7 +422703,7 @@ elf_symbol {
   name: "nf_ct_get_tuplepr"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf6b04909
+  crc: 0x50d19621
   type_id: 0xf0122aeb
   full_name: "nf_ct_get_tuplepr"
 }
@@ -422721,7 +422721,7 @@ elf_symbol {
   name: "nf_ct_iterate_cleanup_net"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x09ebe175
+  crc: 0xf6df4e48
   type_id: 0x1be890ab
   full_name: "nf_ct_iterate_cleanup_net"
 }
@@ -437289,7 +437289,7 @@ elf_symbol {
   name: "skb_flow_dissect_ct"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x74eca6d0
+  crc: 0xdd89df7a
   type_id: 0x1faed94e
   full_name: "skb_flow_dissect_ct"
 }
@@ -437298,7 +437298,7 @@ elf_symbol {
   name: "skb_flow_dissect_hash"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x51101242
+  crc: 0x68b8d1ec
   type_id: 0x1fae5edf
   full_name: "skb_flow_dissect_hash"
 }
@@ -437307,7 +437307,7 @@ elf_symbol {
   name: "skb_flow_dissect_meta"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x51101242
+  crc: 0x68b8d1ec
   type_id: 0x1fae5edf
   full_name: "skb_flow_dissect_meta"
 }
@@ -437316,7 +437316,7 @@ elf_symbol {
   name: "skb_flow_dissect_tunnel_info"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x51101242
+  crc: 0x68b8d1ec
   type_id: 0x1fae5edf
   full_name: "skb_flow_dissect_tunnel_info"
 }
