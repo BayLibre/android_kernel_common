@@ -42,6 +42,9 @@ struct typec_partner {
 	u8				usb_capability;
 
 	struct usb_power_delivery	*pd;
+	struct list_head		mode_list;
+	struct mutex			mode_list_lock;
+	struct delayed_work		mode_selection_work;
 
 	void (*attach)(struct typec_partner *partner, struct device *dev);
 	void (*deattach)(struct typec_partner *partner, struct device *dev);
@@ -107,6 +110,7 @@ extern const struct class typec_mux_class;
 extern const struct class retimer_class;
 extern const struct class typec_class;
 
+struct typec_partner *typec_get_partner(struct typec_port *port);
 #if defined(CONFIG_ACPI)
 int typec_link_ports(struct typec_port *connector);
 void typec_unlink_ports(struct typec_port *connector);

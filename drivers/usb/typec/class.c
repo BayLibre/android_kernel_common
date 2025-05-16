@@ -2069,7 +2069,7 @@ static int partner_match(struct device *dev, void *data)
 	return is_typec_partner(dev);
 }
 
-static struct typec_partner *typec_get_partner(struct typec_port *port)
+struct typec_partner *typec_get_partner(struct typec_port *port)
 {
 	struct device *dev;
 
