@@ -229,4 +229,6 @@ void typec_altmode_unregister_driver(struct typec_altmode_driver *drv);
 	module_driver(__typec_altmode_driver, typec_altmode_register_driver, \
 		      typec_altmode_unregister_driver)
 
+void mode_selection_complete(struct typec_altmode *alt, const int result);
+
 #endif /* __USB_TYPEC_ALTMODE_H */
