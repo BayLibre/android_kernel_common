@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa71e30b_ebcb4c2d",
+        "filename": "arch/arm64/kvm/Kconfig",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-05-16T16:36:49Z",
+      "side": 1,
+      "message": "The only way to make it useful is to have a .config file with PKVM_DEBUG\u003dy and nothing for PTDUMP_STAGE2_DEBUGFS. In that case the latter will be resolved to y.\n\nThis is because the option is \"visible\". Not sure if that\u0027s what it means with that \"or with a visible prompt. \" in the kconfig documentation paragaph about imply. \n\nI\u0027m looking at menuconfig code and I don\u0027t see an easy way out at the moment.",
+      "parentUuid": "a5340e6e_b30c9cfb",
+      "range": {
+        "startLine": 73,
+        "startChar": 1,
+        "endLine": 73,
+        "endChar": 28
+      },
+      "revId": "3d56e418b9db94cc3f2736ded6365909b3ea23fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5a54f19e_ce86ff03",
         "filename": "arch/arm64/kvm/Kconfig",
         "patchSetId": 5
