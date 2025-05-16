@@ -299,6 +299,13 @@ static int sdei_api_get_version(u64 *version)
 	return invoke_sdei_fn(SDEI_1_0_FN_SDEI_VERSION, 0, 0, 0, 0, 0, version);
 }
 
+int sdei_event_signal(u64 target_pe)
+{
+	return invoke_sdei_fn(SDEI_1_0_FN_SDEI_EVENT_SIGNAL, 0, target_pe, 0, 0,
+			      0, NULL);
+}
+EXPORT_SYMBOL_GPL(sdei_event_signal);
+
 int sdei_mask_local_cpu(void)
 {
 	int err;
@@ -563,6 +570,7 @@ static void _local_event_register(void *data)
 	struct sdei_crosscall_args *arg = data;
 
 	reg = per_cpu_ptr(arg->event->private_registered, smp_processor_id());
+
 	err = sdei_api_event_register(arg->event->event_num, sdei_entry_point,
 				      reg, 0, 0);
 
