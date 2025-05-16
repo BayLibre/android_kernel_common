@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8425381a_5728fcfd",
+        "filename": "arch/arm64/kvm/hyp/nvhe/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1807569
+      },
+      "writtenOn": "2025-05-16T01:12:31Z",
+      "side": 1,
+      "message": "nit: put objects in separate directories on separate lines?\n\n```suggestion\nhyp-obj-y +\u003d ../vgic-v3-sr.o ../aarch32.o ../vgic-v2-cpuif-proxy.o ../entry.o \\\n\t ../fpsimd.o ../hyp-entry.o ../exception.o ../pgtable.o iommu/pviommu-host.o  iommu/pviommu.o\nhyp-obj-y +\u003d ../../../kernel/smccc-call.o\n```",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 30
+      },
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8bd7be0_788d1548",
         "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
         "patchSetId": 2
@@ -31,6 +54,29 @@
       "writtenOn": "2025-05-15T19:49:14Z",
       "side": 1,
       "message": "What does this do? Does `arm_smccc_1_2_smc` not overwrite all of `resp`? If you are using FF-A version 1.1 or below (or version 1.2 and up with a 32 bit call), x8-x17 will be preserved across the SMC, but the values that are preserved come from `req` not `resp`.",
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8288036f_9bfbb1f0",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1152,
+      "author": {
+        "id": 1807569
+      },
+      "writtenOn": "2025-05-16T01:12:31Z",
+      "side": 1,
+      "message": "I added a macro `nvhe_arm_smccc_1_2_smc` to make sure hyp events for `arm_smccc_1_2_smc` get emitted as you do here in aosp/3614215. We will need to do the same to support `FFA_MSG_SEND_DIRECT_REQ2` so I think a common macro makes sense and mirrors the way `arm_smccc_1_1_smc` is handled.\n\naosp/3614215 could land before or after this CL.\nIn the after case, we just replace these three lines with `nvhe_arm_smccc_1_2_smc`.\nIn the before case, aosp/3614215 needs a small update to not touch code added in aosp/3501552 (otherwise it will not apply cleanly to ToT).",
+      "range": {
+        "startLine": 1150,
+        "startChar": 0,
+        "endLine": 1152,
+        "endChar": 15
+      },
       "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
