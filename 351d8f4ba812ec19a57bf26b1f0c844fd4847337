@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "215a5a85_4b3e9023",
+        "filename": "arch/arm64/kvm/hyp/nvhe/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-05-16T10:00:15Z",
+      "side": 1,
+      "message": "I think you also need to include this change as part of your upstream patch otherwise it won\u0027t link.",
+      "parentUuid": "8425381a_5728fcfd",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 30
+      },
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8bd7be0_788d1548",
@@ -82,6 +106,48 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6901ebd_28b22b88",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-05-16T10:00:15Z",
+      "side": 1,
+      "message": "In this patch we are not bumping to FF-A 1.2, I know that this will be covered by Per\u0027s series after this CL.",
+      "parentUuid": "9ef16579_c226b800",
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19710065_fc9ad0d8",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-05-16T10:00:15Z",
+      "side": 1,
+      "message": "If we want to be correct that should be the `caller` and not the `callee`. The host/guest is the caller and the hyp is the callee in this case.",
+      "parentUuid": "c2f8fc8f_cbfd7ac1",
+      "range": {
+        "startLine": 1146,
+        "startChar": 4,
+        "endLine": 1146,
+        "endChar": 8
+      },
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c22fd76_8339b822",
@@ -99,6 +165,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c28e3ffb_94a20341",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1148,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-05-16T10:00:15Z",
+      "side": 1,
+      "message": "It preserves the host context registers in case this is using smccc 1.1",
+      "parentUuid": "6c22fd76_8339b822",
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8288036f_9bfbb1f0",
@@ -112,6 +196,30 @@
       "writtenOn": "2025-05-16T01:12:31Z",
       "side": 1,
       "message": "I added a macro `nvhe_arm_smccc_1_2_smc` to make sure hyp events for `arm_smccc_1_2_smc` get emitted as you do here in aosp/3614215. We will need to do the same to support `FFA_MSG_SEND_DIRECT_REQ2` so I think a common macro makes sense and mirrors the way `arm_smccc_1_1_smc` is handled.\n\naosp/3614215 could land before or after this CL.\nIn the after case, we just replace these three lines with `nvhe_arm_smccc_1_2_smc`.\nIn the before case, aosp/3614215 needs a small update to not touch code added in aosp/3501552 (otherwise it will not apply cleanly to ToT).",
+      "range": {
+        "startLine": 1150,
+        "startChar": 0,
+        "endLine": 1152,
+        "endChar": 15
+      },
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2b5fc5f_6e662ff2",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1152,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-05-16T10:00:15Z",
+      "side": 1,
+      "message": "Yes but in this CL it doesn\u0027t make sense to introduce that because it is only used from one place",
+      "parentUuid": "8288036f_9bfbb1f0",
       "range": {
         "startLine": 1150,
         "startChar": 0,
