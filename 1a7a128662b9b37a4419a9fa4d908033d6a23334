@@ -118,6 +118,30 @@
       },
       "revId": "1a7a128662b9b37a4419a9fa4d908033d6a23334",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83666995_cbbecb84",
+        "filename": "gki/aarch64/abi.stg",
+        "patchSetId": 5
+      },
+      "lineNbr": 55401,
+      "author": {
+        "id": 3593604
+      },
+      "writtenOn": "2025-05-16T18:27:00Z",
+      "side": 0,
+      "message": "I generated the stg files using the abi_update_symbol_list targets\n```\ntools/bazel run //common:kernel_aarch64_abi_update_symbol_list \u0026\u0026 tools/bazel run //common:kernel_aarch64_abi_update\n```\n\nThe x86 target in unable to run.",
+      "parentUuid": "ee8450f9_84d33923",
+      "range": {
+        "startLine": 55401,
+        "startChar": 0,
+        "endLine": 55401,
+        "endChar": 16
+      },
+      "revId": "1a7a128662b9b37a4419a9fa4d908033d6a23334",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
