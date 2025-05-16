@@ -87,6 +87,7 @@ struct typec_port {
 	ANDROID_KABI_RESERVE(1);
 
 	bool				alt_mode_override;
+	struct list_head		mode_list;
 };
 
 #define to_typec_port(_dev_) container_of(_dev_, struct typec_port, dev)
