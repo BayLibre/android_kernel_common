@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5340e6e_b30c9cfb",
+        "filename": "arch/arm64/kvm/Kconfig",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-05-16T14:00:03Z",
+      "side": 1,
+      "message": "That\u0027s exactly what I meant but somehow it does not seem to work... I\u0027m trying with another config using \"imply\" and it does not seem any better (TCG_TPM and DRM_MESON_DW_HDMI) https://patchwork.kernel.org/comment/22203705/ seems to describe exactly what we want.\n\nAt the moment, I can switch it to \"select\" but then you can\u0027t have PKVM_DEBUG and not STAGE2_DEBUGFS. Or just remove that imply altogether, it is set already by gki_defconfig anyway.",
+      "parentUuid": "e4ad7553_6b0b8b57",
+      "range": {
+        "startLine": 73,
+        "startChar": 1,
+        "endLine": 73,
+        "endChar": 28
+      },
+      "revId": "3d56e418b9db94cc3f2736ded6365909b3ea23fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5a54f19e_ce86ff03",
         "filename": "arch/arm64/kvm/Kconfig",
         "patchSetId": 5
@@ -61,6 +85,30 @@
           ]
         }
       ],
+      "revId": "3d56e418b9db94cc3f2736ded6365909b3ea23fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "077cefa8_83b03f4f",
+        "filename": "arch/arm64/kvm/Kconfig",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-05-16T14:00:03Z",
+      "side": 1,
+      "message": "It\u0027s part of the PKVM_DEBUG list, so this was to make it enabled by default whenever we select PKVM_DEBUG, just like the other options.\n\nBut then as this one is a bit different, perhaps we should treat it as an addition and leave it \"default n\"?",
+      "parentUuid": "5a54f19e_ce86ff03",
+      "range": {
+        "startLine": 135,
+        "startChar": 1,
+        "endLine": 135,
+        "endChar": 10
+      },
       "revId": "3d56e418b9db94cc3f2736ded6365909b3ea23fa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
