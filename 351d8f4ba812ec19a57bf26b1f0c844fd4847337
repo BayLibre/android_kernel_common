@@ -43,6 +43,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ef16579_c226b800",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 1807569
+      },
+      "writtenOn": "2025-05-16T01:46:47Z",
+      "side": 1,
+      "message": "\u003e FF-A 1.2 and up uses x0-x17 so the registers that needs to be preserved depend on the FF-A version\n\nOn FF-A 1.2, it also depends on whether `FFA_MSG_SEND_DIRECT_REQ` or `FFA_FN64_MSG_SEND_DIRECT_REQ` was called.\n\nIn the former (SMC32/HVC32 on Aarch64) case, x8-x17 must indeed be preserved.\n\nIn the latter (SMC64/HVC64) case: \n- x8-x17 SBZ if the function completed with `FFA_FN64_MSG_SEND_DIRECT_RESP`, and \n- x2-x17 MBZ if it completed with `FFA_SUCCESS`.",
+      "parentUuid": "f8bd7be0_788d1548",
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2f8fc8f_cbfd7ac1",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 1807569
+      },
+      "writtenOn": "2025-05-16T01:46:47Z",
+      "side": 1,
+      "message": "nit: callee? (this code is called from the host and guest FFA handlers.)",
+      "range": {
+        "startLine": 1146,
+        "startChar": 4,
+        "endLine": 1146,
+        "endChar": 8
+      },
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6c22fd76_8339b822",
         "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
         "patchSetId": 2
