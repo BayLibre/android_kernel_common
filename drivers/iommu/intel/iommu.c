@@ -4781,8 +4781,10 @@ static bool risky_device(struct pci_dev *pdev)
 static int intel_iommu_iotlb_sync_map(struct iommu_domain *domain,
 				      unsigned long iova, size_t size)
 {
-	cache_tag_flush_range_np(to_dmar_domain(domain), iova, iova + size - 1);
+	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled())
+		return 0;
 
+	cache_tag_flush_range_np(to_dmar_domain(domain), iova, iova + size - 1);
 	return 0;
 }
 
