@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f546e73_90c9ad49",
+        "filename": "arch/x86/kvm/pkvm/x86.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2720,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-05-19T22:20:03Z",
+      "side": 1,
+      "message": "Actually for non-protected VMs `mp_state` is not used, so we can just set it to `KVM_MP_STATE_UNINITIALIZED`.",
+      "revId": "460cf21848f2148e7c40a7776e60d37cc0398697",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
