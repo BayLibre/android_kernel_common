@@ -69,6 +69,24 @@
       "parentUuid": "f1205cd3_2a73ab49",
       "revId": "b1301d3f35b5afd193065170f07059da6be26faa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa7e8934_b9fe93a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4055446
+      },
+      "writtenOn": "2025-05-19T11:53:41Z",
+      "side": 1,
+      "message": "It was not committed in other branches yet. The problem was discovered in `-lts` branch. It is not a cherry-pick. The issue comes from recent merges done in `-lts` branch. Originally, there was an upstream commit `5c0930ccaad5a74d74e8b18b648c5eb21ed2fe94` (\"hrtimers: Push pending hrtimers away from outgoing CPU earlier\") that has been reverted after the merge of `5.10.204` in `e710feda7ed9b849fb9bede0d5e03621c526b9c9`:\n\n```\ncommit e710feda7ed9b849fb9bede0d5e03621c526b9c9\nAuthor: Greg Kroah-Hartman \u003cgregkh@google.com\u003e\nDate:   Mon Dec 18 19:17:03 2023 +0000\n\n    Revert \"hrtimers: Push pending hrtimers away from outgoing CPU earlier\"\n    \n    This reverts commit 7f4c89400d2997939f6971c7981cc780a219e36b which is\n    commit 5c0930ccaad5a74d74e8b18b648c5eb21ed2fe94 upstream.\n    \n    It breaks the Android kernel abi and can be brought back in the future\n    in an abi-safe way if it is really needed.\n    \n    Bug: 161946584\n    Change-Id: Ifdc5474de6e7488eb24959df1697b61b2e3e7880\n    Signed-off-by: Greg Kroah-Hartman \u003cgregkh@google.com\u003e\n    \n    ...\n    \n-       [CPUHP_AP_HRTIMERS_DYING] \u003d {\n-               .name                   \u003d \"hrtimers:dying\",\n-               .startup.single         \u003d NULL,\n-               .teardown.single        \u003d hrtimers_cpu_dying,\n-       },\n-\n\n    ...\n```\n\nAnother commit was introduced later in version `5.10.234`, which fixes the initial commit `5c0930ccaad5a74d74e8b18b648c5eb21ed2fe94`. This commit causes an issue because it moves some code related to cleaning of `cpu_base` structure from `hrtimers_prepare_cpu` into a dedicated function `hrtimers_cpu_starting`. The latter function is supposed to be executed as a callback for `CPUHP_AP_HRTIMERS_DYING` cpu state, but this state has already been deleted as part of the revert commit mentioned above. \n\n```\n        },\n        [CPUHP_AP_HRTIMERS_DYING] \u003d {\n                .name                   \u003d \"hrtimers:dying\",\n-               .startup.single         \u003d NULL,\n+               .startup.single         \u003d hrtimers_cpu_starting,\n                .teardown.single        \u003d hrtimers_cpu_dying,\n        },\n```\n\nAs a result, `cpu_base` structure is not being cleared properly inside `hrtimers_prepare_cpu`.\n\n\nI still believe this could be considered as a fix for the original bug. In case you still think that another bug has to be created, if so could you please advise which component shall be used on the issue tracker https://issuetracker.google.com/issues/new (I do not have access to view the original bug).\n\nWhat branch besides `-lts` could be used as a target for this change? I am a bit confused...\n\nThanks in advance",
+      "parentUuid": "d9561a86_384c8bbb",
+      "revId": "b1301d3f35b5afd193065170f07059da6be26faa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
