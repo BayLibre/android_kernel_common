@@ -185,6 +185,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "90599abd_00096617",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1148,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2025-05-19T17:36:44Z",
+      "side": 1,
+      "message": "I think you are wrong. arm_smccc_1_2_smc overwrites all of the resp struct and this line has no effect. You have to copy the data to the req struct for it to be preserved.",
+      "parentUuid": "c28e3ffb_94a20341",
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8288036f_9bfbb1f0",
         "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
         "patchSetId": 2
