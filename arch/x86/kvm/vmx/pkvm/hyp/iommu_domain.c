@@ -654,6 +654,9 @@ unsigned long pkvm_iommu_domain_map(struct kvm_vcpu *hvcpu,
 	}
 	pkvm_spin_lock(&domain->lock);
 	ret = domain_map(domain, &param, &donation);
+	if (ret == 0)
+		pkvm_domain_flush_iotlb_range(domain, param.iov_pfn >> VTD_PAGE_SHIFT,
+				(param.iov_pfn + param.nr_pages - 1) >> VTD_PAGE_SHIFT);
 	pkvm_spin_unlock(&domain->lock);
 	pkvm_put_iommu_domain(domain);
 
