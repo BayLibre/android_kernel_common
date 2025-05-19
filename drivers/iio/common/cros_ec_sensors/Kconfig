@@ -30,3 +30,13 @@ config IIO_CROS_EC_SENSORS_LID_ANGLE
 	  convertible devices.
 	  This module is loaded when the EC can calculate the angle between the base
 	  and the lid.
+
+config IIO_CROS_EC_ACTIVITY
+	tristate "ChromeOS EC Activity Sensors"
+	depends on IIO_CROS_EC_SENSORS_CORE
+	help
+	  Module to handle activity events detections presented by the ChromeOS
+	  EC Sensor hub.
+	  Activities can be a proximity detector (on body/off body detection)
+	  or an activity to trigger an event on significant motion.
+	  Creates an IIO device to manage all activities.
