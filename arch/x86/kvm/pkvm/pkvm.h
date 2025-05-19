@@ -3,6 +3,7 @@
 #define __PKVM_X86_PKVM_H
 
 #include <asm/kvm_host.h>
+#include <asm/pkvm_image.h>
 #include <asm/pkvm_spinlock.h>
 
 #define PKVM_MAX_NORMAL_VM_NUM		8
@@ -10,6 +11,10 @@
 #define MAX_PKVM_VMS			(PKVM_MAX_NORMAL_VM_NUM + PKVM_MAX_PROTECTED_VM_NUM)
 
 DECLARE_PER_CPU(struct kvm_vcpu *, host_vcpu);
+
+extern bool pkvm_sym(pvmfw_present);
+extern phys_addr_t pkvm_sym(pvmfw_base);
+extern phys_addr_t pkvm_sym(pvmfw_size);
 
 extern size_t pkvm_vm_sz;
 extern size_t pkvm_vcpu_sz;
@@ -159,5 +164,15 @@ void put_pkvm_vcpu(struct pkvm_vcpu *pkvm_vcpu);
 unsigned long handle_kvm_call(unsigned long fn, unsigned long p1,
 			      unsigned long p2, unsigned long p3);
 void pkvm_x86_ops_init(struct pkvm_x86_ops *ops);
+
+static inline bool pkvm_vm_has_pvmfw(struct kvm *kvm)
+{
+	return kvm->arch.pkvm.pvmfw_load_addr != INVALID_GPA;
+}
+
+static inline bool pkvm_vcpu_is_pvmfw_bsp(struct kvm_vcpu *vcpu)
+{
+	return kvm_vcpu_is_reset_bsp(vcpu) && pkvm_vm_has_pvmfw(vcpu->kvm);
+}
 
 #endif /* __PKVM_X86_PKVM_H */
