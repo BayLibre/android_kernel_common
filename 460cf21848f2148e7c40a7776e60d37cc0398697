@@ -3,6 +3,51 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7506b3fd_91a1bec3",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-05-20T13:01:04Z",
+      "side": 1,
+      "message": "nit: Would it be more readable for this to be outside the for loop? Regardless of its location, this barrier will be executed once, seems to be more readable by placing it after updating load_addr and vcpu_id :-)",
+      "fixSuggestions": [
+        {
+          "fixId": "32cee611_27460e57",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 366,
+                "startChar": 0,
+                "endLine": 367,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 377,
+                "startChar": 0,
+                "endLine": 377,
+                "endChar": 0
+              },
+              "replacement": "\n\tif (kvm-\u003earch.bsp_vcpu_id !\u003d -1)\n\t\tsmp_wmb();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "460cf21848f2148e7c40a7776e60d37cc0398697",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c2780ee1_c1d19c9d",
         "filename": "arch/x86/kvm/pkvm/pkvm.h",
         "patchSetId": 1
