@@ -57,6 +57,30 @@
       },
       "revId": "d21452bf902bf42ca7375653967d57cc16f3e29f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c04196ff_43e479be",
+        "filename": "arch/x86/kvm/pkvm/x86.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3092,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-05-21T13:48:28Z",
+      "side": 1,
+      "message": "Because our/Intel\u0027s temporary approach is to avoid changes the upstream code in x86.c (except those changes that we need for the host part, not the hypervisor part) and instead have this pkvm/x86.c with lots of duplications from x86.c. This is just another such duplication. This is how we currently \"reuse\" upstream KVM code for the pKVM hypervisor.\n\nMoving kvm_vcpu_is_reset_bsp() to a header would be an improvement of the upstream code, independent of pKVM. Basically we can do that right away, although it may cause a bit of trouble with rebases or backports later.",
+      "parentUuid": "b8ed046b_4deb38e2",
+      "range": {
+        "startLine": 3092,
+        "startChar": 0,
+        "endLine": 3092,
+        "endChar": 58
+      },
+      "revId": "d21452bf902bf42ca7375653967d57cc16f3e29f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
