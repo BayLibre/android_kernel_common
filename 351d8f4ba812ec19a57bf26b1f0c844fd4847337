@@ -203,6 +203,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5b92783c_895f6bb4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1148,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2025-05-21T19:06:04Z",
+      "side": 1,
+      "message": "Note that smccc 1.2 is the first smccc version that requires anything below x18 to be preserved if the caller is AArch64. If the caller is AArch32 these registers need to be preserved on any version, but if you don\u0027t support AArch32 guests at all then that would be irrelevant.\n\nFF-A 1.0 does require smccc 1.2 though so there could be guests that expect x8-x17 to be preserved as that was required by FF-A 1.0 and 1.1 for all calls and is still required on FF-A 1.2 for 32 bit calls like FFA_MSG_SEND_DIRECT_REQ. Current Trusty and Linux drivers will not crash though since they either use the same helper function as for the calls that use all 18 registers, or are that are also compatible with smccc 1.0/1.1 that don\u0027t require these registers to be preserved.",
+      "parentUuid": "90599abd_00096617",
+      "revId": "351d8f4ba812ec19a57bf26b1f0c844fd4847337",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8288036f_9bfbb1f0",
         "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
         "patchSetId": 2
