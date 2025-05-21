@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a9ad7085_b90cef83",
+        "filename": "arch/arm64/kvm/Kconfig",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-05-21T10:45:05Z",
+      "side": 1,
+      "message": "I think it\u0027s probably easiest just to drop the \u0027imply\u0027 line altogether. It\u0027s not adding much and if we really want to couple the debugfs stuff with the debug option, we\u0027d be better off sticking it under the PKVM_DEBUG menu anyway.,",
+      "parentUuid": "41252c82_9807ab02",
+      "range": {
+        "startLine": 73,
+        "startChar": 1,
+        "endLine": 73,
+        "endChar": 28
+      },
+      "revId": "3d56e418b9db94cc3f2736ded6365909b3ea23fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5a54f19e_ce86ff03",
         "filename": "arch/arm64/kvm/Kconfig",
         "patchSetId": 5
@@ -151,6 +175,30 @@
       "side": 1,
       "message": "It\u0027s part of the PKVM_DEBUG list, so this was to make it enabled by default whenever we select PKVM_DEBUG, just like the other options.\n\nBut then as this one is a bit different, perhaps we should treat it as an addition and leave it \"default n\"?",
       "parentUuid": "5a54f19e_ce86ff03",
+      "range": {
+        "startLine": 135,
+        "startChar": 1,
+        "endLine": 135,
+        "endChar": 10
+      },
+      "revId": "3d56e418b9db94cc3f2736ded6365909b3ea23fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc06a5f4_fe49f2b0",
+        "filename": "arch/arm64/kvm/Kconfig",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-05-21T10:45:05Z",
+      "side": 1,
+      "message": "Yeah, I think I\u0027d leave it as \u0027n\u0027, especially considering that the help text says \"Just say N.\"!",
+      "parentUuid": "077cefa8_83b03f4f",
       "range": {
         "startLine": 135,
         "startChar": 1,
