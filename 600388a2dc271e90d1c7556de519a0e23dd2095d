@@ -16,6 +16,29 @@
       "message": "Hi, All\n\nJust want to check if there is anything else to be updated before merge this change?",
       "revId": "600388a2dc271e90d1c7556de519a0e23dd2095d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7e7e4bc_d78adf37",
+        "filename": "BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 909,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-05-21T17:06:02Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by Buildifier: Function \"py_library\" is not global anymore and needs to be loaded from \"//third_party/bazel_rules/rules_python/python:defs.bzl\". http://go/buildifier-warnings#native-py\n\nAnalyzer Description: Check formats of Bazel definitions.\nOwner: kleaf@google.com\n\nFunction \"py_library\" is not global anymore and needs to be loaded from \"//third_party/bazel_rules/rules_python/python:defs.bzl\". http://go/buildifier-warnings#native-py",
+      "range": {
+        "startLine": 909,
+        "startChar": 0,
+        "endLine": 909,
+        "endChar": 10
+      },
+      "revId": "600388a2dc271e90d1c7556de519a0e23dd2095d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
