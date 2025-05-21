@@ -101,6 +101,40 @@ struct unix_sock *unix_get_socket(struct file *filp)
 	return NULL;
 }
 
+static LIST_HEAD(unix_unvisited_vertices);
+
+static void unix_add_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
+{
+	struct scm_fp_list_ext *fpl_ext = fpl_to_fpl_ext(fpl);
+	struct unix_vertex *vertex = edge->predecessor->vertex;
+
+	if (!vertex) {
+		vertex = list_first_entry(&fpl_ext->vertices, typeof(*vertex), entry);
+		vertex->out_degree = 0;
+		INIT_LIST_HEAD(&vertex->edges);
+
+		list_move_tail(&vertex->entry, &unix_unvisited_vertices);
+		edge->predecessor->vertex = vertex;
+	}
+
+	vertex->out_degree++;
+	list_add_tail(&edge->vertex_entry, &vertex->edges);
+}
+
+static void unix_del_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
+{
+	struct scm_fp_list_ext *fpl_ext = fpl_to_fpl_ext(fpl);
+	struct unix_vertex *vertex = edge->predecessor->vertex;
+
+	list_del(&edge->vertex_entry);
+	vertex->out_degree--;
+
+	if (!vertex->out_degree) {
+		edge->predecessor->vertex = NULL;
+		list_move_tail(&vertex->entry, &fpl_ext->vertices);
+	}
+}
+
 static void unix_free_vertices(struct scm_fp_list *fpl)
 {
 	struct scm_fp_list_ext *fpl_ext = fpl_to_fpl_ext(fpl);
@@ -110,6 +144,62 @@ static void unix_free_vertices(struct scm_fp_list *fpl)
 		list_del(&vertex->entry);
 		kfree(vertex);
 	}
+}
+
+DEFINE_SPINLOCK(unix_gc_lock);
+
+void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver)
+{
+	struct scm_fp_list_ext *fpl_ext = fpl_to_fpl_ext(fpl);
+	int i = 0, j = 0;
+
+	spin_lock(&unix_gc_lock);
+
+	if (!fpl_ext->count_unix)
+		goto out;
+
+	do {
+		struct unix_sock *inflight = unix_get_socket(fpl->fp[j++]);
+		struct unix_edge *edge;
+
+		if (!inflight)
+			continue;
+
+		edge = fpl->edges + i++;
+		edge->predecessor = inflight;
+		edge->successor = receiver;
+
+		unix_add_edge(fpl, edge);
+	} while (i < fpl_ext->count_unix);
+
+out:
+	spin_unlock(&unix_gc_lock);
+
+	fpl->inflight = true;
+
+	unix_free_vertices(fpl);
+}
+
+void unix_del_edges(struct scm_fp_list *fpl)
+{
+	struct scm_fp_list_ext *fpl_ext = fpl_to_fpl_ext(fpl);
+	int i = 0;
+
+	spin_lock(&unix_gc_lock);
+
+	if (!fpl_ext->count_unix)
+		goto out;
+
+	do {
+		struct unix_edge *edge = fpl->edges + i++;
+
+		unix_del_edge(fpl, edge);
+	} while (i < fpl_ext->count_unix);
+
+out:
+	spin_unlock(&unix_gc_lock);
+
+	fpl->inflight = false;
 }
 
 int unix_prepare_fpl(struct scm_fp_list *fpl)
@@ -143,11 +233,13 @@ err:
 
 void unix_destroy_fpl(struct scm_fp_list *fpl)
 {
+	if (fpl->inflight)
+		unix_del_edges(fpl);
+
 	kvfree(fpl->edges);
 	unix_free_vertices(fpl);
 }
 
-DEFINE_SPINLOCK(unix_gc_lock);
 unsigned int unix_tot_inflight;
 static LIST_HEAD(gc_candidates);
 static LIST_HEAD(gc_inflight_list);
