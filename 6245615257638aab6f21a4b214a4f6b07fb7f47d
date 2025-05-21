@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a10bbc54_fc61a351",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1953271
+      },
+      "writtenOn": "2025-05-21T12:06:43Z",
+      "side": 1,
+      "message": "The symbol `host1x_context_device_bus_type` is exported by `drivers/gpu/host1x/context_bus.c`. This does not change the ABI, and simply adds the said symbol as a new element to `iommu_buses` which is a private array.",
+      "revId": "6245615257638aab6f21a4b214a4f6b07fb7f47d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
