@@ -34,6 +34,29 @@
       "parentUuid": "1270ba5f_67a8ed1a",
       "revId": "d21452bf902bf42ca7375653967d57cc16f3e29f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8ed046b_4deb38e2",
+        "filename": "arch/x86/kvm/pkvm/x86.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3092,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-05-21T13:08:00Z",
+      "side": 1,
+      "message": "Why do not do it right away instead of duplicating kvm_vcpu_is_reset_bsp from arch/x86/kvm/x86.c in this commit?",
+      "range": {
+        "startLine": 3092,
+        "startChar": 0,
+        "endLine": 3092,
+        "endChar": 58
+      },
+      "revId": "d21452bf902bf42ca7375653967d57cc16f3e29f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
