@@ -54,6 +54,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64491527_10af8fcc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-05-21T14:39:32Z",
+      "side": 1,
+      "message": "did you actually test this? CONFIG_TEGRA_HOST1X_CONTEXT_BUS is a hidden config so setting it in gki_defconfig will have no effect. Please test your changes before submitting them!\n\nHidden configs needed by vendor modules are normally added in init/Kconfig.gki.",
+      "revId": "6245615257638aab6f21a4b214a4f6b07fb7f47d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc9d0e9f_aa417441",
         "filename": "arch/arm64/configs/gki_defconfig",
         "patchSetId": 1
