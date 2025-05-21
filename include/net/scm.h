@@ -30,6 +30,7 @@ struct scm_fp_list {
 	short			count;
 	short			max;
 #ifdef CONFIG_UNIX
+	bool			inflight;
 	struct unix_edge        *edges;
 #endif
 	struct user_struct	*user;
