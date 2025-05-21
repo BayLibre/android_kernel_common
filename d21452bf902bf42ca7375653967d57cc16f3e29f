@@ -105,6 +105,30 @@
       },
       "revId": "d21452bf902bf42ca7375653967d57cc16f3e29f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6628dd3_366ec07a",
+        "filename": "arch/x86/kvm/pkvm/x86.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3092,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-05-21T17:54:33Z",
+      "side": 1,
+      "message": "Removed this TODO comment and reshuffled code in pkvm_vcpu_run() to check kvm_vcpu_has_run() even before checking mp_state. Seems to make it a bit cleaner and more efficient.",
+      "parentUuid": "fbc8ce2d_16c69a9f",
+      "range": {
+        "startLine": 3092,
+        "startChar": 0,
+        "endLine": 3092,
+        "endChar": 58
+      },
+      "revId": "d21452bf902bf42ca7375653967d57cc16f3e29f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
