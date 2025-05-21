@@ -71,6 +71,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d161601c_3c091e5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-05-21T19:13:06Z",
+      "side": 1,
+      "message": "My apologies Todd, I had tested locally before pushing but was running into build issues (I missed to notice that CONFIG_TEGRA_HOST1X_CONTEXT_BUS) was hidden and wasn\u0027t sure of the infrastructure to select hidden configs for gki, I was looking for some help in doing so but I should\u0027ve mentioned. Didn\u0027t mean to waste your effort. \n\nThanks a bunch for pointing out where hidden configs can be added, I\u0027ve updated the change to add this hidden config under GKI_HIDDEN_GPU_CONFIGS config as this change pertains to enabling host1x module building, which should fall under GPU configs.",
+      "parentUuid": "64491527_10af8fcc",
+      "revId": "6245615257638aab6f21a4b214a4f6b07fb7f47d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc9d0e9f_aa417441",
         "filename": "arch/arm64/configs/gki_defconfig",
         "patchSetId": 1
