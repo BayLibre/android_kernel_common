@@ -46,6 +46,30 @@
       },
       "revId": "b007708642feb84db41492468392d502f8eff553",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1516718_5867434f",
+        "filename": "kernel/trace/ring_buffer.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 5304,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-05-21T10:49:53Z",
+      "side": 0,
+      "message": "Perhaps just adding an `IS_ENABLED(CONFIG_DUMP_TRACE_ON_PANIC) \u0026\u0026` to the `WARN_ON()` would do?",
+      "parentUuid": "e5e2dcbf_f02a18ad",
+      "range": {
+        "startLine": 5304,
+        "startChar": 0,
+        "endLine": 5304,
+        "endChar": 58
+      },
+      "revId": "b007708642feb84db41492468392d502f8eff553",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
