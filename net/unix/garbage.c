@@ -159,12 +159,15 @@ static void unix_add_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
 	unix_update_graph(unix_edge_successor(edge));
 }
 
+static bool gc_in_progress;
+
 static void unix_del_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
 {
 	struct scm_fp_list_ext *fpl_ext = fpl_to_fpl_ext(fpl);
 	struct unix_vertex *vertex = edge->predecessor->vertex;
 
-	unix_update_graph(unix_edge_successor(edge));
+	if (!gc_in_progress)
+		unix_update_graph(unix_edge_successor(edge));
 
 	list_del(&edge->vertex_entry);
 	vertex->out_degree--;
@@ -242,8 +245,10 @@ void unix_del_edges(struct scm_fp_list *fpl)
 		unix_del_edge(fpl, edge);
 	} while (i < fpl_ext->count_unix);
 
-	receiver = fpl->edges[0].successor;
-	receiver->scm_stat.nr_unix_fds -= fpl_ext->count_unix;
+	if (!gc_in_progress) {
+		receiver = fpl->edges[0].successor;
+		receiver->scm_stat.nr_unix_fds -= fpl_ext->count_unix;
+	}
 	WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - fpl_ext->count_unix);
 out:
 	WRITE_ONCE(fpl->user->unix_inflight, fpl->user->unix_inflight - fpl->count);
@@ -532,6 +537,8 @@ static void unix_walk_scc(struct sk_buff_head *hitlist)
 
 static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
 {
+	unix_graph_maybe_cyclic = false;
+
 	while (!list_empty(&unix_unvisited_vertices)) {
 		struct unix_vertex *vertex;
 		struct list_head scc;
@@ -549,14 +556,14 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
 
 		if (scc_dead)
 			unix_collect_skb(&scc, hitlist);
+		else if (!unix_graph_maybe_cyclic)
+			unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
 
 		list_del(&scc);
 	}
 
 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
 }
-
-static bool gc_in_progress;
 
 static void __unix_gc(struct work_struct *work)
 {
