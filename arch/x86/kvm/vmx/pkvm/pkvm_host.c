@@ -1392,6 +1392,12 @@ static int __init __vmx_pkvm_init(void)
 		return 0;
 	}
 
+	if (no_iommu || dmar_disabled) {
+		pr_warn("pkvm: %s: iommu is disabled, continuing without pkvm!\n", __func__);
+		pkvm_firmware_rmem_clear();
+		return 0;
+	}
+
 	if (pkvm_sym(pkvm_hyp)) {
 		pr_err("pkvm hypervisor is running!");
 		return -EBUSY;
