@@ -33,6 +33,47 @@
       "message": "This change does not build. Please ensure that the change can be built.",
       "revId": "6245615257638aab6f21a4b214a4f6b07fb7f47d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc9d0e9f_aa417441",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 1953271
+      },
+      "writtenOn": "2025-05-21T12:22:09Z",
+      "side": 1,
+      "message": "Please do not remove the newline at the end of the file.",
+      "range": {
+        "startLine": 787,
+        "startChar": 32,
+        "endLine": 787,
+        "endChar": 33
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a3bef0c4_3b4ced70",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/configs/gki_defconfig",
+              "range": {
+                "startLine": 787,
+                "startChar": 0,
+                "endLine": 788,
+                "endChar": 0
+              },
+              "replacement": "CONFIG_TEGRA_HOST1X_CONTEXT_BUS\u003dy\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6245615257638aab6f21a4b214a4f6b07fb7f47d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
