@@ -1615,6 +1615,7 @@ ddk_headers(
     includes = [
         # LINT.IfChange(pkvm_includes)
         "arch/arm64/kvm/hyp/module/include",
+        "arch/arm64/kvm/hyp/module",
         # LINT.ThenChange(/arch/arm64/kvm/hyp/nvhe/Makefile.module:includes)
     ],
     visibility = ["//visibility:private"],
