@@ -302,10 +302,13 @@ static int kvm_notify_vm_availability(uint16_t vm_handle, struct kvm_ffa_buffers
 
 		/*
 		 * Give the SP some cycles in advance,
-		 * in case it got interrupted the last time
+		 * in case it got interrupted the last time.
+		 *
+		 * Some TEEs return NOT_SUPPORTED instead.
+		 * If that happens, ignore the error and continue.
 		 */
 		arm_smccc_1_1_smc(FFA_RUN, dest, 0, 0, 0, 0, 0, 0, &res);
-		if (res.a0 == FFA_ERROR)
+		if (res.a0 == FFA_ERROR && (int)res.a2 != FFA_RET_NOT_SUPPORTED)
 			return ffa_to_linux_errno(res.a2);
 		else if (res.a0 == FFA_INTERRUPT)
 			return -EINTR;
