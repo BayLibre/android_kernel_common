@@ -5,4 +5,5 @@ $(obj)/hyp.lds: arch/arm64/kvm/hyp/nvhe/module.lds.S FORCE
 
 include $(srctree)/arch/arm64/kvm/hyp/nvhe/Makefile.nvhe
 
+ccflags-y += -I$(srctree)/arch/arm64/kvm/hyp/module/include
 ccflags-y += -DMODULE
