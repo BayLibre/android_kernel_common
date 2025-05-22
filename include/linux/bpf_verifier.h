@@ -574,8 +574,13 @@ struct bpf_subprog_info {
 	bool tail_call_reachable;
 	bool has_ld_abs;
 	bool is_async_cb;
+<<<<<<< HEAD   (a10c89 Revert "dm: always update the array size in realloc_argv on )
 
 	ANDROID_KABI_RESERVE(1);
+||||||| BASE
+=======
+	bool changes_pkt_data;
+>>>>>>> BRANCH (5e8c31 Revert "drm/meson: vclk: fix calculation of 59.94 fractional)
 };
 
 struct bpf_verifier_env;
