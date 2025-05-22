@@ -4,4 +4,6 @@
 
 int __pkvm_init_finalise(struct kvm_vcpu *vcpu, struct pkvm_section sections[],
 			 int section_sz);
+
+extern bool pkvm_initialized;
 #endif

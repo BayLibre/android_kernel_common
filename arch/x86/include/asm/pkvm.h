@@ -19,6 +19,8 @@
 #define PKVM_HC_SET_MMIO_VE		10
 #define PKVM_HC_ADD_PTDEV		11
 
+#define __PKVM_HC_REPRIVILEGE_VCPU	100
+
 /*
  * 15bits for PASID, DO NOT change it, based on it,
  * the size of PASID DIR table can kept as one page
