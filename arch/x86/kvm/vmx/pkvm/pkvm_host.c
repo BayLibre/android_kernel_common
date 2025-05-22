@@ -61,6 +61,7 @@ early_param("pvmfw", early_pvmfw_parse_cmdline);
 static struct pkvm_hyp *pkvm;
 
 struct pkvm_deprivilege_param {
+	cpumask_var_t depriv_cpus_mask;
 	struct pkvm_hyp *pkvm;
 	int ret;
 };
@@ -612,17 +613,20 @@ static __init int pkvm_host_init_vmx(struct pkvm_host_vcpu *hvcpu, int cpu)
 	return ret;
 }
 
-static __init void pkvm_host_deinit_vmx(struct pkvm_host_vcpu *hvcpu)
+static inline void pkvm_host_clear_vmx(struct vcpu_vmx *vmx)
 {
-	struct vcpu_vmx *vmx = &hvcpu->vmx;
-
-	pkvm_cpu_vmxoff();
-
 	if (vmx->vmcs01.vmcs)
 		vmx->vmcs01.vmcs = NULL;
 
 	if (vmx->vmcs01.msr_bitmap)
 		vmx->vmcs01.msr_bitmap = NULL;
+}
+
+static __init void pkvm_host_deinit_vmx(struct pkvm_host_vcpu *hvcpu)
+{
+	pkvm_cpu_vmxoff();
+
+	pkvm_host_clear_vmx(&hvcpu->vmx);
 }
 
 static __init void pkvm_host_setup_nested_vmx_cap(struct pkvm_hyp *pkvm)
@@ -906,6 +910,44 @@ static noinline int local_deprivilege_cpu(struct pkvm_host_vcpu *hvcpu)
 	return ret;
 }
 
+static __init void pkvm_host_reprivilege_cpu(void *data)
+{
+	struct pkvm_deprivilege_param *p = data;
+	unsigned long flags;
+	int cpu = get_cpu();
+	struct pkvm_host_vcpu *hvcpu =
+		p->pkvm->host_vm.host_vcpus[cpu];
+	struct kvm_vcpu *vcpu;
+
+	local_irq_save(flags);
+
+	/*
+	 * Intel CET requires indirect jmp/call to return to
+	 * endbr64 instruction. So we can't use kvm_hypercall
+	 * here.
+	 */
+	asm volatile(
+		"vmcall\n"
+		"endbr64\n"
+		:
+		: "a"(__PKVM_HC_REPRIVILEGE_VCPU)
+		: "memory");
+
+	/*
+	 * Now we are re-privileged. Clean up VMX.
+	 */
+	cr4_clear_vmxe();
+	pkvm_host_clear_vmx(&hvcpu->vmx);
+	vcpu = &hvcpu->vmx.vcpu;
+	vcpu->mode = OUTSIDE_GUEST_MODE;
+
+	pr_info("%s: CPU%d back in host mode\n", __func__, cpu);
+
+	local_irq_restore(flags);
+
+	put_cpu();
+}
+
 static __init void pkvm_host_deprivilege_cpu(void *data)
 {
 	struct pkvm_deprivilege_param *p = data;
@@ -929,6 +971,7 @@ static __init void pkvm_host_deprivilege_cpu(void *data)
 	if (ret == 0) {
 		vcpu = &hvcpu->vmx.vcpu;
 		vcpu->mode = IN_GUEST_MODE;
+		cpumask_set_cpu(cpu, p->depriv_cpus_mask);
 		pr_info("%s: CPU%d in guest mode\n", __func__, cpu);
 		goto ok;
 	}
@@ -954,21 +997,21 @@ static __init int pkvm_host_deprivilege_cpus(struct pkvm_hyp *pkvm)
 		.ret = 0,
 	};
 
+	/*
+	 * Shouldn't fail as we are early in the boot and have all the
+	 * memory at our disposal. Something's not right if we fail here.
+	 */
+	BUG_ON(!zalloc_cpumask_var(&p.depriv_cpus_mask, GFP_KERNEL));
+
 	on_each_cpu(pkvm_host_deprivilege_cpu, &p, 1);
 	if (p.ret) {
-		/*
-		 * TODO:
-		 * We are here because some CPUs failed to be deprivileged, so
-		 * the failed CPU will stay in root mode. But the others already
-		 * in the non-root mode. In this case, we should let non-root mode
-		 * CPUs go back to root mode, then the system can still run natively
-		 * without pKVM enabled.
-		 */
 		pr_err("%s: WARNING - failed to deprivilege all CPUs!\n", __func__);
+		on_each_cpu_mask(p.depriv_cpus_mask, pkvm_host_reprivilege_cpu, &p, 1);
 	} else {
 		pr_info("%s: all cpus are in guest mode!\n", __func__);
 	}
 
+	free_cpumask_var(p.depriv_cpus_mask);
 	return p.ret;
 }
 
@@ -1385,8 +1428,10 @@ int __init vmx_pkvm_init(void)
 	}
 
 	ret = pkvm_host_deprivilege_cpus(pkvm);
-	if (ret)
+	if (ret) {
+		pr_warn("pkvm: %s: deprivilege failed, pkvm is disabled!\n", __func__);
 		goto out;
+	}
 
 	pkvm->num_cpus = num_possible_cpus();
 	pkvm_init_debugfs();

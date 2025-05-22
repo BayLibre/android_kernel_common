@@ -93,6 +93,20 @@ static unsigned long handle_vmcall(struct kvm_vcpu *vcpu)
 	a3 = vcpu->arch.regs[VCPU_REGS_RSI];
 
 	switch (nr) {
+	case __PKVM_HC_REPRIVILEGE_VCPU:
+		if (!pkvm_initialized()) {
+			/*
+			 * This is a special hypercall to revert the vcpus
+			 * back to pcpus and should be called only when
+			 * the cpus were partially virtualized. Shouldn't be
+			 * invoked if all cpus are de-privileged successfully.
+			 */
+			__pkvm_reprivilege_vcpu(vcpu->arch.regs);
+			/* Not Reachable */
+			pkvm_dbg("Failed to reprivilege vcpu: %d\n", vcpu->vcpu_id);
+		}
+		ret = -EINVAL;
+		break;
 	case PKVM_HC_SET_VMEXIT_TRACE:
 		pkvm_handle_set_vmexit_trace(vcpu, a0);
 		break;
