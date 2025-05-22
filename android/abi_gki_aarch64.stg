@@ -42939,8 +42939,8 @@ member {
   offset: 704
 }
 member {
-  id: 0x335fcb96
-  type_id: 0x42514dcd
+  id: 0x335fcf90
+  type_id: 0x42515dd6
   offset: 64
 }
 member {
@@ -189317,6 +189317,11 @@ member {
   offset: 1408
 }
 member {
+  id: 0x406e59a2
+  name: "split"
+  type_id: 0x3721bb90
+}
+member {
   id: 0x406ecc6d
   name: "split"
   type_id: 0x37b47468
@@ -224294,12 +224299,13 @@ struct_union {
   }
 }
 struct_union {
-  id: 0x42514dcd
+  id: 0x42515dd6
   kind: UNION
   definition {
     bytesize: 16
     member_id: 0x52238160
     member_id: 0x8dc1500c
+    member_id: 0x406e59a2
   }
 }
 struct_union {
@@ -253196,7 +253202,7 @@ struct_union {
   definition {
     bytesize: 24
     member_id: 0x5c7f890c
-    member_id: 0x335fcb96
+    member_id: 0x335fcf90
   }
 }
 struct_union {
@@ -357938,7 +357944,7 @@ elf_symbol {
   name: "__pkvm_load_el2_module"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8ee91dbf
+  crc: 0x3c5a1f3b
   type_id: 0x9f5021bd
   full_name: "__pkvm_load_el2_module"
 }
@@ -399527,7 +399533,7 @@ elf_symbol {
   name: "ipi_desc_get"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc3f038a3
+  crc: 0xc1af94e9
   type_id: 0xac8d9251
   full_name: "ipi_desc_get"
 }
@@ -402350,7 +402356,7 @@ elf_symbol {
   name: "kvm_iommu_cma_alloc"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1f717f62
+  crc: 0x8eba9304
   type_id: 0xbd98f080
   full_name: "kvm_iommu_cma_alloc"
 }
@@ -402359,7 +402365,7 @@ elf_symbol {
   name: "kvm_iommu_cma_release"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4790d7af
+  crc: 0xc846ea0b
   type_id: 0xff048ca3
   full_name: "kvm_iommu_cma_release"
 }
@@ -402377,7 +402383,7 @@ elf_symbol {
   name: "kvm_iommu_register_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xeaeb9887
+  crc: 0x8436e528
   type_id: 0x9bab2f7e
   full_name: "kvm_iommu_register_driver"
 }
@@ -411796,7 +411802,7 @@ elf_symbol {
   name: "pkvm_iommu_resume"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xfaa5c82e
+  crc: 0x08364498
   type_id: 0x9d16dd74
   full_name: "pkvm_iommu_resume"
 }
@@ -411805,7 +411811,7 @@ elf_symbol {
   name: "pkvm_iommu_suspend"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xdaf6403e
+  crc: 0xfddfbd2e
   type_id: 0x9d16dd74
   full_name: "pkvm_iommu_suspend"
 }
