@@ -4,6 +4,7 @@
  * Author: Quentin Perret <qperret@google.com>
  */
 
+#include <linux/delay.h>
 #include <linux/init.h>
 #include <linux/initrd.h>
 #include <linux/interval_tree_generic.h>
@@ -38,6 +39,15 @@
 #include "hyp_trace.h"
 
 #define PKVM_DEVICE_ASSIGN_COMPAT	"pkvm,device-assignment"
+
+/*
+ * Retry the VM creation message for the host for a maximul total
+ * amount of times, with sleeps in between. For the first few attempts,
+ * do a faster reschedule instead of a full sleep.
+ */
+#define VM_AVAILABILITY_FAST_RETRIES	5
+#define VM_AVAILABILITY_TOTAL_RETRIES	500
+#define VM_AVAILABILITY_RETRY_SLEEP_MS	10
 
 DEFINE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
 
@@ -361,6 +371,46 @@ static int __reclaim_dying_guest_page_call(u64 pfn, u64 gfn, u8 order, void *arg
 				 pfn, gfn, order);
 }
 
+static int __pkvm_notify_guest_vm_avail_retry(struct kvm *host_kvm,
+					      u32 availability_msg)
+{
+	int ret, retries = 0;
+	long timeout;
+
+	if (host_kvm->arch.pkvm.ffa_support)
+		return 0;
+
+	for (retries = 0; retries < VM_AVAILABILITY_TOTAL_RETRIES; retries++) {
+		ret = kvm_call_hyp_nvhe(__pkvm_notify_guest_vm_avail,
+					host_kvm->arch.pkvm.handle,
+					availability_msg);
+		if (!ret)
+			return 0;
+		else if (ret != -EINTR && ret != -EAGAIN)
+			return ret;
+
+		if (retries < VM_AVAILABILITY_FAST_RETRIES) {
+			cond_resched();
+		} else if (availability_msg == FFA_VM_DESTRUCTION_MSG) {
+			/* Uninterruptible sleep then retry */
+			msleep(VM_AVAILABILITY_RETRY_SLEEP_MS);
+		} else {
+			timeout = msecs_to_jiffies(VM_AVAILABILITY_RETRY_SLEEP_MS);
+			timeout = schedule_timeout_killable(timeout);
+			if (timeout) {
+				/*
+				 * The timer did not expire,
+				 * most likely because the
+				 * process was killed.
+				 */
+				return ret;
+			}
+		}
+	}
+
+	return ret;
+}
+
 static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 {
 	struct mm_struct *mm = current->mm;
@@ -375,17 +425,9 @@ static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 		goto out_free;
 
 	WARN_ON(kvm_call_hyp_nvhe(__pkvm_start_teardown_vm, host_kvm->arch.pkvm.handle));
-	if (host_kvm->arch.pkvm.ffa_support) {
-		do {
-			ret = kvm_call_hyp_nvhe(__pkvm_notify_guest_vm_avail,
-						host_kvm->arch.pkvm.handle,
-						FFA_VM_DESTRUCTION_MSG);
-			if (!ret)
-				break;
 
-			cond_resched();
-		} while (ret == -EAGAIN || ret == -EINTR);
-	}
+	ret = __pkvm_notify_guest_vm_avail_retry(host_kvm, FFA_VM_DESTRUCTION_MSG);
+	/* Should we check ret here? */
 
 retry:
 	pages = 0;
@@ -466,7 +508,7 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 {
 	size_t pgd_sz;
 	void *pgd;
-	int ret, retry_availability_msg = 5;
+	int ret;
 
 	if (host_kvm->created_vcpus < 1)
 		return -EINVAL;
@@ -493,22 +535,7 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 	WRITE_ONCE(host_kvm->arch.pkvm.handle, ret);
 
 	kvm_account_pgtable_pages(pgd, pgd_sz >> PAGE_SHIFT);
-	ret = 0;
-	if (host_kvm->arch.pkvm.ffa_support) {
-		do {
-			ret = kvm_call_hyp_nvhe(__pkvm_notify_guest_vm_avail,
-						host_kvm->arch.pkvm.handle,
-						FFA_VM_CREATION_MSG);
-			if (!ret)
-				break;
-			else if (ret == -EINTR || ret == -EAGAIN) {
-				retry_availability_msg--;
-				cond_resched();
-			}
-			else
-				break;
-		} while (retry_availability_msg >= 0);
-	}
+	ret = __pkvm_notify_guest_vm_avail_retry(host_kvm, FFA_VM_CREATION_MSG);
 
 	return ret;
 free_pgd:
