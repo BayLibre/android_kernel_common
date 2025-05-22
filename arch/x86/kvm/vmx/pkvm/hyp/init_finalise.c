@@ -294,12 +294,13 @@ static int create_iommu(void)
 	return pkvm_init_iommu(pkvm_virt_to_phys(iommu_mem_base), nr_pages);
 }
 
+bool pkvm_initialized __ro_after_init;
+
 #define TMP_SECTION_SZ	16UL
 int __pkvm_init_finalise(struct kvm_vcpu *vcpu, struct pkvm_section sections[],
 			 int section_sz)
 {
 	int i, ret = 0;
-	static bool pkvm_init;
 	struct pkvm_host_vcpu *hvcpu = to_pkvm_hvcpu(vcpu);
 	struct pkvm_pcpu *pcpu = hvcpu->pcpu;
 	struct pkvm_section tmp_sections[TMP_SECTION_SZ];
@@ -315,7 +316,7 @@ int __pkvm_init_finalise(struct kvm_vcpu *vcpu, struct pkvm_section sections[],
 	else
 		this_cpu_write(x86_spec_ctrl_current, 0);
 
-	if (pkvm_init) {
+	if (pkvm_initialized) {
 		/* Switch to pkvm mmu in root mode in case some setup may need this */
 		native_write_cr3(pkvm_hyp->mmu->root_pa);
 		goto switch_pgt;
@@ -382,7 +383,7 @@ int __pkvm_init_finalise(struct kvm_vcpu *vcpu, struct pkvm_section sections[],
 	if (ret)
 		goto out;
 
-	pkvm_init = true;
+	pkvm_initialized = true;
 
 switch_pgt:
 	/* switch mmu */
@@ -416,4 +417,132 @@ switch_pgt:
 	ret = pkvm_setup_lapic(pcpu, vcpu->cpu);
 out:
 	return ret;
+}
+
+static inline void __pkvm_vcpu_restore_selectors(void)
+{
+	static u16 guest_ds, guest_es, guest_fs, guest_gs, guest_ss;
+	static u64 guest_fsbase, guest_gsbase;
+
+	guest_fsbase = vmcs_readl(GUEST_FS_BASE);
+	guest_gsbase = vmcs_readl(GUEST_GS_BASE);
+
+	guest_ds = vmcs_read16(GUEST_DS_SELECTOR);
+	guest_es = vmcs_read16(GUEST_ES_SELECTOR);
+	guest_fs = vmcs_read16(GUEST_FS_SELECTOR);
+	guest_gs = vmcs_read16(GUEST_GS_SELECTOR);
+	guest_ss = vmcs_read16(GUEST_SS_SELECTOR);
+
+	asm volatile (
+		"mov %0, %%ds\n"
+		"mov %1, %%es\n"
+		"mov %2, %%fs\n"
+		"mov %3, %%gs\n"
+		"mov %4, %%ss\n"
+
+		:
+		: "m"(guest_ds), "m"(guest_es),
+		  "m"(guest_fs), "m"(guest_gs), "m"(guest_ss)
+		: "memory"
+	);
+
+	wrmsrl(MSR_FS_BASE, guest_fsbase);
+	wrmsrl(MSR_GS_BASE, guest_gsbase);
+}
+
+/*
+ * Restores guest state from vcpu->arch and returns to host
+ */
+void __pkvm_reprivilege_vcpu(unsigned long *vcpu_regs)
+{
+	/*
+	 * We manipulate SP in assembly. So don't use
+	 * stack for the variables.
+	 */
+	static u64 guest_rip, guest_rflags, guest_cr3;
+	static struct desc_ptr gdt, idt;
+	static u16 guest_cs;
+
+	native_irq_disable();
+
+	gdt.address = vmcs_readl(GUEST_GDTR_BASE);
+	gdt.size = vmcs_read32(GUEST_GDTR_LIMIT);
+
+	idt.address = vmcs_readl(GUEST_IDTR_BASE);
+	idt.size = vmcs_read32(GUEST_IDTR_LIMIT);
+
+	guest_cs = vmcs_read16(GUEST_CS_SELECTOR);
+	guest_cr3 = vmcs_readl(GUEST_CR3);
+	guest_rip = vmcs_readl(GUEST_RIP) + vmcs_read32(VM_EXIT_INSTRUCTION_LEN);
+	guest_rflags = vmcs_readl(GUEST_RFLAGS);
+
+	__pkvm_vcpu_restore_selectors();
+
+	asm volatile (
+
+		"vmxoff\n"
+
+		"lgdt %0\n"
+		"lidt %1\n"
+
+		/*
+		 * Use RDI to hold `vcpu->arch.regs` (first argument is already in RDI).
+		 * No need to reload it; x86-64 SysV ABI passes 1st arg in RDI.
+		 * RDI is occupied (holds vcpu pointer), restore it last!
+		 */
+
+		/* Restore general purpose registers */
+		"mov 0x00(%%rdi), %%rax\n"
+		"mov 0x08(%%rdi), %%rcx\n"
+		"mov 0x10(%%rdi), %%rdx\n"
+		"mov 0x18(%%rdi), %%rbx\n"
+		"mov 0x20(%%rdi), %%rsp\n"
+		"mov 0x28(%%rdi), %%rbp\n"
+		"mov 0x30(%%rdi), %%rsi\n"
+		"mov 0x40(%%rdi), %%r8\n"
+		"mov 0x48(%%rdi), %%r9\n"
+		"mov 0x50(%%rdi), %%r10\n"
+		"mov 0x58(%%rdi), %%r11\n"
+		"mov 0x60(%%rdi), %%r12\n"
+		"mov 0x68(%%rdi), %%r13\n"
+		"mov 0x70(%%rdi), %%r14\n"
+		"mov 0x78(%%rdi), %%r15\n"
+
+		/* Restore RDI (last!) */
+		"mov 0x38(%%rdi), %%rdi\n"
+
+		/* Restore RFLAGS */
+		"pushq %3\n"
+		"popfq\n"
+
+		/*
+		 * push CS and RIP to stack, restore guest cr3
+		 * and perform a long return.
+		 */
+		"pushq %4\n"
+		"pushq %2\n"
+
+		"pushq %%rax\n"
+		"mov %5, %%rax\n"
+		"mov %%rax, %%cr3\n"
+		"popq %%rax\n"
+
+		/*
+		 * objtool warns on this instruction:
+		 *  __pkvm_reprivilege_vcpu__pkvm+0x208: unsupported instruction in callable function
+		 *
+		 * objtool doesn't expect a far return on a callable function.
+		 * Far return is rare in linux kernel and usually only in kernel
+		 * entry/exit path(syscall, irq/nmi etc).
+		 * It is harmless in this context as we explicitly want
+		 * a far jump from pkvm to host after the reprivilege.
+		 */
+		"lretq\n"
+
+		:
+		: "m"(gdt), "m"(idt), "m"(guest_rip), "m"(guest_rflags), "m"(guest_cs),
+		  "m"(guest_cr3), "D"(vcpu_regs)
+		: "memory", "cc", "rax", "rbx", "rcx", "rdx", "rsi",
+		  "r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15"
+	);
 }
