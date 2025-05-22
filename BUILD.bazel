@@ -1601,6 +1601,9 @@ ddk_headers(
     visibility = ["//visibility:public"],
 )
 
+# Implementation details for DDK headers. The targets below cannot be directly
+# depended on by DDK modules.
+
 # Headers for building pKVM modules. They are for pKVM only so not added to
 # all_headers_aarch64.
 ddk_headers(
@@ -1609,12 +1612,13 @@ ddk_headers(
         "arch/arm64/kvm/hyp/include/nvhe/trace/define_events.h",
         "arch/arm64/kvm/hyp/include/nvhe/trace/trace.h",
     ],
-    includes = ["arch/arm64/kvm/hyp/include"],
-    visibility = ["//visibility:public"],
+    includes = [
+        # LINT.IfChange(pkvm_includes)
+        "arch/arm64/kvm/hyp/module/include",
+        # LINT.ThenChange(/arch/arm64/kvm/hyp/nvhe/Makefile.module:includes)
+    ],
+    visibility = ["//visibility:private"],
 )
-
-# Implementation details for DDK headers. The targets below cannot be directly
-# depended on by DDK modules.
 
 # Headers needed to include drivers/usb/host/xhci.h.
 ddk_headers(
@@ -1653,6 +1657,7 @@ ddk_headers(
         "sound/usb/usbaudio.h",
         ":all_headers_allowlist_aarch64_globs",
         ":all_headers_allowlist_common_globs",
+        ":pkvm_headers_aarch64",
         ":xhci_headers",
     ],
     # The list of include directories where source files can #include headers
