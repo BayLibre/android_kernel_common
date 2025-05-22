@@ -4,4 +4,7 @@
 
 int __pkvm_init_finalise(struct kvm_vcpu *vcpu, struct pkvm_section sections[],
 			 int section_sz);
+void __pkvm_reprivilege_vcpu(unsigned long *vcpu_regs);
+
+extern bool pkvm_initialized;
 #endif
