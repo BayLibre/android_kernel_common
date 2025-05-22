@@ -336903,6 +336903,13 @@ function {
   parameter_id: 0x14b9453b
 }
 function {
+  id: 0x8624d3e6
+  return_type_id: 0x6720d32f
+  parameter_id: 0x6720d32f
+  parameter_id: 0x92233392
+  parameter_id: 0x92233392
+}
+function {
   id: 0x8625f433
   return_type_id: 0x6720d32f
   parameter_id: 0x6720d32f
@@ -385278,6 +385285,15 @@ elf_symbol {
   full_name: "add_memory"
 }
 elf_symbol {
+  id: 0x9d3925bd
+  name: "add_memory_subsection"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x39634718
+  type_id: 0x8624d3e6
+  full_name: "add_memory_subsection"
+}
+elf_symbol {
   id: 0x7951d828
   name: "add_swap_extent"
   is_defined: true
@@ -414886,6 +414902,15 @@ elf_symbol {
   crc: 0x59bfc3ff
   type_id: 0x01a85b76
   full_name: "memblock_end_of_DRAM"
+}
+elf_symbol {
+  id: 0x4fb91c54
+  name: "memblock_free"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xda923661
+  type_id: 0x1567dd7e
+  full_name: "memblock_free"
 }
 elf_symbol {
   id: 0x73553ac1
@@ -449734,6 +449759,7 @@ interface {
   symbol_id: 0xd20e014a
   symbol_id: 0xf09e1ca4
   symbol_id: 0xcef4ad72
+  symbol_id: 0x9d3925bd
   symbol_id: 0x7951d828
   symbol_id: 0xa5dcf915
   symbol_id: 0xf2768ed7
@@ -453021,6 +453047,7 @@ interface {
   symbol_id: 0x7f797603
   symbol_id: 0x01e78001
   symbol_id: 0x746374fa
+  symbol_id: 0x4fb91c54
   symbol_id: 0x73553ac1
   symbol_id: 0x79d24533
   symbol_id: 0xbf158d63
