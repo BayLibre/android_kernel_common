@@ -23,6 +23,7 @@
 #define PKVM_HC_DUMP_DMAR_TR_STRUCT	20
 #define PKVM_HC_DUMP_DOMAIN_PGT		21
 
+#define __PKVM_HC_REPRIVILEGE_VCPU	100
 
 /*
  * 15bits for PASID, DO NOT change it, based on it,

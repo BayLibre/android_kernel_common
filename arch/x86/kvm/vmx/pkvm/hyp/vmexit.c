@@ -81,10 +81,93 @@ static void handle_cr(struct kvm_vcpu *vcpu)
 	}
 }
 
+/*
+ * Restores guest state from vcpu->arch and returns to host
+ */
+static void pkvm_reprivilege_vcpu(unsigned long *vcpu_regs)
+{
+	/*
+	 * We manipulate SP in assembly. So don't use
+	 * stack for the variables.
+	 */
+	static unsigned long guest_rip, rflags, guest_cs;
+	static struct desc_ptr gdt, idt;
+
+	gdt.address = vmcs_readl(GUEST_GDTR_BASE);
+	gdt.size = vmcs_read32(GUEST_GDTR_LIMIT);
+
+	idt.address = vmcs_readl(GUEST_IDTR_BASE);
+	idt.size = vmcs_read32(GUEST_IDTR_LIMIT);
+
+	guest_cs = vmcs_read16(GUEST_CS_SELECTOR);
+	guest_rip = vmcs_readl(GUEST_RIP) + 3;
+	rflags = vmcs_readl(GUEST_RFLAGS);
+
+	asm volatile (
+		"cli\n"
+
+		"vmxoff\n"
+
+		"lgdt %0\n"
+		"lidt %1\n"
+
+		/*
+		 * Use RDI to hold `vcpu->arch.regs` (first argument is already in RDI).
+		 * No need to reload it; x86-64 SysV ABI passes 1st arg in RDI.
+		 * RDI is occupied (holds vcpu pointer), restore it last!
+		 */
+
+		/* Restore general purpose registers */
+		"mov 0x08(%%rdi), %%rcx\n"
+		"mov 0x10(%%rdi), %%rdx\n"
+		"mov 0x18(%%rdi), %%rbx\n"
+		"mov 0x30(%%rdi), %%rsi\n"
+		"mov 0x40(%%rdi), %%r8\n"
+		"mov 0x48(%%rdi), %%r9\n"
+		"mov 0x50(%%rdi), %%r10\n"
+		"mov 0x58(%%rdi), %%r11\n"
+		"mov 0x60(%%rdi), %%r12\n"
+		"mov 0x68(%%rdi), %%r13\n"
+		"mov 0x70(%%rdi), %%r14\n"
+		"mov 0x78(%%rdi), %%r15\n"
+
+		/* Restore RAX */
+		"mov 0x00(%%rdi), %%rax\n"
+
+		/* Restore RBP */
+		"mov 0x28(%%rdi), %%rbp\n"
+
+		/* Restore RSP */
+		"mov 0x20(%%rdi), %%rsp\n"
+
+		/* Restore RDI (last!) */
+		"mov 0x38(%%rdi), %%rdi\n"
+
+		/* Restore RFLAGS */
+		"pushq %3\n"
+		"popfq\n"
+
+		/*
+		 * push CS and RIP to stack and
+		 * perform a long return.
+		 */
+		"pushq %4\n"
+		"pushq %2\n"
+		"lretq\n"
+
+		:
+		: "m"(gdt), "m"(idt), "m"(guest_rip), "m"(rflags),
+		  "m"(guest_cs), "D"(vcpu_regs)
+		: "memory", "cc", "rax", "rbx", "rcx", "rdx", "rsi",
+		  "r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15"
+	);
+}
+
 static unsigned long handle_vmcall(struct kvm_vcpu *vcpu)
 {
 	u64 nr, a0, a1, a2, a3;
 	unsigned long ret = 0;
+	static bool finalize_hc_called = false;
 
 	nr = vcpu->arch.regs[VCPU_REGS_RAX];
 	a0 = vcpu->arch.regs[VCPU_REGS_RBX];
@@ -93,6 +176,20 @@ static unsigned long handle_vmcall(struct kvm_vcpu *vcpu)
 	a3 = vcpu->arch.regs[VCPU_REGS_RSI];
 
 	switch (nr) {
+	case __PKVM_HC_REPRIVILEGE_VCPU:
+		if (!finalize_hc_called) {
+			/*
+			 * This is a special hypercall to revert the vcpus
+			 * back to pcpus and should be called only when
+			 * the cpus were partially virtualized. Shouldn't be
+			 * invoked if all cpus are de-privileged successfully.
+			 */
+			pkvm_reprivilege_vcpu(vcpu->arch.regs);
+			/* Not Reachable */
+			pkvm_dbg("Failed to reprivilege vcpu: %d\n", vcpu->vcpu_id);
+		}
+		ret = -EINVAL;
+		break;
 	case PKVM_HC_SET_VMEXIT_TRACE:
 		pkvm_handle_set_vmexit_trace(vcpu, a0);
 		break;
@@ -107,6 +204,7 @@ static unsigned long handle_vmcall(struct kvm_vcpu *vcpu)
 		break;
 	case PKVM_HC_INIT_FINALISE:
 		__pkvm_init_finalise(vcpu, (struct pkvm_section *)a0, a1);
+		finalize_hc_called = true;
 		break;
 	case PKVM_HC_FINALIZE_SHADOW_VM:
 		ret = __pkvm_finalize_shadow_vm(a0, a1, a2);
