@@ -22,6 +22,30 @@
       },
       "revId": "7ffc3b37a06ef2064bb58f50355e1604c8f551ec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fc9272d_7dea230e",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 752,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-05-22T18:41:07Z",
+      "side": 0,
+      "message": "Thanks for asking. There was no really good reason for removing this check. Now it seems cleaner to me to keep this check, for both RSP and RIP, even though it shouldn\u0027t make much difference in practice.\n\nThe advantage of this check here is that if the host has never set RSP or RIP value (and thus never marked it as dirty) before running the vCPU first time, pKVM will not needlessly write some undefined values to the VMCS fields GUEST_RSP and GUEST_RIP before entering the VM. (Properly working KVM always sets them at least once, in `kvm_vcpu_reset()`.)\n\nI\u0027ve made some experiments showing no practical difference in the result when  RSP or RIP were not programmed in VMCS at all vs when they were programmed with some random values. E.g. in both cases: for RSP - a VM boots w/o issues (since the initial stack pointer doesn\u0027t matter much), for RIP - a VM fails to start (since the entry address matters a lot).",
+      "parentUuid": "95f40554_27ce350a",
+      "range": {
+        "startLine": 751,
+        "startChar": 0,
+        "endLine": 752,
+        "endChar": 62
+      },
+      "revId": "7ffc3b37a06ef2064bb58f50355e1604c8f551ec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
