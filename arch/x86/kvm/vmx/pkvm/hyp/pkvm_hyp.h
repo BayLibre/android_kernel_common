@@ -10,6 +10,50 @@
 #include <pkvm.h>
 #include <pkvm/vmx/vmx.h>
 
+#define PKVM_WRITE_CR(crnum, val) \
+static inline void __pkvm_write_cr##crnum(unsigned long val) \
+{							\
+	asm volatile("mov %0,%%cr" #crnum : "+r" (val) : : "memory"); \
+}
+
+PKVM_WRITE_CR(0, val)
+PKVM_WRITE_CR(3, val)
+PKVM_WRITE_CR(4, val)
+
+void pkvm_repriv_restore_cpu(unsigned long *vcpu_regs);
+
+#define WORD_SIZE (BITS_PER_LONG / 8)
+
+#define VCPU_RAX	(__VCPU_REGS_RAX * WORD_SIZE)
+#define VCPU_RCX	(__VCPU_REGS_RCX * WORD_SIZE)
+#define VCPU_RDX	(__VCPU_REGS_RDX * WORD_SIZE)
+#define VCPU_RBX	(__VCPU_REGS_RBX * WORD_SIZE)
+#define VCPU_RBP	(__VCPU_REGS_RBP * WORD_SIZE)
+#define VCPU_RSI	(__VCPU_REGS_RSI * WORD_SIZE)
+#define VCPU_RDI	(__VCPU_REGS_RDI * WORD_SIZE)
+
+#ifdef CONFIG_X86_64
+#define VCPU_R8		(__VCPU_REGS_R8  * WORD_SIZE)
+#define VCPU_R9		(__VCPU_REGS_R9  * WORD_SIZE)
+#define VCPU_R10	(__VCPU_REGS_R10 * WORD_SIZE)
+#define VCPU_R11	(__VCPU_REGS_R11 * WORD_SIZE)
+#define VCPU_R12	(__VCPU_REGS_R12 * WORD_SIZE)
+#define VCPU_R13	(__VCPU_REGS_R13 * WORD_SIZE)
+#define VCPU_R14	(__VCPU_REGS_R14 * WORD_SIZE)
+#define VCPU_R15	(__VCPU_REGS_R15 * WORD_SIZE)
+#endif
+
+#define STRINGIFY_INNER(x) #x
+#define STRINGIFY(x) STRINGIFY_INNER(x)
+
+/*
+ * Restores register state from memory pointed by rdi
+ * offset: offset of register backup in memory
+ * dest_reg: register to be restored.
+ */
+#define RESTORE_VCPU_REG(offset, dest_reg) \
+	"mov " STRINGIFY(offset) "(%%rdi), %%" #dest_reg "\n"
+
 #define SHADOW_VM_HANDLE_SHIFT		32
 #define SHADOW_VCPU_INDEX_MASK		((1UL << SHADOW_VM_HANDLE_SHIFT) - 1)
 #define to_shadow_vcpu_handle(vm_handle, vcpu_idx)		\
