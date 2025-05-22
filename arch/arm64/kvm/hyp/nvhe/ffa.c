@@ -1105,6 +1105,7 @@ static void do_ffa_part_get_response(struct arm_smccc_res *res,
 {
 	int ret;
 	u32 count, partition_sz, copy_sz;
+	struct arm_smccc_res rx_res;
 
 	arm_smccc_1_1_smc(FFA_PARTITION_INFO_GET, uuid0, uuid1,
 			  uuid2, uuid3, flags, 0, 0,
@@ -1115,11 +1116,13 @@ static void do_ffa_part_get_response(struct arm_smccc_res *res,
 
 	count = res->a2;
 	if (!count)
+		/* rx buf ownership not transferred */
 		return;
 
 	if (hyp_ffa_version > FFA_VERSION_1_0) {
 		/* Get the number of partitions deployed in the system */
 		if (flags & 0x1)
+			/* rx buf ownership not transferred */
 			return;
 
 		partition_sz  = res->a3;
@@ -1130,7 +1133,7 @@ static void do_ffa_part_get_response(struct arm_smccc_res *res,
 	copy_sz = partition_sz * count;
 	if (copy_sz > KVM_FFA_MBOX_NR_PAGES * PAGE_SIZE) {
 		ffa_to_smccc_res(res, FFA_RET_ABORTED);
-		return;
+		goto unlock;
 	}
 
 	ret = parse_vm_availability_resp(partition_sz, count);
@@ -1139,6 +1142,9 @@ static void do_ffa_part_get_response(struct arm_smccc_res *res,
 
 	if (ffa_buf)
 		memcpy(ffa_buf->rx, hyp_buffers.rx, copy_sz);
+unlock:
+	/* Errors intentionally ignored */
+	ffa_rx_release(&rx_res);
 }
 
 static int hyp_ffa_post_init(void)
@@ -1321,8 +1327,6 @@ static int kvm_host_ffa_signal_availability(void)
 	do_ffa_part_get_response(&res, 0, 0, 0, 0, 0, NULL);
 	if (res.a0 != FFA_SUCCESS)
 		return ffa_to_linux_errno(ret);
-
-	ffa_rx_release(&res);
 
 	return kvm_notify_vm_availability(HOST_FFA_ID, &host_buffers, FFA_VM_CREATION_MSG);
 }
