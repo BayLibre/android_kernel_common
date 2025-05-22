@@ -39,6 +39,15 @@
 
 #define PKVM_DEVICE_ASSIGN_COMPAT	"pkvm,device-assignment"
 
+/*
+ * Retry the VM creation message for the host for a maximul total
+ * amount of times, with sleeps in between. For the first few attempts,
+ * do a faster reschedule instead of a full sleep.
+ */
+#define VM_AVAILABILITY_FAST_RETRIES	5
+#define VM_AVAILABILITY_TOTAL_RETRIES	500
+#define VM_AVAILABILITY_RETRY_SLEEP_MS	10
+
 DEFINE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
 
 static phys_addr_t pvmfw_base;
@@ -466,7 +475,8 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 {
 	size_t pgd_sz;
 	void *pgd;
-	int ret, retry_availability_msg = 5;
+	int ret, retry_availability_msg = 0;
+	long timeout;
 
 	if (host_kvm->created_vcpus < 1)
 		return -EINVAL;
@@ -502,12 +512,32 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
 			if (!ret)
 				break;
 			else if (ret == -EINTR || ret == -EAGAIN) {
-				retry_availability_msg--;
-				cond_resched();
+				if (retry_availability_msg < VM_AVAILABILITY_FAST_RETRIES) {
+					cond_resched();
+				} else {
+					timeout = msecs_to_jiffies(VM_AVAILABILITY_RETRY_SLEEP_MS);
+					timeout = schedule_timeout_killable(timeout);
+					if (timeout) {
+						/*
+						 * The timer did not expire,
+						 * most likely because the
+						 * process was killed.
+						 *
+						 * TODO: we should abort the
+						 * creation message somehow.
+						 */
+						ret = -EINTR;
+						break;
+					}
+				}
+				retry_availability_msg++;
 			}
 			else
 				break;
-		} while (retry_availability_msg >= 0);
+		} while (retry_availability_msg < VM_AVAILABILITY_TOTAL_RETRIES);
+
+		if (retry_availability_msg == VM_AVAILABILITY_TOTAL_RETRIES)
+			ret = -ETIMEDOUT;
 	}
 
 	return ret;
