@@ -34,6 +34,14 @@ bool pvmfw_present;
 phys_addr_t pvmfw_base;
 phys_addr_t pvmfw_size;
 
+/*
+ * Memory area reserved for pkvm.
+ * Used for remapping back to host during rollback
+ * in th event of pkvm initialization failure.
+ */
+static phys_addr_t pkvm_mem_base;
+static unsigned long pkvm_mem_size;
+
 void *pkvm_mmu_pgt_base;
 void *pkvm_vmemmap_base;
 void *host_ept_pgt_base;
@@ -267,6 +275,8 @@ static int protect_pkvm_pages(const struct pkvm_section sections[],
 	}
 #endif
 
+	pkvm_mem_base = phys;
+	pkvm_mem_size = size;
 	ret = pkvm_host_ept_unmap(phys, phys, size);
 	if (ret) {
 		pkvm_err("%s: failed to protect reserved memory\n", __func__);
@@ -293,6 +303,77 @@ static int create_iommu(void)
 					pkvm_hyp->num_cpus);
 
 	return pkvm_init_iommu(pkvm_virt_to_phys(iommu_mem_base), nr_pages);
+}
+
+/*
+ * Flag set to true after pkvm switches to its own
+ * page table and enables ept. Used for remapping the
+ * protected pages to host so that host can access them
+ * during the rollback phase.
+ */
+static bool pgt_switched __ro_after_init;
+
+/*
+ * Flag set to true once pkvm is initialized successfully.
+ * Used to enforce internall hypercalls to be unavailable
+ * for general use once pkvm is initialized.
+ */
+static bool pkvm_initialized __ro_after_init;
+
+int pkvm_reprivilege_vcpu(struct kvm_vcpu *vcpu)
+{
+	if (pkvm_initialized) {
+		pkvm_err("reprivilege request after pkvm initialization is not allowed!\n");
+		return -EINVAL;
+	}
+
+	pkvm_repriv_restore_cpu(vcpu->arch.regs);
+	/* Reach here only if reprivilege fails. */
+	pkvm_err("Failed to reprivilege vcpu: %d\n", vcpu->vcpu_id);
+
+	return -1;
+}
+
+static void pkvm_undo_finalise(void)
+{
+	/*
+	 * Allow the host to access memory for successfully unwinding
+	 * pkvm and returning to host mode.
+	 */
+	if (pgt_switched) {
+		u64 prot = pkvm_mkstate(HOST_EPT_DEF_MEM_PROT, PKVM_PAGE_OWNED);
+
+		pkvm_dbg("%s: remapping reserved mem %llx[%lx]\n",
+				__func__, pkvm_mem_base, pkvm_mem_size);
+		pkvm_host_ept_map(pkvm_mem_base, pkvm_mem_base, pkvm_mem_size, 0, prot);
+		if (pvmfw_present) {
+			pkvm_dbg("%s: remapping pvmfw reserved mem %llx[%llx]\n",
+					__func__, pvmfw_base, pvmfw_size);
+			pkvm_host_ept_map(pvmfw_base, pvmfw_base, pvmfw_size, 0, prot);
+		}
+	}
+
+	pkvm_undo_iommu();
+}
+
+int pkvm_commit_finalise(bool success)
+{
+	if (pkvm_initialized) {
+		pkvm_err("init commit request after pkvm initialization is not allowed!\n");
+		return -EINVAL;
+	}
+
+	if (success) {
+		pkvm_initialized = true;
+		/*
+		 * TODO: Move reprivilege logic and undo_finalize
+		 * to a separate section and zero it out here.
+		 */
+	} else {
+		pkvm_undo_finalise();
+	}
+
+	return 0;
 }
 
 #define TMP_SECTION_SZ	16UL
@@ -413,6 +494,8 @@ switch_pgt:
 	}
 
 	ept_sync_global();
+
+	pgt_switched = true;
 
 	ret = pkvm_setup_lapic(pcpu, vcpu->cpu);
 out:
