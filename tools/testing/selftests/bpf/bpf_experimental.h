@@ -170,6 +170,7 @@ extern void bpf_iter_task_vma_destroy(struct bpf_iter_task_vma *it) __ksym;
 /* Convenience macro to wrap over bpf_obj_drop_impl */
 #define bpf_percpu_obj_drop(kptr) bpf_percpu_obj_drop_impl(kptr, NULL)
 
+<<<<<<< HEAD   (986f8fcf9e0474a4a3b728e616001703c9568ad4 BACKPORT: selftests/bpf: Add test for dmabuf_iter)
 /* Description
  *	Throw a BPF exception from the program, immediately terminating its
  *	execution and unwinding the stack. The supplied 'cookie' parameter
@@ -582,4 +583,12 @@ extern int bpf_wq_set_callback_impl(struct bpf_wq *wq,
 		unsigned int flags__k, void *aux__ign) __ksym;
 #define bpf_wq_set_callback(timer, cb, flags) \
 	bpf_wq_set_callback_impl(timer, cb, flags, NULL)
+||||||| BASE   (9edd9b6f2fec745a4092d3ea9b057424cd1bfef0 BACKPORT: selftests/bpf: Add test for dmabuf_iter)
+=======
+struct bpf_iter_dmabuf;
+extern int bpf_iter_dmabuf_new(struct bpf_iter_dmabuf *it) __weak __ksym;
+extern struct dma_buf *bpf_iter_dmabuf_next(struct bpf_iter_dmabuf *it) __weak __ksym;
+extern void bpf_iter_dmabuf_destroy(struct bpf_iter_dmabuf *it) __weak __ksym;
+
+>>>>>>> CHANGE (8f8989639402b189ac1086300da024ef68a7cd1f BACKPORT: selftests/bpf: Add test for open coded dmabuf_iter)
 #endif
