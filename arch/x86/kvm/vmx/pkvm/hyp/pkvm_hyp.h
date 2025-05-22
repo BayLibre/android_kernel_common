@@ -10,6 +10,18 @@
 #include <pkvm.h>
 #include <pkvm/vmx/vmx.h>
 
+#define PKVM_WRITE_CR(crnum, val) \
+static inline void __pkvm_write_cr##crnum(unsigned long val) \
+{							\
+	asm volatile("mov %0,%%cr" #crnum : "+r" (val) : : "memory"); \
+}
+
+PKVM_WRITE_CR(0, val)
+PKVM_WRITE_CR(3, val)
+PKVM_WRITE_CR(4, val)
+
+void pkvm_repriv_restore_cpu(unsigned long *vcpu_regs);
+
 #define SHADOW_VM_HANDLE_SHIFT		32
 #define SHADOW_VCPU_INDEX_MASK		((1UL << SHADOW_VM_HANDLE_SHIFT) - 1)
 #define to_shadow_vcpu_handle(vm_handle, vcpu_idx)		\
