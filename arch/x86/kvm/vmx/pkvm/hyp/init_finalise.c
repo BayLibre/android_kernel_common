@@ -295,12 +295,14 @@ static int create_iommu(void)
 	return pkvm_init_iommu(pkvm_virt_to_phys(iommu_mem_base), nr_pages);
 }
 
+bool pkvm_initialized __ro_after_init;
+
 #define TMP_SECTION_SZ	16UL
 int __pkvm_init_finalise(struct kvm_vcpu *vcpu, struct pkvm_section sections[],
 			 int section_sz)
 {
 	int i, ret = 0;
-	static bool pkvm_init;
+	static int nr_inited_cpus;
 	struct pkvm_host_vcpu *hvcpu = to_pkvm_hvcpu(vcpu);
 	struct pkvm_pcpu *pcpu = hvcpu->pcpu;
 	struct pkvm_section tmp_sections[TMP_SECTION_SZ];
@@ -316,7 +318,7 @@ int __pkvm_init_finalise(struct kvm_vcpu *vcpu, struct pkvm_section sections[],
 	else
 		this_cpu_write(x86_spec_ctrl_current, 0);
 
-	if (pkvm_init) {
+	if (nr_inited_cpus) {
 		/* Switch to pkvm mmu in root mode in case some setup may need this */
 		native_write_cr3(pkvm_hyp->mmu->root_pa);
 		goto switch_pgt;
@@ -383,8 +385,6 @@ int __pkvm_init_finalise(struct kvm_vcpu *vcpu, struct pkvm_section sections[],
 	if (ret)
 		goto out;
 
-	pkvm_init = true;
-
 switch_pgt:
 	/* switch mmu */
 	vmcs_writel(HOST_CR3, pkvm_hyp->mmu->root_pa);
@@ -416,5 +416,10 @@ switch_pgt:
 
 	ret = pkvm_setup_lapic(pcpu, vcpu->cpu);
 out:
+	if (!ret) {
+		if (++nr_inited_cpus == pkvm_hyp->num_cpus)
+			pkvm_initialized = true;
+	}
+
 	return ret;
 }
