@@ -333,6 +333,7 @@ static int xhci_alloc_segments_for_ring(struct xhci_hcd *xhci,
 		unsigned int max_packet, gfp_t flags)
 {
 	struct xhci_segment *prev;
+	unsigned int num = 0;
 	bool chain_links;
 
 	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
@@ -1827,7 +1828,15 @@ xhci_remove_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
 		tmp &= ERST_SIZE_MASK;
 		writel(tmp, &ir->ir_set->erst_size);
 
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
 		xhci_update_erst_dequeue(xhci, ir, true);
+||||||| BASE
+		tmp64 = xhci_read_64(xhci, &ir->ir_set->erst_dequeue);
+		tmp64 &= (u64) ERST_PTR_MASK;
+		xhci_write_64(xhci, tmp64, &ir->ir_set->erst_dequeue);
+=======
+		xhci_write_64(xhci, ERST_EHB, &ir->ir_set->erst_dequeue);
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 	}
 }
 
@@ -1861,6 +1870,7 @@ void xhci_remove_secondary_interrupter(struct usb_hcd *hcd, struct xhci_interrup
 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
 	unsigned int intr_num;
 
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
 	spin_lock_irq(&xhci->lock);
 
 	/* interrupter 0 is primary interrupter, don't touch it */
@@ -1875,6 +1885,18 @@ void xhci_remove_secondary_interrupter(struct usb_hcd *hcd, struct xhci_interrup
 	 * This also updates event ring dequeue pointer back to the start.
 	 */
 	xhci_skip_sec_intr_events(xhci, ir->event_ring, ir);
+||||||| BASE
+=======
+	/* interrupter 0 is primary interrupter, don't touch it */
+	if (!ir || !ir->intr_num || ir->intr_num >= xhci->max_interrupters)
+		xhci_dbg(xhci, "Invalid secondary interrupter, can't remove\n");
+
+	/* fixme, should we check xhci->interrupter[intr_num] == ir */
+	/* fixme locking */
+
+	spin_lock_irq(&xhci->lock);
+
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 	intr_num = ir->intr_num;
 
 	xhci_remove_interrupter(xhci, ir);
@@ -1893,7 +1915,12 @@ void xhci_mem_cleanup(struct xhci_hcd *xhci)
 
 	cancel_delayed_work_sync(&xhci->cmd_timer);
 
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
 	for (i = 0; xhci->interrupters && i < xhci->max_interrupters; i++) {
+||||||| BASE
+=======
+	for (i = 0; i < xhci->max_interrupters; i++) {
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 		if (xhci->interrupters[i]) {
 			xhci_remove_interrupter(xhci, xhci->interrupters[i]);
 			xhci_free_interrupter(xhci, xhci->interrupters[i]);
@@ -2001,7 +2028,15 @@ static void xhci_set_hc_event_deq(struct xhci_hcd *xhci, struct xhci_interrupter
 	 */
 	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
 		       "// Write event ring dequeue pointer, preserving EHB bit");
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
 	xhci_write_64(xhci, deq & ERST_PTR_MASK, &ir->ir_set->erst_dequeue);
+||||||| BASE
+	xhci_write_64(xhci, ((u64) deq & (u64) ~ERST_PTR_MASK) | temp,
+			&ir->ir_set->erst_dequeue);
+=======
+	xhci_write_64(xhci, ((u64) deq & (u64) ~ERST_PTR_MASK),
+			&ir->ir_set->erst_dequeue);
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 }
 
 static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
@@ -2285,17 +2320,35 @@ static int xhci_setup_port_arrays(struct xhci_hcd *xhci, gfp_t flags)
 }
 
 static struct xhci_interrupter *
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
 xhci_alloc_interrupter(struct xhci_hcd *xhci, int segs, gfp_t flags)
+||||||| BASE
+xhci_alloc_interrupter(struct xhci_hcd *xhci, gfp_t flags)
+=======
+xhci_alloc_interrupter(struct xhci_hcd *xhci, unsigned int segs, gfp_t flags)
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 {
 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
 	struct xhci_interrupter *ir;
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
 	unsigned int num_segs = segs;
+||||||| BASE
+=======
+	unsigned int max_segs;
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 	int ret;
+
+	if (!segs)
+		segs = ERST_DEFAULT_SEGS;
+
+	max_segs = BIT(HCS_ERST_MAX(xhci->hcs_params2));
+	segs = min(segs, max_segs);
 
 	ir = kzalloc_node(sizeof(*ir), flags, dev_to_node(dev));
 	if (!ir)
 		return NULL;
 
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
 	/* number of ring segments should be greater than 0 */
 	if (segs <= 0)
 		num_segs = min_t(unsigned int, 1 << HCS_ERST_MAX(xhci->hcs_params2),
@@ -2303,6 +2356,12 @@ xhci_alloc_interrupter(struct xhci_hcd *xhci, int segs, gfp_t flags)
 
 	ir->event_ring = xhci_ring_alloc(xhci, num_segs, 1, TYPE_EVENT, 0,
 					 flags);
+||||||| BASE
+	ir->event_ring = xhci_ring_alloc(xhci, ERST_NUM_SEGS, 1, TYPE_EVENT,
+					0, flags);
+=======
+	ir->event_ring = xhci_ring_alloc(xhci, segs, 1, TYPE_EVENT, 0, flags);
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 	if (!ir->event_ring) {
 		xhci_warn(xhci, "Failed to allocate interrupter event ring\n");
 		kfree(ir);
@@ -2363,6 +2422,7 @@ xhci_add_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir,
 }
 
 struct xhci_interrupter *
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
 xhci_create_secondary_interrupter(struct usb_hcd *hcd, int num_seg, int intr_num)
 {
 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
@@ -2402,6 +2462,52 @@ free_ir:
 	xhci_free_interrupter(xhci, ir);
 
 	return NULL;
+||||||| BASE
+=======
+xhci_create_secondary_interrupter(struct usb_hcd *hcd, unsigned int segs,
+				  u32 imod_interval)
+{
+	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
+	struct xhci_interrupter *ir;
+	unsigned int i;
+	int err = -ENOSPC;
+
+	if (!xhci->interrupters || xhci->max_interrupters <= 1)
+		return NULL;
+
+	ir = xhci_alloc_interrupter(xhci, segs, GFP_KERNEL);
+	if (!ir)
+		return NULL;
+
+	spin_lock_irq(&xhci->lock);
+
+	/* Find available secondary interrupter, interrupter 0 is reserved for primary */
+	for (i = 1; i < xhci->max_interrupters; i++) {
+		if (xhci->interrupters[i] == NULL) {
+			err = xhci_add_interrupter(xhci, ir, i);
+			break;
+		}
+	}
+
+	spin_unlock_irq(&xhci->lock);
+
+	if (err) {
+		xhci_warn(xhci, "Failed to add secondary interrupter, max interrupters %d\n",
+			  xhci->max_interrupters);
+		xhci_free_interrupter(xhci, ir);
+		return NULL;
+	}
+
+	err = xhci_set_interrupter_moderation(ir, imod_interval);
+	if (err)
+		xhci_warn(xhci, "Failed to set interrupter %d moderation to %uns\n",
+			  i, imod_interval);
+
+	xhci_dbg(xhci, "Add secondary interrupter %d, max interrupters %d\n",
+		 i, xhci->max_interrupters);
+
+	return ir;
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 }
 EXPORT_SYMBOL_GPL(xhci_create_secondary_interrupter);
 

@@ -3110,9 +3110,21 @@ void xhci_update_erst_dequeue(struct xhci_hcd *xhci,
 	if ((temp_64 & ERST_PTR_MASK) == (deq & ERST_PTR_MASK) && !clear_ehb)
 		return;
 
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
 	/* Update HC event ring dequeue pointer */
 	temp_64 = ir->event_ring->deq_seg->num & ERST_DESI_MASK;
 	temp_64 |= deq & ERST_PTR_MASK;
+||||||| BASE
+		/* Update HC event ring dequeue pointer */
+		temp_64 &= ERST_DESI_MASK;
+		temp_64 |= ((u64) deq & (u64) ~ERST_PTR_MASK);
+	}
+=======
+		/* Update HC event ring dequeue pointer */
+		temp_64 = ir->event_ring->deq_seg->num & ERST_DESI_MASK;
+		temp_64 |= ((u64) deq & (u64) ~ERST_PTR_MASK);
+	}
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 
 	/* Clear the event handler busy flag (RW1C) */
 	if (clear_ehb)
@@ -3264,6 +3276,94 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
 	 */
 	status |= STS_EINT;
 	writel(status, &xhci->op_regs->status);
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
+||||||| BASE
+
+	/* This is the handler of the primary interrupter */
+	ir = xhci->interrupter;
+	if (!hcd->msi_enabled) {
+		u32 irq_pending;
+		irq_pending = readl(&ir->ir_set->irq_pending);
+		irq_pending |= IMAN_IP;
+		writel(irq_pending, &ir->ir_set->irq_pending);
+	}
+
+	if (xhci->xhc_state & XHCI_STATE_DYING ||
+	    xhci->xhc_state & XHCI_STATE_HALTED) {
+		xhci_dbg(xhci, "xHCI dying, ignoring interrupt. "
+				"Shouldn't IRQs be disabled?\n");
+		/* Clear the event handler busy flag (RW1C);
+		 * the event ring should be empty.
+		 */
+		temp_64 = xhci_read_64(xhci, &ir->ir_set->erst_dequeue);
+		xhci_write_64(xhci, temp_64 | ERST_EHB,
+				&ir->ir_set->erst_dequeue);
+		ret = IRQ_HANDLED;
+		goto out;
+	}
+
+	event_ring_deq = ir->event_ring->dequeue;
+	/* FIXME this should be a delayed service routine
+	 * that clears the EHB.
+	 */
+	while (xhci_handle_event(xhci, ir) > 0) {
+		if (event_loop++ < TRBS_PER_SEGMENT / 2)
+			continue;
+		xhci_update_erst_dequeue(xhci, ir, event_ring_deq, false);
+		event_ring_deq = ir->event_ring->dequeue;
+
+		/* ring is half-full, force isoc trbs to interrupt more often */
+		if (xhci->isoc_bei_interval > AVOID_BEI_INTERVAL_MIN)
+			xhci->isoc_bei_interval = xhci->isoc_bei_interval / 2;
+
+		event_loop = 0;
+	}
+
+	xhci_update_erst_dequeue(xhci, ir, event_ring_deq, true);
+=======
+
+	/* This is the handler of the primary interrupter */
+	ir = xhci->interrupters[0];
+	if (!hcd->msi_enabled) {
+		u32 irq_pending;
+		irq_pending = readl(&ir->ir_set->irq_pending);
+		irq_pending |= IMAN_IP;
+		writel(irq_pending, &ir->ir_set->irq_pending);
+	}
+
+	if (xhci->xhc_state & XHCI_STATE_DYING ||
+	    xhci->xhc_state & XHCI_STATE_HALTED) {
+		xhci_dbg(xhci, "xHCI dying, ignoring interrupt. "
+				"Shouldn't IRQs be disabled?\n");
+		/* Clear the event handler busy flag (RW1C);
+		 * the event ring should be empty.
+		 */
+		temp_64 = xhci_read_64(xhci, &ir->ir_set->erst_dequeue);
+		xhci_write_64(xhci, temp_64 | ERST_EHB,
+				&ir->ir_set->erst_dequeue);
+		ret = IRQ_HANDLED;
+		goto out;
+	}
+
+	event_ring_deq = ir->event_ring->dequeue;
+	/* FIXME this should be a delayed service routine
+	 * that clears the EHB.
+	 */
+	while (xhci_handle_event(xhci, ir) > 0) {
+		if (event_loop++ < TRBS_PER_SEGMENT / 2)
+			continue;
+		xhci_update_erst_dequeue(xhci, ir, event_ring_deq, false);
+		event_ring_deq = ir->event_ring->dequeue;
+
+		/* ring is half-full, force isoc trbs to interrupt more often */
+		if (xhci->isoc_bei_interval > AVOID_BEI_INTERVAL_MIN)
+			xhci->isoc_bei_interval = xhci->isoc_bei_interval / 2;
+
+		event_loop = 0;
+	}
+
+	xhci_update_erst_dequeue(xhci, ir, event_ring_deq, true);
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 	ret = IRQ_HANDLED;
 
 	/* This is the handler of the primary interrupter */

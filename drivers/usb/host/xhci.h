@@ -1438,6 +1438,7 @@ struct urb_priv {
 	struct	xhci_td	td[];
 };
 
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
 /*
  * Each segment table entry is 4*32bits long.  1K seems like an ok size:
  * (1K bytes * 8bytes/bit) / (4*32 bits) = 64 segment entries in the table,
@@ -1445,6 +1446,17 @@ struct urb_priv {
  * Reasonable limit for number of Event Ring segments (spec allows 32k)
  */
 #define	ERST_MAX_SEGS	2
+||||||| BASE
+/*
+ * Each segment table entry is 4*32bits long.  1K seems like an ok size:
+ * (1K bytes * 8bytes/bit) / (4*32 bits) = 64 segment entries in the table,
+ * meaning 64 ring segments.
+ * Initial allocated size of the ERST, in number of entries */
+#define	ERST_NUM_SEGS	1
+=======
+/* Number of Event Ring segments to allocate, when amount is not specified. (spec allows 32k) */
+#define	ERST_DEFAULT_SEGS	2
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 /* Poll every 60 seconds */
 #define	POLL_TIMEOUT	60
 /* Stop endpoint command timeout (secs) for URB cancellation watchdog timer */
@@ -1895,11 +1907,19 @@ struct xhci_container_ctx *xhci_alloc_container_ctx(struct xhci_hcd *xhci,
 void xhci_free_container_ctx(struct xhci_hcd *xhci,
 		struct xhci_container_ctx *ctx);
 struct xhci_interrupter *
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
 xhci_create_secondary_interrupter(struct usb_hcd *hcd, int num_seg, int intr_num);
 void xhci_remove_secondary_interrupter(struct usb_hcd
 				       *hcd, struct xhci_interrupter *ir);
 void xhci_skip_sec_intr_events(struct xhci_hcd *xhci,
 	struct xhci_ring *ring,	struct xhci_interrupter *ir);
+||||||| BASE
+=======
+xhci_create_secondary_interrupter(struct usb_hcd *hcd, unsigned int segs,
+				  u32 imod_interval);
+void xhci_remove_secondary_interrupter(struct usb_hcd
+				       *hcd, struct xhci_interrupter *ir);
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 
 /* xHCI host controller glue */
 typedef void (*xhci_get_quirks_t)(struct device *, struct xhci_hcd *);
@@ -1937,10 +1957,18 @@ int xhci_alloc_tt_info(struct xhci_hcd *xhci,
 		struct xhci_virt_device *virt_dev,
 		struct usb_device *hdev,
 		struct usb_tt *tt, gfp_t mem_flags);
+<<<<<<< HEAD   (0604a6 Revert "cpufreq: Fix setting policy limits when frequency ta)
 int xhci_enable_interrupter(struct xhci_interrupter *ir);
 int xhci_disable_interrupter(struct xhci_interrupter *ir);
 int xhci_set_interrupter_moderation(struct xhci_interrupter *ir,
 					   u32 imod_interval);
+||||||| BASE
+=======
+int xhci_set_interrupter_moderation(struct xhci_interrupter *ir,
+				    u32 imod_interval);
+int xhci_enable_interrupter(struct xhci_interrupter *ir);
+int xhci_disable_interrupter(struct xhci_interrupter *ir);
+>>>>>>> BRANCH (baa3eb xhci: Limit time spent with xHC interrupts disabled during b)
 
 /* xHCI ring, segment, TRB, and TD functions */
 dma_addr_t xhci_trb_virt_to_dma(struct xhci_segment *seg, union xhci_trb *trb);
