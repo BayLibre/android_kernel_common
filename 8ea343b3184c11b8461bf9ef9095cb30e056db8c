@@ -16,6 +16,24 @@
       "message": "how much does this add to the kernel\u0027s memory footprint for arm64?",
       "revId": "8ea343b3184c11b8461bf9ef9095cb30e056db8c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b85f433d_ef745e38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022147
+      },
+      "writtenOn": "2025-05-23T16:44:29Z",
+      "side": 1,
+      "message": "the Lanklock LSM doesn\u0027t add a memory footprint.\nIt is a process-level sandbox, and we are using it to sandbox the GPU process for clank.",
+      "parentUuid": "9894d764_ffc2cbff",
+      "revId": "8ea343b3184c11b8461bf9ef9095cb30e056db8c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
