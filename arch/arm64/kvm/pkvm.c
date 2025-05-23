@@ -319,21 +319,18 @@ static int __reclaim_dying_guest_page_call(u64 pfn, u64 gfn, u8 order, void *arg
 
 static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 {
+	struct kvm_pinned_page *next, *ppage;
 	struct mm_struct *mm = current->mm;
-	struct kvm_pinned_page *ppage;
 	struct kvm_vcpu *host_vcpu;
-	unsigned long idx, ipa = 0;
+	unsigned long idx;
 
 	if (!host_kvm->arch.pkvm.handle)
 		goto out_free;
 
 	WARN_ON(kvm_call_hyp_nvhe(__pkvm_start_teardown_vm, host_kvm->arch.pkvm.handle));
 
-	mt_clear_in_rcu(&host_kvm->arch.pkvm.pinned_pages);
-
-	mt_for_each(&host_kvm->arch.pkvm.pinned_pages, ppage, ipa, ULONG_MAX) {
-		if (WARN_ON(ppage == KVM_DUMMY_PPAGE))
-			continue;
+	ppage = kvm_pinned_pages_iter_first(&host_kvm->arch.pkvm.pinned_pages, 0, ~(0UL));
+	while (ppage) {
 		WARN_ON(pkvm_call_hyp_nvhe_ppage(ppage,
 						 __reclaim_dying_guest_page_call,
 						 host_kvm, true));
@@ -341,9 +338,11 @@ static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 
 		account_locked_vm(mm, 1, false);
 		unpin_user_pages_dirty_lock(&ppage->page, 1, host_kvm->arch.pkvm.enabled);
+		next = kvm_pinned_pages_iter_next(ppage, 0, ~(0UL));
+		kvm_pinned_pages_remove(ppage, &host_kvm->arch.pkvm.pinned_pages);
 		kfree(ppage);
+		ppage = next;
 	}
-	mtree_destroy(&host_kvm->arch.pkvm.pinned_pages);
 
 	WARN_ON(kvm_call_hyp_nvhe(__pkvm_finalize_teardown_vm, host_kvm->arch.pkvm.handle));
 
@@ -538,13 +537,12 @@ void pkvm_host_reclaim_page(struct kvm *host_kvm, phys_addr_t ipa)
 {
 	struct mm_struct *mm = current->mm;
 	struct kvm_pinned_page *ppage;
-	unsigned long index = ipa;
 	u16 pins;
 
 	write_lock(&host_kvm->mmu_lock);
-	ppage = mt_find(&host_kvm->arch.pkvm.pinned_pages, &index,
-			index + PAGE_SIZE - 1);
-	if (ppage && ppage != KVM_DUMMY_PPAGE) {
+	ppage = kvm_pinned_pages_iter_first(&host_kvm->arch.pkvm.pinned_pages,
+					    ipa, ipa + PAGE_SIZE - 1);
+	if (ppage) {
 		if (ppage->pins)
 			ppage->pins--;
 		else
@@ -552,7 +550,8 @@ void pkvm_host_reclaim_page(struct kvm *host_kvm, phys_addr_t ipa)
 
 		pins = ppage->pins;
 		if (!pins)
-			mtree_erase(&host_kvm->arch.pkvm.pinned_pages, ipa);
+			kvm_pinned_pages_remove(ppage,
+						&host_kvm->arch.pkvm.pinned_pages);
 	}
 	write_unlock(&host_kvm->mmu_lock);
 
@@ -608,6 +607,8 @@ static int __init pkvm_firmware_rmem_clear(void)
 
 	if (likely(!pkvm_firmware_mem))
 		return 0;
+
+	return 0;
 
 	kvm_info("Clearing pKVM firmware memory\n");
 	size = pkvm_firmware_mem->size;
