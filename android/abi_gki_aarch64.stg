@@ -44266,6 +44266,11 @@ member {
   offset: 256
 }
 member {
+  id: 0x3f733e0d
+  type_id: 0x72e28a8b
+  offset: 256
+}
+member {
   id: 0x3f7d3152
   type_id: 0x72da9250
   offset: 128
@@ -45546,6 +45551,11 @@ member {
   type_id: 0x914dbfdc
   offset: 242
   bitsize: 14
+}
+member {
+  id: 0x906218d7
+  name: "__unused"
+  type_id: 0xa179a8c5
 }
 member {
   id: 0x9086e58b
@@ -156569,10 +156579,9 @@ member {
   offset: 576
 }
 member {
-  id: 0x03347550
+  id: 0x0345ffe6
   name: "pinned_pages"
-  type_id: 0xa179a8c5
-  offset: 256
+  type_id: 0xd0f3b5bf
 }
 member {
   id: 0x88a7076f
@@ -227350,6 +227359,15 @@ struct_union {
   }
 }
 struct_union {
+  id: 0x72e28a8b
+  kind: UNION
+  definition {
+    bytesize: 16
+    member_id: 0x906218d7
+    member_id: 0x0345ffe6
+  }
+}
+struct_union {
   id: 0x72e7b747
   kind: UNION
   definition {
@@ -253468,7 +253486,7 @@ struct_union {
     bytesize: 64
     member_id: 0xb8f5134f
     member_id: 0x63c436ff
-    member_id: 0x03347550
+    member_id: 0x3f733e0d
     member_id: 0x0f7f629e
     member_id: 0x3a2d39cb
   }
