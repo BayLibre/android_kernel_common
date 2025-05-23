@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b0c34b3_27940670",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-05-23T16:48:40Z",
+      "side": 0,
+      "message": "Need to look at the resulting .config. It may be that this gets added via dependency now in which case removing it here is fine (result of savedefconfig)",
+      "parentUuid": "c5e28c86_ef7cb5fd",
+      "range": {
+        "startLine": 694,
+        "startChar": 0,
+        "endLine": 694,
+        "endChar": 23
+      },
+      "revId": "085d10c030cc1153fab89379a096c5e0c83ee102",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5f3b84d_67f23e21",
         "filename": "arch/x86/configs/gki_defconfig",
         "patchSetId": 1
