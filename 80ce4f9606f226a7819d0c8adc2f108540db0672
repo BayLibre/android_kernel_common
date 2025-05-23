@@ -16,6 +16,24 @@
       "message": "Do you know what the performance/memory costs are for this? The original shadow stack implementation for arm64 came with a significant performance penalty.",
       "revId": "80ce4f9606f226a7819d0c8adc2f108540db0672",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39c731e1_9f3bbc18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022147
+      },
+      "writtenOn": "2025-05-23T16:51:45Z",
+      "side": 1,
+      "message": "This enables shadow stack support in the kernel for x86, and user-space can start using it, experiment with it. Without user-space change, this change won\u0027t have a performance impact.",
+      "parentUuid": "b8b1105f_9fb9d122",
+      "revId": "80ce4f9606f226a7819d0c8adc2f108540db0672",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
