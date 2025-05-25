@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6e7cafd_bd7520e3",
+        "filename": "kernel/trace/trace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-05-25T22:24:46Z",
+      "side": 1,
+      "message": "Breaks KMI:\n```\n\ntype \u0027struct trace_array\u0027 changed\n  byte size changed from 320 to 328\n  member \u0027const char* system_names\u0027 was added\n  16 members (\u0027struct list_head err_log\u0027 .. \u0027struct trace_func_repeats* last_func_repeats\u0027) changed\n    offset changed by 64\n```",
+      "fixSuggestions": [
+        {
+          "fixId": "97d45f33_548ff961",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/trace/trace.h",
+              "range": {
+                "startLine": 380,
+                "startChar": 0,
+                "endLine": 381,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "kernel/trace/trace.h",
+              "range": {
+                "startLine": 414,
+                "startChar": 0,
+                "endLine": 414,
+                "endChar": 0
+              },
+              "replacement": "\tconst char\t\t*system_names;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b3d5220488d1911b2e6c934b1110ae43bade5fbe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
