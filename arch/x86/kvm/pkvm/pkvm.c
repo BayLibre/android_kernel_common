@@ -1521,3 +1521,8 @@ void pkvm_x86_ops_init(struct pkvm_x86_ops *ops)
 {
 	memcpy(&pkvm_x86_ops, ops, sizeof(struct pkvm_x86_ops));
 }
+
+void warn_thunk_thunk(void)
+{
+	WARN_ONCE(1, "pkvm: Unpatched return thunk in use. This should not happen!\n");
+}
