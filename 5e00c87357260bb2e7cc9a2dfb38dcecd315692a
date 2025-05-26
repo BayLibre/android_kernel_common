@@ -16,6 +16,52 @@
       "message": "Why is this needed?  I see no performance numbers here, and this is a \"stable\" kernel that should not be getting new features added to it.\n\nWhat requirement is driving this?  The bug has no information at all in it, so feel free to discuss it there if you want to, but as this can affect everyone, it really should be talked about in public...",
       "revId": "5e00c87357260bb2e7cc9a2dfb38dcecd315692a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ba7b5e5_bad45458",
+        "filename": "include/linux/trace.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-05-26T15:57:01Z",
+      "side": 1,
+      "message": "make this obvious that this is an Android-only thing \"ext\" does not do that.\n\nAnd now you have two functions to maintain, how is that going to work going forward?",
+      "range": {
+        "startLine": 92,
+        "startChar": 58,
+        "endLine": 92,
+        "endChar": 61
+      },
+      "revId": "5e00c87357260bb2e7cc9a2dfb38dcecd315692a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e007217e_629af6b8",
+        "filename": "kernel/trace/trace_events.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3194,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-05-26T15:57:01Z",
+      "side": 1,
+      "message": "this feels like a functional change that callers will have to handle properly, are they all now correctly doing that?",
+      "range": {
+        "startLine": 3194,
+        "startChar": 0,
+        "endLine": 3194,
+        "endChar": 11
+      },
+      "revId": "5e00c87357260bb2e7cc9a2dfb38dcecd315692a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
