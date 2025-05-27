@@ -662,3 +662,34 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_reuse_whole_anon_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_swap_slot_cache);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_calculate_totalreserve_pages);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_check_set_ioprio);
+<<<<<<< HEAD   (d33b20 FROMGIT: f2fs: sysfs: export linear_lookup in features direc)
+||||||| BASE
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_pages);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lru_gen_add_folio_skip);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lru_gen_del_folio_skip);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_perform_reclaim);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_kswapd_shrink_node);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_keep_reclaimed_folio);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clear_reclaimed_folio);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_evict_folios_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_add_lru_folio_activate);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_fault_pre_folio_locked);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_folio_mapped);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_remove_rmap_ptes);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_pageset_update);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_pages);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lru_gen_add_folio_skip);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lru_gen_del_folio_skip);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_perform_reclaim);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_kswapd_shrink_node);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_keep_reclaimed_folio);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clear_reclaimed_folio);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_evict_folios_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_add_lru_folio_activate);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_fault_pre_folio_locked);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_folio_mapped);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_remove_rmap_ptes);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_pageset_update);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_xhci_full_reset_on_remove);
+>>>>>>> CHANGE (32288c ANDROID: vendor_hooks: Add hooks for xhci reset)
