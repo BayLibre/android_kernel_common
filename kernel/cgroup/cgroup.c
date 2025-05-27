@@ -6477,6 +6477,8 @@ void cgroup_fork(struct task_struct *child)
 {
 	RCU_INIT_POINTER(child->cgroups, &init_css_set);
 	INIT_LIST_HEAD(&child->cg_list);
+	child->frozen_time_total = 0;
+	child->frozen_time_start = 0;
 }
 
 /**
