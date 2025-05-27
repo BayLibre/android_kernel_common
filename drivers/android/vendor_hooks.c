@@ -671,3 +671,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_kswapd_shrink_node);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_keep_reclaimed_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clear_reclaimed_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_evict_folios_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_xhci_full_reset_on_remove);
