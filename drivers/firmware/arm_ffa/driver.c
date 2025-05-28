@@ -1258,6 +1258,7 @@ update_notifier_cb(struct ffa_device *dev, int notify_id, void *cb,
 		hash_add(drv_info->notifier_hash, &cb_info->hnode, notify_id);
 	} else {
 		hash_del(&cb_info->hnode);
+		kfree(cb_info);
 	}
 
 	return 0;
