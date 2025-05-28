@@ -1870,11 +1870,15 @@ void xhci_remove_secondary_interrupter(struct usb_hcd *hcd, struct xhci_interrup
 		return;
 	}
 
+<<<<<<< HEAD   (1654cc Merge 3efb29f6a78d ("usb: xhci: Check for xhci->interrupters)
 	/*
 	 * Cleanup secondary interrupter to ensure there are no pending events.
 	 * This also updates event ring dequeue pointer back to the start.
 	 */
 	xhci_skip_sec_intr_events(xhci, ir->event_ring, ir);
+||||||| BASE
+=======
+>>>>>>> BRANCH (fe4650 xhci: fix possible null pointer dereference at secondary int)
 	intr_num = ir->intr_num;
 
 	xhci_remove_interrupter(xhci, ir);
