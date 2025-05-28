@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37dee0db_273d7003",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1125,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2025-05-28T15:31:51Z",
+      "side": 1,
+      "message": "You probably want to update this comment. It is not clear which code it now refers to.\n\nI also don\u0027t understand what you mean by `In case SMCCC 1.2 is not supported`. SMCCC 1.2 requires host registers to be preserved even if the caller is AArch64, SMCCC 1.1 did not require preservation of anything below x18 for AArch64. Every spec requires some of these registers to be preserved for AArch32 callers (if this code can be used by anyone supporting AArch32 guests). FF-A 1.0 also refers to SMCCC 1.2 so supporting anything older than SMCCC 1.2 would not be needed if that actually needed more work.",
+      "revId": "a2e957d26fd6c849955ee2721fbb21e7a83c69ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
