@@ -42,6 +42,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9bbd08e_ad5cc871",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1123,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-05-28T13:11:41Z",
+      "side": 1,
+      "message": "ugh, not correct let me fix this.",
+      "parentUuid": "b0f87b88_5977698d",
+      "range": {
+        "startLine": 1123,
+        "startChar": 2,
+        "endLine": 1123,
+        "endChar": 9
+      },
+      "revId": "7f7ddfa557887cb86abd7772af39a9d1779ae5a0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c51dd07_ecd5f3a5",
@@ -55,6 +79,30 @@
       "writtenOn": "2025-05-28T11:00:07Z",
       "side": 1,
       "message": "Could we not drop this one too by passing the host regs instead of resp as well?",
+      "range": {
+        "startLine": 1134,
+        "startChar": 1,
+        "endLine": 1134,
+        "endChar": 50
+      },
+      "revId": "7f7ddfa557887cb86abd7772af39a9d1779ae5a0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93e2556c_ccb407de",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1134,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-05-28T13:11:41Z",
+      "side": 1,
+      "message": "Dropped `resp` completely.",
+      "parentUuid": "1c51dd07_ecd5f3a5",
       "range": {
         "startLine": 1134,
         "startChar": 1,
