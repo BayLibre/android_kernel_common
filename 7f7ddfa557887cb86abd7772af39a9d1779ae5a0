@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0f87b88_5977698d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1123,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-05-28T11:00:07Z",
+      "side": 1,
+      "message": "We\u0027re clearly not doing anything useful with resp which is stack allocated here, so is this error path correct?",
+      "range": {
+        "startLine": 1123,
+        "startChar": 2,
+        "endLine": 1123,
+        "endChar": 9
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "07021de3_9ab543f9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 1123,
+                "startChar": 0,
+                "endLine": 1123,
+                "endChar": 0
+              },
+              "replacement": "\t\tmemcpy(\u0026ctxt-\u003eregs.regs[0], \u0026resp, sizeof(resp));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7f7ddfa557887cb86abd7772af39a9d1779ae5a0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c51dd07_ecd5f3a5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1134,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-05-28T11:00:07Z",
+      "side": 1,
+      "message": "Could we not drop this one too by passing the host regs instead of resp as well?",
+      "range": {
+        "startLine": 1134,
+        "startChar": 1,
+        "endLine": 1134,
+        "endChar": 50
+      },
+      "revId": "7f7ddfa557887cb86abd7772af39a9d1779ae5a0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
