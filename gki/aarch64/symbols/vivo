@@ -38,6 +38,10 @@
   tcf_block_get
   tcf_block_put
   tcf_classify
+  cpufreq_unregister_notifier
+  jiffies64_to_nsecs
+  profile_event_unregister
+  __irq_regs
   __traceiter_android_rvh_alloc_pages_reclaim_cycle_end
   __traceiter_android_rvh_alloc_pages_reclaim_start
   __traceiter_android_rvh_bpf_skb_load_bytes
@@ -102,6 +106,13 @@
   __traceiter_tcp_retransmit_skb
   __traceiter_workqueue_execute_end
   __traceiter_workqueue_execute_start
+  __traceiter_android_vh_binder_alloc_new_buf_locked
+  __traceiter_pelt_se_tp
+  __traceiter_android_vh_kvmalloc_node_use_vmalloc
+  __traceiter_android_vh_adjust_kvmalloc_flags
+  __traceiter_android_vh_alter_futex_plist_add
+  __traceiter_task_newtask
+  __traceiter_android_vh_mutex_init
   __traceiter_sys_exit
   __tracepoint_android_rvh_alloc_pages_reclaim_cycle_end
   __tracepoint_android_rvh_alloc_pages_reclaim_start
