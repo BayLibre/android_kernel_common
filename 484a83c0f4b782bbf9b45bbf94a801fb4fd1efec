@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be833635_d948cf4e",
+        "filename": "kernel/cgroup/cgroup.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5203,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-05-28T03:09:28Z",
+      "side": 1,
+      "message": "This function hook name is not generic or relevant to the logic where it is being added.\n\ntrace_android_vh_cgroup_procs_write() might be more agreeable.",
+      "revId": "484a83c0f4b782bbf9b45bbf94a801fb4fd1efec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c62e90e9_f77233ff",
+        "filename": "kernel/cgroup/cgroup.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5207,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-05-28T03:09:28Z",
+      "side": 1,
+      "message": "So, cgroup_procs_write_start() succeeded, but then you just jump to out_unlock? Should this be out_finish instead? Or should the vendor hooks be done prior to calling cgroup_procs_write_start?",
+      "revId": "484a83c0f4b782bbf9b45bbf94a801fb4fd1efec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
