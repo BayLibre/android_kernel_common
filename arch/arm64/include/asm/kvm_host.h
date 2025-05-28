@@ -234,6 +234,7 @@ struct kvm_pinned_page {
 
 typedef unsigned int pkvm_handle_t;
 
+#ifndef __GENKSYMS__
 struct kvm_protected_vm {
 	pkvm_handle_t handle;
 	struct kvm_hyp_memcache stage2_teardown_mc;
@@ -241,6 +242,7 @@ struct kvm_protected_vm {
 	gpa_t pvmfw_load_addr;
 	bool enabled;
 };
+#endif
 
 struct kvm_arch {
 	struct kvm_s2_mmu mmu;
