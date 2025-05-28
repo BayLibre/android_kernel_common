@@ -426,9 +426,6 @@ static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 
 	WARN_ON(kvm_call_hyp_nvhe(__pkvm_start_teardown_vm, host_kvm->arch.pkvm.handle));
 
-	ret = __pkvm_notify_guest_vm_avail_retry(host_kvm, FFA_VM_DESTRUCTION_MSG);
-	/* Should we check ret here? */
-
 retry:
 	pages = 0;
 	nr_busy = 0;
@@ -458,6 +455,9 @@ retry:
 	}
 
 	account_locked_vm(mm, pages, false);
+
+	ret = __pkvm_notify_guest_vm_avail_retry(host_kvm, FFA_VM_DESTRUCTION_MSG);
+	/* Should we check ret here? */
 
 	if (nr_busy) {
 		do {
