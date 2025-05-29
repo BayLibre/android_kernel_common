@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1824585f_ec94bb62",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1121,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-05-29T12:36:33Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we zero the other registers in this case, rather than preserving them?",
+      "range": {
+        "startLine": 1119,
+        "startChar": 0,
+        "endLine": 1121,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b01c44d5_09810b33",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 1121,
+                "startChar": 0,
+                "endLine": 1121,
+                "endChar": 0
+              },
+              "replacement": "\t\treg-\u003ea1 \u003d 0;\n\t\treg-\u003ea3 \u003d 0;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9269cd11b97c71a281f2d8305cdc13c9a04782e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
