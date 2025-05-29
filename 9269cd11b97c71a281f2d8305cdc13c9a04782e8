@@ -112,6 +112,30 @@
       },
       "revId": "9269cd11b97c71a281f2d8305cdc13c9a04782e8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91239366_5ab2d451",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1121,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2025-05-29T17:47:21Z",
+      "side": 1,
+      "message": "\u003e Sorry, I should\u0027ve been clearer. By \"other registers\" I was referring to the other parameter registers to FFA_ERROR (X1, X3-X7).\n\nYes, those should always be cleared. x8-x17 should be cleared for 64 bit calls on FF-A 1.2 and above, but in that case (FFA_FN64_MSG_SEND_DIRECT_REQ) they should also be cleared on entry, so I don\u0027t think it is essential to also clear them here.",
+      "parentUuid": "b8762bcd_c55b361d",
+      "range": {
+        "startLine": 1119,
+        "startChar": 0,
+        "endLine": 1121,
+        "endChar": 0
+      },
+      "revId": "9269cd11b97c71a281f2d8305cdc13c9a04782e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
