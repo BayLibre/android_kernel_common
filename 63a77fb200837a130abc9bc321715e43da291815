@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9c987d5_b653ba3e",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-05-29T20:15:35Z",
+      "side": 1,
+      "message": "Can it be static? Also explicit initialization to NULL is unnecessary?",
+      "revId": "63a77fb200837a130abc9bc321715e43da291815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa4d743e_a823ecd5",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-05-29T20:15:35Z",
+      "side": 1,
+      "message": "Intel IOMMU driver doesn\u0027t support building as a module (and even if it did, pKVM doesn\u0027t, so pKVM requires the IOMMU driver to be compiled-in anyway).",
+      "fixSuggestions": [
+        {
+          "fixId": "fadad99d_e11ee29f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 81,
+                "startChar": 0,
+                "endLine": 82,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "63a77fb200837a130abc9bc321715e43da291815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b6df18c_830c573c",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-05-29T20:15:35Z",
+      "side": 1,
+      "message": "If there is no iommu driver, we fail to enable DMA protection, so we should fail pKVM initialization?",
+      "revId": "63a77fb200837a130abc9bc321715e43da291815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04f97a5d_6ce0c9da",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1514,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-05-29T20:15:35Z",
+      "side": 1,
+      "message": "pvmfw is cleared even if pKVM was successfully initialized? Is this by mistake?\n\nIt seems what we need is to add `fw_rmem_clear:` block at the very end, after the `out:` block, and goto there if pkvm_iommu_driver_init() fails.",
+      "revId": "63a77fb200837a130abc9bc321715e43da291815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
