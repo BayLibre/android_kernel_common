@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdfad435_3d18f7ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4104144
+      },
+      "writtenOn": "2025-05-29T01:19:10Z",
+      "side": 1,
+      "message": "From 047984ea7ad8addc0f0f4b3d4a45c10553181484 Mon Sep 17 00:00:00 2001\nFrom: Vincent Donnefort \u003cvdonnefort@google.com\u003e\nDate: Mon, 26 May 2025 10:21:38 +0100\nSubject: [PATCH] ANDROID: KVM: arm64: Check for existing pinned_pages before THP in pkvm_mem_abort\n\nWith the later introduction of the SPLIT request, we can expect to have\na level-3 mapping on the stage-2 where a level-2 is installed for the\nstage-1. Also, part of the stage-2 might have been unmapped already. So\ncheck for existing stage-2 mappings before checking for the stage-1\n(transparent_hugepage_adjust()).\n\nBug: 419548963\nBug: 357781595\nBug: 278011447\nChange-Id: Iff7755ff6a82fa080c3a04efe1e689bc0500a3c9\nSigned-off-by: Vincent Donnefort \u003cvdonnefort@google.com\u003e\n---\n\ndiff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c\nindex 1c9fe04..c996c55 100644\n--- a/arch/arm64/kvm/mmu.c\n+++ b/arch/arm64/kvm/mmu.c\n@@ -1730,9 +1730,8 @@ __pkvm_pages_to_ppages(struct kvm *kvm, struct kvm_memory_slot *memslot, gfn_t g\n \tread_lock(\u0026kvm-\u003emmu_lock);\n \twhile (p \u003c nr_pages) {\n \t\tphys_addr_t ipa \u003d gfn \u003c\u003c PAGE_SHIFT;\n+\t\tlong skip, page_size \u003d PAGE_SIZE;\n \t\tstruct page *page \u003d pages[p];\n-\t\tlong page_size, skip;\n-\t\tunsigned long hva;\n \t\tu64 pfn;\n \n \t\tppage \u003d kvm_pinned_pages_iter_first(\u0026kvm-\u003earch.pkvm.pinned_pages,\n@@ -1743,8 +1742,14 @@ __pkvm_pages_to_ppages(struct kvm *kvm, struct kvm_memory_slot *memslot, gfn_t g\n \t\t}\n \n \t\tpfn \u003d page_to_pfn(page);\n-\t\thva \u003d gfn_to_hva_memslot_prot(memslot, gfn, NULL);\n-\t\tpage_size \u003d transparent_hugepage_adjust(kvm, memslot, hva, \u0026pfn, \u0026ipa);\n+\n+\t\tif (!kvm_pinned_pages_iter_first(\u0026kvm-\u003earch.pkvm.pinned_pages,\n+\t\t\t\t\t\t ALIGN_DOWN(ipa, PMD_SIZE),\n+\t\t\t\t\t\t ALIGN(ipa + 1, PMD_SIZE) - 1)){\n+\t\t\tunsigned long hva \u003d gfn_to_hva_memslot_prot(memslot, gfn, NULL);\n+\n+\t\t\tpage_size \u003d transparent_hugepage_adjust(kvm, memslot, hva, \u0026pfn, \u0026ipa);\n+\t\t}\n \n \t\t/* Pop a ppage from the pre-allocated list */\n \t\tppage \u003d list_first_entry(\u0026ppage_prealloc, struct kvm_pinned_page, list_node);",
+      "revId": "047984ea7ad8addc0f0f4b3d4a45c10553181484",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
