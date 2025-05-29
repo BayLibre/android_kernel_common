@@ -279,7 +279,8 @@ static int kvm_notify_vm_availability(uint16_t vm_handle, struct kvm_ffa_buffers
 		u64 avail_value = avail_bit << i;
 		uint32_t dest = ((uint32_t)vm_avail_sps[i].sp_id << 16) | hyp_smp_processor_id();
 
-		if ((ffa_buf->vm_avail_bitmap & sp_mask) == avail_value)
+		if ((ffa_buf->vm_avail_bitmap & sp_mask) == avail_value &&
+		    !(ffa_buf->vm_creating_bitmap & sp_mask))
 			continue;
 
 		if (avail_bit && !vm_avail_sps[i].wants_create) {
@@ -313,6 +314,28 @@ static int kvm_notify_vm_availability(uint16_t vm_handle, struct kvm_ffa_buffers
 		else if (res.a0 == FFA_INTERRUPT)
 			return -EINTR;
 
+		if (availability_msg == FFA_VM_DESTRUCTION_MSG &&
+		    (ffa_buf->vm_creating_bitmap & sp_mask)) {
+			/*
+			 * If we sent the initial creation message for this VM
+			 * but never got the success response from the TEE, we
+			 * need to keep trying to create it until it works.
+			 * Otherwise we cannot destroy it.
+			 */
+			arm_smccc_1_1_smc(FFA_MSG_SEND_DIRECT_REQ, vm_avail_sps[i].sp_id,
+					  FFA_VM_CREATION_MSG, HANDLE_LOW(FFA_INVALID_HANDLE),
+					  HANDLE_HIGH(FFA_INVALID_HANDLE), vm_handle, 0, 0,
+					  &res);
+
+			if (res.a0 != FFA_MSG_SEND_DIRECT_RESP)
+				return -EINVAL;
+			if (res.a3 != FFA_RET_SUCCESS)
+				return ffa_to_linux_errno(res.a3);
+
+			/* Creation completed successfully, clear the flag */
+			ffa_buf->vm_creating_bitmap &= ~sp_mask;
+		}
+
 		arm_smccc_1_1_smc(FFA_MSG_SEND_DIRECT_REQ, vm_avail_sps[i].sp_id,
 				  availability_msg, HANDLE_LOW(FFA_INVALID_HANDLE),
 				  HANDLE_HIGH(FFA_INVALID_HANDLE), vm_handle, 0, 0,
@@ -320,11 +343,22 @@ static int kvm_notify_vm_availability(uint16_t vm_handle, struct kvm_ffa_buffers
 		if (res.a0 != FFA_MSG_SEND_DIRECT_RESP)
 			return -EINVAL;
 
-		if (res.a3 != FFA_RET_SUCCESS)
-			return ffa_to_linux_errno(res.a3);
+		switch ((int)res.a3) {
+		case FFA_RET_SUCCESS:
+			ffa_buf->vm_avail_bitmap &= ~sp_mask;
+			ffa_buf->vm_avail_bitmap |= avail_value;
+			ffa_buf->vm_creating_bitmap &= ~sp_mask;
+			break;
 
-		ffa_buf->vm_avail_bitmap &= ~sp_mask;
-		ffa_buf->vm_avail_bitmap |= avail_value;
+		case FFA_RET_INTERRUPTED:
+		case FFA_RET_RETRY:
+			if (availability_msg == FFA_VM_CREATION_MSG)
+				ffa_buf->vm_creating_bitmap |= sp_mask;
+
+			fallthrough;
+		default:
+			return ffa_to_linux_errno(res.a3);
+		}
 	}
 
 	return 0;
