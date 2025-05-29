@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ea8140c_f8fdbef9",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-05-29T20:19:40Z",
+      "side": 1,
+      "message": "Looks like remove_driver() is never called?\nintel_iommu_shutdown() is supposed to be called during shutdown or reboot. Are we ok with skipping everything it does during shutdown or reboot?",
+      "revId": "c34a3fdd437c068f5f001def049bc9b8c1b64b6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
