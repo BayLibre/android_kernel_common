@@ -40,6 +40,30 @@
       ],
       "revId": "9269cd11b97c71a281f2d8305cdc13c9a04782e8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e94d6b0e_9584f356",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1121,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-05-29T16:22:20Z",
+      "side": 1,
+      "message": "I wasn\u0027t really sure because the spec suggest to zero them out but the smccc spec suggest to preserve them in case 1.1 is used  (the changelog says that \u0027Mandates preservation of registers X4—X17 across a SMC\u0027)\n\nI applied your suggestion anyways.",
+      "parentUuid": "1824585f_ec94bb62",
+      "range": {
+        "startLine": 1119,
+        "startChar": 0,
+        "endLine": 1121,
+        "endChar": 0
+      },
+      "revId": "9269cd11b97c71a281f2d8305cdc13c9a04782e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
