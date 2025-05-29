@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "741916c6_cfa572ba",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2658,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2025-05-29T23:17:24Z",
+      "side": 1,
+      "message": "Can we document why we are using MIGRATE_RECLAIMABLE instead of MIGRATE_PCPTYPES?\n\nhttps://source.corp.google.com/h/partner-android/kernel-pixel/superproject/+/android15-gs-pixel-6.6:aosp/mm/page_alloc.c;l\u003d2767\n\nhttps://github.com/torvalds/linux/commit/55612e80e722ac554cc5e80df05555b4f8d40c37",
+      "range": {
+        "startLine": 2658,
+        "startChar": 28,
+        "endLine": 2658,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6cc4e522_ae09cdf2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 2658,
+                "startChar": 0,
+                "endLine": 2658,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * We only track unmovable, reclaimable, movable and cma on pcp lists.\n\t * Other migratetypes are handled as movable.\n\t */\n"
+            },
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 2763,
+                "startChar": 0,
+                "endLine": 2764,
+                "endChar": 0
+              },
+              "replacement": "\t\t * Non-isolated types over MIGRATE_RECLAIMABLE get added\n"
+            }
+          ]
+        }
+      ],
+      "revId": "94fa2c55f4208fcbfc2d136851835b8d3189b672",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
