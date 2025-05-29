@@ -62,7 +62,12 @@ struct vm_struct {
 	unsigned int		nr_pages;
 	phys_addr_t		phys_addr;
 	const void		*caller;
+<<<<<<< HEAD   (ad2b00 Revert "cpufreq: Fix setting policy limits when frequency ta)
 	ANDROID_OEM_DATA(1);
+||||||| BASE
+=======
+	unsigned long		requested_size;
+>>>>>>> BRANCH (5be5db Linux 6.12.29)
 };
 
 struct vmap_area {
