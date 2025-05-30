@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0b374f3d_9acb308e",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1419,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-05-30T00:09:38Z",
+      "side": 1,
+      "message": "Remove extra whitespace?",
+      "revId": "94fa2c55f4208fcbfc2d136851835b8d3189b672",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "741916c6_cfa572ba",
         "filename": "mm/page_alloc.c",
         "patchSetId": 3
@@ -48,6 +65,29 @@
           ]
         }
       ],
+      "revId": "94fa2c55f4208fcbfc2d136851835b8d3189b672",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "754acfd5_ecd2156b",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2658,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-05-30T00:09:38Z",
+      "side": 1,
+      "message": "It makes sense to go back to \u003e instead of \u003e\u003d, but why did we use \u003e\u003d in the first place in the previous patches?",
+      "range": {
+        "startLine": 2658,
+        "startChar": 26,
+        "endLine": 2658,
+        "endChar": 27
+      },
       "revId": "94fa2c55f4208fcbfc2d136851835b8d3189b672",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
