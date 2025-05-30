@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1f5ef81_4dd10689",
+        "filename": "init/Kconfig.gki",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-05-30T15:41:14Z",
+      "side": 1,
+      "message": "is this needed for arm64 too?",
+      "fixSuggestions": [
+        {
+          "fixId": "dbd1f4ed_bf9a8444",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "init/Kconfig.gki",
+              "range": {
+                "startLine": 7,
+                "startChar": 0,
+                "endLine": 8,
+                "endChar": 0
+              },
+              "replacement": "\tselect DRM_PRIVACY_SCREEN if (X86 || ARM64)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "770259407711e0c9d5764f8fdcbfff326332ae06",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
