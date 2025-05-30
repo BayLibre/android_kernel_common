@@ -90,6 +90,54 @@
       },
       "revId": "94fa2c55f4208fcbfc2d136851835b8d3189b672",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ec69cb9_a87c0ef0",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2658,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-05-30T04:18:53Z",
+      "side": 1,
+      "message": "The reason is android\u0027s CMA policies differs from what is upstream. \n\nI don\u0027t want to introduce additional diff are part of this series;\n\nI agree we should document these; so that we can have a plan on how to reduce the debt here, preferable separately.",
+      "parentUuid": "741916c6_cfa572ba",
+      "range": {
+        "startLine": 2658,
+        "startChar": 28,
+        "endLine": 2658,
+        "endChar": 47
+      },
+      "revId": "94fa2c55f4208fcbfc2d136851835b8d3189b672",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd6c0946_50530def",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2658,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-05-30T04:18:53Z",
+      "side": 1,
+      "message": "That was a mistake. I\u0027ll fix it in the previous patch",
+      "parentUuid": "754acfd5_ecd2156b",
+      "range": {
+        "startLine": 2658,
+        "startChar": 26,
+        "endLine": 2658,
+        "endChar": 27
+      },
+      "revId": "94fa2c55f4208fcbfc2d136851835b8d3189b672",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
