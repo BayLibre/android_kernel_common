@@ -34,6 +34,24 @@
       "parentUuid": "8ea8140c_f8fdbef9",
       "revId": "c34a3fdd437c068f5f001def049bc9b8c1b64b6c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be406d4d_83315f1f",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-05-30T08:50:27Z",
+      "side": 1,
+      "message": "\u003e I was thinking of adding code to gracefully re-privilege the cpus on reboot shutdown and then call this\n\nHmm... re-privilege would be a cool functionality, but I don\u0027t think we should do it on reboot or shutdown, which is initiated and controlled by the untrusted host.\n\nMy above question was not rhetorical, maybe it\u0027s fine to not do anything special with the IOMMU during shutdown if pKVM is enabled, as long we understand why it is fine.",
+      "parentUuid": "89971dc2_af60cce8",
+      "revId": "c34a3fdd437c068f5f001def049bc9b8c1b64b6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
