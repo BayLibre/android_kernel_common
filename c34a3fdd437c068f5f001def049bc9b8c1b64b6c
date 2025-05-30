@@ -16,6 +16,24 @@
       "message": "Looks like remove_driver() is never called?\nintel_iommu_shutdown() is supposed to be called during shutdown or reboot. Are we ok with skipping everything it does during shutdown or reboot?",
       "revId": "c34a3fdd437c068f5f001def049bc9b8c1b64b6c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89971dc2_af60cce8",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-05-30T00:50:39Z",
+      "side": 1,
+      "message": "youre right, thanks for pointing this out. I was thinking of adding code to gracefully re-privilege the cpus on reboot shutdown and then call this, but did not get to this. I have code in v2 to re-privilege cpus if the deprivilege partially failed, but did not plug this in yet. I am thinking of doing `x86_platform.iommu_shutdown \u003d intel_iommu_shutdown;` for CONFIG_PKVM_INTEL as well for now in v2.",
+      "parentUuid": "8ea8140c_f8fdbef9",
+      "revId": "c34a3fdd437c068f5f001def049bc9b8c1b64b6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
