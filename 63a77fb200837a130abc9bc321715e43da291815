@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bd752f5a_a8308f98",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-05-30T00:44:56Z",
+      "side": 1,
+      "message": "I agree, it should be static. NULLing was just a habit, I do not have a strong opinion on that :-)",
+      "parentUuid": "f9c987d5_b653ba3e",
+      "revId": "63a77fb200837a130abc9bc321715e43da291815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fa4d743e_a823ecd5",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 4
@@ -55,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4fb2d44e_c848f372",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-05-30T00:44:56Z",
+      "side": 1,
+      "message": "You are right, will remove.",
+      "parentUuid": "fa4d743e_a823ecd5",
+      "revId": "63a77fb200837a130abc9bc321715e43da291815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2b6df18c_830c573c",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 4
@@ -72,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fea3b423_f9c8adf2",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-05-30T00:44:56Z",
+      "side": 1,
+      "message": "Since iommu was a dependency on pkvm, I thought to return 0 here. We have another piece of logic in v2 where iommu driver detect if user disabled iommu at runtime. But I am fine with returning failure here and disable pkvm. Will do in v2.",
+      "parentUuid": "2b6df18c_830c573c",
+      "revId": "63a77fb200837a130abc9bc321715e43da291815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04f97a5d_6ce0c9da",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 4
@@ -83,6 +137,24 @@
       "writtenOn": "2025-05-29T20:15:35Z",
       "side": 1,
       "message": "pvmfw is cleared even if pKVM was successfully initialized? Is this by mistake?\n\nIt seems what we need is to add `fw_rmem_clear:` block at the very end, after the `out:` block, and goto there if pkvm_iommu_driver_init() fails.",
+      "revId": "63a77fb200837a130abc9bc321715e43da291815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cf175aa_0cc787f9",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1514,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-05-30T00:44:56Z",
+      "side": 1,
+      "message": "This is a bit convoluted logic. We reach here only if something failed above, but iommu driver has to be inited regardless of the state of pkvm. This logic is cleaned up in v2 and is more readable. Will post it soon",
+      "parentUuid": "04f97a5d_6ce0c9da",
       "revId": "63a77fb200837a130abc9bc321715e43da291815",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
