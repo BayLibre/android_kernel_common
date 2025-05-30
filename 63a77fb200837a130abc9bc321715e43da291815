@@ -157,6 +157,24 @@
       "parentUuid": "04f97a5d_6ce0c9da",
       "revId": "63a77fb200837a130abc9bc321715e43da291815",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b96a7042_b6a7bece",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1514,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-05-30T08:20:36Z",
+      "side": 1,
+      "message": "\u003e We reach here only if something failed above\n\nNot really, we reach here if everything succeeded as well, or am I missing something? :)",
+      "parentUuid": "9cf175aa_0cc787f9",
+      "revId": "63a77fb200837a130abc9bc321715e43da291815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
