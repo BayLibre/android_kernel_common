@@ -70,6 +70,24 @@
       "parentUuid": "be406d4d_83315f1f",
       "revId": "c34a3fdd437c068f5f001def049bc9b8c1b64b6c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d85f84b_1e29e3ab",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-05-30T12:45:29Z",
+      "side": 1,
+      "message": "I think we explicitly don\u0027t support kexec. See e.g. pKVM-ARM documentation in Documentation/virt/kvm/arm/pkvm.rst: \"Since the host is unable to tear down the hypervisor when pKVM is enabled, hibernation (``CONFIG_HIBERNATION``) and kexec (``CONFIG_KEXEC``) will fail with ``-EBUSY``.\"",
+      "parentUuid": "0587f287_76cf9410",
+      "revId": "c34a3fdd437c068f5f001def049bc9b8c1b64b6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
