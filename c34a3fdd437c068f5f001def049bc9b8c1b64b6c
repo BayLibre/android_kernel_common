@@ -52,6 +52,24 @@
       "parentUuid": "89971dc2_af60cce8",
       "revId": "c34a3fdd437c068f5f001def049bc9b8c1b64b6c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0587f287_76cf9410",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-05-30T11:58:43Z",
+      "side": 1,
+      "message": "Yes, security was the major concern to me as well. My current re-privilege implementation is enabled only if finalize hypercall is not yet called(only intended to be used during deprivilege). secure reprivilege on shutdown was tricky and thats why it was deferred. From looking at the code, I think we are safe not to call shutdown for normal shutdown and reboot, but soft reboot where kernel reboots to itself without going through firmware might be a problem. Not sure if we have usecases for kexec reboots(non-crash related).",
+      "parentUuid": "be406d4d_83315f1f",
+      "revId": "c34a3fdd437c068f5f001def049bc9b8c1b64b6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
