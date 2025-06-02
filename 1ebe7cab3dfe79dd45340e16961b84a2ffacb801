@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68358017_31e623ca",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1119,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-06-02T11:02:06Z",
+      "side": 1,
+      "message": "As Arve mentioned, this is going to corrupt registers for a 32-bit client. Granted, we don\u0027t care about those, but I wonder if it would be better just to use `ffa_to_smccc_error()` and `ffa_set_retval()` in the error case for now?\n\nThat is:\n\n```\nif (FIELD_GET(FFA_SRC_ENDPOINT_MASK, endp) !\u003d vm_handle) {\n\tstruct arm_smccc_res res;\n\t\n\tffa_to_smccc_error(\u0026res, FFA_RET_INVALID_PARAMETERS);\n\tffa_set_retval(ctxt, \u0026res);\n\treturn;\n}\n```\n\nIt means we leave X5-X7 alone, but they\u0027re SBZ rather than MBZ and the rest of the driver does this all over the place anyway. Really, the whole proxy needs moving over to SMCCC 1.2 (see https://lore.kernel.org/all/20250529121751.GB29242@willie-the-truck/), but until that happens the above might be simplest. WDYT?",
+      "range": {
+        "startLine": 1119,
+        "startChar": 0,
+        "endLine": 1119,
+        "endChar": 38
+      },
+      "revId": "1ebe7cab3dfe79dd45340e16961b84a2ffacb801",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
