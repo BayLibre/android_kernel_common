@@ -46,6 +46,30 @@
       },
       "revId": "1ebe7cab3dfe79dd45340e16961b84a2ffacb801",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48bda89c_2de74149",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1119,
+      "author": {
+        "id": 1000205
+      },
+      "writtenOn": "2025-06-02T17:41:46Z",
+      "side": 1,
+      "message": "The FF-A spec says MBZ, not SBZ, but the patch linked to fixes that, so using ffa_set_retval should be compliant in the end.",
+      "parentUuid": "6dd50737_84e5b90a",
+      "range": {
+        "startLine": 1119,
+        "startChar": 0,
+        "endLine": 1119,
+        "endChar": 38
+      },
+      "revId": "1ebe7cab3dfe79dd45340e16961b84a2ffacb801",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
