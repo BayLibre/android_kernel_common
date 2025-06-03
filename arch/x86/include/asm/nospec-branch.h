@@ -367,18 +367,6 @@ extern void __x86_return_thunk(void);
 static inline void __x86_return_thunk(void) {}
 #endif
 
-#ifdef CONFIG_PKVM_INTEL
-extern retpoline_thunk_t __x86_indirect_thunk_array__pkvm[];
-extern retpoline_thunk_t __x86_indirect_call_thunk_array__pkvm[];
-extern retpoline_thunk_t __x86_indirect_jump_thunk_array__pkvm[];
-
-#ifdef CONFIG_MITIGATION_RETHUNK
-extern void __x86_return_thunk__pkvm(void);
-#else
-static inline void __x86_return_thunk__pkvm(void) {}
-#endif
-#endif /* CONFIG_PKVM_INTEL */
-
 #ifdef CONFIG_MITIGATION_UNRET_ENTRY
 extern void retbleed_return_thunk(void);
 #else
@@ -501,6 +489,44 @@ static inline void call_depth_return_thunk(void) {}
 # define CALL_NOSPEC "call *%[thunk_target]\n"
 # define THUNK_TARGET(addr) [thunk_target] "rm" (addr)
 #endif
+
+#ifdef CONFIG_PKVM_INTEL
+extern retpoline_thunk_t __x86_indirect_thunk_array__pkvm[];
+extern retpoline_thunk_t __x86_indirect_call_thunk_array__pkvm[];
+extern retpoline_thunk_t __x86_indirect_jump_thunk_array__pkvm[];
+
+#ifdef CONFIG_MITIGATION_RETHUNK
+extern void __x86_return_thunk__pkvm(void);
+#else
+static inline void __x86_return_thunk__pkvm(void) {}
+#endif
+
+#ifdef CONFIG_MITIGATION_UNRET_ENTRY
+extern void retbleed_return_thunk__pkvm(void);
+#else
+static inline void retbleed_return_thunk__pkvm(void) {}
+#endif
+
+extern void srso_alias_untrain_ret__pkvm(void);
+
+#ifdef CONFIG_MITIGATION_SRSO
+extern void srso_return_thunk__pkvm(void);
+extern void srso_alias_return_thunk__pkvm(void);
+#else
+static inline void srso_return_thunk__pkvm(void) {}
+static inline void srso_alias_return_thunk__pkvm(void) {}
+#endif
+
+extern void retbleed_return_thunk__pkvm(void);
+extern void srso_return_thunk__pkvm(void);
+extern void srso_alias_return_thunk__pkvm(void);
+
+#ifdef CONFIG_MITIGATION_CALL_DEPTH_TRACKING
+extern void call_depth_return_thunk__pkvm(void);
+#else
+static inline void call_depth_return_thunk__pkvm(void) {}
+#endif
+#endif /* CONFIG_PKVM_INTEL */
 
 /* The Spectre V2 mitigation variants */
 enum spectre_v2_mitigation {
