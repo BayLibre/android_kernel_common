@@ -902,6 +902,24 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
 		goto Complete;
 
 	dev->power.is_suspended = false;
+<<<<<<< HEAD   (97b631bf0f53224f08552ce02ce5c10edfc26655 ANDROID: bpf: do not fail to load if log is full)
+||||||| BASE   (9e0566255e18a0a25b9681fef96e6c4a6308f441 UPSTREAM: PM: sleep: Fix list splicing in device suspend err)
+		/*
+		 * Allow new children to be added under the device after this
+		 * point if it has no PM callbacks.
+		 */
+		if (dev->power.no_pm_callbacks)
+			dev->power.is_prepared = false;
+=======
+
+	if (dev->power.direct_complete) {
+		/*
+		 * Allow new children to be added under the device after this
+		 * point if it has no PM callbacks.
+		 */
+		if (dev->power.no_pm_callbacks)
+			dev->power.is_prepared = false;
+>>>>>>> CHANGE (13ee07921b13a275e25af0ce24bb97c8e0784497 UPSTREAM: PM: sleep: Fix power.is_suspended cleanup for dire)
 
 	if (dev->power.direct_complete) {
 		/* Match the pm_runtime_disable() in __device_suspend(). */
