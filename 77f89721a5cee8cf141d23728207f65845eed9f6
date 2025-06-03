@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0540fe90_839dbffa",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-03T18:23:14Z",
+      "side": 1,
+      "message": "Again, if IOMMU driver init failed, we fail to enable DMA protection, so we should fail pKVM initialization?\n\nSo the approach from v1 (call pkvm_iommu_driver_init() explicitly in 2 places: as a part of pKVM initialization, and if pKVM initialization failed) seems more correct to me.",
+      "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
