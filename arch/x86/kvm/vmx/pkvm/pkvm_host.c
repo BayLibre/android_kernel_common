@@ -1181,9 +1181,15 @@ int pkvm_set_mmio_ve(struct kvm_vcpu *vcpu, unsigned long gfn)
 	return 0;
 }
 
-int pkvm_map_guest(u64 gfn, u64 pfn, u64 nr_pages)
+int pkvm_map_guest(struct kvm_vcpu *vcpu, u64 gfn, u64 pfn, u64 nr_pages)
 {
-	return kvm_hypercall3(PKVM_HC_MAP_GUEST, gfn, pfn, nr_pages)
+	int pkvm_vm_handle = vcpu->kvm->arch.pkvm.pkvm_vm_handle;
+	int pkvm_vcpu_handle = vcpu->arch.pkvm_vcpu_handle;
+
+	if (nr_pages > 1)
+		pr_warn("request to map %lld pages, not one\n", nr_pages);
+
+	return kvm_hypercall4(PKVM_HC_MAP_GUEST, pkvm_vm_handle, pkvm_vcpu_handle, gfn, pfn)
 		? RET_PF_RETRY
 		: RET_PF_FIXED;
 }

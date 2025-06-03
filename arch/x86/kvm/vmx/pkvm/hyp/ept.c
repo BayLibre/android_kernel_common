@@ -1011,10 +1011,11 @@ out:
 	return ret;
 }
 
-int pkvm_map_shadow_ept(struct kvm_vcpu *vcpu, u64 gfn, u64 pfn, u64 nr_pages)
+int pkvm_map_shadow_ept(struct kvm_vcpu *vcpu, u64 gfn, u64 pfn)
 {
-	struct pkvm_host_vcpu *pkvm_hvcpu = to_pkvm_hvcpu(vcpu);
-	struct shadow_vcpu_state *shadow_vcpu = pkvm_hvcpu->current_shadow_vcpu;
+	/* HACK: assume single page mapping */
+	u64 nr_pages = 1;
+	struct shadow_vcpu_state *shadow_vcpu = kvm_vcpu_to_shadow(vcpu);
 	struct pkvm_shadow_vm *vm = shadow_vcpu->vm;
 	struct shadow_ept_desc *desc = &vm->sept_desc;
 	struct pkvm_pgtable *sept = &desc->sept;
