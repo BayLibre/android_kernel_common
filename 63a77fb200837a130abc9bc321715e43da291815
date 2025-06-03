@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8d902e5_8dbf7570",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-03T20:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd752f5a_a8308f98",
+      "revId": "63a77fb200837a130abc9bc321715e43da291815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa4d743e_a823ecd5",
@@ -89,6 +107,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbb7ac22_90067808",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-03T20:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fb2d44e_c848f372",
+      "revId": "63a77fb200837a130abc9bc321715e43da291815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b6df18c_830c573c",
@@ -120,6 +156,24 @@
       "side": 1,
       "message": "Since iommu was a dependency on pkvm, I thought to return 0 here. We have another piece of logic in v2 where iommu driver detect if user disabled iommu at runtime. But I am fine with returning failure here and disable pkvm. Will do in v2.",
       "parentUuid": "2b6df18c_830c573c",
+      "revId": "63a77fb200837a130abc9bc321715e43da291815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "000e7328_6cc26fe5",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-03T20:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fea3b423_f9c8adf2",
       "revId": "63a77fb200837a130abc9bc321715e43da291815",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },

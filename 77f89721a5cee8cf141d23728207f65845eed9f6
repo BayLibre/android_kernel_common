@@ -16,6 +16,24 @@
       "message": "Again, if IOMMU driver init failed, we fail to enable DMA protection, so we should fail pKVM initialization?\n\nSo the approach from v1 (call pkvm_iommu_driver_init() explicitly in 2 places: as a part of pKVM initialization, and if pKVM initialization failed) seems more correct to me.",
       "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d373a53d_6d02d350",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-03T20:08:08Z",
+      "side": 1,
+      "message": "I think failing DMA protection will leave the system in a unsecure state whether or not we fail pkvm initialization. In both cases(DMA failed, pkvm inited and DMA failed, pkvm uninited), we end up in a case where devices will be able to access the memory directly. The only difference being, system will be baremetal or virtualized. I feel this is a cleaner and readable code. I can put a banner saying system is not secure if DMA fails. What do you think?",
+      "parentUuid": "0540fe90_839dbffa",
+      "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
