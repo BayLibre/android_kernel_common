@@ -4713,7 +4713,7 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
 
 	if (pvmmu) {
 		kvm_mmu_hugepage_adjust(vcpu, fault);
-		r = pkvm_map_guest(fault->gfn, fault->pfn, KVM_PAGES_PER_HPAGE(fault->req_level));
+		r = pkvm_map_guest(vcpu, fault->gfn, fault->pfn, KVM_PAGES_PER_HPAGE(fault->req_level));
 	} else {
 		r = kvm_tdp_mmu_map(vcpu, fault);
 	}
