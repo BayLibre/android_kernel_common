@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e077c94_14f67ea2",
+        "filename": "fs/f2fs/segment.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 4835,
+      "author": {
+        "id": 3832128
+      },
+      "writtenOn": "2025-06-03T06:29:26Z",
+      "side": 1,
+      "message": "How about adding f2fs_bug_on(sbi, android_sec_entries) before allocation for sanity check?",
+      "range": {
+        "startLine": 4835,
+        "startChar": 2,
+        "endLine": 4835,
+        "endChar": 21
+      },
+      "revId": "b823a7d0a9d91df287aa4cf72a28bedc3edcd6d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1366ccdb_77a9b244",
+        "filename": "fs/f2fs/segment.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 5816,
+      "author": {
+        "id": 3832128
+      },
+      "writtenOn": "2025-06-03T06:29:26Z",
+      "side": 1,
+      "message": "Should be called only if there is large section size? Otherwise umounting a non large section f2fs image.\n\nif (__is_laerge_section()) {\n\tkvfree(android_sec_entries);\n\tandroid_sec_entries \u003d NULL;\n\t}",
+      "range": {
+        "startLine": 5815,
+        "startChar": 1,
+        "endLine": 5816,
+        "endChar": 28
+      },
+      "revId": "b823a7d0a9d91df287aa4cf72a28bedc3edcd6d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
