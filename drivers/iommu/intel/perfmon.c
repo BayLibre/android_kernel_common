@@ -620,6 +620,8 @@ int alloc_iommu_pmu(struct intel_iommu *iommu)
 		goto free_pmu;
 	}
 
+	iommu_pmu->iommu = iommu;
+
 	/* Parse event group capabilities */
 	for (i = 0; i < iommu_pmu->num_eg; i++) {
 		u64 pcap;
