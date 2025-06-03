@@ -34,6 +34,24 @@
       "parentUuid": "0540fe90_839dbffa",
       "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3e3b45d_52528b9a",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-03T22:26:42Z",
+      "side": 1,
+      "message": "I think we should be precise in what we mean by \"secure\", i.e. which security model we are talking about. Security within the host (i.e. whether the host kernel is able to protect itself from devices) is not pKVM\u0027s concern. The concern is whether pKVM is able to protect itself and pVMs from devices and from the host that controls those devices.\n\nIf your point is that if we failed to initialize IOMMU once, with pKVM, we don\u0027t need to try it again without pKVM, then I\u0027m ok with it.\n\nMy point is that if we failed to initialize IOMMU, we should\u0027t consider pKVM deprivilege succeeded, i.e. vmx_pkvm_init() should return failure and clear pvmfw [*] (and probably also reprivilege CPUs).\n\nIOW, if pKVM was implemented in such a way that it didn\u0027t need help from the host IOMMU driver to enable DMA protection, and the role of the host IOMMU driver was only to let the host itself use IOMMU, it would be a different story. But that\u0027s not the case, pKVM actually relies on intel_iommu_init() to make the PKVM_HC_IOMMU_SET_RTA hypercall to enable DMA protection, right?\n\n[*] BTW clearing pvmfw is crucial, I think. The bootloader passes pvmfw secrets to the kernel and trusts that the kernel will never have access to those secrets (either via CPU or DMA), except an early time window when the kernel has not exposed itself to all kinds of attack vectors yet. So if we don\u0027t enable DMA protection and yet don\u0027t clear pvmfw secrets, leaving them accessible via DMA by the host, we break this fundamental assumption.",
+      "parentUuid": "d373a53d_6d02d350",
+      "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
