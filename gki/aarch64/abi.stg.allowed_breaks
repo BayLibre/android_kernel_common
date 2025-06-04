@@ -4,3 +4,6 @@ type 'enum binder_work_type' changed
 type 'struct binder_error' changed
   member 'union { uint32_t and_conquer; unsigned char __kabi_ignored1; }' was added
 
+type 'struct snd_pcm_group' changed
+  member 'union { int unused; unsigned char __kabi_ignored1; }' was added
+

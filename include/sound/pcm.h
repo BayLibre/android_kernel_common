@@ -463,8 +463,10 @@ struct snd_pcm_group {		/* keep linked substreams */
 	struct mutex mutex;
 	struct list_head substreams;
 	refcount_t refs;
-	int unused;
+	ANDROID_KABI_IGNORE(1, int unused);
 };
+
+ANDROID_KABI_BYTE_SIZE(snd_pcm_group, 80);
 
 struct pid;
 
