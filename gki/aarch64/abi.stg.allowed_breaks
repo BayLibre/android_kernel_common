@@ -7,3 +7,7 @@ type 'struct binder_error' changed
 type 'struct snd_pcm_group' changed
   member 'union { int unused; unsigned char __kabi_ignored1; }' was added
 
+type 'struct pipe_inode_info' changed
+  byte size changed from 184 to 192
+  member 'struct { int extensive_changes; }' was added
+
