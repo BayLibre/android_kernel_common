@@ -80,6 +80,9 @@ struct pipe_inode_info {
 #ifdef CONFIG_WATCH_QUEUE
 	struct watch_queue *watch_queue;
 #endif
+	struct {
+		int extensive_changes;
+	};
 };
 
 /*
