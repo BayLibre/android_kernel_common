@@ -70,6 +70,24 @@
       "parentUuid": "e3e3b45d_52528b9a",
       "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd5a48a4_ccb5d82c",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-04T14:43:48Z",
+      "side": 1,
+      "message": "\u003e I haven\u0027t tested reprivileging once init_finalize is successful as it does a lot more stuff like setting up EPT and such. It might be trivial and existing code may work, but need to test it. I shall test it and respond. If its not straight forward, I shall clear the pvmfw_rmem in case of iommu failure. v1 also did this, existing code doesn\u0027t do this as iommu init happened before pkvm takes over. What do you think?\n\nYep, that\u0027s more or less what I meant.\n\n\u003e we could probably have a tristate for kvm-intel.pkvm (disabled, enabled, permissive) where enable will prevent booting and permissive would boot in a compromised state :-).\n\nOr for example an extra flag to panic if pKVM init fails... We may implement something like that if we want to, though it doesn\u0027t seems to me that there is a need for that. As long as we take care to clear pvmfw secrets, the system is not exactly in a compromised state, it simply is not able to run protected VMs, that\u0027s it. (And if we are worried specifically about IOMMU driver failure and thus complete lack of DMA isolation, independently of pKVM, then such a forced panic should be a responsibility of the IOMMU driver, not pKVM, right?)",
+      "parentUuid": "0ba32923_71fb8846",
+      "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
