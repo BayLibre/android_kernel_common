@@ -463,6 +463,7 @@ struct snd_pcm_group {		/* keep linked substreams */
 	struct mutex mutex;
 	struct list_head substreams;
 	refcount_t refs;
+	int unused;
 };
 
 struct pid;
