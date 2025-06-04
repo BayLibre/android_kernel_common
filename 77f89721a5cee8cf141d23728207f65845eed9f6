@@ -52,6 +52,24 @@
       "parentUuid": "d373a53d_6d02d350",
       "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ba32923_71fb8846",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-04T14:05:47Z",
+      "side": 1,
+      "message": "Ahh ok understood. What I meant was - when the user specifies \"kvm-intel.pkvm\u003d1\", its pkvm responsibility to enforce a secure state and if there is a failure in between, we can\u0027t bail out and leave the responsibility to host kernel. I prefer to prevent the system from booting if there is a failure in between. But as you mentioned in chat, if we need to keep parity with arm64 I am fine with letting the system boot. Allowing a system to boot will be the user accepting a compromised boot and whether or not we disable pkvm, the end state will be the same. we could probably have a tristate for kvm-intel.pkvm (disabled, enabled, permissive) where enable will prevent booting and permissive would boot in a compromised state :-). \n\nI fully agree with you regarding clearing the secrets if iommu init fails. I haven\u0027t tested reprivileging once init_finalize is successful as it does a lot more stuff like setting up EPT and such. It might be trivial and existing code may work, but need to test it. I shall test it and respond. If its not straight forward, I shall clear the pvmfw_rmem in case of iommu failure. v1 also did this, existing code doesn\u0027t do this as iommu init happened before pkvm takes over. What do you think?",
+      "parentUuid": "e3e3b45d_52528b9a",
+      "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
