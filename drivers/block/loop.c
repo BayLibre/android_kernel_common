@@ -914,6 +914,11 @@ static void loop_update_limits(struct loop_device *lo, struct queue_limits *lim,
 	struct file *file = lo->lo_backing_file;
 	struct inode *inode = file->f_mapping->host;
 	struct block_device *backing_bdev = NULL;
+<<<<<<< HEAD   (abbbbe Merge 722f6dece719 ("loop: Simplify discard granularity calc)
+||||||| BASE
+=======
+	struct queue_limits lim;
+>>>>>>> BRANCH (0558ce loop: Fix ABBA locking race)
 	u32 granularity = 0, max_discard_sectors = 0;
 
 	if (S_ISBLK(inode->i_mode))
@@ -926,13 +931,26 @@ static void loop_update_limits(struct loop_device *lo, struct queue_limits *lim,
 
 	loop_get_discard_config(lo, &granularity, &max_discard_sectors);
 
+<<<<<<< HEAD   (abbbbe Merge 722f6dece719 ("loop: Simplify discard granularity calc)
 	lim->logical_block_size = bsize;
 	lim->physical_block_size = bsize;
 	lim->io_min = bsize;
 	lim->features &= ~(BLK_FEAT_WRITE_CACHE | BLK_FEAT_ROTATIONAL);
+||||||| BASE
+	lim.physical_block_size = bsize;
+	lim.io_min = bsize;
+	lim.features &= ~(BLK_FEAT_WRITE_CACHE | BLK_FEAT_ROTATIONAL);
+=======
+	lim = queue_limits_start_update(lo->lo_queue);
+	lim.logical_block_size = bsize;
+	lim.physical_block_size = bsize;
+	lim.io_min = bsize;
+	lim.features &= ~(BLK_FEAT_WRITE_CACHE | BLK_FEAT_ROTATIONAL);
+>>>>>>> BRANCH (0558ce loop: Fix ABBA locking race)
 	if (file->f_op->fsync && !(lo->lo_flags & LO_FLAGS_READ_ONLY))
 		lim->features |= BLK_FEAT_WRITE_CACHE;
 	if (backing_bdev && !bdev_nonrot(backing_bdev))
+<<<<<<< HEAD   (abbbbe Merge 722f6dece719 ("loop: Simplify discard granularity calc)
 		lim->features |= BLK_FEAT_ROTATIONAL;
 	lim->max_hw_discard_sectors = max_discard_sectors;
 	lim->max_write_zeroes_sectors = max_discard_sectors;
@@ -940,6 +958,20 @@ static void loop_update_limits(struct loop_device *lo, struct queue_limits *lim,
 		lim->discard_granularity = granularity;
 	else
 		lim->discard_granularity = 0;
+||||||| BASE
+		lim.features |= BLK_FEAT_ROTATIONAL;
+	loop_config_discard(lo, &lim);
+	return queue_limits_commit_update(lo->lo_queue, &lim);
+=======
+		lim.features |= BLK_FEAT_ROTATIONAL;
+	lim.max_hw_discard_sectors = max_discard_sectors;
+	lim.max_write_zeroes_sectors = max_discard_sectors;
+	if (max_discard_sectors)
+		lim.discard_granularity = granularity;
+	else
+		lim.discard_granularity = 0;
+	return queue_limits_commit_update(lo->lo_queue, &lim);
+>>>>>>> BRANCH (0558ce loop: Fix ABBA locking race)
 }
 
 static int loop_configure(struct loop_device *lo, blk_mode_t mode,
