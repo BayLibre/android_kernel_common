@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc98b07b_55092343",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-06-05T18:05:50Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by KernelCommit: Commit does not refer to the upstream commit.\n\nAnalyzer Description: Ensures that kernel commit messages follow the guidelines.\nOwner: android-kernel-team@google.com\n\nCommit does not refer to the upstream commit.\nPlease add a line like \u0027(cherry picked from commit \u003cfull-sha1\u003e)\u0027.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\n\n----\n\nTo fix the linter errors, please use the normal cherrypick process so Gerrit points to the upstream commit. Or, pull it in like a normal cherrypick from upstream linux (preferred).",
+      "revId": "be96a6f7ba06198c39975a6801ee3eb8ecf54f26",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
