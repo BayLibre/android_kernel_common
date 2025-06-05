@@ -1896,7 +1896,12 @@ static int arm_cmn_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	cmn->dev = &pdev->dev;
+<<<<<<< HEAD   (4032a8 Merge android13-5.15 into android13-5.15-lts)
 	cmn->model = (unsigned long)device_get_match_data(cmn->dev);
+||||||| BASE
+=======
+	cmn->cpu = raw_smp_processor_id();
+>>>>>>> BRANCH (1c7008 Linux 5.15.185)
 	platform_set_drvdata(pdev, cmn);
 
 	if (cmn->model == CMN600 && has_acpi_companion(cmn->dev)) {
@@ -1924,7 +1929,12 @@ static int arm_cmn_probe(struct platform_device *pdev)
 	if (err)
 		return err;
 
+<<<<<<< HEAD   (4032a8 Merge android13-5.15 into android13-5.15-lts)
 	cmn->cpu = cpumask_local_spread(0, dev_to_node(cmn->dev));
+||||||| BASE
+	cmn->cpu = raw_smp_processor_id();
+=======
+>>>>>>> BRANCH (1c7008 Linux 5.15.185)
 	cmn->pmu = (struct pmu) {
 		.module = THIS_MODULE,
 		.attr_groups = arm_cmn_attr_groups,
