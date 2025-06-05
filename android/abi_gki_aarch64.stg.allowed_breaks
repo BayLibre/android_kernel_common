@@ -112,3 +112,6 @@ type 'struct cgroup_root' changed
 type 'struct xhci_sideband' changed
   was fully defined, is now only declared
 
+type 'struct scm_fp_list' changed
+  byte size changed from 2040 to 2048
+  member 'short count_unix' was added
