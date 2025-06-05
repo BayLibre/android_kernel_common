@@ -4486,7 +4486,19 @@ restart:
 	}
 
 retry:
+<<<<<<< HEAD   (9163e6 Merge 6.6.92 into android15-6.6-lts)
 	retry_loop_count++;
+||||||| BASE
+=======
+	/*
+	 * Deal with possible cpuset update races or zonelist updates to avoid
+	 * infinite retries.
+	 */
+	if (check_retry_cpuset(cpuset_mems_cookie, ac) ||
+	    check_retry_zonelist(zonelist_iter_cookie))
+		goto restart;
+
+>>>>>>> BRANCH (328840 af_unix: Run GC on only one CPU.)
 	/* Ensure kswapd doesn't accidentally go to sleep as long as we loop */
 	if (alloc_flags & ALLOC_KSWAPD)
 		wake_all_kswapds(order, gfp_mask, ac);

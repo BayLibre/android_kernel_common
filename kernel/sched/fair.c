@@ -93,11 +93,19 @@ unsigned int sysctl_sched_tunable_scaling = SCHED_TUNABLESCALING_LOG;
 /*
  * Minimal preemption granularity for CPU-bound tasks:
  *
- * (default: 0.75 msec * (1 + ilog(ncpus)), units: nanoseconds)
+ * (default: 0.70 msec * (1 + ilog(ncpus)), units: nanoseconds)
  */
+<<<<<<< HEAD   (9163e6 Merge 6.6.92 into android15-6.6-lts)
 unsigned int sysctl_sched_base_slice			= 750000ULL;
 EXPORT_SYMBOL_GPL(sysctl_sched_base_slice);
 static unsigned int normalized_sysctl_sched_base_slice	= 750000ULL;
+||||||| BASE
+unsigned int sysctl_sched_base_slice			= 750000ULL;
+static unsigned int normalized_sysctl_sched_base_slice	= 750000ULL;
+=======
+unsigned int sysctl_sched_base_slice			= 700000ULL;
+static unsigned int normalized_sysctl_sched_base_slice	= 700000ULL;
+>>>>>>> BRANCH (328840 af_unix: Run GC on only one CPU.)
 
 /*
  * After fork, child runs first. If set to 0 (default) then

@@ -1359,9 +1359,13 @@ static struct attribute *f2fs_feat_attrs[] = {
 	BASE_ATTR_LIST(compression),
 #endif
 	BASE_ATTR_LIST(pin_file),
+<<<<<<< HEAD   (9163e6 Merge 6.6.92 into android15-6.6-lts)
 #ifdef CONFIG_UNICODE
 	BASE_ATTR_LIST(linear_lookup),
 #endif
+||||||| BASE
+=======
+>>>>>>> BRANCH (328840 af_unix: Run GC on only one CPU.)
 	NULL,
 };
 ATTRIBUTE_GROUPS(f2fs_feat);
