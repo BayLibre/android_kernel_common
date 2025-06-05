@@ -130,10 +130,15 @@ struct fscrypt_add_key_arg {
 	__u32 key_id;
 #define FSCRYPT_ADD_KEY_FLAG_HW_WRAPPED	0x00000001
 	__u32 flags;
+<<<<<<< HEAD   (f230e0 UPSTREAM: dm: pass through operations on wrapped inline cryp)
 	__u32 __reserved[6];
 	/* N.B.: "temporary" flag, not reserved upstream */
 #define __FSCRYPT_ADD_KEY_FLAG_HW_WRAPPED		0x00000001
 	__u32 __flags;
+||||||| BASE
+=======
+	__u32 __reserved[7];
+>>>>>>> BRANCH (14f19d Merge tag 'fscrypt-for-linus' of git://git.kernel.org/pub/sc)
 	__u8 raw[];
 };
 

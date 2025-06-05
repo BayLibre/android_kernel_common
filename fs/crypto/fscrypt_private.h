@@ -510,9 +510,13 @@ struct fscrypt_master_key_secret {
 	 */
 	bool			is_hw_wrapped;
 
+<<<<<<< HEAD   (f230e0 UPSTREAM: dm: pass through operations on wrapped inline cryp)
 	/* True if this key was added using __FSCRYPT_ADD_KEY_FLAG_HW_WRAPPED */
 	bool			android_compat;
 
+||||||| BASE
+=======
+>>>>>>> BRANCH (14f19d Merge tag 'fscrypt-for-linus' of git://git.kernel.org/pub/sc)
 	/*
 	 * Size of the key in bytes.  This remains set even if ->bytes was
 	 * zeroized due to no longer being needed.  I.e. we still remember the

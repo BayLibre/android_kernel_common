@@ -583,8 +583,13 @@ static int add_master_key(struct super_block *sb,
 			 * different key identifiers by deriving their key
 			 * identifiers using different KDF contexts.
 			 */
+<<<<<<< HEAD   (f230e0 UPSTREAM: dm: pass through operations on wrapped inline cryp)
 			keyid_kdf_ctx = secret->android_compat ?
 				HKDF_CONTEXT_KEY_IDENTIFIER_FOR_RAW_KEY :
+||||||| BASE
+=======
+			keyid_kdf_ctx =
+>>>>>>> BRANCH (14f19d Merge tag 'fscrypt-for-linus' of git://git.kernel.org/pub/sc)
 				HKDF_CONTEXT_KEY_IDENTIFIER_FOR_HW_WRAPPED_KEY;
 		}
 		err = fscrypt_init_hkdf(&secret->hkdf, kdf_key, kdf_key_size);
@@ -782,6 +787,7 @@ int fscrypt_ioctl_add_key(struct file *filp, void __user *_uarg)
 
 	memset(&secret, 0, sizeof(secret));
 
+<<<<<<< HEAD   (f230e0 UPSTREAM: dm: pass through operations on wrapped inline cryp)
 	if (arg.__flags) {
 		/* Support for the original Android flag */
 		if (arg.__flags & ~__FSCRYPT_ADD_KEY_FLAG_HW_WRAPPED)
@@ -792,6 +798,9 @@ int fscrypt_ioctl_add_key(struct file *filp, void __user *_uarg)
 		secret.android_compat = true;
 	}
 
+||||||| BASE
+=======
+>>>>>>> BRANCH (14f19d Merge tag 'fscrypt-for-linus' of git://git.kernel.org/pub/sc)
 	if (arg.flags) {
 		if (arg.flags & ~FSCRYPT_ADD_KEY_FLAG_HW_WRAPPED)
 			return -EINVAL;
