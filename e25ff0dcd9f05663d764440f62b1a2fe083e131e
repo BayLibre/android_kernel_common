@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94c205ac_b68c0b54",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2025-06-05T02:53:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10bbd0f7_0ab91e8f",
+      "range": {
+        "startLine": 9,
+        "startChar": 27,
+        "endLine": 10,
+        "endChar": 25
+      },
+      "revId": "e25ff0dcd9f05663d764440f62b1a2fe083e131e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f4b4432_873d89fd",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-04T19:50:27Z",
       "side": 1,
       "message": "Hi Richard, why do we need to change name and export?",
+      "range": {
+        "startLine": 9674,
+        "startChar": 20,
+        "endLine": 9674,
+        "endChar": 47
+      },
+      "revId": "e25ff0dcd9f05663d764440f62b1a2fe083e131e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a07303e3_de2ce5b6",
+        "filename": "kernel/trace/trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 9674,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2025-06-05T02:53:11Z",
+      "side": 1,
+      "message": "The original trace_array_get_by_name() has already exported to vendor modules, so it will break if we directly change trace_array_get_by_name(name) to trace_array_get_by_name(name, systems).",
+      "parentUuid": "5f4b4432_873d89fd",
       "range": {
         "startLine": 9674,
         "startChar": 20,
@@ -94,6 +142,30 @@
           ]
         }
       ],
+      "revId": "e25ff0dcd9f05663d764440f62b1a2fe083e131e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8804ae44_f6a75203",
+        "filename": "kernel/trace/trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 9738,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2025-06-05T02:53:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a1cca50_55d59a89",
+      "range": {
+        "startLine": 9737,
+        "startChar": 1,
+        "endLine": 9738,
+        "endChar": 35
+      },
       "revId": "e25ff0dcd9f05663d764440f62b1a2fe083e131e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
