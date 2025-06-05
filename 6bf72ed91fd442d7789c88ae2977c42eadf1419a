@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "274baefe_1bb9dd78",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 950,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-05T10:34:16Z",
+      "side": 1,
+      "message": "pKVM may still not be enabled in the kernel command line, so we also need to check `enable_pkvm`?",
+      "revId": "6bf72ed91fd442d7789c88ae2977c42eadf1419a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2585b543_ea6cfe53",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 952,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-05T10:34:16Z",
+      "side": 1,
+      "message": "nit: As we already have a comment for shutdown below, we might also add a small comment explaining that init is no-op because IOMMU initialization is postponed until pKVM initialization?",
+      "revId": "6bf72ed91fd442d7789c88ae2977c42eadf1419a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
