@@ -718,8 +718,18 @@ static void loop_get_discard_config(struct loop_device *lo,
 	if (S_ISBLK(inode->i_mode)) {
 		struct block_device *bdev = I_BDEV(inode);
 
+<<<<<<< HEAD   (6a0454 Merge 126be03494f2 ("riscv: misaligned: Add handling for ZCB)
 		*max_discard_sectors = bdev_write_zeroes_sectors(bdev);
 		*granularity = bdev_discard_granularity(bdev);
+||||||| BASE
+		max_discard_sectors = backingq->limits.max_write_zeroes_sectors;
+		granularity = bdev_discard_granularity(I_BDEV(inode)) ?:
+			queue_physical_block_size(backingq);
+=======
+		max_discard_sectors = bdev_write_zeroes_sectors(bdev);
+		granularity = bdev_discard_granularity(bdev) ?:
+			bdev_physical_block_size(bdev);
+>>>>>>> BRANCH (02a77b loop: Use bdev limit helpers for configuring discard)
 
 	/*
 	 * We use punch hole to reclaim the free space used by the
