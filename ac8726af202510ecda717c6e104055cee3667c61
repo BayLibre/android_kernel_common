@@ -63,6 +63,24 @@
       "message": "This should be landed in `mainline` first so the upstream GKI defconfig is updated, and then cherrypicked into `android16-6.12-desktop`.",
       "revId": "ac8726af202510ecda717c6e104055cee3667c61",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68ab7fcb_70d70ac4",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 3953550
+      },
+      "writtenOn": "2025-06-06T22:59:30Z",
+      "side": 1,
+      "message": "For now, I have moved it to vendor config and it built fine. I will abandon this change.",
+      "parentUuid": "f97185b3_f95414af",
+      "revId": "ac8726af202510ecda717c6e104055cee3667c61",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
