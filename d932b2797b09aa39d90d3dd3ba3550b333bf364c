@@ -1,0 +1,79 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68c5300b_70d007fe",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1906,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-06-06T11:05:41Z",
+      "side": 1,
+      "message": "Isn\u0027t it better to keep that idmap out of the loop? So we are sure to map stuff __only__ if the check for the range has succeed?",
+      "fixSuggestions": [
+        {
+          "fixId": "85fa7a7f_95455615",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 1887,
+                "startChar": 0,
+                "endLine": 1887,
+                "endChar": 0
+              },
+              "replacement": "\t\tu64 addr;\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 1891,
+                "startChar": 0,
+                "endLine": 1891,
+                "endChar": 0
+              },
+              "replacement": "\t\tprot \u003d pkvm_mkstate(PKVM_HOST_MMIO_PROT, PKVM_PAGE_TAINTED);\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 1892,
+                "startChar": 0,
+                "endLine": 1893,
+                "endChar": 0
+              },
+              "replacement": "\t\t\taddr \u003d phys_addr + i * PAGE_SIZE;\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 1905,
+                "startChar": 0,
+                "endLine": 1909,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 1910,
+                "startChar": 0,
+                "endLine": 1910,
+                "endChar": 0
+              },
+              "replacement": "\t\tret \u003d host_stage2_idmap_locked(phys_addr, size, prot, false);\n\t\tif (ret)\n\t\t\treturn ret;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d932b2797b09aa39d90d3dd3ba3550b333bf364c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
