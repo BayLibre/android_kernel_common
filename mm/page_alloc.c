@@ -4746,7 +4746,19 @@ restart:
 	}
 
 retry:
+<<<<<<< HEAD   (398ede Merge android16-6.12 into android16-6.12-lts)
 	retry_loop_count++;
+||||||| BASE
+=======
+	/*
+	 * Deal with possible cpuset update races or zonelist updates to avoid
+	 * infinite retries.
+	 */
+	if (check_retry_cpuset(cpuset_mems_cookie, ac) ||
+	    check_retry_zonelist(zonelist_iter_cookie))
+		goto restart;
+
+>>>>>>> BRANCH (df3f6d Linux 6.12.31)
 	/* Ensure kswapd doesn't accidentally go to sleep as long as we loop */
 	if (alloc_flags & ALLOC_KSWAPD)
 		wake_all_kswapds(order, gfp_mask, ac);
