@@ -414,16 +414,16 @@ static void blk_timeout_work(struct work_struct *work)
 
 struct queue_xiaomi_extra_limit *blk_alloc_queue_xiaomi_extra_limit(void)
 {
-	struct queue_xiaomi_extra_limit *ex_lim = kmalloc(sizeof(*ex_lim), GFP_KERNEL);
+	struct queue_xiaomi_extra_limit *ex_lim = kzalloc(sizeof(*ex_lim), GFP_KERNEL);
 
 	if (!ex_lim)
 		return NULL;
-	memset(ex_lim, 0, sizeof(*ex_lim));
-	ex_lim->sfi_limit = kmalloc(sizeof(*(ex_lim->sfi_limit)), GFP_KERNEL);
+	ex_lim->sfi_limit = kzalloc(sizeof(*(ex_lim->sfi_limit)), GFP_KERNEL);
 
-	if (!ex_lim->sfi_limit)
+	if (!ex_lim->sfi_limit) {
+		kfree(ex_lim);
 		return NULL;
-	memset(ex_lim->sfi_limit, 0, sizeof(*(ex_lim->sfi_limit)));
+	}
 
 	return ex_lim;
 }
