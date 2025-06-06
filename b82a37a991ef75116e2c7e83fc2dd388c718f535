@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd976f38_02468ad7",
+        "filename": "tools/testing/kunit/android/patch1.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-06-06T11:58:12Z",
+      "side": 1,
+      "message": "need a copyright and license SPDX line.",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 16
+      },
+      "revId": "b82a37a991ef75116e2c7e83fc2dd388c718f535",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6fea8e7_ee72c211",
+        "filename": "tools/testing/kunit/android/patch1.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-06-06T11:58:12Z",
+      "side": 1,
+      "message": "not needed :)",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 25
+      },
+      "revId": "b82a37a991ef75116e2c7e83fc2dd388c718f535",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "325f363e_b934ec73",
+        "filename": "tools/testing/kunit/android/patch1.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-06-06T11:58:12Z",
+      "side": 1,
+      "message": "EXPORT_SYMBOL_GPL() please.",
+      "range": {
+        "startLine": 84,
+        "startChar": 1,
+        "endLine": 84,
+        "endChar": 14
+      },
+      "revId": "b82a37a991ef75116e2c7e83fc2dd388c718f535",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "518db4b6_035a8cd0",
+        "filename": "tools/testing/kunit/android/patch1.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-06-06T11:58:12Z",
+      "side": 1,
+      "message": "copyright and license SPDX line please.",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 16
+      },
+      "revId": "b82a37a991ef75116e2c7e83fc2dd388c718f535",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b05ee921_73a6e62b",
+        "filename": "tools/testing/kunit/android/patch1.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-06-06T11:58:12Z",
+      "side": 1,
+      "message": "requires MODULE_DESCRIPTION() or the build will break.",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 23
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "008b5948_6e7d1977",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/testing/kunit/android/patch1.txt",
+              "range": {
+                "startLine": 19,
+                "startChar": 0,
+                "endLine": 20,
+                "endChar": 0
+              },
+              "replacement": " drivers/misc/example_test.c                  | 33 +++++++++++++++++++++\n"
+            },
+            {
+              "path": "tools/testing/kunit/android/patch1.txt",
+              "range": {
+                "startLine": 21,
+                "startChar": 0,
+                "endLine": 22,
+                "endChar": 0
+              },
+              "replacement": " 7 files changed, 60 insertions(+)\n"
+            },
+            {
+              "path": "tools/testing/kunit/android/patch1.txt",
+              "range": {
+                "startLine": 129,
+                "startChar": 0,
+                "endLine": 129,
+                "endChar": 0
+              },
+              "replacement": "+MODULE_DESCRIPTION(\"Example module for KUnit tests\");\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b82a37a991ef75116e2c7e83fc2dd388c718f535",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
