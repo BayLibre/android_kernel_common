@@ -48,3 +48,11 @@ void rust_helper_vma_end_read(struct vm_area_struct *vma)
 {
 	vma_end_read(vma);
 }
+
+void rust_helper_mmap_write_lock(struct mm_struct *mm) {
+	mmap_write_lock(mm);
+}
+
+void rust_helper_mmap_write_unlock(struct mm_struct *mm) {
+	mmap_write_unlock(mm);
+}
