@@ -74,6 +74,24 @@
       ],
       "revId": "d932b2797b09aa39d90d3dd3ba3550b333bf364c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f395d0a_95d7c39e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1906,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-06-06T11:08:51Z",
+      "side": 1,
+      "message": "I thought about that, but that leaves the case if the `idmap` fails, which would require tracking of what pages are original tainted. So, I believe it\u0027s not so bad to update those pages to tainted on failure, as the host expected so anyway, so it won\u0027t try to move them to VMs.",
+      "parentUuid": "68c5300b_70d007fe",
+      "revId": "d932b2797b09aa39d90d3dd3ba3550b333bf364c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
