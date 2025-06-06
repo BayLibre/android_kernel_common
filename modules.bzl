@@ -110,9 +110,12 @@ _X86_GKI_MODULES_LIST = [
 ]
 
 _X86_64_GKI_MODULES_LIST = [
+    "drivers/ptp/ptp_kvm.ko",
+]
+
+_RUST_MODULES = [
     # keep sorted
     "drivers/android/rust_binder.ko",
-    "drivers/ptp/ptp_kvm.ko",
 ]
 
 # buildifier: disable=unnamed-macro
@@ -125,21 +128,25 @@ def get_gki_modules_list(arch = None):
     Returns:
       The list of GKI modules for the given |arch|.
     """
-    gki_modules_list = [] + _COMMON_GKI_MODULES_LIST
-    if arch == "arm":
-        gki_modules_list += _ARM_GKI_MODULES_LIST
-    elif arch == "arm64":
-        gki_modules_list += _ARM64_GKI_MODULES_LIST
-    elif arch == "i386":
-        gki_modules_list += _X86_GKI_MODULES_LIST
-    elif arch == "x86_64":
-        gki_modules_list += _X86_64_GKI_MODULES_LIST
-    else:
+    if not arch in ("arm64", "x86_64", "arm", "i386"):
         fail("{}: arch {} not supported. Use one of [arm, arm64, i386, x86_64]".format(
             str(native.package_relative_label(":x")).removesuffix(":x"),
             arch,
         ))
 
+    if arch == "arm":
+        return _COMMON_GKI_MODULES_LIST + _ARM_GKI_MODULES_LIST
+
+    if arch == "i386":
+        return _COMMON_GKI_MODULES_LIST + _X86_GKI_MODULES_LIST
+
+    gki_modules_list = [] + _COMMON_GKI_MODULES_LIST
+    if arch == "arm64":
+        gki_modules_list += _ARM64_GKI_MODULES_LIST
+    elif arch == "x86_64":
+        gki_modules_list += _X86_64_GKI_MODULES_LIST
+
+    gki_modules_list += _RUST_MODULES
     return gki_modules_list
 
 _KUNIT_FRAMEWORK_MODULES = [
