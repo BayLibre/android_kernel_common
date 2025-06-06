@@ -8,13 +8,29 @@
 #include <linux/refcount.h>
 #include <net/sock.h>
 
+#if IS_ENABLED(CONFIG_UNIX)
+struct unix_sock *unix_get_socket(struct file *filp);
+#else
+static inline struct unix_sock *unix_get_socket(struct file *filp)
+{
+	return NULL;
+}
+#endif
+
 void unix_inflight(struct user_struct *user, struct file *fp);
 void unix_notinflight(struct user_struct *user, struct file *fp);
 void unix_destruct_scm(struct sk_buff *skb);
 void io_uring_destruct_scm(struct sk_buff *skb);
 void unix_gc(void);
+<<<<<<< HEAD   (fc57b3 ANDROID: GKI: db845c: add devm_register_sys_off_handler to s)
 void wait_for_unix_gc(void);
 struct unix_sock *unix_get_socket(struct file *filp);
+||||||| BASE
+void wait_for_unix_gc(void);
+struct sock *unix_get_socket(struct file *filp);
+=======
+void wait_for_unix_gc(struct scm_fp_list *fpl);
+>>>>>>> BRANCH (fb219c UPSTREAM: af_unix: Replace BUG_ON() with WARN_ON_ONCE().)
 struct sock *unix_peer_get(struct sock *sk);
 
 #define UNIX_HASH_MOD	(256 - 1)

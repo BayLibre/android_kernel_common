@@ -145,7 +145,7 @@ static void scan_children(struct sock *x, void (*func)(struct unix_sock *),
 			/* An embryo cannot be in-flight, so it's safe
 			 * to use the list link.
 			 */
-			BUG_ON(!list_empty(&u->link));
+			WARN_ON_ONCE(!list_empty(&u->link));
 			list_add_tail(&u->link, &embryos);
 		}
 		spin_unlock(&x->sk_receive_queue.lock);
@@ -224,8 +224,8 @@ static void __unix_gc(struct work_struct *work)
 
 		total_refs = file_count(sk->sk_socket->file);
 
-		BUG_ON(!u->inflight);
-		BUG_ON(total_refs < u->inflight);
+		WARN_ON_ONCE(!u->inflight);
+		WARN_ON_ONCE(total_refs < u->inflight);
 		if (total_refs == u->inflight) {
 			list_move_tail(&u->link, &gc_candidates);
 			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
@@ -318,7 +318,7 @@ static void __unix_gc(struct work_struct *work)
 		list_move_tail(&u->link, &gc_inflight_list);
 
 	/* All candidates should have been detached by now. */
-	BUG_ON(!list_empty(&gc_candidates));
+	WARN_ON_ONCE(!list_empty(&gc_candidates));
 
 	/* Paired with READ_ONCE() in wait_for_unix_gc(). */
 	WRITE_ONCE(gc_in_progress, false);
@@ -335,6 +335,7 @@ void unix_gc(void)
 }
 
 #define UNIX_INFLIGHT_TRIGGER_GC 16000
+<<<<<<< HEAD   (fc57b3 ANDROID: GKI: db845c: add devm_register_sys_off_handler to s)
 
 void wait_for_unix_gc(void)
 {
@@ -347,6 +348,29 @@ void wait_for_unix_gc(void)
 	if (READ_ONCE(unix_tot_inflight) > UNIX_INFLIGHT_TRIGGER_GC &&
 	    !READ_ONCE(gc_in_progress))
 		unix_gc();
+||||||| BASE
+=======
+#define UNIX_INFLIGHT_SANE_USER (SCM_MAX_FD * 8)
+
+void wait_for_unix_gc(struct scm_fp_list *fpl)
+{
+	/* If number of inflight sockets is insane,
+	 * force a garbage collect right now.
+	 *
+	 * Paired with the WRITE_ONCE() in unix_inflight(),
+	 * unix_notinflight(), and __unix_gc().
+	 */
+	if (READ_ONCE(unix_tot_inflight) > UNIX_INFLIGHT_TRIGGER_GC &&
+	    !READ_ONCE(gc_in_progress))
+		unix_gc();
+
+	/* Penalise users who want to send AF_UNIX sockets
+	 * but whose sockets have not been received yet.
+	 */
+	if (!fpl || !fpl->count_unix ||
+	    READ_ONCE(fpl->user->unix_inflight) < UNIX_INFLIGHT_SANE_USER)
+		return;
+>>>>>>> BRANCH (fb219c UPSTREAM: af_unix: Replace BUG_ON() with WARN_ON_ONCE().)
 
 	if (READ_ONCE(gc_in_progress))
 		flush_work(&unix_gc_work);

@@ -3162,8 +3162,13 @@ int iommu_device_use_default_domain(struct device *dev)
 
 	mutex_lock(&group->mutex);
 	/* We may race against bus_iommu_probe() finalising groups here */
+<<<<<<< HEAD   (fc57b3 ANDROID: GKI: db845c: add devm_register_sys_off_handler to s)
 	if (IS_ENABLED(CONFIG_IOMMU_DMA) && !group->default_domain &&
 	    !dev_iommu_ops(dev)->set_platform_dma_ops) {
+||||||| BASE
+=======
+	if (!group->default_domain) {
+>>>>>>> BRANCH (fb219c UPSTREAM: af_unix: Replace BUG_ON() with WARN_ON_ONCE().)
 		ret = -EPROBE_DEFER;
 		goto unlock_out;
 	}
