@@ -1015,18 +1015,26 @@ static __init int pkvm_host_deprivilege_cpus(struct pkvm_hyp *pkvm)
 	return p.ret;
 }
 
-static int this_cpu_do_finalise_hc(struct pkvm_section *sections, unsigned long size)
+static __init int this_cpu_do_finalise_hc(struct pkvm_section *sections, unsigned long size)
 {
 	int ret = kvm_hypercall2(PKVM_HC_INIT_FINALISE, (unsigned long)sections, size);
 	if (!ret)
 		this_cpu_write(pkvm_enabled, true);
 
+	if (ret) {
+		struct pkvm_deprivilege_param p = {
+			.pkvm = pkvm,
+			.ret = 0,
+		};
+		on_each_cpu(pkvm_host_reprivilege_cpu, &p, 1);
+	}
 	return ret;
 }
 
 static __init void do_pkvm_finalise(void *data)
 {
-	this_cpu_do_finalise_hc(NULL, 0);
+	int *ret = (int *)data;
+	*ret = this_cpu_do_finalise_hc(NULL, 0);
 }
 
 static __init int pkvm_init_finalise(void)
@@ -1104,11 +1112,12 @@ static __init int pkvm_init_finalise(void)
 	 */
 	ret = this_cpu_do_finalise_hc(sections, ARRAY_SIZE(sections));
 	if (ret) {
-		pr_err("%s: pkvm finalise failed!\n", __func__);
+		pr_err("%s: pkvm finalise on CPU%d failed!\n", __func__, self);
 		goto out;
 	}
 
 	for_each_possible_cpu(cpu) {
+		int finalize_ret = 0;
 		if (cpu == self)
 			continue;
 
@@ -1117,7 +1126,12 @@ static __init int pkvm_init_finalise(void)
 		 * for other cpus other than boot cpu.
 		 */
 		ret = smp_call_function_single(cpu, do_pkvm_finalise,
-					       NULL, true);
+					       (void *)&finalize_ret, true);
+		if (ret || finalize_ret) {
+			pr_err("%s: pkvm finalise on CPU%d failed!\n",
+					__func__, cpu);
+			goto out;
+		}
 	}
 
 	ret = kvm_hypercall0(PKVM_HC_ACTIVATE_IOMMU);
@@ -1436,7 +1450,8 @@ int __init vmx_pkvm_init(void)
 
 	ret = pkvm_init_finalise();
 	if (ret)
-		pkvm_firmware_rmem_clear();
+		goto out;
+
 	return ret;
 
 out:
