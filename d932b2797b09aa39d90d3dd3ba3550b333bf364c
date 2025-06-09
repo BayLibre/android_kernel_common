@@ -92,6 +92,24 @@
       "parentUuid": "68c5300b_70d007fe",
       "revId": "d932b2797b09aa39d90d3dd3ba3550b333bf364c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9df893f9_177ecbc0",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1906,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-06-09T08:14:49Z",
+      "side": 1,
+      "message": "Understood.\n\nAfter the check though, there\u0027s no reason for the idmap to fail is there? You could WARN_ON the idmap?",
+      "parentUuid": "4f395d0a_95d7c39e",
+      "revId": "d932b2797b09aa39d90d3dd3ba3550b333bf364c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
