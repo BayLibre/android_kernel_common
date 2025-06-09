@@ -1,0 +1,69 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d79db21_eec70a16",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1906,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-06-09T13:03:29Z",
+      "side": 1,
+      "message": "Actually, I meant that now you have a WARN_ON, it could get out of the loop to make sure sure there\u0027s nothing that partially succeeds or not.",
+      "fixSuggestions": [
+        {
+          "fixId": "e90017bb_dc036723",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 1906,
+                "startChar": 0,
+                "endLine": 1907,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tret \u003d host_stage2_idmap_locked(addr, PAGE_SIZE, prot, false);\n\t\t\tif (ret)\n\t\t\t\treturn ret;\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 2429,
+                "startChar": 0,
+                "endLine": 2429,
+                "endChar": 0
+              },
+              "replacement": "\t\tsize_t size;\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 2439,
+                "startChar": 0,
+                "endLine": 2440,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 2452,
+                "startChar": 0,
+                "endLine": 2453,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tgoto unlock;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "48b1688fe8cf6bc710c9aa64d0faa46303b8520d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
