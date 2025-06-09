@@ -716,6 +716,8 @@ struct dmar_domain {
 	 */
 	struct pkvm_iommu_page_donation __percpu *donation;
 #endif
+	struct maple_tree mappings; /* IOVA -> IPA */
+	spinlock_t mapping_lock;
 
 };
 
