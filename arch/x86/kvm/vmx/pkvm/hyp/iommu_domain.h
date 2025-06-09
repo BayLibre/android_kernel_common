@@ -60,6 +60,5 @@ unsigned long pkvm_iommu_domain_map(struct kvm_vcpu *hvcpu, unsigned long param_
 unsigned long pkvm_iommu_domain_unmap(struct kvm_vcpu *hvcpu, unsigned long pgd_gpa,
 					unsigned long start_pfn, unsigned long last_pfn,
 					unsigned long donation_gva);
-unsigned long pkvm_iommu_domain_iova_to_phys(struct kvm_vcpu *hvcpu, unsigned long param_gva);
 unsigned long pkvm_iommu_domain_alloc(struct kvm_vcpu *hvcpu, unsigned long param_gva);
 #endif

@@ -675,9 +675,20 @@ next:
 /* We can't just free the pages because the IOMMU may still be walking
    the page tables, and may have cached the intermediate levels. The
    pages can only be freed after the IOTLB flush has been done. */
-static void domain_unmap(struct pkvm_iommu_domain *domain, unsigned long start_pfn,
-			 unsigned long last_pfn, struct pkvm_iommu_page_donation *donation)
+static void domain_unmap(struct pkvm_iommu_domain *domain, unsigned long iova,
+			 unsigned long size, struct pkvm_iommu_page_donation *donation)
 {
+	unsigned long start_pfn, last_pfn;
+	int level;
+
+	BUG_ON(!pfn_to_dma_pte(domain, donation, iova >> VTD_PAGE_SHIFT, &level));
+
+	if (size < VTD_PAGE_SIZE << level_to_offset_bits(level))
+		size = VTD_PAGE_SIZE << level_to_offset_bits(level);
+
+	start_pfn = iova >> VTD_PAGE_SHIFT;
+	last_pfn = (iova + size - 1) >> VTD_PAGE_SHIFT;
+
 	if (WARN_ON(!domain_pfn_supported(domain, last_pfn)) ||
 	    WARN_ON(start_pfn > last_pfn))
 		return;
@@ -696,7 +707,7 @@ static void domain_unmap(struct pkvm_iommu_domain *domain, unsigned long start_p
 }
 
 unsigned long pkvm_iommu_domain_unmap(struct kvm_vcpu *hvcpu, unsigned long pgd_gpa,
-		unsigned long start_pfn, unsigned long last_pfn, unsigned long donation_gva)
+		unsigned long iova, unsigned long size, unsigned long donation_gva)
 {
 	struct pkvm_iommu_page_donation donation = { 0 };
 	struct pkvm_iommu_domain *domain;
@@ -717,7 +728,7 @@ unsigned long pkvm_iommu_domain_unmap(struct kvm_vcpu *hvcpu, unsigned long pgd_
 		return -EINVAL;
 	}
 	pkvm_spin_lock(&domain->lock);
-	domain_unmap(domain, start_pfn, last_pfn, &donation);
+	domain_unmap(domain, iova, size, &donation);
 	pkvm_spin_unlock(&domain->lock);
 	pkvm_put_iommu_domain(domain);
 
@@ -728,51 +739,6 @@ unsigned long pkvm_iommu_domain_unmap(struct kvm_vcpu *hvcpu, unsigned long pgd_
 		return ret;
 	}
 	return 0;
-}
-
-unsigned long pkvm_iommu_domain_iova_to_phys(struct kvm_vcpu *hvcpu, unsigned long param_gva)
-{
-	struct pkvm_iommu_page_donation donation = { 0 };
-	struct pkvm_iommu_iova2phys_param param = { 0 };
-	struct pkvm_iommu_domain *domain;
-	struct x86_exception e;
-	unsigned long phys = 0;
-	unsigned long ret = 0;
-	struct dma_pte *pte;
-	int level = 0;
-
-	ret = read_gva(hvcpu, param_gva, &param, sizeof(struct pkvm_iommu_iova2phys_param), &e);
-	if (ret < 0) {
-		pkvm_err("pkvm: %s Failed to read iova2phys_param (gva: %lx) from host!\n",
-				__func__, param_gva);
-		return ret;
-	}
-
-	domain = pkvm_get_iommu_domain(host_gpa2hpa(param.pgd_gpa));
-	if (!domain) {
-		pkvm_err("pkvm: %s, failed to get the domain [pgd:%llx]\n",
-				__func__, param.pgd_gpa);
-		return -EINVAL;
-	}
-	pkvm_spin_lock(&domain->lock);
-	pte = pfn_to_dma_pte(domain, &donation, param.iova >> VTD_PAGE_SHIFT, &level);
-	if (pte && dma_pte_present(pte))
-		phys = dma_pte_addr(pte) +
-			(param.iova & (BIT_MASK(level_to_offset_bits(level) +
-					  VTD_PAGE_SHIFT) - 1));
-	pkvm_spin_unlock(&domain->lock);
-	pkvm_put_iommu_domain(domain);
-
-	param.phys = phys;
-	param.level = level;
-	ret = write_gva(hvcpu, param_gva, &param, sizeof(struct pkvm_iommu_iova2phys_param), &e);
-	if (ret < 0) {
-		pkvm_err("pkvm: %s Failed to write iova2phys_param (gva: %lx) tp host!\n",
-				__func__, param_gva);
-		return ret;
-	}
-
-	return ret;
 }
 
 unsigned long pkvm_iommu_domain_alloc(struct kvm_vcpu *hvcpu, unsigned long param_gva)
