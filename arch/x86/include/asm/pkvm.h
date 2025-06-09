@@ -19,10 +19,9 @@
 #define PKVM_HC_IOMMU_UPDATE_CE		10
 #define PKVM_HC_IOMMU_MAP_PAGES		11
 #define PKVM_HC_IOMMU_UNMAP_PAGES	12
-#define PKVM_HC_IOMMU_IOVA2PHYS		13
-#define PKVM_HC_TLB_REMOTE_FLUSH_RANGE	14
-#define PKVM_HC_SET_MMIO_VE		15
-#define PKVM_HC_ADD_PTDEV		16
+#define PKVM_HC_TLB_REMOTE_FLUSH_RANGE	13
+#define PKVM_HC_SET_MMIO_VE		14
+#define PKVM_HC_ADD_PTDEV		15
 
 /*
  * Internal hypercall to commit the pkvm initialization
@@ -95,16 +94,6 @@ struct pkvm_iommu_map_param {
 	u64 phys_pfn;
 	u64 nr_pages;
 	u64 prot;
-};
-
-/*
- * parameters passed by host for IOMMU_IOVA2PHYS hypercall.
- */
-struct pkvm_iommu_iova2phys_param {
-	u64 pgd_gpa;
-	u64 iova;
-	u64 phys;
-	u64 level;
 };
 
 /*
@@ -220,15 +209,6 @@ static inline long pkvm_iommu_unmap_pages(unsigned long pgd_gpa, unsigned long s
 		ret = kvm_hypercall4(PKVM_HC_IOMMU_UNMAP_PAGES, pgd_gpa, start_pfn, last_pfn,
 				(unsigned long)donation);
 	}
-
-	return ret;
-}
-
-static inline long pkvm_iommu_iova_to_phys(struct pkvm_iommu_iova2phys_param *param)
-{
-	long ret = 0;
-	if (pkvm_enabled())
-		ret = kvm_hypercall1(PKVM_HC_IOMMU_IOVA2PHYS, (unsigned long)param);
 
 	return ret;
 }
