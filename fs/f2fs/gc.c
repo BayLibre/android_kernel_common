@@ -2032,7 +2032,8 @@ static void init_atgc_management(struct f2fs_sb_info *sbi)
 {
 	struct atgc_management *am = &sbi->am;
 
-	if (test_opt(sbi, ATGC))
+	if (test_opt(sbi, ATGC) &&
+		SIT_I(sbi)->elapsed_time >= DEF_GC_THREAD_AGE_THRESHOLD)
 		am->atgc_enabled = true;
 
 	am->root = RB_ROOT_CACHED;
