@@ -37,6 +37,7 @@
 #include "xring_lb_dbg.h"
 
 struct lb_data g_lb_data;
+static bool lb_enabled;
 
 static int xring_lb_register_hooks(void)
 {
@@ -168,6 +169,9 @@ static int __init xring_lb_init(void)
 	int ret;
 	struct lb_data *data = &g_lb_data;
 
+	if (!lb_enabled)
+		return 0;
+
 	memset(data, 0, sizeof(*data));
 	data->initialized = false;
 
@@ -229,3 +233,11 @@ static void __exit xring_lb_exit(void)
 MODULE_LICENSE("GPL");
 module_init(xring_lb_init);
 module_exit(xring_lb_exit);
+
+static int __init launch_boost_setup(char *str)
+{
+	lb_enabled = true;
+	return 0;
+}
+
+early_param("launch_boost_enabled", launch_boost_setup);
