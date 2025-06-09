@@ -115,6 +115,68 @@ static int device_rid_cmp(struct rb_node *lhs, const struct rb_node *rhs)
 	return device_rid_cmp_key(&key, rhs);
 }
 
+static void pv_domain_insert_map(struct dmar_domain *domain,
+		u64 start, u64 end, u64 val, gfp_t gfp)
+{
+	unsigned long flags;
+
+	if (end < start)
+		return;
+
+	MA_STATE(mas, &domain->mappings, start, end);
+
+	spin_lock_irqsave(&domain->mapping_lock, flags);
+	/*TODO: Gracefully handle failure to store the range.*/
+	BUG_ON(mas_store_gfp(&mas, xa_mk_value(val), GFP_ATOMIC));
+	spin_unlock_irqrestore(&domain->mapping_lock, flags);
+}
+
+static void pv_domain_remove_map(struct dmar_domain *domain,
+				      u64 start, u64 end)
+{
+	unsigned long flags;
+	/* Range can cover multiple entries. */
+	while (start < end) {
+		MA_STATE(mas, &domain->mappings, start, end);
+
+		spin_lock_irqsave(&domain->mapping_lock, flags);
+		u64 entry = xa_to_value(mas_find(&mas, end));
+		u64 old_start, old_end;
+
+		old_start = mas.index;
+		old_end = mas.last;
+		mas_erase(&mas);
+		/* Insert the rest if not removed. */
+		if (start > old_start) {
+			MA_STATE(mas, &domain->mappings, old_start, start - 1);
+			BUG_ON(mas_store_gfp(&mas, xa_mk_value(entry), GFP_ATOMIC));
+		}
+
+		if (old_end > end) {
+			MA_STATE(mas, &domain->mappings, end + 1, old_end);
+			BUG_ON(mas_store_gfp(&mas, xa_mk_value(entry + end - old_start + 1), GFP_ATOMIC));
+		}
+
+		start = old_end + 1;
+		spin_unlock_irqrestore(&domain->mapping_lock, flags);
+	}
+}
+
+static u64 pv_domain_find(struct dmar_domain *domain, u64 key)
+{
+	unsigned long flags;
+	MA_STATE(mas, &domain->mappings, key, key);
+	spin_lock_irqsave(&domain->mapping_lock, flags);
+	void *entry = mas_find(&mas, key);
+	spin_unlock_irqrestore(&domain->mapping_lock, flags);
+
+	/* No entry. */
+	if (!xa_is_value(entry))
+		return 0;
+
+	return (key - mas.index) + (u64)xa_to_value(entry);
+}
+
 /*
  * Looks up an IOMMU-probed device using its source ID.
  *
@@ -1391,17 +1453,32 @@ static int pv_domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
 /* We can't just free the pages because the IOMMU may still be walking
    the page tables, and may have cached the intermediate levels. The
    pages can only be freed after the IOTLB flush has been done. */
-static void domain_unmap(struct dmar_domain *domain, unsigned long start_pfn,
-			 unsigned long last_pfn, struct list_head *freelist)
+static void domain_unmap(struct dmar_domain *domain, unsigned long iova,
+			 unsigned long size, struct list_head *freelist)
 {
+	unsigned long start_pfn, last_pfn;
+	int level;
+
+	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled()) {
+		pv_domain_unmap(domain, iova, size, freelist);
+		pv_domain_remove_map(domain, iova, ALIGN_DOWN(iova + size - 1, VTD_PAGE_SIZE) + VTD_PAGE_SIZE - 1);
+		return;
+	}
+
+	/*TODO: Gracefully handle this.*/
+	BUG_ON(!pfn_to_dma_pte(domain, iova >> VTD_PAGE_SHIFT,
+				     &level, GFP_ATOMIC));
+
+	if (size < VTD_PAGE_SIZE << level_to_offset_bits(level))
+		size = VTD_PAGE_SIZE << level_to_offset_bits(level);
+
+	start_pfn = iova >> VTD_PAGE_SHIFT;
+	last_pfn = (iova + size - 1) >> VTD_PAGE_SHIFT;
+
+
 	if (WARN_ON(!domain_pfn_supported(domain, last_pfn)) ||
 	    WARN_ON(start_pfn > last_pfn))
 		return;
-
-	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled()) {
-		pv_domain_unmap(domain, start_pfn, last_pfn, freelist);
-		return;
-	}
 
 	/* we don't need lock here; nobody else touches the iova range */
 	dma_pte_clear_level(domain, agaw_to_level(domain->agaw),
@@ -1413,6 +1490,9 @@ static void domain_unmap(struct dmar_domain *domain, unsigned long start_pfn,
 		list_add_tail(&pgd_page->lru, freelist);
 		domain->pgd = NULL;
 	}
+
+	if (domain->max_addr == iova + size)
+		domain->max_addr = iova;
 }
 
 /* iommu handling */
@@ -1917,13 +1997,14 @@ static void domain_exit(struct dmar_domain *domain)
 	if (domain->pgd) {
 		LIST_HEAD(freelist);
 
-		domain_unmap(domain, 0, DOMAIN_MAX_PFN(domain->gaw), &freelist);
+		domain_unmap(domain, 0, DOMAIN_MAX_ADDR(domain->gaw) + 1, &freelist);
 		iommu_put_pages_list(&freelist);
 	}
 
 	if (WARN_ON(!list_empty(&domain->devices)))
 		return;
 
+	mtree_destroy(&domain->mappings);
 	kfree(domain->qi_batch);
 	kfree(domain);
 }
@@ -2220,7 +2301,15 @@ __domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
 	domain->has_mappings = true;
 
 	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled()) {
-		return pv_domain_mapping(domain, iov_pfn, phys_pfn, nr_pages, prot, gfp);
+		int ret;
+		ret = pv_domain_mapping(domain, iov_pfn, phys_pfn, nr_pages, prot, gfp);
+		/* TODO: Gracefully handle this.*/
+		BUG_ON(ret);
+		if (ret)
+			return ret;
+		pv_domain_insert_map(domain, iov_pfn << VTD_PAGE_SHIFT,
+				((iov_pfn + nr_pages) << VTD_PAGE_SHIFT) - 1, phys_pfn << VTD_PAGE_SHIFT, gfp);
+		return 0;
 	}
 
 	pteval = ((phys_addr_t)phys_pfn << VTD_PAGE_SHIFT) | attr;
@@ -3876,6 +3965,9 @@ static int md_domain_init(struct dmar_domain *domain, int guest_width)
 		};
 		pkvm_iommu_alloc_domain(&param);
 	}
+	mt_init_flags(&domain->mappings, MT_FLAGS_LOCK_EXTERN);
+	mt_set_external_lock(&domain->mappings, &domain->mapping_lock);
+	spin_lock_init(&domain->mapping_lock);
 #endif
 	return ret;
 }
@@ -4196,36 +4288,8 @@ static size_t intel_iommu_unmap(struct iommu_domain *domain,
 				struct iommu_iotlb_gather *gather)
 {
 	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
-	unsigned long start_pfn, last_pfn;
-	int level = 0;
 
-	/* Cope with horrid API which requires us to unmap more than the
-	   size argument if it happens to be a large-page mapping. */
-	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled()) {
-		struct pkvm_iommu_iova2phys_param param = {
-			.pgd_gpa = virt_to_phys(dmar_domain->pgd),
-			.iova = iova,
-		};
-		pkvm_iommu_iova_to_phys(&param);
-		if (!param.phys)
-			return 0;
-		level = param.level;
-	} else {
-		if (unlikely(!pfn_to_dma_pte(dmar_domain, iova >> VTD_PAGE_SHIFT,
-				     &level, GFP_ATOMIC)))
-			return 0;
-	}
-
-	if (size < VTD_PAGE_SIZE << level_to_offset_bits(level))
-		size = VTD_PAGE_SIZE << level_to_offset_bits(level);
-
-	start_pfn = iova >> VTD_PAGE_SHIFT;
-	last_pfn = (iova + size - 1) >> VTD_PAGE_SHIFT;
-
-	domain_unmap(dmar_domain, start_pfn, last_pfn, &gather->freelist);
-
-	if (dmar_domain->max_addr == iova + size)
-		dmar_domain->max_addr = iova;
+	domain_unmap(dmar_domain, iova, size, &gather->freelist);
 
 	/*
 	 * We do not use page-selective IOTLB invalidation in flush queue,
@@ -4278,12 +4342,7 @@ static phys_addr_t pv_iommu_iova_to_phys(struct iommu_domain *domain,
 					    dma_addr_t iova)
 {
 	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
-	struct pkvm_iommu_iova2phys_param param = {
-		.pgd_gpa = virt_to_phys(dmar_domain->pgd),
-		.iova = iova,
-	};
-	pkvm_iommu_iova_to_phys(&param);
-	return param.phys;
+	return pv_domain_find(dmar_domain, iova);
 }
 #else
 static phys_addr_t pv_iommu_iova_to_phys(struct iommu_domain *domain,
