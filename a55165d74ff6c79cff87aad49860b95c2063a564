@@ -16,6 +16,24 @@
       "message": "Hmm, what\u0027s the reason for reverting it?",
       "revId": "a55165d74ff6c79cff87aad49860b95c2063a564",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aacd2ae4_23f88e74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-10T14:59:11Z",
+      "side": 1,
+      "message": "We were using hyp_page_ref_dec/inc apis which were actually private apis for pkvm buddy allocator and it was crashing when refcounting pages not controlled by pkvm. We should probably revert this change in main branch as well",
+      "parentUuid": "7eac5142_9b4e2695",
+      "revId": "a55165d74ff6c79cff87aad49860b95c2063a564",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
