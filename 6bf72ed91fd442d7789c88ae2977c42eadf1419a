@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0dac43b9_e220e4d4",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 950,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-10T15:01:30Z",
+      "side": 1,
+      "message": "You\u0027re right. I remember testing this and it worked for initial intel patches as pkvm_init was called regardless of enable_pkvm:\nhttps://github.com/vineethrp/pKVM-IA/blob/RFC-v6.12/arch/x86/kvm/x86.c#L9700\n\nBut in the latest series, looks like vmx_pkvm_init is called only if enabled_pkvm is true. I missed this, thanks for catching this. Will fix",
+      "parentUuid": "274baefe_1bb9dd78",
+      "revId": "6bf72ed91fd442d7789c88ae2977c42eadf1419a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2585b543_ea6cfe53",
         "filename": "drivers/iommu/intel/dmar.c",
         "patchSetId": 5
@@ -31,6 +49,24 @@
       "writtenOn": "2025-06-05T10:34:16Z",
       "side": 1,
       "message": "nit: As we already have a comment for shutdown below, we might also add a small comment explaining that init is no-op because IOMMU initialization is postponed until pKVM initialization?",
+      "revId": "6bf72ed91fd442d7789c88ae2977c42eadf1419a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "934f69a8_d5b99666",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 952,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-10T15:01:30Z",
+      "side": 1,
+      "message": "Makes sense, will do",
+      "parentUuid": "2585b543_ea6cfe53",
       "revId": "6bf72ed91fd442d7789c88ae2977c42eadf1419a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
