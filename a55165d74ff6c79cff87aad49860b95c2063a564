@@ -34,6 +34,24 @@
       "parentUuid": "7eac5142_9b4e2695",
       "revId": "a55165d74ff6c79cff87aad49860b95c2063a564",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b299eaad_755f36d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-10T22:58:25Z",
+      "side": 1,
+      "message": "\u003e We were using hyp_page_ref_dec/inc apis which were actually private apis for pkvm buddy allocator\n\nAre they? IIUC there are hyp_page structures in pKVM\u0027s vmemmap for all pages of the available RAM. The buddy allocator is just one of the users of it. (And it\u0027s the same in pKVM-ARM, which also uses hyp_page_ref_dec/inc for the same purpose as this reverted CL.)\n\nMaybe we rather have some bug in our vmemmap implementation, or something?",
+      "parentUuid": "aacd2ae4_23f88e74",
+      "revId": "a55165d74ff6c79cff87aad49860b95c2063a564",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
