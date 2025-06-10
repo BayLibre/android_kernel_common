@@ -41,15 +41,14 @@
 /*
  * Worker macros, don't use these, use the ones without a leading '_'
  */
-
-#ifndef BUILD_VDSO
+#if defined(BUILD_VDSO) || defined(__DISABLE_EXPORTS)
+#define __ANDROID_KABI_RULE(hint, target, value)
+#else
 #define __ANDROID_KABI_RULE(hint, target, value)			 \
 	static const char CONCATENATE(__gendwarfksyms_rule_,		 \
 				      __COUNTER__)[] __used __aligned(1) \
 		__section(".discard.gendwarfksyms.kabi_rules") =	 \
 			"1\0" #hint "\0" target "\0" value
-#else
-#define __ANDROID_KABI_RULE(hint, target, value)
 #endif
 
 #define _ANDROID_KABI_RULE(hint, target, value) \
