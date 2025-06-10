@@ -42,11 +42,15 @@
  * Worker macros, don't use these, use the ones without a leading '_'
  */
 
+#ifndef BUILD_VDSO
 #define __ANDROID_KABI_RULE(hint, target, value)			 \
 	static const char CONCATENATE(__gendwarfksyms_rule_,		 \
 				      __COUNTER__)[] __used __aligned(1) \
 		__section(".discard.gendwarfksyms.kabi_rules") =	 \
 			"1\0" #hint "\0" target "\0" value
+#else
+#define __ANDROID_KABI_RULE(hint, target, value)
+#endif
 
 #define _ANDROID_KABI_RULE(hint, target, value) \
 	__ANDROID_KABI_RULE(hint, #target, #value)
@@ -143,18 +147,26 @@
  * ANDROID_KABI_IGNORE
  *   Add a new field that's ignored in versioning.
  */
+#ifndef BUILD_VDSO
 #define ANDROID_KABI_IGNORE(n, _new)		 \
 	union {					 \
 		_new;				 \
 		unsigned char __kabi_ignored##n; \
 	}
+#else
+#define ANDROID_KABI_IGNORE(n, _new)	_new
+#endif
 
 /*
  * ANDROID_KABI_REPLACE
  *   Replace a field with a compatible new field.
  */
+#ifndef BUILD_VDSO
 #define ANDROID_KABI_REPLACE(_oldtype, _oldname, _new) \
 	_ANDROID_KABI_REPLACE(_oldtype __kabi_renamed##_oldname, struct { _new; })
+#else
+#define ANDROID_KABI_REPLACE(_oldtype, _oldname, _new)	_new
+#endif
 
 /*
  * ANDROID_KABI_USE(number, _new)
