@@ -88,6 +88,24 @@
       "parentUuid": "0ba32923_71fb8846",
       "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e466694_fdf4f2b6",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-10T15:01:09Z",
+      "side": 1,
+      "message": "I have made the changes to clear pvmfw_rmem in case iommu_init fails. I have tried re-privileging but the boot doesn\u0027t go far after reprivilege because of various issues. I shall take a look at this later, for now lets clear the memory and proceed - what do you think?\n\n\u003e (And if we are worried specifically about IOMMU driver failure and thus complete lack of DMA isolation, independently of pKVM, then such a forced panic should be a responsibility of the IOMMU driver, not pKVM, right?)\n\nActually, I was not worried about IOMMU driver\u0027s failure causing security issue. I was mentioning about the DMA isolation that pkvm is not able to provide because of iommu driver failure. Without pkvm, I think its okay for boot to continue as IOMMU driver doesn\u0027t guarantee security in case of failure. But IMHO, pkvm should be able to provide the security it guarantees or should not allow the system to come up if it can\u0027t provide the guarantee. That was what I was trying to highlight.",
+      "parentUuid": "dd5a48a4_ccb5d82c",
+      "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
