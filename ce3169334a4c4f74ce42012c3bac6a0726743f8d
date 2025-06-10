@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98fdbdaf_83b5f4a9",
+        "filename": "include/linux/memcontrol.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-06-10T15:12:01Z",
+      "side": 1,
+      "message": "Please leave spaces between functions. Should be:\n\n```\nstatic inline bool folio_memcg_kmem(struct folio *folio);\n\nint mem_cgroup_move_account(struct folio *folio,\n\t\t\t    bool compound,\n\t\t\t    struct mem_cgroup *from,\n\t\t\t    struct mem_cgroup *to);\n\t\t\t    \nvoid do_traversal_all_lruvec(int (*callback)(struct mem_cgroup *memcg,\n```",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 377,
+        "endChar": 70
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "3fe8d873_b9e7de15",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/memcontrol.h",
+              "range": {
+                "startLine": 373,
+                "startChar": 0,
+                "endLine": 373,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            },
+            {
+              "path": "include/linux/memcontrol.h",
+              "range": {
+                "startLine": 377,
+                "startChar": 0,
+                "endLine": 377,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ce3169334a4c4f74ce42012c3bac6a0726743f8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec445e6e_3182a8c4",
+        "filename": "mm/memcontrol-v1.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-06-10T15:12:01Z",
+      "side": 1,
+      "message": "Please keep spaces. Should be:\n```\n}\nEXPORT_SYMBOL_GPL(mem_cgroup_move_account);\n\n/**\n```",
+      "range": {
+        "startLine": 868,
+        "startChar": 0,
+        "endLine": 870,
+        "endChar": 3
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "843382b8_efd39081",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/memcontrol-v1.c",
+              "range": {
+                "startLine": 869,
+                "startChar": 0,
+                "endLine": 869,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            },
+            {
+              "path": "mm/memcontrol-v1.c",
+              "range": {
+                "startLine": 870,
+                "startChar": 0,
+                "endLine": 870,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ce3169334a4c4f74ce42012c3bac6a0726743f8d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
