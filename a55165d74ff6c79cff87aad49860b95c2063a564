@@ -88,6 +88,24 @@
       "parentUuid": "e44dd436_f34369f1",
       "revId": "a55165d74ff6c79cff87aad49860b95c2063a564",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9379bfbc_4ded11b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-11T14:44:21Z",
+      "side": 1,
+      "message": "Ahh makes sense! I verified that the crash happens with our latest code and shadow iommu implementation. graphics card driver maps pfn 0x7C000 early in the boot and this happens to be in the reserved region:\n```\n[    0.000000] BIOS-e820: [mem 0x000000007666d000-0x00000000803fffff] reserved\n```",
+      "parentUuid": "51d03e28_cacbbd9c",
+      "revId": "a55165d74ff6c79cff87aad49860b95c2063a564",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
