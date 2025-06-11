@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3cd6571_982ed00e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-06-11T18:30:05Z",
+      "side": 1,
+      "message": "build-break:\n```\nSymbols missing from ksymtab:\n - devm_hwmon_device_register_with_info\n```\nThe symbol is not exported by the kernel so it can\u0027t be added to the KMI. Is the patch that exports that symbol missing? If so, this patch needs to be rebased on top of it.",
+      "revId": "4a2d79ad05e3cc700d023e8d78a218edca7dccc7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
