@@ -52,6 +52,24 @@
       "parentUuid": "aacd2ae4_23f88e74",
       "revId": "a55165d74ff6c79cff87aad49860b95c2063a564",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e44dd436_f34369f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-11T01:57:28Z",
+      "side": 1,
+      "message": "Ahh ok. We saw this issue even without pviommu changes. The system fails to boot when iommu.passthrough\u003d0. On investigation, we found that the graphics driver does some very early map as soon as the driver initializes and it crashes when acessing `__hyp_vmemmap[pfn]` which is a `struct hyp_page`. This is what we discussed on our last sync. The memory that graphics driver maps was part of reserved memory I think. So our guess was this part of `__hyp_vmemmap` might have not been initialized. Now when you mention that there are hyp_pages for all memory pages, it might be because we access this before `__hyp_vmemmap` was setup. without pviommu changes, iommu gets initialized before pkvm and graphics driver\u0027s resmem would be mapped during iommu init phase, so that might explain the crash. With pviommu initial patches, we initialize iommu after deprivilege but before pkvm_init_finalize(). If `__hyp_vmemmap` is initialized in `pkvm_init_finalize()`, then that might explain what we saw with v1. With v2, we initialize iommu only after `pkvm_init_finalize()`. I shall check this with latest code and see if I can reproduce the crash. Will update it here tomorrow after I test it.",
+      "parentUuid": "b299eaad_755f36d0",
+      "revId": "a55165d74ff6c79cff87aad49860b95c2063a564",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
