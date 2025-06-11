@@ -16,6 +16,24 @@
       "message": "I don\u0027t know who compiles this driver on other architectures, but since this #ifdef CONFIG_X86 is here anyway... Without CONFIG_X86, __setup_pkvm_iommu_callback() will be defined but not used, causing compiler warnings?\n\n...How about doing this in a simple stupid way (without introducing all the above intricacies): _after_ setting `x86_init.iommu.iommu_init` and `x86_platform.iommu_shutdown` in the usual way, check CONFIG_PKVM_INTEL and enable_pkvm and then override `x86_init.iommu.iommu_init` and `x86_platform.iommu_shutdown` if needed.",
       "revId": "de13480554e9a4297d7f16404dcc863ef0e8057e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f1bab55_0eacf36b",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 980,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-11T23:25:50Z",
+      "side": 1,
+      "message": "Or actually... Instead of that, maybe it\u0027s a good moment to add a no-op version of `enable_pkvm` if CONFIG_PKVM_INTEL is disabled (if avoid this extra #ifdef entirely)? It would be useful in some other places as well.",
+      "parentUuid": "42e4d634_fb7f424a",
+      "revId": "de13480554e9a4297d7f16404dcc863ef0e8057e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
