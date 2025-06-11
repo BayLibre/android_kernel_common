@@ -106,6 +106,24 @@
       "parentUuid": "51d03e28_cacbbd9c",
       "revId": "a55165d74ff6c79cff87aad49860b95c2063a564",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "debd3243_867af6b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-11T18:31:26Z",
+      "side": 1,
+      "message": "It seems a solution would be to check if the page is not from \"normal\" RAM memory (e.g. using `find_mem_range()`, like we do in `handle_host_ept_violation()`) and in such case allow the host to DMA-map this page without checking its refcount, as long as we don\u0027t allow donating such pages to pVMs. (Looks like we are actually allowing that, but that seems like a problem in itself.)",
+      "parentUuid": "9379bfbc_4ded11b0",
+      "revId": "a55165d74ff6c79cff87aad49860b95c2063a564",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
