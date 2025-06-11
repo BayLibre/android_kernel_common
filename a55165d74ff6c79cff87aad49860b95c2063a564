@@ -70,6 +70,24 @@
       "parentUuid": "b299eaad_755f36d0",
       "revId": "a55165d74ff6c79cff87aad49860b95c2063a564",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51d03e28_cacbbd9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-11T08:08:27Z",
+      "side": 1,
+      "message": "\u003e The memory that graphics driver maps was part of reserved memory I think.\n\nIf so, that explains it. __hyp_vmemmap does not include reserved regions. See pkvm_back_vmemmap(): it traverses non-reserved memblocks only (that is what I meant by \"available RAM\").\n\nIt seems we\u0027ve hit a known x86 difficulty: it is sometimes ambiguous what a \"reserved\" memory region means.",
+      "parentUuid": "e44dd436_f34369f1",
+      "revId": "a55165d74ff6c79cff87aad49860b95c2063a564",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
