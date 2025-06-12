@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7945beb0_3d4dbd2a",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1405,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-12T00:13:52Z",
+      "side": 1,
+      "message": "fini_driver is intel_iommu_shutdown(), right? That is not something that makes sense to call here?\n\nDo we need this fini_driver() callback? init_driver() itself could do all the needed cleanup (if any) before returning error?",
+      "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33f907b0_7055e9f8",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1414,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-12T00:13:52Z",
+      "side": 1,
+      "message": "Why not disable pkvm_enabled_key already?",
+      "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb54e905_6c0cf047",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1518,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-12T00:13:52Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we check pkvm_iommu_driver_prepare() failure as well? If we fail to read the information about IOMMUs from DMAR, we should fail pKVM initialization as well, for the same reasons?",
+      "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b73a93d_4a78ac60",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1520,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-12T00:13:52Z",
+      "side": 1,
+      "message": "Why so intricate? And this actually seems incorrect: if __vmx_pkvm_init() failed but then pkvm_iommu_driver_init() succeeded, we return success?\n\nAgain, what\u0027s so special about pkvm_iommu_driver_prepare() and pkvm_iommu_driver_init() that we need to move the rest of vmx_pkvm_init() to a separate function?\n\nWhat\u0027s wrong with just adding these pkvm_iommu_driver_prepare() and pkvm_iommu_driver_init() calls to the appropriate places in the existing vmx_pkvm_init() and let it handle pkvm_iommu_driver_init() failure (almost) like other failures?",
+      "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}

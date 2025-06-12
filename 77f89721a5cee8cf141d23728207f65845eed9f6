@@ -106,6 +106,24 @@
       "parentUuid": "dd5a48a4_ccb5d82c",
       "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75d0cff7_30eedb4a",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-12T00:13:52Z",
+      "side": 1,
+      "message": "\u003e But IMHO, pkvm should be able to provide the security it guarantees or should not allow the system to come up if it can\u0027t provide the guarantee.\n\nIt is still not clear to me why you think it should not allow the system to come up. As I said above: \"As long as we take care to clear pvmfw secrets, the system is not exactly in a compromised state, it simply is not able to run protected VMs, that\u0027s it.\" (And again, that is pKVM-ARM\u0027s approach as well.)",
+      "parentUuid": "2e466694_fdf4f2b6",
+      "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
