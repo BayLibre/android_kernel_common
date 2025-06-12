@@ -162,9 +162,83 @@ static struct file_system_type dma_buf_fs_type = {
 	.kill_sb = kill_anon_super,
 };
 
+int dma_buf_account_to_mm(struct dma_buf *dmabuf, struct mm_struct *mm)
+{
+	struct dma_buf_record *r;
+	int ret = 0;
+
+	spin_lock(&mm->dmabufs->lock);
+	list_for_each_entry(r, &mm->dmabufs->refcounts, node) {
+		if (dmabuf == r->dmabuf) {
+			++r->refcount;
+// pr_warn("TJM: Found dmabuf ref %lu %d\n", dmabuf->file->f_inode->i_ino, task_tgid_nr(current));
+			spin_unlock(&mm->dmabufs->lock);
+			goto out;
+		}
+	}
+// pr_warn("TJM: Could not find dmabuf ref %lu %d\n", dmabuf->file->f_inode->i_ino, task_tgid_nr(current));
+	r = kmalloc(sizeof(*r), GFP_KERNEL);
+	if (!r) {
+		ret = -ENOMEM;
+		spin_unlock(&mm->dmabufs->lock);
+		goto out;
+	}
+
+	r->dmabuf = dmabuf;
+	r->refcount = 1;
+	list_add(&r->node, &mm->dmabufs->refcounts);
+	mm->dmabufs->rss += dmabuf->size;
+
+	// TODO adjust dmabuf's task list as well
+	spin_unlock(&mm->dmabufs->lock);
+
+	// TODO trace_dmabuf_stat
+out:
+	return ret;
+}
+
+void dma_buf_unaccount_from_mm(struct dma_buf *dmabuf, struct mm_struct *mm)
+{
+	spin_lock(&mm->dmabufs->lock);
+	struct dma_buf_record *r;
+	list_for_each_entry(r, &mm->dmabufs->refcounts, node) {
+		if (dmabuf == r->dmabuf) {
+			if (--r->refcount)
+				goto done2;
+
+			mm->dmabufs->rss -= r->dmabuf->size;
+			list_del(&r->node);
+			kfree(r);
+
+			// TODO adjust dmabuf's task list as well
+
+			// TODO trace_dmabuf_stat
+			goto done2;
+		}
+	}
+pr_err("TJM: COULD NOT FIND DMABUF in MM!\n"); // TODO
+done2:
+	spin_unlock(&mm->dmabufs->lock);
+}
+
+static void dma_buf_vma_close(struct vm_area_struct *vma)
+{
+
+	struct dma_buf *dmabuf = vma->vm_file->private_data;
+
+	BUG_ON(!vma->vm_mm->dmabufs);
+
+	dma_buf_unaccount_from_mm(dmabuf, vma->vm_mm);
+}
+
+static const struct vm_operations_struct dma_buf_vm_ops = {
+	.close = dma_buf_vma_close,
+};
+
 static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)
 {
 	struct dma_buf *dmabuf;
+	int ret;
 
 	if (!is_dma_buf_file(file))
 		return -EINVAL;
@@ -180,7 +254,24 @@ static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)
 	    dmabuf->size >> PAGE_SHIFT)
 		return -EINVAL;
 
-	return dmabuf->ops->mmap(dmabuf, vma);
+
+	BUG_ON(!vma->vm_mm->dmabufs);
+
+// BUG_ON(vma->vm_ops);
+if (vma->vm_ops != NULL) {
+	// pr_warn("TJM dmabuf vm_ops not NULL!\n");
+}
+vma->vm_ops = &dma_buf_vm_ops; // Apparently we can just do this anyway, because the cma_heap does it to install a fault handler
+	
+	ret = dma_buf_account_to_mm(dmabuf, vma->vm_mm);
+	if (ret)
+		return ret;
+
+	ret = dmabuf->ops->mmap(dmabuf, vma);
+	if (ret)
+		dma_buf_unaccount_from_mm(dmabuf, vma->vm_mm);
+
+	return ret;
 }
 
 static loff_t dma_buf_llseek(struct file *file, loff_t offset, int whence)
