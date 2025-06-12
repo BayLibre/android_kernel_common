@@ -25,6 +25,10 @@ DECLARE_RESTRICTED_HOOK(android_rvh_sk_alloc,
 	TP_PROTO(struct sock *sock), TP_ARGS(sock), 1);
 DECLARE_RESTRICTED_HOOK(android_rvh_sk_free,
 	TP_PROTO(struct sock *sock), TP_ARGS(sock), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_tcp_rcv_spurious_retrans,
+	TP_PROTO(struct sock *sk), TP_ARGS(sk), 1);
+DECLARE_HOOK(android_vh_tcp_rtt_estimator,
+	TP_PROTO(struct sock *sk, long mrtt_us), TP_ARGS(sk, mrtt_us));
 
 struct poll_table_struct;
 typedef struct poll_table_struct poll_table;
