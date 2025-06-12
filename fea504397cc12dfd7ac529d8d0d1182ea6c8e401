@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeec0715_f437e5e7",
+        "filename": "arch/x86/include/asm/nospec-branch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-06-12T09:18:59Z",
+      "side": 1,
+      "message": "With the first patch of using gs for the pkvm percpu base in the non-debug version, so the non-debug version should be ok to correctly get the pcpu_hot__pkvm. But for the debug version, the gs is still configured as the host\u0027s percpu base and the pkvm percpu base is in fs, so seems the debug version will not be able to get the correct pcpu_host__pkvm by calculating with the gs. To resolve this for the debug version, probably can still let the debug version to use pcpu_hot which can be calculated correctly with the gs, rather than pcpu_hot__pkvm",
+      "revId": "fea504397cc12dfd7ac529d8d0d1182ea6c8e401",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
