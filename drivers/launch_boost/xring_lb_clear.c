@@ -74,14 +74,18 @@ int xring_lb_unlink_one_record(const char *record_name)
 	parent_dentry = filp->f_path.dentry;
 	pinode = d_inode(parent_dentry);
 
+	inode_lock_nested(pinode, I_MUTEX_PARENT);
 	dentry = lookup_one_len(record_name, parent_dentry, strlen(record_name));
 	if (IS_ERR(dentry)) {
 		XRING_LB_ERR("Failed to lookup file: %s\n", record_name);
+		inode_unlock(pinode);
+		filp_close(filp, NULL);
 		return -1;
 	}
 
 	vfs_unlink(&nop_mnt_idmap, pinode, dentry, NULL);
 
+	inode_unlock(pinode);
 	dput(dentry);
 	filp_close(filp, NULL);
 	return 0;
