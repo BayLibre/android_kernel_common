@@ -117,7 +117,16 @@ static __init int check_pci_device_count(void)
  */
 static inline bool is_iommu_coherent(u64 ecap)
 {
-	return ecap_smts(ecap) ? !!ecap_smpwc(ecap) : !!ecap_coherent(ecap);
+	if (ecap_smts(ecap)) {
+		/*
+		 * If scalable mode is supported, we don't know yet
+		 * if the host will choose to use scalable or legacy mode,
+		 * so require coherency in both.
+		 */
+		return ecap_smpwc(ecap) && ecap_coherent(ecap);
+	}
+
+	return ecap_coherent(ecap);
 }
 
 static __init int check_and_init_iommu(struct pkvm_hyp *pkvm)

@@ -89,9 +89,8 @@ enum sm_level {
 #define IOMMU_MAX_VADDR_LEN	(BUS_SHIFT + BUS_BITS)
 #define IOMMU_MAX_VADDR		BIT(IOMMU_MAX_VADDR_LEN)
 
-#define MAX_NUM_OF_ADDRESS_SPACE(_iommu)		\
-	(ecap_smts((_iommu)->iommu.ecap) ?		\
-		IOMMU_MAX_VADDR : IOMMU_LM_MAX_VADDR)
+#define MAX_NUM_OF_ADDRESS_SPACE(_iommu) \
+	(sm_enabled(_iommu) ? IOMMU_MAX_VADDR : IOMMU_LM_MAX_VADDR)
 
 #define DMAR_GSTS_EN_BITS	(DMA_GCMD_TE | DMA_GCMD_EAFL | \
 				 DMA_GCMD_QIE | DMA_GCMD_IRE | \
@@ -141,6 +140,11 @@ struct pasid_dir_entry {
 struct pasid_entry {
 	u64 val[8];
 };
+
+static inline bool sm_enabled(struct pkvm_iommu *iommu)
+{
+	return !!(iommu->viommu.vreg.rta & DMA_RTADDR_SMT);
+}
 
 static inline void entry_set_bits(u64 *ptr, u64 mask, u64 bits)
 {
