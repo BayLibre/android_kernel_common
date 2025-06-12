@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d970d16_af3e01ec",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-12T19:35:25Z",
+      "side": 1,
+      "message": "If we disable exports anyway, do we still need to add `|| defined(__PKVM_HYP__)` in aosp/3659737 ?\n\nAnd why exactly do we disable exports here (i.e. why is aosp/3659737 not enough)?",
+      "revId": "7d3b79d8fa090e950cdd5666361eac621c63afee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
