@@ -70,7 +70,6 @@ struct unix_sock {
 	struct path		path;
 	struct mutex		iolock, bindlock;
 	struct sock		*peer;
-	struct unix_vertex	*vertex;
 	struct list_head	link;
 	unsigned long		inflight;
 	spinlock_t		lock;
@@ -83,6 +82,7 @@ struct unix_sock {
 #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
 	struct sk_buff		*oob_skb;
 #endif
+	struct unix_vertex	*vertex;
 };
 
 #define unix_sk(ptr) container_of_const(ptr, struct unix_sock, sk)
