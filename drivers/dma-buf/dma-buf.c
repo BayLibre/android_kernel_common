@@ -162,6 +162,58 @@ static struct file_system_type dma_buf_fs_type = {
 	.kill_sb = kill_anon_super,
 };
 
+int dma_buf_account_to_mm(struct dma_buf *dmabuf, struct mm_struct *mm)
+{
+	struct dma_buf_record *r;
+
+	WARN_ON(!mm->dmabufs);
+
+	spin_lock(&mm->dmabufs->lock);
+	list_for_each_entry(r, &mm->dmabufs->refcounts, node) {
+		if (dmabuf == r->dmabuf) {
+			++r->refcount;
+			spin_unlock(&mm->dmabufs->lock);
+			return 0;
+		}
+	}
+
+	r = kmalloc(sizeof(*r), GFP_KERNEL);
+	if (!r) {
+		spin_unlock(&mm->dmabufs->lock);
+		return -ENOMEM;
+	}
+
+	r->dmabuf = dmabuf;
+	r->refcount = 1;
+	list_add(&r->node, &mm->dmabufs->refcounts);
+	mm->dmabufs->rss += dmabuf->size;
+	spin_unlock(&mm->dmabufs->lock);
+
+	return 0;
+}
+
+void dma_buf_unaccount_from_mm(struct dma_buf *dmabuf, struct mm_struct *mm)
+{
+	WARN_ON(!mm->dmabufs);
+
+	spin_lock(&mm->dmabufs->lock);
+	struct dma_buf_record *r;
+	list_for_each_entry(r, &mm->dmabufs->refcounts, node) {
+		if (dmabuf == r->dmabuf) {
+			if (--r->refcount)
+				goto out;
+
+			mm->dmabufs->rss -= r->dmabuf->size;
+			list_del(&r->node);
+			kfree(r);
+			goto out;
+		}
+	}
+	WARN(1, KERN_ERR "Dmabuf not found in MM\n");
+out:
+	spin_unlock(&mm->dmabufs->lock);
+}
+
 static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)
 {
 	struct dma_buf *dmabuf;

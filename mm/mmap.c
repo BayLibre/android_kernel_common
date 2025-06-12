@@ -49,6 +49,7 @@
 #include <linux/oom.h>
 #include <linux/sched/mm.h>
 #include <linux/ksm.h>
+#include <linux/dma-buf.h>
 
 #include <linux/uaccess.h>
 #include <asm/cacheflush.h>
@@ -86,6 +87,23 @@ static void unmap_region(struct mm_struct *mm, struct ma_state *mas,
 		struct vm_area_struct *vma, struct vm_area_struct *prev,
 		struct vm_area_struct *next, unsigned long start,
 		unsigned long end, unsigned long tree_end, bool mm_wr_locked);
+
+int call_mmap(struct file *file, struct vm_area_struct *vma)
+{
+	int ret;
+
+	if (is_dma_buf_file(file)) {
+		ret = dma_buf_account_to_mm(file->private_data, vma->vm_mm);
+		if (ret)
+			return ret;
+	}
+
+	ret = file->f_op->mmap(file, vma);
+	if (ret && is_dma_buf_file(file))
+		dma_buf_unaccount_from_mm(file->private_data, vma->vm_mm);
+
+	return ret;
+}
 
 static pgprot_t vm_pgprot_modify(pgprot_t oldprot, unsigned long vm_flags)
 {
@@ -144,8 +162,11 @@ static void remove_vma(struct vm_area_struct *vma, bool unreachable)
 {
 	might_sleep();
 	vma_close(vma);
-	if (vma->vm_file)
+	if (vma->vm_file) {
+		if (is_dma_buf_file(vma->vm_file))
+			dma_buf_unaccount_from_mm(vma->vm_file->private_data, vma->vm_mm);
 		fput(vma->vm_file);
+	}
 	mpol_put(vma_policy(vma));
 	if (unreachable)
 		__vm_area_free(vma);
