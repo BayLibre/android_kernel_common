@@ -1114,8 +1114,14 @@ void wake_up_q(struct wake_q_head *head)
 static void __resched_curr(struct rq *rq, int tif)
 {
 	struct task_struct *curr = rq->curr;
+<<<<<<< HEAD   (f62607aa89509bcda2fc90a13a027fa9da9e017e ANDROID: ABI: update symbol list for mtk)
 	struct thread_info *cti = task_thread_info(curr);
 	int cpu;
+||||||| BASE   (31e7de74001ff54e104169fe4eac13532860864f ANDROID: disable KABI macros for VDSO and EFI libstub)
+	int cpu;
+=======
+	int cpu, need_lazy = 0;
+>>>>>>> CHANGE (75547173ff9c2ebe5002749b07c5a1e45c87eb24 ANDROID: vendor_hooks: add one hook for lazy preemption)
 
 	lockdep_assert_rq_held(rq);
 
@@ -1127,6 +1133,10 @@ static void __resched_curr(struct rq *rq, int tif)
 		tif = TIF_NEED_RESCHED;
 
 	if (cti->flags & ((1 << tif) | _TIF_NEED_RESCHED))
+		return;
+
+	trace_android_vh_set_tsk_need_resched_lazy(curr, rq, &need_lazy);
+	if (need_lazy)
 		return;
 
 	cpu = cpu_of(rq);

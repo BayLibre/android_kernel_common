@@ -63,6 +63,82 @@ DECLARE_HOOK(android_vh_sched_show_task,
 	TP_PROTO(struct task_struct *task),
 	TP_ARGS(task));
 
+<<<<<<< HEAD   (f62607aa89509bcda2fc90a13a027fa9da9e017e ANDROID: ABI: update symbol list for mtk)
+||||||| BASE   (31e7de74001ff54e104169fe4eac13532860864f ANDROID: disable KABI macros for VDSO and EFI libstub)
+struct mutex_waiter;
+DECLARE_HOOK(android_vh_alter_mutex_list_add,
+	TP_PROTO(struct mutex *lock,
+		struct mutex_waiter *waiter,
+		struct list_head *list,
+		bool *already_on_list),
+	TP_ARGS(lock, waiter, list, already_on_list));
+DECLARE_HOOK(android_vh_mutex_unlock_slowpath,
+	TP_PROTO(struct mutex *lock),
+	TP_ARGS(lock));
+DECLARE_HOOK(android_vh_mutex_unlock_slowpath_before_wakeq,
+	TP_PROTO(struct mutex *lock),
+	TP_ARGS(lock));
+
+DECLARE_HOOK(android_vh_record_mutex_lock_starttime,
+	TP_PROTO(struct mutex *lock, unsigned long settime_jiffies),
+	TP_ARGS(lock, settime_jiffies));
+DECLARE_HOOK(android_vh_record_rtmutex_lock_starttime,
+	TP_PROTO(struct rt_mutex *lock, unsigned long settime_jiffies),
+	TP_ARGS(lock, settime_jiffies));
+DECLARE_HOOK(android_vh_record_rwsem_lock_starttime,
+	TP_PROTO(struct rw_semaphore *sem, unsigned long settime_jiffies),
+	TP_ARGS(sem, settime_jiffies));
+DECLARE_HOOK(android_vh_record_pcpu_rwsem_starttime,
+	TP_PROTO(struct percpu_rw_semaphore *sem, unsigned long settime_jiffies),
+	TP_ARGS(sem, settime_jiffies));
+
+DECLARE_HOOK(android_vh_exit_check,
+	TP_PROTO(struct task_struct *p),
+	TP_ARGS(p));
+
+DECLARE_RESTRICTED_HOOK(android_rvh_dpm_prepare,
+	TP_PROTO(int flag),
+	TP_ARGS(flag), 1);
+=======
+struct mutex_waiter;
+DECLARE_HOOK(android_vh_alter_mutex_list_add,
+	TP_PROTO(struct mutex *lock,
+		struct mutex_waiter *waiter,
+		struct list_head *list,
+		bool *already_on_list),
+	TP_ARGS(lock, waiter, list, already_on_list));
+DECLARE_HOOK(android_vh_mutex_unlock_slowpath,
+	TP_PROTO(struct mutex *lock),
+	TP_ARGS(lock));
+DECLARE_HOOK(android_vh_mutex_unlock_slowpath_before_wakeq,
+	TP_PROTO(struct mutex *lock),
+	TP_ARGS(lock));
+
+DECLARE_HOOK(android_vh_record_mutex_lock_starttime,
+	TP_PROTO(struct mutex *lock, unsigned long settime_jiffies),
+	TP_ARGS(lock, settime_jiffies));
+DECLARE_HOOK(android_vh_record_rtmutex_lock_starttime,
+	TP_PROTO(struct rt_mutex *lock, unsigned long settime_jiffies),
+	TP_ARGS(lock, settime_jiffies));
+DECLARE_HOOK(android_vh_record_rwsem_lock_starttime,
+	TP_PROTO(struct rw_semaphore *sem, unsigned long settime_jiffies),
+	TP_ARGS(sem, settime_jiffies));
+DECLARE_HOOK(android_vh_record_pcpu_rwsem_starttime,
+	TP_PROTO(struct percpu_rw_semaphore *sem, unsigned long settime_jiffies),
+	TP_ARGS(sem, settime_jiffies));
+
+DECLARE_HOOK(android_vh_exit_check,
+	TP_PROTO(struct task_struct *p),
+	TP_ARGS(p));
+
+DECLARE_RESTRICTED_HOOK(android_rvh_dpm_prepare,
+	TP_PROTO(int flag),
+	TP_ARGS(flag), 1);
+
+DECLARE_HOOK(android_vh_set_tsk_need_resched_lazy,
+	TP_PROTO(struct task_struct *p, struct rq *rq, int *need_lazy),
+	TP_ARGS(p, rq, need_lazy));
+>>>>>>> CHANGE (75547173ff9c2ebe5002749b07c5a1e45c87eb24 ANDROID: vendor_hooks: add one hook for lazy preemption)
 #endif /* _TRACE_HOOK_DTASK_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
