@@ -16,6 +16,24 @@
       "message": "If we disable exports anyway, do we still need to add `|| defined(__PKVM_HYP__)` in aosp/3659737 ?\n\nAnd why exactly do we disable exports here (i.e. why is aosp/3659737 not enough)?",
       "revId": "7d3b79d8fa090e950cdd5666361eac621c63afee",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65f6756e_7cf5d396",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-06-13T04:24:11Z",
+      "side": 1,
+      "message": "The reason we add \"|| defined(__PKVM_HYP__)\" is to disable exports (define DISABLE_EXPORTS). So that \"!defined(__DISABLE_EXPORTS) || defined(__PKVM_HYP__)\" can still be true.\n\nAnd the reason we disable exports because the arch/x86/lib/retpoline.S are exporting some symbols via EXPORT_SYMBOL, which doesn\u0027t have implementation in the pkvm. Alternative, rather than define DISABLE_EXPORTS here + aosp/3659737, changing include/linux/export.h by below is also fine.\ndiff --git a/include/linux/export.h b/include/linux/export.h\nindex a8c23d945634..e4ec88ce75dd 100644\n--- a/include/linux/export.h\n+++ b/include/linux/export.h\n@@ -32,7 +32,7 @@\n                __EXPORT_SYMBOL_REF(sym)        ASM_NL  \\\n        .previous\n\n-#if defined(__DISABLE_EXPORTS)\n+#if defined(__DISABLE_EXPORTS) || defined(__PKVM_HYP__)\n\nIt is much easier. But I feel like __DISABLE_EXPORTS is defined for the purpose of removing EXPORT_SYMBOL. And the files in aosp/3659737 are using __DISABLE_EXPORTS to decide if the code is kernel code or not. Probably a cleaner way is have another macro to be used to indicate a code is kernel code or not rather than reusing __DISABLE_EXPORTS. If this is true, then the current way of define DISABLE_EXPORTS here + aosp/3659737 is better.",
+      "parentUuid": "1d970d16_af3e01ec",
+      "revId": "7d3b79d8fa090e950cdd5666361eac621c63afee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
