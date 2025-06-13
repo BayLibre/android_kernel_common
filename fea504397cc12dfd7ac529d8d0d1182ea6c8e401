@@ -52,6 +52,24 @@
       "parentUuid": "c667d905_2daab236",
       "revId": "fea504397cc12dfd7ac529d8d0d1182ea6c8e401",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b78884e3_39ec84be",
+        "filename": "arch/x86/include/asm/nospec-branch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-06-13T04:33:25Z",
+      "side": 1,
+      "message": "Tried the same \"spectre_v2\u003dretpoline retbleed\u003dstuff retbleed\u003dforce\" in the qemu VM and the bare metal, but didn\u0027t encounter this page fault.\n\nThis page fault seems coming from the host kernel. The host code is wrongly patched with calling call_depth_return_thunk__pkvm, which is expected to be call_depth_return_thunk. As call_depth_return_thunk__pkvm will access pkvm\u0027s percpu memory which is not mapped in host MMU, causes page fault. If this is true, it seems like patch_pkvm for return is wrongly patching a host kernel text rather than a pkvm text?\n\nAnother issue is that, with CONFIG_PKVM_INTEL_DEBUG\u003dn, suppose call_depth_return_thunk__pkvm is protected by the EPT. Executing the code from the host should cause EPT violation first. Did you observe this kind of failure in this case? Or it is still the same page fault trace?\n\nFrom the call trace, seems the vmx_init is calling call_depth_return_thunk__pkvm. Is it possible to disassemble vmx_init to see if it calls call_depth_return_thunk__pkvm or call_depth_return_thunk? I disassembled vmx_init in a qemu VM environment, and it calls call_depth_return_thunk from my side: \"0xffffffff8314aba0 \u003c+176\u003e:   jmp    0xffffffff81edf810 \u003ccall_depth_return_thunk\u003e\". Probably that is the reason I didn\u0027t encounter this page fault. But still don\u0027t get what the difference making this issue happens from your side but didn\u0027t reproduced from our side. Also is it possible to share us your kernel config file?",
+      "parentUuid": "47173881_ac96fe2f",
+      "revId": "fea504397cc12dfd7ac529d8d0d1182ea6c8e401",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
