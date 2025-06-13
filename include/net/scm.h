@@ -28,10 +28,11 @@ struct scm_fp_list {
 	struct user_struct	*user;
 	struct file		*fp[SCM_MAX_FD];
 #ifndef __GENKSYMS__
-	short			count_unix;
 #ifdef CONFIG_UNIX
 	struct list_head	vertices;
 #endif
+	/* IMPORTANT: Keep count_unix at the end of the structure */
+	short			count_unix;
 #endif
 };
 

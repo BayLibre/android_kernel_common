@@ -374,7 +374,7 @@ struct scm_fp_list *scm_fp_dup(struct scm_fp_list *fpl)
 	if (!fpl)
 		return NULL;
 
-	new_fpl = kmemdup(fpl, offsetof(struct scm_fp_list, fp[fpl->count]),
+	new_fpl = kmemdup(fpl, offsetof(struct scm_fp_list, count_unix),
 			  GFP_KERNEL_ACCOUNT);
 	if (new_fpl) {
 		for (i = 0; i < fpl->count; i++)
