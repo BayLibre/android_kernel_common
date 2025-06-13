@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdfe6e49_6b7d06d8",
+        "filename": "drivers/android/binder/freeze.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2025-06-13T22:59:41Z",
+      "side": 1,
+      "message": "Nit: In your other similar case, you did this as new method, and made what you called \"new\" here be \"init\" instead. Maybe they should align?",
+      "revId": "a0d9beadb09117305a75cd6503e4c34c02db9acc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a54b0b7_d072d943",
+        "filename": "drivers/android/binder/freeze.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2025-06-13T22:59:41Z",
+      "side": 1,
+      "message": "Nit: Maybe `request_freeze_notification` or similar to make it clear that this is not a request to freeze the process, but a request to be notified when another process is frozen. (Especially given that `ioctl_freeze` is also a method on a process)",
+      "revId": "a0d9beadb09117305a75cd6503e4c34c02db9acc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e7da335_d39a490a",
+        "filename": "drivers/android/binder/freeze.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2025-06-13T22:59:41Z",
+      "side": 1,
+      "message": "I feel like this could use a comment. What I *think* I figured out:\n\n`procs` is a temp buffer to copy the freeze_list to so that allocation of `batch` (both vector and elements) don\u0027t need to happen with the inner lock held.",
+      "revId": "a0d9beadb09117305a75cd6503e4c34c02db9acc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "191bb579_fba38a8d",
+        "filename": "drivers/android/binder/freeze.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2025-06-13T22:59:41Z",
+      "side": 1,
+      "message": "This loop seems like it has excessive lock traffic for what you\u0027re trying to do? What if instead of unlocking + relocking for each node, we did (very very pseudo-code)\n\n```\nloop {\nlet mut count;\nlock()\ncount \u003d /* iterate nodes and count */;\nif count \u003c\u003d batch.capacity() {\n  /* iterate nodes and fill batch out */\n  return batch;\n}\nunlock()\nbatch.reserve(count)?;\nprealloc.reserve(count)?;\nfor _ in prealloc.len()..prealloc.capacity() {\n  prealloc.push(ArcUnique::new_uninit())?;\n}\n}\n```\n\nThis would mean that in the \"good\" case (your initial vectors are big enough), you\u0027d lock and unlock once, but still keep all the allocations outside the lock. This also avoids the calls to `cursor_lower_bound`, because you don\u0027t need to do an intermediate unlock.",
+      "revId": "a0d9beadb09117305a75cd6503e4c34c02db9acc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1a9d8c3_855efb9c",
+        "filename": "drivers/android/binder/node.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2025-06-13T22:59:41Z",
+      "side": 1,
+      "message": "Not for this CL, but this idiom of \"I need to append to this locked vector, but am not allowed to alloc while holding the lock\" should probably get an abstraction someday",
+      "revId": "a0d9beadb09117305a75cd6503e4c34c02db9acc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
