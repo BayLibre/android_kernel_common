@@ -1222,7 +1222,7 @@ static inline enum dma_data_direction uvc_stream_dir(
 
 static inline struct device *uvc_stream_to_dmadev(struct uvc_streaming *stream)
 {
-	return bus_to_hcd(stream->dev->udev->bus)->self.sysdev;
+	return stream->dev->dma_dev;
 }
 
 static int uvc_submit_urb(struct uvc_urb *uvc_urb, gfp_t mem_flags)
