@@ -34,6 +34,24 @@
       "parentUuid": "1d970d16_af3e01ec",
       "revId": "7d3b79d8fa090e950cdd5666361eac621c63afee",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1bab88a_7c3a86ed",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-13T09:34:18Z",
+      "side": 1,
+      "message": "\u003e The reason we add \"|| defined(PKVM_HYP)\" is to disable exports (define DISABLE_EXPORTS). So that \"!defined(DISABLE_EXPORTS) || defined(PKVM_HYP__)\" can still be true.\n\nAh ok, I missed that it checks for \"!defined(\\_\\_DISABLE_EXPORTS)\", not for \"defined(\\_\\_DISABLE_EXPORTS)\", and that we\u0027ve been already disabling \\_\\_DISABLE_EXPORTS in ccflags above.\n\n\u003e [...] It is much easier. But I feel like __DISABLE_EXPORTS is defined for the purpose of removing EXPORT_SYMBOL. And the files in aosp/3659737 are using __DISABLE_EXPORTS to decide if the code is kernel code or not. Probably a cleaner way is have another macro to be used to indicate a code is kernel code or not rather than reusing __DISABLE_EXPORTS. If this is true, then the current way of define DISABLE_EXPORTS here + aosp/3659737 is better.\n\nYeah, makes sense. Basically I\u0027m ok with either solution.",
+      "parentUuid": "65f6756e_7cf5d396",
+      "revId": "7d3b79d8fa090e950cdd5666361eac621c63afee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
