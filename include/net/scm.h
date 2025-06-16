@@ -27,10 +27,17 @@ struct scm_fp_list {
 	short			max;
 	struct user_struct	*user;
 	struct file		*fp[SCM_MAX_FD];
-#ifndef __GENKSYMS__
-	short			count_unix;
-#endif
 };
+
+struct scm_fp_list_ext {
+	short			count_unix;
+	struct scm_fp_list	fpl;
+};
+
+static inline struct scm_fp_list_ext *fpl_to_fpl_ext(struct scm_fp_list *fpl)
+{
+	return container_of(fpl, struct scm_fp_list_ext, fpl);
+}
 
 struct scm_cookie {
 	struct pid		*pid;		/* Skb credentials */
