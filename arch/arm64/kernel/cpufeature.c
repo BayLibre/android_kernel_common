@@ -2444,13 +2444,6 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
 		.matches = has_cache_dic,
 	},
 	{
-		.desc = "Stage-2 Force Write-Back",
-		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
-		.capability = ARM64_HAS_STAGE2_FWB,
-		.matches = has_cpuid_feature,
-		ARM64_CPUID_FIELDS(ID_AA64MMFR2_EL1, FWB, IMP)
-	},
-	{
 		.desc = "ARMv8.4 Translation Table Level",
 		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
 		.capability = ARM64_HAS_ARMv8_4_TTL,
