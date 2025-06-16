@@ -68,6 +68,7 @@ static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp)
 {
 	int *fdp = (int*)CMSG_DATA(cmsg);
 	struct scm_fp_list *fpl = *fplp;
+	struct scm_fp_list_ext *fpl_ext;
 	struct file **fpp;
 	int i, num;
 
@@ -81,12 +82,14 @@ static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp)
 
 	if (!fpl)
 	{
-		fpl = kmalloc(sizeof(struct scm_fp_list), GFP_KERNEL_ACCOUNT);
-		if (!fpl)
+		fpl_ext = kmalloc(sizeof(struct scm_fp_list_ext), GFP_KERNEL_ACCOUNT);
+		if (!fpl_ext)
 			return -ENOMEM;
+		fpl = &fpl_ext->fpl;
+
 		*fplp = fpl;
 		fpl->count = 0;
-		fpl->count_unix = 0;
+		fpl_ext->count_unix = 0;
 		fpl->max = SCM_MAX_FD;
 		fpl->user = NULL;
 	}
@@ -112,7 +115,7 @@ static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp)
 			return -EINVAL;
 		}
 		if (unix_get_socket(file))
-			fpl->count_unix++;
+			fpl_ext->count_unix++;
 
 		*fpp++ = file;
 		fpl->count++;
@@ -365,7 +368,10 @@ EXPORT_SYMBOL(scm_detach_fds);
 
 struct scm_fp_list *scm_fp_dup(struct scm_fp_list *fpl)
 {
-	struct scm_fp_list *new_fpl;
+	struct scm_fp_list *new_fpl = NULL;
+	struct scm_fp_list_ext *new_fpl_ext;
+	struct scm_fp_list_ext *fpl_ext = fpl_to_fpl_ext(fpl);
+	unsigned int fpl_ext_len;
 	int i;
 
 	static unsigned int count = 0;
@@ -382,11 +388,15 @@ struct scm_fp_list *scm_fp_dup(struct scm_fp_list *fpl)
 	printk("LEE: %s %s()[%d]: [%u] whole: %u chopped: %u saved: %u total_saved: %llu\n",
 		__FILE__, __func__, __LINE__, count, whole, chopped, saved, total_saved);
 
-	new_fpl = kmemdup(fpl, offsetof(struct scm_fp_list, fp[fpl->count]),
-			  GFP_KERNEL_ACCOUNT);
-	if (new_fpl) {
+	fpl_ext_len =
+		sizeof(*fpl_ext) - (sizeof(*fpl) - offsetof(struct scm_fp_list, fp[fpl->count]));
+
+	new_fpl_ext = kmemdup(fpl, fpl_ext_len, GFP_KERNEL_ACCOUNT);
+	if (new_fpl_ext) {
 		for (i = 0; i < fpl->count; i++)
 			get_file(fpl->fp[i]);
+
+		new_fpl = &new_fpl_ext->fpl;
 		new_fpl->max = new_fpl->count;
 		new_fpl->user = get_uid(fpl->user);
 	}
