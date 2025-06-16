@@ -531,12 +531,6 @@ config FORCE_MAX_ZONEORDER
 	int
 
 #
-# Select this config option from the ARM64 architecture Kconfig to set
-# the page size to 16KB.
-# See b/424212284 for more information.
-config ARM64_16K_PAGES
-	bool
-
 # When FORCE_MAX_ZONEORDER is not defined,
 # the default page block order is MAX_ORDER (10) as per
 # include/linux/mmzone.h.
@@ -545,7 +539,6 @@ config PAGE_BLOCK_ORDER
 	int "Page Block Order"
 	range 1 10 if FORCE_MAX_ZONEORDER = 0 || FORCE_MAX_ZONEORDER = ""
 	default 10 if FORCE_MAX_ZONEORDER = 0 || FORCE_MAX_ZONEORDER = ""
-	default 8 if ARM64_16K_PAGES
 	range 1 FORCE_MAX_ZONEORDER if FORCE_MAX_ZONEORDER != 0
 	default FORCE_MAX_ZONEORDER if FORCE_MAX_ZONEORDER != 0
 	help
