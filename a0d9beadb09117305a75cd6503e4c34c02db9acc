@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6271a1d3_4732b470",
+        "filename": "drivers/android/binder/freeze.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-06-16T11:01:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdfe6e49_6b7d06d8",
+      "revId": "a0d9beadb09117305a75cd6503e4c34c02db9acc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a54b0b7_d072d943",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-06-13T22:59:41Z",
       "side": 1,
       "message": "Nit: Maybe `request_freeze_notification` or similar to make it clear that this is not a request to freeze the process, but a request to be notified when another process is frozen. (Especially given that `ioctl_freeze` is also a method on a process)",
+      "revId": "a0d9beadb09117305a75cd6503e4c34c02db9acc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "235ea8c4_878d90df",
+        "filename": "drivers/android/binder/freeze.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-06-16T11:01:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a54b0b7_d072d943",
       "revId": "a0d9beadb09117305a75cd6503e4c34c02db9acc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -52,6 +88,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9214dec2_6f4b7dcd",
+        "filename": "drivers/android/binder/freeze.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-06-16T11:01:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e7da335_d39a490a",
+      "revId": "a0d9beadb09117305a75cd6503e4c34c02db9acc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "191bb579_fba38a8d",
@@ -69,6 +123,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c58d4d2_4fc9ea8a",
+        "filename": "drivers/android/binder/freeze.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-06-16T11:01:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "191bb579_fba38a8d",
+      "revId": "a0d9beadb09117305a75cd6503e4c34c02db9acc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1a9d8c3_855efb9c",
@@ -82,6 +154,24 @@
       "writtenOn": "2025-06-13T22:59:41Z",
       "side": 1,
       "message": "Not for this CL, but this idiom of \"I need to append to this locked vector, but am not allowed to alloc while holding the lock\" should probably get an abstraction someday",
+      "revId": "a0d9beadb09117305a75cd6503e4c34c02db9acc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80feb70d_e6f0a043",
+        "filename": "drivers/android/binder/node.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-06-16T11:01:50Z",
+      "side": 1,
+      "message": "Agreed.",
+      "parentUuid": "d1a9d8c3_855efb9c",
       "revId": "a0d9beadb09117305a75cd6503e4c34c02db9acc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
