@@ -533,6 +533,9 @@ DECLARE_HOOK(android_vh_filemap_add_folio,
 	TP_PROTO(struct address_space *mapping, struct folio *folio,
 		pgoff_t index),
 	TP_ARGS(mapping, folio, index));
+DECLARE_HOOK(android_vh_mempool_alloc_skip_wait,
+	TP_PROTO(gfp_t *gfp_flags, bool *skip_wait),
+	TP_ARGS(gfp_flags, skip_wait));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */

@@ -575,3 +575,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shrink_node);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpuset_fork);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_alloc_uid);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_free_user);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mempool_alloc_skip_wait);
