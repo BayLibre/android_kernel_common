@@ -387,6 +387,8 @@ void unix_gc(void)
 
 void wait_for_unix_gc(struct scm_fp_list *fpl)
 {
+	struct scm_fp_list_ext *fpl_ext = fpl_to_fpl_ext(fpl);
+
 	/* If number of inflight sockets is insane,
 	 * force a garbage collect right now.
 	 *
@@ -400,7 +402,7 @@ void wait_for_unix_gc(struct scm_fp_list *fpl)
 	/* Penalise users who want to send AF_UNIX sockets
 	 * but whose sockets have not been received yet.
 	 */
-	if (!fpl || !fpl->count_unix ||
+	if (!fpl || !fpl_ext->count_unix ||
 	    READ_ONCE(fpl->user->unix_inflight) < UNIX_INFLIGHT_SANE_USER)
 		return;
 
