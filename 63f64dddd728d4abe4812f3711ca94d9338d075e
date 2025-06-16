@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53f6c24e_90b234ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-06-16T21:28:03Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by KernelCommit: Commit does not refer to the upstream commit.\n\nAnalyzer Description: Ensures that kernel commit messages follow the guidelines.\nOwner: android-kernel-team@google.com\n\nCommit does not refer to the upstream commit.\nPlease add a line like \u0027(cherry picked from commit \u003cfull-sha1\u003e)\u0027.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\n\n----\n\nThis may be fixed by fixing the commit message title.",
+      "revId": "63f64dddd728d4abe4812f3711ca94d9338d075e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4f003a8_9ca4cec3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-06-16T21:28:03Z",
+      "side": 1,
+      "message": "Gerrit ignores everything after `Change-Id:`, so all these lines need to be moved above it to fix the linter errors.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 45
+      },
+      "revId": "63f64dddd728d4abe4812f3711ca94d9338d075e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
