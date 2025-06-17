@@ -298,11 +298,11 @@ static void ffa_mem_frag_rx(struct arm_smccc_1_2_regs *res, u32 handle_lo,
 			     u32 handle_hi, u32 fragoff)
 {
 	arm_smccc_1_2_smc(&(struct arm_smccc_1_2_regs) {
-		.a0 = FFA_MEM_FRAG_TX,
+		.a0 = FFA_MEM_FRAG_RX,
 		.a1 = handle_lo,
 		.a2 = handle_hi,
-		.a3 = fraglen,
-		.a4 = endpoint_id,
+		.a3 = fragoff,
+		.a4 = HOST_FFA_ID,
 	}, res);
 }
 
@@ -1283,7 +1283,8 @@ out_handled:
 	return true;
 }
 
-static void do_ffa_guest_features(struct arm_smccc_res *res, struct kvm_cpu_context *ctxt)
+static void do_ffa_guest_features(struct arm_smccc_1_2_regs *regs,
+				  struct kvm_cpu_context *ctxt)
 {
 	DECLARE_REG(u32, id, ctxt, 1);
 	u64 prop = 0;
@@ -1315,7 +1316,7 @@ static void do_ffa_guest_features(struct arm_smccc_res *res, struct kvm_cpu_cont
 	}
 
 out_handled:
-	ffa_to_smccc_res_prop(res, ret, prop);
+	ffa_to_smccc_res_prop(regs, ret, prop);
 }
 
 static void do_ffa_part_get_response(struct arm_smccc_1_2_regs *res,
@@ -1454,25 +1455,26 @@ unlock:
 	hyp_spin_unlock(&version_lock);
 }
 
-static void do_ffa_guest_version(struct arm_smccc_res *res, struct kvm_cpu_context *ctxt,
+static void do_ffa_guest_version(struct arm_smccc_1_2_regs *regs,
+				 struct kvm_cpu_context *ctxt,
 				 struct pkvm_hyp_vcpu *hyp_vcpu)
 {
 	DECLARE_REG(u32, ffa_req_version, ctxt, 1);
 
 	if (FFA_MAJOR_VERSION(ffa_req_version) != 1) {
-		res->a0 = FFA_RET_NOT_SUPPORTED;
+		regs->a0 = FFA_RET_NOT_SUPPORTED;
 		return;
 	}
 
 	hyp_spin_lock(&version_lock);
 	if (has_version_negotiated)
-		res->a0 = hyp_ffa_version;
+		regs->a0 = hyp_ffa_version;
 	else
-		res->a0 = FFA_RET_NOT_SUPPORTED;
+		regs->a0 = FFA_RET_NOT_SUPPORTED;
 	hyp_spin_unlock(&version_lock);
 }
 
-static void do_ffa_part_get(struct arm_smccc_res *res,
+static void do_ffa_part_get(struct arm_smccc_1_2_regs *res,
 			    struct kvm_cpu_context *ctxt,
 			    struct pkvm_hyp_vcpu *hyp_vcpu)
 {
@@ -1651,7 +1653,7 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 {
 	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
 	struct kvm_cpu_context *ctxt = &vcpu->arch.ctxt;
-	struct arm_smccc_res res;
+	struct arm_smccc_1_2_regs res;
 	int ret, hyp_alloc_ret;
 	struct kvm_hyp_req *req;
 
@@ -1755,7 +1757,7 @@ static void kvm_guest_try_reclaim_transfer(struct ffa_mem_transfer *transfer,
 					   struct pkvm_hyp_vm *vm)
 {
 	struct ffa_translation *translation, *tmp;
-	struct arm_smccc_res res;
+	struct arm_smccc_1_2_regs res;
 
 	ffa_mem_reclaim(&res, HANDLE_LOW(transfer->ffa_handle),
 			HANDLE_HIGH(transfer->ffa_handle), 0);
