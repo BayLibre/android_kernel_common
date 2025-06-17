@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73db38d0_00f0fd97",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1515,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-17T16:16:18Z",
+      "side": 1,
+      "message": "nit: guarantees",
+      "fixSuggestions": [
+        {
+          "fixId": "ea41fa41_f0ee756e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 1515,
+                "startChar": 0,
+                "endLine": 1516,
+                "endChar": 0
+              },
+              "replacement": "\t * security guarantees. So disable pkvm and proceed.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "46d1250cabb901049bd5d3f5fc0306717845adf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
