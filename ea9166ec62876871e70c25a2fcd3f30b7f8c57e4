@@ -44,6 +44,24 @@
       ],
       "revId": "ea9166ec62876871e70c25a2fcd3f30b7f8c57e4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "470a881e_f89684db",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 921,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-17T20:16:59Z",
+      "side": 1,
+      "message": "Yep I do know :-). When I wrote this function, my intent was to improve readability by avoiding nested if blocks. So I wrote this helper function and by annotating it inline and having double underscore, I was implicitly commenting that this function is a specific helper function to set the hooks inline by the caller and not to be generically used. I think thats a minimal value that it brings.",
+      "parentUuid": "475b6084_81bf791b",
+      "revId": "ea9166ec62876871e70c25a2fcd3f30b7f8c57e4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

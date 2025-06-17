@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c50acc6_9961d94e",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 2401,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-17T20:16:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9aa8660_3accabbe",
+      "revId": "753c2fbbc29b45a7d14c94f0c25d28e9b32b2e62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2a39a50_f2b248a8",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a46ce10_eed02766",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 2431,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-17T20:16:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2a39a50_f2b248a8",
+      "revId": "753c2fbbc29b45a7d14c94f0c25d28e9b32b2e62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6841c7a_7bc16131",
@@ -48,6 +84,24 @@
       "writtenOn": "2025-06-17T17:13:01Z",
       "side": 1,
       "message": "It looks like the only job of init_no_remapping_devices() is to set drhd-\u003eignored (plus it may also set drhd-\u003egfx_dedicated, but it is only used in iommu_disable_translation(), and with pKVM we shouldn\u0027t really disable translation anyway). So it is much simpler to just bail out early at the beginning of init_no_remapping_devices(), without any other changes to its code?",
+      "revId": "753c2fbbc29b45a7d14c94f0c25d28e9b32b2e62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da34b5e6_12f6ce17",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 2443,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-17T20:16:59Z",
+      "side": 1,
+      "message": "yeah true, I did it this way to give user a warning about why his commandline parameter was ignored. But as you mentioned, this commandline would anyways be ignored or deemed useless. Will modify as you suggested.",
+      "parentUuid": "d6841c7a_7bc16131",
       "revId": "753c2fbbc29b45a7d14c94f0c25d28e9b32b2e62",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
