@@ -103,9 +103,10 @@ struct unix_sock *unix_get_socket(struct file *filp)
 
 static void unix_free_vertices(struct scm_fp_list *fpl)
 {
+	struct scm_fp_list_ext *fpl_ext = fpl_to_fpl_ext(fpl);
 	struct unix_vertex *vertex, *next_vertex;
 
-	list_for_each_entry_safe(vertex, next_vertex, &fpl->vertices, entry) {
+	list_for_each_entry_safe(vertex, next_vertex, &fpl_ext->vertices, entry) {
 		list_del(&vertex->entry);
 		kfree(vertex);
 	}
@@ -113,18 +114,19 @@ static void unix_free_vertices(struct scm_fp_list *fpl)
 
 int unix_prepare_fpl(struct scm_fp_list *fpl)
 {
+	struct scm_fp_list_ext *fpl_ext = fpl_to_fpl_ext(fpl);
 	struct unix_vertex *vertex;
 	int i;
 
-	if (!fpl->count_unix)
+	if (!fpl_ext->count_unix)
 		return 0;
 
-	for (i = 0; i < fpl->count_unix; i++) {
+	for (i = 0; i < fpl_ext->count_unix; i++) {
 		vertex = kmalloc(sizeof(*vertex), GFP_KERNEL);
 		if (!vertex)
 			goto err;
 
-		list_add(&vertex->entry, &fpl->vertices);
+		list_add(&vertex->entry, &fpl_ext->vertices);
 	}
 
 	return 0;
