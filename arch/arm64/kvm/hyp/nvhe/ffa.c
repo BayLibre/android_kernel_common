@@ -162,30 +162,12 @@ static int ffa_host_clear_handle(u64 ffa_handle)
 	return 0;
 }
 
-static void ffa_to_smccc_error(struct arm_smccc_res *res, u64 ffa_errno)
-{
-	*res = (struct arm_smccc_res) {
-		.a0	= FFA_ERROR,
-		.a2	= ffa_errno,
-	};
-}
-
 static void ffa_to_smccc_1_2_error(struct arm_smccc_1_2_regs *regs, u64 ffa_errno)
 {
 	*regs = (struct arm_smccc_1_2_regs) {
 		.a0	= FFA_ERROR,
 		.a2	= ffa_errno,
 	};
-}
-
-static void ffa_to_smccc_res_prop(struct arm_smccc_res *res, int ret, u64 prop)
-{
-	if (ret == FFA_RET_SUCCESS) {
-		*res = (struct arm_smccc_res) { .a0 = FFA_SUCCESS,
-						.a2 = prop };
-	} else {
-		ffa_to_smccc_error(res, ret);
-	}
 }
 
 static void ffa_to_smccc_regs_prop(struct arm_smccc_1_2_regs *regs, int ret,
@@ -197,11 +179,6 @@ static void ffa_to_smccc_regs_prop(struct arm_smccc_1_2_regs *regs, int ret,
 	} else {
 		ffa_to_smccc_1_2_error(regs, ret);
 	}
-}
-
-static void ffa_to_smccc_res(struct arm_smccc_res *res, int ret)
-{
-	ffa_to_smccc_res_prop(res, ret, 0);
 }
 
 static void ffa_to_smccc_regs(struct arm_smccc_1_2_regs *regs, int ret)
@@ -1317,7 +1294,8 @@ out_handled:
 	return true;
 }
 
-static void do_ffa_guest_features(struct arm_smccc_res *res, struct kvm_cpu_context *ctxt)
+static void do_ffa_guest_features(struct arm_smccc_1_2_regs *regs,
+				  struct kvm_cpu_context *ctxt)
 {
 	DECLARE_REG(u32, id, ctxt, 1);
 	u64 prop = 0;
@@ -1349,7 +1327,7 @@ static void do_ffa_guest_features(struct arm_smccc_res *res, struct kvm_cpu_cont
 	}
 
 out_handled:
-	ffa_to_smccc_res_prop(res, ret, prop);
+	ffa_to_smccc_regs_prop(regs, ret, prop);
 }
 
 static void do_ffa_part_get_response(struct arm_smccc_1_2_regs *regs,
@@ -1499,21 +1477,22 @@ unlock:
 	hyp_spin_unlock(&version_lock);
 }
 
-static void do_ffa_guest_version(struct arm_smccc_res *res, struct kvm_cpu_context *ctxt,
+static void do_ffa_guest_version(struct arm_smccc_1_2_regs *regs,
+				 struct kvm_cpu_context *ctxt,
 				 struct pkvm_hyp_vcpu *hyp_vcpu)
 {
 	DECLARE_REG(u32, ffa_req_version, ctxt, 1);
 
 	if (FFA_MAJOR_VERSION(ffa_req_version) != 1) {
-		res->a0 = FFA_RET_NOT_SUPPORTED;
+		regs->a0 = FFA_RET_NOT_SUPPORTED;
 		return;
 	}
 
 	hyp_spin_lock(&version_lock);
 	if (has_version_negotiated)
-		res->a0 = hyp_ffa_version;
+		regs->a0 = hyp_ffa_version;
 	else
-		res->a0 = FFA_RET_NOT_SUPPORTED;
+		regs->a0 = FFA_RET_NOT_SUPPORTED;
 	hyp_spin_unlock(&version_lock);
 }
 
@@ -1696,7 +1675,7 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 {
 	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
 	struct kvm_cpu_context *ctxt = &vcpu->arch.ctxt;
-	struct arm_smccc_res res;
+	struct arm_smccc_1_2_regs regs;
 	int ret, hyp_alloc_ret;
 	struct kvm_hyp_req *req;
 
@@ -1715,41 +1694,41 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 
 	switch (func_id) {
 	case FFA_FEATURES:
-		do_ffa_guest_features(&res, ctxt);
+		do_ffa_guest_features(&regs, ctxt);
 		goto out_guest;
 	case FFA_VERSION:
-		do_ffa_guest_version(&res, ctxt, hyp_vcpu);
+		do_ffa_guest_version(&regs, ctxt, hyp_vcpu);
 		goto out_guest;
 	case FFA_FN64_RXTX_MAP:
 		ret = do_ffa_rxtx_guest_map(ctxt, hyp_vcpu);
 		break;
 	case FFA_RXTX_UNMAP:
-		do_ffa_rxtx_unmap(&res, ctxt, hyp_vcpu);
+		do_ffa_rxtx_unmap(&regs, ctxt, hyp_vcpu);
 		goto out_guest;
 	case FFA_MEM_RECLAIM:
-		do_ffa_mem_reclaim(&res, ctxt, hyp_vcpu);
+		do_ffa_mem_reclaim(&regs, ctxt, hyp_vcpu);
 		goto out_guest;
 	case FFA_MEM_SHARE:
 	case FFA_FN64_MEM_SHARE:
-		ret = do_ffa_mem_xfer(FFA_FN64_MEM_SHARE, &res, ctxt, hyp_vcpu);
+		ret = do_ffa_mem_xfer(FFA_FN64_MEM_SHARE, &regs, ctxt, hyp_vcpu);
 		if (!ret)
 			goto out_guest;
 		break;
 	case FFA_MEM_LEND:
 	case FFA_FN64_MEM_LEND:
-		ret = do_ffa_mem_xfer(FFA_FN64_MEM_LEND, &res, ctxt, hyp_vcpu);
+		ret = do_ffa_mem_xfer(FFA_FN64_MEM_LEND, &regs, ctxt, hyp_vcpu);
 		if (!ret)
 			goto out_guest;
 		break;
 	case FFA_ID_GET:
-		ffa_to_smccc_res_prop(&res, FFA_RET_SUCCESS, hyp_vcpu_to_ffa_handle(hyp_vcpu));
+		ffa_to_smccc_regs_prop(&regs, FFA_RET_SUCCESS, hyp_vcpu_to_ffa_handle(hyp_vcpu));
 		goto out_guest;
 	case FFA_PARTITION_INFO_GET:
-		do_ffa_part_get(&res, ctxt, hyp_vcpu);
+		do_ffa_part_get(&regs, ctxt, hyp_vcpu);
 		goto out_guest;
 	case FFA_RX_RELEASE:
 		hyp_spin_lock(&kvm_ffa_hyp_lock);
-		ffa_rx_release(&res);
+		ffa_rx_release(&regs);
 		hyp_spin_unlock(&kvm_ffa_hyp_lock);
 		goto out_guest;
 	case FFA_MSG_SEND_DIRECT_REQ:
@@ -1790,9 +1769,9 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 	}
 
 out_guest_with_ret:
-	ffa_to_smccc_res(&res, linux_errno_to_ffa(ret));
+	ffa_to_smccc_regs(&regs, linux_errno_to_ffa(ret));
 out_guest:
-	ffa_set_retval(ctxt, &res);
+	ffa_set_retval(ctxt, &regs);
 	return true;
 }
 
@@ -1800,11 +1779,11 @@ static void kvm_guest_try_reclaim_transfer(struct ffa_mem_transfer *transfer,
 					   struct pkvm_hyp_vm *vm)
 {
 	struct ffa_translation *translation, *tmp;
-	struct arm_smccc_res res;
+	struct arm_smccc_1_2_regs regs;
 
-	ffa_mem_reclaim(&res, HANDLE_LOW(transfer->ffa_handle),
+	ffa_mem_reclaim(&regs, HANDLE_LOW(transfer->ffa_handle),
 			HANDLE_HIGH(transfer->ffa_handle), 0);
-	if (res.a0 != FFA_SUCCESS)
+	if (regs.a0 != FFA_SUCCESS)
 		return;
 
 	list_for_each_entry_safe(translation, tmp, &transfer->translations, node) {
