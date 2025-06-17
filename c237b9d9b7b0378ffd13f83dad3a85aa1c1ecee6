@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d641e202_cca1be68",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1414,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-17T12:48:58Z",
+      "side": 1,
+      "message": "I was really hoping we can switch to using pkvm_enabled() instead of enable_pkvm in various places in KVM code, and remove the hack in vmx_init() which resets enable_pkvm to false if vmx_pkvm_init() fails...\n\nCould you elaborate about IRQ_REMAP? Is it expected that kernel is trying to use it even though IOMMU initialization failed?",
+      "parentUuid": "7b23f80d_153fd811",
+      "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb54e905_6c0cf047",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 7
@@ -137,6 +155,24 @@
       "side": 1,
       "message": "Fixed the error handling.\n\nI think that its best to have iommu logic outside of vmx_pkvm_init(as the name suggest). Already vmx_pkvm_init is a huge function with lots of error handling and related gotos. Adding to the mix, the case of having to call iommu_init regardless of failures etc will become really complicated. I agree, its doable but not worth it and not as readable as my current implementation. I think this code is much better in terms of readability and logical grouping. I would like to have the code as it is now, please :-)",
       "parentUuid": "1b73a93d_4a78ac60",
+      "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "207e0fc8_02b3871c",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1520,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-17T12:48:58Z",
+      "side": 1,
+      "message": "Ok, I think the latest version looks quite nice.",
+      "parentUuid": "b0da5b4d_a9e930d6",
       "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }

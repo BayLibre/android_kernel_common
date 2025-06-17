@@ -142,6 +142,24 @@
       "parentUuid": "75d0cff7_30eedb4a",
       "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03777b53_59c16423",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-17T12:48:58Z",
+      "side": 1,
+      "message": "\u003e but also things like preventing host os from directly accessing protected devices\n\nWe don\u0027t really support device assignment yet. And even if we did, it doesn\u0027t necessarily mean support for such use cases when the device needs to be protected from the host all the time, not just when it is assigned to a pVM. Although I can imagine such use cases, it is not clear whether we will ever need to support them. For instance, the existing pKVM-ARM\u0027s support for device assignment, if I\u0027m not mistaken, does not support such use cases, it assumes that a device only needs protection from the host throughout the lifecycle of a pVM it is assigned to, not the rest of the time.\n\n\u003e preventing compromised devices to access memory etc.\n\nAs we discussed, that is not pKVM\u0027s concern.\n\n\u003e Or have a mechanism to notify the user explicitly that pkvm is disabled\n\nThe lack of advertising KVM_X86_PKVM_PROTECTED_VM in kvm_caps.supported_vm_types is this mechanism, right?",
+      "parentUuid": "3f157fa8_90ad712d",
+      "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
