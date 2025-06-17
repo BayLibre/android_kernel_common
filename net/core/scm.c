@@ -93,7 +93,7 @@ static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp)
 		fpl->max = SCM_MAX_FD;
 		fpl->user = NULL;
 #if IS_ENABLED(CONFIG_UNIX)
-		INIT_LIST_HEAD(&fpl->vertices);
+		INIT_LIST_HEAD(&fpl_ext->vertices);
 #endif
 	}
 	fpp = &fpl->fp[fpl->count];
@@ -392,7 +392,7 @@ struct scm_fp_list *scm_fp_dup(struct scm_fp_list *fpl)
 		new_fpl->max = new_fpl->count;
 		new_fpl->user = get_uid(fpl->user);
 #if IS_ENABLED(CONFIG_UNIX)
-		INIT_LIST_HEAD(&new_fpl->vertices);
+		INIT_LIST_HEAD(&new_fpl_ext->vertices);
 #endif
 	}
 	return new_fpl;
