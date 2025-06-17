@@ -160,6 +160,24 @@
       "parentUuid": "3f157fa8_90ad712d",
       "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac267804_b84c5c17",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-17T13:12:42Z",
+      "side": 1,
+      "message": "\u003e\u003e preventing compromised devices to access memory etc.\n\n\u003e As we discussed, that is not pKVM\u0027s concern.\n\nAh ok, I thought this was indeed pkvms concern and thats one of the reasons we were pushing on disabling ATS.\n\n\u003e The lack of advertising KVM_X86_PKVM_PROTECTED_VM in kvm_caps.supported_vm_types is this mechanism, right?\n\nMy view of pkvm was just not its capability of creating and managing protected VM, but making sure that compromise of host os will not lead to compromised user data. This includes protecting secure devices from host access and making sure only devices get to access memory they are authorized to. If the goal of pkvm is only to make sure that protected vms will be *protected* from malicious access, and secure devices need to be protected only during the lifecycle of the VM, then I agree with you, letting the system boot with out pkvm on pkvm failure is perfectly fine",
+      "parentUuid": "03777b53_59c16423",
+      "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

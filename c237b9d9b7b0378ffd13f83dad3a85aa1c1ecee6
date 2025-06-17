@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c76d2846_5f9771ed",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1414,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-17T13:12:42Z",
+      "side": 1,
+      "message": "irq remapping is an independent functional block in DMAR, but uses the QI mechanism and is shared with IOMMU. irq remap initialization happens much earlier during apic initialization and it initialized QI as well. Even if IOMMU is disabled, QI will still be active and irq remap logic will access QI through dmar_read/write or our specific hypercalls. So this will hit a snag if we disable the static key without reprivileging. So we need that static key to be enabled for now and I am working on fixing it.",
+      "parentUuid": "d641e202_cca1be68",
+      "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb54e905_6c0cf047",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 7
