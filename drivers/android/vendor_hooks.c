@@ -560,4 +560,8 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resume_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_early_resume_begin);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_use_amu_fie);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_tsk_need_resched_lazy);
+<<<<<<< HEAD
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_pr_set_vma_name_bypass);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_cpuset_fork);
+>>>>>>> 6ef1e830ad11 (ANDROID: cgroup: Add vendor hook for cpuset.)
