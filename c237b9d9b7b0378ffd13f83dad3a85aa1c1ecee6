@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8fc0857e_06f3fe1f",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1414,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-17T15:00:25Z",
+      "side": 1,
+      "message": "Indeed, you are right, I see intel_prepare_irq_remapping(), intel_enable_irq_remapping() etc are called from apic_intr_mode_init(), which happens much earlier than intel_iommu_init().\n\nDoes this possibly mean that it was a mistake to remove the per-cpu pkvm_enabled variables? Is it possible for any of the functions in drivers/iommu/intel/irq_remapping.c to run on some CPUs in parallel with pKVM deprivileging on other CPUs?\n\n\u003e ...and I am working on fixing it.\n\nCool, thanks.",
+      "parentUuid": "c76d2846_5f9771ed",
+      "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb54e905_6c0cf047",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 7

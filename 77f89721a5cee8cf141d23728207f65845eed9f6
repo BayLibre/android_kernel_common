@@ -178,6 +178,24 @@
       "parentUuid": "03777b53_59c16423",
       "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "412b1885_d463a7e3",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-17T15:00:25Z",
+      "side": 1,
+      "message": "\u003e Ah ok, I thought this was indeed pkvms concern and thats one of the reasons we were pushing on disabling ATS.\n\nIt is pKVM\u0027s concern if there are protected VMs running (or at least pKVM hypervisor itself is running, in particular it is holding pvmfw secrets in its memory), so pKVM needs to protect pVMs and itself from devices DMA.\n\n\u003e My view of pkvm was just not its capability of creating and managing protected VM, but making sure that compromise of host os will not lead to compromised user data.\n\npKVM can only ensure that for such user data that is protected from the host in the first place, i.e. for user data that is managed not by the host OS but by protected VMs.",
+      "parentUuid": "ac267804_b84c5c17",
+      "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
