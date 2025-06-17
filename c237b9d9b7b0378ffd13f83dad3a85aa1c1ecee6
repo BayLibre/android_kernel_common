@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "33c2a7d3_66724ffc",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1405,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-17T10:50:03Z",
+      "side": 1,
+      "message": "You are right, I verified that intel_iommu_init does all the cleanup on failure. We don\u0027t need an additional cleanup callback.",
+      "parentUuid": "7945beb0_3d4dbd2a",
+      "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33f907b0_7055e9f8",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 7
@@ -31,6 +49,24 @@
       "writtenOn": "2025-06-12T00:13:52Z",
       "side": 1,
       "message": "Why not disable pkvm_enabled_key already?",
+      "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b23f80d_153fd811",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1414,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-17T10:50:03Z",
+      "side": 1,
+      "message": "If we disable pkvm_enabled_key without reprivileging, kernel will be confused about hypercalls as hypercalls are gated behind this static key. Without iommu, there are not much hypercalls, but we have IRQ_REMAP which still uses hypercalls now. So its safe to keep it enabled until we succeed in reprivileging",
+      "parentUuid": "33f907b0_7055e9f8",
       "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9957a83a_8a559fbd",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1518,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-17T10:50:03Z",
+      "side": 1,
+      "message": "Fixed",
+      "parentUuid": "eb54e905_6c0cf047",
+      "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b73a93d_4a78ac60",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 7
@@ -65,6 +119,24 @@
       "writtenOn": "2025-06-12T00:13:52Z",
       "side": 1,
       "message": "Why so intricate? And this actually seems incorrect: if __vmx_pkvm_init() failed but then pkvm_iommu_driver_init() succeeded, we return success?\n\nAgain, what\u0027s so special about pkvm_iommu_driver_prepare() and pkvm_iommu_driver_init() that we need to move the rest of vmx_pkvm_init() to a separate function?\n\nWhat\u0027s wrong with just adding these pkvm_iommu_driver_prepare() and pkvm_iommu_driver_init() calls to the appropriate places in the existing vmx_pkvm_init() and let it handle pkvm_iommu_driver_init() failure (almost) like other failures?",
+      "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0da5b4d_a9e930d6",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1520,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-17T10:50:03Z",
+      "side": 1,
+      "message": "Fixed the error handling.\n\nI think that its best to have iommu logic outside of vmx_pkvm_init(as the name suggest). Already vmx_pkvm_init is a huge function with lots of error handling and related gotos. Adding to the mix, the case of having to call iommu_init regardless of failures etc will become really complicated. I agree, its doable but not worth it and not as readable as my current implementation. I think this code is much better in terms of readability and logical grouping. I would like to have the code as it is now, please :-)",
+      "parentUuid": "1b73a93d_4a78ac60",
       "revId": "c237b9d9b7b0378ffd13f83dad3a85aa1c1ecee6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }

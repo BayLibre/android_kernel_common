@@ -124,6 +124,24 @@
       "parentUuid": "2e466694_fdf4f2b6",
       "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f157fa8_90ad712d",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-17T10:50:03Z",
+      "side": 1,
+      "message": "My concern is we should not be giving the user a false sense of security. when the user enforces pkvm to be enabled, it means the user expected secrets to be protected, but also things like preventing host os from directly accessing protected devices, preventing compromised devices to access memory etc. The system coming up means the user is able to interact with the system which *could* be vulnerable to attacks. So, I was just proposing an idea where the system fails the boot early and let the user know. Or have a mechanism to notify the user explicitly that pkvm is disabled, and system is running in a degraded mode.\n\nI understand that the precedence is to let the system boot(as in pkvm arm). So I take back my arguments and rest my case :-)",
+      "parentUuid": "75d0cff7_30eedb4a",
+      "revId": "77f89721a5cee8cf141d23728207f65845eed9f6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
