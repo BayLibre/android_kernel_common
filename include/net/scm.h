@@ -25,14 +25,14 @@ struct scm_creds {
 struct scm_fp_list {
 	short			count;
 	short			max;
-#ifdef CONFIG_UNIX
-	struct list_head	vertices;
-#endif
 	struct user_struct	*user;
 	struct file		*fp[SCM_MAX_FD];
 };
 
 struct scm_fp_list_ext {
+#ifdef CONFIG_UNIX
+	struct list_head	vertices;
+#endif
 	short			count_unix;
 	struct scm_fp_list	fpl;
 };
