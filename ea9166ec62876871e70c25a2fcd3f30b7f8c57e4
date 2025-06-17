@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "475b6084_81bf791b",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 921,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-17T17:13:01Z",
+      "side": 1,
+      "message": "nit: do the double-underscores here bring any value?\n\nAlso inline is redundant (we are not in a header file, and the compiler will certainly inline this function anyway since it is called in just one place, even if this was important for performance)?",
+      "fixSuggestions": [
+        {
+          "fixId": "4c370db4_a24d6fff",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/dmar.c",
+              "range": {
+                "startLine": 921,
+                "startChar": 0,
+                "endLine": 922,
+                "endChar": 0
+              },
+              "replacement": "static void setup_iommu_init_hooks(void)\n"
+            },
+            {
+              "path": "drivers/iommu/intel/dmar.c",
+              "range": {
+                "startLine": 968,
+                "startChar": 0,
+                "endLine": 969,
+                "endChar": 0
+              },
+              "replacement": "\t\tsetup_iommu_init_hooks();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ea9166ec62876871e70c25a2fcd3f30b7f8c57e4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}

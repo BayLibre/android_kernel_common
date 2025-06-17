@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9aa8660_3accabbe",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 2401,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-17T17:13:01Z",
+      "side": 1,
+      "message": "This comment could be inside the function, near the pkvm enabled check?",
+      "revId": "753c2fbbc29b45a7d14c94f0c25d28e9b32b2e62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2a39a50_f2b248a8",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 2431,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-17T17:13:01Z",
+      "side": 1,
+      "message": "At this point we are already past __vmx_pkvm_init(), so we should use pkvm_enabled() (since pkvm init may have failed)?",
+      "revId": "753c2fbbc29b45a7d14c94f0c25d28e9b32b2e62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6841c7a_7bc16131",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 2443,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-17T17:13:01Z",
+      "side": 1,
+      "message": "It looks like the only job of init_no_remapping_devices() is to set drhd-\u003eignored (plus it may also set drhd-\u003egfx_dedicated, but it is only used in iommu_disable_translation(), and with pKVM we shouldn\u0027t really disable translation anyway). So it is much simpler to just bail out early at the beginning of init_no_remapping_devices(), without any other changes to its code?",
+      "revId": "753c2fbbc29b45a7d14c94f0c25d28e9b32b2e62",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
