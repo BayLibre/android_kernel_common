@@ -269,7 +269,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
 		struct sk_buff *skb;
 		size_t skb_len;
 
-		skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE, rest_len);
+		skb_len = min_t(u32, VIRTIO_VSOCK_SKB_DATA_SIZE, rest_len);
 
 		skb = virtio_transport_alloc_skb(info, skb_len,
 						 src_cid, src_port,
