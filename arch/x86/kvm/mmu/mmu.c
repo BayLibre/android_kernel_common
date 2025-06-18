@@ -4784,7 +4784,7 @@ int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
 	struct page *page;
 	int r;
 
-	if (pkvm_is_protected_vcpu(vcpu)) {
+	if (enable_pkvm) {
 		ppage = kmalloc(sizeof(*ppage), GFP_KERNEL_ACCOUNT);
 		if (!ppage)
 			return -ENOMEM;
