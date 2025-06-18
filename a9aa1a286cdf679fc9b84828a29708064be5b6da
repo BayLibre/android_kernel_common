@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6b75aa6_a1b5576f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2025-06-18T17:13:52Z",
+      "side": 1,
+      "message": "The only thing that feels fishy is that `is_{cleared,pending}` seem like they should be able to be mixed with the counts in order to avoid representing bad states, but all of my naive attempts to come up with a new representation failed, so maybe they\u0027re just totally independent.",
+      "revId": "a9aa1a286cdf679fc9b84828a29708064be5b6da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2f069f0_284320c3",
+        "filename": "drivers/android/binder/freeze.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2025-06-18T17:13:52Z",
+      "side": 1,
+      "message": "If we switch to saturating, this could be downgraded to `usize`, which would be nicer on 32-bit architectures.",
+      "revId": "a9aa1a286cdf679fc9b84828a29708064be5b6da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f92635c_fd8e55c8",
+        "filename": "drivers/android/binder/freeze.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2025-06-18T17:13:52Z",
+      "side": 1,
+      "message": "Should this be a saturating increment, similar to refcounts? It probably doesn\u0027t matter because you used an explicit `u64` for the count, so they shouldn\u0027t be able to count that high.\n\nPre-resolving because touching the u64 is rare enough that we might not care about 32-bit perf at all here.",
+      "revId": "a9aa1a286cdf679fc9b84828a29708064be5b6da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
