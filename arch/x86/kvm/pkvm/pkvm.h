@@ -175,6 +175,7 @@ extern struct pkvm_x86_ops pkvm_x86_ops;
 struct pkvm_vm *get_pkvm_vm(int handle);
 void put_pkvm_vm(struct pkvm_vm *pkvm_vm);
 struct pkvm_vcpu *get_pkvm_vcpu(int vm_handle, int vcpu_handle);
+struct pkvm_vcpu *get_pkvm_vcpu_via_shared(struct kvm_vcpu *shared_vcpu);
 void put_pkvm_vcpu(struct pkvm_vcpu *pkvm_vcpu);
 unsigned long handle_kvm_call(unsigned long fn, unsigned long p1,
 			      unsigned long p2, unsigned long p3,
