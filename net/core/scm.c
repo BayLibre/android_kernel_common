@@ -378,7 +378,7 @@ struct scm_fp_list *scm_fp_dup(struct scm_fp_list *fpl)
 	int i;
 
 	static unsigned int count = 0;
-	static u64 total_saved = 0;
+	static u64 total_saved = 0, total_saved_ext = 0;
 	unsigned int whole, chopped, saved;
 
 	if (!fpl)
@@ -390,10 +390,18 @@ struct scm_fp_list *scm_fp_dup(struct scm_fp_list *fpl)
 	total_saved += saved;
 
 	printk("LEE: %s %s()[%d]: [%u] whole: %u chopped: %u saved: %u total_saved: %llu\n",
-		__FILE__, __func__, __LINE__, count++, whole, chopped, saved, total_saved);
+		__FILE__, __func__, __LINE__, count, whole, chopped, saved, total_saved);
 
 	fpl_ext_len =
 		sizeof(*fpl_ext) - (sizeof(*fpl) - offsetof(struct scm_fp_list, fp[fpl->count + 1]));
+
+	whole = sizeof(*fpl_ext);
+	chopped = fpl_ext_len;
+	saved = whole - chopped;
+	total_saved_ext += saved;
+
+	printk("LEE: %s %s()[%d]: [%u] whole: %u chopped: %u saved: %u total_saved: %llu\n",
+		__FILE__, __func__, __LINE__, count++, whole, fpl_ext_len, saved, total_saved_ext);
 
 	new_fpl_ext = kmemdup(fpl, fpl_ext_len, GFP_KERNEL_ACCOUNT);
 	if (new_fpl_ext) {
