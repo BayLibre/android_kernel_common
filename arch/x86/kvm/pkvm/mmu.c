@@ -9,6 +9,7 @@
 #include <vmx/pkvm/hyp/gfp.h>
 #include <vmx/pkvm/hyp/ept.h>	//FIXME
 #include <vmx/pkvm/hyp/mem_protect.h>
+#include <vmx/pkvm/hyp/memory.h>
 
 /*
  * FIXME: temporarily reusing the shadow pgt memory pool.
@@ -76,7 +77,53 @@ int pkvm_vm_mmu_map(int vm_handle, u64 gpa, u64 hpa, u64 size)
 	return ret;
 }
 
+static int guest_pgt_free_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr, int level,
+			       void *ptep, struct pgt_flush_data *flush_data, void *arg)
+{
+	unsigned long phys = pgt->pgt_ops->pgt_entry_to_phys(ptep);
+	unsigned long size = pgt->pgt_ops->pgt_level_to_size(level);
+	struct kvm *kvm = pgt_to_kvm(pgt);
+
+	if (!pgt->pgt_ops->pgt_entry_mapped(ptep))
+		return 0;
+
+	/* Guest may only share its pages, not donate them. */
+	WARN_ON_ONCE(!pgt->pgt_ops->pgt_entry_present(ptep));
+
+	/*
+	 * The pgtable_free_cb in this current page walker is still walking
+	 * the page table so we cannot allow __pkvm_host_unshare_guest()
+	 * or __pkvm_host_undonate_guest() to release the page table pages.
+	 * So we shall get_page before calling these APIs, then put_page
+	 * to let pgtable_free_cb free table pages with correct refcount.
+	 *
+	 * TODO: this suggests that this API as is is not the best suited
+	 * for this task. After all, why walk the page table once again
+	 * to reach this PTE if we are already at it?
+	 */
+	if (pkvm_is_protected_vm(kvm)) {
+		void *virt = pgt->mm_ops->phys_to_virt(phys);
+
+		/*
+		 * Wipe the protected VM memory page before giving it back
+		 * to host, to avoid secrets leakage.
+		 */
+		memset(virt, 0, size);
+		pkvm_clflush_cache_range(virt, size);
+
+		pgt->mm_ops->get_page(ptep);
+		WARN_ON_ONCE(__pkvm_host_undonate_guest(phys, pgt, vaddr, size));
+		pgt->mm_ops->put_page(ptep);
+	} else {
+		pgt->mm_ops->get_page(ptep);
+		WARN_ON_ONCE(__pkvm_host_unshare_guest(phys, pgt, vaddr, size));
+		pgt->mm_ops->put_page(ptep);
+	}
+
+	return 0;
+}
+
 void pkvm_vm_mmu_destroy(struct pkvm_vm *pkvm_vm)
 {
-	pkvm_pgtable_destroy(&pkvm_vm->pgt, NULL);
+	pkvm_pgtable_destroy(&pkvm_vm->pgt, guest_pgt_free_leaf);
 }
