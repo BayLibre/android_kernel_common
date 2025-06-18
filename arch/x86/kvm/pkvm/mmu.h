@@ -12,5 +12,6 @@ extern struct pkvm_pgtable_ops *guest_pgt_ops;
 
 int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm);
 void pkvm_vm_mmu_destroy(struct pkvm_vm *pkvm_vm);
+int pkvm_vm_mmu_map(int handle, u64 gpa, u64 hpa, u64 size, bool writable);
 
 #endif /* __PKVM_X86_MMU_H */
