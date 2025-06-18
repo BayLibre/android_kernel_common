@@ -30,6 +30,8 @@
 
 #ifndef __PKVM_HYP__
 extern bool __read_mostly enable_pkvm;	/* kernel command-line flag */
+#else
+#define enable_pkvm true
 #endif
 
 DECLARE_PER_CPU_READ_MOSTLY(bool, pkvm_enabled);
