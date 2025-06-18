@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "2a5b43a4_a093f049",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-06-18T20:50:21Z",
+      "side": 1,
+      "message": "You can only create a duplicate when `is_clearing \u003d\u003d true`, and the `is_clearing` flag can never be unset, so all duplicates have `is_clearing \u003d\u003d true`.",
+      "parentUuid": "b6b75aa6_a1b5576f",
+      "revId": "a9aa1a286cdf679fc9b84828a29708064be5b6da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f2f069f0_284320c3",
         "filename": "drivers/android/binder/freeze.rs",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2025-06-18T17:13:52Z",
       "side": 1,
       "message": "If we switch to saturating, this could be downgraded to `usize`, which would be nicer on 32-bit architectures.",
+      "revId": "a9aa1a286cdf679fc9b84828a29708064be5b6da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f210295c_1f590f54",
+        "filename": "drivers/android/binder/freeze.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-06-18T20:50:21Z",
+      "side": 1,
+      "message": "I don\u0027t care that 64-bit addition may be slower on 32-bit machines.",
+      "parentUuid": "f2f069f0_284320c3",
       "revId": "a9aa1a286cdf679fc9b84828a29708064be5b6da",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
