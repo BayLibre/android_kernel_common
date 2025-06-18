@@ -474,7 +474,7 @@ static void shadow_ept_flush_tlb(struct pkvm_pgtable *pgt,
 	}
 }
 
-static struct pkvm_mm_ops shadow_ept_mm_ops = {
+struct pkvm_mm_ops shadow_ept_mm_ops = {
 	.phys_to_virt = pkvm_phys_to_virt,
 	.virt_to_phys = pkvm_virt_to_phys,
 	.zalloc_page = shadow_pgt_zalloc_page,
