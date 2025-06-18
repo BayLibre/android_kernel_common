@@ -396,7 +396,7 @@ struct scm_fp_list *scm_fp_dup(struct scm_fp_list *fpl)
 		__FILE__, __func__, __LINE__, count++, whole, chopped, saved, total_saved);
 
 	fpl_ext_len =
-		sizeof(*fpl_ext) - (sizeof(*fpl) - offsetof(struct scm_fp_list, fp[fpl->count]));
+		sizeof(*fpl_ext) - (sizeof(*fpl) - offsetof(struct scm_fp_list, fp[fpl->count + 1]));
 
 	new_fpl_ext = kmemdup(fpl, fpl_ext_len, GFP_KERNEL_ACCOUNT);
 	if (new_fpl_ext) {
