@@ -84,6 +84,9 @@ static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp)
 		fpl = kmalloc(sizeof(struct scm_fp_list), GFP_KERNEL_ACCOUNT);
 		if (!fpl)
 			return -ENOMEM;
+		printk("LEE: %s %s()[%d]: Allocate FPL\n", __FILE__, __func__, __LINE__);
+		fpl = &fpl_ext->fpl;
+
 		*fplp = fpl;
 		fpl->count = 0;
 		fpl->count_unix = 0;
@@ -115,6 +118,7 @@ static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp)
 			fpl->count_unix++;
 
 		*fpp++ = file;
+		printk("LEE: %s %s()[%d]: Allocate FPL\n", __FILE__, __func__, __LINE__);
 		fpl->count++;
 	}
 
@@ -134,6 +138,8 @@ void __scm_destroy(struct scm_cookie *scm)
 		for (i=fpl->count-1; i>=0; i--)
 			fput(fpl->fp[i]);
 		free_uid(fpl->user);
+
+		printk("LEE: %s %s()[%d]: Free FPL\n", __FILE__, __func__, __LINE__);
 		kfree(fpl);
 	}
 }
@@ -368,8 +374,20 @@ struct scm_fp_list *scm_fp_dup(struct scm_fp_list *fpl)
 	struct scm_fp_list *new_fpl;
 	int i;
 
+	static unsigned int count = 0;
+	static u64 total_saved = 0;
+	unsigned int whole, chopped, saved;
+
 	if (!fpl)
 		return NULL;
+
+	whole = sizeof(*fpl);
+	chopped = offsetof(struct scm_fp_list, fp[fpl->count]);
+	saved = whole - chopped;
+	total_saved += saved;
+
+	printk("LEE: %s %s()[%d]: [%u] whole: %u chopped: %u saved: %u total_saved: %llu\n",
+		__FILE__, __func__, __LINE__, count++, whole, chopped, saved, total_saved);
 
 	new_fpl = kmemdup(fpl, offsetof(struct scm_fp_list, fp[fpl->count]),
 			  GFP_KERNEL_ACCOUNT);
