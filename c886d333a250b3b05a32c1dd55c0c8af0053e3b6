@@ -33,6 +33,24 @@
       "message": "What driver needs this?  It should be internal only and not used by any driver at all.",
       "revId": "c886d333a250b3b05a32c1dd55c0c8af0053e3b6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d53c631_52714fb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3600567
+      },
+      "writtenOn": "2025-06-18T08:31:31Z",
+      "side": 1,
+      "message": "We need to read the file name information. The previous kernel had a KMI for file_path, \nbut this modification made the interface unusable. We hope to have a KMI for the file name information. Thank you!\n\nfs: store real path instead of fake path in backing file f_path\nAdapt the commit to the kernel:\nhttps://lore.kernel.org/all/20231010-lohnen-botanik-7bf974a5cecd@brauner/",
+      "parentUuid": "5d047626_b6cfccff",
+      "revId": "c886d333a250b3b05a32c1dd55c0c8af0053e3b6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
