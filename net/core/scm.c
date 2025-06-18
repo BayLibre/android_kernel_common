@@ -134,6 +134,8 @@ void __scm_destroy(struct scm_cookie *scm)
 		for (i=fpl->count-1; i>=0; i--)
 			fput(fpl->fp[i]);
 		free_uid(fpl->user);
+
+		printk("LEE: %s %s()[%d]: Free FPL\n", __FILE__, __func__, __LINE__);
 		kfree(fpl);
 	}
 }
@@ -368,8 +370,20 @@ struct scm_fp_list *scm_fp_dup(struct scm_fp_list *fpl)
 	struct scm_fp_list *new_fpl;
 	int i;
 
+	static unsigned int count = 0;
+	static u64 total_saved = 0;
+	unsigned int whole, chopped, saved;
+
 	if (!fpl)
 		return NULL;
+
+	whole = sizeof(*fpl);
+	chopped = offsetof(struct scm_fp_list, fp[fpl->count]);
+	saved = whole - chopped;
+	total_saved += saved;
+
+	printk("LEE: %s %s()[%d]: [%u] whole: %u chopped: %u saved: %u total_saved: %llu\n",
+		__FILE__, __func__, __LINE__, count++, whole, chopped, saved, total_saved);
 
 	new_fpl = kmemdup(fpl, offsetof(struct scm_fp_list, fp[fpl->count]),
 			  GFP_KERNEL_ACCOUNT);
