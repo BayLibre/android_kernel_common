@@ -5105,8 +5105,7 @@ static int handle_invlpg(struct kvm_vcpu *vcpu)
 static int kvm_pkvm_hypercall(struct kvm_vcpu *vcpu)
 {
 	u64 nr, a0, a1, a2, a3;
-	struct shadow_vcpu_state *shadow_vcpu = kvm_vcpu_to_shadow(vcpu);
-	struct pkvm_pgtable *pgstate_pgt = &shadow_vcpu->vm->pgstate_pgt;
+	struct pkvm_vm *pkvm_vm = to_pkvm(vcpu->kvm);
 	int cpl = vmx_get_cpl(vcpu);
 	int ret = -KVM_EPERM;
 
@@ -5123,10 +5122,16 @@ static int kvm_pkvm_hypercall(struct kvm_vcpu *vcpu)
 
 	switch (nr) {
 	case PKVM_GHC_SHARE_MEM:
-		ret = __pkvm_guest_share_host(pgstate_pgt, a0, a1);
+		/* TODO: clean up */
+		pkvm_spin_lock(&pkvm_vm->lock);
+		ret = __pkvm_guest_share_host(&pkvm_vm->pgt, a0, a1);
+		pkvm_spin_unlock(&pkvm_vm->lock);
 		break;
 	case PKVM_GHC_UNSHARE_MEM:
-		ret = __pkvm_guest_unshare_host(pgstate_pgt, a0, a1);
+		/* TODO: clean up */
+		pkvm_spin_lock(&pkvm_vm->lock);
+		ret = __pkvm_guest_unshare_host(&pkvm_vm->pgt, a0, a1);
+		pkvm_spin_unlock(&pkvm_vm->lock);
 		break;
 	case PKVM_GHC_IOREAD:
 	case PKVM_GHC_IOWRITE:
