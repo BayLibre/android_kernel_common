@@ -4,6 +4,8 @@
 
 #include <asm/kvm_host.h>
 #include <asm/pkvm_spinlock.h>
+//FIXME: clean up the header files
+#include <vmx/pkvm/hyp/pgtable.h>
 
 #define PKVM_MAX_NORMAL_VM_NUM		8
 #define PKVM_MAX_PROTECTED_VM_NUM	2
@@ -66,6 +68,11 @@ struct pkvm_vm {
 	pkvm_spinlock_t lock;
 
 	struct pkvm_vcpu *vcpus[KVM_MAX_VCPUS];
+
+	/* The guest's stage-2 page table managed by the hypervisor */
+	struct pkvm_pgtable pgt;
+	struct pkvm_mm_ops pgt_mm_ops;
+	pkvm_spinlock_t pgt_lock;
 };
 
 struct pkvm_vm_ref {
@@ -97,6 +104,16 @@ static inline struct pkvm_vcpu *to_pkvm_vcpu(struct kvm_vcpu *vcpu)
 {
 	/* See comments for pkvm_vcpu */
 	return (struct pkvm_vcpu *)((unsigned long)vcpu - sizeof(struct pkvm_vcpu));
+}
+
+static inline struct pkvm_vm *pgt_to_pkvm(struct pkvm_pgtable *pgt)
+{
+	return container_of(pgt, struct pkvm_vm, pgt);
+}
+
+static inline struct kvm *pgt_to_kvm(struct pkvm_pgtable *pgt)
+{
+	return to_kvm(pgt_to_pkvm(pgt));
 }
 
 static inline void pkvm_make_req_to_host(int req, struct kvm_vcpu *vcpu)
