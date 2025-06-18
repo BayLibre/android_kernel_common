@@ -28,6 +28,7 @@
 #include "page_track.h"
 #include "cpuid.h"
 #include "spte.h"
+#include "vmx/pkvm.h"	//FIXME
 
 #include <linux/kvm_host.h>
 #include <linux/types.h>
@@ -4717,6 +4718,46 @@ out_unlock:
 }
 #endif
 
+#ifdef CONFIG_PKVM_INTEL
+static int pkvm_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+{
+	int r;
+
+	r = kvm_faultin_pfn(vcpu, fault, ACC_ALL);
+	if (r != RET_PF_CONTINUE)
+		return r;
+
+	r = RET_PF_RETRY;
+	write_lock(&vcpu->kvm->mmu_lock);
+
+	/* FIXME: handle readonly memslots, dirty logging etc */
+
+	if (likely(fault->slot)) {
+		gfn_t base_gfn;
+		gfn_t nr_pages;
+
+		kvm_mmu_hugepage_adjust(vcpu, fault);
+
+		base_gfn = gfn_round_for_level(fault->gfn, fault->req_level);
+		nr_pages = KVM_PAGES_PER_HPAGE(fault->req_level);
+
+		r = kvm_call_pkvm(vm_mmu_map, vcpu->kvm->arch.pkvm.pkvm_vm_handle,
+				  base_gfn << PAGE_SHIFT, fault->pfn << PAGE_SHIFT,
+				  nr_pages << PAGE_SHIFT);
+		if (!r)
+			r = RET_PF_FIXED;
+	} else if (pkvm_is_protected_vcpu(vcpu)) {
+		r = -EFAULT;
+	} else {
+		r = RET_PF_EMULATE;	/* MMIO for npVM */
+	}
+
+	write_unlock(&vcpu->kvm->mmu_lock);
+	kvm_release_pfn_clean(fault->pfn);
+	return r;
+}
+#endif
+
 bool kvm_mmu_may_ignore_guest_pat(void)
 {
 	/*
@@ -4735,6 +4776,10 @@ static inline int __kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fa
 #ifdef CONFIG_X86_64
 	if (tdp_mmu_enabled)
 		return kvm_tdp_mmu_page_fault(vcpu, fault);
+#endif
+#ifdef CONFIG_PKVM_INTEL
+	if (enable_pkvm)
+		return pkvm_page_fault(vcpu, fault);
 #endif
 
 	return direct_page_fault(vcpu, fault);
