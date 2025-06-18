@@ -1524,23 +1524,21 @@ out_unlock:
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 }
 
-static void do_ffa_direct_msg(struct kvm_cpu_context *ctxt,
+static void do_ffa_direct_msg(struct arm_smccc_1_2_regs *res,
+			      struct kvm_cpu_context *ctxt,
 			      u64 vm_handle)
 {
 	DECLARE_REG(u32, endp, ctxt, 1);
 
-	struct arm_smccc_1_2_regs *reg = (void *)&ctxt->regs.regs[0];
+	struct arm_smccc_1_2_regs *args = (void *)&ctxt->regs.regs[0];
 
 	if (FIELD_GET(FFA_SRC_ENDPOINT_MASK, endp) != vm_handle) {
-		struct arm_smccc_res res;
-
-		ffa_to_smccc_error(&res, FFA_RET_INVALID_PARAMETERS);
-		ffa_set_retval(ctxt, &res);
+		ffa_to_smccc_error(res, FFA_RET_INVALID_PARAMETERS);
 		return;
 	}
 
 	__hyp_exit();
-	arm_smccc_1_2_smc(reg, reg);
+	arm_smccc_1_2_smc(args, res);
 	__hyp_enter();
 }
 
@@ -1663,8 +1661,8 @@ bool kvm_host_ffa_handler(struct kvm_cpu_context *host_ctxt, u32 func_id)
 		goto out_handled;
 	case FFA_MSG_SEND_DIRECT_REQ:
 	case FFA_FN64_MSG_SEND_DIRECT_REQ:
-		do_ffa_direct_msg(host_ctxt, HOST_FFA_ID);
-		return true;
+		do_ffa_direct_msg(&res, host_ctxt, HOST_FFA_ID);
+		goto out_handled;
 	}
 
 	if (ffa_call_supported(func_id))
@@ -1738,8 +1736,8 @@ bool kvm_guest_ffa_handler(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 		goto out_guest;
 	case FFA_MSG_SEND_DIRECT_REQ:
 	case FFA_FN64_MSG_SEND_DIRECT_REQ:
-		do_ffa_direct_msg(ctxt, hyp_vcpu_to_ffa_handle(hyp_vcpu));
-		return true;
+		do_ffa_direct_msg(&res, ctxt, hyp_vcpu_to_ffa_handle(hyp_vcpu));
+		goto out_guest;
 	default:
 		ret = -EOPNOTSUPP;
 		break;
