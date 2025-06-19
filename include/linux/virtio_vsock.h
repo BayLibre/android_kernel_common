@@ -52,23 +52,48 @@ static inline void virtio_vsock_skb_rx_put(struct sk_buff *skb)
 
 	len = le32_to_cpu(virtio_vsock_hdr(skb)->len);
 
-	if (len > 0)
+	if (skb_is_nonlinear(skb))
+		skb->len = len;
+	else
 		skb_put(skb, len);
 }
 
-static inline struct sk_buff *virtio_vsock_alloc_skb(unsigned int size, gfp_t mask)
+static inline struct sk_buff *
+virtio_vsock_alloc_skb_with_frags(unsigned int size, gfp_t mask)
 {
 	struct sk_buff *skb;
+	int data_len = 0;
+	int err;
 
 	if (size < VIRTIO_VSOCK_SKB_HEADROOM)
 		return NULL;
 
-	skb = alloc_skb(size, mask);
+	if (size > PAGE_SIZE) {
+		int npages = (size - VIRTIO_VSOCK_SKB_HEADROOM) >> PAGE_SHIFT;
+
+		if (npages > MAX_SKB_FRAGS)
+			return NULL;
+
+		data_len = npages << PAGE_SHIFT;
+		size = VIRTIO_VSOCK_SKB_HEADROOM;
+	}
+
+	skb = alloc_skb_with_frags(size, data_len, PAGE_ALLOC_COSTLY_ORDER,
+				   &err, mask);
 	if (!skb)
 		return NULL;
 
 	skb_reserve(skb, VIRTIO_VSOCK_SKB_HEADROOM);
+	skb->data_len = data_len;
 	return skb;
+}
+
+static inline struct sk_buff *virtio_vsock_alloc_skb(unsigned int size, gfp_t mask)
+{
+	if (size > PAGE_SIZE)
+		return NULL;
+
+	return virtio_vsock_alloc_skb_with_frags(size, mask);
 }
 
 static inline void
