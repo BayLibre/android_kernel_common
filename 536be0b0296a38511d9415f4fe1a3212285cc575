@@ -52,6 +52,24 @@
       "parentUuid": "c45b8a94_7ca0ccc0",
       "revId": "536be0b0296a38511d9415f4fe1a3212285cc575",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b35df396_858ce2d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3346748
+      },
+      "writtenOn": "2025-06-20T06:41:22Z",
+      "side": 1,
+      "message": "This commit modifies an existing hook by only adding one parameter. If other OEM manufacturers do not need this hook, they can just not register it, which will not affect other OEMs. \nI would like to ask:  is there another way to determine whether binder_transaction is of the binder_reply type (cmd \u003d\u003d BR_REPLY)?",
+      "parentUuid": "7247bf4b_61a9bd39",
+      "revId": "536be0b0296a38511d9415f4fe1a3212285cc575",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
