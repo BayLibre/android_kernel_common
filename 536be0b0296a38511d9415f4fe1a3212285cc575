@@ -16,6 +16,24 @@
       "message": "Please submit the real changes needed for binder, not hooks, so that everyone can use them properly.",
       "revId": "536be0b0296a38511d9415f4fe1a3212285cc575",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c45b8a94_7ca0ccc0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3346748
+      },
+      "writtenOn": "2025-06-20T02:52:11Z",
+      "side": 1,
+      "message": "When the application is frozen, check whether the synchronous Binder is of the binder reply type. First, make a statistics to see the proportion. In the future, it may be considered that if it is a binder transaction of the binder reply type, it will not be unfrozen. Wait until the application is unfrozen for other reasons (such as switching to the foreground) before processing the Binder reply.\n\nIn addition, the code is in the OEM manufacturer\u0027s code repository and is a customized requirement, not submitted to the upstream. Therefore, we will first submit the hook.\n\nTherefore, we have not submitted the code yet.",
+      "parentUuid": "5136914c_eb1473db",
+      "revId": "536be0b0296a38511d9415f4fe1a3212285cc575",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
