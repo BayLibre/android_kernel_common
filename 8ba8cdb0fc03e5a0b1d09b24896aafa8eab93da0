@@ -71,6 +71,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d095b987_f6aed226",
+        "filename": "include/linux/virtio_vsock.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-06-20T16:50:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4d74b56_ef2e2c19",
+      "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9acf2a45_63f437ac",
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "Gah, yes. I was originally going to chuck the leftovers into the SKB itself, but the upstream code (`virtio_transport_send_skb()`) reasonably requires that all the data is stored in the fragments if the SKB is nonlinear.\n\nI\u0027ll fix this.",
       "parentUuid": "9acf2a45_63f437ac",
+      "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58e9dc52_8216d0bd",
+        "filename": "include/linux/virtio_vsock.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-06-20T16:50:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c2fdbc2_ba9c4f2a",
       "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -190,6 +226,24 @@
       "side": 1,
       "message": "Yup, although in light of Steven\u0027s comment, lemme see if I can remove this.",
       "parentUuid": "79a9cf02_bc4625d2",
+      "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6d8e18a_de8a2b69",
+        "filename": "include/linux/virtio_vsock.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-06-20T16:50:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b20f9bf4_cc9f1f41",
       "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
