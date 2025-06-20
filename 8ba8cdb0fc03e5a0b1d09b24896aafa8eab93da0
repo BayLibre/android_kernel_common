@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "77795e10_b26a882f",
+        "filename": "include/linux/virtio_vsock.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-06-20T14:57:46Z",
+      "side": 1,
+      "message": "For nonlinear SKBs, the only thing stored in the SKB (as opposed to being stored in fragment pages) is the virtio header. `skb-\u003etail` is updated to reflect that in `virtio_vsock_alloc_skb_with_frags()`, thanks to the call to `skb_reserve(skb, VIRTIO_VSOCK_SKB_HEADROOM)`.\n\nSo I don\u0027t think `skb-\u003etail` requires further adjustment here.",
+      "parentUuid": "1e6c8576_80070a3f",
+      "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3712685c_f075dfb3",
         "filename": "include/linux/virtio_vsock.h",
         "patchSetId": 1
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a4d74b56_ef2e2c19",
+        "filename": "include/linux/virtio_vsock.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-06-20T14:57:46Z",
+      "side": 1,
+      "message": "Good catch -- as I have it, we could still end up allocating a higher-order page if size is just less than a page.",
+      "parentUuid": "3712685c_f075dfb3",
+      "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9acf2a45_63f437ac",
         "filename": "include/linux/virtio_vsock.h",
         "patchSetId": 1
@@ -48,6 +84,24 @@
       "writtenOn": "2025-06-20T09:00:31Z",
       "side": 1,
       "message": "Doesn\u0027t this need to be rounded up rather than implicitly rounded down?",
+      "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c2fdbc2_ba9c4f2a",
+        "filename": "include/linux/virtio_vsock.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-06-20T14:57:46Z",
+      "side": 1,
+      "message": "Gah, yes. I was originally going to chuck the leftovers into the SKB itself, but the upstream code (`virtio_transport_send_skb()`) reasonably requires that all the data is stored in the fragments if the SKB is nonlinear.\n\nI\u0027ll fix this.",
+      "parentUuid": "9acf2a45_63f437ac",
       "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -100,6 +154,42 @@
       "side": 1,
       "message": "Sorry ofc I mean `SKB_WITH_OVERHEAD` not vsock headroom.",
       "parentUuid": "a9a91938_41a725a6",
+      "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7d97f51_24e3ed15",
+        "filename": "include/linux/virtio_vsock.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-06-20T14:57:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2f53ce94_e07a91c0",
+      "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b20f9bf4_cc9f1f41",
+        "filename": "include/linux/virtio_vsock.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-06-20T14:57:46Z",
+      "side": 1,
+      "message": "Yup, although in light of Steven\u0027s comment, lemme see if I can remove this.",
+      "parentUuid": "79a9cf02_bc4625d2",
       "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
