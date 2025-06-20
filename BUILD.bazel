@@ -76,6 +76,7 @@ checkpatch(
     checkpatch_pl = "scripts/checkpatch.pl",
 )
 
+# Test
 # Deprecated - Use arch specific files from below.
 fail_rule(
     name = "gki_system_dlkm_modules",
@@ -170,9 +171,6 @@ filegroup(
             # cscope files
             "cscope.*",
             "ncscope.*",
-
-            # ABI and symbol list files
-            "gki/**",
         ],
     ),
     visibility = ["//visibility:public"],
