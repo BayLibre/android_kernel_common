@@ -157,11 +157,22 @@ static inline int folio_lru_refs(struct folio *folio)
 	return ((flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF) + 1;
 }
 
+static inline int lru_raw_gen_from_flags(unsigned long flags)
+{
+	return ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+}
+#define ISOLATED_FOLIO_MIN ((int) MAX_NR_GENS)
+#define ISOLATED_FOLIO_MAX ((int) (MAX_NR_GENS + 2))
+
 static inline int folio_lru_gen(struct folio *folio)
 {
-	unsigned long flags = READ_ONCE(folio->flags);
+	int raw_gen = lru_raw_gen_from_flags(READ_ONCE(folio->flags));
 
-	return ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+	BUILD_BUG_ON(order_base_2(ISOLATED_FOLIO_MAX + 1) != LRU_GEN_WIDTH);
+
+	if (raw_gen >= ISOLATED_FOLIO_MIN)
+		return -1;
+	return raw_gen;
 }
 
 static inline bool lru_gen_is_active(struct lruvec *lruvec, int gen)
@@ -283,7 +294,8 @@ static inline bool lru_gen_add_folio(struct lruvec *lruvec, struct folio *folio,
 	return true;
 }
 
-static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio, bool reclaiming)
+static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
+				     bool reclaiming, bool isolate)
 {
 	unsigned long flags;
 	int gen = folio_lru_gen(folio);
@@ -296,6 +308,8 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
 
 	/* for folio_migrate_flags() */
 	flags = !reclaiming && lru_gen_is_active(lruvec, gen) ? BIT(PG_active) : 0;
+	if (isolate)
+		flags |= (ISOLATED_FOLIO_MIN + 1UL) << LRU_GEN_PGOFF;
 	flags = set_mask_bits(&folio->flags, LRU_GEN_MASK, flags);
 	gen = ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
 
@@ -328,7 +342,8 @@ static inline bool lru_gen_add_folio(struct lruvec *lruvec, struct folio *folio,
 	return false;
 }
 
-static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio, bool reclaiming)
+static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
+				     bool reclaiming, bool isolate)
 {
 	return false;
 }
@@ -387,7 +402,7 @@ void lruvec_del_folio(struct lruvec *lruvec, struct folio *folio)
 	if (skip)
 		return;
 
-	if (lru_gen_del_folio(lruvec, folio, false))
+	if (lru_gen_del_folio(lruvec, folio, false, false))
 		return;
 
 	if (lru != LRU_UNEVICTABLE)

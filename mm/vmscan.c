@@ -935,6 +935,13 @@ static enum folio_references folio_check_references(struct folio *folio,
 		return FOLIOREF_KEEP;
 
 	if (lru_gen_enabled()) {
+		int gen = lru_raw_gen_from_flags(READ_ONCE(folio->flags));
+
+		VM_WARN_ON_ONCE_FOLIO(gen < ISOLATED_FOLIO_MIN, folio);
+
+		if (gen > ISOLATED_FOLIO_MIN)
+			referenced_ptes += gen - ISOLATED_FOLIO_MIN;
+
 		if (!referenced_ptes)
 			return FOLIOREF_RECLAIM;
 
@@ -3319,6 +3326,17 @@ static int folio_update_gen(struct folio *folio, int gen)
 	VM_WARN_ON_ONCE(!rcu_read_lock_held());
 
 	do {
+		old_gen = lru_raw_gen_from_flags(old_flags);
+
+		if (old_gen >= ISOLATED_FOLIO_MIN) {
+			unsigned long new_gen = min(old_gen + 1, (int) ISOLATED_FOLIO_MAX);
+
+			new_flags = old_flags & ~LRU_GEN_MASK;
+			new_flags |= (new_gen + 1) << LRU_GEN_PGOFF;
+			old_gen = -1;
+			continue;
+		}
+
 		/* see the comment on LRU_REFS_FLAGS */
 		if (!(old_flags & (BIT(PG_workingset) | BIT(PG_referenced)))) {
 			new_flags = old_flags & ~LRU_REFS_MASK;
@@ -3327,8 +3345,6 @@ static int folio_update_gen(struct folio *folio, int gen)
 		} else {
 			new_flags = old_flags & ~LRU_REFS_FLAGS;
 			new_flags |= BIT(PG_workingset);
-
-			old_gen = ((old_flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
 
 			/*
 			 * Skip updating the generation if we're in the eviction path
@@ -3357,10 +3373,10 @@ static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio, bool reclai
 	int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
 	unsigned long new_flags, old_flags = READ_ONCE(folio->flags);
 
-	VM_WARN_ON_ONCE_FOLIO(!(old_flags & LRU_GEN_MASK), folio);
+	VM_WARN_ON_ONCE_FOLIO(folio_lru_gen(folio) == -1, folio);
 
 	do {
-		new_gen = ((old_flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+		new_gen = lru_raw_gen_from_flags(old_flags);
 		/* folio_update_gen() has promoted this page? */
 		if (new_gen >= 0 && new_gen != old_gen)
 			return new_gen;
@@ -4544,11 +4560,11 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
 	int tier = lru_tier_from_refs(refs, workingset);
 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
 
-	VM_WARN_ON_ONCE_FOLIO(gen >= MAX_NR_GENS, folio);
+	VM_WARN_ON_ONCE_FOLIO(gen == -1, folio);
 
 	/* unevictable */
 	if (!folio_evictable(folio)) {
-		success = lru_gen_del_folio(lruvec, folio, true);
+		success = lru_gen_del_folio(lruvec, folio, true, false);
 		VM_WARN_ON_ONCE_FOLIO(!success, folio);
 		folio_set_unevictable(folio);
 		lruvec_add_folio(lruvec, folio);
@@ -4629,7 +4645,7 @@ bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct scan_contr
 	/* for shrink_folio_list() */
 	folio_clear_reclaim(folio);
 
-	success = lru_gen_del_folio(lruvec, folio, true);
+	success = lru_gen_del_folio(lruvec, folio, true, true);
 	VM_WARN_ON_ONCE_FOLIO(!success, folio);
 
 	return true;
@@ -5260,7 +5276,7 @@ static bool drain_evictable(struct lruvec *lruvec)
 			VM_WARN_ON_ONCE_FOLIO(folio_is_file_lru(folio) != type, folio);
 			VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) != zone, folio);
 
-			success = lru_gen_del_folio(lruvec, folio, false);
+			success = lru_gen_del_folio(lruvec, folio, false, false);
 			VM_WARN_ON_ONCE(!success);
 			lruvec_add_folio(lruvec, folio);
 
