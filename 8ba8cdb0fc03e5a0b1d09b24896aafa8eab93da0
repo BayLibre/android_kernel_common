@@ -84,6 +84,24 @@
       "message": "As above, should account for VIRTIO_VSOCK_SKB_HEADROOM?",
       "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79a9cf02_bc4625d2",
+        "filename": "include/linux/virtio_vsock.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2025-06-20T09:08:13Z",
+      "side": 1,
+      "message": "Sorry ofc I mean `SKB_WITH_OVERHEAD` not vsock headroom.",
+      "parentUuid": "a9a91938_41a725a6",
+      "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
