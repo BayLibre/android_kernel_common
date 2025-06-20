@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "745a3c69_c090fdc8",
+        "filename": "kernel/sched/syscalls.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 751,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-06-20T17:49:08Z",
+      "side": 1,
+      "message": "Err, this may be a problematic for other vendors that have added hooks for trace_android_rvh_setscheduler(). Maybe should this remain and you add logic to hook the existing tracepoint (which can call the same logic as your _prio hook)?",
+      "revId": "32f0e7d2dc263a9e7f6945353ec1b9b212688b31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
