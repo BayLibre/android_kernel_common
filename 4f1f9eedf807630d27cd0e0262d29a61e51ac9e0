@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "206b546d_9715557b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-06-20T16:58:14Z",
+      "side": 1,
+      "message": "Ib5c121c102dfd302c72771645a0f751c1be23608",
+      "range": {
+        "startLine": 21,
+        "startChar": 11,
+        "endLine": 21,
+        "endChar": 52
+      },
+      "revId": "4f1f9eedf807630d27cd0e0262d29a61e51ac9e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "01e4c339_800a8013",
@@ -14,6 +37,41 @@
       "writtenOn": "2025-06-20T13:51:50Z",
       "side": 1,
       "message": "Respin bug:b/426503576",
+      "revId": "4f1f9eedf807630d27cd0e0262d29a61e51ac9e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56c30085_3b313243",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2760,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-06-20T16:58:14Z",
+      "side": 1,
+      "message": "```\ntrace_android_vh_free_unref_page_list_bypass(list, \u0026skip_free);\n\tif (skip_free)\n\t\treturn;\n```\nis missing from the original patch https://android-review.googlesource.com/c/kernel/common/+/3644918/4/mm/page_alloc.c",
+      "fixSuggestions": [
+        {
+          "fixId": "4a5af2a2_14c8b18c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/page_alloc.c",
+              "range": {
+                "startLine": 2760,
+                "startChar": 0,
+                "endLine": 2760,
+                "endChar": 0
+              },
+              "replacement": "\tbool skip_free \u003d false;\n\n\ttrace_android_vh_free_unref_page_list_bypass(list, \u0026skip_free);\n\tif (skip_free)\n\t\treturn;\n"
+            }
+          ]
+        }
+      ],
       "revId": "4f1f9eedf807630d27cd0e0262d29a61e51ac9e0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
