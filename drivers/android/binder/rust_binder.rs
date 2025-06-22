@@ -19,6 +19,8 @@ use kernel::{
     uaccess::UserSliceWriter,
 };
 
+const ALIGN_MAX_SIZE: usize = usize::MAX - 7;
+
 use crate::{context::Context, page_range::Shrinker, process::Process, thread::Thread};
 
 use core::{

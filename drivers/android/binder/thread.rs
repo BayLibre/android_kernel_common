@@ -29,6 +29,7 @@ use crate::{
     error::BinderResult,
     prio::{self, BinderPriority, PriorityState},
     process::Process,
+    ALIGN_MAX_SIZE,
     ptr_align,
     stats::GLOBAL_STATS,
     transaction::Transaction,
@@ -1066,15 +1067,27 @@ impl Thread {
         };
 
         let data_size = trd.data_size.try_into().map_err(|_| EINVAL)?;
-        let aligned_data_size = ptr_align(data_size);
         let offsets_size = trd.offsets_size.try_into().map_err(|_| EINVAL)?;
-        let aligned_offsets_size = ptr_align(offsets_size);
         let buffers_size = tr.buffers_size.try_into().map_err(|_| EINVAL)?;
+        let secctx_size = secctx.as_ref().map(|(_, ctx)| ctx.len()).unwrap_or(0);
+
+        if data_size > ALIGN_MAX_SIZE || offsets_size > ALIGN_MAX_SIZE ||
+           buffers_size > ALIGN_MAX_SIZE || secctx_size > ALIGN_MAX_SIZE {
+            pr_warn!(
+                "Got transaction with invalid size. data_size:{}, \
+                offsets_size:{}, buffers_size:{}, secctx_size:{}",
+                data_size,
+                offsets_size,
+                buffers_size,
+                secctx_size
+            );
+            return Err(EINVAL.into());
+        }
+
+        let aligned_data_size = ptr_align(data_size);
+        let aligned_offsets_size = ptr_align(offsets_size);
         let aligned_buffers_size = ptr_align(buffers_size);
-        let aligned_secctx_size = secctx
-            .as_ref()
-            .map(|(_, ctx)| ptr_align(ctx.len()))
-            .unwrap_or(0);
+        let aligned_secctx_size = ptr_align(secctx_size);
 
         // This guarantees that at least `sizeof(usize)` bytes will be allocated.
         let len = usize::max(
