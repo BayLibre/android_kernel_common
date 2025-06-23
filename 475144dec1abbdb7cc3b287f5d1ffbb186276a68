@@ -33,6 +33,40 @@
       "message": "Very good",
       "revId": "475144dec1abbdb7cc3b287f5d1ffbb186276a68",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2333b9d7_3d2f360f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1489981
+      },
+      "writtenOn": "2025-06-23T15:55:43Z",
+      "side": 1,
+      "message": "Ryan/Juston, could you test this patch to make sure vts.GpuServiceVendorTests#com.android.tests.gpuservice.GpuWorkTracepointTest passes on both Brya and fatcat.",
+      "revId": "475144dec1abbdb7cc3b287f5d1ffbb186276a68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d25c674a_decb10b3",
+        "filename": "drivers/gpu/drm/xe/xe_device.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1489981
+      },
+      "writtenOn": "2025-06-23T15:55:43Z",
+      "side": 1,
+      "message": "does this imply a 1sec timeout? how was this value chosen?",
+      "revId": "475144dec1abbdb7cc3b287f5d1ffbb186276a68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
