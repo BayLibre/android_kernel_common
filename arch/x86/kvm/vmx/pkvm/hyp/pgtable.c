@@ -541,7 +541,8 @@ int pgtable_walk(struct pkvm_pgtable *pgt, unsigned long vaddr,
 
 	ret = _pgtable_walk(&data, mm_ops->phys_to_virt(pgt->root_pa), pgt->level);
 
-	if (data.flush_data.flushtlb || !list_empty(&data.flush_data.free_list))
+	if (pgt->mm_ops->flush_tlb && (data.flush_data.flushtlb ||
+	    !list_empty(&data.flush_data.free_list)))
 		pgt->mm_ops->flush_tlb(pgt, aligned_vaddr, aligned_size);
 
 	while (!list_empty(&data.flush_data.free_list)) {
