@@ -67,6 +67,24 @@
       "message": "does this imply a 1sec timeout? how was this value chosen?",
       "revId": "475144dec1abbdb7cc3b287f5d1ffbb186276a68",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3b19c21_980af74f",
+        "filename": "drivers/gpu/drm/xe/xe_device.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 3727313
+      },
+      "writtenOn": "2025-06-23T16:41:44Z",
+      "side": 1,
+      "message": "1sec is the initial value. the actual value is set in #283 which is 500msec.\nI have kept it large enough since all the uids will be emitted in a single thread.",
+      "parentUuid": "d25c674a_decb10b3",
+      "revId": "475144dec1abbdb7cc3b287f5d1ffbb186276a68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
