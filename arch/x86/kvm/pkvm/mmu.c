@@ -35,6 +35,32 @@ static void guest_mmu_put_page(void *vaddr)
 	hyp_put_page(&shadow_pgt_pool, vaddr);
 }
 
+static void guest_mmu_flush_tlb(struct pkvm_pgtable *pgt,
+				unsigned long addr,
+				unsigned long size)
+{
+	struct pkvm_vm *pkvm_vm = pgt_to_pkvm(pgt);
+	int i;
+
+	pkvm_spin_lock(&pkvm_vm->lock);
+
+	for (i = 0; i < to_kvm(pkvm_vm)->created_vcpus; i++) {
+		struct pkvm_vcpu *pkvm_vcpu;
+		struct kvm_vcpu *vcpu;
+
+		pkvm_vcpu = pkvm_vm->vcpus[i];
+		if (WARN_ON_ONCE(!pkvm_vcpu))
+			continue;
+
+		vcpu = to_kvm_vcpu(pkvm_vcpu);
+
+		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
+		pkvm_kick_vcpu(vcpu);
+	}
+
+	pkvm_spin_unlock(&pkvm_vm->lock);
+}
+
 int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm)
 {
 	pkvm_vm->pgt_mm_ops = (struct pkvm_mm_ops) {
@@ -44,7 +70,7 @@ int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm)
 		.get_page = guest_mmu_get_page,
 		.put_page = guest_mmu_put_page,
 		.page_count = hyp_page_count,
-		.flush_tlb = NULL,
+		.flush_tlb = guest_mmu_flush_tlb,
 		.flush_cache = NULL,
 	};
 	pkvm_vm->pgt_lock = __PKVM_SPINLOCK_UNLOCKED;
@@ -170,5 +196,8 @@ static int guest_mmu_free_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr, in
 
 void pkvm_vm_mmu_destroy(struct pkvm_vm *pkvm_vm)
 {
+	/* vCPUs are already torn down, no need to flush TLBs. */
+	pkvm_vm->pgt.mm_ops->flush_tlb = NULL;
+
 	pkvm_pgtable_destroy(&pkvm_vm->pgt, guest_mmu_free_leaf);
 }
