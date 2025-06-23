@@ -32,6 +32,7 @@
 #include <linux/moduleparam.h>
 #include <linux/fs.h>
 #include <linux/wakeup_reason.h>
+#include <linux/workqueue.h>
 
 #include "power.h"
 
@@ -74,6 +75,15 @@ bool pm_suspend_default_s2idle(void)
 	return mem_sleep_current == PM_SUSPEND_TO_IDLE;
 }
 EXPORT_SYMBOL_GPL(pm_suspend_default_s2idle);
+
+static bool suspend_fs_sync_queued = false;
+DEFINE_SPINLOCK(suspend_fs_sync_lock);
+DECLARE_COMPLETION(suspend_fs_sync_complete);
+void suspend_abort_fs_sync(void) {
+	spin_lock(&suspend_fs_sync_lock);
+	complete(&suspend_fs_sync_complete);
+	spin_unlock(&suspend_fs_sync_lock);
+}
 
 void s2idle_set_ops(const struct platform_s2idle_ops *ops)
 {
@@ -574,6 +584,53 @@ static void suspend_finish(void)
 	pm_restore_console();
 }
 
+static void sync_filesystems_fn(struct work_struct *work)
+{
+	ksys_sync_helper();
+
+	spin_lock(&suspend_fs_sync_lock);
+	suspend_fs_sync_queued = false;
+	complete(&suspend_fs_sync_complete);
+	spin_unlock(&suspend_fs_sync_lock);
+}
+static DECLARE_WORK(sync_filesystems, sync_filesystems_fn);
+
+/**
+ * suspend_fs_sync_with_abort- Start filesystem sync and handle potential aborts
+ *
+ * Starts filesystem sync in a workqueue, which will then follow the nominal
+ * suspend sequence. In case of abort during fs_sync, start the resume process
+ * in the main thread so that fs_sync is not blocking and so that the OS is
+ * responsive to user.
+ */
+static int suspend_fs_sync_with_abort(void) {
+	bool need_suspend_fs_sync_requeue;
+
+Start_fs_sync:
+	pm_wakeup_clear(0);
+
+	spin_lock(&suspend_fs_sync_lock);
+	reinit_completion(&suspend_fs_sync_complete);
+	need_suspend_fs_sync_requeue = suspend_fs_sync_queued;
+	if (!suspend_fs_sync_queued) {
+		schedule_work(&sync_filesystems);
+		suspend_fs_sync_queued = true;
+	}
+	spin_unlock(&suspend_fs_sync_lock);
+
+	/*
+	 * Completion is triggered by fs_sync finishing or a suspend abort
+	 * signal, whichever comes first
+	 */
+	wait_for_completion(&suspend_fs_sync_complete);
+	if (pm_wakeup_pending())
+		return -EBUSY;
+	if (need_suspend_fs_sync_requeue)
+		goto Start_fs_sync;
+
+	return 0;
+}
+
 /**
  * enter_state - Do common work needed to enter system sleep state.
  * @state: System sleep state to enter.
@@ -605,8 +662,10 @@ static int enter_state(suspend_state_t state)
 
 	if (sync_on_suspend_enabled) {
 		trace_suspend_resume(TPS("sync_filesystems"), 0, true);
-		ksys_sync_helper();
+		error = suspend_fs_sync_with_abort();
 		trace_suspend_resume(TPS("sync_filesystems"), 0, false);
+		if (error)
+			goto Abort;
 	}
 	if (filesystem_freeze_enabled)
 		filesystems_freeze();
@@ -632,6 +691,7 @@ static int enter_state(suspend_state_t state)
 	suspend_finish();
  Unlock:
 	filesystems_thaw();
+ Abort:
 	mutex_unlock(&system_transition_mutex);
 	return error;
 }
