@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "86293279_2a4538bd",
+        "filename": "include/linux/virtio_vsock.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2025-06-23T07:27:04Z",
+      "side": 1,
+      "message": "Ah yes, agreed. This call is setting the payload length and the payload is not stored in the SKB itself. Perhaps since you are setting `skb-\u003elen` here rather than adding to it, you should assert that the field is initially zero? I think that should be true for any skb passed to this function, regardless of linearity?",
+      "parentUuid": "77795e10_b26a882f",
+      "revId": "8ba8cdb0fc03e5a0b1d09b24896aafa8eab93da0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3712685c_f075dfb3",
         "filename": "include/linux/virtio_vsock.h",
         "patchSetId": 1
