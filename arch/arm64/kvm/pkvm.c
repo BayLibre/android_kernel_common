@@ -73,6 +73,18 @@ static int __init register_memblock_regions(void)
 		hyp_memory[*hyp_memblock_nr_ptr] = *reg;
 		(*hyp_memblock_nr_ptr)++;
 	}
+
+	if (*pvmfw_size && !memblock_overlaps_region(&memblock.memory, *pvmfw_base, *pvmfw_size)) {
+		if (*hyp_memblock_nr_ptr >= HYP_MEMBLOCK_REGIONS)
+			return -ENOMEM;
+
+		hyp_memory[*hyp_memblock_nr_ptr] = (struct memblock_region) {
+			.base   = *pvmfw_base,
+			.size   = *pvmfw_size,
+			.flags  = MEMBLOCK_NOMAP,
+		};
+		(*hyp_memblock_nr_ptr)++;
+	}
 	sort_memblock_regions();
 
 	return 0;
