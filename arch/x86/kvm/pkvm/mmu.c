@@ -10,6 +10,7 @@
 #include <vmx/pkvm/hyp/ept.h>	//FIXME
 #include <vmx/pkvm/hyp/mem_protect.h>
 #include <vmx/pkvm/hyp/memory.h>
+#include <pkvm.h>
 
 struct pkvm_pgtable_cap guest_pgt_cap;
 struct pkvm_pgtable_ops *guest_pgt_ops;
@@ -78,6 +79,35 @@ int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm)
 				 &guest_pgt_cap, true);
 }
 
+static bool range_has_pvmfw(struct kvm *kvm, u64 gpa_start, u64 gpa_end)
+{
+	struct kvm_protected_vm *pkvm = &kvm->arch.pkvm;
+	u64 pvmfw_load_end = pkvm->pvmfw_load_addr + pvmfw_size;
+
+	if (!pvmfw_present)
+		return false;
+
+	if (pkvm->pvmfw_load_addr == INVALID_GPA)
+		return false;
+
+	return gpa_end > pkvm->pvmfw_load_addr && gpa_start < pvmfw_load_end;
+}
+
+static int load_pvmfw_pages(struct kvm *kvm, u64 gpa, u64 phys, u64 size)
+{
+	u64 offset = gpa - kvm->arch.pkvm.pvmfw_load_addr;
+
+	if (offset >= pvmfw_size)
+		return -EINVAL;
+
+	size = min(size, pvmfw_size - offset);
+	if (!PAGE_ALIGNED(size) || !PAGE_ALIGNED(offset))
+		return -EINVAL;
+
+	memcpy(__pkvm_va(phys), __pkvm_va(pvmfw_base + offset), size);
+	return 0;
+}
+
 static int guest_pgt_map_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr, int level,
 			      void *ptep, struct pgt_flush_data *flush_data, void *arg)
 {
@@ -116,10 +146,18 @@ static int guest_pgt_map_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr, int
 	 * the page table once again to reach this PTE if we are already at it?
 	 * We could combine these 2 layers (MMU and page state API) into one layer.
 	 */
-	if (pkvm_is_protected_vm(kvm))
+	if (pkvm_is_protected_vm(kvm)) {
 		ret = __pkvm_host_donate_guest(data->phys, pgt, vaddr, size, data->prot);
-	else
+		if (ret)
+			return ret;
+
+		if (range_has_pvmfw(kvm, vaddr, vaddr + size)) {
+			ret = load_pvmfw_pages(kvm, vaddr, data->phys, size);
+			WARN_ON_ONCE(ret);
+		}
+	} else {
 		ret = __pkvm_host_share_guest(data->phys, pgt, vaddr, size, data->prot);
+	}
 
 	return ret;
 }
