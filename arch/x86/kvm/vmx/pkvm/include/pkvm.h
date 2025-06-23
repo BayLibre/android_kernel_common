@@ -21,6 +21,9 @@ struct pkvm_pgtable_cap {
 	int level;
 	int allowed_pgsz;
 	u64 table_prot;
+	u64 prot_mask;
+	u64 prot_rwx;
+	u64 prot_rx;
 };
 
 struct idt_page {
