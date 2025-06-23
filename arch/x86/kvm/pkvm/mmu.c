@@ -10,6 +10,7 @@
 #include <vmx/pkvm/hyp/ept.h>	//FIXME
 #include <vmx/pkvm/hyp/mem_protect.h>
 #include <vmx/pkvm/hyp/memory.h>
+#include <pkvm.h>
 
 /*
  * FIXME: temporarily reusing the shadow pgt memory pool.
@@ -80,6 +81,35 @@ int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm)
 				 &cap, true);
 }
 
+static bool range_has_pvmfw(struct pkvm_vm *pkvm_vm, u64 gpa_start, u64 gpa_end)
+{
+	struct kvm_protected_vm *pkvm = &to_kvm(pkvm_vm)->arch.pkvm;
+	u64 pvmfw_load_end = pkvm->pvmfw_load_addr + pvmfw_size;
+
+	if (!pvmfw_present)
+		return false;
+
+	if (pkvm->pvmfw_load_addr == INVALID_GPA)
+		return false;
+
+	return gpa_end > pkvm->pvmfw_load_addr && gpa_start < pvmfw_load_end;
+}
+
+static int load_pvmfw_pages(struct pkvm_vm *pkvm_vm, u64 gpa, u64 phys, u64 size)
+{
+	u64 offset = gpa - to_kvm(pkvm_vm)->arch.pkvm.pvmfw_load_addr;
+
+	if (offset >= pvmfw_size)
+		return -EINVAL;
+
+	size = min(size, pvmfw_size - offset);
+	if (!PAGE_ALIGNED(size) || !PAGE_ALIGNED(offset))
+		return -EINVAL;
+
+	memcpy(__pkvm_va(phys), __pkvm_va(pvmfw_base + offset), size);
+	return 0;
+}
+
 int pkvm_vm_mmu_map(int vm_handle, u64 gpa, u64 hpa, u64 size)
 {
 	u64 prot = HOST_EPT_DEF_MEM_PROT;	/* FIXME */
@@ -92,11 +122,19 @@ int pkvm_vm_mmu_map(int vm_handle, u64 gpa, u64 hpa, u64 size)
 
 	pkvm_spin_lock(&pkvm_vm->pgt_lock);
 
-	if (pkvm_is_protected_vm(to_kvm(pkvm_vm)))
+	if (pkvm_is_protected_vm(to_kvm(pkvm_vm))) {
 		ret = __pkvm_host_donate_guest(hpa, &pkvm_vm->pgt, gpa, size, prot);
-	else
-		ret = __pkvm_host_share_guest(hpa, &pkvm_vm->pgt, gpa, size, prot);
+		if (ret)
+			goto unlock;
 
+		if (range_has_pvmfw(pkvm_vm, gpa, gpa + size)) {
+			ret = load_pvmfw_pages(pkvm_vm, gpa, hpa, size);
+			WARN_ON_ONCE(ret);
+		}
+	} else {
+		ret = __pkvm_host_share_guest(hpa, &pkvm_vm->pgt, gpa, size, prot);
+	}
+unlock:
 	pkvm_spin_unlock(&pkvm_vm->pgt_lock);
 
 	put_pkvm_vm(pkvm_vm);
