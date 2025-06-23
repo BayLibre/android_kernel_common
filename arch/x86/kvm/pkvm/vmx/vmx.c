@@ -11,6 +11,7 @@
 #include <vmx/nested.h>
 #include <vmx/sgx.h>
 #include "vmx.h"
+#include "ept.h"
 #include <trace.h>
 #include <pkvm/pkvm.h>
 #include <vmx/pkvm/hyp/pkvm_hyp.h>
@@ -8034,6 +8035,7 @@ static struct pkvm_x86_ops pkvm_vt_x86_ops = {
 	.switch_to_host_vcpu = vmx_switch_to_host_vcpu,
 	.sync_vcpu_state_post_switch = vmx_sync_vcpu_state_post_switch,
 	.sync_vcpu_state_pre_switch = vmx_sync_vcpu_state_pre_switch,
+	.get_mmu_caps = ept_get_caps,
 	.setup_virtual_mmu = vmx_setup_virtual_mmu,
 };
 
