@@ -618,6 +618,7 @@ Start_fs_sync:
 	}
 	spin_unlock(&suspend_fs_sync_lock);
 
+Handle_completion:
 	/*
 	 * Completion is triggered by fs_sync finishing or a suspend abort
 	 * signal, whichever comes first
@@ -625,6 +626,13 @@ Start_fs_sync:
 	wait_for_completion(&suspend_fs_sync_complete);
 	if (pm_wakeup_pending())
 		return -EBUSY;
+	spin_lock(&suspend_fs_sync_lock);
+	if (suspend_fs_sync_queued) {
+		reinit_completion(&suspend_fs_sync_complete);
+		spin_unlock(&suspend_fs_sync_lock);
+		goto Handle_completion;
+	}
+	spin_unlock(&suspend_fs_sync_lock);
 	if (need_suspend_fs_sync_requeue)
 		goto Start_fs_sync;
 
