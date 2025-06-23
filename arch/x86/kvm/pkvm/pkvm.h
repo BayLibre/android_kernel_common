@@ -4,6 +4,8 @@
 
 #include <asm/kvm_host.h>
 #include <asm/pkvm_spinlock.h>
+//FIXME: clean up the header files
+#include <vmx/pkvm/hyp/pgtable.h>
 
 #define PKVM_MAX_NORMAL_VM_NUM		8
 #define PKVM_MAX_PROTECTED_VM_NUM	2
@@ -137,6 +139,7 @@ struct pkvm_x86_ops {
 	void (*switch_to_host_vcpu)(struct kvm_vcpu *vcpu);
 	void (*sync_vcpu_state_post_switch)(struct pkvm_vcpu *pkvm_vcpu);
 	void (*sync_vcpu_state_pre_switch)(struct pkvm_vcpu *pkvm_vcpu);
+	void (*get_mmu_caps)(struct pkvm_pgtable_cap *cap, struct pkvm_pgtable_ops **ops);
 	/*
 	 * FIMXE: This is to support the shadow EPT usage. Should be revisited
 	 * when the PV EPT is ready.
