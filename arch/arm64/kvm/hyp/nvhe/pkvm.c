@@ -1756,6 +1756,22 @@ bool kvm_handle_pvm_smc64(struct kvm_vcpu *vcpu, u64 *exit_code)
 	return handled;
 }
 
+static bool call_module_handle_guest_trng(struct kvm_vcpu *vcpu)
+{
+	struct kvm_cpu_context *ctxt = &vcpu->arch.ctxt;
+	struct arm_smccc_1_2_regs regs;
+	struct arm_smccc_1_2_regs res;
+
+	memcpy(&regs, &ctxt->regs, sizeof(regs));
+
+	if (!module_handle_guest_trng(&regs, &res))
+		return false;
+
+	memcpy(&ctxt->regs, &res, sizeof(res));
+
+	return true;
+}
+
 /*
  * Handler for protected VM HVC calls.
  *
@@ -1815,7 +1831,9 @@ bool kvm_handle_pvm_hvc64(struct kvm_vcpu *vcpu, u64 *exit_code)
 		return pkvm_memrelinquish_call(hyp_vcpu, exit_code);
 	case ARM_SMCCC_TRNG_VERSION ... ARM_SMCCC_TRNG_RND32:
 	case ARM_SMCCC_TRNG_RND64:
-		if (smccc_trng_available)
+		if (call_module_handle_guest_trng(vcpu))
+			return true;
+		else if (smccc_trng_available)
 			return pkvm_forward_trng(vcpu);
 		break;
 	case ARM_SMCCC_VENDOR_HYP_KVM_PVIOMMU_OP_FUNC_ID:

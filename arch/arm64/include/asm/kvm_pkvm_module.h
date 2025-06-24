@@ -280,7 +280,9 @@ struct pkvm_module_ops {
 	int (*hyp_smp_processor_id)(void);
 	int (*device_register_reset)(u64 phys, void *cookie,
 				     int (*cb)(void *cookie, bool host_to_guest));
-	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_USE(1, int (*register_guest_trng_handler)(
+				    bool (*cb)(struct arm_smccc_1_2_regs *,
+					       struct arm_smccc_1_2_regs *)));
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);
