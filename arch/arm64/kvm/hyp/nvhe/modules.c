@@ -143,6 +143,7 @@ enum mod_handler_type {
 	HOST_FAULT_HANDLER = 0,
 	HOST_SMC_HANDLER,
 	GUEST_SMC_HANDLER,
+	GUEST_HVC_HANDLER,
 	NUM_MOD_HANDLER_TYPES,
 };
 
@@ -196,6 +197,13 @@ static int __register_guest_smc_handler(bool (*cb)(struct arm_smccc_1_2_regs *re
 	return mod_handler_register(GUEST_SMC_HANDLER, cb);
 }
 
+static int __register_guest_hvc_handler(bool (*cb)(struct arm_smccc_1_2_regs *,
+						   struct arm_smccc_1_2_regs *,
+						   pkvm_handle_t handle))
+{
+	return mod_handler_register(GUEST_HVC_HANDLER, cb);
+}
+
 bool module_handle_host_perm_fault(struct user_pt_regs *regs, u64 esr, u64 addr)
 {
 	int (*cb)(struct user_pt_regs *regs, u64 esr, u64 addr);
@@ -230,6 +238,21 @@ bool module_handle_guest_smc(struct arm_smccc_1_2_regs *regs, struct arm_smccc_1
 	int i;
 
 	for_each_mod_handler(GUEST_SMC_HANDLER, cb, i) {
+		if (cb(regs, res, handle))
+			return true;
+	}
+
+	return false;
+}
+
+bool module_handle_guest_hvc(struct arm_smccc_1_2_regs *regs, struct arm_smccc_1_2_regs *res,
+			     pkvm_handle_t handle)
+{
+	bool (*cb)(struct arm_smccc_1_2_regs *regs, struct arm_smccc_1_2_regs *res,
+		   pkvm_handle_t handle);
+	int i;
+
+	for_each_mod_handler(GUEST_HVC_HANDLER, cb, i) {
 		if (cb(regs, res, handle))
 			return true;
 	}
@@ -301,6 +324,7 @@ const struct pkvm_module_ops module_ops = {
 	.iommu_reclaim_pages_atomic = kvm_iommu_reclaim_pages_atomic,
 	.hyp_smp_processor_id = __hyp_smp_processor_id,
 	.device_register_reset = pkvm_device_register_reset,
+	.register_guest_hvc_handler = __register_guest_hvc_handler,
 };
 
 static void *pkvm_module_hyp_va(struct pkvm_el2_module *mod, void *kern_va)

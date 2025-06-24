@@ -1756,6 +1756,27 @@ bool kvm_handle_pvm_smc64(struct kvm_vcpu *vcpu, u64 *exit_code)
 	return handled;
 }
 
+static bool call_module_guest_hvc_handler(struct kvm_vcpu *vcpu)
+{
+	struct kvm_cpu_context *ctxt = &vcpu->arch.ctxt;
+	struct pkvm_hyp_vm *vm;
+	struct pkvm_hyp_vcpu *hyp_vcpu;
+	struct arm_smccc_1_2_regs regs;
+	struct arm_smccc_1_2_regs res;
+
+	hyp_vcpu = container_of(vcpu, struct pkvm_hyp_vcpu, vcpu);
+	vm = pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu);
+
+	memcpy(&regs, &ctxt->regs, sizeof(regs));
+
+	if (!module_handle_guest_hvc(&regs, &res, vm->kvm.arch.pkvm.handle))
+		return false;
+
+	memcpy(&ctxt->regs, &res, sizeof(res));
+
+	return true;
+}
+
 /*
  * Handler for protected VM HVC calls.
  *
@@ -1817,6 +1838,8 @@ bool kvm_handle_pvm_hvc64(struct kvm_vcpu *vcpu, u64 *exit_code)
 	case ARM_SMCCC_TRNG_RND64:
 		if (smccc_trng_available)
 			return pkvm_forward_trng(vcpu);
+		else if (call_module_guest_hvc_handler(vcpu))
+			return true;
 		break;
 	case ARM_SMCCC_VENDOR_HYP_KVM_PVIOMMU_OP_FUNC_ID:
 		return kvm_handle_pviommu_hvc(vcpu, exit_code);
@@ -1827,8 +1850,12 @@ bool kvm_handle_pvm_hvc64(struct kvm_vcpu *vcpu, u64 *exit_code)
 	default:
 		if (is_ffa_call(fn))
 			return kvm_guest_ffa_handler(hyp_vcpu, exit_code);
+		else if (pkvm_handle_psci(hyp_vcpu))
+			return true;
+		else if (call_module_guest_hvc_handler(vcpu))
+			return true;
 		else
-			return pkvm_handle_psci(hyp_vcpu);
+			return false;
 	}
 
 	smccc_set_retval(vcpu, val[0], val[1], val[2], val[3]);
