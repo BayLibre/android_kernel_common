@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c74122a8_73b65de0",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-06-24T15:58:05Z",
+      "side": 1,
+      "message": "There are a handful of other Intel-specific configs enabled in this file.\n\nIs this something we want to continue doing, or should we push for this to be a tristate, so it can be a vendor module for the boards that want it (assuming that\u0027s possible)?",
+      "revId": "d1c787fe329b52fcc75662454318832e9102fc44",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
