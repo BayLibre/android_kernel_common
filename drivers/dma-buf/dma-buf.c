@@ -179,6 +179,7 @@ static struct task_dma_buf_record *find_task_dmabuf_record(
 static int new_task_dmabuf_record(struct task_struct *task, struct dma_buf *dmabuf)
 {
 	struct task_dma_buf_record *rec;
+	s64 rss;
 
 	lockdep_assert_held(&task->dmabuf_info->lock);
 
@@ -186,7 +187,15 @@ static int new_task_dmabuf_record(struct task_struct *task, struct dma_buf *dmab
 	if (!rec)
 		return -ENOMEM;
 
-	atomic64_add(dmabuf->size, &task->dmabuf_info->rss);
+	rss = atomic64_add_return(dmabuf->size, &task->dmabuf_info->rss);
+	/*
+	 * task->dmabuf_info->lock protects against concurrent writers, so no
+	 * worries about stale rss_hwm between the read and write, and we don't
+	 * need to cmpxchg here.
+	 */
+	if (rss > atomic64_read(&task->dmabuf_info->rss_hwm))
+		atomic64_set(&task->dmabuf_info->rss_hwm, rss);
+
 	rec->dmabuf = dmabuf;
 	rec->refcnt = 1;
 	list_add(&rec->node, &task->dmabuf_info->dmabufs);
