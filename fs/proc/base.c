@@ -3316,6 +3316,17 @@ static int proc_dmabuf_rss_show(struct seq_file *m, struct pid_namespace *ns,
 
 	return 0;
 }
+
+static int proc_dmabuf_rss_hwm_show(struct seq_file *m, struct pid_namespace *ns,
+		     struct pid *pid, struct task_struct *task)
+{
+	WARN_ON(!task->dmabuf_info);
+
+	if (!(task->flags & PF_KTHREAD))
+		seq_printf(m, "%lld\n", atomic64_read(&task->dmabuf_info->rss_hwm));
+
+	return 0;
+}
 #endif
 
 /*
@@ -3443,6 +3454,7 @@ static const struct pid_entry tgid_base_stuff[] = {
 #endif
 #ifdef CONFIG_DMA_SHARED_BUFFER
 	ONE("dmabuf_rss", 0444, proc_dmabuf_rss_show),
+	ONE("dmabuf_rss_hwm", 0444, proc_dmabuf_rss_hwm_show),
 #endif
 };
 
