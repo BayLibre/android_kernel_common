@@ -16,6 +16,24 @@
       "message": "Again, __vmx_pkvm_init() may have already failed, so it\u0027s more correct to use pkvm_enabled() here?\n\nCan we just do this change in a separate patch after aosp/3590991?",
       "revId": "5d53f1b6f308e838e6b0d8a7683dc955f09b9cc6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "130df2e7_7208df47",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 3284,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-25T15:31:09Z",
+      "side": 1,
+      "message": "I did change this to pkvm_enabled() in the next patch. This change is just to have compile successfully until next patch. I thought it wouldn\u0027t be worth having a commit for single line simple patch. But I can have it as a separate patch if needed.",
+      "parentUuid": "f15e55d3_99e00bed",
+      "revId": "5d53f1b6f308e838e6b0d8a7683dc955f09b9cc6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
