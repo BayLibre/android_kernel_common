@@ -2213,9 +2213,12 @@ static int copy_dmabuf_info(u64 clone_flags, struct task_struct *p)
 		refcount_set(&p->dmabuf_info->refcnt, 1);
 		INIT_LIST_HEAD(&p->dmabuf_info->dmabufs);
 		if (current->dmabuf_info) {
+			s64 rss;
+
 			spin_lock(&current->dmabuf_info->lock);
-			atomic64_set(&p->dmabuf_info->rss,
-				     atomic64_read(&current->dmabuf_info->rss));
+			rss = atomic64_read(&current->dmabuf_info->rss);
+			atomic64_set(&p->dmabuf_info->rss, rss);
+			atomic64_set(&p->dmabuf_info->rss_hwm, rss);
 			list_for_each_entry(rec, &current->dmabuf_info->dmabufs, node) {
 				copy = kmalloc(sizeof(*copy), GFP_KERNEL);
 				if (!copy) {
@@ -2230,6 +2233,7 @@ static int copy_dmabuf_info(u64 clone_flags, struct task_struct *p)
 			spin_unlock(&current->dmabuf_info->lock);
 		} else {
 			atomic64_set(&p->dmabuf_info->rss, 0);
+			atomic64_set(&p->dmabuf_info->rss_hwm, 0);
 		}
 	}
 
