@@ -37,6 +37,7 @@
 #include <linux/kcsan.h>
 #include <linux/rv.h>
 #include <linux/livepatch_sched.h>
+#include <linux/atomic.h>
 #include <linux/android_vendor.h>
 #include <linux/android_kabi.h>
 #include <asm/kmap_size.h>
@@ -728,6 +729,20 @@ struct kmap_ctrl {
 	int				idx;
 	pte_t				pteval[KM_MAX_IDX];
 #endif
+};
+
+struct dma_buf;
+struct task_dma_buf_record {
+	struct list_head node;
+	struct dma_buf *dmabuf;
+	unsigned long refcnt; // All maps, fd refs from all tasks for this buffer
+};
+
+struct task_dma_buf_info {
+	atomic64_t rss;
+	refcount_t refcnt;
+	spinlock_t lock;
+	struct list_head dmabufs;
 };
 
 struct task_struct {
@@ -1516,7 +1531,8 @@ struct task_struct {
 	 */
 	struct callback_head		l1d_flush_kill;
 #endif
-	ANDROID_KABI_RESERVE(1);
+// TODO IFDEF
+	ANDROID_KABI_USE(1, struct task_dma_buf_info *dmabuf_info);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);

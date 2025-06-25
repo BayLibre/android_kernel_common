@@ -100,6 +100,7 @@
 #include <linux/cn_proc.h>
 #include <linux/ksm.h>
 #include <linux/cpufreq_times.h>
+#include <linux/dma-buf.h>
 #include <trace/events/oom.h>
 #include <trace/hooks/sched.h>
 #include "internal.h"
@@ -3304,6 +3305,17 @@ static int proc_stack_depth(struct seq_file *m, struct pid_namespace *ns,
 }
 #endif /* CONFIG_STACKLEAK_METRICS */
 
+static int proc_dmabuf_rss_show(struct seq_file *m, struct pid_namespace *ns,
+		     struct pid *pid, struct task_struct *task)
+{
+	WARN_ON(!task->dmabuf_info);
+
+	if (!(task->flags & PF_KTHREAD))
+		seq_printf(m, "%lld\n", atomic64_read(&task->dmabuf_info->rss));
+
+	return 0;
+}
+
 /*
  * Thread groups
  */
@@ -3427,6 +3439,8 @@ static const struct pid_entry tgid_base_stuff[] = {
 	ONE("ksm_merging_pages",  S_IRUSR, proc_pid_ksm_merging_pages),
 	ONE("ksm_stat",  S_IRUSR, proc_pid_ksm_stat),
 #endif
+// TODO ifdefs
+	ONE("dmabuf_rss", 0444, proc_dmabuf_rss_show),
 };
 
 static int proc_tgid_base_readdir(struct file *file, struct dir_context *ctx)

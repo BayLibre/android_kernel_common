@@ -741,4 +741,7 @@ int dma_buf_vmap_unlocked(struct dma_buf *dmabuf, struct iosys_map *map);
 void dma_buf_vunmap_unlocked(struct dma_buf *dmabuf, struct iosys_map *map);
 long dma_buf_set_name(struct dma_buf *dmabuf, const char *name);
 int dma_buf_get_flags(struct dma_buf *dmabuf, unsigned long *flags);
+
+int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task);
+void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task);
 #endif /* __DMA_BUF_H__ */
