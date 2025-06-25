@@ -16,6 +16,24 @@
       "message": "I am not so sure about the patch sequence in this chain. Looks like this pkvm_enabled() function is defined by another patch: https://android-review.googlesource.com/c/kernel/common/+/3590991/13. If the 3590991 is a later patch, then probably we will have compiling issue in the middle.",
       "revId": "352704478ab12ca4802f958e886f937cfe447f6b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e905320_61a5ffcd",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 3284,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-06-25T13:22:04Z",
+      "side": 1,
+      "message": "My mistake, i had rearranged the patches during the previous iteration and somehow missed this. Fixing it now",
+      "parentUuid": "80c87534_a9f24e1c",
+      "revId": "352704478ab12ca4802f958e886f937cfe447f6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
