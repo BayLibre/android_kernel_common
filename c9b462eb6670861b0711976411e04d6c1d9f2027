@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "31702020_6452d033",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1964618
+      },
+      "writtenOn": "2025-06-25T12:28:10Z",
+      "side": 1,
+      "message": "I\u0027ve verified that there are no modifications to the init_user_ns structure in my local code. The CRC change actually occurred as a result generated during compilation.",
+      "parentUuid": "5139ebfc_61cff857",
+      "revId": "c9b462eb6670861b0711976411e04d6c1d9f2027",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "24ef9b05_eaa66c7e",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -48,6 +66,23 @@
       "writtenOn": "2025-06-25T04:13:50Z",
       "side": 1,
       "message": "Set Ready For Review  (not android_oem_data1[2])",
+      "revId": "c9b462eb6670861b0711976411e04d6c1d9f2027",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "340ae159_e732b196",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1964618
+      },
+      "writtenOn": "2025-06-25T12:28:10Z",
+      "side": 1,
+      "message": "We pulled the clean Android 16-6.12 code and added the changes mentioned above. However, the compiled symbol table still shows:\n3 function symbol(s) added\n  \u0027int __traceiter_android_vh_alloc_uid(void*, struct user_struct*)\u0027\n  \u0027int __traceiter_android_vh_free_user(void*, struct user_struct*)\u0027\n  \u0027struct user_struct* find_user(kuid_t)\u0027\n\n2 variable symbol(s) added\n  \u0027struct tracepoint __tracepoint_android_vh_alloc_uid\u0027\n  \u0027struct tracepoint __tracepoint_android_vh_free_user\u0027\n\nvariable symbol \u0027struct user_namespace init_user_ns\u0027 changed\n  CRC changed from 0x4f51038c to 0x2c43bc48",
       "revId": "c9b462eb6670861b0711976411e04d6c1d9f2027",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
