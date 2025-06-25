@@ -52,6 +52,24 @@
       "parentUuid": "130df2e7_7208df47",
       "revId": "5d53f1b6f308e838e6b0d8a7683dc955f09b9cc6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe38f095_21b2bd94",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 3284,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-06-25T17:20:26Z",
+      "side": 1,
+      "message": "Although IMO there would be nothing wrong in having a separate patch for this one-line change, after all this seems like a separate logical change that doesn\u0027t exactly belong in this patch (and we wouldn\u0027t need to touch this line in 2 different patches, so it would actually make things easier). But that\u0027s not too important.",
+      "parentUuid": "a297ca75_87977be0",
+      "revId": "5d53f1b6f308e838e6b0d8a7683dc955f09b9cc6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
