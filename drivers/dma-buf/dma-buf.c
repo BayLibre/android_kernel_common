@@ -182,6 +182,14 @@ static int add_task_dmabuf_record(struct task_struct *task, struct dma_buf *dmab
 	lockdep_assert_held(&task->dmabuf_info->lock);
 
 	task->dmabuf_info->rss += dmabuf->size;
+	/*
+	 * task->dmabuf_info->lock protects against concurrent writers, so no
+	 * worries about stale rss_hwm between the read and write, and we don't
+	 * need to cmpxchg here.
+	 */
+	if (task->dmabuf_info->rss > task->dmabuf_info->rss_hwm)
+		task->dmabuf_info->rss_hwm = task->dmabuf_info->rss;
+
 	rec->dmabuf = dmabuf;
 	rec->refcnt = 1;
 	list_add(&rec->node, &task->dmabuf_info->dmabufs);
@@ -394,6 +402,7 @@ int copy_dmabuf_info(u64 clone_flags, struct task_struct *task)
 	if (!current->dmabuf_info) {
 		task->dmabuf_info->dmabuf_count = 0;
 		task->dmabuf_info->rss = 0;
+		task->dmabuf_info->rss_hwm = 0;
 
 		return 0;
 	}
@@ -437,6 +446,7 @@ retry:
 
 	task->dmabuf_info->dmabuf_count = current->dmabuf_info->dmabuf_count;
 	task->dmabuf_info->rss = current->dmabuf_info->rss;
+	task->dmabuf_info->rss_hwm = current->dmabuf_info->rss;
 
 	spin_unlock(&current->dmabuf_info->lock);
 
