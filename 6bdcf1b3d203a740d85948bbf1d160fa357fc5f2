@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a2678af_9327b102",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-06-26T18:24:01Z",
+      "side": 1,
+      "message": "Nit: I know you wanted to submit this here for ease of review, but FROMLIST patches submitted to Gerrit really should match a patch sent to lkml (or other public list).",
+      "revId": "6bdcf1b3d203a740d85948bbf1d160fa357fc5f2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e107ae82_470605b1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-06-26T18:24:01Z",
+      "side": 1,
+      "message": "The new commit message is easier to follow, thank you for the edits!",
+      "revId": "6bdcf1b3d203a740d85948bbf1d160fa357fc5f2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c38e708e_54a5dc08",
+        "filename": "kernel/sched/deadline.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1615,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-06-26T18:24:01Z",
+      "side": 1,
+      "message": "I\u0027m still hesitant on the conditional here, as it feels particularly subtle. \n\nApologies if I\u0027m being dim, but given the commit message and the description of the problem, its not clear when we would call this function when `rq-\u003efair_server.dl_server` is false, and why we would want to use the scaled accounting for `rq-\u003efair_server` at that time.\n\nIf there is a good reason, it might be worth adding a comment to make it clear.",
+      "revId": "6bdcf1b3d203a740d85948bbf1d160fa357fc5f2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
