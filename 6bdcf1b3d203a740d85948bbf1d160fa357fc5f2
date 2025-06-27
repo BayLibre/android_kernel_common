@@ -50,6 +50,24 @@
       "message": "I\u0027m still hesitant on the conditional here, as it feels particularly subtle. \n\nApologies if I\u0027m being dim, but given the commit message and the description of the problem, its not clear when we would call this function when `rq-\u003efair_server.dl_server` is false, and why we would want to use the scaled accounting for `rq-\u003efair_server` at that time.\n\nIf there is a good reason, it might be worth adding a comment to make it clear.",
       "revId": "6bdcf1b3d203a740d85948bbf1d160fa357fc5f2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1131036_e03df73d",
+        "filename": "kernel/sched/deadline.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1615,
+      "author": {
+        "id": 3077297
+      },
+      "writtenOn": "2025-06-27T01:58:04Z",
+      "side": 1,
+      "message": "In my opinion, it would be easy for users to configure the dl_server flag to determine whether to use the scaled (dl_server \u003d 0) or non-scaled (dl_server \u003d 1) mode. \n\nNow since the rq-\u003efair_server.dl_server is 1 at dl_server_start, now it\u0027s always use non-sclaed.\n\nMoreover,You can refer this discuss, (Add a deadline server for sched_ext tasks )\nI think maintainer want to use server argument than a specific server. It still under discuss.\nhttps://lore.kernel.org/all/20250620203234.3349930-8-joelagnelf@nvidia.com/\n\nSo I think we should use the server argument rather than the dl_server flag to align with their future changes.",
+      "parentUuid": "c38e708e_54a5dc08",
+      "revId": "6bdcf1b3d203a740d85948bbf1d160fa357fc5f2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
