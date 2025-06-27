@@ -16,6 +16,24 @@
       "message": "Does this actually work? I didn\u0027t think we could include an object with the same name as the larger object.",
       "revId": "b67a7d57b1e62d835794a59baccd95ae9983739a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7455c48_6c3d96fb",
+        "filename": "drivers/staging/android/Makefile",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-06-27T22:50:15Z",
+      "side": 1,
+      "message": "Yep; you can have intermediate objects with the same name as the overall composite object. `make` figures out that it needs to build the intermediate `ashmem_rust.o` from `ashmem_rust.rs` and that it is only a part of the composite `ashmem_rust.o`.\n\nThis is used in other places in the kernel too: https://elixir.bootlin.com/linux/v6.16-rc3/source/drivers/iommu/arm/arm-smmu/Makefile",
+      "parentUuid": "c5fcc6a7_abcc3f5f",
+      "revId": "b67a7d57b1e62d835794a59baccd95ae9983739a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
