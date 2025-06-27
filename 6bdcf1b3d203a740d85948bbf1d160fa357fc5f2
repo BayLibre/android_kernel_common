@@ -68,6 +68,24 @@
       "parentUuid": "c38e708e_54a5dc08",
       "revId": "6bdcf1b3d203a740d85948bbf1d160fa357fc5f2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4fcf001_7513a265",
+        "filename": "kernel/sched/deadline.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1615,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-06-27T02:21:35Z",
+      "side": 1,
+      "message": "I think this overloads the dl_server flag in an unintuitive and implicit way. It would be much better to have a separate bit for scaled accounting.\n\nAs for adapting to the specific patch you linked to, it would be just as easy to put an explicit check:\n  if (rq_dl_server \u003d\u003d rq-\u003efair_server)\n  \nto initially avoid scaling the fair server. \n\nIn my mind, your fix is a bug fix, and that should have priority over feature extensions that haven\u0027t yet landed. So you should make the fix as clear as possible for the code upstream today, not what might come later.\n\nAgain, this would be best discussed on the list (worth re-posting your argument here on lkml), as the upstream maintainers opinion matters much more than mine :)",
+      "parentUuid": "a1131036_e03df73d",
+      "revId": "6bdcf1b3d203a740d85948bbf1d160fa357fc5f2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
