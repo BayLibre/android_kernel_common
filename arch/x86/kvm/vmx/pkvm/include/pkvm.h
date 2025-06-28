@@ -155,7 +155,7 @@ PKVM_DECLARE(void, pkvm_init_host_state_area, (struct pkvm_pcpu *pcpu, int cpu))
 PKVM_DECLARE(int, init_pci, (struct pkvm_hyp *pkvm));
 
 PKVM_DECLARE(void *, pkvm_early_alloc_contig, (unsigned int nr_pages));
-PKVM_DECLARE(void *, pkvm_early_alloc_page, (void));
+PKVM_DECLARE(void *, pkvm_early_alloc_page, (void *mc));
 PKVM_DECLARE(void, pkvm_early_alloc_init, (void *virt, unsigned long size));
 
 PKVM_DECLARE(void, init_msr_emulation, (struct vcpu_vmx *vmx));

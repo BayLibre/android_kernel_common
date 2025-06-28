@@ -381,7 +381,7 @@ static __init int pkvm_enable_vmx(struct pkvm_host_vcpu *hvcpu)
 {
 	u64 phys_addr;
 
-	hvcpu->vmxarea = pkvm_sym(pkvm_early_alloc_page)();
+	hvcpu->vmxarea = pkvm_sym(pkvm_early_alloc_page)(NULL);
 	if (!hvcpu->vmxarea)
 		return -ENOMEM;
 
@@ -618,7 +618,7 @@ static __init int pkvm_host_init_vmx(struct pkvm_host_vcpu *hvcpu, int cpu)
 	if (!vmx->vmcs01.vmcs)
 		return -ENOMEM;
 
-	vmx->vmcs01.msr_bitmap = pkvm_sym(pkvm_early_alloc_page)();
+	vmx->vmcs01.msr_bitmap = pkvm_sym(pkvm_early_alloc_page)(NULL);
 	if (!vmx->vmcs01.msr_bitmap) {
 		pr_err("%s: No page for msr_bitmap\n", __func__);
 		return -ENOMEM;
@@ -1271,7 +1271,7 @@ static __init int pkvm_init_pci(struct pkvm_hyp *pkvm)
 	struct pci_mmcfg_region *data, *cfg;
 	int length = 0, max_region_num = PAGE_SIZE / sizeof(struct pci_mmcfg_region);
 
-	data = pkvm_sym(pkvm_early_alloc_page)();
+	data = pkvm_sym(pkvm_early_alloc_page)(NULL);
 
 	list_for_each_entry_rcu(cfg, &pci_mmcfg_list, list, pci_mmcfg_lock_held()) {
 		if (length >= max_region_num)
