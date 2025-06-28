@@ -383,7 +383,7 @@ static __init int pkvm_enable_vmx(struct pkvm_host_vcpu *hvcpu)
 {
 	u64 phys_addr;
 
-	hvcpu->vmxarea = pkvm_sym(pkvm_early_alloc_page)();
+	hvcpu->vmxarea = pkvm_sym(pkvm_early_alloc_page)(NULL);
 	if (!hvcpu->vmxarea)
 		return -ENOMEM;
 
@@ -617,7 +617,7 @@ static __init int pkvm_host_init_vmx(struct pkvm_host_vcpu *hvcpu, int cpu)
 	if (!vmx->vmcs01.vmcs)
 		return -ENOMEM;
 
-	vmx->vmcs01.msr_bitmap = pkvm_sym(pkvm_early_alloc_page)();
+	vmx->vmcs01.msr_bitmap = pkvm_sym(pkvm_early_alloc_page)(NULL);
 	if (!vmx->vmcs01.msr_bitmap) {
 		pr_err("%s: No page for msr_bitmap\n", __func__);
 		return -ENOMEM;
