@@ -62,7 +62,7 @@ static void *ept_zalloc_page(struct hyp_pool *pool)
 	return page;
 }
 
-static void *host_ept_zalloc_page(void)
+static void *host_ept_zalloc_page(void *mc)
 {
 	/*
 	 * Also initiailize the host ept with SUPPRESS_VE bit set although this
@@ -416,7 +416,7 @@ int pkvm_shadow_ept_pool_init(void *ept_pool_base, unsigned long ept_pool_pages)
 	return hyp_pool_init(&shadow_pgt_pool, pfn, ept_pool_pages, 0);
 }
 
-static void *shadow_pgt_zalloc_page(void)
+static void *shadow_pgt_zalloc_page(void *mc)
 {
 	return ept_zalloc_page(&shadow_pgt_pool);
 }
