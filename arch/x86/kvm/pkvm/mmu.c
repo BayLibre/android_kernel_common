@@ -20,7 +20,7 @@ struct pkvm_pgtable_ops *guest_pgt_ops;
  * Replace it with a memcache supplied by KVM-high.
  */
 
-static void *guest_mmu_zalloc_page(void)
+static void *guest_mmu_zalloc_page(void *mc)
 {
 	return hyp_alloc_pages(&shadow_pgt_pool, 0);
 }
