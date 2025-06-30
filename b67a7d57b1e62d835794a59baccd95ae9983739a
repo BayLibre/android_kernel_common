@@ -97,6 +97,30 @@
       },
       "revId": "b67a7d57b1e62d835794a59baccd95ae9983739a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "484c0d50_d93e0d63",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 5
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-06-30T17:45:01Z",
+      "side": 1,
+      "message": "Hi Greg, thanks for the feedback. There are other places upstream that do this: https://cs.android.com/android/kernel/superproject/+/common-android-mainline:common/mm/shmem.c;l\u003d2787\n\nIs there another way that we should use for checking this? There\u0027s additional context as to why this is needed in the bug ticket if that helps: https://buganizer.corp.google.com/issues/193397560",
+      "parentUuid": "a5914dbf_a3fe2d08",
+      "range": {
+        "startLine": 653,
+        "startChar": 0,
+        "endLine": 653,
+        "endChar": 66
+      },
+      "revId": "b67a7d57b1e62d835794a59baccd95ae9983739a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
