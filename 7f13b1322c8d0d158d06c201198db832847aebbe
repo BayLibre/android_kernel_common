@@ -63,6 +63,30 @@
       ],
       "revId": "7f13b1322c8d0d158d06c201198db832847aebbe",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e57ea32e_ab355107",
+        "filename": "include/linux/dma-buf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2025-06-30T21:11:14Z",
+      "side": 1,
+      "message": "That lock is per-task (or group of tasks sharing both mm_struct and files_struct), but it\u0027s possible for tasks *not* to share the same `dmabuf_info` and refer to the same buffer, in which case this does need some other synchronization.",
+      "parentUuid": "373b4b46_046eec06",
+      "range": {
+        "startLine": 536,
+        "startChar": 21,
+        "endLine": 536,
+        "endChar": 47
+      },
+      "revId": "7f13b1322c8d0d158d06c201198db832847aebbe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
