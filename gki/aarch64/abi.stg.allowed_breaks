@@ -35,3 +35,9 @@ type 'struct drm_bridge' changed
 type 'struct drm_framebuffer' changed
   member 'union { unsigned int internal_flags; unsigned char __kabi_ignored0; }' was added
 
+type 'struct readahead_control' changed
+  member 'union { bool dropbehind; unsigned char __kabi_ignored1; }' was added
+
+type 'struct bindings::bindings_raw::readahead_control' changed
+  member 'union bindings::bindings_raw::readahead_control__bindgen_ty_1 __bindgen_anon_1' was added
+
