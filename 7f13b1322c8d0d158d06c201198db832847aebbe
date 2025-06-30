@@ -22,6 +22,47 @@
       },
       "revId": "7f13b1322c8d0d158d06c201198db832847aebbe",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "373b4b46_046eec06",
+        "filename": "include/linux/dma-buf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-06-30T16:47:08Z",
+      "side": 1,
+      "message": "We always operate on this member under dmabuf_info-\u003elock protection. Do we really need it to be atomic?",
+      "range": {
+        "startLine": 536,
+        "startChar": 21,
+        "endLine": 536,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "aa3efc9b_160a76dd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/dma-buf.h",
+              "range": {
+                "startLine": 536,
+                "startChar": 0,
+                "endLine": 537,
+                "endChar": 0
+              },
+              "replacement": "\tANDROID_KABI_USE(1, unsigned long num_unique_refs);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7f13b1322c8d0d158d06c201198db832847aebbe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
