@@ -169,6 +169,30 @@
       },
       "revId": "b67a7d57b1e62d835794a59baccd95ae9983739a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32e5783e_c0a9f1f1",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 5
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-06-30T22:09:39Z",
+      "side": 1,
+      "message": "To add, there have been cases in the past where this type of behavior was allowed: https://android-review.googlesource.com/c/kernel/common/+/2411393\n\nVendors also use that information for functional reasons. How is this different?",
+      "parentUuid": "c00c2c67_8db2e0e7",
+      "range": {
+        "startLine": 653,
+        "startChar": 0,
+        "endLine": 653,
+        "endChar": 66
+      },
+      "revId": "b67a7d57b1e62d835794a59baccd95ae9983739a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
