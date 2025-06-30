@@ -121,6 +121,30 @@
       },
       "revId": "b67a7d57b1e62d835794a59baccd95ae9983739a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e3687a3_10036abf",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 5
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-06-30T18:06:46Z",
+      "side": 1,
+      "message": "That is debugging only code, the system operation does not rely on that.\n\nAnd really, this should not be anything that anyone does.  You opened the file descriptor, you know what type it is when you did so, any attempt of \"what is this thing really?\" is not ok.",
+      "parentUuid": "484c0d50_d93e0d63",
+      "range": {
+        "startLine": 653,
+        "startChar": 0,
+        "endLine": 653,
+        "endChar": 66
+      },
+      "revId": "b67a7d57b1e62d835794a59baccd95ae9983739a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
