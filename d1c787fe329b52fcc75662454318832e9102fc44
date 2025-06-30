@@ -16,6 +16,24 @@
       "message": "There are a handful of other Intel-specific configs enabled in this file.\n\nIs this something we want to continue doing, or should we push for this to be a tristate, so it can be a vendor module for the boards that want it (assuming that\u0027s possible)?",
       "revId": "d1c787fe329b52fcc75662454318832e9102fc44",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d51a033_f482f6e1",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 3758251
+      },
+      "writtenOn": "2025-06-30T05:42:15Z",
+      "side": 1,
+      "message": "Hi Tim,\n\nI have discussed about tristate with the HFI driver owner(Neri, Ricardo),\nThis needs internal discussion with dependent drivers team and it may take longer path do these changes and get it landed in upstream if its feasible.\n\nMeanwhile can we submit this change and later we can revert once tristate is available in upstream?",
+      "parentUuid": "c74122a8_73b65de0",
+      "revId": "d1c787fe329b52fcc75662454318832e9102fc44",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
