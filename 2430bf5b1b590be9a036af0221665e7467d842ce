@@ -69,6 +69,24 @@
       "parentUuid": "5aa9ee17_7b6f686c",
       "revId": "2430bf5b1b590be9a036af0221665e7467d842ce",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12b205ff_e9b55151",
+        "filename": "kernel/user.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-06-30T18:41:07Z",
+      "side": 1,
+      "message": "Oh, that would be the solution for 6.6 and earlier, but the addition of stable rust interfaces changed the remedy. @gprocida@google.com, what is the new incantation with gendwarfksyms? Is there a doc with the old-\u003enew mappings?",
+      "parentUuid": "dc443d40_651ae433",
+      "revId": "2430bf5b1b590be9a036af0221665e7467d842ce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
