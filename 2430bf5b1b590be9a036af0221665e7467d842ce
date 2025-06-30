@@ -51,6 +51,24 @@
       "message": "I suspect that wrapping this include in `#ifndef __GENKSYMS__` will resolve the CRC issues.\n```\n#ifndef __GENKSYMS__\ninclude \u003ctrace/hooks/user.h\u003e\n#endif\n```",
       "revId": "2430bf5b1b590be9a036af0221665e7467d842ce",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc443d40_651ae433",
+        "filename": "kernel/user.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-06-30T18:16:43Z",
+      "side": 1,
+      "message": "Unfortunately that doesn\u0027t seem to help in my testing.",
+      "parentUuid": "5aa9ee17_7b6f686c",
+      "revId": "2430bf5b1b590be9a036af0221665e7467d842ce",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
