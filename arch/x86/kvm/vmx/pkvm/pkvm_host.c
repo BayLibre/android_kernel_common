@@ -1330,6 +1330,22 @@ static void __init setup_pkvm_syms(void)
 	pkvm_sym(x86_pred_cmd) = x86_pred_cmd;
 }
 
+static int __init setup_pkvm_l1d(void)
+{
+	void *virt;
+
+	if (!PKVM_REQUIRES_L1D_FLUSH_PAGES)
+		return 0;
+
+	virt = pkvm_sym(pkvm_early_alloc_contig)(1 << L1D_CACHE_ORDER);
+	if (!virt)
+		return -ENOMEM;
+
+	pkvm_sym(l1d_flush_phys) = __pa(virt);
+
+	return 0;
+}
+
 int __init vmx_pkvm_init(void)
 {
 	int ret = 0, cpu;
@@ -1366,6 +1382,10 @@ int __init vmx_pkvm_init(void)
 	}
 
 	setup_pkvm_syms();
+
+	ret = setup_pkvm_l1d();
+	if (ret)
+		goto out;
 
 	ret = pkvm_host_check_and_setup_vmx_cap(pkvm);
 	if (ret)
