@@ -178,6 +178,47 @@ static int guest_pgt_map_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr, int
 
 	return ret;
 }
+static void *admit_host_page(void *arg, unsigned long order)
+{
+	phys_addr_t p;
+	struct pkvm_memcache *host_mc = arg;
+
+	if (!host_mc->nr_pages)
+		return NULL;
+
+	p = host_mc->head & PAGE_MASK;
+	/*
+	 * The host still owns the pages in its memcache, so we need to go
+	 * through host-to-hyp donation cycle to change it.
+	 */
+	if (__pkvm_host_donate_hyp(hyp_phys_to_pfn(p), 1 << order))
+		return NULL;
+
+	return pop_pkvm_memcache(host_mc, hyp_phys_to_virt);
+}
+
+/* Refill our local memcache by popping pages from the one provided by the host. */
+static int refill_memcache(struct pkvm_memcache *mc, unsigned long min_pages,
+		    struct pkvm_memcache *host_mc)
+{
+	struct pkvm_memcache tmp = *host_mc;
+	int ret;
+
+	ret =  __topup_pkvm_memcache(mc, min_pages, admit_host_page,
+				     hyp_virt_to_phys, &tmp, 0);
+	*host_mc = tmp;
+
+	return ret;
+}
+
+static int pkvm_refill_memcache(struct pkvm_vcpu *pkvm_vcpu)
+{
+	struct kvm_vcpu *host_vcpu = to_kvm_vcpu(pkvm_vcpu);
+
+	return refill_memcache(&pkvm_vcpu->shared_vcpu->arch.stage2_mc,
+			       host_vcpu->arch.stage2_mc.nr_pages,
+			       &host_vcpu->arch.stage2_mc);
+}
 
 int pkvm_vm_mmu_map(int vm_handle, int vcpu_handle, u64 gpa, u64 hpa, u64 size, bool writable)
 {
@@ -207,6 +248,12 @@ int pkvm_vm_mmu_map(int vm_handle, int vcpu_handle, u64 gpa, u64 hpa, u64 size, 
 	prot |= guest_pgt_cap.access_bit;
 
 	pkvm_spin_lock(&pkvm_vm->pgt_lock);
+
+	/* Top-up our per-vcpu memcache from the host's */
+	ret = pkvm_refill_memcache(pkvm_vcpu);
+	if (ret)
+		return ret;
+
 	ret = pkvm_pgtable_map(&pkvm_vm->pgt, gpa, hpa, size, 0, prot,
 			       guest_pgt_map_leaf,
 			       &pkvm_vcpu->shared_vcpu->arch.stage2_mc);

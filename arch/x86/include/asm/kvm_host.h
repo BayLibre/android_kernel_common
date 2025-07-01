@@ -745,6 +745,7 @@ struct kvm_queued_exception {
 struct pkvm_memcache {
 	phys_addr_t head;
 	unsigned long nr_pages;
+	unsigned long flags;
 };
 
 static inline void push_pkvm_memcache(struct pkvm_memcache *mc,
@@ -770,6 +771,25 @@ static inline void *pop_pkvm_memcache(struct pkvm_memcache *mc,
 	return p;
 }
 
+static inline int __topup_pkvm_memcache(struct pkvm_memcache *mc,
+					unsigned long min_pages,
+					void *(*alloc_fn)(void *arg, unsigned long order),
+					phys_addr_t (*to_pa)(void *virt),
+					void *arg,
+					unsigned long order)
+{
+	while (mc->nr_pages < min_pages) {
+		phys_addr_t *p = alloc_fn(arg, order);
+
+		if (!p)
+			return -ENOMEM;
+
+		push_pkvm_memcache(mc, p, to_pa);
+	}
+
+	return 0;
+}
+
 static inline void __free_pkvm_memcache(struct pkvm_memcache *mc,
 					void (*free_fn)(void *virt, void *arg),
 					void *(*to_va)(phys_addr_t phys),
@@ -777,6 +797,15 @@ static inline void __free_pkvm_memcache(struct pkvm_memcache *mc,
 {
 	while (mc->nr_pages)
 		free_fn(pop_pkvm_memcache(mc, to_va), arg);
+}
+
+#define HYP_MEMCACHE_ACCOUNT_KMEMCG BIT(1)
+#define HYP_MEMCACHE_ACCOUNT_STAGE2 BIT(2)
+
+static inline void init_pkvm_stage2_memcache(struct pkvm_memcache *mc)
+{
+	memset(mc, 0, sizeof(*mc));
+	mc->flags = HYP_MEMCACHE_ACCOUNT_KMEMCG | HYP_MEMCACHE_ACCOUNT_STAGE2;
 }
 
 struct kvm_pinned_page {
