@@ -487,6 +487,24 @@ TRACE_EVENT(rss_stat,
 		__print_symbolic(__entry->member, TRACE_MM_PAGES),
 		__entry->size)
 	);
+
+TRACE_EVENT(dmabuf_rss_stat,
+
+	TP_PROTO(s64 rss),
+
+	TP_ARGS(rss),
+
+	TP_STRUCT__entry(
+		__field(s64, rss)
+	),
+
+	TP_fast_assign(
+		__entry->rss = rss;
+	),
+
+	TP_printk("rss=%lld",
+		__entry->rss)
+	);
 #endif /* _TRACE_KMEM_H */
 
 /* This part must be outside protection */
