@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d617f2b_829dcded",
+        "filename": "fs/proc/base.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3399,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-07-01T06:25:05Z",
+      "side": 1,
+      "message": "if this ever fires, you just rebooted the device and asked for a CVE to be issued for this.  Are you _SURE_ you need it?  Why not just properly handle the error and not do a WARN_ON splat?",
+      "range": {
+        "startLine": 3399,
+        "startChar": 0,
+        "endLine": 3399,
+        "endChar": 33
+      },
+      "revId": "1d160fda2ca0cdf4d20084acb197036c8b1f1294",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f716aa6_684cae69",
+        "filename": "fs/proc/base.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3407,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-07-01T06:25:05Z",
+      "side": 1,
+      "message": "same here.  Don\u0027t do WARN_ON() if at all possible, handle errors properly.",
+      "range": {
+        "startLine": 3407,
+        "startChar": 0,
+        "endLine": 3407,
+        "endChar": 26
+      },
+      "revId": "1d160fda2ca0cdf4d20084acb197036c8b1f1294",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
