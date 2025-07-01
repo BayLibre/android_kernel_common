@@ -193,6 +193,30 @@
       },
       "revId": "b67a7d57b1e62d835794a59baccd95ae9983739a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c525e4ac_180e4778",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 5
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-07-01T06:21:32Z",
+      "side": 1,
+      "message": "debugging information shouldn\u0027t be in generic kernels, right?  Anyway, as this is out-of-tree stuff, never to go upstream, you can ignore my review comments, but overall, poking at the fops of a file pointer is generally never a good idea for any real logic to be based on.\n\ngood luck!",
+      "parentUuid": "32e5783e_c0a9f1f1",
+      "range": {
+        "startLine": 653,
+        "startChar": 0,
+        "endLine": 653,
+        "endChar": 66
+      },
+      "revId": "b67a7d57b1e62d835794a59baccd95ae9983739a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
