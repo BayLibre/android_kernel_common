@@ -34,6 +34,24 @@
       ],
       "revId": "da8c5053d437fdd349739883c967febade62bf97",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e06815ae_8fb5946d",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/idt.S",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-07-01T01:48:25Z",
+      "side": 1,
+      "message": "Indeed. The reason we didn\u0027t face any error is because the handle_exception() is implemented by executing hlt in the end, so we will never reach here when an exception happened. And the NMI doesn\u0027t have error code which increases the rsp thus also doesn\u0027t have issue. But indeed this is not correct and should be fixed. Thanks for caching this!",
+      "parentUuid": "e5238e23_0e5631a4",
+      "revId": "da8c5053d437fdd349739883c967febade62bf97",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
