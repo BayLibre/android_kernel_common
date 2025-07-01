@@ -407,6 +407,24 @@ static int nfsd_startup_net(int nrservs, struct net *net, const struct cred *cre
 	if (ret)
 		goto out_filecache;
 
+<<<<<<< HEAD   (d169a1 Merge 5f87b6f8d8a3 ("ath10k: snoc: fix unbalanced IRQ enable)
+||||||| BASE
+	ret = nfs4_state_start_net(net);
+	if (ret)
+		goto out_reply_cache;
+
+#ifdef CONFIG_NFSD_V4_2_INTER_SSC
+	nfsd4_ssc_init_umount_work(nn);
+#endif
+=======
+#ifdef CONFIG_NFSD_V4_2_INTER_SSC
+	nfsd4_ssc_init_umount_work(nn);
+#endif
+	ret = nfs4_state_start_net(net);
+	if (ret)
+		goto out_reply_cache;
+
+>>>>>>> BRANCH (9ba18e bus: mhi: host: Fix conflict between power_up and SYSERR)
 	nn->nfsd_net_up = true;
 	return 0;
 
