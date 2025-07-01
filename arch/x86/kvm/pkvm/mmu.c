@@ -147,7 +147,8 @@ static int guest_pgt_map_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr, int
 	 * We could combine these 2 layers (MMU and page state API) into a single layer.
 	 */
 	if (pkvm_is_protected_vm(kvm)) {
-		ret = __pkvm_host_donate_guest(data->phys, pgt, vaddr, size, data->prot);
+		ret = __pkvm_host_donate_guest(data->phys, pgt, vaddr, size,
+					       data->prot, data->memcache);
 		if (ret)
 			return ret;
 
@@ -156,27 +157,38 @@ static int guest_pgt_map_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr, int
 			WARN_ON_ONCE(ret);
 		}
 	} else {
-		ret = __pkvm_host_share_guest(data->phys, pgt, vaddr, size, data->prot);
+		ret = __pkvm_host_share_guest(data->phys, pgt, vaddr, size,
+					      data->prot, data->memcache);
 	}
 
 	return ret;
 }
 
-int pkvm_vm_mmu_map(int vm_handle, u64 gpa, u64 hpa, u64 size)
+int pkvm_vm_mmu_map(int vm_handle, int vcpu_handle, u64 gpa, u64 hpa, u64 size)
 {
+	struct pkvm_vcpu *pkvm_vcpu;
 	u64 prot = HOST_EPT_DEF_MEM_PROT;	/* FIXME */
 	struct pkvm_vm *pkvm_vm;
 	int ret;
 
-	pkvm_vm = get_pkvm_vm(vm_handle);
-	if (!pkvm_vm)
+	pkvm_vcpu = get_pkvm_vcpu(vm_handle, vcpu_handle);
+	if (!pkvm_vcpu)
 		return -EINVAL;
 
+	pkvm_vm = get_pkvm_vm(vm_handle);
+	if (!pkvm_vm) {
+		put_pkvm_vcpu(pkvm_vcpu);
+		return -EINVAL;
+	}
+
 	pkvm_spin_lock(&pkvm_vm->pgt_lock);
-	ret = pkvm_pgtable_map(&pkvm_vm->pgt, gpa, hpa, size, 0, prot, guest_pgt_map_leaf, NULL);
+	ret = pkvm_pgtable_map(&pkvm_vm->pgt, gpa, hpa, size, 0, prot,
+			       guest_pgt_map_leaf,
+			       &pkvm_vcpu->shared_vcpu->arch.stage2_mc);
 	pkvm_spin_unlock(&pkvm_vm->pgt_lock);
 
 	put_pkvm_vm(pkvm_vm);
+	put_pkvm_vcpu(pkvm_vcpu);
 	return ret;
 }
 

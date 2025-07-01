@@ -4746,6 +4746,8 @@ out_unlock:
 static int pkvm_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
 {
 	int r;
+	u64 pkvm_vm_vcpu_handle = (u64)vcpu->arch.pkvm_vcpu_handle << 32 |
+				       vcpu->kvm->arch.pkvm.pkvm_vm_handle;
 
 	r = kvm_faultin_pfn(vcpu, fault, ACC_ALL);
 	if (r != RET_PF_CONTINUE)
@@ -4765,7 +4767,7 @@ static int pkvm_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
 		base_gfn = gfn_round_for_level(fault->gfn, fault->req_level);
 		nr_pages = KVM_PAGES_PER_HPAGE(fault->req_level);
 
-		r = kvm_call_pkvm(vm_mmu_map, vcpu->kvm->arch.pkvm.pkvm_vm_handle,
+		r = kvm_call_pkvm(vm_mmu_map, pkvm_vm_vcpu_handle,
 				  base_gfn << PAGE_SHIFT, fault->pfn << PAGE_SHIFT,
 				  nr_pages << PAGE_SHIFT);
 		if (!r)
