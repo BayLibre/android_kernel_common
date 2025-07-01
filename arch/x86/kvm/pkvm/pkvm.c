@@ -185,6 +185,8 @@ static int pkvm_vm_init(struct kvm *shared_kvm, unsigned long gpa)
 	if (ret)
 		goto mmu_destroy;
 
+	init_pkvm_stage2_memcache(&pkvm_vm->shared_kvm->arch.pkvm.s2_teardown_mc);
+
 	return kvm->arch.pkvm.pkvm_vm_handle;
 
 mmu_destroy:
@@ -397,6 +399,25 @@ put_pkvm_vm:
 	return ret;
 }
 
+static void pkvm_free_percpu_memcache(struct kvm_vcpu *vcpu, struct pkvm_memcache *teardown_mc)
+{
+	struct pkvm_memcache *vcpu_mc;
+	void *addr;
+
+	vcpu_mc = &vcpu->arch.stage2_mc;
+	while (vcpu_mc->nr_pages) {
+		/* Drain hyp owned memcache and push pages to the teardown memcache */
+		addr = pop_pkvm_memcache(vcpu_mc, hyp_phys_to_virt);
+		push_pkvm_memcache(teardown_mc, addr, hyp_virt_to_phys);
+
+		/*
+		 * Since pages comes from non-used memcache, there is no need to
+		 * zeroed them before donating back to host.
+		 */
+		WARN_ON(__pkvm_hyp_donate_host(pkvm_virt_to_phys(addr), PAGE_SIZE));
+	}
+}
+
 static void pkvm_vm_destroy(int handle)
 {
 	struct kvm_protected_vm *shared_pkvm;
@@ -413,6 +434,9 @@ static void pkvm_vm_destroy(int handle)
 		struct kvm_vcpu *vcpu = to_kvm_vcpu(pkvm_vcpu);
 
 		detach_pkvm_vcpu_from_vm(pkvm_vcpu, pkvm_vm);
+
+		pkvm_free_percpu_memcache(vcpu, &shared_pkvm->s2_teardown_mc);
+
 		teardown_donated_memory(&shared_pkvm->teardown_mc,
 					(void *)vcpu->arch.cpuid_entries,
 					sizeof(struct kvm_cpuid_entry2) *

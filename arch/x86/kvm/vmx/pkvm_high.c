@@ -815,6 +815,7 @@ static void pkvm_vm_destroy(struct kvm *kvm)
 	/* TODO: unshare struct kvm_vmx with pkvm */
 
 	free_pkvm_memcache(&pkvm->teardown_mc);
+	free_pkvm_memcache(&pkvm->s2_teardown_mc);
 
 	list_for_each_entry_safe(ppage, n, &pkvm->pinned_pages, list) {
 		list_del(&ppage->list);
