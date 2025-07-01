@@ -928,6 +928,10 @@ static void smmu_tlb_add_page(struct iommu_iotlb_gather *gather,
 
 static void smmu_free_leaf(unsigned long phys, size_t granule, void *cookie)
 {
+	struct kvm_hyp_iommu_domain *domain = cookie;
+
+	/* No tracking for idmap domain domain */
+	WARN_ON(domain->domain_id == KVM_IOMMU_DOMAIN_IDMAP_ID);
 	WARN_ON(iommu_pkvm_unuse_dma(phys, granule));
 }
 
