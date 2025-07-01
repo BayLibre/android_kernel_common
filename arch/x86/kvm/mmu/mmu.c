@@ -684,6 +684,10 @@ static void mmu_free_memory_caches(struct kvm_vcpu *vcpu)
 	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_shadow_page_cache);
 	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_shadowed_info_cache);
 	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_page_header_cache);
+
+#ifdef CONFIG_PKVM_INTEL
+	free_pkvm_memcache(&vcpu->arch.stage2_mc);
+#endif
 }
 
 static void mmu_free_pte_list_desc(struct pte_list_desc *pte_list_desc)
@@ -4782,8 +4786,11 @@ out_unlock:
 #endif
 
 #ifdef CONFIG_PKVM_INTEL
-static void pkvm_mc_free_fn(void *addr, void *unused)
+static void pkvm_mc_free_fn(void *addr, void *flags)
 {
+	if ((unsigned long)flags & HYP_MEMCACHE_ACCOUNT_STAGE2)
+		kvm_account_pgtable_pages(addr, -1);
+
 	free_page((unsigned long)addr);
 }
 
@@ -4795,7 +4802,41 @@ static void *kvm_host_va(phys_addr_t phys)
 void free_pkvm_memcache(struct pkvm_memcache *mc)
 {
 	__free_pkvm_memcache(mc, pkvm_mc_free_fn,
-			     kvm_host_va, NULL);
+			     kvm_host_va, (void *)mc->flags);
+}
+
+static void *pkvm_mc_alloc_fn(void *flags, unsigned long order)
+{
+	unsigned long __flags = (unsigned long)flags;
+	gfp_t gfp_mask;
+	void *addr;
+
+	gfp_mask = __flags & HYP_MEMCACHE_ACCOUNT_KMEMCG ?
+		   GFP_KERNEL_ACCOUNT : GFP_KERNEL;
+
+	addr = (void *)__get_free_pages(gfp_mask, order);
+
+	if (addr && __flags & HYP_MEMCACHE_ACCOUNT_STAGE2)
+		kvm_account_pgtable_pages(addr, 1);
+
+	return addr;
+}
+
+static phys_addr_t host_pa(void *addr)
+{
+	return virt_to_phys((volatile void *) addr);
+}
+
+int topup_pkvm_memcache(struct pkvm_memcache *mc, unsigned long min_pages,
+			unsigned long order)
+{
+	unsigned long flags = mc->flags;
+
+	if (order > PAGE_SHIFT)
+		return -E2BIG;
+
+	return __topup_pkvm_memcache(mc, min_pages, pkvm_mc_alloc_fn,
+				     host_pa, (void *)flags, order);
 }
 
 static int pkvm_pin_page(struct kvm *kvm, struct kvm_page_fault *fault)
@@ -4829,6 +4870,12 @@ static int pkvm_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
 	gfn_t nr_pages;
 	int r;
 
+	/*
+	 * Minimum pages required to install stage-2 translation. We've
+	 * pre-allocating the entry page table during per-vm pool creation
+	 */
+	u8 min_mc_pages = kvm_mmu_get_max_tdp_level() - 1;
+
 	r = kvm_faultin_pfn(vcpu, fault, ACC_ALL);
 	if (r != RET_PF_CONTINUE) {
 		/* MMIO emulation works for non-protected VMs only. */
@@ -4851,6 +4898,10 @@ static int pkvm_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
 		goto out_unlock;
 
 	kvm_mmu_hugepage_adjust(vcpu, fault);
+
+	r = topup_pkvm_memcache(&vcpu->arch.stage2_mc, min_mc_pages, 0);
+	if (r)
+		return -ENOMEM;
 
 	base_gfn = gfn_round_for_level(fault->gfn, fault->goal_level);
 	nr_pages = KVM_PAGES_PER_HPAGE(fault->goal_level);
