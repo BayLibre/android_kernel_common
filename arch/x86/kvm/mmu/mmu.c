@@ -4743,6 +4743,43 @@ out_unlock:
 #endif
 
 #ifdef CONFIG_PKVM_INTEL
+static void *pkvm_mc_alloc_fn(void *flags, unsigned long order)
+{
+	unsigned long __flags = (unsigned long)flags;
+	gfp_t gfp_mask;
+	void *addr;
+
+	gfp_mask = __flags & HYP_MEMCACHE_ACCOUNT_KMEMCG ?
+		   GFP_KERNEL_ACCOUNT : GFP_KERNEL;
+
+	addr = (void *)__get_free_pages(gfp_mask, order);
+
+	if (addr && __flags & HYP_MEMCACHE_ACCOUNT_STAGE2)
+		kvm_account_pgtable_pages(addr, 1);
+
+	return addr;
+}
+
+static phys_addr_t host_pa(void *addr)
+{
+	return virt_to_phys((volatile void *) addr);
+}
+
+static int topup_pkvm_memcache(struct pkvm_memcache *mc, unsigned long
+			       min_pages, unsigned long order)
+{
+	unsigned long flags = mc->flags;
+
+	if (order > PAGE_SHIFT)
+		return -E2BIG;
+
+	return __topup_pkvm_memcache(mc, min_pages, pkvm_mc_alloc_fn,
+				     host_pa, (void *)flags, order);
+}
+
+//TODO: JAZ: fix it
+#define min_mc_pages 5
+
 static int pkvm_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
 {
 	int r;
@@ -4761,6 +4798,10 @@ static int pkvm_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
 	if (likely(fault->slot)) {
 		gfn_t base_gfn;
 		gfn_t nr_pages;
+
+		r = topup_pkvm_memcache(&vcpu->arch.stage2_mc, min_mc_pages, 0);
+		if (r)
+			return -ENOMEM;
 
 		kvm_mmu_hugepage_adjust(vcpu, fault);
 
@@ -5640,6 +5681,8 @@ static void init_kvm_tdp_mmu(struct kvm_vcpu *vcpu,
 
 	reset_guest_paging_metadata(vcpu, context);
 	reset_tdp_shadow_zero_bits_mask(context);
+
+	init_pkvm_stage2_memcache(&vcpu->arch.stage2_mc);
 }
 
 static void shadow_mmu_init_context(struct kvm_vcpu *vcpu, struct kvm_mmu *context,
