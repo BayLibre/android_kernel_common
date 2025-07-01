@@ -355847,6 +355847,14 @@ function {
   parameter_id: 0x11cfee5a
 }
 function {
+  id: 0x9ba60b23
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x0d7ce7cc
+  parameter_id: 0xf017819f
+  parameter_id: 0x11cfee5a
+}
+function {
   id: 0x9ba6ac88
   return_type_id: 0x6720d32f
   parameter_id: 0x19118777
@@ -376382,6 +376390,15 @@ elf_symbol {
   full_name: "__traceiter_android_rvh_update_thermal_stats"
 }
 elf_symbol {
+  id: 0x09b5cc40
+  name: "__traceiter_android_rvh_usb_dev_suspend"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xafc7964b
+  type_id: 0x9ba60b23
+  full_name: "__traceiter_android_rvh_usb_dev_suspend"
+}
+elf_symbol {
   id: 0x13c17b96
   name: "__traceiter_android_rvh_util_est_update"
   is_defined: true
@@ -380144,6 +380161,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_uprobes_replace_page"
 }
 elf_symbol {
+  id: 0xd0e4682b
+  name: "__traceiter_android_vh_usb_dev_resume"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xafc7964b
+  type_id: 0x9ba60b23
+  full_name: "__traceiter_android_vh_usb_dev_resume"
+}
+elf_symbol {
   id: 0x08824ed3
   name: "__traceiter_android_vh_use_amu_fie"
   is_defined: true
@@ -382671,6 +382697,15 @@ elf_symbol {
   crc: 0x7c5aa8a7
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_rvh_update_thermal_stats"
+}
+elf_symbol {
+  id: 0xbe0b79ae
+  name: "__tracepoint_android_rvh_usb_dev_suspend"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_rvh_usb_dev_suspend"
 }
 elf_symbol {
   id: 0xa68c0f10
@@ -386433,6 +386468,15 @@ elf_symbol {
   crc: 0x7c5aa8a7
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_uprobes_replace_page"
+}
+elf_symbol {
+  id: 0x990b2371
+  name: "__tracepoint_android_vh_usb_dev_resume"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_usb_dev_resume"
 }
 elf_symbol {
   id: 0xe100c3ad
@@ -445783,7 +445827,7 @@ elf_symbol {
   name: "usb_autopm_get_interface"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc7bf36ca
+  crc: 0xbbfc8e34
   type_id: 0x95c144d5
   full_name: "usb_autopm_get_interface"
 }
@@ -445792,7 +445836,7 @@ elf_symbol {
   name: "usb_autopm_get_interface_async"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc7bf36ca
+  crc: 0xbbfc8e34
   type_id: 0x95c144d5
   full_name: "usb_autopm_get_interface_async"
 }
@@ -445801,7 +445845,7 @@ elf_symbol {
   name: "usb_autopm_get_interface_no_resume"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa7a29885
+  crc: 0x374e9e85
   type_id: 0x18d9f669
   full_name: "usb_autopm_get_interface_no_resume"
 }
@@ -445810,7 +445854,7 @@ elf_symbol {
   name: "usb_autopm_put_interface"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa7a29885
+  crc: 0x374e9e85
   type_id: 0x18d9f669
   full_name: "usb_autopm_put_interface"
 }
@@ -445819,7 +445863,7 @@ elf_symbol {
   name: "usb_autopm_put_interface_async"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa7a29885
+  crc: 0x374e9e85
   type_id: 0x18d9f669
   full_name: "usb_autopm_put_interface_async"
 }
@@ -446017,7 +446061,7 @@ elf_symbol {
   name: "usb_deregister"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2ee1a2d5
+  crc: 0xfb383f26
   type_id: 0x1fbef67f
   full_name: "usb_deregister"
 }
@@ -446035,7 +446079,7 @@ elf_symbol {
   name: "usb_deregister_device_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1c5702b8
+  crc: 0xa473d68f
   type_id: 0x15ca3ead
   full_name: "usb_deregister_device_driver"
 }
@@ -446044,7 +446088,7 @@ elf_symbol {
   name: "usb_device_match_id"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2d808ed0
+  crc: 0x1e486a58
   type_id: 0x1c1deea6
   full_name: "usb_device_match_id"
 }
@@ -446053,7 +446097,7 @@ elf_symbol {
   name: "usb_disable_autosuspend"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x802b6196
+  crc: 0x8478e9a4
   type_id: 0x13c76860
   full_name: "usb_disable_autosuspend"
 }
@@ -446071,7 +446115,7 @@ elf_symbol {
   name: "usb_driver_claim_interface"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7ced0d70
+  crc: 0x788b955a
   type_id: 0x922471e5
   full_name: "usb_driver_claim_interface"
 }
@@ -446080,7 +446124,7 @@ elf_symbol {
   name: "usb_driver_release_interface"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc42c9e4f
+  crc: 0x6522be82
   type_id: 0x1f3aec00
   full_name: "usb_driver_release_interface"
 }
@@ -446098,7 +446142,7 @@ elf_symbol {
   name: "usb_enable_autosuspend"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x802b6196
+  crc: 0x8478e9a4
   type_id: 0x13c76860
   full_name: "usb_enable_autosuspend"
 }
@@ -446800,7 +446844,7 @@ elf_symbol {
   name: "usb_match_id"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xef4444ab
+  crc: 0xaa48e970
   type_id: 0x170370af
   full_name: "usb_match_id"
 }
@@ -446809,7 +446853,7 @@ elf_symbol {
   name: "usb_match_one_id"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1b699408
+  crc: 0x1dd0c1be
   type_id: 0x952154fc
   full_name: "usb_match_one_id"
 }
@@ -446962,7 +447006,7 @@ elf_symbol {
   name: "usb_register_device_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x798b0830
+  crc: 0x9a49cf4b
   type_id: 0x98fe1360
   full_name: "usb_register_device_driver"
 }
@@ -446971,7 +447015,7 @@ elf_symbol {
   name: "usb_register_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2f27e734
+  crc: 0x76cb8876
   type_id: 0x92855f9f
   full_name: "usb_register_driver"
 }
@@ -447385,7 +447429,7 @@ elf_symbol {
   name: "usb_store_new_id"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa5b3ba4d
+  crc: 0xabd1c3aa
   type_id: 0x1fa33567
   full_name: "usb_store_new_id"
 }
@@ -453405,6 +453449,7 @@ interface {
   symbol_id: 0xfaa2e0a4
   symbol_id: 0x71c5eeb6
   symbol_id: 0xc1ba0eb6
+  symbol_id: 0x09b5cc40
   symbol_id: 0x13c17b96
   symbol_id: 0x88b6e481
   symbol_id: 0x1a961a8d
@@ -453823,6 +453868,7 @@ interface {
   symbol_id: 0x008832a3
   symbol_id: 0xc2a5e712
   symbol_id: 0x0266a7bc
+  symbol_id: 0xd0e4682b
   symbol_id: 0x08824ed3
   symbol_id: 0x297c974d
   symbol_id: 0x0002a5ea
@@ -454104,6 +454150,7 @@ interface {
   symbol_id: 0xaa2da792
   symbol_id: 0x0852bdac
   symbol_id: 0x0e614ab0
+  symbol_id: 0xbe0b79ae
   symbol_id: 0xa68c0f10
   symbol_id: 0xabb656f7
   symbol_id: 0x81b8b0f3
@@ -454522,6 +454569,7 @@ interface {
   symbol_id: 0x14b85591
   symbol_id: 0x56b11d7c
   symbol_id: 0x7d0336a2
+  symbol_id: 0x990b2371
   symbol_id: 0xe100c3ad
   symbol_id: 0x6440d1d7
   symbol_id: 0xaf3a3494
