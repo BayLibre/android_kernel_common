@@ -22,6 +22,77 @@
       },
       "revId": "e070cc1c169735eb7816a9e73bcb2bd19a4c7893",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44ca4dce_4bb8f0dc",
+        "filename": "fs/proc/base.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3399,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-07-01T00:58:31Z",
+      "side": 1,
+      "message": "need to return ENOMEM if the warning is triggered.",
+      "range": {
+        "startLine": 3399,
+        "startChar": 1,
+        "endLine": 3399,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "947d9e03_f77e0b16",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3327,
+                "startChar": 0,
+                "endLine": 3327,
+                "endChar": 0
+              },
+              "replacement": "\tif (WARN_ON(!task-\u003edmabuf_info)) {\n\t\tret \u003d -ENOMEM;\n\t\tgoto out;\n\t}\n\n"
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3331,
+                "startChar": 0,
+                "endLine": 3336,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3371,
+                "startChar": 0,
+                "endLine": 3372,
+                "endChar": 0
+              },
+              "replacement": "\t\tret \u003d -ENOMEM;\n"
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3399,
+                "startChar": 0,
+                "endLine": 3400,
+                "endChar": 0
+              },
+              "replacement": "\tif (WARN_ON(!task-\u003edmabuf_info))\n\t\treturn -ENOMEM;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e070cc1c169735eb7816a9e73bcb2bd19a4c7893",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
