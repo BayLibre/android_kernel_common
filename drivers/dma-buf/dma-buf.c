@@ -27,6 +27,7 @@
 #include <linux/mm.h>
 #include <linux/mount.h>
 #include <linux/pseudo_fs.h>
+#include <trace/events/kmem.h>
 #include <trace/hooks/dmabuf.h>
 
 #include <uapi/linux/dma-buf.h>
@@ -188,6 +189,7 @@ static int new_task_dmabuf_record(struct task_struct *task, struct dma_buf *dmab
 		return -ENOMEM;
 
 	rss = atomic64_add_return(dmabuf->size, &task->dmabuf_info->rss);
+	trace_dmabuf_rss_stat(rss, dmabuf->size, dmabuf);
 	/*
 	 * task->dmabuf_info->lock protects against concurrent writers, so no
 	 * worries about stale rss_hwm between the read and write, and we don't
@@ -255,6 +257,7 @@ int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
 void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
 {
 	struct task_dma_buf_record *rec;
+	s64 rss;
 
 	WARN_ON(!dmabuf);
 	WARN_ON(!task);
@@ -268,7 +271,8 @@ void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
 	if (--rec->refcnt == 0) {
 		list_del(&rec->node);
 		kfree(rec);
-		atomic64_sub(dmabuf->size, &task->dmabuf_info->rss);
+		rss = atomic64_sub_return(dmabuf->size, &task->dmabuf_info->rss);
+		trace_dmabuf_rss_stat(rss, -dmabuf->size, dmabuf);
 		atomic64_dec(&dmabuf->num_unique_refs);
 	}
 err:
