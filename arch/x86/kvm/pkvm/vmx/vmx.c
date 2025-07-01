@@ -5107,6 +5107,7 @@ static int kvm_pkvm_hypercall(struct kvm_vcpu *vcpu)
 {
 	u64 nr, a0, a1, a2, a3;
 	struct pkvm_vm *pkvm_vm = to_pkvm(vcpu->kvm);
+	struct pkvm_vcpu *pkvm_vcpu = to_pkvm_vcpu(vcpu);
 	int cpl = vmx_get_cpl(vcpu);
 	int ret = -KVM_EPERM;
 
@@ -5123,7 +5124,8 @@ static int kvm_pkvm_hypercall(struct kvm_vcpu *vcpu)
 
 	switch (nr) {
 	case PKVM_GHC_SHARE_MEM:
-		ret = __pkvm_guest_share_host(&pkvm_vm->pgt, a0, a1);
+		ret = __pkvm_guest_share_host(&pkvm_vm->pgt, a0, a1,
+					      &pkvm_vcpu->shared_vcpu->arch.stage2_mc);
 		break;
 	case PKVM_GHC_UNSHARE_MEM:
 		ret = __pkvm_guest_unshare_host(&pkvm_vm->pgt, a0, a1);

@@ -1106,6 +1106,9 @@ struct kvm_vcpu_arch {
 	 * will be used by pkvm hypervisor to get the corresponding pkvm_vcpu.
 	 */
 	int pkvm_vcpu_handle;
+
+	/* Pages to be donated to pKVM-Low if it runs out */
+	struct pkvm_memcache stage2_mc;
 };
 
 struct kvm_lpage_info {
