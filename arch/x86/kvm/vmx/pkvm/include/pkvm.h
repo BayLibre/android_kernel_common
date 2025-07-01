@@ -140,7 +140,6 @@ extern phys_addr_t pkvm_sym(pvmfw_base);
 extern phys_addr_t pkvm_sym(pvmfw_size);
 
 PKVM_DECLARE(void, __pkvm_vmexit_entry, (void));
-PKVM_DECLARE(bool, pkvm_vmexit_main, (struct kvm_vcpu *vcpu));
 PKVM_DECLARE(void, pkvm_init_host_state_area, (struct pkvm_pcpu *pcpu, int cpu));
 PKVM_DECLARE(int, init_pci, (struct pkvm_hyp *pkvm));
 
