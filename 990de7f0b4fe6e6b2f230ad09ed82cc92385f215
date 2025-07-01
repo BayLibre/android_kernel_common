@@ -35,6 +35,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2123899d_140d4b0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3346748
+      },
+      "writtenOn": "2025-07-01T08:44:03Z",
+      "side": 1,
+      "message": "There is no need to submit it to the upstream because we want to find out whether the synchronous binder is a binder_reply and do some statistics. This is a small feature of our own, which will not be used by other manufacturers or Google, so we can only adopt the hook method.",
+      "parentUuid": "f1814d8d_12160e75",
+      "revId": "990de7f0b4fe6e6b2f230ad09ed82cc92385f215",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68d30451_776a85a2",
@@ -120,6 +138,30 @@
       "side": 1,
       "message": "please give a suggestion to how to modify this problem",
       "parentUuid": "e3f34693_00e210b5",
+      "range": {
+        "startLine": 3223,
+        "startChar": 0,
+        "endLine": 3223,
+        "endChar": 56
+      },
+      "revId": "990de7f0b4fe6e6b2f230ad09ed82cc92385f215",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d392756b_923825c0",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3223,
+      "author": {
+        "id": 3346748
+      },
+      "writtenOn": "2025-07-01T08:44:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9f0e0e34_5c6cb63b",
       "range": {
         "startLine": 3223,
         "startChar": 0,
