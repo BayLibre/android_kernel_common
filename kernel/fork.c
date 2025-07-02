@@ -179,12 +179,21 @@ static struct kmem_cache *task_struct_cachep;
 
 static inline struct task_struct *alloc_task_struct_node(int node)
 {
-	return kmem_cache_alloc_node(task_struct_cachep, GFP_KERNEL, node);
+	struct task_struct_ext *task_ext;
+
+	task_ext = kmem_cache_alloc_node(task_struct_cachep, GFP_KERNEL, node);
+	if (!task_ext)
+		return NULL;
+
+	return &task_ext->task;
 }
 
 static inline void free_task_struct(struct task_struct *tsk)
 {
-	kmem_cache_free(task_struct_cachep, tsk);
+	struct task_struct_ext *task_ext;
+
+	task_ext = container_of(tsk, struct task_struct_ext, task);
+	kmem_cache_free(task_struct_cachep, task_ext);
 }
 #endif
 
@@ -997,21 +1006,23 @@ static inline void put_signal_struct(struct signal_struct *sig)
 
 static void put_dmabuf_info(struct task_struct *tsk)
 {
-	if (!tsk->dmabuf_info) {
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(tsk);
+
+	if (!dmabuf_info) {
 		pr_err("%s dmabuf accounting record was not allocated\n", __func__);
 		return;
 	}
 
-	if (!refcount_dec_and_test(&tsk->dmabuf_info->refcnt))
+	if (!refcount_dec_and_test(&dmabuf_info->refcnt))
 		return;
 
-	if (atomic64_read(&tsk->dmabuf_info->rss))
+	if (atomic64_read(&dmabuf_info->rss))
 		pr_err("%s destroying task with non-zero dmabuf rss\n", __func__);
 
-	if (!list_empty(&tsk->dmabuf_info->dmabufs))
+	if (!list_empty(&dmabuf_info->dmabufs))
 		pr_err("%s destroying task with non-empty dmabuf list\n", __func__);
 
-	kfree(tsk->dmabuf_info);
+	kfree(dmabuf_info);
 }
 
 void __put_task_struct(struct task_struct *tsk)
@@ -2291,57 +2302,61 @@ static void rv_task_fork(struct task_struct *p)
 
 static int copy_dmabuf_info(u64 clone_flags, struct task_struct *p)
 {
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(current);
 	struct task_dma_buf_record *rec, *copy;
+	struct task_struct_ext *task_ext;
 
-	if (current->dmabuf_info && (clone_flags & (CLONE_VM | CLONE_FILES))
-						== (CLONE_VM | CLONE_FILES)) {
+	task_ext = container_of(p, struct task_struct_ext, task);
+
+	if (dmabuf_info && (clone_flags & (CLONE_VM | CLONE_FILES))
+				       == (CLONE_VM | CLONE_FILES)) {
 		/*
 		 * Both MM and FD references to dmabufs are shared with the parent, so
 		 * we can share a RSS counter with the parent.
 		 */
-		refcount_inc(&current->dmabuf_info->refcnt);
-		p->dmabuf_info = current->dmabuf_info;
+		refcount_inc(&dmabuf_info->refcnt);
+		task_ext->dmabuf_info = dmabuf_info;
 		return 0;
 	}
 
-	p->dmabuf_info = kmalloc(sizeof(*p->dmabuf_info), GFP_KERNEL);
-	if (!p->dmabuf_info)
+	task_ext->dmabuf_info = kmalloc(sizeof(struct task_dma_buf_info), GFP_KERNEL);
+	if (!task_ext->dmabuf_info)
 		return -ENOMEM;
 
-	refcount_set(&p->dmabuf_info->refcnt, 1);
-	INIT_LIST_HEAD(&p->dmabuf_info->dmabufs);
-	if (current->dmabuf_info) {
+	refcount_set(&task_ext->dmabuf_info->refcnt, 1);
+	INIT_LIST_HEAD(&task_ext->dmabuf_info->dmabufs);
+	if (dmabuf_info) {
 		s64 rss;
 
-		spin_lock(&current->dmabuf_info->lock);
-		rss = atomic64_read(&current->dmabuf_info->rss);
-		atomic64_set(&p->dmabuf_info->rss, rss);
-		atomic64_set(&p->dmabuf_info->rss_hwm, rss);
-		list_for_each_entry(rec, &current->dmabuf_info->dmabufs, node) {
+		spin_lock(&dmabuf_info->lock);
+		rss = atomic64_read(&dmabuf_info->rss);
+		atomic64_set(&task_ext->dmabuf_info->rss, rss);
+		atomic64_set(&task_ext->dmabuf_info->rss_hwm, rss);
+		list_for_each_entry(rec, &dmabuf_info->dmabufs, node) {
 			copy = kmalloc(sizeof(*copy), GFP_KERNEL);
 			if (!copy) {
-				spin_unlock(&current->dmabuf_info->lock);
+				spin_unlock(&dmabuf_info->lock);
 				goto err_list_copy;
 			}
 
 			copy->dmabuf = rec->dmabuf;
 			copy->refcnt = rec->refcnt;
-			list_add(&copy->node, &p->dmabuf_info->dmabufs);
+			list_add(&copy->node, &task_ext->dmabuf_info->dmabufs);
 		}
-		spin_unlock(&current->dmabuf_info->lock);
+		spin_unlock(&dmabuf_info->lock);
 	} else {
-		atomic64_set(&p->dmabuf_info->rss, 0);
-		atomic64_set(&p->dmabuf_info->rss_hwm, 0);
+		atomic64_set(&task_ext->dmabuf_info->rss, 0);
+		atomic64_set(&task_ext->dmabuf_info->rss_hwm, 0);
 	}
 
 	return 0;
 
 err_list_copy:
-	list_for_each_entry_safe(rec, copy, &p->dmabuf_info->dmabufs, node) {
+	list_for_each_entry_safe(rec, copy, &task_ext->dmabuf_info->dmabufs, node) {
 		list_del(&rec->node);
 		kfree(rec);
 	}
-	kfree(p->dmabuf_info);
+	kfree(task_ext->dmabuf_info);
 	return -ENOMEM;
 }
 

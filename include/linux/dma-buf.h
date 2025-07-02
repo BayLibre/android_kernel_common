@@ -688,6 +688,21 @@ struct task_dma_buf_info {
 	struct list_head dmabufs;
 };
 
+extern struct task_struct init_task;
+
+static inline
+struct task_dma_buf_info *get_task_dma_buf_info(struct task_struct *task)
+{
+	struct task_struct_ext *task_ext;
+
+	if (!task || task == &init_task)
+		return NULL;
+
+	task_ext = container_of(task, struct task_struct_ext, task);
+
+	return task_ext->dmabuf_info;
+}
+
 /**
  * DEFINE_DMA_BUF_EXPORT_INFO - helper macro for exporters
  * @name: export-info name

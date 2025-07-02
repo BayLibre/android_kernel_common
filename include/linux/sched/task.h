@@ -177,7 +177,7 @@ void release_thread(struct task_struct *dead_task);
 #ifdef CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT
 extern int arch_task_struct_size __read_mostly;
 #else
-# define arch_task_struct_size (sizeof(struct task_struct))
+# define arch_task_struct_size (sizeof(struct task_struct_ext))
 #endif
 
 #ifndef CONFIG_HAVE_ARCH_THREAD_STRUCT_WHITELIST

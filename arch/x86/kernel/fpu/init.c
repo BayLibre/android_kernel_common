@@ -148,7 +148,7 @@ static void __init fpu__init_system_generic(void)
  */
 static void __init fpu__init_task_struct_size(void)
 {
-	int task_size = sizeof(struct task_struct);
+	int task_size = sizeof(struct task_struct_ext);
 
 	/*
 	 * Subtract off the static size of the register state.

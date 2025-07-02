@@ -3309,19 +3309,22 @@ static int proc_stack_depth(struct seq_file *m, struct pid_namespace *ns,
 static int proc_dmabuf_rss_show(struct seq_file *m, struct pid_namespace *ns,
 		     struct pid *pid, struct task_struct *task)
 {
-	if (!task->dmabuf_info) {
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(task);
+
+	if (!dmabuf_info) {
 		pr_err("%s dmabuf accounting record was not allocated\n", __func__);
 		return -ENOMEM;
 	}
 
 	if (!(task->flags & PF_KTHREAD))
-		seq_printf(m, "%lld\n", atomic64_read(&task->dmabuf_info->rss));
+		seq_printf(m, "%lld\n", atomic64_read(&dmabuf_info->rss));
 
 	return 0;
 }
 
 static int proc_dmabuf_rss_hwm_show(struct seq_file *m, void *v)
 {
+	struct task_dma_buf_info *dmabuf_info;
 	struct inode *inode = m->private;
 	struct task_struct *task;
 	int ret = 0;
@@ -3330,14 +3333,15 @@ static int proc_dmabuf_rss_hwm_show(struct seq_file *m, void *v)
 	if (!task)
 		return -ESRCH;
 
-	if (!task->dmabuf_info) {
+	dmabuf_info = get_task_dma_buf_info(task);
+	if (!dmabuf_info) {
 		pr_err("%s dmabuf accounting record was not allocated\n", __func__);
 		ret = -ENOMEM;
 		goto out;
 	}
 
 	if (!(task->flags & PF_KTHREAD))
-		seq_printf(m, "%lld\n", atomic64_read(&task->dmabuf_info->rss_hwm));
+		seq_printf(m, "%lld\n", atomic64_read(&dmabuf_info->rss_hwm));
 
 out:
 	put_task_struct(task);
@@ -3355,6 +3359,7 @@ proc_dmabuf_rss_hwm_write(struct file *file, const char __user *buf,
 			  size_t count, loff_t *offset)
 {
 	struct inode *inode = file_inode(file);
+	struct task_dma_buf_info *dmabuf_info;
 	struct task_struct *task;
 	unsigned long long val;
 	int ret;
@@ -3370,15 +3375,16 @@ proc_dmabuf_rss_hwm_write(struct file *file, const char __user *buf,
 	if (!task)
 		return -ESRCH;
 
-	if (!task->dmabuf_info) {
+	dmabuf_info = get_task_dma_buf_info(task);
+	if (!dmabuf_info) {
 		pr_err("%s dmabuf accounting record was not allocated\n", __func__);
 		ret = -ENOMEM;
 		goto out;
 	}
 
-	spin_lock(&task->dmabuf_info->lock);
-	atomic64_set(&task->dmabuf_info->rss_hwm, atomic64_read(&task->dmabuf_info->rss));
-	spin_unlock(&task->dmabuf_info->lock);
+	spin_lock(&dmabuf_info->lock);
+	atomic64_set(&dmabuf_info->rss_hwm, atomic64_read(&dmabuf_info->rss));
+	spin_unlock(&dmabuf_info->lock);
 
 out:
 	put_task_struct(task);
@@ -3397,17 +3403,18 @@ static const struct file_operations proc_dmabuf_rss_hwm_operations = {
 static int proc_dmabuf_pss_show(struct seq_file *m, struct pid_namespace *ns,
 		     struct pid *pid, struct task_struct *task)
 {
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(task);
 	struct task_dma_buf_record *rec;
 	u64 pss = 0;
 
-	if (!task->dmabuf_info) {
+	if (!dmabuf_info) {
 		pr_err("%s dmabuf accounting record was not allocated\n", __func__);
 		return -ENOMEM;
 	}
 
 	if (!(task->flags & PF_KTHREAD)) {
-		spin_lock(&task->dmabuf_info->lock);
-		list_for_each_entry(rec, &task->dmabuf_info->dmabufs, node) {
+		spin_lock(&dmabuf_info->lock);
+		list_for_each_entry(rec, &dmabuf_info->dmabufs, node) {
 			s64 refs = atomic64_read(&rec->dmabuf->num_unique_refs);
 
 			if (refs <= 0) {
@@ -3417,7 +3424,7 @@ static int proc_dmabuf_pss_show(struct seq_file *m, struct pid_namespace *ns,
 
 			pss += rec->dmabuf->size / refs;
 		}
-		spin_unlock(&task->dmabuf_info->lock);
+		spin_unlock(&dmabuf_info->lock);
 
 		seq_printf(m, "%llu\n", pss);
 	}
