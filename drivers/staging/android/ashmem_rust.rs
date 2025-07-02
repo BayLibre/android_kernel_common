@@ -708,3 +708,24 @@ unsafe extern "C" fn ashmem_area_size(file: *mut bindings::file) -> usize {
         Err(_) => 0,
     }
 }
+
+#[no_mangle]
+unsafe extern "C" fn ashmem_area_vmfile(file: *mut bindings::file) -> *mut bindings::file {
+    // SAFETY: is_ashmem_file() checks to ensure that file is not NULL before attempting to use it.
+    let ashmem_file = unsafe { is_ashmem_file(file) };
+    if !ashmem_file {
+        return null_mut();
+    }
+
+    // SAFETY: Given that this is an ashmem file, it should be safe to access the private_data
+    // field containing the Ashmem struct.
+    let private = unsafe { (*file).private_data };
+    // SAFETY: Since this is an ashmem file, we know the type of the struct and can reference it
+    // safely.
+    let ashmem = unsafe { <<Ashmem as MiscDevice>::Ptr as ForeignOwnable>::borrow(private) };
+    let asma = &mut *ashmem.inner.lock();
+    match asma.file.as_ref() {
+        Some(shmem_file) => shmem_file.file().as_ptr(),
+        None => null_mut(),
+    }
+}
