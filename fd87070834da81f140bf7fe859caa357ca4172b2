@@ -16,6 +16,24 @@
       "message": "Hi Rui,\n\nCan you please create a bug explaining why this should be cherry-picked?\n\nThanks,\n\nPaul",
       "revId": "fd87070834da81f140bf7fe859caa357ca4172b2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90e87d7b_ca1a7704",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3600567
+      },
+      "writtenOn": "2025-07-02T03:48:16Z",
+      "side": 1,
+      "message": "Bug: 428889879\nhttps://partnerissuetracker.corp.google.com/issues/428889879\n\nIn OTA scenario, we need to allocate COW file, and we use pin+fallocate.\nIn this link[1], we talk about scattered pin block caused pin+fallocate fail when do gc, which results allocating COW file fail.\nF2FS maintainer Chao Yu mentioned that we can create this sysfs entry[2] to avoid gc when pin+fallocate.\nWe need this patch to avoid OTA failure.\n\n[1]:https://lore.kernel.org/linux-f2fs-devel/20250612032742.1734852-1-wangzijie1@honor.com/\n[2]:https://lore.kernel.org/linux-f2fs-devel/20250613055109.2335-1-chao@kernel.org/",
+      "parentUuid": "f5814387_7e26aefb",
+      "revId": "fd87070834da81f140bf7fe859caa357ca4172b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
