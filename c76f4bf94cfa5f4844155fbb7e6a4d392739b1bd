@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43ac8bed_2d58ce3e",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1395,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-07-02T20:12:25Z",
+      "side": 1,
+      "message": "That\u0027s a nice idea, but still have iommu driver changes along with pkvm changes in a single patch which I was trying to avoid. I could also return 0 here so that pkvm doesn\u0027t bail out, but that means editing this file in the next patch. I guess its unavoidable to isolate the changes to pkvm or iommu driver ;-). The next patch is actually very simple, we could avoid doing the stub and squash it without losing any readability. As you mentioned in the other patch, I can move the changes about \"not ignoring dmars if pkvm is enabled\" to another patch and then the next patch will be very simple and could be squashed with this. It will more or less the same number of line of code with the stub as well.",
+      "parentUuid": "e70d883f_5f0b04f1",
+      "revId": "c76f4bf94cfa5f4844155fbb7e6a4d392739b1bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94240690_ef69505f",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 13
@@ -67,6 +85,24 @@
       "writtenOn": "2025-07-02T18:31:35Z",
       "side": 1,
       "message": "Also just realized: we should clear pvmfw if pKVM is disabled in the kernel command line (`enable_pkvm` is false), and we do that inside __vmx_pkvm_init(), so this will break it.\n\nActually that is already broken, since we don\u0027t even enter vmx_pkvm_init() if enable_pkvm is false. That\u0027s a regression after merging pvVMCS patches (precisely, after aosp/3608584), it used to work before that. I\u0027ll probably prepare a fix shortly. (BTW thanks to @bgrzesik@google.com for noticing this regression. And that\u0027s how I realized this problem here in your patch as well.)",
+      "revId": "c76f4bf94cfa5f4844155fbb7e6a4d392739b1bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df5caf68_849137ca",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-07-02T20:12:25Z",
+      "side": 1,
+      "message": "Ahh yes, thanks for catching this. I shall fix it here as well in the next iteration",
+      "parentUuid": "94240690_ef69505f",
       "revId": "c76f4bf94cfa5f4844155fbb7e6a4d392739b1bd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
