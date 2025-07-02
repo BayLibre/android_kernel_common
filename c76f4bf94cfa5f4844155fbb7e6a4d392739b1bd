@@ -34,6 +34,41 @@
       "parentUuid": "8df61562_fe16477c",
       "revId": "c76f4bf94cfa5f4844155fbb7e6a4d392739b1bd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e70d883f_5f0b04f1",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1395,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-02T18:31:35Z",
+      "side": 1,
+      "message": "I guess we can avoid squashing, e.g. first let the IOMMU driver register a stub pkvm_iommu_driver, without changing the actual behavior, and then in the next patch make the actual change?",
+      "parentUuid": "beb5d028_b06166fa",
+      "revId": "c76f4bf94cfa5f4844155fbb7e6a4d392739b1bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94240690_ef69505f",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-02T18:31:35Z",
+      "side": 1,
+      "message": "Also just realized: we should clear pvmfw if pKVM is disabled in the kernel command line (`enable_pkvm` is false), and we do that inside __vmx_pkvm_init(), so this will break it.\n\nActually that is already broken, since we don\u0027t even enter vmx_pkvm_init() if enable_pkvm is false. That\u0027s a regression after merging pvVMCS patches (precisely, after aosp/3608584), it used to work before that. I\u0027ll probably prepare a fix shortly. (BTW thanks to @bgrzesik@google.com for noticing this regression. And that\u0027s how I realized this problem here in your patch as well.)",
+      "revId": "c76f4bf94cfa5f4844155fbb7e6a4d392739b1bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
