@@ -263,4 +263,10 @@ handle_events:
 
 	native_write_cr2(vcpu->arch.cr2);
 	trace_vmexit_end(vcpu, vmx->exit_reason.basic);
+
+	if (static_branch_unlikely(&vmx_l1d_should_flush))
+		vmx_l1d_flush(vcpu);
+	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
+		 kvm_arch_has_assigned_device(vcpu->kvm))
+		mds_clear_cpu_buffers();
 }
