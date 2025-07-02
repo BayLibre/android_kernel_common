@@ -6,6 +6,7 @@
  * Chrome OS EC.
  */
 
+#include <linux/mutex.h>
 #include <linux/acpi.h>
 #include <linux/module.h>
 #include <linux/of.h>
@@ -303,6 +304,7 @@ static void cros_unregister_ports(struct cros_typec_data *typec)
 		typec_mux_put(typec->ports[i]->mux);
 		cros_typec_unregister_port_altmodes(typec->ports[i]);
 		typec_unregister_port(typec->ports[i]->port);
+		mutex_destroy(&typec->ports[i]->lock);
 	}
 }
 
@@ -397,6 +399,7 @@ static int cros_typec_init_ports(struct cros_typec_data *typec)
 			goto unregister_ports;
 		}
 
+		mutex_init(&cros_port->lock);
 		cros_port->port_num = port_num;
 		cros_port->typec_data = typec;
 		typec->ports[port_num] = cros_port;
