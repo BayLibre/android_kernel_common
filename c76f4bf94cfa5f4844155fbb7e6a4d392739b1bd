@@ -16,6 +16,24 @@
       "message": "Just realized: this will fail pKVM initialization until the next patch which adds pkvm_iommu_register_driver() call in the IOMMU driver, i.e. we have a temporary regression?",
       "revId": "c76f4bf94cfa5f4844155fbb7e6a4d392739b1bd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beb5d028_b06166fa",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1395,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-07-02T13:49:36Z",
+      "side": 1,
+      "message": "right. I think I can squash the next patch into this one. Wanted to do that, but something kept me from having iommu driver changes together with pkvm changes. What do you think?",
+      "parentUuid": "8df61562_fe16477c",
+      "revId": "c76f4bf94cfa5f4844155fbb7e6a4d392739b1bd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
