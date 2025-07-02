@@ -6,6 +6,7 @@
 #include <asm/pkvm_spinlock.h>
 #include <pkvm.h>
 #include "pkvm_hyp.h"
+#include "gfp.h"
 #include "debug.h"
 #include "ept.h"
 #include "iommu_internal.h"
@@ -465,7 +466,8 @@ static int domain_map(struct pkvm_iommu_domain *domain, struct pkvm_iommu_map_pa
 	unsigned int largepage_lvl = 0;
 	unsigned long lvl_pages = 0;
 	phys_addr_t pteval;
-	u64 attr;
+	u64 attr, pfn;
+	int ret = 0;
 
 	if (unlikely(!domain_pfn_supported(domain, iov_pfn + nr_pages - 1)))
 		return -EINVAL;
@@ -478,6 +480,11 @@ static int domain_map(struct pkvm_iommu_domain *domain, struct pkvm_iommu_map_pa
 				nr_pages * VTD_PAGE_SIZE, PKVM_PAGE_OWNED)) {
 		host_ept_unlock();
 		return -EPERM;
+	}
+	for (pfn = phys_pfn; pfn < phys_pfn + nr_pages; pfn++) {
+		struct hyp_page *page = hyp_phys_to_page_safe(pfn << VTD_PAGE_SHIFT);
+		if (page)
+			hyp_page_ref_inc(page);
 	}
 	host_ept_unlock();
 
@@ -500,8 +507,10 @@ static int domain_map(struct pkvm_iommu_domain *domain, struct pkvm_iommu_map_pa
 					phys_pfn, nr_pages);
 
 			pte = pfn_to_dma_pte(domain, iov_pfn, &largepage_lvl);
-			if (!pte)
-				return -ENOMEM;
+			if (!pte) {
+				ret = -ENOMEM;
+				goto out;
+			}
 
 			first_pte = pte;
 
@@ -555,7 +564,15 @@ static int domain_map(struct pkvm_iommu_domain *domain, struct pkvm_iommu_map_pa
 		}
 	}
 
-	return 0;
+out:
+	if (unlikely(nr_pages)) {
+		for (pfn = phys_pfn; pfn < phys_pfn + nr_pages; pfn++) {
+			struct hyp_page *page = hyp_phys_to_page_safe(pfn << VTD_PAGE_SHIFT);
+			if (page)
+				hyp_page_ref_dec(page);
+		}
+	}
+	return ret;
 }
 
 int pkvm_iommu_domain_map(unsigned long param_va)
@@ -605,6 +622,18 @@ out_unlock:
 	return ret;
 }
 
+static inline void decrease_page_ref(unsigned long addr, int level)
+{
+	unsigned long phys;
+	struct hyp_page *page = hyp_phys_to_page_safe(addr);
+
+	if (!page)
+		return;
+
+	for (phys = addr; phys < addr + (level_size(level) * VTD_PAGE_SIZE); phys += VTD_PAGE_SIZE)
+		hyp_page_ref_dec(hyp_phys_to_page(phys));
+}
+
 /* Copied from drivers/iommu/intel/iommu.c:dma_pte_list_pagetables() */
 /*
  * When a page at a given level is being unlinked from its parent, we don't
@@ -619,13 +648,24 @@ static void dma_pte_list_pagetables(struct pkvm_iommu_domain *domain,
 {
 	push_pkvm_memcache(&domain->mc, pkvm_phys_to_virt(dma_pte_addr(pte)),
 			   hyp_virt_to_phys);
-	if (level == 1)
+	if (level == 1) {
+		pte = pkvm_phys_to_virt(dma_pte_addr(pte));
+		do {
+			if (dma_pte_present(pte))
+				decrease_page_ref(dma_pte_addr(pte), 1);
+			pte++;
+		} while (!first_pte_in_page(pte));
 		return;
+	}
 
 	pte = pkvm_phys_to_virt(dma_pte_addr(pte));
 	do {
-		if (dma_pte_present(pte) && !dma_pte_superpage(pte))
-			dma_pte_list_pagetables(domain, level - 1, pte);
+		if (dma_pte_present(pte)) {
+			if (!dma_pte_superpage(pte))
+				dma_pte_list_pagetables(domain, level - 1, pte);
+			else
+				decrease_page_ref(dma_pte_addr(pte), level);
+		}
 		pte++;
 	} while (!first_pte_in_page(pte));
 }
@@ -655,6 +695,8 @@ static void dma_pte_clear_level(struct pkvm_iommu_domain *domain, int level,
 			 */
 			if (level > 1 && !dma_pte_superpage(pte))
 				dma_pte_list_pagetables(domain, level - 1, pte);
+			else
+				decrease_page_ref(dma_pte_addr(pte), level);
 
 			dma_clear_pte(pte);
 			if (!first_pte)
