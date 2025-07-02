@@ -18,6 +18,8 @@
 #include <linux/syscalls.h>
 #include <linux/pm_runtime.h>
 
+#include <linux/delay.h>
+
 #include "power.h"
 
 #ifdef CONFIG_PM_SLEEP
@@ -70,6 +72,8 @@ void ksys_sync_helper(void)
 {
 	ktime_t start;
 	long elapsed_msecs;
+
+	msleep(3000);
 
 	start = ktime_get();
 	ksys_sync();
