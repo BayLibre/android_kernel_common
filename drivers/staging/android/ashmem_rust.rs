@@ -30,6 +30,7 @@ use kernel::{
     seq_file::{seq_print, SeqFile},
     sync::{new_mutex, Mutex, UniqueArc},
     task::Task,
+    types::ForeignOwnable,
     uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
 };
 
@@ -686,4 +687,24 @@ unsafe extern "C" fn ashmem_area_name(
         core::ptr::copy_nonoverlapping(full_name.as_char_ptr(), name, full_name.len_with_nul())
     };
     0
+}
+
+#[no_mangle]
+unsafe extern "C" fn ashmem_area_size(file: *mut bindings::file) -> usize {
+    // SAFETY: is_ashmem_file() checks to ensure that file is not NULL before attempting to use it.
+    let ashmem_file = unsafe { is_ashmem_file(file) };
+    if !ashmem_file {
+        return 0;
+    }
+
+    // SAFETY: Given that this is an ashmem file, it should be safe to access the private_data
+    // field containing the Ashmem struct.
+    let private = unsafe { (*file).private_data };
+    // SAFETY: Since this is an ashmem file, we know the type of the struct and can reference it
+    // safely.
+    let ashmem = unsafe { <<Ashmem as MiscDevice>::Ptr as ForeignOwnable>::borrow(private) };
+    match ashmem.get_size() {
+        Ok(ret) => ret as usize,
+        Err(_) => 0,
+    }
 }
