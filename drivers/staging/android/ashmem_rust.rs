@@ -727,3 +727,31 @@ unsafe extern "C" fn ashmem_area_size(file: *mut bindings::file) -> usize {
         Err(_) => 0,
     }
 }
+
+#[no_mangle]
+/// # Safety
+///
+/// A reference to file must be taken prior to calling this to ensure that file is valid for
+/// the duration of this function.
+///
+/// If this function returns a non-NULL pointer to a file structure, the refcount for that
+/// file will be incremented by 1. It is the caller's responsibility to decrement the refcount
+/// when the file is no longer needed.
+unsafe extern "C" fn ashmem_area_vmfile(file: *mut bindings::file) -> *mut bindings::file {
+    let ashmem = match get_ashmem_area(file) {
+        Ok(a) => a,
+        Err(_) => return null_mut(),
+    };
+
+    let asma = &mut *ashmem.inner.lock();
+    match asma.file.as_ref() {
+        Some(shmem_file) => {
+            let shmem_file_ptr = shmem_file.file().as_ptr();
+            // SAFETY: If the shmem file is valid and the caller has a reference to the ashmem
+            // file, then this should be safe.
+            unsafe { bindings::get_file(shmem_file_ptr) };
+            shmem_file_ptr
+        }
+        None => null_mut(),
+    }
+}
