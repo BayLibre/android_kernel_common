@@ -471,7 +471,7 @@ static void swap_readpage_bdev_sync(struct folio *folio,
 	struct bio bio;
 	bool read = false;
 
-	trace_android_vh_swap_readpage_bdev_sync(sis->bdev,
+	trace_android_rvh_swap_readpage_bdev_sync(sis->bdev,
 		swap_page_sector(&folio->page) + get_start_sect(sis->bdev),
 		&folio->page, &read);
 	if (read) {
