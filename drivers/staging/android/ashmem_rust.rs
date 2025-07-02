@@ -710,3 +710,20 @@ unsafe extern "C" fn ashmem_area_name(
         Err(err) => err.to_errno() as c_int,
     }
 }
+
+#[no_mangle]
+/// # Safety
+///
+/// A reference to file must be taken prior to calling this to ensure that file is valid for
+/// the duration of this function.
+unsafe extern "C" fn ashmem_area_size(file: *mut bindings::file) -> usize {
+    let ashmem = match get_ashmem_area(file) {
+        Ok(a) => a,
+        Err(_) => return 0,
+    };
+
+    match ashmem.get_size() {
+        Ok(size) => size as usize,
+        Err(_) => 0,
+    }
+}
