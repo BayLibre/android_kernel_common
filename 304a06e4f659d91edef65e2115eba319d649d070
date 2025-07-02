@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "035c6ce5_b28e23fd",
+        "filename": "drivers/platform/chrome/cros_ec_typec.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 3594453
+      },
+      "writtenOn": "2025-07-02T17:49:13Z",
+      "side": 1,
+      "message": "Test what happens when partner rejects role swap (can add a dbg message to make sure we get a bail-out on reject). E.g. docking station that doesn\u0027t support role swap. If we realize the reject does not cause a returned negative value we can call status again",
+      "range": {
+        "startLine": 113,
+        "startChar": 2,
+        "endLine": 114,
+        "endChar": 22
+      },
+      "revId": "304a06e4f659d91edef65e2115eba319d649d070",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
