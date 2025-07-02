@@ -6,6 +6,7 @@
 #include <asm/pkvm_spinlock.h>
 #include <pkvm.h>
 #include "pkvm_hyp.h"
+#include "gfp.h"
 #include "debug.h"
 #include "ept.h"
 #include "iommu_internal.h"
@@ -461,6 +462,49 @@ static void switch_to_super_page(struct pkvm_iommu_domain *domain,
 	}
 }
 
+/*
+ * Pin nr_pages starting from phys_pfn. This is used by DMA mapping logic
+ * to ensure that the pages are not donatable by host while mapped for DMA.
+ */
+static int dma_use_range(unsigned long phys_pfn, unsigned long nr_pages)
+{
+	u64 pfn;
+
+	host_ept_lock();
+	if (host_check_page_state_range(NULL, (phys_addr_t)phys_pfn << VTD_PAGE_SHIFT,
+					nr_pages * VTD_PAGE_SIZE, PKVM_PAGE_OWNED)) {
+		host_ept_unlock();
+		return -EPERM;
+	}
+	for (pfn = phys_pfn; pfn < phys_pfn + nr_pages; pfn++) {
+		struct hyp_page *page = hyp_phys_to_page_safe(pfn << VTD_PAGE_SHIFT);
+
+		if (page)
+			hyp_page_ref_inc(page);
+	}
+	host_ept_unlock();
+
+	return 0;
+}
+
+/*
+ * Unpin nr_pages starting from phys_pfn.
+ * Used to release the pages after unmap.
+ */
+static void pfn_range_ref_dec(unsigned long phys_pfn, unsigned long nr_pages)
+{
+	u64 pfn;
+
+	host_ept_lock();
+	for (pfn = phys_pfn; pfn < phys_pfn + nr_pages; pfn++) {
+		struct hyp_page *page = hyp_phys_to_page_safe(pfn << VTD_PAGE_SHIFT);
+
+		if (page)
+			hyp_page_ref_dec(page);
+	}
+	host_ept_unlock();
+}
+
 /* Copied from drivers/iommu/intel/iommu.c:__domain_mapping() */
 static int domain_map(struct pkvm_iommu_domain *domain, struct pkvm_iommu_map_param *param)
 {
@@ -473,6 +517,7 @@ static int domain_map(struct pkvm_iommu_domain *domain, struct pkvm_iommu_map_pa
 	unsigned long lvl_pages = 0;
 	phys_addr_t pteval;
 	u64 attr;
+	int ret;
 
 	if (unlikely(!domain_pfn_supported(domain, iov_pfn + nr_pages - 1)))
 		return -EINVAL;
@@ -480,13 +525,9 @@ static int domain_map(struct pkvm_iommu_domain *domain, struct pkvm_iommu_map_pa
 	if ((prot & (DMA_PTE_READ|DMA_PTE_WRITE)) == 0)
 		return -EINVAL;
 
-	host_ept_lock();
-	if (host_check_page_state_range(NULL, (phys_addr_t)phys_pfn << VTD_PAGE_SHIFT,
-				nr_pages * VTD_PAGE_SIZE, PKVM_PAGE_OWNED)) {
-		host_ept_unlock();
-		return -EPERM;
-	}
-	host_ept_unlock();
+	ret = dma_use_range(phys_pfn, nr_pages);
+	if (ret)
+		return ret;
 
 	attr = prot & (DMA_PTE_READ | DMA_PTE_WRITE | DMA_PTE_SNP);
 	attr |= DMA_FL_PTE_PRESENT;
@@ -507,8 +548,10 @@ static int domain_map(struct pkvm_iommu_domain *domain, struct pkvm_iommu_map_pa
 					phys_pfn, nr_pages);
 
 			pte = pfn_to_dma_pte(domain, iov_pfn, &largepage_lvl);
-			if (!pte)
-				return -ENOMEM;
+			if (!pte) {
+				ret = -ENOMEM;
+				goto out;
+			}
 
 			first_pte = pte;
 
@@ -531,9 +574,13 @@ static int domain_map(struct pkvm_iommu_domain *domain, struct pkvm_iommu_map_pa
 		}
 		/* We don't need lock here, nobody else touches the iova range. */
 		tmp = 0ULL;
-		if (!try_cmpxchg64_local(&pte->val, &tmp, pteval) && (tmp != pteval)) {
-			pkvm_err("ERROR: DMA PTE for vPFN 0x%lx already set (to %llx not %llx)\n",
-				iov_pfn, tmp, (unsigned long long)pteval);
+		if (!try_cmpxchg64_local(&pte->val, &tmp, pteval)) {
+			if (tmp == pteval) {
+				pfn_range_ref_dec(dma_pte_addr(pte) >> VTD_PAGE_SHIFT, 1);
+			} else {
+				pkvm_err("ERROR: DMA PTE for vPFN 0x%lx already set (to %llx not %llx)\n",
+					 iov_pfn, tmp, (unsigned long long)pteval);
+			}
 		}
 
 		nr_pages -= lvl_pages;
@@ -563,7 +610,11 @@ static int domain_map(struct pkvm_iommu_domain *domain, struct pkvm_iommu_map_pa
 		}
 	}
 
-	return 0;
+out:
+	if (unlikely(nr_pages))
+		pfn_range_ref_dec(phys_pfn, nr_pages);
+
+	return ret;
 }
 
 int pkvm_iommu_domain_map(unsigned long param_va)
@@ -628,40 +679,19 @@ out_unlock:
 	return ret;
 }
 
-/* Copied from drivers/iommu/intel/iommu.c:dma_pte_list_pagetables() */
-/*
- * When a page at a given level is being unlinked from its parent, we don't
- * need to *modify* it at all. All we need to do is make a list of all the
- * pages which can be freed just as soon as we've flushed the IOTLB and we
- * know the hardware page-walk will no longer touch them.
- * The 'pte' argument is the *parent* PTE, pointing to the page that is to
- * be freed.
- */
-static void dma_pte_list_pagetables(struct pkvm_iommu_domain *domain,
-				    int level, struct dma_pte *pte)
+static inline void dma_unpresent_pte(struct dma_pte *pte)
 {
-	u64 page_addr = dma_pte_addr(pte);
-
-	if (level == 1)
-		goto push_memcache;
-
-	pte = pkvm_phys_to_virt(page_addr);
-	do {
-		if (dma_pte_present(pte) && !dma_pte_superpage(pte))
-			dma_pte_list_pagetables(domain, level - 1, pte);
-		pte++;
-	} while (!first_pte_in_page(pte));
-
-push_memcache:
-	push_pkvm_memcache(&domain->mc, pkvm_phys_to_virt(page_addr), hyp_virt_to_phys);
+	u64 unpresent = READ_ONCE(pte->val) & ~(DMA_PTE_READ | DMA_PTE_WRITE);
+	WRITE_ONCE(pte->val, unpresent);
 }
 
 /* Copied from drivers/iommu/intel/iommu.c:dma_pte_clear_level() */
-static void dma_pte_clear_level(struct pkvm_iommu_domain *domain, int level,
+static bool dma_pte_clear_level(struct pkvm_iommu_domain *domain, int level,
 				struct dma_pte *pte, unsigned long pfn,
 				unsigned long start_pfn, unsigned long last_pfn)
 {
 	struct dma_pte *first_pte = NULL, *last_pte = NULL;
+	bool leaf_ptes_only = true;
 
 	pfn = max(start_pfn, pfn);
 	pte = &pte[pfn_level_offset(pfn, level)];
@@ -680,17 +710,99 @@ static void dma_pte_clear_level(struct pkvm_iommu_domain *domain, int level,
 			 *  bother to clear them; we're just going to *free* them.
 			 */
 			if (level > 1 && !dma_pte_superpage(pte))
-				dma_pte_list_pagetables(domain, level - 1, pte);
+				leaf_ptes_only = false;
+
+			dma_unpresent_pte(pte);
+			if (!first_pte)
+				first_pte = pte;
+			last_pte = pte;
+		} else if (level > 1) {
+			/* Recurse down into a level that isn't *entirely* obsolete */
+			leaf_ptes_only = dma_pte_clear_level(domain, level - 1,
+					    pkvm_phys_to_virt(dma_pte_addr(pte)),
+					    level_pfn, start_pfn, last_pfn);
+		}
+next:
+		pfn = level_pfn + level_size(level);
+	} while (!first_pte_in_page(++pte) && pfn <= last_pfn);
+
+	if (first_pte)
+		domain_flush_cache(domain, first_pte,
+				   (void *)(++last_pte) - (void *)first_pte);
+
+	return leaf_ptes_only;
+}
+
+/*
+ * Release(unpin) physical pages reachable by pte
+ * that were previously mapped for DMA.
+ */
+static void dma_unuse_pte(struct pkvm_iommu_domain *domain,
+			  int level, struct dma_pte *pte)
+{
+	void *pte_addr = pkvm_phys_to_virt(dma_pte_addr(pte));
+
+	/* First PTE in the page */
+	pte = (struct dma_pte *)pte_addr;
+	if (level == 1) {
+		do {
+			if (dma_pte_addr(pte)) {
+				pfn_range_ref_dec(dma_pte_addr(pte) >> VTD_PAGE_SHIFT, 1);
+				dma_clear_pte(pte);
+			}
+			pte++;
+		} while (!first_pte_in_page(pte));
+	} else {
+		do {
+			if (dma_pte_addr(pte)) {
+				if (!dma_pte_superpage(pte))
+					dma_unuse_pte(domain, level - 1, pte);
+				else
+					pfn_range_ref_dec(dma_pte_addr(pte) >> VTD_PAGE_SHIFT,
+							  level_size(level));
+				dma_clear_pte(pte);
+			}
+			pte++;
+		} while (!first_pte_in_page(pte));
+	}
+	push_pkvm_memcache(&domain->mc, pte_addr, hyp_virt_to_phys);
+}
+
+/*
+ * Release(unpin) a physical pages mapped for
+ * the iova range(start_pfn..last_pfn)
+ */
+static void dma_unuse_range(struct pkvm_iommu_domain *domain, int level,
+			    struct dma_pte *pte, unsigned long pfn,
+			    unsigned long start_pfn, unsigned long last_pfn)
+{
+	struct dma_pte *first_pte = NULL, *last_pte = NULL;
+
+	pfn = max(start_pfn, pfn);
+	pte = &pte[pfn_level_offset(pfn, level)];
+
+	do {
+		unsigned long level_pfn = pfn & level_mask(level);
+
+		if (!dma_pte_addr(pte))
+			goto next;
+
+		if (start_pfn <= level_pfn &&
+		    last_pfn >= level_pfn + level_size(level) - 1) {
+			if (level > 1 && !dma_pte_superpage(pte))
+				dma_unuse_pte(domain, level - 1, pte);
+			else
+				pfn_range_ref_dec(dma_pte_addr(pte) >> VTD_PAGE_SHIFT,
+						  level_size(level));
 
 			dma_clear_pte(pte);
 			if (!first_pte)
 				first_pte = pte;
 			last_pte = pte;
 		} else if (level > 1) {
-			/* Recurse down into a level that isn't *entirely* obsolete */
-			dma_pte_clear_level(domain, level - 1,
-					    pkvm_phys_to_virt(dma_pte_addr(pte)),
-					    level_pfn, start_pfn, last_pfn);
+			dma_unuse_range(domain, level - 1,
+					pkvm_phys_to_virt(dma_pte_addr(pte)),
+					level_pfn, start_pfn, last_pfn);
 		}
 next:
 		pfn = level_pfn + level_size(level);
@@ -712,15 +824,16 @@ static void domain_unmap(struct pkvm_iommu_domain *domain, unsigned long start_p
 {
 	unsigned long start = start_pfn << VTD_PAGE_SHIFT;
 	unsigned long end = last_pfn << VTD_PAGE_SHIFT;
-	unsigned long nr_pages = domain->mc.nr_pages;
+	bool leaf_ptes_only;
 
 	if (WARN_ON(!domain_pfn_supported(domain, last_pfn)) ||
 	    WARN_ON(start_pfn > last_pfn))
 		return;
 
 	/* we don't need lock here; nobody else touches the iova range */
-	dma_pte_clear_level(domain, agaw_to_level(domain->agaw),
-			    pkvm_phys_to_virt(domain->pgd), 0, start_pfn, last_pfn);
+	leaf_ptes_only = dma_pte_clear_level(domain, agaw_to_level(domain->agaw),
+					     pkvm_phys_to_virt(domain->pgd),
+					     0, start_pfn, last_pfn);
 
 	/*
 	 * Regardless of the DMA mode used by host, we perform iotlb flush on
@@ -729,12 +842,10 @@ static void domain_unmap(struct pkvm_iommu_domain *domain, unsigned long start_p
 	 * cache could enable a device to read those pages which might contain
 	 * sensitive data. So perform flush unconditionally.
 	 */
-	/*
-	 * No new pages released during unmap implies only the leaf
-	 * PTEs were updated. Set IH=1(Invalidation Hint) in that case.
-	 */
-	pkvm_cache_tag_flush_range(domain, start, end,
-				   nr_pages == domain->mc.nr_pages);
+	pkvm_cache_tag_flush_range(domain, start, end, leaf_ptes_only);
+
+	dma_unuse_range(domain, agaw_to_level(domain->agaw),
+			pkvm_phys_to_virt(domain->pgd), 0, start_pfn, last_pfn);
 }
 
 int pkvm_iommu_domain_unmap(unsigned long pgd_gpa, unsigned long start_pfn, unsigned long last_pfn)
