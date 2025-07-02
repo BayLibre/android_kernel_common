@@ -515,6 +515,9 @@ struct alloc_context {
 	bool spread_dirty_pages;
 };
 
+#define MIGRATE_SHIFT 16
+#define ORDER_MASK 0xffff
+
 /*
  * This function returns the order of a free page in the buddy system. In
  * general, page_zone(page)->lock must be held by the caller to prevent the
@@ -526,7 +529,7 @@ struct alloc_context {
 static inline unsigned int buddy_order(struct page *page)
 {
 	/* PageBuddy() must be checked by the caller */
-	return page_private(page);
+	return page_private(page) & ORDER_MASK;
 }
 
 /*
@@ -540,7 +543,7 @@ static inline unsigned int buddy_order(struct page *page)
  * times, potentially observing different values in the tests and the actual
  * use of the result.
  */
-#define buddy_order_unsafe(page)	READ_ONCE(page_private(page))
+#define buddy_order_unsafe(page)	(READ_ONCE(page_private(page)) & ORDER_MASK)
 
 /*
  * This function checks whether a page is free && is the buddy

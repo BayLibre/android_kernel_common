@@ -322,6 +322,8 @@ const char * const migratetype_names[MIGRATE_TYPES] = {
 #endif
 };
 
+atomic_long_t nr_free_mthp[MAX_NR_ZONES] = {0};
+atomic_long_t nr_free_fraged[MAX_NR_ZONES] = {0};
 unsigned long nr_free_highatomic[MAX_NR_ZONES] = {0};
 
 int min_free_kbytes = 1024;
@@ -701,9 +703,19 @@ void destroy_large_folio(struct folio *folio)
 	free_the_page(&folio->page, folio_order(folio));
 }
 
-static inline void set_buddy_order(struct page *page, unsigned int order)
+static inline int buddy_get_migratetype(struct page *page)
 {
-	set_page_private(page, order);
+	return page_private(page) >> MIGRATE_SHIFT;
+}
+
+static inline void set_buddy_order(struct page *page, unsigned int order, int migratetype)
+{
+	unsigned long val;
+
+	val = (unsigned long)migratetype << MIGRATE_SHIFT;
+	val |= order;
+
+	set_page_private(page, val);
 	__SetPageBuddy(page);
 }
 
@@ -790,6 +802,14 @@ static inline void __add_to_free_list(struct page *page, struct zone *zone,
 	else
 		list_add(&page->buddy_list, &area->free_list[migratetype]);
 	area->nr_free++;
+
+	if (!migratetype_is_mergeable(migratetype))
+		return;
+
+	if (order < MTHP_ORDER)
+		atomic_long_add((1 << order), &nr_free_fraged[zone_idx(zone)]);
+	else
+		atomic_long_add((1 << order), &nr_free_mthp[zone_idx(zone)]);
 }
 
 /*
@@ -801,6 +821,7 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
 				     unsigned int order, int old_mt, int new_mt)
 {
 	struct free_area *area = &zone->free_area[order];
+	int cached_mt = buddy_get_migratetype(page);
 
 	/* Free page moving can fail, so it happens before the type update */
 	VM_WARN_ONCE(get_pageblock_migratetype(page) != old_mt,
@@ -808,6 +829,21 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
 		     get_pageblock_migratetype(page), old_mt, 1 << order);
 
 	list_move_tail(&page->buddy_list, &area->free_list[new_mt]);
+	set_buddy_order(page, order, new_mt);
+
+	if (migratetype_is_mergeable(cached_mt)) {
+		if (order < MTHP_ORDER)
+			atomic_long_sub((1 << order), &nr_free_fraged[zone_idx(zone)]);
+		else
+			atomic_long_sub((1 << order), &nr_free_mthp[zone_idx(zone)]);
+	}
+
+	if (migratetype_is_mergeable(new_mt)) {
+		if (order < MTHP_ORDER)
+			atomic_long_add((1 << order), &nr_free_fraged[zone_idx(zone)]);
+		else
+			atomic_long_add((1 << order), &nr_free_mthp[zone_idx(zone)]);
+	}
 
 	account_freepages(zone, -(1 << order), old_mt);
 	account_freepages(zone, 1 << order, new_mt);
@@ -816,6 +852,8 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
 static inline void __del_page_from_free_list(struct page *page, struct zone *zone,
 					     unsigned int order, int migratetype)
 {
+	int cached_mt = buddy_get_migratetype(page);
+
         VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
 		     "page type is %lu, passed migratetype is %d (nr=%d)\n",
 		     get_pageblock_migratetype(page), migratetype, 1 << order);
@@ -828,6 +866,14 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
 	__ClearPageBuddy(page);
 	set_page_private(page, 0);
 	zone->free_area[order].nr_free--;
+
+	if (!migratetype_is_mergeable(cached_mt))
+		return;
+
+	if (order < MTHP_ORDER)
+		atomic_long_sub((1 << order), &nr_free_fraged[zone_idx(zone)]);
+	else
+		atomic_long_sub((1 << order), &nr_free_mthp[zone_idx(zone)]);
 }
 
 static inline void del_page_from_free_list(struct page *page, struct zone *zone,
@@ -869,6 +915,18 @@ buddy_merge_likely(unsigned long pfn, unsigned long buddy_pfn,
 static int zone_max_order(struct zone *zone)
 {
 	return zone->order && zone_idx(zone) == ZONE_NOMERGE ? zone->order : MAX_ORDER;
+}
+
+static inline void check_and_wakeup_kcompactd(struct zone *zone)
+{
+	if (current_is_kswapd() || zone_idx(zone) != ZONE_NORMAL)
+		return;
+
+	if (test_and_set_mthp_compact())
+		return;
+
+	if (should_compact_zone(zone) == COMPACT_CONTINUE)
+		wakeup_kcompactd(zone->zone_pgdat, MTHP_ORDER, ZONE_NORMAL);
 }
 
 /*
@@ -975,7 +1033,7 @@ static inline void __free_one_page(struct page *page,
 	}
 
 done_merging:
-	set_buddy_order(page, order);
+	set_buddy_order(page, order, migratetype);
 
 	if (fpi_flags & FPI_TO_TAIL)
 		to_tail = true;
@@ -987,6 +1045,7 @@ done_merging:
 		to_tail = buddy_merge_likely(pfn, buddy_pfn, page, order);
 
 	__add_to_free_list(page, zone, order, migratetype, to_tail);
+	check_and_wakeup_kcompactd(zone);
 
 	/* Notify page reporting subsystem of freed page */
 	if (!(fpi_flags & FPI_SKIP_REPORT_NOTIFY))
@@ -1513,7 +1572,7 @@ struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
  * -- nyc
  */
 static inline void expand(struct zone *zone, struct page *page,
-	int low, int high, int migratetype)
+	int low, int high, int migratetype, int low_migratetype)
 {
 	unsigned long size = 1 << high;
 	unsigned long nr_added = 0;
@@ -1532,8 +1591,20 @@ static inline void expand(struct zone *zone, struct page *page,
 		if (set_page_guard(zone, &page[size], high))
 			continue;
 
+		/*
+		 * low_migratetype would be different with migratetype when called
+		 * from steal_suitable_fallback(), if order smaller than MTHP_ORDER,
+		 * add these pages to migratetype list specified by low_migratetype
+		 *
+		 * This is helpful for a contiguous MTHP_ORDER share same migratetype
+		 * and make compaction more efficient when generating contiguous
+		 * MTHP_ORDER pages
+		 */
+		if (high < MTHP_ORDER)
+			migratetype = low_migratetype;
+
 		__add_to_free_list(&page[size], zone, high, migratetype, false);
-		set_buddy_order(&page[size], high);
+		set_buddy_order(&page[size], high, migratetype);
 		nr_added += size;
 	}
 	account_freepages(zone, nr_added, migratetype);
@@ -1722,7 +1793,7 @@ struct page *__rmqueue_smallest(struct zone *zone, unsigned int order,
 		if (!page)
 			continue;
 		del_page_from_free_list(page, zone, current_order, migratetype);
-		expand(zone, page, order, current_order, migratetype);
+		expand(zone, page, order, current_order, migratetype, migratetype);
 		trace_mm_page_alloc_zone_locked(page, order, migratetype,
 				pcp_allowed_order(order) &&
 				migratetype < MIGRATE_PCPTYPES);
@@ -2003,8 +2074,6 @@ static bool can_steal_fallback(unsigned int order, int start_mt)
 		return true;
 
 	if (order >= pageblock_order / 2 ||
-		start_mt == MIGRATE_RECLAIMABLE ||
-		start_mt == MIGRATE_UNMOVABLE ||
 		page_group_by_mobility_disabled)
 		return true;
 
@@ -2078,7 +2147,7 @@ steal_suitable_fallback(struct zone *zone, struct page *page,
 	if (current_order >= pageblock_order) {
 		del_page_from_free_list(page, zone, current_order, block_type);
 		change_pageblock_range(page, current_order, start_type);
-		expand(zone, page, order, current_order, start_type);
+		expand(zone, page, order, current_order, start_type, start_type);
 		return page;
 	}
 
@@ -2132,7 +2201,7 @@ steal_suitable_fallback(struct zone *zone, struct page *page,
 
 single_page:
 	del_page_from_free_list(page, zone, current_order, block_type);
-	expand(zone, page, order, current_order, block_type);
+	expand(zone, page, order, current_order, block_type, start_type);
 	return page;
 }
 
@@ -2354,6 +2423,14 @@ __rmqueue_fallback(struct zone *zone, int order, int start_migratetype,
 		min_order = pageblock_order;
 
 	/*
+	 * Try stealing pages whose order is larger than MTHP_ORDER
+	 * to avoid a contiguous MTHP_ORDER range messed with different
+	 * type of migratetype pages.
+	 */
+	if (min_order < MTHP_ORDER)
+		min_order = MTHP_ORDER;
+
+	/*
 	 * Find the largest available free page in the other list. This roughly
 	 * approximates finding the pageblock with the most free pages, which
 	 * would be too costly to do exactly.
@@ -2366,31 +2443,17 @@ __rmqueue_fallback(struct zone *zone, int order, int start_migratetype,
 		if (fallback_mt == -1)
 			continue;
 
-		/*
-		 * We cannot steal all free pages from the pageblock and the
-		 * requested migratetype is movable. In that case it's better to
-		 * steal and split the smallest available page instead of the
-		 * largest available page, because even if the next movable
-		 * allocation falls back into a different pageblock than this
-		 * one, it won't cause permanent fragmentation.
-		 */
-		if (!can_steal && start_migratetype == MIGRATE_MOVABLE
-					&& current_order > order)
-			goto find_smallest;
-
 		goto do_steal;
 	}
 
-	return NULL;
-
-find_smallest:
 	for (current_order = order; current_order < NR_PAGE_ORDERS; current_order++) {
 		area = &(zone->free_area[current_order]);
 		fallback_mt = find_suitable_fallback(area, current_order,
 				start_migratetype, false, &can_steal);
 		if (fallback_mt != -1)
-			break;
+			goto do_steal;
 	}
+	return NULL;
 
 	/*
 	 * This should not happen - we already found a suitable fallback
@@ -4882,6 +4945,52 @@ failed:
 }
 EXPORT_SYMBOL_GPL(__alloc_pages_bulk);
 
+static unsigned long ts_alloc_timestamp;
+static atomic64_t ts_nr_alloc = ATOMIC64_INIT(0);
+/*
+ * return true if ts_nr_alloc is larger than threshold
+ *
+ * this is added to proactive compact
+ * this kind of compaction should not be active when someone is allocating pages
+ */
+bool __alloc_busy(int threshold)
+{
+	u64 current_ts = get_jiffies_64();
+	u64 end_ts = ts_alloc_timestamp + msecs_to_jiffies(20);
+
+	if (time_after64(current_ts, end_ts))
+		return false;
+	/*
+	 * alloc time less than 100 in 20 ms (5000 in 1 s)
+	 */
+	if (atomic64_read(&ts_nr_alloc) > threshold)
+		return true;
+
+	return false;
+}
+
+/*
+ * this is added for proactive compact
+ *
+ * This statistical logic does not require precise accuracy—only,
+ * an approximate count satisfy the requirements, so no concurrency
+ * prevention mechanisms (such as locking) have been implemented.
+ */
+static void update_ts(void)
+{
+	u64 current_ts = get_jiffies_64();
+	u64 end_ts;
+
+	end_ts = ts_alloc_timestamp + msecs_to_jiffies(20);
+
+	if (time_after64(current_ts, end_ts)) {
+		ts_alloc_timestamp = current_ts;
+		atomic64_set(&ts_nr_alloc, 0);
+		return;
+	}
+	atomic64_inc(&ts_nr_alloc);
+}
+
 /*
  * This is the 'heart' of the zoned buddy allocator.
  */
@@ -4899,6 +5008,8 @@ struct page *__alloc_pages(gfp_t gfp, unsigned int order, int preferred_nid,
 	 */
 	if (WARN_ON_ONCE_GFP(order > MAX_ORDER, gfp))
 		return NULL;
+
+	update_ts();
 
 	gfp &= gfp_allowed_mask;
 	/*
@@ -7037,7 +7148,7 @@ static void break_down_buddy_pages(struct zone *zone, struct page *page,
 
 		if (current_buddy != target) {
 			add_to_free_list(current_buddy, zone, high, migratetype, false);
-			set_buddy_order(current_buddy, high);
+			set_buddy_order(current_buddy, high, migratetype);
 		}
 	}
 }

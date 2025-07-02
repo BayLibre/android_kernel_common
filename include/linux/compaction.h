@@ -80,6 +80,51 @@ static inline unsigned long compact_gap(unsigned int order)
 	return 2UL << order;
 }
 
+#define MTHP_ORDER 4
+
+extern int mthp_page_percentage;
+extern int mthp_compact_low;
+extern int mthp_compact;
+extern int mthp_compact_busy_threshold;
+extern atomic_t mthp_compact_triggered;
+extern atomic_long_t nr_free_mthp[MAX_NR_ZONES];
+extern atomic_long_t nr_free_fraged[MAX_NR_ZONES];
+
+#define MTHP_COMPACT_ENABLED	2
+
+static inline int get_mthp_compact(void)
+{
+	return atomic_read(&mthp_compact_triggered);
+}
+
+static inline int test_and_set_mthp_compact(void)
+{
+	return atomic_cmpxchg(&mthp_compact_triggered, 0, 1);
+}
+
+bool __alloc_busy(int threshold);
+
+static inline enum compact_result should_compact_zone(struct zone *zone)
+{
+	long low_threshold, nr_mthp_pages, nr_small_pages;
+
+	if (mthp_compact != MTHP_COMPACT_ENABLED)
+		return COMPACT_PARTIAL_SKIPPED;
+
+	if (__alloc_busy(mthp_compact_busy_threshold))
+		return COMPACT_PARTIAL_SKIPPED;
+
+	nr_small_pages = atomic_long_read(&nr_free_fraged[zone_idx(zone)]);
+	if (nr_small_pages < mthp_compact_low)
+		return COMPACT_PARTIAL_SKIPPED;
+
+	low_threshold = nr_small_pages / mthp_page_percentage;
+	nr_mthp_pages = atomic_long_read(&nr_free_mthp[zone_idx(zone)]);
+
+	return nr_mthp_pages < low_threshold ?  COMPACT_CONTINUE : COMPACT_SUCCESS;
+}
+
+
 #ifdef CONFIG_COMPACTION
 
 extern unsigned int extfrag_for_order(struct zone *zone, unsigned int order);

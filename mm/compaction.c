@@ -25,6 +25,24 @@
 #include <linux/psi.h>
 #include "internal.h"
 
+/*
+ * This is used to tell if kcompactd is doing mthp compaction
+ *
+ * It's best to store this member in struct compact_control, but the
+ * compact_control did not reserve any KABI space, to avoid KMI broken,
+ * I moved mthp_compacting here.
+ *
+ * mthp_compacting would only be accessed/modified in kcompactd context,
+ * so there is not race condition around it if NUMA is disabled
+ */
+static int __read_mostly mthp_compacting;
+atomic_t __read_mostly mthp_compact_triggered = ATOMIC_INIT(0);
+
+int __read_mostly mthp_compact_low	= 32768;	// 128 M
+int __read_mostly mthp_page_percentage	= 16;		// 1/16
+int __read_mostly mthp_compact_busy_threshold = 200;
+int __read_mostly mthp_compact;
+
 #ifdef CONFIG_COMPACTION
 /*
  * Fragmentation score check interval for proactive compaction purposes.
@@ -656,6 +674,17 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
 
 		/* Found a free page, will break it into order-0 pages */
 		order = buddy_order(page);
+
+		/*
+		 * If the target order is specified and the free order is
+		 * larger than the target order, do not break this free order
+		 */
+		if (cc->order != -1 && order >= cc->order) {
+			blockpfn += (1 << order) - 1;
+			page += (1 << order) - 1;
+			goto isolate_fail;
+		}
+
 		isolated = __isolate_free_page(page, order);
 		if (!isolated)
 			break;
@@ -849,6 +878,41 @@ static bool too_many_isolated(struct compact_control *cc)
 	return too_many;
 }
 
+/*
+ * check if in mthp compaction
+ */
+static bool is_in_mthp_compact(struct compact_control *cc)
+{
+	/*
+	 * compaction would triggered by following path:
+	 *
+	 * proc's memory compaction (order == -1)
+	 * kcompactd for specific order (order != -1)
+	 * proactive_compaction from kcompactd (order == -1)
+	 * direct compaction from process context (order != -1)
+	 *
+	 * mthp compaction only happened in kcompactd
+	 *
+	 * if cc->order is -1, the compaction might triggered by proc's
+	 * memory compaction or proactive_compaction, mthp compaction would
+	 * set order to 4, so when cc->order is -1 it's not mthp compaction
+	 *
+	 * only direct_compaction would set order != -1, but it would set
+	 * direct_compaction, which is also not mthp compaction
+	 *
+	 * So if order == -1 or direct_compaction is set, it could not be
+	 * mthp compaction
+	 */
+	if (cc->order == -1 || cc->direct_compaction)
+		return false;
+
+	/*
+	 * Now the compaction can only be triggered by kcompactd
+	 * and not proactive_compaction
+	 */
+	return READ_ONCE(mthp_compacting);
+}
+
 /**
  * isolate_migratepages_block() - isolate all migrate-able pages within
  *				  a single pageblock
@@ -908,7 +972,20 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
 
 	cond_resched();
 
-	if (cc->direct_compaction && (cc->mode == MIGRATE_ASYNC)) {
+	/*
+	 * If compaction triggered by mthp_proactive_compact, which is aimed
+	 * to produce plenty MTHP_ORDER contiguous pages, do not migrate
+	 * pages whose range contains an unmovable page
+	 *
+	 * For example, MTHP_ORDER is 4, a page's pfn is X
+	 *
+	 * If any page whose pfn in [X - (X % 16), X - (X % 16) + 16]
+	 * is unmovable, then this contiguous range can not be migrated to
+	 * generate a contiguous MTHP_ORDER pages, so we should not migrate
+	 * such pages.
+	 */
+	if ((cc->direct_compaction && (cc->mode == MIGRATE_ASYNC)) ||
+	     is_in_mthp_compact(cc)) {
 		skip_on_failure = true;
 		next_skip_pfn = block_end_pfn(low_pfn, cc->order);
 	}
@@ -2237,6 +2314,17 @@ static enum compact_result __compact_finished(struct compact_control *cc)
 			return COMPACT_PARTIAL_SKIPPED;
 	}
 
+	/*
+	 * If compaction is triggered by mthp proactive compact,
+	 * call should_compact_zone() to check the compact strategy
+	 */
+	if (is_in_mthp_compact(cc)) {
+		if (kswapd_is_running(cc->zone->zone_pgdat))
+			return COMPACT_PARTIAL_SKIPPED;
+
+		return should_compact_zone(cc->zone);
+	}
+
 	if (cc->proactive_compaction) {
 		int score, wmark_low;
 		pg_data_t *pgdat;
@@ -2455,7 +2543,12 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
 
 	cc->migratetype = gfp_migratetype(cc->gfp_mask);
 
-	if (!is_via_compact_memory(cc->order)) {
+	/*
+	 * if compaction is triggered from proc's compact_memory or
+	 * mthp_proactive_compact, we do not satisfy zone_watermark_ok()
+	 * for specific order.
+	 */
+	if (!is_via_compact_memory(cc->order) && !is_in_mthp_compact(cc)) {
 		unsigned long watermark;
 
 		/* Allocation can already succeed, nothing to do */
@@ -3015,8 +3108,13 @@ static bool kcompactd_node_suitable(pg_data_t *pgdat)
 		if (!zone_can_frag(zone))
 			continue;
 
-		/* Allocation can already succeed, check other zones */
-		if (zone_watermark_ok(zone, pgdat->kcompactd_max_order,
+		/*
+		 * Allocation can already succeed, check other zones
+		 *
+		 * If mthp_proactive_compact is triggered, we do not satisfy
+		 * with zone_watermark_ok() for specified order
+		 */
+		if (!get_mthp_compact() && zone_watermark_ok(zone, pgdat->kcompactd_max_order,
 				      min_wmark_pages(zone),
 				      highest_zoneidx, 0))
 			continue;
@@ -3049,12 +3147,26 @@ static void kcompactd_do_work(pg_data_t *pgdat)
 							cc.highest_zoneidx);
 	count_compact_event(KCOMPACTD_WAKE);
 
+	if (get_mthp_compact()) {
+		cc.whole_zone = true;
+		cc.ignore_skip_hint = true;
+		cc.no_set_skip_hint = true;
+		WRITE_ONCE(mthp_compacting, 1);
+	}
+
 	for (zoneid = 0; zoneid <= cc.highest_zoneidx; zoneid++) {
 		int status;
 
 		zone = &pgdat->node_zones[zoneid];
 		if (!populated_zone(zone))
 			continue;
+
+		/*
+		 * mthp_proactive_compact is triggered by memory status,
+		 * ignore deferred compaction.
+		 */
+		if (READ_ONCE(mthp_compacting))
+			goto check_suitable;
 
 		if (compaction_deferred(zone, cc.order))
 			continue;
@@ -3064,11 +3176,16 @@ static void kcompactd_do_work(pg_data_t *pgdat)
 				      min_wmark_pages(zone), zoneid, 0))
 			continue;
 
+check_suitable:
 		if (!compaction_suitable(zone, cc.order, zoneid))
 			continue;
 
-		if (kthread_should_stop())
+		if (kthread_should_stop()) {
+			atomic_set(&mthp_compact_triggered, 0);
+			WRITE_ONCE(mthp_compacting, 0);
+
 			return;
+		}
 
 		cc.zone = zone;
 		status = compact_zone(&cc, NULL);
@@ -3097,6 +3214,11 @@ static void kcompactd_do_work(pg_data_t *pgdat)
 				     cc.total_free_scanned);
 	}
 	trace_android_vh_compaction_exit(pgdat->node_id, cc.order, cc.highest_zoneidx);
+
+	if (READ_ONCE(mthp_compacting)) {
+		atomic_set(&mthp_compact_triggered, 0);
+		WRITE_ONCE(mthp_compacting, 0);
+	}
 
 	/*
 	 * Regardless of success, we are done until woken up next. But remember
@@ -3324,6 +3446,93 @@ static struct ctl_table vm_compaction[] = {
 	{ }
 };
 
+#ifdef CONFIG_SYSFS
+struct kobject *mthp_kobj;
+static ssize_t enabled_show(struct kobject *kobj, struct kobj_attribute *attr,
+			char *buf)
+{
+	return sysfs_emit(buf, "%d\n", mthp_compact);
+}
+static ssize_t enabled_store(struct kobject *kobj, struct kobj_attribute *attr,
+			 const char *buf, size_t count)
+{
+	int ret;
+
+	ret = kstrtoint(buf, 10, &mthp_compact);
+	if (ret < 0)
+		return ret;
+
+	return count;
+}
+static struct kobj_attribute mthp_compact_enabled_attr = __ATTR_RW(enabled);
+
+static ssize_t low_threshold_show(struct kobject *kobj, struct kobj_attribute *attr,
+			char *buf)
+{
+	return sysfs_emit(buf, "%d\n", mthp_compact_low);
+}
+static ssize_t low_threshold_store(struct kobject *kobj, struct kobj_attribute *attr,
+			 const char *buf, size_t count)
+{
+	int ret;
+
+	ret = kstrtoint(buf, 10, &mthp_compact_low);
+	if (ret < 0)
+		return ret;
+
+	return count;
+}
+static struct kobj_attribute mthp_compact_low_threshold_attr = __ATTR_RW(low_threshold);
+
+static ssize_t ratio_show(struct kobject *kobj, struct kobj_attribute *attr,
+			char *buf)
+{
+	return sysfs_emit(buf, "%d\n", mthp_page_percentage);
+}
+static ssize_t ratio_store(struct kobject *kobj, struct kobj_attribute *attr,
+			 const char *buf, size_t count)
+{
+	int ret;
+
+	ret = kstrtoint(buf, 10, &mthp_page_percentage);
+	if (ret < 0)
+		return ret;
+
+	return count;
+}
+static struct kobj_attribute mthp_compact_ratio_attr = __ATTR_RW(ratio);
+
+static ssize_t busy_threshold_show(struct kobject *kobj, struct kobj_attribute *attr,
+				char *buf)
+{
+	return sysfs_emit(buf, "%d\n", mthp_compact_busy_threshold);
+}
+static ssize_t busy_threshold_store(struct kobject *kobj, struct kobj_attribute *attr,
+				const char *buf, size_t count)
+{
+	int ret;
+
+	ret = kstrtoint(buf, 10, &mthp_compact_busy_threshold);
+	if (ret < 0)
+		return ret;
+
+	return count;
+}
+static struct kobj_attribute mthp_compact_busy_threshold_attr = __ATTR_RW(busy_threshold);
+
+static struct attribute *mthp_compact_attr[] = {
+	&mthp_compact_enabled_attr.attr,
+	&mthp_compact_low_threshold_attr.attr,
+	&mthp_compact_busy_threshold_attr.attr,
+	&mthp_compact_ratio_attr.attr,
+	NULL,
+};
+
+static const struct attribute_group mthp_compact_attr_group = {
+	.attrs = mthp_compact_attr,
+};
+#endif
+
 static int __init kcompactd_init(void)
 {
 	int nid;
@@ -3340,6 +3549,22 @@ static int __init kcompactd_init(void)
 	for_each_node_state(nid, N_MEMORY)
 		kcompactd_run(nid);
 	register_sysctl_init("vm", vm_compaction);
+
+#ifdef CONFIG_SYSFS
+	mthp_kobj = kobject_create_and_add("mthp_compact", mm_kobj);
+	if (unlikely(!mthp_kobj)) {
+		pr_err("failed to create mthp compaction kobject\n");
+		return -ENOMEM;
+	}
+
+	ret = sysfs_create_group(mthp_kobj, &mthp_compact_attr_group);
+	if (ret) {
+		pr_err("failed to register mthp compaction group\n");
+		kobject_put(mthp_kobj);
+		return ret;
+	}
+#endif
+
 	return 0;
 }
 subsys_initcall(kcompactd_init)
