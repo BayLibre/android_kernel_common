@@ -158,7 +158,7 @@ int pkvm_vm_mmu_map(int vm_handle, u64 gpa, u64 hpa, u64 size)
 		return -EINVAL;
 
 	pkvm_spin_lock(&pkvm_vm->pgt_lock);
-	ret = pkvm_pgtable_map(&pkvm_vm->pgt, gpa, hpa, size, 0, prot, guest_pgt_map_leaf);
+	ret = pkvm_pgtable_map(&pkvm_vm->pgt, gpa, hpa, size, 0, prot, guest_pgt_map_leaf, NULL);
 	pkvm_spin_unlock(&pkvm_vm->pgt_lock);
 
 	put_pkvm_vm(pkvm_vm);
