@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e783abc_883146c0",
+        "filename": "drivers/platform/chrome/cros_ec_typec.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1881538
+      },
+      "writtenOn": "2025-07-03T13:00:05Z",
+      "side": 1,
+      "message": "I think we should also hold the port\u0027s mutex inside this loop and then destroy it after releasing it at the end of each loop iteration.",
+      "range": {
+        "startLine": 384,
+        "startChar": 0,
+        "endLine": 395,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "27f6bdd0_f21ffe07",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/platform/chrome/cros_ec_typec.c",
+              "range": {
+                "startLine": 388,
+                "startChar": 0,
+                "endLine": 388,
+                "endChar": 0
+              },
+              "replacement": "\t\tmutex_lock(\u0026typec-\u003eports[i]-\u003elock);\n"
+            },
+            {
+              "path": "drivers/platform/chrome/cros_ec_typec.c",
+              "range": {
+                "startLine": 396,
+                "startChar": 0,
+                "endLine": 396,
+                "endChar": 0
+              },
+              "replacement": "\t\tmutex_unlock(\u0026typec-\u003eports[i]-\u003elock);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c915ff8c4cac8cd0183741511c6580477ae918f5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
