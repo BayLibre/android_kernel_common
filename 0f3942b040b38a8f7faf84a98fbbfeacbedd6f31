@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81707151_27d18164",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/irq.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-03T06:37:14Z",
+      "side": 1,
+      "message": "Just a note: checkpatch warning (also appearing in the CI checks): \"Using vsprintf specifier \u0027%px\u0027 potentially exposes the kernel memory layout, if you don\u0027t really need the address please consider using \u0027%p\u0027.\"\n\nBut I guess we can ignore this and keep %px as is (since the debug mode is not secure anyway, and %p wouldn\u0027t be useful). Unless we think that the symbol information (%pS) is enough, so we can just remove %px (but I guess the raw RIP value might be sometimes useful too?).",
+      "revId": "0f3942b040b38a8f7faf84a98fbbfeacbedd6f31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9d455aa_b63ae484",
+        "filename": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-03T06:37:14Z",
+      "side": 1,
+      "message": "Just a note: checkpatch warning (also appearing in the CI checks): \"WARNING: macros should not use a trailing semicolon\"\n\nBut I guess it\u0027s fine to ignore it in this case (so that we don\u0027t use semicolons in GEN-for-each-exc.h and thus keep it \"consistent\" with arch/x86/include/asm/GEN-for-each-reg.h).",
+      "revId": "0f3942b040b38a8f7faf84a98fbbfeacbedd6f31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
