@@ -33,6 +33,24 @@
       "message": "This is just the definition, init and destroy, not any of the uses yet, right?\n\nThe following patch for role swap ops adds the first usage (lock, unlock) of it?",
       "revId": "1a72068cb91297e1d4a5a50780a895148005475a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "796a7d83_ed0fffc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3594453
+      },
+      "writtenOn": "2025-07-03T08:04:47Z",
+      "side": 1,
+      "message": "I reversed the 2 patches so that we have a clearer reason why we need to introduce the mutex.",
+      "parentUuid": "3bf21c4b_5a7e062c",
+      "revId": "1a72068cb91297e1d4a5a50780a895148005475a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
