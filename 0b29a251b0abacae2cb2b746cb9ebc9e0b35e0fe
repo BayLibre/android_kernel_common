@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d57454e6_c63b9542",
+        "filename": "drivers/platform/chrome/cros_ec_typec.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1881538
+      },
+      "writtenOn": "2025-07-03T10:04:07Z",
+      "side": 1,
+      "message": "A nit - reverse Xmas tree is the other way around:\n```\n\tstruct cros_typec_port *port \u003d typec_get_drvdata(tc_port);\n\tstruct cros_typec_data *data \u003d port-\u003etypec_data;\n\tstruct ec_response_usb_pd_control_v2 resp;\n\tstruct ec_params_usb_pd_control req;\n\tint ret, role;\n```",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 49
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "df43125c_a1d691b1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/platform/chrome/cros_ec_typec.c",
+              "range": {
+                "startLine": 63,
+                "startChar": 0,
+                "endLine": 63,
+                "endChar": 0
+              },
+              "replacement": "\tstruct cros_typec_port *port \u003d typec_get_drvdata(tc_port);\n\tstruct cros_typec_data *data \u003d port-\u003etypec_data;\n\tstruct ec_response_usb_pd_control_v2 resp;\n\tstruct ec_params_usb_pd_control req;\n"
+            },
+            {
+              "path": "drivers/platform/chrome/cros_ec_typec.c",
+              "range": {
+                "startLine": 65,
+                "startChar": 0,
+                "endLine": 70,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "0b29a251b0abacae2cb2b746cb9ebc9e0b35e0fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
