@@ -168,11 +168,21 @@ static struct file_system_type dma_buf_fs_type = {
 static struct task_dma_buf_record *find_task_dmabuf_record(
 		struct task_struct *task, struct dma_buf *dmabuf)
 {
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(task);
 	struct task_dma_buf_record *rec;
 
-	lockdep_assert_held(&task->dmabuf_info->lock);
+	if (!dmabuf_info)
+		return NULL;
 
-	list_for_each_entry(rec, &task->dmabuf_info->dmabufs, node)
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("dmabuf accounting record is missing, error %ld\n",
+			PTR_ERR(dmabuf_info));
+		return NULL;
+	}
+
+	lockdep_assert_held(&dmabuf_info->lock);
+
+	list_for_each_entry(rec, &dmabuf_info->dmabufs, node)
 		if (dmabuf == rec->dmabuf)
 			return rec;
 
@@ -182,21 +192,32 @@ static struct task_dma_buf_record *find_task_dmabuf_record(
 static int add_task_dmabuf_record(struct task_struct *task, struct dma_buf *dmabuf,
 				  struct task_dma_buf_record *rec)
 {
-	lockdep_assert_held(&task->dmabuf_info->lock);
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(task);
 
-	task->dmabuf_info->rss += dmabuf->size;
+	if (!dmabuf_info)
+		return 0;
+
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("dmabuf accounting record is missing, error %ld\n",
+			PTR_ERR(dmabuf_info));
+		return PTR_ERR(dmabuf_info);
+	}
+
+	lockdep_assert_held(&dmabuf_info->lock);
+
+	dmabuf_info->rss += dmabuf->size;
 	/*
-	 * task->dmabuf_info->lock protects against concurrent writers, so no
+	 * dmabuf_info->lock protects against concurrent writers, so no
 	 * worries about stale rss_hwm between the read and write, and we don't
 	 * need to cmpxchg here.
 	 */
-	if (task->dmabuf_info->rss > task->dmabuf_info->rss_hwm)
-		task->dmabuf_info->rss_hwm = task->dmabuf_info->rss;
+	if (dmabuf_info->rss > dmabuf_info->rss_hwm)
+		dmabuf_info->rss_hwm = dmabuf_info->rss;
 
 	rec->dmabuf = dmabuf;
 	rec->refcnt = 1;
-	list_add(&rec->node, &task->dmabuf_info->dmabufs);
-	task->dmabuf_info->dmabuf_count++;
+	list_add(&rec->node, &dmabuf_info->dmabufs);
+	dmabuf_info->dmabuf_count++;
 	atomic64_inc(&dmabuf->num_unique_refs);
 
 	return 0;
@@ -318,20 +339,28 @@ static void put_task_dmabuf_record(struct task_dma_buf_record *rec)
  */
 int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
 {
+	struct task_dma_buf_info *dmabuf_info;
 	struct task_dma_buf_record *rec;
 	int ret = 0;
 
 	if (!dmabuf || !task)
 		return -EINVAL;
 
-	if (!task->dmabuf_info)
-		return -ENOMEM;
+	dmabuf_info = get_task_dma_buf_info(task);
+	if (!dmabuf_info)
+		return 0;
+
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("dmabuf accounting record is missing, error %ld\n",
+			PTR_ERR(dmabuf_info));
+		return PTR_ERR(dmabuf_info);
+	}
 
 	if (!reserve_task_dmabuf_records(1))
 		return -ENOMEM;
 
 
-	spin_lock(&task->dmabuf_info->lock);
+	spin_lock(&dmabuf_info->lock);
 	rec = find_task_dmabuf_record(task, dmabuf);
 	if (rec) {
 		++rec->refcnt;
@@ -340,7 +369,7 @@ int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
 		rec = get_task_dmabuf_record();
 		ret = rec ? add_task_dmabuf_record(task, dmabuf, rec) : -ENOMEM;
 	}
-	spin_unlock(&task->dmabuf_info->lock);
+	spin_unlock(&dmabuf_info->lock);
 
 	return ret;
 }
@@ -361,70 +390,89 @@ int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
  */
 void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
 {
+	struct task_dma_buf_info *dmabuf_info;
 	struct task_dma_buf_record *rec;
 
 	if (!dmabuf || !task)
 		return;
 
-	if (!task->dmabuf_info)
+	dmabuf_info = get_task_dma_buf_info(task);
+	if (!dmabuf_info)
 		return;
 
-	spin_lock(&task->dmabuf_info->lock);
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("dmabuf accounting record is missing, error %ld\n",
+			PTR_ERR(dmabuf_info));
+		return;
+	}
+
+	spin_lock(&dmabuf_info->lock);
 	rec = find_task_dmabuf_record(task, dmabuf);
 	if (rec && --rec->refcnt == 0) {
 		list_del(&rec->node);
-		task->dmabuf_info->dmabuf_count--;
+		dmabuf_info->dmabuf_count--;
 		put_task_dmabuf_record(rec);
-		task->dmabuf_info->rss -= dmabuf->size;
+		dmabuf_info->rss -= dmabuf->size;
 		atomic64_dec(&dmabuf->num_unique_refs);
 	}
-	spin_unlock(&task->dmabuf_info->lock);
+	spin_unlock(&dmabuf_info->lock);
 }
 
 int copy_dmabuf_info(u64 clone_flags, struct task_struct *task)
 {
 	struct task_dma_buf_record *parent_rec, *child_rec;
+	struct task_dma_buf_info *new_dmabuf_info;
+	struct task_dma_buf_info *dmabuf_info;
 	size_t reserve;
 
-	if (current->dmabuf_info && (clone_flags & (CLONE_VM | CLONE_FILES))
+	if (!task_has_dma_buf_info(task))
+		return 0; /* Task is not supposed to have dmabuf_info */
+
+	dmabuf_info = get_task_dma_buf_info(current);
+	/* Original might not have dmabuf_info and that's fine */
+	if (IS_ERR(dmabuf_info))
+		dmabuf_info = NULL;
+
+	if (dmabuf_info && (clone_flags & (CLONE_VM | CLONE_FILES))
 						== (CLONE_VM | CLONE_FILES)) {
 		/*
 		 * Both MM and FD references to dmabufs are shared with the parent, so
 		 * we can share a RSS counter with the parent.
 		 */
-		refcount_inc(&current->dmabuf_info->refcnt);
-		task->dmabuf_info = current->dmabuf_info;
+		refcount_inc(&dmabuf_info->refcnt);
+		task->worker_private = dmabuf_info;
 		return 0;
 	}
 
-	task->dmabuf_info = kmalloc(sizeof(*task->dmabuf_info), GFP_KERNEL);
-	if (!task->dmabuf_info)
+	new_dmabuf_info = kmalloc(sizeof(*new_dmabuf_info), GFP_KERNEL);
+	if (!new_dmabuf_info)
 		return -ENOMEM;
 
-	refcount_set(&task->dmabuf_info->refcnt, 1);
-	spin_lock_init(&task->dmabuf_info->lock);
-	INIT_LIST_HEAD(&task->dmabuf_info->dmabufs);
-	if (!current->dmabuf_info) {
-		task->dmabuf_info->dmabuf_count = 0;
-		task->dmabuf_info->rss = 0;
-		task->dmabuf_info->rss_hwm = 0;
+	refcount_set(&new_dmabuf_info->refcnt, 1);
+	spin_lock_init(&new_dmabuf_info->lock);
+	INIT_LIST_HEAD(&new_dmabuf_info->dmabufs);
+	if (!dmabuf_info) {
+		new_dmabuf_info->dmabuf_count = 0;
+		new_dmabuf_info->rss = 0;
+		new_dmabuf_info->rss_hwm = 0;
+		task->worker_private = new_dmabuf_info;
 
 		return 0;
 	}
 
-	reserve = READ_ONCE(current->dmabuf_info->dmabuf_count);
+	reserve = READ_ONCE(dmabuf_info->dmabuf_count);
 	if (!reserve_task_dmabuf_records(reserve))
 		goto err_list_copy;
 
 retry:
-	spin_lock(&current->dmabuf_info->lock);
+	spin_lock(&dmabuf_info->lock);
 
-	if (unlikely(reserve != current->dmabuf_info->dmabuf_count)) {
-		if (current->dmabuf_info->dmabuf_count > reserve) {
+	if (unlikely(reserve != dmabuf_info->dmabuf_count)) {
+		if (dmabuf_info->dmabuf_count > reserve) {
 			/* We don't have enough reserved records, reallocate. */
-			size_t remaining = current->dmabuf_info->dmabuf_count - reserve;
+			size_t remaining = dmabuf_info->dmabuf_count - reserve;
 
-			spin_unlock(&current->dmabuf_info->lock);
+			spin_unlock(&dmabuf_info->lock);
 			if (!reserve_task_dmabuf_records(remaining)) {
 				unreserve_task_dmabuf_records(reserve);
 				goto err_list_copy;
@@ -433,56 +481,65 @@ retry:
 			goto retry;
 		} else {
 			/* Unreserve extra records */
-			unreserve_task_dmabuf_records(reserve - current->dmabuf_info->dmabuf_count);
-			reserve = current->dmabuf_info->dmabuf_count;
+			unreserve_task_dmabuf_records(reserve - dmabuf_info->dmabuf_count);
+			reserve = dmabuf_info->dmabuf_count;
 		}
 	}
 
-	list_for_each_entry(parent_rec, &current->dmabuf_info->dmabufs, node) {
+	list_for_each_entry(parent_rec, &dmabuf_info->dmabufs, node) {
 		child_rec = get_task_dmabuf_record();
 		if (!child_rec) {
-			spin_unlock(&current->dmabuf_info->lock);
+			spin_unlock(&dmabuf_info->lock);
 			goto err_list_copy;
 		}
 		child_rec->dmabuf = parent_rec->dmabuf;
 		child_rec->refcnt = parent_rec->refcnt;
-		list_add(&child_rec->node, &task->dmabuf_info->dmabufs);
+		list_add(&child_rec->node, &new_dmabuf_info->dmabufs);
 	}
 
-	task->dmabuf_info->dmabuf_count = current->dmabuf_info->dmabuf_count;
-	task->dmabuf_info->rss = current->dmabuf_info->rss;
-	task->dmabuf_info->rss_hwm = current->dmabuf_info->rss;
+	new_dmabuf_info->dmabuf_count = dmabuf_info->dmabuf_count;
+	new_dmabuf_info->rss = dmabuf_info->rss;
+	new_dmabuf_info->rss_hwm = dmabuf_info->rss;
 
-	spin_unlock(&current->dmabuf_info->lock);
+	spin_unlock(&dmabuf_info->lock);
+	task->worker_private = new_dmabuf_info;
 
 	return 0;
 
 err_list_copy:
-	list_for_each_entry_safe(parent_rec, child_rec, &task->dmabuf_info->dmabufs, node) {
+	list_for_each_entry_safe(parent_rec, child_rec, &new_dmabuf_info->dmabufs, node) {
 		list_del(&parent_rec->node);
 		kfree(parent_rec);
 	}
-	kfree(task->dmabuf_info);
-	task->dmabuf_info = NULL;
+	kfree(new_dmabuf_info);
+	task->worker_private = NULL;
 
 	return -ENOMEM;
 }
 
 void put_dmabuf_info(struct task_struct *task)
 {
-	if (!task->dmabuf_info)
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(task);
+
+	if (!dmabuf_info)
 		return;
 
-	if (!refcount_dec_and_test(&task->dmabuf_info->refcnt))
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("dmabuf accounting record is missing, error %ld\n",
+			PTR_ERR(dmabuf_info));
+		return;
+	}
+
+	if (!refcount_dec_and_test(&dmabuf_info->refcnt))
 		return;
 
-	if (task->dmabuf_info->rss)
+	if (dmabuf_info->rss)
 		pr_err("destroying task with non-zero dmabuf rss\n");
 
-	if (!list_empty(&task->dmabuf_info->dmabufs) || task->dmabuf_info->dmabuf_count > 0)
+	if (!list_empty(&dmabuf_info->dmabufs) || dmabuf_info->dmabuf_count > 0)
 		pr_err("destroying task with non-empty dmabuf list\n");
 
-	kfree(task->dmabuf_info);
+	kfree(dmabuf_info);
 }
 
 static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)
