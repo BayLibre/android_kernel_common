@@ -644,6 +644,7 @@ static void sk_psock_backlog(struct work_struct *work)
 	int ret;
 
 	mutex_lock(&psock->work_mutex);
+<<<<<<< HEAD   (79bd7c Merge 2160dcc38acf ("IB/cm: use rwlock for MAD agent lock") )
 	if (unlikely(state->skb)) {
 		spin_lock_bh(&psock->ingress_lock);
 		skb = state->skb;
@@ -656,6 +657,16 @@ static void sk_psock_backlog(struct work_struct *work)
 		goto start;
 
 	while ((skb = skb_dequeue(&psock->ingress_skb))) {
+||||||| BASE
+	if (unlikely(state->len)) {
+		len = state->len;
+		off = state->off;
+	}
+
+	while ((skb = skb_peek(&psock->ingress_skb))) {
+=======
+	while ((skb = skb_peek(&psock->ingress_skb))) {
+>>>>>>> BRANCH (d6181b bpf, sockmap: fix duplicated data transmission)
 		len = skb->len;
 		off = 0;
 		if (skb_bpf_strparser(skb)) {
@@ -664,7 +675,18 @@ static void sk_psock_backlog(struct work_struct *work)
 			off = stm->offset;
 			len = stm->full_len;
 		}
+<<<<<<< HEAD   (79bd7c Merge 2160dcc38acf ("IB/cm: use rwlock for MAD agent lock") )
 start:
+||||||| BASE
+=======
+
+		/* Resume processing from previous partial state */
+		if (unlikely(state->len)) {
+			len = state->len;
+			off = state->off;
+		}
+
+>>>>>>> BRANCH (d6181b bpf, sockmap: fix duplicated data transmission)
 		ingress = skb_bpf_ingress(skb);
 		skb_bpf_redirect_clear(skb);
 		do {
@@ -688,7 +710,17 @@ start:
 			len -= ret;
 		} while (len);
 
+<<<<<<< HEAD   (79bd7c Merge 2160dcc38acf ("IB/cm: use rwlock for MAD agent lock") )
 		if (!ingress)
+||||||| BASE
+		skb = skb_dequeue(&psock->ingress_skb);
+		if (!ingress) {
+=======
+		/* The entire skb sent, clear state */
+		sk_psock_skb_state(psock, state, 0, 0);
+		skb = skb_dequeue(&psock->ingress_skb);
+		if (!ingress) {
+>>>>>>> BRANCH (d6181b bpf, sockmap: fix duplicated data transmission)
 			kfree_skb(skb);
 	}
 end:
