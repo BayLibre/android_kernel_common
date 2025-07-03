@@ -22,7 +22,22 @@ struct pkvm_pgtable_ops *guest_pgt_ops;
 
 static void *guest_mmu_zalloc_page(void *mc)
 {
-	return hyp_alloc_pages(&shadow_pgt_pool, 0);
+	struct hyp_page *p;
+	void *page;
+
+	page = hyp_alloc_pages(&shadow_pgt_pool, 0);
+	if (page)
+		return page;
+
+	page = pop_pkvm_memcache(mc, hyp_phys_to_virt);
+	if (!page)
+		return page;
+
+	memset(page, 0, PAGE_SIZE);
+	p = hyp_virt_to_page(page);
+	hyp_set_page_refcounted(p);
+
+	return page;
 }
 
 static void guest_mmu_get_page(void *vaddr)
