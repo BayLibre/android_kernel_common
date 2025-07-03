@@ -168,11 +168,21 @@ static struct file_system_type dma_buf_fs_type = {
 static struct task_dma_buf_record *find_task_dmabuf_record(
 		struct task_struct *task, struct dma_buf *dmabuf)
 {
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(task);
 	struct task_dma_buf_record *rec;
 
-	lockdep_assert_held(&task->dmabuf_info->lock);
+	if (!dmabuf_info)
+		return NULL;
 
-	list_for_each_entry(rec, &task->dmabuf_info->dmabufs, node)
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("%s dmabuf accounting record is missing, error %ld\n",
+			__func__, PTR_ERR(dmabuf_info));
+		return NULL;
+	}
+
+	lockdep_assert_held(&dmabuf_info->lock);
+
+	list_for_each_entry(rec, &dmabuf_info->dmabufs, node)
 		if (dmabuf == rec->dmabuf)
 			return rec;
 
@@ -182,20 +192,31 @@ static struct task_dma_buf_record *find_task_dmabuf_record(
 static int add_task_dmabuf_record(struct task_struct *task, struct dma_buf *dmabuf,
 				  struct task_dma_buf_record *rec)
 {
-	lockdep_assert_held(&task->dmabuf_info->lock);
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(task);
 
-	task->dmabuf_info->rss += dmabuf->size;
+	if (!dmabuf_info)
+		return 0;
+
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("%s dmabuf accounting record is missing, error %ld\n",
+			__func__, PTR_ERR(dmabuf_info));
+		return PTR_ERR(dmabuf_info);
+	}
+
+	lockdep_assert_held(&dmabuf_info->lock);
+
+	dmabuf_info->rss += dmabuf->size;
 	/*
-	 * task->dmabuf_info->lock protects against concurrent writers, so no
+	 * dmabuf_info->lock protects against concurrent writers, so no
 	 * worries about stale rss_hwm between the read and write, and we don't
 	 * need to cmpxchg here.
 	 */
-	if (task->dmabuf_info->rss > task->dmabuf_info->rss_hwm)
-		task->dmabuf_info->rss_hwm = task->dmabuf_info->rss;
+	if (dmabuf_info->rss > dmabuf_info->rss_hwm)
+		dmabuf_info->rss_hwm = dmabuf_info->rss;
 
 	rec->dmabuf = dmabuf;
 	rec->refcnt = 1;
-	list_add(&rec->node, &task->dmabuf_info->dmabufs);
+	list_add(&rec->node, &dmabuf_info->dmabufs);
 
 	atomic64_inc(&dmabuf->num_unique_refs);
 
@@ -217,22 +238,28 @@ static int add_task_dmabuf_record(struct task_struct *task, struct dma_buf *dmab
  */
 int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
 {
+	struct task_dma_buf_info *dmabuf_info;
 	struct task_dma_buf_record *rec;
 	int ret = 0;
 
 	if (!dmabuf || !task)
 		return -EINVAL;
 
-	if (!task->dmabuf_info) {
-	    pr_err("%s dmabuf accounting record was not allocated\n", __func__);
-	    return -ENOMEM;
+	dmabuf_info = get_task_dma_buf_info(task);
+	if (!dmabuf_info)
+		return 0;
+
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("%s dmabuf accounting record is missing, error %ld\n",
+			__func__, PTR_ERR(dmabuf_info));
+		return PTR_ERR(dmabuf_info);
 	}
 
-	spin_lock(&task->dmabuf_info->lock);
+	spin_lock(&dmabuf_info->lock);
 	rec = find_task_dmabuf_record(task, dmabuf);
 	if (rec)
 		++rec->refcnt;
-	spin_unlock(&task->dmabuf_info->lock);
+	spin_unlock(&dmabuf_info->lock);
 
 	if (!rec) {
 		struct task_dma_buf_record *new_rec;
@@ -241,13 +268,13 @@ int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
 		if (!new_rec)
 			return -ENOMEM;
 
-		spin_lock(&task->dmabuf_info->lock);
+		spin_lock(&dmabuf_info->lock);
 		/*
 		 * Re-check that dmabuf was not added while we were not holding
-		 * the task->dmabuf_info->lock.
+		 * the dmabuf_info->lock.
 		 * If this scanning proves to be too expensive we can implement
 		 * task_dma_buf_record pooling, take a reccord before locking
-		 * task->dmabuf_info->lock and putting back into the pool if the
+		 * dmabuf_info->lock and putting back into the pool if the
 		 * new record was not needed.
 		 */
 		rec = find_task_dmabuf_record(task, dmabuf);
@@ -257,7 +284,7 @@ int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
 		} else {
 			ret = add_task_dmabuf_record(task, dmabuf, new_rec);
 		}
-		spin_unlock(&task->dmabuf_info->lock);
+		spin_unlock(&dmabuf_info->lock);
 	}
 
 	return ret;
@@ -279,17 +306,22 @@ int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
  */
 void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
 {
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(task);
 	struct task_dma_buf_record *rec;
 
 	if (!dmabuf || !task)
 		return;
 
-	if (!task->dmabuf_info) {
-	    pr_err("%s dmabuf accounting record was not allocated\n", __func__);
-	    return;
+	if (!dmabuf_info)
+		return;
+
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("%s dmabuf accounting record is missing, error %ld\n",
+			__func__, PTR_ERR(dmabuf_info));
+		return;
 	}
 
-	spin_lock(&task->dmabuf_info->lock);
+	spin_lock(&dmabuf_info->lock);
 	rec = find_task_dmabuf_record(task, dmabuf);
 	if (!rec) { /* Failed fd_install? */
 		pr_err("dmabuf not found in task list\n");
@@ -299,11 +331,11 @@ void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
 	if (--rec->refcnt == 0) {
 		list_del(&rec->node);
 		kfree(rec);
-		task->dmabuf_info->rss -= dmabuf->size;
+		dmabuf_info->rss -= dmabuf->size;
 		atomic64_dec(&dmabuf->num_unique_refs);
 	}
 err:
-	spin_unlock(&task->dmabuf_info->lock);
+	spin_unlock(&dmabuf_info->lock);
 }
 
 static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)
