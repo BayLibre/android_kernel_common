@@ -168,11 +168,21 @@ static struct file_system_type dma_buf_fs_type = {
 static struct task_dma_buf_record *find_task_dmabuf_record(
 		struct task_struct *task, struct dma_buf *dmabuf)
 {
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(task);
 	struct task_dma_buf_record *rec;
 
-	lockdep_assert_held(&task->dmabuf_info->lock);
+	if (!dmabuf_info)
+		return NULL;
 
-	list_for_each_entry(rec, &task->dmabuf_info->dmabufs, node)
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("%s dmabuf accounting record is missing, error %ld\n",
+			__func__, PTR_ERR(dmabuf_info));
+		return NULL;
+	}
+
+	lockdep_assert_held(&dmabuf_info->lock);
+
+	list_for_each_entry(rec, &dmabuf_info->dmabufs, node)
 		if (dmabuf == rec->dmabuf)
 			return rec;
 
@@ -181,27 +191,37 @@ static struct task_dma_buf_record *find_task_dmabuf_record(
 
 static int new_task_dmabuf_record(struct task_struct *task, struct dma_buf *dmabuf)
 {
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(task);
 	struct task_dma_buf_record *rec;
 	s64 rss;
 
-	lockdep_assert_held(&task->dmabuf_info->lock);
+	if (!dmabuf_info)
+		return 0;
+
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("%s dmabuf accounting record is missing, error %ld\n",
+			__func__, PTR_ERR(dmabuf_info));
+		return PTR_ERR(dmabuf_info);
+	}
+
+	lockdep_assert_held(&dmabuf_info->lock);
 
 	rec = kmalloc(sizeof(*rec), GFP_KERNEL);
 	if (!rec)
 		return -ENOMEM;
 
-	rss = atomic64_add_return(dmabuf->size, &task->dmabuf_info->rss);
+	rss = atomic64_add_return(dmabuf->size, &dmabuf_info->rss);
 	/*
-	 * task->dmabuf_info->lock protects against concurrent writers, so no
+	 * dmabuf_info->lock protects against concurrent writers, so no
 	 * worries about stale rss_hwm between the read and write, and we don't
 	 * need to cmpxchg here.
 	 */
-	if (rss > atomic64_read(&task->dmabuf_info->rss_hwm))
-		atomic64_set(&task->dmabuf_info->rss_hwm, rss);
+	if (rss > atomic64_read(&dmabuf_info->rss_hwm))
+		atomic64_set(&dmabuf_info->rss_hwm, rss);
 
 	rec->dmabuf = dmabuf;
 	rec->refcnt = 1;
-	list_add(&rec->node, &task->dmabuf_info->dmabufs);
+	list_add(&rec->node, &dmabuf_info->dmabufs);
 
 	atomic64_inc(&dmabuf->num_unique_refs);
 
@@ -223,24 +243,30 @@ static int new_task_dmabuf_record(struct task_struct *task, struct dma_buf *dmab
  */
 int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
 {
+	struct task_dma_buf_info *dmabuf_info;
 	struct task_dma_buf_record *rec;
 	int ret = 0;
 
 	if (!dmabuf || !task)
 		return -EINVAL;
 
-	if (!task->dmabuf_info) {
-	    pr_err("%s dmabuf accounting record was not allocated\n", __func__);
-	    return -ENOMEM;
+	dmabuf_info = get_task_dma_buf_info(task);
+	if (!dmabuf_info)
+		return 0;
+
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("%s dmabuf accounting record is missing, error %ld\n",
+			__func__, PTR_ERR(dmabuf_info));
+		return PTR_ERR(dmabuf_info);
 	}
 
-	spin_lock(&task->dmabuf_info->lock);
+	spin_lock(&dmabuf_info->lock);
 	rec = find_task_dmabuf_record(task, dmabuf);
 	if (!rec)
 		ret = new_task_dmabuf_record(task, dmabuf);
 	else
 		++rec->refcnt;
-	spin_unlock(&task->dmabuf_info->lock);
+	spin_unlock(&dmabuf_info->lock);
 
 	return ret;
 }
@@ -261,17 +287,22 @@ int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
  */
 void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
 {
+	struct task_dma_buf_info *dmabuf_info = get_task_dma_buf_info(task);
 	struct task_dma_buf_record *rec;
 
 	if (!dmabuf || !task)
 		return;
 
-	if (!task->dmabuf_info) {
-	    pr_err("%s dmabuf accounting record was not allocated\n", __func__);
-	    return;
+	if (!dmabuf_info)
+		return;
+
+	if (IS_ERR(dmabuf_info)) {
+		pr_err("%s dmabuf accounting record is missing, error %ld\n",
+			__func__, PTR_ERR(dmabuf_info));
+		return;
 	}
 
-	spin_lock(&task->dmabuf_info->lock);
+	spin_lock(&dmabuf_info->lock);
 	rec = find_task_dmabuf_record(task, dmabuf);
 	if (!rec) { /* Failed fd_install? */
 		pr_err("dmabuf not found in task list\n");
@@ -281,11 +312,11 @@ void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
 	if (--rec->refcnt == 0) {
 		list_del(&rec->node);
 		kfree(rec);
-		atomic64_sub(dmabuf->size, &task->dmabuf_info->rss);
+		atomic64_sub(dmabuf->size, &dmabuf_info->rss);
 		atomic64_dec(&dmabuf->num_unique_refs);
 	}
 err:
-	spin_unlock(&task->dmabuf_info->lock);
+	spin_unlock(&dmabuf_info->lock);
 }
 
 static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)
