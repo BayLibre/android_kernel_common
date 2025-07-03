@@ -30,6 +30,7 @@ use kernel::{
     seq_file::{seq_print, SeqFile},
     sync::{new_mutex, Mutex, UniqueArc},
     task::Task,
+    types::ForeignOwnable,
     uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
 };
 
@@ -662,4 +663,50 @@ unsafe extern "C" fn is_ashmem_file(file: *mut bindings::file) -> bool {
     // SAFETY: Accessing the f_op field of a non-NULL file structure is always okay.
     let fops_ptr = unsafe { (*file).f_op };
     fops_ptr == ashmem_fops_ptr
+}
+
+fn get_ashmem_area<'a>(
+    file: *mut bindings::file,
+) -> Result<<<Ashmem as MiscDevice>::Ptr as ForeignOwnable>::Borrowed<'a>, Error> {
+    // SAFETY: is_ashmem_file() checks to ensure that file is not NULL before attempting to use it.
+    let ashmem_file = unsafe { is_ashmem_file(file) };
+    if !ashmem_file {
+        return Err(EINVAL);
+    }
+
+    // SAFETY: Given that this is an ashmem file, it should be safe to access the private_data
+    // field containing the Ashmem struct.
+    let private = unsafe { (*file).private_data };
+    // SAFETY: Since this is an ashmem file, we know the type of the struct and can reference it
+    // safely.
+    let ashmem = unsafe { <<Ashmem as MiscDevice>::Ptr as ForeignOwnable>::borrow(private) };
+    Ok(ashmem)
+}
+
+#[no_mangle]
+/// # Safety
+///
+/// The caller must ensure the following prior to invoking this function:
+/// 1. name is at least of size ASHMEM_FULL_NAME_LEN.
+/// 2. A reference to file must be taken prior to calling this to ensure that file is valid for
+///    the duration of this function.
+unsafe extern "C" fn ashmem_area_name(
+    file: *mut bindings::file,
+    name: *mut kernel::ffi::c_char,
+) -> c_int {
+    if name.is_null() {
+        return EINVAL.to_errno() as c_int;
+    }
+
+    match get_ashmem_area(file) {
+        Ok(ashmem) => {
+            let asma = &mut *ashmem.inner.lock();
+            let name_buffer = name as *mut [u8; ASHMEM_FULL_NAME_LEN];
+            // SAFETY: The pointer is guaranteed to not be NULL at this point.
+            // Caller guarantees that name is at least ASHMEM_FULL_NAME_LEN in size.
+            unsafe { asma.full_name(&mut *name_buffer) };
+            0
+        }
+        Err(err) => err.to_errno() as c_int,
+    }
 }
