@@ -1359,9 +1359,13 @@ static struct attribute *f2fs_feat_attrs[] = {
 	BASE_ATTR_LIST(compression),
 #endif
 	BASE_ATTR_LIST(pin_file),
+<<<<<<< HEAD   (2b9efc Revert "net: page_pool: avoid false positive warning if NAPI)
 #ifdef CONFIG_UNICODE
 	BASE_ATTR_LIST(linear_lookup),
 #endif
+||||||| BASE
+=======
+>>>>>>> BRANCH (1d1531 f2fs: introduce f2fs_base_attr for global sysfs entries)
 	NULL,
 };
 ATTRIBUTE_GROUPS(f2fs_feat);
