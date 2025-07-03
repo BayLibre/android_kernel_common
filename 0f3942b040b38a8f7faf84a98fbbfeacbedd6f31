@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b0566dc8_b92d6d37",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/irq.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-07-03T07:41:33Z",
+      "side": 1,
+      "message": "Yes, I though to fix this by just removing %px, but as this is for debug mode, so we should be fine with this information. And the raw RIP value can be used to double check if the %pS is the right place where occurs the exception.",
+      "parentUuid": "81707151_27d18164",
+      "revId": "0f3942b040b38a8f7faf84a98fbbfeacbedd6f31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f9d455aa_b63ae484",
         "filename": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
         "patchSetId": 5
@@ -31,6 +49,24 @@
       "writtenOn": "2025-07-03T06:37:14Z",
       "side": 1,
       "message": "Just a note: checkpatch warning (also appearing in the CI checks): \"WARNING: macros should not use a trailing semicolon\"\n\nBut I guess it\u0027s fine to ignore it in this case (so that we don\u0027t use semicolons in GEN-for-each-exc.h and thus keep it \"consistent\" with arch/x86/include/asm/GEN-for-each-reg.h).",
+      "revId": "0f3942b040b38a8f7faf84a98fbbfeacbedd6f31",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5632417_31cffeca",
+        "filename": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-07-03T07:41:33Z",
+      "side": 1,
+      "message": "If we add semicolons in GEN-for-each-exc.h, it will cause trouble for the other places where uses this header file, e.g., idt.S and pkvm_host.c. So probably just ignore this warning is the easiest way.",
+      "parentUuid": "f9d455aa_b63ae484",
       "revId": "0f3942b040b38a8f7faf84a98fbbfeacbedd6f31",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
