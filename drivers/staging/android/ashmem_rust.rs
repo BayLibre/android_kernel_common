@@ -659,3 +659,31 @@ unsafe extern "C" fn is_ashmem_file(file: *mut bindings::file) -> bool {
     let fops_ptr = unsafe { (*file).f_op };
     fops_ptr == ashmem_fops_ptr
 }
+
+#[no_mangle]
+/// It is the caller's responsibility to ensure that name is at least of size ASHMEM_FULL_NAME_LEN.
+unsafe extern "C" fn ashmem_area_name(
+    file: *mut bindings::file,
+    name: *mut kernel::ffi::c_char,
+) -> isize {
+    // SAFETY: is_ashmem_file() checks to ensure that file is not NULL before attempting to use it.
+    let ashmem_file = unsafe { is_ashmem_file(file) };
+    if !ashmem_file {
+        return EINVAL.to_errno() as isize;
+    }
+
+    // SAFETY: Given that this is an ashmem file, it should be safe to access the private_data
+    // field containing the Ashmem struct.
+    let private = unsafe { (*file).private_data };
+    // SAFETY: Since this is an ashmem file, we know the type of the struct and can reference it
+    // safely.
+    let ashmem = unsafe { <<Ashmem as MiscDevice>::Ptr as ForeignOwnable>::borrow(private) };
+    let asma = &mut *ashmem.inner.lock();
+    let mut name_buffer = [0u8; ASHMEM_FULL_NAME_LEN];
+    let full_name = asma.full_name(&mut name_buffer);
+    // SAFETY: Caller guarantees that name is at least ASHMEM_FULL_NAME_LEN in size.
+    unsafe {
+        core::ptr::copy_nonoverlapping(full_name.as_char_ptr(), name, full_name.len_with_nul())
+    };
+    0
+}
