@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56f2e856_fce46a3d",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-07-04T01:11:16Z",
+      "side": 1,
+      "message": "The reason we do an ioremap for the IOMMU\u0027s MMIO and read the cap/ecap from the hardware is that, the drhd-\u003eiommu-\u003ecap/ecap is already modified by pkvm_update_iommu_virtual_caps() at this point, e.g. the nested ecap is removed by this function. I guess with this change, even dmar2 also has the warning \"nested translation not supported\" below, which is expected only for dmar0 and dmar1.\n\nIf this is true, then it is better to make the pkvm hypervisor to read the cap/ecap from the hardware rather than getting from the info-\u003ecap/ecap (the change in hyp/iommu.c)",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "732d7fd6_5cde1f48",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3064,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-07-04T01:11:16Z",
+      "side": 1,
+      "message": "Shall the ATC_REQUIRED flag being checked here? My understanding is that, if ATC_REQUIRED flag is not set, it means we don\u0027t need to enable the device IOTLB for the devices covered by this STAC table (suppose we don\u0027t need to look into the device scope to query the ATC_REQUIRED for each device). Is this a correct understanding?\n\nAnother question is that, for an IOMMU, if one of its device is listed in the SATC, then this IOMMU will be marked have device iotlb ecap, then the pkvm hypervisor will not clear the DTE from the context entry for any device in this IOMMU. This sounds like an overfit?",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
