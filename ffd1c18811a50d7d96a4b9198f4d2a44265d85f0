@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "58ca4334_c5a14c2e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-04T19:24:26Z",
+      "side": 1,
+      "message": "Not all of them need it, only those with ATC_REQUIRED, right?\n\nBut I think the most important thing to mention here is that all devices listed in SATC are _trusted_ to use ATS in a secure way (according to VT-d spec which says that all such devices must provide a \"Host Physical Address Isolation Boundary\", so even if such device is compromised, it is still not able to do malicious DMA requests at arbitrary addresses). Which is the reason why we assume that allowing ATS for them will not compromise pKVM security guarantees.",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56f2e856_fce46a3d",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 1
@@ -92,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dab3ba9c_3edd19a3",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-04T19:24:26Z",
+      "side": 1,
+      "message": "\u003e However, with this patch, for example, if an IOMMU contains two devices, device A is described by the SATC, but the device B is not. Then seems this patch will set the DT bit for this IOMMU. And the pkvm hypervisor will enable device iotlb for both device A and device B, but in fact, we only want the device A to have device iotlb as device B is not described in the SATC.\n\nI think that\u0027s the key issue. We should allow ATS per device, not per IOMMU. For instance, on PTL, according to the latest ACPI reference in coreboot (https://chromium.googlesource.com/chromiumos/third_party/coreboot/+/refs/heads/main/src/soc/intel/pantherlake/acpi.c#248), there may be up to 5 devices behind the same Dmar2 IOMMU: NPU, IPU, IAA, telemetry unit and thermal unit (DPTF), and only three of them (NPU, IPU, IAA) are listed in SATC. So IIUC only three of them actually use ATS and are trusted to use it securely, the other two don\u0027t.\n\n(For instance, according to Intel, DPTF doesn\u0027t even do any DMA, so it is pointless to allow ATS for it. I don\u0027t know about the telemetry unit. If it can do DMA, and at the same time doesn\u0027t have a trusted boundary for ATS like the GPU, NPU and IPU do, it means that by allowing ATS for it we would introduce a security hole.)\n\nSo I think the approach of this patch is wrong.\n\nCan\u0027t we just add a new field to struct pkvm_ptdev, e.g. `devtlb_allowed`, instead of hacking the virtual caps?\n\nI was imagining we could implement this in a simple way: when initially before deprivilege in check_and_init_iommu() we scan DRHDs and save the information about IOMMUs in pkvm-\u003eiommu_infos, we can additionally scan `dmar_satc_units` and save the information about SATC devices as well. (For that we might need to export dmar_satc_units in dmar.h and maybe add for_each_satc_unit(), but that\u0027s a detail.) And then later when we register devices in iommu_add_ptdev() -\u003e pkvm_alloc_ptdev(), we use this information to set ptdev-\u003edevtlb_allowed accordingly.",
+      "parentUuid": "7f11bb16_a43fb4ac",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "732d7fd6_5cde1f48",
         "filename": "drivers/iommu/intel/iommu.c",
         "patchSetId": 1
@@ -175,6 +210,24 @@
       "side": 1,
       "message": "Thanks for checking the PTL\u0027s design. So seems implementing like this is fine to PTL. What in my mind is to enable device iotlb for the device if it is in the SATC table. The host IOMMU driver can provide an interface for the pkvm_host.c to check if a pci device is in a SATC with ATC_REQUIRED \u003d\u003d 1. The pkvm_host.c can check for each pci device and collect a array which contains the BDF of the pci device in such SATC for the pkvm hypervisor. Then the pkvm iommu driver can enable the device iotlb for a pci device if its BDF is in this array.\n\nI guess we will prefer to have a more general way to enable device iotlb in the pvIOMMU solution. If this patch is just for the emulated-based IOMMU, probably it is fine.",
       "parentUuid": "a293e7c4_77577dfa",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e16b9c2b_396f1a49",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3064,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-04T19:24:26Z",
+      "side": 1,
+      "message": "Regarding ATC_REQUIRED, actually I suppose it is not necessary to check it. If I\u0027m reading VT-d spec correctly, all SoC-integrated devices that use ATS (even if they don\u0027t absolutely require it) are required to use it in a secure way (section 4.4: \"The Figure 4-3 below shows a typical SoC integrated device that is connected to the Root Complex. All\nsuch devices that support Address Translation Service (ATS) must create an isolation boundary\noutside of which Host Physical Address (HPA) are not exposed. ...\")\n\nSo if we assume that all devices listed in SATC are trusted to use ATS securely, why not allow it even for those of them which don\u0027t have ATC_REQUIRED, to let them enjoy better performance?",
+      "parentUuid": "89d010e6_65509dc6",
       "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
