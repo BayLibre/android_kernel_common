@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4c0181d9_1a2f5ce0",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-04T04:31:52Z",
+      "side": 1,
+      "message": "As per the PTL design spec, Gfx is mapped to one remapping HW unit, Non-Gfx (NPU, IPU, PCMS) mapped to another, all other dev to the last remapping unit. And Intel supports DevTLB in all Gfx \u0026 non-Gfx devices (IOMMU0 \u0026 IOMMU1), thus guarantees security in those 4 integrated devices in the SOC. So even though if SATC lists just one device from a group, enabling devtlb for all the devices should be safe.",
+      "parentUuid": "62677363_2d8dbcfd",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "732d7fd6_5cde1f48",
         "filename": "drivers/iommu/intel/iommu.c",
         "patchSetId": 1
@@ -103,6 +121,24 @@
       "side": 1,
       "message": "The overfit I mean is like what I mentioned in another comment:\n\"with this patch, for example, if an IOMMU contains two devices, device A is described by the SATC, but the device B is not. Then seems this patch will set the DT bit for this IOMMU. And the pkvm hypervisor will enable device iotlb for both device A and device B, but in fact, we only want the device A to have device iotlb as device B is not described in the SATC.\"\n\nPlease correct me if I am wrong about this.",
       "parentUuid": "3abb526f_d2c45698",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a293e7c4_77577dfa",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3064,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-04T04:31:52Z",
+      "side": 1,
+      "message": "Similar to my response above, as per the PTL spec only 4 devs (IGD, NPPU, IPU, PMCS) have devTLB and Intel HW guarantees security of all those 4 dev. So even if they are not listed in SATC, enabling ECAP.DT for that remapping unit should be okay.",
+      "parentUuid": "248b987e_0079e76f",
       "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
