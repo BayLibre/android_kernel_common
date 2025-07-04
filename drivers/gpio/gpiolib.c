@@ -4344,8 +4344,10 @@ struct gpio_desc *gpiod_find_and_request(struct device *consumer,
 		ret = gpiod_request(desc, label);
 	}
 	if (ret) {
-		if (!(ret == -EBUSY && flags & GPIOD_FLAGS_BIT_NONEXCLUSIVE))
+		if (!(ret == -EBUSY && flags & GPIOD_FLAGS_BIT_NONEXCLUSIVE)) {
+			dev_err(consumer, "b/428813481: failed to request %s: %d\n", name, ret);
 			return ERR_PTR(ret);
+		}
 
 		/*
 		 * This happens when there are several consumers for
