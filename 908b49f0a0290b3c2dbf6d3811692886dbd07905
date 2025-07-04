@@ -16,6 +16,24 @@
       "message": "Is it possible that vmx-\u003eexit_reason.full is not 0xdead (i.e. vcpu run succeeded) but vmx-\u003efail is 1 because it was already 1 before we entered pkvm_vcpu_run()?\n\nDo we reset vmx-\u003efail to 0 anywhere?",
       "revId": "908b49f0a0290b3c2dbf6d3811692886dbd07905",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "695e59e8_72ccbcb7",
+        "filename": "arch/x86/kvm/vmx/pkvm_high.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1440,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-07-04T01:19:13Z",
+      "side": 1,
+      "message": "When vmx-\u003efail is set, the kvm will return to the user space with exit reason KVM_EXIT_FAIL_ENTRY. Normally the user space will stop entering the guest again. But that is totally depending on the user space. The user space can still enter the guest in this case. So I think you are right, we can reset vmx-\u003efail before enter the guest again.",
+      "parentUuid": "803d8245_84334052",
+      "revId": "908b49f0a0290b3c2dbf6d3811692886dbd07905",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
