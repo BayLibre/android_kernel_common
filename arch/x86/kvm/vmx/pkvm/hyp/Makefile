@@ -19,7 +19,7 @@ pkvm-hyp-y	:= vmx_asm.o vmexit.o memory.o page_alloc.o early_alloc.o pgtable.o m
 
 pkvm		:= ../../../pkvm
 pkvm-hyp-y	+= $(pkvm)/cpu.o $(pkvm)/pkvm.o $(pkvm)/x86.o $(pkvm)/vmx/vmx.o $(pkvm)/vmx/vmenter.o \
-		   $(pkvm)/cpuid.o $(pkvm)/lapic.o $(pkvm)/fpu/core.o
+		   $(pkvm)/cpuid.o $(pkvm)/lapic.o $(pkvm)/fpu/core.o $(pkvm)/fpu/xstate.o
 
 lib-dir		:= lib
 lib2-dir	:= ../../../../../../lib
@@ -35,6 +35,7 @@ pkvm-obj 	:= $(patsubst %.o,%.pkvm.o,$(pkvm-hyp-y))
 obj-$(CONFIG_PKVM_INTEL)	+= pkvm.o
 
 AFLAGS_$(pkvm)/vmx/vmenter.pkvm.o	+= -iquote $(obj)/$(pkvm)
+CFLAGS_$(pkvm)/fpu/xstate.pkvm.o	+= -iquote $(srctree)/arch/x86/kernel/fpu
 
 $(obj)/$(pkvm)/vmx/vmenter.pkvm.o: $(obj)/$(pkvm)/kvm-asm-offsets.h
 $(obj)/$(pkvm)/kvm-asm-offsets.s: $(obj)/../../../kvm-asm-offsets.c FORCE
