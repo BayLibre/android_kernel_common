@@ -1554,6 +1554,23 @@ static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
 				 start, end - 1, can_yield, true, flush);
 }
 
+static bool pkvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+{
+	int err;
+
+	if (pkvm_is_protected_vm(kvm))
+		return false;
+
+	err = kvm_call_pkvm(vm_mmu_unmap, kvm->arch.pkvm.pkvm_vm_handle,
+			    range->start << PAGE_SHIFT,
+			    (range->end - range->start) << PAGE_SHIFT);
+	WARN_ONCE(err, "pkvm unmap gfn[%llx..%llx] failed, err = %d\n",
+		  range->start, range->end, err);
+
+	/* pKVM itself always flushes TLB on unmap */
+	return false;
+}
+
 bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
 {
 	bool flush = false;
@@ -1576,6 +1593,8 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
 
 	if (tdp_mmu_enabled)
 		flush = kvm_tdp_mmu_unmap_gfn_range(kvm, range, flush);
+	else if (enable_pkvm)
+		flush = pkvm_unmap_gfn_range(kvm, range);
 
 	if (kvm_x86_ops.set_apic_access_page_addr &&
 	    range->slot->id == APIC_ACCESS_PAGE_PRIVATE_MEMSLOT)
