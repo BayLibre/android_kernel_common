@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f7f55095_c4f5557f",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-04T01:59:40Z",
+      "side": 1,
+      "message": "If the ecap/ecap is read from the HW again, the ECAP.DT needs to be updated for iommu* based on the SATC parsed entries. Those SATC entries \u0027dmar_satc_units\u0027 are static to the driver hence can\u0027t be accessed in the PKVM hypervisor. Thus copying the cap/ecap from the host here.\nTo avoid the warning for dmar2, the hypervisor can still read from HW and check for NEST and but the copy to pkvm_iommu_inf-\u003ecap/ecap should be from the host iommu ecap/ecap. Does that sound okay?",
+      "parentUuid": "56f2e856_fce46a3d",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "732d7fd6_5cde1f48",
         "filename": "drivers/iommu/intel/iommu.c",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2025-07-04T01:11:16Z",
       "side": 1,
       "message": "Shall the ATC_REQUIRED flag being checked here? My understanding is that, if ATC_REQUIRED flag is not set, it means we don\u0027t need to enable the device IOTLB for the devices covered by this STAC table (suppose we don\u0027t need to look into the device scope to query the ATC_REQUIRED for each device). Is this a correct understanding?\n\nAnother question is that, for an IOMMU, if one of its device is listed in the SATC, then this IOMMU will be marked have device iotlb ecap, then the pkvm hypervisor will not clear the DTE from the context entry for any device in this IOMMU. This sounds like an overfit?",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3abb526f_d2c45698",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3064,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-04T01:59:40Z",
+      "side": 1,
+      "message": "1) Correct, I missed the check on ATC_REQUIRED. I will add that.\n2) I am not sure about what would happen if the context entry DTE is cleared even if device is listed to have an ATC. Are you suggesting the check for clearing the DTE in the context entry be removed?",
+      "parentUuid": "732d7fd6_5cde1f48",
       "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
