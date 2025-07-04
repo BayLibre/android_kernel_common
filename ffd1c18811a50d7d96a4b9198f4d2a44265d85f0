@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7f11bb16_a43fb4ac",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-07-04T05:35:15Z",
+      "side": 1,
+      "message": "Regarding the warning for dmar2 \"nested translation not supported\", this will impact the pkvm hypervisor to use the nested translation as the pkvm hypervisor cannot see this cap now. This should be fixed.",
+      "parentUuid": "4c0181d9_1a2f5ce0",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "732d7fd6_5cde1f48",
         "filename": "drivers/iommu/intel/iommu.c",
         "patchSetId": 1
@@ -139,6 +157,24 @@
       "side": 1,
       "message": "Similar to my response above, as per the PTL spec only 4 devs (IGD, NPPU, IPU, PMCS) have devTLB and Intel HW guarantees security of all those 4 dev. So even if they are not listed in SATC, enabling ECAP.DT for that remapping unit should be okay.",
       "parentUuid": "248b987e_0079e76f",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89d010e6_65509dc6",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3064,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-07-04T05:35:15Z",
+      "side": 1,
+      "message": "Thanks for checking the PTL\u0027s design. So seems implementing like this is fine to PTL. What in my mind is to enable device iotlb for the device if it is in the SATC table. The host IOMMU driver can provide an interface for the pkvm_host.c to check if a pci device is in a SATC with ATC_REQUIRED \u003d\u003d 1. The pkvm_host.c can check for each pci device and collect a array which contains the BDF of the pci device in such SATC for the pkvm hypervisor. Then the pkvm iommu driver can enable the device iotlb for a pci device if its BDF is in this array.\n\nI guess we will prefer to have a more general way to enable device iotlb in the pvIOMMU solution. If this patch is just for the emulated-based IOMMU, probably it is fine.",
+      "parentUuid": "a293e7c4_77577dfa",
       "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
