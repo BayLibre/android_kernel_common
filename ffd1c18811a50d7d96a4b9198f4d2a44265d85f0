@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "62677363_2d8dbcfd",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-07-04T02:21:59Z",
+      "side": 1,
+      "message": "I feel that, the key point implemented by this patch is to set the DT bit in IOMMU\u0027s ecap if the SATC has ATC_REQUIRED flag. And then in the hyp/iommu.c the device iotlb enabling is based on whether the DT bit is set or not. That is why you don\u0027t want to read from hardware directly, as the value from the hardware is not based on the SATC parsing result.\n\nHowever, with this patch, for example, if an IOMMU contains two devices, device A is described by the SATC, but the device B is not. Then seems this patch will set the DT bit for this IOMMU. And the pkvm hypervisor will enable device iotlb for both device A and device B, but in fact, we only want the device A to have device iotlb as device B is not described in the SATC.",
+      "parentUuid": "f7f55095_c4f5557f",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "732d7fd6_5cde1f48",
         "filename": "drivers/iommu/intel/iommu.c",
         "patchSetId": 1
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "1) Correct, I missed the check on ATC_REQUIRED. I will add that.\n2) I am not sure about what would happen if the context entry DTE is cleared even if device is listed to have an ATC. Are you suggesting the check for clearing the DTE in the context entry be removed?",
       "parentUuid": "732d7fd6_5cde1f48",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "248b987e_0079e76f",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3064,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-07-04T02:21:59Z",
+      "side": 1,
+      "message": "The overfit I mean is like what I mentioned in another comment:\n\"with this patch, for example, if an IOMMU contains two devices, device A is described by the SATC, but the device B is not. Then seems this patch will set the DT bit for this IOMMU. And the pkvm hypervisor will enable device iotlb for both device A and device B, but in fact, we only want the device A to have device iotlb as device B is not described in the SATC.\"\n\nPlease correct me if I am wrong about this.",
+      "parentUuid": "3abb526f_d2c45698",
       "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
