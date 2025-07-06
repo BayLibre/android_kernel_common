@@ -16,6 +16,24 @@
       "message": "Is there some context for why it was removed for Android kernels?\n(maybe a link to change would be helpful here)",
       "revId": "221ab1461ad87aa8534d10ede3ff60f24f074597",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edcef3cd_ab87b289",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-07-06T16:09:54Z",
+      "side": 1,
+      "message": "The context for why the #ifdef was removed is in the change being reverted itself. In aosp/1501631 it reads:\n```\n- migrate_swap(): Brought of NUMA and exported. It is needed to\nmigrate tasks running on LITTLE and big CPUs.\n```\n\nIt looks feasible to reapply the export(). However, I think it is best for the conflict with the new `-\u003enuma_task_swapped` to be resolved by whoever needs it (if that is still the case). Ideally, it is not used anymore.",
+      "parentUuid": "da4f7d0d_c1b6a39c",
+      "revId": "221ab1461ad87aa8534d10ede3ff60f24f074597",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
