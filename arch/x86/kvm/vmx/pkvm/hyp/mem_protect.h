@@ -307,4 +307,26 @@ int __pkvm_host_donate_hyp_share_ro(u64 phys, u64 size);
  */
 int __pkvm_hyp_donate_host_unshare_ro(u64 phys, u64 size);
 
+/**
+ * host_check_page_state_range() - Check if a range of host physical pages matches
+ * a specific state.
+ * @pgt_override: Optional pointer to a page table to check against. If NULL,
+ * the check is performed against the host EPT.
+ * @addr:         Start physical address of the range to check.
+ * @size:         Size of the range to check.
+ * @state:        The expected pkvm_page_state to verify.
+ *
+ * Iterates through the specified physical address range in the host's EPT
+ * page tables (or the provided override) and verifies that every page in the
+ * range is mapped with the state specified by @state.
+ *
+ * This is typically used to assert that memory regions (like donated memory or
+ * shared memory) are in the correct state before performing transitions or
+ * accesses.
+ *
+ * Return: 0 if all pages in the range match the expected state, negative error
+ * code otherwise (e.g., -EPERM if a page state mismatch is found).
+ */
+int host_check_page_state_range(struct pkvm_pgtable *pgt_override, u64 addr,
+				u64 size, enum pkvm_page_state state);
 #endif
