@@ -7,6 +7,7 @@
 #include <pkvm.h>
 #include "pkvm_hyp.h"
 #include "debug.h"
+#include "ept.h"
 #include "iommu_internal.h"
 #include "iommu.h"
 #include "iommu_domain.h"
@@ -471,6 +472,14 @@ static int domain_map(struct pkvm_iommu_domain *domain, struct pkvm_iommu_map_pa
 
 	if ((prot & (DMA_PTE_READ|DMA_PTE_WRITE)) == 0)
 		return -EINVAL;
+
+	host_ept_lock();
+	if (host_check_page_state_range(NULL, (phys_addr_t)phys_pfn << VTD_PAGE_SHIFT,
+				nr_pages * VTD_PAGE_SIZE, PKVM_PAGE_OWNED)) {
+		host_ept_unlock();
+		return -EPERM;
+	}
+	host_ept_unlock();
 
 	attr = prot & (DMA_PTE_READ | DMA_PTE_WRITE | DMA_PTE_SNP);
 	attr |= DMA_FL_PTE_PRESENT;

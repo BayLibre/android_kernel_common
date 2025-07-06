@@ -131,7 +131,7 @@ static int check_page_state_range(struct pkvm_pgtable *pgt, u64 addr, u64 size,
 	return pgtable_walk(pgt, addr, size, true, &walker);
 }
 
-static int __host_check_page_state_range(struct pkvm_pgtable *pgt_override, u64 addr,
+int host_check_page_state_range(struct pkvm_pgtable *pgt_override, u64 addr,
 					 u64 size, enum pkvm_page_state state)
 {
 	struct pkvm_pgtable *host_ept = pgt_override ? pgt_override : pkvm_hyp->host_vm.ept;
@@ -165,7 +165,7 @@ static int pin_unpin_shared_mem_range(u64 phys, u64 size, bool pin)
 	if (!is_mem_range(start, end - start))
 		return -EPERM;
 
-	ret = __host_check_page_state_range(NULL, start, end - start,
+	ret = host_check_page_state_range(NULL, start, end - start,
 					    PKVM_PAGE_SHARED_OWNED);
 	if (ret)
 		return ret;
@@ -181,7 +181,7 @@ static void pin_shared_mem_pages(u64 phys, u64 size)
 	u64 end = PAGE_ALIGN(phys + size);
 
 	for (cur = start; cur < end; cur += PAGE_SIZE) {
-		if (__host_check_page_state_range(NULL, cur, PAGE_SIZE,
+		if (host_check_page_state_range(NULL, cur, PAGE_SIZE,
 						  PKVM_PAGE_SHARED_OWNED))
 			continue;
 
@@ -229,7 +229,7 @@ static int host_request_donation(const struct pkvm_mem_transition *tx)
 	u64 addr = tx->initiator.host.addr;
 	u64 size = tx->size;
 
-	return __host_check_page_state_range(tx->initiator.host.pgt_override,
+	return host_check_page_state_range(tx->initiator.host.pgt_override,
 					     addr, size, PKVM_PAGE_OWNED);
 }
 
@@ -577,7 +577,7 @@ static int host_request_share(const struct pkvm_mem_transition *tx)
 	u64 addr = tx->initiator.host.addr;
 	u64 size = tx->size;
 
-	return __host_check_page_state_range(tx->initiator.host.pgt_override,
+	return host_check_page_state_range(tx->initiator.host.pgt_override,
 					     addr, size, PKVM_PAGE_OWNED);
 }
 
@@ -604,7 +604,7 @@ static int host_ack_share(const struct pkvm_mem_transition *tx)
 	u64 addr = tx->completer.host.addr;
 	u64 size = tx->size;
 
-	return __host_check_page_state_range(tx->completer.host.pgt_override,
+	return host_check_page_state_range(tx->completer.host.pgt_override,
 					     addr, size, PKVM_NOPAGE);
 }
 
@@ -872,7 +872,7 @@ static int host_request_unshare(const struct pkvm_mem_transition *tx)
 	u64 addr = tx->initiator.host.addr;
 	u64 size = tx->size;
 
-	return __host_check_page_state_range(tx->initiator.host.pgt_override, addr,
+	return host_check_page_state_range(tx->initiator.host.pgt_override, addr,
 					     size, PKVM_PAGE_SHARED_OWNED);
 }
 
@@ -910,7 +910,7 @@ static int host_ack_unshare(const struct pkvm_mem_transition *tx)
 	u64 addr = tx->completer.host.addr;
 	u64 size = tx->size;
 
-	return __host_check_page_state_range(tx->completer.host.pgt_override, addr,
+	return host_check_page_state_range(tx->completer.host.pgt_override, addr,
 					     size, PKVM_PAGE_SHARED_BORROWED);
 }
 
