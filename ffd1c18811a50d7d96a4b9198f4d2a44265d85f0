@@ -125,6 +125,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3637f3f_9be0212f",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-07T21:29:56Z",
+      "side": 1,
+      "message": "Agree, pushed another patch-set with the comments incorporated",
+      "parentUuid": "7f11bb16_a43fb4ac",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "732d7fd6_5cde1f48",
@@ -228,6 +246,24 @@
       "side": 1,
       "message": "Regarding ATC_REQUIRED, actually I suppose it is not necessary to check it. If I\u0027m reading VT-d spec correctly, all SoC-integrated devices that use ATS (even if they don\u0027t absolutely require it) are required to use it in a secure way (section 4.4: \"The Figure 4-3 below shows a typical SoC integrated device that is connected to the Root Complex. All\nsuch devices that support Address Translation Service (ATS) must create an isolation boundary\noutside of which Host Physical Address (HPA) are not exposed. ...\")\n\nSo if we assume that all devices listed in SATC are trusted to use ATS securely, why not allow it even for those of them which don\u0027t have ATC_REQUIRED, to let them enjoy better performance?",
       "parentUuid": "89d010e6_65509dc6",
+      "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e2d493d_a0eafdc4",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3064,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-07T21:29:56Z",
+      "side": 1,
+      "message": "In the latest patchset I have checked for ATC_required, I agree that any device on the list should be allowed to enjoy the better performance. Should the keep be removed ?",
+      "parentUuid": "e16b9c2b_396f1a49",
       "revId": "ffd1c18811a50d7d96a4b9198f4d2a44265d85f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
