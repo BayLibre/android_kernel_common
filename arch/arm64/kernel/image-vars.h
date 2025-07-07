@@ -144,6 +144,21 @@ KVM_NVHE_ALIAS(kvm_protected_mode_initialized);
 _kernel_codesize = ABSOLUTE(__inittext_end - _text);
 #endif
 
+<<<<<<< HEAD   (8496dc Merge aef7457540e0 ("Merge tag 'for-linus' of git://git.kern)
+||||||| BASE
+=======
+/*
+ * LLD will occasionally error out with a '__init_end does not converge' error
+ * if INIT_IDMAP_DIR_SIZE is defined in terms of _end, as this results in a
+ * circular dependency. Counter this by dimensioning the initial IDMAP page
+ * tables based on kimage_limit, which is defined such that its value should
+ * not change as a result of the initdata segment being pushed over a 64k
+ * segment boundary due to changes in INIT_IDMAP_DIR_SIZE, provided that its
+ * value doesn't change by more than 2M between linker passes.
+ */
+kimage_limit = ALIGN(ABSOLUTE(_end + SZ_64K), SZ_2M);
+
+>>>>>>> BRANCH (e9e668 Merge tag 'arm64-fixes' of git://git.kernel.org/pub/scm/linu)
 #undef ASSERT
 
 #endif /* __ARM64_KERNEL_IMAGE_VARS_H */
