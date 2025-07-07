@@ -50,7 +50,6 @@ obj-$(CONFIG_LATTICE_ECP3_CONFIG)	+= lattice-ecp3-config.o
 obj-$(CONFIG_SRAM)		+= sram.o
 obj-$(CONFIG_SRAM_EXEC)		+= sram-exec.o
 obj-$(CONFIG_GENWQE)		+= genwqe/
-obj-$(CONFIG_ECHO)		+= echo/
 obj-$(CONFIG_DW_XDATA_PCIE)	+= dw-xdata-pcie.o
 obj-$(CONFIG_PCI_ENDPOINT_TEST)	+= pci_endpoint_test.o
 obj-$(CONFIG_OCXL)		+= ocxl/
@@ -75,4 +74,9 @@ lan966x-pci-objs		:= lan966x_pci.o
 lan966x-pci-objs		+= lan966x_pci.dtbo.o
 obj-$(CONFIG_MCHP_LAN966X_PCI)	+= lan966x-pci.o
 obj-y				+= keba/
+<<<<<<< HEAD   (fa9215cc2a79902dedda1d67087a674352bdbe9b Merge a100922a3855 ("Merge tag 'staging-6.16-rc1' of git://g)
 obj-$(CONFIG_UID_SYS_STATS)	+= uid_sys_stats.o
+||||||| BASE
+=======
+obj-y				+= amd-sbi/
+>>>>>>> BRANCH (c26f4fbd58375bd6ef74f95eb73d61762ad97c59 Merge tag 'char-misc-6.16-rc1' of git://git.kernel.org/pub/s)
