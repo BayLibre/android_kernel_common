@@ -20,6 +20,21 @@ static DECLARE_BITMAP(ptdevs_bitmap, MAX_PTDEV_NUM);
 static struct pkvm_ptdev pkvm_ptdev[MAX_PTDEV_NUM];
 static pkvm_spinlock_t ptdev_lock = __PKVM_SPINLOCK_UNLOCKED;
 
+static bool is_dev_in_satc(u16 bdf)
+{
+	u16 *satc_dev_bdf = pkvm_hyp->satc_dev_bdf;
+
+	if (!pkvm_hyp->satc_dev_cnt)
+		return false;
+
+	for (int idx = 0; idx < pkvm_hyp->satc_dev_cnt; idx++) {
+		if (bdf == satc_dev_bdf[idx])
+			return true;
+	}
+
+	return false;
+}
+
 struct pkvm_ptdev *pkvm_alloc_ptdev(u16 bdf, u32 pasid, bool coherency)
 {
 	struct pkvm_ptdev *ptdev = NULL;
@@ -36,6 +51,7 @@ struct pkvm_ptdev *pkvm_alloc_ptdev(u16 bdf, u32 pasid, bool coherency)
 		ptdev->iommu_coherency = coherency;
 		ptdev->index = index;
 		ptdev->pgt = pkvm_hyp->host_vm.ept;
+		ptdev->devtlb_allowed = is_dev_in_satc(bdf);
 		INIT_LIST_HEAD(&ptdev->iommu_node);
 		INIT_LIST_HEAD(&ptdev->vm_node);
 		atomic_set(&ptdev->refcount, 1);
