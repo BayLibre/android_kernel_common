@@ -1,0 +1,66 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "769aa4dd_ce4070b0",
+        "filename": "drivers/platform/chrome/cros_ec_typec.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1836438
+      },
+      "writtenOn": "2025-07-07T21:05:14Z",
+      "side": 1,
+      "message": "Doesn\u0027t checkpatch make you re-order this? Should be below `\u003clinux/module.h\u003e`",
+      "fixSuggestions": [
+        {
+          "fixId": "e2fd66fb_d5ee488b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/platform/chrome/cros_ec_typec.c",
+              "range": {
+                "startLine": 9,
+                "startChar": 0,
+                "endLine": 10,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "drivers/platform/chrome/cros_ec_typec.c",
+              "range": {
+                "startLine": 12,
+                "startChar": 0,
+                "endLine": 12,
+                "endChar": 0
+              },
+              "replacement": "#include \u003clinux/mutex.h\u003e\n"
+            }
+          ]
+        }
+      ],
+      "revId": "90d68a90b1112ca98f9ed16d0518c4ca3bc720ec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8952071d_4b56642d",
+        "filename": "drivers/platform/chrome/cros_ec_typec.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1836438
+      },
+      "writtenOn": "2025-07-07T21:05:14Z",
+      "side": 1,
+      "message": "nit: Just `unlock` is fine as a label here instead of `unlock_and_ret`",
+      "revId": "90d68a90b1112ca98f9ed16d0518c4ca3bc720ec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
