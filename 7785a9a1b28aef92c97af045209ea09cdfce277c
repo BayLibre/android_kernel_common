@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d82346e5_4409b0ef",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T09:02:29Z",
+      "side": 1,
+      "message": "Ah indeed, you are right, sorry.\n\nThen it\u0027s the other way around: we don\u0027t need to call iommu_find_ptdev() second time in sync_shadow_pasid_table_entry(), we can, for example, just save the ptdev pointer in `sdata` here in sync_shadow_context_entry()?",
+      "parentUuid": "5e0ee42f_fe099388",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07bbc6ef_a0a8f252",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
         "patchSetId": 2
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Context Entry is walked before the PASID table entry, the device gets added when walking the PASID Table Entry. Should adding of the dev be removed while walking the table entry ?",
       "parentUuid": "07bbc6ef_a0a8f252",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f92634a_4fdca346",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T09:02:29Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s the other way around.",
+      "parentUuid": "c9b0d8c2_b1f418b4",
       "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
