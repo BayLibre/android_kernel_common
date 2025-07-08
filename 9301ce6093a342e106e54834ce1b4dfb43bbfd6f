@@ -16,6 +16,24 @@
       "message": "Thanks fore your great work :)\n\nIIUC, if we can iterate through the dmabufs of a task, we might be able to implement /proc/pid/dmabuf_dump to display each dmabuf usage without using the dmabuf_dump utility. This could help developers address memory leaks more easily.",
       "revId": "9301ce6093a342e106e54834ce1b4dfb43bbfd6f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6505c1e5_2219df53",
+        "filename": "fs/proc/base.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 3559,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-07-08T14:43:29Z",
+      "side": 1,
+      "message": "We could but that woud require yet another out-of-tree UAPI. We are adding these because there is no other way to get RSS and PSS and all our upstreaming efforts failed. For getting dmabuf information dmabuf_dump already uses upstream UAPI, so replacing that with an out-of-tree UAPI even though it\u0027s more efficient would not be a well-received proposition.",
+      "parentUuid": "227cdc14_4582d920",
+      "revId": "9301ce6093a342e106e54834ce1b4dfb43bbfd6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
