@@ -1,0 +1,462 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f88fbf5_a9468d4e",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "We\u0027ve already called iommu_find_ptdev() when walking the PASID table, in sync_shadow_pasid_table_entry(). So instead of calling it again here, it seems cleaner to store the needed information (e.g. just the `devtlb_allowed` value) in `sdata` in sync_shadow_pasid_table_entry(), to pass it down to sync_shadow_context_entry().",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07bbc6ef_a0a8f252",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "We\u0027ve already added this device when walking the PASID table, we shouldn\u0027t need to add it again.",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88194cbb_5d599828",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "nit: space after if.",
+      "fixSuggestions": [
+        {
+          "fixId": "fcdc28a1_7a6dae03",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+              "range": {
+                "startLine": 514,
+                "startChar": 0,
+                "endLine": 515,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tif (!ptdev-\u003edevtlb_allowed)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "201695ff_77f47361",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "nit: maybe move this comment before the \"if\" and expand it for clarity, e.g.: \"Make sure device TLB is disabled for security, unless the device is explicitly trusted to use it.\"",
+      "fixSuggestions": [
+        {
+          "fixId": "65364f1a_0c3c9760",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+              "range": {
+                "startLine": 514,
+                "startChar": 0,
+                "endLine": 514,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t/*\n\t\t\t * Make sure device TLB is disabled for security, unless\n\t\t\t * the device is explicitly trusted to use it.\n\t\t\t */\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+              "range": {
+                "startLine": 515,
+                "startChar": 0,
+                "endLine": 516,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e569828_103f6813",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "Just a note: I\u0027ve been thinking that for consistency we might also want to check `devtlb_allowed` here, in legacy mode, and set translation type to CONTEXT_TT_DEV_IOTLB instead of CONTEXT_TT_MULTI_LEVEL if device TLB is allowed.\n\nBut looks like the host IOMMU driver doesn\u0027t do that (since it doesn\u0027t set info-\u003eats_supported in this case), at least not for devices with ATC_REQUIRED, with the following comment:\n\n```\n\tsatcu \u003d dmar_find_matched_satc_unit(dev);\n\tif (satcu)\n\t\t/*\n\t\t * This device supports ATS as it is in SATC table.\n\t\t * When IOMMU is in legacy mode, enabling ATS is done\n\t\t * automatically by HW for the device that requires\n\t\t * ATS, hence OS should not enable this device ATS\n\t\t * to avoid duplicated TLB invalidation.\n\t\t */\n\t\treturn !(satcu-\u003eatc_required \u0026\u0026 !sm_supported(iommu));\n```\n\nSo, as I understand, we shouldn\u0027t do that in pKVM either. Or do that but only for devices without ATC_REQUIRED, but that means some extra logic / complexity to check for ATC_REQUIRED, so we\u0027d better not do that until we have a real use case for ATS in legacy mode.\n\nPlease let me know if this understanding is incorrect.\n\nAlso please let me know if this HW behavior (ATS working fully transparently in legacy mode, including device TLB invalidations) is documented in VT-d spec or elsewhere.",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5c20fda_b7487cc8",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/ptdev.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "nit: unnecessary blank line.",
+      "fixSuggestions": [
+        {
+          "fixId": "b92a901f_f09df0bf",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/ptdev.c",
+              "range": {
+                "startLine": 18,
+                "startChar": 0,
+                "endLine": 19,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "737b4f2c_41c7daae",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/ptdev.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "nit: maybe move it after `bool iommu_coherency`, just to keep IOMMU-related fields together?",
+      "fixSuggestions": [
+        {
+          "fixId": "0cc5882e_5deedba2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/ptdev.h",
+              "range": {
+                "startLine": 19,
+                "startChar": 0,
+                "endLine": 19,
+                "endChar": 0
+              },
+              "replacement": "\tbool devtlb_allowed;\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/ptdev.h",
+              "range": {
+                "startLine": 31,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3bec61a_3407273e",
+        "filename": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "We only need to store the BDFs, not the whole dmar_dev_scope structures?",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0de2af27_14896cb9",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "nit: maybe scan_devices_in_satc() or something like that?",
+      "fixSuggestions": [
+        {
+          "fixId": "8a0769f4_d8266681",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 114,
+                "startChar": 0,
+                "endLine": 115,
+                "endChar": 0
+              },
+              "replacement": "static void scan_devices_in_satc(void)\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 274,
+                "startChar": 0,
+                "endLine": 275,
+                "endChar": 0
+              },
+              "replacement": "\tscan_devices_in_satc();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60ec3f5f_304c89e0",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "It is already zero-initialized when allocating memory for `pkvm`? And even if it wasn\u0027t, we will set it to `cnt` anyway?",
+      "fixSuggestions": [
+        {
+          "fixId": "6751548f_3ac5bedb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 121,
+                "startChar": 0,
+                "endLine": 122,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3faa66e_00b6e678",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "We could use `continue` here?\nAlso, am I correct that there is `for_each_active_dev_scope()` for this purpose?",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d73860fb_554908c6",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "We could use `continue` to reduce indentation?\n\ni.e.:\n```\nif (cnt \u003d\u003d PKVM_MAX_DEVS_IN_SATC) {\n\tpr_err(\"pkvm: too many devices in SATC, not adding %s\\n\",\n\t       dev_name(satc_dev);\n\tcontinue;\n}\n\ndevices[cnt].bus \u003d ...\n```\n\n(I guess we want `continue`, not `break`, just to print out all failed devices?)\n\n...Also wondering: would it be better to return -ENOMEM and fail pKVM initialization in this case? (Not doing that might be fine though, at least pKVM security guarantees will not be weakened anyway, just some devices may not work.)",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1be8b000_23509de3",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "This print seems not very useful, given that we print each found device above?",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "922bc469_1ecb2908",
+        "filename": "include/linux/dmar.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "Why not provide it regardless of pKVM enabled or not?",
+      "fixSuggestions": [
+        {
+          "fixId": "1e500368_a73eab61",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/dmar.h",
+              "range": {
+                "startLine": 52,
+                "startChar": 0,
+                "endLine": 53,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/linux/dmar.h",
+              "range": {
+                "startLine": 61,
+                "startChar": 0,
+                "endLine": 62,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            },
+            {
+              "path": "include/linux/dmar.h",
+              "range": {
+                "startLine": 79,
+                "startChar": 0,
+                "endLine": 80,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/linux/dmar.h",
+              "range": {
+                "startLine": 84,
+                "startChar": 0,
+                "endLine": 85,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "637c6650_55e342f2",
+        "filename": "include/linux/dmar.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "Ditto.",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "585c2d8e_173751c5",
+        "filename": "include/linux/dmar.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-08T00:29:29Z",
+      "side": 1,
+      "message": "list_for_each_entry_rcu? (at least if we want for_each_satc_unit() to be generic, i.e. if we remove #ifdef CONFIG_PKVM_INTEL as I suggested above)",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
