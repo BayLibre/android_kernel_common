@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e0ee42f_fe099388",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "My understanding is, the PASID table is walked after the SM context entry and PASID DIR, so the devtlb_allowed value cannot be passed with sdata.",
+      "parentUuid": "3f88fbf5_a9468d4e",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07bbc6ef_a0a8f252",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2025-07-08T00:29:29Z",
       "side": 1,
       "message": "We\u0027ve already added this device when walking the PASID table, we shouldn\u0027t need to add it again.",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9b0d8c2_b1f418b4",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Context Entry is walked before the PASID table entry, the device gets added when walking the PASID Table Entry. Should adding of the dev be removed while walking the table entry ?",
+      "parentUuid": "07bbc6ef_a0a8f252",
       "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -66,6 +102,24 @@
           ]
         }
       ],
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f59e3d41_5b24bfcf",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "88194cbb_5d599828",
       "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -111,6 +165,24 @@
           ]
         }
       ],
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4ac23b6_64c1a4be",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "201695ff_77f47361",
       "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -167,6 +239,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c27043c7_a5964df3",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/ptdev.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d5c20fda_b7487cc8",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "737b4f2c_41c7daae",
@@ -212,6 +302,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d22974f_6c72fb68",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/ptdev.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "737b4f2c_41c7daae",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3bec61a_3407273e",
@@ -225,6 +333,24 @@
       "writtenOn": "2025-07-08T00:29:29Z",
       "side": 1,
       "message": "We only need to store the BDFs, not the whole dmar_dev_scope structures?",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c18509a_a6d1057b",
+        "filename": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f3bec61a_3407273e",
       "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -274,6 +400,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1d673ab_f7837727",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0de2af27_14896cb9",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60ec3f5f_304c89e0",
@@ -309,6 +453,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90772f91_dc71ecca",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "60ec3f5f_304c89e0",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3faa66e_00b6e678",
@@ -322,6 +484,24 @@
       "writtenOn": "2025-07-08T00:29:29Z",
       "side": 1,
       "message": "We could use `continue` here?\nAlso, am I correct that there is `for_each_active_dev_scope()` for this purpose?",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acf7f4db_aab4517c",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f3faa66e_00b6e678",
       "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -343,6 +523,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "367701b0_cb64cd91",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d73860fb_554908c6",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1be8b000_23509de3",
@@ -356,6 +554,24 @@
       "writtenOn": "2025-07-08T00:29:29Z",
       "side": 1,
       "message": "This print seems not very useful, given that we print each found device above?",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fd016ae_5c26b93c",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1be8b000_23509de3",
       "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -425,6 +641,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "783c2a14_81cc8fb6",
+        "filename": "include/linux/dmar.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "922bc469_1ecb2908",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "637c6650_55e342f2",
@@ -442,6 +676,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e864de69_6e7d542b",
+        "filename": "include/linux/dmar.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "637c6650_55e342f2",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "585c2d8e_173751c5",
@@ -455,6 +707,24 @@
       "writtenOn": "2025-07-08T00:29:29Z",
       "side": 1,
       "message": "list_for_each_entry_rcu? (at least if we want for_each_satc_unit() to be generic, i.e. if we remove #ifdef CONFIG_PKVM_INTEL as I suggested above)",
+      "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a9a7d95_096e26e1",
+        "filename": "include/linux/dmar.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-08T02:45:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "585c2d8e_173751c5",
       "revId": "7785a9a1b28aef92c97af045209ea09cdfce277c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
