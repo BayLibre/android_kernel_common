@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53ece094_713f2bfc",
+        "filename": "drivers/staging/android/ashmem_rust.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-07-08T08:45:01Z",
+      "side": 1,
+      "message": "The `get_size()` function internally casts `usize -\u003e isize` so it seems a bit silly to cast `usize -\u003e isize -\u003e usize`.",
+      "range": {
+        "startLine": 725,
+        "startChar": 0,
+        "endLine": 726,
+        "endChar": 34
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "02a99000_b22edc72",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/staging/android/ashmem_rust.rs",
+              "range": {
+                "startLine": 725,
+                "startChar": 0,
+                "endLine": 729,
+                "endChar": 0
+              },
+              "replacement": "    ashmem.inner.lock().size\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6fbafc90a3f4474202a7f0bce74db00935618dcc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
