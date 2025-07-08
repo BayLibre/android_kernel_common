@@ -13,7 +13,6 @@
 #include <linux/idr.h>
 #include <linux/slab.h>
 #include <linux/xarray.h>
-#include "gcma_sysfs.h"
 
 /*
  * page->page_type : area id
