@@ -1,6 +1,6 @@
 #include <linux/kobject.h>
 #include <linux/sysfs.h>
-#include "gcma_sysfs.h"
+#include <linux/gcma.h>
 
 extern struct kobject *vendor_mm_kobj;
 static struct kobject gcma_kobj;
