@@ -1,0 +1,69 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37966e89_576f5205",
+        "filename": "arch/x86/include/asm/nospec-branch.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-07-08T21:40:12Z",
+      "side": 1,
+      "message": "Looks like the only change is in the percpu name. Would it be easier to have alternate definition for INCREMENT_CALL_DEPTH when CONFIG_PKVM_INTEL is defined so that we do not need any change in callthunk.c?",
+      "fixSuggestions": [
+        {
+          "fixId": "6a7ad74e_fc157b5d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/include/asm/nospec-branch.h",
+              "range": {
+                "startLine": 94,
+                "startChar": 0,
+                "endLine": 94,
+                "endChar": 0
+              },
+              "replacement": "#ifdef CONFIG_PKVM_INTEL\n#define INCREMENT_CALL_DEPTH\t\t\t\t\t\\\n\tsarq\t$5, PER_CPU_VAR(pcpu_hot__pkvm + X86_call_depth);\n#else\n"
+            },
+            {
+              "path": "arch/x86/include/asm/nospec-branch.h",
+              "range": {
+                "startLine": 96,
+                "startChar": 0,
+                "endLine": 96,
+                "endChar": 0
+              },
+              "replacement": "#endif\n"
+            },
+            {
+              "path": "arch/x86/include/asm/nospec-branch.h",
+              "range": {
+                "startLine": 98,
+                "startChar": 0,
+                "endLine": 101,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/x86/include/asm/nospec-branch.h",
+              "range": {
+                "startLine": 107,
+                "startChar": 0,
+                "endLine": 108,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "b023dee00a8a06865e6d6e23a869113dbd58cbc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
