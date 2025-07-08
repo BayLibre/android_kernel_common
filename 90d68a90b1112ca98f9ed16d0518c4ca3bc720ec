@@ -46,6 +46,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a3e7e84_9393ca37",
+        "filename": "drivers/platform/chrome/cros_ec_typec.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3594453
+      },
+      "writtenOn": "2025-07-08T16:06:06Z",
+      "side": 1,
+      "message": "Good catch, thanks. I was not aware of the checkpatch.pl utility so I gave it a try - however it did not prompt me to re-order the includes.",
+      "parentUuid": "769aa4dd_ce4070b0",
+      "revId": "90d68a90b1112ca98f9ed16d0518c4ca3bc720ec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8952071d_4b56642d",
@@ -59,6 +77,24 @@
       "writtenOn": "2025-07-07T21:05:14Z",
       "side": 1,
       "message": "nit: Just `unlock` is fine as a label here instead of `unlock_and_ret`",
+      "revId": "90d68a90b1112ca98f9ed16d0518c4ca3bc720ec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac7aa13a_a8423209",
+        "filename": "drivers/platform/chrome/cros_ec_typec.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 3594453
+      },
+      "writtenOn": "2025-07-08T16:06:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8952071d_4b56642d",
       "revId": "90d68a90b1112ca98f9ed16d0518c4ca3bc720ec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
