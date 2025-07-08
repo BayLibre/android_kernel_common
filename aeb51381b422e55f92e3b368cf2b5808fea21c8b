@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5ac3565_a89d9678",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1954115
+      },
+      "writtenOn": "2025-07-08T18:13:25Z",
+      "side": 1,
+      "message": "This is cherry-pick drops changes to fs/f2fs/segment.c because android12-5.10 f2fs does not have atomic write support.Please add a line regarding this in commit message and do a sign-off. When we do backport, its better to mention why and what is different from the upstream version. The backport itself looks fine.",
+      "revId": "aeb51381b422e55f92e3b368cf2b5808fea21c8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
