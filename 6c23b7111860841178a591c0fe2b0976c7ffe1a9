@@ -33,6 +33,42 @@
       "message": "Since this patch does not implement any functional changes, why has it been backported?",
       "revId": "6c23b7111860841178a591c0fe2b0976c7ffe1a9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "659b9e1f_cfbb98ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1718992
+      },
+      "writtenOn": "2025-07-08T02:53:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6b17aeb6_acbebf5e",
+      "revId": "6c23b7111860841178a591c0fe2b0976c7ffe1a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a07f8a08_b2273619",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1718992
+      },
+      "writtenOn": "2025-07-08T02:53:24Z",
+      "side": 1,
+      "message": "we have new one policy that only work on blkcg level, not disk level like kernel6.12 ioprio. we find that\nin function blkg_alloc(),will crash:\n\n                if (!blkcg_policy_enabled(disk-\u003equeue, pol))\n                        continue;\n\n                /* alloc per-policy data and attach it to blkg */\n                pd \u003d pol-\u003epd_alloc_fn(disk, blkcg, gfp_mask);///\u003c\u003c\u003c\u003c\u003c--------pol-\u003epd_alloc_fn crash\n                \nso we need do not active this policy in disk level by return -EINVAL;,\nand do not __set_bit(pol-\u003eplid, q-\u003eblkcg_pols);\n\nand than in blkg_alloc() will not crash：\n\n                if (!blkcg_policy_enabled(disk-\u003equeue, pol))--\u003etrue\n                        continue;\n                \n                pd \u003d pol-\u003epd_alloc_fn(disk, blkcg, gfp_mask);///\u003c\u003c\u003c\u003c\u003c--do not run to this.",
+      "parentUuid": "03b31edc_5c0e3269",
+      "revId": "6c23b7111860841178a591c0fe2b0976c7ffe1a9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
