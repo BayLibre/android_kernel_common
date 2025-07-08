@@ -18,11 +18,13 @@ enum gcma_stat_type {
 void gcma_stat_inc(enum gcma_stat_type type);
 void gcma_stat_dec(enum gcma_stat_type type);
 void gcma_stat_add(enum gcma_stat_type type, unsigned long delta);
+s64 gcma_stat_get(enum gcma_stat_type type);
 #else /* CONFIG_GCMA_SYSFS */
 static inline void gcma_stat_inc(enum gcma_stat_type type) {}
 static inline void gcma_stat_dec(enum gcma_stat_type type) {}
 static inline void gcma_stat_add(enum gcma_stat_type type,
 				 unsigned long delta) {}
+static inline s64 gcma_stat_get(enum gcma_stat_type type) { return 0; }
 #endif /* CONFIG_GCMA_SYSFS */
 
 extern void gcma_alloc_range(unsigned long start_pfn, unsigned long end_pfn);
