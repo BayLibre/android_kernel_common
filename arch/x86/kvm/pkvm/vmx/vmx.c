@@ -7893,9 +7893,6 @@ static void vmx_sync_vcpu_state_pre_switch(struct pkvm_vcpu *pkvm_vcpu)
 static void vmx_setup_virtual_mmu(struct kvm_vcpu *vcpu,
 				  hpa_t root_hpa, int root_level)
 {
-	u64 veptp = construct_eptp(vcpu, root_hpa, root_level);
-
-	pkvm_setup_virtual_ept(vcpu, veptp);
 }
 
 struct kvm_x86_ops vt_x86_ops __initdata = {
