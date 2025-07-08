@@ -1,5 +1,6 @@
 #include <linux/kobject.h>
 #include <linux/sysfs.h>
+#include <linux/gcma.h>
 #include "gcma_sysfs.h"
 
 extern struct kobject *vendor_mm_kobj;
