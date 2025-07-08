@@ -315,6 +315,7 @@ int register_gcma_area(const char *name, phys_addr_t base, phys_addr_t size)
 
 	area->start_pfn = pfn;
 	area->end_pfn = pfn + page_count - 1;
+	gcma_stat_add(TOTAL_PAGE, page_count);
 
 	pr_info("Reserved memory: created GCMA memory pool at %pa, size %lu MiB for %s\n",
 		 &base, (unsigned long)size / SZ_1M, name ? : "none");

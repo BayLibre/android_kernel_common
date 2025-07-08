@@ -11,6 +11,7 @@ enum gcma_stat_type {
 	EVICTED_PAGE,
 	CACHED_PAGE,
 	DISCARDED_PAGE,
+	TOTAL_PAGE,
 	NUM_OF_GCMA_STAT,
 };
 
