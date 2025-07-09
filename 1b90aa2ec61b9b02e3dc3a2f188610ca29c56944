@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4db3a8d6_eb583980",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-07-09T09:17:04Z",
+      "side": 1,
+      "message": "This results with calling pgtable_map twice and will result with double page walks (one here and second from guest_complete_share-\u003epkvm_pgtable_map or guest_complete_donate-\u003epkvm_pgtable_map). Can\u0027t we instead check only for\n```\nif (pgt-\u003epgt_ops-\u003epgt_entry_present(ptep))\n\t\treturn 0;\n```\n\nand call directly `__pkvm_host_donate_guest`/`__pkvm_host_share_guest` as it was in previous version?\n\nIt will probably require some additional locking.",
+      "range": {
+        "startLine": 96,
+        "startChar": 1,
+        "endLine": 96,
+        "endChar": 84
+      },
+      "revId": "1b90aa2ec61b9b02e3dc3a2f188610ca29c56944",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
