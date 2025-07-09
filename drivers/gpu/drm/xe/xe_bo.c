@@ -16,6 +16,8 @@
 #include <drm/ttm/ttm_tt.h>
 #include <uapi/drm/xe_drm.h>
 
+#include <trace/events/gpu_mem.h>
+
 #include "xe_device.h"
 #include "xe_dma_buf.h"
 #include "xe_drm_client.h"
@@ -340,6 +342,19 @@ struct sg_table *xe_bo_sg(struct xe_bo *bo)
 	return xe_tt->sg;
 }
 
+static void update_global_total_pages(struct ttm_device *ttm_dev,
+				      long num_pages)
+{
+#if IS_ENABLED(CONFIG_TRACE_GPU_MEM)
+	struct xe_device *xe = ttm_to_xe_device(ttm_dev);
+	u64 global_total_pages =
+		atomic64_add_return(num_pages, &xe->global_total_pages);
+
+	trace_gpu_mem_total(xe->drm.primary->index, 0,
+			    global_total_pages << PAGE_SHIFT);
+#endif
+}
+
 static struct ttm_tt *xe_ttm_tt_create(struct ttm_buffer_object *ttm_bo,
 				       u32 page_flags)
 {
@@ -425,6 +440,7 @@ static int xe_ttm_tt_populate(struct ttm_device *ttm_dev, struct ttm_tt *tt,
 	if (err)
 		return err;
 
+	update_global_total_pages(ttm_dev, tt->num_pages);
 	return err;
 }
 
@@ -435,6 +451,7 @@ static void xe_ttm_tt_unpopulate(struct ttm_device *ttm_dev, struct ttm_tt *tt)
 
 	xe_tt_unmap_sg(tt);
 
+	update_global_total_pages(ttm_dev, -(long)tt->num_pages);
 	return ttm_pool_free(&ttm_dev->pool, tt);
 }
 
