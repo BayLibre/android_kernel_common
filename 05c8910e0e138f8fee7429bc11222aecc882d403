@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8232cddd_7e673890",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-07-09T20:39:26Z",
+      "side": 1,
+      "message": "Please create an additional patch on top of this one to prevent the CRC issues. Here is the contents of the patch:\n```\ndiff --git a/drivers/virt/gunyah/rsc_mgr.h b/drivers/virt/gunyah/rsc_mgr.h\nindex af65801489bb..ff832450dc78 100644\n--- a/drivers/virt/gunyah/rsc_mgr.h\n+++ b/drivers/virt/gunyah/rsc_mgr.h\n@@ -8,6 +8,7 @@\n #include \u003clinux/gunyah.h\u003e\n #include \u003clinux/notifier.h\u003e\n #include \u003clinux/types.h\u003e\n+#include \u003clinux/android_kabi.h\u003e\n \n #define GUNYAH_VMID_INVAL U16_MAX\n #define GUNYAH_MEM_HANDLE_INVAL U32_MAX\n@@ -51,6 +52,7 @@ enum gunyah_rm_vm_status {\n        GUNYAH_RM_VM_STATUS_RESET_FAILED        \u003d 12,\n        /* clang-format on */\n };\n+ANDROID_KABI_ENUMERATOR_IGNORE(gunyah_rm_vm_status, GUNYAH_RM_VM_STATUS_RESET_FAILED);\n \n struct gunyah_rm_vm_status_payload {\n        __le16 vmid;\ndiff --git a/gki/aarch64/abi.stg b/gki/aarch64/abi.stg\nindex e8ffbb95c8e8..bc6e615f7fe4 100644\n```\n\nThat patch will also need an update to the STG since the enum is changing.",
+      "revId": "05c8910e0e138f8fee7429bc11222aecc882d403",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
