@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27a0ac02_fbe5532e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1954115
+      },
+      "writtenOn": "2025-07-09T19:09:30Z",
+      "side": 1,
+      "message": "After reviewing ABI break reports, the trace symbol affected is \n```\nfunction symbol \u0027int __traceiter_f2fs_submit_folio_write(void*, struct folio*, struct f2fs_io_info*)\u0027 changed\n  CRC changed from 0x3f6478e5 to 0xb523f1d5\n```\n\nBut changing data structure in the patch is f2fs_sb_info. f2fs_io_info has a pointer to this changing structure.\n```\nstruct f2fs_io_info {\n        struct f2fs_sb_info *      sbi;                  /*     0     8 */\n        nid_t                      ino;                  /*     8     4 */\n        enum page_type             type;                 /*    12     4 */\n```\n\nSo technically it should not break looking at f2fs_io_info due to change in size of f2fs_sb_info as it is pointer. So CR+1 from me.",
+      "revId": "2f3e29f129ff94f310f343227c8f4b36ec13742f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ec40657_ea33315d",
