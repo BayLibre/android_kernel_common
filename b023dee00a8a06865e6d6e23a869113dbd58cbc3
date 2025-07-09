@@ -64,6 +64,24 @@
       ],
       "revId": "b023dee00a8a06865e6d6e23a869113dbd58cbc3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87679db0_2cc4ba46",
+        "filename": "arch/x86/include/asm/nospec-branch.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-07-09T00:31:13Z",
+      "side": 1,
+      "message": "The reason we implement like this because both the INCREMENT_CALL_DEPTH and INCREMENT_CALL_DEPTH_PKVM will be used when CONFIG_PKVM_INTEL\u003dy. INCREMENT_CALL_DEPTH is for linux kernel text, and INCREMENT_CALL_DEPTH_PKVM is for pkvm text when CONFIG_PKVM_INTEL\u003dy. Of cause, we can also make the implementation as you suggested, then both linux kernel text and pkvm text will use the percpu variable called pcpu_hot__pkvm.call_depth. For pkvm text, this is fine. For the linux kernel, it should also work as the linux kernel also has pcpu_hot__pkvm, but this may not be consistent with the other places where is using pcpu_hot.call_depth, e.g., in retpoline.S call_depth_return_thunk(). And make linux kernel to use the percpu variable called pcpu_hot__pkvm is a bit weird to me. Meanwhile, we don\u0027t want the pkvm text to have CALL_THUNKS_DEBUG_INC_CALLS which is debugging purpose and requires more symbols. So in the end, prefer to separate them.",
+      "parentUuid": "37966e89_576f5205",
+      "revId": "b023dee00a8a06865e6d6e23a869113dbd58cbc3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
