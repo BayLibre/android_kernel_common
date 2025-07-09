@@ -70,6 +70,30 @@
       },
       "revId": "1b90aa2ec61b9b02e3dc3a2f188610ca29c56944",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35ac850d_7270891b",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-09T12:58:54Z",
+      "side": 1,
+      "message": "\u003e Ok, so the POR is to go with this approach for pvMMU and merge it (soon if no other blockers arrive)\n\nYes, I think so.\n\n\u003e and revisit it later on with lower priority after refactoring mem_protect.c?\n\nOr rather together with refactoring mem_protect.c. (And that may be actually a relatively high priority, since that is a part of cleaning up the pKVM-IA code base and patch history, eliminating remnants of VMX emulation and moving stuff from the legacy `vmx/pkvm/` location to `pkvm/`. But I\u0027d still prefer to do it as a next step, after finishing and merging the initial pvMMU implementation.)",
+      "parentUuid": "c2f5e874_4a7a46ed",
+      "range": {
+        "startLine": 96,
+        "startChar": 1,
+        "endLine": 96,
+        "endChar": 84
+      },
+      "revId": "1b90aa2ec61b9b02e3dc3a2f188610ca29c56944",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
