@@ -46,6 +46,30 @@
       },
       "revId": "1b90aa2ec61b9b02e3dc3a2f188610ca29c56944",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2f5e874_4a7a46ed",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-07-09T12:34:38Z",
+      "side": 1,
+      "message": "Ok, so the POR is to go with this approach for pvMMU and merge it (soon if no other blockers arrive) and revisit it later on with lower priority after refactoring mem_protect.c? (Just to be clear I am not against just making sure what\u0027s the plan as I am basing on those patches)",
+      "parentUuid": "c18a5551_3d29f178",
+      "range": {
+        "startLine": 96,
+        "startChar": 1,
+        "endLine": 96,
+        "endChar": 84
+      },
+      "revId": "1b90aa2ec61b9b02e3dc3a2f188610ca29c56944",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
