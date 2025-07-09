@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ec40657_ea33315d",
+        "filename": "fs/f2fs/f2fs.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 1717,
+      "author": {
+        "id": 1954115
+      },
+      "writtenOn": "2025-07-09T16:09:55Z",
+      "side": 1,
+      "message": "This addition of reserved_pin_section breaks the ABI.\n\n```\nfunction symbol \u0027int __traceiter_f2fs_submit_folio_write(void*, struct folio*, struct f2fs_io_info*)\u0027 changed\n  CRC changed from 0x3f6478e5 to 0xb523f1d5\n\ntype \u0027struct f2fs_sb_info\u0027 changed\n  member \u0027unsigned int reserved_pin_section\u0027 was added\n  member \u0027unsigned short gc_pin_file_threshold\u0027 changed\n    offset changed by 32\n\n```",
+      "revId": "2f3e29f129ff94f310f343227c8f4b36ec13742f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
