@@ -22,6 +22,30 @@
       },
       "revId": "1b90aa2ec61b9b02e3dc3a2f188610ca29c56944",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c18a5551_3d29f178",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-09T11:29:43Z",
+      "side": 1,
+      "message": "Right, pgtable_map is needlessly called twice, which is what the TODO at line 73 is about. BTW the same happens in the existing implementation (emulated EPT) as well. I\u0027m keeping it as is for now just to avoid refactoring mem_protect.c yet (although we should refactor it anyway, but we can do it later; for now let\u0027s just focus on switching from emulation to PV and making sure it works correctly).\n\nWe can\u0027t just check `pgt-\u003epgt_ops-\u003epgt_entry_present(ptep)` here since we don\u0027t have `ptep` yet, i.e. we first need to walk to this PTE.",
+      "parentUuid": "4db3a8d6_eb583980",
+      "range": {
+        "startLine": 96,
+        "startChar": 1,
+        "endLine": 96,
+        "endChar": 84
+      },
+      "revId": "1b90aa2ec61b9b02e3dc3a2f188610ca29c56944",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
