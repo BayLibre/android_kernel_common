@@ -29,7 +29,12 @@
 #include <linux/idr.h>
 #include <linux/leds.h>
 #include <linux/rculist.h>
+<<<<<<< HEAD   (8cb2595f9383353a083f0f14bb781be5d9cd6d8c Merge 6.12.35 into android16-6.12-lts)
 #include <linux/android_kabi.h>
+||||||| BASE   (783cd2c3dca8b6c434e955b84c20c8940588dc68 Linux 6.12.35)
+=======
+#include <linux/srcu.h>
+>>>>>>> BRANCH (df64e51d4ab83244b6a4eb11eb41f89403611e24 Linux 6.12.36)
 
 #include <net/bluetooth/hci.h>
 #include <net/bluetooth/hci_drv.h>
@@ -340,6 +345,7 @@ struct adv_monitor {
 
 struct hci_dev {
 	struct list_head list;
+	struct srcu_struct srcu;
 	struct mutex	lock;
 
 	struct ida	unset_handle_ida;

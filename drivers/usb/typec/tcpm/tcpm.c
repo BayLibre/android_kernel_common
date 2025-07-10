@@ -5640,8 +5640,15 @@ static void run_state_machine(struct tcpm_port *port)
 		tcpm_set_auto_vbus_discharge_threshold(port, TYPEC_PWR_MODE_USB,
 						       port->pps_data.active, 0);
 		tcpm_set_charge(port, false);
+<<<<<<< HEAD   (8cb2595f9383353a083f0f14bb781be5d9cd6d8c Merge 6.12.35 into android16-6.12-lts)
 		tcpm_set_state(port, hard_reset_state(port),
 			       port->timings.ps_src_off_time);
+||||||| BASE   (783cd2c3dca8b6c434e955b84c20c8940588dc68 Linux 6.12.35)
+		tcpm_set_state(port, hard_reset_state(port),
+			       PD_T_PS_SOURCE_OFF);
+=======
+		tcpm_set_state(port, ERROR_RECOVERY, PD_T_PS_SOURCE_OFF);
+>>>>>>> BRANCH (df64e51d4ab83244b6a4eb11eb41f89403611e24 Linux 6.12.36)
 		break;
 	case PR_SWAP_SNK_SRC_SOURCE_ON:
 		tcpm_enable_auto_vbus_discharge(port, true);
