@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eabae278_93e8d7cd",
+        "filename": "mm/readahead.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2025-07-10T20:34:32Z",
+      "side": 1,
+      "message": "This tracepoint was created to avoid unnecessary allocations in certain cases, wouldn\u0027t the tracepoint need to know the size to read ahead or the new_order?",
+      "range": {
+        "startLine": 484,
+        "startChar": 1,
+        "endLine": 484,
+        "endChar": 63
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e4ca7d8f_98e266fc",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/readahead.c",
+              "range": {
+                "startLine": 484,
+                "startChar": 0,
+                "endLine": 485,
+                "endChar": 0
+              },
+              "replacement": "\ttrace_android_vh_page_cache_ra_order_bypass(mapping, new_order, \u0026bypass);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2fe5408f487f8369390219c90953e7095ce4d55e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
