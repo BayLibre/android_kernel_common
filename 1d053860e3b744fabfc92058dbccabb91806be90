@@ -16,6 +16,24 @@
       "message": "This patch is for THC but the Bug and Test point to ISH. Can we split the THC patches into a separate series?",
       "revId": "1d053860e3b744fabfc92058dbccabb91806be90",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49abf7ae_9b990f86",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 4132227
+      },
+      "writtenOn": "2025-07-10T15:48:55Z",
+      "side": 1,
+      "message": "I have included this patch for cleaner backport. \nNote: To apply https://android-review.googlesource.com/c/kernel/common/+/3662031/7 on Android kernel we need this patch, Hence I had to pull this from Linux Upstream.",
+      "parentUuid": "e1165df7_a7ac80df",
+      "revId": "1d053860e3b744fabfc92058dbccabb91806be90",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
