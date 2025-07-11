@@ -1782,7 +1782,12 @@ struct f2fs_sb_info {
 	unsigned int dirty_device;		/* for checkpoint data flush */
 	spinlock_t dev_lock;			/* protect dirty_device */
 	bool aligned_blksize;			/* all devices has the same logical blksize */
+<<<<<<< HEAD   (b0291e9adee64088b02548ae76481e9f1016bffc ANDROID: GKI: add devm_regulator_bulk_get_enable to db845c s)
 	unsigned int first_zoned_segno;		/* first segno in sequential zone */
+||||||| BASE   (df64e51d4ab83244b6a4eb11eb41f89403611e24 Linux 6.12.36)
+=======
+	unsigned int first_seq_zone_segno;	/* first segno in sequential zone */
+>>>>>>> BRANCH (fbad404f04d758c52bae79ca20d0e7fe5fef91d3 Linux 6.12.37)
 
 	/* For write statistics */
 	u64 sectors_written_start;

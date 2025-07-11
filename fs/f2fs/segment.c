@@ -2801,7 +2801,13 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
 		if (sbi->blkzone_alloc_policy == BLKZONE_ALLOC_PRIOR_CONV || pinning)
 			segno = 0;
 		else
+<<<<<<< HEAD   (b0291e9adee64088b02548ae76481e9f1016bffc ANDROID: GKI: add devm_regulator_bulk_get_enable to db845c s)
 			segno = max(sbi->first_zoned_segno, *newseg);
+||||||| BASE   (df64e51d4ab83244b6a4eb11eb41f89403611e24 Linux 6.12.36)
+			segno = max(first_zoned_segno(sbi), *newseg);
+=======
+			segno = max(sbi->first_seq_zone_segno, *newseg);
+>>>>>>> BRANCH (fbad404f04d758c52bae79ca20d0e7fe5fef91d3 Linux 6.12.37)
 		hint = GET_SEC_FROM_SEG(sbi, segno);
 	}
 #endif
@@ -2813,7 +2819,13 @@ find_other_zone:
 	if (secno >= MAIN_SECS(sbi) && f2fs_sb_has_blkzoned(sbi)) {
 		/* Write only to sequential zones */
 		if (sbi->blkzone_alloc_policy == BLKZONE_ALLOC_ONLY_SEQ) {
+<<<<<<< HEAD   (b0291e9adee64088b02548ae76481e9f1016bffc ANDROID: GKI: add devm_regulator_bulk_get_enable to db845c s)
 			hint = GET_SEC_FROM_SEG(sbi, sbi->first_zoned_segno);
+||||||| BASE   (df64e51d4ab83244b6a4eb11eb41f89403611e24 Linux 6.12.36)
+			hint = GET_SEC_FROM_SEG(sbi, first_zoned_segno(sbi));
+=======
+			hint = GET_SEC_FROM_SEG(sbi, sbi->first_seq_zone_segno);
+>>>>>>> BRANCH (fbad404f04d758c52bae79ca20d0e7fe5fef91d3 Linux 6.12.37)
 			secno = find_next_zero_bit(free_i->free_secmap, MAIN_SECS(sbi), hint);
 		} else
 			secno = find_first_zero_bit(free_i->free_secmap,
@@ -3339,7 +3351,12 @@ retry:
 
 	if (f2fs_sb_has_blkzoned(sbi) && err == -EAGAIN && gc_required) {
 		f2fs_down_write(&sbi->gc_lock);
+<<<<<<< HEAD   (b0291e9adee64088b02548ae76481e9f1016bffc ANDROID: GKI: add devm_regulator_bulk_get_enable to db845c s)
 		err = f2fs_gc_range(sbi, 0, sbi->first_zoned_segno - 1,
+||||||| BASE   (df64e51d4ab83244b6a4eb11eb41f89403611e24 Linux 6.12.36)
+=======
+		err = f2fs_gc_range(sbi, 0, sbi->first_seq_zone_segno - 1,
+>>>>>>> BRANCH (fbad404f04d758c52bae79ca20d0e7fe5fef91d3 Linux 6.12.37)
 				true, ZONED_PIN_SEC_REQUIRED_COUNT);
 		f2fs_up_write(&sbi->gc_lock);
 
