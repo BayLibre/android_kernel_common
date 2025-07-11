@@ -52,6 +52,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39db4aa4_44c9b379",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1978967
+      },
+      "writtenOn": "2025-07-11T23:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4933afb4_928fba68",
+      "range": {
+        "startLine": 610,
+        "startChar": 2,
+        "endLine": 610,
+        "endChar": 17
+      },
+      "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2eb5f342_af5ee692",
@@ -99,6 +123,30 @@
           ]
         }
       ],
+      "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f5d3d8e_c898442e",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1978967
+      },
+      "writtenOn": "2025-07-11T23:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2eb5f342_af5ee692",
+      "range": {
+        "startLine": 617,
+        "startChar": 2,
+        "endLine": 617,
+        "endChar": 24
+      },
       "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -160,6 +208,30 @@
           ]
         }
       ],
+      "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a799b9c0_7aad197c",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 1978967
+      },
+      "writtenOn": "2025-07-11T23:48:17Z",
+      "side": 1,
+      "message": "Since it is while(suspend_fs_sync_queued) in the do-while(), we need to unlock at the start of the loop anyways",
+      "parentUuid": "b889e22b_2aa4907b",
+      "range": {
+        "startLine": 619,
+        "startChar": 16,
+        "endLine": 619,
+        "endChar": 36
+      },
       "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -279,6 +351,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28a5f47c_b05ca01a",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 1978967
+      },
+      "writtenOn": "2025-07-11T23:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c04268f_abc209ef",
+      "range": {
+        "startLine": 631,
+        "startChar": 2,
+        "endLine": 631,
+        "endChar": 35
+      },
+      "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2bbce24_6c5c95ec",
@@ -292,6 +388,30 @@
       "writtenOn": "2025-07-11T23:22:22Z",
       "side": 1,
       "message": "I think a goto is sufficient for this one as we don\u0027t expect it to loop more than once. It\u0027d reduce the indentation too.",
+      "range": {
+        "startLine": 633,
+        "startChar": 0,
+        "endLine": 633,
+        "endChar": 40
+      },
+      "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fde699ac_0e22b0c5",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1978967
+      },
+      "writtenOn": "2025-07-11T23:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2bbce24_6c5c95ec",
       "range": {
         "startLine": 633,
         "startChar": 0,
