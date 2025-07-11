@@ -560,6 +560,9 @@ static int check_share(const struct pkvm_mem_transition *tx)
 		return ret;
 
 	switch (tx->completer.id) {
+	case PKVM_ID_HYP:
+		ret = 0;
+		break;
 	case PKVM_ID_HOST:
 		ret = host_ack_share(tx);
 		break;
@@ -633,6 +636,9 @@ static int __do_share(const struct pkvm_mem_transition *tx)
 		return ret;
 
 	switch (tx->completer.id) {
+	case PKVM_ID_HYP:
+		ret = 0;
+		break;
 	case PKVM_ID_HOST:
 		ret = host_complete_share(tx);
 		break;
@@ -813,6 +819,9 @@ static int check_unshare(const struct pkvm_mem_transition *tx)
 		return ret;
 
 	switch (tx->completer.id) {
+	case PKVM_ID_HYP:
+		ret = 0;
+		break;
 	case PKVM_ID_HOST:
 		ret = host_ack_unshare(tx);
 		break;
@@ -884,6 +893,9 @@ static int __do_unshare(struct pkvm_mem_transition *tx)
 		return ret;
 
 	switch (tx->completer.id) {
+	case PKVM_ID_HYP:
+		ret = 0;
+		break;
 	case PKVM_ID_HOST:
 		ret = host_complete_unshare(tx);
 		break;
@@ -999,6 +1011,62 @@ int __pkvm_guest_unshare_host(struct pkvm_pgtable *guest_pgt,
 
 	host_ept_unlock();
 	guest_mmu_unlock(guest_pgt);
+
+	return ret;
+}
+
+int __pkvm_host_share_hyp(u64 gpa, u64 size)
+{
+	u64 start = PAGE_ALIGN_DOWN(gpa);
+	u64 end = PAGE_ALIGN(gpa + size);
+	struct pkvm_mem_transition share = {
+		.size = end - start,
+		.initiator	= {
+			.id	= PKVM_ID_HOST,
+			.host = {
+				.addr	= start,
+			},
+			.prot	= HOST_EPT_DEF_MEM_PROT,
+		},
+		.completer	= {
+			.id	= PKVM_ID_HYP,
+		},
+	};
+	int ret;
+
+	host_ept_lock();
+
+	ret = do_share(&share);
+
+	host_ept_unlock();
+
+	return ret;
+}
+
+int __pkvm_host_unshare_hyp(u64 gpa, u64 size)
+{
+	u64 start = PAGE_ALIGN_DOWN(gpa);
+	u64 end = PAGE_ALIGN(gpa + size);
+	struct pkvm_mem_transition unshare = {
+		.size = end - start,
+		.initiator	= {
+			.id	= PKVM_ID_HOST,
+			.host = {
+				.addr	= start,
+			},
+			.prot	= HOST_EPT_DEF_MEM_PROT,
+		},
+		.completer	= {
+			.id	= PKVM_ID_HYP,
+		},
+	};
+	int ret;
+
+	host_ept_lock();
+
+	ret = do_unshare(&unshare);
+
+	host_ept_unlock();
 
 	return ret;
 }
