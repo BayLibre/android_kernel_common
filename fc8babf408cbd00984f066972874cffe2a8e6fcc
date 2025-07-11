@@ -160,6 +160,24 @@
       "parentUuid": "8ee764d2_bea829ef",
       "revId": "fc8babf408cbd00984f066972874cffe2a8e6fcc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90d1873f_691b0865",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1984890
+      },
+      "writtenOn": "2025-07-11T15:40:15Z",
+      "side": 1,
+      "message": "For platforms where async pm is broken this comes in handy because it avoids any race between disabling pm async via sysfs and first system suspend event. I find it fine, we allow platforms that have broken async suspend to still boot (and suspend synchronously). If you still find this bad, please comment on the patch itself. Rafael informed me that he queued it.",
+      "parentUuid": "ea7e824d_18ed7950",
+      "revId": "fc8babf408cbd00984f066972874cffe2a8e6fcc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
