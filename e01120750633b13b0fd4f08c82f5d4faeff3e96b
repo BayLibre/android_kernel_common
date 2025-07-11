@@ -1,0 +1,220 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4933afb4_928fba68",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-07-11T23:22:22Z",
+      "side": 1,
+      "message": "I don\u0027t think you want to do this in a loop? Because pm_wakeup_pending() is used in multiple places after suspend starts, but there\u0027s only one pm_wakeip_clear() in the code path as of today.",
+      "range": {
+        "startLine": 610,
+        "startChar": 2,
+        "endLine": 610,
+        "endChar": 17
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6dae7d30_be2e9faa",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 608,
+                "startChar": 0,
+                "endLine": 608,
+                "endChar": 0
+              },
+              "replacement": "\tpm_wakeup_clear(0);\n"
+            },
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 610,
+                "startChar": 0,
+                "endLine": 612,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eb5f342_af5ee692",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-07-11T23:22:22Z",
+      "side": 1,
+      "message": "You could move this into the \"if\" too, right?",
+      "range": {
+        "startLine": 617,
+        "startChar": 2,
+        "endLine": 617,
+        "endChar": 24
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "dea5bb05_a1545ad0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 616,
+                "startChar": 0,
+                "endLine": 616,
+                "endChar": 0
+              },
+              "replacement": "\t\t{\n"
+            },
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 617,
+                "startChar": 0,
+                "endLine": 618,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tsuspend_fs_sync_queued \u003d true;\n\t\t}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc50eb4_646e639d",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-07-11T23:22:22Z",
+      "side": 1,
+      "message": "This is confusing me a bit now. Can you upload it again without using any do while loops? Like the one I saw offline?",
+      "range": {
+        "startLine": 631,
+        "startChar": 2,
+        "endLine": 631,
+        "endChar": 35
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "48fa0dea_784718fe",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 607,
+                "startChar": 0,
+                "endLine": 608,
+                "endChar": 0
+              },
+              "replacement": "\tbool need_suspend_fs_sync_requeue \u003d false;\n"
+            },
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 609,
+                "startChar": 0,
+                "endLine": 610,
+                "endChar": 0
+              },
+              "replacement": "\twhile (true) {\n"
+            },
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 614,
+                "startChar": 0,
+                "endLine": 615,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 618,
+                "startChar": 0,
+                "endLine": 627,
+                "endChar": 0
+              },
+              "replacement": "\t\tspin_unlock(\u0026suspend_fs_sync_lock);\n"
+            },
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 628,
+                "startChar": 0,
+                "endLine": 632,
+                "endChar": 0
+              },
+              "replacement": "\t\t/*\n\t\t * Completion is triggered by fs_sync finishing or a\n\t\t * suspend abort signal, whichever comes first\n\t\t */\n\t\twait_for_completion(\u0026suspend_fs_sync_complete);\n\t\tif (pm_wakeup_pending())\n\t\t\treturn -EBUSY;\n\n\t\tspin_lock(\u0026suspend_fs_sync_lock);\n\t\tif (!suspend_fs_sync_queued) {\n\t\t\tspin_unlock(\u0026suspend_fs_sync_lock);\n\t\t\tbreak;\n\t\t}\n\t\tneed_suspend_fs_sync_requeue \u003d true;\n\t\treinit_completion(\u0026suspend_fs_sync_complete);\n"
+            },
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 633,
+                "startChar": 0,
+                "endLine": 634,
+                "endChar": 0
+              },
+              "replacement": "\t}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2bbce24_6c5c95ec",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-07-11T23:22:22Z",
+      "side": 1,
+      "message": "I think a goto is sufficient for this one as we don\u0027t expect it to loop more than once. It\u0027d reduce the indentation too.",
+      "range": {
+        "startLine": 633,
+        "startChar": 0,
+        "endLine": 633,
+        "endChar": 40
+      },
+      "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
