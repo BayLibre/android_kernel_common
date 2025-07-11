@@ -69,6 +69,24 @@
       "parentUuid": "e91ee7b4_42510057",
       "revId": "8a809caba19fdcdcf16ed5e0f44189ab9ab3b956",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d56de4c6_76022730",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-11T11:01:41Z",
+      "side": 1,
+      "message": "Yes, I guess so. As the sync_data is a local variable in this free_shadow_id_cb(), which is initialized without setting the ptdev.",
+      "parentUuid": "18439c8e_73122782",
+      "revId": "8a809caba19fdcdcf16ed5e0f44189ab9ab3b956",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
