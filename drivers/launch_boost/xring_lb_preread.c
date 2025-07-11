@@ -72,6 +72,11 @@ static void xring_lb_wake_up_preread(struct app_record *record)
 	struct file *filp;
 	struct inode *inode;
 
+	if (atomic_read(&g_file_count)) {
+		XRING_LB_ERR("preread in progress, skip preread\n");
+		return;
+	}
+
 	data = &s_preread->data;
 	atomic_set(&g_file_count, 0);
 	list_for_each_entry_safe(info, tmp, &record->file_list, list) {
