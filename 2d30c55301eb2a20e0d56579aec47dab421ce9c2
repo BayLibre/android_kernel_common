@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f448c5a_f42cb6cd",
+        "filename": "mm/readahead.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2025-07-11T14:00:24Z",
+      "side": 1,
+      "message": "why do we need to pass a reference for the unsigned int gfp? is it going to be modified?",
+      "range": {
+        "startLine": 484,
+        "startChar": 67,
+        "endLine": 484,
+        "endChar": 71
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "cc7c1e42_3480bbd3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/readahead.c",
+              "range": {
+                "startLine": 484,
+                "startChar": 0,
+                "endLine": 485,
+                "endChar": 0
+              },
+              "replacement": "\ttrace_android_vh_page_cache_ra_order_bypass(ractl, ra, new_order, gfp,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2d30c55301eb2a20e0d56579aec47dab421ce9c2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
