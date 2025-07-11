@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "724716f4_2d0cc724",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 4030611
+      },
+      "writtenOn": "2025-07-11T04:39:29Z",
+      "side": 1,
+      "message": "while triggering shutdown I see we are freeing resources and calling shadow PTE without walking context entry. Need to add ptdev entry to avoid NULL reference.  @chuanxiao.dong@intel.corp-partner.google.com",
+      "revId": "8a809caba19fdcdcf16ed5e0f44189ab9ab3b956",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
