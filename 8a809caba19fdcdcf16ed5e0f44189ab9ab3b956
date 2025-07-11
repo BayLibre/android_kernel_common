@@ -33,6 +33,24 @@
       "message": "while triggering shutdown I see we are freeing resources and calling shadow PTE without walking context entry. Need to add ptdev entry to avoid NULL reference.  @chuanxiao.dong@intel.corp-partner.google.com",
       "revId": "8a809caba19fdcdcf16ed5e0f44189ab9ab3b956",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e91ee7b4_42510057",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-11T05:41:55Z",
+      "side": 1,
+      "message": "Yes, the new approach is to carry ptdev in the sync_data rather than finding ptdev in the middle. Beside the init_sync_id_data() which set ptdev in sync_data for syncing the shadow, this is the other function also needs to set ptdev in sync_data for freeing the shadow.",
+      "parentUuid": "724716f4_2d0cc724",
+      "revId": "8a809caba19fdcdcf16ed5e0f44189ab9ab3b956",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
