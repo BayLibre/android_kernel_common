@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e720c24c_1de7e404",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-11T05:21:52Z",
+      "side": 1,
+      "message": "Hi @krishna.prabhakaran1@intel.corp-partner.google.com, @prabu.renganathan@intel.corp-partner.google.com found that the ptdev is NULL in this function when reboot, and thus caused exception when calls pkvm_setup_ptdev_vpgt in line 682. Suppose the sdata-\u003eptdev is not set with the ptdev pointer.",
+      "revId": "8a809caba19fdcdcf16ed5e0f44189ab9ab3b956",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "724716f4_2d0cc724",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
         "patchSetId": 6
