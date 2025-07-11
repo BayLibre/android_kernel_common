@@ -1,0 +1,65 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23f3234c_fc1d52d9",
+        "filename": "fs/proc/base.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3418,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2025-07-11T16:52:06Z",
+      "side": 1,
+      "message": "When does it happen?",
+      "range": {
+        "startLine": 3418,
+        "startChar": 4,
+        "endLine": 3418,
+        "endChar": 46
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8b17ffc6_72df2266",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3418,
+                "startChar": 0,
+                "endLine": 3419,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t\tpr_warn(\"dmabuf has \u003c\u003d refs %lld\\n\", refs);\n"
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3559,
+                "startChar": 0,
+                "endLine": 3562,
+                "endChar": 0
+              },
+              "replacement": "\tONE(\"dmabuf_rss\", S_IRUGO, proc_dmabuf_rss_show),\n\tREG(\"dmabuf_rss_hwm\", S_IRUGO|S_IWUSR, proc_dmabuf_rss_hwm_operations),\n\tONE(\"dmabuf_pss\", S_IRUGO, proc_dmabuf_pss_show),\n"
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3903,
+                "startChar": 0,
+                "endLine": 3904,
+                "endChar": 0
+              },
+              "replacement": "\tONE(\"time_in_state\", S_IRUGO, proc_time_in_state_show),\n"
+            }
+          ]
+        }
+      ],
+      "revId": "95bcb2a50d12deed4cdb011baa9d1580f3fd07eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
