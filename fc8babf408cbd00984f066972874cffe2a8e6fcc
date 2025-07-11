@@ -52,6 +52,24 @@
       "parentUuid": "530dd59d_673bdfce",
       "revId": "fc8babf408cbd00984f066972874cffe2a8e6fcc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f091c89_1b700390",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1984890
+      },
+      "writtenOn": "2025-07-11T07:39:38Z",
+      "side": 1,
+      "message": "It doesn\u0027t fix a bug per se. Upstream pm sleep seems fine, it\u0027s the pixel OOT drivers that don\u0027t properly describe dependencies, which causes pixel6 to hang on suspend. This was revealed with the 6.16-rc1-pm merge. This patch allows pixel6 to make suspend synchronous, where suspend works fine. I\u0027m ok waiting for this patch to get queued upstream. In case some urgency appears, I\u0027ll let you know.",
+      "parentUuid": "75f7bf23_aa3fa0c3",
+      "revId": "fc8babf408cbd00984f066972874cffe2a8e6fcc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
