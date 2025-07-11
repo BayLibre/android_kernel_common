@@ -105,6 +105,67 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b889e22b_2aa4907b",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-07-11T23:24:57Z",
+      "side": 1,
+      "message": "Can\u0027t you move this outside the do loop and then grab the lock only when you check fs_sync_queued and reinit completion?",
+      "range": {
+        "startLine": 619,
+        "startChar": 16,
+        "endLine": 619,
+        "endChar": 36
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "65781983_708e1269",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 618,
+                "startChar": 0,
+                "endLine": 618,
+                "endChar": 0
+              },
+              "replacement": "\t\tspin_unlock(\u0026suspend_fs_sync_lock);\n"
+            },
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 619,
+                "startChar": 0,
+                "endLine": 620,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 632,
+                "startChar": 0,
+                "endLine": 633,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dcc50eb4_646e639d",
         "filename": "kernel/power/suspend.c",
         "patchSetId": 3
@@ -190,6 +251,30 @@
           ]
         }
       ],
+      "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c04268f_abc209ef",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-07-11T23:24:57Z",
+      "side": 1,
+      "message": "Ignore the comment above.",
+      "parentUuid": "dcc50eb4_646e639d",
+      "range": {
+        "startLine": 631,
+        "startChar": 2,
+        "endLine": 631,
+        "endChar": 35
+      },
       "revId": "e01120750633b13b0fd4f08c82f5d4faeff3e96b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
