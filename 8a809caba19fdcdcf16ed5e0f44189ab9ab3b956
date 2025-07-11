@@ -51,6 +51,24 @@
       "parentUuid": "724716f4_2d0cc724",
       "revId": "8a809caba19fdcdcf16ed5e0f44189ab9ab3b956",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18439c8e_73122782",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-11T10:37:31Z",
+      "side": 1,
+      "message": "Thanks for catching this. So IIUC what is happening is: we do walk the context entry, and sync_shadow_context_entry() does set ptdev, but then it is lost, since free_shadow_id_cb() does not propagate it to sync_shadow_pasid_table_entry() (like sync_shadow_id_cb() does at line 1165)?",
+      "parentUuid": "e91ee7b4_42510057",
+      "revId": "8a809caba19fdcdcf16ed5e0f44189ab9ab3b956",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
