@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06d26151_1914e618",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-12T00:32:50Z",
+      "side": 1,
+      "message": "Will update the patch to find the ptdev and assign it to sync_data before calling into \u0027iommu_id_sync_entry\u0027",
+      "parentUuid": "e720c24c_1de7e404",
+      "revId": "8a809caba19fdcdcf16ed5e0f44189ab9ab3b956",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "724716f4_2d0cc724",
@@ -85,6 +103,24 @@
       "side": 1,
       "message": "Yes, I guess so. As the sync_data is a local variable in this free_shadow_id_cb(), which is initialized without setting the ptdev.",
       "parentUuid": "18439c8e_73122782",
+      "revId": "8a809caba19fdcdcf16ed5e0f44189ab9ab3b956",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b24ac66_192c2b3d",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 4168684
+      },
+      "writtenOn": "2025-07-12T00:32:50Z",
+      "side": 1,
+      "message": "Will update the patch to find the ptdev and assign it to sync_data before calling into \u0027iommu_id_sync_entry\u0027",
+      "parentUuid": "d56de4c6_76022730",
       "revId": "8a809caba19fdcdcf16ed5e0f44189ab9ab3b956",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
