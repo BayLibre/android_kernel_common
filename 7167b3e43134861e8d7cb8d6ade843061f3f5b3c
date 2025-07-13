@@ -18,6 +18,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d047da3b_a1d5ed2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1132673
+      },
+      "writtenOn": "2025-07-13T13:23:34Z",
+      "side": 1,
+      "message": "How is the situation in GKI? Is BTI disabled there too?",
+      "revId": "7167b3e43134861e8d7cb8d6ade843061f3f5b3c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "95999753_80a76bfb",
@@ -31,6 +48,24 @@
       "writtenOn": "2025-07-11T21:46:39Z",
       "side": 1,
       "message": "I probably don\u0027t understand how these defconfigs work. Since it wasn\u0027t listed before, wasn\u0027t it already disabled?",
+      "revId": "7167b3e43134861e8d7cb8d6ade843061f3f5b3c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1a8191f_6655132a",
+        "filename": "arch/arm64/configs/microdroid_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1132673
+      },
+      "writtenOn": "2025-07-13T13:23:34Z",
+      "side": 1,
+      "message": "Not listed here doesn\u0027t always mean it\u0027s disabled. Those not shown here are auto-resolved (either enabled or disabled). That\u0027s why we have `# CONFIG_* is not set` lines here.",
+      "parentUuid": "95999753_80a76bfb",
       "revId": "7167b3e43134861e8d7cb8d6ade843061f3f5b3c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
