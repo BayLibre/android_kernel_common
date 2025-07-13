@@ -643,7 +643,15 @@ static void sk_psock_backlog(struct work_struct *work)
 	u32 len, off;
 	int ret;
 
+	/* Increment the psock refcnt to synchronize with close(fd) path in
+	 * sock_map_close(), ensuring we wait for backlog thread completion
+	 * before sk_socket freed. If refcnt increment fails, it indicates
+	 * sock_map_close() completed with sk_socket potentially already freed.
+	 */
+	if (!sk_psock_get(psock->sk))
+		return;
 	mutex_lock(&psock->work_mutex);
+<<<<<<< HEAD   (d126ee34e4d3a62c7f2e7fb0f349c622aebe1b8e Merge android14-5.15 into android14-5.15-lts)
 	if (unlikely(state->skb)) {
 		spin_lock_bh(&psock->ingress_lock);
 		skb = state->skb;
@@ -656,6 +664,16 @@ static void sk_psock_backlog(struct work_struct *work)
 		goto start;
 
 	while ((skb = skb_dequeue(&psock->ingress_skb))) {
+||||||| BASE
+	if (unlikely(state->len)) {
+		len = state->len;
+		off = state->off;
+	}
+
+	while ((skb = skb_peek(&psock->ingress_skb))) {
+=======
+	while ((skb = skb_peek(&psock->ingress_skb))) {
+>>>>>>> BRANCH (7298df96179b3ee832717f7ef3bf035311bde736 powerpc/vas: Return -EINVAL if the offset is non-zero in mma)
 		len = skb->len;
 		off = 0;
 		if (skb_bpf_strparser(skb)) {
@@ -664,7 +682,18 @@ static void sk_psock_backlog(struct work_struct *work)
 			off = stm->offset;
 			len = stm->full_len;
 		}
+<<<<<<< HEAD   (d126ee34e4d3a62c7f2e7fb0f349c622aebe1b8e Merge android14-5.15 into android14-5.15-lts)
 start:
+||||||| BASE
+=======
+
+		/* Resume processing from previous partial state */
+		if (unlikely(state->len)) {
+			len = state->len;
+			off = state->off;
+		}
+
+>>>>>>> BRANCH (7298df96179b3ee832717f7ef3bf035311bde736 powerpc/vas: Return -EINVAL if the offset is non-zero in mma)
 		ingress = skb_bpf_ingress(skb);
 		skb_bpf_redirect_clear(skb);
 		do {
@@ -688,11 +717,22 @@ start:
 			len -= ret;
 		} while (len);
 
+<<<<<<< HEAD   (d126ee34e4d3a62c7f2e7fb0f349c622aebe1b8e Merge android14-5.15 into android14-5.15-lts)
 		if (!ingress)
+||||||| BASE
+		skb = skb_dequeue(&psock->ingress_skb);
+		if (!ingress) {
+=======
+		/* The entire skb sent, clear state */
+		sk_psock_skb_state(psock, state, 0, 0);
+		skb = skb_dequeue(&psock->ingress_skb);
+		if (!ingress) {
+>>>>>>> BRANCH (7298df96179b3ee832717f7ef3bf035311bde736 powerpc/vas: Return -EINVAL if the offset is non-zero in mma)
 			kfree_skb(skb);
 	}
 end:
 	mutex_unlock(&psock->work_mutex);
+	sk_psock_put(psock->sk, psock);
 }
 
 struct sk_psock *sk_psock_init(struct sock *sk, int node)
