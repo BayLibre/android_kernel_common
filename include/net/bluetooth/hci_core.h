@@ -29,7 +29,12 @@
 #include <linux/idr.h>
 #include <linux/leds.h>
 #include <linux/rculist.h>
+<<<<<<< HEAD   (06215a57456593a19000afe99c61b4a2093bebbe ANDROID: GKI: add devm_regulator_bulk_get_enable to db845c s)
 #include <linux/android_kabi.h>
+||||||| BASE
+=======
+#include <linux/srcu.h>
+>>>>>>> BRANCH (59a2de10b81ae4765d73142acde15106028b1571 Linux 6.6.97)
 
 #include <net/bluetooth/hci.h>
 #include <net/bluetooth/hci_sync.h>
@@ -349,6 +354,7 @@ struct amp_assoc {
 
 struct hci_dev {
 	struct list_head list;
+	struct srcu_struct srcu;
 	struct mutex	lock;
 
 	struct ida	unset_handle_ida;
