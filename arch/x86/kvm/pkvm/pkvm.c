@@ -41,27 +41,60 @@ static DEFINE_PER_CPU(union pkvm_pv_param *, pv_param);
 
 #define this_pv_param(f)	(&this_cpu_read(pv_param)->f)
 
-static int pkvm_enable_virtualization_cpu(unsigned long pv_param_pa)
+static int pkvm_enable_virtualization_cpu(unsigned long pv_param_gpa)
 {
-	int r = kvm_arch_enable_virtualization_cpu();
+	size_t size = sizeof(union pkvm_pv_param);
+	int r;
 
-	if (!r)
-		/*
-		 * TODO: Assume host is already share the pv_param structure
-		 * with pkvm. Pin the pv_param_pa so that it won't be re-used
-		 * as guest memory.
-		 */
-		this_cpu_write(pv_param, __pkvm_va(pv_param_pa));
+	/*
+	 * The kvm host can follow the way of handling the shared kvm/kvm_vcpu
+	 * by trigger page sharing via PV interface, and the pkvm hypervisor to
+	 * pin the shared pages. But then the kvm host will need to unshare the
+	 * pv_param in the pkvm_disable_virtualization_cpu() in the irq disabled
+	 * context, which conflicts with using the mutex hyp_shared_pfns_lock.
+	 *
+	 * Alternatively, request the pv_param memory to be page aligned so that
+	 * the pkvm hypervisor can share/unshare the pv_param memory page by its
+	 * own.
+	 */
+	r = __pkvm_host_share_hyp(pv_param_gpa, size);
+	if (r)
+		return r;
 
+	r = hyp_pin_shared_mem(pv_param_gpa, size);
+	if (r)
+		goto unshare;
+
+	r = kvm_arch_enable_virtualization_cpu();
+	if (r)
+		goto unpin;
+
+	this_cpu_write(pv_param, __pkvm_va(host_gpa2hpa(pv_param_gpa)));
+	return 0;
+
+unpin:
+	hyp_unpin_shared_mem(pv_param_gpa, size);
+unshare:
+	__pkvm_host_unshare_hyp(pv_param_gpa, size);
 	return r;
 }
 
 static void pkvm_disable_virtualization_cpu(void)
 {
+	void *pv_param_va = this_cpu_read(pv_param);
+	size_t size = sizeof(union pkvm_pv_param);
+	unsigned long pv_param_gpa;
+
+	if (!pv_param_va)
+		return;
+
+	this_cpu_write(pv_param, NULL);
+
 	kvm_arch_disable_virtualization_cpu();
 
-	/* TODO: unpin the shared pv_param memory */
-	this_cpu_write(pv_param, NULL);
+	pv_param_gpa = pkvm_virt_to_host_gpa(pv_param_va);
+	hyp_unpin_shared_mem(pv_param_gpa, size);
+	__pkvm_host_unshare_hyp(pv_param_gpa, size);
 }
 
 #define HANDLE_OFFSET 1
