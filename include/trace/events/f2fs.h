@@ -1366,7 +1366,20 @@ DEFINE_EVENT(f2fs__folio, f2fs_set_page_dirty,
 
 	TP_PROTO(struct folio *folio, int type),
 
+<<<<<<< HEAD   (170440ba3c39eedceb5659ec529b3addbfd362bf Revert "Bluetooth: hci_core: Fix use-after-free in vhci_flus)
 	TP_ARGS(folio, type)
+||||||| BASE
+	TP_ARGS(page, type)
+);
+
+DEFINE_EVENT(f2fs__page, f2fs_vm_page_mkwrite,
+
+	TP_PROTO(struct page *page, int type),
+
+	TP_ARGS(page, type)
+=======
+	TP_ARGS(page, type)
+>>>>>>> BRANCH (59a2de10b81ae4765d73142acde15106028b1571 Linux 6.6.97)
 );
 
 TRACE_EVENT(f2fs_replace_atomic_write_block,
