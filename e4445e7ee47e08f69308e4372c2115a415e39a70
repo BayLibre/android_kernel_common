@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "200b04e3_0120fecc",
+        "filename": "drivers/gpu/drm/xe/xe_uc_fw.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-07-14T22:33:15Z",
+      "side": 1,
+      "message": "Re: Why don\u0027t these patches match?\n\nI wasn\u0027t intending for this cherrypick to be changed so they do match - I genuinely don\u0027t understand why they don\u0027t match as was asking for clarification about that.\n\nThe patch that landed upstream does not have the `PANTHERLAKE` lines, so they should be removed from here also so we match upstream as closely as possible.\n\nLooking at the git history upstream, it appears those lines are added with the later CLs you have in the relation chain.",
+      "parentUuid": "54fb6533_f5120c22",
+      "revId": "e4445e7ee47e08f69308e4372c2115a415e39a70",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "57be86af_90cddf7b",
         "filename": "drivers/gpu/drm/xe/xe_uc_fw.c",
         "patchSetId": 1
