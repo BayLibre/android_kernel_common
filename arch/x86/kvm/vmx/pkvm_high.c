@@ -928,7 +928,7 @@ static int pkvm_vm_init(struct kvm *kvm)
 	if (ret)
 		goto free_page;
 
-	ret = kvm_call_pkvm(vm_init, kvm, __pa(pkvm_vm));
+	ret = kvm_call_pkvm(vm_init, __pa(kvm), __pa(pkvm_vm));
 	if (ret < 0)
 		goto unshare;
 
