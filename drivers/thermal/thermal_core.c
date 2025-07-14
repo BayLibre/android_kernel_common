@@ -555,8 +555,10 @@ void __thermal_zone_device_update(struct thermal_zone_device *tz,
 	int low = -INT_MAX, high = INT_MAX;
 	int temp, ret;
 
-	if (tz->state != TZ_STATE_READY || tz->mode != THERMAL_DEVICE_ENABLED)
+	if (tz->state != TZ_STATE_READY || tz->mode != THERMAL_DEVICE_ENABLED) {
+		atomic_set(&tz->need_update, 1);
 		return;
+	}
 
 	ret = __thermal_zone_get_temp(tz, &temp);
 	if (ret) {
@@ -1708,7 +1710,9 @@ static void thermal_zone_device_resume(struct work_struct *work)
 	thermal_debug_tz_resume(tz);
 	thermal_zone_device_init(tz);
 	thermal_governor_update_tz(tz, THERMAL_TZ_RESUME);
-	__thermal_zone_device_update(tz, THERMAL_TZ_RESUME);
+	if (atomic_cmpxchg(&tz->need_update, 1, 0)) {
+		__thermal_zone_device_update(tz, THERMAL_TZ_RESUME);
+	}
 
 	complete(&tz->resume);
 
