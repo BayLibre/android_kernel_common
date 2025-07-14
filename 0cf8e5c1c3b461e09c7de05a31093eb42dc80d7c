@@ -16,6 +16,24 @@
       "message": "This will become an issue in android16-6.12 where `KVM_IOMMU_DOMAINS_PER_PAGE` is not a multiple of `KVM_IOMMU_MAX_DOMAINS`.",
       "revId": "0cf8e5c1c3b461e09c7de05a31093eb42dc80d7c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3af02bda_77e8cd90",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-07-14T08:02:59Z",
+      "side": 1,
+      "message": "If this is not a problem on this branch, can we skip the fix here, as domain stuct is now part of KMI so it will never change",
+      "parentUuid": "9ba5039c_5b12c065",
+      "revId": "0cf8e5c1c3b461e09c7de05a31093eb42dc80d7c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
