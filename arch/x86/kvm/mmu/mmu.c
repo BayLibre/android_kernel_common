@@ -7475,6 +7475,13 @@ void __init kvm_mmu_x86_module_init(void)
 	if (nx_huge_pages == -1)
 		__set_nx_huge_pages(get_nx_auto_mode());
 
+	if (enable_pkvm) {
+		if (nx_huge_pages)
+			pr_warn("disabling iTLB multihit mitigation due to pKVM enabled\n");
+		__set_nx_huge_pages(false);
+		nx_hugepage_mitigation_hard_disabled = true;
+	}
+
 	/*
 	 * Snapshot userspace's desire to enable the TDP MMU. Whether or not the
 	 * TDP MMU is actually enabled is determined in kvm_configure_mmu()
