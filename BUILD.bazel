@@ -887,6 +887,95 @@ _DB845C_WATCHDOG_MODULE_OUTS = [
 ]
 
 kernel_build(
+    name = "db845c_16k_no_kgdb",
+    srcs = [":kernel_aarch64_sources"],
+    outs = [
+        "arch/arm64/boot/dts/qcom/qrb5165-rb5.dtb",
+        "arch/arm64/boot/dts/qcom/sdm845-db845c.dtb",
+        "arch/arm64/boot/dts/qcom/sm8450-hdk.dtb",
+        "arch/arm64/boot/dts/qcom/sm8450-qrd.dtb",
+        "arch/arm64/boot/dts/qcom/sm8550-hdk.dtb",
+        "arch/arm64/boot/dts/qcom/sm8550-qrd.dtb",
+        "arch/arm64/boot/dts/qcom/sm8650-hdk.dtb",
+        "arch/arm64/boot/dts/qcom/sm8650-qrd.dtb",
+    ],
+    arch = "arm64",
+    # Enable mixed build.
+    base_kernel = ":kernel_aarch64",
+    build_config = "build.config.db845c",
+    collect_unstripped_modules = True,
+    defconfig = "arch/arm64/configs/gki_defconfig",
+    kmi_symbol_list = "gki/aarch64/symbols/db845c",
+    make_goals = [
+        "modules",
+        "qcom/qrb5165-rb5.dtb",
+        "qcom/sdm845-db845c.dtb",
+        "qcom/sm8450-hdk.dtb",
+        "qcom/sm8450-qrd.dtb",
+        "qcom/sm8550-hdk.dtb",
+        "qcom/sm8550-qrd.dtb",
+        "qcom/sm8650-hdk.dtb",
+        "qcom/sm8650-qrd.dtb",
+    ],
+    makefile = ":Makefile",
+    module_outs = _DB845C_MODULE_OUTS + _DB845C_WATCHDOG_MODULE_OUTS,
+    page_size = "16k",
+    pre_defconfig_fragments = ["arch/arm64/configs/db845c_gki.fragment"],
+    strip_modules = True,
+)
+
+alias(
+    name = "db845c_16k",
+    actual = select({
+        "//conditions:default": "db845c_16k_no_kgdb",
+    }),
+)
+
+kernel_abi(
+    name = "db845c_16k_abi",
+    kernel_build = ":db845c_16k",
+)
+
+kernel_modules_install(
+    name = "db845c_16k_modules_install",
+    kernel_build = ":db845c_16k",
+)
+
+merged_kernel_uapi_headers(
+    name = "db845c_16k_merged_kernel_uapi_headers",
+    kernel_build = ":db845c_16k",
+)
+
+initramfs(
+    name = "db845c_16k_initramfs",
+    kernel_modules_install = ":db845c_16k_modules_install",
+    visibility = ["//visibility:private"],
+)
+
+pkg_files(
+    name = "db845c_16k_dist_files",
+    srcs = [
+        ":db845c_16k",
+        ":db845c_16k_initramfs",
+        ":db845c_16k_modules_install",
+        ":db845c_16k_merged_kernel_uapi_headers",
+        # Mixed build: Additional GKI artifacts.
+        ":kernel_aarch64_16k",
+        ":kernel_aarch64_modules",
+        ":kernel_aarch64_additional_artifacts",
+        ":tests_zip_arm64",
+    ],
+    strip_prefix = strip_prefix.files_only(),
+    visibility = ["//visibility:private"],
+)
+
+pkg_install(
+    name = "db845c_16k_dist",
+    srcs = [":db845c_16k_dist_files"],
+    destdir = "out/db845_16k/dist",
+)
+
+kernel_build(
     name = "db845c_no_kgdb",
     srcs = [":kernel_aarch64_sources"],
     outs = [
