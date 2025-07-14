@@ -857,53 +857,89 @@ static unsigned long system_bhb_mitigations;
  * This must be called with SCOPE_LOCAL_CPU for each type of CPU, before any
  * SCOPE_SYSTEM call will give the right answer.
  */
-u8 spectre_bhb_loop_affected(int scope)
+static bool is_spectre_bhb_safe(int scope)
+{
+	static const struct midr_range spectre_bhb_safe_list[] = {
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A35),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A53),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A55),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A510),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A520),
+		MIDR_ALL_VERSIONS(MIDR_BRAHMA_B53),
+		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_2XX_SILVER),
+		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_3XX_SILVER),
+		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_SILVER),
+		{},
+	};
+	static bool all_safe = true;
+
+	if (scope != SCOPE_LOCAL_CPU)
+		return all_safe;
+
+	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_safe_list))
+		return true;
+
+	all_safe = false;
+
+	return false;
+}
+
+static u8 spectre_bhb_loop_affected(void)
 {
 	u8 k = 0;
-	static u8 max_bhb_k;
 
-	if (scope == SCOPE_LOCAL_CPU) {
-		static const struct midr_range spectre_bhb_k32_list[] = {
-			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
-			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
-			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
-			MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
-			MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-			MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
-			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
-			{},
-		};
-		static const struct midr_range spectre_bhb_k24_list[] = {
-			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
-			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
-			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
-			MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
-			{},
-		};
-		static const struct midr_range spectre_bhb_k11_list[] = {
-			MIDR_ALL_VERSIONS(MIDR_AMPERE1),
-			{},
-		};
-		static const struct midr_range spectre_bhb_k8_list[] = {
-			MIDR_ALL_VERSIONS(MIDR_CORTEX_A72),
-			MIDR_ALL_VERSIONS(MIDR_CORTEX_A57),
-			{},
-		};
+	static const struct midr_range spectre_bhb_k132_list[] = {
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
+		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
+		{},
+	};
+	static const struct midr_range spectre_bhb_k38_list[] = {
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
+		{},
+	};
+	static const struct midr_range spectre_bhb_k32_list[] = {
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1C),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
+		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+		{},
+	};
+	static const struct midr_range spectre_bhb_k24_list[] = {
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76AE),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
+		{},
+	};
+	static const struct midr_range spectre_bhb_k11_list[] = {
+		MIDR_ALL_VERSIONS(MIDR_AMPERE1),
+		{},
+	};
+	static const struct midr_range spectre_bhb_k8_list[] = {
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A72),
+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A57),
+		{},
+	};
 
-		if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
-			k = 32;
-		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
-			k = 24;
-		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k11_list))
-			k = 11;
-		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k8_list))
-			k =  8;
-
-		max_bhb_k = max(max_bhb_k, k);
-	} else {
-		k = max_bhb_k;
-	}
+	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k132_list))
+		k = 132;
+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k38_list))
+		k = 38;
+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
+		k = 32;
+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
+		k = 24;
+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k11_list))
+		k = 11;
+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k8_list))
+		k =  8;
 
 	return k;
 }
@@ -929,29 +965,13 @@ static enum mitigation_state spectre_bhb_get_cpu_fw_mitigation_state(void)
 	}
 }
 
-static bool is_spectre_bhb_fw_affected(int scope)
+static bool has_spectre_bhb_fw_mitigation(void)
 {
-	static bool system_affected;
 	enum mitigation_state fw_state;
 	bool has_smccc = arm_smccc_1_1_get_conduit() != SMCCC_CONDUIT_NONE;
-	static const struct midr_range spectre_bhb_firmware_mitigated_list[] = {
-		MIDR_ALL_VERSIONS(MIDR_CORTEX_A73),
-		MIDR_ALL_VERSIONS(MIDR_CORTEX_A75),
-		{},
-	};
-	bool cpu_in_list = is_midr_in_range_list(read_cpuid_id(),
-					 spectre_bhb_firmware_mitigated_list);
-
-	if (scope != SCOPE_LOCAL_CPU)
-		return system_affected;
 
 	fw_state = spectre_bhb_get_cpu_fw_mitigation_state();
-	if (cpu_in_list || (has_smccc && fw_state == SPECTRE_MITIGATED)) {
-		system_affected = true;
-		return true;
-	}
-
-	return false;
+	return has_smccc && fw_state == SPECTRE_MITIGATED;
 }
 
 static bool supports_ecbhb(int scope)
@@ -967,6 +987,8 @@ static bool supports_ecbhb(int scope)
 						    ID_AA64MMFR1_ECBHB_SHIFT);
 }
 
+static u8 max_bhb_k;
+
 bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry,
 			     int scope)
 {
@@ -975,16 +997,23 @@ bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry,
 	if (supports_csv2p3(scope))
 		return false;
 
-	if (supports_clearbhb(scope))
-		return true;
+	if (is_spectre_bhb_safe(scope))
+		return false;
 
-	if (spectre_bhb_loop_affected(scope))
-		return true;
+	/*
+	 * At this point the core isn't known to be "safe" so we're going to
+	 * assume it's vulnerable. We still need to update `max_bhb_k` though,
+	 * but only if we aren't mitigating with clearbhb though.
+	 */
+	if (scope == SCOPE_LOCAL_CPU && !supports_clearbhb(SCOPE_LOCAL_CPU))
+		max_bhb_k = max(max_bhb_k, spectre_bhb_loop_affected());
 
-	if (is_spectre_bhb_fw_affected(scope))
-		return true;
+	return true;
+}
 
-	return false;
+u8 get_spectre_bhb_loop_value(void)
+{
+	return max_bhb_k;
 }
 
 static void this_cpu_set_vectors(enum arm64_bp_harden_el1_vectors slot)
@@ -1007,11 +1036,142 @@ static void this_cpu_set_vectors(enum arm64_bp_harden_el1_vectors slot)
 	isb();
 }
 
+<<<<<<< HEAD   (7f6f0e358965d6a8c169dfad6b10e096f1f228ae Merge 952596b08c74 ("mm/hugetlb: fix huge_pmd_unshare() vs G)
+||||||| BASE
+#ifdef CONFIG_KVM
+static int kvm_bhb_get_vecs_size(const char *start)
+{
+	if (start == __smccc_workaround_3_smc)
+		return __SMCCC_WORKAROUND_3_SMC_SZ;
+	else if (start == __spectre_bhb_loop_k8 ||
+		 start == __spectre_bhb_loop_k24 ||
+		 start == __spectre_bhb_loop_k32)
+		return __SPECTRE_BHB_LOOP_SZ;
+	else if (start == __spectre_bhb_clearbhb)
+		return __SPECTRE_BHB_CLEARBHB_SZ;
+
+	return 0;
+}
+
+static void kvm_setup_bhb_slot(const char *hyp_vecs_start)
+{
+	int cpu, slot = -1, size;
+	const char *hyp_vecs_end;
+
+	if (!IS_ENABLED(CONFIG_KVM) || !is_hyp_mode_available())
+		return;
+
+	size = kvm_bhb_get_vecs_size(hyp_vecs_start);
+	if (WARN_ON_ONCE(!hyp_vecs_start || !size))
+		return;
+	hyp_vecs_end = hyp_vecs_start + size;
+
+	raw_spin_lock(&bp_lock);
+	for_each_possible_cpu(cpu) {
+		if (per_cpu(bp_hardening_data.template_start, cpu) == hyp_vecs_start) {
+			slot = per_cpu(bp_hardening_data.hyp_vectors_slot, cpu);
+			break;
+		}
+	}
+
+	if (slot == -1) {
+		slot = atomic_inc_return(&arm64_el2_vector_last_slot);
+		BUG_ON(slot >= BP_HARDEN_EL2_SLOTS);
+		__copy_hyp_vect_bpi(slot, hyp_vecs_start, hyp_vecs_end);
+	}
+
+	__this_cpu_write(bp_hardening_data.hyp_vectors_slot, slot);
+	__this_cpu_write(bp_hardening_data.template_start, hyp_vecs_start);
+	raw_spin_unlock(&bp_lock);
+}
+#else
+#define __smccc_workaround_3_smc NULL
+#define __spectre_bhb_loop_k8 NULL
+#define __spectre_bhb_loop_k24 NULL
+#define __spectre_bhb_loop_k32 NULL
+#define __spectre_bhb_clearbhb NULL
+
+static void kvm_setup_bhb_slot(const char *hyp_vecs_start) { }
+#endif /* CONFIG_KVM */
+
+=======
+#ifdef CONFIG_KVM
+static int kvm_bhb_get_vecs_size(const char *start)
+{
+	if (start == __smccc_workaround_3_smc)
+		return __SMCCC_WORKAROUND_3_SMC_SZ;
+	else if (start == __spectre_bhb_loop_k8 ||
+		 start == __spectre_bhb_loop_k24 ||
+		 start == __spectre_bhb_loop_k32)
+		return __SPECTRE_BHB_LOOP_SZ;
+	else if (start == __spectre_bhb_clearbhb)
+		return __SPECTRE_BHB_CLEARBHB_SZ;
+
+	return 0;
+}
+
+static void kvm_setup_bhb_slot(const char *hyp_vecs_start)
+{
+	int cpu, slot = -1, size;
+	const char *hyp_vecs_end;
+
+	if (!IS_ENABLED(CONFIG_KVM) || !is_hyp_mode_available())
+		return;
+
+	size = kvm_bhb_get_vecs_size(hyp_vecs_start);
+	if (WARN_ON_ONCE(!hyp_vecs_start || !size))
+		return;
+	hyp_vecs_end = hyp_vecs_start + size;
+
+	raw_spin_lock(&bp_lock);
+	for_each_possible_cpu(cpu) {
+		if (per_cpu(bp_hardening_data.template_start, cpu) == hyp_vecs_start) {
+			slot = per_cpu(bp_hardening_data.hyp_vectors_slot, cpu);
+			break;
+		}
+	}
+
+	if (slot == -1) {
+		slot = atomic_inc_return(&arm64_el2_vector_last_slot);
+		BUG_ON(slot >= BP_HARDEN_EL2_SLOTS);
+		__copy_hyp_vect_bpi(slot, hyp_vecs_start, hyp_vecs_end);
+	}
+
+	__this_cpu_write(bp_hardening_data.hyp_vectors_slot, slot);
+	__this_cpu_write(bp_hardening_data.template_start, hyp_vecs_start);
+	raw_spin_unlock(&bp_lock);
+}
+#else
+#define __smccc_workaround_3_smc NULL
+#define __spectre_bhb_loop_k8 NULL
+#define __spectre_bhb_loop_k24 NULL
+#define __spectre_bhb_loop_k32 NULL
+#define __spectre_bhb_clearbhb NULL
+
+static void kvm_setup_bhb_slot(const char *hyp_vecs_start) { }
+#endif /* CONFIG_KVM */
+
+static bool spectre_bhb_fw_mitigated;
+bool __read_mostly __nospectre_bhb;
+static int __init parse_spectre_bhb_param(char *str)
+{
+	__nospectre_bhb = true;
+	return 0;
+}
+early_param("nospectre_bhb", parse_spectre_bhb_param);
+
+>>>>>>> BRANCH (ecbc622e0f5202e17a2f13dadb0900273faee0eb Linux 5.10.239)
 void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
 {
+<<<<<<< HEAD   (7f6f0e358965d6a8c169dfad6b10e096f1f228ae Merge 952596b08c74 ("mm/hugetlb: fix huge_pmd_unshare() vs G)
 	bp_hardening_cb_t cpu_cb;
 	enum mitigation_state fw_state, state = SPECTRE_VULNERABLE;
 	struct bp_hardening_data *data = this_cpu_ptr(&bp_hardening_data);
+||||||| BASE
+	enum mitigation_state fw_state, state = SPECTRE_VULNERABLE;
+=======
+	enum mitigation_state state = SPECTRE_VULNERABLE;
+>>>>>>> BRANCH (ecbc622e0f5202e17a2f13dadb0900273faee0eb Linux 5.10.239)
 
 	if (!is_spectre_bhb_affected(entry, SCOPE_LOCAL_CPU))
 		return;
@@ -1020,7 +1180,7 @@ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
 		/* No point mitigating Spectre-BHB alone. */
 	} else if (!IS_ENABLED(CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY)) {
 		pr_info_once("spectre-bhb mitigation disabled by compile time option\n");
-	} else if (cpu_mitigations_off()) {
+	} else if (cpu_mitigations_off() || __nospectre_bhb) {
 		pr_info_once("spectre-bhb mitigation disabled by command line option\n");
 	} else if (supports_ecbhb(SCOPE_LOCAL_CPU)) {
 		state = SPECTRE_MITIGATED;
@@ -1035,6 +1195,7 @@ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
 
 		this_cpu_set_vectors(EL1_VECTOR_BHB_CLEAR_INSN);
 		state = SPECTRE_MITIGATED;
+<<<<<<< HEAD   (7f6f0e358965d6a8c169dfad6b10e096f1f228ae Merge 952596b08c74 ("mm/hugetlb: fix huge_pmd_unshare() vs G)
 		set_bit(BHB_INSN, &system_bhb_mitigations);
 	} else if (spectre_bhb_loop_affected(SCOPE_LOCAL_CPU)) {
 		/*
@@ -1045,9 +1206,43 @@ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
 		 */
 		if (!data->slot)
 			data->slot = HYP_VECTOR_INDIRECT;
+||||||| BASE
+	} else if (spectre_bhb_loop_affected(SCOPE_LOCAL_CPU)) {
+		switch (spectre_bhb_loop_affected(SCOPE_SYSTEM)) {
+		case 8:
+			kvm_setup_bhb_slot(__spectre_bhb_loop_k8);
+			break;
+		case 24:
+			kvm_setup_bhb_slot(__spectre_bhb_loop_k24);
+			break;
+		case 32:
+			kvm_setup_bhb_slot(__spectre_bhb_loop_k32);
+			break;
+		default:
+			WARN_ON_ONCE(1);
+		}
+		this_cpu_set_vectors(EL1_VECTOR_BHB_LOOP);
+=======
+	} else if (spectre_bhb_loop_affected()) {
+		switch (max_bhb_k) {
+		case 8:
+			kvm_setup_bhb_slot(__spectre_bhb_loop_k8);
+			break;
+		case 24:
+			kvm_setup_bhb_slot(__spectre_bhb_loop_k24);
+			break;
+		case 32:
+			kvm_setup_bhb_slot(__spectre_bhb_loop_k32);
+			break;
+		default:
+			WARN_ON_ONCE(1);
+		}
+		this_cpu_set_vectors(EL1_VECTOR_BHB_LOOP);
+>>>>>>> BRANCH (ecbc622e0f5202e17a2f13dadb0900273faee0eb Linux 5.10.239)
 
 		this_cpu_set_vectors(EL1_VECTOR_BHB_LOOP);
 		state = SPECTRE_MITIGATED;
+<<<<<<< HEAD   (7f6f0e358965d6a8c169dfad6b10e096f1f228ae Merge 952596b08c74 ("mm/hugetlb: fix huge_pmd_unshare() vs G)
 		set_bit(BHB_LOOP, &system_bhb_mitigations);
 	} else if (is_spectre_bhb_fw_affected(SCOPE_LOCAL_CPU)) {
 		fw_state = spectre_bhb_get_cpu_fw_mitigation_state();
@@ -1062,7 +1257,19 @@ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
 				data->slot += 1;
 
 			this_cpu_set_vectors(EL1_VECTOR_BHB_FW);
+||||||| BASE
+	} else if (is_spectre_bhb_fw_affected(SCOPE_LOCAL_CPU)) {
+		fw_state = spectre_bhb_get_cpu_fw_mitigation_state();
+		if (fw_state == SPECTRE_MITIGATED) {
+			kvm_setup_bhb_slot(__smccc_workaround_3_smc);
+			this_cpu_set_vectors(EL1_VECTOR_BHB_FW);
+=======
+	} else if (has_spectre_bhb_fw_mitigation()) {
+		kvm_setup_bhb_slot(__smccc_workaround_3_smc);
+		this_cpu_set_vectors(EL1_VECTOR_BHB_FW);
+>>>>>>> BRANCH (ecbc622e0f5202e17a2f13dadb0900273faee0eb Linux 5.10.239)
 
+<<<<<<< HEAD   (7f6f0e358965d6a8c169dfad6b10e096f1f228ae Merge 952596b08c74 ("mm/hugetlb: fix huge_pmd_unshare() vs G)
 			/*
 			 * The WA3 call in the vectors supersedes the WA1 call
 			 * made during context-switch. Uninstall any firmware
@@ -1075,11 +1282,19 @@ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
 			state = SPECTRE_MITIGATED;
 			set_bit(BHB_FW, &system_bhb_mitigations);
 		}
+||||||| BASE
+			state = SPECTRE_MITIGATED;
+		}
+=======
+		state = SPECTRE_MITIGATED;
+		spectre_bhb_fw_mitigated = true;
+>>>>>>> BRANCH (ecbc622e0f5202e17a2f13dadb0900273faee0eb Linux 5.10.239)
 	}
 
 	update_mitigation_state(&spectre_bhb_state, state);
 }
 
+<<<<<<< HEAD   (7f6f0e358965d6a8c169dfad6b10e096f1f228ae Merge 952596b08c74 ("mm/hugetlb: fix huge_pmd_unshare() vs G)
 /* Patched to NOP when enabled */
 void noinstr spectre_bhb_patch_loop_mitigation_enable(struct alt_instr *alt,
 						     __le32 *origptr,
@@ -1100,6 +1315,12 @@ void noinstr spectre_bhb_patch_fw_mitigation_enabled(struct alt_instr *alt,
 
 	if (test_bit(BHB_FW, &system_bhb_mitigations))
 		*updptr++ = cpu_to_le32(aarch64_insn_gen_nop());
+||||||| BASE
+=======
+bool is_spectre_bhb_fw_mitigated(void)
+{
+	return spectre_bhb_fw_mitigated;
+>>>>>>> BRANCH (ecbc622e0f5202e17a2f13dadb0900273faee0eb Linux 5.10.239)
 }
 
 /* Patched to correct the immediate */
@@ -1108,7 +1329,6 @@ void noinstr spectre_bhb_patch_loop_iter(struct alt_instr *alt,
 {
 	u8 rd;
 	u32 insn;
-	u16 loop_count = spectre_bhb_loop_affected(SCOPE_SYSTEM);
 
 	BUG_ON(nr_inst != 1); /* MOV -> MOV */
 
@@ -1117,7 +1337,7 @@ void noinstr spectre_bhb_patch_loop_iter(struct alt_instr *alt,
 
 	insn = le32_to_cpu(*origptr);
 	rd = aarch64_insn_decode_register(AARCH64_INSN_REGTYPE_RD, insn);
-	insn = aarch64_insn_gen_movewide(rd, loop_count, 0,
+	insn = aarch64_insn_gen_movewide(rd, max_bhb_k, 0,
 					 AARCH64_INSN_VARIANT_64BIT,
 					 AARCH64_INSN_MOVEWIDE_ZERO);
 	*updptr++ = cpu_to_le32(insn);
