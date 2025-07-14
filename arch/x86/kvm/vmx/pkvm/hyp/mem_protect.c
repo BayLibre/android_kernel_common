@@ -782,6 +782,19 @@ static int guest_request_unshare(const struct pkvm_mem_transition *tx)
 					      addr, size, PKVM_PAGE_SHARED_OWNED);
 }
 
+static int hyp_ack_unshare(const struct pkvm_mem_transition *tx)
+{
+	u64 cur, start = tx->completer.hyp.addr;
+	u64 end = start + tx->size;
+
+	for (cur = start; cur < end; cur += PAGE_SIZE) {
+		if (hyp_page_count(__pkvm_va(cur)))
+			return -EBUSY;
+	}
+
+	return 0;
+}
+
 static int host_ack_unshare(const struct pkvm_mem_transition *tx)
 {
 	u64 addr = tx->completer.host.addr;
@@ -820,7 +833,7 @@ static int check_unshare(const struct pkvm_mem_transition *tx)
 
 	switch (tx->completer.id) {
 	case PKVM_ID_HYP:
-		ret = 0;
+		ret = hyp_ack_unshare(tx);
 		break;
 	case PKVM_ID_HOST:
 		ret = host_ack_unshare(tx);
@@ -1058,6 +1071,9 @@ int __pkvm_host_unshare_hyp(u64 gpa, u64 size)
 		},
 		.completer	= {
 			.id	= PKVM_ID_HYP,
+			.hyp = {
+				.addr	= host_gpa2hpa(start),
+			},
 		},
 	};
 	int ret;
@@ -1069,4 +1085,44 @@ int __pkvm_host_unshare_hyp(u64 gpa, u64 size)
 	host_ept_unlock();
 
 	return ret;
+}
+
+static int __pkvm_pin_unpin_mem(u64 phys, u64 size, bool pin,
+				enum pkvm_page_state expt_pgstate)
+{
+	u64 cur, start = PAGE_ALIGN_DOWN(phys);
+	u64 end = PAGE_ALIGN(phys + size);
+	int failed_pages = 0;
+
+	for (cur = start; cur < end; cur += PAGE_SIZE) {
+		if (__host_check_page_state_range(NULL, cur, PAGE_SIZE, expt_pgstate)) {
+			failed_pages++;
+			continue;
+		}
+
+		if (pin)
+			hyp_page_ref_inc(hyp_phys_to_page(cur));
+		else
+			hyp_page_ref_dec(hyp_phys_to_page(cur));
+	}
+
+	return failed_pages ? -EPERM : 0;
+}
+
+int __pkvm_pin_shared_mem(u64 phys, u64 size)
+{
+	int ret;
+
+	host_ept_lock();
+	ret = __pkvm_pin_unpin_mem(phys, size, true, PKVM_PAGE_SHARED_OWNED);
+	host_ept_unlock();
+
+	return ret;
+}
+
+void __pkvm_unpin_shared_mem(u64 phys, u64 size)
+{
+	host_ept_lock();
+	WARN_ON(__pkvm_pin_unpin_mem(phys, size, false, PKVM_PAGE_SHARED_OWNED));
+	host_ept_unlock();
 }
