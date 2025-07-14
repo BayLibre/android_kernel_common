@@ -142,6 +142,7 @@ int pkvm_vm_mmu_map(int vm_handle, u64 gpa, u64 hpa, u64 size, bool writable)
 	prot = writable ? guest_pgt_cap.prot_rwx :
 			  guest_pgt_cap.prot_rx;
 	prot |= guest_pgt_cap.mt_memory;
+	prot |= guest_pgt_cap.access_bit;
 
 	pkvm_spin_lock(&pkvm_vm->pgt_lock);
 	ret = pkvm_pgtable_map(&pkvm_vm->pgt, gpa, hpa, size, 0, prot, guest_pgt_map_leaf);
@@ -188,6 +189,75 @@ int pkvm_vm_mmu_unmap(int vm_handle, u64 gpa, u64 size)
 	pkvm_spin_lock(&pkvm_vm->pgt_lock);
 	ret = pkvm_pgtable_unmap(&pkvm_vm->pgt, gpa, size, guest_pgt_unmap_leaf);
 	pkvm_spin_unlock(&pkvm_vm->pgt_lock);
+
+put_pkvm_vm:
+	put_pkvm_vm(pkvm_vm);
+	return ret;
+}
+
+struct guest_pgt_age_data {
+	bool mkold;
+	bool young;
+};
+
+static int guest_pgt_age_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr,
+			      unsigned long vaddr_end, int level, void *ptep,
+			      unsigned long flags, struct pgt_flush_data *flush_data,
+			      void *const arg)
+{
+	struct guest_pgt_age_data *data = arg;
+	u64 pte;
+
+	if (!pgt->pgt_ops->pgt_entry_present(ptep))
+		return 0;
+
+	pte = *(u64 *)ptep;
+	if (!(pte & guest_pgt_cap.access_bit))
+		return 0;
+
+	data->young = true;
+
+	if (data->mkold)
+		pgt->pgt_ops->pgt_set_entry(ptep, pte & ~guest_pgt_cap.access_bit);
+
+	/*
+	 * Do not flush TLB here. It will be flushed by the MMU notifier in KVM-high
+	 * if needed.
+	 */
+
+	return 0;
+}
+
+int pkvm_vm_mmu_age(int vm_handle, u64 gpa, u64 size, bool mkold)
+{
+	struct guest_pgt_age_data data = {
+		.mkold = mkold,
+		.young = false,
+	};
+	struct pkvm_pgtable_walker walker = {
+		.cb = guest_pgt_age_leaf,
+		.arg = &data,
+		.flags = PKVM_PGTABLE_WALK_LEAF,
+	};
+	struct pkvm_vm *pkvm_vm;
+	int ret;
+
+	pkvm_vm = get_pkvm_vm(vm_handle);
+	if (!pkvm_vm)
+		return -EINVAL;
+
+	if (pkvm_is_protected_vm(to_kvm(pkvm_vm))) {
+		ret = -EPERM;
+		goto put_pkvm_vm;
+	}
+
+	pkvm_spin_lock(&pkvm_vm->pgt_lock);
+	ret = pgtable_walk(&pkvm_vm->pgt, gpa, size, true, &walker);
+	pkvm_spin_unlock(&pkvm_vm->pgt_lock);
+
+	WARN_ON_ONCE(ret);
+	if (!ret)
+		ret = data.young;
 
 put_pkvm_vm:
 	put_pkvm_vm(pkvm_vm);
