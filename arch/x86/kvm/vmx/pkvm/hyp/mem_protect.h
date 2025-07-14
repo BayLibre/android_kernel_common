@@ -236,4 +236,31 @@ int __pkvm_host_share_hyp(u64 gpa, u64 size);
  */
 int __pkvm_host_unshare_hyp(u64 gpa, u64 size);
 
+/**
+ * hyp_pin_shared_mem() - Pin the share pages
+ *
+ * @gpa:	Start gpa of the shared pages, must be continuous.
+ * @size:	The size of memory to be pinned.
+ *
+ * The pinned range is the minimum PAGE_SIZE-aligned range covering [@gpa,
+ * @gpa + @size). Only the page which the page state is PAGE_SHARED_OWNED can
+ * be pinned via incrementing the refcount of the corresponding hyp_page, which
+ * can prevent the shared pages from being unshared without unpin.
+ *
+ * Return: 0 on success, negative value on failure.
+ */
+int hyp_pin_shared_mem(u64 gpa, u64 size);
+
+/**
+ * hyp_unpin_shared_mem() - Unpin the share pages
+ *
+ * @gpa:	Start gpa of the shared pages, must be continuous.
+ * @size:	The size of memory to be unpinned.
+ *
+ * The unpinned range is the minimum PAGE_SIZE-aligned range covering [@gpa,
+ * @gpa + @size). Only the page which the page state is PAGE_SHARED_OWNED can
+ * be unpinned via decrementing the refcount of the corresponding hyp_page.
+ */
+void hyp_unpin_shared_mem(u64 gpa, u64 size);
+
 #endif
