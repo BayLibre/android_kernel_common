@@ -8023,14 +8023,6 @@ int setup_vmx(void)
 	enable_sgx = false;
 #endif
 
-	/*
-	 * FIXME: the pkvm hypervisor emulated MSR_IA32_VMX_EPT_VPID_CAP by
-	 * removing VMX_EPT_AD_BIT. So the host KVM cannot see this bit. To
-	 * keep align with the host KVM, disable enable_ept_ad_bits in the pkvm
-	 * hypervisor. Revisit later when PV method is fully functional.
-	 */
-	enable_ept_ad_bits = 0;
-
 #ifdef CONFIG_PKVM_INTEL_DEBUG
 	dump_invalid_vmcs = true;
 #endif

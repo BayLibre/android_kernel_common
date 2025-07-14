@@ -110,6 +110,7 @@ void ept_set_mmu_caps(void)
 	guest_pgt_cap.prot_rwx = guest_pgt_cap.prot_mask;
 	guest_pgt_cap.prot_rx = guest_pgt_cap.prot_rwx & ~VMX_EPT_WRITABLE_MASK;
 	guest_pgt_cap.mt_memory = MTRR_TYPE_WRBACK << VMX_EPT_MT_EPTE_SHIFT;
+	guest_pgt_cap.access_bit = VMX_EPT_ACCESS_BIT;
 
 	guest_pgt_ops = &ept_ops;
 }
