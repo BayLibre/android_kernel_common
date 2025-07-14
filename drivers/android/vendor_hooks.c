@@ -502,3 +502,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_swap_bio_charge);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_folio_drop_mmap_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_folio_drop_mmap_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_update_page);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_isolate_priv_lru);
