@@ -24,6 +24,7 @@ struct pkvm_pgtable_cap {
 	u64 prot_mask;
 	u64 prot_rwx;
 	u64 prot_rx;
+	u64 access_bit;
 };
 
 struct idt_page {
