@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e16e5f41_69a7bff9",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-14T12:31:21Z",
+      "side": 1,
+      "message": "Hmm, just realized: we ignore pasid here?\n\nSo, although we have no use cases for PASIDs yet, to keep the code correct we should not add ptdev until we know which PASID it wants to use (i.e. until we walk the PASID table).\n\nSo it seems that instead of doing iommu_find_ptdev()/iommu_add_ptdev() here and passing ptdev around, we should just check is_dev_in_satc() here (since we know the BDF, so we don\u0027t need any other information here)?",
+      "revId": "5f92fa52200241811202a5521018cfb3290a9b2d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
