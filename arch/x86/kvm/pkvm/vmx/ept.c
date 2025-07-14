@@ -109,6 +109,7 @@ void pkvm_ept_set_mmu_caps(void)
 	guest_pgt_cap.prot_mask = VMX_EPT_RWX_MASK;
 	guest_pgt_cap.prot_rwx = guest_pgt_cap.prot_mask;
 	guest_pgt_cap.prot_rx = guest_pgt_cap.prot_rwx & ~VMX_EPT_WRITABLE_MASK;
+	guest_pgt_cap.access_bit = VMX_EPT_ACCESS_BIT;
 
 	guest_pgt_ops = &ept_ops;
 }
