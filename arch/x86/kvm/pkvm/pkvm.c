@@ -8,6 +8,7 @@
 //FIXME: clean up the header files
 #include <vmx/pkvm/hyp/mem_protect.h>
 #include <vmx/pkvm/hyp/memory.h>
+#include <vmx/pkvm/hyp/trace.h>
 #include <pkvm.h>
 
 /*
@@ -55,7 +56,7 @@ static void pkvm_disable_virtualization_cpu(void)
 
 #define HANDLE_OFFSET 1
 
-static int idx_to_vm_handle(int idx)
+int idx_to_vm_handle(int idx)
 {
 	return idx + HANDLE_OFFSET;
 }
@@ -218,6 +219,8 @@ static int attach_pkvm_vcpu_to_vm(struct pkvm_vcpu *pkvm_vcpu, struct pkvm_vm *p
 	ret = kvm_arch_vcpu_create(vcpu);
 	if (ret)
 		goto out;
+
+	pkvm_vcpu_perf_init(vcpu);
 
 	pkvm_vm->vcpus[pkvm_vcpu->vcpu_idx] = pkvm_vcpu;
 	kvm->created_vcpus++;

@@ -4,6 +4,7 @@
 
 #include <asm/kvm_host.h>
 #include <asm/pkvm_spinlock.h>
+#include <pkvm_trace.h>
 
 #define PKVM_MAX_NORMAL_VM_NUM		8
 #define PKVM_MAX_PROTECTED_VM_NUM	2
@@ -41,6 +42,8 @@ struct pkvm_vcpu {
 	unsigned long reqs_to_host;
 	/* The host emulated MSR error */
 	int host_emulated_msr_err;
+	/* Vmexit perf data on this vcpu */
+	struct vmexit_perf perf;
 } __aligned(PAGE_SIZE);
 
 /*
@@ -152,6 +155,7 @@ extern struct pkvm_x86_ops pkvm_x86_ops;
 	(pkvm_x86_ops.func);				\
 })
 
+int idx_to_vm_handle(int idx);
 struct pkvm_vm *get_pkvm_vm(int handle);
 void put_pkvm_vm(struct pkvm_vm *pkvm_vm);
 struct pkvm_vcpu *get_pkvm_vcpu(int vm_handle, int vcpu_handle);

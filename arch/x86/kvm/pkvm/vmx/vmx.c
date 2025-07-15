@@ -6810,7 +6810,7 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
 
 	trace_kvm_exit(vcpu, KVM_ISA_VMX);
 #else
-	trace_vmexit_start(vcpu, true);
+	trace_vmexit_start(vcpu);
 #endif
 
 	if (unlikely(vmx->exit_reason.failed_vmentry))
