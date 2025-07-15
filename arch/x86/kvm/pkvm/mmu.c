@@ -12,17 +12,15 @@
 #include <vmx/pkvm/hyp/memory.h>
 #include <pkvm.h>
 
-/*
- * FIXME: temporarily reusing the shadow pgt memory pool.
- * Replace it with a memcache supplied by KVM-high.
- */
+DECLARE_PER_CPU(struct pkvm_vm *, __current_vm);
+#define current_vm (*this_cpu_ptr(&__current_vm))
 
 static void *guest_mmu_zalloc_page(void *mc)
 {
 	struct hyp_page *p;
 	void *page;
 
-	page = hyp_alloc_pages(&shadow_pgt_pool, 0);
+	page = hyp_alloc_pages(&current_vm->pool, 0);
 	if (page)
 		return page;
 
@@ -39,12 +37,12 @@ static void *guest_mmu_zalloc_page(void *mc)
 
 static void guest_mmu_get_page(void *vaddr)
 {
-	hyp_get_page(&shadow_pgt_pool, vaddr);
+	hyp_get_page(&current_vm->pool, vaddr);
 }
 
 static void guest_mmu_put_page(void *vaddr)
 {
-	hyp_put_page(&shadow_pgt_pool, vaddr);
+	hyp_put_page(&current_vm->pool, vaddr);
 }
 
 static void guest_tlb_shootdown(struct pkvm_pgtable *pgt,
@@ -73,10 +71,17 @@ static void guest_tlb_shootdown(struct pkvm_pgtable *pgt,
 	pkvm_spin_unlock(&pkvm_vm->lock);
 }
 
-int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm)
+int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm, void *pgd)
 {
 	struct pkvm_pgtable_cap cap;
 	struct pkvm_pgtable_ops *pgt_ops;
+	unsigned long nr_pages;
+	int ret;
+
+	nr_pages = 1;
+	ret = hyp_pool_init(&pkvm_vm->pool, hyp_virt_to_pfn(pgd), nr_pages, 0);
+	if (ret)
+		return ret;
 
 	pkvm_x86_call(get_mmu_caps)(&cap, &pgt_ops);
 
@@ -92,8 +97,11 @@ int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm)
 	};
 	pkvm_vm->pgt_lock = __PKVM_SPINLOCK_UNLOCKED;
 
-	return pkvm_pgtable_init(&pkvm_vm->pgt, &pkvm_vm->pgt_mm_ops, pgt_ops,
+	guest_pgt_lock(pkvm_vm);
+	ret = pkvm_pgtable_init(&pkvm_vm->pgt, &pkvm_vm->pgt_mm_ops, pgt_ops,
 				 &cap, true);
+	guest_pgt_unlock(pkvm_vm);
+	return ret;
 }
 
 static bool range_has_pvmfw(struct kvm *kvm, u64 gpa_start, u64 gpa_end)
@@ -222,7 +230,7 @@ int pkvm_vm_mmu_map(int vm_handle, int vcpu_handle, u64 gpa, u64 hpa, u64 size)
 		return -EINVAL;
 	}
 
-	pkvm_spin_lock(&pkvm_vm->pgt_lock);
+	guest_pgt_lock(pkvm_vm);
 
 	/* Top-up our per-vcpu memcache from the host's */
 	ret = pkvm_refill_memcache(pkvm_vcpu);
@@ -232,7 +240,7 @@ int pkvm_vm_mmu_map(int vm_handle, int vcpu_handle, u64 gpa, u64 hpa, u64 size)
 	ret = pkvm_pgtable_map(&pkvm_vm->pgt, gpa, hpa, size, 0, prot,
 			       guest_pgt_map_leaf,
 			       &pkvm_vcpu->shared_vcpu->arch.stage2_mc);
-	pkvm_spin_unlock(&pkvm_vm->pgt_lock);
+	guest_pgt_unlock(pkvm_vm);
 
 	put_pkvm_vm(pkvm_vm);
 	put_pkvm_vcpu(pkvm_vcpu);
@@ -272,9 +280,9 @@ int pkvm_vm_mmu_unmap(int vm_handle, u64 gpa, u64 size)
 		goto put_pkvm_vm;
 	}
 
-	pkvm_spin_lock(&pkvm_vm->pgt_lock);
+	guest_pgt_lock(pkvm_vm);
 	ret = pkvm_pgtable_unmap(&pkvm_vm->pgt, gpa, size, guest_pgt_unmap_leaf);
-	pkvm_spin_unlock(&pkvm_vm->pgt_lock);
+	guest_pgt_unlock(pkvm_vm);
 
 put_pkvm_vm:
 	put_pkvm_vm(pkvm_vm);
@@ -328,5 +336,7 @@ void pkvm_vm_mmu_destroy(struct pkvm_vm *pkvm_vm)
 	/* vCPUs are already torn down, no need to flush TLBs. */
 	pkvm_vm->pgt.mm_ops->flush_tlb = NULL;
 
+	guest_pgt_lock(pkvm_vm);
 	pkvm_pgtable_destroy(&pkvm_vm->pgt, guest_pgt_free_leaf);
+	guest_pgt_unlock(pkvm_vm);
 }

@@ -54,7 +54,10 @@ typedef u32 pkvm_id;
 #define OWNER_ID_INV	(~(u32)0UL)
 
 struct pkvm_pgtable;
+struct pkvm_vm;
 
+void guest_pgt_lock(struct pkvm_vm *vm);
+void guest_pgt_unlock(struct pkvm_vm *vm);
 /*
  * __pkvm_host_donate_hyp() - Donate pages from host to hyp, then host cannot
  * access these donated pages.

@@ -4,7 +4,7 @@
 
 #include "pkvm.h"
 
-int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm);
+int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm, void *pgd);
 void pkvm_vm_mmu_destroy(struct pkvm_vm *pkvm_vm);
 int pkvm_vm_mmu_map(int vm_handle, int vcpu_handle, u64 gpa, u64 hpa, u64 size);
 int pkvm_vm_mmu_unmap(int handle, u64 gpa, u64 size);
