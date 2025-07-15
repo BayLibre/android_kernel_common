@@ -143,7 +143,7 @@ static void teardown_donated_memory(struct pkvm_memcache *mc, void *addr, size_t
 	__pkvm_hyp_donate_host(pkvm_virt_to_phys(addr), size);
 }
 
-static int pkvm_vm_init(struct kvm *shared_kvm, unsigned long gpa)
+static int pkvm_vm_init(struct kvm *shared_kvm, unsigned long gpa, unsigned long pgd_gpa)
 {
 	unsigned long pkvm_vm_pa;
 	struct pkvm_vm *pkvm_vm;
@@ -177,7 +177,7 @@ static int pkvm_vm_init(struct kvm *shared_kvm, unsigned long gpa)
 	if (ret)
 		goto undonate;
 
-	ret = pkvm_vm_mmu_init(pkvm_vm);
+	ret = pkvm_vm_mmu_init(pkvm_vm, pgd_gpa);
 	if (ret)
 		goto vm_destroy;
 
@@ -418,6 +418,32 @@ static void pkvm_free_percpu_memcache(struct kvm_vcpu *vcpu, struct pkvm_memcach
 	}
 }
 
+static void drain_hyp_per_vm_pool(struct pkvm_memcache *teardown_mc, struct hyp_pool *vm_pool)
+{
+	struct hyp_page *page;
+
+	void *p = hyp_alloc_pages(vm_pool, 0);
+
+	while (p) {
+		page = hyp_virt_to_page(p);
+
+		/* Don't expect per vm pool to have greater order pages */
+		WARN_ON(page->order);
+
+		hyp_page_ref_dec(page);
+
+		push_pkvm_memcache(teardown_mc, p, hyp_virt_to_phys);
+
+		/*
+		 * Pages stored in pool are zeroed by __hyp_attach_page so do
+		 * not repeat this step before donation
+		 */
+		WARN_ON(__pkvm_hyp_donate_host(pkvm_virt_to_phys(p), PAGE_SIZE));
+
+		p = hyp_alloc_pages(vm_pool, 0);
+	}
+}
+
 static void pkvm_vm_destroy(int handle)
 {
 	struct kvm_protected_vm *shared_pkvm;
@@ -448,6 +474,11 @@ static void pkvm_vm_destroy(int handle)
 
 	pkvm_vm_mmu_destroy(pkvm_vm);
 
+	/*
+	 * Drain per VM pool after destroying the page-table so the pool
+	 * contains all pages freed during that step.
+	 */
+	drain_hyp_per_vm_pool(&shared_pkvm->s2_teardown_mc, &pkvm_vm->pool);
 	kvm_arch_destroy_vm(to_kvm(pkvm_vm));
 	teardown_donated_memory(&shared_pkvm->teardown_mc,
 				(void *)pkvm_vm, pkvm_vm->size);
@@ -1702,7 +1733,7 @@ unsigned long handle_kvm_call(unsigned long fn, unsigned long p1,
 		ret = kvm_x86_call(check_processor_compatibility)();
 		break;
 	case __pkvm__vm_init:
-		ret = pkvm_vm_init((struct kvm *)kern_pkvm_va((void *)p1), p2);
+		ret = pkvm_vm_init((struct kvm *)kern_pkvm_va((void *)p1), p2, p3);
 		break;
 	case __pkvm__vm_finalize:
 		ret = pkvm_vm_finalize((int)p1);
