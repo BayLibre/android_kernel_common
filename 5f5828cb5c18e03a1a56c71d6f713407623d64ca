@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c893bb3a_9b2403a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1887488
+      },
+      "writtenOn": "2025-07-15T12:31:59Z",
+      "side": 1,
+      "message": "Originally, Linux did not override FOPEN_PASSTHROUGH. However, using mmap could cause an issue where a file is simultaneously treated as both a cached and non-cached inode. That is why FOPEN_DIRECT_IO was made to override FOPEN_PASSTHROUGH.\nDid you upstream this change and check whether it addresses the issue previously encountered with maintainer?\n\nhttps://lore.kernel.org/linux-fsdevel/20240206142453.1906268-1-amir73il@gmail.com/\nhttps://sourceforge.net/p/fuse/mailman/message/56898505/",
+      "revId": "5f5828cb5c18e03a1a56c71d6f713407623d64ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
