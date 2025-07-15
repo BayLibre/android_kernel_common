@@ -759,6 +759,7 @@ static int pkvm_vm_init(struct kvm *kvm)
 	struct kvm_protected_vm *pkvm = &kvm->arch.pkvm;
 	size_t pkvm_vm_sz;
 	void *pkvm_vm;
+	void *vm_init_pool;
 	int ret;
 
 	ret = vmx_vm_init(kvm);
@@ -775,9 +776,13 @@ static int pkvm_vm_init(struct kvm *kvm)
 	if (!pkvm_vm)
 		return -ENOMEM;
 
+	/* Single page for per VM pool init */
+	vm_init_pool = (void *)__get_free_pages(GFP_KERNEL_ACCOUNT, 0);
+	if (!vm_init_pool)
+		return -ENOMEM;
 	/* TODO: share struct kvm_vmx with pkvm */
 
-	ret = kvm_call_pkvm(vm_init, kvm, __pa(pkvm_vm));
+	ret = kvm_call_pkvm(vm_init, kvm, __pa(pkvm_vm), __pa(vm_init_pool));
 	if (ret < 0)
 		goto free_page;
 

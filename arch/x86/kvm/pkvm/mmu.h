@@ -10,7 +10,7 @@
 extern struct pkvm_pgtable_cap guest_pgt_cap;
 extern struct pkvm_pgtable_ops *guest_pgt_ops;
 
-int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm);
+int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm, void *pgd);
 void pkvm_vm_mmu_destroy(struct pkvm_vm *pkvm_vm);
 int pkvm_vm_mmu_map(struct kvm_vcpu *shared_vcpu, u64 gpa, u64 hpa, u64 size, bool writable);
 int pkvm_vm_mmu_unmap(int vm_handle, u64 gpa, u64 size);
