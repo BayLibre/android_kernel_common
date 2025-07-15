@@ -1,6 +1,92 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad4a2220_2e2a031a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-07-15T01:36:19Z",
+      "side": 1,
+      "message": "this needs a better subject e.g. `ANDROID: binder: add vendor hook to determine call type` or something like that.",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 50
+      },
+      "revId": "990de7f0b4fe6e6b2f230ad09ed82cc92385f215",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdb82b4a_11618b60",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-07-15T01:36:19Z",
+      "side": 1,
+      "message": "Call type is more than \"reply\" or \"not\". It is \"sync\" (0), \"async\" (1), \"reply\" (2).",
+      "range": {
+        "startLine": 9,
+        "startChar": 97,
+        "endLine": 9,
+        "endChar": 116
+      },
+      "revId": "990de7f0b4fe6e6b2f230ad09ed82cc92385f215",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6937ac7a_9dfe5d73",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-07-15T01:36:19Z",
+      "side": 1,
+      "message": "nit: please wrap the commit message, most people do 72 chars length.",
+      "range": {
+        "startLine": 9,
+        "startChar": 71,
+        "endLine": 9,
+        "endChar": 73
+      },
+      "revId": "990de7f0b4fe6e6b2f230ad09ed82cc92385f215",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1c6073f_e9b5aeeb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-07-15T01:36:19Z",
+      "side": 1,
+      "message": "Please stop putting empty lines between tags.",
+      "revId": "990de7f0b4fe6e6b2f230ad09ed82cc92385f215",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "9b31d4a9_4c27483f",
@@ -67,6 +153,23 @@
       "side": 1,
       "message": "Binder is not a place to differentiate features due to it being a core feature of Android systems.",
       "parentUuid": "2123899d_140d4b0c",
+      "revId": "990de7f0b4fe6e6b2f230ad09ed82cc92385f215",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23ca12f0_616054f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-07-15T01:36:19Z",
+      "side": 1,
+      "message": "Important: why do you need to determine the \"call type\" and send it to a vendor hook? where is this info?",
       "revId": "990de7f0b4fe6e6b2f230ad09ed82cc92385f215",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -209,6 +312,53 @@
         "startChar": 0,
         "endLine": 3223,
         "endChar": 56
+      },
+      "revId": "990de7f0b4fe6e6b2f230ad09ed82cc92385f215",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22fb8edb_8e093ec7",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3223,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-07-15T01:36:19Z",
+      "side": 1,
+      "message": "These values (0 - 2), are internal and only for logging purposes. They have no strict relationship with the \"call_type\". Please don\u0027t use them. You can always use `tr-\u003eflags` and `reply` individually.",
+      "parentUuid": "b826a691_927fe751",
+      "range": {
+        "startLine": 3223,
+        "startChar": 0,
+        "endLine": 3223,
+        "endChar": 56
+      },
+      "revId": "990de7f0b4fe6e6b2f230ad09ed82cc92385f215",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1cef5d0_f5a18219",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3449,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-07-15T01:36:19Z",
+      "side": 1,
+      "message": "Not the transaction already holds `t-\u003eflags` and `t-\u003efrom` populated later on. So you could determine the \"call type\" if needed with only `t`. However, you would need to relocate the vendor hook.",
+      "range": {
+        "startLine": 3449,
+        "startChar": 47,
+        "endLine": 3449,
+        "endChar": 48
       },
       "revId": "990de7f0b4fe6e6b2f230ad09ed82cc92385f215",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
