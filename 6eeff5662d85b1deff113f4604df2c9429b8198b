@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfaf7f51_de106a61",
+        "filename": "arch/x86/kvm/pkvm/entry.S",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-07-15T15:50:42Z",
+      "side": 1,
+      "message": "I am not familiar with this vulnerability mitigation technique, this question might be dumb :-). The linux code has a `.skip` here and the comment mentions that its for safety. \n```\n\t/*\n\t * Shift instructions so that the RET is in the upper half of the\n\t * cacheline and don\u0027t take the slowpath to its_return_thunk.\n\t */\n\t.skip 32 - (.Lret1 - 1f), 0xcc\n```\nDo we need it here as well?",
+      "fixSuggestions": [
+        {
+          "fixId": "bc2b0c15_70e6af49",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/entry.S",
+              "range": {
+                "startLine": 59,
+                "startChar": 0,
+                "endLine": 59,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * Shift inst to avoid the return address being in the same cache line\n\t * as the call instruction.\n\t */\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/entry.S",
+              "range": {
+                "startLine": 63,
+                "startChar": 0,
+                "endLine": 63,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * Shift inst to avoid the return address being in the same cache line\n\t * as the call instruction.\n\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6eeff5662d85b1deff113f4604df2c9429b8198b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30b024d3_f8cf359b",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-07-15T15:50:42Z",
+      "side": 1,
+      "message": "I see that this is used in vmenter.S but do not see it being set/unset anywhere. Does pkvm make use of it or just added for successful compilattion?",
+      "fixSuggestions": [
+        {
+          "fixId": "9f4bcdb0_25de0148",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 20,
+                "startChar": 0,
+                "endLine": 20,
+                "endChar": 0
+              },
+              "replacement": "// TODO: Add the implementation to set/unset kvm_rebooting.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6eeff5662d85b1deff113f4604df2c9429b8198b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
