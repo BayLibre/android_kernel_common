@@ -18,6 +18,8 @@ DECLARE_PER_CPU(struct kvm_vcpu *, host_vcpu);
 extern size_t pkvm_vm_sz;
 extern size_t pkvm_vcpu_sz;
 
+struct hyp_pool;
+
 /*
  * Struct kvm_vcpu can be appended in the end of pkvm_vcpu as below:
  *  ---------------------
@@ -75,6 +77,7 @@ struct pkvm_vm {
 
 	/* The guest's stage-2 page table managed by the hypervisor */
 	struct pkvm_pgtable mmu;
+	struct hyp_pool pool;
 	pkvm_spinlock_t mmu_lock;
 
 	/*
