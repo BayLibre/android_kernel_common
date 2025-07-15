@@ -110,6 +110,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5124c852_8fc2fabf",
+        "filename": "drivers/gpu/drm/xe/xe_uc_fw.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 4130765
+      },
+      "writtenOn": "2025-07-15T03:16:17Z",
+      "side": 1,
+      "message": "Actually GuC/HuC patches was present in drm-xe-next. we pulled into 6.12-desktop branch.\nNow if I see this patch, it became an orphan patch(not linked to any branches and tags).\nhttps://gitlab.freedesktop.org/drm/xe/kernel/-/commit/9a67bf39ece1cfd828f8c671c61f7f3c1c694a30\n\nSo, we did revert to remove this patch from the 6.12 desktop branch and UPREV the xe firmwares for the latest version.\n\nNow, we have abandoned revert patches, as per your comment, where those revert patches were not present in Upstream",
+      "parentUuid": "200b04e3_0120fecc",
+      "revId": "e4445e7ee47e08f69308e4372c2115a415e39a70",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "57be86af_90cddf7b",
         "filename": "drivers/gpu/drm/xe/xe_uc_fw.c",
         "patchSetId": 1
