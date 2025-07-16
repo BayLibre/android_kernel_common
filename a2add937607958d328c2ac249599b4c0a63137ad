@@ -1,0 +1,131 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e04e4d76_47aeb3b7",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-07-16T22:30:37Z",
+      "side": 1,
+      "message": "Delete this.",
+      "range": {
+        "startLine": 610,
+        "startChar": 1,
+        "endLine": 610,
+        "endChar": 16
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ded9d947_c4294903",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 610,
+                "startChar": 0,
+                "endLine": 610,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * Clear wakeup flag before starting fs sync to avoid a race condition\n\t * where a wakeup event could arrive before the fs sync is started,\n\t * causing the system to miss the wakeup and hang.\n\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a2add937607958d328c2ac249599b4c0a63137ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2596e1f_cb715d15",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-07-16T22:30:37Z",
+      "side": 1,
+      "message": "Move this to else. I think that\u0027s clearer.",
+      "fixSuggestions": [
+        {
+          "fixId": "11380807_a690eb87",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 614,
+                "startChar": 0,
+                "endLine": 615,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 618,
+                "startChar": 0,
+                "endLine": 618,
+                "endChar": 0
+              },
+              "replacement": "\t\tneed_suspend_fs_sync_requeue \u003d false;\n\t} else {\n\t\tneed_suspend_fs_sync_requeue \u003d true;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a2add937607958d328c2ac249599b4c0a63137ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6fee65c_04bef6e7",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-07-16T22:30:37Z",
+      "side": 1,
+      "message": "Add a comment explaining why you are conditionally queuing the work.",
+      "range": {
+        "startLine": 615,
+        "startChar": 6,
+        "endLine": 615,
+        "endChar": 28
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "85ce9956_30cb790c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 615,
+                "startChar": 0,
+                "endLine": 615,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * Only queue the work if it is not already queued. This prevents\n\t * multiple calls to schedule_work() when the function is called\n\t * multiple times before the work is completed.\n\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a2add937607958d328c2ac249599b4c0a63137ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
