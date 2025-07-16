@@ -16,6 +16,24 @@
       "message": "These are not to be used by kernel drivers, sorry.  Please fix your code to not need them.",
       "revId": "3b9be33045fb977e2f8781daf8d306d852c486fe",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaa7ad6f_68892d94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4224958
+      },
+      "writtenOn": "2025-07-16T09:01:01Z",
+      "side": 1,
+      "message": "These functions are declared in common/include/linux/perf_event.h and are used by various kernel drivers. For example:\n - armpmu_dispatch_irq in common/drivers/perf/arm_pmu.c\n - armv8pmu_handle_irq in common/drivers/perf/arm_pmuv3.c\n - pmu_sbi_ovf_handler in common/drivers/perf/riscv_pmu_sbi.c\n\nMy kernel driver should use these functions to implement similar functionality as the ARM PMU driver.",
+      "parentUuid": "49b16cf5_0eff90d8",
+      "revId": "3b9be33045fb977e2f8781daf8d306d852c486fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
