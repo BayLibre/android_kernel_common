@@ -34,6 +34,24 @@
       "parentUuid": "c893bb3a_9b2403a8",
       "revId": "5f5828cb5c18e03a1a56c71d6f713407623d64ca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb7395ce_e1c07f7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1887488
+      },
+      "writtenOn": "2025-07-16T07:47:57Z",
+      "side": 1,
+      "message": "it is possible to perform both mmap and regular read/write on the same file. I am not entirely clear on the mmap issue, so I\u0027m a bit worried this might be a potential bug. Please upstream this to the Linux community, we need more people comment on this.",
+      "parentUuid": "99c84d44_47ef8903",
+      "revId": "5f5828cb5c18e03a1a56c71d6f713407623d64ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
