@@ -3323,6 +3323,7 @@ static void reserve_highatomic_pageblock(struct page *page, int order,
 	if ((zone_managed_pages(zone) / 100) < pageblock_nr_pages)
 		return;
 	max_managed = ALIGN((zone_managed_pages(zone) / 100), pageblock_nr_pages);
+	trace_android_vh_reserve_highatomic_pageblock(zone, &max_managed);
 	if (zone->nr_reserved_highatomic >= max_managed)
 		return;
 	trace_android_vh_reserve_highatomic_bypass(page, &bypass);
