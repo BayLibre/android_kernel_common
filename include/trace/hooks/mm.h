@@ -537,6 +537,9 @@ DECLARE_HOOK(android_vh_filemap_add_folio,
 	TP_PROTO(struct address_space *mapping, struct folio *folio,
 		pgoff_t index),
 	TP_ARGS(mapping, folio, index));
+DECLARE_HOOK(android_vh_reserve_highatomic_pageblock,
+	TP_PROTO(struct zone *zone, unsigned long *max_managed),
+	TP_ARGS(zone, max_managed));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
