@@ -16,6 +16,29 @@
       "message": "Done, PTAL (sorry, forgot to send this for re-review earlier)",
       "revId": "68b507204dc06a7012dd8728a90bb2b67b897ec7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64546c4d_05e754b4",
+        "filename": "drivers/md/dm-verity.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2025-07-16T18:38:14Z",
+      "side": 1,
+      "message": "This is confusing, since this field is used in other cases too.\n\nI don\u0027t think this field really even needs a comment, but if you\u0027d like to add one it should just say that it keeps track of whether the request is being processed in the kworker or inline.",
+      "range": {
+        "startLine": 106,
+        "startChar": 4,
+        "endLine": 108,
+        "endChar": 14
+      },
+      "revId": "68b507204dc06a7012dd8728a90bb2b67b897ec7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
