@@ -16,6 +16,24 @@
       "message": "Originally, Linux did not override FOPEN_PASSTHROUGH. However, using mmap could cause an issue where a file is simultaneously treated as both a cached and non-cached inode. That is why FOPEN_DIRECT_IO was made to override FOPEN_PASSTHROUGH.\nDid you upstream this change and check whether it addresses the issue previously encountered with maintainer?\n\nhttps://lore.kernel.org/linux-fsdevel/20240206142453.1906268-1-amir73il@gmail.com/\nhttps://sourceforge.net/p/fuse/mailman/message/56898505/",
       "revId": "5f5828cb5c18e03a1a56c71d6f713407623d64ca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99c84d44_47ef8903",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1974145
+      },
+      "writtenOn": "2025-07-16T01:50:15Z",
+      "side": 1,
+      "message": "I haven\u0027t submitted this to upstream yet. According to the description in [1], the issue occurs in the mmap scenario. Does this issue also exist in the read/write scenario?\n\n[1] https://lore.kernel.org/linux-fsdevel/20240206142453.1906268-9-amir73il@gmail.com/",
+      "parentUuid": "c893bb3a_9b2403a8",
+      "revId": "5f5828cb5c18e03a1a56c71d6f713407623d64ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
