@@ -48,6 +48,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a8a85b7_459c13ad",
+        "filename": "arch/x86/kvm/pkvm/entry.S",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-07-16T00:58:31Z",
+      "side": 1,
+      "message": "Seems my code base doesn\u0027t have this new change, as it is introduced by \"x86/its: Align RETs in BHB clear sequence to avoid thunking\" which is related with ITS and back ported from the upstream recently.\n\nMy understanding about the skip is used to avoid the code to hit the ITS mitigation by putting the RET in the upper half of the cacheline, which can avoid being patched so that to have a better performance.\n\nThanks for catching this. I will update this accordingly.",
+      "parentUuid": "dfaf7f51_de106a61",
+      "revId": "6eeff5662d85b1deff113f4604df2c9429b8198b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30b024d3_f8cf359b",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 1
