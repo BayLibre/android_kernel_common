@@ -1,0 +1,86 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b159bd6c_ce6e1e01",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2708,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2025-07-16T00:15:35Z",
+      "side": 1,
+      "message": "What if this error is coming from line 2660? I\u0027m concerned that in that case, you might not properly unmap those mappings that have been made of as part of flushing the list in `kvm_arm_smmu_add_deferred_map_sg`.",
+      "revId": "4c14d61a414c5df549ba03a4816737db4fb63f03",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9a104ba_0dbdfec0",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2710,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2025-07-16T00:15:35Z",
+      "side": 1,
+      "message": "If you\u0027re not calling `ops-\u003econsume_deferred_map_sg`, I\u0027m concerned that you might leak memory including `map_sg`.",
+      "fixSuggestions": [
+        {
+          "fixId": "754d1aa6_514c15dd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/iommu.c",
+              "range": {
+                "startLine": 2710,
+                "startChar": 0,
+                "endLine": 2710,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t\t\tgoto out_err_free_cookie;\n"
+            },
+            {
+              "path": "drivers/iommu/iommu.c",
+              "range": {
+                "startLine": 2755,
+                "startChar": 0,
+                "endLine": 2755,
+                "endChar": 0
+              },
+              "replacement": "\tif (deferred_sg)\n\t\tops-\u003efree_cookie_sg(cookie_sg);\n\n"
+            },
+            {
+              "path": "drivers/iommu/iommu.c",
+              "range": {
+                "startLine": 2759,
+                "startChar": 0,
+                "endLine": 2759,
+                "endChar": 0
+              },
+              "replacement": "\nout_err_free_cookie:\n\tops-\u003efree_cookie_sg(cookie_sg);\n\treturn ret;\n"
+            },
+            {
+              "path": "drivers/iommu/iommu.c",
+              "range": {
+                "startLine": 2832,
+                "startChar": 0,
+                "endLine": 2833,
+                "endChar": 0
+              },
+              "replacement": "\t\treturn -EOPNOTSUPP;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4c14d61a414c5df549ba03a4816737db4fb63f03",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
