@@ -16,6 +16,24 @@
       "message": "Why is this needed now and not just later when it is merged upstream?",
       "revId": "a4f56726fd9adf12376afb94e91bc6e8bdb2a08b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8ce8cd9_c80cf1c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981286
+      },
+      "writtenOn": "2025-07-16T14:13:01Z",
+      "side": 1,
+      "message": "This fixes non-working camera on Pixel on mainline and various failing tests (power consumption regressions, etc.). Having this patch allows us to link the bug resolutions to this patch, and properly running TH against it.\nIf you think this will cause issues, feel free to reject it, but I was hoping this one-line change is acceptable and shouldn\u0027t cause too much headache :-)",
+      "parentUuid": "00840a9d_be98d1b7",
+      "revId": "a4f56726fd9adf12376afb94e91bc6e8bdb2a08b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
