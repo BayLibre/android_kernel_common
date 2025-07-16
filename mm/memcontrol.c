@@ -4871,6 +4871,25 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
 	old->memcg_data = 0;
 }
 
+int mem_cgroup_try_move_folio(struct folio *folio, struct mem_cgroup *new_memcg)
+{
+	if (try_charge(new_memcg, GFP_KERNEL, folio_nr_pages(folio)) == 0) {
+		struct mem_cgroup *old_memcg = folio_memcg(folio);
+		char path1[128], path2[128];
+		char *str1 = old_memcg ? path1 : "";
+		char *str2 = new_memcg ? path2 : "";
+		if (old_memcg) cgroup_path(old_memcg->css.cgroup, path1, 128);
+		if (new_memcg) cgroup_path(new_memcg->css.cgroup, path2, 128);
+		trace_printk("moving %s %px from %s to %s\n",
+			     folio_is_file_lru(folio) ? "file" : "anon", folio, str1, str2);
+
+		mem_cgroup_uncharge(folio);
+		mem_cgroup_commit_charge(folio, new_memcg);
+		return 0;
+	}
+	return -1;
+}
+
 DEFINE_STATIC_KEY_FALSE(memcg_sockets_enabled_key);
 EXPORT_SYMBOL(memcg_sockets_enabled_key);
 

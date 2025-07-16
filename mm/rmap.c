@@ -836,6 +836,8 @@ struct folio_referenced_arg {
 	int referenced;
 	unsigned long vm_flags;
 	struct mem_cgroup *memcg;
+	struct lruvec *reclaiming_lruvec;
+	struct lruvec **mapped_lruvec;
 };
 
 /*
@@ -892,7 +894,8 @@ static bool folio_referenced_one(struct folio *folio,
 
 		if (lru_gen_enabled() && pvmw.pte) {
 			trace_android_vh_look_around(&pvmw, folio, vma, &referenced);
-			if (lru_gen_look_around(&pvmw))
+			if (lru_gen_look_around(&pvmw, pra->reclaiming_lruvec,
+						pra->mapped_lruvec))
 				referenced++;
 		} else if (pvmw.pte) {
 			if (ptep_clear_flush_young_notify(vma, address,
@@ -979,13 +982,16 @@ static bool invalid_folio_referenced_vma(struct vm_area_struct *vma, void *arg)
  * Return: The number of mappings which referenced the folio. Return -1 if
  * the function bailed out due to rmap lock contention.
  */
-int folio_referenced(struct folio *folio, int is_locked,
-		     struct mem_cgroup *memcg, unsigned long *vm_flags)
+int folio_referenced(struct folio *folio, int is_locked, struct mem_cgroup *memcg,
+		     struct lruvec *reclaiming_lruvec, unsigned long *vm_flags,
+		     struct lruvec **mapped_lruvec)
 {
 	bool we_locked = false;
 	struct folio_referenced_arg pra = {
 		.mapcount = folio_mapcount(folio),
 		.memcg = memcg,
+		.reclaiming_lruvec = reclaiming_lruvec,
+		.mapped_lruvec = mapped_lruvec,
 	};
 	struct rmap_walk_control rwc = {
 		.rmap_one = folio_referenced_one,

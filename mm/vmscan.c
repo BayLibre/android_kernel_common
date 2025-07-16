@@ -900,12 +900,13 @@ static bool lru_gen_set_refs(struct folio *folio)
 }
 #endif /* CONFIG_LRU_GEN */
 
-static enum folio_references folio_check_references(struct folio *folio,
-						  struct scan_control *sc)
+static enum folio_references folio_check_references(
+		struct folio *folio, struct lruvec *reclaiming_lruvec, struct scan_control *sc)
 {
 	int referenced_ptes, referenced_folio;
 	unsigned long vm_flags;
 	int ret = 0;
+	struct lruvec *mapped_lruvec;
 
 #ifdef CONFIG_ANDROID_VENDOR_OEM_DATA
 	trace_android_vh_page_should_be_protected(folio, sc->nr_scanned,
@@ -915,15 +916,18 @@ static enum folio_references folio_check_references(struct folio *folio,
 	if (ret)
 		return ret;
 
-	referenced_ptes = folio_referenced(folio, 1, sc->target_mem_cgroup,
-					   &vm_flags);
+	referenced_ptes = folio_referenced(folio, 1, sc->target_mem_cgroup, reclaiming_lruvec,
+					   &vm_flags, &mapped_lruvec);
 
 	/*
 	 * The supposedly reclaimable folio was found to be in a VM_LOCKED vma.
 	 * Let the folio, now marked Mlocked, be moved to the unevictable list.
 	 */
-	if (vm_flags & VM_LOCKED)
+	if (vm_flags & VM_LOCKED) {
+		if (mapped_lruvec && mapped_lruvec != reclaiming_lruvec)
+			mem_cgroup_put(lruvec_memcg(mapped_lruvec));
 		return FOLIOREF_ACTIVATE;
+	}
 
 	/*
 	 * There are two cases to consider.
@@ -931,13 +935,27 @@ static enum folio_references folio_check_references(struct folio *folio,
 	 * 2) Skip the non-shared swapbacked folio mapped solely by
 	 *    the exiting or OOM-reaped process.
 	 */
-	if (referenced_ptes == -1)
+	if (referenced_ptes == -1) {
+		if (mapped_lruvec && mapped_lruvec != reclaiming_lruvec)
+			mem_cgroup_put(lruvec_memcg(mapped_lruvec));
 		return FOLIOREF_KEEP;
+	}
 
 	if (lru_gen_enabled()) {
 		int gen = lru_raw_gen_from_flags(READ_ONCE(folio->flags));
 
 		VM_WARN_ON_ONCE_FOLIO(gen < ISOLATED_FOLIO_MIN, folio);
+
+		if (mapped_lruvec && mapped_lruvec != reclaiming_lruvec) {
+			struct mem_cgroup *mapped_memcg = lruvec_memcg(mapped_lruvec);
+
+			mem_cgroup_try_move_folio(folio, mapped_memcg);
+			mem_cgroup_put(mapped_memcg);
+
+			VM_WARN_ON_ONCE_FOLIO(folio_test_active(folio), folio);
+
+			return FOLIOREF_ACTIVATE;
+		}
 
 		if (gen > ISOLATED_FOLIO_MIN)
 			referenced_ptes += gen - ISOLATED_FOLIO_MIN;
@@ -1109,8 +1127,9 @@ static bool may_enter_fs(struct folio *folio, gfp_t gfp_mask)
  * shrink_folio_list() returns the number of reclaimed pages
  */
 static unsigned int shrink_folio_list(struct list_head *folio_list,
-		struct pglist_data *pgdat, struct scan_control *sc,
-		struct reclaim_stat *stat, bool ignore_references)
+		struct lruvec *reclaiming_lruvec, struct pglist_data *pgdat,
+		struct scan_control *sc, struct reclaim_stat *stat,
+		bool ignore_references)
 {
 	struct folio_batch free_folios;
 	LIST_HEAD(ret_folios);
@@ -1286,7 +1305,7 @@ retry:
 		}
 
 		if (!ignore_references)
-			references = folio_check_references(folio, sc);
+			references = folio_check_references(folio, reclaiming_lruvec, sc);
 
 		switch (references) {
 		case FOLIOREF_ACTIVATE:
@@ -1682,7 +1701,7 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
 	 * change in the future.
 	 */
 	noreclaim_flag = memalloc_noreclaim_save();
-	nr_reclaimed = shrink_folio_list(&clean_folios, zone->zone_pgdat, &sc,
+	nr_reclaimed = shrink_folio_list(&clean_folios, NULL, zone->zone_pgdat, &sc,
 					&stat, true);
 	memalloc_noreclaim_restore(noreclaim_flag);
 
@@ -1955,6 +1974,7 @@ static unsigned int move_folios_to_lru(struct lruvec *lruvec,
 {
 	int nr_pages, nr_moved = 0;
 	struct folio_batch free_folios;
+	struct lruvec *target_lruvec = lruvec;
 
 	folio_batch_init(&free_folios);
 	while (!list_empty(list)) {
@@ -1963,10 +1983,20 @@ static unsigned int move_folios_to_lru(struct lruvec *lruvec,
 		VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
 		list_del(&folio->lru);
 		if (unlikely(!folio_evictable(folio))) {
-			spin_unlock_irq(&lruvec->lru_lock);
+			spin_unlock_irq(&target_lruvec->lru_lock);
 			folio_putback_lru(folio);
-			spin_lock_irq(&lruvec->lru_lock);
+			spin_lock_irq(&target_lruvec->lru_lock);
 			continue;
+		}
+
+		VM_BUG_ON(lruvec_pgdat(lruvec) != lruvec_pgdat(target_lruvec));
+		VM_BUG_ON_FOLIO(lruvec_pgdat(target_lruvec) != folio_pgdat(folio), folio);
+		if (target_lruvec != folio_lruvec(folio)) {
+			VM_BUG_ON(!lru_gen_enabled());
+
+			spin_unlock_irq(&target_lruvec->lru_lock);
+			target_lruvec = folio_lruvec(folio);
+			spin_lock_irq(&target_lruvec->lru_lock);
 		}
 
 		/*
@@ -1987,26 +2017,29 @@ static unsigned int move_folios_to_lru(struct lruvec *lruvec,
 
 			folio_unqueue_deferred_split(folio);
 			if (folio_batch_add(&free_folios, folio) == 0) {
-				spin_unlock_irq(&lruvec->lru_lock);
+				spin_unlock_irq(&target_lruvec->lru_lock);
 				mem_cgroup_uncharge_folios(&free_folios);
 				free_unref_folios(&free_folios);
-				spin_lock_irq(&lruvec->lru_lock);
+				spin_lock_irq(&target_lruvec->lru_lock);
 			}
 
 			continue;
 		}
 
-		/*
-		 * All pages were isolated from the same lruvec (and isolation
-		 * inhibits memcg migration).
-		 */
-		VM_BUG_ON_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
-		lruvec_add_folio(lruvec, folio);
 		nr_pages = folio_nr_pages(folio);
-		nr_moved += nr_pages;
-		if (folio_test_active(folio))
-			workingset_age_nonresident(lruvec, nr_pages);
+		if (lruvec == target_lruvec) {
+			nr_moved += nr_pages;
+			if (folio_test_active(folio))
+				workingset_age_nonresident(lruvec, nr_pages);
+		}
+		lruvec_add_folio(target_lruvec, folio);
 	}
+
+	if (target_lruvec != lruvec) {
+		spin_unlock_irq(&target_lruvec->lru_lock);
+		spin_lock_irq(&lruvec->lru_lock);
+	}
+
 
 	if (free_folios.nr) {
 		spin_unlock_irq(&lruvec->lru_lock);
@@ -2078,7 +2111,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
 	if (nr_taken == 0)
 		return 0;
 
-	nr_reclaimed = shrink_folio_list(&folio_list, pgdat, sc, &stat, false);
+	nr_reclaimed = shrink_folio_list(&folio_list, NULL, pgdat, sc, &stat, false);
 
 	spin_lock_irq(&lruvec->lru_lock);
 	move_folios_to_lru(lruvec, &folio_list);
@@ -2220,8 +2253,8 @@ static void shrink_active_list(unsigned long nr_to_scan,
 			goto skip_folio_referenced;
 
 		/* Referenced or rmap lock contention: rotate */
-		if (folio_referenced(folio, 0, sc->target_mem_cgroup,
-				     &vm_flags) != 0) {
+		if (folio_referenced(folio, 0, sc->target_mem_cgroup, NULL,
+				     &vm_flags, NULL) != 0) {
 			/*
 			 * Identify referenced, file-backed active folios and
 			 * give them one more trip around the active list. So
@@ -2279,7 +2312,7 @@ static unsigned int reclaim_folio_list(struct list_head *folio_list,
 		.no_demotion = 1,
 	};
 
-	nr_reclaimed = shrink_folio_list(folio_list, pgdat, &sc, &dummy_stat, true);
+	nr_reclaimed = shrink_folio_list(folio_list, NULL, pgdat, &sc, &dummy_stat, true);
 	if (private) {
 		trace_android_rvh_reclaim_folio_list(folio_list, private);
 	} else {
@@ -4308,7 +4341,8 @@ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
  * the PTE table to the Bloom filter. This forms a feedback loop between the
  * eviction and the aging.
  */
-bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw,
+			 struct lruvec *reclaiming_lruvec, struct lruvec **mapped_lruvec)
 {
 	int i;
 	bool dirty;
@@ -4333,6 +4367,29 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
 
 	if (!ptep_clear_young_notify(vma, addr, pte))
 		return false;
+
+	if (reclaiming_lruvec) {
+		struct mem_cgroup *mapping_memcg;
+		bool same_memcg = false;
+
+		mapping_memcg = get_mem_cgroup_from_mm(vma->vm_mm);
+		if (mapping_memcg) {
+			if (mem_cgroup_is_descendant(mapping_memcg, lruvec_memcg(reclaiming_lruvec))) {
+				if (*mapped_lruvec && reclaiming_lruvec != *mapped_lruvec)
+					mem_cgroup_put(lruvec_memcg(*mapped_lruvec));
+				*mapped_lruvec = reclaiming_lruvec;
+				mem_cgroup_put(mapping_memcg);
+				same_memcg = true;
+			} else if (*mapped_lruvec == NULL) {
+				*mapped_lruvec = mem_cgroup_lruvec(mapping_memcg, lruvec_pgdat(reclaiming_lruvec));
+			} else {
+				mem_cgroup_put(mapping_memcg);
+			}
+		}
+
+		if (!same_memcg)
+			return true;
+	}
 
 	if (spin_is_contended(pvmw->ptl))
 		return true;
@@ -4826,7 +4883,7 @@ static int evict_folios(struct lruvec *lruvec, struct scan_control *sc, int swap
 	if (list_empty(&list))
 		return scanned;
 retry:
-	reclaimed = shrink_folio_list(&list, pgdat, sc, &stat, false);
+	reclaimed = shrink_folio_list(&list, lruvec, pgdat, sc, &stat, false);
 	sc->nr.unqueued_dirty += stat.nr_unqueued_dirty;
 	sc->nr_reclaimed += reclaimed;
 	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,

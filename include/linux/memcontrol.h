@@ -745,6 +745,8 @@ void mem_cgroup_cancel_charge(struct mem_cgroup *memcg, unsigned int nr_pages);
 void mem_cgroup_replace_folio(struct folio *old, struct folio *new);
 void mem_cgroup_migrate(struct folio *old, struct folio *new);
 
+int mem_cgroup_try_move_folio(struct folio *folio, struct mem_cgroup *new_memcg);
+
 /**
  * mem_cgroup_lruvec - get the lru list vector for a memcg & node
  * @memcg: memcg of the wanted lruvec
@@ -1258,6 +1260,12 @@ static inline void mem_cgroup_migrate(struct folio *old, struct folio *new)
 {
 }
 
+static inline int mem_cgroup_try_move_folio(struct folio *folio,
+					    struct mem_cgroup *new_memcg)
+{
+	return 0;
+}
+
 static inline struct lruvec *mem_cgroup_lruvec(struct mem_cgroup *memcg,
 					       struct pglist_data *pgdat)
 {
@@ -1278,6 +1286,12 @@ void lruvec_memcg_debug(struct lruvec *lruvec, struct folio *folio)
 static inline struct mem_cgroup *parent_mem_cgroup(struct mem_cgroup *memcg)
 {
 	return NULL;
+}
+
+static inline bool mem_cgroup_is_descendant(struct mem_cgroup *memcg,
+			      struct mem_cgroup *root)
+{
+	return false;
 }
 
 static inline bool mm_match_cgroup(struct mm_struct *mm,
