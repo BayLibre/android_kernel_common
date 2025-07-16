@@ -34,6 +34,24 @@
       "parentUuid": "49b16cf5_0eff90d8",
       "revId": "3b9be33045fb977e2f8781daf8d306d852c486fe",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9539921e_1fb52ddc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-07-16T14:00:40Z",
+      "side": 1,
+      "message": "Those are not external drivers, but built in files to the kernel image and not meant to be loaded after boot.  Please just get the needed changes you have to the existing platform code merged upstream and we will be glad to accept the backport here.",
+      "parentUuid": "aaa7ad6f_68892d94",
+      "revId": "3b9be33045fb977e2f8781daf8d306d852c486fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
