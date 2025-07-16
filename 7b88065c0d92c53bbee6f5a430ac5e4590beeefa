@@ -1,0 +1,289 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3f95374_a394d636",
+        "filename": "include/linux/mm_inline.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-07-16T20:55:16Z",
+      "side": 1,
+      "message": "There is `trace_android_vh_lruvec_add_folio` hook right before this one. Why do you need to duplicate it?",
+      "range": {
+        "startLine": 374,
+        "startChar": 1,
+        "endLine": 374,
+        "endChar": 39
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "788628b1_b3028ae2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/mm_inline.h",
+              "range": {
+                "startLine": 374,
+                "startChar": 0,
+                "endLine": 378,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/linux/mm_inline.h",
+              "range": {
+                "startLine": 398,
+                "startChar": 0,
+                "endLine": 402,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/linux/mm_inline.h",
+              "range": {
+                "startLine": 422,
+                "startChar": 0,
+                "endLine": 426,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49bb5106_e43de105",
+        "filename": "include/linux/mm_inline.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-07-16T20:55:16Z",
+      "side": 1,
+      "message": "reuse `trace_android_vh_lruvec_add_folio`",
+      "range": {
+        "startLine": 398,
+        "startChar": 1,
+        "endLine": 398,
+        "endChar": 39
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "0ba9878a_476896e0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/mm_inline.h",
+              "range": {
+                "startLine": 374,
+                "startChar": 0,
+                "endLine": 378,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/linux/mm_inline.h",
+              "range": {
+                "startLine": 398,
+                "startChar": 0,
+                "endLine": 402,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/linux/mm_inline.h",
+              "range": {
+                "startLine": 422,
+                "startChar": 0,
+                "endLine": 426,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2ff9c30_53c4abab",
+        "filename": "include/linux/mm_inline.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-07-16T20:55:16Z",
+      "side": 1,
+      "message": "reuse `trace_android_vh_lruvec_del_folio`",
+      "range": {
+        "startLine": 422,
+        "startChar": 1,
+        "endLine": 422,
+        "endChar": 39
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8acc879f_7f83176e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/mm_inline.h",
+              "range": {
+                "startLine": 422,
+                "startChar": 0,
+                "endLine": 426,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/linux/mm_inline.h",
+              "range": {
+                "startLine": 430,
+                "startChar": 0,
+                "endLine": 430,
+                "endChar": 0
+              },
+              "replacement": "\ttrace_android_vh_lruvec_del_folio(lruvec, folio, lru, \u0026skip);\n\tif (skip)\n\t\treturn;\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6a41441_22d53954",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2396,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-07-16T20:55:16Z",
+      "side": 1,
+      "message": "You should initialize *nr_scanned to 0 because caller passes this parameter uninitialized, using it as an output parameter. But this is not a very good API. Please either use (nr_taken !\u003d 0) as a condition for this bypass or if 0 is a legitimate return value here then add a separate parameter to bypass the rest of the code.",
+      "range": {
+        "startLine": 2396,
+        "startChar": 6,
+        "endLine": 2396,
+        "endChar": 16
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e61ce67e_32432543",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/vmscan.c",
+              "range": {
+                "startLine": 2392,
+                "startChar": 0,
+                "endLine": 2392,
+                "endChar": 0
+              },
+              "replacement": "\tunsigned long nr_scanned_before \u003d *nr_scanned;\n"
+            },
+            {
+              "path": "mm/vmscan.c",
+              "range": {
+                "startLine": 2396,
+                "startChar": 0,
+                "endLine": 2397,
+                "endChar": 0
+              },
+              "replacement": "\tif (*nr_scanned !\u003d nr_scanned_before)\n"
+            },
+            {
+              "path": "mm/vmscan.c",
+              "range": {
+                "startLine": 2777,
+                "startChar": 0,
+                "endLine": 2779,
+                "endChar": 0
+              },
+              "replacement": "\tunsigned long nr_taken \u003d 0;\n\tunsigned long nr_scanned \u003d 0;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f062e86f_42f5d6e6",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3149,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-07-16T20:55:16Z",
+      "side": 1,
+      "message": "Can you reuse existing `trace_android_vh_file_is_tiny_bypass`?",
+      "range": {
+        "startLine": 3149,
+        "startChar": 1,
+        "endLine": 3149,
+        "endChar": 26
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "22c02de5_ffdd8061",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/vmscan.c",
+              "range": {
+                "startLine": 3021,
+                "startChar": 0,
+                "endLine": 3030,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "mm/vmscan.c",
+              "range": {
+                "startLine": 3149,
+                "startChar": 0,
+                "endLine": 3150,
+                "endChar": 0
+              },
+              "replacement": "\ttrace_android_vh_file_is_tiny_bypass(sc-\u003efile_is_tiny, \u0026bypass);\n\tif (!bypass)\n\t\tsc-\u003efile_is_tiny \u003d file_is_tiny;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
