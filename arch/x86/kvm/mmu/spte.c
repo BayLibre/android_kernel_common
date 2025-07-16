@@ -65,6 +65,9 @@ static u8 __init kvm_get_host_maxphyaddr(void)
 
 void __init kvm_mmu_spte_module_init(void)
 {
+	if (enable_pkvm)
+		enable_mmio_caching = false;
+
 	/*
 	 * Snapshot userspace's desire to allow MMIO caching.  Whether or not
 	 * KVM can actually enable MMIO caching depends on vendor-specific
