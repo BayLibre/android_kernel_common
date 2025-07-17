@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93cf7caf_2769b903",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/vmexit.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-17T03:18:40Z",
+      "side": 1,
+      "message": "Make sense. Let me update the comment.",
+      "parentUuid": "b515603e_b62b864c",
+      "revId": "011bd76e39319cbb15e226d25ad9f9ff5abc1651",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "999bae95_50b6b727",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/vmx_asm.S",
         "patchSetId": 1
@@ -77,6 +95,24 @@
           ]
         }
       ],
+      "revId": "011bd76e39319cbb15e226d25ad9f9ff5abc1651",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f66ad756_00d8b50d",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/vmx_asm.S",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-17T03:18:40Z",
+      "side": 1,
+      "message": "The comment message here is not accurate. This function doesn\u0027t return but use vmresume to enter guest. Will update.",
+      "parentUuid": "999bae95_50b6b727",
       "revId": "011bd76e39319cbb15e226d25ad9f9ff5abc1651",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
