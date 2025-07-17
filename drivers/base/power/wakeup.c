@@ -917,6 +917,11 @@ bool pm_wakeup_pending(void)
 	bool ret = false;
 	char suspend_abort[MAX_SUSPEND_ABORT_LEN];
 
+	int debug = atomic_read(&pm_abort_suspend);
+
+	trace_wakeup_source_activate("SW DEBUG pm_abort_suspend", debug);
+	trace_wakeup_source_deactivate("SW DEBUG pm_abort_suspend", debug);
+
 	raw_spin_lock_irqsave(&events_lock, flags);
 	if (events_check_enabled) {
 		unsigned int cnt, inpr;
@@ -942,6 +947,9 @@ EXPORT_SYMBOL_GPL(pm_wakeup_pending);
 
 void pm_system_wakeup(void)
 {
+	trace_wakeup_source_activate("SW DEBUG inc pm_abort_suspend", 0);
+	trace_wakeup_source_deactivate("SW DEBUG inc pm_abort_suspend", 0);
+
 	atomic_inc(&pm_abort_suspend);
 	suspend_abort_fs_sync();
 	s2idle_wake();
@@ -950,6 +958,9 @@ EXPORT_SYMBOL_GPL(pm_system_wakeup);
 
 void pm_system_cancel_wakeup(void)
 {
+	trace_wakeup_source_activate("SW DEBUG dec pm_abort_suspend", 0);
+	trace_wakeup_source_deactivate("SW DEBUG dec pm_abort_suspend", 0);
+
 	atomic_dec_if_positive(&pm_abort_suspend);
 }
 
@@ -1060,6 +1071,9 @@ bool pm_save_wakeup_count(unsigned int count)
 {
 	unsigned int cnt, inpr;
 	unsigned long flags;
+
+	trace_wakeup_source_activate("SW DEBUG saved_count", count);
+	trace_wakeup_source_deactivate("SW DEBUG saved_count", count);
 
 	events_check_enabled = false;
 	raw_spin_lock_irqsave(&events_lock, flags);

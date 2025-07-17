@@ -615,6 +615,7 @@ Start_fs_sync:
 		need_suspend_fs_sync_requeue = false;
 		suspend_fs_sync_queued = true;
 		schedule_work(&sync_filesystems);
+		trace_suspend_resume(TPS("SUSPEND FS_SYNC"), 0, true);
 	}
 	spin_unlock(&suspend_fs_sync_lock);
 
@@ -623,10 +624,17 @@ Start_fs_sync:
 	 * signal, whichever comes first
 	 */
 	wait_for_completion(&suspend_fs_sync_complete);
-	if (pm_wakeup_pending())
+	if (pm_wakeup_pending()) {
+		trace_suspend_resume(TPS("SUSPEND ABORT"), 0, true);
+		trace_suspend_resume(TPS("SUSPEND ABORT"), 0, false);
 		return -EBUSY;
-	if (need_suspend_fs_sync_requeue)
+	}
+	trace_suspend_resume(TPS("SUSPEND FS_SYNC"), 0, false);
+	if (need_suspend_fs_sync_requeue) {
+		trace_suspend_resume(TPS("SUSPEND REQUEUE"), 0, true);
+		trace_suspend_resume(TPS("SUSPEND REQUEUE"), 0, false);
 		goto Start_fs_sync;
+	}
 
 	return 0;
 }
