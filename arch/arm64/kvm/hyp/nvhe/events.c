@@ -28,14 +28,14 @@ static void hyp_set_key(atomic_t *key, int val)
 	hyp_fixmap_unmap();
 }
 
-static bool __try_set_event(unsigned short id, bool enable,
+static bool __try_set_event(unsigned short hyp_id, bool enable,
 			    struct hyp_event_id *event_id,
 			    struct hyp_event_id *end)
 {
 	atomic_t *enable_key;
 
 	for (; event_id < end; event_id++) {
-		if (event_id->id != id)
+		if (event_id->hyp_id != hyp_id)
 			continue;
 
 		enable_key = (atomic_t *)event_id->data;

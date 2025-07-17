@@ -23,7 +23,7 @@ int register_hyp_event_ids(unsigned long start, unsigned long end);
 		__entry = tracing_reserve_entry(length);			\
 		if (!__entry)							\
 			return;							\
-		__entry->hdr.id = hyp_event_id_##__name.id;			\
+		__entry->hdr.hyp_id = hyp_event_id_##__name.hyp_id;		\
 		__assign							\
 		tracing_commit_entry();						\
 	}

@@ -449,11 +449,11 @@ static int ht_print_trace_fmt(struct ht_iterator *iter)
 	ht_print_trace_cpu(iter);
 	ht_print_trace_time(iter);
 
-	e = hyp_trace_find_event(iter->ent->id);
+	e = hyp_trace_find_event(iter->ent->hyp_id);
 	if (e)
 		e->trace_func(iter);
 	else
-		trace_seq_printf(&iter->seq, "Unknown event id %d\n", iter->ent->id);
+		trace_seq_printf(&iter->seq, "Unknown event id %d\n", iter->ent->hyp_id);
 
 	return trace_seq_has_overflowed(&iter->seq) ? -EOVERFLOW : 0;
 };

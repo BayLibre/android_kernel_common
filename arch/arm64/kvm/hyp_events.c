@@ -49,7 +49,7 @@ static struct hyp_event *find_hyp_event(const char *name)
 
 static int enable_hyp_event(struct hyp_event *event, bool enable)
 {
-	unsigned short id = event->id;
+	unsigned short id = event->hyp_id;
 	int ret;
 
 	if (enable == *event->enabled)
@@ -254,6 +254,7 @@ static struct dentry *event_tracefs;
 // NOTE: this introduces ID clash between hypervisor events and kernel events.
 // For now this doesn't seem to cause problems, but we should fix it...
 static unsigned int last_event_id = 1;
+static unsigned short last_event_hyp_id = 0;
 
 struct hyp_event_table {
 	struct hyp_event	*start;
@@ -267,27 +268,27 @@ static struct hyp_event_mod_tables {
 #define nr_events(__start, __stop) \
 	(((unsigned long)__stop - (unsigned long)__start) / sizeof(*__start))
 
-struct hyp_event *hyp_trace_find_event(int id)
+struct hyp_event *hyp_trace_find_event(unsigned short hyp_id)
 {
-	struct hyp_event *event = __hyp_events_start + id;
+	struct hyp_event *event = __hyp_events_start + hyp_id;
 
 	if ((unsigned long)event >= (unsigned long)__hyp_events_end) {
 		struct hyp_event_table *table;
 
 		event = NULL;
-		id -= nr_events(__hyp_events_start, __hyp_events_end);
+		hyp_id -= nr_events(__hyp_events_start, __hyp_events_end);
 
 		rcu_read_lock();
 		table = rcu_dereference(mod_event_tables.tables);
 
 		for (int i = 0; i < mod_event_tables.nr_tables; i++) {
-			if (table->nr_events <= id) {
-				id -= table->nr_events;
+			if (table->nr_events <= hyp_id) {
+				hyp_id -= table->nr_events;
 				table++;
 				continue;
 			}
 
-			event = table->start + id;
+			event = table->start + hyp_id;
 			break;
 		}
 		rcu_read_unlock();
@@ -332,7 +333,8 @@ static int hyp_event_table_init(struct hyp_event *event,
 		 * declarations from kvm_hypevents.h. We have then a 1:1
 		 * mapping.
 		 */
-		event->id = event_id->id = last_event_id++;
+		event->hyp_id = event_id->hyp_id = last_event_hyp_id++;
+		event->id = last_event_id++;
 
 		event++;
 		event_id++;

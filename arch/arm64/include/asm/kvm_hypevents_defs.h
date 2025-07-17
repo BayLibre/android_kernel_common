@@ -4,7 +4,7 @@
 #define __ARM64_KVM_HYPEVENTS_DEFS_H
 
 struct hyp_event_id {
-	unsigned short id;
+	unsigned short hyp_id;
 	void *data;
 };
 
@@ -17,10 +17,11 @@ struct hyp_event {
 	struct trace_event_fields	*fields;
 	void (*trace_func)(struct ht_iterator *iter);
 	int				id;
+	unsigned short			hyp_id;
 };
 
 struct hyp_entry_hdr {
-	unsigned short id;
+	unsigned short hyp_id;
 };
 
 struct hyp_printk_fmt {
