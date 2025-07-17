@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b515603e_b62b864c",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/vmexit.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-07-17T03:13:17Z",
+      "side": 1,
+      "message": "nit: remove this?",
+      "fixSuggestions": [
+        {
+          "fixId": "6b451599_14ca7952",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/vmexit.c",
+              "range": {
+                "startLine": 181,
+                "startChar": 0,
+                "endLine": 182,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "011bd76e39319cbb15e226d25ad9f9ff5abc1651",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "999bae95_50b6b727",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/vmx_asm.S",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-07-17T03:13:17Z",
+      "side": 1,
+      "message": "nit: Is this comment accurate?",
+      "fixSuggestions": [
+        {
+          "fixId": "bd322abd_a36c80a2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/vmx_asm.S",
+              "range": {
+                "startLine": 36,
+                "startChar": 0,
+                "endLine": 38,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/vmx_asm.S",
+              "range": {
+                "startLine": 43,
+                "startChar": 0,
+                "endLine": 43,
+                "endChar": 0
+              },
+              "replacement": " * After vmexit handling, vmresume instruction will be called to return to guest.\n *\n"
+            }
+          ]
+        }
+      ],
+      "revId": "011bd76e39319cbb15e226d25ad9f9ff5abc1651",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
