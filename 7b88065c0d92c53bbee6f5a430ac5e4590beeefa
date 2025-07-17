@@ -62,6 +62,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d4532d0_8f4963ab",
+        "filename": "include/linux/mm_inline.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 4118894
+      },
+      "writtenOn": "2025-07-17T03:22:06Z",
+      "side": 1,
+      "message": "Thanks.\nThe reason for adding new hooks is that trace_android_vh_lruvec_add_folio and trace_android_vh_mm_lru_add_priv_folio are used in different ko and do two completely different things.\nThe new hooks are necessary, and more details cannot be given.",
+      "parentUuid": "b3f95374_a394d636",
+      "range": {
+        "startLine": 374,
+        "startChar": 1,
+        "endLine": 374,
+        "endChar": 39
+      },
+      "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49bb5106_e43de105",
@@ -123,6 +147,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b566914d_f2101f16",
+        "filename": "include/linux/mm_inline.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 4118894
+      },
+      "writtenOn": "2025-07-17T03:22:06Z",
+      "side": 1,
+      "message": "Same as above",
+      "parentUuid": "49bb5106_e43de105",
+      "range": {
+        "startLine": 398,
+        "startChar": 1,
+        "endLine": 398,
+        "endChar": 39
+      },
+      "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2ff9c30_53c4abab",
@@ -170,6 +218,30 @@
           ]
         }
       ],
+      "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cead72d3_7d05e147",
+        "filename": "include/linux/mm_inline.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 4118894
+      },
+      "writtenOn": "2025-07-17T03:22:06Z",
+      "side": 1,
+      "message": "Similar to the newly added trace_android_vh_mm_lru_add_priv_folio, trace_android_vh_mm_lru_del_priv_folio and trace_android_vh_lruvec_del_folio are used in different ko and do completely different things.",
+      "parentUuid": "e2ff9c30_53c4abab",
+      "range": {
+        "startLine": 422,
+        "startChar": 1,
+        "endLine": 422,
+        "endChar": 39
+      },
       "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -235,6 +307,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e78702e_0d9e7a27",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2396,
+      "author": {
+        "id": 4118894
+      },
+      "writtenOn": "2025-07-17T03:22:06Z",
+      "side": 1,
+      "message": "Thanks, I have modified it as suggested (except nr_taken has been initialized in isolate_lru_folios and is not a parameter)",
+      "parentUuid": "f6a41441_22d53954",
+      "range": {
+        "startLine": 2396,
+        "startChar": 6,
+        "endLine": 2396,
+        "endChar": 16
+      },
+      "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f062e86f_42f5d6e6",
@@ -282,6 +378,30 @@
           ]
         }
       ],
+      "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0b3c8d8_ef3bbd66",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3149,
+      "author": {
+        "id": 4118894
+      },
+      "writtenOn": "2025-07-17T03:22:06Z",
+      "side": 1,
+      "message": "I can\u0027t reuse trace_android_vh_file_is_tiny_bypass because it needs to be used together with trace_android_vh_modify_scan_control, and trace_android_vh_modify_scan_control is only called when directly reclaiming memory.\nThe new hook allows me to modify the value of file_is_tiny when directly or indirectly reclaiming memory.",
+      "parentUuid": "f062e86f_42f5d6e6",
+      "range": {
+        "startLine": 3149,
+        "startChar": 1,
+        "endLine": 3149,
+        "endChar": 26
+      },
       "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
