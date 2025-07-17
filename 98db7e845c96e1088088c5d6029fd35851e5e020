@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c9087893_be1dfc73",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1418,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-17T21:31:44Z",
+      "side": 1,
+      "message": "Maybe e.g. pkvm_init_rollback() and pkvm_init_commit()?\n\n...Or better vmx_pkvm_deinit() and, for example, vmx_pkvm_post_init()?",
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c1241aed_3b5a9a79",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 17
@@ -14,6 +31,58 @@
       "writtenOn": "2025-07-17T01:53:50Z",
       "side": 1,
       "message": "If pkvm_finalise_started \u003d\u003d false, it means the deprivilege didn\u0027t happen on any CPU, so seems like we also don\u0027t need to call pkvm_host_reprivilege_cpu()?",
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0624bec4_b06639dd",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1446,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-17T21:31:44Z",
+      "side": 1,
+      "message": "Comment basically just repeats the function name?",
+      "fixSuggestions": [
+        {
+          "fixId": "7eeea7ce_a8d8f692",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 1445,
+                "startChar": 0,
+                "endLine": 1448,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "865c3731_52a217d1",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1552,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-17T21:31:44Z",
+      "side": 1,
+      "message": "pkvm_firmware_rmem_clear() is called here in 3 places already, can we e.g. move it to the end of function and use goto? (Maybe together with vmx_pkvm_deinit() I mentioned in another comment?)",
       "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
