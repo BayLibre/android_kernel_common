@@ -509,7 +509,26 @@ DECLARE_HOOK(android_vh_lruvec_del_folio,
 	TP_PROTO(struct lruvec *lruvec, struct folio *folio, enum lru_list lru,
 		bool *skip),
 	TP_ARGS(lruvec, folio, lru, skip));
+<<<<<<< HEAD
 >>>>>>> 9996464e05e1 (ANDROID: vendor_hooks: add hook when adding or deleting folios)
+=======
+DECLARE_HOOK(android_vh_mm_customize_longterm_pinnable,
+	TP_PROTO(struct folio *folio, bool *is_longterm_pinnable),
+	TP_ARGS(folio, is_longterm_pinnable));
+DECLARE_HOOK(android_vh_mm_migrate_one_page,
+	TP_PROTO(struct page *page, const vm_flags_t vm_flags),
+	TP_ARGS(page, vm_flags));
+DECLARE_HOOK(android_vh_mm_remove_migration_pte_bypass,
+	TP_PROTO(struct folio *dst, struct vm_area_struct *vma, unsigned long addr,
+		 struct folio *src, bool *bypass),
+	TP_ARGS(dst, vma, addr, src, bypass));
+DECLARE_HOOK(android_vh_mm_split_huge_page_bypass,
+	TP_PROTO(struct folio *folio, struct list_head *list, int *ret, bool *bypass),
+	TP_ARGS(folio, list, ret, bypass));
+DECLARE_HOOK(android_vh_mm_try_split_folio_bypass,
+	TP_PROTO(struct folio *folio, bool *bypass),
+	TP_ARGS(folio, bypass));
+>>>>>>> 0e2f5877a7d6 (ANDROID: vendor_hook: Added hook to tune reclaimed huge page)
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
