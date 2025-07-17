@@ -42,6 +42,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d2fa01b_0e6fc490",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1978967
+      },
+      "writtenOn": "2025-07-17T19:00:27Z",
+      "side": 1,
+      "message": "Did some testing with and without the call to this function, and this is needed.\n\nThe counter this function clears is continuously incremented even outside of suspend, so this counter will have a large non-zero value upon entering suspend unless it is cleared.",
+      "parentUuid": "e04e4d76_47aeb3b7",
+      "range": {
+        "startLine": 610,
+        "startChar": 1,
+        "endLine": 610,
+        "endChar": 16
+      },
+      "revId": "a2add937607958d328c2ac249599b4c0a63137ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2596e1f_cb715d15",
@@ -87,6 +111,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeb45412_f0f37ba5",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 1978967
+      },
+      "writtenOn": "2025-07-17T19:00:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2596e1f_cb715d15",
+      "revId": "a2add937607958d328c2ac249599b4c0a63137ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6fee65c_04bef6e7",
@@ -124,6 +166,30 @@
           ]
         }
       ],
+      "revId": "a2add937607958d328c2ac249599b4c0a63137ad",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49efe116_5e378d0f",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1978967
+      },
+      "writtenOn": "2025-07-17T19:00:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6fee65c_04bef6e7",
+      "range": {
+        "startLine": 615,
+        "startChar": 6,
+        "endLine": 615,
+        "endChar": 28
+      },
       "revId": "a2add937607958d328c2ac249599b4c0a63137ad",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
