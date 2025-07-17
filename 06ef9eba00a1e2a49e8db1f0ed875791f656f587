@@ -16,6 +16,47 @@
       "message": "No, you should not refactor sysfs code just to add additional stats.",
       "revId": "06ef9eba00a1e2a49e8db1f0ed875791f656f587",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e467386_4de1dca2",
+        "filename": "include/linux/gcma.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-07-17T01:52:30Z",
+      "side": 1,
+      "message": "I think that\u0027s the only part that you need to move here for your later exported function to use.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 2
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5f1a916d_f22698a6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/gcma.h",
+              "range": {
+                "startLine": 17,
+                "startChar": 0,
+                "endLine": 39,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "06ef9eba00a1e2a49e8db1f0ed875791f656f587",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
