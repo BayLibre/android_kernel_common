@@ -731,6 +731,16 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_swap_bio_charge);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_task_mem);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_free);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_init);
+<<<<<<< PATCH SET (3ef548a74a75a9184c237c404b8a9b6ed694885c ANDROID: vendor_hook: Added hook to tune reclaimed huge page)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_customize_longterm_pinnable);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_do_madvise_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_migrate_one_page);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_remove_migration_pte_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_split_huge_page_bypass);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_try_split_folio_bypass);
+||||||| BASE      (80d121daf99d40d7c95ffc3695c939a93bfacdc9 ANDROID: GKI: update symbol list for galaxy)
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_delay_schedule);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_task_fork);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_task_exit);
+>>>>>>> BASE      (028e591355fbe43d834e69213a013c2944080c1a UPSTREAM: memfd: drop warning for missing exec-related flags)
