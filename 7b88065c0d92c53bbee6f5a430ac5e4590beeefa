@@ -88,6 +88,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6ee1389f_9ad606dd",
+        "filename": "include/linux/mm_inline.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-07-17T20:55:01Z",
+      "side": 1,
+      "message": "Two separate modules can hook to the same tracepoint and you can even control the order in which they will be invoked. Please do not duplicate vendor hooks.",
+      "parentUuid": "5d4532d0_8f4963ab",
+      "range": {
+        "startLine": 374,
+        "startChar": 1,
+        "endLine": 374,
+        "endChar": 39
+      },
+      "revId": "7b88065c0d92c53bbee6f5a430ac5e4590beeefa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "49bb5106_e43de105",
         "filename": "include/linux/mm_inline.h",
         "patchSetId": 4
