@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1241aed_3b5a9a79",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1433,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-17T01:53:50Z",
+      "side": 1,
+      "message": "If pkvm_finalise_started \u003d\u003d false, it means the deprivilege didn\u0027t happen on any CPU, so seems like we also don\u0027t need to call pkvm_host_reprivilege_cpu()?",
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
