@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2e72bb0_7e0abd59",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3150,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-07-18T20:30:47Z",
+      "side": 1,
+      "message": "Why not just\n```\ntrace_android_vh_mm_customize_file_is_tiny(sc-\u003emay_swap, sc-\u003eorder,\n\t\t\t\t\t\t   sc-\u003ereclaim_idx, \u0026sc-\u003efile_is_tiny)\n``` ?",
+      "range": {
+        "startLine": 3150,
+        "startChar": 1,
+        "endLine": 3150,
+        "endChar": 31
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "d8f43d4c_da7a2e4c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/vmscan.c",
+              "range": {
+                "startLine": 3022,
+                "startChar": 0,
+                "endLine": 3031,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "mm/vmscan.c",
+              "range": {
+                "startLine": 3150,
+                "startChar": 0,
+                "endLine": 3151,
+                "endChar": 0
+              },
+              "replacement": "\ttrace_android_vh_mm_customize_file_is_tiny(sc-\u003emay_swap, sc-\u003eorder,\n\t\t\t\t\t\t   sc-\u003ereclaim_idx, \u0026sc-\u003efile_is_tiny);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "da1b06a8c6ce52ee7a635c2a931c146142a47526",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
