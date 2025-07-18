@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29b4d07a_197fbf46",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1150933
+      },
+      "writtenOn": "2025-07-18T03:40:55Z",
+      "side": 1,
+      "message": "Can we call this `iotlb_sync_map` to align with `struct iommu_domain_ops`?",
+      "range": {
+        "startLine": 143,
+        "startChar": 27,
+        "endLine": 143,
+        "endChar": 41
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "fe43abbb_bb5afb4c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+              "range": {
+                "startLine": 143,
+                "startChar": 0,
+                "endLine": 144,
+                "endChar": 0
+              },
+              "replacement": "\tANDROID_KABI_USE(1, int (*iotlb_sync_map)(struct kvm_hyp_iommu_domain *domain,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "cd8c771adfe8b1e49b49eb15180647ee5366c27f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
