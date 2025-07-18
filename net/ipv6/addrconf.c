@@ -5149,22 +5149,6 @@ static inline int inet6_ifaddr_msgsize(void)
 	       + nla_total_size(4)  /* IFA_RT_PRIORITY */;
 }
 
-enum addr_type_t {
-	UNICAST_ADDR,
-	MULTICAST_ADDR,
-	ANYCAST_ADDR,
-};
-
-struct inet6_fill_args {
-	u32 portid;
-	u32 seq;
-	int event;
-	unsigned int flags;
-	int netnsid;
-	int ifindex;
-	enum addr_type_t type;
-};
-
 static int inet6_fill_ifaddr(struct sk_buff *skb,
 			     const struct inet6_ifaddr *ifa,
 			     struct inet6_fill_args *args)
@@ -5243,15 +5227,16 @@ error:
 	return -EMSGSIZE;
 }
 
-static int inet6_fill_ifmcaddr(struct sk_buff *skb,
-			       const struct ifmcaddr6 *ifmca,
-			       struct inet6_fill_args *args)
+int inet6_fill_ifmcaddr(struct sk_buff *skb,
+			const struct ifmcaddr6 *ifmca,
+			struct inet6_fill_args *args)
 {
 	int ifindex = ifmca->idev->dev->ifindex;
 	u8 scope = RT_SCOPE_UNIVERSE;
 	struct nlmsghdr *nlh;
 
-	if (ipv6_addr_scope(&ifmca->mca_addr) & IFA_SITE)
+	if (!args->force_rt_scope_universe &&
+	    ipv6_addr_scope(&ifmca->mca_addr) & IFA_SITE)
 		scope = RT_SCOPE_SITE;
 
 	nlh = nlmsg_put(skb, args->portid, args->seq, args->event,
@@ -5276,6 +5261,7 @@ static int inet6_fill_ifmcaddr(struct sk_buff *skb,
 	nlmsg_end(skb, nlh);
 	return 0;
 }
+EXPORT_SYMBOL(inet6_fill_ifmcaddr);
 
 static int inet6_fill_ifacaddr(struct sk_buff *skb,
 			       const struct ifacaddr6 *ifaca,
@@ -5440,6 +5426,7 @@ static int inet6_dump_addr(struct sk_buff *skb, struct netlink_callback *cb,
 		.flags = NLM_F_MULTI,
 		.netnsid = -1,
 		.type = type,
+		.force_rt_scope_universe = false,
 	};
 	struct {
 		unsigned long ifindex;
@@ -5568,6 +5555,7 @@ static int inet6_rtm_getaddr(struct sk_buff *in_skb, struct nlmsghdr *nlh,
 		.event = RTM_NEWADDR,
 		.flags = 0,
 		.netnsid = -1,
+		.force_rt_scope_universe = false,
 	};
 	struct ifaddrmsg *ifm;
 	struct nlattr *tb[IFA_MAX+1];
@@ -5639,6 +5627,7 @@ static void inet6_ifa_notify(int event, struct inet6_ifaddr *ifa)
 		.event = event,
 		.flags = 0,
 		.netnsid = -1,
+		.force_rt_scope_universe = false,
 	};
 	int err = -ENOBUFS;
 
