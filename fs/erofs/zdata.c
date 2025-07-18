@@ -241,8 +241,14 @@ static int z_erofs_bvec_enqueue(struct z_erofs_bvec_iter *iter,
 		struct page *nextpage = *candidate_bvpage;
 
 		if (!nextpage) {
+<<<<<<< HEAD   (9e88cf4c5868fbb2b31ad79b89b8a34c16bededd Merge cef58a395491 ("erofs: allocate extra bvec pages direct)
 			nextpage = __erofs_allocpage(pagepool, GFP_NOFS,
 					true);
+||||||| BASE
+			nextpage = alloc_page(GFP_NOFS);
+=======
+			nextpage = erofs_allocpage(pagepool, GFP_NOFS);
+>>>>>>> BRANCH (5220cfed7027c667330aae3a05f464bf5fc83aa8 erofs: avoid on-stack pagepool directly passed by arguments)
 			if (!nextpage)
 				return -ENOMEM;
 			set_page_private(nextpage, Z_EROFS_SHORTLIVED_PAGE);
@@ -976,7 +982,13 @@ static int z_erofs_read_fragment(struct super_block *sb, struct page *page,
 }
 
 static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
+<<<<<<< HEAD   (9e88cf4c5868fbb2b31ad79b89b8a34c16bededd Merge cef58a395491 ("erofs: allocate extra bvec pages direct)
 				struct page *page, bool ra)
+||||||| BASE
+				struct page *page, struct page **pagepool)
+=======
+				struct page *page)
+>>>>>>> BRANCH (5220cfed7027c667330aae3a05f464bf5fc83aa8 erofs: avoid on-stack pagepool directly passed by arguments)
 {
 	struct inode *const inode = fe->inode;
 	struct erofs_map_blocks *const map = &fe->map;
@@ -1019,8 +1031,30 @@ repeat:
 				EROFS_I(inode)->z_fragmentoff + fpos);
 		if (err)
 			goto out;
+<<<<<<< HEAD   (9e88cf4c5868fbb2b31ad79b89b8a34c16bededd Merge cef58a395491 ("erofs: allocate extra bvec pages direct)
 		tight = false;
 		goto next_part;
+||||||| BASE
+		}
+		get_page(fe->map.buf.page);
+		WRITE_ONCE(fe->pcl->compressed_bvecs[0].page,
+			   fe->map.buf.page);
+		fe->pcl->pageofs_in = map->m_pa & ~PAGE_MASK;
+		fe->mode = Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE;
+	} else {
+		/* bind cache first when cached decompression is preferred */
+		z_erofs_bind_cache(fe, pagepool);
+=======
+		}
+		get_page(fe->map.buf.page);
+		WRITE_ONCE(fe->pcl->compressed_bvecs[0].page,
+			   fe->map.buf.page);
+		fe->pcl->pageofs_in = map->m_pa & ~PAGE_MASK;
+		fe->mode = Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE;
+	} else {
+		/* bind cache first when cached decompression is preferred */
+		z_erofs_bind_cache(fe);
+>>>>>>> BRANCH (5220cfed7027c667330aae3a05f464bf5fc83aa8 erofs: avoid on-stack pagepool directly passed by arguments)
 	}
 
 	if (!fe->pcl) {
@@ -1688,8 +1722,22 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
 		cur = mdev.m_pa;
 		end = cur + pcl->pclustersize;
 		do {
+<<<<<<< HEAD   (9e88cf4c5868fbb2b31ad79b89b8a34c16bededd Merge cef58a395491 ("erofs: allocate extra bvec pages direct)
 			z_erofs_fill_bio_vec(&bvec, f, pcl, i++, mc);
 			if (!bvec.bv_page)
+||||||| BASE
+			struct page *page;
+
+			page = pickup_page_for_submission(pcl, i++, pagepool,
+							  mc);
+			if (!page)
+=======
+			struct page *page;
+
+			page = pickup_page_for_submission(pcl, i++,
+					&f->pagepool, mc);
+			if (!page)
+>>>>>>> BRANCH (5220cfed7027c667330aae3a05f464bf5fc83aa8 erofs: avoid on-stack pagepool directly passed by arguments)
 				continue;
 
 			if (bio && (cur != last_pa ||
@@ -1824,7 +1872,13 @@ static void z_erofs_pcluster_readmore(struct z_erofs_decompress_frontend *f,
 			if (PageUptodate(page)) {
 				unlock_page(page);
 			} else {
+<<<<<<< HEAD   (9e88cf4c5868fbb2b31ad79b89b8a34c16bededd Merge cef58a395491 ("erofs: allocate extra bvec pages direct)
 				err = z_erofs_do_read_page(f, page, !!rac);
+||||||| BASE
+				err = z_erofs_do_read_page(f, page, pagepool);
+=======
+				err = z_erofs_do_read_page(f, page);
+>>>>>>> BRANCH (5220cfed7027c667330aae3a05f464bf5fc83aa8 erofs: avoid on-stack pagepool directly passed by arguments)
 				if (err)
 					erofs_err(inode->i_sb,
 						  "readmore error at page %lu @ nid %llu",
@@ -1851,9 +1905,20 @@ static int z_erofs_read_folio(struct file *file, struct folio *folio)
 	f.headoffset = (erofs_off_t)page->index << PAGE_SHIFT;
 
 	z_erofs_pcluster_readmore(&f, NULL, true);
+<<<<<<< HEAD   (9e88cf4c5868fbb2b31ad79b89b8a34c16bededd Merge cef58a395491 ("erofs: allocate extra bvec pages direct)
 	err = z_erofs_do_read_page(&f, page, false);
 	z_erofs_pcluster_readmore(&f, NULL, false);
 	z_erofs_pcluster_end(&f);
+||||||| BASE
+	err = z_erofs_do_read_page(&f, page, &pagepool);
+	z_erofs_pcluster_readmore(&f, NULL, &pagepool, false);
+
+	(void)z_erofs_collector_end(&f);
+=======
+	err = z_erofs_do_read_page(&f, page);
+	z_erofs_pcluster_readmore(&f, NULL, false);
+	(void)z_erofs_collector_end(&f);
+>>>>>>> BRANCH (5220cfed7027c667330aae3a05f464bf5fc83aa8 erofs: avoid on-stack pagepool directly passed by arguments)
 
 	/* if some compressed cluster ready, need submit them anyway */
 	z_erofs_runqueue(&f, z_erofs_is_sync_decompress(sbi, 0), false);
@@ -1892,7 +1957,13 @@ static void z_erofs_readahead(struct readahead_control *rac)
 		/* traversal in reverse order */
 		head = (void *)page_private(page);
 
+<<<<<<< HEAD   (9e88cf4c5868fbb2b31ad79b89b8a34c16bededd Merge cef58a395491 ("erofs: allocate extra bvec pages direct)
 		err = z_erofs_do_read_page(&f, page, true);
+||||||| BASE
+		err = z_erofs_do_read_page(&f, page, &pagepool);
+=======
+		err = z_erofs_do_read_page(&f, page);
+>>>>>>> BRANCH (5220cfed7027c667330aae3a05f464bf5fc83aa8 erofs: avoid on-stack pagepool directly passed by arguments)
 		if (err)
 			erofs_err(inode->i_sb,
 				  "readahead error at page %lu @ nid %llu",
@@ -1900,7 +1971,13 @@ static void z_erofs_readahead(struct readahead_control *rac)
 		put_page(page);
 	}
 	z_erofs_pcluster_readmore(&f, rac, false);
+<<<<<<< HEAD   (9e88cf4c5868fbb2b31ad79b89b8a34c16bededd Merge cef58a395491 ("erofs: allocate extra bvec pages direct)
 	z_erofs_pcluster_end(&f);
+||||||| BASE
+	(void)z_erofs_collector_end(&f);
+=======
+	(void)z_erofs_collector_end(&f);
+>>>>>>> BRANCH (5220cfed7027c667330aae3a05f464bf5fc83aa8 erofs: avoid on-stack pagepool directly passed by arguments)
 
 	z_erofs_runqueue(&f, z_erofs_is_sync_decompress(sbi, nr_pages), true);
 	erofs_put_metabuf(&f.map.buf);
