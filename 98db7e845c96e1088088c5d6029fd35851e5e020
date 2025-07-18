@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "422ad894_9248f5fa",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1433,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-18T14:20:40Z",
+      "side": 1,
+      "message": "\u003e If pkvm_finalise_started \u003d\u003d false, it means the deprivilege didn\u0027t happen on any CPU\n\npkvm_finalise_started is set to true only after all CPUs have successfully deprivileged. If some CPUs deprivileged but some others failed to deprivilege, we don\u0027t enter pkvm_init_finalise() and thus pkvm_finalise_started is still false, right?",
+      "parentUuid": "c1241aed_3b5a9a79",
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0624bec4_b06639dd",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 17
@@ -72,6 +90,58 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b2cd540_fc70f3db",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1448,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-18T14:20:40Z",
+      "side": 1,
+      "message": "In line with what I\u0027ve just suggested in https://android-review.googlesource.com/c/kernel/common/+/3649034/comment/7f838e18_c5a9606a/, maybe something like this:\n\n```\n\tif (pkvm_finalise_started) {\n\t\t/*\n\t\t * Rollback pkvm initialization. Also the hypervisor will take care\n\t\t * of clearing the pvmfw memory.\n\t\t */\n\t\tkvm_hypercall1(__PKVM_HC_COMMIT_FINALISE, false);\n\t} else {\n\t\t/*\n\t\t * Some CPUs may be already deprivileged but still have access\n\t\t * to the hypervisor memory, so we can clear the pvmfw memory\n\t\t * as soon as possible, before trying to reprivilege CPUs.\n\t\t */\n\t\tpkvm_firmware_rmem_clear();\n\t}\n\n\t/*\n\t * Reprivilege cpus\n\t */\n\t...\n```\n\n?",
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e00d576a_30d2f703",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1523,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-18T14:20:40Z",
+      "side": 1,
+      "message": "nit: any reason for pre-initializing vmx_ret?",
+      "fixSuggestions": [
+        {
+          "fixId": "43c24973_29a74a50",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 1523,
+                "startChar": 0,
+                "endLine": 1524,
+                "endChar": 0
+              },
+              "replacement": "\tint vmx_ret, iommu_ret;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "865c3731_52a217d1",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 17
@@ -83,6 +153,24 @@
       "writtenOn": "2025-07-17T21:31:44Z",
       "side": 1,
       "message": "pkvm_firmware_rmem_clear() is called here in 3 places already, can we e.g. move it to the end of function and use goto? (Maybe together with vmx_pkvm_deinit() I mentioned in another comment?)",
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6fd339b_34d58522",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1552,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-18T14:20:40Z",
+      "side": 1,
+      "message": "Maybe just:\n```\n\treturn vmx_ret ? vmx_ret : iommu_ret;\nfw_clear:\n\tpkvm_firmware_rmem_clear();\n\treturn ret;\n}\n```\n\nassuming that pkvm_host_rollback() aka vmx_pkvm_deinit() will take care of calling pkvm_firmware_rmem_clear() if needed (so `goto fw_clear` is only for failures before __vmx_pkvm_init()).",
+      "parentUuid": "865c3731_52a217d1",
       "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
