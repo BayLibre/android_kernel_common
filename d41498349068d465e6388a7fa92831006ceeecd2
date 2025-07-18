@@ -46,6 +46,30 @@
       },
       "revId": "d41498349068d465e6388a7fa92831006ceeecd2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6719e8f_30c5fbc9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2025-07-18T21:34:25Z",
+      "side": 1,
+      "message": "In this case, we should account for it under the kernel thread\u0027s usage. For instance, CCing layog@google.com, as he\u0027s familiar with several use cases where a kernel thread legitimately imports a dmabuf file descriptor and uses it.",
+      "parentUuid": "8d51c2ce_ff8859ab",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 71
+      },
+      "revId": "d41498349068d465e6388a7fa92831006ceeecd2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
