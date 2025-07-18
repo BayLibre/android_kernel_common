@@ -1782,7 +1782,17 @@ static void z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
  * approximate readmore strategies as a start.
  */
 static void z_erofs_pcluster_readmore(struct z_erofs_decompress_frontend *f,
+<<<<<<< HEAD   (1f6a1772078bfc065728668d821fb8a96acfc7a6 Merge c34a8b0083f9 ("erofs: remove the member readahead from)
 		struct readahead_control *rac, bool backmost)
+||||||| BASE
+				      struct readahead_control *rac,
+				      erofs_off_t end,
+				      struct page **pagepool,
+				      bool backmost)
+=======
+				      struct readahead_control *rac,
+				      struct page **pagepool, bool backmost)
+>>>>>>> BRANCH (241d3c6f99c640abe76c7bb678317adff119c504 erofs: clean up z_erofs_pcluster_readmore())
 {
 	struct inode *inode = f->inode;
 	struct erofs_map_blocks *map = &f->map;
@@ -1850,10 +1860,25 @@ static int z_erofs_read_folio(struct file *file, struct folio *folio)
 	trace_erofs_readpage(page, false);
 	f.headoffset = (erofs_off_t)page->index << PAGE_SHIFT;
 
+<<<<<<< HEAD   (1f6a1772078bfc065728668d821fb8a96acfc7a6 Merge c34a8b0083f9 ("erofs: remove the member readahead from)
 	z_erofs_pcluster_readmore(&f, NULL, true);
 	err = z_erofs_do_read_page(&f, page, false);
 	z_erofs_pcluster_readmore(&f, NULL, false);
 	z_erofs_pcluster_end(&f);
+||||||| BASE
+	z_erofs_pcluster_readmore(&f, NULL, f.headoffset + PAGE_SIZE - 1,
+				  &pagepool, true);
+	err = z_erofs_do_read_page(&f, page, &pagepool);
+	z_erofs_pcluster_readmore(&f, NULL, 0, &pagepool, false);
+
+	(void)z_erofs_collector_end(&f);
+=======
+	z_erofs_pcluster_readmore(&f, NULL, &pagepool, true);
+	err = z_erofs_do_read_page(&f, page, &pagepool);
+	z_erofs_pcluster_readmore(&f, NULL, &pagepool, false);
+
+	(void)z_erofs_collector_end(&f);
+>>>>>>> BRANCH (241d3c6f99c640abe76c7bb678317adff119c504 erofs: clean up z_erofs_pcluster_readmore())
 
 	/* if some compressed cluster ready, need submit them anyway */
 	z_erofs_runqueue(&f, z_erofs_is_sync_decompress(sbi, 0), false);
@@ -1876,7 +1901,14 @@ static void z_erofs_readahead(struct readahead_control *rac)
 
 	f.headoffset = readahead_pos(rac);
 
+<<<<<<< HEAD   (1f6a1772078bfc065728668d821fb8a96acfc7a6 Merge c34a8b0083f9 ("erofs: remove the member readahead from)
 	z_erofs_pcluster_readmore(&f, rac, true);
+||||||| BASE
+	z_erofs_pcluster_readmore(&f, rac, f.headoffset +
+				  readahead_length(rac) - 1, &pagepool, true);
+=======
+	z_erofs_pcluster_readmore(&f, rac, &pagepool, true);
+>>>>>>> BRANCH (241d3c6f99c640abe76c7bb678317adff119c504 erofs: clean up z_erofs_pcluster_readmore())
 	nr_pages = readahead_count(rac);
 	trace_erofs_readpages(inode, readahead_index(rac), nr_pages, false);
 
@@ -1899,8 +1931,16 @@ static void z_erofs_readahead(struct readahead_control *rac)
 				  page->index, EROFS_I(inode)->nid);
 		put_page(page);
 	}
+<<<<<<< HEAD   (1f6a1772078bfc065728668d821fb8a96acfc7a6 Merge c34a8b0083f9 ("erofs: remove the member readahead from)
 	z_erofs_pcluster_readmore(&f, rac, false);
 	z_erofs_pcluster_end(&f);
+||||||| BASE
+	z_erofs_pcluster_readmore(&f, rac, 0, &pagepool, false);
+	(void)z_erofs_collector_end(&f);
+=======
+	z_erofs_pcluster_readmore(&f, rac, &pagepool, false);
+	(void)z_erofs_collector_end(&f);
+>>>>>>> BRANCH (241d3c6f99c640abe76c7bb678317adff119c504 erofs: clean up z_erofs_pcluster_readmore())
 
 	z_erofs_runqueue(&f, z_erofs_is_sync_decompress(sbi, nr_pages), true);
 	erofs_put_metabuf(&f.map.buf);
