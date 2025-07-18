@@ -241,8 +241,13 @@ static int z_erofs_bvec_enqueue(struct z_erofs_bvec_iter *iter,
 		struct page *nextpage = *candidate_bvpage;
 
 		if (!nextpage) {
+<<<<<<< HEAD   (79e7ea545bd6ef13e85c9ac568a8e9c198b5a6cf Merge 241d3c6f99c6 ("erofs: clean up z_erofs_pcluster_readmo)
 			nextpage = __erofs_allocpage(pagepool, GFP_NOFS,
 					true);
+||||||| BASE
+=======
+			nextpage = alloc_page(GFP_NOFS);
+>>>>>>> BRANCH (cef58a39549100ad4726ba80de62b34083868b34 erofs: allocate extra bvec pages directly instead of retryin)
 			if (!nextpage)
 				return -ENOMEM;
 			set_page_private(nextpage, Z_EROFS_SHORTLIVED_PAGE);
