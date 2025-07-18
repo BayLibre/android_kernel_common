@@ -107,6 +107,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1e2916ba_d2f5d468",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1448,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-18T14:41:55Z",
+      "side": 1,
+      "message": "After more thought: it doesn\u0027t really make much difference whether to clear pvmfw in pKVM in the __PKVM_HC_COMMIT_FINALISE(false) hypercall, or right after returning from this hypercall. So, to keep it simpler and avoid duplicating pvmfw clearing code in the hypervisor, we can call pkvm_firmware_rmem_clear() here in the host (but before reprivileging CPUs, not after it) in both cases, not just if pkvm_finalise_started is false.",
+      "parentUuid": "9b2cd540_fc70f3db",
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e00d576a_30d2f703",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 17
