@@ -817,6 +817,8 @@ static inline void free_pkvm_memcache(struct pkvm_memcache *mc)
 
 #define HYP_MEMCACHE_ACCOUNT_KMEMCG BIT(1)
 #define HYP_MEMCACHE_ACCOUNT_STAGE2 BIT(2)
+int topup_pkvm_memcache(struct pkvm_memcache *mc, unsigned long
+			       min_pages, unsigned long order);
 
 static inline void init_pkvm_stage2_memcache(struct pkvm_memcache *mc)
 {

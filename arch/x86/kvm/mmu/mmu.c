@@ -4832,7 +4832,7 @@ static phys_addr_t host_pa(void *addr)
 	return virt_to_phys((volatile void *) addr);
 }
 
-static int topup_pkvm_memcache(struct pkvm_memcache *mc, unsigned long
+int topup_pkvm_memcache(struct pkvm_memcache *mc, unsigned long
 			       min_pages, unsigned long order)
 {
 	unsigned long flags = mc->flags;
