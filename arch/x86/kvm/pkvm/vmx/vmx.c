@@ -5124,6 +5124,14 @@ static int kvm_pkvm_hypercall(struct kvm_vcpu *vcpu)
 
 	switch (nr) {
 	case PKVM_GHC_SHARE_MEM:
+		/*
+		 * TODO: huge-page support requires memcache refill before
+		 * sharing pages with host since some huge-pages may require
+		 * splitting and creating new mapping (and therefore allocating
+		 * pages for page table). This is not an issue for page sharing
+		 * without huge-page support (mapping for 4KB page is already
+		 * created during first page fault handling).
+		 */
 		ret = __pkvm_guest_share_host(&pkvm_vm->pgt, a0, a1,
 					      &pkvm_vcpu->shared_vcpu->arch.stage2_mc);
 		break;
