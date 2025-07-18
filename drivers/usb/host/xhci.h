@@ -1920,6 +1920,15 @@ struct xhci_hcd {
 #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
 #define XHCI_TRB_OVERFETCH	BIT_ULL(45)
 #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
+<<<<<<< HEAD   (6b619c45dff59b8fb5abd7fa7758fb234aa06fc6 Merge 5.15.188 into android13-5.15-lts)
+||||||| BASE
+#define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
+#define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
+=======
+#define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
+#define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
+#define XHCI_LIMIT_ENDPOINT_INTERVAL_9 BIT_ULL(49)
+>>>>>>> BRANCH (c79648372d02944bf4a54d87e3901db05d0ac82e Linux 5.15.189)
 
 	unsigned int		num_active_eps;
 	unsigned int		limit_active_eps;
