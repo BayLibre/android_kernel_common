@@ -33,6 +33,24 @@
       "message": "I\u0027m fine with exporting this for the vendor hook. However, since GCMA is now on Android, it might be better to integrate it directly into the AOSP kernel. This would prevent other vendors from having to implement the same workaround.\n\n@surenb@google.com WDYT?",
       "revId": "7dd101e25ea3b31ea3461076ad7321ce7d9afe6c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bb15a57_e0005b90",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-07-18T20:56:26Z",
+      "side": 1,
+      "message": "Once we have GCMA upstream I think we can add it into meminfo there and will get it into android-mainline from the LTS release. For now I don\u0027t want to mock too much the official kernel UAPI.",
+      "parentUuid": "93d695e3_1dff82cb",
+      "revId": "7dd101e25ea3b31ea3461076ad7321ce7d9afe6c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
