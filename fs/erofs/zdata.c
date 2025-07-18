@@ -1756,13 +1756,25 @@ submit_bio_retry:
 }
 
 static void z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
+<<<<<<< HEAD   (dd6ab964c51ba1b88470026dc292dde1b19a43f1 Merge 91fa560c73a8 ("nbd: fix uaf in nbd_genl_connect() erro)
 			     bool force_fg, bool ra)
+||||||| BASE
+			     struct page **pagepool, bool force_fg)
+=======
+			     struct page **pagepool, bool force_fg, bool ra)
+>>>>>>> BRANCH (c34a8b0083f9776183d3448e2757335609a9e068 erofs: remove the member readahead from struct z_erofs_decom)
 {
 	struct z_erofs_decompressqueue io[NR_JOBQUEUES];
 
 	if (f->owned_head == Z_EROFS_PCLUSTER_TAIL)
 		return;
+<<<<<<< HEAD   (dd6ab964c51ba1b88470026dc292dde1b19a43f1 Merge 91fa560c73a8 ("nbd: fix uaf in nbd_genl_connect() erro)
 	z_erofs_submit_queue(f, io, &force_fg, ra);
+||||||| BASE
+	z_erofs_submit_queue(f, pagepool, io, &force_fg);
+=======
+	z_erofs_submit_queue(f, pagepool, io, &force_fg, ra);
+>>>>>>> BRANCH (c34a8b0083f9776183d3448e2757335609a9e068 erofs: remove the member readahead from struct z_erofs_decom)
 
 	/* handle bypass queue (no i/o pclusters) immediately */
 	z_erofs_decompress_queue(&io[JQ_BYPASS], &f->pagepool);
@@ -1856,7 +1868,15 @@ static int z_erofs_read_folio(struct file *file, struct folio *folio)
 	z_erofs_pcluster_end(&f);
 
 	/* if some compressed cluster ready, need submit them anyway */
+<<<<<<< HEAD   (dd6ab964c51ba1b88470026dc292dde1b19a43f1 Merge 91fa560c73a8 ("nbd: fix uaf in nbd_genl_connect() erro)
 	z_erofs_runqueue(&f, z_erofs_is_sync_decompress(sbi, 0), false);
+||||||| BASE
+	z_erofs_runqueue(&f, &pagepool,
+			 z_erofs_get_sync_decompress_policy(sbi, 0));
+=======
+	z_erofs_runqueue(&f, &pagepool, z_erofs_is_sync_decompress(sbi, 0),
+			 false);
+>>>>>>> BRANCH (c34a8b0083f9776183d3448e2757335609a9e068 erofs: remove the member readahead from struct z_erofs_decom)
 
 	if (err)
 		erofs_err(inode->i_sb, "failed to read, err [%d]", err);
@@ -1902,7 +1922,15 @@ static void z_erofs_readahead(struct readahead_control *rac)
 	z_erofs_pcluster_readmore(&f, rac, false);
 	z_erofs_pcluster_end(&f);
 
+<<<<<<< HEAD   (dd6ab964c51ba1b88470026dc292dde1b19a43f1 Merge 91fa560c73a8 ("nbd: fix uaf in nbd_genl_connect() erro)
 	z_erofs_runqueue(&f, z_erofs_is_sync_decompress(sbi, nr_pages), true);
+||||||| BASE
+	z_erofs_runqueue(&f, &pagepool,
+			 z_erofs_get_sync_decompress_policy(sbi, nr_pages));
+=======
+	z_erofs_runqueue(&f, &pagepool,
+			 z_erofs_is_sync_decompress(sbi, nr_pages), true);
+>>>>>>> BRANCH (c34a8b0083f9776183d3448e2757335609a9e068 erofs: remove the member readahead from struct z_erofs_decom)
 	erofs_put_metabuf(&f.map.buf);
 	erofs_release_pages(&f.pagepool);
 }
