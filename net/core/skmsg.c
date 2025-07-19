@@ -610,12 +610,18 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
 static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
 			       u32 off, u32 len, bool ingress)
 {
+	int err = 0;
+
 	if (!ingress) {
 		if (!sock_writeable(psock->sk))
 			return -EAGAIN;
 		return skb_send_sock(psock->sk, skb, off, len);
 	}
-	return sk_psock_skb_ingress(psock, skb, off, len);
+	skb_get(skb);
+	err = sk_psock_skb_ingress(psock, skb, off, len);
+	if (err < 0)
+		kfree_skb(skb);
+	return err;
 }
 
 static void sk_psock_skb_state(struct sk_psock *psock,
@@ -697,8 +703,22 @@ start:
 			len -= ret;
 		} while (len);
 
+<<<<<<< HEAD   (6d5a3649bba0dba2907cb350a29447af8d44f20c Merge 5.15.188 into android14-5.15-lts)
 		if (!ingress)
 			kfree_skb(skb);
+||||||| BASE
+		/* The entire skb sent, clear state */
+		sk_psock_skb_state(psock, state, 0, 0);
+		skb = skb_dequeue(&psock->ingress_skb);
+		if (!ingress) {
+			kfree_skb(skb);
+		}
+=======
+		/* The entire skb sent, clear state */
+		sk_psock_skb_state(psock, state, 0, 0);
+		skb = skb_dequeue(&psock->ingress_skb);
+		kfree_skb(skb);
+>>>>>>> BRANCH (a5012673d49788f16bb4e375b002d7743eb642d9 usb: gadget: u_serial: Fix race condition in TTY wakeup)
 	}
 end:
 	mutex_unlock(&psock->work_mutex);
