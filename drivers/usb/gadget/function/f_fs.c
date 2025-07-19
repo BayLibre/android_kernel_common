@@ -20,11 +20,13 @@
 #include <linux/dma-resv.h>
 #include <linux/pagemap.h>
 #include <linux/export.h>
+#include <linux/fs.h>
 #include <linux/fs_parser.h>
 #include <linux/hid.h>
 #include <linux/mm.h>
 #include <linux/module.h>
 #include <linux/scatterlist.h>
+#include <linux/slab.h>
 #include <linux/sched/signal.h>
 #include <linux/uio.h>
 #include <linux/vmalloc.h>
@@ -38,6 +40,7 @@
 #include <linux/aio.h>
 #include <linux/kthread.h>
 #include <linux/poll.h>
+#include <linux/xattr.h>
 #include <linux/eventfd.h>
 
 #include "u_fs.h"
@@ -237,6 +240,19 @@ struct ffs_buffer {
 	size_t length;
 	char *data;
 	char storage[] __counted_by(length);
+};
+
+struct ffs_xattr {
+	struct list_head list;
+	char *name;
+	void *value;
+	size_t value_len;
+};
+
+struct ffs_inode_info {
+	struct list_head xattrs;
+	struct mutex xattr_lock; /* protects xattrs list */
+	struct inode inode;
 };
 
 /*  ffs_io_data structure ***************************************************/
@@ -1838,6 +1854,135 @@ static const struct file_operations ffs_epfile_operations = {
 	.compat_ioctl = compat_ptr_ioctl,
 };
 
+/* xattr operations */
+static inline struct ffs_inode_info *FFS_I(struct inode *inode)
+{
+	return container_of(inode, struct ffs_inode_info, inode);
+}
+
+static struct ffs_xattr *ffs_xattr_find(struct ffs_inode_info *ffs_inode, const char *name)
+{
+	struct ffs_xattr *xattr;
+
+	list_for_each_entry(xattr, &ffs_inode->xattrs, list) {
+		if (!strcmp(xattr->name, name))
+			return xattr;
+	}
+
+	return NULL;
+}
+
+static int ffs_xattr_get(const struct xattr_handler *handler,
+			 struct dentry *dentry, struct inode *inode,
+			 const char *name, void *buffer, size_t size)
+{
+	struct ffs_inode_info *ffs_inode = FFS_I(inode);
+	struct ffs_xattr *xattr;
+	int ret = -ENODATA;
+
+	mutex_lock(&ffs_inode->xattr_lock);
+
+	xattr = ffs_xattr_find(ffs_inode, name);
+	if (xattr) {
+		ret = xattr->value_len;
+		if (buffer) {
+			if (size < xattr->value_len)
+				ret = -ERANGE;
+			else
+				memcpy(buffer, xattr->value, xattr->value_len);
+		}
+	}
+
+	mutex_unlock(&ffs_inode->xattr_lock);
+
+	return ret;
+}
+
+static int ffs_xattr_set(const struct xattr_handler *handler,
+			 struct mnt_idmap *idmap, struct dentry *dentry,
+			 struct inode *inode, const char *name,
+			 const void *value, size_t size, int flags)
+{
+	struct ffs_inode_info *ffs_inode = FFS_I(inode);
+	struct ffs_xattr *xattr, *new_xattr = NULL;
+	int ret = 0;
+
+	if (!value) {
+		/* This is a remove operation */
+		mutex_lock(&ffs_inode->xattr_lock);
+		xattr = ffs_xattr_find(ffs_inode, name);
+		if (xattr) {
+			list_del(&xattr->list);
+			kfree(xattr->name);
+			kfree(xattr->value);
+			kfree(xattr);
+			ret = 0;
+		} else {
+			ret = -ENODATA;
+		}
+		mutex_unlock(&ffs_inode->xattr_lock);
+		return ret;
+	}
+
+	new_xattr = kzalloc(sizeof(*new_xattr), GFP_KERNEL);
+	if (!new_xattr)
+		return -ENOMEM;
+
+	new_xattr->name = kstrdup(name, GFP_KERNEL);
+	if (!new_xattr->name) {
+		ret = -ENOMEM;
+		goto error;
+	}
+
+	new_xattr->value = kmemdup(value, size, GFP_KERNEL);
+	if (!new_xattr->value) {
+		ret = -ENOMEM;
+		goto error;
+	}
+	new_xattr->value_len = size;
+
+	mutex_lock(&ffs_inode->xattr_lock);
+
+	xattr = ffs_xattr_find(ffs_inode, name);
+	if (xattr) {
+		if (flags & XATTR_CREATE) {
+			ret = -EEXIST;
+		} else {
+			list_replace(&xattr->list, &new_xattr->list);
+			kfree(xattr->name);
+			kfree(xattr->value);
+			kfree(xattr);
+			new_xattr = NULL;
+		}
+	} else if (flags & XATTR_REPLACE) {
+		ret = -ENODATA;
+	} else {
+		list_add(&new_xattr->list, &ffs_inode->xattrs);
+		new_xattr = NULL;
+	}
+
+	mutex_unlock(&ffs_inode->xattr_lock);
+
+error:
+	if (new_xattr) {
+		kfree(new_xattr->name);
+		kfree(new_xattr->value);
+		kfree(new_xattr);
+	}
+
+	return ret;
+}
+
+static const struct xattr_handler ffs_xattr_handler = {
+	.prefix = "", /* Catch all */
+	.get = ffs_xattr_get,
+	.set = ffs_xattr_set,
+};
+
+static const struct xattr_handler * const ffs_xattr_handlers[] = {
+	&ffs_xattr_handler,
+	NULL
+};
 
 /* File system and super block operations ***********************************/
 
@@ -1852,12 +1997,15 @@ ffs_sb_make_inode(struct super_block *sb, void *data,
 		  const struct inode_operations *iops,
 		  struct ffs_file_perms *perms)
 {
-	struct inode *inode;
-
-	inode = new_inode(sb);
+	struct inode *inode = new_inode(sb);
+	struct ffs_inode_info *ffs_inode;
 
 	if (inode) {
 		struct timespec64 ts = inode_set_ctime_current(inode);
+
+		ffs_inode = FFS_I(inode);
+		INIT_LIST_HEAD(&ffs_inode->xattrs);
+		mutex_init(&ffs_inode->xattr_lock);
 
 		inode->i_ino	 = get_next_ino();
 		inode->i_mode    = perms->mode;
@@ -1898,8 +2046,60 @@ static struct dentry *ffs_sb_create_file(struct super_block *sb,
 	return dentry;
 }
 
+static struct inode *ffs_alloc_inode(struct super_block *sb)
+{
+	struct ffs_inode_info *ffs_inode;
+
+	ffs_inode = kzalloc(sizeof(*ffs_inode), GFP_KERNEL);
+	if (!ffs_inode)
+		return NULL;
+	return &ffs_inode->inode;
+}
+
+static void ffs_free_inode(struct inode *inode)
+{
+	struct ffs_inode_info *ffs_inode = FFS_I(inode);
+	struct ffs_xattr *xattr, *next;
+
+	list_for_each_entry_safe(xattr, next, &ffs_inode->xattrs, list) {
+		kfree(xattr->name);
+		kfree(xattr->value);
+		kfree(xattr);
+	}
+
+	kfree(ffs_inode);
+}
+
+static const struct inode_operations ffs_dir_inode_operations;
+
+static int ffs_mkdir(struct mnt_idmap *mnt_idmap, struct inode *dir,
+		     struct dentry *dentry, umode_t mode)
+{
+	struct ffs_data *ffs = dir->i_sb->s_fs_info;
+	struct inode *inode;
+
+	inode = ffs_sb_make_inode(dir->i_sb, NULL, &simple_dir_operations,
+				  &ffs_dir_inode_operations, &ffs->file_perms);
+	if (!inode)
+		return -ENOSPC;
+
+	inode->i_mode = S_IFDIR | mode;
+	set_nlink(inode, 2);
+	d_instantiate(dentry, inode);
+	inc_nlink(dir);
+	return 0;
+}
+
+static const struct inode_operations ffs_dir_inode_operations = {
+	.lookup = simple_lookup,
+	.mkdir = ffs_mkdir,
+	.rmdir = simple_rmdir,
+};
+
 /* Super block */
 static const struct super_operations ffs_sb_operations = {
+	.alloc_inode =	ffs_alloc_inode,
+	.free_inode =	ffs_free_inode,
 	.statfs =	simple_statfs,
 	.drop_inode =	generic_delete_inode,
 };
@@ -1926,12 +2126,13 @@ static int ffs_sb_fill(struct super_block *sb, struct fs_context *fc)
 	sb->s_magic          = FUNCTIONFS_MAGIC;
 	sb->s_op             = &ffs_sb_operations;
 	sb->s_time_gran      = 1;
+	sb->s_xattr          = ffs_xattr_handlers;
 
 	/* Root inode */
 	data->perms.mode = data->root_mode;
 	inode = ffs_sb_make_inode(sb, NULL,
 				  &simple_dir_operations,
-				  &simple_dir_inode_operations,
+				  &ffs_dir_inode_operations,
 				  &data->perms);
 	sb->s_root = d_make_root(inode);
 	if (!sb->s_root)
