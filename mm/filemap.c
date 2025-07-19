@@ -1945,6 +1945,8 @@ no_page:
 		if (fgp_flags & FGP_NOFS)
 			gfp_mask &= ~__GFP_FS;
 
+		trace_android_vh_pagecache_get_page_gfp(mapping, fgp_flags, &gfp_mask);
+
 		page = __page_cache_alloc(gfp_mask);
 		if (!page)
 			return NULL;
