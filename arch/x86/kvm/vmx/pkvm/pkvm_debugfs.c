@@ -46,7 +46,8 @@ static const char *get_vmexit_reason(int index)
 	return NULL;
 }
 
-static void dump_perf_data(struct perf_data *perf, bool guest, struct perf_data *summary)
+static void dump_perf_data(struct seq_file *m, struct perf_data *perf,
+			   bool guest, struct perf_data *summary)
 {
 	int i;
 
@@ -55,15 +56,15 @@ static void dump_perf_data(struct perf_data *perf, bool guest, struct perf_data 
 			continue;
 
 		if (guest)
-			pr_info("VM%d-vcpu%d: %s %lld cycles %lld each-handler-cycle %lld\n",
-				perf->vm_handle, perf->vcpu_id, get_vmexit_reason(i),
-				perf->vmexit.reasons[i], perf->vmexit.cycles[i],
-				perf->vmexit.cycles[i] / perf->vmexit.reasons[i]);
+			seq_printf(m, "VM%d-vcpu%d: %s %lld cycles %lld each-handler-cycle %lld\n",
+				   perf->vm_handle, perf->vcpu_id, get_vmexit_reason(i),
+				   perf->vmexit.reasons[i], perf->vmexit.cycles[i],
+				   perf->vmexit.cycles[i] / perf->vmexit.reasons[i]);
 		else
-			pr_info("Host-vcpu%d: %s %lld cycles %lld each-handler-cycle %lld\n",
-				perf->vcpu_id, get_vmexit_reason(i), perf->vmexit.reasons[i],
-				perf->vmexit.cycles[i],
-				perf->vmexit.cycles[i] / perf->vmexit.reasons[i]);
+			seq_printf(m, "Host-vcpu%d: %s %lld cycles %lld each-handler-cycle %lld\n",
+				   perf->vcpu_id, get_vmexit_reason(i), perf->vmexit.reasons[i],
+				   perf->vmexit.cycles[i],
+				   perf->vmexit.cycles[i] / perf->vmexit.reasons[i]);
 
 		summary->vmexit.reasons[i] += perf->vmexit.reasons[i];
 		summary->vmexit.cycles[i] += perf->vmexit.cycles[i];
@@ -73,7 +74,7 @@ static void dump_perf_data(struct perf_data *perf, bool guest, struct perf_data 
 	}
 }
 
-static void print_summary(struct perf_data *summary, bool guest)
+static void print_summary(struct seq_file *m, struct perf_data *summary, bool guest)
 {
 	int i;
 
@@ -82,22 +83,24 @@ static void print_summary(struct perf_data *summary, bool guest)
 			continue;
 
 		if (guest)
-			pr_info("VM%d: %s %lld cycles %lld each-handler-cycle %lld\n",
-				summary->vm_handle, get_vmexit_reason(i),
-				summary->vmexit.reasons[i], summary->vmexit.cycles[i],
-				summary->vmexit.cycles[i] / summary->vmexit.reasons[i]);
+			seq_printf(m, "VM%d: %s %lld cycles %lld each-handler-cycle %lld\n",
+				   summary->vm_handle, get_vmexit_reason(i),
+				   summary->vmexit.reasons[i], summary->vmexit.cycles[i],
+				   summary->vmexit.cycles[i] / summary->vmexit.reasons[i]);
 		else
-			pr_info("Host: %s %lld cycles %lld each-handler-cycle %lld\n",
-				get_vmexit_reason(i), summary->vmexit.reasons[i],
-				summary->vmexit.cycles[i],
-				summary->vmexit.cycles[i] / summary->vmexit.reasons[i]);
+			seq_printf(m, "Host: %s %lld cycles %lld each-handler-cycle %lld\n",
+				   get_vmexit_reason(i), summary->vmexit.reasons[i],
+				   summary->vmexit.cycles[i],
+				   summary->vmexit.cycles[i] / summary->vmexit.reasons[i]);
 
 		if (need_resched())
 			cond_resched();
 	}
 }
 
-static struct perf_data *dump_host_vcpu_perf_data(struct perf_data *dump, unsigned long *size)
+static struct perf_data *dump_host_vcpu_perf_data(struct seq_file *m,
+						  struct perf_data *dump,
+						  unsigned long *size)
 {
 	struct perf_data summary = { 0 };
 	struct perf_data *perf;
@@ -106,14 +109,15 @@ static struct perf_data *dump_host_vcpu_perf_data(struct perf_data *dump, unsign
 	for (perf = dump, cpu = 0;
 	     cpu < num_possible_cpus() && *size >= sizeof(struct perf_data);
 	     cpu++, *size -= sizeof(struct perf_data), perf++)
-		dump_perf_data(perf, false, &summary);
+		dump_perf_data(m, perf, false, &summary);
 
-	print_summary(&summary, false);
+	print_summary(m, &summary, false);
 
 	return perf;
 }
 
-static void dump_guest_vcpu_perf_data(struct perf_data *dump, unsigned long *size)
+static void dump_guest_vcpu_perf_data(struct seq_file *m, struct perf_data *dump,
+				      unsigned long *size)
 {
 	struct perf_data summary = { 0 };
 	struct perf_data *perf;
@@ -127,26 +131,27 @@ static void dump_guest_vcpu_perf_data(struct perf_data *dump, unsigned long *siz
 
 		if (summary.vm_handle != perf->vm_handle) {
 			/* Start to dump another VM, print summary */
-			print_summary(&summary, true);
+			print_summary(m, &summary, true);
 			memset(&summary, 0, sizeof(struct perf_data));
 			summary.vm_handle = perf->vm_handle;
 		}
 
-		dump_perf_data(perf, true, &summary);
+		dump_perf_data(m, perf, true, &summary);
 	}
 
-	print_summary(&summary, true);
+	print_summary(m, &summary, true);
 }
 
-static void pkvm_dump_vmexit_trace(struct perf_data *dump, unsigned long size)
+static void pkvm_dump_vmexit_trace(struct seq_file *m, struct perf_data *dump,
+				   unsigned long size)
 {
 	/* Dump host vcpu perf as this is first copied by the pkvm */
-	struct perf_data *guest_perf = dump_host_vcpu_perf_data(dump, &size);
+	struct perf_data *guest_perf = dump_host_vcpu_perf_data(m, dump, &size);
 
-	dump_guest_vcpu_perf_data(guest_perf, &size);
+	dump_guest_vcpu_perf_data(m, guest_perf, &size);
 }
 
-static int dump_vmexit_trace(void *data, u64 *val)
+static int vmexit_trace_show(struct seq_file *m, void *unused)
 {
 	unsigned long size = sizeof(struct perf_data) * num_possible_cpus();
 	struct perf_data *perf;
@@ -166,14 +171,13 @@ static int dump_vmexit_trace(void *data, u64 *val)
 	kvm_hypercall2(PKVM_HC_DUMP_VMEXIT_TRACE, __pa(perf), size);
 	barrier();
 
-	pkvm_dump_vmexit_trace(perf, size);
+	pkvm_dump_vmexit_trace(m, perf, size);
 
 	free_pages_exact(perf, size);
 
-	*val = 0;
 	return 0;
 }
-DEFINE_SIMPLE_ATTRIBUTE(dump_vmexit_trace_fops, dump_vmexit_trace, NULL, "%llu\n");
+DEFINE_SHOW_ATTRIBUTE(vmexit_trace);
 
 struct debugfs_item {
 	const char *name;
@@ -184,7 +188,7 @@ struct debugfs_item {
 
 struct debugfs_item debugfs_files[] = {
 	{ "set_vmexit_trace", 0222, &set_vmexit_trace_fops},
-	{ "dump_vmexit_trace", 0444, &dump_vmexit_trace_fops},
+	{ "dump_vmexit_trace", 0444, &vmexit_trace_fops},
 	{ NULL }
 };
 
