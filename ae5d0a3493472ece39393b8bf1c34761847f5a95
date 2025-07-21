@@ -16,6 +16,24 @@
       "message": "Might be good to add a comment about why we don\u0027t unmap MMIO here but postpone it until activate_iommu() (to capture the outcome of our brainstorm in https://android-review.googlesource.com/c/kernel/common/+/3590991/13..18/arch/x86/kvm/vmx/pkvm/pkvm_host.c#b1041)?\n\nBTW this postponing of MMIO unmap is not something that is needed in this patch (for postponing IOMMU initialization), it is related to the next patch aosp/3590991, right? So it rather belongs in a separate patch after this one?",
       "revId": "ae5d0a3493472ece39393b8bf1c34761847f5a95",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eacb83a_e570ea03",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-21T01:23:22Z",
+      "side": 0,
+      "message": "Just realized one thing that, now the IOMMU MMIO unmap from the EPT is in activate_iommu, which is triggered when the host IOMMU driver is accessing the IOMMU MMIO via hypercall. And normally we don\u0027t trust the host after finalize as the host can be tampered. So seems it is possible that a tampered host IOMMU driver uses memory mapped way to access IOMMU MMIO rather than hypercall so that no chance for the pkvm hypervisor to unmap the IOMMU MMIO?",
+      "parentUuid": "c449d649_5f16fa62",
+      "revId": "ae5d0a3493472ece39393b8bf1c34761847f5a95",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
