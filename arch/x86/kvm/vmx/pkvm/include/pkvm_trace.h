@@ -5,11 +5,16 @@
 #ifndef _PKVM_TRACE_H_
 #define _PKVM_TRACE_H_
 
+#include <asm/vmx.h>
+
+/* Vmexit reason larger than EXIT_REASON_NOTIFY will not traced */
+#define MAX_VMEXIT_REASONS (EXIT_REASON_NOTIFY + 1)
+
 struct vmexit_data {
 	u64 total_count;
 	u64 total_cycles;
-	u64 reasons[74];
-	u64 cycles[74];
+	u64 reasons[MAX_VMEXIT_REASONS];
+	u64 cycles[MAX_VMEXIT_REASONS];
 };
 
 struct perf_data {
