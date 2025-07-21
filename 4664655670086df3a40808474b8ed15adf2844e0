@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f87ef1b3_a093f6d0",
+        "filename": "arch/x86/kvm/vmx/pkvm/include/pkvm_trace.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-21T17:23:35Z",
+      "side": 1,
+      "message": "I guess we could add this directly to arch/x86/include/uapi/asm/vmx.h:\n\n```\n--- a/arch/x86/include/uapi/asm/vmx.h\n+++ b/arch/x86/include/uapi/asm/vmx.h\n@@ -92,6 +92,7 @@\n #define EXIT_REASON_TPAUSE              68\n #define EXIT_REASON_BUS_LOCK            74\n #define EXIT_REASON_NOTIFY              75\n+#define EXIT_REASON_MAX                 (EXIT_REASON_NOTIFY + 1)\n \n #define VMX_EXIT_REASONS \\\n \t{ EXIT_REASON_EXCEPTION_NMI,         \"EXCEPTION_NMI\" }, \\\n```\n\nso that if yet another exit reason is added, we can easily notice that and update EXIT_REASON_MAX.\n\nThere is no strong need to do that now, but maybe it\u0027s a good idea to do that right away. WDYT?",
+      "revId": "4664655670086df3a40808474b8ed15adf2844e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
