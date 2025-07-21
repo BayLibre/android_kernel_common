@@ -1,0 +1,317 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6311ed4_67c8f97d",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-21T17:21:59Z",
+      "side": 1,
+      "message": "Move it to pkvm.h as static inline? (maybe together with vm_handle_to_idx())?",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcb8f50b_7bce2c24",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-21T17:21:59Z",
+      "side": 1,
+      "message": "Is this just to prevent `age` from becoming negative if it overflows? If so, shouldn\u0027t we just make it unsigned instead? (BTW according to C standard, signed integer overflow is undefined behavior?)",
+      "fixSuggestions": [
+        {
+          "fixId": "6cbe449d_6df696a7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+              "range": {
+                "startLine": 22,
+                "startChar": 0,
+                "endLine": 23,
+                "endChar": 0
+              },
+              "replacement": "\tunsigned int age;\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+              "range": {
+                "startLine": 98,
+                "startChar": 0,
+                "endLine": 100,
+                "endChar": 0
+              },
+              "replacement": "\t\tpctrl-\u003eage++;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d034432_8e5b7806",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-21T17:21:59Z",
+      "side": 1,
+      "message": "Why specifically VALID_PAGE? It seems to be mostly a KVM MMU thing (for checking if a MMU root is allocated)?\n\nBTW, am I correct that we have here the same problem as in various \"TODO: Assume host is already share ...\" comments in arch/x86/kvm/pkvm/pkvm.c (i.e. the host should explicitly share/unshare this buffer with pKVM, and pKVM should pin/unpin it, to prevent e.g. donating it to a pVM while pKVM is dumping vmexit data to it)?",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "326b1197_de3723b4",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-21T17:21:59Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we do this with vm-\u003elock locked?",
+      "fixSuggestions": [
+        {
+          "fixId": "7e32c47a_31b5e513",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+              "range": {
+                "startLine": 151,
+                "startChar": 0,
+                "endLine": 151,
+                "endChar": 0
+              },
+              "replacement": "\t\tpkvm_spin_lock(\u0026vm-\u003elock);\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+              "range": {
+                "startLine": 162,
+                "startChar": 0,
+                "endLine": 162,
+                "endChar": 0
+              },
+              "replacement": "\t\tpkvm_spin_unlock(\u0026vm-\u003elock);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1284dbec_8f9abc44",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-21T17:21:59Z",
+      "side": 1,
+      "message": "nit: Looks like we don\u0027t need to pass `guest` as an argument, we can derive it from vm_handle inside dump_perf_data()?",
+      "fixSuggestions": [
+        {
+          "fixId": "60e379fa_2a41caa6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+              "range": {
+                "startLine": 49,
+                "startChar": 0,
+                "endLine": 50,
+                "endChar": 0
+              },
+              "replacement": "static void dump_perf_data(struct perf_data *perf, struct perf_data *summary)\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+              "range": {
+                "startLine": 52,
+                "startChar": 0,
+                "endLine": 52,
+                "endChar": 0
+              },
+              "replacement": "\tbool guest \u003d perf-\u003evm_handle !\u003d 0;\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+              "range": {
+                "startLine": 109,
+                "startChar": 0,
+                "endLine": 110,
+                "endChar": 0
+              },
+              "replacement": "\t\tdump_perf_data(perf, \u0026summary);\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+              "range": {
+                "startLine": 135,
+                "startChar": 0,
+                "endLine": 136,
+                "endChar": 0
+              },
+              "replacement": "\t\tdump_perf_data(perf, \u0026summary);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b79c8551_b8e2eae0",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-21T17:21:59Z",
+      "side": 1,
+      "message": "nit: We don\u0027t need to pass size to dump_guest_vcpu_perf_data() by pointer, we can pass it by value, since its final value is not used by anyone after dump_guest_vcpu_perf_data()?",
+      "fixSuggestions": [
+        {
+          "fixId": "63375742_bfe7dfe7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+              "range": {
+                "startLine": 116,
+                "startChar": 0,
+                "endLine": 117,
+                "endChar": 0
+              },
+              "replacement": "static void dump_guest_vcpu_perf_data(struct perf_data *dump, unsigned long size)\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+              "range": {
+                "startLine": 122,
+                "startChar": 0,
+                "endLine": 124,
+                "endChar": 0
+              },
+              "replacement": "\t     size \u003e\u003d sizeof(struct perf_data);\n\t     size -\u003d sizeof(struct perf_data), perf++) {\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+              "range": {
+                "startLine": 146,
+                "startChar": 0,
+                "endLine": 147,
+                "endChar": 0
+              },
+              "replacement": "\tdump_guest_vcpu_perf_data(guest_perf, size);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbc85ebc_53b938c0",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-21T17:21:59Z",
+      "side": 1,
+      "message": "Can we just multiply sizeof(struct perf_data) by the number of vcpus?",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d89c388_7831f441",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-21T17:21:59Z",
+      "side": 1,
+      "message": "While we\u0027re at it, we should check it for failure?",
+      "fixSuggestions": [
+        {
+          "fixId": "635e7563_b889e04f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+              "range": {
+                "startLine": 165,
+                "startChar": 0,
+                "endLine": 165,
+                "endChar": 0
+              },
+              "replacement": "\tif (!perf) {\n\t\tpr_err(\"Failed to allocate perf buffer\\n\");\n\t\treturn -ENOMEM;\n\t}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "310d7d71_5f6da945",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-21T17:21:59Z",
+      "side": 1,
+      "message": "While we\u0027re at it, why is this barrier needed?",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
