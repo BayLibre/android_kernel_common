@@ -34,6 +34,24 @@
       "parentUuid": "c449d649_5f16fa62",
       "revId": "ae5d0a3493472ece39393b8bf1c34761847f5a95",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "439c00db_8624218f",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-21T11:21:02Z",
+      "side": 0,
+      "message": "I think we are free to define at which point in vmx_pkvm_init() the host becomes untrusted. It doesn\u0027t need to be right after finalize.\n\nIn fact, in the earlier patch aosp/3649034 we already explicitly postpone this point: before the host makes __PKVM_HC_COMMIT_FINALISE(true) hypercall, pKVM allows the host to reprivilege CPUs, which means that it still considers the host trusted, right?\n\nAnd, what this patch is doing is postponing IOMMU initialization until after finalize, which means that right after finalize the host cannot be considered fully deprivileged yet (since IOMMU is not initialized yet, so pKVM has not enabled DMA protection yet). I.e. pKVM needs to assume that the (still trusted) host will enable DMA protection as a part of the IOMMU driver initialization (which happens after finalize). So it\u0027s ok to postpone unmapping IOMMU MMIO until the (still trusted) host actually enables DMA protection, right?\n\nPrecisely, in this patch, the host does that by writing GCMD.SRTP in intel_iommu_init() -\u003e init_dmars() -\u003e iommu_set_root_entry(), which triggers activate_iommu() in pKVM, which finally enables DMA protection. That happens inside vmx_pkvm_init(), after finalize but before the host issues __PKVM_HC_COMMIT_FINALISE(true).\n\nAlthough even more precisely, this patch also moves enable_translation() from activate_iommu() to handle_gcmd_te() (I\u0027m not sure what for, actually). So DMA protection is _actually_ enabled a bit later, when the host writes GCMD.TE in intel_iommu_init() -\u003e iommu_enable_translation(). But that still happens before __PKVM_HC_COMMIT_FINALISE(true).\n\nPerhaps just an extra (optional) simple safeguard we can add is to disallow __PKVM_HC_COMMIT_FINALISE(true) unless the host has already triggered activate_iommu() and enable_translation().\n\nBTW once we switch to PV IOMMU, keeping relying on the host to write emulated GCMD.SRTP and GCMD.TE in intel_iommu_init() might be not the best way of doing that, it seems cleaner to let the host do that via a single explicit hypercall. I wrote some thoughts about that here:\n\nhttps://android-review.googlesource.com/c/kernel/common/+/3590995/comment/1ddef4b2_0e8cc597/\n\nhttps://android-review.googlesource.com/c/kernel/common/+/3590995/comment/aa61672f_79f2142a/",
+      "parentUuid": "2eacb83a_e570ea03",
+      "revId": "ae5d0a3493472ece39393b8bf1c34761847f5a95",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
