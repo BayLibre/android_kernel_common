@@ -922,10 +922,10 @@ static inline void check_and_wakeup_kcompactd(struct zone *zone)
 	if (current_is_kswapd() || zone_idx(zone) != ZONE_NORMAL)
 		return;
 
-	if (test_and_set_mthp_compact())
+	if (get_mthp_compact())
 		return;
 
-	if (should_compact_zone(zone) == COMPACT_CONTINUE)
+	if (should_compact_zone(zone) == COMPACT_CONTINUE && !test_and_set_mthp_compact())
 		wakeup_kcompactd(zone->zone_pgdat, MTHP_ORDER, ZONE_NORMAL);
 }
 
