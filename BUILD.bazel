@@ -36,6 +36,7 @@ load(
     "get_gki_protected_modules_list",
     "get_kunit_modules_list",
 )
+load("@rules_devicetree//devicetree:devicetree_library.bzl", "devicetree_library")
 
 package(
     default_visibility = [
@@ -1656,6 +1657,13 @@ ddk_headers(
         "kernel/workqueue_internal.h",
     ],
     visibility = ["//visibility:private"],
+)
+
+devicetree_library(
+    name = "dtc_includes",
+    hdrs = glob(["scripts/dtc/include-prefixes/**/*.h"]),
+    includes = ["scripts/dtc/include-prefixes"],
+    visibility = ["//visibility:public"],
 )
 
 _KSELFTEST_DIR = "testcases/selftests"
