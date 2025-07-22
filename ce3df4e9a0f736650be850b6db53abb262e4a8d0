@@ -22,6 +22,30 @@
       },
       "revId": "ce3df4e9a0f736650be850b6db53abb262e4a8d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d84a2c42_3c967ae3",
+        "filename": "gki/aarch64/afdo/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2025-07-22T09:02:58Z",
+      "side": 1,
+      "message": "While this update shows a slight regression compared to the 6.12.18 profile, the changes fall within the expected variance when viewed alongside all three previous 6.12 updates (the other two are in https://android-review.git.corp.google.com/c/toolchain/pgo-profiles/+/3474550/2/kernel/aarch64/android16-6.12/source_info.md).\nFor the results of kernel 6.12.9, 6.12.11, 6.12.18, 6.12.30:\nboot time: 2.1%, 1.8%, 2.6% \u003d\u003e 2.2%\napp launch time: 3.1%, 3.2%, 3.7% \u003d\u003e 3.3%\nbinder-rpc: 7.8%, 6.3%, 9.4% \u003d\u003e 8.3%\nbinder-addints: 30.2%, 20.4%, 31.9% \u003d\u003e 15.2%\nhwbinder: 17.7%, 14.4%, 16.5% \u003d\u003e 17.8%\nbionic (syscall_mmap) 5.0%, 6.4%, 7.1% \u003d\u003e 6.6%\nbionic (pthread) 2.4%, 2.5%, 3.3% \u003d\u003e 2.8%\nbionic (stdio) 3.0%, 3.2%, 3.7% \u003d\u003e 1.2%\nbionic (all) 1.2%, 2.1%, 3.4% \u003d\u003e 1.4%\n\nFor possible reasons:\n1. this update is the first one using profile generated from the lab, instead of from local devices. I feel this environment and collection script change can affect the profile and benchmark results. For example, devices running in the lab may can\u0027t login apps as good as local devices.\n2. The result of binder-addints is known to have high variance, as in the comments in https://android-review.git.corp.google.com/c/toolchain/pgo-profiles/+/3474550/2/kernel/aarch64/android16-6.12/source_info.md#b10. And the other two binders are showing normal improvements.",
+      "parentUuid": "6600992c_3e5697dc",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 30
+      },
+      "revId": "ce3df4e9a0f736650be850b6db53abb262e4a8d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
