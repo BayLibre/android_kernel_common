@@ -65,6 +65,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b521db18_c5c57282",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-22T02:47:34Z",
+      "side": 1,
+      "message": "Ah, yes, let me change to unsigned int",
+      "parentUuid": "dcb8f50b_7bce2c24",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3d034432_8e5b7806",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
         "patchSetId": 1
@@ -76,6 +94,24 @@
       "writtenOn": "2025-07-21T17:21:59Z",
       "side": 1,
       "message": "Why specifically VALID_PAGE? It seems to be mostly a KVM MMU thing (for checking if a MMU root is allocated)?\n\nBTW, am I correct that we have here the same problem as in various \"TODO: Assume host is already share ...\" comments in arch/x86/kvm/pkvm/pkvm.c (i.e. the host should explicitly share/unshare this buffer with pKVM, and pKVM should pin/unpin it, to prevent e.g. donating it to a pVM while pKVM is dumping vmexit data to it)?",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0631372a_4bed6acd",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-22T02:47:34Z",
+      "side": 1,
+      "message": "Initially I plan to use this as an option for the host to query the required memory size, like if host pass an INVALID_PAGE, then the pkvm return required memory size. But later seems this not necessary. As VALID_PAGE() check is harmless and can still prevent the host sending INVALID_PAGE, leave it as it is. Although it mostly used by the KVM MMU thing, there are still some other usages, like for the partition assist page in hv_get_partition_assist_page(), and for the snp_vmsa_gpa in sev_snp_ap_creation().\n\nAnd yes, I will add a TODO for this as well. Thanks!",
+      "parentUuid": "3d034432_8e5b7806",
       "revId": "8a928d880a279123a53579bd057f857ed9485eec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -121,6 +157,24 @@
           ]
         }
       ],
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea459424_8bc6a51d",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-22T02:47:34Z",
+      "side": 1,
+      "message": "Do we concern about the \"created_vcpus\" may be increased during this, so better to use spin lock to cover all the possible vcpus? If so, probably better to move this lock out of the for(j\u003d0;...) loop?\n\nIf concern about some pkvm_vcpu might be teardown during this, then this should not be an issue, as we already get the vm and prevent the pkvm_vm_destroy to do so.\n\nBy looking at the usage via \"watch -n 1 grep -v vcpu /sys/kernel/debug/pkvm/dump_vmexit_trace\", it looks like we expect to dump the vmexit trace data at any running time. This reminds me that, as pkvm_vm is got for copying the vmexit perf data, if the host is trying to destroy the vm at the same time, the pkvm_vm_destroy() will return negative value due to pkvm_vm is busy. A rough idea from my side to resolve this, is to lock the pkvm_vms_lock during walking for each pkvm_vm, so that the pkvm_vm_destroy will wait until the pkvm_vms_lock is unlocked. In this case, kvm/pkvm/pkvm.c may need to expose a new function like pkvm_for_each_vm_func to run a desired function for each VM with pkvm_vms_lock locked. For this case, the desired function is to copy each pkvm vcpu\u0027s vmexit perf data. At the same time, no need to expose idx_to_vm_handle.",
+      "parentUuid": "326b1197_de3723b4",
       "revId": "8a928d880a279123a53579bd057f857ed9485eec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -192,6 +246,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6cac66ae_c26c0ff1",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-22T02:47:34Z",
+      "side": 1,
+      "message": "Removing guest parameter is better. Will update this.",
+      "parentUuid": "1284dbec_8f9abc44",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b79c8551_b8e2eae0",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
         "patchSetId": 1
@@ -247,6 +319,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e952d34c_c059bfb6",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-22T02:47:34Z",
+      "side": 1,
+      "message": "Indeed. Will update.",
+      "parentUuid": "b79c8551_b8e2eae0",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fbc85ebc_53b938c0",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
         "patchSetId": 1
@@ -258,6 +348,24 @@
       "writtenOn": "2025-07-21T17:21:59Z",
       "side": 1,
       "message": "Can we just multiply sizeof(struct perf_data) by the number of vcpus?",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbb784ce_1bb1667a",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-22T02:47:34Z",
+      "side": 1,
+      "message": "Sure, then probably it will be \"size +\u003d atomic_read(\u0026kvm-\u003eonline_vcpus) * sizeof(struct perf_data);\"",
+      "parentUuid": "fbc85ebc_53b938c0",
       "revId": "8a928d880a279123a53579bd057f857ed9485eec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -299,6 +407,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d3e1a195_c1a0336c",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-22T02:47:34Z",
+      "side": 1,
+      "message": "Sure, will udate.",
+      "parentUuid": "1d89c388_7831f441",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "310d7d71_5f6da945",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
         "patchSetId": 1
@@ -310,6 +436,24 @@
       "writtenOn": "2025-07-21T17:21:59Z",
       "side": 1,
       "message": "While we\u0027re at it, why is this barrier needed?",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f90f2bed_aec75b68",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_debugfs.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-22T02:47:34Z",
+      "side": 1,
+      "message": "No, it is not necessary as the hypercall asm code can guarantee this. Let\u0027s remove it in this patch, as it is just one line change.",
+      "parentUuid": "310d7d71_5f6da945",
       "revId": "8a928d880a279123a53579bd057f857ed9485eec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
