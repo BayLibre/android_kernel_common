@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d99033a7_0d89235e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-22T05:40:37Z",
+      "side": 1,
+      "message": "Yes. If make it per-vm, suppose we can still use the dump_vmexit_trace in /sys/kernel/debug/pkvm to show all the traces rather than just host VM traces, which is compatible with the current usage if there is any?\n\nAnd as it is per-vm, do we want to reuse the per-vm sub-directory under /sys/kernel/debugfs/kvm/ or just creat a new one? This decides if we reuse the kvm-\u003edebugfs_dentry or create a new per-vm debugfs dentry.",
+      "parentUuid": "67b2e883_a03c0858",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6311ed4_67c8f97d",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 1
