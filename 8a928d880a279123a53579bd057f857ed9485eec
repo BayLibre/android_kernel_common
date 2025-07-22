@@ -153,6 +153,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3d98deb8_570e1b41",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-22T09:15:33Z",
+      "side": 1,
+      "message": "Yeah, VALID_PAGE() check is harmless. Just a thought: if we have a sanity check here anyway, we could also check for NULL?",
+      "parentUuid": "0631372a_4bed6acd",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "326b1197_de3723b4",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
         "patchSetId": 1
@@ -210,6 +228,24 @@
       "side": 1,
       "message": "Do we concern about the \"created_vcpus\" may be increased during this, so better to use spin lock to cover all the possible vcpus? If so, probably better to move this lock out of the for(j\u003d0;...) loop?\n\nIf concern about some pkvm_vcpu might be teardown during this, then this should not be an issue, as we already get the vm and prevent the pkvm_vm_destroy to do so.\n\nBy looking at the usage via \"watch -n 1 grep -v vcpu /sys/kernel/debug/pkvm/dump_vmexit_trace\", it looks like we expect to dump the vmexit trace data at any running time. This reminds me that, as pkvm_vm is got for copying the vmexit perf data, if the host is trying to destroy the vm at the same time, the pkvm_vm_destroy() will return negative value due to pkvm_vm is busy. A rough idea from my side to resolve this, is to lock the pkvm_vms_lock during walking for each pkvm_vm, so that the pkvm_vm_destroy will wait until the pkvm_vms_lock is unlocked. In this case, kvm/pkvm/pkvm.c may need to expose a new function like pkvm_for_each_vm_func to run a desired function for each VM with pkvm_vms_lock locked. For this case, the desired function is to copy each pkvm vcpu\u0027s vmexit perf data. At the same time, no need to expose idx_to_vm_handle.",
       "parentUuid": "326b1197_de3723b4",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fd0186d_1df5f331",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-22T09:15:33Z",
+      "side": 1,
+      "message": "\u003e Do we concern about the \"created_vcpus\" may be increased during this, so better to use spin lock to cover all the possible vcpus?\n\nYes, that\u0027s my concern.\n\n\u003e If so, probably better to move this lock out of the for(j\u003d0;...) loop?\n\nYes, that\u0027s exactly what I suggested. :) \n\n\u003e as pkvm_vm is got for copying the vmexit perf data, if the host is trying to destroy the vm at the same time, the pkvm_vm_destroy() will return negative value due to pkvm_vm is busy.\n\nMaybe that\u0027s fine?\n\nAlthough, locking pkvm_vms_lock instead might be indeed a good idea...",
+      "parentUuid": "ea459424_8bc6a51d",
       "revId": "8a928d880a279123a53579bd057f857ed9485eec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
