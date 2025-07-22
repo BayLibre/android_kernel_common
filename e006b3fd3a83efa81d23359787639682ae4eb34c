@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "675fe998_702d28eb",
+        "filename": "arch/x86/include/uapi/asm/vmx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-22T15:58:02Z",
+      "side": 1,
+      "message": "nit: MAX_EXIT_REASONS (just to be in line with the above EXIT_REASON_xxx)?",
+      "fixSuggestions": [
+        {
+          "fixId": "7f67eab8_83de2984",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/include/uapi/asm/vmx.h",
+              "range": {
+                "startLine": 95,
+                "startChar": 0,
+                "endLine": 96,
+                "endChar": 0
+              },
+              "replacement": "#define MAX_EXIT_REASONS              (EXIT_REASON_NOTIFY + 1)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e006b3fd3a83efa81d23359787639682ae4eb34c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
