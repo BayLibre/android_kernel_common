@@ -16,6 +16,24 @@
       "message": "Are these values dependent on the page size or are they constant?",
       "revId": "fa419dcd2c89a8f795221574237b46aa11175158",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c3e19b1_81b989ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-07-22T18:44:48Z",
+      "side": 1,
+      "message": "The value passed on the CF command-line is 16k, so I\u0027ve gone with something that should mirror that behaviour. The fiddly part is that we\u0027re changing constants in the _guest_ to dimension an allocation on the _host_ so we can\u0027t really base it on the page-size or the size of the skb structure.\n\ntl;dr: this value shouldn\u0027t need changing based on the page size.",
+      "parentUuid": "900a5997_5f578af4",
+      "revId": "fa419dcd2c89a8f795221574237b46aa11175158",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
