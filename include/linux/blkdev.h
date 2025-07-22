@@ -847,6 +847,8 @@ static inline u64 sb_bdev_nr_blocks(struct super_block *sb)
 }
 
 #ifdef CONFIG_BLK_DEV_ZONED
+bool blk_pipeline_zwr(struct request_queue *q);
+
 /**
  * bio_needs_zone_write_plugging - Check if a BIO needs to be handled with zone
  *				   write plugging
@@ -895,6 +897,11 @@ static inline bool bio_needs_zone_write_plugging(struct bio *bio)
 	}
 }
 #else /* CONFIG_BLK_DEV_ZONED */
+static inline bool blk_pipeline_zwr(struct request_queue *q)
+{
+	return false;
+}
+
 static inline bool bio_needs_zone_write_plugging(struct bio *bio)
 {
 	return false;
