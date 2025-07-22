@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5c68ab7_19342c98",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-22T16:17:26Z",
+      "side": 1,
+      "message": "TBH, I don\u0027t see much value in having this extra per-VM entry under /sys/kernel/debug/kvm/ at this point.\n\nAnd it feels a bit inconsistent that in order to _enable_ this new per-VM trace in  /sys/kernel/debugfs/kvm/, we still need to enable tracing globally via /sys/kernel/debug/pkvm/set_vmexit_trace.",
+      "parentUuid": "d0e5eb2b_b7196551",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6311ed4_67c8f97d",
