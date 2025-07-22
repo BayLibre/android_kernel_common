@@ -70,6 +70,24 @@
       "parentUuid": "439c00db_8624218f",
       "revId": "ae5d0a3493472ece39393b8bf1c34761847f5a95",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54dcc518_a1a3d44e",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-22T11:33:08Z",
+      "side": 0,
+      "message": "As I see it, such extra safeguards are rather optional. Roughly speaking, the host is trusted until the moment when vmx_pkvm_init() returns. And there are 2 cases:\n\n* If vmx_pkvm_init() succeeds, it is the host\u0027s responsibility to issue the \\_\\_PKVM_HC_COMMIT_FINALISE(true) hypercall, before vmx_pkvm_init() returns but _after_ the pKVM hypervisor has enabled all the needed protection; and the pKVM hypervisor\u0027s responsibility is to ensure that starting from the moment of \\_\\_PKVM_HC_COMMIT_FINALISE(true) all the needed protection remains enabled (i.e. reprivileging is forbidden).\n* If vmx_pkvm_init() fails, it is the host\u0027s responsibility to ensure that the pvmfw memory region is cleared before vmx_pkvm_init() returns.\n\nIn both cases we ensure that after vmx_pkvm_init() returns, the untrusted host has no access to any pVM sensitive data (since the secrets contained in the pvmfw memory region are the \"root\" of all pVM secrets, and we ensure in both cases that after returning from vmx_pkvm_init() the host has no access to those pvmfw secrets).",
+      "parentUuid": "ba2c1076_dd03013c",
+      "revId": "ae5d0a3493472ece39393b8bf1c34761847f5a95",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
