@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "071decc0_acc56bbb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-22T18:03:50Z",
+      "side": 1,
+      "message": "Just an ignorant question: could you describe some example scenarios in which the lack of this setting of kvm governed features for XSAVE/LAM may cause problems (with pKVM)?\n\nAfter briefly searching for usages of guest_can_use(X86_FEATURE_LAM) and guest_can_use(X86_FEATURE_XSAVES) in the code, I can see one such example for LAM (CR3 value validation for SET_SREGS ioctl in __set_sregs_common() -\u003e kvm_is_valid_sregs() -\u003e kvm_vcpu_is_legal_cr3()) but no such examples for XSAVES.",
+      "range": {
+        "startLine": 10,
+        "startChar": 60,
+        "endLine": 11,
+        "endChar": 67
+      },
+      "revId": "411e86ffd0f10a483a1baf22cff33aa5724e986c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
