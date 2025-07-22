@@ -171,6 +171,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "13af474c_8a73d206",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-22T09:25:11Z",
+      "side": 1,
+      "message": "You mean check with pa \u003d\u003d 0? Probably it is still possible for the host to use physical address 0, although it might not happen in real?",
+      "parentUuid": "3d98deb8_570e1b41",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "326b1197_de3723b4",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
         "patchSetId": 1
@@ -246,6 +264,24 @@
       "side": 1,
       "message": "\u003e Do we concern about the \"created_vcpus\" may be increased during this, so better to use spin lock to cover all the possible vcpus?\n\nYes, that\u0027s my concern.\n\n\u003e If so, probably better to move this lock out of the for(j\u003d0;...) loop?\n\nYes, that\u0027s exactly what I suggested. :) \n\n\u003e as pkvm_vm is got for copying the vmexit perf data, if the host is trying to destroy the vm at the same time, the pkvm_vm_destroy() will return negative value due to pkvm_vm is busy.\n\nMaybe that\u0027s fine?\n\nAlthough, locking pkvm_vms_lock instead might be indeed a good idea...",
       "parentUuid": "ea459424_8bc6a51d",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52b85339_cffda6b6",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-22T09:25:11Z",
+      "side": 1,
+      "message": "Yeah, it should be a corner case. I have refactored the code to use pkvm_vms_lock. Will update the patch.",
+      "parentUuid": "4fd0186d_1df5f331",
       "revId": "8a928d880a279123a53579bd057f857ed9485eec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
