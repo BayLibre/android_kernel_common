@@ -52,6 +52,24 @@
       "parentUuid": "2eacb83a_e570ea03",
       "revId": "ae5d0a3493472ece39393b8bf1c34761847f5a95",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba2c1076_dd03013c",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-22T06:50:44Z",
+      "side": 0,
+      "message": "\u003e Perhaps just an extra (optional) simple safeguard we can add is to disallow __PKVM_HC_COMMIT_FINALISE(true) unless the host has already triggered activate_iommu() and enable_translation().\n\nProbably it is better for us to have this simple safeguard to make sure all the CPU are finalized and IOMMU translation is enabled before boot up any pVM, so that we don\u0027t need to trust the host after deprivilege? And this might also be helpful to the PV IOMMU case?",
+      "parentUuid": "439c00db_8624218f",
+      "revId": "ae5d0a3493472ece39393b8bf1c34761847f5a95",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
