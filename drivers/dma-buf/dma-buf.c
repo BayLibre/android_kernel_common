@@ -120,8 +120,10 @@ static void dma_buf_release(struct dentry *dentry)
 		dma_resv_fini(dmabuf->resv);
 
 	dmabuf_ext = get_dmabuf_ext(dmabuf);
-	if (atomic64_read(&dmabuf_ext->nr_task_refs))
-		pr_alert("destroying dmabuf with non-zero task refs\n");
+	if (atomic64_read(&dmabuf_ext->nr_task_refs)) {
+		pr_err("destroying dmabuf with non-zero task refs, %lld\n",
+			atomic64_read(&dmabuf_ext->nr_task_refs));
+	}
 
 	WARN_ON(!list_empty(&dmabuf->attachments));
 	module_put(dmabuf->owner);
@@ -341,7 +343,7 @@ static void add_task_dmabuf_record(struct task_dma_buf_info *dmabuf_info,
  * * 0 on success
  * * A negative error code upon error
  */
-int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
+int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task, bool fd_ref)
 {
 	struct task_dma_buf_info *dmabuf_info;
 	struct task_dma_buf_record *rec;
@@ -363,10 +365,15 @@ int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
 	rec = find_task_dmabuf_record(dmabuf_info, dmabuf);
 	if (rec) {
 		++rec->refcnt;
+		pr_err("dmabuf account existing record, %s %d %lx %lu\n", fd_ref ? "fd" : "vma",
+			task_pid_nr(task), (unsigned long)dmabuf, rec->refcnt);
 		trim_task_dmabuf_records_locked();
 	} else {
 		rec = alloc_task_dmabuf_record();
 		add_task_dmabuf_record(dmabuf_info, dmabuf, rec);
+		pr_err("dmabuf account new record, %s %d %lx %zu %u %zu\n", fd_ref ? "fd" : "vma",
+			task_pid_nr(task), (unsigned long)dmabuf, dmabuf->size,
+			dmabuf_info->rss, dmabuf_info->dmabuf_count);
 	}
 	spin_unlock(&dmabuf_info->lock);
 	task_dmabuf_records_preload_end();
@@ -384,7 +391,7 @@ int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
  * references to @dmabuf are removed from @task, the buffer's size is removed
  * from the task's dmabuf RSS.
  */
-void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
+void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task, bool fd_ref)
 {
 	struct task_dma_buf_info *dmabuf_info;
 	struct task_dma_buf_record *rec;
@@ -408,6 +415,13 @@ void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
 		dmabuf_info->rss -= dmabuf->size;
 		trace_dmabuf_rss_stat(dmabuf_info->rss, -dmabuf->size, dmabuf);
 		atomic64_dec(&get_dmabuf_ext(dmabuf)->nr_task_refs);
+		BUG_ON(atomic64_read(&get_dmabuf_ext(dmabuf)->nr_task_refs) < 0);
+		pr_err("dmabuf unaccount and remove record, %s %d %lx %zu %u %zu\n", fd_ref ? "fd" : "vma",
+			task_pid_nr(task), (unsigned long)dmabuf, dmabuf->size,
+			dmabuf_info->rss, dmabuf_info->dmabuf_count);
+	} else {
+		pr_err("dmabuf unaccount record, %s %d %lx %lu\n", fd_ref ? "fd" : "vma",
+			task_pid_nr(task), (unsigned long)dmabuf, rec->refcnt);
 	}
 	spin_unlock(&dmabuf_info->lock);
 }
@@ -527,10 +541,12 @@ void put_dmabuf_info(struct task_struct *task)
 		return;
 
 	if (dmabuf_info->rss)
-		pr_alert("destroying task with non-zero dmabuf rss\n");
+		pr_err("destroying task with non-zero dmabuf rss, %u, %lx, %d, %x\n",
+			dmabuf_info->rss, (unsigned long)dmabuf_info, task_pid_nr(task), task->flags);
 
 	if (!list_empty(&dmabuf_info->dmabufs) || dmabuf_info->dmabuf_count > 0)
-		pr_alert("destroying task with non-empty dmabuf list\n");
+		pr_err("destroying task with non-empty dmabuf list, %zu, %lx, %d, %x\n",
+			dmabuf_info->dmabuf_count, (unsigned long)dmabuf_info, task_pid_nr(task), task->flags);
 
 	kfree(dmabuf_info);
 	set_task_dma_buf_info(task, NULL);
@@ -539,7 +555,7 @@ void put_dmabuf_info(struct task_struct *task)
 static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)
 {
 	struct dma_buf *dmabuf;
-	int ret, acct_err;
+	int ret;
 
 	if (!is_dma_buf_file(file))
 		return -EINVAL;
@@ -555,14 +571,13 @@ static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)
 	    dmabuf->size >> PAGE_SHIFT)
 		return -EINVAL;
 
-	acct_err = dma_buf_account_task(dmabuf, current);
-	if (acct_err)
-		pr_err("dmabuf accounting failed during mmap operation, err %d\n",
-		       acct_err);
-
 	ret = dmabuf->ops->mmap(dmabuf, vma);
-	if (ret && !acct_err)
-		dma_buf_unaccount_task(dmabuf, current);
+	if (!ret) {
+		int acct_err = dma_buf_account_task(dmabuf, current, false);
+		if (acct_err)
+			pr_err("dmabuf accounting failed during mmap operation, err %d\n",
+			       acct_err);
+	}
 
 	return ret;
 }
@@ -944,7 +959,7 @@ static void dma_buf_show_fdinfo(struct seq_file *m, struct file *file)
 static int dma_buf_flush(struct file *file, fl_owner_t id)
 {
 	/* When dmabuf FD is closed we should unaccount it */
-	dma_buf_unaccount_task(file->private_data, current);
+	dma_buf_unaccount_task(file->private_data, current, true);
 	return 0;
 }
 
@@ -1951,7 +1966,7 @@ EXPORT_SYMBOL_GPL(dma_buf_end_cpu_access_partial);
 int dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma,
 		 unsigned long pgoff)
 {
-	int ret, acct_err;
+	int ret;
 
 	if (WARN_ON(!dmabuf || !vma))
 		return -EINVAL;
@@ -1973,14 +1988,13 @@ int dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma,
 	vma_set_file(vma, dmabuf->file);
 	vma->vm_pgoff = pgoff;
 
-	acct_err = dma_buf_account_task(dmabuf, current);
-	if (acct_err)
-		pr_err("dmabuf accounting failed during mmap operation, err %d\n",
-		       acct_err);
-
 	ret = dmabuf->ops->mmap(dmabuf, vma);
-	if (ret)
-		dma_buf_unaccount_task(dmabuf, current);
+	if (!ret) {
+		int acct_err = dma_buf_account_task(dmabuf, current, false);
+		if (acct_err)
+			pr_err("dmabuf accounting failed during mmap operation, err %d\n",
+			       acct_err);
+	}
 
 	return ret;
 }
