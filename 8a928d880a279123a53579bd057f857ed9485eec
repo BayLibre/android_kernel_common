@@ -72,6 +72,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de46882a_d371ae0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-23T00:34:15Z",
+      "side": 1,
+      "message": "Comparing with the kvm trace, the /sys/kernel/debug/trace/event/kvm/ controls the entire kvm trace, not per-vm, and perf tool can pick up the trace of a specific VM. Similarly, /sys/kernel/debug/pkvm/set_vmexit_trace controls the entire pkvm trace, not per-vm, and we use a per-vm dump_vmexit_trace to pick up the trace of a specific VM. So from this point of view, seems we are similar with the kvm trace?\n\nFrom another point, the /sys/kernel/debug/pkvm/dump_vmexit_trace is still used to show all the trace data for an overview. Thus I think keeping the /sys/kernel/debug/pkvm/set_vmexit_trace as a global control may be more convenient for this purpose, rather than having per-vm\u0027s control.",
+      "parentUuid": "d5c68ab7_19342c98",
+      "revId": "8a928d880a279123a53579bd057f857ed9485eec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6311ed4_67c8f97d",
