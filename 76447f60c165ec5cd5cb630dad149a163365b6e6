@@ -16,6 +16,24 @@
       "message": "If this is a real bugfix, why is this not marked for stable tree inclusion?\n\nWhat issue is this actually fixing that people are hitting in this kernel branch to require us to take this now?",
       "revId": "76447f60c165ec5cd5cb630dad149a163365b6e6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a3572cf_26c02e87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1949210
+      },
+      "writtenOn": "2025-07-23T06:47:14Z",
+      "side": 1,
+      "message": "This is not a real bug; rather a proactive effort to make our drivers robust when it comes to runtime PM attempts. In the actions resulting from runtime PM callbacks, when the drivers encounter auto-recoverable errors or have taken actions to fix them, then they should ensure to return EAGAIN/EBUSY as the error code.\n\nTo make runtime resume and suspend handling similar, https://lore.kernel.org/all/12620037.O9o76ZdvQC@rjwysocki.net/ was created, and I created this CL to bring it into android16-6.12",
+      "parentUuid": "bf47f99a_ae416cc8",
+      "revId": "76447f60c165ec5cd5cb630dad149a163365b6e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
