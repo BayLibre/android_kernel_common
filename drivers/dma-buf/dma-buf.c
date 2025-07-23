@@ -120,8 +120,10 @@ static void dma_buf_release(struct dentry *dentry)
 		dma_resv_fini(dmabuf->resv);
 
 	dmabuf_ext = get_dmabuf_ext(dmabuf);
-	if (atomic64_read(&dmabuf_ext->nr_task_refs))
-		pr_alert("destroying dmabuf with non-zero task refs\n");
+	if (atomic64_read(&dmabuf_ext->nr_task_refs)) {
+		pr_alert("destroying dmabuf with non-zero task refs, %lld\n",
+			atomic64_read(&dmabuf_ext->nr_task_refs));
+	}
 
 	WARN_ON(!list_empty(&dmabuf->attachments));
 	module_put(dmabuf->owner);
@@ -408,6 +410,7 @@ void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
 		dmabuf_info->rss -= dmabuf->size;
 		trace_dmabuf_rss_stat(dmabuf_info->rss, -dmabuf->size, dmabuf);
 		atomic64_dec(&get_dmabuf_ext(dmabuf)->nr_task_refs);
+		BUG_ON(atomic64_read(&get_dmabuf_ext(dmabuf)->nr_task_refs) < 0);
 	}
 	spin_unlock(&dmabuf_info->lock);
 }
@@ -527,10 +530,12 @@ void put_dmabuf_info(struct task_struct *task)
 		return;
 
 	if (dmabuf_info->rss)
-		pr_alert("destroying task with non-zero dmabuf rss\n");
+		pr_alert("destroying task with non-zero dmabuf rss, %u, %lx, %d, %x\n",
+			dmabuf_info->rss, (unsigned long)dmabuf_info, task_pid_nr(task), task->flags);
 
 	if (!list_empty(&dmabuf_info->dmabufs) || dmabuf_info->dmabuf_count > 0)
-		pr_alert("destroying task with non-empty dmabuf list\n");
+		pr_alert("destroying task with non-empty dmabuf list, %zu, %lx, %d, %x\n",
+			dmabuf_info->dmabuf_count, (unsigned long)dmabuf_info, task_pid_nr(task), task->flags);
 
 	kfree(dmabuf_info);
 	set_task_dma_buf_info(task, NULL);
