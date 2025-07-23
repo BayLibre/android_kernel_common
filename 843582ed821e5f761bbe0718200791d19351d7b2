@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b10328e_43a5db64",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2025-07-23T06:15:31Z",
+      "side": 1,
+      "message": "it should be pr_alert since it meant unexpected bug happened.",
+      "range": {
+        "startLine": 119,
+        "startChar": 2,
+        "endLine": 119,
+        "endChar": 8
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "56c97757_ec7f9561",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/dma-buf/dma-buf.c",
+              "range": {
+                "startLine": 119,
+                "startChar": 0,
+                "endLine": 120,
+                "endChar": 0
+              },
+              "replacement": "\t\tpr_alert(\"destroying dmabuf with non-zero task refs\\n\");\n"
+            },
+            {
+              "path": "drivers/dma-buf/dma-buf.c",
+              "range": {
+                "startLine": 892,
+                "startChar": 0,
+                "endLine": 892,
+                "endChar": 0
+              },
+              "replacement": "\tseq_printf(m, \"num_unique_refs:\\t%ld\\n\",\n\t\t   atomic64_read(\u0026dmabuf-\u003enum_unique_refs));\n"
+            },
+            {
+              "path": "drivers/dma-buf/dma-buf.c",
+              "range": {
+                "startLine": 2088,
+                "startChar": 0,
+                "endLine": 2088,
+                "endChar": 0
+              },
+              "replacement": "\tseq_printf(s, \"%-8s\\t%-8s\\t%-8s\\t%-8s\\t%-8s\\t%-8s\\t%-8s\\n\",\n\t\t   \"\", \"\", \"\", \"\", \"\", \"refs\", \"\");\n"
+            },
+            {
+              "path": "drivers/dma-buf/dma-buf.c",
+              "range": {
+                "startLine": 2097,
+                "startChar": 0,
+                "endLine": 2098,
+                "endChar": 0
+              },
+              "replacement": "\t\tseq_printf(s, \"%08zu\\t%08x\\t%08x\\t%08ld\\t%s\\t%08lu\\t%s\\t%ld\\n\",\n"
+            },
+            {
+              "path": "drivers/dma-buf/dma-buf.c",
+              "range": {
+                "startLine": 2103,
+                "startChar": 0,
+                "endLine": 2104,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t\tbuf_obj-\u003ename ?: \"\u003cnone\u003e\",\n\t\t\t\tatomic64_read(\u0026buf_obj-\u003enum_unique_refs));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "843582ed821e5f761bbe0718200791d19351d7b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b3a1986_82719506",
+        "filename": "include/linux/dma-buf.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2025-07-23T06:15:31Z",
+      "side": 1,
+      "message": "How about nr_task_refs?",
+      "range": {
+        "startLine": 543,
+        "startChar": 12,
+        "endLine": 543,
+        "endChar": 27
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "423fb6ca_7e987faa",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/dma-buf.h",
+              "range": {
+                "startLine": 539,
+                "startChar": 0,
+                "endLine": 540,
+                "endChar": 0
+              },
+              "replacement": "\t * @nr_task_refs:\n"
+            },
+            {
+              "path": "include/linux/dma-buf.h",
+              "range": {
+                "startLine": 543,
+                "startChar": 0,
+                "endLine": 544,
+                "endChar": 0
+              },
+              "replacement": "\tatomic64_t nr_task_refs;\n"
+            },
+            {
+              "path": "include/linux/dma-buf.h",
+              "range": {
+                "startLine": 691,
+                "startChar": 0,
+                "endLine": 692,
+                "endChar": 0
+              },
+              "replacement": "\tunsigned long dmabuf_count;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "843582ed821e5f761bbe0718200791d19351d7b2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
