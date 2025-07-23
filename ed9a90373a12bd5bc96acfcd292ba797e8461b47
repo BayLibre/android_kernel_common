@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cab93b91_1032c749",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/iommu.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-07-23T12:23:08Z",
+      "side": 1,
+      "message": "-ENODOCUMENTATION!",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 3
+      },
+      "revId": "ed9a90373a12bd5bc96acfcd292ba797e8461b47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17747b19_6dbeb047",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 846,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-07-23T12:23:08Z",
+      "side": 1,
+      "message": "Is it worth checking that e.g. size !\u003d 0 and iova + size doesn\u0027t overflow here, a bit like we do for the unmap case?",
+      "range": {
+        "startLine": 846,
+        "startChar": 0,
+        "endLine": 846,
+        "endChar": 57
+      },
+      "revId": "ed9a90373a12bd5bc96acfcd292ba797e8461b47",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
