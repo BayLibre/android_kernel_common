@@ -672,6 +672,12 @@ DECLARE_RESTRICTED_HOOK(android_rvh_gup_longterm_locked,
 		unsigned long start, unsigned long nr_pages,
 		struct page **pages),
 	TP_ARGS(rc, nr_pinned_pages, start, nr_pages, pages), 5);
+DECLARE_HOOK(android_vh_free_page_bypass,
+	TP_PROTO(struct page *page, unsigned int order, bool *skip_free_page),
+	TP_ARGS(page, order, skip_free_page));
+DECLARE_HOOK(android_vh_free_folio_bypass,
+	TP_PROTO(struct folio *folio, unsigned int order, bool *skip_free_folio),
+	TP_ARGS(folio, order, skip_free_folio));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
