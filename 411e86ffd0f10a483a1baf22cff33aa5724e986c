@@ -22,6 +22,30 @@
       },
       "revId": "411e86ffd0f10a483a1baf22cff33aa5724e986c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9be82fd2_eed59f1c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-23T00:11:40Z",
+      "side": 1,
+      "message": "LAM does, as you saw in the vmx_get_untagged_addr(), which will be used by the host to emulate for npVM. XSAVE is not for now as the code of having guest_can_use(X86_FEATURE_XSAVES) are moved to the pkvm hypervisor, e.g., kvm_load_guest_xsave_state/kvm_load_host_xsave_state. To keep the similar implementation with vmx_vcpu_after_set_cpuid(), also set the governed feature for XSAVES, in case this might be needed in the future for the npVM. VMX is another feature set by vmx_vcpu_after_set_cpuid(), but this feature is not needed for us so didn\u0027t add.",
+      "parentUuid": "071decc0_acc56bbb",
+      "range": {
+        "startLine": 10,
+        "startChar": 60,
+        "endLine": 11,
+        "endChar": 67
+      },
+      "revId": "411e86ffd0f10a483a1baf22cff33aa5724e986c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
