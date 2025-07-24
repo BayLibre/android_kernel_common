@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0096135b_b5af8f1f",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1401,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-24T08:35:47Z",
+      "side": 1,
+      "message": "Hi @dmaluka@google.com, I made a change to put the debugfs initialization in the end after everything is ok, so replaced this with a goto out. So the difference will be, previously only pkvm_firmware_rmem_clear() is called then just return. Now with goto out, pkvm_firmware_rmem_clear() is called and pkvm_hyp is also set to NULL. Suppose this change should have no impact, but still want to have a double confirm with you.",
+      "revId": "928973fc01e6478d2b5e9f607056b03234d04872",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
