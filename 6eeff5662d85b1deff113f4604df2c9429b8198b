@@ -82,6 +82,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6d82f0d_3a051647",
+        "filename": "arch/x86/kvm/pkvm/entry.S",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-24T16:54:44Z",
+      "side": 1,
+      "message": "A more general note: I see these implementations of clear_bhb_loop() and mds_verw_sel() are just copies of the host kernel implementations in arch/x86/entry/entry_64.S and arch/x86/entry/entry.S. For now it\u0027s probably ok to keep this as is (to avoid changes in upstream code outside KVM), but eventually (maybe even for GKI 6.18?) we might consider moving those 2 symbols to a separate file, used by both host kernel and pKVM.",
+      "parentUuid": "47c86381_91baeace",
+      "revId": "6eeff5662d85b1deff113f4604df2c9429b8198b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30b024d3_f8cf359b",
