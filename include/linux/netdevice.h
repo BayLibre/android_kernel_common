@@ -1622,6 +1622,17 @@ struct net_device_ops {
 	int			(*ndo_hwtstamp_set)(struct net_device *dev,
 						    struct kernel_hwtstamp_config *kernel_config,
 						    struct netlink_ext_ack *extack);
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	int			(*ndo_apf_get_caps)(struct net_device *dev,
+						    u32 *version,
+						    u32 *max_program_size,
+						    u32 *flags);
+	int			(*ndo_apf_set_filter)(struct net_device *dev,
+						      const u8 *program, u32 len,
+						      const u32 flags);
+	int			(*ndo_apf_get_filter)(struct net_device *dev,
+						      u8 *program, u32 *len);
+#endif /* IS_ENABLED(CONFIG_ANDROID_APF) */
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);

@@ -866,6 +866,65 @@ static int ieee80211_netdev_setup_tc(struct net_device *dev,
 	return drv_net_setup_tc(local, sdata, dev, type, type_data);
 }
 
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+static int ieee80211_netdev_apf_get_caps(struct net_device *dev, u32 *version,
+					 u32 *max_program_size, u32 *flags)
+{
+	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+	struct ieee80211_local *local = sdata->local;
+
+	if (!local->ops->apf_get_caps)
+		return -EOPNOTSUPP;
+
+	return local->ops->apf_get_caps(&local->hw, &sdata->vif, version,
+					max_program_size, flags);
+}
+
+static int ieee80211_netdev_apf_set_filter(struct net_device *dev,
+					   const u8 *program, u32 len,
+					   const u32 flags)
+{
+	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+	struct ieee80211_local *local = sdata->local;
+
+	if (!local->ops->apf_set_filter)
+		return -EOPNOTSUPP;
+
+	return local->ops->apf_set_filter(&local->hw, &sdata->vif, program, len,
+					  flags);
+}
+
+static int ieee80211_netdev_apf_get_filter(struct net_device *dev, u8 *program,
+					   u32 *len)
+{
+	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+	struct ieee80211_local *local = sdata->local;
+
+	if (!local->ops->apf_get_filter)
+		return -EOPNOTSUPP;
+
+	return local->ops->apf_get_filter(&local->hw, &sdata->vif, program, len);
+}
+#endif
+
+#if IS_ENABLED(CONFIG_MAC80211_HWSIM)
+static int ieee80211_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
+				    void __user *data, int cmd)
+{
+	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+	struct ieee80211_local *local = sdata->local;
+
+	pr_warn("ieee80211_siocdevprivate(dev=%p, sdata=%p, local=%p ifr=%p, %d)\n", dev, sdata, local, ifr, cmd);
+
+	if (!local->ops->siocdevprivate)
+		return -EOPNOTSUPP;
+
+	pr_warn("ieee80211_siocdevprivate found\n");
+
+	return local->ops->siocdevprivate(&local->hw, &sdata->vif, ifr, data, cmd);
+}
+#endif
+
 static const struct net_device_ops ieee80211_dataif_ops = {
 	.ndo_open		= ieee80211_open,
 	.ndo_stop		= ieee80211_stop,
@@ -874,6 +933,14 @@ static const struct net_device_ops ieee80211_dataif_ops = {
 	.ndo_set_rx_mode	= ieee80211_set_multicast_list,
 	.ndo_set_mac_address 	= ieee80211_change_mac,
 	.ndo_setup_tc		= ieee80211_netdev_setup_tc,
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	.ndo_apf_get_caps	= ieee80211_netdev_apf_get_caps,
+	.ndo_apf_set_filter	= ieee80211_netdev_apf_set_filter,
+	.ndo_apf_get_filter	= ieee80211_netdev_apf_get_filter,
+#endif
+#if IS_ENABLED(CONFIG_MAC80211_HWSIM)
+	.ndo_siocdevprivate	= ieee80211_siocdevprivate,
+#endif
 };
 
 static u16 ieee80211_monitor_select_queue(struct net_device *dev,
@@ -912,6 +979,9 @@ static const struct net_device_ops ieee80211_monitorif_ops = {
 	.ndo_set_rx_mode	= ieee80211_set_multicast_list,
 	.ndo_set_mac_address 	= ieee80211_change_mac,
 	.ndo_select_queue	= ieee80211_monitor_select_queue,
+#if IS_ENABLED(CONFIG_MAC80211_HWSIM)
+	.ndo_siocdevprivate	= ieee80211_siocdevprivate,
+#endif
 };
 
 static int ieee80211_netdev_fill_forward_path(struct net_device_path_ctx *ctx,
@@ -981,6 +1051,14 @@ static const struct net_device_ops ieee80211_dataif_8023_ops = {
 	.ndo_set_mac_address	= ieee80211_change_mac,
 	.ndo_fill_forward_path	= ieee80211_netdev_fill_forward_path,
 	.ndo_setup_tc		= ieee80211_netdev_setup_tc,
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	.ndo_apf_get_caps	= ieee80211_netdev_apf_get_caps,
+	.ndo_apf_set_filter	= ieee80211_netdev_apf_set_filter,
+	.ndo_apf_get_filter	= ieee80211_netdev_apf_get_filter,
+#endif
+#if IS_ENABLED(CONFIG_MAC80211_HWSIM)
+	.ndo_siocdevprivate	= ieee80211_siocdevprivate,
+#endif
 };
 
 static bool ieee80211_iftype_supports_hdr_offload(enum nl80211_iftype iftype)

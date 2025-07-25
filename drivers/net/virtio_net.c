@@ -26,6 +26,8 @@
 #include <net/netdev_rx_queue.h>
 #include <net/netdev_queues.h>
 #include <net/xdp_sock_drv.h>
+#include <linux/apf_interpreter.h>
+
 
 static int napi_weight = NAPI_POLL_WEIGHT;
 module_param(napi_weight, int, 0444);
@@ -40,6 +42,8 @@ module_param(napi_tx, bool, 0644);
 #define GOOD_COPY_LEN	128
 
 #define VIRTNET_RX_PAD (NET_IP_ALIGN + NET_SKB_PAD)
+#define VIRTIO_NET_APF_RAM_SIZE 4096
+
 
 /* Separating two types of XDP xmit */
 #define VIRTIO_XDP_TX		BIT(0)
@@ -485,6 +489,14 @@ struct virtnet_info {
 	struct failover *failover;
 
 	u64 device_stats_cap;
+
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	/* APF state */
+	u8 *apf_ram;
+	u32 apf_program_len;
+	u32 apf_ram_len;
+	ktime_t apf_install_time;
+#endif
 };
 
 struct padded_vnet_hdr {
@@ -2481,6 +2493,21 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
 	if (unlikely(!skb))
 		return;
 
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	if (vi->apf_ram) {
+		s64 install_time_ns = ktime_to_ns(vi->apf_install_time);
+		u64 age_ns = ktime_to_ns(ktime_get()) - install_time_ns;
+		/* filter_age is in 1/16384ths of a second */
+		u32 filter_age = (u32)div_u64(age_ns << 5, 1953125);
+
+		if (!apf_run(dev, (u32 *)vi->apf_ram, vi->apf_program_len,
+			     vi->apf_ram_len, skb->data, skb->len, filter_age)) {
+			dev_kfree_skb(skb);
+			return;
+		}
+	}
+#endif
+
 	virtnet_receive_done(vi, rq, skb, flags);
 }
 
@@ -3658,6 +3685,54 @@ static void virtnet_rx_mode_work(struct work_struct *work)
 
 	kfree(buf);
 }
+
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+static int virtnet_apf_get_caps(struct net_device *dev, u32 *version,
+				u32 *max_program_size, u32 *flags)
+{
+	*version = apf_version();
+	*max_program_size = VIRTIO_NET_APF_RAM_SIZE;
+	*flags = 0;
+	return 0;
+}
+
+static int virtnet_apf_get_filter(struct net_device *dev, u8 *ram, u32 *len)
+{
+	struct virtnet_info *vi = netdev_priv(dev);
+
+	if (!ram) {
+		*len = vi->apf_ram_len;
+		return 0;
+	}
+
+	if (*len < vi->apf_ram_len) {
+		*len = vi->apf_ram_len;
+		return -ENOMEM;
+	}
+
+	memcpy(ram, vi->apf_ram, vi->apf_ram_len);
+	*len = vi->apf_ram_len;
+
+	return 0;
+}
+
+static int virtnet_apf_set_filter(struct net_device *dev, const u8 *program, u32 len,
+				   const u32 flags)
+{
+	struct virtnet_info *vi = netdev_priv(dev);
+
+	if (len > VIRTIO_NET_APF_RAM_SIZE)
+		return -EINVAL;
+
+	memcpy(vi->apf_ram, program, len);
+
+	vi->apf_program_len = len;
+	vi->apf_ram_len = VIRTIO_NET_APF_RAM_SIZE;
+	vi->apf_install_time = ktime_get();
+
+	return 0;
+}
+#endif
 
 static void virtnet_set_rx_mode(struct net_device *dev)
 {
@@ -6017,6 +6092,11 @@ static const struct net_device_ops virtnet_netdev = {
 	.ndo_get_phys_port_name	= virtnet_get_phys_port_name,
 	.ndo_set_features	= virtnet_set_features,
 	.ndo_tx_timeout		= virtnet_tx_timeout,
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	.ndo_apf_get_caps	= virtnet_apf_get_caps,
+	.ndo_apf_set_filter	= virtnet_apf_set_filter,
+	.ndo_apf_get_filter	= virtnet_apf_get_filter,
+#endif
 };
 
 static void virtnet_config_changed_work(struct work_struct *work)
@@ -6595,6 +6675,13 @@ static int virtnet_probe(struct virtio_device *vdev)
 
 	/* Set up our device-specific information */
 	vi = netdev_priv(dev);
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	vi->apf_ram = kzalloc(VIRTIO_NET_APF_RAM_SIZE, GFP_KERNEL);
+	if (!vi->apf_ram) {
+		err = -ENOMEM;
+		goto free;
+	}
+#endif
 	vi->dev = dev;
 	vi->vdev = vdev;
 	vdev->priv = vi;
@@ -6853,6 +6940,9 @@ free_vqs:
 	free_receive_page_frags(vi);
 	virtnet_del_vqs(vi);
 free:
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	kfree(vi->apf_ram);
+#endif
 	free_netdev(dev);
 	return err;
 }
@@ -6900,6 +6990,10 @@ static void virtnet_remove(struct virtio_device *vdev)
 	remove_vq_common(vi);
 
 	rss_indirection_table_free(&vi->rss);
+
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	kfree(vi->apf_ram);
+#endif
 
 	free_netdev(vi->dev);
 }

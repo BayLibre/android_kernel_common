@@ -16,6 +16,8 @@
 
 #include <linux/list.h>
 #include <linux/slab.h>
+#include <linux/uaccess.h>
+#include <linux/capability.h>
 #include <linux/spinlock.h>
 #include <net/dst.h>
 #include <net/xfrm.h>
@@ -36,6 +38,7 @@
 #include <linux/virtio.h>
 #include <linux/virtio_ids.h>
 #include <linux/virtio_config.h>
+#include <linux/apf_interpreter.h>
 #include "mac80211_hwsim.h"
 
 #define WARN_QUEUE 100
@@ -224,9 +227,17 @@ struct hwsim_vif_priv {
 	u8 bssid[ETH_ALEN];
 	bool assoc;
 	bool bcn_en;
+	bool suspend_mode;
 	u16 aid;
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	u8 *apf_ram;
+	u32 apf_ram_len;
+	u32 apf_program_len;
+	ktime_t apf_install_time;
+#endif
 };
 
+#define HWSIM_APF_RAM_SIZE 4096
 #define HWSIM_VIF_MAGIC	0x69537748
 
 static inline void hwsim_check_magic(struct ieee80211_vif *vif)
@@ -707,7 +718,7 @@ struct mac80211_hwsim_data {
 	struct ieee80211_channel *channel;
 	enum nl80211_chan_width bw;
 	unsigned int rx_filter;
-	bool started, idle, scanning;
+	bool started, idle, scanning, suspended;
 	struct mutex mutex;
 	enum ps_mode {
 		PS_DISABLED, PS_ENABLED, PS_AUTO_POLL, PS_MANUAL_POLL
@@ -2109,6 +2120,10 @@ static int mac80211_hwsim_start(struct ieee80211_hw *hw)
 {
 	struct mac80211_hwsim_data *data = hw->priv;
 	wiphy_dbg(hw->wiphy, "%s\n", __func__);
+	if (data->suspended) {
+		pr_info("mac80211_hwsim: resuming\n");
+		data->suspended = false;
+	}
 	data->started = true;
 	return 0;
 }
@@ -2128,6 +2143,68 @@ static void mac80211_hwsim_stop(struct ieee80211_hw *hw, bool suspend)
 		ieee80211_free_txskb(hw, skb_dequeue(&data->pending));
 
 	wiphy_dbg(hw->wiphy, "%s\n", __func__);
+	if (suspend) {
+		pr_info("mac80211_hwsim: suspending\n");
+		data->suspended = true;
+	}
+}
+
+
+struct android_wifi_priv_cmd {
+	char __user *buf;
+	int used_len;
+	int total_len;
+};
+
+static int mac80211_hwsim_siocdevprivate(struct ieee80211_hw *hw,
+					 struct ieee80211_vif *vif,
+					 struct ifreq *ifr, void __user *data,
+					 int cmd)
+{
+	struct hwsim_vif_priv *vp;
+	struct android_wifi_priv_cmd priv_cmd;
+	char buf[64];
+
+	if (!vif)
+		return -EINVAL;
+
+	vp = (void *)vif->drv_priv;
+	hwsim_check_magic(vif);
+
+	pr_warn("mac80211_hwsim: siocdevprivate(%d [0x%x]) <%d>\n", cmd, cmd, SIOCDEVPRIVATE + 1);
+	if (cmd == SIOCDEVPRIVATE + 1) {
+		pr_warn("mac80211_hwsim: siocdevprivate + 1\n");
+		if (!capable(CAP_NET_ADMIN))
+			return -EPERM;
+
+		pr_warn("mac80211_hwsim: siocdevprivate + 1.\n");
+
+		if (copy_from_user(&priv_cmd, data, sizeof(priv_cmd)))
+			return -EFAULT;
+
+		if (copy_from_user(buf, priv_cmd.buf, sizeof(buf) - 1))
+			return -EFAULT;
+
+		pr_warn("mac80211_hwsim: siocdevprivate + 1!\n");
+
+		buf[sizeof(buf) - 1] = 0;
+		if (!strcmp(buf, "SETSUSPENDMODE 0")) {
+			pr_warn("mac80211_hwsim: SETSUSPENDMODE 0 command received\n");
+			vp->suspend_mode = false;
+			return 0;
+		} else if (!strcmp(buf, "SETSUSPENDMODE 1")) {
+			pr_warn("mac80211_hwsim: SETSUSPENDMODE 1 command received\n");
+			vp->suspend_mode = true;
+			return 0;
+		} else if (!strncmp(buf, "SETSUSPENDMODE ", 15)) {
+			pr_warn("mac80211_hwsim: SETSUSPENDMODE command received: [%s]\n", buf + 15);
+			return 0;
+		} else {
+			pr_warn("mac80211_hwsim: [%s]\n", buf);
+		}
+	}
+
+	return -EOPNOTSUPP;
 }
 
 
@@ -2147,6 +2224,18 @@ static int mac80211_hwsim_add_interface(struct ieee80211_hw *hw,
 	vif->hw_queue[IEEE80211_AC_VI] = 1;
 	vif->hw_queue[IEEE80211_AC_BE] = 2;
 	vif->hw_queue[IEEE80211_AC_BK] = 3;
+
+	{
+		struct hwsim_vif_priv *vp = (void *)vif->drv_priv;
+
+		vp->suspend_mode = false;
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+		vp->apf_ram = kzalloc(HWSIM_APF_RAM_SIZE, GFP_KERNEL);
+		if (!vp->apf_ram)
+			return -ENOMEM;
+		vp->apf_ram_len = HWSIM_APF_RAM_SIZE;
+#endif
+	}
 
 	return 0;
 }
@@ -2196,7 +2285,109 @@ static void mac80211_hwsim_remove_interface(
 	hwsim_clear_magic(vif);
 	if (vif->type != NL80211_IFTYPE_MONITOR)
 		mac80211_hwsim_config_mac_nl(hw, vif->addr, false);
+
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	{
+		struct hwsim_vif_priv *vp = (void *)vif->drv_priv;
+		kfree(vp->apf_ram);
+		vp->apf_ram = NULL;
+	}
+#endif
 }
+
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+static int mac80211_hwsim_apf_get_caps(struct ieee80211_hw *hw,
+					struct ieee80211_vif *vif,
+					u32 *version, u32 *max_program_size,
+					u32 *flags)
+{
+	*version = apf_version();
+	*max_program_size = HWSIM_APF_RAM_SIZE;
+	*flags = 0;
+	return 0;
+}
+
+static int mac80211_hwsim_apf_set_filter(struct ieee80211_hw *hw,
+					 struct ieee80211_vif *vif,
+					 const u8 *program, u32 len,
+					 const u32 flags)
+{
+	struct hwsim_vif_priv *vp = (void *)vif->drv_priv;
+
+	hwsim_check_magic(vif);
+
+	if (len > vp->apf_ram_len)
+		return -EINVAL;
+
+	memcpy(vp->apf_ram, program, len);
+	vp->apf_program_len = len;
+	vp->apf_install_time = ktime_get();
+
+	return 0;
+}
+
+static int mac80211_hwsim_apf_get_filter(struct ieee80211_hw *hw,
+					 struct ieee80211_vif *vif,
+					 u8 *program, u32 *len)
+{
+	struct hwsim_vif_priv *vp = (void *)vif->drv_priv;
+
+	hwsim_check_magic(vif);
+
+	if (!program) {
+		*len = vp->apf_ram_len;
+		return 0;
+	}
+
+	if (*len < vp->apf_ram_len) {
+		*len = vp->apf_ram_len;
+		return -ENOMEM;
+	}
+
+	memcpy(program, vp->apf_ram, vp->apf_ram_len);
+	*len = vp->apf_ram_len;
+
+	return 0;
+}
+
+static int mac80211_hwsim_apf_run_filter(struct ieee80211_hw *hw,
+					 struct ieee80211_vif *vif,
+					 struct sk_buff *skb,
+					 struct net_device *dev)
+{
+	struct hwsim_vif_priv *vp = (void *)vif->drv_priv;
+	u32 filter_age;
+	s64 install_time_ns;
+	u64 age_ns;
+
+	hwsim_check_magic(vif);
+
+	if (!vp->apf_ram || vp->apf_program_len == 0 || !vp->suspend_mode)
+		return 1; /* Pass */
+
+	install_time_ns = ktime_to_ns(vp->apf_install_time);
+	age_ns = ktime_to_ns(ktime_get()) - install_time_ns;
+	/* filter_age is in 1/16384ths of a second */
+	filter_age = (u32)div_u64(age_ns << 5, 1953125);
+
+	if (skb_is_nonlinear(skb)) {
+		if (skb_linearize(skb))
+			return 1; /* Pass on error */
+	}
+
+	return apf_run(dev, (u32 *)vp->apf_ram, vp->apf_program_len,
+		       vp->apf_ram_len, skb->data, skb->len, filter_age);
+}
+
+#define HWSIM_APF_OPS \
+	.apf_get_caps = mac80211_hwsim_apf_get_caps,		\
+	.apf_set_filter = mac80211_hwsim_apf_set_filter,	\
+	.apf_get_filter = mac80211_hwsim_apf_get_filter,	\
+	.apf_run_filter = mac80211_hwsim_apf_run_filter,
+
+#else
+#define HWSIM_APF_OPS
+#endif
 
 static void mac80211_hwsim_tx_frame(struct ieee80211_hw *hw,
 				    struct sk_buff *skb,
@@ -3979,6 +4170,8 @@ out:
 	.get_et_strings = mac80211_hwsim_get_et_strings,	\
 	.start_pmsr = mac80211_hwsim_start_pmsr,		\
 	.abort_pmsr = mac80211_hwsim_abort_pmsr,		\
+	.siocdevprivate = mac80211_hwsim_siocdevprivate,	\
+	HWSIM_APF_OPS						\
 	HWSIM_DEBUGFS_OPS
 
 #define HWSIM_NON_MLO_OPS					\

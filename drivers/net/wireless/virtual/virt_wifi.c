@@ -14,6 +14,11 @@
 #include <linux/etherdevice.h>
 #include <linux/math64.h>
 #include <linux/module.h>
+#include <linux/slab.h>
+#include <linux/apf_interpreter.h>
+
+#define VIRT_WIFI_APF_RAM_SIZE 4096
+
 
 static struct wiphy *common_wiphy;
 
@@ -222,6 +227,13 @@ struct virt_wifi_netdev_priv {
 	bool is_up;
 	bool is_connected;
 	bool being_deleted;
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	/* APF state */
+	u8 *apf_ram;
+	u32 apf_ram_len;
+	u32 apf_program_len;
+	ktime_t apf_install_time;
+#endif
 };
 
 /* Called with the rtnl lock held. */
@@ -472,11 +484,62 @@ static int virt_wifi_net_device_get_iflink(const struct net_device *dev)
 	return READ_ONCE(priv->lowerdev->ifindex);
 }
 
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+static int virt_wifi_apf_get_caps(struct net_device *dev, u32 *version,
+				  u32 *max_program_size, u32 *flags)
+{
+	*version = apf_version();
+	*max_program_size = VIRT_WIFI_APF_RAM_SIZE;
+	*flags = 0;
+	return 0;
+}
+
+static int virt_wifi_apf_set_filter(struct net_device *dev, const u8 *program,
+				    u32 len, const u32 flags)
+{
+	struct virt_wifi_netdev_priv *priv = netdev_priv(dev);
+
+	if (len > priv->apf_ram_len) return -EINVAL;
+
+	memcpy(priv->apf_ram, program, len);
+
+	priv->apf_program_len = len;
+	priv->apf_install_time = ktime_get();
+
+	return 0;
+}
+
+static int virt_wifi_apf_get_filter(struct net_device *dev, u8 *program, u32 *len)
+{
+	struct virt_wifi_netdev_priv *priv = netdev_priv(dev);
+
+	if (!program) {
+		*len = priv->apf_ram_len;
+		return 0;
+	}
+
+	if (*len < priv->apf_ram_len) {
+		*len = priv->apf_ram_len;
+		return -ENOMEM;
+	}
+
+	memcpy(program, priv->apf_ram, priv->apf_ram_len);
+	*len = priv->apf_ram_len;
+
+	return 0;
+}
+#endif
+
 static const struct net_device_ops virt_wifi_ops = {
 	.ndo_start_xmit = virt_wifi_start_xmit,
 	.ndo_open	= virt_wifi_net_device_open,
 	.ndo_stop	= virt_wifi_net_device_stop,
 	.ndo_get_iflink = virt_wifi_net_device_get_iflink,
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	.ndo_apf_get_caps	= virt_wifi_apf_get_caps,
+	.ndo_apf_set_filter	= virt_wifi_apf_set_filter,
+	.ndo_apf_get_filter	= virt_wifi_apf_get_filter,
+#endif
 };
 
 /* Invoked as part of rtnl lock release. */
@@ -506,6 +569,47 @@ static rx_handler_result_t virt_wifi_rx_handler(struct sk_buff **pskb)
 
 	if (!priv->is_connected)
 		return RX_HANDLER_PASS;
+
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	if (priv->apf_ram) {
+		s64 install_time_ns = ktime_to_ns(priv->apf_install_time);
+		u64 age_ns = ktime_to_ns(ktime_get()) - install_time_ns;
+		/* filter_age is in 1/16384ths of a second */
+		u32 filter_age = (u32)div_u64(age_ns << 5, 1953125);
+
+		if (skb_is_nonlinear(skb)) {
+			pr_info("skb is nonlinear (len: %u, data_len: %u). Linearizing...\n",
+				skb->len, skb->data_len);
+
+			if (skb_linearize(skb)) {
+				pr_warn("Failed to linearize skb. Dropping packet.\n");
+				kfree_skb(skb);
+				return -ENOMEM;
+			}
+		}
+
+		unsigned char *data = skb->data;
+		unsigned int len = skb->len;
+
+		if (skb_mac_header_was_set(skb)) {
+			data = skb_mac_header(skb);
+			len += skb->data - data;
+		}
+
+/*
+		pr_err("PKT: %02X:%02X:%02X:%02X:%02X:%02X %02X:%02X:%02X:%02X:%02X:%02X %02X:%02X\n",
+				data[0], data[1], data[2], data[3], data[4], data[5],
+				data[6], data[7], data[8], data[9], data[10], data[11],
+				data[12], data[13]);
+*/
+
+		if (!apf_run(priv->upperdev, (u32 *)priv->apf_ram, priv->apf_program_len,
+			     priv->apf_ram_len, data, len, filter_age)) {
+			kfree_skb(skb);
+			return RX_HANDLER_CONSUMED;
+		}
+	}
+#endif
 
 	/* GFP_ATOMIC because this is a packet interrupt handler. */
 	skb = skb_share_check(skb, GFP_ATOMIC);
@@ -551,6 +655,15 @@ static int virt_wifi_newlink(struct net *src_net, struct net_device *dev,
 			"can't netdev_rx_handler_register: %d\n", err);
 		return err;
 	}
+
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	priv->apf_ram_len = VIRT_WIFI_APF_RAM_SIZE;
+	priv->apf_ram = kzalloc(priv->apf_ram_len, GFP_KERNEL);
+	if (!priv->apf_ram) {
+		err = -ENOMEM;
+		goto remove_handler;
+	}
+#endif
 
 	eth_hw_addr_inherit(dev, priv->lowerdev);
 	netif_stacked_transfer_operstate(priv->lowerdev, dev);
@@ -616,6 +729,9 @@ static void virt_wifi_dellink(struct net_device *dev,
 	netdev_upper_dev_unlink(priv->lowerdev, dev);
 
 	unregister_netdevice_queue(dev, head);
+#if IS_ENABLED(CONFIG_ANDROID_APF)
+	kfree(priv->apf_ram);
+#endif
 	module_put(THIS_MODULE);
 
 	/* Deleting the wiphy is handled in the module destructor. */

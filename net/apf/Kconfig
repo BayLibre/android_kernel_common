@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Kconfig for the Android Packet Filter (APF) subsystem
+#
+
+config ANDROID_APF
+	default y
+	tristate "Android Packet Filter (APF) Subsystem"
+	depends on NET
+	help
+	  This enables the Android Packet Filter (APF) subsystem, which provides
+	  a generic netlink interface for userspace to configure network driver
+	  and firmware implemented packet filtering capabilities.
+
+	  If you are building a kernel for an Android device that uses APF,
+	  say Y.
