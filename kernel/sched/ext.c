@@ -5414,7 +5414,7 @@ static struct scx_sched *scx_alloc_and_add_sched(struct sched_ext_ops *ops)
 	if (!sch->event_stats_cpu)
 		goto err_free_gdsqs;
 
-	sch->helper = kthread_run_worker(0, "sched_ext_helper");
+	sch->helper = kthread_create_worker(0, "sched_ext_helper");
 	if (!sch->helper)
 		goto err_free_event_stats;
 	sched_set_fifo(sch->helper->task);

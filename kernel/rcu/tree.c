@@ -4160,7 +4160,7 @@ static void __init rcu_start_exp_gp_kworker(void)
 	const char *name = "rcu_exp_gp_kthread_worker";
 	struct sched_param param = { .sched_priority = kthread_prio };
 
-	rcu_exp_gp_kworker = kthread_run_worker(0, name);
+	rcu_exp_gp_kworker = kthread_create_worker(0, name);
 	if (IS_ERR_OR_NULL(rcu_exp_gp_kworker)) {
 		pr_err("Failed to create %s!\n", name);
 		rcu_exp_gp_kworker = NULL;
