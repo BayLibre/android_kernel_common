@@ -3313,26 +3313,40 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
 static int folio_update_gen(struct folio *folio, int gen)
 {
 	unsigned long new_flags, old_flags = READ_ONCE(folio->flags);
+	int old_gen;
 
-	VM_WARN_ON_ONCE(gen >= MAX_NR_GENS);
+	VM_WARN_ON_ONCE(gen >= (int) MAX_NR_GENS);
 	VM_WARN_ON_ONCE(!rcu_read_lock_held());
 
-	/* see the comment on LRU_REFS_FLAGS */
-	if (!folio_test_referenced(folio) && !folio_test_workingset(folio)) {
-		set_mask_bits(&folio->flags, LRU_REFS_MASK, BIT(PG_referenced));
-		return -1;
-	}
-
 	do {
-		/* lru_gen_del_folio() has isolated this page? */
-		if (!(old_flags & LRU_GEN_MASK))
-			return -1;
+		/* see the comment on LRU_REFS_FLAGS */
+		if (!(old_flags & (BIT(PG_workingset) | BIT(PG_referenced)))) {
+			new_flags = old_flags & ~LRU_REFS_MASK;
+			new_flags |= BIT(PG_referenced);
+			old_gen = -1;
+		} else {
+			new_flags = old_flags & ~LRU_REFS_FLAGS;
+			new_flags |= BIT(PG_workingset);
 
-		new_flags = old_flags & ~(LRU_GEN_MASK | LRU_REFS_FLAGS);
-		new_flags |= ((gen + 1UL) << LRU_GEN_PGOFF) | BIT(PG_workingset);
+			old_gen = ((old_flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+
+			/*
+			 * Skip updating the generation if we're in the eviction path
+			 * and don't have the LRU lock. The caller will call
+			 * folio_activate. (gen == -1)
+			 *
+			 * Also, we can come across a page with no generation
+			 * if lru_gen_del_folio has removed the page or before a page
+			 * is added to the lru in the first place. (old_gen == -1)
+			 */
+			if (gen >= 0 && old_gen >= 0) {
+				new_flags &= ~LRU_GEN_MASK;
+				new_flags |= (gen + 1UL) << LRU_GEN_PGOFF;
+			}
+		}
 	} while (!try_cmpxchg(&folio->flags, &old_flags, new_flags));
 
-	return ((old_flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+	return old_gen;
 }
 
 /* protect pages accessed multiple times through file descriptors */
@@ -3570,8 +3584,8 @@ static void walk_update_folio(struct lru_gen_mm_walk *walk, struct folio *folio,
 		old_gen = folio_update_gen(folio, new_gen);
 		if (old_gen >= 0 && old_gen != new_gen)
 			update_batch_size(walk, folio, old_gen, new_gen);
-	} else if (lru_gen_set_refs(folio)) {
-		old_gen = folio_lru_gen(folio);
+	} else {
+		old_gen = folio_update_gen(folio, -1);
 		if (old_gen >= 0 && old_gen != new_gen)
 			folio_activate(folio);
 	}
