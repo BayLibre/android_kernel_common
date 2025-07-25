@@ -1292,8 +1292,10 @@ struct readahead_control {
 	pgoff_t _index;
 	unsigned int _nr_pages;
 	unsigned int _batch_count;
-	bool dropbehind;
 	bool _workingset;
+#ifndef __GENKSYMS__
+       bool dropbehind;
+#endif
 	unsigned long _pflags;
 	ANDROID_OEM_DATA(1);
 };

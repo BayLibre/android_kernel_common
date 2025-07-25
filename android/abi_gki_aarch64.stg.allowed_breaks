@@ -248,3 +248,6 @@ type 'struct xt_target' changed
 type 'struct drm_framebuffer' changed
   member 'unsigned int internal_flags' was added
 
+type 'struct readahead_control' changed
+  member 'bool dropbehind' was added
+
