@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee4ed5bf_4bac1304",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/vmexit.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-25T18:43:11Z",
+      "side": 1,
+      "message": "This is the host vcpu, not a VM vcpu, right? It always has \"assigned devices\" (plenty of them :)), while we never increase its assigned_device_count?\n\nSo it seems we should just always call mds_clear_cpu_buffers() (on affected CPUs), since the host always has access to some MMIO?\n\nMoreover, what is the value of vcpu-\u003ekvm? Does the host vcpu even have its own kvm struct?",
+      "fixSuggestions": [
+        {
+          "fixId": "3c2abce0_cc4fd1ec",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/vmexit.c",
+              "range": {
+                "startLine": 269,
+                "startChar": 0,
+                "endLine": 271,
+                "endChar": 0
+              },
+              "replacement": "\telse if (static_branch_unlikely(\u0026mmio_stale_data_clear))\n"
+            }
+          ]
+        }
+      ],
+      "revId": "874fe401f863fb62d4e49c2b1343a8e9093f41c6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
