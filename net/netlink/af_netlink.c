@@ -1388,7 +1388,19 @@ static int netlink_broadcast_deliver(struct sock *sk, struct sk_buff *skb)
 {
 	struct netlink_sock *nlk = nlk_sk(sk);
 
+<<<<<<< HEAD   (7cfaccdb2870fda0e6546db6069f250fe7810ee2 Merge a2504279841f ("pwm: mediatek: Ensure to disable clocks)
 	if (atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf &&
+||||||| BASE
+	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
+	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+
+	if ((rmem != skb->truesize || rmem <= rcvbuf) &&
+=======
+	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
+	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+
+	if ((rmem == skb->truesize || rmem <= rcvbuf) &&
+>>>>>>> BRANCH (ccc9da90af65e15c061ec6b39ad4e6452e88bff7 netlink: Fix rmem check in netlink_broadcast_deliver().)
 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
 		netlink_skb_set_owner_r(skb, sk);
 		__netlink_sendskb(sk, skb);
