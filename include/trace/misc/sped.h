@@ -7,17 +7,17 @@
 enum sped_task_action {
 	// Continue with the scheduling of the inspected task.
 	// This occurs when:
-	//	* The inspected task does not have elevated privileges.
-	//	* SPED is disabled or we are in the early stages of the boot
-	//	  process and the Vendor Hook is not initialized yet.
-	// 	* A soft error has occurred, but it should be ignored.
+	//    * The inspected task does not have elevated privileges.
+	//    * SPED is disabled or we are in the early stages of the boot
+	//      process and the Vendor Hook is not initialized yet.
+	//    * A soft error has occurred, but it should be ignored.
 	SPED_TASK_CONTINUE = 0,c
 
 	// Do not schedule the inspected task for execution.
 	// This occurs when:
-	//	* The inspected task does have elevated privileges.
-	//	* A hard error has occurred and the current task should not be
-	// 	  scheduled for execution.
+	//    * The inspected task does have elevated privileges.
+	//    * A hard error has occurred and the current task should not be
+	//      scheduled for execution.
 	SPED_TASK_NOT_SCHEDULE = 1,
 
 	// Halt the device.
