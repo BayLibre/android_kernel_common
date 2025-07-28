@@ -34,6 +34,24 @@
       ],
       "revId": "874fe401f863fb62d4e49c2b1343a8e9093f41c6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c8a4f41_9ee4271e",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/vmexit.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-07-28T02:50:52Z",
+      "side": 1,
+      "message": "Ah, yes, you are right. We don\u0027t need to call kvm_arch_has_assigned_device for the host vcpu, and we don\u0027t have vcpu-\u003ekvm. Thanks for caching this issue. Will fix it.",
+      "parentUuid": "ee4ed5bf_4bac1304",
+      "revId": "874fe401f863fb62d4e49c2b1343a8e9093f41c6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
