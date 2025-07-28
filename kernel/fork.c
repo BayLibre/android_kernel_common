@@ -2564,6 +2564,9 @@ __latent_entropy struct task_struct *copy_process(
 		}
 	}
 
+	/* SPED: Register the new task. */
+	trace_android_rvh_sped_add_task(pid, p->cred, (uintptr_t)p);
+
 	/*
 	 * This has to happen after we've potentially unshared the file
 	 * descriptor table (so that the pidfd doesn't leak into the child

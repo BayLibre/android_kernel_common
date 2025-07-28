@@ -75,6 +75,7 @@
 #include <asm/mmu_context.h>
 #include <trace/hooks/mm.h>
 #include <trace/hooks/dtask.h>
+#include <trace/hooks/sched.h>
 
 /*
  * The default value should be high enough to not crash a system that randomly
@@ -282,6 +283,10 @@ repeat:
 	put_pid(thread_pid);
 	release_thread(p);
 	put_task_struct_rcu_user(p);
+
+
+	/* SPED: Delete the terminated task. */
+	trace_android_rvh_sped_del_task(thread_pid, (uintptr_t)p);
 
 	p = leader;
 	if (unlikely(zap_leader))
