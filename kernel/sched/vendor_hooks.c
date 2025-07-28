@@ -124,3 +124,13 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_inheritance);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_restore);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_task_comm);
+<<<<<<< HEAD   (e5ca12a6dfac2997e107a215c8858781eb5177b7 UPSTREAM: usb: gadget: uvc: Initialize frame-based format co)
+||||||| BASE   (bbf416a00efd96fb29cc80c42ab0b52000dc2576 ANDROID: GKI: update symbol list for xiaomi)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_before_pick_task_fair);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_balance_fair);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_before_pick_task_fair);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_balance_fair);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_chk_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_put_task);
+>>>>>>> CHANGE (c986346df16bec245dc03ce406e037c9ecc0dde5 ANDROID: SPED: Add vendor hooks in Scheduler)
