@@ -99,6 +99,7 @@
 #include <trace/hooks/sched.h>
 #include <trace/hooks/cgroup.h>
 #include <trace/hooks/dtask.h>
+#include <trace/misc/sped.h>
 
 EXPORT_TRACEPOINT_SYMBOL_GPL(ipi_send_cpu);
 EXPORT_TRACEPOINT_SYMBOL_GPL(ipi_send_cpumask);
@@ -6156,6 +6157,9 @@ __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 {
 	const struct sched_class *class;
 	struct task_struct *p;
+	// Action to take after SPED inspected task p.
+	// During early boot VH isn't enabled yet so initialized it to CONTINUE.
+	int action = SPED_TASK_CONTINUE;
 
 	/*
 	 * Optimization: we know that if all tasks are in the fair class we can
@@ -6176,6 +6180,21 @@ __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 			p = pick_next_task_idle(rq);
 		}
 
+		/* SPED: Inspect p if it has elevated privileges. */
+		trace_android_rvh_sped_is_task_elevated(p, &action);	
+		// TODO: Add 1 check on CONTINUE.
+		if (unlikely(action == SPED_TASK_NOT_SCHEDULE)) {
+			// Task has elevated privileges or a hard error occured.
+			// Remove it from runqueue and schedule the idle task.
+			put_prev_task(rq, prev);
+			p = pick_next_task_idle(rq);
+			// TODO(ispo): Make sure that idle task is also not elevated.
+
+			// TODO(ispo): Do the logging.
+		} else if (unlikely(action == SPED_TASK_ABORT)) {
+			BUG();  // A fatal SPED error has occured.
+		}
+
 		return p;
 	}
 
@@ -6184,8 +6203,22 @@ restart:
 
 	for_each_class(class) {
 		p = class->pick_next_task(rq);
-		if (p)
-			return p;
+		if (p) {
+			/* SPED: Inspect p if it has elevated privileges. */
+			trace_android_rvh_sped_is_task_elevated(p, &action);
+			if (likely(action == SPED_TASK_CONTINUE)) {
+				return p;  // Task is not elevated.
+			} else if (unlikely(action == SPED_TASK_NOT_SCHEDULE)) {
+				// Task has elevated privileges or a hard error
+				// occured. Advance to the next scheduling
+				// class.
+
+				// TODO(ispo): Do the logging.
+			} else if (unlikely(action == SPED_TASK_ABORT)) {
+				BUG();  // A fatal SPED error has occured.
+			}
+		}
+
 	}
 
 	BUG(); /* The idle class should always have a runnable task. */
