@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f15fcb2d_6b406816",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-28T23:40:22Z",
+      "side": 1,
+      "message": "Please rework and include the additions with the vendorhook definitions instead of adding them separately.",
+      "revId": "39fdd4526f755726fa621ed3800e27cf6c30cbe6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "337dc32e_cc87b412",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6196,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-28T23:40:22Z",
+      "side": 1,
+      "message": "Usually vendorhooks should only have a minimal amount of logic (usually returning early from the function) added to the calling function.\n\nInstead, the vendorhooks itself should have the logic needed. In this case potentially calling put_prev_task and calling pick_next_task_idle().\n\nIn that case, it likely would be better if the vendorhook took a pointer to p, instead of the action value.\n\nAdditionally, calling BUG is usually the wrong thing here.",
+      "revId": "39fdd4526f755726fa621ed3800e27cf6c30cbe6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb59baa7_e12b28d7",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6220,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-28T23:40:22Z",
+      "side": 1,
+      "message": "Please rework so the vendorhook takes a pointer to p and manages this logically internally, instead of doing so here.",
+      "revId": "39fdd4526f755726fa621ed3800e27cf6c30cbe6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
