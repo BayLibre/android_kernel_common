@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d9fc850_68a6fdb4",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/vmexit.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-07-29T18:34:45Z",
+      "side": 1,
+      "message": "There is yet another pending backport from 6.12 LTS: aosp/3709666 in which, among other things, mds_clear_cpu_buffers() is renamed to x86_clear_cpu_buffers(). So this will need to be updated.\n\nAlthough we are not merging aosp/3709666 yet, since it is causing some regressions in the GPU driver (not related to pKVM).",
+      "revId": "243bf5d7d552c7dd402272c8c95bd7131f7aa821",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
