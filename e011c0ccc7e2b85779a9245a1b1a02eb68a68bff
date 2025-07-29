@@ -105,6 +105,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "548ee750_b193f086",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2025-07-29T11:40:49Z",
+      "side": 1,
+      "message": "No. The follow up statement clarifies how uclamp_min changes are honoured on timely manner now (as opposed they had to wait before this patch).",
+      "parentUuid": "5a6f632f_a9bdbf5e",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9b1c099_e58b73f9",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -122,6 +140,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "31dd34b6_6553013e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2025-07-29T11:40:49Z",
+      "side": 1,
+      "message": "CPUs that share the clock domain. This is a cpufreq governor terminology FWIW.",
+      "parentUuid": "b9b1c099_e58b73f9",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30fb0b8b_e3577153",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -133,6 +169,24 @@
       "writtenOn": "2025-07-29T03:33:32Z",
       "side": 1,
       "message": "So getting to the bottom of this, while it all sounds reasonable, its not clear exactly what the impact is of this change. Are there any metrics that you could include to better provide some motivation for merging this? Or is the benefit something that follows from other changes after this cleanup?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df01d166_d357088c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2025-07-29T11:40:49Z",
+      "side": 1,
+      "message": "It was giving me consistently better jank on all of my past testing. Against mainline 6.12 I don\u0027t see big impact anymore, but I do see it on our platform.\n\nIt will allow us to fix other problems in our code when the updates are done on a more reliably on context switch.",
+      "parentUuid": "30fb0b8b_e3577153",
       "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -172,6 +226,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "234888d4_17c2f37c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2025-07-29T11:40:49Z",
+      "side": 1,
+      "message": "Thanks for having a look! I\u0027m not too keen on the clean up at this stage tbh as this deviates from the current state of the patch and I know it was shredded upstream in 8 versions and Vincent was happy to take it as-is at the end to my knowledge if Ingo didn\u0027t ask for the split. This was merged into 6.6 FWIW and unfortunately was reverted and didn\u0027t reland due to GKI timelines and constraints meant we kept missing it to reland (you\u0027ll see other abandoned versions of this patch that were sent at various point of time over the last year).\n\nThat said, happy to go through the commit message reword and small nits that doesn\u0027t impact code flow if this is going to be merged. I get the feeling it is doubtful from your comments and it\u0027d be a waste of time to redo and retest for it to be abandoned again later.",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d8e33d5_c6e6de1d",
@@ -185,6 +256,24 @@
       "writtenOn": "2025-07-29T03:33:32Z",
       "side": 1,
       "message": "Feels like each of these additions could be their own patch?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bd3176e_142515ac",
+        "filename": "include/linux/sched/cpufreq.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2025-07-29T11:40:49Z",
+      "side": 1,
+      "message": "Sorry splitting patches will just risk breaking things at this tight time schedule we have. I don\u0027t see the benefit and I can\u0027t afford the time unfortunately 😞",
+      "parentUuid": "8d8e33d5_c6e6de1d",
       "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -219,6 +308,24 @@
       "writtenOn": "2025-07-29T03:33:32Z",
       "side": 1,
       "message": "so forced_update won\u0027t trigger if iowait_boost is false? Should this be checked earlier?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6433bd39_3dd72beb",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2025-07-29T11:40:49Z",
+      "side": 1,
+      "message": "It should force the update if a iowait boost is required, nothing to do otherwise.",
+      "parentUuid": "10c364c0_f54f730a",
       "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
