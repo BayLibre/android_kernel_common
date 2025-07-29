@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb9b2ab9_e10b769b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4253023
+      },
+      "writtenOn": "2025-07-29T20:33:19Z",
+      "side": 1,
+      "message": "Hi. I looked into converting HFI_THERMAL to tristate and discussed it with some folks. The maintainer of the thermal drivers didn\u0027t like the change and would not accept patches for such change.\n\nThe HFI interrupts come from the CPU LVT thermal monitor. If the HFI code were to be made a module, handling these interrupts would become more complex. Plus, all thermal interrupts share a single register and masking would need to consider three states.\n\nAs far as I can see, there is no use case for HFI in Android. Am I missing anything?",
+      "revId": "d9ffe4814d5ed20b799c6273955ab232526ca278",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
