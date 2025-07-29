@@ -2705,8 +2705,7 @@ static struct dentry *proc_pident_instantiate(struct dentry *dentry,
 		inode->i_fop = p->fop;
 	ei->op = p->op;
 	pid_update_inode(task, inode);
-	d_set_d_op(dentry, &pid_dentry_operations);
-	return d_splice_alias(inode, dentry);
+	return d_splice_alias_ops(inode, dentry, &pid_dentry_operations);
 }
 
 static struct dentry *proc_pident_lookup(struct inode *dir, 
@@ -3292,7 +3291,7 @@ static int proc_pid_ksm_stat(struct seq_file *m, struct pid_namespace *ns,
 }
 #endif /* CONFIG_KSM */
 
-#ifdef CONFIG_STACKLEAK_METRICS
+#ifdef CONFIG_KSTACK_ERASE_METRICS
 static int proc_stack_depth(struct seq_file *m, struct pid_namespace *ns,
 				struct pid *pid, struct task_struct *task)
 {
@@ -3305,7 +3304,7 @@ static int proc_stack_depth(struct seq_file *m, struct pid_namespace *ns,
 							prev_depth, depth);
 	return 0;
 }
-#endif /* CONFIG_STACKLEAK_METRICS */
+#endif /* CONFIG_KSTACK_ERASE_METRICS */
 
 /*
  * Thread groups
@@ -3412,10 +3411,16 @@ static const struct pid_entry tgid_base_stuff[] = {
 #ifdef CONFIG_LIVEPATCH
 	ONE("patch_state",  S_IRUSR, proc_pid_patch_state),
 #endif
+<<<<<<< HEAD   (a6d983e97c99144cb3840a504ef21a2fab64189a Merge tag 'v6.16' into android-mainline)
 #ifdef CONFIG_CPU_FREQ_TIMES
 	ONE("time_in_state", 0444, proc_time_in_state_show),
 #endif
 #ifdef CONFIG_STACKLEAK_METRICS
+||||||| BASE   (038d61fd642278bab63ee8ef722c50d10ab01e8f Linux 6.16)
+#ifdef CONFIG_STACKLEAK_METRICS
+=======
+#ifdef CONFIG_KSTACK_ERASE_METRICS
+>>>>>>> BRANCH (86aa721820952b793a12fc6e5a01734186c0c238 Merge tag 'chrome-platform-v6.17' of git://git.kernel.org/pu)
 	ONE("stack_depth", S_IRUGO, proc_stack_depth),
 #endif
 #ifdef CONFIG_PROC_PID_ARCH_STATUS
@@ -3505,8 +3510,7 @@ static struct dentry *proc_pid_instantiate(struct dentry * dentry,
 	set_nlink(inode, nlink_tgid);
 	pid_update_inode(task, inode);
 
-	d_set_d_op(dentry, &pid_dentry_operations);
-	return d_splice_alias(inode, dentry);
+	return d_splice_alias_ops(inode, dentry, &pid_dentry_operations);
 }
 
 struct dentry *proc_pid_lookup(struct dentry *dentry, unsigned int flags)
@@ -3811,8 +3815,7 @@ static struct dentry *proc_task_instantiate(struct dentry *dentry,
 	set_nlink(inode, nlink_tid);
 	pid_update_inode(task, inode);
 
-	d_set_d_op(dentry, &pid_dentry_operations);
-	return d_splice_alias(inode, dentry);
+	return d_splice_alias_ops(inode, dentry, &pid_dentry_operations);
 }
 
 static struct dentry *proc_task_lookup(struct inode *dir, struct dentry * dentry, unsigned int flags)
