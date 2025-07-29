@@ -42,7 +42,6 @@ struct pkvm_host_vcpu {
 	struct vmcs *vmxarea;
 
 	bool pending_nmi;
-	u8 *io_bitmap;
 };
 
 struct pkvm_pci_info {
@@ -55,7 +54,6 @@ struct pkvm_host_vm {
 	struct pkvm_pgtable *ept;
 	struct pkvm_pgtable *ept_notlbflush;
 	struct pkvm_pci_info pci_info;
-	u8 *io_bitmap;
 };
 
 struct pkvm_iommu_info {
@@ -147,7 +145,6 @@ extern phys_addr_t pkvm_sym(pvmfw_size);
 PKVM_DECLARE(void, __pkvm_vmexit_entry, (void));
 PKVM_DECLARE(bool, pkvm_vmexit_main, (struct kvm_vcpu *vcpu));
 PKVM_DECLARE(void, pkvm_init_host_state_area, (struct pkvm_pcpu *pcpu, int cpu));
-PKVM_DECLARE(int, init_pci, (struct pkvm_hyp *pkvm));
 
 PKVM_DECLARE(void *, pkvm_early_alloc_contig, (unsigned int nr_pages));
 PKVM_DECLARE(void *, pkvm_early_alloc_page, (void));
