@@ -1,0 +1,299 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e2b957a_da64f091",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "Small readability note, \"them\" isn\u0027t super clear on the first read here. You might replace it with \"At the moment, we call cpufreq_update_util() when load is updated for...\"",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4701da89_d650f60d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "Similarly \"bandwidth for DL\" isn\u0027t super clear. maybe be explicit and say \"when bandwidth is updated for DL\"?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40c2585b_fbc3c801",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "Its already a dense paragraph, so I\u0027d turn the end of this around to something like  \"But this can lead to too many updates in a short period of time, and due to rate_limit_us in schedutil, cause updates to be ignored at a critical moment.\"",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c34f7f3_6ed62971",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "The paragraph above is pretty hard to read. \"Simultaneous\" strikes me as being enqueued in parallel, when it seems the example more about two sequential enqueues, and the update for the first causes the impact of the second to be delayed.\n\nMaybe:\n\"For example, if a small task is enqueued, causing cpufreq_update_util() to run, then a large task is enqueued right afterwards, the second large task\u0027s cpufreq_update_util() may not get handled until a tick later.\" ?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c0dcb6b_88c9727c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "I\u0027d move the paragraph above to later or maybe even cut it, as its getting into details before folks grok the need.",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a6f632f_a9bdbf5e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "Would this have any downside on android kernels where that\u0027s not the case?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9b1c099_e58b73f9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "So, this is confusing as it seemingly mirrors the initial example that motivates the change. Its not clear how exactly this is different from that initial case (other then shared policy). Also, honestly, I\u0027m not sure I fully understand what you mean by \"shared policy\"? :)",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30fb0b8b_e3577153",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "So getting to the bottom of this, while it all sounds reasonable, its not clear exactly what the impact is of this change. Are there any metrics that you could include to better provide some motivation for merging this? Or is the benefit something that follows from other changes after this cleanup?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7144fbe_51e671d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "Ok, lots of little bits of feedback. Sorry for being a nuisance.\n\n\nSo Ingo\u0027s on list feedback that this is a bit of a large change, and it would be easier to review in smaller chunks is I think still quite valid. Have you taken a stab at breaking this up?\n\nI fret this may be too big of a change (with a bit of subtle implications on the behavior shift) for KMI thaw, but lets see how it goes.",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d8e33d5_c6e6de1d",
+        "filename": "include/linux/sched/cpufreq.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "Feels like each of these additions could be their own patch?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ce52d21_18c3cfb2",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "Should the comment be expanded a bit as to the impact of the flags argument?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10c364c0_f54f730a",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "so forced_update won\u0027t trigger if iowait_boost is false? Should this be checked earlier?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "165eb4f2_a6fc7c11",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "These gotos seem to be hinting the logic might be reworked to be simpler?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d177f7b_7c798656",
+        "filename": "kernel/sched/cpufreq_schedutil.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "looks like a good case to switch to guard?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58813f8f_612534af",
+        "filename": "kernel/sched/deadline.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "Maybe \"don\u0027t need a cpufreq update on dequeue (via __sub_running_bw)\", just to be clear?",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd6de9e7_818d9c30",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9055,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by KernelCheckPatch: WARNING:SUSPECT_CODE_INDENT: suspect code indent for conditional statements (16,...\n\nWARNING:SUSPECT_CODE_INDENT: suspect code indent for conditional statements (16, 16)\n\n\nMaybe rework as:\nif (!defined(CONFIG_SMP) || rq-\u003ecfs.decayed) {\n    cpufreq_update_util(rq, SCHED_CPUFREQ_TASK_ENQUEUED);\n}\n?",
+      "range": {
+        "startLine": 9055,
+        "startChar": 0,
+        "endLine": 9055,
+        "endChar": 0
+      },
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd961fa7_48fdce20",
+        "filename": "kernel/sched/syscalls.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 786,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-07-29T03:33:32Z",
+      "side": 1,
+      "message": "So the naming variance \"update_cpufreq_...\" and \"cpufreq_update_...\" feels a little inconsistent. Would it be worth a cleanup patch aligning them? Or somehow better differentiate the naming? (as update_cpufreq_current-\u003e__update_cpufreq_ctx_switch-\u003ecpufreq_update_util(), it feels like you\u0027ve got \"go do the tangled path, and the direct call\"). It seems like this should be flattened somehow.",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
