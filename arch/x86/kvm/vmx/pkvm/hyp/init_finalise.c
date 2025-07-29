@@ -24,7 +24,6 @@
 #include "iommu_internal.h"
 #include "mem_protect.h"
 #include "lapic.h"
-#include "pci.h"
 #include "init_finalise.h"
 #include "trace.h"
 #include <vmx/vmx.h>
@@ -362,10 +361,6 @@ int __pkvm_init_finalise(struct kvm_vcpu *vcpu, struct pkvm_section sections[],
 
 	ret = protect_pkvm_pages(tmp_sections, section_sz,
 			hyp_mem_base, hyp_mem_size);
-	if (ret)
-		goto out;
-
-	ret = init_finalize_pci(&pkvm_hyp->host_vm.pci_info);
 	if (ret)
 		goto out;
 
