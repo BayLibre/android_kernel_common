@@ -3291,7 +3291,7 @@ static int proc_pid_ksm_stat(struct seq_file *m, struct pid_namespace *ns,
 }
 #endif /* CONFIG_KSM */
 
-#ifdef CONFIG_STACKLEAK_METRICS
+#ifdef CONFIG_KSTACK_ERASE_METRICS
 static int proc_stack_depth(struct seq_file *m, struct pid_namespace *ns,
 				struct pid *pid, struct task_struct *task)
 {
@@ -3304,7 +3304,7 @@ static int proc_stack_depth(struct seq_file *m, struct pid_namespace *ns,
 							prev_depth, depth);
 	return 0;
 }
-#endif /* CONFIG_STACKLEAK_METRICS */
+#endif /* CONFIG_KSTACK_ERASE_METRICS */
 
 /*
  * Thread groups
@@ -3411,10 +3411,16 @@ static const struct pid_entry tgid_base_stuff[] = {
 #ifdef CONFIG_LIVEPATCH
 	ONE("patch_state",  S_IRUSR, proc_pid_patch_state),
 #endif
+<<<<<<< HEAD   (484ac60d9ff2c850be3dd559e1bc1aa980613ec5 Merge 278c7d9b5e0c ("Merge tag 'vfs-6.17-rc1.fallocate' of g)
 #ifdef CONFIG_CPU_FREQ_TIMES
 	ONE("time_in_state", 0444, proc_time_in_state_show),
 #endif
 #ifdef CONFIG_STACKLEAK_METRICS
+||||||| BASE   (278c7d9b5e0ca73a75e5151c22fb05c91cb4495f Merge tag 'vfs-6.17-rc1.fallocate' of git://git.kernel.org/p)
+#ifdef CONFIG_STACKLEAK_METRICS
+=======
+#ifdef CONFIG_KSTACK_ERASE_METRICS
+>>>>>>> BRANCH (86aa721820952b793a12fc6e5a01734186c0c238 Merge tag 'chrome-platform-v6.17' of git://git.kernel.org/pu)
 	ONE("stack_depth", S_IRUGO, proc_stack_depth),
 #endif
 #ifdef CONFIG_PROC_PID_ARCH_STATUS
