@@ -16,6 +16,98 @@
       "message": "PTAL. If there are no concerns, I\u0027ll send it upstream shortly after (probably as an RFC). Thanks.",
       "revId": "69a4e4ca820cdaf0f47246f861b046c2c2905be9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c9d9c95_4ccbcf1c",
+        "filename": "mm/memfd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1054468
+      },
+      "writtenOn": "2025-07-30T23:13:56Z",
+      "side": 1,
+      "message": "is this still necessary?",
+      "range": {
+        "startLine": 455,
+        "startChar": 0,
+        "endLine": 455,
+        "endChar": 41
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ad6d5a31_c45fd651",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/memfd.c",
+              "range": {
+                "startLine": 455,
+                "startChar": 0,
+                "endLine": 458,
+                "endChar": 0
+              },
+              "replacement": "\t\tfile_inode(file)-\u003ei_mode \u0026\u003d ~0111;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "69a4e4ca820cdaf0f47246f861b046c2c2905be9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "545bd22d_13f833a0",
+        "filename": "security/selinux/include/classmap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1054468
+      },
+      "writtenOn": "2025-07-30T23:13:56Z",
+      "side": 1,
+      "message": "Why is this associated with execute? In policy, we commonly group \"execute_no_trans\" and \"execute\" together. it\u0027s confusing here to instead of entrypoint associated with execute_no_trans. Perhaps just get rid of this #define?",
+      "range": {
+        "startLine": 14,
+        "startChar": 41,
+        "endLine": 14,
+        "endChar": 51
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "aa0f5dd9_17f2bf69",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "security/selinux/include/classmap.h",
+              "range": {
+                "startLine": 14,
+                "startChar": 0,
+                "endLine": 15,
+                "endChar": 0
+              },
+              "replacement": "\tCOMMON_FILE_PERMS, \"execute_no_trans\"\n"
+            },
+            {
+              "path": "security/selinux/include/classmap.h",
+              "range": {
+                "startLine": 73,
+                "startChar": 0,
+                "endLine": 74,
+                "endChar": 0
+              },
+              "replacement": "\t    \"relabelto\", \"associate\", \"quotamod\", \"quotaget\", \"watch\",\n\t    \"entrypoint\", NULL } },\n"
+            }
+          ]
+        }
+      ],
+      "revId": "69a4e4ca820cdaf0f47246f861b046c2c2905be9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
