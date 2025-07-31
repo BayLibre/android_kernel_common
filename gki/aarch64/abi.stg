@@ -48364,6 +48364,10 @@ member {
   type_id: 0x1d4594fc
 }
 member {
+  id: 0x24c2370a
+  type_id: 0x1c26ac38
+}
+member {
   id: 0x24c431ea
   type_id: 0x1c3eb7b9
 }
@@ -48534,6 +48538,10 @@ member {
 member {
   id: 0x28acbbd7
   type_id: 0x2d9c9f4f
+}
+member {
+  id: 0x28c63ea1
+  type_id: 0x2c368a94
 }
 member {
   id: 0x28cca42f
@@ -49058,6 +49066,11 @@ member {
   offset: 1024
 }
 member {
+  id: 0x32fda190
+  type_id: 0x44d8e0b8
+  offset: 12672
+}
+member {
   id: 0x3301cfe7
   type_id: 0x43295669
   offset: 640
@@ -49560,6 +49573,10 @@ member {
   offset: 1408
 }
 member {
+  id: 0x36752b74
+  type_id: 0x56faddc1
+}
+member {
   id: 0x3697c485
   type_id: 0x55715975
   offset: 1152
@@ -49792,6 +49809,11 @@ member {
   id: 0x39b53975
   type_id: 0x69fa9768
   offset: 256
+}
+member {
+  id: 0x39d5c329
+  type_id: 0x68797ea9
+  offset: 12608
 }
 member {
   id: 0x39d6d358
@@ -56991,6 +57013,11 @@ member {
   offset: 15424
 }
 member {
+  id: 0x112ba38e
+  name: "__kabi_reserved_backport1"
+  type_id: 0x92233392
+}
+member {
   id: 0x112ba40c
   name: "__kabi_reserved_backport1"
   type_id: 0x92233392
@@ -57079,6 +57106,11 @@ member {
   name: "__kabi_reserved_backport1"
   type_id: 0x89d2d38c
   offset: 49792
+}
+member {
+  id: 0xd16b393e
+  name: "__kabi_reserved_backport2"
+  type_id: 0x92233392
 }
 member {
   id: 0xa7e1214e
@@ -177186,6 +177218,12 @@ member {
   offset: 1088
 }
 member {
+  id: 0xfa2a79e0
+  name: "offload_at_suspend"
+  type_id: 0x4585663f
+  bitsize: 1
+}
+member {
   id: 0x6893726f
   name: "offload_base"
   type_id: 0xd3c80119
@@ -177214,6 +177252,11 @@ member {
   name: "offload_requested"
   type_id: 0x6d7f5ff6
   offset: 1232
+}
+member {
+  id: 0x48a005ae
+  name: "offload_usage"
+  type_id: 0x6720d32f
 }
 member {
   id: 0x757e2d7c
@@ -266629,6 +266672,14 @@ struct_union {
   }
 }
 struct_union {
+  id: 0x1c26ac38
+  kind: STRUCT
+  definition {
+    bytesize: 8
+    member_id: 0x112ba38e
+  }
+}
+struct_union {
   id: 0x1c3eb7b9
   kind: STRUCT
   definition {
@@ -267682,6 +267733,14 @@ struct_union {
     member_id: 0xd14839b1
     member_id: 0x5cb0ff20
     member_id: 0x58a7affd
+  }
+}
+struct_union {
+  id: 0x2c368a94
+  kind: STRUCT
+  definition {
+    bytesize: 8
+    member_id: 0xd16b393e
   }
 }
 struct_union {
@@ -269247,6 +269306,16 @@ struct_union {
   }
 }
 struct_union {
+  id: 0x44d8e0b8
+  kind: UNION
+  definition {
+    bytesize: 8
+    member_id: 0x48a005ae
+    member_id: 0x28c63ea1
+    member_id: 0x36752b74
+  }
+}
+struct_union {
   id: 0x44e0bbd2
   kind: UNION
   definition {
@@ -270250,6 +270319,12 @@ struct_union {
     bytesize: 4
     member_id: 0x032aedf1
     member_id: 0x0f4b9ba4
+  }
+}
+struct_union {
+  id: 0x56faddc1
+  kind: UNION
+  definition {
   }
 }
 struct_union {
@@ -271549,6 +271624,16 @@ struct_union {
     bytesize: 16
     member_id: 0xfa946861
     member_id: 0xab39140b
+  }
+}
+struct_union {
+  id: 0x68797ea9
+  kind: UNION
+  definition {
+    bytesize: 8
+    member_id: 0xfa2a79e0
+    member_id: 0x24c2370a
+    member_id: 0x36752b74
   }
 }
 struct_union {
@@ -341298,7 +341383,7 @@ struct_union {
   kind: STRUCT
   name: "usb_device"
   definition {
-    bytesize: 1576
+    bytesize: 1592
     member_id: 0x575bee81
     member_id: 0x18249e35
     member_id: 0x995819c8
@@ -341364,6 +341449,8 @@ struct_union {
     member_id: 0xb116e2bf
     member_id: 0xf0d65d46
     member_id: 0x04993d66
+    member_id: 0x39d5c329
+    member_id: 0x32fda190
   }
 }
 struct_union {
@@ -443043,7 +443130,7 @@ elf_symbol {
   name: "__usb_create_hcd"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x65ecb251
+  crc: 0x923853e0
   type_id: 0xab9a208d
   full_name: "__usb_create_hcd"
 }
@@ -443052,7 +443139,7 @@ elf_symbol {
   name: "__usb_serial_register_drivers"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x479f8834
+  crc: 0xc8847641
   type_id: 0x9217ff72
   full_name: "__usb_serial_register_drivers"
 }
@@ -461639,7 +461726,7 @@ elf_symbol {
   name: "ehci_handshake"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x56d6415c
+  crc: 0x694778d6
   type_id: 0x9ab89acf
   full_name: "ehci_handshake"
 }
@@ -461648,7 +461735,7 @@ elf_symbol {
   name: "ehci_hub_control"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xfda25494
+  crc: 0x43c52161
   type_id: 0x96bdc834
   full_name: "ehci_hub_control"
 }
@@ -461657,7 +461744,7 @@ elf_symbol {
   name: "ehci_init_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe5c55aba
+  crc: 0xa243ef88
   type_id: 0x14fbfe19
   full_name: "ehci_init_driver"
 }
@@ -461666,7 +461753,7 @@ elf_symbol {
   name: "ehci_resume"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x336338b8
+  crc: 0x0e9fefac
   type_id: 0x956b1688
   full_name: "ehci_resume"
 }
@@ -461675,7 +461762,7 @@ elf_symbol {
   name: "ehci_setup"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x397127ff
+  crc: 0xcaffc0d4
   type_id: 0x94deebf7
   full_name: "ehci_setup"
 }
@@ -461684,7 +461771,7 @@ elf_symbol {
   name: "ehci_suspend"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3c57669a
+  crc: 0xca37a569
   type_id: 0x956b1688
   full_name: "ehci_suspend"
 }
@@ -495443,7 +495530,7 @@ elf_symbol {
   name: "snd_usb_autoresume"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xda1dd2b6
+  crc: 0x0def0ac7
   type_id: 0x9b1b4bcb
   full_name: "snd_usb_autoresume"
 }
@@ -495452,7 +495539,7 @@ elf_symbol {
   name: "snd_usb_autosuspend"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6f21da7e
+  crc: 0x0db2c823
   type_id: 0x1603f977
   full_name: "snd_usb_autosuspend"
 }
@@ -495461,7 +495548,7 @@ elf_symbol {
   name: "snd_usb_endpoint_prepare"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x45a2e5d4
+  crc: 0x60eb7c53
   type_id: 0x9b8a8a73
   full_name: "snd_usb_endpoint_prepare"
 }
@@ -495479,7 +495566,7 @@ elf_symbol {
   name: "snd_usb_find_format"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf5be25ca
+  crc: 0xe2d2a03b
   type_id: 0x69a0810c
   full_name: "snd_usb_find_format"
 }
@@ -495488,7 +495575,7 @@ elf_symbol {
   name: "snd_usb_find_substream_format"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xaa8c5b1b
+  crc: 0x824c3a89
   type_id: 0x67cbd5c7
   full_name: "snd_usb_find_substream_format"
 }
@@ -495497,7 +495584,7 @@ elf_symbol {
   name: "snd_usb_hw_free"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xbec82de6
+  crc: 0x8d4a245b
   type_id: 0x9fae6d0c
   full_name: "snd_usb_hw_free"
 }
@@ -495506,7 +495593,7 @@ elf_symbol {
   name: "snd_usb_hw_params"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6335fcc0
+  crc: 0x27cea108
   type_id: 0x9f18c019
   full_name: "snd_usb_hw_params"
 }
@@ -495515,7 +495602,7 @@ elf_symbol {
   name: "snd_usb_lock_shutdown"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xda1dd2b6
+  crc: 0x0def0ac7
   type_id: 0x9b1b4bcb
   full_name: "snd_usb_lock_shutdown"
 }
@@ -495524,7 +495611,7 @@ elf_symbol {
   name: "snd_usb_register_platform_ops"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x761968cd
+  crc: 0x58dfcfcb
   type_id: 0x93880391
   full_name: "snd_usb_register_platform_ops"
 }
@@ -495533,7 +495620,7 @@ elf_symbol {
   name: "snd_usb_unlock_shutdown"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6f21da7e
+  crc: 0x0db2c823
   type_id: 0x1603f977
   full_name: "snd_usb_unlock_shutdown"
 }
@@ -501892,7 +501979,7 @@ elf_symbol {
   name: "usb_add_hcd"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x78ff990c
+  crc: 0xf626a7bc
   type_id: 0x95c42336
   full_name: "usb_add_hcd"
 }
@@ -501910,7 +501997,7 @@ elf_symbol {
   name: "usb_alloc_coherent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0432cd4d
+  crc: 0x3d90ab8b
   type_id: 0x5625fe7a
   full_name: "usb_alloc_coherent"
 }
@@ -501919,7 +502006,7 @@ elf_symbol {
   name: "usb_alloc_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe558efb4
+  crc: 0x9fb618db
   type_id: 0x7fc911b7
   full_name: "usb_alloc_urb"
 }
@@ -501946,7 +502033,7 @@ elf_symbol {
   name: "usb_anchor_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2cc683e7
+  crc: 0x6511b019
   type_id: 0x100504e2
   full_name: "usb_anchor_urb"
 }
@@ -502009,7 +502096,7 @@ elf_symbol {
   name: "usb_bulk_msg"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x64fd392d
+  crc: 0x569bd7e3
   type_id: 0x9fce79d4
   full_name: "usb_bulk_msg"
 }
@@ -502063,7 +502150,7 @@ elf_symbol {
   name: "usb_choose_configuration"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x69604826
+  crc: 0x47a50e80
   type_id: 0x9edfdadc
   full_name: "usb_choose_configuration"
 }
@@ -502072,7 +502159,7 @@ elf_symbol {
   name: "usb_clear_halt"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6277daa8
+  crc: 0x4edfac0d
   type_id: 0x9f435990
   full_name: "usb_clear_halt"
 }
@@ -502108,7 +502195,7 @@ elf_symbol {
   name: "usb_control_msg"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc563e953
+  crc: 0x3e5de2b3
   type_id: 0x9fe7c091
   full_name: "usb_control_msg"
 }
@@ -502117,7 +502204,7 @@ elf_symbol {
   name: "usb_control_msg_recv"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3d80cfe7
+  crc: 0xf571f6d7
   type_id: 0x9c3e4be2
   full_name: "usb_control_msg_recv"
 }
@@ -502126,7 +502213,7 @@ elf_symbol {
   name: "usb_control_msg_send"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6f42d6c1
+  crc: 0x37c5e21c
   type_id: 0x9c3e4bea
   full_name: "usb_control_msg_send"
 }
@@ -502144,7 +502231,7 @@ elf_symbol {
   name: "usb_create_hcd"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x91a1f2b7
+  crc: 0xb3358ba6
   type_id: 0xab95c382
   full_name: "usb_create_hcd"
 }
@@ -502153,7 +502240,7 @@ elf_symbol {
   name: "usb_create_shared_hcd"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xfd8f9b35
+  crc: 0xc9a56351
   type_id: 0xab955662
   full_name: "usb_create_shared_hcd"
 }
@@ -502216,7 +502303,7 @@ elf_symbol {
   name: "usb_deregister_device_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1c5702b8
+  crc: 0x99f9251f
   type_id: 0x15ca3ead
   full_name: "usb_deregister_device_driver"
 }
@@ -502225,7 +502312,7 @@ elf_symbol {
   name: "usb_device_match_id"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2d808ed0
+  crc: 0xdfff2758
   type_id: 0x1c1deea6
   full_name: "usb_device_match_id"
 }
@@ -502234,7 +502321,7 @@ elf_symbol {
   name: "usb_disable_autosuspend"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x802b6196
+  crc: 0xb9779f4b
   type_id: 0x13c76860
   full_name: "usb_disable_autosuspend"
 }
@@ -502270,7 +502357,7 @@ elf_symbol {
   name: "usb_driver_set_configuration"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x25d36054
+  crc: 0x5b080a59
   type_id: 0x9f435990
   full_name: "usb_driver_set_configuration"
 }
@@ -502279,7 +502366,7 @@ elf_symbol {
   name: "usb_enable_autosuspend"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x802b6196
+  crc: 0xb9779f4b
   type_id: 0x13c76860
   full_name: "usb_enable_autosuspend"
 }
@@ -502288,7 +502375,7 @@ elf_symbol {
   name: "usb_enable_lpm"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd783056b
+  crc: 0x0c7a17f9
   type_id: 0x13c76860
   full_name: "usb_enable_lpm"
 }
@@ -502432,7 +502519,7 @@ elf_symbol {
   name: "usb_for_each_dev"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa9df3ddc
+  crc: 0xd56a1d57
   type_id: 0x9b1b47aa
   full_name: "usb_for_each_dev"
 }
@@ -502450,7 +502537,7 @@ elf_symbol {
   name: "usb_free_coherent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xed1099c5
+  crc: 0x973ed1f5
   type_id: 0x10121220
   full_name: "usb_free_coherent"
 }
@@ -502459,7 +502546,7 @@ elf_symbol {
   name: "usb_free_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1edb19c2
+  crc: 0xe80189de
   type_id: 0x10d459f4
   full_name: "usb_free_urb"
 }
@@ -502621,7 +502708,7 @@ elf_symbol {
   name: "usb_get_dev"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe119d123
+  crc: 0x3ab02498
   type_id: 0x751f8257
   full_name: "usb_get_dev"
 }
@@ -502639,7 +502726,7 @@ elf_symbol {
   name: "usb_get_from_anchor"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xecd86f53
+  crc: 0x51031dca
   type_id: 0x68d26f6c
   full_name: "usb_get_from_anchor"
 }
@@ -502702,7 +502789,7 @@ elf_symbol {
   name: "usb_get_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3b3d8139
+  crc: 0x8b3049d5
   type_id: 0x658bb664
   full_name: "usb_get_urb"
 }
@@ -502720,7 +502807,7 @@ elf_symbol {
   name: "usb_hc_died"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x18e56180
+  crc: 0xc061bb77
   type_id: 0x19c6594b
   full_name: "usb_hc_died"
 }
@@ -502729,7 +502816,7 @@ elf_symbol {
   name: "usb_hcd_check_unlink_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x643e7f44
+  crc: 0x8a4c88ba
   type_id: 0x94c3e345
   full_name: "usb_hcd_check_unlink_urb"
 }
@@ -502738,7 +502825,7 @@ elf_symbol {
   name: "usb_hcd_end_port_resume"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe4293e4e
+  crc: 0xd93f4f0d
   type_id: 0x1e6686a2
   full_name: "usb_hcd_end_port_resume"
 }
@@ -502747,7 +502834,7 @@ elf_symbol {
   name: "usb_hcd_giveback_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd0f4b116
+  crc: 0xf425600a
   type_id: 0x19db51f9
   full_name: "usb_hcd_giveback_urb"
 }
@@ -502765,7 +502852,7 @@ elf_symbol {
   name: "usb_hcd_is_primary_hcd"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb482fdfa
+  crc: 0x364960c1
   type_id: 0x94deebf7
   full_name: "usb_hcd_is_primary_hcd"
 }
@@ -502774,7 +502861,7 @@ elf_symbol {
   name: "usb_hcd_link_urb_to_ep"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x61273d03
+  crc: 0xdf452ff3
   type_id: 0x94da2b71
   full_name: "usb_hcd_link_urb_to_ep"
 }
@@ -502783,7 +502870,7 @@ elf_symbol {
   name: "usb_hcd_map_urb_for_dma"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x263c3b8c
+  crc: 0xe77db070
   type_id: 0x94e642c6
   full_name: "usb_hcd_map_urb_for_dma"
 }
@@ -502801,7 +502888,7 @@ elf_symbol {
   name: "usb_hcd_pci_probe"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7e8117e4
+  crc: 0x9a6af2b3
   type_id: 0x991753c2
   full_name: "usb_hcd_pci_probe"
 }
@@ -502837,7 +502924,7 @@ elf_symbol {
   name: "usb_hcd_poll_rh_status"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x18e56180
+  crc: 0xc061bb77
   type_id: 0x19c6594b
   full_name: "usb_hcd_poll_rh_status"
 }
@@ -502846,7 +502933,7 @@ elf_symbol {
   name: "usb_hcd_resume_root_hub"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x18e56180
+  crc: 0xc061bb77
   type_id: 0x19c6594b
   full_name: "usb_hcd_resume_root_hub"
 }
@@ -502855,7 +502942,7 @@ elf_symbol {
   name: "usb_hcd_start_port_resume"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe4293e4e
+  crc: 0xd93f4f0d
   type_id: 0x1e6686a2
   full_name: "usb_hcd_start_port_resume"
 }
@@ -502864,7 +502951,7 @@ elf_symbol {
   name: "usb_hcd_unlink_urb_from_ep"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x91b4dcee
+  crc: 0x63bf2bd3
   type_id: 0x19c299cd
   full_name: "usb_hcd_unlink_urb_from_ep"
 }
@@ -502873,7 +502960,7 @@ elf_symbol {
   name: "usb_hcd_unmap_urb_for_dma"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x91b4dcee
+  crc: 0x63bf2bd3
   type_id: 0x19c299cd
   full_name: "usb_hcd_unmap_urb_for_dma"
 }
@@ -502891,7 +502978,7 @@ elf_symbol {
   name: "usb_hub_clear_tt_buffer"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2421b82c
+  crc: 0x7e7a6784
   type_id: 0x9dcceb48
   full_name: "usb_hub_clear_tt_buffer"
 }
@@ -502900,7 +502987,7 @@ elf_symbol {
   name: "usb_hub_find_child"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xed6d1416
+  crc: 0x171c1bc0
   type_id: 0x7483011b
   full_name: "usb_hub_find_child"
 }
@@ -502909,7 +502996,7 @@ elf_symbol {
   name: "usb_ifnum_to_if"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb3a66758
+  crc: 0x7d9e9f2a
   type_id: 0x4d878509
   full_name: "usb_ifnum_to_if"
 }
@@ -502918,7 +503005,7 @@ elf_symbol {
   name: "usb_init_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1edb19c2
+  crc: 0xe80189de
   type_id: 0x10d459f4
   full_name: "usb_init_urb"
 }
@@ -502945,7 +503032,7 @@ elf_symbol {
   name: "usb_interrupt_msg"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x64fd392d
+  crc: 0x569bd7e3
   type_id: 0x9fce79d4
   full_name: "usb_interrupt_msg"
 }
@@ -502963,7 +503050,7 @@ elf_symbol {
   name: "usb_kill_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1edb19c2
+  crc: 0xe80189de
   type_id: 0x10d459f4
   full_name: "usb_kill_urb"
 }
@@ -502972,7 +503059,7 @@ elf_symbol {
   name: "usb_lock_device_for_reset"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xde82e9f8
+  crc: 0x545a5dc0
   type_id: 0x9e021d71
   full_name: "usb_lock_device_for_reset"
 }
@@ -503008,7 +503095,7 @@ elf_symbol {
   name: "usb_mon_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x49e50f0e
+  crc: 0xaeed5bc7
   type_id: 0x91a44dee
   full_name: "usb_mon_register"
 }
@@ -503071,7 +503158,7 @@ elf_symbol {
   name: "usb_poison_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1edb19c2
+  crc: 0xe80189de
   type_id: 0x10d459f4
   full_name: "usb_poison_urb"
 }
@@ -503080,7 +503167,7 @@ elf_symbol {
   name: "usb_put_dev"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc4bed811
+  crc: 0xb974ff27
   type_id: 0x13c76860
   full_name: "usb_put_dev"
 }
@@ -503107,7 +503194,7 @@ elf_symbol {
   name: "usb_put_hcd"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x18e56180
+  crc: 0xc061bb77
   type_id: 0x19c6594b
   full_name: "usb_put_hcd"
 }
@@ -503143,7 +503230,7 @@ elf_symbol {
   name: "usb_register_device_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x798b0830
+  crc: 0x2cfa3d7a
   type_id: 0x98fe1360
   full_name: "usb_register_device_driver"
 }
@@ -503179,7 +503266,7 @@ elf_symbol {
   name: "usb_remove_hcd"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x18e56180
+  crc: 0xc061bb77
   type_id: 0x19c6594b
   full_name: "usb_remove_hcd"
 }
@@ -503197,7 +503284,7 @@ elf_symbol {
   name: "usb_reset_configuration"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xcd832e79
+  crc: 0x1af31046
   type_id: 0x9edfdadc
   full_name: "usb_reset_configuration"
 }
@@ -503206,7 +503293,7 @@ elf_symbol {
   name: "usb_reset_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1636990a
+  crc: 0xc8c13b96
   type_id: 0x9edfdadc
   full_name: "usb_reset_device"
 }
@@ -503215,7 +503302,7 @@ elf_symbol {
   name: "usb_reset_endpoint"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xcadcfac3
+  crc: 0x46606312
   type_id: 0x12d17df8
   full_name: "usb_reset_endpoint"
 }
@@ -503305,7 +503392,7 @@ elf_symbol {
   name: "usb_root_hub_lost_power"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd9c7661e
+  crc: 0xc71d6d64
   type_id: 0x13c76860
   full_name: "usb_root_hub_lost_power"
 }
@@ -503323,7 +503410,7 @@ elf_symbol {
   name: "usb_serial_claim_interface"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x60547d0b
+  crc: 0x2bb23cf5
   type_id: 0x9aa5384e
   full_name: "usb_serial_claim_interface"
 }
@@ -503332,7 +503419,7 @@ elf_symbol {
   name: "usb_serial_deregister_drivers"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x73fdb3b6
+  crc: 0x0d692e69
   type_id: 0x1f2cb682
   full_name: "usb_serial_deregister_drivers"
 }
@@ -503350,7 +503437,7 @@ elf_symbol {
   name: "usb_serial_generic_close"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x94e23c3e
+  crc: 0x0f2555d3
   type_id: 0x181d9d22
   full_name: "usb_serial_generic_close"
 }
@@ -503368,7 +503455,7 @@ elf_symbol {
   name: "usb_serial_generic_open"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x69076a97
+  crc: 0x950f8e6f
   type_id: 0x96b71ffd
   full_name: "usb_serial_generic_open"
 }
@@ -503377,7 +503464,7 @@ elf_symbol {
   name: "usb_serial_generic_process_read_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4d08efd0
+  crc: 0xc497149b
   type_id: 0x10d459f4
   full_name: "usb_serial_generic_process_read_urb"
 }
@@ -503386,7 +503473,7 @@ elf_symbol {
   name: "usb_serial_generic_read_bulk_callback"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4d08efd0
+  crc: 0xc497149b
   type_id: 0x10d459f4
   full_name: "usb_serial_generic_read_bulk_callback"
 }
@@ -503395,7 +503482,7 @@ elf_symbol {
   name: "usb_serial_generic_resume"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xbb845e2d
+  crc: 0x9dce7d88
   type_id: 0x9a212231
   full_name: "usb_serial_generic_resume"
 }
@@ -503404,7 +503491,7 @@ elf_symbol {
   name: "usb_serial_generic_submit_read_urbs"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x882899b6
+  crc: 0x723089fa
   type_id: 0x96c3b4e1
   full_name: "usb_serial_generic_submit_read_urbs"
 }
@@ -503449,7 +503536,7 @@ elf_symbol {
   name: "usb_serial_generic_write"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7be17c88
+  crc: 0x9efec6b0
   type_id: 0x96b8906b
   full_name: "usb_serial_generic_write"
 }
@@ -503458,7 +503545,7 @@ elf_symbol {
   name: "usb_serial_generic_write_bulk_callback"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4d08efd0
+  crc: 0xc497149b
   type_id: 0x10d459f4
   full_name: "usb_serial_generic_write_bulk_callback"
 }
@@ -503467,7 +503554,7 @@ elf_symbol {
   name: "usb_serial_generic_write_start"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x882899b6
+  crc: 0x723089fa
   type_id: 0x96c3b4e1
   full_name: "usb_serial_generic_write_start"
 }
@@ -503476,7 +503563,7 @@ elf_symbol {
   name: "usb_serial_handle_dcd_change"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3d0e7b7d
+  crc: 0x53ba714a
   type_id: 0x18b7067a
   full_name: "usb_serial_handle_dcd_change"
 }
@@ -503485,7 +503572,7 @@ elf_symbol {
   name: "usb_serial_port_softint"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x94e23c3e
+  crc: 0x0f2555d3
   type_id: 0x181d9d22
   full_name: "usb_serial_port_softint"
 }
@@ -503512,7 +503599,7 @@ elf_symbol {
   name: "usb_set_configuration"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc9a6be0c
+  crc: 0x0980b9fc
   type_id: 0x9f435990
   full_name: "usb_set_configuration"
 }
@@ -503521,7 +503608,7 @@ elf_symbol {
   name: "usb_set_interface"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3f01ea30
+  crc: 0x9ed4eed3
   type_id: 0x9f5a91a4
   full_name: "usb_set_interface"
 }
@@ -503530,7 +503617,7 @@ elf_symbol {
   name: "usb_sg_init"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xabb5105a
+  crc: 0x654ff42a
   type_id: 0x95bd08a6
   full_name: "usb_sg_init"
 }
@@ -503539,7 +503626,7 @@ elf_symbol {
   name: "usb_sg_wait"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x5fdc68b9
+  crc: 0x85a23698
   type_id: 0x18803b18
   full_name: "usb_sg_wait"
 }
@@ -503575,7 +503662,7 @@ elf_symbol {
   name: "usb_string"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc3067712
+  crc: 0xcbab0458
   type_id: 0x9f41a9bc
   full_name: "usb_string"
 }
@@ -503593,7 +503680,7 @@ elf_symbol {
   name: "usb_submit_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe5bc0c54
+  crc: 0x595b62de
   type_id: 0x9e0a7037
   full_name: "usb_submit_urb"
 }
@@ -503611,7 +503698,7 @@ elf_symbol {
   name: "usb_unanchor_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1edb19c2
+  crc: 0xe80189de
   type_id: 0x10d459f4
   full_name: "usb_unanchor_urb"
 }
@@ -503629,7 +503716,7 @@ elf_symbol {
   name: "usb_unlink_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x5166ba46
+  crc: 0xc8e4f6df
   type_id: 0x9dcceb48
   full_name: "usb_unlink_urb"
 }
@@ -503638,7 +503725,7 @@ elf_symbol {
   name: "usb_unpoison_urb"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1edb19c2
+  crc: 0xe80189de
   type_id: 0x10d459f4
   full_name: "usb_unpoison_urb"
 }
@@ -503656,7 +503743,7 @@ elf_symbol {
   name: "usb_wakeup_notification"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8536f3b1
+  crc: 0x792899a5
   type_id: 0x12d17df8
   full_name: "usb_wakeup_notification"
 }
@@ -503665,7 +503752,7 @@ elf_symbol {
   name: "usbnet_cdc_unbind"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa58d5bcc
+  crc: 0xe128e6c0
   type_id: 0x136e318e
   full_name: "usbnet_cdc_unbind"
 }
@@ -503710,7 +503797,7 @@ elf_symbol {
   name: "usbnet_skb_return"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x04d52bfd
+  crc: 0x1963e271
   type_id: 0x13ff1655
   full_name: "usbnet_skb_return"
 }
@@ -508285,7 +508372,7 @@ elf_symbol {
   name: "xhci_add_endpoint"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0264af1a
+  crc: 0xf8060785
   type_id: 0x94ebfe13
   full_name: "xhci_add_endpoint"
 }
@@ -508294,7 +508381,7 @@ elf_symbol {
   name: "xhci_check_bandwidth"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb325ab87
+  crc: 0x5f1a30c2
   type_id: 0x94eb1868
   full_name: "xhci_check_bandwidth"
 }
@@ -508303,7 +508390,7 @@ elf_symbol {
   name: "xhci_create_secondary_interrupter"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3fa73303
+  crc: 0xe25ec233
   type_id: 0xb883150f
   full_name: "xhci_create_secondary_interrupter"
 }
@@ -508312,7 +508399,7 @@ elf_symbol {
   name: "xhci_drop_endpoint"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0264af1a
+  crc: 0xf8060785
   type_id: 0x94ebfe13
   full_name: "xhci_drop_endpoint"
 }
@@ -508321,7 +508408,7 @@ elf_symbol {
   name: "xhci_gen_setup"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0407ea1c
+  crc: 0x5fd13647
   type_id: 0x97b34018
   full_name: "xhci_gen_setup"
 }
@@ -508339,7 +508426,7 @@ elf_symbol {
   name: "xhci_get_ep_ctx"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x287c5e69
+  crc: 0xe7042246
   type_id: 0xcbd33190
   full_name: "xhci_get_ep_ctx"
 }
@@ -508348,7 +508435,7 @@ elf_symbol {
   name: "xhci_init_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4808fb95
+  crc: 0x28d0f794
   type_id: 0x14d9dc3c
   full_name: "xhci_init_driver"
 }
@@ -508386,7 +508473,7 @@ elf_symbol {
   name: "xhci_remove_secondary_interrupter"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf3502073
+  crc: 0xafc3c4cc
   type_id: 0x19fc7bf2
   full_name: "xhci_remove_secondary_interrupter"
 }
@@ -508395,7 +508482,7 @@ elf_symbol {
   name: "xhci_reset_bandwidth"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd7f497ea
+  crc: 0xb051dd7c
   type_id: 0x19f3aad4
   full_name: "xhci_reset_bandwidth"
 }
@@ -508404,7 +508491,7 @@ elf_symbol {
   name: "xhci_resume"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1a976748
+  crc: 0x91a8e4a4
   type_id: 0x9ae1f92a
   full_name: "xhci_resume"
 }
@@ -508413,7 +508500,7 @@ elf_symbol {
   name: "xhci_run"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x53eaed06
+  crc: 0x525aa18c
   type_id: 0x94deebf7
   full_name: "xhci_run"
 }
@@ -508422,7 +508509,7 @@ elf_symbol {
   name: "xhci_sideband_add_endpoint"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6124ef85
+  crc: 0xb33f9eb2
   type_id: 0x9ebbeb61
   full_name: "xhci_sideband_add_endpoint"
 }
@@ -508431,7 +508518,7 @@ elf_symbol {
   name: "xhci_sideband_create_interrupter"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x08958192
+  crc: 0xf069cf00
   type_id: 0x9f316da2
   full_name: "xhci_sideband_create_interrupter"
 }
@@ -508440,7 +508527,7 @@ elf_symbol {
   name: "xhci_sideband_get_endpoint_buffer"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0e0d7b64
+  crc: 0x247e74af
   type_id: 0x42476815
   full_name: "xhci_sideband_get_endpoint_buffer"
 }
@@ -508449,7 +508536,7 @@ elf_symbol {
   name: "xhci_sideband_get_event_buffer"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xaeacbde7
+  crc: 0x96940ec6
   type_id: 0x42490fa5
   full_name: "xhci_sideband_get_event_buffer"
 }
@@ -508458,7 +508545,7 @@ elf_symbol {
   name: "xhci_sideband_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x72207d28
+  crc: 0x21a5333f
   type_id: 0x56df99a5
   full_name: "xhci_sideband_register"
 }
@@ -508467,7 +508554,7 @@ elf_symbol {
   name: "xhci_sideband_remove_endpoint"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6124ef85
+  crc: 0xb33f9eb2
   type_id: 0x9ebbeb61
   full_name: "xhci_sideband_remove_endpoint"
 }
@@ -508476,7 +508563,7 @@ elf_symbol {
   name: "xhci_sideband_remove_interrupter"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x96b6595c
+  crc: 0xde89138b
   type_id: 0x13ad3e6d
   full_name: "xhci_sideband_remove_interrupter"
 }
@@ -508485,7 +508572,7 @@ elf_symbol {
   name: "xhci_sideband_stop_endpoint"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6124ef85
+  crc: 0xb33f9eb2
   type_id: 0x9ebbeb61
   full_name: "xhci_sideband_stop_endpoint"
 }
@@ -508494,7 +508581,7 @@ elf_symbol {
   name: "xhci_sideband_unregister"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x96b6595c
+  crc: 0xde89138b
   type_id: 0x13ad3e6d
   full_name: "xhci_sideband_unregister"
 }
@@ -508503,7 +508590,7 @@ elf_symbol {
   name: "xhci_stop_endpoint_sync"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7a0f73a8
+  crc: 0xfc5c5afa
   type_id: 0x99499c1e
   full_name: "xhci_stop_endpoint_sync"
 }
@@ -508512,7 +508599,7 @@ elf_symbol {
   name: "xhci_suspend"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x79a2bf47
+  crc: 0xfcb22893
   type_id: 0x98945a53
   full_name: "xhci_suspend"
 }
