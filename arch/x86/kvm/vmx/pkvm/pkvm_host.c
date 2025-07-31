@@ -1269,6 +1269,7 @@ static __init int pkvm_init_io_emulation(struct pkvm_hyp *pkvm)
 
 static __init int pkvm_init_pci(struct pkvm_hyp *pkvm)
 {
+	return 0;
 	struct pci_mmcfg_region *data, *cfg;
 	int length = 0, max_region_num = PAGE_SIZE / sizeof(struct pci_mmcfg_region);
 

@@ -329,6 +329,7 @@ static int pkvm_mmu_map_mmcfg_region(struct pkvm_pci_info *pci_info)
 
 int init_finalize_pci(struct pkvm_pci_info *pci_info)
 {
+	return 0;
 	struct pci_mmcfg_region *region;
 	unsigned long start, end;
 	int ret, i;
