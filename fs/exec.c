@@ -67,6 +67,7 @@
 #include <linux/time_namespace.h>
 #include <linux/user_events.h>
 #include <linux/page_size_compat.h>
+#include <linux/dma-buf.h>
 
 #include <linux/uaccess.h>
 #include <asm/mmu_context.h>
@@ -1036,6 +1037,12 @@ static int exec_mmap(struct mm_struct *mm)
 		setmax_mm_hiwater_rss(&tsk->signal->maxrss, old_mm);
 		mm_update_next_owner(old_mm);
 		mmput(old_mm);
+
+		/*
+		 * The mmput above will only unaccount MM dmabuf references if this is the last
+		 * reference to the MM. It won't be for vfork (with CLONE_VM).
+		 */
+		dma_buf_exec_mmap();
 		return 0;
 	}
 	mmdrop_lazy_tlb(active_mm);
