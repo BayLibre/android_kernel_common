@@ -748,10 +748,10 @@ struct usb_device {
 	u16 hub_delay;
 	unsigned use_generic_driver:1;
 
+	ANDROID_BACKPORT_RESERVE(1);
+	ANDROID_BACKPORT_RESERVE(2);
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
-	ANDROID_KABI_RESERVE(3);
-	ANDROID_KABI_RESERVE(4);
 };
 
 #define to_usb_device(__dev)	container_of_const(__dev, struct usb_device, dev)
