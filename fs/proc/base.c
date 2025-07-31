@@ -3312,11 +3312,12 @@ static int proc_dmabuf_rss_show(struct seq_file *m, struct pid_namespace *ns,
 	struct task_dma_buf_info *dmabuf_info = task->dmabuf_info;
 
 	if (dmabuf_info) {
+		unsigned long flags;
 		unsigned long rss;
 
-		spin_lock(&dmabuf_info->lock);
+		spin_lock_irqsave(&dmabuf_info->lock, flags);
 		rss = dmabuf_info->rss;
-		spin_unlock(&dmabuf_info->lock);
+		spin_unlock_irqrestore(&dmabuf_info->lock, flags);
 		seq_printf(m, "%lu\n", rss);
 	}
 
@@ -3334,11 +3335,12 @@ static int proc_dmabuf_rss_hwm_show(struct seq_file *m, void *v)
 		return -ESRCH;
 
 	if (task->dmabuf_info) {
+		unsigned long flags;
 		unsigned long rss_hwm;
 
-		spin_lock(&task->dmabuf_info->lock);
+		spin_lock_irqsave(&task->dmabuf_info->lock, flags);
 		rss_hwm = task->dmabuf_info->rss_hwm;
-		spin_unlock(&task->dmabuf_info->lock);
+		spin_unlock_irqrestore(&task->dmabuf_info->lock, flags);
 		seq_printf(m, "%lu\n", rss_hwm);
 	}
 
@@ -3375,9 +3377,11 @@ proc_dmabuf_rss_hwm_write(struct file *file, const char __user *buf,
 	if (!task->dmabuf_info) {
 		ret = -ENOENT;
 	} else {
-		spin_lock(&task->dmabuf_info->lock);
+		unsigned long flags;
+
+		spin_lock_irqsave(&task->dmabuf_info->lock, flags);
 		task->dmabuf_info->rss_hwm = task->dmabuf_info->rss;
-		spin_unlock(&task->dmabuf_info->lock);
+		spin_unlock_irqrestore(&task->dmabuf_info->lock, flags);
 	}
 
 	put_task_struct(task);
@@ -3399,9 +3403,10 @@ static int proc_dmabuf_pss_show(struct seq_file *m, struct pid_namespace *ns,
 	struct task_dma_buf_record *rec;
 
 	if (task->dmabuf_info) {
+		unsigned long flags;
 		unsigned long pss = 0;
 
-		spin_lock(&task->dmabuf_info->lock);
+		spin_lock_irqsave(&task->dmabuf_info->lock, flags);
 		list_for_each_entry(rec, &task->dmabuf_info->dmabufs, node) {
 			s64 refs = atomic64_read(&rec->dmabuf->nr_task_refs);
 
@@ -3412,7 +3417,7 @@ static int proc_dmabuf_pss_show(struct seq_file *m, struct pid_namespace *ns,
 
 			pss += rec->dmabuf->size / (size_t)refs;
 		}
-		spin_unlock(&task->dmabuf_info->lock);
+		spin_unlock_irqrestore(&task->dmabuf_info->lock, flags);
 		seq_printf(m, "%lu\n", pss);
 	}
 

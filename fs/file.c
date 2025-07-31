@@ -595,7 +595,7 @@ void fd_install(unsigned int fd, struct file *file)
 	struct fdtable *fdt;
 
 	if (is_dma_buf_file(file)) {
-		int err = dma_buf_account_task(file->private_data, current);
+		int err = dma_buf_account_task(file->private_data, current, FD);
 
 		if (err)
 			pr_err("dmabuf accounting failed during fd_install operation, err %d\n",

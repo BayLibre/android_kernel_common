@@ -660,6 +660,8 @@ struct task_dma_buf_info;
 
 #else
 
+enum dma_buf_ref_type {MM, FD, NUM_REF_TYPES};
+
 /**
  * struct task_dma_buf_record - Holds the number of (VMA and FD) references to a
  * dmabuf by a collection of tasks that share both mm_struct and files_struct.
@@ -673,12 +675,33 @@ struct task_dma_buf_info;
 struct task_dma_buf_record {
 	struct list_head node;
 	struct dma_buf *dmabuf;
-	unsigned long refcnt;
+	unsigned long refcnt[NUM_REF_TYPES];
+};
+
+/**
+ * struct task_dma_buf_shared_list - A refcounted list holding task_dma_buf_info entries that
+ * participate in partial sharing of dmabuf accounting information. Partial sharing is when a task
+ * shares its mm_struct xor files_struct with other tasks. Multiple tasks cannot share a single
+ * task_dma_buf_info accounting structure in this case, since each task can have different RSS.
+ * Updates (accounting / unaccounting) for tasks that partially share must be propagated to all
+ * task_dma_buf_infos in the partial sharing relationship, and this list keeps track of all of
+ * those.
+ *
+ * @lock: Lock protecting all elements except @refcnt.
+ * @list: A list of task_dma_buf_infos that share either a mm_struct or files_struct (but not both).
+ * @count: The number of elements on @list. For O(1) list length.
+ * @refcnt: A reference count for controlling list lifetime.
+ */
+struct task_dma_buf_shared_list {
+	spinlock_t lock;
+	struct list_head list;
+	unsigned int count;
+	refcount_t refcnt;
 };
 
 /**
  * struct task_dma_buf_info - Holds RSS and RSS HWM counters, and a list of
- * dmabufs for alltasks that share both mm_struct and files_struct.
+ * dmabufs for all tasks that share a mm_struct and/or a files_struct.
  *
  * @rss: The sum of all dmabuf memory referenced by the task(s) via memory
  *       mappings or file descriptors in bytes. Buffers referenced more than
@@ -689,9 +712,18 @@ struct task_dma_buf_record {
  * @rss_hwm: The maximum value of @rss over the lifetime of this struct. (Unless
  *           reset by userspace.)
  * @refcnt: The number of tasks sharing this struct.
- * @lock: Lock protecting @rss, @dmabufs, and @dmabuf_count.
+ * @lock: Lock protecting @rss, @rss_hwm, @dmabufs, and @dmabuf_count.
  * @dmabufs: List of all dmabufs referenced by the task(s).
- * @dmabuf_count: The number of elements on the @dmabufs list.
+ * @dmabuf_count: The number of task_dma_buf_records on the @dmabufs list
+ *
+ * @mm_list: A list of task_dma_buf_infos that all share a common mm_struct, but
+ *           not a common files_struct. Used when CLONE_VM is provided without
+ *           CLONE_FILES.
+ * @fd_list: A list of task_dma_buf_infos that all share a common files struct,
+ *           but not a common mm_struct. Used when CLONE_FILES is provided
+ *	     without CLONE_VM.
+ * @mm_node: Stores the partial sharing MM list this struct is on.
+ * @fd_node: Stores the partial sharing FD list this struct is on.
  */
 struct task_dma_buf_info {
 	unsigned long rss;
@@ -700,6 +732,12 @@ struct task_dma_buf_info {
 	spinlock_t lock;
 	struct list_head dmabufs;
 	unsigned int dmabuf_count;
+
+	// Only for partial MM/FD sharing among tasks
+	struct task_dma_buf_shared_list *mm_list;
+	struct task_dma_buf_shared_list *fd_list;
+	struct list_head mm_node;
+	struct list_head fd_node;
 };
 
 #endif
@@ -811,10 +849,15 @@ struct dma_buf *dma_buf_iter_next(struct dma_buf *dmbuf);
 #ifdef CONFIG_DMA_SHARED_BUFFER
 
 int is_dma_buf_file(struct file *file);
-int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task);
-void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task);
+int dma_buf_account_task(struct dma_buf *dmabuf,
+			 struct task_struct *task,
+			 enum dma_buf_ref_type ref_type);
+void dma_buf_unaccount_task(struct dma_buf *dmabuf,
+			    struct task_struct *task,
+			    enum dma_buf_ref_type ref_type);
 int copy_dmabuf_info(u64 clone_flags, struct task_struct *task);
 void put_dmabuf_info(struct task_struct *task);
+void dma_buf_exec_mmap(void);
 
 #else /* CONFIG_DMA_SHARED_BUFFER */
 
@@ -826,6 +869,7 @@ static inline void dma_buf_unaccount_task(struct dma_buf *dmabuf,
 static inline int copy_dmabuf_info(u64 clone_flags,
 				   struct task_struct *task) { return 0; }
 static inline void put_dmabuf_info(struct task_struct *task) {}
+static inline void dma_buf_exec_mmap(void) { return 0; }
 
 #endif /* CONFIG_DMA_SHARED_BUFFER */
 
