@@ -48364,6 +48364,10 @@ member {
   type_id: 0x1d4594fc
 }
 member {
+  id: 0x24c2370a
+  type_id: 0x1c26ac38
+}
+member {
   id: 0x24c431ea
   type_id: 0x1c3eb7b9
 }
@@ -48534,6 +48538,10 @@ member {
 member {
   id: 0x28acbbd7
   type_id: 0x2d9c9f4f
+}
+member {
+  id: 0x28c63ea1
+  type_id: 0x2c368a94
 }
 member {
   id: 0x28cca42f
@@ -49058,6 +49066,11 @@ member {
   offset: 1024
 }
 member {
+  id: 0x32fdacdd
+  type_id: 0x44d8e0b8
+  offset: 12416
+}
+member {
   id: 0x3301cfe7
   type_id: 0x43295669
   offset: 640
@@ -49560,6 +49573,10 @@ member {
   offset: 1408
 }
 member {
+  id: 0x36752b74
+  type_id: 0x56faddc1
+}
+member {
   id: 0x3697c485
   type_id: 0x55715975
   offset: 1152
@@ -49792,6 +49809,11 @@ member {
   id: 0x39b53975
   type_id: 0x69fa9768
   offset: 256
+}
+member {
+  id: 0x39d5c3e2
+  type_id: 0x68797ea9
+  offset: 12352
 }
 member {
   id: 0x39d6d358
@@ -54832,12 +54854,6 @@ member {
   type_id: 0x92233392
 }
 member {
-  id: 0x415b0cf0
-  name: "__kabi_reserved1"
-  type_id: 0x92233392
-  offset: 12352
-}
-member {
   id: 0x415b0d19
   name: "__kabi_reserved1"
   type_id: 0x92233392
@@ -55280,12 +55296,6 @@ member {
   name: "__kabi_reserved2"
   type_id: 0x92233392
   offset: 10624
-}
-member {
-  id: 0xb116e2bf
-  name: "__kabi_reserved2"
-  type_id: 0x92233392
-  offset: 12416
 }
 member {
   id: 0xb116e2e6
@@ -56217,12 +56227,6 @@ member {
   offset: 9152
 }
 member {
-  id: 0xf0d65d46
-  name: "__kabi_reserved3"
-  type_id: 0x92233392
-  offset: 12480
-}
-member {
   id: 0xf0d65d5d
   name: "__kabi_reserved3"
   type_id: 0x92233392
@@ -56661,12 +56665,6 @@ member {
   offset: 5248
 }
 member {
-  id: 0x04993d66
-  name: "__kabi_reserved4"
-  type_id: 0x92233392
-  offset: 12544
-}
-member {
   id: 0x04993d6f
   name: "__kabi_reserved4"
   type_id: 0x92233392
@@ -56991,6 +56989,11 @@ member {
   offset: 15424
 }
 member {
+  id: 0x112ba38e
+  name: "__kabi_reserved_backport1"
+  type_id: 0x92233392
+}
+member {
   id: 0x112ba40c
   name: "__kabi_reserved_backport1"
   type_id: 0x92233392
@@ -57079,6 +57082,11 @@ member {
   name: "__kabi_reserved_backport1"
   type_id: 0x89d2d38c
   offset: 49792
+}
+member {
+  id: 0xd16b393e
+  name: "__kabi_reserved_backport2"
+  type_id: 0x92233392
 }
 member {
   id: 0xa7e1214e
@@ -177186,6 +177194,12 @@ member {
   offset: 1088
 }
 member {
+  id: 0xfa2a79e0
+  name: "offload_at_suspend"
+  type_id: 0x4585663f
+  bitsize: 1
+}
+member {
   id: 0x6893726f
   name: "offload_base"
   type_id: 0xd3c80119
@@ -177214,6 +177228,11 @@ member {
   name: "offload_requested"
   type_id: 0x6d7f5ff6
   offset: 1232
+}
+member {
+  id: 0x48a005ae
+  name: "offload_usage"
+  type_id: 0x6720d32f
 }
 member {
   id: 0x757e2d7c
@@ -266629,6 +266648,14 @@ struct_union {
   }
 }
 struct_union {
+  id: 0x1c26ac38
+  kind: STRUCT
+  definition {
+    bytesize: 8
+    member_id: 0x112ba38e
+  }
+}
+struct_union {
   id: 0x1c3eb7b9
   kind: STRUCT
   definition {
@@ -267682,6 +267709,14 @@ struct_union {
     member_id: 0xd14839b1
     member_id: 0x5cb0ff20
     member_id: 0x58a7affd
+  }
+}
+struct_union {
+  id: 0x2c368a94
+  kind: STRUCT
+  definition {
+    bytesize: 8
+    member_id: 0xd16b393e
   }
 }
 struct_union {
@@ -269247,6 +269282,16 @@ struct_union {
   }
 }
 struct_union {
+  id: 0x44d8e0b8
+  kind: UNION
+  definition {
+    bytesize: 8
+    member_id: 0x48a005ae
+    member_id: 0x28c63ea1
+    member_id: 0x36752b74
+  }
+}
+struct_union {
   id: 0x44e0bbd2
   kind: UNION
   definition {
@@ -270250,6 +270295,12 @@ struct_union {
     bytesize: 4
     member_id: 0x032aedf1
     member_id: 0x0f4b9ba4
+  }
+}
+struct_union {
+  id: 0x56faddc1
+  kind: UNION
+  definition {
   }
 }
 struct_union {
@@ -271549,6 +271600,16 @@ struct_union {
     bytesize: 16
     member_id: 0xfa946861
     member_id: 0xab39140b
+  }
+}
+struct_union {
+  id: 0x68797ea9
+  kind: UNION
+  definition {
+    bytesize: 8
+    member_id: 0xfa2a79e0
+    member_id: 0x24c2370a
+    member_id: 0x36752b74
   }
 }
 struct_union {
@@ -341360,10 +341421,10 @@ struct_union {
     member_id: 0x7407da36
     member_id: 0xcbfaf78e
     member_id: 0x0e98d998
-    member_id: 0x415b0cf0
-    member_id: 0xb116e2bf
-    member_id: 0xf0d65d46
-    member_id: 0x04993d66
+    member_id: 0x39d5c3e2
+    member_id: 0x32fdacdd
+    member_id: 0x415b0336
+    member_id: 0xb116e9fb
   }
 }
 struct_union {
