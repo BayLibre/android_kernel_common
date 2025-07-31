@@ -752,6 +752,8 @@ struct usb_device {
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);
+	ANDROID_BACKPORT_RESERVE(1);
+	ANDROID_BACKPORT_RESERVE(2);
 };
 
 #define to_usb_device(__dev)	container_of_const(__dev, struct usb_device, dev)
