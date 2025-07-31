@@ -676,9 +676,15 @@ struct task_dma_buf_record {
 	unsigned long refcnt;
 };
 
+// refcount is list size
+struct task_dma_buf_shared_list {
+	spinlock_t lock;
+	struct list_head list;
+};
+
 /**
  * struct task_dma_buf_info - Holds RSS and RSS HWM counters, and a list of
- * dmabufs for alltasks that share both mm_struct and files_struct.
+ * dmabufs for all tasks that share both mm_struct and files_struct. TODO
  *
  * @rss: The sum of all dmabuf memory referenced by the task(s) via memory
  *       mappings or file descriptors in bytes. Buffers referenced more than
@@ -691,7 +697,12 @@ struct task_dma_buf_record {
  * @refcnt: The number of tasks sharing this struct.
  * @lock: Lock protecting @rss, @dmabufs, and @dmabuf_count.
  * @dmabufs: List of all dmabufs referenced by the task(s).
- * @dmabuf_count: The number of elements on the @dmabufs list.
+ * @dmabuf_count: The number of task_dma_buf_records on the @dmabufs list
+ *
+ * @mm_list: TODO
+ * @fd_list: TODO
+ * @mm_node: TODO
+ * @fd_node: TODO
  */
 struct task_dma_buf_info {
 	unsigned long rss;
@@ -700,6 +711,12 @@ struct task_dma_buf_info {
 	spinlock_t lock;
 	struct list_head dmabufs;
 	unsigned int dmabuf_count;
+
+	// Only for partial MM/FD sharing among tasks
+	struct task_dma_buf_shared_list *mm_list;
+	struct task_dma_buf_shared_list *fd_list;
+	struct list_head mm_node;
+	struct list_head fd_node;
 };
 
 #endif
@@ -811,8 +828,13 @@ struct dma_buf *dma_buf_iter_next(struct dma_buf *dmbuf);
 #ifdef CONFIG_DMA_SHARED_BUFFER
 
 int is_dma_buf_file(struct file *file);
-int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task);
-void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task);
+enum dma_buf_ref_type {MM, FD};
+int dma_buf_account_task(struct dma_buf *dmabuf,
+			 struct task_struct *task,
+			 enum dma_buf_ref_type ref_type);
+void dma_buf_unaccount_task(struct dma_buf *dmabuf,
+			    struct task_struct *task,
+			    enum dma_buf_ref_type ref_type);
 int copy_dmabuf_info(u64 clone_flags, struct task_struct *task);
 void put_dmabuf_info(struct task_struct *task);
 

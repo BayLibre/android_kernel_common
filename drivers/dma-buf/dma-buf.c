@@ -382,6 +382,8 @@ static void add_task_dmabuf_record(struct task_dma_buf_info *dmabuf_info,
 				   struct task_dma_buf_record *rec)
 {
 	lockdep_assert_held(&dmabuf_info->lock);
+	if (WARN_ON(!rec))
+		return;
 
 	rec->dmabuf = dmabuf;
 	rec->refcnt = 1;
@@ -390,14 +392,138 @@ static void add_task_dmabuf_record(struct task_dma_buf_info *dmabuf_info,
 	dmabuf_info->rss += dmabuf->size;
 	if (dmabuf_info->rss > dmabuf_info->rss_hwm)
 		dmabuf_info->rss_hwm = dmabuf_info->rss;
-	trace_dmabuf_rss_stat(dmabuf_info->rss, dmabuf->size, dmabuf);
+	trace_dmabuf_rss_stat(dmabuf_info->rss, dmabuf->size, dmabuf); // BUG here for partial sharing case
 	atomic64_inc(&dmabuf->nr_task_refs);
+}
+
+static void dma_buf_account(struct dma_buf *dmabuf, struct task_dma_buf_info *dmabuf_info)
+{
+	struct task_dma_buf_record *rec;
+
+	lockdep_assert_held(&dmabuf_info->lock);
+
+	rec = find_task_dmabuf_record(dmabuf_info, dmabuf);
+	if (rec)
+		++rec->refcnt;
+	else
+		add_task_dmabuf_record(dmabuf_info, dmabuf, alloc_task_dmabuf_record());
+}
+
+static struct task_dma_buf_record *dma_buf_unaccount(struct dma_buf *dmabuf, struct task_dma_buf_info *dmabuf_info)
+{
+	struct task_dma_buf_record *rec;
+
+	lockdep_assert_held(&dmabuf_info->lock);
+
+	rec = find_task_dmabuf_record(dmabuf_info, dmabuf);
+	if (rec) {
+		if (--rec->refcnt == 0) {
+			list_del(&rec->node);
+			dmabuf_info->dmabuf_count--;
+			dmabuf_info->rss -= dmabuf->size;
+			trace_dmabuf_rss_stat(dmabuf_info->rss, -dmabuf->size, // BUG here for partial sharing case
+					      dmabuf);
+			atomic64_dec(&dmabuf->nr_task_refs);
+		} else {
+			rec = NULL;
+		}
+	} else {
+		pr_err("Could not find dmabuf %lu in unaccount for a task\n",
+		       file_inode(dmabuf->file)->i_ino);
+	}
+
+	return rec;
+}
+
+static void update_other(struct task_dma_buf_info *other,
+			 struct dma_buf *dmabuf,
+			 bool account,
+			 struct list_head *deferred_free)
+{
+	struct task_dma_buf_record *rec = NULL;
+
+	spin_lock(&other->lock);
+	if (account) {
+		dma_buf_account(dmabuf, other);
+	} else {
+		rec = dma_buf_unaccount(dmabuf, other);
+	}
+	spin_unlock(&other->lock);
+
+	if (rec)
+		list_add(&rec->node, deferred_free);
+}
+
+static int maybe_update_other_dmabuf_infos(struct task_dma_buf_info *dmabuf_info,
+					   enum dma_buf_ref_type ref_type,
+					   struct dma_buf *dmabuf,
+					   bool account)
+{
+	struct task_dma_buf_info *other;
+	struct task_dma_buf_shared_list *list;
+	size_t prealloc_count;
+	unsigned long flags;
+	struct list_head deferred_free;
+
+retry:
+	spin_lock_irqsave(&dmabuf_info->lock, flags);
+	list = (ref_type == MM) ? dmabuf_info->mm_list : dmabuf_info->fd_list;
+	spin_unlock_irqrestore(&dmabuf_info->lock, flags);
+	if (!list)
+		return 0;
+
+	if (account) {
+		// Racily check max potential size for preallocation
+		// spin_lock_irqsave(&list->lock, flags);  // Lock ordering problem here. Need atomic.
+		prealloc_count = list_count_nodes(&list->list); // Not ideal... TODO add counter
+		// spin_unlock_irqrestore(&list->lock, flags);
+	} else {
+		INIT_LIST_HEAD(&deferred_free);
+	}
+
+	if (account && !task_dmabuf_records_preload(prealloc_count)) {
+		trim_task_dmabuf_records();
+		return -ENOMEM;
+	}
+
+	spin_lock_irqsave(&list->lock, flags);
+	if (account && list_count_nodes(&list->list) > prealloc_count) {
+		spin_unlock_irqrestore(&list->lock, flags);
+		task_dmabuf_records_preload_end();
+		goto retry; // TODO max retry attempts
+	}
+
+	if (ref_type == MM) {
+		list_for_each_entry(other, &list->list, mm_node)
+			if (other != dmabuf_info)
+				update_other(other, dmabuf, account, &deferred_free);
+	} else if (ref_type == FD) {
+		list_for_each_entry(other, &list->list, fd_node)
+			if (other != dmabuf_info)
+				update_other(other, dmabuf, account, &deferred_free);
+	}
+	spin_unlock_irqrestore(&list->lock, flags);
+
+	if (account) {
+		trim_task_dmabuf_records_locked();
+		task_dmabuf_records_preload_end();
+	} else {
+		struct task_dma_buf_record *rec, *n;
+
+		list_for_each_entry_safe(rec, n, &deferred_free, node) {
+			list_del(&rec->node);
+			free_task_dmabuf_record(rec); // Must be done outside of mm/fd list locked section
+		}
+	}
+
+	return 0;
 }
 
 /**
  * dma_buf_account_task - Account a dmabuf to a task
  * @dmabuf:	[in]	pointer to dma_buf
  * @task:	[in]	pointer to task_struct
+ * @ref_type:   [in]    type of dma buf reference
  *
  * When a process obtains a dmabuf file descriptor, or maps a dmabuf, this
  * function attributes the provided @dmabuf to the @task. The first time @dmabuf
@@ -407,10 +533,12 @@ static void add_task_dmabuf_record(struct task_dma_buf_info *dmabuf_info,
  * * 0 on success
  * * A negative error code upon error
  */
-int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
+int dma_buf_account_task(struct dma_buf *dmabuf,
+			 struct task_struct *task,
+			 enum dma_buf_ref_type ref_type)
 {
 	struct task_dma_buf_info *dmabuf_info = task->dmabuf_info;
-	struct task_dma_buf_record *rec;
+	unsigned long flags;
 
 	if (!dmabuf_info)
 		return 0;
@@ -418,59 +546,49 @@ int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
 	if (!task_dmabuf_records_preload(1))
 		return -ENOMEM;
 
-	spin_lock(&dmabuf_info->lock);
-	rec = find_task_dmabuf_record(dmabuf_info, dmabuf);
-	if (rec) {
-		++rec->refcnt;
-		trim_task_dmabuf_records_locked();
-	} else {
-		rec = alloc_task_dmabuf_record();
-		WARN_ON(!rec);
-		add_task_dmabuf_record(dmabuf_info, dmabuf, rec);
-	}
-	spin_unlock(&dmabuf_info->lock);
+	spin_lock_irqsave(&dmabuf_info->lock, flags);
+	dma_buf_account(dmabuf, dmabuf_info);
+	spin_unlock_irqrestore(&dmabuf_info->lock, flags);
+	trim_task_dmabuf_records_locked();
 	task_dmabuf_records_preload_end();
 
-	return 0;
+	/*
+	 * @task's dmabuf_info is now updated. However if @task's dmabuf_info has a shared MM or FD
+	 * list, then other tasks need their lists and RSS counters updated as well.
+	 */
+	return maybe_update_other_dmabuf_infos(dmabuf_info, ref_type, dmabuf, true);
 }
 
 /**
  * dma_buf_unaccount_task - Unaccount a dmabuf from a task
  * @dmabuf:	[in]	pointer to dma_buf
  * @task:	[in]	pointer to task_struct
+ * @ref_type:   [in]    type of dma buf reference
  *
  * When a process closes a dmabuf file descriptor, or unmaps a dmabuf, this
  * function removes the provided @dmabuf attribution from the @task. When all
  * references to @dmabuf are removed from @task, the buffer's size is removed
  * from the task's dmabuf RSS.
  */
-void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
+void dma_buf_unaccount_task(struct dma_buf *dmabuf,
+			    struct task_struct *task,
+			    enum dma_buf_ref_type ref_type)
 {
 	struct task_dma_buf_info *dmabuf_info = task->dmabuf_info;
 	struct task_dma_buf_record *rec;
+	unsigned long flags;
 
 	if (!dmabuf_info)
 		return;
 
-	spin_lock(&dmabuf_info->lock);
-	rec = find_task_dmabuf_record(dmabuf_info, dmabuf);
-	if (rec) {
-		if (--rec->refcnt == 0) {
-			list_del(&rec->node);
-			dmabuf_info->dmabuf_count--;
-			dmabuf_info->rss -= dmabuf->size;
-			trace_dmabuf_rss_stat(dmabuf_info->rss, -dmabuf->size, dmabuf);
-			atomic64_dec(&dmabuf->nr_task_refs);
-		} else {
-			rec = NULL;
-		}
-	} else {
-		pr_err("Could not find dmabuf %lu in unaccount for task %d\n",
-		       file_inode(dmabuf->file)->i_ino, task_pid_nr(task));
-	}
-	spin_unlock(&dmabuf_info->lock);
+	spin_lock_irqsave(&dmabuf_info->lock, flags);
+	rec = dma_buf_unaccount(dmabuf, dmabuf_info);
+	spin_unlock_irqrestore(&dmabuf_info->lock, flags);
 	if (rec)
 		free_task_dmabuf_record(rec);
+
+	// TODO docs
+	maybe_update_other_dmabuf_infos(dmabuf_info, ref_type, dmabuf, false);
 }
 
 static struct task_dma_buf_info *alloc_task_dma_buf_info(void)
@@ -484,14 +602,20 @@ static struct task_dma_buf_info *alloc_task_dma_buf_info(void)
 	refcount_set(&dmabuf_info->refcnt, 1);
 	spin_lock_init(&dmabuf_info->lock);
 	INIT_LIST_HEAD(&dmabuf_info->dmabufs);
+	dmabuf_info->mm_list = NULL;
+	dmabuf_info->fd_list = NULL;
 
 	return dmabuf_info;
 }
 
-static struct task_dma_buf_info *dup_dma_buf_info(struct task_dma_buf_info *from)
+static struct task_dma_buf_info *dup_dma_buf_info(struct task_dma_buf_info *from,
+						  bool share_vm, bool share_fs)
 {
 	struct task_dma_buf_info *to;
 	struct task_dma_buf_record *from_rec, *to_rec;
+	struct task_dma_buf_shared_list *mm_list, *fd_list;
+	struct task_dma_buf_shared_list *new_list = NULL;
+	unsigned long flags;
 	unsigned int count;
 	int retries = 0;
 
@@ -500,18 +624,27 @@ static struct task_dma_buf_info *dup_dma_buf_info(struct task_dma_buf_info *from
 	if (!to)
 		return NULL;
 
-	/* Read required count racily, before obtaining dmabuf_info->lock */
-	count = READ_ONCE(from->dmabuf_count);
+	if (!from)
+		return to;
+
+	if (share_vm || share_fs) {
+		new_list = kmalloc(sizeof(struct task_dma_buf_shared_list), GFP_KERNEL);
+		if (!new_list)
+			goto err_alloc_list;
+	}
+
+	/* Read required count racily, before obtaining from->lock */
+	count = READ_ONCE(from->dmabuf_count); // Small BUG: This is a size_t, so probably 64bits. Read could be torn on 32bit, but very unlikely we have so many buffers
 	if (!task_dmabuf_records_preload(count))
 		goto err_list_copy;
 
 retry:
-	spin_lock(&from->lock);
+	spin_lock_irqsave(&from->lock, flags);
 	if (from->dmabuf_count > count) {
 		/* We don't have enough reserved records, allocate more */
 		count = from->dmabuf_count;
 
-		spin_unlock(&from->lock);
+		spin_unlock_irqrestore(&from->lock, flags);
 		task_dmabuf_records_preload_end();
 		if (!task_dmabuf_records_preload(count))
 			goto err_list_copy;
@@ -525,7 +658,7 @@ retry:
 		goto retry;
 	}
 
-	/* All required records are reserved */
+	/* All required records are pre-allocated */
 	list_for_each_entry(from_rec, &from->dmabufs, node) {
 		to_rec = alloc_task_dmabuf_record();
 		WARN_ON(!to_rec);
@@ -537,14 +670,62 @@ retry:
 	to->dmabuf_count = from->dmabuf_count;
 	to->rss = from->rss;
 	to->rss_hwm = to->rss;
-	spin_unlock(&from->lock);
+	// TODO trace event w/new PID
+ 
+	mm_list = from->mm_list;
+	fd_list = from->fd_list;
+	spin_unlock_irqrestore(&from->lock, flags);
 
 	trim_task_dmabuf_records_locked();
 	task_dmabuf_records_preload_end();
 
+	if (share_vm) {
+		if (mm_list) {
+			spin_lock_irqsave(&mm_list->lock, flags);
+			list_add(&to->mm_node, &mm_list->list);
+			spin_unlock_irqrestore(&mm_list->lock, flags);
+			to->mm_list = mm_list;
+			kfree(new_list); /* Don't need the list */
+		} else {
+			spin_lock_init(&new_list->lock);
+			INIT_LIST_HEAD(&new_list->list);
+
+			list_add(&to->mm_node, &new_list->list);
+
+			spin_lock_irqsave(&from->lock, flags);
+			list_add(&from->mm_node, &new_list->list);
+			from->mm_list = new_list;
+			spin_unlock_irqrestore(&from->lock, flags);
+
+			to->mm_list = new_list;
+		}
+	} else if (share_fs) {
+		if (fd_list) {
+			spin_lock_irqsave(&fd_list->lock, flags);
+			list_add(&to->fd_node, &fd_list->list);
+			spin_unlock_irqrestore(&fd_list->lock, flags);
+			to->fd_list = fd_list;
+			kfree(new_list); /* Don't need the list */
+		} else {
+			spin_lock_init(&new_list->lock);
+			INIT_LIST_HEAD(&new_list->list);
+
+			list_add(&to->fd_node, &new_list->list);
+
+			spin_lock_irqsave(&from->lock, flags);
+			list_add(&from->fd_node, &new_list->list);
+			from->fd_list = new_list;
+			spin_unlock_irqrestore(&from->lock, flags);
+
+			to->fd_list = new_list;
+		}
+	}
+
 	return to;
 
 err_list_copy:
+	kfree(new_list);
+err_alloc_list:
 	trim_task_dmabuf_records();
 	kfree(to);
 
@@ -578,29 +759,21 @@ int copy_dmabuf_info(u64 clone_flags, struct task_struct *task)
 	}
 
 	/*
-	 * Partial sharing is not supported.
-	 * Children of such tasks are also not supported.
-	 */
-	if (share_vm != share_fs || !parent_dmabuf_info) {
-		task->dmabuf_info = NULL;
-		return 0;
-	}
-
-	/*
 	 * Full sharing: Both MM and FD references to dmabufs are shared with
 	 * the parent, so they can both share the same dmabuf_info.
 	 */
 	if (share_vm && share_fs) {
 		refcount_inc(&parent_dmabuf_info->refcnt);
 		task->dmabuf_info = parent_dmabuf_info;
+		// TODO trace event w/new PID
 		return 0;
 	}
 
 	/*
-	 * No sharing: Both MM and FD references to dmabufs are duplicated in the child. We
+	 * No or partial sharing: Both MM and FD references to dmabufs are duplicated in the child. We
 	 * duplicate the dmabuf accounting info into the child as well here.
 	 */
-	child_dmabuf_info = dup_dma_buf_info(parent_dmabuf_info);
+	child_dmabuf_info = dup_dma_buf_info(parent_dmabuf_info, share_vm, share_fs);
 	if (!child_dmabuf_info)
 		return -ENOMEM;
 
@@ -611,21 +784,51 @@ int copy_dmabuf_info(u64 clone_flags, struct task_struct *task)
 
 void put_dmabuf_info(struct task_struct *task)
 {
-	if (!task->dmabuf_info)
+	struct task_dma_buf_info *dmabuf_info = task->dmabuf_info;
+	bool empty;
+
+	if (!dmabuf_info)
 		return;
 
-	if (!refcount_dec_and_test(&task->dmabuf_info->refcnt))
+	if (!refcount_dec_and_test(&dmabuf_info->refcnt))
 		return;
 
-	if (task->dmabuf_info->rss)
-		pr_alert("destroying task with non-zero dmabuf rss %lu\n", task->dmabuf_info->rss);
+	if (dmabuf_info->mm_list) {
+		spin_lock(&dmabuf_info->mm_list->lock);
+		list_del(&dmabuf_info->mm_node);
+		empty = list_empty(&dmabuf_info->mm_list->list);
+		spin_unlock(&dmabuf_info->mm_list->lock);
+		if (empty) {
+			kfree(dmabuf_info->mm_list);
+			dmabuf_info->mm_list = NULL;
+		}
+	}
+	if (dmabuf_info->fd_list) {
+		spin_lock(&dmabuf_info->fd_list->lock);
+		list_del(&dmabuf_info->fd_node);
+		empty = list_empty(&dmabuf_info->fd_list->list);
+		spin_unlock(&dmabuf_info->fd_list->lock);
+		if (empty) {
+			kfree(dmabuf_info->fd_list);
+			dmabuf_info->fd_list = NULL;
+		}
+	}
 
-	if (!list_empty(&task->dmabuf_info->dmabufs) || task->dmabuf_info->dmabuf_count > 0)
-		pr_alert("destroying task with non-empty dmabuf list %zu %u\n",
-			 list_count_nodes(&task->dmabuf_info->dmabufs),
-			 task->dmabuf_info->dmabuf_count);
+	/*
+	 * Partial sharing with another task could mean we still have buffers attributed to this
+	 * task via the other task, even though we're exiting. Sanity check only when we know
+	 * we're alone.
+	 */
+	if (!dmabuf_info->mm_list && !dmabuf_info->fd_list) {
+		if (dmabuf_info->rss)
+			pr_alert("destroying task %d with non-zero dmabuf rss %lu\n",
+				 task_pid_nr(task), dmabuf_info->rss);
+		if (!list_empty(&dmabuf_info->dmabufs) || dmabuf_info->dmabuf_count > 0)
+			pr_alert("destroying task with non-empty dmabuf list still containing %u elements\n",
+				 dmabuf_info->dmabuf_count);
+	}
 
-	kfree(task->dmabuf_info);
+	kfree(dmabuf_info);
 }
 
 static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)
@@ -649,7 +852,7 @@ static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)
 
 	ret = dmabuf->ops->mmap(dmabuf, vma);
 	if (!ret) {
-		int err = dma_buf_account_task(dmabuf, current);
+		int err = dma_buf_account_task(dmabuf, current, MM);
 
 		if (err)
 			pr_err("dmabuf accounting failed during mmap operation, err %d\n", err);
@@ -1035,7 +1238,7 @@ static void dma_buf_show_fdinfo(struct seq_file *m, struct file *file)
 static int dma_buf_flush(struct file *file, fl_owner_t id)
 {
 	/* When dmabuf FD is closed we should unaccount it */
-	dma_buf_unaccount_task(file->private_data, current);
+	dma_buf_unaccount_task(file->private_data, current, FD);
 	return 0;
 }
 
@@ -2062,7 +2265,7 @@ int dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma,
 
 	ret = dmabuf->ops->mmap(dmabuf, vma);
 	if (!ret) {
-		int err = dma_buf_account_task(dmabuf, current);
+		int err = dma_buf_account_task(dmabuf, current, MM);
 
 		if (err)
 			pr_err("dmabuf accounting failed during mmap operation, err %d\n", err);
