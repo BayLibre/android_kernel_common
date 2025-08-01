@@ -1105,7 +1105,7 @@ config INTEL_SCU
 	select INTEL_SCU_IPC
 
 config INTEL_SCU_PCI
-	bool "Intel SCU PCI driver"
+	tristate "Intel SCU PCI driver"
 	depends on PCI
 	select INTEL_SCU
 	help

@@ -50,5 +50,9 @@ static struct pci_driver intel_scu_pci_driver = {
 	.id_table = pci_ids,
 	.probe = intel_scu_pci_probe,
 };
+module_pci_driver(intel_scu_pci_driver);
 
-builtin_pci_driver(intel_scu_pci_driver);
+MODULE_AUTHOR("Sreedhara DS <sreedhara.ds@intel.com>");
+MODULE_AUTHOR("Mika Westerberg <mika.westerberg@linux.intel.com");
+MODULE_DESCRIPTION("Intel SCU PCI driver");
+MODULE_LICENSE("GPL v2");
