@@ -72,6 +72,7 @@ checkpatch(
 )
 
 # Deprecated - Use arch specific files from below.
+# Adding one extra line for testing.
 fail_rule(
     name = "gki_system_dlkm_modules",
     message = """
