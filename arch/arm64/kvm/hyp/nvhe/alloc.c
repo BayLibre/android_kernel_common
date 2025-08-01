@@ -549,8 +549,7 @@ void *hyp_alloc(size_t size)
 	struct hyp_allocator *allocator = &hyp_allocator;
 	struct chunk_hdr *chunk, *last_chunk;
 	unsigned long chunk_addr;
-	size_t missing_map;
-	int ret = 0;
+	int missing_map, ret = 0;
 
 	size = ALIGN(size ?: MIN_ALLOC, MIN_ALLOC);
 
