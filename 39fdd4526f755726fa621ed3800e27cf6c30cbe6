@@ -35,6 +35,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f72bda40_09a8ce3a",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6196,
+      "author": {
+        "id": 1181388
+      },
+      "writtenOn": "2025-08-04T13:48:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "337dc32e_cc87b412",
+      "revId": "39fdd4526f755726fa621ed3800e27cf6c30cbe6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb59baa7_e12b28d7",
@@ -48,6 +66,24 @@
       "writtenOn": "2025-07-28T23:40:22Z",
       "side": 1,
       "message": "Please rework so the vendorhook takes a pointer to p and manages this logically internally, instead of doing so here.",
+      "revId": "39fdd4526f755726fa621ed3800e27cf6c30cbe6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "badc3410_cae674c2",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6220,
+      "author": {
+        "id": 1181388
+      },
+      "writtenOn": "2025-08-04T13:48:32Z",
+      "side": 1,
+      "message": "Done. VH now takes a reference to the pointer and if the task is elevated it sets that pointer to NULL. That weay the __pick_next_task can choose another task for execution.",
+      "parentUuid": "bb59baa7_e12b28d7",
       "revId": "39fdd4526f755726fa621ed3800e27cf6c30cbe6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
