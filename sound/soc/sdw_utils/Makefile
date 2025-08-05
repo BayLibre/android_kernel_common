@@ -1,4 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
+
+ccflags-y += -DDEBUG
+
 snd-soc-sdw-utils-y := soc_sdw_utils.o soc_sdw_dmic.o soc_sdw_rt_dmic.o \
 		       soc_sdw_rt700.o soc_sdw_rt711.o 			\
 		       soc_sdw_rt5682.o soc_sdw_rt_sdca_jack_common.o	\

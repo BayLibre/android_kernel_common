@@ -4,6 +4,8 @@
 # Copyright (c) 2001 by Jaroslav Kysela <perex@perex.cz>
 #
 
+ccflags-y += -DDEBUG
+
 snd-ad1889-y := ad1889.o
 snd-als300-y := als300.o
 snd-als4000-y := als4000.o

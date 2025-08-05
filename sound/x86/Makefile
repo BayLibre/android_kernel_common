@@ -1,4 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
+
+ccflags-y += -DDEBUG
+
 snd-hdmi-lpe-audio-y += \
 	intel_hdmi_audio.o
 

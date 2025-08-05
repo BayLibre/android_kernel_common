@@ -4,6 +4,8 @@
 # Copyright (c) 2003 by Jaroslav Kysela <perex@perex.cz>
 #
 
+ccflags-y += -DDEBUG
+
 snd-ak4114-y := ak4114.o
 snd-ak4117-y := ak4117.o
 snd-ak4113-y := ak4113.o

@@ -1,4 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
+
+ccflags-y += -DDEBUG
+
 snd-hda-intel-y := hda_intel.o
 snd-hda-tegra-y := hda_tegra.o
 

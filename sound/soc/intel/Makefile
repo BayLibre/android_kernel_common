@@ -1,5 +1,8 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Core support
+
+ccflags-y += -DDEBUG
+
 obj-$(CONFIG_SND_SOC) += common/
 
 # Platform Support

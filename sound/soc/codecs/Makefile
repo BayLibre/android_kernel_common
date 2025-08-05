@@ -1,4 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
+
+ccflags-y += -DDEBUG
+
 snd-soc-88pm860x-y := 88pm860x-codec.o
 snd-soc-ab8500-codec-y := ab8500-codec.o
 snd-soc-ac97-y := ac97.o

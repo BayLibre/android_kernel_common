@@ -1,4 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
+
+ccflags-y += -DDEBUG
+
 snd-soc-acpi-intel-match-y := soc-acpi-intel-byt-match.o soc-acpi-intel-cht-match.o \
 	soc-acpi-intel-hsw-bdw-match.o \
 	soc-acpi-intel-skl-match.o soc-acpi-intel-kbl-match.o \

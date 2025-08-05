@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 
+ccflags-y += -DDEBUG
+
 snd-soc-avs-da7219-y := da7219.o
 snd-soc-avs-dmic-y := dmic.o
 snd-soc-avs-es8336-y := es8336.o

@@ -4,6 +4,8 @@
 # Copyright (c) 2001 by Jaroslav Kysela <perex@perex.cz>
 #
 
+ccflags-y += -DDEBUG
+
 snd-i2c-y := i2c.o
 snd-cs8427-y := cs8427.o
 snd-tea6330t-y := tea6330t.o

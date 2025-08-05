@@ -1,4 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
+
+ccflags-y += -DDEBUG
+
 snd-soc-simple-card-utils-y	:= simple-card-utils.o
 snd-soc-simple-card-y		:= simple-card.o
 snd-soc-audio-graph-card-y	:= audio-graph-card.o
