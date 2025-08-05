@@ -307,6 +307,7 @@ static int tbt_altmode_probe(struct typec_altmode *alt)
 	typec_altmode_set_drvdata(alt, tbt);
 	typec_altmode_set_ops(alt, &tbt_altmode_ops);
 
+#if 0
 	if (tbt_ready(alt)) {
 		if (tbt->plug[TYPEC_PLUG_SOP_P])
 			tbt->state = TBT_STATE_SOP_P_ENTER;
@@ -316,6 +317,7 @@ static int tbt_altmode_probe(struct typec_altmode *alt)
 			tbt->state = TBT_STATE_ENTER;
 		schedule_work(&tbt->work);
 	}
+#endif
 
 	return 0;
 }
