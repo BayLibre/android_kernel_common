@@ -1,0 +1,76 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9b16467_4bc33ca7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-05T14:44:15Z",
+      "side": 1,
+      "message": "Why can\u0027t this feature be implemented correctly by sending the patch to upstream so all devices can be protected?",
+      "revId": "737fd41e4377248c201bf2507fcab542d2d718a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95bcf822_276dd3f5",
+        "filename": "kernel/fork.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-05T14:44:15Z",
+      "side": 1,
+      "message": "unless you are planning to share your implementation with all partners, please drop all \"sped\" comments and names. This hook should just be `trace_android_rvh_put_task` or something generic name that is about the context, not the out-of-tree feature.",
+      "fixSuggestions": [
+        {
+          "fixId": "c4b7e917_d93bf341",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/fork.c",
+              "range": {
+                "startLine": 1004,
+                "startChar": 0,
+                "endLine": 1006,
+                "endChar": 0
+              },
+              "replacement": "\ttrace_android_rvh_put_task(tsk);\n"
+            },
+            {
+              "path": "kernel/fork.c",
+              "range": {
+                "startLine": 2770,
+                "startChar": 0,
+                "endLine": 2771,
+                "endChar": 0
+              },
+              "replacement": "\thlist_del(\u0026delayed.node);\n"
+            },
+            {
+              "path": "kernel/fork.c",
+              "range": {
+                "startLine": 2852,
+                "startChar": 0,
+                "endLine": 2853,
+                "endChar": 0
+              },
+              "replacement": "\thlist_del(\u0026delayed.node);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "737fd41e4377248c201bf2507fcab542d2d718a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
