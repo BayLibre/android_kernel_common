@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c8e0dbf_cf386710",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-08-05T19:56:51Z",
+      "side": 1,
+      "message": "The addition of these 6 configs leads to the total addition of 9 configs to the output .config file, specified below\n\nCONFIG_EXTCON_USB_GPIO\u003dy\nCONFIG_PHY_TEGRA_XUSB\u003dy\nCONFIG_USB_CONFIGFS_F_LB_SS\u003dy\nCONFIG_USB_CONFIGFS_RNDIS\u003dy\nCONFIG_USB_CONN_GPIO\u003dy\nCONFIG_USB_F_RNDIS\u003dy\nCONFIG_USB_F_SS_LB\u003dy\nCONFIG_USB_TEGRA_XUDC\u003dy\nCONFIG_USB_XHCI_TEGRA\u003dy\n\nPlease also find data regarding the increase in the memory footprint of the kernel below:\n\n**Base GKI Without Tegra USB Enablement:**\nImage Size: 21M\ntext:     27,030,430 bytes\ndata:      8,321,281 bytes\nbss:         649,528 bytes\ntotal:    36,001,239 bytes (decimal)\nfile:     vmlinux\n\n\n**With Tegra USB Enablement:**\nImage size: 21M\ntext:     27,138,527 bytes\ndata:      8,346,485 bytes\nbss:         649,528 bytes\ntotal:    36,134,540 bytes\nfile:     vmlinux",
+      "revId": "2b9cda7e5cd3ab5f9d739f5ff49485153688ebf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
