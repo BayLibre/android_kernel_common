@@ -71,6 +71,71 @@
       ],
       "revId": "737fd41e4377248c201bf2507fcab542d2d718a7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcf2e35d_2f8e5c6f",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 5020,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-05T14:45:20Z",
+      "side": 1,
+      "message": "see related comment - get rid of \"sped\" in comments and names",
+      "fixSuggestions": [
+        {
+          "fixId": "614b2d02_8fedf2d7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/sched/core.c",
+              "range": {
+                "startLine": 5018,
+                "startChar": 0,
+                "endLine": 5020,
+                "endChar": 0
+              },
+              "replacement": "\t/* Register the new task. */\n\ttrace_android_rvh_add_task(p);\n"
+            },
+            {
+              "path": "kernel/sched/core.c",
+              "range": {
+                "startLine": 6177,
+                "startChar": 0,
+                "endLine": 6178,
+                "endChar": 0
+              },
+              "replacement": "\t\t * Check if the next task has elevated privileges.\n"
+            },
+            {
+              "path": "kernel/sched/core.c",
+              "range": {
+                "startLine": 6180,
+                "startChar": 0,
+                "endLine": 6181,
+                "endChar": 0
+              },
+              "replacement": "\t\ttrace_android_rvh_chk_task(\u0026p);\n"
+            },
+            {
+              "path": "kernel/sched/core.c",
+              "range": {
+                "startLine": 6197,
+                "startChar": 0,
+                "endLine": 6199,
+                "endChar": 0
+              },
+              "replacement": "\t\t/* Check if the next task has elevated privileges.*/\n\t\ttrace_android_rvh_chk_task(\u0026p);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "737fd41e4377248c201bf2507fcab542d2d718a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
