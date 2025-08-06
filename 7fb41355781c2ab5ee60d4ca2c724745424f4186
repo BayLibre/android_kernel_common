@@ -34,6 +34,24 @@
       "parentUuid": "6f0f92d7_d1d01a85",
       "revId": "7fb41355781c2ab5ee60d4ca2c724745424f4186",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec55b05f_bd88a0cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2025-08-06T02:01:05Z",
+      "side": 1,
+      "message": "Reintroducing a bug to suppress a lockdep complaint is not acceptable in my opinion. A patch like what has been mentioned in https://b.corp.google.com/u/0/issues/436163342#comment5 would be acceptable in my opinion because it suppresses the lockdep complaint without reintroducing the bug fixed by \"UPSTREAM: scsi: ufs: core: Don\u0027t perform UFS clkscaling during host async scan\".",
+      "parentUuid": "452ca461_824df42a",
+      "revId": "7fb41355781c2ab5ee60d4ca2c724745424f4186",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
