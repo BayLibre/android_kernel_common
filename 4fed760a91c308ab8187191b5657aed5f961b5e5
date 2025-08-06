@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "910f3a82_920ecfcb",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 3970691
+      },
+      "writtenOn": "2025-08-06T21:02:56Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "42da18a2_2335b0b8",
+      "revId": "4fed760a91c308ab8187191b5657aed5f961b5e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e189263_a2bdf141",
@@ -49,6 +67,24 @@
       "writtenOn": "2025-08-06T05:54:08Z",
       "side": 1,
       "message": "Then we also trust the reg_size calculated by the iommu drvier, which is saved in drhd-\u003eiommu-\u003ereg_size. So we can just get the reg_size form drdh-\u003eiommu-\u003ereg_size so that no need to calculate reg_size at here, and also no need to define PKVM_IOMMU_REMAP_REGION_SIZE. E.g., info-\u003ereg_size \u003d drhd-\u003eiommu-\u003ereg_size, and the local reg_size variable is useless and can also be removed.",
+      "revId": "4fed760a91c308ab8187191b5657aed5f961b5e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe6e80eb_45040325",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 3970691
+      },
+      "writtenOn": "2025-08-06T21:02:56Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3e189263_a2bdf141",
       "revId": "4fed760a91c308ab8187191b5657aed5f961b5e5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
