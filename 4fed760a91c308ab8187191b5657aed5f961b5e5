@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "42da18a2_2335b0b8",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-06T15:21:39Z",
+      "side": 1,
+      "message": "+1. Or if we still need to do ioremap() here for some reason, we should use drhd-\u003ereg_size instead of just hardcoding 64K?",
+      "parentUuid": "b7ead508_4c3c2436",
+      "revId": "4fed760a91c308ab8187191b5657aed5f961b5e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3e189263_a2bdf141",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 1
