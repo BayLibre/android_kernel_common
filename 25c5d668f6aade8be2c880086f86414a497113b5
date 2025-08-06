@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c977dda5_6f243bf5",
+        "filename": "security/selinux/hooks.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3007,
+      "author": {
+        "id": 1003966
+      },
+      "writtenOn": "2025-08-06T00:42:03Z",
+      "side": 1,
+      "message": "Per aosp/3707252, `type` can be `LSM_ANON_INODE_MEMFD` or `LSM_ANON_INODE_GENERIC`. Maybe you want to add an assertion that the type is LSM_ANON_INODE_GENERIC at this point? That way, if someone adds a future type, they will update the relevant SELinux code.\n\nAlternatively, error out in the earlier parts of this function if type !\u003d `LSM_ANON_INODE_MEMFD` or `LSM_ANON_INODE_GENERIC`?\n\njust a nit. Feel free to ignore this if you think it\u0027s clear enough.",
+      "revId": "25c5d668f6aade8be2c880086f86414a497113b5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
