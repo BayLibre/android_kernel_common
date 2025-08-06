@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7ead508_4c3c2436",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-08-06T05:54:08Z",
+      "side": 1,
+      "message": "Probably we don\u0027t need to ioremap(drhd-\u003ereg_base_addr) anymore as we trust what the IOMMU driver did before the pkvm deprivilege. So wen can try to reuse drhd-\u003eiommu-\u003ereg to read cap and ecap, like line 210 did for reading GSTS, thus also don\u0027t need to iounmap at line 227. So we can try to remove line 217~222 and line 227, to simplify the code as:\n \t\tinfo \u003d \u0026pkvm-\u003eiommu_infos[index];\n\t\tcap \u003d readq(drhd-\u003eiommu-\u003ereg + DMAR_CAP_REG);\n\t\tecap \u003d readq(drhd-\u003eiommu-\u003ereg + DMAR_ECAP_REG);",
+      "revId": "4fed760a91c308ab8187191b5657aed5f961b5e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e189263_a2bdf141",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-08-06T05:54:08Z",
+      "side": 1,
+      "message": "Then we also trust the reg_size calculated by the iommu drvier, which is saved in drhd-\u003eiommu-\u003ereg_size. So we can just get the reg_size form drdh-\u003eiommu-\u003ereg_size so that no need to calculate reg_size at here, and also no need to define PKVM_IOMMU_REMAP_REGION_SIZE. E.g., info-\u003ereg_size \u003d drhd-\u003eiommu-\u003ereg_size, and the local reg_size variable is useless and can also be removed.",
+      "revId": "4fed760a91c308ab8187191b5657aed5f961b5e5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
