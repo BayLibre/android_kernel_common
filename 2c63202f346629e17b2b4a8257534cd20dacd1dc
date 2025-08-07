@@ -51,6 +51,24 @@
       "message": "Given the ABI Compatibility check error you likely need to regenerate ABI again",
       "revId": "2c63202f346629e17b2b4a8257534cd20dacd1dc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb559865_0412eac6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2025-08-07T06:16:10Z",
+      "side": 1,
+      "message": "Error is expected, since the change is not compatible and that\u0027s why such patches require careful attention and additional tracking. Currently we don\u0027t have a mechanism to ignore it other than Lint +2",
+      "parentUuid": "b9e33445_3e94a323",
+      "revId": "2c63202f346629e17b2b4a8257534cd20dacd1dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
