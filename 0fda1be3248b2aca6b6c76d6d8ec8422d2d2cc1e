@@ -16,6 +16,24 @@
       "message": "This patch breaks ABI by introducing incompatible changes in KMI structures. Please add `desktop-6.12-x86-64-kmi-breakage` for better tracking.",
       "revId": "0fda1be3248b2aca6b6c76d6d8ec8422d2d2cc1e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b5705b7_022cc653",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2025-08-07T06:22:49Z",
+      "side": 1,
+      "message": "Also it would be nice to have incremental ABI updates inside the chain. I am using simple script for that:\n\n```\n#!/bin/bash\nkernel_dir\u003d$(dirname $(realpath $BASH_SOURCE))/kernel\n\nexec_list\u003d\"${exec_list}../tools/bazel run //common:kernel_x86_64_abi_update; \"\nexec_list\u003d\"${exec_list}git add -u; \"\nexec_list\u003d\"${exec_list}git commit -sm \u0027WIP: Update ABI\u0027; \"\nexec_list\u003d\"${exec_list}git rebase --continue; \"\n\ngit -C ${kernel_dir}/common rebase -x \"${exec_list}\" \"$@\"\n```",
+      "parentUuid": "db794229_ce084dc8",
+      "revId": "0fda1be3248b2aca6b6c76d6d8ec8422d2d2cc1e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
