@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5bf3268_8f89ba4b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-08-07T16:40:01Z",
+      "side": 1,
+      "message": "You want a `READ_ONCE()` here.",
+      "range": {
+        "startLine": 678,
+        "startChar": 0,
+        "endLine": 678,
+        "endChar": 37
+      },
+      "revId": "92f6d750fe02849a9c000645d361f04d503eb515",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aff7dc4e_0a11fb49",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-08-07T16:40:01Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be the one you stashed in the hyp_vcpu as you need the output of `kern_hyp_va()`?",
+      "range": {
+        "startLine": 685,
+        "startChar": 24,
+        "endLine": 685,
+        "endChar": 32
+      },
+      "revId": "92f6d750fe02849a9c000645d361f04d503eb515",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
