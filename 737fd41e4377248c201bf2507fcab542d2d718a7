@@ -138,6 +138,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "679c111e_eaee858e",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 5020,
+      "author": {
+        "id": 1181388
+      },
+      "writtenOn": "2025-08-07T15:19:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcf2e35d_2f8e5c6f",
+      "revId": "737fd41e4377248c201bf2507fcab542d2d718a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6e05b2e_b3bd41ea",
@@ -151,6 +169,24 @@
       "writtenOn": "2025-08-05T17:41:28Z",
       "side": 1,
       "message": "Todd\u0027s comment about dropping vendorhook implementation details applies here as well. \n\nBut after reading the commit message, I\u0027m a little confused on how this wouldn\u0027t break things.  If you have many fair tasks on the rq, but the first up is a \"root\" privileged task, this implementation would cause you to schedule idle, when there are possibly a number of runnable tasks. This seems like it would allow a single root task to, in effect, cork the run-queue on that CPU.  Am I missing some detail?\n\nIt seems like you would want to deactivate the problematic selected task, and try to pick again from the rq to choose something else?",
+      "revId": "737fd41e4377248c201bf2507fcab542d2d718a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2481e287_d8a4895d",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 6179,
+      "author": {
+        "id": 1181388
+      },
+      "writtenOn": "2025-08-07T15:19:48Z",
+      "side": 1,
+      "message": "Thank you very much for pointing that out. I haven\u0027t thought about this scenario. I\u0027ve changed the VH implementation (pa/3389007) to call put_prev_task to remove the elevated task from runqueue and then call pick_next_task again to find another suitable task (if any) instead of returning NULL and scheduling the idle task.",
+      "parentUuid": "f6e05b2e_b3bd41ea",
       "revId": "737fd41e4377248c201bf2507fcab542d2d718a7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
