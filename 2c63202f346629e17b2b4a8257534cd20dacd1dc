@@ -16,6 +16,24 @@
       "message": "Please add `desktop-6.12-x86-64-kmi-breakage` hashtag to each patch which breaks ABI. Changes to drm structures like drm_plane, drm_mode_config and others which are mambers of drm_device are not backward compatible and we want to be sure they will land in kernel.org before 6.18 is forked, otherwise they won\u0027t be accepted for GKI 6.18.",
       "revId": "2c63202f346629e17b2b4a8257534cd20dacd1dc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d05d2e82_ca4c44af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3485565
+      },
+      "writtenOn": "2025-08-07T05:53:11Z",
+      "side": 1,
+      "message": "the hashtag is already there",
+      "parentUuid": "cfa58ec8_fdc44650",
+      "revId": "2c63202f346629e17b2b4a8257534cd20dacd1dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
