@@ -72,6 +72,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29ee69ce_a47b36cc",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-08-08T10:07:10Z",
+      "side": 1,
+      "message": "Thanks, so this prevents the compiler from emitting loads on each hyp_reqs access as described in `COMPILER BARRIER` (https://docs.kernel.org/core-api/wrappers/memory-barriers.html).",
+      "parentUuid": "f9b5b056_c86a1591",
+      "range": {
+        "startLine": 678,
+        "startChar": 0,
+        "endLine": 678,
+        "endChar": 37
+      },
+      "revId": "92f6d750fe02849a9c000645d361f04d503eb515",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aff7dc4e_0a11fb49",
