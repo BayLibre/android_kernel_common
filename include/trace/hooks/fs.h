@@ -8,8 +8,10 @@
 #define _TRACE_HOOK_FS_H
 
 #include <trace/hooks/vendor_hooks.h>
+
 struct f2fs_sb_info;
 struct va_format;
+enum cp_reason_type;
 
 DECLARE_RESTRICTED_HOOK(android_rvh_f2fs_down_read,
 	TP_PROTO(wait_queue_head_t *read_waiters, struct rw_semaphore *rwsem, bool *skip),
@@ -68,6 +70,14 @@ DECLARE_RESTRICTED_HOOK(android_rvh_do_fcntl,
 DECLARE_HOOK(android_vh_f2fs_file_open,
 	TP_PROTO(struct inode *inode, struct file *filp),
 	TP_ARGS(inode, filp));
+
+DECLARE_HOOK(android_vh_modify_cp_reason,
+	TP_PROTO(struct inode *inode, enum cp_reason_type *cp_reason),
+	TP_ARGS(inode, cp_reason));
+
+DECLARE_HOOK(android_vh_f2fs_file_write_end,
+	TP_PROTO(struct inode *inode),
+	TP_ARGS(inode));
 
 #endif /* _TRACE_HOOK_FS_H */
 
