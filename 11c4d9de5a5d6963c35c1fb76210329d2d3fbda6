@@ -16,6 +16,24 @@
       "message": "There are some checkpatch errors that need to be fixed, Gerrit-id complains should be just skipped, but there are some other:\nERROR: code indent should use tabs where possible\n#49: FILE: arch/x86/kvm/vmx/pkvm/pkvm_host.c:216:\n+^I        cap \u003d readq(drhd-\u003eiommu-\u003ereg + DMAR_CAP_REG);$\n\nERROR: code indent should use tabs where possible\n#50: FILE: arch/x86/kvm/vmx/pkvm/pkvm_host.c:217:\n+        ^Iecap \u003d readq(drhd-\u003eiommu-\u003ereg + DMAR_ECAP_REG);$\n\nWARNING: please, no space before tabs\n#50: FILE: arch/x86/kvm/vmx/pkvm/pkvm_host.c:217:\n+        ^Iecap \u003d readq(drhd-\u003eiommu-\u003ereg + DMAR_ECAP_REG);$\n\nWARNING: please, no spaces at the start of a line\n#50: FILE: arch/x86/kvm/vmx/pkvm/pkvm_host.c:217:\n+        ^Iecap \u003d readq(drhd-\u003eiommu-\u003ereg + DMAR_ECAP_REG);$",
       "revId": "11c4d9de5a5d6963c35c1fb76210329d2d3fbda6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d7d7997_9ba32975",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3970691
+      },
+      "writtenOn": "2025-08-08T17:00:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c312c52f_bc70ac4e",
+      "revId": "11c4d9de5a5d6963c35c1fb76210329d2d3fbda6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
