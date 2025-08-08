@@ -8,6 +8,9 @@
 #include <linux/psi.h>
 #include <linux/cpuhotplug.h>
 #include <trace/events/erofs.h>
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+#include "iostat.h"
+#endif
 
 #define Z_EROFS_PCLUSTER_MAX_PAGES	(Z_EROFS_PCLUSTER_MAX_SIZE / PAGE_SIZE)
 #define Z_EROFS_INLINE_BVECS		2
@@ -1599,6 +1602,9 @@ static void z_erofs_submissionqueue_endio(struct bio *bio)
 	struct bio_vec *bvec;
 	struct bvec_iter_all iter_all;
 
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+	erofs_iostat_update(EROFS_SB(q->sb), bio);
+#endif
 	bio_for_each_segment_all(bvec, bio, iter_all) {
 		struct page *page = bvec->bv_page;
 
@@ -1693,6 +1699,9 @@ submit_bio_retry:
 			if (!bio) {
 				bio = bio_alloc(mdev.m_bdev, BIO_MAX_VECS,
 						REQ_OP_READ, GFP_NOIO);
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+				erofs_iostat_record_start(EROFS_SB(sb), bio);
+#endif
 				bio->bi_end_io = z_erofs_submissionqueue_endio;
 				bio->bi_iter.bi_sector = cur >> 9;
 				bio->bi_private = q[JQ_SUBMIT];

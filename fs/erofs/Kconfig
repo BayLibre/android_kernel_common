@@ -143,3 +143,20 @@ config EROFS_FS_PCPU_KTHREAD_HIPRI
 	  at higher priority.
 
 	  If unsure, say N.
+
+config XIAOMI_EROFS_IOSTAT
+	bool "Xiaomi EROFS IO statistics information"
+	depends on EROFS_FS
+	default y
+	help
+	  provide Xiaomi EROFS I/O monitoring capabilities. When enabled,
+	  two specialized sysfs nodes are created:
+
+	  1) iostat_daily_latency - Provides 24-hour historical data including,
+	  helps analyze long-term storage behavior and performance trends.
+
+	  2) iostat_window_latency - Offers 2-minute sliding window statistics,
+	  crucial for diagnosing I/O-related ANR (Application Not Responding) issues.
+
+	  Enable this feature by setting iostat_enable=1 via sysfs.
+

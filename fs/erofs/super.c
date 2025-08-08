@@ -14,6 +14,9 @@
 #include <linux/dax.h>
 #include <linux/exportfs.h>
 #include "xattr.h"
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+#include "iostat.h"
+#endif
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/erofs.h>
@@ -683,6 +686,12 @@ static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
 	if (err)
 		return err;
 
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+	err = erofs_init_iostat(sbi);
+	if (err)
+		return err;
+#endif
+
 	erofs_info(sb, "mounted with root inode @ nid %llu.", ROOT_NID(sbi));
 	return 0;
 }
@@ -819,6 +828,9 @@ static void erofs_put_super(struct super_block *sb)
 	sbi->packed_inode = NULL;
 	erofs_free_dev_context(sbi->devs);
 	sbi->devs = NULL;
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+	erofs_destroy_iostat(sbi);
+#endif
 	erofs_fscache_unregister_fs(sb);
 }
 

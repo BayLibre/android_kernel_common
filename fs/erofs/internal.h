@@ -176,6 +176,10 @@ struct erofs_sb_info {
 	struct erofs_domain *domain;
 	char *fsid;
 	char *domain_id;
+
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+	struct erofs_iostat *iostat;
+#endif
 };
 
 #define EROFS_SB(sb) ((struct erofs_sb_info *)(sb)->s_fs_info)

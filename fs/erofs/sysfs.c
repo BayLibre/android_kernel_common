@@ -7,16 +7,27 @@
 #include <linux/kobject.h>
 
 #include "internal.h"
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+#include "iostat.h"
+#endif
 
 enum {
 	attr_feature,
 	attr_pointer_ui,
 	attr_pointer_bool,
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+	attr_iostat_config,
+	attr_iostat_window_latency,
+	attr_iostat_daily_latency,
+#endif
 };
 
 enum {
 	struct_erofs_sb_info,
 	struct_erofs_mount_opts,
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+	struct_erofs_iostat,
+#endif
 };
 
 struct erofs_attr {
@@ -58,10 +69,22 @@ static struct erofs_attr erofs_attr_##_name = {			\
 #ifdef CONFIG_EROFS_FS_ZIP
 EROFS_ATTR_RW_UI(sync_decompress, erofs_mount_opts);
 #endif
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+EROFS_ATTR_RW_BOOL(iostat_enable, erofs_iostat);
+EROFS_ATTR_FUNC(iostat_config, 0644);
+EROFS_ATTR_FUNC(iostat_window_latency, 0444);
+EROFS_ATTR_FUNC(iostat_daily_latency, 0644);
+#endif
 
 static struct attribute *erofs_attrs[] = {
 #ifdef CONFIG_EROFS_FS_ZIP
 	ATTR_LIST(sync_decompress),
+#endif
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+	ATTR_LIST(iostat_enable),
+	ATTR_LIST(iostat_config),
+	ATTR_LIST(iostat_window_latency),
+	ATTR_LIST(iostat_daily_latency),
 #endif
 	NULL,
 };
@@ -101,6 +124,10 @@ static unsigned char *__struct_ptr(struct erofs_sb_info *sbi,
 		return (unsigned char *)sbi + offset;
 	if (struct_type == struct_erofs_mount_opts)
 		return (unsigned char *)&sbi->opt + offset;
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+	if (struct_type == struct_erofs_iostat)
+		return (unsigned char *)sbi->iostat + offset;
+#endif
 	return NULL;
 }
 
@@ -123,6 +150,26 @@ static ssize_t erofs_attr_show(struct kobject *kobj,
 		if (!ptr)
 			return 0;
 		return sysfs_emit(buf, "%d\n", *(bool *)ptr);
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+	case attr_iostat_config:
+		if (!ptr)
+			return 0;
+		return sysfs_emit(buf, "%lu,%lu,%lu,%lu,%lu,%lu\n",
+			sbi->iostat->window_period_ns / NSEC_PER_SEC,
+			sbi->iostat->latency_threshold_ns[SIZE_16K] / NSEC_PER_MSEC,
+			sbi->iostat->latency_threshold_ns[SIZE_128K] / NSEC_PER_MSEC,
+			sbi->iostat->latency_threshold_ns[SIZE_256K] / NSEC_PER_MSEC,
+			sbi->iostat->latency_threshold_ns[SIZE_512K] / NSEC_PER_MSEC,
+			sbi->iostat->latency_threshold_ns[SIZE_ABOVE] / NSEC_PER_MSEC);
+	case attr_iostat_window_latency:
+		if (!ptr)
+			return 0;
+		return erofs_iostat_window_latency_show(sbi, buf);
+	case attr_iostat_daily_latency:
+		if (!ptr)
+			return 0;
+		return erofs_iostat_daily_latency_show(sbi, buf);
+#endif
 	}
 	return 0;
 }
@@ -162,7 +209,23 @@ static ssize_t erofs_attr_store(struct kobject *kobj, struct attribute *attr,
 		if (t != 0 && t != 1)
 			return -EINVAL;
 		*(bool *)ptr = !!t;
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+		if (!strcmp(a->attr.name, "iostat_enable")) {
+			if (!sbi->iostat->iostat_enable)
+				erofs_iostat_latency_stats_reset(sbi);
+		}
+#endif
 		return len;
+#ifdef CONFIG_XIAOMI_EROFS_IOSTAT
+	case attr_iostat_config:
+		if (!ptr)
+			return 0;
+		return erofs_iostat_config_parse(sbi, buf) ?: len;
+	case attr_iostat_daily_latency:
+		if (!ptr)
+			return 0;
+		return erofs_iostat_daily_stats_reset(sbi, buf) ?: len;
+#endif
 	}
 	return 0;
 }

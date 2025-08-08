@@ -727,6 +727,7 @@ out:
 	}
 
 #ifdef CONFIG_F2FS_IOSTAT
+#ifndef CONFIG_XIAOMI_ENHANCED_IOSTAT
 	if (!strcmp(a->attr.name, "iostat_enable")) {
 		sbi->iostat_enable = !!t;
 		if (!sbi->iostat_enable)
@@ -742,6 +743,7 @@ out:
 		spin_unlock_irq(&sbi->iostat_lock);
 		return count;
 	}
+#endif
 #endif
 
 #ifdef CONFIG_BLK_DEV_ZONED
@@ -945,6 +947,186 @@ static ssize_t f2fs_sbi_store(struct f2fs_attr *a,
 
 	return ret;
 }
+
+#ifdef CONFIG_XIAOMI_ENHANCED_IOSTAT
+static ssize_t en_iostat_enable_show(struct f2fs_attr *a,
+			struct f2fs_sb_info *sbi, char *buf)
+{
+	struct enhanced_iostat *iostat = f2fs_get_iostat(sbi);
+
+	if (!iostat)
+		return -EINVAL;
+	return sysfs_emit(buf, "%d\n",
+		iostat->en_iostat_enable ? 1 : 0);
+}
+
+static ssize_t en_iostat_enable_store(
+		struct f2fs_attr *a, struct f2fs_sb_info *sbi,
+		const char *buf, size_t count)
+{
+	struct enhanced_iostat *iostat = f2fs_get_iostat(sbi);
+	unsigned long t;
+	int ret;
+
+	ret = kstrtoul(skip_spaces(buf), 0, &t);
+	if (ret < 0)
+		return ret;
+
+	if (!iostat)
+		return -EINVAL;
+
+	if (t != 0 && t != 1)
+		return -EINVAL;
+
+	iostat->en_iostat_enable = !!t;
+
+	if (!iostat->en_iostat_enable)
+		iostat_latency_stats_reset(sbi);
+
+	return count;
+}
+
+static ssize_t iostat_window_period_s_show(struct f2fs_attr *a,
+			struct f2fs_sb_info *sbi, char *buf)
+{
+	struct enhanced_iostat *iostat = f2fs_get_iostat(sbi);
+
+	if (!iostat)
+		return -EINVAL;
+	return sysfs_emit(buf, "%lu\n",
+			iostat->window_period_ns / NSEC_PER_SEC);
+}
+
+static ssize_t iostat_window_period_s_store(struct f2fs_attr *a,
+			struct f2fs_sb_info *sbi,
+			const char *buf, size_t count)
+{
+	struct enhanced_iostat *iostat = f2fs_get_iostat(sbi);
+	unsigned long t;
+	int ret;
+
+	ret = kstrtoul(skip_spaces(buf), 0, &t);
+	if (ret < 0)
+		return ret;
+
+	if (!iostat)
+		return -EINVAL;
+	iostat->window_period_ns = (unsigned long)t * NSEC_PER_SEC;
+	return count;
+}
+
+static ssize_t iostat_latency_threshold_ms_show(struct f2fs_attr *a,
+			struct f2fs_sb_info *sbi, char *buf)
+{
+	struct enhanced_iostat *iostat = f2fs_get_iostat(sbi);
+
+	if (!iostat)
+		return -EINVAL;
+
+	return sysfs_emit(buf, "%lu,%lu,%lu,%lu,%lu\n",
+		iostat->latency_threshold_ns[SIZE_16K] / NSEC_PER_MSEC,
+		iostat->latency_threshold_ns[SIZE_128K] / NSEC_PER_MSEC,
+		iostat->latency_threshold_ns[SIZE_256K] / NSEC_PER_MSEC,
+		iostat->latency_threshold_ns[SIZE_512K] / NSEC_PER_MSEC,
+		iostat->latency_threshold_ns[SIZE_ABOVE] / NSEC_PER_MSEC);
+}
+
+static ssize_t iostat_latency_threshold_ms_store(struct f2fs_attr *a,
+			struct f2fs_sb_info *sbi,
+			const char *buf, size_t count)
+{
+	struct enhanced_iostat *iostat = f2fs_get_iostat(sbi);
+	char *str = strim((char *)buf);
+	char *token;
+	unsigned long thresholds[NR_IO_SIZE];
+	int i = 0;
+	int ret = 0;
+
+	if (!iostat)
+		return -EINVAL;
+
+	for (i = 0; i < NR_IO_SIZE; i++) {
+		token = strsep(&str, ",");
+		if (!token)
+			return -EINVAL;
+		ret = kstrtoul(token, 10, &thresholds[i]);
+		if (ret)
+			return -EINVAL;
+	}
+
+	if (str)
+		return -EINVAL;
+
+	for (i = 0; i < NR_IO_SIZE; i++)
+		iostat->latency_threshold_ns[i] = thresholds[i] * NSEC_PER_MSEC;
+
+	return count;
+}
+
+static ssize_t f2fs_iostat_window_latency_show(struct f2fs_attr *a,
+			struct f2fs_sb_info *sbi, char *buf)
+{
+	struct enhanced_iostat *iostat = f2fs_get_iostat(sbi);
+
+	if (!iostat)
+		return -EINVAL;
+
+	return iostat_window_latency_show(sbi, buf);
+}
+
+static ssize_t f2fs_iostat_daily_latency_show(struct f2fs_attr *a,
+			struct f2fs_sb_info *sbi, char *buf)
+{
+	struct enhanced_iostat *iostat = f2fs_get_iostat(sbi);
+
+	if (!iostat)
+		return -EINVAL;
+
+	return iostat_daily_latency_show(sbi, buf);
+}
+
+static ssize_t f2fs_iostat_window_latency_store(struct f2fs_attr *a,
+			struct f2fs_sb_info *sbi,
+			const char *buf, size_t count)
+{
+	struct enhanced_iostat *iostat = f2fs_get_iostat(sbi);
+
+	if (!iostat)
+		return -EINVAL;
+
+	return iostat_daily_stats_reset(sbi, buf, count);
+}
+
+struct f2fs_attr f2fs_attr_en_iostat_enable = __ATTR(
+	en_iostat_enable, 0644,
+	en_iostat_enable_show,
+	en_iostat_enable_store
+);
+
+struct f2fs_attr f2fs_attr_iostat_window_period_s = __ATTR(
+	iostat_window_period_s, 0644,
+	iostat_window_period_s_show,
+	iostat_window_period_s_store
+);
+
+static struct f2fs_attr f2fs_attr_iostat_latency_threshold_ms = __ATTR(
+	iostat_latency_threshold_ms, 0644,
+	iostat_latency_threshold_ms_show,
+	iostat_latency_threshold_ms_store
+);
+
+static struct f2fs_attr f2fs_attr_iostat_window_latency = __ATTR(
+	iostat_window_latency, 0444,
+	f2fs_iostat_window_latency_show,
+	NULL
+);
+
+static struct f2fs_attr f2fs_attr_iostat_daily_latency = __ATTR(
+	iostat_daily_latency, 0644,
+	f2fs_iostat_daily_latency_show,
+	f2fs_iostat_window_latency_store
+);
+#endif
 
 static ssize_t f2fs_attr_show(struct kobject *kobj,
 				struct attribute *attr, char *buf)
@@ -1202,8 +1384,10 @@ F2FS_SBI_GENERAL_RW_ATTR(migration_granularity);
 F2FS_SBI_GENERAL_RW_ATTR(migration_window_granularity);
 F2FS_SBI_GENERAL_RW_ATTR(dir_level);
 #ifdef CONFIG_F2FS_IOSTAT
+#ifndef CONFIG_XIAOMI_ENHANCED_IOSTAT
 F2FS_SBI_GENERAL_RW_ATTR(iostat_enable);
 F2FS_SBI_GENERAL_RW_ATTR(iostat_period_ms);
+#endif
 #endif
 F2FS_SBI_GENERAL_RW_ATTR(readdir_ra);
 F2FS_SBI_GENERAL_RW_ATTR(max_io_bytes);
@@ -1374,8 +1558,16 @@ static struct attribute *f2fs_attrs[] = {
 	ATTR_LIST(gc_idle_interval),
 	ATTR_LIST(umount_discard_timeout),
 #ifdef CONFIG_F2FS_IOSTAT
+#ifdef CONFIG_XIAOMI_ENHANCED_IOSTAT
+	ATTR_LIST(en_iostat_enable),
+	ATTR_LIST(iostat_window_period_s),
+	ATTR_LIST(iostat_latency_threshold_ms),
+	ATTR_LIST(iostat_daily_latency),
+	ATTR_LIST(iostat_window_latency),
+#else
 	ATTR_LIST(iostat_enable),
 	ATTR_LIST(iostat_period_ms),
+#endif
 #endif
 	ATTR_LIST(readdir_ra),
 	ATTR_LIST(max_io_bytes),
@@ -1892,8 +2084,10 @@ int f2fs_register_sysfs(struct f2fs_sb_info *sbi)
 	proc_create_single_data("segment_bits", 0444, sbi->s_proc,
 				segment_bits_seq_show, sb);
 #ifdef CONFIG_F2FS_IOSTAT
+#ifndef CONFIG_XIAOMI_ENHANCED_IOSTAT
 	proc_create_single_data("iostat_info", 0444, sbi->s_proc,
 				iostat_info_seq_show, sb);
+#endif
 #endif
 	proc_create_single_data("victim_bits", 0444, sbi->s_proc,
 				victim_bits_seq_show, sb);

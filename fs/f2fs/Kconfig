@@ -152,6 +152,23 @@ config F2FS_IOSTAT
 	  IO statistics tracepoint events. You have to turn on "iostat_enable"
 	  sysfs node to enable this feature.
 
+config XIAOMI_ENHANCED_IOSTAT
+	bool "Xiaomi enhanced iostat"
+	depends on F2FS_FS
+	default y
+	help
+	  This option extends F2FS_IOSTAT to provide Xiaomi advanced I/O monitoring
+	  capabilities. When enabled, two specialized sysfs nodes are created:
+
+	  1) iostat_daily_latency - Provides 24-hour historical data including,
+	  helps analyze long-term storage behavior and performance trends.
+
+	  2) iostat_window_latency - Offers 2-minute sliding window statistics,
+	  crucial for diagnosing I/O-related ANR (Application Not Responding) issues.
+
+	  These sysfs nodes are designed for system monitoring tools, performance analysis,
+	  and debugging purposes. Enable this feature by setting en_iostat_enable=1 via sysfs.
+
 config F2FS_UNFAIR_RWSEM
 	bool "F2FS unfair rw_semaphore"
 	depends on F2FS_FS && BLK_CGROUP
