@@ -748,6 +748,24 @@
       "parentUuid": "fd961fa7_48fdce20",
       "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20cf4f55_f645c8a0",
+        "filename": "kernel/sched/syscalls.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 786,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-08-08T18:52:50Z",
+      "side": 1,
+      "message": "\u003e Isn\u0027t this out-of-scopre for a FROMLIST patch? I tried to follow as many of your suggestions to clean up; but it feels this goes beyond the necessity bits to apply a FROMLIST patch given no correctness issues.\n\nSo yeah, I probably went a little deeper into general review mode, and much of this would be better shared on-list, but it was here that it was submitted.\n\nI apologize for the review being annoying, but we do push back pretty hard on FROMLIST changes. We are much easier with FROMGIT/UPSTREAM/BACKPORT changes. But with FROMLIST we need really compelling evidence for why this is a benefit and why it is low risk. There really should not be any upstream objections to FROMLIST patches (while not in correctness, this does have style issues raised by Ingo, which limited him from giving further feedback).\n\nThe reason most of my feedback here is on the commit message is that I\u0027m trying my best to get my head around what is being changed, the implications of that change, and any potential benefits and risks.\n\nAnd this is a big change that affects behavior in core logic, so it is inherently risky and increases the chance for collisions with upstream fixes coming from -stable. \n\nI also appreciate all the effort you\u0027ve put in and your testing is reassuring, though it\u0027s currently unclear to me if the logical changes might have side-effects to existing logic in vendorhook code that we don\u0027t have access to test. \n\nThe moving of where trace_android_rvh_set_iowait() is called is the obvious one in the patch, but also the change to where cpufreq_update_util() is called might have effects on logic behind the driver\u0027s update_util_data-\u003efunc that gets called. It may be obviously safe to you, but I\u0027m not as familiar with the details.\n\n\nI\u0027m trying to think if there would be a way to conditionalize the change so that is easy to fall back to the old logic. As it stands, if there are problems then we\u0027d have the unfortunately need to try to revert around the kabi changes since they would be fixed after the thaw.\n\n\n\u003e\u003e it feels like you\u0027ve got \"go do the tangled path, and the direct call\"). It seems like this should be flattened somehow.\n\u003e\n\u003e I didn\u0027t understand this.\n\nOh, sorry. Its just that when there\u0027s an if tree with multiple call paths that end in the same place, I think its often nice to rework the logic to reduce the call depth so its clear how the actions are conditionalized rather then doing it implicitly in the deeper nested function. It just reduces the cognitive load of tracking what the subtle side-effects of similar sounding functions are.\n\nInstead of:\n```\nif (a)\n  do_a_and_b();\nelse\n  do_b();\n```\nits easier to track:\n```\nif (a)\n  do_a();\ndo_b();\n```\nIts obviously more complex in your case, but that\u0027s the gist of the suggestion. Again, just my initial thoughts from review for future iterations.",
+      "parentUuid": "07124fc0_22db6da7",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
