@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f9b5b056_c86a1591",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-08-08T09:10:28Z",
+      "side": 1,
+      "message": "If you don\u0027t use `READ_ONCE()` then the compiler could re-load the variable every time you reference it, leading to ToCToU issues again.",
+      "parentUuid": "7b1de4e6_8e85338d",
+      "range": {
+        "startLine": 678,
+        "startChar": 0,
+        "endLine": 678,
+        "endChar": 37
+      },
+      "revId": "92f6d750fe02849a9c000645d361f04d503eb515",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aff7dc4e_0a11fb49",
         "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
         "patchSetId": 2
