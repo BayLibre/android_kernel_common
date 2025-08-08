@@ -727,17 +727,22 @@ static int ffa_guest_share_ranges(struct ffa_mem_region_addr_range *ranges,
 	struct ffa_mem_region_addr_range *buf = out_region->constituents;
 	int i, j, ret;
 	u32 mem_region_idx = 0;
-	u64 ipa, pa;
+	u64 ipa, pa, offset;
 
 	for (i = 0; i < nranges; i++) {
 		range = &ranges[i];
 		for (j = 0; j < range->pg_cnt; j++) {
-			if (mem_region_idx * sizeof(struct ffa_mem_region_addr_range) >= reg_len) {
+			if (mem_region_idx * sizeof(struct ffa_mem_region_addr_range) >= reg_len ||
+			    check_mul_overflow(j, PAGE_SIZE, &offset)) {
 				ret = -EINVAL;
 				goto unshare;
 			}
 
-			ipa = range->address + PAGE_SIZE * j;
+			if (check_add_overflow(range->address, offset, &ipa)) {
+				ret = -EINVAL;
+				goto unshare;
+			}
+
 			ret = __pkvm_guest_share_ffa_page(vcpu, ipa, &pa);
 			if (ret)
 				goto unshare;
