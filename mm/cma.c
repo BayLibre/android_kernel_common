@@ -522,6 +522,7 @@ struct page *__cma_alloc(struct cma *cma, unsigned long count,
 		mutex_lock(&cma_mutex);
 		if (cma->gcma) {
 			gcma_alloc_range(pfn, pfn + count - 1);
+			gcma_prepare_new_pages(pfn, count, gfp);
 			ret = 0;
 		} else {
 			ret = alloc_contig_range(pfn, pfn + count, MIGRATE_CMA, gfp);
@@ -650,10 +651,12 @@ bool cma_release(struct cma *cma, const struct page *pages,
 
 	VM_BUG_ON(pfn + count > cma->base_pfn + cma->count);
 
-	if (cma->gcma)
+	if (cma->gcma) {
+		gcma_prepare_free_pages(pfn, count);
 		gcma_free_range(pfn, pfn + count - 1);
-	else
+	} else {
 		free_contig_range(pfn, count);
+	}
 	cma_clear_bitmap(cma, pfn, count);
 	cma_sysfs_account_release_pages(cma, count);
 	trace_cma_release(cma->name, pfn, pages, count);

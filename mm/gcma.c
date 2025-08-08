@@ -15,6 +15,7 @@
 #include <linux/xarray.h>
 #include <trace/hooks/mm.h>
 #include "gcma_sysfs.h"
+#include "internal.h"
 
 /*
  * page->page_type : area id
@@ -314,6 +315,7 @@ int register_gcma_area(const char *name, phys_addr_t base, phys_addr_t size)
 		reset_gcma_page(page);
 		SetPageGCMAFree(page);
 		list_add(&page->lru, &area->free_pages);
+		ClearPageReserved(page);
 	}
 
 	area->start_pfn = pfn;
@@ -600,6 +602,49 @@ again:
 	}
 	local_irq_enable();
 }
+
+void gcma_prepare_new_pages(unsigned long pfn, unsigned long count, gfp_t gfp)
+{
+	for (unsigned long i = 0; i < count; i++, pfn++) {
+		struct page *page = pfn_to_page(pfn);
+
+		post_alloc_hook(page, 0, gfp);
+		set_page_refcounted(page);
+		atomic_set(&page->_mapcount, -1);
+	}
+}
+EXPORT_SYMBOL_GPL(gcma_prepare_new_pages);
+
+void gcma_prepare_free_pages(unsigned long pfn, unsigned long count)
+{
+	struct folio *folio = pfn_folio(pfn);
+
+	if (folio_test_large(folio)) {
+		int expected = folio_nr_pages(folio);
+
+		if (WARN(count != expected, "PFN %lu: count %lu != expected %d\n",
+		     pfn, count, expected))
+			return;
+
+		if (WARN_ON(!folio_put_testzero(folio)))
+			return;
+
+		page_cache_release(folio);
+		folio_unqueue_deferred_split(folio);
+		mem_cgroup_uncharge(folio);
+		free_pages_prepare(&folio->page, folio_order(folio));
+	} else {
+		for (unsigned long i = 0; i < count; i++, pfn++) {
+			struct page *page = pfn_to_page(pfn);
+
+			if (WARN_ON(!put_page_testzero(page)))
+				continue;
+
+			free_pages_prepare(page, 0);
+		}
+	}
+}
+EXPORT_SYMBOL_GPL(gcma_prepare_free_pages);
 
 void gcma_alloc_range(unsigned long start_pfn, unsigned long end_pfn)
 {
