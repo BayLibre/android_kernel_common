@@ -1,0 +1,114 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06d8027a_9e63b842",
+        "filename": "kernel/fork.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-10T19:09:03Z",
+      "side": 1,
+      "message": "why \"del_task\"? Shouldn\u0027t it be \"put_task\"?",
+      "fixSuggestions": [
+        {
+          "fixId": "6af9ee69_309fda7f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/fork.c",
+              "range": {
+                "startLine": 1004,
+                "startChar": 0,
+                "endLine": 1005,
+                "endChar": 0
+              },
+              "replacement": "\ttrace_android_rvh_put_task(tsk);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2561fd371491dbf12b5410967e175acb511968ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af00b582_adfac6ad",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 5017,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-10T19:09:03Z",
+      "side": 1,
+      "message": "this is not needed. Use `trace_android_rvh_new_task_stats()`",
+      "fixSuggestions": [
+        {
+          "fixId": "74d82402_84999cd3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/sched/core.c",
+              "range": {
+                "startLine": 5017,
+                "startChar": 0,
+                "endLine": 5018,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "kernel/sched/core.c",
+              "range": {
+                "startLine": 5435,
+                "startChar": 0,
+                "endLine": 5437,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "kernel/sched/core.c",
+              "range": {
+                "startLine": 6090,
+                "startChar": 0,
+                "endLine": 6092,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "kernel/sched/core.c",
+              "range": {
+                "startLine": 6174,
+                "startChar": 0,
+                "endLine": 6176,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "kernel/sched/core.c",
+              "range": {
+                "startLine": 6190,
+                "startChar": 0,
+                "endLine": 6191,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "2561fd371491dbf12b5410967e175acb511968ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
