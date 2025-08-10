@@ -15476,6 +15476,18 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
 				insn->src_reg);
 			return -EACCES;
 		}
+<<<<<<< HEAD   (b18ad4b768e57cd356179a3ac2b3e0e0f28c6eb4 Merge android16-6.12 into android16-6.12-lts)
+||||||| BASE   (d90ecb2b1308b3e362ec4c21ff7cf0a051b445df Linux 6.12.40)
+
+		if (src_reg->type == PTR_TO_STACK)
+			insn_flags |= INSN_F_SRC_REG_STACK;
+=======
+
+		if (src_reg->type == PTR_TO_STACK)
+			insn_flags |= INSN_F_SRC_REG_STACK;
+		if (dst_reg->type == PTR_TO_STACK)
+			insn_flags |= INSN_F_DST_REG_STACK;
+>>>>>>> BRANCH (8f5ff9784f3262e6e85c68d86f8b7931827f2983 Linux 6.12.41)
 	} else {
 		if (insn->src_reg != BPF_REG_0) {
 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
@@ -15485,8 +15497,29 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
 		memset(src_reg, 0, sizeof(*src_reg));
 		src_reg->type = SCALAR_VALUE;
 		__mark_reg_known(src_reg, insn->imm);
+
+		if (dst_reg->type == PTR_TO_STACK)
+			insn_flags |= INSN_F_DST_REG_STACK;
 	}
 
+<<<<<<< HEAD   (b18ad4b768e57cd356179a3ac2b3e0e0f28c6eb4 Merge android16-6.12 into android16-6.12-lts)
+||||||| BASE   (d90ecb2b1308b3e362ec4c21ff7cf0a051b445df Linux 6.12.40)
+	if (dst_reg->type == PTR_TO_STACK)
+		insn_flags |= INSN_F_DST_REG_STACK;
+	if (insn_flags) {
+		err = push_insn_history(env, this_branch, insn_flags, 0);
+		if (err)
+			return err;
+	}
+
+=======
+	if (insn_flags) {
+		err = push_insn_history(env, this_branch, insn_flags, 0);
+		if (err)
+			return err;
+	}
+
+>>>>>>> BRANCH (8f5ff9784f3262e6e85c68d86f8b7931827f2983 Linux 6.12.41)
 	is_jmp32 = BPF_CLASS(insn->code) == BPF_JMP32;
 	pred = is_branch_taken(dst_reg, src_reg, opcode, is_jmp32);
 	if (pred >= 0) {
