@@ -334,6 +334,7 @@ static int z_erofs_transform_plain(struct z_erofs_decompress_req *rq,
 	unsigned int cur = 0, ni = 0, no, pi, po, insz, cnt;
 	u8 *kin;
 
+<<<<<<< HEAD   (e6bb027f8ca63e51ad961764c393054c49078b3e Merge android15-6.6 into android15-6.6-lts)
 	if (rq->outputsize > rq->inputsize)
 		return -EOPNOTSUPP;
 	if (rq->alg == Z_EROFS_COMPRESSION_INTERLACED) {
@@ -352,6 +353,57 @@ static int z_erofs_transform_plain(struct z_erofs_decompress_req *rq,
 			kunmap_local(kin);
 		}
 		rq->outputsize -= cur;
+||||||| BASE   (dbcb8d8e4163e46066f43e2bd9a6779e594ec900 Linux 6.6.100)
+	if (outpages > 2 && rq->alg == Z_EROFS_COMPRESSION_SHIFTED) {
+		DBG_BUGON(1);
+		return -EFSCORRUPTED;
+	}
+
+	if (rq->out[0] == *rq->in) {
+		DBG_BUGON(rq->pageofs_out);
+		return 0;
+	}
+
+	src = kmap_local_page(rq->in[inpages - 1]) + rq->pageofs_in;
+	if (rq->out[0])
+		memcpy_to_page(rq->out[0], rq->pageofs_out,
+			       src + interlaced_offset, righthalf);
+
+	if (outpages > inpages) {
+		DBG_BUGON(!rq->out[outpages - 1]);
+		if (rq->out[outpages - 1] != rq->in[inpages - 1]) {
+			memcpy_to_page(rq->out[outpages - 1], 0, src +
+					(interlaced_offset ? 0 : righthalf),
+				       lefthalf);
+		} else if (!interlaced_offset) {
+			memmove(src, src + righthalf, lefthalf);
+			flush_dcache_page(rq->in[inpages - 1]);
+		}
+=======
+	if (outpages > 2 && rq->alg == Z_EROFS_COMPRESSION_SHIFTED) {
+		DBG_BUGON(1);
+		return -EFSCORRUPTED;
+	}
+
+	if (rq->out[0] == *rq->in) {
+		DBG_BUGON(rq->pageofs_out);
+		return 0;
+	}
+
+	src = kmap_local_page(rq->in[inpages - 1]) + rq->pageofs_in;
+	if (rq->out[0])
+		memcpy_to_page(rq->out[0], rq->pageofs_out,
+			       src + interlaced_offset, righthalf);
+
+	if (outpages > inpages) {
+		DBG_BUGON(!rq->out[outpages - 1]);
+		if (rq->out[outpages - 1] != rq->in[inpages - 1])
+			memcpy_to_page(rq->out[outpages - 1], 0, src +
+					(interlaced_offset ? 0 : righthalf),
+				       lefthalf);
+		else if (!interlaced_offset)
+			memmove(src, src + righthalf, lefthalf);
+>>>>>>> BRANCH (3a8ababb8b6a0ced2be230b60b6e3ddbd8d67014 Linux 6.6.101)
 	}
 
 	for (; rq->outputsize; rq->pageofs_in = 0, cur += PAGE_SIZE, ni++) {
