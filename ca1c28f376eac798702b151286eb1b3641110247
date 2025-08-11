@@ -16,6 +16,23 @@
       "message": "This is a `FROMLIST` that unblocks corsola testing.",
       "revId": "ca1c28f376eac798702b151286eb1b3641110247",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41706f01_f7cfa8c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3485565
+      },
+      "writtenOn": "2025-08-11T08:25:49Z",
+      "side": 1,
+      "message": "This in fact is supposed to land as a vendor modules change (go/al-gki-vmm), but not only it is trivial, it also affects a bunch of modules making it quite a bit of work compared to the benefits.\n\nI\u0027m fine to land it in core kernel, but please address the linter errors (KernelCommit, Upstream divergence)",
+      "revId": "ca1c28f376eac798702b151286eb1b3641110247",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
