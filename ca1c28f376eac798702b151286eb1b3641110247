@@ -33,6 +33,24 @@
       "message": "This in fact is supposed to land as a vendor modules change (go/al-gki-vmm), but not only it is trivial, it also affects a bunch of modules making it quite a bit of work compared to the benefits.\n\nI\u0027m fine to land it in core kernel, but please address the linter errors (KernelCommit, Upstream divergence)",
       "revId": "ca1c28f376eac798702b151286eb1b3641110247",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c753ba92_e202ab12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3266585
+      },
+      "writtenOn": "2025-08-11T09:07:09Z",
+      "side": 1,
+      "message": "\u003e This in fact is supposed to land as a vendor modules change (go/al-gki-vmm), but not only it is trivial, it also affects a bunch of modules making it quite a bit of work compared to the benefits.\n\nAfaik the state of audio modules are still in-tree vendor modules. Not sure if it worth the benefits if we move every audio module out of tree. Any suggestions on this part? \n\n\u003e I\u0027m fine to land it in core kernel, but please address the linter errors (KernelCommit, Upstream divergence)\n\nThanks for the understanding. Not sure if this did not get reviewed by upstream. I will try to let Mark know.",
+      "parentUuid": "41706f01_f7cfa8c5",
+      "revId": "ca1c28f376eac798702b151286eb1b3641110247",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
