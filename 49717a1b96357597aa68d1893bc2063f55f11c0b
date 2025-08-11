@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec6e4d89_4cf538db",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-08-11T10:44:48Z",
+      "side": 1,
+      "message": "How about rephrasing it a bit e.g.: `Previously only 4KB IOMMU drhd region was ioremapped and therefore prevented accessing registers above 4KB. Drop overly limiting  drhd region remapping and rely on previous, correct remapping of IOMMU driver which was done before pkvm deprivilege`",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 34
+      },
+      "revId": "49717a1b96357597aa68d1893bc2063f55f11c0b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
