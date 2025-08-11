@@ -1,0 +1,169 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "675a5598_6b80e216",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-11T00:47:08Z",
+      "side": 1,
+      "message": "Please provide rationale for why this needs to be expanded.",
+      "revId": "49d3521459bf3477371a46f824a0e529189c8a92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a880af68_749786a8",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-11T00:47:08Z",
+      "side": 1,
+      "message": "Why is 512 not enough? 1536 is a lot of memory for every task.",
+      "fixSuggestions": [
+        {
+          "fixId": "56e4406c_106e3728",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/configs/gki_defconfig",
+              "range": {
+                "startLine": 119,
+                "startChar": 0,
+                "endLine": 120,
+                "endChar": 0
+              },
+              "replacement": "CONFIG_GKI_TASK_STRUCT_VENDOR_SIZE_MAX\u003d512\n"
+            }
+          ]
+        }
+      ],
+      "revId": "49d3521459bf3477371a46f824a0e529189c8a92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61bc12b5_0546d6ef",
+        "filename": "include/asm-generic/vmlinux.lds.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-11T00:47:08Z",
+      "side": 1,
+      "message": "Please explain what\u0027s going on here in the commit message",
+      "fixSuggestions": [
+        {
+          "fixId": "e8d14430_9da4142d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/asm-generic/vmlinux.lds.h",
+              "range": {
+                "startLine": 352,
+                "startChar": 0,
+                "endLine": 352,
+                "endChar": 0
+              },
+              "replacement": "/*\n * When CONFIG_GKI_DYNAMIC_TASK_STRUCT_SIZE is enabled, the init task will be\n * expanded to multiple tasks. The linker needs to keep the init task data\n * in the .data section.\n *\n * __init_task_expand_begin and __init_task_expand_end are used to record the\n * start and end of the init task data.\n */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "49d3521459bf3477371a46f824a0e529189c8a92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83c2e25f_a13b699b",
+        "filename": "include/linux/sched/task.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-11T00:47:08Z",
+      "side": 1,
+      "message": "This all looks very hacky. Please provide a very detailed explanation and rationale in the commit message.",
+      "fixSuggestions": [
+        {
+          "fixId": "eb95f52b_15d4f13b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/sched/task.h",
+              "range": {
+                "startLine": 61,
+                "startChar": 0,
+                "endLine": 61,
+                "endChar": 0
+              },
+              "replacement": "/*\n * vendor_data_pad is used to reserve 512 bytes for vendor data,\n * vendor_data_pad2 is used to reserve the rest of the vendor data.\n * The total size of vendor data is CONFIG_GKI_TASK_STRUCT_VENDOR_SIZE_MAX.\n */\n"
+            },
+            {
+              "path": "include/linux/sched/task.h",
+              "range": {
+                "startLine": 247,
+                "startChar": 0,
+                "endLine": 247,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * The vendor data is located after the task_struct.\n\t */\n"
+            },
+            {
+              "path": "include/linux/sched/task.h",
+              "range": {
+                "startLine": 253,
+                "startChar": 0,
+                "endLine": 253,
+                "endChar": 0
+              },
+              "replacement": "\t\t/*\n\t\t * Initialize the vendor data to 0.\n\t\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "49d3521459bf3477371a46f824a0e529189c8a92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4606d69e_76f5b137",
+        "filename": "init/init_task.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-11T00:47:08Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by KernelCheckPatch: WARNING:BLOCK_COMMENT_STYLE: Block comments should align the * on each line\n\nWARNING:BLOCK_COMMENT_STYLE: Block comments should align the * on each line",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 251,
+        "endChar": 0
+      },
+      "revId": "49d3521459bf3477371a46f824a0e529189c8a92",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
