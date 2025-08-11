@@ -91,7 +91,6 @@ static bool cgroup_memory_nosocket __ro_after_init;
 static bool cgroup_memory_nokmem __ro_after_init;
 
 static struct kmem_cache *memcg_cachep;
-static struct kmem_cache *memcg_pn_cachep;
 
 #ifdef CONFIG_CGROUP_WRITEBACK
 static DECLARE_WAIT_QUEUE_HEAD(memcg_cgwb_frn_waitq);
@@ -5266,8 +5265,7 @@ static int alloc_mem_cgroup_per_node_info(struct mem_cgroup *memcg, int node)
 {
 	struct mem_cgroup_per_node *pn;
 
-	pn = kmem_cache_alloc_node(memcg_pn_cachep, GFP_KERNEL | __GFP_ZERO,
-				   node);
+	pn = kzalloc_node(sizeof(*pn), GFP_KERNEL, node);
 	if (!pn)
 		return 1;
 
@@ -7369,8 +7367,6 @@ int __init mem_cgroup_init(void)
 	memcg_cachep = kmem_cache_create("mem_cgroup", memcg_size, 0,
 					 SLAB_PANIC | SLAB_HWCACHE_ALIGN, NULL);
 
-	memcg_pn_cachep = KMEM_CACHE(mem_cgroup_per_node,
-				     SLAB_PANIC | SLAB_HWCACHE_ALIGN);
 	for_each_node(node) {
 		struct mem_cgroup_tree_per_node *rtpn;
 
