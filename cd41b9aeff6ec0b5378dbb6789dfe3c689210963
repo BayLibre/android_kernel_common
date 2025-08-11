@@ -34,6 +34,24 @@
       "parentUuid": "ddea75be_83b9ca5f",
       "revId": "cd41b9aeff6ec0b5378dbb6789dfe3c689210963",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2daea6b9_6c733cde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1954115
+      },
+      "writtenOn": "2025-08-11T04:24:37Z",
+      "side": 1,
+      "message": "Thanks Peter for providing links. The issue happens in ACK and not upstream because ACK is missing some patches and backporting those 2 patches need many more dependent patches. Based on the feedback upstream and testing results, this try_lock patch seems to be simpler fix and I am ok with this landing in ACK.",
+      "parentUuid": "6bcc9398_eabf0c33",
+      "revId": "cd41b9aeff6ec0b5378dbb6789dfe3c689210963",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
