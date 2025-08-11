@@ -26749,6 +26749,11 @@ pointer_reference {
   pointee_type_id: 0xd395c0e4
 }
 pointer_reference {
+  id: 0x3e771036
+  kind: POINTER
+  pointee_type_id: 0xd39ca645
+}
+pointer_reference {
   id: 0x3e7afc58
   kind: POINTER
   pointee_type_id: 0xd3ab17fd
@@ -253891,6 +253896,56 @@ enumeration {
   }
 }
 enumeration {
+  id: 0xd39ca645
+  name: "cp_reason_type"
+  definition {
+    underlying_type_id: 0x4585663f
+    enumerator {
+      name: "CP_NO_NEEDED"
+    }
+    enumerator {
+      name: "CP_NON_REGULAR"
+      value: 1
+    }
+    enumerator {
+      name: "CP_COMPRESSED"
+      value: 2
+    }
+    enumerator {
+      name: "CP_HARDLINK"
+      value: 3
+    }
+    enumerator {
+      name: "CP_SB_NEED_CP"
+      value: 4
+    }
+    enumerator {
+      name: "CP_WRONG_PINO"
+      value: 5
+    }
+    enumerator {
+      name: "CP_NO_SPC_ROLL"
+      value: 6
+    }
+    enumerator {
+      name: "CP_NODE_NEED_CP"
+      value: 7
+    }
+    enumerator {
+      name: "CP_FASTBOOT_MODE"
+      value: 8
+    }
+    enumerator {
+      name: "CP_SPEC_LOG_NUM"
+      value: 9
+    }
+    enumerator {
+      name: "CP_RECOVER_DIR"
+      value: 10
+    }
+  }
+}
+enumeration {
   id: 0xe99880e8
   name: "cpufreq_table_sorting"
   definition {
@@ -295964,6 +296019,12 @@ function {
   parameter_id: 0x1f8dbf97
 }
 function {
+  id: 0x9bc1ac21
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x1b8590a8
+}
+function {
   id: 0x9bc1c0ac
   return_type_id: 0x6720d32f
   parameter_id: 0x18ea6ae3
@@ -296076,6 +296137,14 @@ function {
   parameter_id: 0x2efe8065
 }
 function {
+  id: 0x9bc9d953
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x1b8590a8
+  parameter_id: 0x27a7c613
+  parameter_id: 0x6720d32f
+}
+function {
   id: 0x9bc9ed5a
   return_type_id: 0x6720d32f
   parameter_id: 0x18ea6ae3
@@ -296143,6 +296212,13 @@ function {
   parameter_id: 0x1bf16028
   parameter_id: 0x370ed8aa
   parameter_id: 0x11cfee5a
+}
+function {
+  id: 0x9bce31e5
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x1b8590a8
+  parameter_id: 0x3e771036
 }
 function {
   id: 0x9bcfcbd0
@@ -312009,6 +312085,15 @@ elf_symbol {
   full_name: "__traceiter_android_vh_exit_signal"
 }
 elf_symbol {
+  id: 0xda0c0a31
+  name: "__traceiter_android_vh_f2fs_file_write_end"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xbc2197e5
+  type_id: 0x9bc1ac21
+  full_name: "__traceiter_android_vh_f2fs_file_write_end"
+}
+elf_symbol {
   id: 0x9e91661b
   name: "__traceiter_android_vh_free_oem_binder_struct"
   is_defined: true
@@ -312403,6 +312488,15 @@ elf_symbol {
   crc: 0x2ede94f1
   type_id: 0x9b77df43
   full_name: "__traceiter_android_vh_mmc_sdio_pm_flag_set"
+}
+elf_symbol {
+  id: 0x6cbe190c
+  name: "__traceiter_android_vh_modify_cp_reason"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x9dbccd70
+  type_id: 0x9bce31e5
+  full_name: "__traceiter_android_vh_modify_cp_reason"
 }
 elf_symbol {
   id: 0x306a6019
@@ -313258,6 +313352,15 @@ elf_symbol {
   crc: 0xcff87172
   type_id: 0x9bfc29dd
   full_name: "__traceiter_dwc3_writel"
+}
+elf_symbol {
+  id: 0x94aab0b3
+  name: "__traceiter_f2fs_datawrite_end"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x23f6729e
+  type_id: 0x9bc9d953
+  full_name: "__traceiter_f2fs_datawrite_end"
 }
 elf_symbol {
   id: 0x104ffeec
@@ -315411,6 +315514,15 @@ elf_symbol {
   full_name: "__tracepoint_android_vh_exit_signal"
 }
 elf_symbol {
+  id: 0x8d87f803
+  name: "__tracepoint_android_vh_f2fs_file_write_end"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x4e7d93eb
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_f2fs_file_write_end"
+}
+elf_symbol {
   id: 0x901d0e89
   name: "__tracepoint_android_vh_free_oem_binder_struct"
   is_defined: true
@@ -315805,6 +315917,15 @@ elf_symbol {
   crc: 0x80ed5c28
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_android_vh_mmc_sdio_pm_flag_set"
+}
+elf_symbol {
+  id: 0x79db6b66
+  name: "__tracepoint_android_vh_modify_cp_reason"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x233031a6
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_modify_cp_reason"
 }
 elf_symbol {
   id: 0x65023f2f
@@ -316660,6 +316781,15 @@ elf_symbol {
   crc: 0x7bad1f23
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_dwc3_writel"
+}
+elf_symbol {
+  id: 0xecb47bb9
+  name: "__tracepoint_f2fs_datawrite_end"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xf4b326f8
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_f2fs_datawrite_end"
 }
 elf_symbol {
   id: 0xd8f3ca82
@@ -370332,6 +370462,7 @@ interface {
   symbol_id: 0xf586d5b6
   symbol_id: 0x7f1591a1
   symbol_id: 0x1f554c2a
+  symbol_id: 0xda0c0a31
   symbol_id: 0x9e91661b
   symbol_id: 0x5ecff02f
   symbol_id: 0x812c6920
@@ -370376,6 +370507,7 @@ interface {
   symbol_id: 0x22de652b
   symbol_id: 0xf928bf8a
   symbol_id: 0xab76d6cc
+  symbol_id: 0x6cbe190c
   symbol_id: 0x306a6019
   symbol_id: 0xb1c564a3
   symbol_id: 0x17b175ff
@@ -370471,6 +370603,7 @@ interface {
   symbol_id: 0x92373f85
   symbol_id: 0xafc53276
   symbol_id: 0xa1c053cb
+  symbol_id: 0x94aab0b3
   symbol_id: 0x104ffeec
   symbol_id: 0x6d4f31c4
   symbol_id: 0xcf61fd25
@@ -370710,6 +370843,7 @@ interface {
   symbol_id: 0xe7584e1c
   symbol_id: 0xdef7c547
   symbol_id: 0x0d418d38
+  symbol_id: 0x8d87f803
   symbol_id: 0x901d0e89
   symbol_id: 0xe6918e09
   symbol_id: 0x4ce6de1a
@@ -370754,6 +370888,7 @@ interface {
   symbol_id: 0xa3d5f70d
   symbol_id: 0x72c79d80
   symbol_id: 0x0403b7c6
+  symbol_id: 0x79db6b66
   symbol_id: 0x65023f2f
   symbol_id: 0xd5097f8d
   symbol_id: 0xecc3ea35
@@ -370849,6 +370984,7 @@ interface {
   symbol_id: 0xb2d6f207
   symbol_id: 0x53afc62c
   symbol_id: 0x66f49065
+  symbol_id: 0xecb47bb9
   symbol_id: 0xd8f3ca82
   symbol_id: 0xff315556
   symbol_id: 0x6d72699f
