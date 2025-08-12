@@ -153,6 +153,8 @@ static inline void count_mthp_stat(int order, enum mthp_stat_item item)
 	mod_mthp_stat(order, item, 1);
 }
 
+unsigned long sum_mthp_stat(int order, enum mthp_stat_item item);
+
 #else
 static inline void mod_mthp_stat(int order, enum mthp_stat_item item, int delta)
 {
@@ -160,6 +162,11 @@ static inline void mod_mthp_stat(int order, enum mthp_stat_item item, int delta)
 
 static inline void count_mthp_stat(int order, enum mthp_stat_item item)
 {
+}
+
+unsigned long sum_mthp_stat(int order, enum mthp_stat_item item)
+{
+	return 0;
 }
 #endif
 
