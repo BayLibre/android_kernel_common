@@ -67353,10 +67353,10 @@ member {
   offset: 1024
 }
 member {
-  id: 0xbd75bf18
+  id: 0xbd75b94d
   name: "avg_load"
   type_id: 0x92233392
-  offset: 384
+  offset: 320
 }
 member {
   id: 0xca0e05a3
@@ -67443,10 +67443,10 @@ member {
   offset: 3296
 }
 member {
-  id: 0xe05addab
+  id: 0xe05adac7
   name: "avg_vruntime"
   type_id: 0x2e0f9112
-  offset: 320
+  offset: 256
 }
 member {
   id: 0x0271dcd6
@@ -89455,10 +89455,10 @@ member {
   offset: 26752
 }
 member {
-  id: 0x8ddd7b59
+  id: 0x8ddd7452
   name: "curr"
   type_id: 0x082be49e
-  offset: 640
+  offset: 576
 }
 member {
   id: 0x06716b72
@@ -125352,10 +125352,10 @@ member {
   offset: 512
 }
 member {
-  id: 0x3f84ca4c
-  name: "h_nr_delayed"
+  id: 0x9e476925
+  name: "h_nr_idle"
   type_id: 0x4585663f
-  offset: 288
+  offset: 224
 }
 member {
   id: 0x939a1be0
@@ -133116,23 +133116,11 @@ member {
   bitsize: 1
 }
 member {
-  id: 0xafe87365
-  name: "idle_h_nr_running"
-  type_id: 0x4585663f
-  offset: 256
-}
-member {
   id: 0xbd670ada
   name: "idle_notification"
   type_id: 0x6d7f5ff6
   offset: 1795
   bitsize: 1
-}
-member {
-  id: 0x0df876ad
-  name: "idle_nr_running"
-  type_id: 0x4585663f
-  offset: 224
 }
 member {
   id: 0x3bb61197
@@ -161027,12 +161015,6 @@ member {
   offset: 384
 }
 member {
-  id: 0x63fbeb6e
-  name: "min_vruntime"
-  type_id: 0x92233392
-  offset: 448
-}
-member {
   id: 0x63fbed8b
   name: "min_vruntime"
   type_id: 0x92233392
@@ -169263,10 +169245,10 @@ member {
   type_id: 0x09f6e8ac
 }
 member {
-  id: 0x11fb2906
+  id: 0x11fb2d42
   name: "next"
   type_id: 0x082be49e
-  offset: 704
+  offset: 640
 }
 member {
   id: 0x11ffe851
@@ -173352,6 +173334,12 @@ member {
   offset: 832
 }
 member {
+  id: 0x963f9045
+  name: "nr_queued"
+  type_id: 0x4585663f
+  offset: 128
+}
+member {
   id: 0xd007138a
   name: "nr_queued_ckpt"
   type_id: 0x6720d32f
@@ -173512,12 +173500,6 @@ member {
   name: "nr_running"
   type_id: 0x4585663f
   offset: 32
-}
-member {
-  id: 0xd63677cb
-  name: "nr_running"
-  type_id: 0x4585663f
-  offset: 128
 }
 member {
   id: 0xd6baf45b
@@ -237143,10 +237125,10 @@ member {
   offset: 1472
 }
 member {
-  id: 0x197cb9fb
+  id: 0x197cb594
   name: "tasks_timeline"
   type_id: 0xd0f3b5bf
-  offset: 512
+  offset: 448
 }
 member {
   id: 0x686c7215
@@ -288817,18 +288799,16 @@ struct_union {
   definition {
     bytesize: 512
     member_id: 0x0e290c33
-    member_id: 0xd63677cb
+    member_id: 0x963f9045
     member_id: 0x939a1be0
     member_id: 0x78596efd
-    member_id: 0x0df876ad
-    member_id: 0xafe87365
-    member_id: 0x3f84ca4c
-    member_id: 0xe05addab
-    member_id: 0xbd75bf18
-    member_id: 0x63fbeb6e
-    member_id: 0x197cb9fb
-    member_id: 0x8ddd7b59
-    member_id: 0x11fb2906
+    member_id: 0x9e476925
+    member_id: 0xe05adac7
+    member_id: 0xbd75b94d
+    member_id: 0x63fbed8b
+    member_id: 0x197cb594
+    member_id: 0x8ddd7452
+    member_id: 0x11fb2d42
     member_id: 0x0f961bee
     member_id: 0x0aed277d
     member_id: 0x2e72960f
@@ -427261,7 +427241,13 @@ elf_symbol {
   name: "__balance_callbacks"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xbdeef253
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x908f8571
+=======
   crc: 0x7e355678
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x1b18f64e
   full_name: "__balance_callbacks"
 }
@@ -429486,7 +429472,13 @@ elf_symbol {
   name: "__migrate_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xa5d626be
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xb5bcd07a
+=======
   crc: 0xa7cde394
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x81bed9bb
   full_name: "__migrate_task"
 }
@@ -430873,7 +430865,13 @@ elf_symbol {
   name: "__task_rq_lock"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xe2c1994f
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x9371bba6
+=======
   crc: 0x08f83c49
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x8d7ecefa
   full_name: "__task_rq_lock"
 }
@@ -430936,7 +430934,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_account_irq"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x6830485e
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xe10649f1
+=======
   crc: 0xa31429c2
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bc2b791
   full_name: "__traceiter_android_rvh_account_irq"
 }
@@ -430945,7 +430949,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_after_dequeue_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x7cddfb32
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x9264d0f7
+=======
   crc: 0x841f9933
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b116e84
   full_name: "__traceiter_android_rvh_after_dequeue_task"
 }
@@ -430954,7 +430964,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_after_enqueue_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x05d0829c
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x981fdf45
+=======
   crc: 0xdeacee08
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b116af7
   full_name: "__traceiter_android_rvh_after_enqueue_task"
 }
@@ -431008,7 +431024,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_attach_entity_load_avg"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x20bd4525
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x64b50df9
+=======
   crc: 0x921a03e2
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b96d02c
   full_name: "__traceiter_android_rvh_attach_entity_load_avg"
 }
@@ -431017,7 +431039,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_balance_fair"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x49fd4c91
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x8a626122
+=======
   crc: 0xd3d98a77
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b1007fb
   full_name: "__traceiter_android_rvh_balance_fair"
 }
@@ -431035,7 +431063,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_before_pick_task_fair"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x14781f2d
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xe36e2730
+=======
   crc: 0x9e8d8384
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b14bef4
   full_name: "__traceiter_android_rvh_before_pick_task_fair"
 }
@@ -431071,7 +431105,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_can_migrate_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x892e1121
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xf88f9fd7
+=======
   crc: 0xf5abfb1b
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bc25990
   full_name: "__traceiter_android_rvh_can_migrate_task"
 }
@@ -431089,7 +431129,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_check_preempt_tick"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x92d45678
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xce51c313
+=======
   crc: 0x22344632
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bda0446
   full_name: "__traceiter_android_rvh_check_preempt_tick"
 }
@@ -431098,7 +431144,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_check_preempt_wakeup_fair"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x07442fdc
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xe653ddce
+=======
   crc: 0xec3326e2
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b10b4a6
   full_name: "__traceiter_android_rvh_check_preempt_wakeup_fair"
 }
@@ -431107,7 +431159,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_check_preempt_wakeup_ignore"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xde6b7ccf
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x294f0080
+=======
   crc: 0x3311e12f
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdfaf3f
   full_name: "__traceiter_android_rvh_check_preempt_wakeup_ignore"
 }
@@ -431215,7 +431273,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_dequeue_entity"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x27932835
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x45331852
+=======
   crc: 0xce8eb43e
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b96d02c
   full_name: "__traceiter_android_rvh_dequeue_entity"
 }
@@ -431224,7 +431288,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_dequeue_entity_delayed"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xe25352ec
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x31a80e05
+=======
   crc: 0x9b6d986b
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b969713
   full_name: "__traceiter_android_rvh_dequeue_entity_delayed"
 }
@@ -431233,7 +431303,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_dequeue_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x05d0829c
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x981fdf45
+=======
   crc: 0xdeacee08
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b116af7
   full_name: "__traceiter_android_rvh_dequeue_task"
 }
@@ -431242,7 +431318,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_dequeue_task_fair"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x05d0829c
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x981fdf45
+=======
   crc: 0xdeacee08
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b116af7
   full_name: "__traceiter_android_rvh_dequeue_task_fair"
 }
@@ -431251,7 +431333,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_detach_entity_load_avg"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x20bd4525
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x64b50df9
+=======
   crc: 0x921a03e2
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b96d02c
   full_name: "__traceiter_android_rvh_detach_entity_load_avg"
 }
@@ -431323,7 +431411,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_do_sched_yield"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x4c718ab7
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x67ac427f
+=======
   crc: 0x9fd818a4
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b17b01e
   full_name: "__traceiter_android_rvh_do_sched_yield"
 }
@@ -431359,7 +431453,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_enqueue_entity"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x27932835
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x45331852
+=======
   crc: 0xce8eb43e
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b96d02c
   full_name: "__traceiter_android_rvh_enqueue_entity"
 }
@@ -431368,7 +431468,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_enqueue_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x05d0829c
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x981fdf45
+=======
   crc: 0xdeacee08
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b116af7
   full_name: "__traceiter_android_rvh_enqueue_task"
 }
@@ -431377,7 +431483,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_enqueue_task_fair"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x05d0829c
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x981fdf45
+=======
   crc: 0xdeacee08
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b116af7
   full_name: "__traceiter_android_rvh_enqueue_task_fair"
 }
@@ -431386,7 +431498,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_entity_tick"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x20bd4525
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x64b50df9
+=======
   crc: 0x921a03e2
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b96d02c
   full_name: "__traceiter_android_rvh_entity_tick"
 }
@@ -431413,7 +431531,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_find_busiest_queue"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x2b74422e
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x9d26e8fe
+=======
   crc: 0x47e933ac
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9a3e0766
   full_name: "__traceiter_android_rvh_find_busiest_queue"
 }
@@ -431422,7 +431546,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_find_lowest_rq"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x7496eef0
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x2a9b6923
+=======
   crc: 0x7914b699
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdc60c3
   full_name: "__traceiter_android_rvh_find_lowest_rq"
 }
@@ -431440,7 +431570,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_finish_prio_fork"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd47403ff
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd8c7dfcc
+=======
   crc: 0x29bfa915
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_rvh_finish_prio_fork"
 }
@@ -431449,7 +431585,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_flush_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xb709fd90
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xeec1ce70
+=======
   crc: 0x4b22e740
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_rvh_flush_task"
 }
@@ -431620,7 +431762,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_is_cpu_allowed"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x627f78bd
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x4f611a7f
+=======
   crc: 0xee6541d7
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bc253cf
   full_name: "__traceiter_android_rvh_is_cpu_allowed"
 }
@@ -431665,7 +431813,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_migrate_queued_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xe74ed61e
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xb18c814b
+=======
   crc: 0x01559e52
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b18c50f
   full_name: "__traceiter_android_rvh_migrate_queued_task"
 }
@@ -431674,7 +431828,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_new_task_stats"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd47403ff
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd8c7dfcc
+=======
   crc: 0x29bfa915
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_rvh_new_task_stats"
 }
@@ -431746,7 +431906,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_place_entity"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x96aa146c
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xbc739181
+=======
   crc: 0x2e7a3470
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b974729
   full_name: "__traceiter_android_rvh_place_entity"
 }
@@ -431755,7 +431921,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_post_init_entity_util_avg"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x45cae75d
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x299fd405
+=======
   crc: 0x93e81b07
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b8f15f1
   full_name: "__traceiter_android_rvh_post_init_entity_util_avg"
 }
@@ -431791,7 +431963,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_prepare_prio_fork"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd47403ff
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd8c7dfcc
+=======
   crc: 0x29bfa915
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_rvh_prepare_prio_fork"
 }
@@ -431845,7 +432023,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_remove_entity_load_avg"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x20bd4525
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x64b50df9
+=======
   crc: 0x921a03e2
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b96d02c
   full_name: "__traceiter_android_rvh_remove_entity_load_avg"
 }
@@ -431854,7 +432038,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_replace_next_task_fair"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xac359693
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x3e4d3c13
+=======
   crc: 0xc92c89fb
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b14b1ec
   full_name: "__traceiter_android_rvh_replace_next_task_fair"
 }
@@ -431881,7 +432071,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_rtmutex_prepare_setprio"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x22191428
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x9f45b55b
+=======
   crc: 0x552b0b7c
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdc9aae
   full_name: "__traceiter_android_rvh_rtmutex_prepare_setprio"
 }
@@ -431899,7 +432095,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_sched_balance_find_src_group"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xab23db12
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd38abc48
+=======
   crc: 0x8ce41186
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b79ad21
   full_name: "__traceiter_android_rvh_sched_balance_find_src_group"
 }
@@ -431908,7 +432110,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_sched_balance_rt"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xf123bf1a
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x0d744d3c
+=======
   crc: 0x16b0435d
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b10bb14
   full_name: "__traceiter_android_rvh_sched_balance_rt"
 }
@@ -431944,7 +432152,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_sched_fork"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd47403ff
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd8c7dfcc
+=======
   crc: 0x29bfa915
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_rvh_sched_fork"
 }
@@ -431953,7 +432167,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_sched_fork_init"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd47403ff
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd8c7dfcc
+=======
   crc: 0x29bfa915
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_rvh_sched_fork_init"
 }
@@ -431962,7 +432182,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_sched_getaffinity"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xea18d0c6
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xa6b58f80
+=======
   crc: 0xc2c7b5e4
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bd5e248
   full_name: "__traceiter_android_rvh_sched_getaffinity"
 }
@@ -431971,7 +432197,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_sched_newidle_balance"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xf61c4fd5
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd6c643ad
+=======
   crc: 0x50e04cc4
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b18e15a
   full_name: "__traceiter_android_rvh_sched_newidle_balance"
 }
@@ -431980,7 +432212,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_sched_nohz_balancer_kick"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x063ee8be
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x4fb19dc7
+=======
   crc: 0xc30599a1
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b110126
   full_name: "__traceiter_android_rvh_sched_nohz_balancer_kick"
 }
@@ -431989,7 +432227,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_sched_rebalance_domains"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x638c71c0
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x03bd918d
+=======
   crc: 0xe9f77375
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b13661d
   full_name: "__traceiter_android_rvh_sched_rebalance_domains"
 }
@@ -431998,7 +432242,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_sched_setaffinity"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xb787d9b5
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x6682c72f
+=======
   crc: 0x013700c9
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bd7d214
   full_name: "__traceiter_android_rvh_sched_setaffinity"
 }
@@ -432007,7 +432257,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_schedule"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x37b8dcb8
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xe837df4f
+=======
   crc: 0x2dbc6cd2
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdc22a4
   full_name: "__traceiter_android_rvh_schedule"
 }
@@ -432034,7 +432290,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_select_fallback_rq"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd1ecaa00
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x8dccf1ab
+=======
   crc: 0x7ea96efc
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9a343225
   full_name: "__traceiter_android_rvh_select_fallback_rq"
 }
@@ -432043,7 +432305,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_select_task_rq_fair"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xad18ec73
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x8e3f150b
+=======
   crc: 0x780cdbfa
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bc391f6
   full_name: "__traceiter_android_rvh_select_task_rq_fair"
 }
@@ -432052,7 +432320,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_select_task_rq_rt"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xad18ec73
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x8e3f150b
+=======
   crc: 0x780cdbfa
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bc391f6
   full_name: "__traceiter_android_rvh_select_task_rq_rt"
 }
@@ -432115,7 +432389,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_set_cpus_allowed_by_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xda2de791
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xc63511f1
+=======
   crc: 0x196c4567
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b67b049
   full_name: "__traceiter_android_rvh_set_cpus_allowed_by_task"
 }
@@ -432124,7 +432404,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_set_cpus_allowed_comm"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x6e26194a
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x17026eca
+=======
   crc: 0x9491b42d
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bd79f74
   full_name: "__traceiter_android_rvh_set_cpus_allowed_comm"
 }
@@ -432133,7 +432419,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_set_cpus_allowed_ptr"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x52cc5d28
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x6d232b6d
+=======
   crc: 0xe46a6792
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bddd318
   full_name: "__traceiter_android_rvh_set_cpus_allowed_ptr"
 }
@@ -432151,7 +432443,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_set_iowait"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xab94f788
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x378cf591
+=======
   crc: 0xbe6d739b
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bd01103
   full_name: "__traceiter_android_rvh_set_iowait"
 }
@@ -432169,7 +432467,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_set_task_comm"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x4c82d940
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x9bcfad1e
+=======
   crc: 0xbf32f257
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bc08313
   full_name: "__traceiter_android_rvh_set_task_comm"
 }
@@ -432178,7 +432482,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_set_task_cpu"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x2dfbc0d5
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xab4cc4e1
+=======
   crc: 0x97aa4bf2
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bcabd9d
   full_name: "__traceiter_android_rvh_set_task_cpu"
 }
@@ -432187,7 +432497,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_set_user_nice"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x6e71f180
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x610703ea
+=======
   crc: 0x0996568c
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bd6b82b
   full_name: "__traceiter_android_rvh_set_user_nice"
 }
@@ -432196,7 +432512,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_set_user_nice_locked"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xc25582f9
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xcbe74b6c
+=======
   crc: 0x8188876c
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bd6ff14
   full_name: "__traceiter_android_rvh_set_user_nice_locked"
 }
@@ -432205,7 +432527,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_setscheduler"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd47403ff
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd8c7dfcc
+=======
   crc: 0x29bfa915
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_rvh_setscheduler"
 }
@@ -432214,7 +432542,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_setscheduler_prio"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd47403ff
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd8c7dfcc
+=======
   crc: 0x29bfa915
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_rvh_setscheduler_prio"
 }
@@ -432286,7 +432620,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_tick_entry"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x4c718ab7
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x67ac427f
+=======
   crc: 0x9fd818a4
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b17b01e
   full_name: "__traceiter_android_rvh_tick_entry"
 }
@@ -432304,7 +432644,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_try_to_wake_up"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd47403ff
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd8c7dfcc
+=======
   crc: 0x29bfa915
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_rvh_try_to_wake_up"
 }
@@ -432313,7 +432659,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_try_to_wake_up_success"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd47403ff
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd8c7dfcc
+=======
   crc: 0x29bfa915
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_rvh_try_to_wake_up_success"
 }
@@ -432331,7 +432683,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_uclamp_eff_get"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x915f9d16
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xac128f6e
+=======
   crc: 0x510df742
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bca85c1
   full_name: "__traceiter_android_rvh_uclamp_eff_get"
 }
@@ -432394,7 +432752,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_update_blocked_fair"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x4c718ab7
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x67ac427f
+=======
   crc: 0x9fd818a4
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b17b01e
   full_name: "__traceiter_android_rvh_update_blocked_fair"
 }
@@ -432412,7 +432776,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_update_cpus_allowed"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd2cae851
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xf673b4dd
+=======
   crc: 0xdf7080a0
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bda7323
   full_name: "__traceiter_android_rvh_update_cpus_allowed"
 }
@@ -432421,7 +432791,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_update_deadline"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd3b5998f
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x35c4c5fc
+=======
   crc: 0x265199d0
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b969713
   full_name: "__traceiter_android_rvh_update_deadline"
 }
@@ -432430,7 +432806,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_update_load_avg"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x034621da
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xfffd39ce
+=======
   crc: 0x3f15066e
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x99e4a009
   full_name: "__traceiter_android_rvh_update_load_avg"
 }
@@ -432439,7 +432821,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_update_load_avg_blocked_se"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x04274ba4
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xe706d34e
+=======
   crc: 0x9f1a5b30
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x99e57134
   full_name: "__traceiter_android_rvh_update_load_avg_blocked_se"
 }
@@ -432448,7 +432836,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_update_load_avg_cfs_rq"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xe2024d07
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd3b8ae34
+=======
   crc: 0x25b55d33
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x99e4cdc6
   full_name: "__traceiter_android_rvh_update_load_avg_cfs_rq"
 }
@@ -432457,7 +432851,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_update_load_avg_se"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xe207d3e5
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x0a6794b8
+=======
   crc: 0x995575b3
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x99e4a4df
   full_name: "__traceiter_android_rvh_update_load_avg_se"
 }
@@ -432466,7 +432866,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_update_misfit_status"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x5e82f27c
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x79b7739f
+=======
   crc: 0xb7bcdcd0
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bd01b5c
   full_name: "__traceiter_android_rvh_update_misfit_status"
 }
@@ -432475,7 +432881,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_update_rq_clock_pelt"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x91c5f9d3
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x826287b4
+=======
   crc: 0xd19df6da
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b1c7e9a
   full_name: "__traceiter_android_rvh_update_rq_clock_pelt"
 }
@@ -432484,7 +432896,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_update_rt_rq_load_avg"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x9bd0835d
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xa5cbe3b5
+=======
   crc: 0x5a83e91e
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x99ecdba4
   full_name: "__traceiter_android_rvh_update_rt_rq_load_avg"
 }
@@ -432493,7 +432911,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_update_rt_rq_load_avg_internal"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x60d7f25a
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xaf0bd9e1
+=======
   crc: 0xddfd8b07
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x99ed2e5f
   full_name: "__traceiter_android_rvh_update_rt_rq_load_avg_internal"
 }
@@ -432520,7 +432944,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_util_est_update"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xc4c06aea
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x4757d5d8
+=======
   crc: 0x5b506ed7
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b922d94
   full_name: "__traceiter_android_rvh_util_est_update"
 }
@@ -432574,7 +433004,13 @@ elf_symbol {
   name: "__traceiter_android_rvh_wake_up_new_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd47403ff
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd8c7dfcc
+=======
   crc: 0x29bfa915
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_rvh_wake_up_new_task"
 }
@@ -432592,7 +433028,13 @@ elf_symbol {
   name: "__traceiter_android_vh_account_task_time"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x7cd1c3fa
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x605c8c05
+=======
   crc: 0xb5945aa4
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bd1c0e0
   full_name: "__traceiter_android_vh_account_task_time"
 }
@@ -433303,7 +433745,13 @@ elf_symbol {
   name: "__traceiter_android_vh_copy_process"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x96b3aa7c
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x6e7c8e75
+=======
   crc: 0x2e23ae62
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bc214f0
   full_name: "__traceiter_android_vh_copy_process"
 }
@@ -433321,7 +433769,13 @@ elf_symbol {
   name: "__traceiter_android_vh_cpu_cgroup_css_alloc"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x93adb802
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x9e8a312d
+=======
   crc: 0xbd0fb82f
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b0bea06
   full_name: "__traceiter_android_vh_cpu_cgroup_css_alloc"
 }
@@ -433330,7 +433784,13 @@ elf_symbol {
   name: "__traceiter_android_vh_cpu_cgroup_css_alloc_early"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xc77a6f1a
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x5330c067
+=======
   crc: 0x9bba9531
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b012fb6
   full_name: "__traceiter_android_vh_cpu_cgroup_css_alloc_early"
 }
@@ -433339,7 +433799,13 @@ elf_symbol {
   name: "__traceiter_android_vh_cpu_cgroup_css_free"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xe5063eeb
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xdd28cb94
+=======
   crc: 0x20a15041
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b03e163
   full_name: "__traceiter_android_vh_cpu_cgroup_css_free"
 }
@@ -433636,7 +434102,13 @@ elf_symbol {
   name: "__traceiter_android_vh_dup_task_struct"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x3f65d3b0
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xde36bc40
+=======
   crc: 0x0a4a11b1
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdc9aae
   full_name: "__traceiter_android_vh_dup_task_struct"
 }
@@ -433897,7 +434369,13 @@ elf_symbol {
   name: "__traceiter_android_vh_free_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd47403ff
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd8c7dfcc
+=======
   crc: 0x29bfa915
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_vh_free_task"
 }
@@ -434284,7 +434762,13 @@ elf_symbol {
   name: "__traceiter_android_vh_irqtime_account_process_tick"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xb9211a70
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x4d79af5a
+=======
   crc: 0x6ed26375
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bd1d928
   full_name: "__traceiter_android_vh_irqtime_account_process_tick"
 }
@@ -434473,7 +434957,13 @@ elf_symbol {
   name: "__traceiter_android_vh_map_util_freq"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x61c53489
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x407d6f07
+=======
   crc: 0x4d04d46e
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b6e7eec
   full_name: "__traceiter_android_vh_map_util_freq"
 }
@@ -434824,7 +435314,13 @@ elf_symbol {
   name: "__traceiter_android_vh_mmput"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd7d01c5f
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xc89c040f
+=======
   crc: 0x381ca76c
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bc3617d
   full_name: "__traceiter_android_vh_mmput"
 }
@@ -435112,7 +435608,13 @@ elf_symbol {
   name: "__traceiter_android_vh_prio_inheritance"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x6e3d48fa
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x6605425c
+=======
   crc: 0xa6e62a8f
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdf4df8
   full_name: "__traceiter_android_vh_prio_inheritance"
 }
@@ -435310,7 +435812,13 @@ elf_symbol {
   name: "__traceiter_android_vh_reweight_entity"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x3d01d623
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x8be7ee4a
+=======
   crc: 0x6b1d6b2d
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b8e86a9
   full_name: "__traceiter_android_vh_reweight_entity"
 }
@@ -435553,7 +436061,13 @@ elf_symbol {
   name: "__traceiter_android_vh_sched_move_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xc9b21b89
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xb2bcecf5
+=======
   crc: 0x5b20b7d2
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_vh_sched_move_task"
 }
@@ -435571,7 +436085,13 @@ elf_symbol {
   name: "__traceiter_android_vh_sched_setaffinity_early"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x9a03a8fb
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x0935d608
+=======
   crc: 0x1b6f6b95
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bd7d84b
   full_name: "__traceiter_android_vh_sched_setaffinity_early"
 }
@@ -435589,7 +436109,13 @@ elf_symbol {
   name: "__traceiter_android_vh_scheduler_tick"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x4c718ab7
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x67ac427f
+=======
   crc: 0x9fd818a4
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b17b01e
   full_name: "__traceiter_android_vh_scheduler_tick"
 }
@@ -435607,7 +436133,13 @@ elf_symbol {
   name: "__traceiter_android_vh_scx_fix_prev_slice"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xd47403ff
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd8c7dfcc
+=======
   crc: 0x29bfa915
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_android_vh_scx_fix_prev_slice"
 }
@@ -435634,7 +436166,13 @@ elf_symbol {
   name: "__traceiter_android_vh_scx_set_cpus_allowed"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xec62143b
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xfd66a4ff
+=======
   crc: 0xcfcb4e66
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bddd947
   full_name: "__traceiter_android_vh_scx_set_cpus_allowed"
 }
@@ -435643,7 +436181,13 @@ elf_symbol {
   name: "__traceiter_android_vh_scx_task_switch_finish"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xc173dcf8
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xdc486088
+=======
   crc: 0xc960d2d1
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bc214f0
   full_name: "__traceiter_android_vh_scx_task_switch_finish"
 }
@@ -435679,7 +436223,13 @@ elf_symbol {
   name: "__traceiter_android_vh_setscheduler_uclamp"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x7b58b6d4
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x49f5d463
+=======
   crc: 0xfeb6bc1f
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bc302e5
   full_name: "__traceiter_android_vh_setscheduler_uclamp"
 }
@@ -436309,7 +436859,13 @@ elf_symbol {
   name: "__traceiter_android_vh_uclamp_validate"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xf4d772af
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xf928585c
+=======
   crc: 0x23d5bd25
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bd5ba29
   full_name: "__traceiter_android_vh_uclamp_validate"
 }
@@ -437083,7 +437639,13 @@ elf_symbol {
   name: "__traceiter_pelt_cfs_tp"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xea6097ac
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xbbf5e5d1
+=======
   crc: 0xf4fd79c9
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b94dad5
   full_name: "__traceiter_pelt_cfs_tp"
 }
@@ -437092,7 +437654,13 @@ elf_symbol {
   name: "__traceiter_pelt_dl_tp"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x4955ba63
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xbe8cc609
+=======
   crc: 0xd9cdbb7c
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b17b01e
   full_name: "__traceiter_pelt_dl_tp"
 }
@@ -437101,7 +437669,13 @@ elf_symbol {
   name: "__traceiter_pelt_irq_tp"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x4955ba63
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xbe8cc609
+=======
   crc: 0xd9cdbb7c
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b17b01e
   full_name: "__traceiter_pelt_irq_tp"
 }
@@ -437110,7 +437684,13 @@ elf_symbol {
   name: "__traceiter_pelt_rt_tp"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x4955ba63
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xbe8cc609
+=======
   crc: 0xd9cdbb7c
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b17b01e
   full_name: "__traceiter_pelt_rt_tp"
 }
@@ -437119,7 +437699,13 @@ elf_symbol {
   name: "__traceiter_pelt_se_tp"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xa4da3948
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x3479ee5a
+=======
   crc: 0x1a5b3416
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b8f15f1
   full_name: "__traceiter_pelt_se_tp"
 }
@@ -437200,7 +437786,13 @@ elf_symbol {
   name: "__traceiter_sched_cpu_capacity_tp"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x4955ba63
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xbe8cc609
+=======
   crc: 0xd9cdbb7c
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b17b01e
   full_name: "__traceiter_sched_cpu_capacity_tp"
 }
@@ -437209,7 +437801,13 @@ elf_symbol {
   name: "__traceiter_sched_overutilized_tp"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x23c8a33d
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x92317488
+=======
   crc: 0x3828f32e
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b506e5c
   full_name: "__traceiter_sched_overutilized_tp"
 }
@@ -437218,7 +437816,13 @@ elf_symbol {
   name: "__traceiter_sched_stat_blocked"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xa7899d9f
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x093bb6a4
+=======
   crc: 0xf9cb5f30
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bff5408
   full_name: "__traceiter_sched_stat_blocked"
 }
@@ -437227,7 +437831,13 @@ elf_symbol {
   name: "__traceiter_sched_stat_iowait"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xa7899d9f
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x093bb6a4
+=======
   crc: 0xf9cb5f30
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bff5408
   full_name: "__traceiter_sched_stat_iowait"
 }
@@ -437236,7 +437846,13 @@ elf_symbol {
   name: "__traceiter_sched_stat_runtime"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x6545337a
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x1a2fe283
+=======
   crc: 0x82d28f2a
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bff5408
   full_name: "__traceiter_sched_stat_runtime"
 }
@@ -437245,7 +437861,13 @@ elf_symbol {
   name: "__traceiter_sched_stat_sleep"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xa7899d9f
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x093bb6a4
+=======
   crc: 0xf9cb5f30
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bff5408
   full_name: "__traceiter_sched_stat_sleep"
 }
@@ -437254,7 +437876,13 @@ elf_symbol {
   name: "__traceiter_sched_stat_wait"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xa7899d9f
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x093bb6a4
+=======
   crc: 0xf9cb5f30
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bff5408
   full_name: "__traceiter_sched_stat_wait"
 }
@@ -437263,7 +437891,13 @@ elf_symbol {
   name: "__traceiter_sched_switch"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x320f5e91
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x0dd8afac
+=======
   crc: 0xb6d4b580
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9a1d6471
   full_name: "__traceiter_sched_switch"
 }
@@ -437272,7 +437906,13 @@ elf_symbol {
   name: "__traceiter_sched_update_nr_running_tp"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x2ab82a6b
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x1306f6c9
+=======
   crc: 0xff4f2739
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b0e782a
   full_name: "__traceiter_sched_update_nr_running_tp"
 }
@@ -437281,7 +437921,13 @@ elf_symbol {
   name: "__traceiter_sched_util_est_cfs_tp"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xea6097ac
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xbbf5e5d1
+=======
   crc: 0xf4fd79c9
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b94dad5
   full_name: "__traceiter_sched_util_est_cfs_tp"
 }
@@ -437290,7 +437936,13 @@ elf_symbol {
   name: "__traceiter_sched_util_est_se_tp"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xa4da3948
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x3479ee5a
+=======
   crc: 0x1a5b3416
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b8f15f1
   full_name: "__traceiter_sched_util_est_se_tp"
 }
@@ -437299,7 +437951,13 @@ elf_symbol {
   name: "__traceiter_sched_wakeup"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x8095f4ef
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x20b648f0
+=======
   crc: 0x4afe1e50
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_sched_wakeup"
 }
@@ -437308,7 +437966,13 @@ elf_symbol {
   name: "__traceiter_sched_waking"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x8095f4ef
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x20b648f0
+=======
   crc: 0x4afe1e50
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9bdbdcc4
   full_name: "__traceiter_sched_waking"
 }
@@ -445039,7 +445703,13 @@ elf_symbol {
   name: "activate_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x47a99661
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x6c8fc7ce
+=======
   crc: 0x5a4a6cd8
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x1b7558dd
   full_name: "activate_task"
 }
@@ -445946,7 +446616,13 @@ elf_symbol {
   name: "balance_push_callback"
   is_defined: true
   symbol_type: OBJECT
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x7033df9d
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x24534082
+=======
   crc: 0x533ad7cc
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x3e2562ef
   full_name: "balance_push_callback"
 }
@@ -450188,7 +450864,13 @@ elf_symbol {
   name: "cpu_cgrp_subsys"
   is_defined: true
   symbol_type: OBJECT
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xcb9ac3c0
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x1e6774d6
+=======
   crc: 0x265a0fb7
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x00571446
   full_name: "cpu_cgrp_subsys"
 }
@@ -450684,7 +451366,13 @@ elf_symbol {
   name: "cpufreq_this_cpu_can_update"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xbe897568
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x8a66ccba
+=======
   crc: 0x0a965f35
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0xfec3d248
   full_name: "cpufreq_this_cpu_can_update"
 }
@@ -450837,7 +451525,13 @@ elf_symbol {
   name: "cpupri_find_fitness"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x73c7a7c1
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xc31b4f96
+=======
   crc: 0x3288a644
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x96cdf22f
   full_name: "cpupri_find_fitness"
 }
@@ -452170,7 +452864,13 @@ elf_symbol {
   name: "deactivate_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x47a99661
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x6c8fc7ce
+=======
   crc: 0x5a4a6cd8
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x1b7558dd
   full_name: "deactivate_task"
 }
@@ -457749,7 +458449,13 @@ elf_symbol {
   name: "double_rq_lock"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x57c50aa8
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x9f41baa0
+=======
   crc: 0xc02abc56
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x1ba0fc33
   full_name: "double_rq_lock"
 }
@@ -463311,7 +464017,13 @@ elf_symbol {
   name: "ext_sched_class"
   is_defined: true
   symbol_type: OBJECT
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xf78cb669
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xa0f21f3a
+=======
   crc: 0xa7234fc3
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0xeae74d43
   full_name: "ext_sched_class"
 }
@@ -466511,7 +467223,13 @@ elf_symbol {
   name: "get_wchan"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xf47b8144
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x1ee94b4a
+=======
   crc: 0x03834637
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x36eaa726
   full_name: "get_wchan"
 }
@@ -473214,7 +473932,13 @@ elf_symbol {
   name: "kick_process"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x19d52547
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x9ab58baa
+=======
   crc: 0x67bd62e7
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x17de3be6
   full_name: "kick_process"
 }
@@ -476541,7 +477265,13 @@ elf_symbol {
   name: "migrate_swap"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x91f7d213
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x3a001f23
+=======
   crc: 0xd9ded9ff
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9aaabb4a
   full_name: "migrate_swap"
 }
@@ -484551,7 +485281,13 @@ elf_symbol {
   name: "pick_highest_pushable_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x0e4477c4
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xadf0e581
+=======
   crc: 0x953baec1
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x7151826e
   full_name: "pick_highest_pushable_task"
 }
@@ -484560,7 +485296,13 @@ elf_symbol {
   name: "pick_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x77ce29b9
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x9f8ce7c5
+=======
   crc: 0x3d7915df
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x70cd0122
   full_name: "pick_task"
 }
@@ -487402,7 +488144,13 @@ elf_symbol {
   name: "raw_spin_rq_lock_nested"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x7bf3765d
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xbf042976
+=======
   crc: 0x744edf03
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x1a847502
   full_name: "raw_spin_rq_lock_nested"
 }
@@ -487411,7 +488159,13 @@ elf_symbol {
   name: "raw_spin_rq_unlock"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xbdeef253
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x908f8571
+=======
   crc: 0x7e355678
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x1b18f64e
   full_name: "raw_spin_rq_unlock"
 }
@@ -489445,7 +490199,13 @@ elf_symbol {
   name: "resched_curr"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xbdeef253
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x908f8571
+=======
   crc: 0x7e355678
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x1b18f64e
   full_name: "resched_curr"
 }
@@ -489923,7 +490683,13 @@ elf_symbol {
   name: "root_task_group"
   is_defined: true
   symbol_type: OBJECT
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x61031c93
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x9bddf427
+=======
   crc: 0x26a11bdb
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x84d533ac
   full_name: "root_task_group"
 }
@@ -490670,7 +491436,13 @@ elf_symbol {
   name: "runqueues"
   is_defined: true
   symbol_type: OBJECT
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xc6fc5c68
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xf8ee9eb3
+=======
   crc: 0x14f7f34e
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x924a9b47
   full_name: "runqueues"
 }
@@ -490886,7 +491658,13 @@ elf_symbol {
   name: "sched_set_fifo"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xaf1f7901
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xfb4928a1
+=======
   crc: 0x9fe58f67
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x17de3be6
   full_name: "sched_set_fifo"
 }
@@ -490895,7 +491673,13 @@ elf_symbol {
   name: "sched_set_fifo_low"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xaf1f7901
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xfb4928a1
+=======
   crc: 0x9fe58f67
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x17de3be6
   full_name: "sched_set_fifo_low"
 }
@@ -490904,7 +491688,13 @@ elf_symbol {
   name: "sched_set_normal"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x391c3d9c
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xd9a103a7
+=======
   crc: 0xdd95e695
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x1642b8aa
   full_name: "sched_set_normal"
 }
@@ -490913,7 +491703,13 @@ elf_symbol {
   name: "sched_setattr"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xa1ea1dc4
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x120a1328
+=======
   crc: 0x5dd1c9c4
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9a2476b0
   full_name: "sched_setattr"
 }
@@ -490922,7 +491718,13 @@ elf_symbol {
   name: "sched_setattr_nocheck"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xa1ea1dc4
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x120a1328
+=======
   crc: 0x5dd1c9c4
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9a2476b0
   full_name: "sched_setattr_nocheck"
 }
@@ -490931,7 +491733,13 @@ elf_symbol {
   name: "sched_setscheduler"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x629d1ae7
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x00f43c38
+=======
   crc: 0xb285eefb
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b56b28e
   full_name: "sched_setscheduler"
 }
@@ -490940,7 +491748,13 @@ elf_symbol {
   name: "sched_setscheduler_nocheck"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x629d1ae7
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x00f43c38
+=======
   crc: 0xb285eefb
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9b56b28e
   full_name: "sched_setscheduler_nocheck"
 }
@@ -490949,7 +491763,13 @@ elf_symbol {
   name: "sched_show_task"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x19d52547
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x9ab58baa
+=======
   crc: 0x67bd62e7
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x17de3be6
   full_name: "sched_show_task"
 }
@@ -492227,7 +493047,13 @@ elf_symbol {
   name: "select_fallback_rq"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x3e3b5b38
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x60a7cb5c
+=======
   crc: 0x12d95576
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x843cb143
   full_name: "select_fallback_rq"
 }
@@ -492884,7 +493710,13 @@ elf_symbol {
   name: "set_cpus_allowed_ptr"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x6b9df31c
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0xf19ff953
+=======
   crc: 0x448401dd
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9a02b25a
   full_name: "set_cpus_allowed_ptr"
 }
@@ -492920,7 +493752,13 @@ elf_symbol {
   name: "set_next_entity"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x595ebbfa
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x5a90386b
+=======
   crc: 0x92a3a6b9
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x130ef56d
   full_name: "set_next_entity"
 }
@@ -492992,7 +493830,13 @@ elf_symbol {
   name: "set_task_cpu"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x18f926cd
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x41871b9f
+=======
   crc: 0x31d10ca5
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x16c82e7e
   full_name: "set_task_cpu"
 }
@@ -493010,7 +493854,13 @@ elf_symbol {
   name: "set_user_nice"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xaa14de9c
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x1bff8a86
+=======
   crc: 0xd32cefe3
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x142e0390
   full_name: "set_user_nice"
 }
@@ -498882,7 +499732,13 @@ elf_symbol {
   name: "task_cputime_adjusted"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x233f7228
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x5d598fbc
+=======
   crc: 0xcc1dd60b
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x176dde0e
   full_name: "task_cputime_adjusted"
 }
@@ -498900,7 +499756,13 @@ elf_symbol {
   name: "task_rq_lock"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xe2c1994f
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x9371bba6
+=======
   crc: 0x08f83c49
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x8d7ecefa
   full_name: "task_rq_lock"
 }
@@ -499755,7 +500617,13 @@ elf_symbol {
   name: "thread_group_cputime_adjusted"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x233f7228
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x5d598fbc
+=======
   crc: 0xcc1dd60b
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x176dde0e
   full_name: "thread_group_cputime_adjusted"
 }
@@ -501879,7 +502747,13 @@ elf_symbol {
   name: "uclamp_eff_value"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xc03861d6
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x7230099a
+=======
   crc: 0x7ccba7f6
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x37f8837e
   full_name: "uclamp_eff_value"
 }
@@ -503042,7 +503916,13 @@ elf_symbol {
   name: "update_misfit_status"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x018187e5
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x5e473224
+=======
   crc: 0x2d96fc1a
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x1766319b
   full_name: "update_misfit_status"
 }
@@ -503051,7 +503931,13 @@ elf_symbol {
   name: "update_rq_clock"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0xbdeef253
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x908f8571
+=======
   crc: 0x7e355678
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x1b18f64e
   full_name: "update_rq_clock"
 }
@@ -508787,7 +509673,13 @@ elf_symbol {
   name: "wake_up_process"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x55db26ed
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x1538b16e
+=======
   crc: 0x95574d12
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x9ac6895a
   full_name: "wake_up_process"
 }
@@ -508805,7 +509697,13 @@ elf_symbol {
   name: "wakeup_preempt"
   is_defined: true
   symbol_type: FUNCTION
+<<<<<<< PATCH SET (dfdd3b140308843e8170f3057d47c24b2a04fb30 ANDROID: Fix up kabi after scheduler changes for thaw)
+  crc: 0x47a99661
+||||||| BASE      (269d68249bc6fbeb2b93a47076367302835d1e42 UPSTREAM: sched/fair: Fix variable declaration position)
+  crc: 0x6c8fc7ce
+=======
   crc: 0x5a4a6cd8
+>>>>>>> BASE      (af0fda93afb08a7de536247e85e91d8322152e2d UPSTREAM: sched/fair: Fix variable declaration position)
   type_id: 0x1b7558dd
   full_name: "wakeup_preempt"
 }
