@@ -120,6 +120,11 @@ static inline void pkvm_update_iommu_virtual_caps(u64 *cap, u64 *ecap)
 		*ecap = (*ecap & ~GENMASK_ULL(39, 35)) | (tmp << 35);
 	}
 }
-#endif
+
+#else /* CONFIG_PKVM_INTEL */
+
+#define enable_pkvm false
+
+#endif /* CONFIG_PKVM_INTEL */
 
 #endif
