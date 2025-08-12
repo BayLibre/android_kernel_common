@@ -3255,7 +3255,12 @@ bool noinstr kvm_arch_has_assigned_device(struct kvm *kvm)
 {
 	return raw_atomic_read(&kvm->arch.assigned_device_count);
 }
-EXPORT_SYMBOL_GPL(kvm_arch_has_assigned_device);
+
+bool kvm_arch_has_noncoherent_dma(struct kvm *kvm)
+{
+	return atomic_read(&kvm->arch.noncoherent_dma_count);
+}
+EXPORT_SYMBOL_GPL(kvm_arch_has_noncoherent_dma);
 
 int kvm_spec_ctrl_test_value(u64 value)
 {
