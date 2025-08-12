@@ -1654,15 +1654,15 @@ int rt712_sdca_init(struct device *dev, struct regmap *regmap,
 		return ret;
 
 	/* only add the dmic component if a SMART_MIC function is exposed in ACPI */
-	if (sdca_device_quirk_match(slave, SDCA_QUIRKS_RT712_VB)) {
-		ret =  devm_snd_soc_register_component(dev,
-						       &soc_sdca_dev_rt712_dmic,
-						       rt712_sdca_dmic_dai,
-						       ARRAY_SIZE(rt712_sdca_dmic_dai));
-		if (ret < 0)
-			return ret;
-		rt712->dmic_function_found = true;
-	}
+	/* temporarily enable rt712 dmic until rt712 disco update. */
+
+	ret =  devm_snd_soc_register_component(dev,
+					       &soc_sdca_dev_rt712_dmic,
+					       rt712_sdca_dmic_dai,
+					       ARRAY_SIZE(rt712_sdca_dmic_dai));
+	if (ret < 0)
+		return ret;
+	rt712->dmic_function_found = true;
 
 	/* set autosuspend parameters */
 	pm_runtime_set_autosuspend_delay(dev, 3000);
