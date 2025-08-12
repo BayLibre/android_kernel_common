@@ -67,6 +67,11 @@ static int gunyah_cma_release(struct inode *inode, struct file *file)
 	if (!cma->page)
 		return 0;
 
+	/*
+	 * TODO: The count here is max_size which can be lower than the allocation
+	 * size in gunyah_cma_alloc(). Releasing more memory than allocated is a
+	 * bug. Fix this by caching the allocation size in gunyah_cma struct.
+	 */
 	cma_release(cma->dev.cma_area, cma->page, count);
 	cma->page = NULL;
 
