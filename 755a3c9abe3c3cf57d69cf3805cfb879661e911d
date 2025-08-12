@@ -16,6 +16,23 @@
       "message": "see comments on bug.",
       "revId": "755a3c9abe3c3cf57d69cf3805cfb879661e911d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db47a38b_63a94264",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-12T16:56:07Z",
+      "side": 1,
+      "message": "Please add the removed symbols to gki/aarch64/symbols/type_visibility so the symbols are not removed from the KMI. Something like this:\n```\n# no longer needed\n__traceiter_android_vh_oom_check_panic\n__traceiter_kfree\n__traceiter_kmalloc\n__traceiter_kmem_cache_alloc\n__traceiter_kmem_cache_free\n__xas_next\nconsole_verbose\ncopy_from_user_nofault\ntty_struct* get_current_tty\nkmem_cache_shrink\nset_worker_desc\nstack_trace_save_regs\nwalk_iomem_res_desc\nwork_on_cpu_safe_key\n__tracepoint_android_vh_oom_check_panic\n__tracepoint_kfree\n__tracepoint_kmalloc\n__tracepoint_kmem_cache_alloc\n__tracepoint_kmem_cache_free\n```",
+      "revId": "755a3c9abe3c3cf57d69cf3805cfb879661e911d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
