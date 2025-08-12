@@ -3023,6 +3023,8 @@ static struct mm_struct *get_next_mm(struct lru_gen_mm_walk *walk)
 	return mmget_not_zero(mm) ? mm : NULL;
 }
 
+static void lru_gen_start_scanning_memcg(struct mem_cgroup *memcg);
+
 void lru_gen_add_mm(struct mm_struct *mm)
 {
 	int nid;
@@ -3033,7 +3035,10 @@ void lru_gen_add_mm(struct mm_struct *mm)
 #ifdef CONFIG_MEMCG
 	VM_WARN_ON_ONCE(mm->lru_gen.memcg);
 	mm->lru_gen.memcg = memcg;
+
+	lru_gen_start_scanning_memcg(memcg);
 #endif
+
 	spin_lock(&mm_list->lock);
 
 	for_each_node_state(nid, N_MEMORY) {
@@ -4245,6 +4250,22 @@ static void set_initial_priority(struct pglist_data *pgdat, struct scan_control 
 	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
 }
 
+static bool lruvec_is_empty(struct lruvec *lruvec)
+{
+	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+	int type, zone, gen;
+
+	spin_lock_irq(&lruvec->lru_lock);
+	for_each_gen_type_zone(gen, type, zone) {
+		if (!list_empty(&lrugen->folios[gen][type][zone])) {
+			spin_unlock_irq(&lruvec->lru_lock);
+			return false;
+		}
+	}
+	spin_unlock_irq(&lruvec->lru_lock);
+	return true;
+}
+
 static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
 {
 	int gen, type, zone;
@@ -4469,6 +4490,8 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw,
  *                          memcg LRU
  ******************************************************************************/
 
+#define MEMCG_LRU_INVALID_GEN 0xff
+
 /* see the comment on MEMCG_NR_GENS */
 enum {
 	MEMCG_LRU_NOP,
@@ -4476,17 +4499,23 @@ enum {
 	MEMCG_LRU_TAIL,
 	MEMCG_LRU_OLD,
 	MEMCG_LRU_YOUNG,
+	MEMCG_LRU_DEAD,
 };
 
 static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
 {
 	int seg;
-	int old, new;
+	u8 old, new;
 	unsigned long flags;
 	int bin = get_random_u32_below(MEMCG_NR_BINS);
 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
 
 	spin_lock_irqsave(&pgdat->memcg_lru.lock, flags);
+
+	if (lruvec->lrugen.gen == MEMCG_LRU_INVALID_GEN) {
+		spin_unlock_irqrestore(&pgdat->memcg_lru.lock, flags);
+		return;
+	}
 
 	VM_WARN_ON_ONCE(hlist_nulls_unhashed(&lruvec->lrugen.list));
 
@@ -4502,6 +4531,8 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
 		new = get_memcg_gen(pgdat->memcg_lru.seq);
 	else if (op == MEMCG_LRU_YOUNG)
 		new = get_memcg_gen(pgdat->memcg_lru.seq + 1);
+	else if (op == MEMCG_LRU_DEAD)
+		new = MEMCG_LRU_INVALID_GEN;
 	else
 		VM_WARN_ON_ONCE(true);
 
@@ -4512,11 +4543,12 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
 
 	if (op == MEMCG_LRU_HEAD || op == MEMCG_LRU_OLD)
 		hlist_nulls_add_head_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
-	else
+	else if (op == MEMCG_LRU_TAIL || op == MEMCG_LRU_YOUNG)
 		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
 
 	pgdat->memcg_lru.nr_memcgs[old]--;
-	pgdat->memcg_lru.nr_memcgs[new]++;
+	if (new != MEMCG_LRU_INVALID_GEN)
+		pgdat->memcg_lru.nr_memcgs[new]++;
 
 	if (!pgdat->memcg_lru.nr_memcgs[old] && old == get_memcg_gen(pgdat->memcg_lru.seq))
 		WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
@@ -4528,6 +4560,14 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
 
 void lru_gen_online_memcg(struct mem_cgroup *memcg)
 {
+	int nid;
+
+	for_each_node(nid)
+		get_lruvec(memcg, nid)->lrugen.gen = MEMCG_LRU_INVALID_GEN;
+}
+
+void lru_gen_start_scanning_memcg(struct mem_cgroup *memcg)
+{
 	int gen;
 	int nid;
 	int bin = get_random_u32_below(MEMCG_NR_BINS);
@@ -4538,14 +4578,16 @@ void lru_gen_online_memcg(struct mem_cgroup *memcg)
 
 		spin_lock_irq(&pgdat->memcg_lru.lock);
 
-		VM_WARN_ON_ONCE(!hlist_nulls_unhashed(&lruvec->lrugen.list));
+		if (lruvec->lrugen.gen == MEMCG_LRU_INVALID_GEN) {
+			VM_WARN_ON_ONCE(!hlist_nulls_unhashed(&lruvec->lrugen.list));
 
-		gen = get_memcg_gen(pgdat->memcg_lru.seq);
+			gen = get_memcg_gen(pgdat->memcg_lru.seq);
 
-		lruvec->lrugen.gen = gen;
+			lruvec->lrugen.gen = gen;
 
-		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[gen][bin]);
-		pgdat->memcg_lru.nr_memcgs[gen]++;
+			hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[gen][bin]);
+			pgdat->memcg_lru.nr_memcgs[gen]++;
+		}
 
 		spin_unlock_irq(&pgdat->memcg_lru.lock);
 	}
@@ -4573,7 +4615,8 @@ void lru_gen_release_memcg(struct mem_cgroup *memcg)
 
 		spin_lock_irq(&pgdat->memcg_lru.lock);
 
-		if (hlist_nulls_unhashed(&lruvec->lrugen.list))
+		if (hlist_nulls_unhashed(&lruvec->lrugen.list) ||
+		    lruvec->lrugen.gen == MEMCG_LRU_INVALID_GEN)
 			goto unlock;
 
 		gen = lruvec->lrugen.gen;
@@ -4992,7 +5035,7 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, int s
 
 	/* try to scrape all its memory if this memcg was deleted */
 	if (nr_to_scan && !mem_cgroup_online(memcg))
-		return nr_to_scan;
+		return nr_to_scan > 0 ? nr_to_scan : -1;
 
 	/* try to get away with not aging at the default priority */
 	if (!success || sc->priority == DEF_PRIORITY)
@@ -5081,15 +5124,18 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
 
 static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
 {
-	bool success;
+	bool should_rotate;
 	unsigned long scanned = sc->nr_scanned;
 	unsigned long reclaimed = sc->nr_reclaimed;
 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
 
 	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
-	if (mem_cgroup_below_min(NULL, memcg))
+	if (mem_cgroup_below_min(NULL, memcg)) {
+		if (!mem_cgroup_online(memcg) && lruvec_is_empty(lruvec))
+			return MEMCG_LRU_DEAD;
 		return MEMCG_LRU_YOUNG;
+	}
 
 	if (mem_cgroup_below_low(NULL, memcg)) {
 		/* see the comment on MEMCG_NR_GENS */
@@ -5099,7 +5145,7 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
 		memcg_memory_event(memcg, MEMCG_LOW);
 	}
 
-	success = try_to_shrink_lruvec(lruvec, sc);
+	should_rotate = try_to_shrink_lruvec(lruvec, sc);
 
 	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
 
@@ -5109,11 +5155,14 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
 
 	flush_reclaim_state(sc);
 
-	if (success && mem_cgroup_online(memcg))
+	if (should_rotate && mem_cgroup_online(memcg))
 		return MEMCG_LRU_YOUNG;
 
-	if (!success && lruvec_is_sizable(lruvec, sc))
-		return 0;
+	if (should_rotate && !mem_cgroup_online(memcg) && lruvec_is_empty(lruvec))
+		return MEMCG_LRU_DEAD;
+
+	if (!should_rotate && lruvec_is_sizable(lruvec, sc))
+		return MEMCG_LRU_NOP;
 
 	/* one retry if offlined or too small */
 	return READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_TAIL ?
