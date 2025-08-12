@@ -16,6 +16,23 @@
       "message": "I wanted to suggest documenting the new file in the `gki/` directory but it seems it doesn\u0027t exist for `android-mainline`.\n\nI\u0027ve created a cherry-pick (http://r.android.com/3727310) in case we want to have it merged first.",
       "revId": "4d64fa470f4f36dbd7f0f68049d24f706928db89",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64d3eafb_37ab690f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-08-12T14:42:23Z",
+      "side": 1,
+      "message": "Let\u0027s keep the gki/ directory for data, not code. It could be argued that all the `.bzl` should be moved out of the top directory, but I\u0027d like a proposal if you want to pursue that.",
+      "revId": "4d64fa470f4f36dbd7f0f68049d24f706928db89",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
