@@ -361305,6 +361305,68 @@ enumeration {
   }
 }
 enumeration {
+  id: 0x6d69c879
+  name: "mthp_stat_item"
+  definition {
+    underlying_type_id: 0x4585663f
+    enumerator {
+      name: "MTHP_STAT_ANON_FAULT_ALLOC"
+    }
+    enumerator {
+      name: "MTHP_STAT_ANON_FAULT_FALLBACK"
+      value: 1
+    }
+    enumerator {
+      name: "MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE"
+      value: 2
+    }
+    enumerator {
+      name: "MTHP_STAT_SWPOUT"
+      value: 3
+    }
+    enumerator {
+      name: "MTHP_STAT_SWPOUT_FALLBACK"
+      value: 4
+    }
+    enumerator {
+      name: "MTHP_STAT_SHMEM_ALLOC"
+      value: 5
+    }
+    enumerator {
+      name: "MTHP_STAT_SHMEM_FALLBACK"
+      value: 6
+    }
+    enumerator {
+      name: "MTHP_STAT_SHMEM_FALLBACK_CHARGE"
+      value: 7
+    }
+    enumerator {
+      name: "MTHP_STAT_SPLIT"
+      value: 8
+    }
+    enumerator {
+      name: "MTHP_STAT_SPLIT_FAILED"
+      value: 9
+    }
+    enumerator {
+      name: "MTHP_STAT_SPLIT_DEFERRED"
+      value: 10
+    }
+    enumerator {
+      name: "MTHP_STAT_NR_ANON"
+      value: 11
+    }
+    enumerator {
+      name: "MTHP_STAT_NR_ANON_PARTIALLY_MAPPED"
+      value: 12
+    }
+    enumerator {
+      name: "__MTHP_STAT_COUNT"
+      value: 13
+    }
+  }
+}
+enumeration {
   id: 0x5874250c
   name: "nbcon_prio"
   definition {
@@ -386021,6 +386083,12 @@ function {
   return_type_id: 0x48b5725f
   parameter_id: 0xe0bb64fa
   parameter_id: 0x4585663f
+}
+function {
+  id: 0x29d15eb9
+  return_type_id: 0x33756485
+  parameter_id: 0x6720d32f
+  parameter_id: 0x6d69c879
 }
 function {
   id: 0x29d41b8a
@@ -498197,6 +498265,15 @@ elf_symbol {
   full_name: "subsys_system_register"
 }
 elf_symbol {
+  id: 0x4072acf3
+  name: "sum_mthp_stat"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x6df93463
+  type_id: 0x29d15eb9
+  full_name: "sum_mthp_stat"
+}
+elf_symbol {
   id: 0xdf289104
   name: "super_setup_bdi"
   is_defined: true
@@ -518131,6 +518208,7 @@ interface {
   symbol_id: 0x5577d5a8
   symbol_id: 0x0e1b0b82
   symbol_id: 0xfb52ace2
+  symbol_id: 0x4072acf3
   symbol_id: 0xdf289104
   symbol_id: 0x44e002a2
   symbol_id: 0xf85d5428
