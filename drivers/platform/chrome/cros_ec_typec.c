@@ -343,6 +343,14 @@ static int cros_typec_register_port_altmodes(struct cros_typec_data *typec,
 		if (IS_ERR(amode))
 			return PTR_ERR(amode);
 		port->port_altmode[CROS_EC_ALTMODE_TBT] = amode;
+
+		memset(&desc, 0, sizeof(desc));
+		desc.svid = USB_TYPEC_USB4_SID;
+		desc.mode = TBT_MODE;
+		amode = cros_typec_register_usb4(port, &desc);
+		if (IS_ERR(amode))
+			return PTR_ERR(amode);
+		port->port_altmode[CROS_EC_ALTMODE_USB4] = amode;
 	}
 
 	port->state.alt = NULL;
