@@ -609,6 +609,7 @@ struct pci_host_bridge {
 			resource_size_t size,
 			resource_size_t align);
 
+	ANDROID_BACKPORT_RESERVE(1);
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 
