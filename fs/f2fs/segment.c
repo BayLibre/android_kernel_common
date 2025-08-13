@@ -24,6 +24,7 @@
 #include "gc.h"
 #include "iostat.h"
 #include <trace/events/f2fs.h>
+#include <trace/hooks/segment.h>
 
 #define __reverse_ffz(x) __reverse_ffs(~(x))
 
@@ -2805,6 +2806,8 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
 		hint = GET_SEC_FROM_SEG(sbi, segno);
 	}
 #endif
+
+trace_android_vh_segment_border_secno(&hint);
 
 find_other_zone:
 	secno = find_next_zero_bit(free_i->free_secmap, MAIN_SECS(sbi), hint);
