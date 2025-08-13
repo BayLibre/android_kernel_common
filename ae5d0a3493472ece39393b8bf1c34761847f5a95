@@ -88,6 +88,24 @@
       "parentUuid": "ba2c1076_dd03013c",
       "revId": "ae5d0a3493472ece39393b8bf1c34761847f5a95",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee7fedf5_48e7e221",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-13T13:02:52Z",
+      "side": 0,
+      "message": "Great discussion, I do not have more points to add :-). As you suggested, I have created a new commit to separate the delay of mmio space unmap and added all the details in the commit message. I was not sure where exactly to put the comments in code as this delay is not apparent when we read the code. I hope the details in commit message would suffice :-).",
+      "parentUuid": "54dcc518_a1a3d44e",
+      "revId": "ae5d0a3493472ece39393b8bf1c34761847f5a95",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
