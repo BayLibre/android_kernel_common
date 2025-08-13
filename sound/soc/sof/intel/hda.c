@@ -1129,8 +1129,7 @@ static struct snd_soc_acpi_mach *hda_sdw_machine_select(struct snd_sof_dev *sdev
 		}
 		/* Found if all Slaves are checked */
 		if (i == hdev->info.count || !link->num_adr)
-			if (!mach->machine_check || mach->machine_check(hdev->sdw))
-				break;
+			break;
 	}
 	if (mach && mach->link_mask) {
 		mach->mach_params.links = mach->links;
