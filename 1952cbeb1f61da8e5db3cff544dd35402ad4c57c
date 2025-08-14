@@ -123,6 +123,24 @@
       "parentUuid": "70ec00cb_94bce6f7",
       "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75a3d878_a347cdbd",
+        "filename": "include/uapi/linux/dma-heap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-08-14T17:46:15Z",
+      "side": 1,
+      "message": "Could a separate vendor driver interface provide the same functionality here(translating a dma-buf FD to a restricted handle)?  Is there more context on why this needs to be done in the dma-buf heap interface?",
+      "parentUuid": "42c256b7_dfc50eda",
+      "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
