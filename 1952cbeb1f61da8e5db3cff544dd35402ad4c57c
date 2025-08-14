@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c564da2_af440ca6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1276894
+      },
+      "writtenOn": "2025-08-14T16:15:18Z",
+      "side": 1,
+      "message": "Hi, I am Hiro who requests this IOCTL to the Hubert\u0027s team (b/429034641).\n\nI would like to use this IOCTL in secure video playback (L1 DRM) scenario.\nThe file descriptor in REE which is allocated by restrcited dma_heap allocator is not often understood by Secure OS (e.g. OP-TEE).\nWe need to convert the file descriptor to something that the secure OS can understand.\nIt is what restricted handle is called here.\nThe design doc is attached in the description of the issue tracker too.",
+      "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "895c44a3_0914e5b1",
@@ -50,6 +67,24 @@
       "side": 1,
       "message": "\u003e Maybe would using something other than 0x1 for the IOWR number be wise?\n\nI guess that the reason behind setting this to `0x1` is just the logical order - the previous ioctl `DMA_HEAP_IOCTL_ALLOC` has value `0x0`. Is there any reason not to use `0x1`?",
       "parentUuid": "8f18b289_f63a70fa",
+      "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3992f6b_4b503c39",
+        "filename": "include/uapi/linux/dma-heap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1276894
+      },
+      "writtenOn": "2025-08-14T16:15:18Z",
+      "side": 1,
+      "message": "Yes, I agree that the value doesn\u0027t have to be `0x1`. Any larger value is workable.",
+      "parentUuid": "e6e98d9a_08a49825",
       "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
