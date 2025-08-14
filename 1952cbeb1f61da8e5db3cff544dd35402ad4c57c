@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "895c44a3_0914e5b1",
+        "filename": "include/uapi/linux/dma-heap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-08-14T06:09:15Z",
+      "side": 1,
+      "message": "What is the status of this patch upstream? I feel like there have been a few restricted heap attempts.\n\nWe are usually very hesitant about adding user-visible UAPI that isn\u0027t upstream (as if something slightly different does make it upstream there can be lots of pain to make the transition).\n\nMaybe would using something other than 0x1 for the IOWR number be wise?",
+      "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
