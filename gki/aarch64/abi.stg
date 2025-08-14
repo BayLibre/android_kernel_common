@@ -362193,6 +362193,163 @@ elf_symbol {
   full_name: "__traceiter_android_vh_customize_alloc_gfp"
 }
 elf_symbol {
+<<<<<<< HEAD   (ef6386ddb0f30b65bebb7030a90f00d93f8cee6f ANDROID: GKI: update symbol list for xiaomi)
+||||||| BASE   (1d3cdeb464ce95d74494c87ca07c3d1ac17cadf1 ANDROID: GKI: dma-buf: add vendor hook for dma_buf_release)
+  id: 0xecf16451
+  name: "__traceiter_android_vh_customize_pmd_gfp_bypass"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xe5a022b2
+  type_id: 0x9b702fa1
+  full_name: "__traceiter_android_vh_customize_pmd_gfp_bypass"
+}
+elf_symbol {
+  id: 0x3444cc6c
+  name: "__traceiter_android_vh_customize_thp_gfp_orders"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x3198092f
+  type_id: 0x9b758262
+  full_name: "__traceiter_android_vh_customize_thp_gfp_orders"
+}
+elf_symbol {
+  id: 0xbb17692f
+  name: "__traceiter_android_vh_dc_receive"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x95551fd6
+  type_id: 0x9bbe51c4
+  full_name: "__traceiter_android_vh_dc_receive"
+}
+elf_symbol {
+  id: 0xc8db6e69
+  name: "__traceiter_android_vh_dc_send_copy"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf57e0652
+  type_id: 0x9bb62e4f
+  full_name: "__traceiter_android_vh_dc_send_copy"
+}
+elf_symbol {
+  id: 0x17df4128
+  name: "__traceiter_android_vh_direct_reclaim_begin"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xa5578c91
+  type_id: 0x9be2da56
+  full_name: "__traceiter_android_vh_direct_reclaim_begin"
+}
+elf_symbol {
+  id: 0x5db6a094
+  name: "__traceiter_android_vh_direct_reclaim_end"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x4b2f86ab
+  type_id: 0x9a33392f
+  full_name: "__traceiter_android_vh_direct_reclaim_end"
+}
+elf_symbol {
+  id: 0x8dc41da8
+  name: "__traceiter_android_vh_dma_buf_attr_show_end"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x2573cbab
+  type_id: 0x9bac9a8d
+  full_name: "__traceiter_android_vh_dma_buf_attr_show_end"
+}
+elf_symbol {
+  id: 0x5f33b294
+  name: "__traceiter_android_vh_dma_buf_attr_show_start"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xc2b1879b
+  type_id: 0x9b8532be
+  full_name: "__traceiter_android_vh_dma_buf_attr_show_start"
+}
+elf_symbol {
+=======
+  id: 0xecf16451
+  name: "__traceiter_android_vh_customize_pmd_gfp_bypass"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xe5a022b2
+  type_id: 0x9b702fa1
+  full_name: "__traceiter_android_vh_customize_pmd_gfp_bypass"
+}
+elf_symbol {
+  id: 0x3444cc6c
+  name: "__traceiter_android_vh_customize_thp_gfp_orders"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x3198092f
+  type_id: 0x9b758262
+  full_name: "__traceiter_android_vh_customize_thp_gfp_orders"
+}
+elf_symbol {
+  id: 0xbb17692f
+  name: "__traceiter_android_vh_dc_receive"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x95551fd6
+  type_id: 0x9bbe51c4
+  full_name: "__traceiter_android_vh_dc_receive"
+}
+elf_symbol {
+  id: 0xc8db6e69
+  name: "__traceiter_android_vh_dc_send_copy"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf57e0652
+  type_id: 0x9bb62e4f
+  full_name: "__traceiter_android_vh_dc_send_copy"
+}
+elf_symbol {
+  id: 0x17df4128
+  name: "__traceiter_android_vh_direct_reclaim_begin"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xa5578c91
+  type_id: 0x9be2da56
+  full_name: "__traceiter_android_vh_direct_reclaim_begin"
+}
+elf_symbol {
+  id: 0x5db6a094
+  name: "__traceiter_android_vh_direct_reclaim_end"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x4b2f86ab
+  type_id: 0x9a33392f
+  full_name: "__traceiter_android_vh_direct_reclaim_end"
+}
+elf_symbol {
+  id: 0x8dc41da8
+  name: "__traceiter_android_vh_dma_buf_attr_show_end"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x2573cbab
+  type_id: 0x9bac9a8d
+  full_name: "__traceiter_android_vh_dma_buf_attr_show_end"
+}
+elf_symbol {
+  id: 0x5f33b294
+  name: "__traceiter_android_vh_dma_buf_attr_show_start"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xc2b1879b
+  type_id: 0x9b8532be
+  full_name: "__traceiter_android_vh_dma_buf_attr_show_start"
+}
+elf_symbol {
+  id: 0x6664371a
+  name: "__traceiter_android_vh_dma_buf_release"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x2dac4d6e
+  type_id: 0x9bac9a8d
+  full_name: "__traceiter_android_vh_dma_buf_release"
+}
+elf_symbol {
+>>>>>>> CHANGE (125206b4d7d6898a8a5d0c088a5ba75114266b81 ANDROID: GKI: update symbol list file for xiaomi)
   id: 0x94b48bb0
   name: "__traceiter_android_vh_dma_heap_buffer_alloc_end"
   is_defined: true
@@ -367233,6 +367390,163 @@ elf_symbol {
   full_name: "__tracepoint_android_vh_customize_alloc_gfp"
 }
 elf_symbol {
+<<<<<<< HEAD   (ef6386ddb0f30b65bebb7030a90f00d93f8cee6f ANDROID: GKI: update symbol list for xiaomi)
+||||||| BASE   (1d3cdeb464ce95d74494c87ca07c3d1ac17cadf1 ANDROID: GKI: dma-buf: add vendor hook for dma_buf_release)
+  id: 0xc2fde553
+  name: "__tracepoint_android_vh_customize_pmd_gfp_bypass"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_customize_pmd_gfp_bypass"
+}
+elf_symbol {
+  id: 0x66823d32
+  name: "__tracepoint_android_vh_customize_thp_gfp_orders"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_customize_thp_gfp_orders"
+}
+elf_symbol {
+  id: 0x869fd955
+  name: "__tracepoint_android_vh_dc_receive"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dc_receive"
+}
+elf_symbol {
+  id: 0xaab0786f
+  name: "__tracepoint_android_vh_dc_send_copy"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dc_send_copy"
+}
+elf_symbol {
+  id: 0x749563a6
+  name: "__tracepoint_android_vh_direct_reclaim_begin"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_direct_reclaim_begin"
+}
+elf_symbol {
+  id: 0x694ad7a6
+  name: "__tracepoint_android_vh_direct_reclaim_end"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_direct_reclaim_end"
+}
+elf_symbol {
+  id: 0xd020303e
+  name: "__tracepoint_android_vh_dma_buf_attr_show_end"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dma_buf_attr_show_end"
+}
+elf_symbol {
+  id: 0xe829284e
+  name: "__tracepoint_android_vh_dma_buf_attr_show_start"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dma_buf_attr_show_start"
+}
+elf_symbol {
+=======
+  id: 0xc2fde553
+  name: "__tracepoint_android_vh_customize_pmd_gfp_bypass"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_customize_pmd_gfp_bypass"
+}
+elf_symbol {
+  id: 0x66823d32
+  name: "__tracepoint_android_vh_customize_thp_gfp_orders"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_customize_thp_gfp_orders"
+}
+elf_symbol {
+  id: 0x869fd955
+  name: "__tracepoint_android_vh_dc_receive"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dc_receive"
+}
+elf_symbol {
+  id: 0xaab0786f
+  name: "__tracepoint_android_vh_dc_send_copy"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dc_send_copy"
+}
+elf_symbol {
+  id: 0x749563a6
+  name: "__tracepoint_android_vh_direct_reclaim_begin"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_direct_reclaim_begin"
+}
+elf_symbol {
+  id: 0x694ad7a6
+  name: "__tracepoint_android_vh_direct_reclaim_end"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_direct_reclaim_end"
+}
+elf_symbol {
+  id: 0xd020303e
+  name: "__tracepoint_android_vh_dma_buf_attr_show_end"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dma_buf_attr_show_end"
+}
+elf_symbol {
+  id: 0xe829284e
+  name: "__tracepoint_android_vh_dma_buf_attr_show_start"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dma_buf_attr_show_start"
+}
+elf_symbol {
+  id: 0x7bbd7744
+  name: "__tracepoint_android_vh_dma_buf_release"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x7c5aa8a7
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_android_vh_dma_buf_release"
+}
+elf_symbol {
+>>>>>>> CHANGE (125206b4d7d6898a8a5d0c088a5ba75114266b81 ANDROID: GKI: update symbol list file for xiaomi)
   id: 0x30442e2e
   name: "__tracepoint_android_vh_dma_heap_buffer_alloc_end"
   is_defined: true
@@ -428708,6 +429022,27 @@ interface {
   symbol_id: 0x431c5bf5
   symbol_id: 0x9f47ed94
   symbol_id: 0x96cfd964
+<<<<<<< HEAD   (ef6386ddb0f30b65bebb7030a90f00d93f8cee6f ANDROID: GKI: update symbol list for xiaomi)
+||||||| BASE   (1d3cdeb464ce95d74494c87ca07c3d1ac17cadf1 ANDROID: GKI: dma-buf: add vendor hook for dma_buf_release)
+  symbol_id: 0xecf16451
+  symbol_id: 0x3444cc6c
+  symbol_id: 0xbb17692f
+  symbol_id: 0xc8db6e69
+  symbol_id: 0x17df4128
+  symbol_id: 0x5db6a094
+  symbol_id: 0x8dc41da8
+  symbol_id: 0x5f33b294
+=======
+  symbol_id: 0xecf16451
+  symbol_id: 0x3444cc6c
+  symbol_id: 0xbb17692f
+  symbol_id: 0xc8db6e69
+  symbol_id: 0x17df4128
+  symbol_id: 0x5db6a094
+  symbol_id: 0x8dc41da8
+  symbol_id: 0x5f33b294
+  symbol_id: 0x6664371a
+>>>>>>> CHANGE (125206b4d7d6898a8a5d0c088a5ba75114266b81 ANDROID: GKI: update symbol list file for xiaomi)
   symbol_id: 0x94b48bb0
   symbol_id: 0xbcd1a27c
   symbol_id: 0x5e9ed424
@@ -429268,6 +429603,27 @@ interface {
   symbol_id: 0x66a766d7
   symbol_id: 0xc44d61e6
   symbol_id: 0x611b30be
+<<<<<<< HEAD   (ef6386ddb0f30b65bebb7030a90f00d93f8cee6f ANDROID: GKI: update symbol list for xiaomi)
+||||||| BASE   (1d3cdeb464ce95d74494c87ca07c3d1ac17cadf1 ANDROID: GKI: dma-buf: add vendor hook for dma_buf_release)
+  symbol_id: 0xc2fde553
+  symbol_id: 0x66823d32
+  symbol_id: 0x869fd955
+  symbol_id: 0xaab0786f
+  symbol_id: 0x749563a6
+  symbol_id: 0x694ad7a6
+  symbol_id: 0xd020303e
+  symbol_id: 0xe829284e
+=======
+  symbol_id: 0xc2fde553
+  symbol_id: 0x66823d32
+  symbol_id: 0x869fd955
+  symbol_id: 0xaab0786f
+  symbol_id: 0x749563a6
+  symbol_id: 0x694ad7a6
+  symbol_id: 0xd020303e
+  symbol_id: 0xe829284e
+  symbol_id: 0x7bbd7744
+>>>>>>> CHANGE (125206b4d7d6898a8a5d0c088a5ba75114266b81 ANDROID: GKI: update symbol list file for xiaomi)
   symbol_id: 0x30442e2e
   symbol_id: 0x9d32ef5e
   symbol_id: 0x325e746a
