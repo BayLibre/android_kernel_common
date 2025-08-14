@@ -87,6 +87,24 @@
       "parentUuid": "e6e98d9a_08a49825",
       "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70ec00cb_94bce6f7",
+        "filename": "include/uapi/linux/dma-heap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-14T17:26:26Z",
+      "side": 1,
+      "message": "We generally do not take any UAPI changes that haven\u0027t landed upstream. See https://source.android.com/docs/core/architecture/kernel/kernel-code#core-kernel-features. This becomes unsupportable if a conflicting change is made upstream.\n\nIs this needed by system code, or are the consumers of this new UAPI restricted to vendor code?",
+      "parentUuid": "f3992f6b_4b503c39",
+      "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
