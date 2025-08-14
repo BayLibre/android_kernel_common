@@ -714,6 +714,7 @@ struct per_cpu_pages {
 
 	/* Lists of pages, one per migrate type stored on the pcp-lists */
 	struct list_head lists[NR_PCP_LISTS];
+	unsigned long pad;
 } ____cacheline_aligned_in_smp;
 
 struct per_cpu_zonestat {
