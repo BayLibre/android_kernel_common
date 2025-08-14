@@ -146,6 +146,9 @@ xe-$(CONFIG_PCI_IOV) += \
 # GPU frequency tracer
 xe-$(CONFIG_DRM_XE_GPUFREQTRACER) += xe_gpufreqtracer.o
 
+# GPU Work Period tracepoint
+xe-$(CONFIG_DRM_XE_TRACE_GPU_WORK_PERIOD) += xe_work_period.o
+
 # include helpers for tests even when XE is built-in
 ifdef CONFIG_DRM_XE_KUNIT_TEST
 xe-y += tests/xe_kunit_helpers.o
