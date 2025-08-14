@@ -16,6 +16,24 @@
       "message": "What is the status of this patch upstream? I feel like there have been a few restricted heap attempts.\n\nWe are usually very hesitant about adding user-visible UAPI that isn\u0027t upstream (as if something slightly different does make it upstream there can be lots of pain to make the transition).\n\nMaybe would using something other than 0x1 for the IOWR number be wise?",
       "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f18b289_f63a70fa",
+        "filename": "include/uapi/linux/dma-heap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 2055842
+      },
+      "writtenOn": "2025-08-14T06:48:22Z",
+      "side": 1,
+      "message": "From the conversation with the author I think that this patch is not targeted upstream yet - indeed there are many proposals and wip implementations of the restricted heap and none is accepted by the community yet.\n\nI fully agree that in case any other implementation gets to upstream, then it would get difficult since we\u0027ll have to revert this and apply the other, or combine those two. Probably it will get much more time before any solution is worked out.\n\nAlso currently we can\u0027t see any other reasonable approach in android16-6.12 branch to handle the restricted heaps properly...",
+      "parentUuid": "895c44a3_0914e5b1",
+      "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
