@@ -11,6 +11,12 @@ menuconfig ACPI_DPTF
 	  a coordinated approach for different policies to effect the hardware
 	  state of a system.
 
+config DPTF_THERMAL_INT340X
+    bool
+
+config DPTF_THERMAL_INTEL_SOC_DTS
+    bool
+
 if ACPI_DPTF
 
 config DPTF_POWER
