@@ -26,6 +26,7 @@ struct dma_heap_ops {
 				    u32 fd_flags,
 				    u64 heap_flags);
 	long (*get_pool_size)(struct dma_heap *heap);
+	int (*get_restricted_handle)(u32 fd, u64 *handle);
 };
 
 /**

@@ -164,8 +164,32 @@ static long dma_heap_ioctl_allocate(struct file *file, void *data)
 	return 0;
 }
 
+static long dma_heap_ioctl_get_restricted_handle(struct file *file, void *data)
+{
+	struct dma_heap_restricted_handle_data *handle_data = data;
+	struct dma_heap *heap = file->private_data;
+	u64 rsted_handle;
+	int ret;
+
+	if (handle_data->fd < 0)
+		return -EINVAL;
+
+	if (!heap->ops->get_restricted_handle)
+		return -EINVAL;
+
+	ret =  heap->ops->get_restricted_handle(handle_data->fd,
+						&rsted_handle);
+	if (ret < 0)
+		return ret;
+
+	handle_data->restricted_handle = rsted_handle;
+
+	return 0;
+}
+
 static unsigned int dma_heap_ioctl_cmds[] = {
 	DMA_HEAP_IOCTL_ALLOC,
+	DMA_HEAP_IOCTL_GET_RESTRICTED_HANDLE,
 };
 
 static long dma_heap_ioctl(struct file *file, unsigned int ucmd,
@@ -214,6 +238,9 @@ static long dma_heap_ioctl(struct file *file, unsigned int ucmd,
 	switch (kcmd) {
 	case DMA_HEAP_IOCTL_ALLOC:
 		ret = dma_heap_ioctl_allocate(file, kdata);
+		break;
+	case DMA_HEAP_IOCTL_GET_RESTRICTED_HANDLE:
+		ret = dma_heap_ioctl_get_restricted_handle(file, kdata);
 		break;
 	default:
 		ret = -ENOTTY;

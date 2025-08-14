@@ -39,6 +39,20 @@ struct dma_heap_allocation_data {
 	__u64 heap_flags;
 };
 
+/**
+ * struct dma_heap_restricted_handle_data - metadata passed from userspace to
+ *                                      get restricted buffer handle
+ * @handle:			will be populated with a restricted handle which
+ *				provides the handle to the restriected dma-buf
+ * @fd:				previously allocated dma-buf
+ *
+ * Provided by userspace as an argument to the ioctl
+ */
+struct dma_heap_restricted_handle_data {
+	__u64 restricted_handle;
+	__u32 fd;
+};
+
 #define DMA_HEAP_IOC_MAGIC		'H'
 
 /**
@@ -49,5 +63,8 @@ struct dma_heap_allocation_data {
  */
 #define DMA_HEAP_IOCTL_ALLOC	_IOWR(DMA_HEAP_IOC_MAGIC, 0x0,\
 				      struct dma_heap_allocation_data)
+
+#define DMA_HEAP_IOCTL_GET_RESTRICTED_HANDLE	_IOWR(DMA_HEAP_IOC_MAGIC, 0x1,\
+						      struct dma_heap_restricted_handle_data)
 
 #endif /* _UAPI_LINUX_DMABUF_POOL_H */
