@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fa926de_39dab586",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2025-08-14T20:07:39Z",
+      "side": 1,
+      "message": "Thanks!",
+      "parentUuid": "265dd3db_1f67c0eb",
+      "revId": "ea3d9795af950549909e57bfd2efc6250bb69503",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d39726de_bd239181",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-08-13T02:55:39Z",
       "side": 1,
       "message": "This raised an error\n\n```\n...k/src/gchips-internal/main/kernel/android15-6.6/common/mm/vmscan.c:3178:26: error: implicit declaration of function \u0027sc_swappiness\u0027; did you mean \u0027si_swapinfo\u0027? [-Werror\u003dimplicit-function-declaration]\n 3178 |         int swappiness \u003d sc_swappiness(sc, memcg);\n      |                          ^~~~~~~~~~~~~\n      |                          si_swapinfo\n```",
+      "revId": "ea3d9795af950549909e57bfd2efc6250bb69503",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3d4c626_e44b0623",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3178,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2025-08-14T20:07:39Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "d39726de_bd239181",
       "revId": "ea3d9795af950549909e57bfd2efc6250bb69503",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
