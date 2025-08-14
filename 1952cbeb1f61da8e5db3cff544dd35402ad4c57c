@@ -177,6 +177,24 @@
       "parentUuid": "e9a38934_f9da5caf",
       "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97bce477_e38e8939",
+        "filename": "include/uapi/linux/dma-heap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-08-14T19:20:31Z",
+      "side": 1,
+      "message": "\u003e this would involve cloning (probably whole) dma_heap framework to vendor, where we can add this ioctl\n\nI\u0027m not sure I see why that would be necessary.\n\nThe logic added in this patch is mostly a passthrough call to the vendor heap driver:\n```\n\tret \u003d  heap-\u003eops-\u003eget_restricted_handle(handle_data-\u003efd,\n\t\t\t\t\t\t\u0026rsted_handle);\n```\n\nIt seems that the vendor heap driver could also provide a separate chardev/ioctls interface (similar to what Hiro suggested) which could do the same.",
+      "parentUuid": "78f8ad41_03cf4c6b",
+      "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
