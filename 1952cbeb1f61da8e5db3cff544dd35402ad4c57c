@@ -34,6 +34,24 @@
       "parentUuid": "895c44a3_0914e5b1",
       "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6e98d9a_08a49825",
+        "filename": "include/uapi/linux/dma-heap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 2055842
+      },
+      "writtenOn": "2025-08-14T09:20:20Z",
+      "side": 1,
+      "message": "\u003e Maybe would using something other than 0x1 for the IOWR number be wise?\n\nI guess that the reason behind setting this to `0x1` is just the logical order - the previous ioctl `DMA_HEAP_IOCTL_ALLOC` has value `0x0`. Is there any reason not to use `0x1`?",
+      "parentUuid": "8f18b289_f63a70fa",
+      "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
