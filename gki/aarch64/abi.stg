@@ -15514,6 +15514,11 @@ pointer_reference {
   pointee_type_id: 0xaf74831c
 }
 pointer_reference {
+  id: 0x214e9b28
+  kind: POINTER
+  pointee_type_id: 0xaf7a8a3c
+}
+pointer_reference {
   id: 0x214fd672
   kind: POINTER
   pointee_type_id: 0xaf7fbf57
@@ -123256,6 +123261,12 @@ member {
   name: "get_reserved_space"
   type_id: 0x01a57649
   offset: 448
+}
+member {
+  id: 0x8082a64d
+  name: "get_restricted_handle"
+  type_id: 0x214e9b28
+  offset: 128
 }
 member {
   id: 0xb775d96c
@@ -298895,9 +298906,10 @@ struct_union {
   kind: STRUCT
   name: "dma_heap_ops"
   definition {
-    bytesize: 16
+    bytesize: 24
     member_id: 0x7fa38ab0
     member_id: 0x4f78f705
+    member_id: 0x8082a64d
   }
 }
 struct_union {
@@ -422019,6 +422031,12 @@ function {
   parameter_id: 0x18bd6530
 }
 function {
+  id: 0xaf7a8a3c
+  return_type_id: 0x6720d32f
+  parameter_id: 0xc9082b19
+  parameter_id: 0x2e18f543
+}
+function {
   id: 0xaf7fbf57
   return_type_id: 0x31e58fe0
   parameter_id: 0x015f6fbc
@@ -457260,7 +457278,7 @@ elf_symbol {
   name: "dma_heap_add"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa7ba9655
+  crc: 0xb558cdf9
   type_id: 0x0a745291
   full_name: "dma_heap_add"
 }
