@@ -16,6 +16,24 @@
       "message": "we have another mmu.c in arch/x86/kvm/vmx/pkvm/hyp/ folder. After rebasing, they will be in the same folder arch/x86/kvm/pkvm/. So seems we will merge them as a single mmu.c in the end, right?",
       "revId": "933d44124f033260169c03f57a6970171ae4553e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fd537d6_b7144e4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-14T09:41:02Z",
+      "side": 1,
+      "message": "Quite possibly. The existing arch/x86/kvm/vmx/pkvm/hyp/mmu.c is just for the hypervisor page tables, so if we want to still keep it in a separate file, I guess we\u0027d better rename it to hyp_mmu.c (and correspondingly rename the functions in it, e.g.: pkvm_hyp_mmu_early_init(), pkvm_hyp_mmu_later_init() etc).\n\nBut I suppose we\u0027d prefer to have hypervisor, host and guest page table management all in the same file mmu.c? (As Kevin noted elsewhere, KVM tends to have large files.)\n\nTo me, both options are ok.\n\nBTW I think we also want to eventually merge mem_protect.c into this mmu.c (after we refactor mem_protect.c similarly to pKVM-ARM, as we discussed elsewhere, so that it becomes much simpler and suitable for directly handling host\u0027s MMU hypercalls, without this extra layer in between). The name of the resulting file might be either mmu.c or mem_protect.c, I guess both are ok.\n\nOr maybe you have some other ideas?",
+      "parentUuid": "a6b6fba6_bf8ff0d6",
+      "revId": "933d44124f033260169c03f57a6970171ae4553e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
