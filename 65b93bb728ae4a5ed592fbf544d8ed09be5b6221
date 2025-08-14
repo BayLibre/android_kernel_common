@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ec1252e_14461ee5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-08-14T14:34:36Z",
+      "side": 1,
+      "message": "I think it would be cleaner to add this to the next `if` condition.",
+      "range": {
+        "startLine": 736,
+        "startChar": 0,
+        "endLine": 736,
+        "endChar": 51
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b17e7a3a_10ed2abc",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 735,
+                "startChar": 0,
+                "endLine": 737,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tif (mem_region_idx * sizeof(struct ffa_mem_region_addr_range) \u003e\u003d reg_len) {\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 741,
+                "startChar": 0,
+                "endLine": 742,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tif (check_mul_overflow(j, PAGE_SIZE, \u0026offset) ||\n\t\t\t    check_add_overflow(range-\u003eaddress, offset, \u0026ipa)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "65b93bb728ae4a5ed592fbf544d8ed09be5b6221",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
