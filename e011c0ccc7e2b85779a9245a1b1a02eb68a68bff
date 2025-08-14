@@ -766,6 +766,24 @@
       "parentUuid": "07124fc0_22db6da7",
       "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f36790e8_c6b2c5f0",
+        "filename": "kernel/sched/syscalls.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 786,
+      "author": {
+        "id": 1976445
+      },
+      "writtenOn": "2025-08-14T12:06:18Z",
+      "side": 1,
+      "message": "\u003e while not in correctness, this does have style issues raised by Ingo, which limited him from giving further feedback\n\nYeah but you forget the fact that Peter and Vincent who are the true active maintainers were fine with it. Ingo\u0027s comment was a simple passer\u0027s by comment, he really digs into the finer details.\n\nAnyway I won\u0027t push any further. But for the record this makes the usefulness of the thaw really very limited and borderline pointless 😞",
+      "parentUuid": "20cf4f55_f645c8a0",
+      "revId": "e011c0ccc7e2b85779a9245a1b1a02eb68a68bff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
