@@ -159,6 +159,24 @@
       "parentUuid": "75a3d878_a347cdbd",
       "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78f8ad41_03cf4c6b",
+        "filename": "include/uapi/linux/dma-heap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1276894
+      },
+      "writtenOn": "2025-08-14T19:10:08Z",
+      "side": 1,
+      "message": "I am wondering that having a bypas node such as `/dev/dma_heap_restrcited_handle` only to get a restricted handle from secure fd and adding the ioctl for the node is easy and doesn\u0027t need UAPI and KMI change.\nBut I am not familiar with the restricted heap implementation.\nSo I would rather Friday on MediaTek answer the question.",
+      "parentUuid": "e9a38934_f9da5caf",
+      "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
