@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae36184c_dfb636fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 4286396
+      },
+      "writtenOn": "2025-08-14T10:21:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e39a0473_e96e5080",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 3
+      },
+      "revId": "3f877413167305f2fce410fdb4c5a1d11a1abbd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32a78875_0f2b4128",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-08-13T05:19:56Z",
       "side": 1,
       "message": ".xml file was not generated properly, you removed symbols, not added them 😞",
+      "revId": "3f877413167305f2fce410fdb4c5a1d11a1abbd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "264b5ec9_5d0243a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4286396
+      },
+      "writtenOn": "2025-08-14T10:21:44Z",
+      "side": 1,
+      "message": "I found the problem. Last time, I built it using BUILD_CONGIG\u003dcommon/build. config. gki.arch64 build/build.sh -- update, but Gerrit\u0027s testing robot uses tools/bazel run//common: kernel.arch64-dist, so I need to update BUILD.bazel",
+      "parentUuid": "32a78875_0f2b4128",
       "revId": "3f877413167305f2fce410fdb4c5a1d11a1abbd3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
