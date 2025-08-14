@@ -141,6 +141,24 @@
       "parentUuid": "42c256b7_dfc50eda",
       "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9a38934_f9da5caf",
+        "filename": "include/uapi/linux/dma-heap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 2055842
+      },
+      "writtenOn": "2025-08-14T18:17:04Z",
+      "side": 1,
+      "message": "Theoretically, yes - although this would involve cloning (probably whole) dma_heap framework to vendor, where we can add this ioctl. That\u0027s a lot of work and we are not 100% sure that this will work as expected (not even mentioning the feasibility). Straightforward solution which guarantees that it works correctly is basically implementing a new API for this, like in the change.",
+      "parentUuid": "75a3d878_a347cdbd",
+      "revId": "1952cbeb1f61da8e5db3cff544dd35402ad4c57c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
