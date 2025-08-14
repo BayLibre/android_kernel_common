@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "272b7312_5394a463",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1418,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-14T19:08:13Z",
+      "side": 1,
+      "message": "If we stick to the commit/rollback names, the `vmx_` prefix actually seems a bit superfluous. These functions are internal to this file, so we don\u0027t need to emphasize that they are VMX-specific, since this whole file is VMX-specific; and these functions per se are not so much about VMX. :)",
+      "parentUuid": "276b6765_46b4892f",
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c1241aed_3b5a9a79",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 17
@@ -191,6 +209,24 @@
       "side": 1,
       "message": "I agree. Just curious: is there an advantage in clearing fw memory before reprivilege? After `__PKVM_HC_COMMIT_FINALISE(false)` is called, the fw memory is accessible to host and would it make a difference clearing it before or after reprivilege?",
       "parentUuid": "1e2916ba_d2f5d468",
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "526bb3f8_08f2b452",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1448,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-14T19:08:13Z",
+      "side": 1,
+      "message": "Realistically, bugs in the reprivileging code are not unlikely, right? So if something goes wrong during reprivileging and the CPU gets stuck in some undefined state, the pvmfw memory ends up not being cleared. So it seems safer to clear it as soon as we can, before reprivileging?",
+      "parentUuid": "d72a0883_73783e8c",
       "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },

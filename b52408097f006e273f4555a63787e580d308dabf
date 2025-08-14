@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f35a30ae_4246be1f",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-14T19:08:13Z",
+      "side": 1,
+      "message": "nit: move this somewhere around `static struct pkvm_hyp *pkvm` declararion, since `pkvm_finalise_started` is more a runtime thing, unlike this early command line stuff here?",
+      "revId": "b52408097f006e273f4555a63787e580d308dabf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf31a27e_02242c7d",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 1516,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-14T19:08:13Z",
+      "side": 1,
+      "message": "We can just do `ret \u003d pkvm_iommu_driver_prepare()` ?",
+      "revId": "b52408097f006e273f4555a63787e580d308dabf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
