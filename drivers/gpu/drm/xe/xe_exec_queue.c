@@ -14,6 +14,7 @@
 
 #include "xe_device.h"
 #include "xe_gt.h"
+#include "xe_gt_clock.h"
 #include "xe_hw_engine_class_sysfs.h"
 #include "xe_hw_engine_group.h"
 #include "xe_hw_fence.h"
@@ -822,6 +823,7 @@ void xe_exec_queue_update_run_ticks(struct xe_exec_queue *q)
 	struct xe_device *xe = gt_to_xe(q->gt);
 	struct xe_file *xef;
 	struct xe_lrc *lrc;
+	struct xe_gt *gt = q->gt;
 	u32 old_ts, new_ts;
 	int idx;
 
@@ -850,6 +852,10 @@ void xe_exec_queue_update_run_ticks(struct xe_exec_queue *q)
 	lrc = q->lrc[0];
 	new_ts = xe_lrc_update_timestamp(lrc, &old_ts);
 	xef->run_ticks[q->class] += (new_ts - old_ts) * q->width;
+
+	// Accumulate the runtime in nanosec for this queue into the xe file.
+	q->xef->active_duration_ns +=
+		xe_gt_clock_interval_to_ns(gt, (new_ts - old_ts));
 
 	drm_dev_exit(idx);
 }
