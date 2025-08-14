@@ -16,6 +16,23 @@
       "message": "Should be done by blkzone_alloc_policy.",
       "revId": "f77a3aec861a5c6cb8d33918b71c3f9d7f268ec8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "843aeb45_acce2a04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4251672
+      },
+      "writtenOn": "2025-08-14T11:35:46Z",
+      "side": 1,
+      "message": "The device we plan to use is not a zone device, so we cannot utilize blkzone_alloc_policy. We are aware that f2fs has adapted to support multiple devices, but currently upstream has not adapted for this feature (to be precise, it only supports zone devices), preventing us from using this approach. Currently, our alternative solution is to map two storage devices into a single DM device for processing, which necessitates the use of this vendor hook to provide functionality similar to blkzone_alloc_policy.",
+      "revId": "f77a3aec861a5c6cb8d33918b71c3f9d7f268ec8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
