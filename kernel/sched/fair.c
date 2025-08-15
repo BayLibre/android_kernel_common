@@ -1233,7 +1233,7 @@ static inline bool did_preempt_short(struct cfs_rq *cfs_rq, struct sched_entity 
 	if (!sched_feat(PREEMPT_SHORT))
 		return false;
 
-	if (protect_slice(curr))
+	if (curr->vlag == curr->deadline)
 		return false;
 
 	return !entity_eligible(cfs_rq, curr);
