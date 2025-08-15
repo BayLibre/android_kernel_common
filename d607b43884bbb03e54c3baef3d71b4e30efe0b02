@@ -1,0 +1,100 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7f24e44_ff9c2cba",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-15T12:03:03Z",
+      "side": 1,
+      "message": "nit (sorry :)): maybe move it after `DEFINE_PER_CPU_READ_MOSTLY(bool, pkvm_enabled)`, just because finalise starts after deprivilege, not before it. :)",
+      "fixSuggestions": [
+        {
+          "fixId": "7674d7d0_5ec39284",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 63,
+                "startChar": 0,
+                "endLine": 65,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 71,
+                "startChar": 0,
+                "endLine": 71,
+                "endChar": 0
+              },
+              "replacement": "static bool pkvm_finalise_started;\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d607b43884bbb03e54c3baef3d71b4e30efe0b02",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50199368_c88b40b2",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 1457,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-15T12:03:03Z",
+      "side": 1,
+      "message": "nit: if we have have a comment here anyway, maybe make it more explanatory e.g.: \"If finalise operation started, it means pkvm may have already enabled protection of the hypervisor memory or other resources from the host. So ask pkvm to tear down this protection to let the host successfully rollback pkvm initialization.\"",
+      "revId": "d607b43884bbb03e54c3baef3d71b4e30efe0b02",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bf5ce41_98f850cf",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 1462,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-15T12:03:03Z",
+      "side": 1,
+      "message": "nit: As we have other comments here, this seems to deserve a comment too, e.g. maybe: \"Clear the pvmfw memory region as soon as we can (i.e. as soon as we have access to the hypervisor memory), before reprivileging the CPUs, to ensure clearing it even if the reprivileging goes wrong and the CPU gets stuck.\" ?",
+      "revId": "d607b43884bbb03e54c3baef3d71b4e30efe0b02",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7e76cc7_e925ffe1",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 1465,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-15T12:03:03Z",
+      "side": 1,
+      "message": "nit: similarly, if we have this comment anyway, maybe e.g. \"Reprivilege cpus, i.e. return them to VMX root mode.\" ?",
+      "revId": "d607b43884bbb03e54c3baef3d71b4e30efe0b02",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
