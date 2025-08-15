@@ -15,6 +15,7 @@
 #include <linux/xarray.h>
 #include <trace/hooks/mm.h>
 #include "gcma_sysfs.h"
+#include "internal.h"
 
 /*
  * page->page_type : area id
@@ -313,6 +314,8 @@ int register_gcma_area(const char *name, phys_addr_t base, phys_addr_t size)
 		set_area_id(page, area_id);
 		reset_gcma_page(page);
 		SetPageGCMAFree(page);
+		set_page_refcounted(page);
+		atomic_set(&page->_mapcount, 0);
 		list_add(&page->lru, &area->free_pages);
 	}
 
@@ -524,6 +527,8 @@ again:
 			 */
 			ClearPageGCMAFree(page);
 			list_del_init(&page->lru);
+			if (page_ref_count(page) == 0)
+				set_page_refcounted(page);
 			page_area_unlock(page);
 			continue;
 		}
@@ -655,6 +660,10 @@ void gcma_free_range(unsigned long start_pfn, unsigned long end_pfn)
 		/* The struct page fields would be contaminated so reset them */
 		set_area_id(page, area_id);
 		INIT_LIST_HEAD(&page->lru);
+		/* The caller should ensure no other users when freeing */
+		if (WARN_ON(!put_page_testzero(page)))
+			continue;
+
 		page_area_lock(page);
 		__gcma_free_page(page);
 		page_area_unlock(page);
