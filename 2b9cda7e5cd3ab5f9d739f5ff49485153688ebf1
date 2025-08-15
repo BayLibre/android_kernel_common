@@ -16,6 +16,181 @@
       "message": "The addition of these 6 configs leads to the total addition of 9 configs to the output .config file, specified below\n\nCONFIG_EXTCON_USB_GPIO\u003dy\nCONFIG_PHY_TEGRA_XUSB\u003dy\nCONFIG_USB_CONFIGFS_F_LB_SS\u003dy\nCONFIG_USB_CONFIGFS_RNDIS\u003dy\nCONFIG_USB_CONN_GPIO\u003dy\nCONFIG_USB_F_RNDIS\u003dy\nCONFIG_USB_F_SS_LB\u003dy\nCONFIG_USB_TEGRA_XUDC\u003dy\nCONFIG_USB_XHCI_TEGRA\u003dy\n\nPlease also find data regarding the increase in the memory footprint of the kernel below:\n\n**Base GKI Without Tegra USB Enablement:**\nImage Size: 21M\ntext:     27,030,430 bytes\ndata:      8,321,281 bytes\nbss:         649,528 bytes\ntotal:    36,001,239 bytes (decimal)\nfile:     vmlinux\n\n\n**With Tegra USB Enablement:**\nImage size: 21M\ntext:     27,138,527 bytes\ndata:      8,346,485 bytes\nbss:         649,528 bytes\ntotal:    36,134,540 bytes\nfile:     vmlinux",
       "revId": "2b9cda7e5cd3ab5f9d739f5ff49485153688ebf1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f61d6120_87d54ba3",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-15T16:47:29Z",
+      "side": 1,
+      "message": "This is a tristate config. Why does it need to be built-in? Please build as a vendor module in your downstream tree.",
+      "fixSuggestions": [
+        {
+          "fixId": "8b3a2c53_6a3179d2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/configs/gki_defconfig",
+              "range": {
+                "startLine": 518,
+                "startChar": 0,
+                "endLine": 519,
+                "endChar": 0
+              },
+              "replacement": "# CONFIG_USB_XHCI_TEGRA is not set\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2b9cda7e5cd3ab5f9d739f5ff49485153688ebf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93f7f3c4_e8f03e36",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-15T16:47:29Z",
+      "side": 1,
+      "message": "This is a tristate config. Why does it need to be built-in? Please build as a vendor module in your downstream tree.",
+      "fixSuggestions": [
+        {
+          "fixId": "163cd2df_0c4334a2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/configs/gki_defconfig",
+              "range": {
+                "startLine": 530,
+                "startChar": 0,
+                "endLine": 531,
+                "endChar": 0
+              },
+              "replacement": "# CONFIG_USB_TEGRA_XUDC is not set\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2b9cda7e5cd3ab5f9d739f5ff49485153688ebf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d93cc88_34d68cfa",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-15T16:47:29Z",
+      "side": 1,
+      "message": "This config is for testing. There is no reason this should be added for all Android devices. Please remove it and build your own downstream kernel with this config for testing.",
+      "fixSuggestions": [
+        {
+          "fixId": "93d647b7_6c6c8619",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/configs/gki_defconfig",
+              "range": {
+                "startLine": 540,
+                "startChar": 0,
+                "endLine": 541,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "2b9cda7e5cd3ab5f9d739f5ff49485153688ebf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf2954a6_77d1b3a9",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-15T16:47:29Z",
+      "side": 1,
+      "message": "This is a tristate config. Why does it need to be built-in? Please build as a vendor module in your downstream tree.",
+      "fixSuggestions": [
+        {
+          "fixId": "feb85756_ed059b25",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/configs/gki_defconfig",
+              "range": {
+                "startLine": 610,
+                "startChar": 0,
+                "endLine": 611,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "2b9cda7e5cd3ab5f9d739f5ff49485153688ebf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dc15fcb_46ab06be",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-15T16:47:29Z",
+      "side": 1,
+      "message": "This is a tristate config. Why does it need to be built-in? Please build as a vendor module in your downstream tree.",
+      "fixSuggestions": [
+        {
+          "fixId": "a5a7b9ad_4d108956",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/configs/gki_defconfig",
+              "range": {
+                "startLine": 624,
+                "startChar": 0,
+                "endLine": 625,
+                "endChar": 0
+              },
+              "replacement": "# CONFIG_PHY_TEGRA_XUSB is not set\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2b9cda7e5cd3ab5f9d739f5ff49485153688ebf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
