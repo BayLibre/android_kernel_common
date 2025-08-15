@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0de07529_25bf9588",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1418,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-15T02:04:49Z",
+      "side": 1,
+      "message": "Ok, will remove the `vmx_` prefix, I would like to stick on to the commit/rollback terminology and it sounds a bit more suitable here :-)",
+      "parentUuid": "272b7312_5394a463",
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c1241aed_3b5a9a79",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 17
@@ -227,6 +245,24 @@
       "side": 1,
       "message": "Realistically, bugs in the reprivileging code are not unlikely, right? So if something goes wrong during reprivileging and the CPU gets stuck in some undefined state, the pvmfw memory ends up not being cleared. So it seems safer to clear it as soon as we can, before reprivileging?",
       "parentUuid": "d72a0883_73783e8c",
+      "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15f26945_435296f8",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 1448,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-15T02:04:49Z",
+      "side": 1,
+      "message": "Absolutely, bugs are more than likely, and there are chances that reprivilege can get cpus stuck. I shall move pkvm_firmware_rmem_clear() before reprivilege",
+      "parentUuid": "526bb3f8_08f2b452",
       "revId": "98db7e845c96e1088088c5d6029fd35851e5e020",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
