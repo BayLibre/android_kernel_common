@@ -258,6 +258,16 @@ Description:	The USB Modes that the partner device supports. The active mode
 		- usb3 (USB 3.2)
 		- usb4 (USB4)
 
+What:		/sys/class/typec/<port>-partner/mode_selection
+Date:		August 2025
+Contact:	Andrei Kuchynski <akuchynski@chromium.org>
+Description:	Mode selection is activated by writing boolean 1 to the
+		file. Conversely, writing boolean 0 will cancel any ongoing selection
+		process and exit the currently active mode, if any. The attribute
+		returns "on" when mode selection is in progress, and "off" otherwise.
+		This attribute is only present if the kernel supports AP driven mode
+		entry, where the Application Processor manages USB Type-C alt-modes.
+
 USB Type-C cable devices (eg. /sys/class/typec/port0-cable/)
 
 Note: Electronically Marked Cables will have a device also for one cable plug

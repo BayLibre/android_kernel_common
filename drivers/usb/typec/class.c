@@ -763,6 +763,35 @@ static ssize_t number_of_alternate_modes_show(struct device *dev, struct device_
 }
 static DEVICE_ATTR_RO(number_of_alternate_modes);
 
+static ssize_t mode_selection_show(struct device *dev,
+				   struct device_attribute *attr, char *buf)
+{
+	const bool ret = typec_mode_selection_is_pending(to_typec_partner(dev));
+
+	return sysfs_emit(buf, "%s\n", str_on_off(ret));
+}
+
+static ssize_t mode_selection_store(struct device *dev,
+	struct device_attribute *attr, const char *buf, size_t size)
+{
+	struct typec_partner *partner = to_typec_partner(dev);
+	bool start;
+	int ret = kstrtobool(buf, &start);
+
+	if (!ret) {
+		if (start)
+			ret = typec_mode_selection_start(partner);
+		else
+			ret = typec_mode_selection_reset(partner);
+	}
+
+	if (ret)
+		return ret;
+
+	return size;
+}
+static DEVICE_ATTR_RW(mode_selection);
+
 static struct attribute *typec_partner_attrs[] = {
 	&dev_attr_accessory_mode.attr,
 	&dev_attr_supports_usb_power_delivery.attr,
@@ -770,6 +799,7 @@ static struct attribute *typec_partner_attrs[] = {
 	&dev_attr_type.attr,
 	&dev_attr_usb_mode.attr,
 	&dev_attr_usb_power_delivery_revision.attr,
+	&dev_attr_mode_selection.attr,
 	NULL
 };
 
@@ -792,6 +822,10 @@ static umode_t typec_partner_attr_is_visible(struct kobject *kobj, struct attrib
 
 	if (attr == &dev_attr_type.attr)
 		if (!get_pd_product_type(kobj_to_dev(kobj)))
+			return 0;
+
+	if (attr == &dev_attr_mode_selection.attr)
+		if (!port->mode_control)
 			return 0;
 
 	return attr->mode;
@@ -1096,6 +1130,8 @@ struct typec_partner *typec_register_partner(struct typec_port *port,
 		typec_partner_link_device(partner, port->usb3_dev);
 	mutex_unlock(&port->partner_link_lock);
 
+	typec_mode_selection_add_partner(partner);
+
 	return partner;
 }
 EXPORT_SYMBOL_GPL(typec_register_partner);
@@ -1113,6 +1149,7 @@ void typec_unregister_partner(struct typec_partner *partner)
 	if (IS_ERR_OR_NULL(partner))
 		return;
 
+	typec_mode_selection_remove_partner(partner);
 	port = to_typec_port(partner->dev.parent);
 
 	mutex_lock(&port->partner_link_lock);
