@@ -767,6 +767,7 @@ void lru_add_drain(void)
 	local_unlock(&cpu_fbatches.lock);
 	mlock_drain_local();
 }
+EXPORT_SYMBOL_GPL(lru_add_drain);
 
 /*
  * It's called from per-cpu workqueue context in SMP case so
