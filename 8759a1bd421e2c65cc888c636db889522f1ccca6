@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c4038a8_46a6a5f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-08-18T19:54:51Z",
+      "side": 1,
+      "message": "Could you expand HWT? It\u0027s not immediately obvious what its referring to.",
+      "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4b86618_48a22ce6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-08-18T19:54:51Z",
+      "side": 1,
+      "message": "This commit message needs some improvements. It\u0027s not obvious how the description here connects to change in logic in this patch.",
+      "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab652e37_b4633176",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-08-18T19:54:51Z",
+      "side": 1,
+      "message": "So this change feels pretty subtle, so the explanation of the problem and how this change resolves it needs some improvement.\n\nThen we need to understand if the change in the vendorhook call location (and locks held) might negatively impact other vendor implementations, and if this needs to be addressed via a new vendorhook instead to avoid impacting existing semantics.",
+      "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb483eb4_db4ceb66",
+        "filename": "kernel/sched/ext.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4672,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-08-18T19:54:51Z",
+      "side": 1,
+      "message": "So I fret this changes the semantics of the vendorhook (since additional locks are now held), and has potential to cause problems to existing vendorhook implementations.\n\nThe the existing VH is used inconsistently with respect to the locks, as scx_ops_enable() calls the same hook with both SCX_OPS_ENABLING and SCX_OPS_ENABLED holding scx_ops_enable_mutex. \n\nBut in the `scx_ops_disable_workfn()` logic, its called with SCX_OPS_DISABLING\n and SCX_OPS_DISABLED outside of the `scx_ops_enable_mutex` critical section\n\n\nMaking it consistent feels like a reasonable bug fix. But it seems like you\u0027d need to do both this call and the SCX_OPS_DISABLED together. \n\n\nHowever, the other complexity here is this patch adds another lock `scx_fork_rwsem` into the mix, which isn\u0027t held for any of the other callers in my understanding, which seems like it could cause trouble.\n\nIt seems calling DISABLING with the scx_fork_rwsem held critical to the fix here. Could you explain this better in the commit message? \n\nAs a alternative, maybe a separate vendorhook\n\n`trace_android_vh_scx_ops_enable_state_locked()` might be added (leaving the existing one in place) where specific logic that needs to be done holding the rwsem could be added?",
+      "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
