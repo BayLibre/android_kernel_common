@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66ead516_6e31826a",
+        "filename": "gki/aarch64/symbols/type_visibility",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-18T16:28:05Z",
+      "side": 1,
+      "message": "The symbol parser is sensitive to inconsistent indentation, so the inconsistent use of leading whitespace is breaking the build. All of these should be proceeded with 2 spaces as they are above and in your mtktv symbol list.",
+      "fixSuggestions": [
+        {
+          "fixId": "841fe989_7a4ac56f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gki/aarch64/symbols/type_visibility",
+              "range": {
+                "startLine": 9,
+                "startChar": 0,
+                "endLine": 10,
+                "endChar": 0
+              },
+              "replacement": "  __traceiter_kfree\n"
+            },
+            {
+              "path": "gki/aarch64/symbols/type_visibility",
+              "range": {
+                "startLine": 11,
+                "startChar": 0,
+                "endLine": 12,
+                "endChar": 0
+              },
+              "replacement": "  __traceiter_kmem_cache_alloc\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1e4b87389e5b8affc40367e925b691c854754e3b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
