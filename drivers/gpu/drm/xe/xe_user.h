@@ -6,6 +6,9 @@
 #ifndef _XE_USER_H_
 #define _XE_USER_H_
 
+#include "xe_device.h"
+
+
 /**
  * struct xe_user - xe user structure
  *
@@ -41,6 +44,11 @@ struct xe_user {
 	struct work_struct work;
 
 	/**
+	 * @id: index of this user into the xe device::users xarray
+	 */
+	u32 id;
+
+	/**
 	 * @uid: UID of this xe_user
 	 */
 	u32 uid;
@@ -58,7 +66,8 @@ struct xe_user {
 	u64 last_timestamp_ns;
 };
 
-struct xe_user *xe_user_alloc(void);
+int xe_user_init(struct xe_device *xe, struct xe_file *xef, unsigned int uid);
+
 
 static inline struct xe_user *
 xe_user_get(struct xe_user *user)
