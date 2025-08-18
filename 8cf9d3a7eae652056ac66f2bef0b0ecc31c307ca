@@ -1,0 +1,273 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd12b6da_23c07138",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-18T21:10:49Z",
+      "side": 1,
+      "message": "Would it be better to use `shadow_pgt_*` functions from ept.c so as to avoid making `shadow_pgt_pool` extern?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "53579ac2_109d3610",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/mmu.c",
+              "range": {
+                "startLine": 22,
+                "startChar": 0,
+                "endLine": 23,
+                "endChar": 0
+              },
+              "replacement": "\treturn shadow_pgt_zalloc_page();\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/mmu.c",
+              "range": {
+                "startLine": 27,
+                "startChar": 0,
+                "endLine": 28,
+                "endChar": 0
+              },
+              "replacement": "\tshadow_pgt_get_page(vaddr);\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/mmu.c",
+              "range": {
+                "startLine": 32,
+                "startChar": 0,
+                "endLine": 33,
+                "endChar": 0
+              },
+              "replacement": "\tshadow_pgt_put_page(vaddr);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee2d2f22_d5f456d2",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-18T21:10:49Z",
+      "side": 1,
+      "message": "nit: In the spirit of bisectability, would it be better to have this in next patch? pkvm_vm_mmu_init() will fail here as guest_pg_ops is NULL and pkvm_vm_mmu_destroy also may have issues because guest_pgt_ops was not initialized.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 1
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "d4e67b6c_4e632875",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/mmu.c",
+              "range": {
+                "startLine": 35,
+                "startChar": 0,
+                "endLine": 48,
+                "endChar": 0
+              },
+              "replacement": "// int pkvm_vm_mmu_init(struct pkvm_vm *pkvm_vm)\n// {\n// \tpkvm_vm-\u003epgt_mm_ops \u003d (struct pkvm_mm_ops) {\n// \t\t.phys_to_virt \u003d pkvm_phys_to_virt,\n// \t\t.virt_to_phys \u003d pkvm_virt_to_phys,\n// \t\t.zalloc_page \u003d guest_mmu_zalloc_page,\n// \t\t.get_page \u003d guest_mmu_get_page,\n// \t\t.put_page \u003d guest_mmu_put_page,\n// \t\t.page_count \u003d hyp_page_count,\n// \t\t.flush_tlb \u003d NULL,\n// \t\t.flush_cache \u003d NULL,\n// \t};\n// \tpkvm_vm-\u003epgt_lock \u003d __PKVM_SPINLOCK_UNLOCKED;\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/mmu.c",
+              "range": {
+                "startLine": 49,
+                "startChar": 0,
+                "endLine": 52,
+                "endChar": 0
+              },
+              "replacement": "// \treturn pkvm_pgtable_init(\u0026pkvm_vm-\u003epgt, \u0026pkvm_vm-\u003epgt_mm_ops, guest_pgt_ops,\n// \t\t\t\t \u0026guest_pgt_cap, true);\n// }\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/mmu.c",
+              "range": {
+                "startLine": 53,
+                "startChar": 0,
+                "endLine": 57,
+                "endChar": 0
+              },
+              "replacement": "// void pkvm_vm_mmu_destroy(struct pkvm_vm *pkvm_vm)\n// {\n// \tpkvm_pgtable_destroy(\u0026pkvm_vm-\u003epgt, NULL);\n// }\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "996ed2f1_7e7c483d",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-18T21:10:49Z",
+      "side": 1,
+      "message": "We might not need this as pkvm_vm_destroy calls pkvm_vm_mmu_destroy anyways",
+      "fixSuggestions": [
+        {
+          "fixId": "b402535b_392471ea",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 186,
+                "startChar": 0,
+                "endLine": 187,
+                "endChar": 0
+              },
+              "replacement": "\t\tgoto vm_destroy;\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 190,
+                "startChar": 0,
+                "endLine": 192,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b740cc0_e10e6555",
+        "filename": "arch/x86/kvm/pkvm/pkvm.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-18T21:10:49Z",
+      "side": 1,
+      "message": "suggestion: Would it make sense to have this in a separate data structure - maybe pkvm_mmu? Might help in organizing initialization/destroy and other management easier.",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 26
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "00ae8cf4_fb69a4dc",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.h",
+              "range": {
+                "startLine": 51,
+                "startChar": 0,
+                "endLine": 51,
+                "endChar": 0
+              },
+              "replacement": "struct pkvm_mmu {\n\t/* The guest\u0027s stage-2 page table managed by the hypervisor */\n\tstruct pkvm_pgtable pgt;\n\tstruct pkvm_mm_ops pgt_mm_ops;\n\tpkvm_spinlock_t pgt_lock;\n};\n\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.h",
+              "range": {
+                "startLine": 75,
+                "startChar": 0,
+                "endLine": 79,
+                "endChar": 0
+              },
+              "replacement": "\tstruct pkvm_mmu mmu;\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.h",
+              "range": {
+                "startLine": 114,
+                "startChar": 0,
+                "endLine": 115,
+                "endChar": 0
+              },
+              "replacement": "\treturn container_of(pgt, struct pkvm_vm, mmu.pgt);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "802761f4_4befa8a3",
+        "filename": "arch/x86/kvm/pkvm/pkvm.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-18T21:10:49Z",
+      "side": 1,
+      "message": "These are not used in this patch I believe. Would it be better to define it in the patch where they are used the first time?",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 1
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "4f63652e_0db7f344",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.h",
+              "range": {
+                "startLine": 111,
+                "startChar": 0,
+                "endLine": 121,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
