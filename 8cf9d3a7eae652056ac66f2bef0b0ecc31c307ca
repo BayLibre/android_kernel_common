@@ -64,6 +64,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "174c173f_c243343d",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-18T22:18:25Z",
+      "side": 1,
+      "message": "Then we would need to make those functions extern. While this is temporary anyway - see Greg\u0027s WIP patch aosp/3702537.",
+      "parentUuid": "cd12b6da_23c07138",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 0
+      },
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ee2d2f22_d5f456d2",
         "filename": "arch/x86/kvm/pkvm/mmu.c",
         "patchSetId": 13
@@ -125,6 +149,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f099c45f_e2ffe513",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-18T22:18:25Z",
+      "side": 1,
+      "message": "Indeed, didn\u0027t realize that pkvm_pgtable_init() returns an error in this case. Let me see how to address this.",
+      "parentUuid": "ee2d2f22_d5f456d2",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 1
+      },
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "996ed2f1_7e7c483d",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 13
@@ -164,6 +212,24 @@
           ]
         }
       ],
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a24a11c1_5d61df5c",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-18T22:18:25Z",
+      "side": 1,
+      "message": "Indeed.",
+      "parentUuid": "996ed2f1_7e7c483d",
       "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -231,6 +297,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bcbbf8e5_9ab87bcf",
+        "filename": "arch/x86/kvm/pkvm/pkvm.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-18T22:18:25Z",
+      "side": 1,
+      "message": "I thought about that, but I\u0027m not sure it wouldn\u0027t be a bit premature to pursue a \"well-defined abstraction\" of \"pKVM MMU\" at this point (in particular since we are considering further refactoring of this code in a near future: unifying it with mem_protect.c, unifying host EPT code with it, etc). Also pKVM-ARM doesn\u0027t use a separate structure for that either (see `struct pkvm_hyp_vm`).",
+      "parentUuid": "8b740cc0_e10e6555",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 26
+      },
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "802761f4_4befa8a3",
         "filename": "arch/x86/kvm/pkvm/pkvm.h",
         "patchSetId": 13
@@ -266,6 +356,30 @@
           ]
         }
       ],
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7642d9b3_5ff6a5b5",
+        "filename": "arch/x86/kvm/pkvm/pkvm.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-18T22:18:25Z",
+      "side": 1,
+      "message": "Would that make it easier to review, or quite the opposite?",
+      "parentUuid": "802761f4_4befa8a3",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 1
+      },
       "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
