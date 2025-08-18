@@ -435,8 +435,8 @@ int __pkvm_hyp_donate_host(u64 hpa, u64 size)
 	return ret;
 }
 
-int __pkvm_host_donate_guest(u64 hpa, struct pkvm_pgtable *guest_pgt,
-			     u64 gpa, u64 size, u64 prot)
+int __pkvm_host_donate_guest(u64 hpa, struct pkvm_pgtable *guest_pgt, u64 gpa,
+			     u64 size, u64 prot, void *mc)
 {
 	int ret;
 	struct pkvm_mem_transition donation = {
@@ -460,7 +460,7 @@ int __pkvm_host_donate_guest(u64 hpa, struct pkvm_pgtable *guest_pgt,
 
 	host_ept_lock();
 
-	ret = do_donate(&donation, NULL);
+	ret = do_donate(&donation, mc);
 
 	host_ept_unlock();
 
@@ -582,7 +582,7 @@ static int host_initiate_share(const struct pkvm_mem_transition *tx)
 	return host_ept_create_idmap_locked(tx->initiator.host.pgt_override, addr, size, 0, prot);
 }
 
-static int guest_initiate_share(const struct pkvm_mem_transition *tx)
+static int guest_initiate_share(const struct pkvm_mem_transition *tx, void *mc)
 {
 	struct pkvm_pgtable *pgt = tx->initiator.guest.pgt;
 	u64 addr = tx->initiator.guest.addr;
@@ -590,7 +590,7 @@ static int guest_initiate_share(const struct pkvm_mem_transition *tx)
 	u64 size = tx->size;
 	u64 prot = pkvm_mkstate(tx->initiator.prot, PKVM_PAGE_SHARED_OWNED);
 
-	return pkvm_pgtable_map(pgt, addr, phys, size, 0, prot, NULL, NULL);
+	return pkvm_pgtable_map(pgt, addr, phys, size, 0, prot, NULL, mc);
 }
 
 static int host_complete_share(const struct pkvm_mem_transition *tx)
@@ -602,7 +602,7 @@ static int host_complete_share(const struct pkvm_mem_transition *tx)
 	return host_ept_create_idmap_locked(tx->completer.host.pgt_override, addr, size, 0, prot);
 }
 
-static int guest_complete_share(const struct pkvm_mem_transition *tx)
+static int guest_complete_share(const struct pkvm_mem_transition *tx, void *mc)
 {
 	struct pkvm_pgtable *pgt = tx->completer.guest.pgt;
 	u64 addr = tx->completer.guest.addr;
@@ -611,10 +611,10 @@ static int guest_complete_share(const struct pkvm_mem_transition *tx)
 	u64 prot = tx->completer.prot;
 
 	prot = pkvm_mkstate(prot, PKVM_PAGE_SHARED_BORROWED);
-	return pkvm_pgtable_map(pgt, addr, phys, size, 0, prot, NULL, NULL);
+	return pkvm_pgtable_map(pgt, addr, phys, size, 0, prot, NULL, mc);
 }
 
-static int __do_share(const struct pkvm_mem_transition *tx)
+static int __do_share(const struct pkvm_mem_transition *tx, void *mc)
 {
 	int ret;
 
@@ -623,7 +623,7 @@ static int __do_share(const struct pkvm_mem_transition *tx)
 		ret = host_initiate_share(tx);
 		break;
 	case PKVM_ID_GUEST:
-		ret = guest_initiate_share(tx);
+		ret = guest_initiate_share(tx, mc);
 		break;
 	default:
 		ret = -EINVAL;
@@ -637,7 +637,7 @@ static int __do_share(const struct pkvm_mem_transition *tx)
 		ret = host_complete_share(tx);
 		break;
 	case PKVM_ID_GUEST:
-		ret = guest_complete_share(tx);
+		ret = guest_complete_share(tx, mc);
 		break;
 	default:
 		ret = -EINVAL;
@@ -653,7 +653,7 @@ static int __do_share(const struct pkvm_mem_transition *tx)
  * Initiator: OWNED	=> SHARED_OWNED
  * Completer: NOPAGE	=> SHARED_BORROWED
  */
-static int do_share(const struct pkvm_mem_transition *share)
+static int do_share(const struct pkvm_mem_transition *share, void *mc)
 {
 	int ret;
 
@@ -661,11 +661,11 @@ static int do_share(const struct pkvm_mem_transition *share)
 	if (ret)
 		return ret;
 
-	return WARN_ON(__do_share(share));
+	return WARN_ON(__do_share(share, mc));
 }
 
 int __pkvm_host_share_guest(u64 hpa, struct pkvm_pgtable *guest_pgt,
-			    u64 gpa, u64 size, u64 prot)
+			    u64 gpa, u64 size, u64 prot, void *mc)
 {
 	int ret;
 	struct pkvm_mem_transition share = {
@@ -690,7 +690,7 @@ int __pkvm_host_share_guest(u64 hpa, struct pkvm_pgtable *guest_pgt,
 
 	host_ept_lock();
 
-	ret = do_share(&share);
+	ret = do_share(&share, mc);
 
 	host_ept_unlock();
 
@@ -698,7 +698,7 @@ int __pkvm_host_share_guest(u64 hpa, struct pkvm_pgtable *guest_pgt,
 }
 
 static int __pkvm_guest_share_host_page(struct pkvm_pgtable *guest_pgt,
-					u64 gpa, u64 hpa, u64 guest_prot)
+					u64 gpa, u64 hpa, u64 guest_prot, void *mc)
 {
 	struct pkvm_mem_transition share = {
 		.size		= PAGE_SIZE,
@@ -720,11 +720,11 @@ static int __pkvm_guest_share_host_page(struct pkvm_pgtable *guest_pgt,
 		},
 	};
 
-	return do_share(&share);
+	return do_share(&share, mc);
 }
 
 int __pkvm_guest_share_host(struct pkvm_pgtable *guest_pgt,
-			    u64 gpa, u64 size)
+			    u64 gpa, u64 size, void *mc)
 {
 	unsigned long hpa;
 	u64 prot;
@@ -743,7 +743,7 @@ int __pkvm_guest_share_host(struct pkvm_pgtable *guest_pgt,
 			break;
 		}
 
-		ret = __pkvm_guest_share_host_page(guest_pgt, gpa, hpa, prot);
+		ret = __pkvm_guest_share_host_page(guest_pgt, gpa, hpa, prot, mc);
 		if (ret)
 			break;
 

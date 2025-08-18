@@ -156,7 +156,8 @@ static int guest_mmu_map_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr, int
 	 * We could combine these 2 layers (MMU and page state API) into one layer.
 	 */
 	if (pkvm_is_protected_vm(kvm)) {
-		ret = __pkvm_host_donate_guest(data->phys, pgt, vaddr, size, data->prot);
+		ret = __pkvm_host_donate_guest(data->phys, pgt, vaddr, size,
+					       data->prot, data->memcache);
 		if (ret)
 			return ret;
 
@@ -165,7 +166,8 @@ static int guest_mmu_map_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr, int
 			WARN_ON_ONCE(ret);
 		}
 	} else {
-		ret = __pkvm_host_share_guest(data->phys, pgt, vaddr, size, data->prot);
+		ret = __pkvm_host_share_guest(data->phys, pgt, vaddr, size,
+					      data->prot, data->memcache);
 	}
 
 	return ret;
@@ -174,6 +176,7 @@ static int guest_mmu_map_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr, int
 int pkvm_vm_mmu_map(struct kvm_vcpu *shared_vcpu, u64 gpa, u64 hpa, u64 size, bool writable)
 {
 	struct pkvm_vcpu *pkvm_vcpu;
+	struct kvm_vcpu *vcpu;
 	struct pkvm_vm *pkvm_vm;
 	u64 prot;
 	int ret;
@@ -183,6 +186,7 @@ int pkvm_vm_mmu_map(struct kvm_vcpu *shared_vcpu, u64 gpa, u64 hpa, u64 size, bo
 		return -EINVAL;
 
 	pkvm_vm = pkvm_vcpu->pkvm_vm;
+	vcpu = to_kvm_vcpu(pkvm_vcpu);
 
 	if (!writable && pkvm_is_protected_vm(to_kvm(pkvm_vm))) {
 		ret = -EPERM;
@@ -195,7 +199,8 @@ int pkvm_vm_mmu_map(struct kvm_vcpu *shared_vcpu, u64 gpa, u64 hpa, u64 size, bo
 	prot |= kvm_x86_call(get_mt_mask)(to_kvm_vcpu(pkvm_vcpu), gpa >> PAGE_SHIFT, false);
 
 	pkvm_spin_lock(&pkvm_vm->pgt_lock);
-	ret = pkvm_pgtable_map(&pkvm_vm->pgt, gpa, hpa, size, 0, prot, guest_mmu_map_leaf, NULL);
+	ret = pkvm_pgtable_map(&pkvm_vm->pgt, gpa, hpa, size, 0, prot,
+			       guest_mmu_map_leaf, &vcpu->arch.stage2_mc);
 	pkvm_spin_unlock(&pkvm_vm->pgt_lock);
 
 put_pkvm_vcpu:
