@@ -526,6 +526,16 @@ struct xe_device {
 	u8 vm_inject_error_position;
 #endif
 
+	/**
+	 * @xe_work_period: Support for GPU work period tracepoint
+	 */
+	struct xe_work_period {
+		/** @users: list of users that have opened this xe device */
+		struct xarray users;
+		/** @lock: lock protecting this structure */
+		struct mutex lock;
+	} work_period;
+
 	/* private: */
 
 #if IS_ENABLED(CONFIG_DRM_XE_DISPLAY)
@@ -625,6 +635,12 @@ struct xe_file {
 
 	/** @active_duration_ns: total run time in ns for this xe file */
 	u64 active_duration_ns;
+
+	/** @user: pointer to struct xe_user associated with this xe file */
+	struct xe_user *user;
+
+	/** @user_link: link into xe_user::filelist */
+	struct list_head user_link;
 
 	/** @client: drm client */
 	struct xe_drm_client *client;
