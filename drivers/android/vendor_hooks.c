@@ -617,4 +617,9 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_remove_migration_pte_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_split_huge_page_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_try_split_folio_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_scmi_limit_notify_cb);
+<<<<<<< PATCH SET (0651498412eeb3818d536222ecc25024005a2b95 ANDROID: dmabuf: add vendor hook for dma_heap_buffer_alloc)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dma_heap_buffer_alloc);
+||||||| BASE      (02e487e3c19bc0907c8def61fd409f61dc6b0b1e ANDROID: rust_binder: don't drop AllocationInfo in reservati)
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_fiq_dump);
+>>>>>>> BASE      (0d89690c20b1b938bd1be805528f57fcb3718749 ANDROID: GKI: Update symbol list for Pixel Watch)
