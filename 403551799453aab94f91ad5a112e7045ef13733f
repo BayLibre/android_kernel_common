@@ -1,0 +1,80 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8d21004_efa263a6",
+        "filename": "arch/x86/kvm/pkvm/vmx/ept.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-18T21:11:00Z",
+      "side": 1,
+      "message": "just curious, why do we have rwx and rx only and not the rest?. Would it be better to have accessor functions which derives the needed mask from a single prot_mask rather than having individual fields for the mask that we need in the code?",
+      "range": {
+        "startLine": 109,
+        "startChar": 1,
+        "endLine": 112,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "eb03adb1_deb96013",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/vmx/ept.c",
+              "range": {
+                "startLine": 110,
+                "startChar": 0,
+                "endLine": 110,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * The prot_rwx is used to check if the page is writable.\n\t * The prot_rx is used to check if the page is readable and executable.\n\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "403551799453aab94f91ad5a112e7045ef13733f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3154d3e_e2d11b73",
+        "filename": "arch/x86/kvm/pkvm/vmx/vmx.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 7654,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-18T21:11:00Z",
+      "side": 1,
+      "message": "nit: since the design is to have a VMX agnostic layer, can we have kvm call into VMX and SVM rather than directly calling in VMX?",
+      "fixSuggestions": [
+        {
+          "fixId": "9b0b825e_f0d16b5d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/vmx/vmx.c",
+              "range": {
+                "startLine": 7654,
+                "startChar": 0,
+                "endLine": 7654,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * The pkvm hypervisor needs to setup the MMU caps for the EPT.\n\t * This is a VMX specific operation, so it is called directly here.\n\t * TODO: Consider to move this to a VMX agnostic layer.\n\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "403551799453aab94f91ad5a112e7045ef13733f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
