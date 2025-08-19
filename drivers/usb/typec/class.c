@@ -792,6 +792,13 @@ static ssize_t mode_selection_store(struct device *dev,
 }
 static DEVICE_ATTR_RW(mode_selection);
 
+static ssize_t mode_selection_state_show(struct device *dev,
+				   struct device_attribute *attr, char *buf)
+{
+	return typec_mode_selection_get_state(to_typec_partner(dev), buf);
+}
+static DEVICE_ATTR_RO(mode_selection_state);
+
 static struct attribute *typec_partner_attrs[] = {
 	&dev_attr_accessory_mode.attr,
 	&dev_attr_supports_usb_power_delivery.attr,
@@ -800,6 +807,7 @@ static struct attribute *typec_partner_attrs[] = {
 	&dev_attr_usb_mode.attr,
 	&dev_attr_usb_power_delivery_revision.attr,
 	&dev_attr_mode_selection.attr,
+	&dev_attr_mode_selection_state.attr,
 	NULL
 };
 
@@ -825,6 +833,10 @@ static umode_t typec_partner_attr_is_visible(struct kobject *kobj, struct attrib
 			return 0;
 
 	if (attr == &dev_attr_mode_selection.attr)
+		if (!port->mode_control)
+			return 0;
+
+	if (attr == &dev_attr_mode_selection_state.attr)
 		if (!port->mode_control)
 			return 0;
 
