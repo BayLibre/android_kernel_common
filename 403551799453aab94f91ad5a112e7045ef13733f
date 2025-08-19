@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c7cb474_8166472b",
+        "filename": "arch/x86/kvm/pkvm/vmx/ept.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-19T16:09:52Z",
+      "side": 1,
+      "message": "Good point. I think this is at least inconsistent, since we don\u0027t really reuse guest EPT as IOMMU page tables, we only do that with the host EPT.\n\nThe existing pkVM-IA code (shadow EPT) has the same inconsistency. But perhaps it\u0027s a good moment to clean this up a bit, e.g. by directly setting `level` and `allowed_pgsz` here, independently of `pkvm_hyp-\u003eept_cap`.",
+      "parentUuid": "44d10a31_4ffad014",
+      "revId": "403551799453aab94f91ad5a112e7045ef13733f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8d21004_efa263a6",
         "filename": "arch/x86/kvm/pkvm/vmx/ept.c",
         "patchSetId": 12
@@ -313,6 +331,30 @@
       "side": 1,
       "message": "Sorry I meant ept and pagetable logic, missed an `and` :-)",
       "parentUuid": "cca514e0_1061ac28",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 13
+      },
+      "revId": "403551799453aab94f91ad5a112e7045ef13733f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cfa6806_97ba929f",
+        "filename": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-19T16:09:52Z",
+      "side": 1,
+      "message": "Yeah, I think I see your point. I was also hesitating as to whether it is a good idea to \"abuse\" `pkvm_pgtable_cap` by adding fields that are not used by pgtable.c. Now it seems cleaner to add a separate structure for them, e.g. `pkvm_pgtable_masks`, or for example just make them all global variables (again, similarly to KVM with its `shadow_user_mask`, `shadow_accessed_mask` etc).\n\nAlso slightly independently of that, I\u0027ve realized it\u0027s better to rename them to `perm_mask`, `perm_rwx` and `perm_rx`, to not confuse with \"prot\" used in `table_prot`, `pgt_entry_to_prot()` etc where it is used with a different meaning: it stands for \"protection\" but actually means not just the protection bits (rwx) but any bits beyond the address bits. (This naming style is kind of inherited from ARM, see `enum kvm_pgtable_prot`)",
+      "parentUuid": "c39edc9b_fd2a5911",
       "range": {
         "startLine": 24,
         "startChar": 0,
