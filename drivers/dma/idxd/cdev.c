@@ -354,9 +354,7 @@ static void idxd_cdev_evl_drain_pasid(struct idxd_wq *wq, u32 pasid)
 			set_bit(h, evl->bmap);
 		h = (h + 1) % size;
 	}
-	if (wq->wq)
-		drain_workqueue(wq->wq);
-
+	drain_workqueue(wq->wq);
 	mutex_unlock(&evl->lock);
 }
 

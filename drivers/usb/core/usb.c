@@ -695,16 +695,15 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
 		device_set_of_node_from_dev(&dev->dev, bus->sysdev);
 		dev_set_name(&dev->dev, "usb%d", bus->busnum);
 	} else {
-		int n;
-
 		/* match any labeling on the hubs; it's one-based */
 		if (parent->devpath[0] == '0') {
-			n = snprintf(dev->devpath, sizeof(dev->devpath), "%d", port1);
+			snprintf(dev->devpath, sizeof dev->devpath,
+				"%d", port1);
 			/* Root ports are not counted in route string */
 			dev->route = 0;
 		} else {
-			n = snprintf(dev->devpath, sizeof(dev->devpath), "%s.%d",
-				     parent->devpath, port1);
+			snprintf(dev->devpath, sizeof dev->devpath,
+				"%s.%d", parent->devpath, port1);
 			/* Route string assumes hubs have less than 16 ports */
 			if (port1 < 15)
 				dev->route = parent->route +
@@ -712,11 +711,6 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
 			else
 				dev->route = parent->route +
 					(15 << ((parent->level - 1)*4));
-		}
-		if (n >= sizeof(dev->devpath)) {
-			usb_put_hcd(bus_to_hcd(bus));
-			usb_put_dev(dev);
-			return NULL;
 		}
 
 		dev->dev.parent = &parent->dev;

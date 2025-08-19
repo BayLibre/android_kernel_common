@@ -2733,13 +2733,8 @@ out_verifier:
 	case -EPROTONOSUPPORT:
 		goto out_err;
 	case -EACCES:
-		/* possible RPCSEC_GSS out-of-sequence event (RFC2203),
-		 * reset recv state and keep waiting, don't retransmit
-		 */
-		task->tk_rqstp->rq_reply_bytes_recvd = 0;
-		task->tk_status = xprt_request_enqueue_receive(task);
-		task->tk_action = call_transmit_status;
-		return -EBADMSG;
+		/* Re-encode with a fresh cred */
+		fallthrough;
 	default:
 		goto out_garbage;
 	}
