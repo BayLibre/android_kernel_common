@@ -3,6 +3,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "44d10a31_4ffad014",
+        "filename": "arch/x86/kvm/pkvm/vmx/ept.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-19T14:08:50Z",
+      "side": 1,
+      "message": "Just noticed, ept_cap\u0027s `level` and `allowed_pgsz` uses values based on what iommu supports. Is this what we want for all VMs? I guess its fine, but thought of noting it down here.",
+      "fixSuggestions": [
+        {
+          "fixId": "ba7d82b6_19f86faa",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/vmx/ept.c",
+              "range": {
+                "startLine": 108,
+                "startChar": 0,
+                "endLine": 108,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * Note that ept_cap\u0027s `level` and `allowed_pgsz` uses values based on\n\t * what iommu supports. This is fine for now, but we may need to\n\t * revisit this if we need to support different configurations.\n\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "403551799453aab94f91ad5a112e7045ef13733f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8d21004_efa263a6",
         "filename": "arch/x86/kvm/pkvm/vmx/ept.c",
         "patchSetId": 12
