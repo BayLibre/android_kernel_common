@@ -86,6 +86,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f26bd8e9_b3d38686",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-19T14:02:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "174c173f_c243343d",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 0
+      },
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee2d2f22_d5f456d2",
@@ -319,6 +343,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d7b60dc_a63f6b3a",
+        "filename": "arch/x86/kvm/pkvm/pkvm.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-19T14:02:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bcbbf8e5_9ab87bcf",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 26
+      },
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "802761f4_4befa8a3",
@@ -374,6 +422,30 @@
       "side": 1,
       "message": "Would that make it easier to review, or quite the opposite?",
       "parentUuid": "802761f4_4befa8a3",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 1
+      },
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24245cef_2110ecda",
+        "filename": "arch/x86/kvm/pkvm/pkvm.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-19T14:02:38Z",
+      "side": 1,
+      "message": "Personally I feel its easier to review if it accompanies the code that uses it, but its a personal preference I guess. I have seen upstream folks also inclining towards defining functions where they are used first in favor of introducing dead code in separate commits.",
+      "parentUuid": "7642d9b3_5ff6a5b5",
       "range": {
         "startLine": 112,
         "startChar": 0,
