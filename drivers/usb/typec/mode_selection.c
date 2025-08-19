@@ -385,3 +385,23 @@ int typec_mode_selection_reset(struct typec_partner *partner)
 
 	return 0;
 }
+
+int typec_mode_selection_get_state(struct typec_partner *partner, char *buf)
+{
+	struct mode_selection_state *ms;
+	ssize_t count = 0;
+
+	mutex_lock(&partner->mode_list_lock);
+
+	ms = list_first_entry_or_null(&partner->mode_list, struct mode_selection_state, list);
+	if (ms) {
+		if (ms->state == MS_STATE_ACTIVE)
+			count = sysfs_emit_at(buf, count, "[%s]\n", ms->name);
+		else
+			count = sysfs_emit_at(buf, count, "%s\n", ms->name);
+	}
+
+	mutex_unlock(&partner->mode_list_lock);
+
+	return count;
+}
