@@ -66,6 +66,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1a21986_0194cf49",
+        "filename": "arch/x86/kvm/pkvm/vmx/ept.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-19T14:02:49Z",
+      "side": 1,
+      "message": "\u003e Because we don\u0027t have use cases for non-executable mappings so far (and KVM\u0027s uAPI doesn\u0027t support them). Although KVM internally uses non-executable huge pages, to work around a bug in older CPUs: https://docs.kernel.org/admin-guide/hw-vuln/multihit.html but that creates a plenty of extra complexity (dynamically splitting those pages into small executable pages when the guest wants to execute them, plus taking that into account in various corner cases), so I\u0027ve disabled that workaround for simplicity: aosp/3700491\n\nGot it, thanks\n\n\u003e The reason for using these static masks is that we simply don\u0027t need to derive them at runtime every time, we can just set them once. (The memory type bits, for instance, are a bit different story. We do derive them at runtime using kvm_x86_call(get_mt_mask), as you can see in the next patches.)\n\nyeah true, it makes sense to have it static as it doesn\u0027t change for a particular vendor.",
+      "parentUuid": "a76a457a_b178875c",
+      "range": {
+        "startLine": 109,
+        "startChar": 1,
+        "endLine": 112,
+        "endChar": 0
+      },
+      "revId": "403551799453aab94f91ad5a112e7045ef13733f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3154d3e_e2d11b73",
@@ -115,6 +139,85 @@
       "side": 1,
       "message": "We can, but what exactly for?\n\nAgain, this is similar to kvm_mmu_set_ept_masks() (see right below).",
       "parentUuid": "d3154d3e_e2d11b73",
+      "revId": "403551799453aab94f91ad5a112e7045ef13733f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aa44952_bc2dbae5",
+        "filename": "arch/x86/kvm/pkvm/vmx/vmx.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 7654,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-19T14:02:49Z",
+      "side": 1,
+      "message": "`kvm_mmu_set_ept_masks` is a bit different I guess - that is intel specific and I am not sure if the masks set in `kvm_mmu_set_ept_masks` are used for svm code. If I understand correctly, pkvm_ept_set_mmu_caps() is actually setting two global variables `guest_pgt_ops` and `guest_pgt_cap` that is supposed to be vendor agnostic and could be used in SVM as well. I was just trying to point out that the code is not fully vendor agnostic in this case.\n\nMy initial proposal was to have vendor agnostic function called from vendor_module_init that calls into vendor specific function. But now when I think about it, it doesn\u0027t give any advantage over calling `pkvm_npt_set_mmu_caps()` from svm_hardware_init and `pkvm_ept_set_mmu_caps()` from vmx_hardware_init. I am fine with this implementation. Rescinding my proposal :-)",
+      "parentUuid": "aee7de2b_2a9a074a",
+      "revId": "403551799453aab94f91ad5a112e7045ef13733f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38d1911b_e5a1067e",
+        "filename": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-08-19T14:02:49Z",
+      "side": 1,
+      "message": "Looks like these fields are used only in the vendor agnostic mmu implementation while rest of the fields are only used for pkvm ept pagetable logic. Would it make sense to split into a separate structure or have it as independent fields in mmu.c. Also would it be better to have it defined in the first patch that uses it(like introducing `access_bit` in aosp/3700490)?",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 13
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6ef9ff84_77d53e93",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
+              "range": {
+                "startLine": 20,
+                "startChar": 0,
+                "endLine": 21,
+                "endChar": 0
+              },
+              "replacement": "struct pkvm_ept_pgtable_cap {\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
+              "range": {
+                "startLine": 24,
+                "startChar": 0,
+                "endLine": 24,
+                "endChar": 0
+              },
+              "replacement": "};\n\nstruct pkvm_mmu_pgtable_cap {\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
+              "range": {
+                "startLine": 67,
+                "startChar": 0,
+                "endLine": 69,
+                "endChar": 0
+              },
+              "replacement": "\tstruct pkvm_mmu_pgtable_cap mmu_cap;\n\tstruct pkvm_ept_pgtable_cap ept_cap;\n"
+            }
+          ]
+        }
+      ],
       "revId": "403551799453aab94f91ad5a112e7045ef13733f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
