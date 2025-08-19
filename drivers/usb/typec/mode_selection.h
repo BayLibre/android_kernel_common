@@ -35,3 +35,4 @@ void typec_mode_selection_add_mode(struct typec_partner *partner,
 		struct typec_altmode *alt);
 void typec_mode_selection_add_cable(struct typec_partner *partner,
 		struct typec_cable *cable);
+int typec_mode_selection_get_state(struct typec_partner *partner, char *buf);
