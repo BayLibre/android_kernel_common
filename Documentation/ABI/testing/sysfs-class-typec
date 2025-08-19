@@ -270,6 +270,19 @@ Description:	Mode selection is activated by writing boolean 1 to the
 		This attribute is only present if the kernel supports AP driven mode
 		entry, where the Application Processor manages USB Type-C alt-modes.
 
+What:		/sys/class/typec/<port>-partner/mode_selection_state
+Date:		August 2025
+Contact:	Andrei Kuchynski <akuchynski@chromium.org>
+Description:	Displays a prioritized list of modes that both the port and the
+		partner support with the currently entered mode bracketed. Parentheses
+		indicates a mode currently in progress. Modes listed before the active
+		or in-progress mode have failed.
+
+		Example values:
+		- "USB4 (TBT) DP": USB4 mode entry failed, Thunderbolt alt-mode is in
+			progress, DisplayPort alt-mode is next.
+		- "[USB4] TBT DP": USB4 mode is currently active.
+
 USB Type-C cable devices (eg. /sys/class/typec/port0-cable/)
 
 Note: Electronically Marked Cables will have a device also for one cable plug
