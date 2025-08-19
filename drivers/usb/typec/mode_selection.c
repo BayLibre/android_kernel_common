@@ -478,3 +478,37 @@ int typec_mode_selection_reset(struct typec_partner *partner)
 
 	return 0;
 }
+
+int typec_mode_selection_get_state(struct typec_partner *partner, char *buf)
+{
+	struct typec_port *port = to_typec_port(partner->dev.parent);
+	struct mode_selection_state *ms, *running_ms;
+	ssize_t count = 0;
+
+	mutex_lock(&partner->mode_sequence_lock);
+	if (!kfifo_peek(&partner->mode_sequence, &running_ms))
+		running_ms = NULL;
+
+	list_for_each_entry(ms, &port->mode_list, list) {
+		const bool partner_supported = device_for_each_child(
+			&partner->dev, &ms->mode, mode_selection_check_partner);
+
+		if (partner_supported) {
+			if (ms->state == MS_STATE_ACTIVE)
+				count += sysfs_emit_at(buf, count, "[%s] ",
+					mode_names[ms->mode]);
+			else if (ms == running_ms)
+				count += sysfs_emit_at(buf, count, "(%s) ",
+					mode_names[ms->mode]);
+			else
+				count += sysfs_emit_at(buf, count, "%s ",
+					mode_names[ms->mode]);
+		}
+	}
+	mutex_unlock(&partner->mode_sequence_lock);
+
+	if (count)
+		count += sysfs_emit_at(buf, count, "\n");
+
+	return count;
+}
