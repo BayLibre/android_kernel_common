@@ -28,3 +28,4 @@ void typec_mode_selection_remove_partner(struct typec_partner *partner);
 int typec_mode_selection_start(struct typec_partner *partner);
 bool typec_mode_selection_is_pending(struct typec_partner *partner);
 int typec_mode_selection_reset(struct typec_partner *partner);
+int typec_mode_selection_get_state(struct typec_partner *partner, char *buf);
