@@ -990,11 +990,31 @@ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
 	split = 0;
 	end = PAGE_SIZE;
 repeat:
+<<<<<<< HEAD   (5dbebee0ded6e2083f72aa812074e5e34f928f35 Merge 869d35e23944 ("erofs: get rid of debug_one_dentry()") )
 	if (offset + end - 1 < map->m_la ||
 	    offset + end - 1 >= map->m_la + map->m_llen) {
 		erofs_dbg("out-of-range map @ pos %llu", offset + end - 1);
 		z_erofs_pcluster_end(fe);
 		map->m_la = offset + end - 1;
+||||||| BASE   (869d35e23944f48c75cd2b34a00a7630e1c73a13 erofs: get rid of debug_one_dentry())
+	cur = end - 1;
+
+	if (offset + cur < map->m_la ||
+	    offset + cur >= map->m_la + map->m_llen) {
+		erofs_dbg("out-of-range map @ pos %llu", offset + cur);
+
+		if (z_erofs_collector_end(fe))
+			fe->backmost = false;
+		map->m_la = offset + cur;
+=======
+	cur = end - 1;
+
+	if (offset + cur < map->m_la ||
+	    offset + cur >= map->m_la + map->m_llen) {
+		if (z_erofs_collector_end(fe))
+			fe->backmost = false;
+		map->m_la = offset + cur;
+>>>>>>> BRANCH (98b24fc42cfef02f7419e0f99162c0355269ebba erofs: sunset erofs_dbg())
 		map->m_llen = 0;
 		err = z_erofs_map_blocks_iter(inode, map, 0);
 		if (err)
@@ -1073,9 +1093,16 @@ out:
 	if (err)
 		z_erofs_page_mark_eio(page);
 	z_erofs_onlinepage_endio(page);
+<<<<<<< HEAD   (5dbebee0ded6e2083f72aa812074e5e34f928f35 Merge 869d35e23944 ("erofs: get rid of debug_one_dentry()") )
 
 	erofs_dbg("%s, finish page: %pK split: %u map->m_llen %llu",
 		  __func__, page, split, map->m_llen);
+||||||| BASE   (869d35e23944f48c75cd2b34a00a7630e1c73a13 erofs: get rid of debug_one_dentry())
+
+	erofs_dbg("%s, finish page: %pK spiltted: %u map->m_llen %llu",
+		  __func__, page, spiltted, map->m_llen);
+=======
+>>>>>>> BRANCH (98b24fc42cfef02f7419e0f99162c0355269ebba erofs: sunset erofs_dbg())
 	return err;
 }
 
