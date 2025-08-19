@@ -42,17 +42,11 @@ extern struct module __this_module;
 	.long sym
 #endif
 
-/*
- * LLVM integrated assembler cam merge adjacent string literals (like
- * C and GNU-as) passed to '.ascii', but not to '.asciz' and chokes on:
- *
- *   .asciz "MODULE_" "kvm" ;
- */
-#define ___EXPORT_SYMBOL(sym, license, ns...)		\
+#define ___EXPORT_SYMBOL(sym, license, ns)		\
 	.section ".export_symbol","a"		ASM_NL	\
 	__export_symbol_##sym:			ASM_NL	\
 		.asciz license			ASM_NL	\
-		.ascii ns "\0"			ASM_NL	\
+		.asciz ns			ASM_NL	\
 		__EXPORT_SYMBOL_REF(sym)	ASM_NL	\
 	.previous
 
@@ -93,7 +87,5 @@ extern struct module __this_module;
 #define EXPORT_SYMBOL_GPL(sym)		_EXPORT_SYMBOL(sym, "GPL")
 #define EXPORT_SYMBOL_NS(sym, ns)	__EXPORT_SYMBOL(sym, "", __stringify(ns))
 #define EXPORT_SYMBOL_NS_GPL(sym, ns)	__EXPORT_SYMBOL(sym, "GPL", __stringify(ns))
-
-#define EXPORT_SYMBOL_GPL_FOR_MODULES(sym, mods) __EXPORT_SYMBOL(sym, "GPL", "module:" mods)
 
 #endif /* _LINUX_EXPORT_H */
