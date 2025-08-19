@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40281c15_5e55855b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3838915
+      },
+      "writtenOn": "2025-08-19T12:03:44Z",
+      "side": 1,
+      "message": "Hi Stultz. HWT refers to Hardware Watchdog Timer, and I will rewrite the commit message.",
+      "parentUuid": "3c4038a8_46a6a5f2",
+      "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4b86618_48a22ce6",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-08-18T19:54:51Z",
       "side": 1,
       "message": "This commit message needs some improvements. It\u0027s not obvious how the description here connects to change in logic in this patch.",
+      "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c771aed7_10a656e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3838915
+      },
+      "writtenOn": "2025-08-19T12:03:44Z",
+      "side": 1,
+      "message": "Thank you for your suggestion, and I will recommit it.",
+      "parentUuid": "e4b86618_48a22ce6",
       "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -52,6 +88,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44102408_3c480a58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3838915
+      },
+      "writtenOn": "2025-08-19T12:03:44Z",
+      "side": 1,
+      "message": "Hi Stultz, thank you for your comments, i will reply the comments below.",
+      "parentUuid": "ab652e37_b4633176",
+      "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb483eb4_db4ceb66",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-08-18T19:54:51Z",
       "side": 1,
       "message": "So I fret this changes the semantics of the vendorhook (since additional locks are now held), and has potential to cause problems to existing vendorhook implementations.\n\nThe the existing VH is used inconsistently with respect to the locks, as scx_ops_enable() calls the same hook with both SCX_OPS_ENABLING and SCX_OPS_ENABLED holding scx_ops_enable_mutex. \n\nBut in the `scx_ops_disable_workfn()` logic, its called with SCX_OPS_DISABLING\n and SCX_OPS_DISABLED outside of the `scx_ops_enable_mutex` critical section\n\n\nMaking it consistent feels like a reasonable bug fix. But it seems like you\u0027d need to do both this call and the SCX_OPS_DISABLED together. \n\n\nHowever, the other complexity here is this patch adds another lock `scx_fork_rwsem` into the mix, which isn\u0027t held for any of the other callers in my understanding, which seems like it could cause trouble.\n\nIt seems calling DISABLING with the scx_fork_rwsem held critical to the fix here. Could you explain this better in the commit message? \n\nAs a alternative, maybe a separate vendorhook\n\n`trace_android_vh_scx_ops_enable_state_locked()` might be added (leaving the existing one in place) where specific logic that needs to be done holding the rwsem could be added?",
+      "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e64c87f_aa8ab301",
+        "filename": "kernel/sched/ext.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4672,
+      "author": {
+        "id": 3838915
+      },
+      "writtenOn": "2025-08-19T12:03:44Z",
+      "side": 1,
+      "message": "Hi Stultz, thank you for your comments. In deed, scx_fork_rwsem protects the task list. When scx_ops_disable_workfn() is invoked, it will hold the scx_fork_rwsem and set all the tasks in task list to fair class. Scx_ops_enable_mutex protects the scx enable and disable process, so switching scx tasks to fair tasks is reasonable in exiting process, so that in scx_ops_disable_workfn() both scx_ops_enable_mutex and scx_fork_rwsem is needed.\n\nSo what happens in the baseline code?\nHere is a situation: A scx task (Task A) is forked, the task holds the scx_fork_rwsem. Meanwhile, scx is disabling and there is a task (Task B) invoking the scx_ops_disable_workfn() is blocked because the scx_fork_rwsem is held by Task A. However when SCX_OPS_ENABLING VH is invoked, newly forked tasks will be fair task, and fair task\u0027s priority is higher than scx task. So In extreme scenarios Task B will never running if newly forked tasks keep forking fair tasks.\n\nIn deed this VH hook is upstreamed by our team, i guess only our team use the hook.",
+      "parentUuid": "eb483eb4_db4ceb66",
       "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
