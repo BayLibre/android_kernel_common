@@ -196,6 +196,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "147275f9_47f8e85d",
+        "filename": "arch/x86/kvm/pkvm/vmx/vmx.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 7654,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-19T14:47:57Z",
+      "side": 1,
+      "message": "`guest_pgt_ops` and `guest_pgt_cap` are set by vendor-specific code but used by vendor-agnostic code in vendor-agnostic way. Just like KVM\u0027s `shadow_user_mask`, `shadow_accessed_mask` etc which are set by `kvm_mmu_set_ept_masks()` on Intel, while on AMD they remain set to the default values in `kvm_mmu_reset_all_pte_masks()` (since, I guess, NPT, unlike EPT, has PTEs format compatible with regular, stage-1 page tables), but after that they are used by KVM MMU the same way on both Intel and AMD.",
+      "parentUuid": "4aa44952_bc2dbae5",
+      "revId": "403551799453aab94f91ad5a112e7045ef13733f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38d1911b_e5a1067e",
