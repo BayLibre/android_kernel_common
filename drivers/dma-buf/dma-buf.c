@@ -617,10 +617,11 @@ void put_dmabuf_info(struct task_struct *task)
 	if (!refcount_dec_and_test(&task->dmabuf_info->refcnt))
 		return;
 
-	if (task->dmabuf_info->rss)
+	if (WARN_ON(task->dmabuf_info->rss))
 		pr_alert("destroying task with non-zero dmabuf rss %lu\n", task->dmabuf_info->rss);
 
-	if (!list_empty(&task->dmabuf_info->dmabufs) || task->dmabuf_info->dmabuf_count > 0)
+	if (WARN_ON(!list_empty(&task->dmabuf_info->dmabufs)) ||
+	    WARN_ON(task->dmabuf_info->dmabuf_count > 0))
 		pr_alert("destroying task with non-empty dmabuf list %zu %u\n",
 			 list_count_nodes(&task->dmabuf_info->dmabufs),
 			 task->dmabuf_info->dmabuf_count);
