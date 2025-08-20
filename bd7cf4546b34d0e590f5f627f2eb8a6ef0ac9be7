@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "472bc750_1619c63e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1764341
+      },
+      "writtenOn": "2025-08-20T16:00:19Z",
+      "side": 1,
+      "message": "I have done previously ABI update, and haven\u0027t made changes with stg file, as Carlos helped with it.\n\nIf you want me to update, sure I can try your suggested commands.",
+      "parentUuid": "6deb8ec4_47bed4a6",
+      "revId": "bd7cf4546b34d0e590f5f627f2eb8a6ef0ac9be7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4726c7b2_0e70022d",
@@ -55,6 +73,30 @@
           ]
         }
       ],
+      "revId": "bd7cf4546b34d0e590f5f627f2eb8a6ef0ac9be7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26f32dbe_b8175231",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 2
+      },
+      "lineNbr": 2339,
+      "author": {
+        "id": 1764341
+      },
+      "writtenOn": "2025-08-20T16:00:19Z",
+      "side": 1,
+      "message": "Agree. It is not exported symbol and part of include/linux/pci.h file. As it is not exported symbol, it is not needed as part of ABI file. will update into next patchset.",
+      "parentUuid": "4726c7b2_0e70022d",
+      "range": {
+        "startLine": 2339,
+        "startChar": 2,
+        "endLine": 2339,
+        "endChar": 14
+      },
       "revId": "bd7cf4546b34d0e590f5f627f2eb8a6ef0ac9be7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
