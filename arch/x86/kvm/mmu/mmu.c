@@ -4782,6 +4782,22 @@ out_unlock:
 #endif
 
 #ifdef CONFIG_PKVM_INTEL
+static void pkvm_mc_free_fn(void *addr, void *unused)
+{
+	free_page((unsigned long)addr);
+}
+
+static void *kvm_host_va(phys_addr_t phys)
+{
+	return __va(phys);
+}
+
+void free_pkvm_memcache(struct pkvm_memcache *mc)
+{
+	__free_pkvm_memcache(mc, pkvm_mc_free_fn,
+			     kvm_host_va, NULL);
+}
+
 static int pkvm_pin_page(struct kvm *kvm, struct kvm_page_fault *fault)
 {
 	struct kvm_pinned_page *ppage;
