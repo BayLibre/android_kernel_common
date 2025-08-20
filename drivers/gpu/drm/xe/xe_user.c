@@ -5,7 +5,14 @@
 
 #include <drm/drm_drv.h>
 
+#include "xe_assert.h"
+#include "xe_device_types.h"
+#include "xe_exec_queue.h"
+#include "xe_pm.h"
 #include "xe_user.h"
+
+#define CREATE_TRACE_POINTS
+#include <trace/gpu_work_period.h>
 
 
 /**
@@ -50,7 +57,80 @@
  */
 
 
+static inline void schedule_next_work(struct xe_device *xe, unsigned int id)
+{
+	struct xe_user *user;
 
+	mutex_lock(&xe->work_period.lock);
+	user = xa_load(&xe->work_period.users, id);
+	if (user && xe_user_get_unless_zero(user))
+		if(!schedule_delayed_work(&user->delay_work,
+				msecs_to_jiffies(XE_WORK_PERIOD_INTERVAL)))
+			xe_user_put(user);
+	mutex_unlock(&xe->work_period.lock);
+}
+
+static void xe_work_period_worker(struct work_struct *work)
+{
+	struct xe_user *user = container_of(work, struct xe_user, delay_work.work);
+	struct xe_device *xe = user->xe;
+	struct xe_file *xef;
+	struct xe_exec_queue *q;
+
+	/*
+	 * The GPU work period event requires the following parameters
+	 *
+	 * gpuid:           GPU index in case the platform has more than one GPU
+	 * uid:             user id of the app
+	 * start_time:      start time for the sampling period in nanosecs
+	 * end_time:        end time for the sampling period in nanosecs
+	 * active_duration: Total runtime in nanosecs for this uid in
+	 *                  the current sampling period.
+	 */
+	u32 gpuid = 0, uid = user->uid, id = user->id;
+	u64 start_time, end_time, active_duration;
+	u64 last_active_duration, last_timestamp;
+	unsigned long i;
+
+	mutex_lock(&user->lock);
+
+	// Save the last recorded active duration and timestamp
+	last_active_duration = user->active_duration_ns;
+	last_timestamp = user->last_timestamp_ns;
+
+	if (xe_pm_runtime_get_if_active(xe)) {
+
+		list_for_each_entry(xef, &user->filelist, user_link) {
+
+			/* Accumulate all the exec queues from this file */
+			mutex_lock(&xef->exec_queue.lock);
+			xa_for_each(&xef->exec_queue.xa, i, q) {
+				xe_exec_queue_get(q);
+				mutex_unlock(&xef->exec_queue.lock);
+
+				xe_exec_queue_update_run_ticks(q);
+
+				mutex_lock(&xef->exec_queue.lock);
+				xe_exec_queue_put(q);
+			}
+			mutex_unlock(&xef->exec_queue.lock);
+			user->active_duration_ns += xef->active_duration_ns;
+		}
+
+		xe_pm_runtime_put(xe);
+
+		start_time = last_timestamp + 1;
+		end_time = ktime_get_raw_ns();
+		active_duration = user->active_duration_ns - last_active_duration;
+		trace_gpu_work_period(gpuid, uid, start_time, end_time, active_duration);
+		user->last_timestamp_ns = end_time;
+		xe_user_put(user);
+	}
+
+	mutex_unlock(&user->lock);
+
+	schedule_next_work(xe, id);
+}
 
 /**
  * xe_user_alloc() - Allocate xe user
@@ -71,9 +151,9 @@ static struct xe_user *xe_user_alloc(void)
 		return NULL;
 
 	kref_init(&user->refcount);
-	mutex_init(&user->filelist_lock);
+	mutex_init(&user->lock);
 	INIT_LIST_HEAD(&user->filelist);
-	INIT_WORK(&user->work, work_period_worker);
+	INIT_DELAYED_WORK(&user->delay_work, xe_work_period_worker);
 	return user;
 }
 
@@ -163,12 +243,52 @@ int xe_user_init(struct xe_device *xe, struct xe_file *xef, unsigned int uid)
 
 		user->id = idx;
 		drm_dev_get(&xe->drm);
+
+		xe_user_get(user);
+		if (!schedule_delayed_work(&user->delay_work,
+					msecs_to_jiffies(XE_WORK_PERIOD_INTERVAL)))
+			xe_user_put(user);
 	}
 
-	mutex_lock(&user->filelist_lock);
+	mutex_lock(&user->lock);
 	list_add(&xef->user_link, &user->filelist);
-	mutex_unlock(&user->filelist_lock);
+	mutex_unlock(&user->lock);
 	xef->user = user;
 
 	return 0;
 }
+
+void xe_user_cancel_workers(struct xe_device *xe)
+{
+	struct xe_user *user = NULL;
+	unsigned long i = 0;
+
+	xa_for_each(&xe->work_period.users, i, user) {
+		/*
+		 * If cancel_delayed_work_sync returns true, that means
+		 * we already hold a valid reference to this xe_user (taken
+		 * during schedule_delayed_work). so we don't need to take
+		 * a lock here
+		 */
+		if (user && cancel_delayed_work_sync(&user->delay_work))
+ 			xe_user_put(user);
+ 	}
+
+}
+
+void xe_user_resume_workers(struct xe_device *xe)
+{
+	struct xe_user *user = NULL;
+	unsigned long i = 0;
+
+	mutex_lock(&xe->work_period.lock);
+	xa_for_each(&xe->work_period.users, i, user) {
+		if (user && xe_user_get_unless_zero(user)) {
+			if (!schedule_delayed_work(&user->delay_work,
+					msecs_to_jiffies(XE_WORK_PERIOD_INTERVAL)))
+				xe_user_put(user);
+		}
+	}
+	mutex_unlock(&xe->work_period.lock);
+}
+
