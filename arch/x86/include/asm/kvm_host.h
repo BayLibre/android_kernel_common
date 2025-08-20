@@ -779,6 +779,22 @@ static inline void __free_pkvm_memcache(struct pkvm_memcache *mc,
 		free_fn(pop_pkvm_memcache(mc, to_va), arg);
 }
 
+static void pkvm_mc_free_fn(void *addr, void *unused)
+{
+	free_page((unsigned long)addr);
+}
+
+static void *kvm_host_va(phys_addr_t phys)
+{
+	return __va(phys);
+}
+
+static inline void free_pkvm_memcache(struct pkvm_memcache *mc)
+{
+	__free_pkvm_memcache(mc, pkvm_mc_free_fn,
+			     kvm_host_va, NULL);
+}
+
 struct kvm_pinned_page {
 	struct list_head list;
 	struct page *page;
