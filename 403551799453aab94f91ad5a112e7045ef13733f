@@ -363,6 +363,30 @@
       },
       "revId": "403551799453aab94f91ad5a112e7045ef13733f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04d046c2_2c63dd58",
+        "filename": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-08-20T02:14:28Z",
+      "side": 1,
+      "message": "nit: Just want to share some related v6.15 rebasing for adding isolation. The finalize will map host EPT with RWX + WB for memory and RWX + UC for MMIO. To make the finalize independent with the EPT (property bits format), I introduced a new callback in the pkvm_pgtable_ops, to calculate the property bits according various combinations of the bool read, bool write, bool exec and enum page_cache_mode.",
+      "parentUuid": "8cfa6806_97ba929f",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 13
+      },
+      "revId": "403551799453aab94f91ad5a112e7045ef13733f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
