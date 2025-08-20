@@ -76,6 +76,8 @@ static int cros_typec_altmode_enter(struct typec_altmode *alt, u32 *vdo)
 		req.mode_to_enter = CROS_EC_ALTMODE_DP;
 	else if (adata->sid == USB_TYPEC_TBT_SID)
 		req.mode_to_enter = CROS_EC_ALTMODE_TBT;
+	else if (adata->sid == 0xFF00)
+		req.mode_to_enter = CROS_EC_ALTMODE_USB4;
 	else
 		return -EOPNOTSUPP;
 
@@ -380,6 +382,56 @@ cros_typec_register_thunderbolt(struct cros_typec_port *port,
 }
 
 int cros_typec_tbt_status_update(struct typec_altmode *alt, int error)
+{
+	struct cros_typec_altmode_data *adata = typec_altmode_get_drvdata(alt);
+
+	mutex_lock(&adata->lock);
+
+	adata->header = VDO(adata->sid, 1, SVDM_VER_2_0, TBT_CMD_STATUS_UPDATE);
+	adata->header |= VDO_CMDT(error ? CMDT_RSP_NAK : CMDT_RSP_ACK);
+	adata->error = error;
+	adata->vdo_data = &adata->error;
+	adata->vdo_size = 1;
+	schedule_work(&adata->work);
+
+	mutex_unlock(&adata->lock);
+
+	return 0;
+}
+#endif
+
+#if IS_ENABLED(CONFIG_USB4)
+struct typec_altmode *cros_typec_register_usb4(struct cros_typec_port *port,
+				struct typec_altmode_desc *desc)
+{
+	struct typec_altmode *alt;
+	struct cros_typec_altmode_data *adata;
+
+	alt = typec_port_register_altmode(port->port, desc);
+	if (IS_ERR(alt))
+		return alt;
+
+	adata = devm_kzalloc(&alt->dev, sizeof(*adata), GFP_KERNEL);
+	if (!adata) {
+		typec_unregister_altmode(alt);
+		return ERR_PTR(-ENOMEM);
+	}
+
+	INIT_WORK(&adata->work, cros_typec_altmode_work);
+	mutex_init(&adata->lock);
+	adata->alt = alt;
+	adata->port = port;
+	adata->ap_mode_entry = true;
+	adata->sid = desc->svid;
+	adata->mode = desc->mode;
+
+	typec_altmode_set_ops(alt, &cros_typec_altmode_ops);
+	typec_altmode_set_drvdata(alt, adata);
+
+	return alt;
+}
+
+int cros_typec_usb4_status_update(struct typec_altmode *alt, int error)
 {
 	struct cros_typec_altmode_data *adata = typec_altmode_get_drvdata(alt);
 
