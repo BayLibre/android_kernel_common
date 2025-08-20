@@ -16,6 +16,47 @@
       "message": "This doesn\u0027t seem to build. Can you make sure you\u0027ve built with the `//common:kernel_aarch64_abi_dist` target and updated ABI.stg file via `//common:kernel_aarch64_abi_update`?",
       "revId": "bd7cf4546b34d0e590f5f627f2eb8a6ef0ac9be7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4726c7b2_0e70022d",
+        "filename": "android/abi_gki_aarch64_qcom",
+        "patchSetId": 2
+      },
+      "lineNbr": 2339,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-08-20T15:46:15Z",
+      "side": 1,
+      "message": "Is this really a symbol? fwict, this is an inline definition.",
+      "range": {
+        "startLine": 2339,
+        "startChar": 2,
+        "endLine": 2339,
+        "endChar": 14
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "518e3616_97b36ec6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "android/abi_gki_aarch64_qcom",
+              "range": {
+                "startLine": 2339,
+                "startChar": 0,
+                "endLine": 2340,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "bd7cf4546b34d0e590f5f627f2eb8a6ef0ac9be7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
