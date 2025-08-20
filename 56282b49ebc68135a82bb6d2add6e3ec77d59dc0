@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a0b09fa_9f18a987",
+        "filename": "gki/aarch64/symbols/type_visibility",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-20T18:34:18Z",
+      "side": 1,
+      "message": "Again, the indentations need to be consistent. Here and line 9.",
+      "fixSuggestions": [
+        {
+          "fixId": "c9f49987_a4d0a391",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gki/aarch64/symbols/type_visibility",
+              "range": {
+                "startLine": 9,
+                "startChar": 0,
+                "endLine": 10,
+                "endChar": 0
+              },
+              "replacement": "  __traceiter_kfree\n"
+            },
+            {
+              "path": "gki/aarch64/symbols/type_visibility",
+              "range": {
+                "startLine": 11,
+                "startChar": 0,
+                "endLine": 12,
+                "endChar": 0
+              },
+              "replacement": "  __traceiter_kmem_cache_alloc\n"
+            }
+          ]
+        }
+      ],
+      "revId": "56282b49ebc68135a82bb6d2add6e3ec77d59dc0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
