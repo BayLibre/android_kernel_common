@@ -433,6 +433,15 @@ static int cros_typec_register_port_altmodes(struct cros_typec_data *typec,
 		if (IS_ERR(amode))
 			return PTR_ERR(amode);
 		port->port_altmode[CROS_EC_ALTMODE_TBT] = amode;
+
+		if (port->caps.usb_capability | USB_CAPABILITY_USB4) {
+			memset(&desc, 0, sizeof(desc));
+			desc.svid = 0xFF00;
+			amode = cros_typec_register_usb4(port, &desc);
+			if (IS_ERR(amode))
+				return PTR_ERR(amode);
+			port->port_altmode[CROS_EC_ALTMODE_USB4] = amode;
+		}
 	}
 
 	port->state.alt = NULL;
@@ -732,9 +741,11 @@ static int cros_typec_enable_usb4(struct cros_typec_data *typec,
 	data.active_link_training = !!(pd_ctrl->control_flags &
 				       USB_PD_CTRL_ACTIVE_LINK_UNIDIR);
 
-	port->state.alt = NULL;
 	port->state.data = &data;
 	port->state.mode = TYPEC_MODE_USB4;
+
+	if (!port->state.alt)
+		port->state.alt = port->port_altmode[CROS_EC_ALTMODE_USB4];
 
 	return typec_mux_set(port->mux, &port->state);
 }
@@ -789,6 +800,8 @@ static int cros_typec_configure_mux(struct cros_typec_data *typec, int port_num,
 
 	if (port->mux_flags & USB_PD_MUX_USB4_ENABLED) {
 		ret = cros_typec_enable_usb4(typec, port_num, pd_ctrl);
+		cros_typec_usb4_status_update(
+			port->port_altmode[CROS_EC_ALTMODE_USB4], ret);
 	} else if (port->mux_flags & USB_PD_MUX_TBT_COMPAT_ENABLED) {
 		ret = cros_typec_enable_tbt(typec, port_num, pd_ctrl);
 		cros_typec_tbt_status_update(
