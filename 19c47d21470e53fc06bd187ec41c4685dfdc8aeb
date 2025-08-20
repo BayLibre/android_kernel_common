@@ -34,6 +34,24 @@
       "parentUuid": "5ee314cd_976249ea",
       "revId": "19c47d21470e53fc06bd187ec41c4685dfdc8aeb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ef9b4a9_2bad449f",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4847,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-20T10:46:44Z",
+      "side": 1,
+      "message": "\u003e That would be actually more correct [...]\n\nWhat I actually meant: it would be more correct to pin the page not just before mapping but even earlier, before kvm_faultin_pfn() (or perhaps instead of kvm_faultin_pfn()). So it is not exactly related to your question. :)",
+      "parentUuid": "355155ea_c117c7c0",
+      "revId": "19c47d21470e53fc06bd187ec41c4685dfdc8aeb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
