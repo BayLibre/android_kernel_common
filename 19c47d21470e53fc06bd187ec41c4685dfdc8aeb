@@ -16,6 +16,24 @@
       "message": "Seems better to unmap if pin page is failed? Or pin page first and unpin page if map is failed?",
       "revId": "19c47d21470e53fc06bd187ec41c4685dfdc8aeb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "355155ea_c117c7c0",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4847,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-20T10:44:34Z",
+      "side": 1,
+      "message": "If pin failed, we just return the error to userspace and then the VMM just kills the VM.\n\n\u003e Or pin page first\n\nThat would be actually more correct, for different reasons (one of which I mentioned in b/438539067). But that would require quite come rework, which might be better to do not with 6.12 but with newer kernels, where KVM\u0027s own fault-in mechanism has been reworked in a more correct way: https://lore.kernel.org/all/20241010182427.1434605-1-seanjc@google.com/ (or maybe even then it will be not worth reworking, since this pinning is still fundamentally a hack, and we should eventually switch to guest_memfd instead).",
+      "parentUuid": "5ee314cd_976249ea",
+      "revId": "19c47d21470e53fc06bd187ec41c4685dfdc8aeb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
