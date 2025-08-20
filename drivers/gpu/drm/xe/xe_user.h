@@ -9,6 +9,8 @@
 #include "xe_device.h"
 
 
+#define XE_WORK_PERIOD_INTERVAL 500
+
 /**
  * struct xe_user - xe user structure
  *
@@ -28,9 +30,9 @@ struct xe_user {
 	struct xe_device *xe;
 
 	/**
-	 * @filelist_lock: lock protecting the filelist
+	 * @filelist_lock: lock protecting this structure
 	 */
-	struct mutex filelist_lock;
+	struct mutex lock;
 
 	/**
 	 * @filelist: list of xe files belonging to this xe user
@@ -41,7 +43,7 @@ struct xe_user {
 	 * @work: work to emit the gpu work period event for this
 	 * xe user
 	 */
-	struct work_struct work;
+	struct delayed_work delay_work;
 
 	/**
 	 * @id: index of this user into the xe device::users xarray
@@ -68,6 +70,17 @@ struct xe_user {
 
 int xe_user_init(struct xe_device *xe, struct xe_file *xef, unsigned int uid);
 
+void xe_user_cancel_workers(struct xe_device *xe);
+
+void xe_user_resume_workers(struct xe_device *xe);
+
+static inline struct xe_user *
+xe_user_get_unless_zero(struct xe_user *user)
+{
+	if (kref_get_unless_zero(&user->refcount))
+		return user;
+	return NULL;
+}
 
 static inline struct xe_user *
 xe_user_get(struct xe_user *user)

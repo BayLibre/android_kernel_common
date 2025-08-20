@@ -129,11 +129,12 @@ static void xe_file_destroy(struct kref *ref)
 	xe_drm_client_put(xef->client);
 	kfree(xef->process_name);
 
-	mutex_lock(&xef->user->filelist_lock);
-	list_del(&xef->user_link);
-	mutex_unlock(&xef->user->filelist_lock);
-
-	xe_user_put(xef->user);
+	if (xef->user) {
+		mutex_lock(&xef->user->lock);
+		list_del(&xef->user_link);
+		xe_user_put(xef->user);
+		mutex_unlock(&xef->user->lock);
+	}
 	kfree(xef);
 }
 
