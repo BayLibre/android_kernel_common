@@ -118,6 +118,10 @@ static int parse(FILE *input, FILE *csource, FILE *cheader, char *prefix)
 	if (idx)
 		fprintf(csource, ") },\n");
 
+<<<<<<< PATCH SET (cad44959b8109050e50f78ac8907f144e9d4ad9e FROMLIST: drm/xe: replace basename() with portable strrchr())
+<<<<<<< HEAD   (35eeb4d42d50d732250a138559350b81b075f738 ANDROID: sched: Export set_task_cpu inside of ifdef am: 37a6)
+	fprintf(cheader, "\t_XE_WA_OOB_COUNT = %u\n", idx);
+||||||| BASE   (40226d7997b8d45a9d587c8ce70f68d50d4c21c7 Merge 260f6f4fda93 ("Merge tag 'drm-next-2025-07-30' of http)
 	fprintf(cheader, "\t_%s_COUNT = %u\n", prefix, idx);
 
 	return 0;
@@ -145,6 +149,68 @@ static int fn_to_prefix(const char *fn, char *prefix, size_t size)
 			break;
 		}
 	}
+=======
+	fprintf(cheader, "\t_%s_COUNT = %u\n", prefix, idx);
+
+	return 0;
+}
+
+static int fn_to_prefix(const char *fn, char *prefix, size_t size)
+{
+	const char *base;
+	size_t len;
+
+	base = strrchr(fn, '/');
+	fn = base ? base + 1 : fn;
+	len = strlen(fn);
+
+	if (len > size - 1)
+		return -ENAMETOOLONG;
+
+	memcpy(prefix, fn, len + 1);
+
+	for (char *p = prefix; *p; p++) {
+		switch (*p) {
+		case '.':
+			*p = '\0';
+			return 0;
+		default:
+			*p = toupper(*p);
+			break;
+		}
+	}
+>>>>>>> CHANGE (c71ecb422115b1a9571b3e36cf14eb06c8de99c5 FROMLIST: drm/xe: replace basename() with portable strrchr())
+||||||| BASE      (35eeb4d42d50d732250a138559350b81b075f738 ANDROID: sched: Export set_task_cpu inside of ifdef am: 37a6)
+	fprintf(cheader, "\t_XE_WA_OOB_COUNT = %u\n", idx);
+=======
+	fprintf(cheader, "\t_%s_COUNT = %u\n", prefix, idx);
+
+	return 0;
+}
+
+static int fn_to_prefix(const char *fn, char *prefix, size_t size)
+{
+	size_t len;
+
+	fn = basename(fn);
+	len = strlen(fn);
+
+	if (len > size - 1)
+		return -ENAMETOOLONG;
+
+	memcpy(prefix, fn, len + 1);
+
+	for (char *p = prefix; *p; p++) {
+		switch (*p) {
+		case '.':
+			*p = '\0';
+			return 0;
+		default:
+			*p = toupper(*p);
+			break;
+		}
+	}
+>>>>>>> BASE      (e7342b72fc916ab6801a63ea26820c5d5b9185ed [conflict] Merge 260f6f4fda93 ("Merge tag 'drm-next-2025-07-)
 
 	return 0;
 }
