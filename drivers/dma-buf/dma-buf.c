@@ -35,7 +35,6 @@
 
 #include <trace/hooks/dmabuf.h>
 #include <linux/android_kabi.h>
-ANDROID_KABI_DECLONLY(trace_eval_map);
 
 #if IS_ENABLED(CONFIG_DEBUG_FS)
 static DEFINE_MUTEX(debugfs_list_mutex);
