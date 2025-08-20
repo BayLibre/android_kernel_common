@@ -166,7 +166,7 @@ static int register_kinfo_region(const struct kmemdump_backend *be,
 		info->num_syms = *(__u32 *)vaddr;
 		break;
 	case KMEMDUMP_ID_COREIMAGE_kallsyms_relative_base:
-		info->_relative_pa = (u64)__pa(vaddr);
+		info->_relative_pa = (u64)__pa(*(u64 *)vaddr);
 		break;
 	case KMEMDUMP_ID_COREIMAGE_kallsyms_offsets:
 		info->_offsets_pa = (u64)__pa(vaddr);
