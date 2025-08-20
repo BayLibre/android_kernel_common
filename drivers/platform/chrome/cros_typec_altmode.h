@@ -54,4 +54,22 @@ static inline int cros_typec_tbt_status_update(struct typec_altmode *alt,
 }
 #endif
 
+#if IS_ENABLED(CONFIG_USB4)
+struct typec_altmode *cros_typec_register_usb4(struct cros_typec_port *port,
+				struct typec_altmode_desc *desc);
+int cros_typec_usb4_status_update(struct typec_altmode *alt, int error);
+#else
+struct typec_altmode *cros_typec_register_usb4(struct cros_typec_port *port,
+				struct typec_altmode_desc *desc)
+{
+	return typec_port_register_altmode(port->port, desc);
+}
+
+static inline int cros_typec_usb4_status_update(struct typec_altmode *alt,
+					int error)
+{
+	return 0;
+}
+#endif
+
 #endif /* __CROS_TYPEC_ALTMODE_H__ */
