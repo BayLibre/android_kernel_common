@@ -16,6 +16,23 @@
       "message": "nit: or just return __pkvm_host_donate_guest() or return __pkvm_host_donate_guest() so that no need to have ret variable.",
       "revId": "fef0c38714e0fdb9e53f55c06d9a23ec746b33b4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7b52d4f_ea4cf533",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1693,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-08-20T06:33:37Z",
+      "side": 1,
+      "message": "nit: wondering if we want to continue to pass the struct kvm_vcpu *vcpu as the PV interface input, or use vm_handle + vcpu_handle for the v6.15?\n\nLooks like this PV interface doesn\u0027t need to load pkvm_vcpu thus it is put at here, and passing vm_handle + vcpu_handle can directly using pkvm_get_vcpu() without exposing get_pkvm_vcpu_via_shared(). If this PV interface will use vm_handle + vcpu_handle, then probably all the other PV interfaces can do the same to avoid converting a host VA to pKVM VA, and accessing such pKVM VA to get the vm_handle + vcpu_handle.",
+      "revId": "fef0c38714e0fdb9e53f55c06d9a23ec746b33b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
