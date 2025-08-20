@@ -387,6 +387,30 @@
       },
       "revId": "403551799453aab94f91ad5a112e7045ef13733f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca9ddc94_2b9c78c8",
+        "filename": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-20T15:08:39Z",
+      "side": 1,
+      "message": "Thanks for the notice! I\u0027ll take a look and maybe will backport that new callback to my patches to use it instead of these static pre-initialized values, to keep the same style. (Although using an indirect function call is slightly slower than just accessing global variables, but probably no need to worry about that for now.)",
+      "parentUuid": "04d046c2_2c63dd58",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 13
+      },
+      "revId": "403551799453aab94f91ad5a112e7045ef13733f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
