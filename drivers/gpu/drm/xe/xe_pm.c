@@ -22,6 +22,7 @@
 #include "xe_pcode.h"
 #include "xe_pxp.h"
 #include "xe_trace.h"
+#include "xe_user.h"
 #include "xe_wa.h"
 
 /**
@@ -439,6 +440,8 @@ int xe_pm_runtime_suspend(struct xe_device *xe)
 
 	xe_display_pm_runtime_suspend_late(xe);
 
+	xe_user_cancel_workers(xe);
+
 	xe_rpm_lockmap_release(xe);
 	xe_pm_write_callback_task(xe, NULL);
 	return 0;
@@ -485,6 +488,8 @@ int xe_pm_runtime_resume(struct xe_device *xe)
 		if (err)
 			goto out;
 	}
+
+	xe_user_resume_workers(xe);
 
 	xe_irq_resume(xe);
 
