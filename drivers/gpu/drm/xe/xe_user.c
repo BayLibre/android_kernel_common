@@ -260,6 +260,12 @@ int xe_user_init(struct xe_device *xe, struct xe_file *xef, unsigned int uid)
 	return 0;
 }
 
+void xe_user_fini(struct xe_device *xe)
+{
+	xe_user_cancel_workers(xe);
+	xa_destroy(&xe->work_period.users);
+}
+
 void xe_user_cancel_workers(struct xe_device *xe)
 {
 	struct xe_user *user = NULL;
