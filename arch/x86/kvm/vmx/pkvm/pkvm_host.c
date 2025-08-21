@@ -26,6 +26,8 @@ DEFINE_STATIC_KEY_FALSE(pkvm_enabled_key);
 
 bool __read_mostly enable_pkvm = false;
 
+static bool relax_cpu_bugs = true;
+
 static bool cmdline_pvmfw_present;
 static u64 cmdline_pvmfw_base;
 static u64 cmdline_pvmfw_size;
@@ -997,13 +999,6 @@ static __init void pkvm_host_deprivilege_cpu(void *data)
 		goto out;
 	}
 
-	/*
-	 * Setup the x86_spec_ctrl percpu value for the pkvm hypervisor before
-	 * the deprivileging so that the pkvm hypervisor can properly restore
-	 * the spec ctrl when exits from the host.
-	 */
-	pkvm_sym(setup_x86_spec_ctrl)(cpu);
-
 	ret = local_deprivilege_cpu(hvcpu);
 	if (ret == 0) {
 		vcpu = &hvcpu->vmx.vcpu;
@@ -1500,6 +1495,166 @@ static void __init pkvm_init_commit(void)
 	kvm_hypercall1(__PKVM_HC_COMMIT_FINALISE, true);
 }
 
+static bool mitigate_spectre_v2(void)
+{
+	u64 spec_ctrl = SPEC_CTRL_IBRS | SPEC_CTRL_BHI_DIS_S;
+	int cpu;
+
+	/* Require eIBRS */
+	if (!boot_cpu_has(X86_FEATURE_IBRS_ENHANCED))
+		return false;
+
+	/* Require IBPB */
+	if (!boot_cpu_has(X86_FEATURE_IBPB))
+		return false;
+
+	/* Make sure pkvm to use IBPB */
+	set_cpu_cap(&pkvm_sym(boot_cpu_data), X86_FEATURE_USE_IBPB);
+
+	/* Requires EIBRS_PBRSB is not effected */
+	if (boot_cpu_has_bug(X86_BUG_EIBRS_PBRSB))
+		return false;
+
+	/*
+	 * Requires spec ctrl MSR to:
+	 * 1) set IBRS for eIBRS
+	 * 2) set BHI_CTRL to mitigate BHI.
+	 */
+	if (!boot_cpu_has(X86_FEATURE_MSR_SPEC_CTRL) ||
+	    !boot_cpu_has(X86_FEATURE_BHI_CTRL))
+		return false;
+
+	for_each_possible_cpu(cpu)
+		pkvm_sym(setup_x86_spec_ctrl)(cpu, spec_ctrl);
+
+	return true;
+}
+
+static bool mitigate_spec_store_bypass(void)
+{
+	u64 spec_ctrl = SPEC_CTRL_SSBD;
+	int cpu;
+
+	/* Requires spec ctrl MSR to set SSBD to disable SSB. */
+	if (!boot_cpu_has(X86_FEATURE_MSR_SPEC_CTRL) ||
+	    !boot_cpu_has(X86_FEATURE_SPEC_CTRL_SSBD))
+		return false;
+
+	for_each_possible_cpu(cpu)
+		pkvm_sym(setup_x86_spec_ctrl)(cpu, spec_ctrl);
+
+	return true;
+}
+
+/*
+ * Make sure the CPU only with the bugs that can be mitigated by the pkvm
+ * hypervisor can pass the check. The mitigated CPU bugs (as listed in
+ * possible_cpu_bugs array) are based on Intel PTL CPU, and could be extended
+ * beyond PTL in the future.
+ *
+ * The assumption is that the linux kernel is trusted before deprivileging and
+ * can report the CPU bugs/features precisely.
+ *
+ * Below are the CPU bugs could be mitigated by the pkvm hypervisor:
+ *
+ * 1) X86_BUG_SPECTRE_V1. The pkvm mitigations:
+ * 1.1) usercopy/swapgs are not used. Thus can mitigate X86_BUG_SWAPGS.
+ * 1.2) The array index passed from the host VM or the guest VM are sanitized
+ * by array_index_nospec to prevent bypassing the bounds check due to CPU
+ * speculation.
+ *
+ * 2) X86_BUG_SPECTRE_V2. The pkvm mitigations:
+ * 2.1) Leverage PTL hardware mitigation eIBRS feature; Set SPEC_CTRL_IBRS in
+ * spec ctrl MSR.
+ * 2.2) Performs IBPB during context switching between VMs;
+ * 2.3) No context switch in pkvm hypervisor. No need to fill RSB.
+ * 2.4) PBRSB-eIBRS not affected on PTL, no need to fill RSB for vmexits.
+ * 2.5) Set SPEC_CTRL_BHI_DIS_S in spec ctrl MSR to mitigate.
+ *
+ * 3) X86_BUG_SPEC_STORE_BYPASS. The pkvm mitigations:
+ * 3.1) Set SPEC_CTRL_SSBD in spec ctrl MSR to mitigate.
+ *
+ * 4) X86_BUG_SWAPGS:
+ * See comments for X86_BUG_SPECTRE_V1 1.1.
+ *
+ * Note: Beyond the above mitigations, the pkvm hypervisor also supports boot
+ * time retpoline/rethunk patching to mitigate certain CPU (older than PTL)
+ * vulnerabilities. The reason is that, the pkvm hypervisor is part of linux
+ * kernel, and linux kernel could enable retpoline/rethunk patching via kernel
+ * command line parameters even for a CPU which doesn't have such
+ * vulnerabilities, e.g., PTL. With this, the kernel image (including the pkvm
+ * hypervisor) will be patched with the linux kernel's retpoline/rethunk symbols
+ * at the boot time. To support this usage, the pkvm hypervisor should support
+ * retpoline/rethunk patching with its own retpoline/rethunk symbols, otherwise
+ * it will not be able to run due to isolation
+ */
+static bool pkvm_mitigate_cpu_bug(unsigned long bug)
+{
+	bool mitigated = false;
+
+	switch (bug) {
+	case X86_BUG_SPECTRE_V1:
+	case X86_BUG_SWAPGS:
+		/* Guaranteed by the pkvm hypervisor code */
+		mitigated = true;
+		break;
+	case X86_BUG_SPECTRE_V2:
+		mitigated = mitigate_spectre_v2();
+		break;
+	case X86_BUG_SPEC_STORE_BYPASS:
+		mitigated = mitigate_spec_store_bypass();
+		break;
+	default:
+		break;
+	}
+
+	if (!mitigated)
+		pr_err("pkvm: Cannot mitigate CPU bug %s\n", x86_bug_flags[bug - NCAPINTS * 32]);
+
+	return mitigated;
+}
+
+/*
+ * The CPU bugs list based on Intel PTL CPU. Could be extended beyond PTL in the
+ * future.
+ */
+static unsigned long possible_cpu_bugs[] = {
+	X86_BUG_SPECTRE_V1,
+	X86_BUG_SPECTRE_V2,
+	X86_BUG_SPEC_STORE_BYPASS,
+	X86_BUG_SWAPGS,
+};
+
+static bool pkvm_has_unmitigated_cpu_bugs(void)
+{
+	struct cpuinfo_x86 c = boot_cpu_data;
+	int i, unmitigated_cpu_bugs = 0;
+
+	for (i = 0; i < ARRAY_SIZE(possible_cpu_bugs); i++) {
+		unsigned long bug = possible_cpu_bugs[i];
+
+		if (!boot_cpu_has_bug(bug))
+			continue;
+
+		if (!pkvm_mitigate_cpu_bug(bug))
+			continue;
+
+		clear_bit(bug, (unsigned long *)c.x86_capability);
+	}
+
+	for_each_set_bit(i, (unsigned long *)&c.x86_capability[NCAPINTS], NBUGINTS * 32) {
+		pr_err("pkvm: unmitigated cpu bug %s\n", x86_bug_flags[i]);
+		unmitigated_cpu_bugs++;
+	}
+
+	if (unmitigated_cpu_bugs) {
+		pr_err("pkvm: in total has %d unmitigated cpu bugs\n", unmitigated_cpu_bugs);
+		return true;
+	}
+
+	return false;
+}
+
 static int __init __vmx_pkvm_init(void)
 {
 	int ret = 0, cpu;
@@ -1541,6 +1696,21 @@ static int __init __vmx_pkvm_init(void)
 		ret = pkvm_host_setup_vcpu(pkvm, cpu);
 		if (ret)
 			goto out;
+	}
+
+	/*
+	 * Check if there is any CPU bug which cannot be mitigated by the pkvm
+	 * hypervisor. As this may need to set the pkvm's per-cpu spec ctrl, do
+	 * this after pkvm's per-cpu has been initialized.
+	 */
+	if (pkvm_has_unmitigated_cpu_bugs()) {
+		if (relax_cpu_bugs) {
+			pr_warn("pkvm: Allow pkvm to run with unmitigated CPU bugs\n");
+		} else {
+			pr_err("pkvm: Prevent pkvm to run due to unmitigated CPU bugs\n");
+			ret = -EOPNOTSUPP;
+			goto out;
+		}
 	}
 
 	ret = pkvm_host_deprivilege_cpus(pkvm);
