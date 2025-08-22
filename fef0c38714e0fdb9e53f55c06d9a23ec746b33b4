@@ -87,6 +87,24 @@
       "parentUuid": "8fc6d0bd_d2cd864b",
       "revId": "fef0c38714e0fdb9e53f55c06d9a23ec746b33b4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab25bf7b_1fecd07b",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1693,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-08-22T00:33:26Z",
+      "side": 1,
+      "message": "BTW, the pvVMCS patch serial rebasing is not started on v6.15 yet, so changing from the vcpu host vaddr to handles is just an idea in mind, without any practices. If we prefer to use host vaddr as that is more clear and more align with what pkvm-arm did, we can continue to use that without any additional burden.",
+      "parentUuid": "7dafc1ea_00bc8b4d",
+      "revId": "fef0c38714e0fdb9e53f55c06d9a23ec746b33b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
