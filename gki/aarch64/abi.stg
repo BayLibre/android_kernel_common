@@ -141076,6 +141076,13 @@ member {
   bitsize: 1
 }
 member {
+  id: 0x1f7fa5e5
+  name: "is_async"
+  type_id: 0x4585663f
+  offset: 704
+  bitsize: 1
+}
+member {
   id: 0xd6a7318a
   name: "is_async_cb"
   type_id: 0x6d7f5ff6
@@ -141751,6 +141758,13 @@ member {
   name: "is_rel"
   type_id: 0x295c7202
   offset: 456
+}
+member {
+  id: 0xc4b84a2f
+  name: "is_reply"
+  type_id: 0x4585663f
+  offset: 705
+  bitsize: 1
 }
 member {
   id: 0xd901b2d5
@@ -168094,13 +168108,6 @@ member {
   name: "need_qs"
   type_id: 0x295c7202
   offset: 8
-}
-member {
-  id: 0xbce3b67f
-  name: "need_reply"
-  type_id: 0x4585663f
-  offset: 704
-  bitsize: 1
 }
 member {
   id: 0xa400c5ce
@@ -275231,7 +275238,8 @@ struct_union {
     member_id: 0xd2c1c293
     member_id: 0x5841407c
     member_id: 0xa321ae92
-    member_id: 0xbce3b67f
+    member_id: 0x1f7fa5e5
+    member_id: 0xc4b84a2f
     member_id: 0x33e6b01d
     member_id: 0x54a562d8
     member_id: 0x2d2d07f5
@@ -437034,7 +437042,7 @@ elf_symbol {
   name: "__traceiter_binder_transaction_received"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xecddab0a
+  crc: 0x1573722e
   type_id: 0x9ba51920
   full_name: "__traceiter_binder_transaction_received"
 }
