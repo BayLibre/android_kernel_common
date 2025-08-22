@@ -286190,6 +286190,13 @@ function {
   parameter_id: 0x3eb9b5ea
 }
 function {
+  id: 0x9b261113
+  return_type_id: 0x6720d32f
+  parameter_id: 0x191de370
+  parameter_id: 0x3e10b518
+  parameter_id: 0x6720d32f
+}
+function {
   id: 0x9b263487
   return_type_id: 0x6720d32f
   parameter_id: 0x191de370
@@ -310010,6 +310017,15 @@ elf_symbol {
   full_name: "generic_handle_irq"
 }
 elf_symbol {
+  id: 0xd5bc36ee
+  name: "generic_handle_irq_safe"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x74d54026
+  type_id: 0x8ce1baa0
+  full_name: "generic_handle_irq_safe"
+}
+elf_symbol {
   id: 0x92e08a4a
   name: "generic_llseek_cookie"
   is_defined: true
@@ -317551,6 +317567,15 @@ elf_symbol {
   full_name: "pci_iounmap"
 }
 elf_symbol {
+  id: 0x9981880a
+  name: "pci_iov_virtfn_devfn"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x324b67ed
+  type_id: 0x9865c1f0
+  full_name: "pci_iov_virtfn_devfn"
+}
+elf_symbol {
   id: 0x3cbd6214
   name: "pci_irq_vector"
   is_defined: true
@@ -324071,6 +324096,15 @@ elf_symbol {
   crc: 0x24b0254d
   type_id: 0x13648576
   full_name: "snd_soc_jack_report"
+}
+elf_symbol {
+  id: 0xce618820
+  name: "snd_soc_limit_volume"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x0a3b1aa1
+  type_id: 0x9b261113
+  full_name: "snd_soc_limit_volume"
 }
 elf_symbol {
   id: 0x55809d13
@@ -332968,6 +333002,7 @@ interface {
   symbol_id: 0x3812bb22
   symbol_id: 0x2f7205ee
   symbol_id: 0x7d577f86
+  symbol_id: 0xd5bc36ee
   symbol_id: 0x92e08a4a
   symbol_id: 0x95a840b8
   symbol_id: 0x4c4073c3
@@ -333806,6 +333841,7 @@ interface {
   symbol_id: 0x2fefe933
   symbol_id: 0x1c994923
   symbol_id: 0xec861eec
+  symbol_id: 0x9981880a
   symbol_id: 0x3cbd6214
   symbol_id: 0x419ed67f
   symbol_id: 0x0847b0c3
@@ -334531,6 +334567,7 @@ interface {
   symbol_id: 0x2328a625
   symbol_id: 0xabad0839
   symbol_id: 0x6d4398fa
+  symbol_id: 0xce618820
   symbol_id: 0x55809d13
   symbol_id: 0x97f4e147
   symbol_id: 0xb01de4a2
