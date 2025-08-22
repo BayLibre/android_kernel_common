@@ -437,8 +437,13 @@ static int __dev_pm_qos_update_request(struct dev_pm_qos_request *req,
 
 	trace_dev_pm_qos_update_request(dev_name(req->dev), req->type,
 					new_value);
-	if (curr_value != new_value)
+	if (curr_value != new_value){
+#ifdef CONFIG_RSC_VIVO_FAS_GPU_EX
+		if(req->type == DEV_PM_QOS_MAX_FREQUENCY)
+		tracer_android_vh_fas_gpu_qos_update_tracer(&req->data.freq, &new_value);
+#endif
 		ret = apply_constraint(req, PM_QOS_UPDATE_REQ, new_value);
+	}
 
 	return ret;
 }
