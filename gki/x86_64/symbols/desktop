@@ -1229,6 +1229,7 @@
   generic_fillattr
   generic_handle_domain_irq
   generic_handle_irq
+  generic_handle_irq_safe
   generic_llseek_cookie
   generic_mii_ioctl
   generic_read_dir
@@ -2125,6 +2126,7 @@
   pci_iomap_range
   pci_ioremap_bar
   pci_iounmap
+  pci_iov_virtfn_devfn
   pci_irq_vector
   pci_lock_rescan_remove
   pci_map_rom
@@ -2907,6 +2909,7 @@
   snd_soc_jack_free_gpios
   snd_soc_jack_notifier_register
   snd_soc_jack_report
+  snd_soc_limit_volume
   snd_soc_new_compress
   snd_soc_params_to_bclk
   snd_soc_params_to_frame_size
