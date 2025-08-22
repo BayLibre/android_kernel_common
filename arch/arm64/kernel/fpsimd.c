@@ -1820,12 +1820,24 @@ void fpsimd_save_and_flush_cpu_state(void)
 	if (!system_supports_fpsimd())
 		return;
 	WARN_ON(preemptible());
+<<<<<<< HEAD   (5e6db704570401cf7c881129fa38842ddce8f945 ANDROID: oplus add symbols to symbol list)
 	local_irq_save(flags);
 	__get_cpu_fpsimd_context();
+||||||| BASE   (7efba616ff076076f4b953d04653245bac8d9207 ANDROID: update kernel_aoa_enabled to android_kernel_aoa_ena)
+	__get_cpu_fpsimd_context();
+=======
+	get_cpu_fpsimd_context();
+>>>>>>> CHANGE (fc1d54ae71d90167ab350c3ebad1afae882599eb UPSTREAM: KVM: arm64: Fix kernel BUG() due to bad backport o)
 	fpsimd_save();
 	fpsimd_flush_cpu_state();
+<<<<<<< HEAD   (5e6db704570401cf7c881129fa38842ddce8f945 ANDROID: oplus add symbols to symbol list)
 	__put_cpu_fpsimd_context();
 	local_irq_restore(flags);
+||||||| BASE   (7efba616ff076076f4b953d04653245bac8d9207 ANDROID: update kernel_aoa_enabled to android_kernel_aoa_ena)
+	__put_cpu_fpsimd_context();
+=======
+	put_cpu_fpsimd_context();
+>>>>>>> CHANGE (fc1d54ae71d90167ab350c3ebad1afae882599eb UPSTREAM: KVM: arm64: Fix kernel BUG() due to bad backport o)
 }
 
 #ifdef CONFIG_KERNEL_MODE_NEON
