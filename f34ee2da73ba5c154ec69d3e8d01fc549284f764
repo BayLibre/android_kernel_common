@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bdaf5b49_1d1b24e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-08-22T18:41:07Z",
+      "side": 1,
+      "message": "I recognize this is cherry-picking another change that didn\u0027t do it properly, but we usually split patches like this so that the vendorhook additions are done in one patch and the symbol and ABI file updates are done in a following patch.\n\nI think it would be good to correct this before we merge it.",
+      "revId": "f34ee2da73ba5c154ec69d3e8d01fc549284f764",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e131d79e_08352c00",
         "filename": "BUILD.bazel",
         "patchSetId": 2
