@@ -105,6 +105,24 @@
       "parentUuid": "7dafc1ea_00bc8b4d",
       "revId": "fef0c38714e0fdb9e53f55c06d9a23ec746b33b4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdd18088_43c4be84",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1693,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-22T17:24:23Z",
+      "side": 1,
+      "message": "\u003e The benefit of using handle is to avoid the host using some malicious virtual address to break the pkvm hypervisor, e.g, cause page fault exceptions in the pkvm hypervisor as the pkvm hypervisor needs to access this malicious virtual address. Although DoS is not the target, preventing the host to break the pkvm hypervisor still seems attractive to me 😊\n\nAh indeed, good point. I definitely agree it\u0027s better to prevent the host from crashing the hypervisor.\n\nI\u0027ve just checked that pKVM-ARM actually seems to validate the kvm_vcpu pointer passed by the host, in get_host_hyp_vcpus(). More precisely: when loading a vCPU, in `vcpu_load` hypercall, the host passes vcpu_idx, not a kvm_vcpu pointer. And then in `vcpu_run` and some other hypercalls, the host passes a kvm_vcpu pointer, but pKVM validates if this pointer points to struct kvm_vcpu of the vCPU that is currently loaded on this pCPU (before dereferencing this pointer!).\n\nSo... I\u0027m not against passing vm_handle + vcpu_handle instead, or if we still want to pass kvm_vcpu pointer, we should validate it, before dereferencing it. I see you actually have a FIXME for that in get_pkvm_vcpu_via_shared().\n\n...Furthermore: for most pKVM-ARM hypercalls (among those that are expected to be called for a loaded vCPU) the host doesn\u0027t even pass the vCPU as an argument, instead pKVM itself finds out which vCPU is loaded on this pCPU, and handles the hypercall for this vCPU. It seems we can do the same: for all those PV interfaces handled in pkvm_vcpu_handle_kvm_call() (except \\_\\_pkvm__vcpu_load), the host doesn\u0027t need to pass the vCPU, and then pKVM doesn\u0027t need to check if this vCPU is the same as the loaded one, it just needs to check if any vCPU is loaded at all, and then use the loaded vCPU?",
+      "parentUuid": "ab25bf7b_1fecd07b",
+      "revId": "fef0c38714e0fdb9e53f55c06d9a23ec746b33b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
