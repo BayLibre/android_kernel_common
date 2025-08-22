@@ -694,5 +694,14 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_customize_lru_add_dst);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_isolate_priv_lru);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_customize_pgdat_balanced);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_customize_file_is_tiny);
+<<<<<<< HEAD   (87c4ce66affdfd15427fad8a89bc91c279176d29 ANDROID: KVM: arm64: Disable Memory Tagging for all guests i)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bio_add_page_merge_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_loop_skip_queue_work);
+||||||| BASE   (46cba2832a67ecdc28866735338d8bb6ef733681 Revert "ANDROID: add .bazelignore file")
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_nr_pcp_alloc);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_pcp_alloc_factor_adjust);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_nr_pcp_alloc);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_pcp_alloc_factor_adjust);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fas_gpu_qos_update_tracer);
+>>>>>>> CHANGE (3adae2c5b2d2579ec636ca857eeb19a357cff7e1 ANDROID: vendor_hooks: add hook in __dev_pm_qos_update_reque)
