@@ -52,6 +52,24 @@
       "parentUuid": "355155ea_c117c7c0",
       "revId": "19c47d21470e53fc06bd187ec41c4685dfdc8aeb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c8fadbc_31a436a0",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4847,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-08-22T00:47:22Z",
+      "side": 1,
+      "message": "Yes, we will switch to the guest_memfd eventually and this pinning is just a temporary way, and will be removed. As long as a failed pinning can result in the VM being killed and the mapped memory being unmapped, it is good to me.",
+      "parentUuid": "3ef9b4a9_2bad449f",
+      "revId": "19c47d21470e53fc06bd187ec41c4685dfdc8aeb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
