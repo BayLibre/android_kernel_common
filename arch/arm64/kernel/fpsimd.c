@@ -1820,12 +1820,24 @@ void fpsimd_save_and_flush_cpu_state(void)
 	if (!system_supports_fpsimd())
 		return;
 	WARN_ON(preemptible());
+<<<<<<< HEAD   (2c0cf7b3a827953ada8818022b28d2990e7a2b41 BACKPORT: tracing: Have trace_event_file have ref counters)
 	local_irq_save(flags);
 	__get_cpu_fpsimd_context();
+||||||| BASE   (7efba616ff076076f4b953d04653245bac8d9207 ANDROID: update kernel_aoa_enabled to android_kernel_aoa_ena)
+	__get_cpu_fpsimd_context();
+=======
+	get_cpu_fpsimd_context();
+>>>>>>> CHANGE (fc1d54ae71d90167ab350c3ebad1afae882599eb UPSTREAM: KVM: arm64: Fix kernel BUG() due to bad backport o)
 	fpsimd_save();
 	fpsimd_flush_cpu_state();
+<<<<<<< HEAD   (2c0cf7b3a827953ada8818022b28d2990e7a2b41 BACKPORT: tracing: Have trace_event_file have ref counters)
 	__put_cpu_fpsimd_context();
 	local_irq_restore(flags);
+||||||| BASE   (7efba616ff076076f4b953d04653245bac8d9207 ANDROID: update kernel_aoa_enabled to android_kernel_aoa_ena)
+	__put_cpu_fpsimd_context();
+=======
+	put_cpu_fpsimd_context();
+>>>>>>> CHANGE (fc1d54ae71d90167ab350c3ebad1afae882599eb UPSTREAM: KVM: arm64: Fix kernel BUG() due to bad backport o)
 }
 
 #ifdef CONFIG_KERNEL_MODE_NEON
