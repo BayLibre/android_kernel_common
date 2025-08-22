@@ -16,6 +16,24 @@
       "message": "Looks like this file was entirely empty before. Please add a similar header to what\u0027s in `gki/aarch64/abi.stg.allowed_breaks`:\n\n```\n# How to use this file: http://go/approve-abi-break\n# ABI freeze commit: unknown\n```\n\nI\u0027m not sure how that \"ABI freeze commit\" value is generated, or why it was omitted when the file was added, but presumably we can add that later.\n\n@srosek@google.com Do you know what the commit value is, based on your work in b/393500592?",
       "revId": "2ae90bea52b275e1f611bbaab9e28cd2ec2328eb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9a07803_9929bff1",
+        "filename": "gki/x86_64/abi.stg.allowed_breaks",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-08-22T05:11:58Z",
+      "side": 1,
+      "message": "I did not think there was a frozen abi for this branch at all, so why is this change needed?",
+      "parentUuid": "972432b8_c451ceee",
+      "revId": "2ae90bea52b275e1f611bbaab9e28cd2ec2328eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
