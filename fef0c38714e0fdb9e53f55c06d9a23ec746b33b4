@@ -123,6 +123,24 @@
       "parentUuid": "ab25bf7b_1fecd07b",
       "revId": "fef0c38714e0fdb9e53f55c06d9a23ec746b33b4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c3716cf_853d8d89",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 1693,
+      "author": {
+        "id": 1015280
+      },
+      "writtenOn": "2025-08-25T05:16:26Z",
+      "side": 1,
+      "message": "\u003e It seems we can do the same: for all those PV interfaces handled in pkvm_vcpu_handle_kvm_call() (except __pkvm__vcpu_load), the host doesn\u0027t need to pass the vCPU, and then pKVM doesn\u0027t need to check if this vCPU is the same as the loaded one, it just needs to check if any vCPU is loaded at all, and then use the loaded vCPU?\n\nYeah, that makes sense. I didn\u0027t noticed the pkvm-arm has such change in v6.12, but do noticed in v6.15. We can do similar for pkvm-ia rebasing, and discuss more then. Thanks for pointing this out!",
+      "parentUuid": "fdd18088_43c4be84",
+      "revId": "fef0c38714e0fdb9e53f55c06d9a23ec746b33b4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
