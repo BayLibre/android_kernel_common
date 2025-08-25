@@ -18,6 +18,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf3d326e_a526249f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-08-25T21:31:04Z",
+      "side": 1,
+      "message": "Thanks for reviewing Todd. Had some in-depth internal review with USB folks over the last week and abandoning this change as a result.\nHistorically have faced some issues with our USB drivers functionality when building and loading them as vendor modules rather than having them as built-in, hence the initial request for upstreaming them despite them being tristate. \nWill instead look to build and load them as vendor modules and root cause the functionality issues that arise. Thanks.",
+      "revId": "2b9cda7e5cd3ab5f9d739f5ff49485153688ebf1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f61d6120_87d54ba3",
