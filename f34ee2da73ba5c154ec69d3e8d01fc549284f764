@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89138174_397ee14c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-08-25T15:47:36Z",
+      "side": 1,
+      "message": "What John meant was that code changes should not be in the same patch as symbol updates. This is so the vendor hook patch can be cherry-picked to other branches without worrying about ABI conflicts. So move the changes to BUILD.bazel, gki/aarch64/symbols/tcl, and gki/aarch64/abi.stg to a new patch (a child of this patch).",
+      "parentUuid": "5ed7009d_245bd338",
+      "revId": "f34ee2da73ba5c154ec69d3e8d01fc549284f764",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e131d79e_08352c00",
         "filename": "BUILD.bazel",
         "patchSetId": 2
