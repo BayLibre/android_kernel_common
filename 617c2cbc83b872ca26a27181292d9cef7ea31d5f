@@ -16,6 +16,24 @@
       "message": "This commit message should stay with the symbol additions patch (what should be the child patch to this one).\n\nInstead on this commit, you should explain why the vendorhooks you are adding are needed.\n\nIts good to answer the following questions in the commit message:\n1) What is the issue you are seeing that motivate the request to add the vendorhooks?\n2) What quantifiable benefits do you get by having the vendorhooks added?\n3) What upstream approach has been considered which could eventually resolve the need for these vendorhooks.",
       "revId": "617c2cbc83b872ca26a27181292d9cef7ea31d5f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41677eec_1da4fe92",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3434417
+      },
+      "writtenOn": "2025-08-26T04:54:49Z",
+      "side": 1,
+      "message": "these hooks are for  binder thread info. \n\tthe first one is the lifecycle that they are added to thread pool,\n\tand they are released. another is that the data is readed  by thread.\n\t\n\tAnd we don\u0027t find upstream approach which can give these info.\n\tso,we want to add these hooks.\n\t\n\tthanks;",
+      "parentUuid": "53e07c40_e29796f3",
+      "revId": "617c2cbc83b872ca26a27181292d9cef7ea31d5f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
