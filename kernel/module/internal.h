@@ -105,6 +105,7 @@ struct find_symbol_arg {
 	const u32 *crc;
 	const struct kernel_symbol *sym;
 	enum mod_license license;
+	bool is_protected;
 };
 
 int mod_verify_sig(const void *mod, struct load_info *info);
