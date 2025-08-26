@@ -1246,6 +1246,11 @@ static const struct kernel_symbol *resolve_symbol(struct module *mod,
 		goto getname;
 	}
 
+	if (fsa.is_protected && !mod->sig_ok) {
+		fsa.sym = ERR_PTR(-EACCES);
+		goto getname;
+	}
+
 getname:
 	/* We must make copy under the lock if we failed to get ref. */
 	strscpy(ownername, module_name(fsa.owner), MODULE_NAME_LEN);
@@ -1532,8 +1537,12 @@ static int simplify_symbols(struct module *mod, const struct load_info *info)
 				break;
 
 			ret = PTR_ERR(ksym) ?: -ENOENT;
-			pr_warn("%s: Unknown symbol %s (err %d)\n",
-				mod->name, name, ret);
+			if (ret == -EACCES)
+				pr_warn("%s: Protected symbol %s (err %d)\n",
+					mod->name, name, ret);
+			else
+				pr_warn("%s: Unknown symbol %s (err %d)\n",
+					mod->name, name, ret);
 			break;
 
 		default:
