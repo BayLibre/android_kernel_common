@@ -905,6 +905,8 @@ static void initialize_viommu_reg(struct pkvm_iommu *iommu, u32 gsts)
 	/* Invalidate Queue regs are updated when create descriptor */
 }
 
+static int initialize_qi(struct pkvm_iommu *iommu);
+
 int pkvm_init_iommu(unsigned long mem_base, unsigned long nr_pages)
 {
 	struct pkvm_iommu_info *info = &pkvm_hyp->iommu_infos[0];
@@ -944,6 +946,15 @@ int pkvm_init_iommu(unsigned long mem_base, unsigned long nr_pages)
 		piommu->iommu.gcmd = gsts & DMAR_GSTS_EN_BITS;
 
 		initialize_viommu_reg(piommu, gsts);
+		/*
+		 * Initialize QI if it was enabled before pkvm activation.
+		 */
+		if (gsts & DMA_GSTS_QIES) {
+			ret = initialize_qi(piommu);
+			if (ret)
+				return ret;
+		}
+
 	}
 
 	return 0;
@@ -1314,11 +1325,16 @@ static void enable_qi(struct pkvm_iommu *iommu)
 			   readl, (sts & DMA_GSTS_QIES), sts);
 }
 
-static int create_qi_desc(struct pkvm_iommu *iommu)
+static int initialize_qi(struct pkvm_iommu *iommu)
 {
 	struct pkvm_viommu *viommu = &iommu->viommu;
 	struct q_inval *qi = &iommu->qi;
 	void __iomem *reg = iommu->iommu.reg;
+
+	if (iommu->qi_enabled) {
+		pkvm_dbg("pkvm: QI already enabled!\n");
+		return 0;
+	}
 
 	pkvm_spin_lock_init(&iommu->qi_lock);
 	/*
@@ -1395,6 +1411,7 @@ static int create_qi_desc(struct pkvm_iommu *iommu)
 	}
 
 	enable_qi(iommu);
+	iommu->qi_enabled = true;
 	return 0;
 }
 
@@ -1636,10 +1653,6 @@ static int activate_iommu(struct pkvm_iommu *iommu)
 	ret = sync_shadow_id(iommu, vaddr, vaddr_end, 0, NULL);
 	if (ret)
 		return ret;
-
-	ret = create_qi_desc(iommu);
-	if (ret)
-		goto free_shadow;
 
 	set_root_table(iommu);
 
@@ -2043,6 +2056,7 @@ static void handle_gcmd_qie(struct pkvm_iommu *iommu, bool en)
 		/* Update the iqa from vreg */
 		iommu->viommu.iqa = vreg->iqa;
 		vreg->iq_head = 0;
+		initialize_qi(iommu);
 		vreg->gsts |= DMA_GSTS_QIES;
 		pkvm_dbg("pkvm: %s: enabled QI\n", __func__);
 		return;
@@ -2225,7 +2239,7 @@ static unsigned long access_iommu_mmio(struct pkvm_iommu *iommu, bool is_read,
 		if (is_read)
 			ret = viommu->vreg.iq_tail;
 		else {
-			if (viommu->vreg.gsts & DMA_GSTS_QIES)
+			if (iommu->qi_enabled)
 				ret = handle_qi_invalidation(iommu, val);
 			else
 				viommu->vreg.iq_tail = val;
