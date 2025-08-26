@@ -887,7 +887,7 @@ static int initialize_iommu_pgt(struct pkvm_iommu *iommu)
 	return ret;
 }
 
-static void initialize_viommu_reg(struct pkvm_iommu *iommu, u32 gsts)
+static void initialize_viommu_reg(struct pkvm_iommu *iommu)
 {
 	struct viommu_reg *vreg = &iommu->viommu.vreg;
 
@@ -895,15 +895,20 @@ static void initialize_viommu_reg(struct pkvm_iommu *iommu, u32 gsts)
 	vreg->ecap = iommu->iommu.ecap;
 	pkvm_update_iommu_virtual_caps(&vreg->cap, &vreg->ecap);
 
-	vreg->gsts = gsts;
+	vreg->gsts = readl(iommu->iommu.reg + DMAR_GSTS_REG);
+
+	vreg->iq_head = readq(iommu->iommu.reg + DMAR_IQH_REG);
+	vreg->iq_tail = readq(iommu->iommu.reg + DMAR_IQT_REG);
+	vreg->iqa = readq(iommu->iommu.reg + DMAR_IQA_REG);
 
 	pkvm_dbg("%s: iommu phys reg 0x%llx cap 0x%llx ecap 0x%llx gsts 0x%x\n",
 		 __func__, iommu->iommu.reg_phys, vreg->cap, vreg->ecap, vreg->gsts);
 
 	/* rta updated when host writes to DMAR_RTADDR_REG */
 
-	/* Invalidate Queue regs are updated when create descriptor */
 }
+
+static int initialize_qi(struct pkvm_iommu *iommu);
 
 int pkvm_init_iommu(unsigned long mem_base, unsigned long nr_pages)
 {
@@ -915,7 +920,7 @@ int pkvm_init_iommu(unsigned long mem_base, unsigned long nr_pages)
 		return ret;
 
 	for (i = 0; i < PKVM_MAX_IOMMU_NUM; piommu++, info++, i++) {
-		u32 gsts;
+		struct viommu_reg *vreg = &piommu->viommu.vreg;
 
 		if (!info->reg_phys)
 			break;
@@ -939,11 +944,20 @@ int pkvm_init_iommu(unsigned long mem_base, unsigned long nr_pages)
 
 		piommu->iommu.cap = readq(piommu->iommu.reg + DMAR_CAP_REG);
 		piommu->iommu.ecap = readq(piommu->iommu.reg + DMAR_ECAP_REG);
-		gsts = readl(piommu->iommu.reg + DMAR_GSTS_REG);
-		/* cache the enabled features from Global Status register */
-		piommu->iommu.gcmd = gsts & DMAR_GSTS_EN_BITS;
 
-		initialize_viommu_reg(piommu, gsts);
+		initialize_viommu_reg(piommu);
+		/* cache the enabled features from Global Status register */
+		piommu->iommu.gcmd = vreg->gsts & DMAR_GSTS_EN_BITS;
+
+		/*
+		 * Initialize QI if it was enabled before pkvm activation.
+		 */
+		if (vreg->gsts & DMA_GSTS_QIES) {
+			ret = initialize_qi(piommu);
+			if (ret)
+				return ret;
+		}
+
 	}
 
 	return 0;
@@ -1314,11 +1328,19 @@ static void enable_qi(struct pkvm_iommu *iommu)
 			   readl, (sts & DMA_GSTS_QIES), sts);
 }
 
-static int create_qi_desc(struct pkvm_iommu *iommu)
+static int initialize_qi(struct pkvm_iommu *iommu)
 {
 	struct pkvm_viommu *viommu = &iommu->viommu;
 	struct q_inval *qi = &iommu->qi;
 	void __iomem *reg = iommu->iommu.reg;
+
+	if (iommu->qi_enabled) {
+		pkvm_dbg("pkvm: QI already enabled!\n");
+		return 0;
+	}
+
+	/* Update the iqa from vreg */
+	viommu->iqa = viommu->vreg.iqa;
 
 	pkvm_spin_lock_init(&iommu->qi_lock);
 	/*
@@ -1333,24 +1355,16 @@ static int create_qi_desc(struct pkvm_iommu *iommu)
 		readq(reg + DMAR_IQT_REG))
 		cpu_relax();
 
-	viommu->vreg.iqa = viommu->iqa = readq(reg + DMAR_IQA_REG);
-	viommu->vreg.iq_head = readq(reg + DMAR_IQH_REG);
-	viommu->vreg.iq_tail = readq(reg + DMAR_IQT_REG);
-
 	if (viommu->vreg.gsts & DMA_GSTS_QIES) {
 		struct qi_desc *wait_desc;
 		u64 iqa = viommu->iqa;
 		int shift = IQ_DESC_SHIFT(iqa);
-		int offset = ((viommu->vreg.iq_head >> shift) +
+		int offset = ((readq(reg + DMAR_IQH_REG) >> shift) +
 			      IQ_DESC_LEN(iqa) - 1) % IQ_DESC_LEN(iqa);
 		int *desc_status;
 
 		/* Find out the last descriptor */
 		wait_desc = pkvm_phys_to_virt(IQ_DESC_BASE_PHYS(iqa)) + (offset << shift);
-
-		pkvm_dbg("pkvm: viommu iqa 0x%llx head 0x%llx tail 0x%llx qw0 0x%llx qw1 0x%llx",
-				viommu->vreg.iqa, viommu->vreg.iq_head, viommu->vreg.iq_tail,
-				wait_desc->qw0, wait_desc->qw1);
 
 		/*
 		 * If there were invalidation events in flight, wait until
@@ -1395,6 +1409,7 @@ static int create_qi_desc(struct pkvm_iommu *iommu)
 	}
 
 	enable_qi(iommu);
+	iommu->qi_enabled = true;
 	return 0;
 }
 
@@ -1636,10 +1651,6 @@ static int activate_iommu(struct pkvm_iommu *iommu)
 	ret = sync_shadow_id(iommu, vaddr, vaddr_end, 0, NULL);
 	if (ret)
 		return ret;
-
-	ret = create_qi_desc(iommu);
-	if (ret)
-		goto free_shadow;
 
 	set_root_table(iommu);
 
@@ -2040,8 +2051,7 @@ static void handle_gcmd_qie(struct pkvm_iommu *iommu, bool en)
 			return;
 		}
 
-		/* Update the iqa from vreg */
-		iommu->viommu.iqa = vreg->iqa;
+		initialize_qi(iommu);
 		vreg->iq_head = 0;
 		vreg->gsts |= DMA_GSTS_QIES;
 		pkvm_dbg("pkvm: %s: enabled QI\n", __func__);
@@ -2225,7 +2235,7 @@ static unsigned long access_iommu_mmio(struct pkvm_iommu *iommu, bool is_read,
 		if (is_read)
 			ret = viommu->vreg.iq_tail;
 		else {
-			if (viommu->vreg.gsts & DMA_GSTS_QIES)
+			if (iommu->qi_enabled)
 				ret = handle_qi_invalidation(iommu, val);
 			else
 				viommu->vreg.iq_tail = val;
