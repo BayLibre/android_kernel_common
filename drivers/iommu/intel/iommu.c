@@ -2111,16 +2111,6 @@ static int __init init_dmars(void)
 		intel_svm_check(iommu);
 	}
 
-	/*
-	 * Now that qi is enabled on all iommus, set the root entry and flush
-	 * caches. This is required on some Intel X58 chipsets, otherwise the
-	 * flush_context function will loop forever and the boot hangs.
-	 */
-	for_each_active_iommu(iommu, drhd) {
-		iommu_flush_write_buffer(iommu);
-		iommu_set_root_entry(iommu);
-	}
-
 	check_tylersburg_isoch();
 
 	/*
@@ -2208,6 +2198,15 @@ static void __init init_no_remapping_devices(void)
 	}
 }
 
+static void intel_iommu_enable(struct intel_iommu *iommu)
+{
+	iommu_flush_write_buffer(iommu);
+	iommu_set_root_entry(iommu);
+	if (!translation_pre_enabled(iommu)) {
+		iommu_enable_translation(iommu);
+	}
+}
+
 #ifdef CONFIG_SUSPEND
 static int init_iommu_hw(void)
 {
@@ -2234,9 +2233,7 @@ static int init_iommu_hw(void)
 			continue;
 		}
 
-		iommu_flush_write_buffer(iommu);
-		iommu_set_root_entry(iommu);
-		iommu_enable_translation(iommu);
+		intel_iommu_enable(iommu);
 		iommu_disable_protect_mem_regions(iommu);
 	}
 
@@ -2562,7 +2559,6 @@ static int intel_iommu_add(struct dmar_drhd_unit *dmaru)
 	}
 
 	intel_iommu_init_qi(iommu);
-	iommu_flush_write_buffer(iommu);
 
 #ifdef CONFIG_INTEL_IOMMU_SVM
 	if (pasid_supported(iommu) && ecap_prs(iommu->ecap)) {
@@ -2575,8 +2571,7 @@ static int intel_iommu_add(struct dmar_drhd_unit *dmaru)
 	if (ret)
 		goto disable_iommu;
 
-	iommu_set_root_entry(iommu);
-	iommu_enable_translation(iommu);
+	intel_iommu_enable(iommu);
 
 	iommu_disable_protect_mem_regions(iommu);
 	return 0;
@@ -3097,8 +3092,8 @@ int __init intel_iommu_init(void)
 
 	/* Finally, we enable the DMA remapping hardware. */
 	for_each_iommu(iommu, drhd) {
-		if (!drhd->ignored && !translation_pre_enabled(iommu))
-			iommu_enable_translation(iommu);
+		if (!drhd->ignored)
+			intel_iommu_enable(iommu);
 
 		iommu_disable_protect_mem_regions(iommu);
 	}
