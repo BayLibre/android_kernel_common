@@ -50,6 +50,41 @@
       "message": "Please rebase this so it is on top of the patch which adds the vendorhooks.",
       "revId": "1a5b874158346d775915d3d06c526605dc7c473b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efa728bc_e375f624",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-08-26T03:00:41Z",
+      "side": 1,
+      "message": "For this file, it should be spaces instead of a tab.",
+      "fixSuggestions": [
+        {
+          "fixId": "c7f1b345_1b05ebba",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 206,
+                "startChar": 0,
+                "endLine": 207,
+                "endChar": 0
+              },
+              "replacement": "        \"gki/aarch64/symbols/tcl\",\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1a5b874158346d775915d3d06c526605dc7c473b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
