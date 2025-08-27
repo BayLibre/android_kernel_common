@@ -29,3 +29,27 @@ type 'enum gunyah_rm_vm_status' changed
   'struct tracepoint __tracepoint_f2fs_write_checkpoint'
   'struct tracepoint __tracepoint_ufshcd_command'
 
+function symbol 'struct typec_port* typec_altmode2port(struct typec_altmode*)' changed
+  CRC changed from 0x27538cfe to 0x5a7c9ab6
+
+function symbol 'int typec_altmode_attention(struct typec_altmode*, u32)' changed
+  CRC changed from 0xdefe8bae to 0x67f32b39
+
+function symbol 'int typec_altmode_notify(struct typec_altmode*, unsigned long, void*)' changed
+  CRC changed from 0x19203fb to 0x989c2b3
+
+... 31 omitted; 34 symbols have only CRC changes
+
+type 'struct typec_port' changed
+  byte size changed from 1112 to 1120
+  member 'bool mode_control' was added
+
+type 'struct typec_altmode' changed
+  byte size changed from 960 to 968
+  member 'unsigned int priority' was added
+  4 members ('char* desc' .. 'u64 __kabi_reserved1') changed
+    offset changed by 64
+
+type 'struct typec_capability' changed
+  member 'bool no_mode_control' was added
+

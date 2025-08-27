@@ -1,0 +1,26 @@
+
+
+function symbol 'int __typec_altmode_register_driver(struct typec_altmode_driver*, struct module*)' changed
+  CRC changed from 0x88721c6 to 0x6b62f9a1
+
+function symbol 'struct typec_port* typec_altmode2port(struct typec_altmode*)' changed
+  CRC changed from 0xaf55b40b to 0x63a00dc1
+
+function symbol 'int typec_altmode_attention(struct typec_altmode*, u32)' changed
+  CRC changed from 0x7f2ca912 to 0xe169c24b
+
+... 37 omitted; 40 symbols have only CRC changes
+
+type 'struct typec_port' changed
+  byte size changed from 1096 to 1104
+  member 'bool mode_control' was added
+
+type 'struct typec_altmode' changed
+  byte size changed from 944 to 952
+  member 'unsigned int priority' was added
+  4 members ('char* desc' .. 'u64 __kabi_reserved1') changed
+    offset changed by 64
+
+type 'struct typec_capability' changed
+  member 'bool no_mode_control' was added
+
