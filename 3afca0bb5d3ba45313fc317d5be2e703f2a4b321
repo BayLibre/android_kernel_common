@@ -104,6 +104,24 @@
       "parentUuid": "92976752_58610ce9",
       "revId": "3afca0bb5d3ba45313fc317d5be2e703f2a4b321",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fb15b65_320ab9e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 3589941
+      },
+      "writtenOn": "2025-08-27T12:50:49Z",
+      "side": 1,
+      "message": "With this new hook, important tasks can be selected directly for execution rather than using the replace method, thereby saving the overhead of the pick_next_entity instructions in the non-simple native path.\n\nThis new hook allows important tasks to be immediately pulled from other CPUs for execution (instead of waiting for CPU newidle or tick balance), reducing scheduling latency—something that the current hooks cannot achieve.",
+      "parentUuid": "4ea04fba_c1a255b3",
+      "revId": "3afca0bb5d3ba45313fc317d5be2e703f2a4b321",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
