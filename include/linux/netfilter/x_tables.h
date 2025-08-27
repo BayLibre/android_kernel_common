@@ -144,6 +144,15 @@ struct xt_match {
 
 	const char name[XT_EXTENSION_MAXNAMELEN];
 	u_int8_t revision;
+#ifndef __GENKSYMS__
+	/*
+	 * ANDROID: Indicates that this structure is contained within a compat_xt_match_ext struct,
+	 * which contains the required metadata.
+	 *
+	 * Hide this from GENKSYMS to preserve the original CRC value of this struct.
+	 */
+	bool has_compat_metadata;
+#endif
 
 	/* Return true or false: return FALSE and set *hotdrop = 1 to
            force immediate packet drop. */
@@ -184,6 +193,15 @@ struct xt_target {
 
 	const char name[XT_EXTENSION_MAXNAMELEN];
 	u_int8_t revision;
+#ifndef __GENKSYMS__
+	/*
+	 * ANDROID: Indicates that this structure is contained within a compat_xt_target_ext struct,
+	 * which contains the required metadata.
+	 *
+	 * Hide this from GENKSYMS to preserve the original CRC value of this struct.
+	 */
+	bool has_compat_metadata;
+#endif
 
 	/* Returns verdict. Argument order changed since 2.6.9, as this
 	   must now handle non-linear skbs, using skb_copy_bits and
@@ -455,6 +473,22 @@ void xt_unregister_template(const struct xt_table *t);
 #ifdef CONFIG_NETFILTER_XTABLES_COMPAT
 #include <net/compat.h>
 
+struct compat_xt_match_ext {
+	/* Called when userspace align differs from kernel space one */
+	void (*compat_from_user)(void *dst, const void *src);
+	int (*compat_to_user)(void __user *dst, const void *src);
+	unsigned int compatsize;
+	struct xt_match match;
+};
+
+struct compat_xt_target_ext {
+	/* Called when userspace align differs from kernel space one */
+	void (*compat_from_user)(void *dst, const void *src);
+	int (*compat_to_user)(void __user *dst, const void *src);
+	unsigned int compatsize;
+	struct xt_target target;
+};
+
 struct compat_xt_entry_match {
 	union {
 		struct {
@@ -509,6 +543,26 @@ struct _compat_xt_align {
 };
 
 #define COMPAT_XT_ALIGN(s) __ALIGN_KERNEL((s), __alignof__(struct _compat_xt_align))
+
+static inline struct compat_xt_match_ext *get_compat_xt_match_ext(const struct xt_match *match)
+{
+	struct compat_xt_match_ext *match_ext = NULL;
+
+	if (match->has_compat_metadata)
+		match_ext = container_of(match, struct compat_xt_match_ext, match);
+
+	return match_ext;
+}
+
+static inline struct compat_xt_target_ext *get_compat_xt_target_ext(const struct xt_target *target)
+{
+	struct compat_xt_target_ext *target_ext = NULL;
+
+	if (target->has_compat_metadata)
+		target_ext = container_of(target, struct compat_xt_target_ext, target);
+
+	return target_ext;
+}
 
 void xt_compat_lock(u_int8_t af);
 void xt_compat_unlock(u_int8_t af);
