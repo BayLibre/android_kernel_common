@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b7793b6_53ecddad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-08-27T22:41:58Z",
+      "side": 1,
+      "message": "You shouldn\u0027t use FROMLIST with ANDROID per the guidelines.\n\nAlso, this is a squash of 3 patches. So another reason it can\u0027t have FROMLIST.",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 17
+      },
+      "revId": "55da60b1e9d9dce3f296e6981eb5c8ca36ae19ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db946c68_c1944f99",
+        "filename": "kernel/power/suspend.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-08-27T22:41:58Z",
+      "side": 1,
+      "message": "I don\u0027t see any `pm_fs_abort` code. Am I going blind?",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 34
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "16f44f1b_24c7a701",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/power/suspend.c",
+              "range": {
+                "startLine": 95,
+                "startChar": 0,
+                "endLine": 95,
+                "endChar": 0
+              },
+              "replacement": "\n#define pm_fs_abort suspend_abort_fs_sync\n"
+            }
+          ]
+        }
+      ],
+      "revId": "55da60b1e9d9dce3f296e6981eb5c8ca36ae19ff",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
