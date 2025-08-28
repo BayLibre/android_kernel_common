@@ -162,6 +162,44 @@ static int debug_kinfo_probe(struct platform_device *pdev)
 
 	update_kernel_all_info(all_info);
 
+	/* Print the contents of the entire struct for debugging. */
+	pr_info("--- ANDROID Kernel all info contents ---");
+	pr_info("struct kernel_all_info:");
+	pr_info("  magic_number: 0x%08x", all_info->magic_number);
+	pr_info("  combined_checksum: 0x%08x", all_info->combined_checksum);
+
+	pr_info("struct kernel_info (nested inside):");
+	pr_info("  enabled_all: %hhu", info->enabled_all);
+	pr_info("  enabled_base_relative: %hhu", info->enabled_base_relative);
+	pr_info("  enabled_absolute_percpu: %hhu", info->enabled_absolute_percpu);
+	pr_info("  enabled_cfi_clang: %hhu", info->enabled_cfi_clang);
+	pr_info("  num_syms: %u", info->num_syms);
+	pr_info("  name_len: %u", info->name_len);
+	pr_info("  bit_per_long: %u", info->bit_per_long);
+	pr_info("  module_name_len: %u", info->module_name_len);
+	pr_info("  symbol_len: %u", info->symbol_len);
+	pr_info("  _relative_pa: 0x%llx", info->_relative_pa);
+	pr_info("  _text_pa: 0x%llx", info->_text_pa);
+	pr_info("  _stext_pa: 0x%llx", info->_stext_pa);
+	pr_info("  _etext_pa: 0x%llx", info->_etext_pa);
+	pr_info("  _sinittext_pa: 0x%llx", info->_sinittext_pa);
+	pr_info("  _einittext_pa: 0x%llx", info->_einittext_pa);
+	pr_info("  _end_pa: 0x%llx", info->_end_pa);
+	pr_info("  _offsets_pa: 0x%llx", info->_offsets_pa);
+	pr_info("  _names_pa: 0x%llx", info->_names_pa);
+	pr_info("  _token_table_pa: 0x%llx", info->_token_table_pa);
+	pr_info("  _token_index_pa: 0x%llx", info->_token_index_pa);
+	pr_info("  _markers_pa: 0x%llx", info->_markers_pa);
+	pr_info("  _seqs_of_names_pa: 0x%llx", info->_seqs_of_names_pa);
+	pr_info("  thread_size: %u", info->thread_size);
+	pr_info("  swapper_pg_dir_pa: 0x%llx", info->swapper_pg_dir_pa);
+	pr_info("  last_uts_release: %s", info->last_uts_release);
+	pr_info("  build_info: %s", info->build_info);
+	pr_info("  enabled_modules_tree_lookup: %u", info->enabled_modules_tree_lookup);
+	pr_info("  mod_mem_offset: %u", info->mod_mem_offset);
+	pr_info("  mod_kallsyms_offset: %u", info->mod_kallsyms_offset);
+	pr_info("--- ANDROID End of kernel all info ---");
+
 	return 0;
 }
 
