@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc1e66cd_25798bd8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-08-28T10:20:15Z",
+      "side": 1,
+      "message": "On which path do we not already use a hyp-local copy of the host memcache?\n\nrefill_memcache() already does it for instance, and hyp_alloc_mgt_refill() uses a stack-allocated one, is there something else?",
+      "revId": "3cc19f29d1717ebfa0fa34a2c4da32df24445432",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
