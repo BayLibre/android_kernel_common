@@ -56,6 +56,8 @@ enum sm_level {
 	IOMMU_SM_LEVEL_NUM,
 };
 
+#define pkvm_sm_supported(iommu)	(pkvm_hyp->iommu_sm && ecap_smts((iommu)->ecap))
+
 #define LAST_LEVEL(level)	\
 	(((level) == 1) ? true : false)
 
