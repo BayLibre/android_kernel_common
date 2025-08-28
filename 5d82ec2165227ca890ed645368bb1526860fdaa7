@@ -22,6 +22,30 @@
       },
       "revId": "5d82ec2165227ca890ed645368bb1526860fdaa7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b0a5381_89361875",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2025-08-28T12:30:46Z",
+      "side": 1,
+      "message": "sure, this is not as dangerous as the one in `admit_host_page`. In fact we can also use it for `host_mc-\u003enr_pages`",
+      "parentUuid": "de650da1_81e717de",
+      "range": {
+        "startLine": 620,
+        "startChar": 32,
+        "endLine": 620,
+        "endChar": 39
+      },
+      "revId": "5d82ec2165227ca890ed645368bb1526860fdaa7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
