@@ -453,7 +453,10 @@ static int selinux_is_genfs_special_handling(struct super_block *sb)
 		!strcmp(sb->s_type->name, "rootfs") ||
 		(selinux_policycap_cgroupseclabel() &&
 		 (!strcmp(sb->s_type->name, "cgroup") ||
-		  !strcmp(sb->s_type->name, "cgroup2")));
+		  !strcmp(sb->s_type->name, "cgroup2"))) ||
+		 // Android: remove functionfs policycap check due to
+		 // ABI breakage with policycap array.
+		 !strcmp(sb->s_type->name, "functionfs");
 }
 
 static int selinux_is_sblabel_mnt(struct super_block *sb)
@@ -705,7 +708,18 @@ static int selinux_set_mnt_opts(struct super_block *sb,
 	    !strcmp(sb->s_type->name, "tracefs") ||
 	    !strcmp(sb->s_type->name, "binder") ||
 	    !strcmp(sb->s_type->name, "bpf") ||
+<<<<<<< HEAD   (effada2cf9523030a08d6bbc28fb054aa5e20b7e UPSTREAM: perf/core: Fix potential NULL deref)
 	    !strcmp(sb->s_type->name, "pstore"))
+||||||| BASE   (4b89111e7b1d9c9d8461d81a306af871f43c8dcc ANDROID: GKI: vivo add symbols to symbol list)
+	    !strcmp(sb->s_type->name, "pstore") ||
+	    !strcmp(sb->s_type->name, "securityfs"))
+=======
+	    !strcmp(sb->s_type->name, "pstore") ||
+	    !strcmp(sb->s_type->name, "securityfs") ||
+	    // Android: remove functionfs policycap check due to
+	    // ABI breakage with policycap array.
+	     strcmp(sb->s_type->name, "functionfs"))
+>>>>>>> CHANGE (e63379d191dd2f612400004b6969aabc67ae3208 BACKPORT: FROMGIT: selinux: enable per-file labeling for fun)
 		sbsec->flags |= SE_SBGENFS;
 
 	if (!strcmp(sb->s_type->name, "sysfs") ||
