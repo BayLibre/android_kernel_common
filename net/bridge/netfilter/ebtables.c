@@ -1662,10 +1662,7 @@ static int compat_match_to_user(struct ebt_entry_match *m, void __user **dstptr,
 	    put_user(msize, &cm->match_size))
 		return -EFAULT;
 
-	if (match->compat_to_user) {
-		if (match->compat_to_user(cm->data, m->data))
-			return -EFAULT;
-	} else if (match_ext && match_ext->compat_to_user) {
+	if (match_ext && match_ext->compat_to_user) {
 		if (match_ext->compat_to_user(cm->data, m->data))
 			return -EFAULT;
 	} else {
@@ -1698,10 +1695,7 @@ static int compat_target_to_user(struct ebt_entry_target *t,
 	    put_user(tsize, &cm->match_size))
 		return -EFAULT;
 
-	if (target->compat_to_user) {
-		if (target->compat_to_user(cm->data, t->data))
-			return -EFAULT;
-	} else if (target_ext && target_ext->compat_to_user) {
+	if (target_ext && target_ext->compat_to_user) {
 		if (target_ext->compat_to_user(cm->data, t->data))
 			return -EFAULT;
 	} else {
@@ -1999,9 +1993,7 @@ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
 		if (dst) {
 			match_ext = get_compat_xt_match_ext(match);
 
-			if (match->compat_from_user)
-				match->compat_from_user(dst, mwt->data);
-			else if (match_ext && match_ext->compat_from_user)
+			if (match_ext && match_ext->compat_from_user)
 				match_ext->compat_from_user(dst, mwt->data);
 			else
 				memcpy(dst, mwt->data, match_size);
@@ -2023,9 +2015,7 @@ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
 		if (dst) {
 			target_ext = get_compat_xt_target_ext(wt);
 
-			if (wt->compat_from_user)
-				wt->compat_from_user(dst, mwt->data);
-			else if (target_ext && target_ext->compat_from_user)
+			if (target_ext && target_ext->compat_from_user)
 				target_ext->compat_from_user(dst, mwt->data);
 			else
 				memcpy(dst, mwt->data, match_size);
