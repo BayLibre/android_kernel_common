@@ -746,9 +746,7 @@ int xt_compat_match_offset(const struct xt_match *match)
 	struct compat_xt_match_ext *match_ext = get_compat_xt_match_ext(match);
 	u_int16_t csize;
 
-	if (match->compatsize)
-		csize = match->compatsize;
-	else if (match_ext && match_ext->compatsize)
+	if (match_ext && match_ext->compatsize)
 		csize = match_ext->compatsize;
 	else
 		csize = match->matchsize;
@@ -769,9 +767,7 @@ void xt_compat_match_from_user(struct xt_entry_match *m, void **dstptr,
 
 	m = *dstptr;
 	memcpy(m, cm, sizeof(*cm));
-	if (match->compat_from_user)
-		match->compat_from_user(m->data, cm->data);
-	else if (match_ext && match_ext->compat_from_user)
+	if (match_ext && match_ext->compat_from_user)
 		match_ext->compat_from_user(m->data, cm->data);
 	else
 		memcpy(m->data, cm->data, msize - sizeof(*cm));
@@ -805,10 +801,7 @@ int xt_compat_match_to_user(const struct xt_entry_match *m,
 	if (XT_OBJ_TO_USER(cm, m, match, msize))
 		return -EFAULT;
 
-	if (match->compat_to_user) {
-		if (match->compat_to_user((void __user *)cm->data, m->data))
-			return -EFAULT;
-	} else if (match_ext && match_ext->compat_to_user) {
+	if (match_ext && match_ext->compat_to_user) {
 		if (match_ext->compat_to_user((void __user *)cm->data, m->data))
 			return -EFAULT;
 	} else {
@@ -1142,9 +1135,7 @@ int xt_compat_target_offset(const struct xt_target *target)
 	struct compat_xt_target_ext *target_ext = get_compat_xt_target_ext(target);
 	u_int16_t csize;
 
-	if (target->compatsize)
-		csize = target->compatsize;
-	else if (target_ext && target_ext->compatsize)
+	if (target_ext && target_ext->compatsize)
 		csize = target_ext->compatsize;
 	else
 		csize = target->targetsize;
@@ -1165,9 +1156,7 @@ void xt_compat_target_from_user(struct xt_entry_target *t, void **dstptr,
 
 	t = *dstptr;
 	memcpy(t, ct, sizeof(*ct));
-	if (target->compat_from_user)
-		target->compat_from_user(t->data, ct->data);
-	else if (target_ext && target_ext->compat_from_user)
+	if (target_ext && target_ext->compat_from_user)
 		target_ext->compat_from_user(t->data, ct->data);
 	else
 		memcpy(t->data, ct->data, tsize - sizeof(*ct));
@@ -1195,10 +1184,7 @@ int xt_compat_target_to_user(const struct xt_entry_target *t,
 	if (XT_OBJ_TO_USER(ct, t, target, tsize))
 		return -EFAULT;
 
-	if (target->compat_to_user) {
-		if (target->compat_to_user((void __user *)ct->data, t->data))
-			return -EFAULT;
-	} else if (target_ext && target_ext->compat_to_user) {
+	if (target_ext && target_ext->compat_to_user) {
 		if (target_ext->compat_to_user((void __user *)ct->data, t->data))
 			return -EFAULT;
 	} else {

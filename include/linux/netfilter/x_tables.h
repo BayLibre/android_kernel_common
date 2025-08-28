@@ -167,7 +167,13 @@ struct xt_match {
 
 	/* Called when entry of this type deleted. */
 	void (*destroy)(const struct xt_mtdtor_param *);
-#ifdef CONFIG_NETFILTER_XTABLES_COMPAT
+	/*
+	 * ANDROID: Adding these fields to this structure breaks the KMI, so do not allow them to
+	 * be added within this structure.
+	 *
+	 * Instead, see struct compat_xt_match_ext and its usage below.
+	 */
+#ifdef CONFIG_BROKEN
 	/* Called when userspace align differs from kernel space one */
 	void (*compat_from_user)(void *dst, const void *src);
 	int (*compat_to_user)(void __user *dst, const void *src);
@@ -178,7 +184,13 @@ struct xt_match {
 	const char *table;
 	unsigned int matchsize;
 	unsigned int usersize;
-#ifdef CONFIG_NETFILTER_XTABLES_COMPAT
+	/*
+	 * ANDROID: Adding this field to this structure breaks the KMI, so do not allow it to be
+	 * added within this structure.
+	 *
+	 * Instead, see struct compat_xt_match_ext and its usage below.
+	 */
+#ifdef CONFIG_BROKEN
 	unsigned int compatsize;
 #endif
 	unsigned int hooks;
@@ -217,7 +229,13 @@ struct xt_target {
 
 	/* Called when entry of this type deleted. */
 	void (*destroy)(const struct xt_tgdtor_param *);
-#ifdef CONFIG_NETFILTER_XTABLES_COMPAT
+	/*
+	 * ANDROID: Adding these fields to this structure breaks the KMI, so do not allow them to
+	 * be added within this structure.
+	 *
+	 * Instead, see struct compat_xt_target_ext and its usage below.
+	 */
+#ifdef CONFIG_BROKEN
 	/* Called when userspace align differs from kernel space one */
 	void (*compat_from_user)(void *dst, const void *src);
 	int (*compat_to_user)(void __user *dst, const void *src);
@@ -228,7 +246,13 @@ struct xt_target {
 	const char *table;
 	unsigned int targetsize;
 	unsigned int usersize;
-#ifdef CONFIG_NETFILTER_XTABLES_COMPAT
+	/*
+	 * ANDROID: Adding this field to this structure breaks the KMI, so do not allow it to be
+	 * added within this structure.
+	 *
+	 * Instead, see struct compat_xt_target_ext and its usage below.
+	 */
+#ifdef CONFIG_BROKEN
 	unsigned int compatsize;
 #endif
 	unsigned int hooks;
