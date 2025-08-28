@@ -507768,6 +507768,15 @@ elf_symbol {
   full_name: "vfs_getattr_nosec"
 }
 elf_symbol {
+  id: 0x59e05e1d
+  name: "vfs_ioctl"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x859da056
+  type_id: 0xa00069e0
+  full_name: "vfs_ioctl"
+}
+elf_symbol {
   id: 0x720f61e1
   name: "vfs_iter_read"
   is_defined: true
@@ -519912,6 +519921,7 @@ interface {
   symbol_id: 0x1499f6a1
   symbol_id: 0xfd383511
   symbol_id: 0x3a06b46a
+  symbol_id: 0x59e05e1d
   symbol_id: 0x720f61e1
   symbol_id: 0x8c159c51
   symbol_id: 0xf89b49b7
