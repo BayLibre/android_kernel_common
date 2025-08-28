@@ -285,7 +285,7 @@ static void debug_kinfo_remove(struct platform_device *pdev)
 }
 
 static const struct of_device_id debug_kinfo_of_match[] = {
-	{ .compatible	= "google,debug-kinfo" },
+	{ .compatible	= "kmemdump-google,debug-kinfo" },
 	{},
 };
 MODULE_DEVICE_TABLE(of, debug_kinfo_of_match);
@@ -294,7 +294,7 @@ static struct platform_driver debug_kinfo_driver = {
 	.probe = debug_kinfo_probe,
 	.remove = debug_kinfo_remove,
 	.driver = {
-		.name = "debug-kinfo",
+		.name = "kmemdump-debug-kinfo",
 		.of_match_table = of_match_ptr(debug_kinfo_of_match),
 	},
 };
