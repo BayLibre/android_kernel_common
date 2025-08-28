@@ -262,6 +262,7 @@ static int debug_kinfo_probe(struct platform_device *pdev)
 	memset(all_info, 0, sizeof(struct kernel_all_info));
 	info = &all_info->info;
 	info->enabled_all = IS_ENABLED(CONFIG_KALLSYMS_ALL);
+	info->enabled_base_relative = IS_ENABLED(CONFIG_KALLSYMS_BASE_RELATIVE);
 	info->enabled_absolute_percpu = IS_ENABLED(CONFIG_KALLSYMS_ABSOLUTE_PERCPU);
 	info->enabled_cfi_clang = IS_ENABLED(CONFIG_CFI_CLANG);
 	info->name_len = KSYM_NAME_LEN;
