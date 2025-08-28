@@ -209,6 +209,7 @@ static __init int check_and_init_iommu(struct pkvm_hyp *pkvm)
 	if ((pkvm->vmx_cap.ept & VMX_EPT_1GB_PAGE_BIT))
 		pgsz_mask |= 1 << PG_LEVEL_1G;
 
+	pkvm->iommu_sm = intel_iommu_sm;
 	pkvm->iommu_coherent = true;
 	for_each_drhd_unit(drhd) {
 		int level = 0, mask = 1 << PG_LEVEL_4K;
