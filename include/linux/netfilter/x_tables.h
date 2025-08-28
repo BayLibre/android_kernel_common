@@ -167,7 +167,13 @@ struct xt_match {
 
 	/* Called when entry of this type deleted. */
 	void (*destroy)(const struct xt_mtdtor_param *);
-#ifdef CONFIG_NETFILTER_XTABLES_COMPAT
+	/*
+	 * ANDROID: Adding these fields to this structure breaks the KMI, so do not allow them to
+	 * be added within this structure.
+	 *
+	 * Instead, see struct compat_xt_match_ext and its usage below.
+	 */
+#ifdef CONFIG_BROKEN
 	/* Called when userspace align differs from kernel space one */
 	void (*compat_from_user)(void *dst, const void *src);
 	int (*compat_to_user)(void __user *dst, const void *src);
@@ -178,7 +184,13 @@ struct xt_match {
 	const char *table;
 	unsigned int matchsize;
 	unsigned int usersize;
-#ifdef CONFIG_NETFILTER_XTABLES_COMPAT
+	/*
+	 * ANDROID: Adding this field to this structure breaks the KMI, so do not allow it to be
+	 * added within this structure.
+	 *
+	 * Instead, see struct compat_xt_match_ext and its usage below.
+	 */
+#ifdef CONFIG_BROKEN
 	unsigned int compatsize;
 #endif
 	unsigned int hooks;
@@ -217,7 +229,13 @@ struct xt_target {
 
 	/* Called when entry of this type deleted. */
 	void (*destroy)(const struct xt_tgdtor_param *);
-#ifdef CONFIG_NETFILTER_XTABLES_COMPAT
+	/*
+	 * ANDROID: Adding these fields to this structure breaks the KMI, so do not allow them to
+	 * be added within this structure.
+	 *
+	 * Instead, see struct compat_xt_target_ext and its usage below.
+	 */
+#ifdef CONFIG_BROKEN
 	/* Called when userspace align differs from kernel space one */
 	void (*compat_from_user)(void *dst, const void *src);
 	int (*compat_to_user)(void __user *dst, const void *src);
@@ -228,7 +246,13 @@ struct xt_target {
 	const char *table;
 	unsigned int targetsize;
 	unsigned int usersize;
-#ifdef CONFIG_NETFILTER_XTABLES_COMPAT
+	/*
+	 * ANDROID: Adding this field to this structure breaks the KMI, so do not allow it to be
+	 * added within this structure.
+	 *
+	 * Instead, see struct compat_xt_target_ext and its usage below.
+	 */
+#ifdef CONFIG_BROKEN
 	unsigned int compatsize;
 #endif
 	unsigned int hooks;
@@ -556,12 +580,8 @@ static inline struct compat_xt_match_ext *get_compat_xt_match_ext(const struct x
 
 static inline unsigned int get_xt_match_compatsize(const struct xt_match *match)
 {
-	struct compat_xt_match_ext *match_ext;
+	struct compat_xt_match_ext *match_ext = get_compat_xt_match_ext(match);
 
-	if (match->compatsize)
-		return match->compatsize;
-
-	match_ext = get_compat_xt_match_ext(match);
 	if (match_ext && match_ext->compatsize)
 		return match_ext->compatsize;
 
@@ -571,12 +591,8 @@ static inline unsigned int get_xt_match_compatsize(const struct xt_match *match)
 static inline void (*get_xt_match_compat_from_user(const struct xt_match *match))(void *,
 										  const void *)
 {
-	struct compat_xt_match_ext *match_ext;
+	struct compat_xt_match_ext *match_ext = get_compat_xt_match_ext(match);
 
-	if (match->compat_from_user)
-		return match->compat_from_user;
-
-	match_ext = get_compat_xt_match_ext(match);
 	if (match_ext && match_ext->compat_from_user)
 		return match_ext->compat_from_user;
 
@@ -586,12 +602,8 @@ static inline void (*get_xt_match_compat_from_user(const struct xt_match *match)
 static inline int (*get_xt_match_compat_to_user(const struct xt_match *match))(void __user *,
 									       const void *)
 {
-	struct compat_xt_match_ext *match_ext;
+	struct compat_xt_match_ext *match_ext = get_compat_xt_match_ext(match);
 
-	if (match->compat_to_user)
-		return match->compat_to_user;
-
-	match_ext = get_compat_xt_match_ext(match);
 	if (match_ext && match_ext->compat_to_user)
 		return match_ext->compat_to_user;
 
@@ -610,12 +622,8 @@ static inline struct compat_xt_target_ext *get_compat_xt_target_ext(const struct
 
 static inline unsigned int get_xt_target_compatsize(const struct xt_target *target)
 {
-	struct compat_xt_target_ext *target_ext;
+	struct compat_xt_target_ext *target_ext = get_compat_xt_target_ext(target);
 
-	if (target->compatsize)
-		return target->compatsize;
-
-	target_ext = get_compat_xt_target_ext(target);
 	if (target_ext && target_ext->compatsize)
 		return target_ext->compatsize;
 
@@ -625,12 +633,8 @@ static inline unsigned int get_xt_target_compatsize(const struct xt_target *targ
 static inline void (*get_xt_target_compat_from_user(const struct xt_target *target))(void *,
 										     const void *)
 {
-	struct compat_xt_target_ext *target_ext;
+	struct compat_xt_target_ext *target_ext = get_compat_xt_target_ext(target);
 
-	if (target->compat_from_user)
-		return target->compat_from_user;
-
-	target_ext = get_compat_xt_target_ext(target);
 	if (target_ext && target_ext->compat_from_user)
 		return target_ext->compat_from_user;
 
@@ -640,12 +644,8 @@ static inline void (*get_xt_target_compat_from_user(const struct xt_target *targ
 static inline int (*get_xt_target_compat_to_user(const struct xt_target *target))(void __user *,
 										  const void *)
 {
-	struct compat_xt_target_ext *target_ext;
+	struct compat_xt_target_ext *target_ext = get_compat_xt_target_ext(target);
 
-	if (target->compat_to_user)
-		return target->compat_to_user;
-
-	target_ext = get_compat_xt_target_ext(target);
 	if (target_ext && target_ext->compat_to_user)
 		return target_ext->compat_to_user;
 
