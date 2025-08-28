@@ -193,6 +193,7 @@ static int register_kinfo_region(const struct kmemdump_backend *be,
 		strscpy(info->last_uts_release, vaddr, __NEW_UTS_LEN);
 		break;
 	default:
+		return 0;
 	};
 
 	update_kernel_all_info(all_info);
