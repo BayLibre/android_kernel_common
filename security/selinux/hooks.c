@@ -453,7 +453,10 @@ static int selinux_is_genfs_special_handling(struct super_block *sb)
 		!strcmp(sb->s_type->name, "rootfs") ||
 		(selinux_policycap_cgroupseclabel() &&
 		 (!strcmp(sb->s_type->name, "cgroup") ||
-		  !strcmp(sb->s_type->name, "cgroup2")));
+		  !strcmp(sb->s_type->name, "cgroup2"))) ||
+		// Android: remove functionfs policycap check due to
+		// ABI breakage with policycap array.
+		!strcmp(sb->s_type->name, "functionfs");
 }
 
 static int selinux_is_sblabel_mnt(struct super_block *sb)
@@ -705,7 +708,18 @@ static int selinux_set_mnt_opts(struct super_block *sb,
 	    !strcmp(sb->s_type->name, "tracefs") ||
 	    !strcmp(sb->s_type->name, "binder") ||
 	    !strcmp(sb->s_type->name, "bpf") ||
+<<<<<<< HEAD   (31c2019330e67f44b2e41b0937701a7dfa79156f UPSTREAM: net/packet: fix a race in packet_set_ring() and pa)
 	    !strcmp(sb->s_type->name, "pstore"))
+||||||| BASE   (77259d2668d7612300c645fb8c8fe5fe7a33eccb FROMGIT: f2fs: fix condition in __allow_reserved_blocks())
+	    !strcmp(sb->s_type->name, "pstore") ||
+	    !strcmp(sb->s_type->name, "securityfs"))
+=======
+	    !strcmp(sb->s_type->name, "pstore") ||
+	    !strcmp(sb->s_type->name, "securityfs") ||
+	    // Android: remove functionfs policycap check due to
+	    // ABI breakage with policycap array.
+	    !strcmp(sb->s_type->name, "functionfs"))
+>>>>>>> CHANGE (532c452095b99e52580db02cd5842365b2bbb615 BACKPORT: FROMGIT: selinux: enable per-file labeling for fun)
 		sbsec->flags |= SE_SBGENFS;
 
 	if (!strcmp(sb->s_type->name, "sysfs") ||
