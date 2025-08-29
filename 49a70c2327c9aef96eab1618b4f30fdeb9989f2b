@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e23a0e01_f958ab8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3593604
+      },
+      "writtenOn": "2025-08-29T20:46:34Z",
+      "side": 1,
+      "message": "LGTM with nits",
+      "revId": "49a70c2327c9aef96eab1618b4f30fdeb9989f2b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d524f3f_6684e0c2",
+        "filename": "drivers/gpu/drm/i915/display/intel_display.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7223,
+      "author": {
+        "id": 3593604
+      },
+      "writtenOn": "2025-08-29T20:46:34Z",
+      "side": 1,
+      "message": "```suggestion\n\tstruct intel_display *display \u003d to_intel_display(state);\n\tconst struct intel_crtc_state *new_crtc_state \u003d\n\t\tintel_atomic_get_new_crtc_state(state, crtc);\n\tbool modeset \u003d intel_crtc_needs_modeset(new_crtc_state);\n\n\tdrm_WARN_ON(display-\u003edrm, new_crtc_state-\u003euse_dsb);\n\n```",
+      "range": {
+        "startLine": 7216,
+        "startChar": 0,
+        "endLine": 7223,
+        "endChar": 0
+      },
+      "revId": "49a70c2327c9aef96eab1618b4f30fdeb9989f2b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db2b8a68_7876d4e1",
+        "filename": "drivers/gpu/drm/i915/display/intel_display.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7229,
+      "author": {
+        "id": 3593604
+      },
+      "writtenOn": "2025-08-29T20:46:34Z",
+      "side": 1,
+      "message": "```suggestion\n\tif (DISPLAY_VER(display) \u003e\u003d 9 \u0026\u0026 !modeset)\n```",
+      "range": {
+        "startLine": 7229,
+        "startChar": 17,
+        "endLine": 7229,
+        "endChar": 25
+      },
+      "revId": "49a70c2327c9aef96eab1618b4f30fdeb9989f2b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
