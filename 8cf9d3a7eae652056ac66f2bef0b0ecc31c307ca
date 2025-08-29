@@ -195,6 +195,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3aa59815_a80d8919",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-29T16:56:13Z",
+      "side": 1,
+      "message": "Done: flipped the order of this and next patch.",
+      "parentUuid": "f099c45f_e2ffe513",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 1
+      },
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "996ed2f1_7e7c483d",
@@ -272,6 +296,24 @@
       "side": 1,
       "message": "Actually pkvm_vm_destroy() is not called in pkvm_vm_init()\u0027s failure path, it is only called when handling the `__pkvm__vm_destroy` hypercall. So we still need to call pkvm_vm_mmu_destroy() here. Right?",
       "parentUuid": "a24a11c1_5d61df5c",
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ce46cae_11f2d509",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-29T16:56:13Z",
+      "side": 1,
+      "message": ".",
+      "parentUuid": "3754d8d4_33740808",
       "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -464,6 +506,30 @@
       "side": 1,
       "message": "Personally I feel its easier to review if it accompanies the code that uses it, but its a personal preference I guess. I have seen upstream folks also inclining towards defining functions where they are used first in favor of introducing dead code in separate commits.",
       "parentUuid": "7642d9b3_5ff6a5b5",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 1
+      },
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2f09f6a_67406b53",
+        "filename": "arch/x86/kvm/pkvm/pkvm.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-29T16:56:13Z",
+      "side": 1,
+      "message": "Done: moved these to aosp/3666639 where they are used first time.",
+      "parentUuid": "24245cef_2110ecda",
       "range": {
         "startLine": 112,
         "startChar": 0,
