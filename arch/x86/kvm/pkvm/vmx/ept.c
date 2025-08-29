@@ -96,6 +96,18 @@ static unsigned long ept_level_to_size(int level)
 	return KVM_HPAGE_SIZE(level);
 }
 
+static bool ept_entry_young(void *ptep)
+{
+	u64 val = *(u64 *)ptep;
+
+	return !!(val & VMX_EPT_ACCESS_BIT);
+}
+
+static void ept_entry_mkold(void *ptep)
+{
+	*(u64 *)ptep &= ~VMX_EPT_ACCESS_BIT;
+}
+
 static void ept_set_entry(void *sptep, u64 spte)
 {
 	WRITE_ONCE(*(u64 *)sptep, spte);
@@ -117,6 +129,8 @@ void pkvm_guest_ept_setup(void)
 		.pgt_level_entry_size = ept_level_entry_size,
 		.pgt_level_to_entries = ept_level_to_entries,
 		.pgt_level_to_size = ept_level_to_size,
+		.pgt_entry_young = ept_entry_young,
+		.pgt_entry_mkold = ept_entry_mkold,
 		.pgt_set_entry = ept_set_entry,
 	};
 
