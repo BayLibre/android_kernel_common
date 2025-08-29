@@ -32,6 +32,9 @@
 #ifndef _ANDROID_KABI_H
 #define _ANDROID_KABI_H
 
+/* We maintain a stable ABI only for ARM64 */
+#ifdef CONFIG_ARM64
+
 #include <linux/compiler.h>
 #include <linux/stringify.h>
 
@@ -133,5 +136,14 @@
 #define ANDROID_KABI_USE2(number, _new1, _new2)			\
 	_ANDROID_KABI_REPLACE(_ANDROID_KABI_RESERVE(number), struct{ _new1; _new2; })
 
+#else /* CONFIG_ARM64 */
+
+#define ANDROID_KABI_RESERVE(number)
+#define ANDROID_KABI_BACKPORT_OK(number)
+#define ANDROID_KABI_USE(number, _new) _new
+#define ANDROID_KABI_BACKPORT_USE(number, _new) _new
+#define ANDROID_KABI_USE2(number, _new1, _new2) do {_new1; _new2; } while(0)
+
+#endif /* CONFIG_ARM64 */
 
 #endif /* _ANDROID_KABI_H */
