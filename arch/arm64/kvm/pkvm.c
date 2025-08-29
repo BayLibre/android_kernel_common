@@ -181,7 +181,7 @@ static int __init register_moveable_regions(void)
 {
 	struct memblock_region *reg;
 	struct device_node *np;
-	int i = 0, ret = 0, idx = 0;
+	int i = 0, ret = 0;
 
 	for_each_mem_region(reg) {
 		if (i >= PKVM_NR_MOVEABLE_REGS)
@@ -202,8 +202,7 @@ static int __init register_moveable_regions(void)
 	for_each_compatible_node(np, NULL, PKVM_DEVICE_ASSIGN_COMPAT) {
 		struct of_phandle_args args;
 
-		while (!of_parse_phandle_with_fixed_args(np, "devices", 1, idx, &args)) {
-			idx++;
+		for (i = 0; !of_parse_phandle_with_fixed_args(np, "devices", 1, i, &args); i++) {
 			ret = register_moveable_fdt_resource(args.np, PKVM_MREG_ASSIGN_MMIO);
 			of_node_put(args.np);
 			if (ret)
@@ -689,14 +688,14 @@ static int pkvm_register_device(struct of_phandle_args *args,
 static int pkvm_init_devices(void)
 {
 	struct device_node *np;
-	int idx = 0, ret = 0, dev_cnt = 0;
+	int i, ret = 0, dev_cnt = 0;
 	size_t dev_sz;
-	struct pkvm_device *dev_base;
+	struct pkvm_device *dev_base, *dev;
 
 	for_each_compatible_node (np, NULL, PKVM_DEVICE_ASSIGN_COMPAT) {
 		struct of_phandle_args args;
 
-		while (!of_parse_phandle_with_fixed_args(np, "devices", 1, dev_cnt, &args)) {
+		for (i = 0; !of_parse_phandle_with_fixed_args(np, "devices", 1, i, &args); i++) {
 			dev_cnt++;
 			of_node_put(args.np);
 		}
@@ -713,17 +712,17 @@ static int pkvm_init_devices(void)
 	if (!dev_base)
 		return -ENOMEM;
 
+	dev = dev_base;
 	for_each_compatible_node(np, NULL, PKVM_DEVICE_ASSIGN_COMPAT) {
 		struct of_phandle_args args;
 
-		while (!of_parse_phandle_with_fixed_args(np, "devices", 1, idx, &args)) {
-			ret = pkvm_register_device(&args, &dev_base[idx]);
+		for (i = 0; !of_parse_phandle_with_fixed_args(np, "devices", 1, i, &args); i++) {
+			ret = pkvm_register_device(&args, dev++);
 			of_node_put(args.np);
 			if (ret) {
 				of_node_put(np);
 				goto out_free;
 			}
-			idx++;
 		}
 	}
 
