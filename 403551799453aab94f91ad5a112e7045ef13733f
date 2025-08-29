@@ -429,6 +429,30 @@
       },
       "revId": "403551799453aab94f91ad5a112e7045ef13733f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6da78f08_3d0ab42f",
+        "filename": "arch/x86/kvm/vmx/pkvm/include/pkvm.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-08-29T17:08:50Z",
+      "side": 1,
+      "message": "Refactored to use pgtable callbacks instead of these pre-initialized constants:\n\n1. backported Chuanxiao\u0027s .calc_pte_perm() callback as pgt_entry_calc_perm() callback.\n2. for the age hypercall (aosp/3700490) added callbacks .pgt_entry_young() and .pgt_entry_mkold() (and as a side effect, split aosp/3700490 into 3 patches: aosp/3751567 + aosp/3751568 + aosp/3700490)",
+      "parentUuid": "ca9ddc94_2b9c78c8",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 13
+      },
+      "revId": "403551799453aab94f91ad5a112e7045ef13733f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
