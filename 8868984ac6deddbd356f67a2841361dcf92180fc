@@ -1,0 +1,74 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "209c5a61_51592d0c",
+        "filename": "drivers/debug/kinfo.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1334815
+      },
+      "writtenOn": "2025-08-29T15:40:45Z",
+      "side": 1,
+      "message": "May I know when this will be called ?",
+      "fixSuggestions": [
+        {
+          "fixId": "5b0f0a3d_1e6afaa2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/debug/kinfo.c",
+              "range": {
+                "startLine": 131,
+                "startChar": 0,
+                "endLine": 132,
+                "endChar": 0
+              },
+              "replacement": " * register_kinfo_region() - Register a new kinfo region.\n *                           Called by the kmemdump framework when a kernel\n *                           memory region with a specific kmemdump_uid\n *                           is being registered. This happens during\n *                           kernel initialization as various subsystems\n *                           export their memory ranges.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8868984ac6deddbd356f67a2841361dcf92180fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87469d3c_353d33ed",
+        "filename": "drivers/debug/kinfo.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1334815
+      },
+      "writtenOn": "2025-08-29T15:40:45Z",
+      "side": 1,
+      "message": "May original design only call this once, but it seems to be called many times here ?",
+      "fixSuggestions": [
+        {
+          "fixId": "f83bd388_8f3e5b8d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/debug/kinfo.c",
+              "range": {
+                "startLine": 198,
+                "startChar": 0,
+                "endLine": 198,
+                "endChar": 0
+              },
+              "replacement": "\t/* May original design only call this once, but it seems to be called many times */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8868984ac6deddbd356f67a2841361dcf92180fc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
