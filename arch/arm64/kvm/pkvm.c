@@ -668,12 +668,8 @@ static int pkvm_init_devices(void)
 	struct pkvm_device *dev_base, *dev;
 
 	for_each_compatible_node (np, NULL, PKVM_DEVICE_ASSIGN_COMPAT) {
-		struct of_phandle_args args;
-
-		for (i = 0; !of_parse_phandle_with_fixed_args(np, "devices", 1, i, &args); i++) {
+		for (i = 0; !of_parse_phandle_with_fixed_args(np, "devices", 1, i, NULL); i++)
 			dev_cnt++;
-			of_node_put(args.np);
-		}
 	}
 	kvm_info("Found %d assignable devices", dev_cnt);
 
