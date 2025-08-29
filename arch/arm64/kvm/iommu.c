@@ -190,17 +190,61 @@ unsigned long __pkvm_free_iommu_hyp_memcache(struct kvm_hyp_memcache *mc)
 	return __free_hyp_memcache(mc, hyp_mc_iommu_free_fn, kvm_host_va, mc);
 }
 
+static phys_addr_t __topup_virt_to_phys(void *virt)
+{
+	return __pa(virt);
+}
+
+static int __kvm_iommu_topup_memcache_from_cma(size_t size, gfp_t gfp, size_t *allocated)
+{
+	*allocated = 0;
+
+	if ((gfp & GFP_ATOMIC) == GFP_ATOMIC)
+		return -ENOMEM;
+
+	while (*allocated < size) {
+		struct page *p = kvm_iommu_cma_alloc();
+		struct kvm_hyp_memcache mc;
+
+		if (!p)
+			return -ENOMEM;
+
+		init_hyp_memcache(&mc);
+		push_hyp_memcache(&mc, page_to_virt(p), __topup_virt_to_phys,
+				  PMD_SHIFT - PAGE_SHIFT);
+
+		if (__pkvm_topup_hyp_alloc_mgt_mc(HYP_ALLOC_MGT_IOMMU_ID, &mc)) {
+			kvm_iommu_cma_release(p);
+			return -EINVAL;
+		}
+
+		*allocated += PMD_SIZE;
+	}
+
+	return 0;
+}
+
 int __pkvm_topup_hyp_iommu(unsigned long nr_pages, unsigned long sz_alloc, gfp_t gfp)
 {
 	struct kvm_hyp_memcache mc;
 	int ret;
 	unsigned long order = get_order(sz_alloc);
+	size_t size = sz_alloc * nr_pages;
+	size_t from_cma = 0;
 
 	if (!is_protected_kvm_enabled())
 		return 0;
 
 	if (order > PAGE_SHIFT)
 		return -E2BIG;
+
+	if (sz_alloc <= PMD_SIZE) {
+		ret = __kvm_iommu_topup_memcache_from_cma(size, gfp, &from_cma);
+		if (!ret)
+			return 0;
+	}
+
+	nr_pages -= from_cma / sz_alloc;
 
 	init_hyp_memcache(&mc);
 
