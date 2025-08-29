@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9da8bc88_74111606",
+        "filename": "mm/madvise.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1551,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-08-29T21:17:03Z",
+      "side": 1,
+      "message": "Let\u0027s add the missing ` prev \u003d vma;` before this. We concluded it\u0027s not needed but let\u0027s be consistent with the upstream.",
+      "range": {
+        "startLine": 1551,
+        "startChar": 3,
+        "endLine": 1551,
+        "endChar": 46
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "761b082c_ed3fe333",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/madvise.c",
+              "range": {
+                "startLine": 1551,
+                "startChar": 0,
+                "endLine": 1551,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tprev \u003d vma;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f3c4f34fd0674cce531a353b84dd0d8a4293a237",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
