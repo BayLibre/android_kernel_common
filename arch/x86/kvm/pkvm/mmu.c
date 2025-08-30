@@ -180,7 +180,7 @@ int pkvm_vm_mmu_map(struct kvm_vcpu *shared_vcpu, u64 gpa, u64 hpa, u64 size, bo
 	prot |= kvm_x86_call(get_mt_mask)(to_kvm_vcpu(pkvm_vcpu), gpa >> PAGE_SHIFT, false);
 
 	pkvm_spin_lock(&pkvm_vm->pgt_lock);
-	ret = pkvm_pgtable_map(&pkvm_vm->pgt, gpa, hpa, size, 0, prot, guest_mmu_map_leaf);
+	ret = pkvm_pgtable_map(&pkvm_vm->pgt, gpa, hpa, size, 0, prot, guest_mmu_map_leaf, NULL);
 	pkvm_spin_unlock(&pkvm_vm->pgt_lock);
 
 put_pkvm_vcpu:
