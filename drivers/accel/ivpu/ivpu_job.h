@@ -30,8 +30,15 @@ struct ivpu_cmdq {
 	u32 entry_count;
 	u32 id;
 	u32 db_id;
+<<<<<<< HEAD   (8479c7078d88df74ac0b390190ae7c3248d0014c FROMGIT: drm/i915/dp: Add device specific quirk to limit eDP)
 	u8 priority;
 	bool is_legacy;
+||||||| BASE   (437e1d666d1da25565a576e40737f771189ad707 UPSTREAM: printk: Improve memory usage logging during boot)
+	bool db_registered;
+=======
+	bool db_registered;
+	u8 priority;
+>>>>>>> BRANCH (21fbbe6cf817b3776973b0174ce80f28dafcb072 Merge tag 'android16-6.12.38_r00' into android16-6.12)
 };
 
 /**

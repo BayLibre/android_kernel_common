@@ -173,7 +173,13 @@ void xe_irq_enable_hwe(struct xe_gt *gt)
 		if (ccs_mask & (BIT(0)|BIT(1)))
 			xe_mmio_write32(mmio, CCS0_CCS1_INTR_MASK, ~dmask);
 		if (ccs_mask & (BIT(2)|BIT(3)))
+<<<<<<< HEAD   (8479c7078d88df74ac0b390190ae7c3248d0014c FROMGIT: drm/i915/dp: Add device specific quirk to limit eDP)
 			xe_mmio_write32(mmio, CCS2_CCS3_INTR_MASK, ~dmask);
+||||||| BASE   (437e1d666d1da25565a576e40737f771189ad707 UPSTREAM: printk: Improve memory usage logging during boot)
+			xe_mmio_write32(gt,  CCS2_CCS3_INTR_MASK, ~dmask);
+=======
+			xe_mmio_write32(gt, CCS2_CCS3_INTR_MASK, ~dmask);
+>>>>>>> BRANCH (21fbbe6cf817b3776973b0174ce80f28dafcb072 Merge tag 'android16-6.12.38_r00' into android16-6.12)
 	}
 
 	if (xe_gt_is_media_type(gt) || MEDIA_VER(xe) < 13) {

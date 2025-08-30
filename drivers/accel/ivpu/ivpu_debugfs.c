@@ -455,7 +455,12 @@ priority_bands_fops_write(struct file *file, const char __user *user_buf, size_t
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD   (8479c7078d88df74ac0b390190ae7c3248d0014c FROMGIT: drm/i915/dp: Add device specific quirk to limit eDP)
 	buf[ret] = '\0';
+||||||| BASE   (437e1d666d1da25565a576e40737f771189ad707 UPSTREAM: printk: Improve memory usage logging during boot)
+=======
+	buf[size] = '\0';
+>>>>>>> BRANCH (21fbbe6cf817b3776973b0174ce80f28dafcb072 Merge tag 'android16-6.12.38_r00' into android16-6.12)
 	ret = sscanf(buf, "%u %u %u %u", &band, &grace_period, &process_grace_period,
 		     &process_quantum);
 	if (ret != 4)
