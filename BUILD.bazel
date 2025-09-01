@@ -1708,7 +1708,10 @@ cc_binary_with_abi(
     srcs = select({
         "//build/kernel/kleaf/platforms/config_settings:android_x86_64": ["tools/testing/selftests/breakpoints/breakpoint_test.c"],
         "//build/kernel/kleaf/platforms/config_settings:android_i386": ["tools/testing/selftests/breakpoints/breakpoint_test.c"],
-        "//build/kernel/kleaf/platforms/config_settings:android_arm64": ["tools/testing/selftests/breakpoints/breakpoint_test_arm64.c"],
+        "//build/kernel/kleaf/platforms/config_settings:android_arm64": [
+            "tools/testing/selftests/breakpoints/breakpoint_test.c",
+            "tools/testing/selftests/breakpoints/breakpoint_test_arm64.c",
+        ],
         "//conditions:default": [],
     }),
     copts = _KSELFTEST_COPTS,
@@ -2833,6 +2836,7 @@ pkg_filegroup(
     name = "vts_kselftest_tests_x86_64",
     srcs = [
         ":kselftest_binderfs_binderfs_test_x86_64",
+        ":kselftest_breakpoints_breakpoint_test_x86_64",
         ":kselftest_capabilities_test_execve_x86_64",
         ":kselftest_capabilities_validate_cap_x86_64",
         ":kselftest_futex_futex_requeue_pi_mismatched_ops_x86_64",
@@ -2922,6 +2926,7 @@ pkg_filegroup(
     name = "vts_kselftest_tests_x86",
     srcs = [
         ":kselftest_binderfs_binderfs_test_x86",
+        ":kselftest_breakpoints_breakpoint_test_x86",
         ":kselftest_capabilities_test_execve_x86",
         ":kselftest_capabilities_validate_cap_x86",
         ":kselftest_futex_futex_requeue_pi_mismatched_ops_x86",
@@ -3004,6 +3009,7 @@ pkg_filegroup(
     name = "vts_kselftest_tests_arm",
     srcs = [
         ":kselftest_binderfs_binderfs_test_arm",
+        ":kselftest_breakpoints_breakpoint_test_arm",
         ":kselftest_capabilities_test_execve_arm",
         ":kselftest_capabilities_validate_cap_arm",
         ":kselftest_futex_futex_requeue_arm",
@@ -3088,6 +3094,7 @@ pkg_filegroup(
     name = "vts_kselftest_tests_arm64",
     srcs = [
         ":kselftest_binderfs_binderfs_test_arm64",
+        ":kselftest_breakpoints_breakpoint_test_arm64",
         ":kselftest_capabilities_test_execve_arm64",
         ":kselftest_capabilities_validate_cap_arm64",
         ":kselftest_futex_futex_requeue_arm64",
