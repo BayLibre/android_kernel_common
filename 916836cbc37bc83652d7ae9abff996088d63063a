@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df8150df_e79d7602",
+        "filename": "drivers/accel/ivpu/ivpu_job.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3485565
+      },
+      "writtenOn": "2025-09-01T07:51:14Z",
+      "side": 0,
+      "message": "Are you sure we don\u0027t lose here `db_registered` struct field? it\u0027s in the ACK:\n\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android16-6.12/drivers/accel/ivpu/ivpu_job.h#25",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 0
+      },
+      "revId": "916836cbc37bc83652d7ae9abff996088d63063a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
