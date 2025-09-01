@@ -18,6 +18,7 @@ struct page_vma_mapped_walk;
 struct track;
 struct compact_control;
 struct vm_unmapped_area_info;
+struct folio_batch;
 
 DECLARE_RESTRICTED_HOOK(android_rvh_shmem_get_folio,
 			TP_PROTO(struct shmem_inode_info *info, struct folio **folio),
@@ -443,6 +444,20 @@ DECLARE_HOOK(android_vh_do_async_mmap_readahead,
 DECLARE_HOOK(android_vh_mm_free_page,
 	TP_PROTO(struct page *page),
 	TP_ARGS(page));
+DECLARE_HOOK(android_vh_page_cache_ra_unbounded,
+	TP_PROTO(struct readahead_control *ractl,
+		struct address_space *mapping,
+		struct folio *folio),
+	TP_ARGS(ractl, mapping, folio));
+DECLARE_HOOK(android_vh_force_page_cache_ra,
+	TP_PROTO(struct readahead_control *ractl),
+	TP_ARGS(ractl));
+DECLARE_HOOK(android_vh_filemap_fault,
+	TP_PROTO(struct vm_fault *vmf, struct inode *inode, struct folio *folio),
+	TP_ARGS(vmf, inode, folio));
+DECLARE_HOOK(android_vh_filemap_read_end,
+	TP_PROTO(struct inode *inode, struct folio_batch *fbatch),
+	TP_ARGS(inode, fbatch));
 
 DECLARE_HOOK(android_vh_cma_debug_show_areas,
 	TP_PROTO(bool *show),

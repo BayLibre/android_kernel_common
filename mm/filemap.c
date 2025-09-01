@@ -2819,6 +2819,7 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
 				break;
 			}
 		}
+		trace_android_vh_filemap_read_end(inode, &fbatch);
 put_folios:
 		for (i = 0; i < folio_batch_count(&fbatch); i++)
 			folio_put(fbatch.folios[i]);
@@ -3443,6 +3444,8 @@ retry_find:
 
 	if (!lock_folio_maybe_drop_mmap(vmf, folio, &fpin))
 		goto out_retry;
+
+	trace_android_vh_filemap_fault(vmf, inode, folio);
 
 	/* Did it get truncated? */
 	if (unlikely(folio->mapping != mapping)) {
