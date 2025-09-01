@@ -2004,6 +2004,102 @@ cc_library(
 )
 
 cc_binary_with_abi(
+    name = "kselftest_net_tests_socket",
+    srcs = ["tools/testing/selftests/net/socket.c"],
+    out = "socket",
+    copts = _KSELFTEST_COPTS,
+    includes = [
+        "tools/testing/selftests",
+    ],
+    path_prefix = _KSELFTEST_DIR,
+    target_compatible_with = ["@platforms//os:android"],
+    visibility = ["//visibility:private"],
+    deps = [
+        ":kselftest_headers_lib",
+    ],
+)
+
+cc_binary_with_abi(
+    name = "kselftest_net_tests_psock_fanout",
+    srcs = ["tools/testing/selftests/net/psock_fanout.c"],
+    out = "psock_fanout",
+    copts = _KSELFTEST_COPTS,
+    includes = [
+        "tools/testing/selftests",
+    ],
+    path_prefix = _KSELFTEST_DIR,
+    target_compatible_with = ["@platforms//os:android"],
+    visibility = ["//visibility:private"],
+    deps = [
+        ":kselftest_headers_lib",
+    ],
+)
+
+cc_binary_with_abi(
+    name = "kselftest_net_tests_psock_tpacket",
+    srcs = ["tools/testing/selftests/net/psock_tpacket.c"],
+    out = "psock_tpacket",
+    copts = _KSELFTEST_COPTS,
+    includes = [
+        "tools/testing/selftests",
+    ],
+    path_prefix = _KSELFTEST_DIR,
+    target_compatible_with = ["@platforms//os:android"],
+    visibility = ["//visibility:private"],
+    deps = [
+        ":kselftest_headers_lib",
+    ],
+)
+
+cc_binary_with_abi(
+    name = "kselftest_net_tests_reuseport_dualstack",
+    srcs = ["tools/testing/selftests/net/reuseport_dualstack.c"],
+    out = "reuseport_dualstack",
+    copts = _KSELFTEST_COPTS,
+    includes = [
+        "tools/testing/selftests",
+    ],
+    path_prefix = _KSELFTEST_DIR,
+    target_compatible_with = ["@platforms//os:android"],
+    visibility = ["//visibility:private"],
+    deps = [
+        ":kselftest_headers_lib",
+    ],
+)
+
+cc_binary_with_abi(
+    name = "kselftest_net_tests_reuseaddr_conflict",
+    srcs = ["tools/testing/selftests/net/reuseaddr_conflict.c"],
+    out = "reuseaddr_conflict",
+    copts = _KSELFTEST_COPTS,
+    includes = [
+        "tools/testing/selftests",
+    ],
+    path_prefix = _KSELFTEST_DIR,
+    target_compatible_with = ["@platforms//os:android"],
+    visibility = ["//visibility:private"],
+    deps = [
+        ":kselftest_headers_lib",
+    ],
+)
+
+cc_binary_with_abi(
+    name = "kselftest_net_test_bpf",
+    srcs = ["tools/testing/selftests/net/reuseport_bpf.c"],
+    out = "reuseport_bpf",
+    copts = _KSELFTEST_COPTS,
+    includes = [
+        "tools/testing/selftests",
+    ],
+    path_prefix = _KSELFTEST_DIR,
+    target_compatible_with = ["@platforms//os:android"],
+    visibility = ["//visibility:private"],
+    deps = [
+        ":kselftest_headers_lib",
+    ],
+)
+
+cc_binary_with_abi(
     name = "kselftest_memfd_test",
     srcs = ["tools/testing/selftests/memfd/memfd_test.c"],
     copts = _KSELFTEST_COPTS,
@@ -3107,6 +3203,12 @@ pkg_filegroup(
         ":kselftest_futex_futex_wait_uninitialized_heap_arm64",
         ":kselftest_futex_futex_wait_wouldblock_arm64",
         ":kselftest_kcmp_kcmp_test_arm64",
+        ":kselftest_net_tests_socket_arm64",
+        ":kselftest_net_tests_psock_fanout_arm64",
+        ":kselftest_net_tests_psock_tpacket_arm64",
+        ":kselftest_net_tests_reuseport_dualstack_arm64",
+        ":kselftest_net_tests_reuseaddr_conflict_arm64",
+        ":kselftest_net_test_bpf_arm64",
     ],
     visibility = ["//visibility:private"],
 )
