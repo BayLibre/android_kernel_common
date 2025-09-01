@@ -153,7 +153,12 @@ void drm_sysfs_lease_event(struct drm_device *dev);
 
 /* drm_gem.c */
 int drm_gem_init(struct drm_device *dev);
+<<<<<<< HEAD   (8e86454f068ad3187350cd9fb81aca87249d02c1 ANDROID: GKI: Enable 32-bit userspace x_tables support)
 bool drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj);
+||||||| BASE   (830a2dadaa8fc019f8238b1adc292b5de1e7eea5 ANDROID: GKI: Add empty symbol list for meizu)
+=======
+void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj);
+>>>>>>> BRANCH (2e5a4bace74a835f6a733c1a628cbd76501f2d62 Merge tag 'android16-6.12.40_r00' into android16-6.12)
 void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj);
 int drm_gem_handle_create_tail(struct drm_file *file_priv,
 			       struct drm_gem_object *obj,

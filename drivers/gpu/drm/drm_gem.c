@@ -197,6 +197,7 @@ static void drm_gem_object_handle_get(struct drm_gem_object *obj)
 }
 
 /**
+<<<<<<< HEAD   (8e86454f068ad3187350cd9fb81aca87249d02c1 ANDROID: GKI: Enable 32-bit userspace x_tables support)
  * drm_gem_object_handle_get_if_exists_unlocked - acquire reference on user-space handle, if any
  * @obj: GEM object
  *
@@ -225,6 +226,26 @@ bool drm_gem_object_handle_get_if_exists_unlocked(struct drm_gem_object *obj)
 
 	return true;
 }
+||||||| BASE   (830a2dadaa8fc019f8238b1adc292b5de1e7eea5 ANDROID: GKI: Add empty symbol list for meizu)
+=======
+ * drm_gem_object_handle_get_unlocked - acquire reference on user-space handles
+ * @obj: GEM object
+ *
+ * Acquires a reference on the GEM buffer object's handle. Required
+ * to keep the GEM object alive. Call drm_gem_object_handle_put_unlocked()
+ * to release the reference.
+ */
+void drm_gem_object_handle_get_unlocked(struct drm_gem_object *obj)
+{
+	struct drm_device *dev = obj->dev;
+
+	guard(mutex)(&dev->object_name_lock);
+
+	drm_WARN_ON(dev, !obj->handle_count); /* first ref taken in create-tail helper */
+	drm_gem_object_handle_get(obj);
+}
+EXPORT_SYMBOL(drm_gem_object_handle_get_unlocked);
+>>>>>>> BRANCH (2e5a4bace74a835f6a733c1a628cbd76501f2d62 Merge tag 'android16-6.12.40_r00' into android16-6.12)
 
 /**
  * drm_gem_object_handle_free - release resources bound to userspace handles
@@ -257,7 +278,12 @@ static void drm_gem_object_exported_dma_buf_free(struct drm_gem_object *obj)
 }
 
 /**
+<<<<<<< HEAD   (8e86454f068ad3187350cd9fb81aca87249d02c1 ANDROID: GKI: Enable 32-bit userspace x_tables support)
  * drm_gem_object_handle_put_unlocked - releases reference on user-space handle
+||||||| BASE   (830a2dadaa8fc019f8238b1adc292b5de1e7eea5 ANDROID: GKI: Add empty symbol list for meizu)
+=======
+ * drm_gem_object_handle_put_unlocked - releases reference on user-space handles
+>>>>>>> BRANCH (2e5a4bace74a835f6a733c1a628cbd76501f2d62 Merge tag 'android16-6.12.40_r00' into android16-6.12)
  * @obj: GEM object
  *
  * Releases a reference on the GEM buffer object's handle. Possibly releases
@@ -288,6 +314,7 @@ void drm_gem_object_handle_put_unlocked(struct drm_gem_object *obj)
 	if (final)
 		drm_gem_object_put(obj);
 }
+EXPORT_SYMBOL(drm_gem_object_handle_put_unlocked);
 
 /*
  * Called at device or object close to release the file's
