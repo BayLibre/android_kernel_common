@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "075d15e7_d6514a75",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-09-02T18:43:29Z",
+      "side": 1,
+      "message": "So the patch that reverted this change before said there was a long boot delay caused by the clk_sync_state code.  Does that persist now with this fix?",
+      "revId": "84c817f48ec8a73c8d119f3b6d0a49ec5a579969",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "807388f4_948993c7",
@@ -14,6 +31,24 @@
       "writtenOn": "2025-09-02T16:10:17Z",
       "side": 1,
       "message": "This crash is not reproducible on upstream kernel and only reproducible on android-mainline. Suggesting its association with the android-mainline\u0027s sync_state() patches.",
+      "revId": "84c817f48ec8a73c8d119f3b6d0a49ec5a579969",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4514e35_0eb0dade",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-09-02T18:43:29Z",
+      "side": 1,
+      "message": "Hrm. I am wondering if the clk_sync_state patches are still needed. I know Rob Clark was skeptical back in the day, but I\u0027m not sure if folks are actively using it. @saravanak@google.com do you have thoughts? Can you remind me why those haven\u0027t made it upstream?",
+      "parentUuid": "807388f4_948993c7",
       "revId": "84c817f48ec8a73c8d119f3b6d0a49ec5a579969",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
