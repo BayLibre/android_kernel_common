@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "595a89f2_5aaebfcd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-09-02T15:51:36Z",
+      "side": 1,
+      "message": "This has landed in Linus\u0027s tree now, pleaes use this SHA instead: 4cc39f91ef6c6f876651eb231974a59ffbcb3a21",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 72
+      },
+      "revId": "4dc526c1a91876ec563953128034412033a24664",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fc16b34_d9d9e8a8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-09-02T15:51:36Z",
+      "side": 1,
+      "message": "Please describe the change instead of the link. It seems you moved the `madvise_lock()` to the original place we did the locking (after `madvise_inject_error()`) instead of the linked fix. I prefer your approach. Please update the description to reflect that.\n\n[Seems this was fixed coincidentally upstream by some other refactoring of the code.]",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 71
+      },
+      "revId": "4dc526c1a91876ec563953128034412033a24664",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
