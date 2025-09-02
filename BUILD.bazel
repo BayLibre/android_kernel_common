@@ -1709,7 +1709,6 @@ cc_binary_with_abi(
         "//build/kernel/kleaf/platforms/config_settings:android_x86_64": ["tools/testing/selftests/breakpoints/breakpoint_test.c"],
         "//build/kernel/kleaf/platforms/config_settings:android_i386": ["tools/testing/selftests/breakpoints/breakpoint_test.c"],
         "//build/kernel/kleaf/platforms/config_settings:android_arm64": [
-            "tools/testing/selftests/breakpoints/breakpoint_test.c",
             "tools/testing/selftests/breakpoints/breakpoint_test_arm64.c",
         ],
         "//conditions:default": [],
@@ -2021,7 +2020,10 @@ cc_binary_with_abi(
 
 cc_binary_with_abi(
     name = "kselftest_net_tests_psock_fanout",
-    srcs = ["tools/testing/selftests/net/psock_fanout.c"],
+    srcs = [
+        "tools/testing/selftests/net/psock_fanout.c",
+        "tools/testing/selftests/net/psock_lib.h",
+    ],
     out = "psock_fanout",
     copts = _KSELFTEST_COPTS,
     includes = [
@@ -2037,7 +2039,10 @@ cc_binary_with_abi(
 
 cc_binary_with_abi(
     name = "kselftest_net_tests_psock_tpacket",
-    srcs = ["tools/testing/selftests/net/psock_tpacket.c"],
+    srcs = [
+        "tools/testing/selftests/net/psock_tpacket.c",
+        "tools/testing/selftests/net/psock_lib.h",
+    ],
     out = "psock_tpacket",
     copts = _KSELFTEST_COPTS,
     includes = [
