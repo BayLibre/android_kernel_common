@@ -192,7 +192,17 @@ static inline void __mm_zero_struct_page(struct page *page)
 #define MAPCOUNT_ELF_CORE_MARGIN	(5)
 #define DEFAULT_MAX_MAP_COUNT	(USHRT_MAX - MAPCOUNT_ELF_CORE_MARGIN)
 
-extern int sysctl_max_map_count;
+/**
+ * would_exceed_max_nr_vmas - check if a VMA operation would exceed max_map_count
+ * @mm: The mm_struct of the target process.
+ * @new_vmas: The number of new VMAs the operation will create.
+ *
+ * Returns true if the operation would cause the number of VMAs to exceed
+ * the sysctl_max_map_count limit, false otherwise. A rate-limited warning
+ * is logged if the limit is exceeded.
+ */
+extern bool would_exceed_max_nr_vmas(struct mm_struct *mm,
+					    unsigned int new_vmas);
 
 extern unsigned long sysctl_user_reserve_kbytes;
 extern unsigned long sysctl_admin_reserve_kbytes;
