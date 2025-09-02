@@ -22,6 +22,30 @@
       },
       "revId": "916836cbc37bc83652d7ae9abff996088d63063a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77eeaf4f_7e93b1db",
+        "filename": "drivers/accel/ivpu/ivpu_job.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2025-09-02T21:53:25Z",
+      "side": 0,
+      "message": "`db_registered` was removed in an UPSTREAM series merged to this branch in July: \n* b/428897007\n* specifically https://android-review.git.corp.google.com/c/kernel/common/+/3692991\n\nThis is a symptom of our vendor \u0027drm/accel/ivpu` driver being newer than 6.12 expects. So we can expect this driver to diverge from ACK\u0027s 6.12 branch in other ways as well.",
+      "parentUuid": "df8150df_e79d7602",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 0
+      },
+      "revId": "916836cbc37bc83652d7ae9abff996088d63063a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
