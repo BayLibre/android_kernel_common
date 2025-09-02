@@ -305,7 +305,7 @@ impl kernel::Module for BinderModule {
                 fn unload_binder() -> i32;
             }
 
-            if binder_use_rust == 0 {
+            if (binder_use_rust & 0b1) == 0b0 {
                 return Ok(Self {});
             }
             if unload_binder() != 0 {

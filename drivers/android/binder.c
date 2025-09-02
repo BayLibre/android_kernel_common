@@ -7458,9 +7458,29 @@ err_alloc_device_names_failed:
 
 device_initcall(binder_init);
 
-#define BINDER_USE_C 0
-#define BINDER_USE_RUST 1
-#define BINDER_USE_RUST_LOADED 2
+/* Flag for whether Rust Binder is used. */
+#define BINDER_USE_RUST (1 << 0)
+/*
+ * Flag for whether one of the drivers has been chosen. Once this flag is set,
+ * the choice of driver is permanent (until reboot).
+ */
+#define BINDER_LOADED (1 << 1)
+
+bool binder_using_rust(void)
+{
+	return binder_use_rust & BINDER_USE_RUST;
+}
+
+bool binder_using_c(void)
+{
+	return !binder_using_rust();
+}
+
+bool binder_is_loaded(void)
+{
+	return binder_use_rust & BINDER_LOADED;
+}
+
 int binder_use_rust;
 EXPORT_SYMBOL_GPL(binder_use_rust);
 
@@ -7477,10 +7497,10 @@ int unload_binder(void)
 		return -EINVAL;
 
 	mutex_lock(&binder_use_rust_lock);
-	if (binder_use_rust == BINDER_USE_RUST)
-		binder_use_rust = BINDER_USE_RUST_LOADED;
-	else
+	if (binder_is_loaded() || binder_using_c())
 		ret = -EINVAL;
+	else
+		binder_use_rust |= BINDER_LOADED;
 	mutex_unlock(&binder_use_rust_lock);
 
 	if (!ret) {
@@ -7498,22 +7518,30 @@ int on_binderfs_mount(void)
 	int ret = 0;
 
 	mutex_lock(&binder_use_rust_lock);
-	if (binder_use_rust == BINDER_USE_RUST) {
-		/*
-		 * C binder was mounted before loading the Rust Binder module.
-		 * In this case, we fall back to using C Binder even though
-		 * Rust Binder was requested.
-		 */
-		pr_warn("Using C Binder even though binder.impl=rust is set.\n");
-		binder_use_rust = BINDER_USE_C;
+	if (binder_using_rust()) {
+		if (binder_is_loaded()) {
+			/*
+			 * Rust Binder is requested *and* has already started unloading
+			 * C Binder. Fail the attempt to mount C Binder.
+			 */
+			ret = -EINVAL;
+		} else {
+			/*
+			 * C binder was mounted before loading the Rust Binder module.
+			 * In this case, we fall back to using C Binder even though
+			 * Rust Binder was requested.
+			 *
+			 * We unset the BINDER_USE_RUST flag, and below we set the
+			 * BINDER_LOADED flag because it's now too late to use
+			 * Rust Binder.
+			 */
+			pr_warn("Using C Binder even though binder.impl=rust is set.\n");
+			binder_use_rust &= ~BINDER_USE_RUST;
+		}
 	}
 
-	if (binder_use_rust == BINDER_USE_RUST_LOADED) {
-		/*
-		 * Rust Binder is requested *and* has already started unloading
-		 * C Binder. Fail the attempt to mount C Binder.
-		 */
-		ret = -EINVAL;
+	if (binder_using_c()) {
+		binder_use_rust |= BINDER_LOADED;
 	}
 	mutex_unlock(&binder_use_rust_lock);
 	return ret;
@@ -7521,14 +7549,25 @@ int on_binderfs_mount(void)
 
 static int binder_impl_param_set(const char *buffer, const struct kernel_param *kp)
 {
-	if (!strcmp(buffer, "rust"))
-		binder_use_rust = true;
-	else if (!strcmp(buffer, "c"))
-		binder_use_rust = false;
-	else
-		return -EINVAL;
+	int ret = 0;
 
-	return 0;
+	mutex_lock(&binder_use_rust_lock);
+
+	if (binder_is_loaded()) {
+		ret = -EPERM;
+		goto out;
+	}
+
+	if (!strcmp(buffer, "rust"))
+		binder_use_rust |= BINDER_USE_RUST;
+	else if (!strcmp(buffer, "c"))
+		binder_use_rust &= ~BINDER_USE_RUST;
+	else
+		ret = -EINVAL;
+
+out:
+	mutex_unlock(&binder_use_rust_lock);
+	return ret;
 }
 
 static int binder_impl_param_get(char *buffer, const struct kernel_param *kp)
@@ -7542,7 +7581,7 @@ static const struct kernel_param_ops binder_impl_param_ops = {
 	.get = binder_impl_param_get,
 };
 
-module_param_cb(impl, &binder_impl_param_ops, NULL, 0444);
+module_param_cb(impl, &binder_impl_param_ops, NULL, 0644);
 
 #define CREATE_TRACE_POINTS
 #include "binder_trace.h"
