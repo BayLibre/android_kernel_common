@@ -374,7 +374,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
 		return -EOVERFLOW;
 
 	/* Too many mappings? */
-	if (mm->map_count > sysctl_max_map_count)
+	if (would_exceed_max_nr_vmas(mm, 1))
 		return -ENOMEM;
 
 	/*

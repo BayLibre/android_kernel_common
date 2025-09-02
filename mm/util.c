@@ -756,9 +756,21 @@ EXPORT_SYMBOL(folio_mc_copy);
 int sysctl_overcommit_memory __read_mostly = OVERCOMMIT_GUESS;
 static int sysctl_overcommit_ratio __read_mostly = 50;
 static unsigned long sysctl_overcommit_kbytes __read_mostly;
-int sysctl_max_map_count __read_mostly = DEFAULT_MAX_MAP_COUNT;
 unsigned long sysctl_user_reserve_kbytes __read_mostly = 1UL << 17; /* 128MB */
 unsigned long sysctl_admin_reserve_kbytes __read_mostly = 1UL << 13; /* 8MB */
+
+static int sysctl_max_map_count __read_mostly = DEFAULT_MAX_MAP_COUNT;
+
+bool would_exceed_max_nr_vmas(struct mm_struct *mm, unsigned int new_vmas)
+{
+	if (unlikely(mm->map_count + new_vmas > sysctl_max_map_count)) {
+		pr_warn_ratelimited("%s (%d): Map count limit %u exceeded\n",
+				    current->comm, current->pid,
+				    sysctl_max_map_count);
+		return true;
+	}
+	return false;
+}
 
 #ifdef CONFIG_SYSCTL
 
