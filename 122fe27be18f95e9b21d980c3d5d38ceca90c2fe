@@ -1,0 +1,115 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c965159_b0489524",
+        "filename": "include/linux/netfilter/x_tables.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2025-09-02T17:08:43Z",
+      "side": 1,
+      "message": "WDYT if we used a macro to generate these? These seem almost same logic?\n\n```\n#define DEFINE_XT_COMPAT_GETTER(type, field, signature, def_val)         \\\nstatic inline signature                                                  \\\n{                                                                        \\\n\tif (type-\u003efield)                                                 \\\n\t\treturn type-\u003efield;                                      \\\n                                                                         \\\n\tconst struct compat_xt_##type##_ext *type##_ext \u003d                \\\n\t\tget_compat_xt_##type##_ext(type);                        \\\n\tif (type##_ext \u0026\u0026 type##_ext-\u003efield)                             \\\n\t\treturn type##_ext-\u003efield;                                \\\n                                                                         \\\n\treturn def_val;                                                  \\\n}\n```\n\n\n```c\nDEFINE_XT_COMPAT_GETTER(match, compatsize,\n\tunsigned int get_xt_match_compatsize(const struct xt_match *match),\n\t0)\n\n....\n\n\nDEFINE_XT_COMPAT_GETTER(target, compat_to_user,\n\tint (*get_xt_target_compat_to_user(const struct xt_target *target))(void __user *, const void *),\n\tNULL)\n```",
+      "range": {
+        "startLine": 547,
+        "startChar": 0,
+        "endLine": 653,
+        "endChar": 1
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c60d7bbf_2b8c6a9c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/netfilter/x_tables.h",
+              "range": {
+                "startLine": 546,
+                "startChar": 0,
+                "endLine": 546,
+                "endChar": 0
+              },
+              "replacement": "\n#define DEFINE_XT_COMPAT_GETTER(type, field, signature, def_val)         \\\nstatic inline signature                                                  \\\n{                                                                        \\\n\tif (type-\u003efield)                                                 \\\n\t\treturn type-\u003efield;                                      \\\n                                                                         \\\n\tconst struct compat_xt_##type##_ext *type##_ext \u003d                \\\n\t\tget_compat_xt_##type##_ext(type);                        \\\n\tif (type##_ext \u0026\u0026 type##_ext-\u003efield)                             \\\n\t\treturn type##_ext-\u003efield;                                \\\n                                                                         \\\n\treturn def_val;                                                  \\\n}\n"
+            },
+            {
+              "path": "include/linux/netfilter/x_tables.h",
+              "range": {
+                "startLine": 557,
+                "startChar": 0,
+                "endLine": 560,
+                "endChar": 0
+              },
+              "replacement": "DEFINE_XT_COMPAT_GETTER(match, compatsize,\n\tunsigned int get_xt_match_compatsize(const struct xt_match *match),\n\t0)\n"
+            },
+            {
+              "path": "include/linux/netfilter/x_tables.h",
+              "range": {
+                "startLine": 561,
+                "startChar": 0,
+                "endLine": 597,
+                "endChar": 0
+              },
+              "replacement": "DEFINE_XT_COMPAT_GETTER(match, compat_from_user,\n\tvoid (*get_xt_match_compat_from_user(const struct xt_match *match))(void *, const void *),\n\tNULL)\n"
+            },
+            {
+              "path": "include/linux/netfilter/x_tables.h",
+              "range": {
+                "startLine": 598,
+                "startChar": 0,
+                "endLine": 600,
+                "endChar": 0
+              },
+              "replacement": "DEFINE_XT_COMPAT_GETTER(match, compat_to_user,\n\tint (*get_xt_match_compat_to_user(const struct xt_match *match))(void __user *, const void *),\n\tNULL)\n"
+            },
+            {
+              "path": "include/linux/netfilter/x_tables.h",
+              "range": {
+                "startLine": 611,
+                "startChar": 0,
+                "endLine": 644,
+                "endChar": 0
+              },
+              "replacement": "DEFINE_XT_COMPAT_GETTER(target, compatsize,\n\tunsigned int get_xt_target_compatsize(const struct xt_target *target),\n\t0)\n"
+            },
+            {
+              "path": "include/linux/netfilter/x_tables.h",
+              "range": {
+                "startLine": 645,
+                "startChar": 0,
+                "endLine": 647,
+                "endChar": 0
+              },
+              "replacement": "DEFINE_XT_COMPAT_GETTER(target, compat_from_user,\n\tvoid (*get_xt_target_compat_from_user(const struct xt_target *target))(void *, const void *),\n\tNULL)\n"
+            },
+            {
+              "path": "include/linux/netfilter/x_tables.h",
+              "range": {
+                "startLine": 648,
+                "startChar": 0,
+                "endLine": 651,
+                "endChar": 0
+              },
+              "replacement": "DEFINE_XT_COMPAT_GETTER(target, compat_to_user,\n\tint (*get_xt_target_compat_to_user(const struct xt_target *target))(void __user *, const void *),\n\tNULL)\n"
+            },
+            {
+              "path": "include/linux/netfilter/x_tables.h",
+              "range": {
+                "startLine": 652,
+                "startChar": 0,
+                "endLine": 654,
+                "endChar": 0
+              },
+              "replacement": "#undef DEFINE_XT_COMPAT_GETTER\n"
+            }
+          ]
+        }
+      ],
+      "revId": "122fe27be18f95e9b21d980c3d5d38ceca90c2fe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
