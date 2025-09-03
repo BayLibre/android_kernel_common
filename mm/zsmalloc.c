@@ -357,8 +357,16 @@ static void cache_free_handle(struct zs_pool *pool, unsigned long handle)
 
 static struct zspage *cache_alloc_zspage(struct zs_pool *pool, gfp_t flags)
 {
+<<<<<<< HEAD   (18593a0671dbe39da47cdb7516170bf4812ccbb3 Merge android12-5.10 into android12-5.10-lts)
 	return kmem_cache_alloc(pool->zspage_cachep,
 			flags & ~(__GFP_HIGHMEM|__GFP_MOVABLE|__GFP_CMA));
+||||||| BASE   (d5eca7ebcf6f64c4aebf9684c365c130a3a069b3 Linux 5.10.240)
+	return kmem_cache_alloc(pool->zspage_cachep,
+			flags & ~(__GFP_HIGHMEM|__GFP_MOVABLE));
+=======
+	return kmem_cache_zalloc(pool->zspage_cachep,
+			flags & ~(__GFP_HIGHMEM|__GFP_MOVABLE));
+>>>>>>> BRANCH (c6a3b81c36f98083cf13cc2de67b04a6ff381cba Linux 5.10.241)
 }
 
 static void cache_free_zspage(struct zs_pool *pool, struct zspage *zspage)
@@ -1067,7 +1075,9 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
 	if (!zspage)
 		return NULL;
 
-	memset(zspage, 0, sizeof(struct zspage));
+	if (!IS_ENABLED(CONFIG_COMPACTION))
+		gfp &= ~__GFP_MOVABLE;
+
 	zspage->magic = ZSPAGE_MAGIC;
 	migrate_lock_init(zspage);
 
