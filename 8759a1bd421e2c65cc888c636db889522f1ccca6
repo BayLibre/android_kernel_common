@@ -139,6 +139,24 @@
       "parentUuid": "eb483eb4_db4ceb66",
       "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c7f4b3b_4d036124",
+        "filename": "kernel/sched/ext.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4672,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-09-03T09:03:54Z",
+      "side": 1,
+      "message": "I appreciate the extra details here, and while helps to explain things a bit,  it still feels like this vendorhooks is inconsistently called with different locks held, which feels like is asking for trouble.\n\n\n\u003e In deed this VH hook is upstreamed by our team, i guess only our team use the hook.\n\nNot necessarily, other vendors may be using it already once the hook has landed. So we need to be cautious here.",
+      "parentUuid": "2e64c87f_aa8ab301",
+      "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

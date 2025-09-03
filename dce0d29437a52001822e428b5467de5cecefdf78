@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c5665b5_9641ca84",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-09-03T09:03:54Z",
+      "side": 1,
+      "message": "Please add newlines around 75 characters\n\nAlso I still find this difficult to understand on the initial read.\n\n\nMaybe I\u0027d try to use the form:\n\nDescribe the issue seen with the current logic.\n\nBriefly describe what you change\n\nDescribe *why* your change addresses the problem.",
+      "revId": "dce0d29437a52001822e428b5467de5cecefdf78",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1aea1d7b_ff903e38",
+        "filename": "kernel/sched/ext.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4764,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-09-03T09:03:54Z",
+      "side": 1,
+      "message": "For consistency, it seems like this call should be moved inside the scx_ops_enable_mutex lock section. Then at least the scx_ops_enable_mutex would be held any time folks call into trace_android_vh_scx_ops_enable_state()",
+      "revId": "dce0d29437a52001822e428b5467de5cecefdf78",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
