@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9077eca_58035e10",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2025-09-03T11:01:17Z",
+      "side": 1,
+      "message": "Personal message:\nHi,\n\nThis is part of a new checker for clean reverts, in this case it seems to be correctly flagging a difference against the original diff, can you acknowledge the difference and confirm is expected?\n\nThanks!\n\nAnalyzer original message:\n\nPlease fix this WARNING reported by KernelCommit: Revert is not clean. Checked against commit.\nRevert commit: [source](https://and...\n\nRevert is not clean. Checked against commit.\nRevert commit: [source](https://android.googlesource.com/kernel/common/+/e19e2557a03884c9cf8b74b515ad7adef0eab1c6).\n\n```\n--- Original commit [e19e2557a03884c9cf8b74b515ad7adef0eab1c6](https://android.googlesource.com/kernel/common/+/e19e2557a03884c9cf8b74b515ad7adef0eab1c6)\n+++ Revert commit [75df852ceaca7121fb038046d0baa106a96a4811](https://android.googlesource.com/kernel/common/+/75df852ceaca7121fb038046d0baa106a96a4811)\n@@ -13,7 +13,7 @@\n\n -\t\tif (bug)\n -\t\t\tbug_get_file_line(bug, \u0026file, \u0026line);\n +\t\tif (!is_protected_kvm_enabled() ||\n-+\t\t    IS_ENABLED(CONFIG_NVHE_EL2_DEBUG)) {\n++\t\t    IS_ENABLED(PKVM_DISABLE_STAGE2_ON_PANIC)) {\n +\t\t\tstruct bug_entry *bug \u003d find_bug(elr_in_kimg);\n +\n +\t\t\tif (bug)\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "75df852ceaca7121fb038046d0baa106a96a4811",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
