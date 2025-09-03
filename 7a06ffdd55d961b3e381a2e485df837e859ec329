@@ -88,6 +88,24 @@
       "parentUuid": "d95f3be8_e3b23805",
       "revId": "7a06ffdd55d961b3e381a2e485df837e859ec329",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "468cbb69_bea6b869",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-03T10:51:42Z",
+      "side": 1,
+      "message": "Thank you for your feedback. While I understand the value of submitting the debug module upstream and leveraging it as a BACKPORT, there are specific reasons why this approach may not be feasible. The debug module includes functionality that prints memory data for debugging purposes. This is a critical feature for our internal debugging needs, as it allows us to identify and resolve issues effectively. However, this functionality involves a trade-off where security is sacrificed for debugging convenience. Exposing memory data could introduce potential vulnerabilities, which might not align with upstream’s stringent security standards. As a result, such a patch might not be acceptable in upstream projects.\n\nGiven these constraints, using a vendor hook is a practical solution to integrate the debug module without compromising upstream compatibility or security standards. This approach allows us to retain the necessary debugging capabilities while maintaining flexibility for our specific use case.  I would greatly appreciate it if you could reconsider applying the patch with the vendor hook, as it effectively addresses our debugging requirements while maintaining alignment with upstream policies.",
+      "parentUuid": "01ffe861_1e7487ee",
+      "revId": "7a06ffdd55d961b3e381a2e485df837e859ec329",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
