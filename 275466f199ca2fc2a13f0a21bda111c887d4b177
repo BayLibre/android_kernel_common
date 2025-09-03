@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9eb8627a_fda27e9e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-03T08:11:56Z",
+      "side": 1,
+      "message": "I changed it",
+      "parentUuid": "c0c4afb6_82ab374f",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 0
+      },
+      "revId": "275466f199ca2fc2a13f0a21bda111c887d4b177",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "080902fb_1584058a",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "baaa0d28_894d99a9",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-03T08:11:56Z",
+      "side": 1,
+      "message": "The signature of the handle_error() function expects an int parameter, not an enum. I initially thought that without casting, the compiler would throw a type mismatch error. However, today I rebuilt the code locally without casting, and the build passed successfully. I’ve made the necessary changes. Please review it again.",
+      "parentUuid": "080902fb_1584058a",
+      "range": {
+        "startLine": 403,
+        "startChar": 36,
+        "endLine": 403,
+        "endChar": 41
+      },
+      "revId": "275466f199ca2fc2a13f0a21bda111c887d4b177",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b8cbe26_d8454fc9",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-08-27T17:33:29Z",
       "side": 1,
       "message": "why does this need to be cast to int?",
+      "range": {
+        "startLine": 540,
+        "startChar": 34,
+        "endLine": 540,
+        "endChar": 39
+      },
+      "revId": "275466f199ca2fc2a13f0a21bda111c887d4b177",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98112517_babebcf4",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-03T08:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b8cbe26_d8454fc9",
       "range": {
         "startLine": 540,
         "startChar": 34,

@@ -16,6 +16,24 @@
       "message": "Why not just add the additional checks upstream so that no hooks are needed at all?",
       "revId": "7a06ffdd55d961b3e381a2e485df837e859ec329",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c175253_bb7a68e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-03T08:11:56Z",
+      "side": 1,
+      "message": "When I submitted code for OGKI related to DMV on the SM8750 chip, I initially upstreamed it without using a vendor hook. A reviewer suggested using a vendor hook instead, but since it was close to the release schedule, I did not apply it at that time. This year, I have considered the suggestion and applied the vendor hook.\n \nPreviously, the commit was upstreamed without a vendor hook, and the review comments included a request to use one: [https://partner-android-review.googlesource.com/c/kernel-oem/samsung/common/+/2965748]",
+      "parentUuid": "3ba2710a_8db083ad",
+      "revId": "7a06ffdd55d961b3e381a2e485df837e859ec329",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
