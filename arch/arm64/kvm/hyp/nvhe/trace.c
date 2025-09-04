@@ -472,7 +472,7 @@ int __pkvm_load_tracing(unsigned long desc_hva, size_t desc_size)
 	struct hyp_trace_desc *desc = (struct hyp_trace_desc *)kern_hyp_va(desc_hva);
 	struct trace_page_desc *trace_pdesc = &desc->page_desc;
 	struct rb_page_desc *pdesc;
-	int ret, cpu;
+	int ret, pdesc_cpu;
 
 	if (!desc_size || !PAGE_ALIGNED(desc_hva) || !PAGE_ALIGNED(desc_size))
 		return -EINVAL;
@@ -484,11 +484,17 @@ int __pkvm_load_tracing(unsigned long desc_hva, size_t desc_size)
 
 	hyp_spin_lock(&trace_rb_lock);
 
+<<<<<<< HEAD   (f988247102d39385f0a7a9a4cd30370b650cffae BACKPORT: FROMGIT: f2fs: show the list of donation files)
 	trace_clock_update(&desc->clock_data);
 
 	for_each_rb_page_desc(pdesc, cpu, trace_pdesc) {
+||||||| BASE   (2e5a4bace74a835f6a733c1a628cbd76501f2d62 Merge tag 'android16-6.12.40_r00' into android16-6.12)
+	for_each_rb_page_desc(pdesc, cpu, trace_pdesc) {
+=======
+	for_each_rb_page_desc(pdesc, pdesc_cpu, trace_pdesc) {
+>>>>>>> CHANGE (5110d356f7a477dacfad888364862c66dbaa5827 ANDROID: KVM: arm64: Fix CPU type for when reading trace_pde)
 		struct hyp_rb_per_cpu *cpu_buffer;
-		int cpu;
+		unsigned int cpu;
 
 		ret = -EINVAL;
 		if (!rb_cpu_fits_desc(pdesc, desc_hva + desc_size))
