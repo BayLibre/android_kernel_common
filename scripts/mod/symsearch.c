@@ -162,13 +162,12 @@ Elf_Sym *symsearch_find_nearest(struct elf_info *elf, Elf_Addr addr,
 	target.addr = addr;
 	target.section_index = secndx;
 	target.symbol_index = ~0;  /* compares greater than any actual index */
-	while (hi > lo) {
-		unsigned int mid = lo + (hi - lo) / 2;  /* Avoids overflow */
 
-		if (syminfo_compare(&table[mid], &target) > 0)
-			hi = mid;
-		else
-			lo = mid + 1;
+	for (; lo < hi; ++lo) {
+		if (syminfo_compare(&table[lo], &target) > 0) {
+			hi = lo;
+			break;
+		}
 	}
 
 	/*
