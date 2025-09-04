@@ -316,8 +316,10 @@ void pkvm_init_hyp_services(void)
 	    arm64_mem_crypt_ops_register(&pkvm_crypt_ops);
 
 	if (kvm_arm_hyp_service_available(ARM_SMCCC_KVM_FUNC_MMIO_GUARD_MAP) &&
-	    __dram_is_aligned(pkvm_granule))
+	    __dram_is_aligned(pkvm_granule)) {
 		arm64_ioremap_prot_hook_register(&mmio_guard_ioremap_hook);
+		arm_smccc_1_1_invoke(ARM_SMCCC_VENDOR_HYP_KVM_MMIO_GUARD_ENROLL_FUNC_ID, &res);
+	}
 
 #ifdef CONFIG_VIRTIO_BALLOON_HYP_OPS
 	virtio_balloon_hyp_ops = &pkvm_virtio_balloon_hyp_ops;
