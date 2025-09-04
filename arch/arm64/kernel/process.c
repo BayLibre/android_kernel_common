@@ -569,6 +569,7 @@ struct task_struct *__switch_to(struct task_struct *prev,
 	return last;
 }
 
+<<<<<<< HEAD   (166af4de7e9116918c0a11d7a10e37cd44807754 Merge b52e53a44a43 ("x86: Fix get_wchan() to support the ORC)
 struct wchan_info {
 	unsigned long	pc;
 	int		count;
@@ -586,7 +587,13 @@ static bool get_wchan_cb(void *arg, unsigned long pc)
 }
 
 unsigned long get_wchan(struct task_struct *p)
+||||||| BASE   (b52e53a44a4320d357b7462d11a98cf1146c22c0 x86: Fix get_wchan() to support the ORC unwinder)
+unsigned long get_wchan(struct task_struct *p)
+=======
+unsigned long __get_wchan(struct task_struct *p)
+>>>>>>> BRANCH (5ce1264b586d53775f69769606e8c4afcbd7f85c sched: Add wrapper for get_wchan() to keep task blocked)
 {
+<<<<<<< HEAD   (166af4de7e9116918c0a11d7a10e37cd44807754 Merge b52e53a44a43 ("x86: Fix get_wchan() to support the ORC)
 	struct wchan_info wchan_info = {
 		.pc = 0,
 		.count = 0,
@@ -594,6 +601,17 @@ unsigned long get_wchan(struct task_struct *p)
 
 	if (!p || p == current || task_is_running(p))
 		return 0;
+||||||| BASE   (b52e53a44a4320d357b7462d11a98cf1146c22c0 x86: Fix get_wchan() to support the ORC unwinder)
+	struct stackframe frame;
+	unsigned long stack_page, ret = 0;
+	int count = 0;
+	if (!p || p == current || task_is_running(p))
+		return 0;
+=======
+	struct stackframe frame;
+	unsigned long stack_page, ret = 0;
+	int count = 0;
+>>>>>>> BRANCH (5ce1264b586d53775f69769606e8c4afcbd7f85c sched: Add wrapper for get_wchan() to keep task blocked)
 
 	if (!try_get_task_stack(p))
 		return 0;
