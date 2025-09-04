@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d9148ad_8b25f162",
+        "filename": "include/trace/hooks/dmv_debug.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-09-04T09:32:55Z",
+      "side": 1,
+      "message": "This shows that you are adding an internal ABI dependency that we can NEVER check or verify it works properly as you are relying on an internal enum value to never change over the lifespan of this kernel.  This is not going to work at all, sorry.\n\nPlease make these unique hooks, one per \"type\" to prevent that from happening.",
+      "parentUuid": "b6a9edd8_8026c506",
+      "range": {
+        "startLine": 20,
+        "startChar": 32,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "f029856af2cc0774db3524902522ec618d8200f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "863d1f43_1c27c38e",
         "filename": "include/trace/hooks/dmv_debug.h",
         "patchSetId": 4
@@ -252,6 +276,30 @@
       "side": 1,
       "message": "Do you mean change ```unsigned long long block``` to ```sector_t block```?",
       "parentUuid": "d4b53229_8c017513",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 22
+      },
+      "revId": "f029856af2cc0774db3524902522ec618d8200f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac039914_684e8db4",
+        "filename": "include/trace/hooks/dmv_debug.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-09-04T09:32:55Z",
+      "side": 1,
+      "message": "yes.",
+      "parentUuid": "5cafec02_1f62ff13",
       "range": {
         "startLine": 21,
         "startChar": 4,
