@@ -124,6 +124,24 @@
       "parentUuid": "468cbb69_bea6b869",
       "revId": "7a06ffdd55d961b3e381a2e485df837e859ec329",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13505472_13172420",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-04T03:50:13Z",
+      "side": 1,
+      "message": "I understand your concerns about exporting kernel pointers to userspace and the potential security implications. But I am not exporting any APIs to userspace at all.\n\nWhile using proper APIs is a valid approach, it does not provide the granularity or flexibility needed to extract the specific partition data and runtime digest required for our debugging process. So, we built a dmv-debug to allows us to access this critical information securely and efficiently, enabling us to identify and resolve issues without introducing vulnerabilities.\n\nEspecially with vendor hooks, not only can my kernel module easily extract the necessary information, but it also provides the flexibility to maintain and expand its functionality in the future without modifying the core code.",
+      "parentUuid": "ce042fe6_9e9f298e",
+      "revId": "7a06ffdd55d961b3e381a2e485df837e859ec329",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
