@@ -120,6 +120,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "756d6888_8befbb2e",
+        "filename": "include/trace/hooks/dmv_debug.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-04T09:50:59Z",
+      "side": 1,
+      "message": "Do you mean I should create one hook for each type, for example:\n```\nDECLARE_HOOK(android_vh_handle_error_type_data,\n\t\tTP_PROTO(struct dm_verity *v,\n\t\t\tunsigned long long block, struct dm_verity_io *io,\n\t\t\tconst u8 *data, const u8 *want_digest),\n\t\tTP_ARGS(v, block, io, data, want_digest));\n\t\t\nDECLARE_HOOK(android_vh_handle_error_type_metadata,\n\t\tTP_PROTO(struct dm_verity *v,\n\t\t\tunsigned long long block, struct dm_verity_io *io,\n\t\t\tconst u8 *data, const u8 *want_digest),\n\t\tTP_ARGS(v, block, io, data, want_digest));\n```",
+      "parentUuid": "5d9148ad_8b25f162",
+      "range": {
+        "startLine": 20,
+        "startChar": 32,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "f029856af2cc0774db3524902522ec618d8200f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "863d1f43_1c27c38e",
@@ -300,6 +324,30 @@
       "side": 1,
       "message": "yes.",
       "parentUuid": "5cafec02_1f62ff13",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 22
+      },
+      "revId": "f029856af2cc0774db3524902522ec618d8200f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fc24052_824423fa",
+        "filename": "include/trace/hooks/dmv_debug.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-04T09:50:59Z",
+      "side": 1,
+      "message": "Yes, I will modify it.\nThank you for your suggestion.",
+      "parentUuid": "ac039914_684e8db4",
       "range": {
         "startLine": 21,
         "startChar": 4,
