@@ -1517,4 +1517,21 @@ static inline vm_flags_t ksm_vma_flags(const struct mm_struct *, const struct fi
 	return vm_flags;
 }
 
+/* Helpers to check VMA count capacity */
+int __has_vma_count_remaining(const struct mm_struct *mm, int nr_vmas)
+{
+	const int map_count = mm->map_count;
+	const int max_count = sysctl_max_map_count;
+
+	if (max_count > map_count)
+		return (max_count - map_count) >= nr_vmas;
+	else
+		return 0;
+}
+
+static inline int has_vma_count_remaining(const struct mm_struct *mm)
+{
+	return __has_vma_count_remaining(mm, 1);
+}
+
 #endif	/* __MM_VMA_INTERNAL_H */

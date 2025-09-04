@@ -1661,4 +1661,11 @@ static inline bool reclaim_pt_is_enabled(unsigned long start, unsigned long end,
 void dup_mm_exe_file(struct mm_struct *mm, struct mm_struct *oldmm);
 int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm);
 
+int __has_vma_count_remaining(const struct mm_struct *mm, int nr_vmas);
+
+static inline int has_vma_count_remaining(const struct mm_struct *mm)
+{
+	return __has_vma_count_remaining(mm, 1);
+}
+
 #endif	/* __MM_INTERNAL_H */
