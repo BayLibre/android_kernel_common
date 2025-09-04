@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c297ab6_ff69011d",
+        "filename": "include/trace/hooks/dmv_debug.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-04T01:54:56Z",
+      "side": 1,
+      "message": "forward declarations of enums don\u0027t work in C. The compiler needs the full definition of an enum to know the size of the underlying type (char, short, int, long) so we can\u0027t just forward declare enum verity_block_type; since the compiler will complain about the android_vh_handle_error() hook definition with enum verity_block_type on the argument list.\nTo fix it, In the TP_PROTO() for android_vh_handle_error, we changed enum verity_block_type type to int type",
+      "parentUuid": "0137b178_9dd50585",
+      "range": {
+        "startLine": 20,
+        "startChar": 32,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "f029856af2cc0774db3524902522ec618d8200f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "863d1f43_1c27c38e",
@@ -65,6 +89,54 @@
         "startChar": 4,
         "endLine": 21,
         "endChar": 22
+      },
+      "revId": "f029856af2cc0774db3524902522ec618d8200f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb817009_a5af9d8f",
+        "filename": "include/trace/hooks/dmv_debug.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-04T01:54:56Z",
+      "side": 1,
+      "message": "Blocks are typically represented as sector_t, which is a 64-bit unsigned integer (equivalent to unsigned long long)",
+      "parentUuid": "89fce72c_acb2e58f",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 22
+      },
+      "revId": "f029856af2cc0774db3524902522ec618d8200f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc5138aa_9fa16ab3",
+        "filename": "include/trace/hooks/dmv_debug.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-04T01:54:56Z",
+      "side": 1,
+      "message": "Blocks are utilized for both metadata blocks and hash blocks.",
+      "parentUuid": "863d1f43_1c27c38e",
+      "range": {
+        "startLine": 21,
+        "startChar": 22,
+        "endLine": 21,
+        "endChar": 27
       },
       "revId": "f029856af2cc0774db3524902522ec618d8200f8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
