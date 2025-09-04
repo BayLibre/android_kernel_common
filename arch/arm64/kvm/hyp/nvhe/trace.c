@@ -555,11 +555,23 @@ void __pkvm_teardown_tracing(void)
 
 int __pkvm_load_tracing(unsigned long pack_hva, size_t pack_size)
 {
+<<<<<<< HEAD   (65affddf72ba37b49538c7bfb3453ce433e7ef4f ANDROID: KVM: arm64: Configure size of pKVM linear map on th)
 	struct hyp_trace_pack *pack = (struct hyp_trace_pack *)kern_hyp_va(pack_hva);
 	struct trace_buffer_pack *trace_pack = &pack->trace_buffer_pack;
 	struct hyp_buffer_page *bpage_backing_start;
 	struct ring_buffer_pack *rb_pack;
 	int ret, cpu;
+||||||| BASE   (2e5a4bace74a835f6a733c1a628cbd76501f2d62 Merge tag 'android16-6.12.40_r00' into android16-6.12)
+	struct hyp_trace_desc *desc = (struct hyp_trace_desc *)kern_hyp_va(desc_hva);
+	struct trace_page_desc *trace_pdesc = &desc->page_desc;
+	struct rb_page_desc *pdesc;
+	int ret, cpu;
+=======
+	struct hyp_trace_desc *desc = (struct hyp_trace_desc *)kern_hyp_va(desc_hva);
+	struct trace_page_desc *trace_pdesc = &desc->page_desc;
+	struct rb_page_desc *pdesc;
+	int ret, pdesc_cpu;
+>>>>>>> CHANGE (12437e1ca0d5a11e59bf37efbbd9f1f7957d7178 ANDROID: KVM: arm64: Fix CPU type when reading trace_pdesc)
 
 	if (!pack_size || !PAGE_ALIGNED(pack_hva) || !PAGE_ALIGNED(pack_size))
 		return -EINVAL;
@@ -571,6 +583,7 @@ int __pkvm_load_tracing(unsigned long pack_hva, size_t pack_size)
 
 	hyp_spin_lock(&trace_rb_lock);
 
+<<<<<<< HEAD   (65affddf72ba37b49538c7bfb3453ce433e7ef4f ANDROID: KVM: arm64: Configure size of pKVM linear map on th)
 	ret = rb_setup_bpage_backing(pack);
 	if (ret)
 		goto err;
@@ -580,8 +593,13 @@ int __pkvm_load_tracing(unsigned long pack_hva, size_t pack_size)
 	bpage_backing_start = (struct hyp_buffer_page *)hyp_buffer_pages_backing.start;
 
 	for_each_ring_buffer_pack(rb_pack, cpu, trace_pack) {
+||||||| BASE   (2e5a4bace74a835f6a733c1a628cbd76501f2d62 Merge tag 'android16-6.12.40_r00' into android16-6.12)
+	for_each_rb_page_desc(pdesc, cpu, trace_pdesc) {
+=======
+	for_each_rb_page_desc(pdesc, pdesc_cpu, trace_pdesc) {
+>>>>>>> CHANGE (12437e1ca0d5a11e59bf37efbbd9f1f7957d7178 ANDROID: KVM: arm64: Fix CPU type when reading trace_pdesc)
 		struct hyp_rb_per_cpu *cpu_buffer;
-		int cpu;
+		unsigned int cpu;
 
 		ret = -EINVAL;
 		if (!rb_cpu_fits_pack(rb_pack, pack_hva + pack_size))
