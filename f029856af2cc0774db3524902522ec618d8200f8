@@ -72,6 +72,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6a9edd8_8026c506",
+        "filename": "include/trace/hooks/dmv_debug.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-04T09:15:18Z",
+      "side": 1,
+      "message": "```\nenum verity_block_type;\n\nDECLARE_HOOK(android_vh_handle_error,\n\t\tTP_PROTO(struct dm_verity *v, enum verity_block_type type,\n\t\t\tunsigned long long block, struct dm_verity_io *io,\n\t\t\tconst u8 *data, const u8 *want_digest),\n\t\tTP_ARGS(v, type, block, io, data, want_digest));\n```\n\nIf I change it to \u0027enum\u0027 like above, I will encounter an error relate to variable has incomplete type like the below:\nXXXXXX/android16/out/bazel/output_user_root/9d0efe60da054428701ed198db7be3fe/sandbox/linux-sandbox/8/execroot/_main/common/include/trace/hooks/dmv_debug.h:21:56: error: variable has incomplete type \u0027enum verity_block_type\u0027\n   21 |                 TP_PROTO(struct dm_verity *v, enum verity_block_type type,\n\nTo fix it, I need to include header dm-verity.h like that: \n```#include \"../../../drivers/md/dm-verity.h\"```\nBut as I know, we should not include header file in the hooks file. That why I change \u0027enum\u0027 to \u0027int\u0027 type.",
+      "parentUuid": "0db6dba6_e34e9bce",
+      "range": {
+        "startLine": 20,
+        "startChar": 32,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "f029856af2cc0774db3524902522ec618d8200f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "863d1f43_1c27c38e",
@@ -204,6 +228,30 @@
       "side": 1,
       "message": "Please use the correct type",
       "parentUuid": "eb817009_a5af9d8f",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 22
+      },
+      "revId": "f029856af2cc0774db3524902522ec618d8200f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cafec02_1f62ff13",
+        "filename": "include/trace/hooks/dmv_debug.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-04T09:15:18Z",
+      "side": 1,
+      "message": "Do you mean change ```unsigned long long block``` to ```sector_t block```?",
+      "parentUuid": "d4b53229_8c017513",
       "range": {
         "startLine": 21,
         "startChar": 4,
