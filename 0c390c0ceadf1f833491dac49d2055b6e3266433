@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34ce312d_373f172b",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7483,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-09-05T18:20:21Z",
+      "side": 1,
+      "message": "This logic is all good to me. However, could we please use a separate `static int binder_loaded;` global to eliminate all the helpers and instead use it along with the `binder_use_rust` parameter? I think it is worth the extra int to keep this section simple.",
+      "range": {
+        "startLine": 7461,
+        "startChar": 0,
+        "endLine": 7483,
+        "endChar": 0
+      },
+      "revId": "0c390c0ceadf1f833491dac49d2055b6e3266433",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
