@@ -307,8 +307,12 @@ static int smmu_alloc_l2_strtab(struct hyp_arm_smmu_v3_device *smmu, u32 sid)
 	struct arm_smmu_strtab_l2 *l2table;
 	size_t l2_order = get_order(sizeof(struct arm_smmu_strtab_l2));
 	int flags = 0;
+	u32 l1_idx = arm_smmu_strtab_l1_idx(sid);
 
-	l1_desc = &cfg->l2.l1tab[arm_smmu_strtab_l1_idx(sid)];
+	if (l1_idx > cfg->l2.num_l1_ents)
+		return -EINVAL;
+
+	l1_desc = &cfg->l2.l1tab[l1_idx];
 	if (l1_desc->l2ptr)
 		return 0;
 
