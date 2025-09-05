@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d2cf1fc_00105ae3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3838915
+      },
+      "writtenOn": "2025-09-05T03:41:33Z",
+      "side": 1,
+      "message": "Hi Stultz, thank you for your comments. I will recommit the information following the format you suggested.",
+      "parentUuid": "2c5665b5_9641ca84",
+      "revId": "dce0d29437a52001822e428b5467de5cecefdf78",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1aea1d7b_ff903e38",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-09-03T09:03:54Z",
       "side": 1,
       "message": "For consistency, it seems like this call should be moved inside the scx_ops_enable_mutex lock section. Then at least the scx_ops_enable_mutex would be held any time folks call into trace_android_vh_scx_ops_enable_state()",
+      "revId": "dce0d29437a52001822e428b5467de5cecefdf78",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "199400e9_8e7f0863",
+        "filename": "kernel/sched/ext.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4764,
+      "author": {
+        "id": 3838915
+      },
+      "writtenOn": "2025-09-05T03:41:33Z",
+      "side": 1,
+      "message": "I prefer the trace_android_vh_scx_ops_enable_state(SCX_OPS_DISABLED); not to be moved inside the scx_ops_enable_mutex lock section. It is because the scx_ops_enable_mutex protects the scx disabling process, and lock release means that the scx ops has already disbaled. So that trace_android_vh_scx_ops_enable_state(SCX_OPS_DISABLED); can be invoked after lock is released.",
+      "parentUuid": "1aea1d7b_ff903e38",
       "revId": "dce0d29437a52001822e428b5467de5cecefdf78",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }

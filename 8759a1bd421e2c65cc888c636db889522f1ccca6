@@ -157,6 +157,24 @@
       "parentUuid": "2e64c87f_aa8ab301",
       "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1802e9f0_529ef0cb",
+        "filename": "kernel/sched/ext.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4672,
+      "author": {
+        "id": 3838915
+      },
+      "writtenOn": "2025-09-05T03:41:33Z",
+      "side": 1,
+      "message": "I will show more details. \nIf a task is scx or not is decided by vendors, and trace_android_vh_scx_ops_enable_state(state) tells vendors the scx schduler\u0027s state so that vendors can determine if a task should be scx task. It is truth that when scx_ops_disable_workfn is invoked, scx ops is preparing to be released, so that vendors should switch tasks to fair when trace_android_vh_scx_ops_enable_state(SCX_OPS_DISABLING) is invoked. This is the role of trace_android_vh_scx_ops_enable_state HOOK. So move the hook inside the scx_fork_rwsem section is reasonable.\nWhen moving the hook inside the critical section, the disabling process will never be blocked by others. So that watchdog issue can be avoid.",
+      "parentUuid": "9c7f4b3b_4d036124",
+      "revId": "8759a1bd421e2c65cc888c636db889522f1ccca6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
