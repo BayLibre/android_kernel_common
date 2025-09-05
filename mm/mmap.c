@@ -1311,7 +1311,7 @@ void exit_mmap(struct mm_struct *mm)
 		vma = vma_next(&vmi);
 	} while (vma && likely(!xa_is_zero(vma)));
 
-	BUG_ON(count != mm->map_count);
+	BUG_ON(count != mm->vma_count);
 
 	trace_exit_mmap(mm);
 destroy:
@@ -1519,11 +1519,11 @@ static int sysctl_max_map_count __read_mostly = DEFAULT_MAX_MAP_COUNT;
  */
 int __has_vma_count_remaining(const struct mm_struct *mm, int nr_vmas)
 {
-	const int map_count = mm->map_count;
+	const int vma_count = mm->vma_count;
 	const int max_count = sysctl_max_map_count;
 
-	if (max_count > map_count)
-		return (max_count - map_count) >= nr_vmas;
+	if (max_count > vma_count)
+		return (max_count - vma_count) >= nr_vmas;
 	else
 		return 0;
 }
@@ -1833,7 +1833,7 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
 		 */
 		vma_iter_bulk_store(&vmi, tmp);
 
-		mm->map_count++;
+		mm->vma_count++;
 
 		if (tmp->vm_ops && tmp->vm_ops->open)
 			tmp->vm_ops->open(tmp);

@@ -251,7 +251,7 @@ struct mutex {};
 
 struct mm_struct {
 	struct maple_tree mm_mt;
-	int map_count;			/* number of VMAs */
+	int vma_count;			/* number of VMAs */
 	unsigned long total_vm;	   /* Total pages mapped */
 	unsigned long locked_vm;   /* Pages that have PG_mlocked set */
 	unsigned long data_vm;	   /* VM_WRITE & ~VM_SHARED & ~VM_STACK */
@@ -1520,11 +1520,11 @@ static inline vm_flags_t ksm_vma_flags(const struct mm_struct *, const struct fi
 /* Helpers to check VMA count capacity */
 int __has_vma_count_remaining(const struct mm_struct *mm, int nr_vmas)
 {
-	const int map_count = mm->map_count;
+	const int vma_count = mm->vma_count;
 	const int max_count = sysctl_max_map_count;
 
-	if (max_count > map_count)
-		return (max_count - map_count) >= nr_vmas;
+	if (max_count > vma_count)
+		return (max_count - vma_count) >= nr_vmas;
 	else
 		return 0;
 }
