@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1be2f65a_54a65de5",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-05T09:48:53Z",
+      "side": 1,
+      "message": "Yes, I will delete it.",
+      "parentUuid": "facd31f6_d28c483f",
+      "range": {
+        "startLine": 404,
+        "startChar": 20,
+        "endLine": 404,
+        "endChar": 24
+      },
+      "revId": "06444d205c8287266488e42fd2c08fb02399cb13",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e11351d4_e043628e",
         "filename": "include/trace/hooks/dmv_debug.h",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2025-09-05T06:44:59Z",
       "side": 1,
       "message": "why is this here?",
+      "range": {
+        "startLine": 32,
+        "startChar": 17,
+        "endLine": 32,
+        "endChar": 23
+      },
+      "revId": "06444d205c8287266488e42fd2c08fb02399cb13",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b5fa286_1481c1dc",
+        "filename": "include/trace/hooks/dmv_debug.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3782178
+      },
+      "writtenOn": "2025-09-05T09:48:53Z",
+      "side": 1,
+      "message": "If no parameter, it will have an error while building, I have tested with 2 cases like below:\n\n### code:\n```DECLARE_HOOK(android_vh_handle_add_skipped_blks,\n\t\tTP_PROTO(),\n\t\tTP_ARGS()); ```\n### log:\n```Use --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\nIn file included from /mnt/544d8888-4987-42cb-b513-dae39d621d85/android16/out/bazel/output_user_root/238e990bd913deb276f3f36b65b7692c/sandbox/linux-sandbox/6/execroot/_main/common/drivers/md/dm-verity-target.c:26:\n/mnt/544d8888-4987-42cb-b513-dae39d621d85/android16/out/bazel/output_user_root/238e990bd913deb276f3f36b65b7692c/sandbox/linux-sandbox/6/execroot/_main/common/include/trace/hooks/dmv_debug.h:31:1: error: expected parameter declarator\n   31 | DECLARE_HOOK(android_vh_handle_add_skipped_blks,\n      | ^\n/mnt/544d8888-4987-42cb-b513-dae39d621d85/android16/out/bazel/output_user_root/238e990bd913deb276f3f36b65b7692c/sandbox/linux-sandbox/6/execroot/_main/common/include/trace/hooks/vendor_hooks.h:16:22: note: expanded from macro \u0027DECLARE_HOOK\u0027\n   16 | #define DECLARE_HOOK DECLARE_TRACE... ```\n\n\n\n### code:\n```DECLARE_HOOK(android_vh_handle_add_skipped_blks); ```\n### log:\n```Use --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\nIn file included from /mnt/544d8888-4987-42cb-b513-dae39d621d85/android16/out/bazel/output_user_root/238e990bd913deb276f3f36b65b7692c/sandbox/linux-sandbox/10/execroot/_main/common/drivers/md/dm-verity-target.c:26:\n/mnt/544d8888-4987-42cb-b513-dae39d621d85/android16/out/bazel/output_user_root/238e990bd913deb276f3f36b65b7692c/sandbox/linux-sandbox/10/execroot/_main/common/include/trace/hooks/dmv_debug.h:31:48: error: too few arguments provided to function-like macro invocation\n   31 | DECLARE_HOOK(android_vh_handle_add_skipped_blks);\n      |                                                ^\n/mnt/544d8888-4987-42cb-b513-dae39d621d85/android16/out/bazel/output_user_root/238e990bd913deb276f3f36b65b7692c/sandbox/linux-sandbox/10/execroot/_main/common/include/linux/tracepoint.h:472:9: note: macro \u0027DECLARE_TRACE\u0027 defined here\n  472 | #define DECLARE_TRACE(name, proto, args) ```\n  \nIt seems a hook need at least one parameter. Please let me know if you know how to remove that ```unused``` parameter?",
+      "parentUuid": "e11351d4_e043628e",
       "range": {
         "startLine": 32,
         "startChar": 17,
