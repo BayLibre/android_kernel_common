@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "facd31f6_d28c483f",
+        "filename": "drivers/md/dm-verity-target.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-09-05T06:44:59Z",
+      "side": 1,
+      "message": "you only ever pass NULL in here, so why is it a parameter at all?",
+      "range": {
+        "startLine": 404,
+        "startChar": 20,
+        "endLine": 404,
+        "endChar": 24
+      },
+      "revId": "06444d205c8287266488e42fd2c08fb02399cb13",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e11351d4_e043628e",
+        "filename": "include/trace/hooks/dmv_debug.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-09-05T06:44:59Z",
+      "side": 1,
+      "message": "why is this here?",
+      "range": {
+        "startLine": 32,
+        "startChar": 17,
+        "endLine": 32,
+        "endChar": 23
+      },
+      "revId": "06444d205c8287266488e42fd2c08fb02399cb13",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
