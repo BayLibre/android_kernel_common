@@ -1411,6 +1411,9 @@ int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
 
 	type = desc->qw0 & GENMASK_ULL(3, 0);
 
+	if (!(iommu->gcmd & DMA_GCMD_TE) && type != QI_IEC_TYPE)
+		return 0;
+
 	if ((type == QI_IOTLB_TYPE || type == QI_EIOTLB_TYPE) &&
 	    dmar_latency_enabled(iommu, DMAR_LATENCY_INV_IOTLB))
 		iotlb_start_ktime = ktime_to_ns(ktime_get());
