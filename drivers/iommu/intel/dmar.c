@@ -1395,6 +1395,7 @@ static int qi_check_fault(struct intel_iommu *iommu, int index, int wait_index)
 int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
 		   unsigned int count, unsigned long options)
 {
+	bool te = iommu->gcmd & DMA_GCMD_TE;
 	struct q_inval *qi = iommu->qi;
 	s64 devtlb_start_ktime = 0;
 	s64 iotlb_start_ktime = 0;
@@ -1410,6 +1411,9 @@ int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
 		return 0;
 
 	type = desc->qw0 & GENMASK_ULL(3, 0);
+
+	if (!te && type != QI_IEC_TYPE)
+		return 0;
 
 	if ((type == QI_IOTLB_TYPE || type == QI_EIOTLB_TYPE) &&
 	    dmar_latency_enabled(iommu, DMAR_LATENCY_INV_IOTLB))
