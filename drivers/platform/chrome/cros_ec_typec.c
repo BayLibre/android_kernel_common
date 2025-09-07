@@ -1225,7 +1225,13 @@ static int cros_typec_probe(struct platform_device *pdev)
 	typec->dev = dev;
 
 	typec->ec = dev_get_drvdata(pdev->dev.parent);
+<<<<<<< HEAD   (7ef32367add4e758d08c22c80fb3cace49170811 Merge caf7f7c1a050 ("ata: libata-sata: Disallow changing LPM)
 	if (!typec->ec || !typec->ec->ec) {
+||||||| BASE   (caf7f7c1a050774ca8b05d2c474fb09b1b5e78e4 ata: libata-sata: Disallow changing LPM state if not support)
+	if (!typec->ec) {
+=======
+	if (!typec->ec) {
+>>>>>>> BRANCH (9314cd0fb179898b0985bc370fa7a91cbe091f00 ASoC: qcom: use drvdata instead of component to keep id)
 		dev_warn(dev, "couldn't find parent EC device\n");
 		return -EPROBE_DEFER;
 	}
