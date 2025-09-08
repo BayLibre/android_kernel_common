@@ -846,6 +846,7 @@ static int initialize_iommu_pgt(struct pkvm_iommu *iommu)
 {
 	struct pkvm_pgtable *pgt = &iommu->pgt;
 	struct pkvm_pgtable *vpgt = &iommu->viommu.pgt;
+	struct viommu_reg *vreg = &iommu->viommu.vreg;
 	static const struct pkvm_mm_ops *iommu_mm_ops;
 	const struct pkvm_pgtable_ops *iommu_ops;
 	struct pkvm_pgtable_cap cap;
@@ -859,6 +860,13 @@ static int initialize_iommu_pgt(struct pkvm_iommu *iommu)
 		iommu_ops = &iommu_lm_id_ops;
 	}
 
+	if (!vreg->rta) {
+		pkvm_err("pkvm: %s: iommu%d: host RTADDR_REG not set",
+				__func__, iommu->iommu.seq_id);
+		return -EINVAL;
+	}
+
+	vpgt->root_pa = vreg->rta & VTD_PAGE_MASK;
 	ret = pkvm_pgtable_init(vpgt, &viommu_mm_ops, iommu_ops, &cap, false);
 	if (ret)
 		return ret;
@@ -1702,34 +1710,20 @@ static void set_root_table(struct pkvm_iommu *iommu)
 	flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
 }
 
-static void enable_translation(struct pkvm_iommu *iommu)
+static int enable_translation(struct pkvm_iommu *iommu)
 {
+	unsigned long vaddr = 0, vaddr_end = MAX_NUM_OF_ADDRESS_SPACE(iommu);
 	void __iomem *reg = iommu->iommu.reg;
 	u32 sts;
-
-	if (iommu->iommu.gcmd & DMA_GCMD_TE)
-		return;
-
-	iommu->iommu.gcmd |= DMA_GCMD_TE;
-
-	writel(iommu->iommu.gcmd, reg + DMAR_GCMD_REG);
-
-	PKVM_IOMMU_WAIT_OP(reg + DMAR_GSTS_REG, readl, (sts & DMA_GSTS_TES), sts);
-}
-
-/*
- * Should be called with iommu->lock held.
- */
-static int activate_iommu(struct pkvm_iommu *iommu)
-{
-	unsigned long vaddr = 0, vaddr_end = IOMMU_MAX_VADDR;
 	int ret;
 
-	ret = initialize_iommu_pgt(iommu);
-	if (ret)
-		return ret;
+	if (iommu->iommu.gcmd & DMA_GCMD_TE) {
+		pkvm_err("pkvm: %s: iommu%d already enabled!\n",
+				__func__, iommu->iommu.seq_id);
+		return -EINVAL;
+	}
 
-	ret = sync_shadow_id(iommu, vaddr, vaddr_end, 0, NULL);
+	ret = initialize_iommu_pgt(iommu);
 	if (ret)
 		return ret;
 
@@ -1739,18 +1733,43 @@ static int activate_iommu(struct pkvm_iommu *iommu)
 			     (unsigned long)iommu->iommu.reg_phys,
 			     iommu->iommu.reg_size);
 	if (ret)
-		goto free_shadow;
+		return ret;
+
+	iommu->viommu.vreg.gsts |= DMA_GSTS_TES;
+	/*
+	 * Sync shadow id table to emulate Translation enable.
+	 */
+	ret = sync_shadow_id(iommu, vaddr, vaddr_end, 0, NULL);
+	if (ret) {
+		pkvm_err("pkvm: %s: shadow sync for iommu%d failed!\n",
+				__func__, iommu->iommu.seq_id);
+		return ret;
+	}
+
+	iommu->iommu.gcmd |= DMA_GCMD_TE;
+
+	writel(iommu->iommu.gcmd, reg + DMAR_GCMD_REG);
+
+	PKVM_IOMMU_WAIT_OP(reg + DMAR_GSTS_REG, readl, (sts & DMA_GSTS_TES), sts);
 
 	iommu->activated = true;
-	root_tbl_walk(iommu);
-
 	pkvm_dbg("pkvm: %s: iommu%d activated\n", __func__, iommu->iommu.seq_id);
-
-	return 0;
-
-free_shadow:
-	free_shadow_id(iommu, vaddr, vaddr_end);
+	root_tbl_walk(iommu);
 	return ret;
+}
+
+static void disable_translation(struct pkvm_iommu *iommu)
+{
+	unsigned long vaddr = 0, vaddr_end = MAX_NUM_OF_ADDRESS_SPACE(iommu);
+
+	/*
+	 * Free shadow to emulate Translation disable.
+	 *
+	 * Don't disable translation as we still
+	 * need to protect against the device.
+	 */
+	free_shadow_id(iommu, vaddr, vaddr_end);
+	iommu->viommu.vreg.gsts &= ~DMA_GSTS_TES;
 }
 
 static int context_cache_invalidate(struct pkvm_iommu *iommu, struct qi_desc *desc)
@@ -2052,33 +2071,15 @@ static int handle_qi_invalidation(struct pkvm_iommu *iommu, unsigned long val)
 
 static void handle_gcmd_te(struct pkvm_iommu *iommu, bool en)
 {
-	unsigned long vaddr = 0, vaddr_end = MAX_NUM_OF_ADDRESS_SPACE(iommu);
-	struct pkvm_viommu *viommu = &iommu->viommu;
-
 	if (en) {
-		viommu->vreg.gsts |= DMA_GSTS_TES;
-		/*
-		 * Sync shadow id table to emulate Translation enable.
-		 */
-		if (sync_shadow_id(iommu, vaddr, vaddr_end, 0, NULL))
+		if (enable_translation(iommu))
 			return;
-
-		enable_translation(iommu);
-
-		pkvm_dbg("pkvm: %s: enable TE\n", __func__);
-		goto out;
+	} else {
+		disable_translation(iommu);
 	}
 
-	/*
-	 * Free shadow to emulate Translation disable.
-	 *
-	 * Not really disable translation as still
-	 * need to protect agains the device.
-	 */
-	free_shadow_id(iommu, vaddr, vaddr_end);
-	viommu->vreg.gsts &= ~DMA_GSTS_TES;
-	pkvm_dbg("pkvm: %s: disable TE\n", __func__);
-out:
+	pkvm_dbg("pkvm: %s: %s TE\n", __func__, en ? "enable" : "disable");
+
 	flush_context_cache(iommu, 0, 0, 0, DMA_CCMD_GLOBAL_INVL);
 	if (sm_supported(&iommu->iommu))
 		flush_pasid_cache(iommu, 0, QI_PC_GLOBAL, 0);
@@ -2090,36 +2091,21 @@ out:
 static void handle_gcmd_srtp(struct pkvm_iommu *iommu)
 {
 	struct viommu_reg *vreg = &iommu->viommu.vreg;
-	struct pkvm_pgtable *vpgt = &iommu->viommu.pgt;
 
-	vreg->gsts &= ~DMA_GSTS_RTPS;
-
-	/* Set the root table phys address from vreg */
-	vpgt->root_pa = vreg->rta & VTD_PAGE_MASK;
-
-	pkvm_dbg("pkvm: %s: set SRTP val 0x%llx\n", __func__, vreg->rta);
-
-	if (!iommu->activated) {
-		if (activate_iommu(iommu)) {
-			pkvm_dbg("pkvm: %s: iommu%d failed to activate\n",
-					__func__, iommu->iommu.seq_id);
-		}
-	} else if (vreg->gsts & DMA_GSTS_TES) {
-		unsigned long vaddr = 0, vaddr_end = MAX_NUM_OF_ADDRESS_SPACE(iommu);
-
-		/* TE is already enabled, sync shadow */
-		if (sync_shadow_id(iommu, vaddr, vaddr_end, 0, NULL))
-			return;
-
-		flush_context_cache(iommu, 0, 0, 0, DMA_CCMD_GLOBAL_INVL);
-		if (sm_supported(&iommu->iommu))
-			flush_pasid_cache(iommu, 0, QI_PC_GLOBAL, 0);
-		flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
+	if (vreg->gsts & DMA_GSTS_RTPS) {
+		pkvm_err("pkvm: %s: set SRTP not allowed more than once!\n",
+				__func__);
+		return;
 	}
 
-	vreg->gsts |= DMA_GSTS_RTPS;
+	/*
+	 * We don't do anything specific other than setting the bit in GSTS.
+	 * RTADDR_REG(vreg->rta) will be used to initialize viommu pagetable
+	 * later in initialize_iommu_pgt.
+	 */
+	pkvm_dbg("pkvm: %s: set SRTP val 0x%llx\n", __func__, vreg->rta);
 
-	root_tbl_walk(iommu);
+	vreg->gsts |= DMA_GSTS_RTPS;
 }
 
 static void handle_gcmd_qie(struct pkvm_iommu *iommu, bool en)
