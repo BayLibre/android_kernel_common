@@ -39,6 +39,7 @@
 #endif
 
 #include "binder.c"
+#include "bitops.c"
 #include "blk.c"
 #include "bug.c"
 #include "build_assert.c"
