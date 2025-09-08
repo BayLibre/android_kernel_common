@@ -7548,4 +7548,9 @@ void get_slabinfo(struct kmem_cache *s, struct slabinfo *sinfo)
 }
 EXPORT_SYMBOL_NS_GPL(get_slabinfo, MINIDUMP);
 
+bool is_slub_debug_enabled(void)
+{
+	return static_branch_unlikely(&slub_debug_enabled);
+}
+EXPORT_SYMBOL_GPL(is_slub_debug_enabled);
 #endif /* CONFIG_SLUB_DEBUG */

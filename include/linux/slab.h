@@ -1080,4 +1080,12 @@ size_t kmalloc_size_roundup(size_t size);
 
 void __init kmem_cache_init_late(void);
 
+#ifdef CONFIG_SLUB_DEBUG
+bool is_slub_debug_enabled(void);
+#else
+static inline bool is_slub_debug_enabled(void)
+{
+	return false;
+}
+#endif
 #endif	/* _LINUX_SLAB_H */
