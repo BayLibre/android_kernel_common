@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d881e956_7bc1682c",
+        "filename": "arch/x86/kvm/vmx/pkvm_high.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1805,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-09T15:26:44Z",
+      "side": 1,
+      "message": "IIUC this means that pages allocated via alloc_pages_exact() will be freed one by one via free_page()? According to the documentation of alloc_pages_exact(), that is incorrect: \"Memory allocated by this function must be released by free_pages_exact()\"",
+      "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
