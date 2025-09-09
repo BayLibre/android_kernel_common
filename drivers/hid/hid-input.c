@@ -596,6 +596,7 @@ static void hidinput_cleanup_battery(struct hid_device *dev)
 }
 
 static bool hidinput_update_battery_charge_status(struct hid_device *dev,
+<<<<<<< HEAD   (3d54fb16a2f413953a868095cf60a48898c3e707 Merge 6.12.44 into android16-6.12-lts)
 			                                       unsigned int usage, int value)
 {
 	switch (usage) {
@@ -604,6 +605,17 @@ static bool hidinput_update_battery_charge_status(struct hid_device *dev,
 					POWER_SUPPLY_STATUS_CHARGING :
 					POWER_SUPPLY_STATUS_DISCHARGING;
 			return true;
+||||||| BASE   (11a24528d080a6ac23f07d6031da9e271728d62d Linux 6.12.44)
+=======
+						  unsigned int usage, int value)
+{
+	switch (usage) {
+	case HID_BAT_CHARGING:
+		dev->battery_charge_status = value ?
+					     POWER_SUPPLY_STATUS_CHARGING :
+					     POWER_SUPPLY_STATUS_DISCHARGING;
+		return true;
+>>>>>>> BRANCH (b0c51e95f54e5f4e13a7ada6629125b0bc427a96 Linux 6.12.45)
 	}
 
 	return false;
