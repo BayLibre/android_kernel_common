@@ -55,8 +55,21 @@ enum sm_level {
 	IOMMU_SM_LEVEL_NUM,
 };
 
+/*
+ * Simple wrapper to get devfn from bdf.
+ * This is not the appropriate place to park.
+ * Temporarily parking it here as it is used
+ * only by iommu code.
+ */
+#define PCI_DEV_FN(x) ((x) & 0xff)
+
 extern const struct pkvm_mm_ops iommu_pw_coherency_mm_ops;
 extern const struct pkvm_mm_ops iommu_pw_noncoherency_mm_ops;
+
+static inline u16 level_to_agaw(int level)
+{
+	return (level == 3) ? 1 : (level == 4) ? 2 : 3;
+}
 
 #define LAST_LEVEL(level)	\
 	(((level) == 1) ? true : false)
@@ -350,6 +363,16 @@ static inline bool pasid_copy_entry(struct pasid_entry *to, struct pasid_entry *
 	return updated;
 }
 
+/*
+ * Copied from drivers/iommu/intel/iommu.h:__iommu_flush_cache()
+ */
+static inline void __pkvm_iommu_flush_cache(
+	struct intel_iommu *iommu, void *addr, int size)
+{
+	if (!ecap_coherent(iommu->ecap))
+		pkvm_clflush_cache_range(addr, size);
+}
+
 static inline bool iommu_coherency(struct intel_iommu *iommu)
 {
 	return sm_supported(iommu) ?
@@ -360,8 +383,20 @@ extern void root_tbl_walk(struct pkvm_iommu *iommu);
 
 bool is_dev_in_satc(u16 bdf);
 
+void flush_context_cache(struct pkvm_iommu *iommu, u16 did,
+				u16 sid, u8 fm, u64 type);
+void flush_iotlb(struct pkvm_iommu *iommu, u16 did, u64 addr,
+			unsigned int size_order, u64 type);
+void flush_dev_iotlb(struct pkvm_iommu *iommu, u16 sid, u16 pfsid,
+			u16 qdep, u64 addr, unsigned int mask);
+void flush_write_buffer(struct pkvm_iommu *iommu);
+
+struct pkvm_iommu *find_iommu_by_reg_phys(unsigned long phys);
+
 #ifdef CONFIG_PKVM_INTEL_PVIOMMU
 unsigned long pkvm_iommu_submit_qi(u64 reg, u64 desc_base, int count);
+unsigned long pkvm_iommu_clear_ce(u64 param_va);
+unsigned long pkvm_iommu_set_lm_ce(u64 param_va);
 #else
 int initialize_iommu_pgt(struct pkvm_iommu *iommu);
 int handle_descriptor(struct pkvm_iommu *iommu, struct qi_desc *desc);
