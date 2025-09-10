@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3d7a6e2_b4789e8b",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 841,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-10T10:49:46Z",
+      "side": 1,
+      "message": "Shall we limit the size to PAGE_SIZE? As there is only one pkvm_pgtable_age_data, if walks multiple leaves, then only the last one\u0027s young will be returned.",
+      "revId": "f9792146a25b4d6440d5b0f048d110c1d4ae8770",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
