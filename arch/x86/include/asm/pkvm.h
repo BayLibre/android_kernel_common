@@ -17,6 +17,8 @@
 
 #define PKVM_HC_ENABLE_IOMMU		11
 #define PKVM_HC_DISABLE_IOMMU		12
+#define PKVM_HC_IOMMU_CLEAR_CE		13
+#define PKVM_HC_IOMMU_SET_LM_CE		14
 
 /*
  * Internal hypercall to commit the pkvm initialization
@@ -46,6 +48,39 @@ struct pkvm_iommu_driver {
 };
 
 #ifdef CONFIG_PKVM_INTEL
+
+/*
+ * Generic hypercall parameter for clearing legacy
+ * and scalable mode context entries and pasid table
+ * entries.
+ */
+struct pkvm_clear_translation_param {
+	/*
+	 * Input: bdf to indentify entry
+	 *        to be cleared.
+	 */
+	u16 bdf;
+	/*
+	 * Input: pasid to indentify pasid table
+	 *        entry to be cleared.
+	 *        Ignored for context teardown.
+	 */
+	u32 pasid;
+	/*
+	 * Output: did of the cleared entry
+	 *         Ignored for scalable mode
+	 *         context entry.
+	 */
+	u16 did;
+};
+
+struct pkvm_lm_context_param {
+	u16 bdf;
+	u16 did;
+	u16 domain_agaw;
+	u64 domain_pgd_gpa;
+	u64 context_gpa;
+};
 
 #ifndef __PKVM_HYP__
 
