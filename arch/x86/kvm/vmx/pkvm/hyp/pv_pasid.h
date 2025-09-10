@@ -10,6 +10,8 @@
 #include <asm/pkvm_spinlock.h>
 #include "ptdev.h"
 
+#define FLPT_DEFAULT_DID		1
+
 #define PASID_PTE_PRESENT	1
 #define PASID_PTE_FPD		2
 #define MAX_NR_PASID_BITS	PKVM_MAX_PASID_BITS
