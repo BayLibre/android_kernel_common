@@ -81,6 +81,8 @@ PKVM_HC(vm_mmu_age)
 PKVM_HC(iommu_mmio_access)
 PKVM_HC(iommu_enable)
 PKVM_HC(iommu_disable)
+PKVM_HC(iommu_clear_ce)
+PKVM_HC(iommu_set_lm_ce)
 
 /* pKVM vmexit tracing/profiling */
 PKVM_HC(set_vmexit_trace)
