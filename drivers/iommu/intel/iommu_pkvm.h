@@ -53,5 +53,17 @@ static inline long pkvm_hc_iommu_set_lm_ce(unsigned long reg_phys,
 
 	return ret;
 }
+
+static inline long pkvm_hc_iommu_set_sm_ce(unsigned long reg_phys,
+		struct pkvm_sm_context_param *param)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_SET_SM_CE, reg_phys,
+				virt_to_phys(param));
+
+	return ret;
+}
 #endif
 
