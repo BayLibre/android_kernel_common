@@ -12,6 +12,8 @@ obj-$(CONFIG_ANDROID_BINDER_IPC_RUST_DUMMY)	+= rust_binder.o
 ifdef CONFIG_ANDROID_BINDER_IPC_RUST
 rust_binder-objs := binder/rust_binder.o binder/rust_binderfs.o binder/rust_binder_events.o
 rust_binder-objs += binder/rust_binder_hooks.o binder/page_range_helper.o
+# Functions in page_range_helper.c are exported for Rust only, there is no headers or prototypes.
+CFLAGS_REMOVE_binder/page_range_helper.o = -Wmissing-prototypes -Wmissing-declarations
 else
 rust_binder-objs := binder/dummy.o
 endif
