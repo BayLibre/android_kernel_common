@@ -65,8 +65,13 @@ struct mod_arch_specific {
 
 	/* for CONFIG_DYNAMIC_FTRACE */
 	struct plt_entry	*ftrace_trampolines;
+<<<<<<< HEAD   (ae6d0451fe00a4590b8cfafdb0cefb5fc4102824 ANDROID: GKI: fix crc issue with dma_map_ops)
 
 	ARM64_MODULE_KVM_ARCHDATA
+||||||| BASE   (b0c51e95f54e5f4e13a7ada6629125b0bc427a96 Linux 6.12.45)
+=======
+	struct plt_entry	*init_ftrace_trampolines;
+>>>>>>> BRANCH (d497f0738df9504721852225eb5b162d7c8d4a46 Linux 6.12.46)
 };
 
 u64 module_emit_plt_entry(struct module *mod, Elf64_Shdr *sechdrs,
