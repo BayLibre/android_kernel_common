@@ -47,7 +47,12 @@
 #include <linux/pkeys.h>
 #include <linux/oom.h>
 #include <linux/sched/mm.h>
+<<<<<<< HEAD   (e5065ec1497393ca357dddc2d790fef5bf0783bb Merge ba86db5b7784 ("mm: update memfd seal write check to in)
 #include <linux/dma-buf.h>
+||||||| BASE   (ba86db5b7784e6e6b21952b3028b34b3eb150074 mm: update memfd seal write check to include F_SEAL_WRITE)
+=======
+#include <linux/memfd.h>
+>>>>>>> BRANCH (54aeb486404fcfcc6316c9c09c25f3653ee4cd5f mm: reinstate ability to map write-sealed memfd mappings rea)
 
 #include <linux/uaccess.h>
 #include <asm/cacheflush.h>
@@ -1390,6 +1395,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
 
 	if (file) {
 		struct inode *inode = file_inode(file);
+		unsigned int seals = memfd_file_seals(file);
 		unsigned long flags_mask;
 
 		if (!file_mmap_ok(file, inode, pgoff, len))
@@ -1428,6 +1434,8 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
 			vm_flags |= VM_SHARED | VM_MAYSHARE;
 			if (!(file->f_mode & FMODE_WRITE))
 				vm_flags &= ~(VM_MAYWRITE | VM_SHARED);
+			else if (is_readonly_sealed(seals, vm_flags))
+				vm_flags &= ~VM_MAYWRITE;
 			fallthrough;
 		case MAP_PRIVATE:
 			if (!(file->f_mode & FMODE_READ))
