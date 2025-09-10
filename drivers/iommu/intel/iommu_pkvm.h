@@ -42,4 +42,9 @@ static inline long pkvm_hc_iommu_set_lm_ce(struct pkvm_lm_context_param *param)
 {
 	return pkvm_iommu_hypercall(PKVM_HC_IOMMU_SET_LM_CE, lm_context_param, param);
 }
+
+static inline long pkvm_hc_iommu_set_sm_ce(struct pkvm_sm_context_param *param)
+{
+	return pkvm_iommu_hypercall(PKVM_HC_IOMMU_SET_SM_CE, sm_context_param, param);
+}
 #endif
