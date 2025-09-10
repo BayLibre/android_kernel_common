@@ -16,6 +16,24 @@
       "message": "IIUC this means that pages allocated via alloc_pages_exact() will be freed one by one via free_page()? According to the documentation of alloc_pages_exact(), that is incorrect: \"Memory allocated by this function must be released by free_pages_exact()\"",
       "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8bd752c_04da175b",
+        "filename": "arch/x86/kvm/vmx/pkvm_high.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1805,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-10T01:34:10Z",
+      "side": 1,
+      "message": "If my understanding is correct, pkvm-arm frees the memory allocated by alloc_pages_exact() via free_page(), for example, __pkvm_create_hyp_vm() allocates hyp_vm structure via alloc_pages_exact(), __pkvm_teardown_vm() puts the hyp_vm into teardown_mc via teardown_donated_memory(mc, hyp_vm, vm_size), and __pkvm_destroy_hyp_vm() free teardown_mc via free_hyp_memcache() which calls free_page. Actually we did similar for pkvm_vm and pkvm_vcpu.\n\nBut indeed, the documentation said that. If look at the free_pages_exact(), it just does free_pages() one by one, which is the same as we did for free memcache. So looks like we are fine to do so?",
+      "parentUuid": "d881e956_7bc1682c",
+      "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
