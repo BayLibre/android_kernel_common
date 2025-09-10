@@ -31,6 +31,7 @@ int initialize_iommu_pgt(struct pkvm_iommu *iommu)
 	}
 
 	pgt->root_pa = vreg->rta & VTD_PAGE_MASK;
+	iommu->iommu.root_entry = pkvm_phys_to_virt(pgt->root_pa);
 
 	return 0;
 }
@@ -52,7 +53,6 @@ static int validate_lm_context_entry(struct pkvm_iommu *hyp_iommu, u16 bdf,
 					struct context_entry *ce)
 {
 	struct intel_iommu *iommu = &hyp_iommu->iommu;
-	struct pkvm_ptdev *ptdev = NULL;
 	u16 ndoms = cap_ndoms(iommu->cap);
 	u64 slptr;
 	u16 did;
@@ -82,12 +82,6 @@ static int validate_lm_context_entry(struct pkvm_iommu *hyp_iommu, u16 bdf,
 		return -1;
 	} else if ((tt == CONTEXT_TT_MULTI_LEVEL || tt == CONTEXT_TT_DEV_IOTLB) && !slptr) {
 		pkvm_err("pkvm: %s: SLPTR not set in DMA mode\n", __func__);
-		return -1;
-	}
-
-	ptdev = iommu_add_ptdev(hyp_iommu, bdf, 0);
-	if (!ptdev) {
-		pkvm_dbg("pkvm: %s: Unable to create ptdev for device!\n", __func__);
 		return -1;
 	}
 
@@ -240,4 +234,159 @@ unsigned long pkvm_iommu_disable(u64 phys)
 	pkvm_spin_unlock(&iommu->lock);
 
 	return 0;
+}
+
+struct context_entry *pkvm_iommu_context_addr(struct intel_iommu *iommu, u8 bus,
+					 u8 devfn, u64 context_phys)
+{
+	struct root_entry *root = &iommu->root_entry[bus];
+	struct context_entry *context;
+	u64 *entry;
+
+	entry = &root->lo;
+	if (sm_supported(iommu)) {
+		if (devfn >= 0x80) {
+			devfn -= 0x80;
+			entry = &root->hi;
+		}
+		devfn *= 2;
+	}
+	if (*entry & 1)
+		context = pkvm_phys_to_virt(*entry & VTD_PAGE_MASK);
+	else {
+		unsigned long phy_addr;
+		if (!context_phys)
+			return NULL;
+
+		context = (struct context_entry *)host_gpa2hva(context_phys);
+		if (!context)
+			return NULL;
+
+		if (!iommu_coherency(iommu))
+			iommu_flush_cache((void *)context, VTD_PAGE_SIZE);
+		phy_addr = virt_to_phys((void *)context);
+		*entry = phy_addr | 1;
+		if (!iommu_coherency(iommu))
+			iommu_flush_cache(entry, sizeof(*entry));
+	}
+	return &context[devfn];
+}
+
+unsigned long pkvm_iommu_clear_ce(u64 phys, u64 param_gpa)
+{
+	struct pkvm_iommu *hyp_iommu = find_iommu_by_reg_phys(phys);
+	struct pkvm_clear_translation_param *param;
+	struct context_entry *context;
+
+	if (!hyp_iommu)
+		return -EINVAL;
+
+	param = host_gpa2hva(param_gpa);
+	if (!param)
+		return -EINVAL;
+
+	pkvm_spin_lock(&hyp_iommu->lock);
+	context = pkvm_iommu_context_addr(&hyp_iommu->iommu,
+			PCI_BUS_NUM(param->bdf), PCI_DEV_FN(param->bdf), 0);
+
+	if (!context)
+		goto out;
+
+	/*
+	 * Pass the did back to host for iommu cache flush.
+	 */
+	param->did = context_domain_id(context);
+	pkvm_dbg("pkvm: %s: clear_ce: dev[%x] did: %u\n",
+			__func__, param->bdf, param->did);
+	context_clear_entry(context);
+	if (!iommu_coherency(&hyp_iommu->iommu))
+		iommu_flush_cache(context, sizeof(*context));
+out:
+	pkvm_spin_unlock(&hyp_iommu->lock);
+	return 0;
+}
+
+static void pkvm_context_present_cache_flush(struct pkvm_iommu *iommu, u16 bdf, u16 did)
+{
+	if (cap_caching_mode(iommu->iommu.cap)) {
+		flush_context_cache(iommu, 0, bdf, DMA_CCMD_MASK_NOBIT, DMA_CCMD_DEVICE_INVL);
+		flush_iotlb(iommu, did, 0, 0, DMA_TLB_DSI_FLUSH);
+	} else {
+		flush_write_buffer(iommu);
+	}
+}
+
+unsigned long set_context_entry(struct pkvm_iommu *hyp_iommu,
+		struct pkvm_lm_context_param *param)
+{
+	struct intel_iommu *iommu = &hyp_iommu->iommu;
+	u8 bus = PCI_BUS_NUM(param->bdf);
+	u8 devfn = PCI_DEV_FN(param->bdf);
+	struct context_entry *context;
+	u8 tt;
+
+	context = pkvm_iommu_context_addr(iommu, bus, devfn, param->context_gpa);
+	if (!context)
+		return -ENOMEM;
+
+	if (context_present(context))
+		return -EBUSY;
+
+	if (sm_supported(iommu) && is_dev_in_satc(param->bdf))
+		tt = CONTEXT_TT_DEV_IOTLB;
+	else
+		tt = CONTEXT_TT_MULTI_LEVEL;
+
+	__set_lm_context(context, param->did, param->domain_agaw,
+			tt, param->domain_pgd_gpa);
+
+	if (!iommu_coherency(iommu))
+		iommu_flush_cache(context, sizeof(*context));
+	pkvm_context_present_cache_flush(hyp_iommu, param->bdf, param->did);
+
+	return 0;
+}
+
+unsigned long pkvm_iommu_set_lm_ce(u64 phys, u64 param_gpa)
+{
+	struct pkvm_iommu *hyp_iommu = find_iommu_by_reg_phys(phys);
+	struct pkvm_lm_context_param *param;
+	struct intel_iommu *iommu;
+	int ret;
+
+	if (!hyp_iommu)
+		return -EINVAL;
+
+	param = host_gpa2hva(param_gpa);
+	if (!param)
+		return -EINVAL;
+
+	pkvm_spin_lock(&hyp_iommu->lock);
+	iommu = &hyp_iommu->iommu;
+
+	if (param->did == FLPT_DEFAULT_DID) {
+		/*
+		 * Passthrough will break pkvm security guarantees as
+		 * device would be able to access the whole physical
+		 * memory range. Use Second stage translation with host ept
+		 * as second stage pagetable so as to limit device access
+		 * to host memory..
+		 */
+		int level = pkvm_host_ept_level();
+
+		param->domain_agaw = (level == 3) ? 1 :
+				(level == 4) ? 2 : 3;
+		param->domain_pgd_gpa = pkvm_host_ept_pgd();
+	} else {
+		param->domain_pgd_gpa = host_gpa2hpa(param->domain_pgd_gpa);
+	}
+	pkvm_dbg("pkvm: %s: set_lm_ce: dev[%x] did:%u, agaw: %u, pgd: %llx\n",
+			__func__, param->bdf, param->did,
+			param->domain_agaw, param->domain_pgd_gpa);
+
+	ret = set_context_entry(hyp_iommu, param);
+
+	pkvm_spin_unlock(&hyp_iommu->lock);
+
+	return ret;
 }
