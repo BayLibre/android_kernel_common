@@ -34,6 +34,24 @@
       "parentUuid": "d881e956_7bc1682c",
       "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fe93b44_9e82bade",
+        "filename": "arch/x86/kvm/vmx/pkvm_high.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1805,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-10T18:44:18Z",
+      "side": 1,
+      "message": "I see. Yeah, seems safe (for the time being, until the implementation of free_pages_exact() changes so that it is not safe anymore :))\n\nBTW looks like pKVM-ARM doesn\u0027t do that anymore, now it does something more generic (but also much more complex):\n\nhttps://android-review.googlesource.com/c/kernel/common/+/2950992\nhttps://android-review.googlesource.com/c/kernel/common/+/2968716\n\nI don\u0027t know much about that, afaik it was motivated by some ARM-specific use cases, so I suppose we won\u0027t need to do the same.",
+      "parentUuid": "e8bd752c_04da175b",
+      "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
