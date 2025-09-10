@@ -153,6 +153,7 @@ bool init_done(struct zram *zram);
 
 struct zram_pp_ctl {
 	struct list_head	pp_buckets[NUM_PP_BUCKETS];
+	u32			num_of_processed_slots;
 };
 
 struct zram_pp_ctl *init_pp_ctl(void);
