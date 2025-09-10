@@ -496,7 +496,7 @@ static void submit_qi(struct pkvm_iommu *iommu, struct qi_desc *base, int count)
 	} while (count > 0);
 }
 
-static void flush_context_cache(struct pkvm_iommu *iommu, u16 did,
+void flush_context_cache(struct pkvm_iommu *iommu, u16 did,
 				u16 sid, u8 fm, u64 type)
 {
 	struct qi_desc desc = {.qw1 = 0, .qw2 = 0, .qw3 = 0};
@@ -516,6 +516,20 @@ static void flush_pasid_cache(struct pkvm_iommu *iommu, u16 did,
 		   QI_PC_GRAN(granu) | QI_PC_TYPE;
 
 	submit_qi(iommu, &desc, 1);
+}
+
+void flush_write_buffer(struct pkvm_iommu *iommu)
+{
+	void __iomem *reg = iommu->iommu.reg;
+	u32 val;
+
+	if (!cap_rwbf(iommu->iommu.cap))
+		return;
+
+	writel(iommu->iommu.gcmd | DMA_GCMD_WBF, reg + DMAR_GCMD_REG);
+
+	PKVM_IOMMU_WAIT_OP(reg + DMAR_GSTS_REG,
+		      readl, (!(val & DMA_GSTS_WBFS)), val);
 }
 
 static void setup_iotlb_qi_desc(struct pkvm_iommu *iommu,
@@ -538,7 +552,7 @@ static void setup_iotlb_qi_desc(struct pkvm_iommu *iommu,
 	desc->qw3 = 0;
 }
 
-static void flush_iotlb(struct pkvm_iommu *iommu, u16 did, u64 addr,
+void flush_iotlb(struct pkvm_iommu *iommu, u16 did, u64 addr,
 			unsigned int size_order, u64 type)
 {
 	struct qi_desc desc;
@@ -582,6 +596,10 @@ static void set_root_table(struct pkvm_iommu *iommu)
 	if (sm_supported(&iommu->iommu))
 		flush_pasid_cache(iommu, 0, QI_PC_GLOBAL, 0);
 	flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
+
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+	iommu->iommu.root_entry = pkvm_phys_to_virt(iommu->pgt.root_pa);
+#endif
 }
 
 static void enable_translation(struct pkvm_iommu *iommu)
@@ -818,7 +836,7 @@ static void handle_global_cmd(struct pkvm_iommu *iommu, u32 val)
 	handle_gcmd_direct(iommu, val);
 }
 
-static struct pkvm_iommu *find_iommu_by_reg_phys(unsigned long phys)
+struct pkvm_iommu *find_iommu_by_reg_phys(unsigned long phys)
 {
 	struct pkvm_iommu *iommu;
 

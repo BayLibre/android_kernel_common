@@ -87,6 +87,46 @@ static inline unsigned long __pkvm_hypercall(unsigned long nr, unsigned long p1,
 
 #ifdef CONFIG_PKVM_INTEL
 
+/*
+ * Generic hypercall parameter for clearing legacy
+ * and scalable mode context entries and pasid table
+ * entries.
+ */
+struct pkvm_clear_translation_param {
+	/*
+	 * Input: base physical address of mmio region
+	 *        of the iommu. Used to identify the
+	 *        iommu in pkvm.
+	 */
+	u64 phys;
+	/*
+	 * Input: bdf to indentify entry
+	 *        to be cleared.
+	 */
+	u16 bdf;
+	/*
+	 * Input: pasid to indentify pasid table
+	 *        entry to be cleared.
+	 *        Ignored for context teardown.
+	 */
+	u32 pasid;
+	/*
+	 * Output: did of the cleared entry
+	 *         Ignored for scalable mode
+	 *         context entry.
+	 */
+	u16 did;
+};
+
+struct pkvm_lm_context_param {
+	u64 phys;
+	u16 bdf;
+	u16 did;
+	u16 domain_agaw;
+	u64 domain_pgd_gpa;
+	u64 context_gpa;
+};
+
 #ifndef __PKVM_HYP__
 
 extern bool __read_mostly enable_pkvm;	/* kernel command-line flag */
