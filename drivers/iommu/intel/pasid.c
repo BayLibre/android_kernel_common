@@ -641,6 +641,22 @@ int intel_pasid_setup_nested(struct intel_iommu *iommu, struct device *dev,
 	return 0;
 }
 
+static int pv_pasid_table_teardown(struct intel_iommu *iommu, u8 bus, u8 devfn, u16 *did)
+{
+	struct pkvm_clear_translation_param param = {
+		.bdf = PCI_DEVID(bus, devfn),
+	};
+	int ret = pkvm_hc_iommu_clear_ce(iommu->reg_phys, &param);
+
+	if (ret) {
+		pr_warn("%s: pkvm failed to tear down pasid_table for device[%x]\n",
+				__func__, param.did);
+	}
+	*did = param.did;
+
+	return ret;
+}
+
 /*
  * Interfaces to setup or teardown a pasid table to the scalable-mode
  * context table entry:
@@ -652,19 +668,28 @@ static void device_pasid_table_teardown(struct device *dev, u8 bus, u8 devfn)
 	struct intel_iommu *iommu = info->iommu;
 	struct context_entry *context;
 	u16 did;
+	int ret = -1;
 
 	spin_lock(&iommu->lock);
+	if (iommu_pv_translation(iommu)) {
+		ret = pv_pasid_table_teardown(iommu, bus, devfn, &did);
+		goto out_unlock;
+	}
+
 	context = iommu_context_addr(iommu, bus, devfn, false);
 	if (!context) {
-		spin_unlock(&iommu->lock);
-		return;
+		goto out_unlock;
 	}
 
 	did = context_domain_id(context);
 	context_clear_entry(context);
 	__iommu_flush_cache(iommu, context, sizeof(*context));
+	ret = 0;
+
+out_unlock:
 	spin_unlock(&iommu->lock);
-	intel_context_flush_present(info, did, false);
+	if (!ret)
+		intel_context_flush_present(info, did, false);
 }
 
 static int pci_pasid_table_teardown(struct pci_dev *pdev, u16 alias, void *data)
@@ -732,6 +757,33 @@ static int context_entry_set_pasid_table(struct context_entry *context,
 	return 0;
 }
 
+static int pv_device_pasid_table_setup(struct device_domain_info *info)
+{
+	struct intel_iommu *iommu = info->iommu;
+	struct context_entry *context;
+	struct pkvm_sm_context_param param = {
+		.bdf = PCI_DEVID(info->bus, info->devfn),
+		.pasid_dir_gpa = virt_to_phys(info->pasid_table->table),
+		.ats_supported = info->ats_supported,
+		.max_pasid = info->pasid_table->max_pasid,
+	};
+	int ret = 0;
+
+	ret = pkvm_hc_iommu_set_sm_ce(iommu->reg_phys, &param);
+	if (ret == -ENOMEM) {
+		context = iommu_alloc_page_node(iommu->node, GFP_ATOMIC);
+		if (context) {
+			param.context_gpa = virt_to_phys(context);
+			ret = pkvm_hc_iommu_set_sm_ce(iommu->reg_phys, &param);
+		} else {
+			pr_err("%s: failed to allocate context page for iommu: %d\n",
+					__func__, iommu->seq_id);
+			ret = -ENOMEM;
+		}
+	}
+	return ret;
+}
+
 static int device_pasid_table_setup(struct device *dev, u8 bus, u8 devfn)
 {
 	struct device_domain_info *info = dev_iommu_priv_get(dev);
@@ -739,6 +791,11 @@ static int device_pasid_table_setup(struct device *dev, u8 bus, u8 devfn)
 	struct context_entry *context;
 
 	spin_lock(&iommu->lock);
+	if (iommu_pv_translation(iommu)) {
+		int ret = pv_device_pasid_table_setup(info);
+		spin_unlock(&iommu->lock);
+		return ret;
+	}
 	context = iommu_context_addr(iommu, bus, devfn, true);
 	if (!context) {
 		spin_unlock(&iommu->lock);
