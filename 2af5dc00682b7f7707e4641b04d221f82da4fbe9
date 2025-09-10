@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d389db18_82fd0129",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-09-10T16:55:23Z",
+      "side": 1,
+      "message": "ANDROID: refresh ABI, allow ABI break and fix up symbol CRCs\n\n(ABI change)\n\n(explanation as to why this is safe change)\n\nThis commit hides the type change from CRC calculations and marks the ABI break as allowed.\n\n(no blank line after Bug and Test)",
+      "revId": "2af5dc00682b7f7707e4641b04d221f82da4fbe9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fea55186_59955af2",
+        "filename": "include/uapi/linux/iio/types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-09-10T16:55:23Z",
+      "side": 1,
+      "message": "@gregkh@google.com Do you think we should move the `#ifdef __KERNEL__` into `linux/android_kabi.h` itself? There could be more of these in the future.\n\nThis way `#include \u003clinux/android_kabi.h\u003e` can live at the top as normal.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 6
+      },
+      "revId": "2af5dc00682b7f7707e4641b04d221f82da4fbe9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
