@@ -1287,7 +1287,6 @@ void cache_tag_flush_range_np(struct dmar_domain *domain, unsigned long start,
 			      unsigned long end);
 
 void intel_context_flush_present(struct device_domain_info *info,
-				 struct context_entry *context,
 				 u16 did, bool affect_domains);
 
 #ifdef CONFIG_INTEL_IOMMU_SVM
