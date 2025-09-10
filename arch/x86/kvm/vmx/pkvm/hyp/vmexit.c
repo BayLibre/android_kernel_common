@@ -119,6 +119,12 @@ static unsigned long handle_vmcall(struct kvm_vcpu *vcpu)
 	case __pkvm__iommu_disable:
 		ret = pkvm_iommu_disable(a0);
 		break;
+	case __pkvm__iommu_clear_ce:
+		ret = pkvm_iommu_clear_ce(a0);
+		break;
+	case __pkvm__iommu_set_lm_ce:
+		ret = pkvm_iommu_set_lm_ce(a0);
+		break;
 #endif
 	case __pkvm__add_ptdev:
 		ret = pkvm_add_ptdev(a0, a1, a2);
