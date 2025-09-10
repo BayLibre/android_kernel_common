@@ -1,0 +1,80 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee487cc8_1ac24888",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 2044797
+      },
+      "writtenOn": "2025-09-10T12:59:33Z",
+      "side": 1,
+      "message": "Future proof by adding, and then when we do compressed writeback this will become a small change.\n\nctl-\u003enum_of_bytes_written +\u003d PAGE_SIZE;",
+      "fixSuggestions": [
+        {
+          "fixId": "fdb35b06_d00fda48",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/block/zram/zram_drv.c",
+              "range": {
+                "startLine": 815,
+                "startChar": 0,
+                "endLine": 815,
+                "endChar": 0
+              },
+              "replacement": "\t\tctl-\u003enum_of_bytes_written +\u003d PAGE_SIZE;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f97ef908e0fe343e91cb3ef53dfe8a182fce8f9d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89261af2_cdab33bb",
+        "filename": "drivers/block/zram/zram_drv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 2044797
+      },
+      "writtenOn": "2025-09-10T12:59:33Z",
+      "side": 1,
+      "message": "add a u64 num_of_bytes_written",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 30
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "05f207a3_55ea7495",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/block/zram/zram_drv.h",
+              "range": {
+                "startLine": 157,
+                "startChar": 0,
+                "endLine": 157,
+                "endChar": 0
+              },
+              "replacement": "\tu64\t\t\tnum_of_bytes_written;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f97ef908e0fe343e91cb3ef53dfe8a182fce8f9d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
