@@ -16,6 +16,24 @@
       "message": "Shall we limit the size to PAGE_SIZE? As there is only one pkvm_pgtable_age_data, if walks multiple leaves, then only the last one\u0027s young will be returned.",
       "revId": "f9792146a25b4d6440d5b0f048d110c1d4ae8770",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb3a43a3_6a1d953f",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 841,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-10T16:30:09Z",
+      "side": 1,
+      "message": "\u003e only the last one\u0027s young will be returned.\n\nNot really, data-\u003eyoung will be set to true if at least one leaf is young. If the next walked leaf is old, data-\u003eyoung will not be reset to false, it will still remain true.",
+      "parentUuid": "e3d7a6e2_b4789e8b",
+      "revId": "f9792146a25b4d6440d5b0f048d110c1d4ae8770",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
