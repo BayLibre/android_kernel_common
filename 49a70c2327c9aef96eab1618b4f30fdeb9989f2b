@@ -62,6 +62,30 @@
       },
       "revId": "49a70c2327c9aef96eab1618b4f30fdeb9989f2b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b93e77d6_fadd64e6",
+        "filename": "drivers/gpu/drm/i915/display/intel_display.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7229,
+      "author": {
+        "id": 4043531
+      },
+      "writtenOn": "2025-09-10T05:07:55Z",
+      "side": 1,
+      "message": "I feel both ways are right . The changes you suggested was part of another patch https://github.com/torvalds/linux/commit/6069b21f58dc96e5d57c9c2fd64240135952a545 . So i just added just the variable to make this backport closer to original patch",
+      "parentUuid": "db2b8a68_7876d4e1",
+      "range": {
+        "startLine": 7229,
+        "startChar": 17,
+        "endLine": 7229,
+        "endChar": 25
+      },
+      "revId": "49a70c2327c9aef96eab1618b4f30fdeb9989f2b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
