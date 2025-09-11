@@ -283,6 +283,24 @@ unsigned long pkvm_iommu_clear_ce(u64 phys, u64 param_gpa)
 	if (!context)
 		goto out;
 
+	/*
+	 * In legacy mode, ptdevs are created during context entry creation and we need
+	 * to delete the ptdev during context entry teardown.
+	 */
+	if (!pkvm_sm_supported(&hyp_iommu->iommu)) {
+		struct ptdev_info *ptdev_info = iommu_find_ptdev(hyp_iommu, param->bdf, 0);
+		if (ptdev_info) {
+			iommu_del_ptdev(hyp_iommu, ptdev_info);
+		} else {
+			pkvm_err("pkvm: %s: unable to locate ptdev for device[%x:%x:%x] during context clear!\n",
+				__func__, PCI_BUS_NUM(param->bdf), PCI_SLOT(PCI_DEV_FN(param->bdf)),
+				PCI_FUNC(PCI_DEV_FN(param->bdf)));
+		}
+	}
+
+	/*
+	 * Pass the did back to host for flushing.
+	 */
 	param->did = context_domain_id(context);
 	pkvm_dbg("pkvm: %s: clear context mapping for did: %d\n", __func__, param->did);
 	context_clear_entry(context);
@@ -387,4 +405,101 @@ unsigned long pkvm_iommu_set_lm_ptce(u64 phys, u64 param_gpa)
 				(level == 4) ? 2 : 3;
 	param->domain_pgd_gpa = pkvm_host_ept_pgd();
 	return set_context_entry(hyp_iommu, param);
+}
+
+static unsigned long context_get_sm_pds(u32 max_pasid)
+{
+	unsigned long pds, max_pde;
+
+	max_pde = max_pasid >> PASIDDIR_SHIFT;
+	pds = find_first_bit(&max_pde, MAX_NR_PASID_BITS);
+	if (pds < 7)
+		return 0;
+
+	return pds - 7;
+}
+
+unsigned long pkvm_iommu_set_sm_ce(u64 phys, u64 param_gpa)
+{
+	struct pkvm_iommu *hyp_iommu = find_iommu_by_reg_phys(phys);
+	struct pkvm_sm_context_param *param;
+	struct context_entry *context;
+	struct intel_iommu *iommu;
+	unsigned long pds;
+	u8 bus, devfn;
+	int ret = 0;
+
+	if (!hyp_iommu)
+		return -EINVAL;
+
+	param = host_gpa2hva(param_gpa);
+	if (!param)
+		return -EINVAL;
+
+	bus = PCI_BUS_NUM(param->bdf);
+	devfn = PCI_DEV_FN(param->bdf);
+	if (!param->pasid_dir_gpa) {
+		pkvm_err("pkvm: %s pasid_dir gpa not passed in for set_sm_ce(device[%x:%x:%x])\n",
+				__func__, bus, PCI_SLOT(devfn), PCI_FUNC(devfn));
+		return -EINVAL;
+	}
+
+	if (param->ats_supported && !is_dev_in_satc(param->bdf)) {
+		pkvm_err("pkvm: %s host reported ats supported for device[%x:%x:%x] not in satc\n",
+				__func__, bus, PCI_SLOT(devfn), PCI_FUNC(devfn));
+		param->ats_supported = 0;
+	}
+
+	pkvm_spin_lock(&hyp_iommu->lock);
+	iommu = &hyp_iommu->iommu;
+
+	if (!pkvm_sm_supported(iommu)) {
+		pkvm_err("pkvm: %s: trying to set Scalable Mode Context but iommu%d doesn't support it!\n",
+				__func__, iommu->seq_id);
+		return -EINVAL;
+	};
+
+	pkvm_dbg("pkvm: %s: Set sm context mapping for %02x:%02x.%d, pasid_dir: %llx\n",
+		__func__, bus, PCI_SLOT(devfn), PCI_FUNC(devfn), param->pasid_dir_gpa);
+
+	context = pkvm_iommu_context_addr(iommu, bus, devfn, param->context_gpa);
+	if (!context) {
+		ret = -ENOMEM;
+		goto out_unlock;
+	}
+
+	if (context_present(context))
+		goto out_unlock;
+
+	context_clear_entry(context);
+
+	pds = context_get_sm_pds(param->max_pasid);
+	context->lo = param->pasid_dir_gpa | context_pdts(pds);
+	context_set_sm_rid2pasid(context, IOMMU_NO_PASID);
+
+	if (param->ats_supported)
+		context_set_sm_dte(context);
+	if (ecap_pasid(iommu->ecap))
+		context_set_pasid(context);
+
+	context_set_fault_enable(context);
+	context_set_present(context);
+
+	if (validate_sm_context_entries(hyp_iommu, bus, context, devfn >= 0x80)) {
+		pkvm_err("pkvm: %s: failed to validate the context entry for device[%x:%x:%x], CE:%llx:%llx!\n",
+				__func__, bus, PCI_SLOT(devfn), PCI_FUNC(devfn), context->hi, context->lo);
+		context_clear_entry(context);
+		ret = -EINVAL;
+		goto out_unlock;
+	}
+
+	if (!iommu_coherency(iommu))
+		iommu_flush_cache(context, sizeof(*context));
+
+	pkvm_context_present_cache_flush(hyp_iommu, param->bdf, 0);
+
+out_unlock:
+	pkvm_spin_unlock(&hyp_iommu->lock);
+
+	return ret;
 }
