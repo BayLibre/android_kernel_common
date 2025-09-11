@@ -51,6 +51,24 @@
       "parentUuid": "78602c75_e1d8caf2",
       "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1a77ac6_fad5dd3d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-09-11T08:22:06Z",
+      "side": 1,
+      "message": "The bindgen output generates Rust versions of all C structs available from headers included by `rust/bindings/bindings_helper.h`, even if Rust does not actually use the struct anywhere. That\u0027s the scenario here.",
+      "parentUuid": "78810f86_d9e21899",
+      "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
