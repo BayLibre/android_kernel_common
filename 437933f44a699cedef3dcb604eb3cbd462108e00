@@ -141,6 +141,24 @@
       "parentUuid": "90daeb32_acff700a",
       "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed6bbaf9_b6f3969a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1416371
+      },
+      "writtenOn": "2025-09-11T21:19:58Z",
+      "side": 1,
+      "message": "tl;dr: I was trying to say that no rust-specific maintenance is required. This can cause a break, though it\u0027s unlikely and not rust-specific.\n\nTo be more precise about my original claim:\n1. The type `readahead_control` is not currently referenced *directly* by any in-tree Rust code. The generated bindings do reference it. We do not currently directly export any `bindings::` methods and are unlikely to do so.\n2. Rust-specific maintenance is need *only* if:\n  a. Rust interacts directly with the field being moved/inserted/removed.\n  b. A struct has changed in size (you\u0027re already avoiding this for C here)\n  c. Rust modules might initialize the struct, which can cause issues because padding is not guaranteed to be copied/zero initialized.\n\nCombined, this means that the Rust code should be oblivious to this change, even without further investigation.\n\nIn this particular case, what has happened is that `readhead_control` is used by `address_space_operations` is used by `address_space` is used by `file`, so any Rust code using `file` is marked as potentially affected in terms of debug information. However, we know that in-tree Rust code never accesses the `readahead` field of `address_space_operations` (in fact, it never even deals with `address_space_operations`), and does not construct a `readhead_control` or explicitly accept one as an argument/return one.\n\n\n\nAll of that said, there is still a way for this change to be buggy, which applies to either Rust *or* C, but I think is generally unavoidable with this type of ABI update. If someone\u0027s old module performs a *copy* operation on this struct, that copy is allowed to forget the current value of the provided boolean. I don\u0027t think that\u0027s likely in this case, but that would be an issue any time you insert a field that isn\u0027t there before if you insert into a hole rather than into a reserved field.\n\nFor example, if you do\n```\nvoid my_readahead(readahead_control *ctl) {\n  readahead_control tmp \u003d *ctl;\n  // Stuff here\n  *ctl \u003d tmp;\n}\n```\n\nthe compiler is within its rights to implement the `*ctl` expressions as a field-by-field copy. If this code appeared in a module, it means your boolean might not have the correct value on the other end of the call, even though the module never mentioned it. If this were a pointer, I might be concerned, but:\n1. This seems unlikely for someone to write\n2. If they did, the worst case scenario is that you could have an unexpected sense-flip of `drop_behind`.",
+      "parentUuid": "90daeb32_acff700a",
+      "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
