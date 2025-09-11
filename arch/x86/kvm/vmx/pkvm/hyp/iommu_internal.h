@@ -375,6 +375,7 @@ struct pkvm_iommu *find_iommu_by_reg_phys(unsigned long phys);
 struct pkvm_ptdev *iommu_find_ptdev(struct pkvm_iommu *iommu, u16 bdf, u32 pasid);
 struct pkvm_ptdev *iommu_add_ptdev(struct pkvm_iommu *iommu, u16 bdf, u32 pasid);
 void iommu_del_ptdev(struct pkvm_iommu *iommu, struct pkvm_ptdev *ptdev);
+void iommu_del_ptdevs(struct pkvm_iommu *iommu, u16 bdf);
 int iommu_audit_did(struct pkvm_iommu *iommu, u16 did, int shadow_vm_handle);
 bool is_dev_in_satc(u16 bdf);
 
