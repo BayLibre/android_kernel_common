@@ -75,6 +75,30 @@
       ],
       "revId": "f97ef908e0fe343e91cb3ef53dfe8a182fce8f9d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89fede75_81e0f6d2",
+        "filename": "drivers/block/zram/zram_drv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2025-09-11T02:18:38Z",
+      "side": 1,
+      "message": "Since zram_pp_ctl is controlling the pp_slots, and zram_pp_ctl is also used by recompression, the name \"num_of_bytes_written\" may not accurate here.\n\nnum_of_processed_bytes?",
+      "parentUuid": "89261af2_cdab33bb",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 30
+      },
+      "revId": "f97ef908e0fe343e91cb3ef53dfe8a182fce8f9d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
