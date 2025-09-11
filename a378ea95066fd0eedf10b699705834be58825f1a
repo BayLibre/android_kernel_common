@@ -70,6 +70,24 @@
       "parentUuid": "4fe93b44_9e82bade",
       "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35a1eaaf_f79389c4",
+        "filename": "arch/x86/kvm/vmx/pkvm_high.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1805,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-11T11:06:23Z",
+      "side": 1,
+      "message": "\u003e And for v6.15, we can refactor this to use free_page_exact() together with the pkvm_vm/pkvm_vcpu. Does this make sense to you?\n\nI haven\u0027t got quite familiar with how this works yet, so I have no opinion on that yet. I guess it depends on how complicated it would be. If the current way is much simpler than alternatives, it might be better to keep using the current way, even if it doesn\u0027t formally conform to the documentation?",
+      "parentUuid": "a656a23f_157558c0",
+      "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
