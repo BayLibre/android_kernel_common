@@ -118,13 +118,13 @@ out:
 void pkvm_teardown_shadow_vm(struct kvm *kvm)
 {
 	struct pkvm_shadow_vm *vm = kvm_to_shadow(kvm);
-	struct pkvm_ptdev *ptdev, *tmp;
+	struct ptdev_info *ptdev_info, *tmp;
 
 	pkvm_shadow_ept_deinit(&vm->sept_desc);
 	pkvm_pgstate_pgt_deinit(vm);
 
-	list_for_each_entry_safe(ptdev, tmp, &vm->ptdev_head, vm_node)
-		pkvm_detach_ptdev(ptdev, vm);
+	list_for_each_entry_safe(ptdev_info, tmp, &vm->ptdev_head, vm_node)
+		pkvm_detach_ptdev(ptdev_info, vm);
 }
 
 int pkvm_init_shadow_vcpu(struct kvm_vcpu *vcpu)
