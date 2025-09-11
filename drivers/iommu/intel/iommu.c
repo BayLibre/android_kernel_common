@@ -1487,6 +1487,37 @@ static void context_present_cache_flush(struct intel_iommu *iommu, u16 did,
 	}
 }
 
+static int pv_context_mapping(struct dmar_domain *domain,
+				      struct intel_iommu *iommu,
+				      u8 bus, u8 devfn, u16 did)
+{
+	int ret;
+	struct pkvm_context_param param = {
+		.bdf = PCI_DEVID(bus, devfn),
+		.domain_pgd_gpa = virt_to_phys(domain->pgd),
+		.domain_agaw = domain->agaw,
+		.domain_gaw = domain->gaw,
+		.iommu_coherency = domain->iommu_coherency,
+		.iommu_superpage = domain->iommu_superpage,
+		.did = did,
+	};
+
+	ret = pkvm_hc_iommu_set_lm_ce(iommu->reg_phys, &param);
+	if (ret == -ENOMEM) {
+		void *context = iommu_alloc_page_node(iommu->node, GFP_ATOMIC);
+		if (!context) {
+			pr_err("%s: failed to allocate context page for iommu: %d\n", __func__, iommu->seq_id);
+			return -ENOMEM;
+		}
+		param.context_gpa = virt_to_phys(context);
+		ret = pkvm_hc_iommu_set_lm_ce(iommu->reg_phys, &param);
+		if (param.context_gpa)
+			iommu_free_page(context);
+	}
+
+	return ret;
+}
+
 static int domain_context_mapping_one(struct dmar_domain *domain,
 				      struct intel_iommu *iommu,
 				      u8 bus, u8 devfn)
@@ -1503,6 +1534,11 @@ static int domain_context_mapping_one(struct dmar_domain *domain,
 		bus, PCI_SLOT(devfn), PCI_FUNC(devfn));
 
 	spin_lock(&iommu->lock);
+	if (iommu_pv_translation(iommu)) {
+		ret = pv_context_mapping(domain, iommu, bus, devfn, did);
+		goto out_unlock;
+	}
+
 	ret = -ENOMEM;
 	context = iommu_context_addr(iommu, bus, devfn, 1);
 	if (!context)
@@ -1729,24 +1765,49 @@ __domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
 	return 0;
 }
 
+static int pv_context_clear(struct intel_iommu *iommu, u8 bus, u8 devfn, u16 *did)
+{
+	int ret;
+
+	struct pkvm_block_translation_param param = {
+		.bdf = PCI_DEVID(bus, devfn),
+	};
+	ret = pkvm_hc_iommu_clear_ce(iommu->reg_phys, &param);
+	if (ret) {
+		pr_warn("%s: pkvm failed to clear context entry for device[%x:%x:%x]!\n",
+				__func__, bus, PCI_SLOT(devfn), PCI_FUNC(devfn));
+	}
+	*did = param.did;
+
+	return ret;
+}
+
 static void domain_context_clear_one(struct device_domain_info *info, u8 bus, u8 devfn)
 {
 	struct intel_iommu *iommu = info->iommu;
 	struct context_entry *context;
-	u16 did;
+	u16 did = 0;
+	int ret = -1;
 
 	spin_lock(&iommu->lock);
+	if (iommu_pv_translation(iommu)) {
+		ret = pv_context_clear(iommu, bus, devfn, &did);
+		goto out_unlock;
+	}
+
 	context = iommu_context_addr(iommu, bus, devfn, 0);
 	if (!context) {
-		spin_unlock(&iommu->lock);
-		return;
+		goto out_unlock;
 	}
 
 	did = context_domain_id(context);
 	context_clear_entry(context);
 	__iommu_flush_cache(iommu, context, sizeof(*context));
+	ret = 0;
+out_unlock:
 	spin_unlock(&iommu->lock);
-	intel_context_flush_present(info, did, true);
+	if (!ret)
+		intel_context_flush_present(info, did, true);
 }
 
 static int domain_setup_first_level(struct intel_iommu *iommu,
@@ -2255,9 +2316,13 @@ static void __init init_no_remapping_devices(void)
 
 static int intel_iommu_enable(struct intel_iommu *iommu)
 {
-	if (pkvm_pviommu_enabled())
-		return pkvm_hc_enable_iommu(iommu->reg_phys,
+	if (pkvm_pviommu_enabled()) {
+		int ret = pkvm_hc_enable_iommu(iommu->reg_phys,
 				virt_to_phys(iommu->root_entry));
+		if (!ret)
+			iommu_set_pv_translation(iommu);
+		return ret;
+	}
 
 	iommu_flush_write_buffer(iommu);
 	iommu_set_root_entry(iommu);
@@ -4307,22 +4372,51 @@ static const struct iommu_dirty_ops intel_dirty_ops = {
 	.read_and_clear_dirty = intel_iommu_read_and_clear_dirty,
 };
 
+static int pv_context_setup_pass_through(struct intel_iommu *iommu, u8 bus, u8 devfn)
+{
+	struct pkvm_context_param param = {
+		.bdf = PCI_DEVID(bus, devfn),
+		.did = FLPT_DEFAULT_DID,
+	};
+	int ret = pkvm_hc_iommu_set_lm_ptce(iommu->reg_phys, &param);
+
+	if (ret == -ENOMEM) {
+		void *context = iommu_alloc_page_node(iommu->node, GFP_ATOMIC);
+		if (!context) {
+			pr_err("%s: failed to allocate context page for iommu: %d\n", __func__, iommu->seq_id);
+			return -ENOMEM;
+		}
+		param.context_gpa = virt_to_phys(context);
+		ret = pkvm_hc_iommu_set_lm_ptce(iommu->reg_phys, &param);
+		if (param.context_gpa)
+			iommu_free_page(context);
+	}
+
+	return ret;
+}
+
 static int context_setup_pass_through(struct device *dev, u8 bus, u8 devfn)
 {
 	struct device_domain_info *info = dev_iommu_priv_get(dev);
 	struct intel_iommu *iommu = info->iommu;
 	struct context_entry *context;
+	int ret = 0;
 
 	spin_lock(&iommu->lock);
+	if (iommu_pv_translation(iommu)) {
+		ret = pv_context_setup_pass_through(iommu, bus, devfn);
+		goto out_unlock;
+	}
+
 	context = iommu_context_addr(iommu, bus, devfn, 1);
 	if (!context) {
 		spin_unlock(&iommu->lock);
-		return -ENOMEM;
+		ret = -ENOMEM;
+		goto out_unlock;
 	}
 
 	if (context_present(context) && !context_copied(iommu, bus, devfn)) {
-		spin_unlock(&iommu->lock);
-		return 0;
+		goto out_unlock;
 	}
 
 	copied_context_tear_down(iommu, context, bus, devfn);
@@ -4340,9 +4434,10 @@ static int context_setup_pass_through(struct device *dev, u8 bus, u8 devfn)
 	if (!ecap_coherent(iommu->ecap))
 		clflush_cache_range(context, sizeof(*context));
 	context_present_cache_flush(iommu, FLPT_DEFAULT_DID, bus, devfn);
+out_unlock:
 	spin_unlock(&iommu->lock);
 
-	return 0;
+	return ret;
 }
 
 static int context_setup_pass_through_cb(struct pci_dev *pdev, u16 alias, void *data)
