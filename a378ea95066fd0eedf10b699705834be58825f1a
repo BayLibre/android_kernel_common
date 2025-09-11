@@ -52,6 +52,24 @@
       "parentUuid": "e8bd752c_04da175b",
       "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a656a23f_157558c0",
+        "filename": "arch/x86/kvm/vmx/pkvm_high.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1805,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-11T02:32:56Z",
+      "side": 1,
+      "message": "Agree, we can still use the simple way. Probably we can still use memcache to free page in v6.12 as most likely the free_page_exact() won\u0027t be changed in this version. And for v6.15, we can refactor this to use free_page_exact() together with the pkvm_vm/pkvm_vcpu. Does this make sense to you?",
+      "parentUuid": "4fe93b44_9e82bade",
+      "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
