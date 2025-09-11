@@ -52,6 +52,24 @@
       "parentUuid": "bb3a43a3_6a1d953f",
       "revId": "f9792146a25b4d6440d5b0f048d110c1d4ae8770",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5e602c0_4af5c9d3",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 841,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-11T10:57:29Z",
+      "side": 1,
+      "message": "\u003e nit: As we have a kernel doc here, not sure if it worth to mention this in the description part?\n\nIt is already mentioned: \"Return: true if any of the visited PTEs had the access flag set.\"",
+      "parentUuid": "a9077475_de7563f6",
+      "revId": "f9792146a25b4d6440d5b0f048d110c1d4ae8770",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
