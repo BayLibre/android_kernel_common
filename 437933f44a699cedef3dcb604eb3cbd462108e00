@@ -33,6 +33,24 @@
       "message": "Confirmed `readahead_control` is not present in the bindings, so this should not pose a Rust issue.",
       "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78810f86_d9e21899",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-09-11T08:20:05Z",
+      "side": 1,
+      "message": "Should I try to work out which symbols are affected by this?\n\n```\ntype \u0027struct bindings::bindings_raw::readahead_control\u0027 changed\n  member \u0027union bindings::bindings_raw::readahead_control__bindgen_ty_1 __bindgen_anon_1\u0027 was added\n```",
+      "parentUuid": "78602c75_e1d8caf2",
+      "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
