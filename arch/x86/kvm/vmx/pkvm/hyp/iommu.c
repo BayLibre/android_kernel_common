@@ -59,7 +59,8 @@ struct pkvm_ptdev *iommu_find_ptdev(struct pkvm_iommu *iommu, u16 bdf, u32 pasid
 	struct pkvm_ptdev *p;
 
 	list_for_each_entry(p, &iommu->ptdev_head, iommu_node) {
-		if (match_ptdev(p, bdf, pasid))
+		struct pkvm_device *dev = p->dev;
+		if (match_pkvm_device(dev, bdf) && match_pkvm_ptdev(p, pasid))
 			return p;
 	}
 
@@ -68,8 +69,15 @@ struct pkvm_ptdev *iommu_find_ptdev(struct pkvm_iommu *iommu, u16 bdf, u32 pasid
 
 struct pkvm_ptdev *iommu_add_ptdev(struct pkvm_iommu *iommu, u16 bdf, u32 pasid)
 {
-	struct pkvm_ptdev *ptdev = pkvm_get_ptdev(bdf, pasid);
+	struct pkvm_ptdev *ptdev;
 
+	if (iommu_find_ptdev(iommu, bdf, pasid)) {
+		pkvm_err("pkvm: %s: ptdev(bdf: %x, pasid: %x) already added!",
+			__func__, bdf, pasid);
+		return NULL;
+	}
+
+	ptdev = pkvm_get_ptdev(bdf, pasid);
 	if (!ptdev) {
 		ptdev = pkvm_alloc_ptdev(bdf, pasid, iommu_coherency(&iommu->iommu));
 		if (!ptdev)
@@ -84,6 +92,17 @@ void iommu_del_ptdev(struct pkvm_iommu *iommu, struct pkvm_ptdev *ptdev)
 {
 	list_del_init(&ptdev->iommu_node);
 	pkvm_put_ptdev(ptdev);
+}
+
+void iommu_del_ptdevs(struct pkvm_iommu *iommu, u16 bdf)
+{
+	struct pkvm_ptdev *p, *tmp;
+
+	list_for_each_entry_safe(p, tmp, &iommu->ptdev_head, iommu_node) {
+		struct pkvm_device *dev = p->dev;
+		if (match_pkvm_device(dev, bdf))
+			iommu_del_ptdev(iommu, p);
+	}
 }
 
 int iommu_audit_did(struct pkvm_iommu *iommu, u16 did, int shadow_vm_handle)
@@ -1128,7 +1147,7 @@ bool is_mem_range_overlap_iommu(unsigned long start, unsigned long end)
  * To handle this case, pKVM IOMMU driver needs to check the
  * DMAR to know which IOMMU should be used for this bdf/pasid.
  */
-static struct pkvm_iommu *bdf_pasid_to_iommu(u16 bdf, u32 pasid)
+static struct pkvm_iommu *bdf_to_iommu(u16 bdf)
 {
 	struct pkvm_iommu *iommu, *find = NULL;
 	struct pkvm_ptdev *p;
@@ -1136,7 +1155,8 @@ static struct pkvm_iommu *bdf_pasid_to_iommu(u16 bdf, u32 pasid)
 	for_each_valid_iommu(iommu) {
 		pkvm_spin_lock(&iommu->lock);
 		list_for_each_entry(p, &iommu->ptdev_head, iommu_node) {
-			if (match_ptdev(p, bdf, pasid)) {
+			struct pkvm_device *dev = p->dev;
+			if (match_pkvm_device(dev, bdf)) {
 				find = iommu;
 				break;
 			}
@@ -1156,7 +1176,7 @@ static struct pkvm_iommu *bdf_pasid_to_iommu(u16 bdf, u32 pasid)
  */
 int pkvm_iommu_sync(u16 bdf, u32 pasid)
 {
-	struct pkvm_iommu *iommu = bdf_pasid_to_iommu(bdf, pasid);
+	struct pkvm_iommu *iommu = bdf_to_iommu(bdf);
 	unsigned long id_addr, id_addr_end;
 	struct pkvm_ptdev *ptdev;
 	u16 old_did;
@@ -1205,9 +1225,9 @@ int pkvm_iommu_sync(u16 bdf, u32 pasid)
 	return ret;
 }
 
-bool pkvm_iommu_coherency(u16 bdf, u32 pasid)
+bool pkvm_iommu_coherency(u16 bdf)
 {
-	struct pkvm_iommu *iommu = bdf_pasid_to_iommu(bdf, pasid);
+	struct pkvm_iommu *iommu = bdf_to_iommu(bdf);
 
 	/*
 	 * If cannot find a valid IOMMU by bdf/pasid, return
