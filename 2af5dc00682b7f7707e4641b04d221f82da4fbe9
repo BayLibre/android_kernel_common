@@ -177,6 +177,30 @@
       },
       "revId": "2af5dc00682b7f7707e4641b04d221f82da4fbe9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "446accc6_9a68b2ed",
+        "filename": "include/uapi/linux/iio/types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1886585
+      },
+      "writtenOn": "2025-09-11T10:07:31Z",
+      "side": 1,
+      "message": "\u003e don\u0027t actually know what that ln is doing. It almost looks overwriting the internal one with the external one, but that cannot be right. Right?! (Please confirm.)\n\n`tools/iio` do the ln so the uapi is \"copied\" under `tools/iio/include/linux/iio/types.h` \n\n\nthat way, the compiler will use that file instead of `/usr/include/linux/iio/types.h` \n\n\n\n\u003e If the ln is a red herring, then all you should have to do is move the macro stuff to the internal types.h.\n\nThat will work. but the macro will be in a different location than the enum. If you are ok with that I can do the change.\n\nThanks!",
+      "parentUuid": "f7748991_fc66caeb",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 6
+      },
+      "revId": "2af5dc00682b7f7707e4641b04d221f82da4fbe9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
