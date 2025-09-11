@@ -1294,14 +1294,14 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
 	struct block_device *bdev;
 	unsigned long flags;
 	struct bio *bio;
+	bool prepared;
 
 	/*
 	 * Submit the next plugged BIO. If we do not have any, clear
 	 * the plugged flag.
 	 */
-	spin_lock_irqsave(&zwplug->lock, flags);
-
 again:
+	spin_lock_irqsave(&zwplug->lock, flags);
 	bio = bio_list_pop(&zwplug->bio_list);
 	if (!bio) {
 		zwplug->flags &= ~BLK_ZONE_WPLUG_PLUGGED;
@@ -1309,15 +1309,22 @@ again:
 		goto put_zwplug;
 	}
 
+<<<<<<< HEAD   (15806a231d4180de148a02d6b04c6ef3bb113080 ANDROID: GKI: Update symbol list for Amlogic)
 	trace_blk_zone_wplug_bio(zwplug->disk->queue, zwplug->zone_no,
 				 bio->bi_iter.bi_sector, bio_sectors(bio));
 
 	if (!blk_zone_wplug_prepare_bio(zwplug, bio)) {
+||||||| BASE   (2e5a4bace74a835f6a733c1a628cbd76501f2d62 Merge tag 'android16-6.12.40_r00' into android16-6.12)
+	if (!blk_zone_wplug_prepare_bio(zwplug, bio)) {
+=======
+	prepared = blk_zone_wplug_prepare_bio(zwplug, bio);
+	spin_unlock_irqrestore(&zwplug->lock, flags);
+
+	if (!prepared) {
+>>>>>>> BRANCH (ae6d0451fe00a4590b8cfafdb0cefb5fc4102824 ANDROID: GKI: fix crc issue with dma_map_ops)
 		blk_zone_wplug_bio_io_error(zwplug, bio);
 		goto again;
 	}
-
-	spin_unlock_irqrestore(&zwplug->lock, flags);
 
 	bdev = bio->bi_bdev;
 
