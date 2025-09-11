@@ -105,6 +105,24 @@
       "parentUuid": "f55a0820_0a597aa7",
       "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90daeb32_acff700a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-09-11T15:23:53Z",
+      "side": 1,
+      "message": "It wouldn\u0027t be in the ABI Changes (and allowed breaks) unless STG found a path from an exported, listed symbol to the modified type.\n\nThere are in fact, many many possible paths and thousands of affected intermediate nodes which make visualisation extremely difficult.\n\nYou can grab parent and current commit ABIs, call them `1.stg` and `2.stg`. This will show all the affected types and symbols:\n\n```\nstgdiff -f flat -o - -s 1.stg 2.stg\n```\n\nOr if you run your own ABI build, have a look in `out_abi/kernel_aarch64_abi_dist/dist/abi_stgdiff` as it contains all available report formats.\n\nIf old Rust code in vendor module will not be upset by the type change, we\u0027re fine. But there is a type change!",
+      "parentUuid": "8c1a2fb8_365c8f89",
+      "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
