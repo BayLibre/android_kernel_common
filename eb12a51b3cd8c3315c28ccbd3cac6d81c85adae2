@@ -52,6 +52,24 @@
       "parentUuid": "c901442f_a6866692",
       "revId": "eb12a51b3cd8c3315c28ccbd3cac6d81c85adae2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0a1f602_a35a2731",
+        "filename": "kernel/fork.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 2768,
+      "author": {
+        "id": 1181388
+      },
+      "writtenOn": "2025-09-11T23:12:53Z",
+      "side": 1,
+      "message": "The attack vector is slightly different: The attacker can read/write to Kernel memory through a vulnerability, but they cannot execute arbitrary code yet (and we want to prevent that). The question is if it is possible to disable a RVH just by patching the memory (without changing any permissions)? and if so it it harder than disabling a normal VH or a tracepoint?\n\ntrace_android_vh_copy_process() does not accept p as a parameter. Is it okay if I modify it?",
+      "parentUuid": "1edb1c14_2c9d6e52",
+      "revId": "eb12a51b3cd8c3315c28ccbd3cac6d81c85adae2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
