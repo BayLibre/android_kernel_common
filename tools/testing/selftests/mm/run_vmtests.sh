@@ -43,6 +43,8 @@ separated by spaces:
 	tests for very large virtual address space
 - vmalloc
 	vmalloc smoke tests
+- vma_count
+	tests for max vma_count
 - hmm
 	hmm smoke tests
 - madv_guard
@@ -416,6 +418,9 @@ fi # VADDR64
 
 # vmalloc stability smoke test
 CATEGORY="vmalloc" run_test bash ./test_vmalloc.sh smoke
+
+# test operations against max vma count limit
+CATEGORY="vma_count" run_test ./vma_count_tests
 
 CATEGORY="mremap" run_test ./mremap_dontunmap
 
