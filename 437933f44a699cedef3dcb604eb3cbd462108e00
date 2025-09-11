@@ -87,6 +87,24 @@
       "parentUuid": "78810f86_d9e21899",
       "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c1a2fb8_365c8f89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-09-11T09:36:32Z",
+      "side": 1,
+      "message": "Hmm, I guess it\u0027s possible that ashmem uses a struct that recursively references this struct somewhere, but ashmem is built-in to the kernel so there are no ABI concerns. Even ashmem it was a vendor module, I would say that there are no issues there either for the same reasons as why this works with C code.",
+      "parentUuid": "f55a0820_0a597aa7",
+      "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
