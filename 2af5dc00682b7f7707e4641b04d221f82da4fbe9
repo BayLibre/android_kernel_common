@@ -129,6 +129,30 @@
       },
       "revId": "2af5dc00682b7f7707e4641b04d221f82da4fbe9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87eb8695_71987b45",
+        "filename": "include/uapi/linux/iio/types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1886585
+      },
+      "writtenOn": "2025-09-11T09:31:13Z",
+      "side": 1,
+      "message": "\u003eThere are an awful lot of #include \u003clinux/iio/types.h\u003e so adding the macro after each one isn\u0027t really a good idea.\n\nNot sure what you mean by this. Could you rephrase please?\n\n\u003e You could change from ln to sed in tools/iio/Makefile.\n\nWould that only fix the issue for tools/iio?\n\nIf any other userspace tool wants to use the header it will be broken.",
+      "parentUuid": "4e6968c7_2306292b",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 6
+      },
+      "revId": "2af5dc00682b7f7707e4641b04d221f82da4fbe9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
