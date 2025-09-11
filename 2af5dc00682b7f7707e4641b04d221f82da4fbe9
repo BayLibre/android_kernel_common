@@ -81,6 +81,30 @@
       },
       "revId": "2af5dc00682b7f7707e4641b04d221f82da4fbe9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd27fde2_d2e3d95d",
+        "filename": "include/uapi/linux/iio/types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-09-11T09:20:09Z",
+      "side": 1,
+      "message": "There are an awful lot of `#include \u003clinux/iio/types.h\u003e` so adding the macro after each one isn\u0027t really a good idea.\n\nYou could change from `ln` to `sed` in `tools/iio/Makefile`.\n\n```\nln -sf $(CURDIR)/../../include/uapi/linux/iio/types.h $@\n```\n\nSomething like:\n\n```\n/^enum iio_chan_type {/i\\\n#include \u003clinux/android_kabi.h\u003e\\\nANDROID_KABI_ENUMERATOR_IGNORE(iio_chan_type, IIO_ATTENTION);\\\n (there is a blank line here)\n```\n\n```\nsed -f iio.sed $(CURDIR)/../../include/uapi/linux/iio/types.h $@\n```\n\nYou\u0027d probably put the `sed` script inline in the `Makefile`. Just work out how many backslashes and quotes you need. :-)",
+      "parentUuid": "2cd2b60b_54166166",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 6
+      },
+      "revId": "2af5dc00682b7f7707e4641b04d221f82da4fbe9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
