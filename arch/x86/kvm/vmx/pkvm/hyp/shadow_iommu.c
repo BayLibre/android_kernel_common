@@ -350,29 +350,30 @@ static int shadow_pgt_unmap_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr,
 }
 
 /* used in legacy mode only */
-static void sync_shadow_pgt(struct pkvm_ptdev *ptdev, struct shadow_pgt_sync_data *sdata)
+static void sync_shadow_pgt(struct ptdev_info *ptdev_info, struct shadow_pgt_sync_data *sdata)
 {
+	struct pkvm_ptdev *ptdev = ptdev_info->ptdev;
 	struct pkvm_pgtable *spgt;
 	int ret;
 
-	PKVM_ASSERT(is_pgt_ops_ept(&ptdev->vpgt));
+	PKVM_ASSERT(is_pgt_ops_ept(&ptdev_info->vpgt));
 
 	/*
-	 * ptdev->pgt should be already set to this shadow iommu pgtable.
-	 * However, ptdev->pgt could change in the meantime due to ptdev
-	 * attach to a VM. So to avoid race, do not use ptdev->pgt directly
+	 * ptdev_info->pgt should be already set to this shadow iommu pgtable.
+	 * However, ptdev_info->pgt could change in the meantime due to ptdev
+	 * attach to a VM. So to avoid race, do not use ptdev_info->pgt directly
 	 * but get the same shadow iommu pgtable on our own.
 	 */
-	spgt = pkvm_get_host_iommu_spgt(ptdev->vpgt.root_pa, ptdev->iommu_coherency);
+	spgt = pkvm_get_host_iommu_spgt(ptdev_info->vpgt.root_pa, ptdev->iommu_coherency);
 	PKVM_ASSERT(spgt);
 
 	if (sdata)
-		ret = pkvm_pgtable_sync_map_range(&ptdev->vpgt, spgt,
+		ret = pkvm_pgtable_sync_map_range(&ptdev_info->vpgt, spgt,
 						  sdata->vaddr,
 						  sdata->vaddr_end - sdata->vaddr,
 						  NULL, shadow_pgt_map_leaf, shadow_pgt_unmap_leaf);
 	else
-		ret = pkvm_pgtable_sync_map(&ptdev->vpgt, spgt,
+		ret = pkvm_pgtable_sync_map(&ptdev_info->vpgt, spgt,
 					    NULL, shadow_pgt_map_leaf, shadow_pgt_unmap_leaf);
 	PKVM_ASSERT(ret == 0);
 
@@ -399,7 +400,7 @@ static bool sync_shadow_context_entry(struct id_sync_data *sdata)
 	struct context_entry *shadow_ce = sdata->shadow_ptep, tmp = {0};
 	struct context_entry *guest_ce = sdata->guest_ptep;
 	struct pkvm_iommu *iommu = pgt_to_pkvm_iommu(sdata->shadow_id);
-	struct pkvm_ptdev *ptdev;
+	struct ptdev_info *ptdev_info;
 	struct pkvm_pgtable_cap cap;
 	bool updated = false;
 	u8 tt, aw;
@@ -427,19 +428,19 @@ static bool sync_shadow_context_entry(struct id_sync_data *sdata)
 		 * for scalable mode.
 		 */
 		bdf = sdata->vaddr >> LM_DEVFN_SHIFT;
-		ptdev = iommu_find_ptdev(iommu, bdf, 0);
+		ptdev_info = iommu_find_ptdev(iommu, bdf, 0);
 
-		if (!ptdev) {
-			ptdev = iommu_add_ptdev(iommu, bdf, 0);
-			if (!ptdev)
+		if (!ptdev_info) {
+			ptdev_info = iommu_add_ptdev(iommu, bdf, 0);
+			if (!ptdev_info)
 				return false;
 		}
 
 		if (!sdata->guest_ptep) {
 			if (context_lm_is_present(shadow_ce)) {
-				pkvm_setup_ptdev_vpgt(ptdev, 0, NULL, NULL, NULL, false);
-				pkvm_setup_ptdev_did(ptdev, 0);
-				iommu_del_ptdev(iommu, ptdev);
+				pkvm_setup_ptdev_vpgt(ptdev_info, 0, NULL, NULL, NULL, false);
+				pkvm_setup_ptdev_did(ptdev_info, 0);
+				iommu_del_ptdev(iommu, ptdev_info);
 
 				goto update_shadow_ce;
 			}
@@ -454,8 +455,8 @@ static bool sync_shadow_context_entry(struct id_sync_data *sdata)
 			if (aw != 1 && aw != 2 && aw != 3) {
 				pkvm_err("pkvm: unsupported address width %u\n", aw);
 
-				pkvm_setup_ptdev_vpgt(ptdev, 0, NULL, NULL, NULL, false);
-				pkvm_setup_ptdev_did(ptdev, 0);
+				pkvm_setup_ptdev_vpgt(ptdev_info, 0, NULL, NULL, NULL, false);
+				pkvm_setup_ptdev_did(ptdev_info, 0);
 
 				/*
 				 * TODO: our error reporting to the host for invalid
@@ -468,11 +469,11 @@ static bool sync_shadow_context_entry(struct id_sync_data *sdata)
 			cap.level = (aw == 1) ? 3 :
 				    (aw == 2) ? 4 : 5;
 			cap.allowed_pgsz = pkvm_hyp->ept_cap.allowed_pgsz;
-			pkvm_setup_ptdev_vpgt(ptdev, context_lm_get_slptr(guest_ce),
+			pkvm_setup_ptdev_vpgt(ptdev_info, context_lm_get_slptr(guest_ce),
 					      &viommu_mm_ops, &ept_ops, &cap, true);
 
-			if (!ptdev_attached_to_vm(ptdev))
-				sync_shadow_pgt(ptdev, sdata->spgt_data);
+			if (!ptdev_attached_to_vm(ptdev_info))
+				sync_shadow_pgt(ptdev_info, sdata->spgt_data);
 
 			break;
 		case CONTEXT_TT_PASS_THROUGH:
@@ -486,18 +487,18 @@ static bool sync_shadow_context_entry(struct id_sync_data *sdata)
 		default:
 			pkvm_err("pkvm: unsupported translation type %u\n", tt);
 
-			pkvm_setup_ptdev_vpgt(ptdev, 0, NULL, NULL, NULL, false);
-			pkvm_setup_ptdev_did(ptdev, 0);
+			pkvm_setup_ptdev_vpgt(ptdev_info, 0, NULL, NULL, NULL, false);
+			pkvm_setup_ptdev_did(ptdev_info, 0);
 			goto update_shadow_ce;
 		}
 
 		did = context_lm_get_did(guest_ce);
-		if (iommu_audit_did(iommu, did, ptdev->shadow_vm_handle))
+		if (iommu_audit_did(iommu, did, ptdev_info->shadow_vm_handle))
 			return false;
 
-		pkvm_setup_ptdev_did(ptdev, did);
+		pkvm_setup_ptdev_did(ptdev_info, did);
 
-		if (!is_pgt_ops_ept(ptdev->pgt))
+		if (!is_pgt_ops_ept(ptdev_info->pgt))
 			return false;
 
 		tmp = *guest_ce;
@@ -507,9 +508,9 @@ static bool sync_shadow_context_entry(struct id_sync_data *sdata)
 		 * translation and to disable device TLB for security.
 		 */
 		context_lm_set_tt(&tmp, CONTEXT_TT_MULTI_LEVEL);
-		context_lm_set_slptr(&tmp, ptdev->pgt->root_pa);
-		aw = (ptdev->pgt->level == 3) ? 1 :
-		     (ptdev->pgt->level == 4) ? 2 : 3;
+		context_lm_set_slptr(&tmp, ptdev_info->pgt->root_pa);
+		aw = (ptdev_info->pgt->level == 3) ? 1 :
+		     (ptdev_info->pgt->level == 4) ? 2 : 3;
 		context_lm_set_aw(&tmp, aw);
 	}
 
@@ -554,15 +555,15 @@ static bool sync_shadow_pasid_table_entry(struct id_sync_data *sdata)
 	u16 bdf = sdata->vaddr >> DEVFN_SHIFT;
 	u32 pasid = sdata->vaddr & ((1UL << MAX_NR_PASID_BITS) - 1);
 	struct pkvm_iommu *iommu = pgt_to_pkvm_iommu(sdata->shadow_id);
-	struct pkvm_ptdev *ptdev = iommu_find_ptdev(iommu, bdf, pasid);
+	struct ptdev_info *ptdev_info = iommu_find_ptdev(iommu, bdf, pasid);
 	struct pasid_entry *shadow_pte = sdata->shadow_ptep, tmp_pte = {0};
 	struct pasid_entry *guest_pte;
 	bool synced = false;
 	u64 type, aw;
 
-	if (!ptdev) {
-		ptdev = iommu_add_ptdev(iommu, bdf, pasid);
-		if (!ptdev)
+	if (!ptdev_info) {
+		ptdev_info = iommu_add_ptdev(iommu, bdf, pasid);
+		if (!ptdev_info)
 			return false;
 	}
 
@@ -574,9 +575,9 @@ static bool sync_shadow_pasid_table_entry(struct id_sync_data *sdata)
 			 * a ptdev's vpgt/did should be reset as well as
 			 * deleting ptdev from this iommu.
 			 */
-			pkvm_setup_ptdev_vpgt(ptdev, 0, NULL, NULL, NULL, false);
-			pkvm_setup_ptdev_did(ptdev, 0);
-			iommu_del_ptdev(iommu, ptdev);
+			pkvm_setup_ptdev_vpgt(ptdev_info, 0, NULL, NULL, NULL, false);
+			pkvm_setup_ptdev_did(ptdev_info, 0);
+			iommu_del_ptdev(iommu, ptdev_info);
 
 			synced = pasid_copy_entry(shadow_pte, &tmp_pte);
 		}
@@ -588,10 +589,10 @@ static bool sync_shadow_pasid_table_entry(struct id_sync_data *sdata)
 	if (type == PASID_ENTRY_PGTT_FL_ONLY) {
 		struct pkvm_pgtable_cap cap;
 
-		if (ptdev_attached_to_vm(ptdev))
+		if (ptdev_attached_to_vm(ptdev_info))
 			/*
 			 * For the attached ptdev, use SL Only mode with
-			 * using ptdev->pgt so that the translation is
+			 * using ptdev_info->pgt so that the translation is
 			 * totally controlled by pkvm.
 			 */
 			type = PASID_ENTRY_PGTT_SL_ONLY;
@@ -607,7 +608,7 @@ static bool sync_shadow_pasid_table_entry(struct id_sync_data *sdata)
 		/* ptdev vpgt can be initialized with flptr */
 		cap.level = pasid_get_flpm(guest_pte) == 0 ? 4 : 5;
 		cap.allowed_pgsz = pkvm_hyp->mmu_cap.allowed_pgsz;
-		pkvm_setup_ptdev_vpgt(ptdev, pasid_get_flptr(guest_pte),
+		pkvm_setup_ptdev_vpgt(ptdev_info, pasid_get_flptr(guest_pte),
 				      &viommu_mm_ops, &mmu_ops, &cap, false);
 	} else if (type == PASID_ENTRY_PGTT_PT) {
 		/*
@@ -626,17 +627,17 @@ static bool sync_shadow_pasid_table_entry(struct id_sync_data *sdata)
 		 * keep ptdev linked to this IOMMU, and clear the shadow entry
 		 * so that not to support it.
 		 */
-		pkvm_setup_ptdev_vpgt(ptdev, 0, NULL, NULL, NULL, false);
-		pkvm_setup_ptdev_did(ptdev, 0);
+		pkvm_setup_ptdev_vpgt(ptdev_info, 0, NULL, NULL, NULL, false);
+		pkvm_setup_ptdev_did(ptdev_info, 0);
 
 		pkvm_err("pkvm: unsupported pasid type %lld\n", type);
 
 		return pasid_copy_entry(shadow_pte, &tmp_pte);
 	}
 
-	pkvm_setup_ptdev_did(ptdev, pasid_get_domain_id(guest_pte));
+	pkvm_setup_ptdev_did(ptdev_info, pasid_get_domain_id(guest_pte));
 
-	if (iommu_audit_did(iommu, ptdev->did, ptdev->shadow_vm_handle))
+	if (iommu_audit_did(iommu, ptdev_info->did, ptdev_info->shadow_vm_handle))
 		/*
 		 * It is possible that this ptdev will be attached to a protected
 		 * VM so primary VM allocates the same did used by this protected
@@ -659,10 +660,10 @@ static bool sync_shadow_pasid_table_entry(struct id_sync_data *sdata)
 		return false;
 
 	/*
-	 * ptdev->pgt will be used as second-level translation table
+	 * ptdev_info->pgt will be used as second-level translation table
 	 * which should be EPT format.
 	 */
-	if (!is_pgt_ops_ept(ptdev->pgt))
+	if (!is_pgt_ops_ept(ptdev_info->pgt))
 		return false;
 
 	/*
@@ -684,8 +685,8 @@ static bool sync_shadow_pasid_table_entry(struct id_sync_data *sdata)
 	 * Reuse FPD/P
 	 */
 	pasid_set_translation_type(&tmp_pte, type);
-	pasid_set_slptr(&tmp_pte, ptdev->pgt->root_pa);
-	aw = (ptdev->pgt->level == 4) ? 2 : 3;
+	pasid_set_slptr(&tmp_pte, ptdev_info->pgt->root_pa);
+	aw = (ptdev_info->pgt->level == 4) ? 2 : 3;
 	pasid_set_address_width(&tmp_pte, aw);
 	pasid_set_ssade(&tmp_pte, 0);
 	pasid_set_ssee(&tmp_pte, 0);
@@ -1199,7 +1200,7 @@ static int iotlb_lm_invalidate(struct pkvm_iommu *iommu, struct qi_desc *desc)
 	u64 addr = QI_DESC_IOTLB_ADDR(desc->qw1);
 	u64 mask = ((u64)-1) << (VTD_PAGE_SHIFT + QI_DESC_IOTLB_AM(desc->qw1));
 	struct shadow_pgt_sync_data data;
-	struct pkvm_ptdev *p;
+	struct ptdev_info *p;
 	int ret = 0;
 
 	switch (granu) {
@@ -1214,7 +1215,7 @@ static int iotlb_lm_invalidate(struct pkvm_iommu *iommu, struct qi_desc *desc)
 		/* optimization: walk just the needed devices, not the entire bdf space */
 		list_for_each_entry(p, &iommu->ptdev_head, iommu_node)
 			if (p->did == did) {
-				ret = sync_shadow_id(iommu, p->bdf, p->bdf + 1, did);
+				ret = sync_shadow_id(iommu, p->ptdev->bdf, p->ptdev->bdf + 1, did);
 				if (ret)
 					break;
 			}
@@ -1228,7 +1229,7 @@ static int iotlb_lm_invalidate(struct pkvm_iommu *iommu, struct qi_desc *desc)
 		/* optimization: walk just the needed devices, not the entire bdf space */
 		list_for_each_entry(p, &iommu->ptdev_head, iommu_node)
 			if (p->did == did) {
-				ret = __sync_shadow_id(iommu, p->bdf, p->bdf + 1, did, &data);
+				ret = __sync_shadow_id(iommu, p->ptdev->bdf, p->ptdev->bdf + 1, did, &data);
 				if (ret)
 					break;
 			}

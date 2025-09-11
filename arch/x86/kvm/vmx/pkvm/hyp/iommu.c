@@ -54,41 +54,57 @@ void iommu_flush_cache(void *ptep, unsigned int size)
 	pkvm_clflush_cache_range(ptep, size);
 }
 
-struct pkvm_ptdev *iommu_find_ptdev(struct pkvm_iommu *iommu, u16 bdf, u32 pasid)
+struct ptdev_info *iommu_find_ptdev(struct pkvm_iommu *iommu, u16 bdf, u32 pasid)
 {
-	struct pkvm_ptdev *p;
+	struct ptdev_info *p;
 
 	list_for_each_entry(p, &iommu->ptdev_head, iommu_node) {
-		if (match_ptdev(p, bdf, pasid))
+		struct pkvm_ptdev *ptdev = p->ptdev;
+		if (match_ptdev(ptdev, bdf) && match_ptdev_info(p, pasid))
 			return p;
 	}
 
 	return NULL;
 }
 
-struct pkvm_ptdev *iommu_add_ptdev(struct pkvm_iommu *iommu, u16 bdf, u32 pasid)
+struct ptdev_info *iommu_add_ptdev(struct pkvm_iommu *iommu, u16 bdf, u32 pasid)
 {
-	struct pkvm_ptdev *ptdev = pkvm_get_ptdev(bdf, pasid);
+	struct ptdev_info *ptdev_info = iommu_find_ptdev(iommu, bdf, pasid);
 
-	if (!ptdev) {
-		ptdev = pkvm_alloc_ptdev(bdf, pasid, iommu_coherency(&iommu->iommu));
-		if (!ptdev)
-			return NULL;
-	}
+	/*
+	 * ptdev was already added.
+	 */
+	if (ptdev_info)
+		return ptdev_info;
 
-	list_add_tail(&ptdev->iommu_node, &iommu->ptdev_head);
-	return ptdev;
+	ptdev_info = pkvm_alloc_ptdev_info(bdf, pasid, iommu_coherency(&iommu->iommu));
+	if (!ptdev_info)
+		return NULL;
+
+	list_add_tail(&ptdev_info->iommu_node, &iommu->ptdev_head);
+	return ptdev_info;
 }
 
-void iommu_del_ptdev(struct pkvm_iommu *iommu, struct pkvm_ptdev *ptdev)
+void iommu_del_ptdev(struct pkvm_iommu *iommu, struct ptdev_info *ptdev_info)
 {
-	list_del_init(&ptdev->iommu_node);
-	pkvm_put_ptdev(ptdev);
+	list_del_init(&ptdev_info->iommu_node);
+	pkvm_put_ptdev_info(ptdev_info);
+}
+
+void iommu_del_ptdevs(struct pkvm_iommu *iommu, u16 bdf)
+{
+	struct ptdev_info *p, *tmp;
+
+	list_for_each_entry_safe(p, tmp, &iommu->ptdev_head, iommu_node) {
+		struct pkvm_ptdev *ptdev = p->ptdev;
+		if (match_ptdev(ptdev, bdf))
+			iommu_del_ptdev(iommu, p);
+	}
 }
 
 int iommu_audit_did(struct pkvm_iommu *iommu, u16 did, int shadow_vm_handle)
 {
-	struct pkvm_ptdev *tmp;
+	struct ptdev_info *tmp;
 	int ret = 0;
 
 	list_for_each_entry(tmp, &iommu->ptdev_head, iommu_node) {
@@ -1089,15 +1105,16 @@ bool is_mem_range_overlap_iommu(unsigned long start, unsigned long end)
  * To handle this case, pKVM IOMMU driver needs to check the
  * DMAR to know which IOMMU should be used for this bdf/pasid.
  */
-static struct pkvm_iommu *bdf_pasid_to_iommu(u16 bdf, u32 pasid)
+static struct pkvm_iommu *bdf_to_iommu(u16 bdf)
 {
 	struct pkvm_iommu *iommu, *find = NULL;
-	struct pkvm_ptdev *p;
+	struct ptdev_info *p;
 
 	for_each_valid_iommu(iommu) {
 		pkvm_spin_lock(&iommu->lock);
 		list_for_each_entry(p, &iommu->ptdev_head, iommu_node) {
-			if (match_ptdev(p, bdf, pasid)) {
+			struct pkvm_ptdev *ptdev = p->ptdev;
+			if (match_ptdev(ptdev, bdf)) {
 				find = iommu;
 				break;
 			}
@@ -1117,20 +1134,20 @@ static struct pkvm_iommu *bdf_pasid_to_iommu(u16 bdf, u32 pasid)
  */
 int pkvm_iommu_sync(u16 bdf, u32 pasid)
 {
-	struct pkvm_iommu *iommu = bdf_pasid_to_iommu(bdf, pasid);
+	struct pkvm_iommu *iommu = bdf_to_iommu(bdf);
 	unsigned long id_addr, id_addr_end;
-	struct pkvm_ptdev *ptdev;
+	struct ptdev_info *ptdev_info;
 	u16 old_did;
 	int ret;
 
 	if (!iommu)
 		return -ENODEV;
 
-	ptdev = pkvm_get_ptdev(bdf, pasid);
-	if (!ptdev)
+	ptdev_info = pkvm_get_ptdev_info(bdf, pasid);
+	if (!ptdev_info)
 		return -ENODEV;
 
-	old_did = ptdev->did;
+	old_did = ptdev_info->did;
 
 	if (ecap_smts(iommu->iommu.ecap)) {
 		id_addr = ((unsigned long)bdf << DEVFN_SHIFT) |
@@ -1144,7 +1161,7 @@ int pkvm_iommu_sync(u16 bdf, u32 pasid)
 	pkvm_spin_lock(&iommu->lock);
 	ret = sync_shadow_id(iommu, id_addr, id_addr_end, 0);
 	if (!ret) {
-		if (old_did != ptdev->did) {
+		if (old_did != ptdev_info->did) {
 			/* Flush pasid cache and IOTLB for the valid old_did */
 			if (ecap_smts(iommu->iommu.ecap))
 				flush_pasid_cache(iommu, old_did, QI_PC_PASID_SEL, pasid);
@@ -1155,20 +1172,20 @@ int pkvm_iommu_sync(u16 bdf, u32 pasid)
 
 		/* Flush pasid cache and IOTLB to make sure no stale TLB for the new did */
 		if (ecap_smts(iommu->iommu.ecap))
-			flush_pasid_cache(iommu, ptdev->did, QI_PC_PASID_SEL, pasid);
+			flush_pasid_cache(iommu, ptdev_info->did, QI_PC_PASID_SEL, pasid);
 		else
-			flush_context_cache(iommu, ptdev->did, 0, 0, DMA_CCMD_DOMAIN_INVL);
-		flush_iotlb(iommu, ptdev->did, 0, 0, DMA_TLB_DSI_FLUSH);
+			flush_context_cache(iommu, ptdev_info->did, 0, 0, DMA_CCMD_DOMAIN_INVL);
+		flush_iotlb(iommu, ptdev_info->did, 0, 0, DMA_TLB_DSI_FLUSH);
 	}
 	pkvm_spin_unlock(&iommu->lock);
 
-	pkvm_put_ptdev(ptdev);
+	pkvm_put_ptdev_info(ptdev_info);
 	return ret;
 }
 
-bool pkvm_iommu_coherency(u16 bdf, u32 pasid)
+bool pkvm_iommu_coherency(u16 bdf)
 {
-	struct pkvm_iommu *iommu = bdf_pasid_to_iommu(bdf, pasid);
+	struct pkvm_iommu *iommu = bdf_to_iommu(bdf);
 
 	/*
 	 * If cannot find a valid IOMMU by bdf/pasid, return
@@ -1191,7 +1208,7 @@ struct iotlb_flush_data {
 
 static void iommu_flush_iotlb(struct pkvm_iommu *iommu, struct iotlb_flush_data *data)
 {
-	struct pkvm_ptdev *ptdev;
+	struct ptdev_info *ptdev_info;
 	struct qi_desc *desc = data->desc;
 	int qi_desc_index = 0;
 
@@ -1214,17 +1231,17 @@ static void iommu_flush_iotlb(struct pkvm_iommu *iommu, struct iotlb_flush_data 
 	}
 
 	/* Flush per domain */
-	list_for_each_entry(ptdev, &iommu->ptdev_head, iommu_node) {
+	list_for_each_entry(ptdev_info, &iommu->ptdev_head, iommu_node) {
 		struct qi_desc *tmp = desc;
 		bool did_exist = false;
 		int i;
 
-		if (!ptdev->pgt || ptdev->pgt->root_pa != data->desired_root_pa)
+		if (!ptdev_info->pgt || ptdev_info->pgt->root_pa != data->desired_root_pa)
 			continue;
 
 		for (i = 0; i < qi_desc_index; i++, tmp++) {
 			/* The same did is already in descriptor page */
-			if (ptdev->did == QI_DESC_IOTLB_DID(tmp->qw0)) {
+			if (ptdev_info->did == QI_DESC_IOTLB_DID(tmp->qw0)) {
 				did_exist = true;
 				break;
 			}
@@ -1240,11 +1257,11 @@ static void iommu_flush_iotlb(struct pkvm_iommu *iommu, struct iotlb_flush_data 
 		if (cap_pgsel_inv(iommu->iommu.cap) &&
 		    data->size_order <= cap_max_amask_val(iommu->iommu.cap))
 			setup_iotlb_qi_desc(iommu, desc + qi_desc_index++,
-					    ptdev->did, data->addr, data->size_order,
+					    ptdev_info->did, data->addr, data->size_order,
 					    DMA_TLB_PSI_FLUSH);
 		else
 			setup_iotlb_qi_desc(iommu, desc + qi_desc_index++,
-					    ptdev->did, 0, 0,
+					    ptdev_info->did, 0, 0,
 					    DMA_TLB_DSI_FLUSH);
 
 		if (qi_desc_index == data->desc_max_index) {
