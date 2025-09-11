@@ -70,6 +70,24 @@
       "parentUuid": "1edb1c14_2c9d6e52",
       "revId": "eb12a51b3cd8c3315c28ccbd3cac6d81c85adae2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a3b62e1_8be45f92",
+        "filename": "kernel/fork.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 2768,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-09-11T23:24:41Z",
+      "side": 1,
+      "message": "\u003e trace_android_vh_copy_process() does not accept p as a parameter. Is it okay if I modify it?\n\nNo, sorry, we can\u0027t change the existing vendhook function signatures as they are part of the KMI. \n\nI suspect Todd meant `trace_task_newtask()` there but saw the neighboring hook in the patch.",
+      "parentUuid": "c0a1f602_a35a2731",
+      "revId": "eb12a51b3cd8c3315c28ccbd3cac6d81c85adae2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
