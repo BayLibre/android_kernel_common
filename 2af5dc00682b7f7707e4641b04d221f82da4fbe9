@@ -201,6 +201,30 @@
       },
       "revId": "2af5dc00682b7f7707e4641b04d221f82da4fbe9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a4df31a_30941f6f",
+        "filename": "include/uapi/linux/iio/types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-09-11T12:15:53Z",
+      "side": 1,
+      "message": "It won\u0027t hurt (and might help!) to add a comment to say why the macro is detached and in the wrong place.\n\nIt might be clearest to put it close to `#include`:\n\n```\n#include \u003cuapi\u003e\n/* enum blah is declared in a UAPI header so we have to fudge CRCs here instead */\nmacro(foo)\u0027\n```",
+      "parentUuid": "446accc6_9a68b2ed",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 6
+      },
+      "revId": "2af5dc00682b7f7707e4641b04d221f82da4fbe9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
