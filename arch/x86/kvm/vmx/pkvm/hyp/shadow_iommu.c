@@ -352,6 +352,7 @@ static int shadow_pgt_unmap_leaf(struct pkvm_pgtable *pgt, unsigned long vaddr,
 /* used in legacy mode only */
 static void sync_shadow_pgt(struct pkvm_ptdev *ptdev, struct shadow_pgt_sync_data *sdata)
 {
+	struct pkvm_device *dev = ptdev->dev;
 	struct pkvm_pgtable *spgt;
 	int ret;
 
@@ -363,7 +364,7 @@ static void sync_shadow_pgt(struct pkvm_ptdev *ptdev, struct shadow_pgt_sync_dat
 	 * attach to a VM. So to avoid race, do not use ptdev->pgt directly
 	 * but get the same shadow iommu pgtable on our own.
 	 */
-	spgt = pkvm_get_host_iommu_spgt(ptdev->vpgt.root_pa, ptdev->iommu_coherency);
+	spgt = pkvm_get_host_iommu_spgt(ptdev->vpgt.root_pa, dev->iommu_coherency);
 	PKVM_ASSERT(spgt);
 
 	if (sdata)
@@ -376,7 +377,7 @@ static void sync_shadow_pgt(struct pkvm_ptdev *ptdev, struct shadow_pgt_sync_dat
 					    NULL, shadow_pgt_map_leaf, shadow_pgt_unmap_leaf);
 	PKVM_ASSERT(ret == 0);
 
-	pkvm_put_host_iommu_spgt(spgt, ptdev->iommu_coherency);
+	pkvm_put_host_iommu_spgt(spgt, dev->iommu_coherency);
 }
 
 /* present root entry when shadow_pa valid, otherwise un-present it */
@@ -1215,7 +1216,7 @@ static int iotlb_lm_invalidate(struct pkvm_iommu *iommu, struct qi_desc *desc)
 		/* optimization: walk just the needed devices, not the entire bdf space */
 		list_for_each_entry(p, &iommu->ptdev_head, iommu_node)
 			if (p->did == did) {
-				ret = sync_shadow_id(iommu, p->bdf, p->bdf + 1, did);
+				ret = sync_shadow_id(iommu, p->dev->bdf, p->dev->bdf + 1, did);
 				if (ret)
 					break;
 			}
@@ -1229,7 +1230,7 @@ static int iotlb_lm_invalidate(struct pkvm_iommu *iommu, struct qi_desc *desc)
 		/* optimization: walk just the needed devices, not the entire bdf space */
 		list_for_each_entry(p, &iommu->ptdev_head, iommu_node)
 			if (p->did == did) {
-				ret = __sync_shadow_id(iommu, p->bdf, p->bdf + 1, did, &data);
+				ret = __sync_shadow_id(iommu, p->dev->bdf, p->dev->bdf + 1, did, &data);
 				if (ret)
 					break;
 			}
