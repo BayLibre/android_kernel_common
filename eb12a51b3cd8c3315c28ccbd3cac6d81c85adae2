@@ -34,6 +34,24 @@
       "parentUuid": "6d808937_8d2ffe62",
       "revId": "eb12a51b3cd8c3315c28ccbd3cac6d81c85adae2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1edb1c14_2c9d6e52",
+        "filename": "kernel/fork.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 2768,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-09-11T22:05:41Z",
+      "side": 1,
+      "message": "For an attacker to maliciously detach the hook, they already have privileged access and are running in kernel mode. You have no protection at all at that point so this is a needless precaution. This is not a valid reason for a redundant hook. Valid reasons for rvh are: need to block, need to run on an offline CPU, cannot run in atomic context. That\u0027s all. Please use trace_android_vh_copy_process.",
+      "parentUuid": "c901442f_a6866692",
+      "revId": "eb12a51b3cd8c3315c28ccbd3cac6d81c85adae2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
