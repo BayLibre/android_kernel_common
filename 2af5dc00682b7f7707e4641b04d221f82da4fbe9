@@ -57,6 +57,30 @@
       },
       "revId": "2af5dc00682b7f7707e4641b04d221f82da4fbe9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cd2b60b_54166166",
+        "filename": "include/uapi/linux/iio/types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-09-11T08:56:19Z",
+      "side": 1,
+      "message": "The odds of us changing uapi .h files is _very_ low, I don\u0027t think we have ever done that before, which would require this type of change in the past.  So putting __kernel__ in android_kapi.h wouldn\u0027t seem like it really matters much.\n\nNote, that will also probably not work as linux/android_kabi.h would not be able to be found when the uapi .h files are exported in the userspace package.  They need to be self-contained, so this would require android-kabi.h to also be added to them, making that part of the uapi files?",
+      "parentUuid": "fea55186_59955af2",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 6
+      },
+      "revId": "2af5dc00682b7f7707e4641b04d221f82da4fbe9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
