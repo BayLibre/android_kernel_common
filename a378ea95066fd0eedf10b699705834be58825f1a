@@ -88,6 +88,24 @@
       "parentUuid": "a656a23f_157558c0",
       "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38d25ba9_6cc13e75",
+        "filename": "arch/x86/kvm/vmx/pkvm_high.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1805,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-11T11:22:25Z",
+      "side": 1,
+      "message": "For v6.15, my initial idea is to store a size to the first page of the contiguous memory which is going to be freed. E.g, for pkvm_vm_destroy, there are multiple contiguous memory ranges to free. pkvm_vm_destroy will teardown all pkvm_vcpu memory pages and pkvm_vm memory pages, which all are contiguous memory regions. Instead of pushing each page\u0027s physical address to pkvm memcache, only pushing the first page address of each contiguous memory region to pkvm memcache, and storing the size to the pushed page. When the host pop out the physical address from pkvm memcache, get the size from the popped page. If the size is PAGE_SIZE, then free_page, otherwise free_page_excat(). I will test this method during rebasing pvvmcs in v6.15 to see if it really works or not.",
+      "parentUuid": "35a1eaaf_f79389c4",
+      "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
