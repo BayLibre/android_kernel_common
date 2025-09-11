@@ -159,6 +159,24 @@
       "parentUuid": "90daeb32_acff700a",
       "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "589c0fc0_19751b60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-09-11T21:34:07Z",
+      "side": 1,
+      "message": "Sorry about the massive diff. If you want to restrict to just the impact on Rust things, pick one of the ashmen symbols and create reduced ABIs as follows:\n\n```\nstg -s -S $symbol 1.stg -o 1a.stg\nstg -s -S $symbol 2.stg -o 2a.stg\nstgdiff -f flat -o - -s 1a.stg 2a.stg\n```\n\nThis is what I effectively did.\n\n---\n\n\u003e How do we verify this,\n\nYou can do some due diligence, I suppose.\n\n\u003e given the new variable was added to a hole in the C structure which shouldn\u0027t be impacting the ABI.\n\nThat\u0027s fighting talk.\n\nCan this structure be copied? If yes, how do the compilers generate the copy code, are holes skipped?\n\nCould code be generated for updating the adjacent bool that operates on a whole machine word for efficiency rather than writing a single byte?\n\nWhile it seems quite unlikely compilers could do such things, they are under no obligation not to.\n\n---\n\nWe\u0027ve done this sort of thing with C code for a while and using holes has never been an issue. It probably won\u0027t be an issue with rustc either.\n\nCaveat Emptor",
+      "parentUuid": "759b0d9e_062c84a4",
+      "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
