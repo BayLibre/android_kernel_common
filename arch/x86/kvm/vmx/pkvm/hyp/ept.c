@@ -826,22 +826,22 @@ static int populate_pgstate_pgt(struct pkvm_pgtable *pgt)
 {
 	struct pkvm_shadow_vm *vm = pgstate_pgt_to_shadow_vm(pgt);
 	struct list_head *ptdev_head = &vm->ptdev_head;
-	struct pkvm_ptdev *ptdev, *tmp;
+	struct ptdev_info *ptdev_info, *tmp;
 	u64 *prot_override;
 	bool populated;
 	u64 prot;
 	int ret;
 
-	list_for_each_entry(ptdev, ptdev_head, vm_node) {
+	list_for_each_entry(ptdev_info, ptdev_head, vm_node) {
 		/* No need to populate if vpgt.root_pa doesn't exist */
-		if (!ptdev->vpgt.root_pa)
+		if (!ptdev_info->vpgt.root_pa)
 			continue;
 
 		populated = false;
 		list_for_each_entry(tmp, ptdev_head, vm_node) {
-			if (tmp == ptdev)
+			if (tmp == ptdev_info)
 				break;
-			if (tmp->vpgt.root_pa == ptdev->vpgt.root_pa) {
+			if (tmp->vpgt.root_pa == ptdev_info->vpgt.root_pa) {
 				populated = true;
 				break;
 			}
@@ -850,7 +850,7 @@ static int populate_pgstate_pgt(struct pkvm_pgtable *pgt)
 		if (populated)
 			continue;
 
-		if (ptdev->vpgt.pgt_ops != pgt->pgt_ops) {
+		if (ptdev_info->vpgt.pgt_ops != pgt->pgt_ops) {
 			/* Populate with EPT format */
 			if (is_pgt_ops_ept(pgt)) {
 				prot = VMX_EPT_RWX_MASK;
@@ -863,7 +863,7 @@ static int populate_pgstate_pgt(struct pkvm_pgtable *pgt)
 			prot_override = NULL;
 		}
 
-		ret = pkvm_pgtable_sync_map(&ptdev->vpgt, pgt, prot_override,
+		ret = pkvm_pgtable_sync_map(&ptdev_info->vpgt, pgt, prot_override,
 					    pkvm_pgstate_pgt_map_leaf, NULL);
 		if (ret)
 			return ret;
