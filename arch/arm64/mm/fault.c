@@ -787,7 +787,12 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
 		 */
 		siaddr  = untagged_addr(far);
 	}
+<<<<<<< HEAD   (bed39ff3329d3f66ced116e25baecd390c94e6c9 Merge 2925edfa98f7 ("ALSA: usb-audio: Avoid precedence issue)
 	trace_android_rvh_do_sea(siaddr, esr, regs);
+||||||| BASE   (2925edfa98f756964a68fc41cddc623bb240a8e8 ALSA: usb-audio: Avoid precedence issues in mixer_quirks mac)
+=======
+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+>>>>>>> BRANCH (3d8090bb53424432fa788fe9a49e8ceca74f0544 xfrm: Duplicate SPI Handling)
 	arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
 
 	return 0;
