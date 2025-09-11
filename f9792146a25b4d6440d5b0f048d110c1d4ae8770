@@ -34,6 +34,24 @@
       "parentUuid": "e3d7a6e2_b4789e8b",
       "revId": "f9792146a25b4d6440d5b0f048d110c1d4ae8770",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9077475_de7563f6",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 841,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-11T01:28:57Z",
+      "side": 1,
+      "message": "I see. So this API will identify the virtual address range is young if at least one of the present leaf entry is young. Otherwise the range is identified as old.\nnit: As we have a kernel doc here, not sure if it worth to mention this in the description part?",
+      "parentUuid": "bb3a43a3_6a1d953f",
+      "revId": "f9792146a25b4d6440d5b0f048d110c1d4ae8770",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
