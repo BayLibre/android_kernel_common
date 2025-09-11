@@ -123,6 +123,24 @@
       "parentUuid": "8c1a2fb8_365c8f89",
       "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "759b0d9e_062c84a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2025-09-11T19:42:43Z",
+      "side": 1,
+      "message": "I captured the diff between 1.stg and 2.stg as described above; its a 4.4M file. Here is the drive link:\n\nhttps://drive.google.com/file/d/1KY_wQRYuAcGaYuRPOH2EBkYPAP_sbtc_/view?usp\u003ddrive_link\n\n\n\u003e If old Rust code in vendor module will not be upset by the type change, we\u0027re fine. But there is a type change!\n\nHow do we verify this, given the new variable was added to a hole in the C structure which shouldn\u0027t be impacting the ABI.",
+      "parentUuid": "90daeb32_acff700a",
+      "revId": "437933f44a699cedef3dcb604eb3cbd462108e00",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
