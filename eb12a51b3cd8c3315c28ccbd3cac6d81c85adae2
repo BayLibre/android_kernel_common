@@ -88,6 +88,24 @@
       "parentUuid": "c0a1f602_a35a2731",
       "revId": "eb12a51b3cd8c3315c28ccbd3cac6d81c85adae2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aad0e852_70b5d099",
+        "filename": "kernel/fork.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 2768,
+      "author": {
+        "id": 1181388
+      },
+      "writtenOn": "2025-09-12T09:29:00Z",
+      "side": 1,
+      "message": "Ack. I\u0027ve removed the trace_android_rvh_add_task() and changed the other hooks from restricted to normal. Commit message is also updated. However, if during our security assessment we found that the tracehook is easier to attack than the (restricted) vendor hook, we\u0027ll have to update the hooks.",
+      "parentUuid": "6a3b62e1_8be45f92",
+      "revId": "eb12a51b3cd8c3315c28ccbd3cac6d81c85adae2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
