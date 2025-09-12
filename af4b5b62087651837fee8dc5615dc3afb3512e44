@@ -52,6 +52,24 @@
       "parentUuid": "0b816d96_68ca2a0e",
       "revId": "af4b5b62087651837fee8dc5615dc3afb3512e44",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e3093ce_3f865f62",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/vmexit.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-12T10:41:49Z",
+      "side": 1,
+      "message": "Ok, got it, we do use vcpu-\u003emode, and it can be EXITING_GUEST_MODE, since we use kvm_vcpu_exiting_guest_mode() in pkvm_kick_vcpu().",
+      "parentUuid": "788b7177_02e22aff",
+      "revId": "af4b5b62087651837fee8dc5615dc3afb3512e44",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
