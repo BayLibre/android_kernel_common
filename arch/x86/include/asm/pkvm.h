@@ -142,6 +142,21 @@ struct pkvm_sm_context_param {
 	u64 context_gpa;
 };
 
+struct pkvm_pasid_table_param {
+	u64 phys;
+	u16 bdf;
+	u16 did;
+	u32 pasid;
+	u8 force_snooping:1;
+	u8 dirty_tracking:1;
+	u32 max_pasid;
+	u64 pasid_dir_gpa;
+	u64 pasid_table_gpa;
+	u16 domain_gaw;
+	u16 domain_agaw;
+	u64 domain_pgd_gpa;
+};
+
 #ifndef __PKVM_HYP__
 
 extern bool __read_mostly enable_pkvm;	/* kernel command-line flag */
