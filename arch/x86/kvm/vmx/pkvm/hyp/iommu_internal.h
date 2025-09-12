@@ -202,6 +202,8 @@ void flush_context_cache(struct pkvm_iommu *iommu, u16 did,
 				u16 sid, u8 fm, u64 type);
 void flush_iotlb(struct pkvm_iommu *iommu, u16 did, u64 addr,
 			unsigned int size_order, u64 type);
+void flush_piotlb(struct pkvm_iommu *iommu, u16 did, u32 pasid, u64 addr,
+		     unsigned long npages, bool ih);
 void flush_pasid_cache(struct pkvm_iommu *iommu, u16 did,
 			      u64 granu, u32 pasid);
 void flush_write_buffer(struct pkvm_iommu *iommu);
@@ -238,6 +240,8 @@ unsigned long pkvm_iommu_disable(u64 phys);
 unsigned long pkvm_iommu_clear_ce(u64 phys, u64 param_gpa);
 unsigned long pkvm_iommu_set_lm_ce(u64 phys, u64 param_gpa);
 unsigned long pkvm_iommu_set_sm_ce(u64 phys, u64 param_gpa);
+struct context_entry *pkvm_iommu_context_addr(struct intel_iommu *iommu, u8 bus,
+					 u8 devfn, u64 context_phys);
 #else
 int handle_descriptor(struct pkvm_iommu *iommu, struct qi_desc *desc);
 int free_shadow_id(struct pkvm_iommu *iommu, unsigned long vaddr,
