@@ -208,3 +208,366 @@ int validate_sm_context_entries(struct pkvm_iommu *iommu,
 	return 0;
 }
 
+static int pkvm_pasid_get_entry(struct intel_iommu *iommu, struct ptdev_info *ptdev_info,
+		u64 *ptable_gpa, struct pasid_entry **pte)
+{
+	struct pkvm_ptdev *ptdev;
+	struct pasid_dir_entry *dir;
+	struct pasid_entry *entries;
+	int dir_index, index;
+	u8 bus, devfn;
+
+	ptdev = ptdev_info->ptdev;
+	bus = PCI_BUS_NUM(ptdev->bdf);
+	devfn = PCI_DEV_FN(ptdev->bdf);
+	if (!ptdev->pasid_table || ptdev_info->pasid >= ptdev->max_pasid) {
+		pkvm_err("pkvm: %s: unexpected state in pas_table for device[%x:%x:%x]: ptable=%p, max_pasid=%u\n",
+				__func__, bus, PCI_SLOT(devfn), PCI_FUNC(devfn), ptdev->pasid_table, ptdev->max_pasid);
+		return -EINVAL;
+	}
+
+
+	dir = ptdev->pasid_table;
+	dir_index = ptdev_info->pasid >> PASIDDIR_SHIFT;
+	index = ptdev_info->pasid & PASID_PTE_MASK;
+
+retry:
+	entries = get_pasid_table_from_pde(&dir[dir_index]);
+	if (!entries) {
+		u64 tmp;
+		u64 ptable_hpa;
+
+		if (!ptable_gpa)
+			return -ENOMEM;
+
+		ptable_hpa = host_gpa2hpa(*ptable_gpa);
+		entries = host_gpa2hva(*ptable_gpa);
+
+		/*
+		 * The pasid directory table entry won't be freed after
+		 * allocation. No worry about the race with free and
+		 * clear. However, this entry might be populated by others
+		 * while we are preparing it. Use theirs with a retry.
+		 */
+		tmp = 0ULL;
+		if (!try_cmpxchg64(&dir[dir_index].val, &tmp,
+				   (u64)ptable_hpa | PASID_PTE_PRESENT)) {
+			goto retry;
+		}
+
+		if (!iommu_coherency(iommu)) {
+			iommu_flush_cache(entries, VTD_PAGE_SIZE);
+			iommu_flush_cache(&dir[dir_index].val, sizeof(*dir));
+		}
+		*ptable_gpa = 0;
+	}
+
+	*pte = &entries[index];
+	return 0;
+}
+
+/*
+ * This function flushes cache for a newly setup pasid table entry.
+ * Caller of it should not modify the in-use pasid table entries.
+ */
+static void pkvm_pasid_flush_caches(struct pkvm_iommu *hyp_iommu,
+				struct pasid_entry *pte,
+			       u32 pasid, u16 did)
+{
+	struct intel_iommu *iommu = &hyp_iommu->iommu;
+
+	if (!iommu_coherency(iommu))
+		iommu_flush_cache(pte, sizeof(*pte));
+
+	if (cap_caching_mode(iommu->cap)) {
+		flush_pasid_cache(hyp_iommu, did, QI_PC_PASID_SEL, pasid);
+		flush_piotlb(hyp_iommu, did, pasid, 0, -1, 0);
+	} else {
+		flush_write_buffer(hyp_iommu);
+	}
+}
+
+int pkvm_iommu_clear_pasid_entry(u64 phys, u64 param_gpa)
+{
+	struct pkvm_iommu *hyp_iommu = find_iommu_by_reg_phys(phys);
+	struct pkvm_block_translation_param *param;
+	struct pasid_entry *pte;
+	struct intel_iommu *iommu;
+	struct ptdev_info *ptdev_info;
+	u16 did, pgtt;
+	int ret = -ENODEV;
+
+	if (!hyp_iommu)
+		return -EINVAL;
+
+	param = host_gpa2hva(param_gpa);
+	if (!param)
+		return -EINVAL;
+
+	pkvm_spin_lock(&hyp_iommu->lock);
+	iommu = &hyp_iommu->iommu;
+
+	ptdev_info = iommu_find_ptdev(hyp_iommu, param->bdf, param->pasid);
+	if (!ptdev_info) {
+		pkvm_err("pkvm: %s: failed to locate ptdev for device[%x:%x:%x]\n",
+				__func__, PCI_BUS_NUM(param->bdf), PCI_SLOT(PCI_DEV_FN(param->bdf)), PCI_FUNC(PCI_DEV_FN(param->bdf)));
+		goto out_unlock;
+	}
+	pkvm_info("pkvm: %s: ptdev_info for device[%x:%x:%x]\n",
+			__func__, PCI_BUS_NUM(param->bdf),
+			PCI_SLOT(PCI_DEV_FN(param->bdf)), PCI_FUNC(PCI_DEV_FN(param->bdf)));
+
+	ret = pkvm_pasid_get_entry(iommu, ptdev_info, NULL, &pte);
+	if (ret) {
+		pkvm_dbg("pkvm: %s: failed to get pasid table entry for device[%x:%x:%x], err=%d\n",
+				__func__, PCI_BUS_NUM(param->bdf),
+				PCI_SLOT(PCI_DEV_FN(param->bdf)), PCI_FUNC(PCI_DEV_FN(param->bdf)), ret);
+		goto out_unlock;
+	}
+	if (!pasid_pte_is_present(pte)) {
+		pkvm_err("pkvm: %s: pte for teardown not present!\n", __func__);
+		ret = -ENODEV;
+		goto out_unlock;
+	}
+
+	did = pasid_get_domain_id(pte);
+	pgtt = pasid_get_translation_type(pte);
+	pasid_clear_entry(pte);
+	iommu_del_ptdev(hyp_iommu, ptdev_info);
+	ret = 0;
+
+out_unlock:
+	pkvm_spin_unlock(&hyp_iommu->lock);
+
+	if (ret)
+		return ret;
+
+	if (!iommu_coherency(iommu))
+		iommu_flush_cache(pte, sizeof(*pte));
+
+	flush_pasid_cache(hyp_iommu, did, QI_PC_PASID_SEL, param->pasid);
+
+	if (pgtt == PASID_ENTRY_PGTT_PT || pgtt == PASID_ENTRY_PGTT_FL_ONLY)
+		flush_piotlb(hyp_iommu, did, param->pasid, 0, -1, 0);
+	else
+		flush_iotlb(hyp_iommu, did, 0, 0, DMA_TLB_DSI_FLUSH);
+
+	return 0;
+
+}
+
+/*
+ * Set up the scalable mode pasid table entry for first only
+ * translation type.
+ */
+int pkvm_iommu_pasid_setup_fl(u64 phys, u64 param_gpa)
+{
+	struct pkvm_iommu *hyp_iommu = find_iommu_by_reg_phys(phys);
+	struct pkvm_pasid_table_param *param;
+	struct intel_iommu *iommu;
+	struct ptdev_info *ptdev_info = NULL;
+	struct pkvm_ptdev *ptdev;
+	struct pasid_entry *pte;
+	int ret = -EINVAL;
+
+	if (!hyp_iommu)
+		return -EINVAL;
+
+	param = host_gpa2hva(param_gpa);
+	if (!param)
+		return -EINVAL;
+
+	pkvm_spin_lock(&hyp_iommu->lock);
+	iommu = &hyp_iommu->iommu;
+
+	if (!ecap_flts(iommu->ecap)) {
+		pr_err("pkvm: %s: No first level translation support on iommu%d\n",
+		       __func__, iommu->seq_id);
+		goto out_unlock;
+	}
+
+	ptdev_info = iommu_add_ptdev(hyp_iommu, param->bdf, param->pasid);
+	if (!ptdev_info) {
+		pkvm_err("pkvm: %s: ptdev_info not found for device[%x:%x:%x]\n",
+				__func__, PCI_BUS_NUM(param->bdf),
+				PCI_SLOT(PCI_DEV_FN(param->bdf)), PCI_FUNC(PCI_DEV_FN(param->bdf)));
+		ret = -EFAULT;
+		goto out_unlock;
+	}
+	ptdev = ptdev_info->ptdev;
+	if (!ptdev->pasid_table) {
+		ptdev->pasid_table = host_gpa2hva(param->pasid_dir_gpa);
+		ptdev->max_pasid = param->max_pasid;
+	} else if (ptdev->pasid_table != host_gpa2hva(param->pasid_dir_gpa)) {
+		pkvm_err("pkvm: %s: Invalid pasid_table for device!\n", __func__);
+		ret = -EINVAL;
+		goto out_unlock;
+	}
+
+	pkvm_info("pkvm: %s: ptdev_info for device[%x:%x:%x]\n",
+			__func__, PCI_BUS_NUM(param->bdf),
+			PCI_SLOT(PCI_DEV_FN(param->bdf)), PCI_FUNC(PCI_DEV_FN(param->bdf)));
+	ret = pkvm_pasid_get_entry(iommu, ptdev_info, &param->pasid_table_gpa, &pte);
+	if (ret) {
+		pkvm_dbg("pkvm: %s: failed to get pasid table entry for device[%x:%x:%x], err=%d\n",
+				__func__, PCI_BUS_NUM(param->bdf),
+				PCI_SLOT(PCI_DEV_FN(param->bdf)), PCI_FUNC(PCI_DEV_FN(param->bdf)), ret);
+		goto out_unlock;
+	}
+
+	if (pasid_pte_is_present(pte)) {
+		ret = -EBUSY;
+		goto out_unlock;
+	}
+
+	pasid_clear_entry(pte);
+
+	/* Setup the first level page table pointer: */
+	pasid_set_flptr(pte, param->domain_pgd_gpa);
+
+	if (agaw_to_level(iommu->agaw) == 5 && cap_fl5lp_support(iommu->cap))
+		pasid_set_flpm(pte, 1);
+
+	if (param->force_snooping)
+		pasid_set_pgsnp(pte);
+
+	pasid_set_domain_id(pte, param->did);
+	pasid_set_address_width(pte, iommu->agaw);
+	pasid_set_page_snoop(pte, !!ecap_smpwc(iommu->ecap));
+
+	/* Setup Present and PASID Granular Transfer Type: */
+	pasid_set_translation_type(pte, PASID_ENTRY_PGTT_FL_ONLY);
+	pasid_set_present(pte);
+
+	if (validate_pasid_entry(hyp_iommu, param->bdf, pte))
+		ret = -EINVAL;
+
+out_unlock:
+	if (ret && ptdev_info)
+		iommu_del_ptdev(hyp_iommu, ptdev_info);
+
+	pkvm_spin_unlock(&hyp_iommu->lock);
+
+	if (!ret)
+		pkvm_pasid_flush_caches(hyp_iommu, pte, param->pasid, param->did);
+
+	return ret;
+}
+
+static int pasid_setup_sl(struct pkvm_iommu *hyp_iommu, struct pkvm_pasid_table_param *param)
+{
+	struct intel_iommu *iommu;
+	struct ptdev_info *ptdev_info = NULL;
+	struct pkvm_ptdev *ptdev;
+	struct pasid_entry *pte;
+	int ret = -EINVAL;
+
+	pkvm_spin_lock(&hyp_iommu->lock);
+	iommu = &hyp_iommu->iommu;
+
+	/*
+	 * If hardware advertises no support for second level
+	 * translation, return directly.
+	 */
+	if (!ecap_slts(iommu->ecap)) {
+		pkvm_err("pkvm: %s: No second level translation support on iommu%d\n",
+		       __func__, iommu->seq_id);
+		goto out_unlock;
+	}
+
+	if (param->domain_agaw < 0 || param->domain_agaw > iommu->agaw) {
+		pkvm_err("pkvm: %s: Invalid domain page table\n", __func__);
+		goto out_unlock;
+	}
+
+	ptdev_info = iommu_add_ptdev(hyp_iommu, param->bdf, param->pasid);
+	if (!ptdev_info) {
+		pkvm_err("pkvm: %s: failed to locate ptdev for device[%x:%x:%x]\n",
+				__func__, PCI_BUS_NUM(param->bdf), PCI_SLOT(PCI_DEV_FN(param->bdf)), PCI_FUNC(PCI_DEV_FN(param->bdf)));
+		ret = -ENODEV;
+		goto out_unlock;
+	}
+	ptdev = ptdev_info->ptdev;
+	if (!ptdev->pasid_table) {
+		ptdev->pasid_table = host_gpa2hva(param->pasid_dir_gpa);
+		ptdev->max_pasid = param->max_pasid;
+	} else if (ptdev->pasid_table != host_gpa2hva(param->pasid_dir_gpa)) {
+		pkvm_err("pkvm: %s: Invalid pasid_table for device!\n", __func__);
+		ret = -EINVAL;
+		goto out_unlock;
+	}
+	pkvm_info("pkvm: %s: ptdev_info for device[%x:%x:%x]\n",
+			__func__, PCI_BUS_NUM(param->bdf),
+			PCI_SLOT(PCI_DEV_FN(param->bdf)), PCI_FUNC(PCI_DEV_FN(param->bdf)));
+
+	ret = pkvm_pasid_get_entry(iommu, ptdev_info, &param->pasid_table_gpa, &pte);
+	if (ret) {
+		pkvm_dbg("pkvm: %s: failed to get pasid table entry for device[%x:%x:%x], err=%d\n",
+				__func__, PCI_BUS_NUM(param->bdf),
+				PCI_SLOT(PCI_DEV_FN(param->bdf)), PCI_FUNC(PCI_DEV_FN(param->bdf)), ret);
+		goto out_unlock;
+	}
+
+	if (pasid_pte_is_present(pte)) {
+		ret = -EBUSY;
+		goto out_unlock;
+	}
+
+	__pasid_setup_sl(iommu, pte, param->domain_pgd_gpa, param->did,
+			param->domain_agaw, param->dirty_tracking);
+
+	if (validate_pasid_entry(hyp_iommu, param->bdf, pte))
+		ret = -EINVAL;
+
+out_unlock:
+	if (ret && ptdev_info)
+		iommu_del_ptdev(hyp_iommu, ptdev_info);
+
+	pkvm_spin_unlock(&hyp_iommu->lock);
+
+	if (!ret)
+		pkvm_pasid_flush_caches(hyp_iommu, pte, param->pasid, param->did);
+
+	return ret;
+}
+
+int pkvm_iommu_pasid_setup_sl(u64 phys, u64 param_gpa)
+{
+	struct pkvm_iommu *hyp_iommu = find_iommu_by_reg_phys(phys);
+	struct pkvm_pasid_table_param *param;
+
+	if (!hyp_iommu)
+		return -EINVAL;
+
+	param = host_gpa2hva(param_gpa);
+	if (!param)
+		return -EINVAL;
+
+	param->domain_pgd_gpa = host_gpa2hpa(param->domain_pgd_gpa);
+	return pasid_setup_sl(hyp_iommu, param);
+}
+
+int pkvm_iommu_pasid_setup_pt(u64 phys, u64 param_gpa)
+{
+	struct pkvm_iommu *hyp_iommu = find_iommu_by_reg_phys(phys);
+	struct pkvm_pasid_table_param *param;
+	int level = pkvm_host_ept_level();
+
+	if (!hyp_iommu)
+		return -EINVAL;
+
+	param = host_gpa2hva(param_gpa);
+	if (!param)
+		return -EINVAL;
+
+	/*
+	 * pkvm should convert the passthrough request to a mapped one
+	 * to protect devices from protected memory. So we use the host
+	 * ept as the second level page table.
+	 */
+	param->domain_agaw = (level == 3) ? 1 :
+				(level == 4) ? 2 : 3;
+	param->domain_pgd_gpa = pkvm_host_ept_pgd();
+	return pasid_setup_sl(hyp_iommu, param);
+
+}
