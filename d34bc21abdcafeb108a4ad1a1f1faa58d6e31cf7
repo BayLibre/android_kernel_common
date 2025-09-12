@@ -16,6 +16,24 @@
       "message": "Needs fix: \n\n34ecde3c5606 iomap: don\u0027t lose folio dropbehind state for overwrites",
       "revId": "d34bc21abdcafeb108a4ad1a1f1faa58d6e31cf7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49f14de5_4c10cf88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2025-09-12T04:54:03Z",
+      "side": 1,
+      "message": "This patch is actually not required for two reasons:\n\n1: f2fs and ext4 doesn\u0027t use iomap for bufferred writes\n\n2: We don\u0027t support writes (in this stack)\n\nI added this patch for completeness purpose as the only users of this is xfs which we don\u0027t support.\n\nLet me check if the fix can be applied easily if not i will just drop this patch from the stack.",
+      "parentUuid": "4c8c7055_c439b257",
+      "revId": "d34bc21abdcafeb108a4ad1a1f1faa58d6e31cf7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
