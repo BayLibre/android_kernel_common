@@ -11,8 +11,11 @@
 #include "ptdev.h"
 
 #define PASID_PTE_PRESENT	1
+#define PASID_PTE_MASK		0x3F
 #define PASID_PTE_FPD		2
 #define MAX_NR_PASID_BITS	PKVM_MAX_PASID_BITS
+
+#define PDE_PFN_MASK		PAGE_MASK
 
 #define PASIDTAB_BITS		6
 #define PASIDTAB_SHIFT		0
@@ -97,6 +100,16 @@ pasid_get_domain_id(struct pasid_entry *pe)
 }
 
 /*
+ * Setup the First Level Page table Pointer field (Bit 140~191)
+ * of a scalable mode PASID entry.
+ */
+static inline void
+pasid_set_flptr(struct pasid_entry *pe, u64 value)
+{
+	entry_set_bits(&pe->val[2], VTD_PAGE_MASK, value);
+}
+
+/*
  * Get the FLPTPTR(First Level Page Table Pointer) field (Bit 140 ~ 191)
  * of a scalable mode PASID entry.
  */
@@ -124,6 +137,16 @@ static inline u64
 pasid_get_slptr(struct pasid_entry *pe)
 {
 	return (u64)(READ_ONCE(pe->val[0]) & VTD_PAGE_MASK);
+}
+
+/*
+ * Setup the First Level Paging Mode field (Bit 130~131) of a
+ * scalable mode PASID entry.
+ */
+static inline void
+pasid_set_flpm(struct pasid_entry *pe, u64 value)
+{
+	entry_set_bits(&pe->val[2], GENMASK_ULL(3, 2), value << 2);
 }
 
 /*
@@ -260,4 +283,9 @@ static inline bool pasid_copy_entry(struct pasid_entry *to, struct pasid_entry *
 struct pkvm_iommu;
 int validate_sm_context_entries(struct pkvm_iommu *iommu,
 				u8 bus, struct context_entry *context, bool upper);
+
+int pkvm_iommu_clear_pasid_entry(u64 phys, u64 param_gpa);
+int pkvm_iommu_pasid_setup_fl(u64 phys, u64 param_gpa);
+int pkvm_iommu_pasid_setup_sl(u64 phys, u64 param_gpa);
+int pkvm_iommu_pasid_setup_pt(u64 phys, u64 param_gpa);
 #endif /* __PKVM_PV_PASID_H */
