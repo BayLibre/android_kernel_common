@@ -16,6 +16,24 @@
       "message": "If req_immediate_exit is true, then we will make KVM_REQ_EVENT request to vcpu and request an immediate exit. In this case, this if condition will also be true, then we jump to handle_events to handle KVM_REQ_EVENT again. And if there is vcpu-\u003earch.nmi_pending and exception is already injected, then we will set req_immediate_exit to true, which seems like will fall into this loop again?\n\nAs if we have set req_immediate_exit, the host vm will exit immediately after injecting the pending event, probably we don\u0027t need to check the pending request if req_immediate_exit is true. Maybe we can do it in this way:\n\n```\nhandle_events:\n          handle_pending_events(vcpu, \u0026req_immediate_exit);\n          \n          set_vcpu_mode(vcpu, IN_GUEST_MODE);\n\n          if (req_immediate_exit) {\n                  kvm_make_request(KVM_REQ_EVENT, vcpu);\n                  request_host_immediate_exit(vmx);\n          } else if (vcpu-\u003emode \u003d\u003d EXITING_GUEST_MODE || kvm_request_pending(vcpu)) {\n                  goto handle_events;\n          }\n```\nHow do you think?",
       "revId": "af4b5b62087651837fee8dc5615dc3afb3512e44",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b816d96_68ca2a0e",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/vmexit.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-12T10:23:43Z",
+      "side": 1,
+      "message": "Yeah, thanks for catching this. Somehow I ignored this check, I thought it was some remnant of the old emulation code, since it doesn\u0027t look like `vcpu-\u003emode \u003d\u003d EXITING_GUEST_MODE` can ever be true here (since we set it to IN_GUEST_MODE just above). Now I see it can be true also if `kvm_request_pending(vcpu)`, regardless of vcpu-\u003emode, and yeah, in this particular case with req_immediate_exit it seems we are doomed to have an endless loop here.\n\nBTW can we remove the `vcpu-\u003emode \u003d\u003d EXITING_GUEST_MODE` check? I\u0027m not sure what was the reason for adding it in the first place...",
+      "parentUuid": "160c8f2a_ddf96712",
+      "revId": "af4b5b62087651837fee8dc5615dc3afb3512e44",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
