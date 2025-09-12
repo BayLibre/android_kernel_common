@@ -11,8 +11,11 @@
 #include "ptdev.h"
 
 #define PASID_PTE_PRESENT	1
+#define PASID_PTE_MASK		0x3F
 #define PASID_PTE_FPD		2
 #define MAX_NR_PASID_BITS	PKVM_MAX_PASID_BITS
+
+#define PDE_PFN_MASK		PAGE_MASK
 
 #define PASIDTAB_BITS		6
 #define PASIDTAB_SHIFT		0
@@ -280,4 +283,8 @@ static inline bool pasid_copy_entry(struct pasid_entry *to, struct pasid_entry *
 struct pkvm_iommu;
 int validate_sm_context_entries(struct pkvm_iommu *iommu,
 				u8 bus, struct context_entry *context, bool upper);
+
+int pkvm_iommu_clear_pasid_entry(u64 param_va);
+int pkvm_iommu_set_pasid_fl(u64 param_va);
+int pkvm_iommu_set_pasid_sl(u64 param_va);
 #endif /* __PKVM_PV_PASID_H */
