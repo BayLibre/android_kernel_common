@@ -204,6 +204,8 @@ void flush_context_cache(struct pkvm_iommu *iommu, u16 did,
 				u16 sid, u8 fm, u64 type);
 void flush_iotlb(struct pkvm_iommu *iommu, u16 did, u64 addr,
 			unsigned int size_order, u64 type);
+void flush_piotlb(struct pkvm_iommu *iommu, u16 did, u32 pasid, u64 addr,
+		     unsigned long npages, bool ih);
 void flush_pasid_cache(struct pkvm_iommu *iommu, u16 did,
 			      u64 granu, u32 pasid);
 void flush_write_buffer(struct pkvm_iommu *iommu);
