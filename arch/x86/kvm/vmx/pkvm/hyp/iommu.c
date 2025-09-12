@@ -625,6 +625,15 @@ void flush_iotlb(struct pkvm_iommu *iommu, u16 did, u64 addr,
 	submit_qi(iommu, &desc, 1);
 }
 
+void flush_piotlb(struct pkvm_iommu *iommu, u16 did, u32 pasid, u64 addr,
+		     unsigned long npages, bool ih)
+{
+	struct qi_desc desc;
+
+	qi_desc_piotlb(did, pasid, addr, npages, ih, &desc);
+	submit_qi(iommu, &desc, 1);
+}
+
 static void set_root_table(struct pkvm_iommu *iommu)
 {
 	u64 val = iommu->pgt.root_pa;
