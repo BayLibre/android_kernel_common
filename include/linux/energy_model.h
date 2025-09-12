@@ -234,7 +234,13 @@ static inline unsigned long em_cpu_energy(struct em_perf_domain *pd,
 				unsigned long max_util, unsigned long sum_util,
 				unsigned long allowed_cpu_cap)
 {
+<<<<<<< HEAD   (bc2356a52be6a438aef27e6775037e9445756ab6 Merge 6688eb926932 ("cpufreq/schedutil: Use a fixed referenc)
 	struct em_perf_table *em_table;
+||||||| BASE   (6688eb92693239a4cbd5385ead8a0e165951df02 cpufreq/schedutil: Use a fixed reference frequency)
+	unsigned long freq, scale_cpu;
+=======
+	unsigned long freq, ref_freq, scale_cpu;
+>>>>>>> BRANCH (11da2b1ae4c9b41c9fb207ed659d71592e9c52d6 energy_model: Use a fixed reference frequency)
 	struct em_perf_state *ps;
 	int i;
 
@@ -253,7 +259,25 @@ static inline unsigned long em_cpu_energy(struct em_perf_domain *pd,
 	 * max utilization to the allowed CPU capacity before calculating
 	 * effective performance.
 	 */
+<<<<<<< HEAD   (bc2356a52be6a438aef27e6775037e9445756ab6 Merge 6688eb926932 ("cpufreq/schedutil: Use a fixed referenc)
+||||||| BASE   (6688eb92693239a4cbd5385ead8a0e165951df02 cpufreq/schedutil: Use a fixed reference frequency)
+	cpu = cpumask_first(to_cpumask(pd->cpus));
+	scale_cpu = arch_scale_cpu_capacity(cpu);
+	ps = &pd->table[pd->nr_perf_states - 1];
+
+=======
+	cpu = cpumask_first(to_cpumask(pd->cpus));
+	scale_cpu = arch_scale_cpu_capacity(cpu);
+	ref_freq = arch_scale_freq_ref(cpu);
+
+>>>>>>> BRANCH (11da2b1ae4c9b41c9fb207ed659d71592e9c52d6 energy_model: Use a fixed reference frequency)
 	max_util = min(max_util, allowed_cpu_cap);
+<<<<<<< HEAD   (bc2356a52be6a438aef27e6775037e9445756ab6 Merge 6688eb926932 ("cpufreq/schedutil: Use a fixed referenc)
+||||||| BASE   (6688eb92693239a4cbd5385ead8a0e165951df02 cpufreq/schedutil: Use a fixed reference frequency)
+	freq = map_util_freq(max_util, ps->frequency, scale_cpu);
+=======
+	freq = map_util_freq(max_util, ref_freq, scale_cpu);
+>>>>>>> BRANCH (11da2b1ae4c9b41c9fb207ed659d71592e9c52d6 energy_model: Use a fixed reference frequency)
 
 	/*
 	 * Find the lowest performance state of the Energy Model above the
