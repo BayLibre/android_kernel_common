@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15ca24ff_f863f574",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1585,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-12T18:38:53Z",
+      "side": 1,
+      "message": "Does this paragraph mean to say that pkvm hypervisor will be broken if neither the HW mitigations are available nor the corresponding SW mitigations (retpoline/rethunk) are enabled? If so, why does it mention PTL, on which those HW mitigations are available?",
+      "revId": "55f4b1b5ad8922ab6b6bc6646b47eee09061a669",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
