@@ -13,8 +13,11 @@
 #define FLPT_DEFAULT_DID		1
 
 #define PASID_PTE_PRESENT	1
+#define PASID_PTE_MASK		0x3F
 #define PASID_PTE_FPD		2
 #define MAX_NR_PASID_BITS	PKVM_MAX_PASID_BITS
+
+#define PDE_PFN_MASK		PAGE_MASK
 
 #define PASIDTAB_BITS		6
 #define PASIDTAB_SHIFT		0
@@ -282,4 +285,8 @@ static inline bool pasid_copy_entry(struct pasid_entry *to, struct pasid_entry *
 struct pkvm_iommu;
 int validate_sm_context_entries(struct pkvm_iommu *iommu,
 				u8 bus, struct context_entry *context, bool upper);
+
+int pkvm_iommu_clear_pasid_entry(u64 phys, u64 param_gpa);
+int pkvm_iommu_pasid_setup_fl(u64 phys, u64 param_gpa);
+int pkvm_iommu_pasid_setup_sl(u64 phys, u64 param_gpa);
 #endif /* __PKVM_PV_PASID_H */

@@ -126,6 +126,15 @@ static unsigned long handle_vmcall(struct kvm_vcpu *vcpu)
 	case PKVM_HC_IOMMU_SET_SM_CE:
 		ret = pkvm_iommu_set_sm_ce(a0, a1);
 		break;
+	case PKVM_HC_IOMMU_CLEAR_PASID_ENTRY:
+		ret = pkvm_iommu_clear_pasid_entry(a0, a1);
+		break;
+	case PKVM_HC_IOMMU_SET_PASID_FL:
+		ret = pkvm_iommu_pasid_setup_fl(a0, a1);
+		break;
+	case PKVM_HC_IOMMU_SET_PASID_SL:
+		ret = pkvm_iommu_pasid_setup_sl(a0, a1);
+		break;
 #endif
 
 	/*
