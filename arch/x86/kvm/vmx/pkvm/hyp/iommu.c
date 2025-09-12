@@ -507,7 +507,7 @@ void flush_context_cache(struct pkvm_iommu *iommu, u16 did,
 	submit_qi(iommu, &desc, 1);
 }
 
-static void flush_pasid_cache(struct pkvm_iommu *iommu, u16 did,
+void flush_pasid_cache(struct pkvm_iommu *iommu, u16 did,
 			      u64 granu, u32 pasid)
 {
 	struct qi_desc desc = {.qw1 = 0, .qw2 = 0, .qw3 = 0};
@@ -558,6 +558,15 @@ void flush_iotlb(struct pkvm_iommu *iommu, u16 did, u64 addr,
 	struct qi_desc desc;
 
 	setup_iotlb_qi_desc(iommu, &desc, did, addr, size_order, type);
+	submit_qi(iommu, &desc, 1);
+}
+
+void flush_piotlb(struct pkvm_iommu *iommu, u16 did, u32 pasid, u64 addr,
+		     unsigned long npages, bool ih)
+{
+	struct qi_desc desc;
+
+	qi_desc_piotlb(did, pasid, addr, npages, ih, &desc);
 	submit_qi(iommu, &desc, 1);
 }
 
