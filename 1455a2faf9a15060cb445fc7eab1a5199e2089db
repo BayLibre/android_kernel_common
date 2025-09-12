@@ -16,6 +16,24 @@
       "message": "Doesn\u0027t the user-facing interface need updating if you\u0027re going to make this change? At the moment, `KVM_CAP_ARM_PROTECTED_VM_FLAGS_SET_FFA` will report the negotiated version to the VMM.",
       "revId": "1455a2faf9a15060cb445fc7eab1a5199e2089db",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbaacc9c_8d989794",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1856745
+      },
+      "writtenOn": "2025-09-12T07:21:19Z",
+      "side": 1,
+      "message": "would you recommend against updating KVM_CAP_ARM_PROTECTED_VM_FLAGS_SET_FFA and thus supporting 1.1/1.0 for the Guest FFA proxy; or rather could we update the implementation of KVM_CAP_ARM_PROTECTED_VM_FLAGS_SET_FFA to return unsupported when pkvm FFA version is at 1.1/1.0? We were hoping for the latter to reduce the burden on supporting a mode we don\u0027t need and cannot fully test/regress.",
+      "parentUuid": "ee87f49a_939a6f93",
+      "revId": "1455a2faf9a15060cb445fc7eab1a5199e2089db",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
