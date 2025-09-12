@@ -70,6 +70,24 @@
       "parentUuid": "788b7177_02e22aff",
       "revId": "af4b5b62087651837fee8dc5615dc3afb3512e44",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e12e5ca_5b39f642",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/vmexit.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-12T10:49:08Z",
+      "side": 1,
+      "message": "\u003eBTW can we remove the vcpu-\u003emode \u003d\u003d EXITING_GUEST_MODE check? I\u0027m not sure what was the reason for adding it in the first place...\n\nI think that refers the kvm function kvm_vcpu_exit_request(), which checks vcpu-\u003emode or the pending request. And actually I am also thinking about removing it in v6.15, as it is only necessary to go to handle_events when there is pending request. And in pkvm, when `vcpu-\u003emode \u003d\u003d EXITING_GUEST_MODE`, there will be a pending event as well as pkvm makes pending request and kick vcpu together, so seems we can remove the check of `vcpu-\u003emode \u003d\u003d EXITING_GUEST_MODE`\n\n\u003e Furthermore, do we need vcpu-\u003emode at all (for host vCPUs)? Where do we use it?\n\nWe use it in `pkvm_kick_vcpu`, to determine if we need to send init signal or not.",
+      "parentUuid": "788b7177_02e22aff",
+      "revId": "af4b5b62087651837fee8dc5615dc3afb3512e44",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
