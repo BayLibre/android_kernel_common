@@ -16,6 +16,24 @@
       "message": "Does this paragraph mean to say that pkvm hypervisor will be broken if neither the HW mitigations are available nor the corresponding SW mitigations (retpoline/rethunk) are enabled? If so, why does it mention PTL, on which those HW mitigations are available?",
       "revId": "55f4b1b5ad8922ab6b6bc6646b47eee09061a669",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1657667_2ab15a7c",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1585,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-13T11:27:28Z",
+      "side": 1,
+      "message": "No, this paragraph means to say the linux kernel may force enable retpoline/rethunk patching via kernel command line, on the CPU, e.g. PTL which even doesn\u0027t have hw vulnerabilities. In this case, pkvm hypervisor should also support retpoline/rethunk patching otherwise the pkvm hypervisor will be not able to run as it will be patched to use the linux kernel symbols.",
+      "parentUuid": "15ca24ff_f863f574",
+      "revId": "55f4b1b5ad8922ab6b6bc6646b47eee09061a669",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
