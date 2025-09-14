@@ -65,5 +65,41 @@ static inline long pkvm_hc_iommu_set_sm_ce(unsigned long reg_phys,
 
 	return ret;
 }
+
+static inline long pkvm_hc_iommu_clear_pasid_entry(unsigned long reg_phys,
+		struct pkvm_clear_translation_param *param)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_CLEAR_PASID_ENTRY, reg_phys,
+				virt_to_phys(param));
+
+	return ret;
+}
+
+static inline long pkvm_hc_iommu_set_pasid_fl(unsigned long reg_phys,
+		struct pkvm_pasid_table_param *param)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_SET_PASID_FL, reg_phys,
+				virt_to_phys(param));
+
+	return ret;
+}
+
+static inline long pkvm_hc_iommu_set_pasid_sl(unsigned long reg_phys,
+		struct pkvm_pasid_table_param *param)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_SET_PASID_SL, reg_phys,
+				virt_to_phys(param));
+
+	return ret;
+}
 #endif
 
