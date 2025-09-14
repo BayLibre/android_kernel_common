@@ -34,6 +34,24 @@
       "parentUuid": "15ca24ff_f863f574",
       "revId": "55f4b1b5ad8922ab6b6bc6646b47eee09061a669",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ff566f9_f2f85c78",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1585,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-14T23:59:10Z",
+      "side": 1,
+      "message": "Ok, this sounds much more clear to me. Can we replace the paragraph in the code with this one? :)\n\nAlthough it\u0027s still not quite clear to me why we mention this here, in the context of pkvm_mitigate_cpu_bug().\n\nIn particular, it\u0027s still not clear to me why need to emphasize \"PTL which even doesn\u0027t have hw vulnerabilities\". The fact that those command line params enable retpoline/rethunk regardless of whether the CPU has those vulnerabilities or not is a known fact, it is not pKVM-specific?",
+      "parentUuid": "b1657667_2ab15a7c",
+      "revId": "55f4b1b5ad8922ab6b6bc6646b47eee09061a669",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
