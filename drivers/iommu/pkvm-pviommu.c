@@ -26,6 +26,7 @@ struct pviommu_domain {
 	struct iommu_domain		domain;
 	unsigned long			id; /* pKVM domain ID. */
 	struct maple_tree		mappings; /* IOVA -> IPA */
+	spinlock_t			mtree_lock; /* Lock for maple tree*/
 };
 
 struct pviommu {
@@ -80,22 +81,28 @@ static u64 __linux_prot_smccc(int iommu_prot)
 static void pviommu_domain_insert_map(struct pviommu_domain *pv_domain,
 				      u64 start, u64 end, u64 val, gfp_t gfp)
 {
+	unsigned long flags;
+
 	if (end < start)
 		return;
 
+	spin_lock_irqsave(&pv_domain->mtree_lock, flags);
 	mtree_store_range(&pv_domain->mappings, start, end, xa_mk_value(val), gfp);
+	spin_unlock_irqrestore(&pv_domain->mtree_lock, flags);
 }
 
 static void pviommu_domain_remove_map(struct pviommu_domain *pv_domain,
 				      u64 start, u64 end)
 {
+	unsigned long flags;
+
 	/* Range can cover multiple entries. */
 	while (start < end) {
 		MA_STATE(mas, &pv_domain->mappings, start, end);
 		u64 entry;
 		u64 old_start, old_end;
 
-		mtree_lock(mas.tree);
+		spin_lock_irqsave(&pv_domain->mtree_lock, flags);
 		entry = xa_to_value(mas_find(&mas, start));
 		old_start = mas.index;
 		old_end = mas.last;
@@ -109,7 +116,7 @@ static void pviommu_domain_remove_map(struct pviommu_domain *pv_domain,
 			WARN_ON(mas_store_gfp(&mas_border, xa_mk_value(entry + end - old_start + 1),
 				GFP_ATOMIC));
 		}
-		mtree_unlock(mas.tree);
+		spin_unlock_irqrestore(&pv_domain->mtree_lock, flags);
 		start = old_end + 1;
 	}
 }
@@ -118,10 +125,11 @@ static u64 pviommu_domain_find(struct pviommu_domain *pv_domain, u64 key)
 {
 	MA_STATE(mas, &pv_domain->mappings, key, key);
 	void *entry;
+	unsigned long flags;
 
-	mtree_lock(mas.tree);
+	spin_lock_irqsave(&pv_domain->mtree_lock, flags);
 	entry = mas_find(&mas, key);
-	mtree_unlock(mas.tree);
+	spin_unlock_irqrestore(&pv_domain->mtree_lock, flags);
 	/* No entry. */
 	if (!xa_is_value(entry))
 		return 0;
@@ -297,7 +305,12 @@ static struct iommu_domain *pviommu_domain_alloc(unsigned int type)
 	if (!pv_domain)
 		return ERR_PTR(-ENOMEM);
 
-	mt_init(&pv_domain->mappings);
+	/*
+	 * We use an external lock for the maple tree, because the maple tree
+	 * implementation uses spin_lock/unlock version instead of irqsave/restore,
+	 * which makes it not suitable to use from irq context.
+	 */
+	mt_init_flags(&pv_domain->mappings, MT_FLAGS_LOCK_EXTERN);
 
 	arm_smccc_1_1_hvc(ARM_SMCCC_VENDOR_HYP_KVM_PVIOMMU_OP_FUNC_ID,
 			  KVM_PVIOMMU_OP_ALLOC_DOMAIN, 0, 0, 0, 0, 0, &res);
