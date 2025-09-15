@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6cf1cd15_77a4938b",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1503,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-15T09:30:38Z",
+      "side": 1,
+      "message": "Maybe rather:\n```\nif (spectre_v2_enabled \u003d\u003d SPECTRE_V2_RETPOLINE ||\n    spectre_v2_enabled \u003d\u003d SPECTRE_V2_EIBRS_RETPOLINE)\n\treturn true;\n```\n\n?",
+      "parentUuid": "38bc7510_5259769e",
+      "revId": "55f4b1b5ad8922ab6b6bc6646b47eee09061a669",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "15ca24ff_f863f574",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 1
