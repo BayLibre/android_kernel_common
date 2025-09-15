@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "38bc7510_5259769e",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1503,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-15T09:13:12Z",
+      "side": 1,
+      "message": "Am I correct that if retpoline/rethunk is enabled via the kernel command line, it is enough to mitigate Spectre v2 (not just for the host kernel but for the pKVM hypervisor as well) even if none of the HW features checked below are available?\n\nIf so, can we add something like this above:\n\n```\nif (spectre_v2_enabled \u003d\u003d SPECTRE_V2_RETPOLINE)\n\treturn true;\n```",
+      "revId": "55f4b1b5ad8922ab6b6bc6646b47eee09061a669",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "15ca24ff_f863f574",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 1
@@ -68,6 +85,24 @@
       "side": 1,
       "message": "Oh, the reason of mentioning retpoline/rethunk here is that, patching with retpoline/rethunk is another mitigation pkvm hypervisor has to mitigate certain bugs existing on older CPUs. In theory the pkvm hypervisor doesn\u0027t have to support this mitigation as PTL doesn\u0027t have those CPU bugs. However the repoline/rethunk patching can be enabled via kernel command line regardless the hardware vulnerabilities. To support this, the pkvm hypervisor should support retpline/rethunk patching.\n\nSo how about refactor the comment as below? \n\n\"Note: Beyond the above mitigations, the pkvm hypervisor also supports boot time retpoline/rethunk patching to mitigate certain CPU (older than PTL) vulnerabilities. The reason is that, the pkvm hypervisor is part of linux kernel, and linux kernel could enable retpoline/rethunk patching via kernel command line parameters for a CPU (e.g. PTL) which even doesn\u0027t have such vulnerabilities. With this, the kernel image (including the pkvm hypervisor) will be patched with the linux kernel\u0027s retpoling/rethunk symbols at the boot time. To support this usage, the pkvm hypervisor should support retpoline/rethunk patching with its own retpline/rethunk symbols, otherwise it will not be able to run due to isolation.\"",
       "parentUuid": "8ff566f9_f2f85c78",
+      "revId": "55f4b1b5ad8922ab6b6bc6646b47eee09061a669",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5736127d_0ea4b054",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1585,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-15T09:13:12Z",
+      "side": 1,
+      "message": "Ok, SGTM.\n\nOnly that \"could enable retpoline/rethunk patching via kernel command line parameters for a CPU (e.g. PTL) which even doesn\u0027t have such vulnerabilities\"\n\nsounds a bit unclear, it should be rather: \"could enable retpoline/rethunk patching via kernel command line parameters even for a CPU that doesn\u0027t have such vulnerabilities, e.g. PTL\" ?\n\nAlso s/retpoling/retpoline/, s/retpline/retpoline/ :)",
+      "parentUuid": "abe0d25c_91ae0b04",
       "revId": "55f4b1b5ad8922ab6b6bc6646b47eee09061a669",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
