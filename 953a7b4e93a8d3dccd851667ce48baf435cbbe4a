@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3bf1e530_12b2bfe8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1898165
+      },
+      "writtenOn": "2025-09-15T14:21:11Z",
+      "side": 1,
+      "message": "Should they be separate commits in chain then? I figured those changes are very closely related to not enabling CONFIG_ARCH_MEDIATEK. E.g. using the HIDDEN option in soc/mediatek results directly from a warning issued while compiling the change in init/Kconfig.gki. Without it the patch had to be reverted due to build failure. For adding option in irqchip, looks like indeed it can be separated.",
+      "parentUuid": "05d9a600_6c34a71a",
+      "revId": "953a7b4e93a8d3dccd851667ce48baf435cbbe4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5204fcd7_efe3da51",
         "filename": "init/Kconfig.gki",
         "patchSetId": 2
@@ -49,6 +67,24 @@
           ]
         }
       ],
+      "revId": "953a7b4e93a8d3dccd851667ce48baf435cbbe4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af0a1801_7ca14444",
+        "filename": "init/Kconfig.gki",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1898165
+      },
+      "writtenOn": "2025-09-15T14:21:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5204fcd7_efe3da51",
       "revId": "953a7b4e93a8d3dccd851667ce48baf435cbbe4a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
