@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c4f01f1_97e58f47",
+        "filename": "drivers/irqchip/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-09-15T22:44:39Z",
+      "side": 1,
+      "message": "One issue we may want to watch out for: Back in the early GKI days the vendor specific hidden configs enabled some \"core\" hardware logic in the upstream GKI. However, that vendor had already reworked drivers out of tree to be loadable via module, and there were some conflicts where the upstream driver enabled in GKI would attach to the dts description instead of their modified out of tree vendor module.   It is possible that enabling these sysirq/cirq drivers here in GKI could similarly collide with MTK\u0027s out of tree drivers.  So we may want to give them a heads up on this.",
+      "revId": "3a24d29566fcfc66916a2cf3fd890667ada91514",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3ab97094_7fc9b8e3",
         "filename": "init/Kconfig.gki",
         "patchSetId": 3
