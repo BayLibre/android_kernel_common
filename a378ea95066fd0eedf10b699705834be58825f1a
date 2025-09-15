@@ -106,6 +106,24 @@
       "parentUuid": "35a1eaaf_f79389c4",
       "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "517f18bc_1f71e111",
+        "filename": "arch/x86/kvm/vmx/pkvm_high.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1805,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-15T07:17:47Z",
+      "side": 1,
+      "message": "BTW, this discussion reminds me that, seems the https://android-review.googlesource.com/c/kernel/common/+/3728238 should be updated for the way of allocating fpstate memory. This patch allocates a single large memory area via alloc_pages_excat() according to the size of (pkvm_vcpu_size + fpstate_size), and use the first several pages as pkvm_vcpu and the last several pages as fpstate. When needs to re-allocate the fpstate, the previous fpstate memory will be returned back to the host via memcache and the host free them via free_page. As the previous fpstate memory is not the entire memory area allocated by alloc_pages_excat() but just a part of it, seems freeing it via free_page doesn\u0027t equal to free_pages_excat(). I will fix this by allocating two memory area via alloc_page_excat(), one is for pkvm_vcpua nd the other is for fpstate, so that freeing fpstate via free_page equals to calling free_page_exact().",
+      "parentUuid": "38d25ba9_6cc13e75",
+      "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
