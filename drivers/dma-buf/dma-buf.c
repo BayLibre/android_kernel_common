@@ -40,6 +40,27 @@ static inline int is_dma_buf_file(struct file *);
 static DEFINE_MUTEX(dmabuf_list_mutex);
 static LIST_HEAD(dmabuf_list);
 
+
+int get_dmabuf_data(int (*fn)(const struct dma_buf *, void *),
+			void *private)
+{
+	int ret;
+	struct dma_buf *dmabuf;
+
+	mutex_lock(&dmabuf_list_mutex);
+
+	list_for_each_entry(dmabuf, &dmabuf_list, list_node) {
+		ret = fn(dmabuf, private);
+		if (ret)
+			break;
+	}
+
+	mutex_unlock(&dmabuf_list_mutex);
+
+	return ret;
+}
+EXPORT_SYMBOL_NS_GPL(get_dmabuf_data, "DMA_BUF");
+
 static void __dma_buf_list_add(struct dma_buf *dmabuf)
 {
 	mutex_lock(&dmabuf_list_mutex);

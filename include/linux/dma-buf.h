@@ -603,7 +603,8 @@ struct dma_buf_export_info {
 	struct dma_resv *resv;
 	void *priv;
 };
-
+int get_dmabuf_data(int (*fn)(const struct dma_buf *, void *),
+			void *private);
 /**
  * DEFINE_DMA_BUF_EXPORT_INFO - helper macro for exporters
  * @name: export-info name
