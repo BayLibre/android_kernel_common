@@ -16,6 +16,41 @@
       "message": "Those are 3 individual changes:\n - introducing an option in irqchip\n - introducing the Kconfig.gki changes\n - using the option in soc/mediatek",
       "revId": "953a7b4e93a8d3dccd851667ce48baf435cbbe4a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5204fcd7_efe3da51",
+        "filename": "init/Kconfig.gki",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2025-09-15T09:11:26Z",
+      "side": 1,
+      "message": "remove the empty line",
+      "fixSuggestions": [
+        {
+          "fixId": "570b7492_a3eca20b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "init/Kconfig.gki",
+              "range": {
+                "startLine": 118,
+                "startChar": 0,
+                "endLine": 119,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "953a7b4e93a8d3dccd851667ce48baf435cbbe4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
