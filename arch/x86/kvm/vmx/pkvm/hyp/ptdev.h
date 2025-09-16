@@ -17,6 +17,9 @@ struct pkvm_ptdev {
 	pkvm_spinlock_t lock;
 
 	DECLARE_HASHTABLE(devinfo_hash, 8);
+
+	u32 max_pasid;
+	void *pasid_table;
 };
 
 struct ptdev_info {
