@@ -131,13 +131,6 @@ static int validate_lm_context_entries(struct pkvm_iommu *hyp_iommu,
 	return 0;
 }
 
-// TODO: SM context validation
-static int validate_sm_context_entries(struct pkvm_iommu *iommu,
-				u8 bus, struct context_entry *context, bool upper)
-{
-	return 0;
-}
-
 static int validate_translation_tables(struct pkvm_iommu *hyp_iommu, struct root_entry *root)
 {
 	struct intel_iommu *iommu = &hyp_iommu->iommu;
