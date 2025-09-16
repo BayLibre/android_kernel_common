@@ -37,9 +37,6 @@ void pkvm_flush_host_ept(void);
 int pkvm_shadow_ept_pool_init(void *ept_pool_base, unsigned long ept_pool_pages);
 enum sept_handle_ret
 pkvm_handle_shadow_ept_violation(struct shadow_vcpu_state *shadow_vcpu, u64 l2_gpa, u64 exit_quali);
-void pkvm_invalidate_shadow_ept(struct shadow_ept_desc *desc);
-void pkvm_invalidate_shadow_ept_with_range(struct shadow_ept_desc *desc,
-					   unsigned long vaddr, unsigned long size);
 void pkvm_shadow_clear_suppress_ve(struct kvm_vcpu *vcpu, unsigned long gfn);
 
 int pkvm_pgstate_pgt_init(struct pkvm_shadow_vm *vm);
@@ -61,7 +58,5 @@ static inline bool is_valid_eptp(u64 eptp)
 
 extern struct pkvm_pgtable_ops ept_ops;
 extern struct hyp_pool shadow_pgt_pool;
-
-void pkvm_invalidate_guest_ept(int shadow_handle, u64 start_gpa, u64 size);
 
 #endif
