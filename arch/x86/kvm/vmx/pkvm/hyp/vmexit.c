@@ -18,6 +18,7 @@
 #include "lapic.h"
 #include "debug.h"
 #include "init_finalise.h"
+#include "iommu_internal.h"
 
 #define CR4	4
 
@@ -120,6 +121,15 @@ static unsigned long handle_vmcall(struct kvm_vcpu *vcpu)
 	case PKVM_HC_KVM_CALL:
 		ret = handle_kvm_call(a0, a1, a2, a3);
 		break;
+
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+	case PKVM_HC_ENABLE_IOMMU:
+		ret = pkvm_iommu_enable(a0, a1);
+		break;
+	case PKVM_HC_DISABLE_IOMMU:
+		ret = pkvm_iommu_disable(a0);
+		break;
+#endif
 
 	/*
 	 * Following hypercalls are special that they are intended to be used
