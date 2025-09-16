@@ -124,6 +124,24 @@
       "parentUuid": "38d25ba9_6cc13e75",
       "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc773452_d3c7f363",
+        "filename": "arch/x86/kvm/vmx/pkvm_high.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1805,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-16T04:51:22Z",
+      "side": 1,
+      "message": "This patch is updated to free the old cpuid entries memory via the free_pages_exact(). The old cpuid entries memory size is stored in the beginning of the memory by the pkvm hypervisor before returning from the PV interface. Thus the host can retrieve the size and call free_pages_exact(va, size) to free the memory.\n\nIn the VM tear down path, the way of freeing pages, e.g., pkvm_vm/pkvm_vcpu/cpuid entries is not changed, which still uses the memcache and freed by the host via calling free_page().",
+      "parentUuid": "517f18bc_1f71e111",
+      "revId": "a378ea95066fd0eedf10b699705834be58825f1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
