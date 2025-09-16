@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66f0216e_4565f8b6",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-16T12:57:00Z",
+      "side": 1,
+      "message": "I see this on PTL:\n```\n[    2.358529] pkvm: unmitigated cpu bug bhi\n[    2.359155] pkvm: in total has 1 unmitigated cpu bugs\n```\n\nand AFAICS the reason is not that X86_FEATURE_BHI_CTRL is not available (it is available, and BHI_DIS_S is set) but simply a logic error: this check for X86_FEATURE_BHI_CTRL succeeds and mitigate_spectre_v2() returns success, so we clear X86_BUG_SPECTRE_V2, but we still don\u0027t clear X86_BUG_BHI.\n\nDon\u0027t you see the same?",
+      "revId": "5fe70fd0937503be5d96b094dd5836fe1bc450b5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
