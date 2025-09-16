@@ -25724,6 +25724,11 @@ pointer_reference {
   pointee_type_id: 0xd37ad96d
 }
 pointer_reference {
+  id: 0x3e521881
+  kind: POINTER
+  pointee_type_id: 0xd308849a
+}
+pointer_reference {
   id: 0x3e5a64ad
   kind: POINTER
   pointee_type_id: 0xd3297429
@@ -35332,6 +35337,10 @@ member {
   type_id: 0x1d4594fc
 }
 member {
+  id: 0x24c2370a
+  type_id: 0x1c26ac38
+}
+member {
   id: 0x24c431ea
   type_id: 0x1c3eb7b9
 }
@@ -36482,6 +36491,10 @@ member {
   offset: 1408
 }
 member {
+  id: 0x36752b74
+  type_id: 0x56faddc1
+}
+member {
   id: 0x3697c485
   type_id: 0x55715975
   offset: 1152
@@ -36987,6 +37000,11 @@ member {
   id: 0x3d036096
   type_id: 0x7b23ef96
   offset: 448
+}
+member {
+  id: 0x3d065985
+  type_id: 0x7b3704ce
+  offset: 14912
 }
 member {
   id: 0x3d18936e
@@ -40037,6 +40055,11 @@ member {
   offset: 11840
 }
 member {
+  id: 0x112ba38e
+  name: "__kabi_reserved_backport1"
+  type_id: 0x92233392
+}
+member {
   id: 0x112ba40c
   name: "__kabi_reserved_backport1"
   type_id: 0x92233392
@@ -40065,12 +40088,6 @@ member {
   name: "__kabi_reserved_backport1"
   type_id: 0x92233392
   offset: 3392
-}
-member {
-  id: 0x112ba73c
-  name: "__kabi_reserved_backport1"
-  type_id: 0x92233392
-  offset: 14912
 }
 member {
   id: 0x112baf59
@@ -86414,6 +86431,17 @@ member {
   offset: 448
 }
 member {
+  id: 0x33536f6a
+  name: "freeze_seq"
+  type_id: 0xd0e93144
+}
+member {
+  id: 0x4cd1d9b8
+  name: "freeze_start_nsec"
+  type_id: 0x92233392
+  offset: 64
+}
+member {
   id: 0xebc2b6b0
   name: "freeze_super"
   type_id: 0x2f3c5242
@@ -86430,6 +86458,11 @@ member {
   name: "freezer"
   type_id: 0x8eaee9d1
   offset: 14720
+}
+member {
+  id: 0x14d41b24
+  name: "freezer"
+  type_id: 0x14ab8135
 }
 member {
   id: 0xd5e4618a
@@ -86647,6 +86680,12 @@ member {
   name: "frozen"
   type_id: 0x6d7f5ff6
   offset: 1928
+}
+member {
+  id: 0xa90a46d9
+  name: "frozen_nsec"
+  type_id: 0x92233392
+  offset: 128
 }
 member {
   id: 0x696cf202
@@ -104439,6 +104478,11 @@ member {
   name: "kmemcg_id"
   type_id: 0x6720d32f
   offset: 10496
+}
+member {
+  id: 0xb713907c
+  name: "kmi_ext_info"
+  type_id: 0x3e521881
 }
 member {
   id: 0x0d020036
@@ -194083,6 +194127,16 @@ struct_union {
   }
 }
 struct_union {
+  id: 0x14ab8135
+  kind: STRUCT
+  definition {
+    bytesize: 24
+    member_id: 0x33536f6a
+    member_id: 0x4cd1d9b8
+    member_id: 0xa90a46d9
+  }
+}
+struct_union {
   id: 0x14b5803c
   kind: STRUCT
   definition {
@@ -194556,6 +194610,14 @@ struct_union {
     member_id: 0x0ecdcd53
     member_id: 0x4b3fa326
     member_id: 0xfebe0857
+  }
+}
+struct_union {
+  id: 0x1c26ac38
+  kind: STRUCT
+  definition {
+    bytesize: 8
+    member_id: 0x112ba38e
   }
 }
 struct_union {
@@ -197501,6 +197563,12 @@ struct_union {
   }
 }
 struct_union {
+  id: 0x56faddc1
+  kind: UNION
+  definition {
+  }
+}
+struct_union {
   id: 0x571cd963
   kind: UNION
   definition {
@@ -199657,6 +199725,16 @@ struct_union {
     bytesize: 8
     member_id: 0xb755e42c
     member_id: 0x312d72de
+  }
+}
+struct_union {
+  id: 0x7b3704ce
+  kind: UNION
+  definition {
+    bytesize: 8
+    member_id: 0xb713907c
+    member_id: 0x24c2370a
+    member_id: 0x36752b74
   }
 }
 struct_union {
@@ -205269,7 +205347,7 @@ struct_union {
     member_id: 0x68223b90
     member_id: 0x144e195a
     member_id: 0x1084eb49
-    member_id: 0x112ba73c
+    member_id: 0x3d065985
     member_id: 0xd2908663
   }
 }
@@ -205319,6 +205397,15 @@ struct_union {
     member_id: 0xf9e27450
     member_id: 0xb0af57e0
     member_id: 0xea724160
+  }
+}
+struct_union {
+  id: 0xd308849a
+  kind: STRUCT
+  name: "cgroup_kmi_ext_info"
+  definition {
+    bytesize: 24
+    member_id: 0x14d41b24
   }
 }
 struct_union {
