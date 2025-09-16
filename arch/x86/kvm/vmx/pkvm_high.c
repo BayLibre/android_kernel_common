@@ -1033,7 +1033,7 @@ static int pkvm_vcpu_create(struct kvm_vcpu *vcpu)
 	if (ret)
 		goto free_pages;
 
-	ret = kvm_call_pkvm(vcpu_create, vcpu, __pa(pkvm_vcpu));
+	ret = kvm_call_pkvm(vcpu_create, __pa(vcpu), __pa(pkvm_vcpu));
 	if (ret < 0)
 		goto unshare;
 

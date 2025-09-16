@@ -281,7 +281,7 @@ void put_pkvm_vm(struct pkvm_vm *pkvm_vm)
 	WARN_ON(atomic_dec_if_positive(&pkvm_vm_ref->refcount) <= 0);
 }
 
-static int pkvm_vcpu_create(struct kvm_vcpu *shared_vcpu, unsigned long gpa)
+static int pkvm_vcpu_create(unsigned long shared_vcpu_gpa, unsigned long gpa)
 {
 	struct pkvm_vcpu *pkvm_vcpu;
 	unsigned long pkvm_vcpu_pa;
@@ -294,21 +294,21 @@ static int pkvm_vcpu_create(struct kvm_vcpu *shared_vcpu, unsigned long gpa)
 	if (!PAGE_ALIGNED(pkvm_vcpu_pa))
 		return -EINVAL;
 
+	ret = hyp_pin_shared_mem(shared_vcpu_gpa, kvm_vcpu_sz);
+	if (ret)
+		return ret;
+
 	pa_size = PAGE_ALIGN(pkvm_vcpu_sz);
-	if (__pkvm_host_donate_hyp(pkvm_vcpu_pa, pa_size))
-		return -EINVAL;
+	ret = __pkvm_host_donate_hyp(pkvm_vcpu_pa, pa_size);
+	if (ret)
+		goto unpin;
 
 	pkvm_vcpu = pkvm_phys_to_virt(pkvm_vcpu_pa);
 	memset(pkvm_vcpu, 0, pa_size);
 
 	pkvm_vcpu->size = pa_size;
-	/*
-	 * TODO: Assume host is already share the kvm_vcpu structure
-	 * (represented by shared_vcpu) with pkvm. So just pin
-	 * shared_vcpu. Unpin shared_vcpu when destroying
-	 */
-	pkvm_vcpu->shared_vcpu = shared_vcpu;
 
+	pkvm_vcpu->shared_vcpu = __pkvm_va(host_gpa2hpa(shared_vcpu_gpa));
 	shared_kvm = kern_pkvm_va(pkvm_vcpu->shared_vcpu->kvm);
 	pkvm_vm = get_pkvm_vm(shared_kvm->arch.pkvm.pkvm_vm_handle);
 	if (!pkvm_vm) {
@@ -328,6 +328,8 @@ put_pkvm_vm:
 	put_pkvm_vm(pkvm_vm);
 undonate:
 	__pkvm_hyp_donate_host(pkvm_vcpu_pa, pa_size);
+unpin:
+	hyp_unpin_shared_mem(shared_vcpu_gpa, kvm_vcpu_sz);
 	return ret;
 }
 
@@ -414,15 +416,18 @@ static void pkvm_vm_destroy(int handle)
 	for (i = 0; i < to_kvm(pkvm_vm)->created_vcpus; i++) {
 		struct pkvm_vcpu *pkvm_vcpu = pkvm_vm->vcpus[i];
 		struct kvm_vcpu *vcpu = to_kvm_vcpu(pkvm_vcpu);
+		struct kvm_vcpu *shared_vcpu;
 
 		detach_pkvm_vcpu_from_vm(pkvm_vcpu, pkvm_vm);
 		teardown_donated_memory(&shared_pkvm->teardown_mc,
 					(void *)vcpu->arch.cpuid_entries,
 					sizeof(struct kvm_cpuid_entry2) *
 					vcpu->arch.cpuid_nent);
+		shared_vcpu = pkvm_vcpu->shared_vcpu;
 		teardown_donated_memory(&shared_pkvm->teardown_mc,
 					(void *)pkvm_vcpu, pkvm_vcpu->size);
-		/* TODO: unpin shared kvm_vcpu */
+		hyp_unpin_shared_mem(pkvm_virt_to_host_gpa(shared_vcpu),
+				     kvm_vcpu_sz);
 	}
 
 	kvm_arch_destroy_vm(to_kvm(pkvm_vm));
@@ -1690,7 +1695,7 @@ unsigned long handle_kvm_call(unsigned long fn, unsigned long p1,
 		ret = 0;
 		break;
 	case __pkvm__vcpu_create:
-		ret = pkvm_vcpu_create((struct kvm_vcpu *)kern_pkvm_va((void *)p1), p2);
+		ret = pkvm_vcpu_create(p1, p2);
 		break;
 	case __pkvm__host_share_hyp:
 		ret = __pkvm_host_share_hyp(PFN_PHYS(p1), p2 * PAGE_SIZE);
