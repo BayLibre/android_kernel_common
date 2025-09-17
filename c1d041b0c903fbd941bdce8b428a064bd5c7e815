@@ -16,6 +16,29 @@
       "message": "Have you considered using mt_set_external_lock()? I believe this should bring extra checks.",
       "revId": "c1d041b0c903fbd941bdce8b428a064bd5c7e815",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "712b3649_e65a046e",
+        "filename": "drivers/iommu/pkvm-pviommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-09-17T10:52:24Z",
+      "side": 1,
+      "message": "I think this can end up calling kmem_cache_alloc_bulk_noprof() down the line, which doesn\u0027t look safe to call with irqs disabled :(",
+      "range": {
+        "startLine": 90,
+        "startChar": 1,
+        "endLine": 90,
+        "endChar": 18
+      },
+      "revId": "c1d041b0c903fbd941bdce8b428a064bd5c7e815",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
