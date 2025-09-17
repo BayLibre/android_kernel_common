@@ -12,6 +12,7 @@
 #include "ept.h"
 #include "iommu.h"
 #include "memory.h"
+#include "debug.h"
 #include <pkvm/vmx/vmx.h>
 
 struct check_walk_data {
@@ -1004,4 +1005,59 @@ int __pkvm_guest_unshare_host(struct pkvm_pgtable *guest_pgt,
 	guest_mmu_unlock(guest_pgt);
 
 	return ret;
+}
+
+static int update_host_ept_prot(u64 addr, u64 size, u64 exp_prot, u64 new_prot)
+{
+	struct mem_range range;
+	unsigned long paddr;
+	int ret = 0;
+	u64 prot;
+
+	/*
+	 * Only allow updating protection bits of normal memory (tracked in the hyp vmemmap),
+	 * not reserved memory, MMIO etc.
+	 */
+	if (!find_mem_range(addr, &range))
+		return -EPERM;
+
+	/* Prevent updating protection bits for pages used by the host for DMA. */
+	if (hyp_page_count(__hyp_va(addr)))
+		return -EBUSY;
+
+	host_ept_lock();
+	pkvm_host_ept_lookup(addr, &paddr, &prot, NULL);
+	if (paddr == INVALID_ADDR) {
+		pkvm_err("pkvm: %s: requested memory(%llx) not mapped in ept!\n", __func__, addr);
+		ret = -EPERM;
+		goto out;
+	} else if (prot != new_prot && prot != exp_prot) {
+		pkvm_err("pkvm: %s: requested memory(%llx) prot expected(%llx), actual(%llx)!\n",
+				__func__, addr, exp_prot, prot);
+		ret = -EINVAL;
+		goto out;
+	}
+
+	ret = pkvm_host_ept_map(addr, addr, size, 0, new_prot);
+
+out:
+	host_ept_unlock();
+
+	return ret;
+}
+
+int pkvm_switch_host_ept_ro(u64 addr, u64 size)
+{
+	u64 new_prot = pkvm_mkstate(HOST_EPT_RO_MEM_PROT, PKVM_PAGE_OWNED);
+	u64 exp_prot = pkvm_mkstate(HOST_EPT_DEF_MEM_PROT, PKVM_PAGE_OWNED);
+
+	return update_host_ept_prot(addr, size, exp_prot, new_prot);
+}
+
+int pkvm_switch_host_ept_default(u64 addr, u64 size)
+{
+	u64 new_prot = pkvm_mkstate(HOST_EPT_DEF_MEM_PROT, PKVM_PAGE_OWNED);
+	u64 exp_prot = pkvm_mkstate(HOST_EPT_RO_MEM_PROT, PKVM_PAGE_OWNED);
+
+	return update_host_ept_prot(addr, size, exp_prot, new_prot);
 }
