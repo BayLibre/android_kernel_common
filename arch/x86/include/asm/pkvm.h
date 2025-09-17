@@ -136,6 +136,13 @@ struct pkvm_sm_context_param {
 	u64 context_gpa;
 };
 
+struct pkvm_sm_context_pre_param {
+	u64 phys;
+	u16 bdf;
+	u8 val;
+	u16 did;
+};
+
 struct pkvm_pasid_table_param {
 	u64 phys;
 	u16 bdf;
