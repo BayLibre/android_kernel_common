@@ -22,6 +22,30 @@
       },
       "revId": "0bfe9f536ed496ad66a3a81c190bda0bff90f322",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "130649ee_d76740b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-17T18:08:01Z",
+      "side": 1,
+      "message": "In Chuanxiao\u0027s WIP v6.15 rebase it is already done:\nhttps://github.com/intel-staging/pKVM-IA/pull/40/commits/9847a6c4830c3dea63e77c333af6be6b11f85809\nhttps://github.com/intel-staging/pKVM-IA/pull/40/commits/fdb76ccb3cce91291e625826c28bbf81fdda86a2\n\nOn 6.12, I guess realistically we are not gonna refactor this, i.e. we are not really gonna revert this patch on 6.12... So basically the purpose of this REVERTME is just to stick out to emphasize that it is a temporary thing related to the remnants of the pre-pvVMCS implementation, and should not be ported to the clean 6.15 implementation.",
+      "parentUuid": "0e981406_7e957ff8",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 6
+      },
+      "revId": "0bfe9f536ed496ad66a3a81c190bda0bff90f322",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
