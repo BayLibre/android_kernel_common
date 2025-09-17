@@ -3979,6 +3979,18 @@ static int intel_iommu_enable_sva(struct device *dev)
 	return 0;
 }
 
+static void pv_context_flip_pri(struct device_domain_info *info, bool enable)
+{
+	struct pkvm_sm_context_pre_param param = {
+		.bdf = PCI_DEVID(info->bus, info->devfn),
+		.val = enable,
+	};
+
+	if (pkvm_hc_iommu_set_sm_ce_pre(info->iommu->reg_phys, &param)) {
+		intel_context_flush_present(info, param.did, true);
+	}
+}
+
 static int context_flip_pri(struct device_domain_info *info, bool enable)
 {
 	struct intel_iommu *iommu = info->iommu;
@@ -3987,6 +3999,11 @@ static int context_flip_pri(struct device_domain_info *info, bool enable)
 	u16 did;
 
 	spin_lock(&iommu->lock);
+	if (iommu_pv_translation(iommu)) {
+		pv_context_flip_pri(info, enable);
+		goto out_unlock;
+	}
+
 	if (context_copied(iommu, bus, devfn)) {
 		spin_unlock(&iommu->lock);
 		return -EINVAL;
@@ -4007,6 +4024,8 @@ static int context_flip_pri(struct device_domain_info *info, bool enable)
 	if (!ecap_coherent(iommu->ecap))
 		clflush_cache_range(context, sizeof(*context));
 	intel_context_flush_present(info, did, true);
+
+out_unlock:
 	spin_unlock(&iommu->lock);
 
 	return 0;
