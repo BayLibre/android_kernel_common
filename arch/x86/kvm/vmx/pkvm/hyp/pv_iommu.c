@@ -477,3 +477,46 @@ out_unlock:
 
 	return ret;
 }
+
+unsigned long pkvm_iommu_set_sm_ce_pre(u64 phys, u64 param_gpa)
+{
+	struct pkvm_iommu *hyp_iommu = find_iommu_by_reg_phys(phys);
+	struct pkvm_sm_context_pre_param *param;
+	struct context_entry *context;
+	struct intel_iommu *iommu;
+	u8 bus, devfn;
+	int ret = 0;
+
+	if (!hyp_iommu)
+		return -EINVAL;
+
+	param = host_gpa2hva(param_gpa);
+	if (!param)
+		return -EINVAL;
+
+	bus = PCI_BUS_NUM(param->bdf);
+	devfn = PCI_DEV_FN(param->bdf);
+
+	pkvm_spin_lock(&hyp_iommu->lock);
+	iommu = &hyp_iommu->iommu;
+
+	context = pkvm_iommu_context_addr(iommu, bus, devfn, 0);
+	if (!context) {
+		ret = -ENODEV;
+		goto out_unlock;
+	}
+	param->did = context_domain_id(context);
+
+	if (param->val)
+		context_set_sm_pre(context);
+	else
+		context_clear_sm_pre(context);
+
+	if (!ecap_coherent(iommu->ecap))
+		iommu_flush_cache(context, sizeof(*context));
+
+out_unlock:
+	pkvm_spin_unlock(&hyp_iommu->lock);
+
+	return ret;
+}
