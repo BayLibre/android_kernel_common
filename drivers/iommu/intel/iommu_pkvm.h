@@ -66,6 +66,18 @@ static inline long pkvm_hc_iommu_set_sm_ce(unsigned long reg_phys,
 	return ret;
 }
 
+static inline long pkvm_hc_iommu_set_sm_ce_pre(unsigned long reg_phys,
+		struct pkvm_sm_context_pre_param *param)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_SET_SM_CE_PRE, reg_phys,
+				virt_to_phys(param));
+
+	return ret;
+}
+
 static inline long pkvm_hc_iommu_clear_pasid_entry(unsigned long reg_phys,
 		struct pkvm_clear_translation_param *param)
 {
