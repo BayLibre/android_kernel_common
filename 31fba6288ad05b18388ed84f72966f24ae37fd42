@@ -1,0 +1,265 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa28ead9_83eb8a6e",
+        "filename": "arch/x86/kvm/pkvm/cpu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-17T15:05:10Z",
+      "side": 1,
+      "message": "nit: Since now it actually not sets up the speculation control as a whole but enables specific bits in it (so we call it multiple times, for different bits), should we change its name to a more suitable one, e.g. maybe `enable_x86_spec_ctrl`?",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9ea794d_76b02288",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1532,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-17T15:05:10Z",
+      "side": 1,
+      "message": "This comment doesn\u0027t tell anything that is not obvious from the code?",
+      "fixSuggestions": [
+        {
+          "fixId": "d327cf6b_fe25541a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 1532,
+                "startChar": 0,
+                "endLine": 1533,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47ca079c_078c7991",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1535,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-17T15:05:10Z",
+      "side": 1,
+      "message": "nit: maybe s/spectre-v2/spectre_v2/ (so that `dmesg | grep spectre_v2` will show this as well)?",
+      "fixSuggestions": [
+        {
+          "fixId": "a15522b3_fce31617",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 1535,
+                "startChar": 0,
+                "endLine": 1536,
+                "endChar": 0
+              },
+              "replacement": "\t\tpr_info(\"pkvm: Mitigated bhi when mitigating spectre_v2\\n\");\n"
+            }
+          ]
+        }
+      ],
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d7c2d54_98f2f53c",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1623,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-17T15:05:10Z",
+      "side": 1,
+      "message": "nit: s/has/have/",
+      "fixSuggestions": [
+        {
+          "fixId": "239a6584_1c5f663f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 1623,
+                "startChar": 0,
+                "endLine": 1624,
+                "endChar": 0
+              },
+              "replacement": "\t\tpr_info(\"pkvm: CPU doesn\u0027t have bug %s\\n\", x86_bug_flags[bug - NCAPINTS * 32]);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60b28eca_a5bc05af",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1628,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-17T15:05:10Z",
+      "side": 1,
+      "message": "nit: s/but is/but it is/\n\nBut actually, this print seems redundant, since it may be \"already mitigated\" only by pKVM itself, and for that we already print `pkvm: Mitigated bhi when mitigating spectre-v2`?\n\nSo maybe just add a comment in the code here, instead of printing this to dmesg?",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ee14e52_6adfd7f7",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1646,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-17T15:05:10Z",
+      "side": 1,
+      "message": "Wondering if we really need mitigate_bhi(), since IIUC `boot_cpu_has(X86_BUG_BHI) \u0026\u0026 !boot_cpu_has(X86_BUG_SPECTRE_V2)` is not supposed to happen, so mitigate_spectre_v2() should always take care of enabling BHI mitigation if needed?\n\nAlthough it may cause the below \"Cannot mitigate CPU bug\" being erroneously printed (not in this case, since X86_BUG_SPECTRE_V1 \u003c X86_BUG_BHI, but maybe in a more general case). But we may remove this print, as I suggested below?\n\nEDIT: please feel free to ignore this, I\u0027ve just realized that mitigate_spectre_v2() may not succeed and then mitigate_bhi() may succeed (that is actually the case on ADL, for instance), i.e. it is actually useful if we cannot mitigate Spectre V2 as a whole but at least can mitigate just BHI.",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4e67684_4f7e9eec",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1654,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-17T15:05:10Z",
+      "side": 1,
+      "message": "If we print \"unmitigated cpu bug\" (with all lower-case letters) at line 1681, maybe let\u0027s print with all lower-case letters here as well? (Or the other way around?)",
+      "fixSuggestions": [
+        {
+          "fixId": "66f7bbc0_af69653c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 1654,
+                "startChar": 0,
+                "endLine": 1655,
+                "endChar": 0
+              },
+              "replacement": "\t\tpr_info(\"pkvm: mitigated cpu bug %s\\n\", x86_bug_flags[bug - NCAPINTS * 32]);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "645e0c30_1f09ec83",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1656,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-17T15:05:10Z",
+      "side": 1,
+      "message": "This print seems redundant, since we print \"pkvm: unmitigated cpu bug\" in the end at line 1681?",
+      "fixSuggestions": [
+        {
+          "fixId": "b4baa40c_8974f52a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 1655,
+                "startChar": 0,
+                "endLine": 1657,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fc9f8df_0fa23415",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1745,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-17T15:05:10Z",
+      "side": 1,
+      "message": "nit: s/to run/from running/ ?",
+      "fixSuggestions": [
+        {
+          "fixId": "3a5e62c3_c499936e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+              "range": {
+                "startLine": 1745,
+                "startChar": 0,
+                "endLine": 1746,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tpr_err(\"pkvm: Prevent pkvm from running due to unmitigated CPU bugs\\n\");\n"
+            }
+          ]
+        }
+      ],
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
