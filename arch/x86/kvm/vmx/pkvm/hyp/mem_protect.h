@@ -208,4 +208,7 @@ int __pkvm_guest_share_host(struct pkvm_pgtable *guest_pgt,
  */
 int __pkvm_guest_unshare_host(struct pkvm_pgtable *guest_pgt,
 			      u64 gpa, u64 size);
+
+int pkvm_switch_host_ept_ro(u64 addr, u64 size);
+int pkvm_switch_host_ept_default(u64 addr, u64 size);
 #endif
