@@ -272,4 +272,6 @@ int __pkvm_pin_shared_mem(u64 phys, u64 size);
  */
 void __pkvm_unpin_shared_mem(u64 phys, u64 size);
 
+int pkvm_switch_host_ept_ro(u64 addr, u64 size);
+int pkvm_switch_host_ept_default(u64 addr, u64 size);
 #endif
