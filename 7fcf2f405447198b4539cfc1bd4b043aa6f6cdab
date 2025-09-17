@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00892c87_9d94d25a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2025-09-17T19:59:23Z",
+      "side": 1,
+      "message": "To avoid this ANDROID patch, I could also write a Python wrapper that parses the -a option and pass it as stdin to xargs. But that\u0027s much more heavy-weighted than a single-line hack for a (hopefully) temporary issue.\n\nIt is a step backwards to our goal of eliminating ANDROID patches in Kbuild, though... so adding @maennich@google.com for comments.",
+      "revId": "7fcf2f405447198b4539cfc1bd4b043aa6f6cdab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
