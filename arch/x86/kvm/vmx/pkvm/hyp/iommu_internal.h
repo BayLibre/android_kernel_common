@@ -240,6 +240,7 @@ unsigned long pkvm_iommu_disable(u64 phys);
 unsigned long pkvm_iommu_clear_ce(u64 phys, u64 param_gpa);
 unsigned long pkvm_iommu_set_lm_ce(u64 phys, u64 param_gpa);
 unsigned long pkvm_iommu_set_sm_ce(u64 phys, u64 param_gpa);
+unsigned long pkvm_iommu_set_sm_ce_pre(u64 phys, u64 param_gpa);
 struct context_entry *pkvm_iommu_context_addr(struct intel_iommu *iommu, u8 bus,
 					 u8 devfn, u64 context_phys);
 #else
