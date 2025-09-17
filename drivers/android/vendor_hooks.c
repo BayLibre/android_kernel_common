@@ -62,7 +62,12 @@
  */
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_do_send_sig_info);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_oom_reaper_delay_bypass);
+<<<<<<< HEAD   (f432e1408a4aedf2cefe2813f0ef8523ff21ee82 FROMGIT: firmware: arm_scmi: Increase performance MAX_OPPS l)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_killed_process);
+||||||| BASE   (ff337fdfcdeac57e1b44fcf19ee437ca6ccd8330 FROMGIT: mm/oom_kill: the OOM reaper traverses the VMA maple)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_thaw_killed_process);
+>>>>>>> CHANGE (23b27871f3c7290e8daeef735c8cdeb171924ab7 ANDROID: mm: Add vendor hook to thaw the killed process)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_arch_set_freq_scale);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_wait_start);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_wait_finish);
