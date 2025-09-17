@@ -23,6 +23,7 @@
 #define PKVM_HC_IOMMU_CLEAR_PASID_ENTRY	16
 #define PKVM_HC_IOMMU_SET_PASID_FL	17
 #define PKVM_HC_IOMMU_SET_PASID_SL	18
+#define PKVM_HC_IOMMU_SET_SM_CE_PRE	19
 
 /*
  * Internal hypercall to commit the pkvm initialization
@@ -97,6 +98,12 @@ struct pkvm_sm_context_param {
 	u32 max_pasid;
 	u64 pasid_dir_gpa;
 	u64 context_gpa;
+};
+
+struct pkvm_sm_context_pre_param {
+	u16 bdf;
+	u8 val;
+	u16 did;
 };
 
 struct pkvm_pasid_table_param {
@@ -241,6 +248,18 @@ static inline long pkvm_hc_iommu_set_sm_ce(unsigned long reg_phys,
 
 	if (pkvm_pviommu_enabled())
 		ret = kvm_hypercall2(PKVM_HC_IOMMU_SET_SM_CE, reg_phys,
+				virt_to_phys(param));
+
+	return ret;
+}
+
+static inline long pkvm_hc_iommu_set_sm_ce_pre(unsigned long reg_phys,
+		struct pkvm_sm_context_pre_param *param)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_SET_SM_CE_PRE, reg_phys,
 				virt_to_phys(param));
 
 	return ret;
