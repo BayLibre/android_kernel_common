@@ -48,6 +48,12 @@ static inline long pkvm_hc_iommu_set_sm_ce(struct pkvm_sm_context_param *param)
 	return pkvm_iommu_hypercall(iommu_set_sm_ce, sm_context_param, param);
 }
 
+static inline long pkvm_hc_iommu_set_sm_ce_pre(struct pkvm_sm_context_pre_param *param)
+{
+	return pkvm_iommu_hypercall(iommu_set_sm_ce_pre,
+			sm_context_pre_param, param);
+}
+
 static inline long pkvm_hc_iommu_clear_pasid_entry(struct pkvm_clear_translation_param *param)
 {
 	return pkvm_iommu_hypercall(iommu_clear_pasid_entry,
