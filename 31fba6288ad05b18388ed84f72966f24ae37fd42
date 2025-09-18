@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93b4d6d9_38bd88ed",
+        "filename": "arch/x86/kvm/pkvm/cpu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-18T09:14:09Z",
+      "side": 1,
+      "message": "Cool. Then probably choose `set_x86_spec_ctrl` for short",
+      "parentUuid": "7825574d_e75452f8",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "45a253b8_b2be9845",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 3
@@ -67,6 +85,24 @@
       "writtenOn": "2025-09-18T08:42:38Z",
       "side": 1,
       "message": "Can we move for_each_possible_cpu() into setup_x86_spec_ctrl() for avoid duplication?\n\nAt first glance it seems we can, since we do set up __cpu_possible_mask in setup_pkvm_syms().",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "620969db_c86d1814",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1529,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-18T09:14:09Z",
+      "side": 1,
+      "message": "I will try this.",
+      "parentUuid": "45a253b8_b2be9845",
       "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -402,6 +438,24 @@
       "side": 1,
       "message": "Yeah, good point, if in the mitigation functions we don\u0027t print any errors in case of failures, we\u0027d better print an error at least here.\n\nAlthough, maybe we should print errors in the mitigation functions? To report more precisely which required HW features are missing?",
       "parentUuid": "eeb9758e_8a0bdb55",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09240267_fd202885",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1656,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-18T09:14:09Z",
+      "side": 1,
+      "message": "To report more precisely which required HW features are missing may result in the code more complicated. e.g., mitigate_spectre_v2 relies on multiple hw features, and returning when detected the first missing hw feature is easy, but the other hw features may also be missed. If we want to print logs to show all the missed hw features, then probably should return later until all the hw feature checkings are done.\n\nMeanwhile, for the case that using if() to check multiple features, we need to split this if() to check single feature so that can precisely print the log?",
+      "parentUuid": "69e7fef3_b8e00acd",
       "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
