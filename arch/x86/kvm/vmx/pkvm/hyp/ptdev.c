@@ -112,6 +112,8 @@ static struct pkvm_ptdev *alloc_ptdev(struct pkvm_device *dev, u32 pasid)
 		atomic_set(&ptdev->refcount, 1);
 		pkvm_spin_lock_init(&ptdev->lock);
 		hash_add(dev->ptdev_hash, &ptdev->hnode, pasid);
+		ptdev->domain = NULL;
+		INIT_LIST_HEAD(&ptdev->domain_node);
 	}
 
 	return ptdev;

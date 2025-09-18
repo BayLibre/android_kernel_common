@@ -19,6 +19,7 @@
 #include "iommu_spgt.h"
 #include "bug.h"
 #include "iommu.h"
+#include "iommu_domain.h"
 
 static void __pasid_setup_fl(struct intel_iommu *iommu, struct pasid_entry *pe, u64 flptr,
 		u16 did, bool force_snoop)
@@ -132,6 +133,22 @@ static int validate_pasid_entry(struct pkvm_iommu *iommu, u16 bdf, struct pasid_
 	return 0;
 }
 
+static u64 __pasid_domain_pgd(struct pasid_entry *pe)
+{
+	u16 pgtt = pasid_get_translation_type(pe);
+	u64 pgd = 0;
+
+	if (pgtt == PASID_ENTRY_PGTT_FL_ONLY) {
+		pgd = pasid_get_flptr(pe);
+	} else if (pgtt == PASID_ENTRY_PGTT_SL_ONLY) {
+		pgd = pasid_get_slptr(pe);
+		if (pgd == pkvm_host_ept_pgd())
+			pgd = 0;
+	}
+
+	return pgd;
+}
+
 static int validate_pasid_entries(struct pkvm_iommu *iommu, u32 pasid_start,
 		u16 bdf, struct pasid_entry *pe)
 {
@@ -147,6 +164,7 @@ static int validate_pasid_entries(struct pkvm_iommu *iommu, u32 pasid_start,
 	for (pe_idx = 0; pe_idx < PASIDTAB_ENTRIES; pe_idx++, pe++) {
 		struct pkvm_ptdev *ptdev;
 		u32 pasid = pasid_start + pe_idx;
+		u64 pgd;
 
 		if (!pasid_pte_is_present(pe))
 			continue;
@@ -162,6 +180,14 @@ static int validate_pasid_entries(struct pkvm_iommu *iommu, u32 pasid_start,
 		if (!ptdev) {
 			pkvm_err("pkvm: %s: Unable to create ptdev for device[%x]!\n",
 					__func__, bdf);
+			return -1;
+		}
+
+		pgd = __pasid_domain_pgd(pe);
+		if (pgd && pkvm_domain_attach_device(pgd, bdf, pasid, ptdev->dev->iommu_coherency)) {
+			pkvm_err("pkvm: %s: failed to attach device[%x] to domain(pgd=%llx)!\n",
+				__func__, bdf, pgd);
+			iommu_del_ptdev(iommu, ptdev);
 			return -1;
 		}
 	}
@@ -337,6 +363,7 @@ int pkvm_iommu_clear_pasid_entry(u64 phys, u64 param_gpa)
 {
 	struct pkvm_iommu *hyp_iommu = find_iommu_by_reg_phys(phys);
 	struct pkvm_clear_translation_param *param;
+	struct pkvm_iommu_domain *domain;
 	struct pasid_entry *pte;
 	struct intel_iommu *iommu;
 	struct pkvm_ptdev *ptdev;
@@ -377,6 +404,12 @@ int pkvm_iommu_clear_pasid_entry(u64 phys, u64 param_gpa)
 	pkvm_dbg("pkvm: %s: clear_pe: dev[%x] pasid: %x, did: %x\n",
 			__func__, param->bdf, param->pasid, param->did);
 	pasid_clear_entry(pte);
+
+	domain = ptdev->domain;
+	if (domain && pkvm_domain_detach_device(domain, param->bdf, param->pasid)) {
+		pkvm_err("pkvm: %s: failed to detach device[%x] from domain(pgd=%llx)\n",
+				__func__, param->bdf, domain->pgd);
+	}
 	iommu_del_ptdev(hyp_iommu, ptdev);
 	ret = 0;
 
@@ -476,6 +509,14 @@ int pkvm_iommu_pasid_setup_fl(u64 phys, u64 param_gpa)
 		goto out_unlock;
 	}
 
+	ret = pkvm_domain_attach_device(param->domain_pgd_gpa, param->bdf,
+				param->pasid, iommu_coherency(&hyp_iommu->iommu));
+	if (ret) {
+		pkvm_err("pkvm: %s: failed to attach device[%x] to domain(pgd=%llx)!\n",
+				__func__, param->bdf, param->domain_pgd_gpa);
+		goto out_unlock;
+	}
+
 	__pasid_setup_fl(iommu, pte, param->domain_pgd_gpa,
 			param->did, param->force_snooping);
 
@@ -530,6 +571,15 @@ static int pasid_setup_sl(struct pkvm_iommu *hyp_iommu, struct pkvm_pasid_table_
 		goto out_unlock;
 	}
 
+	if (param->domain_pgd_gpa != pkvm_host_ept_pgd()) {
+		ret = pkvm_domain_attach_device(param->domain_pgd_gpa, param->bdf,
+				param->pasid, iommu_coherency(&hyp_iommu->iommu));
+		if (ret) {
+			pkvm_err("pkvm: %s: failed to attach device[%x] to domain(pgd=%llx)!\n",
+				__func__, param->bdf, param->domain_pgd_gpa);
+			goto out_unlock;
+		}
+	}
 	__pasid_setup_sl(iommu, pte, param->domain_pgd_gpa, param->did,
 			param->domain_agaw, param->dirty_tracking);
 
