@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97ed9fcc_6a4165da",
+        "filename": "arch/x86/kvm/pkvm/cpu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-18T00:51:39Z",
+      "side": 1,
+      "message": "Or maybe `set_x86_spec_ctrl`/`set_x86_spec_ctrl_bits`, as this does set the bits but not clear any bit.",
+      "parentUuid": "aa28ead9_83eb8a6e",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9ea794d_76b02288",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 3
