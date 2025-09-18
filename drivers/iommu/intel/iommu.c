@@ -1374,6 +1374,11 @@ static void domain_exit(struct dmar_domain *domain)
 
 		domain_unmap(domain, 0, DOMAIN_MAX_PFN(domain->gaw), &freelist);
 		iommu_put_pages_list(&freelist);
+
+		if (pkvm_pviommu_enabled()) {
+			pkvm_hc_iommu_domain_free(virt_to_phys(domain->pgd));
+			iommu_free_page(domain->pgd);
+		}
 	}
 
 	if (WARN_ON(!list_empty(&domain->devices)))
@@ -3282,6 +3287,43 @@ static int iommu_superpage_capability(struct intel_iommu *iommu, bool first_stag
 	return fls(cap_super_page_val(iommu->cap));
 }
 
+static int pv_paging_domain_alloc(struct device_domain_info *info, struct dmar_domain *domain)
+{
+	struct pkvm_domain_param param = {
+		.phys = info->iommu->reg_phys,
+		.bdf = PCI_DEVID(info->bus, info->devfn),
+		.use_first_level = domain->use_first_level,
+		.pgd_gpa = virt_to_phys(domain->pgd),
+	};
+	int ret = pkvm_hc_iommu_domain_alloc(&param);
+
+	if (ret) {
+		pr_err("%s: pv domain alloc failed for device[%x:%x:%x] ret=%d\n", __func__,
+				info->bus, PCI_SLOT(info->devfn), PCI_FUNC(info->devfn), ret);
+		iommu_free_page(domain->pgd);
+		return ret;
+	}
+
+	domain->gaw = param.gaw;
+	domain->agaw = param.agaw;
+	domain->max_addr = param.max_addr;
+	domain->iommu_coherency = param.iommu_coherency;
+	domain->iommu_superpage = param.iommu_superpage;
+
+	/* pagesize bitmap */
+	domain->domain.pgsize_bitmap = SZ_4K;
+	domain->domain.pgsize_bitmap |= domain_super_pgsize_bitmap(domain);
+
+	domain->domain.geometry.force_aperture = true;
+	domain->domain.geometry.aperture_start = 0;
+	if (domain->use_first_level)
+		domain->domain.geometry.aperture_end = __DOMAIN_MAX_ADDR(domain->gaw - 1);
+	else
+		domain->domain.geometry.aperture_end = __DOMAIN_MAX_ADDR(domain->gaw);
+
+	return 0;
+}
+
 static struct dmar_domain *paging_domain_alloc(struct device *dev, bool first_stage)
 {
 	struct device_domain_info *info = dev_iommu_priv_get(dev);
@@ -3302,6 +3344,23 @@ static struct dmar_domain *paging_domain_alloc(struct device *dev, bool first_st
 
 	domain->nid = dev_to_node(dev);
 	domain->use_first_level = first_stage;
+
+	/* always allocate the top pgd */
+	domain->pgd = iommu_alloc_page_node(domain->nid, GFP_KERNEL);
+	if (!domain->pgd) {
+		kfree(domain);
+		return ERR_PTR(-ENOMEM);
+	}
+
+	if (pkvm_pviommu_enabled()) {
+		int ret  = pv_paging_domain_alloc(info, domain);
+		if (ret) {
+			iommu_free_page(domain->pgd);
+			kfree(domain);
+			domain = ERR_PTR(ret);
+		}
+		return domain;
+	}
 
 	/* calculate the address width */
 	addr_width = agaw_to_width(iommu->agaw);
@@ -3332,12 +3391,6 @@ static struct dmar_domain *paging_domain_alloc(struct device *dev, bool first_st
 	else
 		domain->domain.geometry.aperture_end = __DOMAIN_MAX_ADDR(domain->gaw);
 
-	/* always allocate the top pgd */
-	domain->pgd = iommu_alloc_page_node(domain->nid, GFP_KERNEL);
-	if (!domain->pgd) {
-		kfree(domain);
-		return ERR_PTR(-ENOMEM);
-	}
 	domain_flush_cache(domain, domain->pgd, PAGE_SIZE);
 
 	return domain;
