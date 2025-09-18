@@ -12,6 +12,7 @@
 #include "mmu.h"
 #include "ept.h"
 #include "pgtable.h"
+#include "mem_protect.h"
 #include "iommu_internal.h"
 #include "debug.h"
 #include "iommu_spgt.h"
@@ -116,6 +117,13 @@ static int validate_lm_context_entries(struct pkvm_iommu *hyp_iommu,
 		u8 bus, struct context_entry *context)
 {
 
+	pkvm_dbg("pkvm: %s: write protecting lm context table: %llx\n",
+			__func__, pkvm_virt_to_phys(context));
+	if (pkvm_switch_host_ept_ro(pkvm_virt_to_phys(context), VTD_PAGE_SIZE)) {
+		pkvm_err("pkvm: %s: failed to write protect lm context table Page!\n", __func__);
+		return -EFAULT;
+	}
+
 	for (int devfn = 0; devfn < 256; devfn++) {
 		struct context_entry *ce = &context[devfn];
 		int ret;
@@ -136,6 +144,13 @@ static int validate_translation_tables(struct pkvm_iommu *hyp_iommu, struct root
 {
 	struct intel_iommu *iommu = &hyp_iommu->iommu;
 	bool sm_supported = sm_supported(iommu);
+
+	pkvm_dbg("pkvm: %s: write protecting rta: %llx\n",
+			__func__, pkvm_virt_to_phys(root));
+	if (pkvm_switch_host_ept_ro(pkvm_virt_to_phys(root), VTD_PAGE_SIZE)) {
+		pkvm_err("pkvm: %s: failed to write protect Root Table Page!\n", __func__);
+		return -EFAULT;
+	}
 
 	for (int bus = 0; bus < 256; bus++) {
 		struct root_entry *rte = &root[bus];
@@ -260,6 +275,14 @@ struct context_entry *pkvm_iommu_context_addr(struct intel_iommu *iommu, u8 bus,
 		context = (struct context_entry *)host_gpa2hva(context_phys);
 		if (!context)
 			return NULL;
+
+		pkvm_dbg("pkvm: %s: write protecting lm context table: %llx\n",
+				__func__, pkvm_virt_to_phys(context));
+		if (pkvm_switch_host_ept_ro(pkvm_virt_to_phys(context), VTD_PAGE_SIZE)) {
+			pkvm_err("pkvm: %s: failed to write protect lm context table Page!\n", __func__);
+			return NULL;
+		}
+		memset(context, 0, VTD_PAGE_SIZE);
 
 		if (!iommu_coherency(iommu))
 			pkvm_clflush_cache_range((void *)context, VTD_PAGE_SIZE);
