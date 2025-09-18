@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3eebfac6_89e636b2",
+        "filename": "drivers/irqchip/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1898165
+      },
+      "writtenOn": "2025-09-18T11:48:51Z",
+      "side": 1,
+      "message": "I confirmed with MTK engineers working on Rauru that this is not needed to be enabled. I just introduce MTK_IRQ as default to ARCH_MEDIATEK and not enable it which should not change anything for irqchip in GKI and we should be fine. Also MTK_CPUX_TIMER and MTK_REGULATOR_COUPLER are not needed so I removed them. All described in the commit message and in the bug.",
+      "parentUuid": "1c4f01f1_97e58f47",
+      "revId": "3a24d29566fcfc66916a2cf3fd890667ada91514",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3ab97094_7fc9b8e3",
         "filename": "init/Kconfig.gki",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2025-09-15T22:38:17Z",
       "side": 1,
       "message": "It might be useful to add in the commit message why this if (ARM64) is needed where the other hidden options didn\u0027t need it.",
+      "revId": "3a24d29566fcfc66916a2cf3fd890667ada91514",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86450305_8a125997",
+        "filename": "init/Kconfig.gki",
+        "patchSetId": 3
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1898165
+      },
+      "writtenOn": "2025-09-18T11:48:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ab97094_7fc9b8e3",
       "revId": "3a24d29566fcfc66916a2cf3fd890667ada91514",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
