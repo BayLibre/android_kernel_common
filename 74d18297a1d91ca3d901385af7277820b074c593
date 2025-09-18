@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b67c74a8_7f1904ee",
+        "filename": "init/Kconfig.gki",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-09-18T17:51:44Z",
+      "side": 1,
+      "message": "if it is reduced down to just MTK_TIMER, can\u0027t it be set in gki_defconfig? It doesn\u0027t look like a hidden config",
+      "fixSuggestions": [
+        {
+          "fixId": "a92ab902_5a7f7b16",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "init/Kconfig.gki",
+              "range": {
+                "startLine": 112,
+                "startChar": 0,
+                "endLine": 120,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "init/Kconfig.gki",
+              "range": {
+                "startLine": 305,
+                "startChar": 0,
+                "endLine": 306,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "74d18297a1d91ca3d901385af7277820b074c593",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
