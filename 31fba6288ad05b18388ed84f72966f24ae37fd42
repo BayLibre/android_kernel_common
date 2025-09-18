@@ -38,6 +38,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7825574d_e75452f8",
+        "filename": "arch/x86/kvm/pkvm/cpu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-18T08:42:38Z",
+      "side": 1,
+      "message": "SGTM.",
+      "parentUuid": "97ed9fcc_6a4165da",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45a253b8_b2be9845",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1529,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-18T08:42:38Z",
+      "side": 1,
+      "message": "Can we move for_each_possible_cpu() into setup_x86_spec_ctrl() for avoid duplication?\n\nAt first glance it seems we can, since we do set up __cpu_possible_mask in setup_pkvm_syms().",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9ea794d_76b02288",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 3
@@ -349,6 +384,24 @@
       "side": 1,
       "message": "Maybe a bit different as this print indicates the mitigation function is failed, and line 1681 shows there may be no mitigation function?",
       "parentUuid": "645e0c30_1f09ec83",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69e7fef3_b8e00acd",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1656,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-18T08:42:38Z",
+      "side": 1,
+      "message": "Yeah, good point, if in the mitigation functions we don\u0027t print any errors in case of failures, we\u0027d better print an error at least here.\n\nAlthough, maybe we should print errors in the mitigation functions? To report more precisely which required HW features are missing?",
+      "parentUuid": "eeb9758e_8a0bdb55",
       "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
