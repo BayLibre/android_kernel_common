@@ -41,6 +41,7 @@ struct pkvm_ptdev *pkvm_alloc_ptdev(u16 bdf, bool coherency)
 		pkvm_spin_lock_init(&ptdev->lock);
 		hash_init(ptdev->devinfo_hash);
 		hash_add(ptdev_hasht, &ptdev->hnode, bdf);
+		INIT_LIST_HEAD(&ptdev->domain_node);
 	}
 
 	pkvm_spin_unlock(&ptdev_lock);
