@@ -19,6 +19,7 @@
 #include "iommu_spgt.h"
 #include "bug.h"
 #include "iommu.h"
+#include "iommu_domain.h"
 
 int initialize_iommu_pgt(struct pkvm_iommu *iommu)
 {
@@ -362,6 +363,19 @@ unsigned long set_context_entry(struct pkvm_iommu *hyp_iommu,
 
 	if (context_present(context))
 		return -EBUSY;
+
+	if (param->domain_pgd_gpa != pkvm_host_ept_pgd()) {
+		/*
+		 * Verify that the domain exists in pkvm.
+		 */
+		struct pkvm_iommu_domain *domain = pkvm_get_iommu_domain(param->domain_pgd_gpa);
+		if (!domain) {
+			pkvm_err("pkvm: %s: Failed to locate domain with pgd: %llx\n",
+					__func__, param->domain_pgd_gpa);
+			return -EFAULT;
+		}
+		pkvm_put_iommu_domain(domain);
+	}
 
 	if (sm_supported(iommu) && is_dev_in_satc(param->bdf))
 		tt = CONTEXT_TT_DEV_IOTLB;
