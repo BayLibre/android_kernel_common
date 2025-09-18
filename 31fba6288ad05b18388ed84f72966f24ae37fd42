@@ -72,6 +72,23 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d919b1a8_6641d019",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1516,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-18T10:07:45Z",
+      "side": 1,
+      "message": "Would it make sense to enable IBPB as long as it is available, even if MSR_SPEC_CTRL or eIBRS is not available (IOW, move the checks at lines 1503-1509 after this line)?\n\nAnd if we do so, perhaps also apply this approach to BHI, i.e. remove mitigate_bhi() and make mitigate_spectre_v2() solely responsible for mitigating BHI, but make sure it mitigates it even if IBPB, eIBRS etc are not available?\n\n...But actually please feel free to ignore this, I\u0027m ok with keeping the code as is.",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45a253b8_b2be9845",
@@ -456,6 +473,24 @@
       "side": 1,
       "message": "To report more precisely which required HW features are missing may result in the code more complicated. e.g., mitigate_spectre_v2 relies on multiple hw features, and returning when detected the first missing hw feature is easy, but the other hw features may also be missed. If we want to print logs to show all the missed hw features, then probably should return later until all the hw feature checkings are done.\n\nMeanwhile, for the case that using if() to check multiple features, we need to split this if() to check single feature so that can precisely print the log?",
       "parentUuid": "69e7fef3_b8e00acd",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5eaaa105_adb52d35",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1656,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-18T10:07:45Z",
+      "side": 1,
+      "message": "Ok, if it would make the code more complicated, I\u0027m ok with keeping it as is.",
+      "parentUuid": "09240267_fd202885",
       "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
