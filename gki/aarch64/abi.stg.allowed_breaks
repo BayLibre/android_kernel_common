@@ -4,3 +4,11 @@ type 'struct cfs_rq' changed
   member 'unsigned int h_nr_queued' was removed
   member 'union { struct { union { unsigned int h_nr_queued; unsigned int h_nr_running; }; }; struct { unsigned int __kabi_renamedh_nr_queued; }; union { }; }' was added
 
+2 function symbol(s) removed
+  'int __traceiter_android_vh_f2fs_printk(void*, struct f2fs_sb_info*, struct va_format*, int, bool)'
+  'int __traceiter_f2fs_submit_folio_write(void*, struct folio*, struct f2fs_io_info*)'
+
+2 variable symbol(s) removed
+  'struct tracepoint __tracepoint_android_vh_f2fs_printk'
+  'struct tracepoint __tracepoint_f2fs_submit_folio_write'
+
