@@ -386,6 +386,11 @@ struct context_entry *iommu_context_addr(struct intel_iommu *iommu, u8 bus,
 		if (!alloc)
 			return NULL;
 
+		if (iommu_pv_translation(iommu)) {
+			pr_warn("%s: not allowed to touch translation table when pkvm enabled!\n", __func__);
+			return NULL;
+		}
+
 		context = iommu_alloc_page_node(iommu->node, GFP_ATOMIC);
 		if (!context)
 			return NULL;
