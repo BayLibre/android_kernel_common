@@ -39,6 +39,9 @@ struct pkvm_ptdev {
 
 	struct hlist_node hnode;
 	struct pkvm_device *dev;
+
+	struct pkvm_iommu_domain *domain;
+	struct list_head domain_node;
 };
 
 struct pkvm_device *pkvm_alloc_device(u16 bdf, bool coherency);
