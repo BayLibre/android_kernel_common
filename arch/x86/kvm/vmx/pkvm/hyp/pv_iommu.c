@@ -19,6 +19,7 @@
 #include "iommu_spgt.h"
 #include "bug.h"
 #include "iommu.h"
+#include "iommu_domain.h"
 
 int initialize_iommu_pgt(struct pkvm_iommu *iommu)
 {
@@ -110,6 +111,13 @@ static int validate_lm_context_entry(struct pkvm_iommu *hyp_iommu, u16 bdf,
 			tt = CONTEXT_TT_DEV_IOTLB;
 		else
 			tt = CONTEXT_TT_MULTI_LEVEL;
+	} else {
+		if (pkvm_domain_attach_device(slptr, bdf, 0, ptdev->dev->iommu_coherency)) {
+			pkvm_err("pkvm: %s: failed to attach device[%x] to domain(pgd=%llx)!\n",
+					__func__, bdf, slptr);
+			iommu_del_ptdev(hyp_iommu, ptdev);
+			return -1;
+		}
 	}
 
 	/*
@@ -329,6 +337,11 @@ unsigned long pkvm_iommu_clear_ce(u64 phys, u64 param_gpa)
 	if (!pkvm_sm_supported(&hyp_iommu->iommu)) {
 		struct pkvm_ptdev *ptdev = iommu_find_ptdev(hyp_iommu, param->bdf, 0);
 		if (ptdev) {
+			struct pkvm_iommu_domain *domain = ptdev->domain;
+			if (domain && pkvm_domain_detach_device(domain, param->bdf, 0)) {
+				pkvm_err("pkvm: %s: failed to detach device[%x] from domain(pgd=%llx)\n",
+						__func__, param->bdf, domain->pgd);
+			}
 			iommu_del_ptdev(hyp_iommu, ptdev);
 		} else {
 			pkvm_err("pkvm: %s: unable to locate ptdev for device[%x]!\n",
@@ -387,6 +400,17 @@ unsigned long set_context_entry(struct pkvm_iommu *hyp_iommu,
 		pkvm_err("pkvm: %s: ptdev not found for device[%x]\n",
 				__func__, param->bdf);
 		return -EFAULT;
+	}
+
+	if (param->domain_pgd_gpa != pkvm_host_ept_pgd()) {
+		int ret = pkvm_domain_attach_device(param->domain_pgd_gpa, param->bdf,
+				0, iommu_coherency(iommu));
+		if (ret) {
+			iommu_del_ptdev(hyp_iommu, ptdev);
+			pkvm_err("pkvm: %s: failed to attach device[%x] to domain(pgd=%llx)!\n",
+				__func__, param->bdf, param->domain_pgd_gpa);
+			return ret;
+		}
 	}
 
 	if (pkvm_sm_supported(iommu) && is_dev_in_satc(param->bdf))
