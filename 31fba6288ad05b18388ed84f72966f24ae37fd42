@@ -53,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c6625b6_9470de26",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1532,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-18T00:46:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a9ea794d_76b02288",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47ca079c_078c7991",
@@ -84,6 +102,24 @@
           ]
         }
       ],
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58aed7c0_b5885e95",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1535,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-18T00:46:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "47ca079c_078c7991",
       "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -123,6 +159,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b296b10_81b8dbfd",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1623,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-18T00:46:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3d7c2d54_98f2f53c",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60b28eca_a5bc05af",
@@ -136,6 +190,24 @@
       "writtenOn": "2025-09-17T15:05:10Z",
       "side": 1,
       "message": "nit: s/but is/but it is/\n\nBut actually, this print seems redundant, since it may be \"already mitigated\" only by pKVM itself, and for that we already print `pkvm: Mitigated bhi when mitigating spectre-v2`?\n\nSo maybe just add a comment in the code here, instead of printing this to dmesg?",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbdfc7e0_072237a0",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1628,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-18T00:46:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "60b28eca_a5bc05af",
       "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -192,6 +264,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ebb709c_c494a30a",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1654,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-18T00:46:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d4e67684_4f7e9eec",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "645e0c30_1f09ec83",
@@ -229,6 +319,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eeb9758e_8a0bdb55",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1656,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-18T00:46:12Z",
+      "side": 1,
+      "message": "Maybe a bit different as this print indicates the mitigation function is failed, and line 1681 shows there may be no mitigation function?",
+      "parentUuid": "645e0c30_1f09ec83",
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8fc9f8df_0fa23415",
         "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
         "patchSetId": 3
@@ -258,6 +366,24 @@
           ]
         }
       ],
+      "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dab2ea1e_af42b715",
+        "filename": "arch/x86/kvm/vmx/pkvm/pkvm_host.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1745,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-18T00:46:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8fc9f8df_0fa23415",
       "revId": "31fba6288ad05b18388ed84f72966f24ae37fd42",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
