@@ -16,6 +16,47 @@
       "message": "The pattern in the commit message does not match the change. One of them is wrong.",
       "revId": "ee9f5e05020a1110adc21586a0634baeee5692f7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0456471c_d9693553",
+        "filename": "project.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1123518
+      },
+      "writtenOn": "2025-09-18T17:05:22Z",
+      "side": 1,
+      "message": "Can we add delete capabilities temporily as I am developing and experimenting the automatic tagging workflow? We can remove the capability once the workflow is established ans stablized",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 17
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8dc67538_f4851a12",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.config",
+              "range": {
+                "startLine": 30,
+                "startChar": 0,
+                "endLine": 30,
+                "endChar": 0
+              },
+              "replacement": "\tdelete \u003d group mdb/gki-release-gerrit-operator\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ee9f5e05020a1110adc21586a0634baeee5692f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
