@@ -81,6 +81,7 @@ struct pkvm_hyp {
 
 	bool iommu_coherent;
 	bool iommu_sm;	/* scalable mode enabled in host */
+	bool iommu_sp;	/* super page enabled in host */
 
 	/* Store BDF of all devices in the SATC ACPI table */
 	u16 satc_dev_bdf[PKVM_MAX_DEVS_IN_SATC];
