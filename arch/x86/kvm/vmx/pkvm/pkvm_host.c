@@ -210,6 +210,7 @@ static __init int check_and_init_iommu(struct pkvm_hyp *pkvm)
 		pgsz_mask |= 1 << PG_LEVEL_1G;
 
 	pkvm->iommu_sm = intel_iommu_sm;
+	pkvm->iommu_sp = intel_iommu_superpage;
 	pkvm->iommu_coherent = true;
 	for_each_drhd_unit(drhd) {
 		int level = 0, mask = 1 << PG_LEVEL_4K;
