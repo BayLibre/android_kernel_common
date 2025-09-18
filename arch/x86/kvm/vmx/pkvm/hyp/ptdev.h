@@ -20,6 +20,9 @@ struct pkvm_ptdev {
 
 	u32 max_pasid;
 	void *pasid_table;
+
+	struct pkvm_iommu_domain *domain;
+	struct list_head domain_node;
 };
 
 struct ptdev_info {
