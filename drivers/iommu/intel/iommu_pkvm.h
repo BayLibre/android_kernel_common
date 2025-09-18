@@ -113,5 +113,27 @@ static inline long pkvm_hc_iommu_set_pasid_sl(unsigned long reg_phys,
 
 	return ret;
 }
+
+static inline long pkvm_hc_iommu_domain_alloc(unsigned long reg_phys,
+		struct pkvm_domain_param *param)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_DOMAIN_ALLOC, reg_phys,
+				virt_to_phys(param));
+
+	return ret;
+}
+
+static inline long pkvm_hc_iommu_domain_free(u64 pgd_gpa)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall1(PKVM_HC_IOMMU_DOMAIN_FREE, pgd_gpa);
+
+	return ret;
+}
 #endif
 
