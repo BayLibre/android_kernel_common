@@ -16,6 +16,23 @@
       "message": "To avoid this ANDROID patch, I could also write a Python wrapper that parses the -a option and pass it as stdin to xargs. But that\u0027s much more heavy-weighted than a single-line hack for a (hopefully) temporary issue.\n\nIt is a step backwards to our goal of eliminating ANDROID patches in Kbuild, though... so adding @maennich@google.com for comments.",
       "revId": "7fcf2f405447198b4539cfc1bd4b043aa6f6cdab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6be7ea5f_c3098b09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1402878
+      },
+      "writtenOn": "2025-09-18T08:59:54Z",
+      "side": 1,
+      "message": "I am ok to keep this while toybox gets updated, which is happening in http://lists.landley.net/pipermail/toybox-landley.net/2025-September/030828.html\n\nAlternatively, can we wait it out?",
+      "revId": "7fcf2f405447198b4539cfc1bd4b043aa6f6cdab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
