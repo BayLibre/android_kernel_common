@@ -12,6 +12,7 @@
 #include "mmu.h"
 #include "ept.h"
 #include "pgtable.h"
+#include "mem_protect.h"
 #include "iommu_internal.h"
 #include "debug.h"
 #include "iommu_spgt.h"
@@ -135,6 +136,13 @@ static int validate_pasid_entries(struct pkvm_iommu *iommu, u32 pasid_start,
 {
 	int pe_idx;
 
+	pkvm_dbg("pkvm: %s: write protecting pasid table: %llx\n",
+			__func__, pkvm_virt_to_phys(pe));
+	if (pkvm_switch_host_ept_ro(pkvm_virt_to_phys(pe), VTD_PAGE_SIZE)) {
+		pkvm_err("pkvm: %s: failed to write protect pasid table page!\n", __func__);
+		return -EFAULT;
+	}
+
 	for (pe_idx = 0; pe_idx < PASIDTAB_ENTRIES; pe_idx++, pe++) {
 		u32 pasid = pasid_start + pe_idx;
 
@@ -160,6 +168,15 @@ static int validate_pasid_dir(struct pkvm_iommu *iommu, u16 bdf, u32 nr_pdes,
 	for (pde_index = 0; pde_index < nr_pdes; pde_index++, pde++) {
 		struct pasid_entry *pe;
 
+		if (IS_ALIGNED(pkvm_virt_to_phys(pde), VTD_PAGE_SIZE)) {
+			pkvm_dbg("pkvm: %s: write protecting pasid dir: %llx\n",
+					__func__, pkvm_virt_to_phys(pde));
+			if (pkvm_switch_host_ept_ro(pkvm_virt_to_phys(pde), VTD_PAGE_SIZE)) {
+				pkvm_err("pkvm: %s: failed to write protect pasid dir page!\n", __func__);
+				return -EFAULT;
+			}
+		}
+
 		pe = get_pasid_table_from_pde(pde);
 		if (!pe)
 			continue;
@@ -178,6 +195,13 @@ int validate_sm_context_entries(struct pkvm_iommu *iommu,
 				u8 bus, struct context_entry *context, bool upper)
 {
 	int ce_idx, ret;
+
+	pkvm_dbg("pkvm: %s: write protecting sm context table: %llx\n",
+			__func__, pkvm_virt_to_phys(context));
+	if (pkvm_switch_host_ept_ro(pkvm_virt_to_phys(context), VTD_PAGE_SIZE)) {
+		pkvm_err("pkvm: %s: failed to write protect sm context table Page!\n", __func__);
+		return -EFAULT;
+	}
 
 	for (ce_idx = 0; ce_idx < 128; ce_idx++) {
 		struct context_entry *ce = &context[ce_idx * 2];
@@ -253,6 +277,14 @@ retry:
 
 		ptable_hpa = host_gpa2hpa(*ptable_gpa);
 		entries = host_gpa2hva(*ptable_gpa);
+
+		pkvm_dbg("pkvm: %s: write protecting pasid table: %llx\n",
+				__func__, pkvm_virt_to_phys(entries));
+		if (pkvm_switch_host_ept_ro(pkvm_virt_to_phys(entries), VTD_PAGE_SIZE)) {
+			pkvm_err("pkvm: %s: failed to write protect pasid table Page!\n", __func__);
+			return -EFAULT;
+		}
+		memset(entries, 0, VTD_PAGE_SIZE);
 
 		/*
 		 * The pasid directory table entry won't be freed after
