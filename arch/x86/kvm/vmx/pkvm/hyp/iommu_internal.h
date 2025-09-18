@@ -73,6 +73,8 @@ extern struct pkvm_mm_ops iommu_pw_noncoherency_mm_ops;
 extern struct pkvm_pgtable_ops iommu_lm_id_ops;
 extern struct pkvm_pgtable_ops iommu_sm_id_ops;
 
+#define __DOMAIN_MAX_ADDR(gaw) ((((uint64_t)1) << (gaw)) - 1)
+
 #define LAST_LEVEL(level)	\
 	(((level) == 1) ? true : false)
 
@@ -245,6 +247,8 @@ unsigned long pkvm_iommu_set_lm_ce(u64 phys, u64 param_gpa);
 unsigned long pkvm_iommu_set_lm_ptce(u64 phys, u64 param_gpa);
 unsigned long pkvm_iommu_set_sm_ce(u64 phys, u64 param_gpa);
 unsigned long pkvm_iommu_set_sm_ce_pre(u64 phys, u64 param_gpa);
+unsigned long pkvm_iommu_domain_attach(u64 phys, u64 param_gpa);
+unsigned long pkvm_iommu_domain_detach(u64 phys, u64 bdf, u64 pgd_gpa);
 #else
 int handle_descriptor(struct pkvm_iommu *iommu, struct qi_desc *desc);
 int free_shadow_id(struct pkvm_iommu *iommu, unsigned long vaddr,
