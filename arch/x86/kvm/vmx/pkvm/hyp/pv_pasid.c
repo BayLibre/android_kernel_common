@@ -18,6 +18,7 @@
 #include "iommu_spgt.h"
 #include "bug.h"
 #include "iommu.h"
+#include "iommu_domain.h"
 
 static void __pasid_setup_fl(struct intel_iommu *iommu, struct pasid_entry *pe, u64 flptr,
 		u16 did, bool force_snoop)
@@ -391,6 +392,7 @@ int pkvm_iommu_clear_pasid_entry(u64 phys, u64 param_gpa)
 	pkvm_dbg("pkvm: %s: clear_pe: dev[%x] pasid: %x, did: %x\n",
 			__func__, param->bdf, param->pasid, param->did);
 	pasid_clear_entry(pte);
+
 	ret = 0;
 
 out_unlock:
@@ -422,6 +424,7 @@ int pkvm_iommu_pasid_setup_fl(u64 phys, u64 param_gpa)
 	struct pkvm_pasid_table_param *param;
 	struct intel_iommu *iommu;
 	struct pasid_entry *pte;
+	struct pkvm_iommu_domain *domain;
 	int ret = -EINVAL;
 
 	if (!hyp_iommu)
@@ -453,6 +456,24 @@ int pkvm_iommu_pasid_setup_fl(u64 phys, u64 param_gpa)
 		goto out_unlock;
 	}
 
+	/*
+	 * Verify that the domain exists in pkvm.
+	 */
+	domain = pkvm_get_iommu_domain(param->domain_pgd_gpa);
+	if (!domain) {
+		pkvm_err("pkvm: %s: Failed to locate domain with pgd: %llx\n",
+				__func__, param->domain_pgd_gpa);
+		ret = -EFAULT;
+		goto out_unlock;
+	}
+	pkvm_put_iommu_domain(domain);
+
+	if (ret) {
+		pkvm_err("pkvm: %s: failed to attach device[%x] to domain(pgd=%llx)!\n",
+				__func__, param->bdf, param->domain_pgd_gpa);
+		goto out_unlock;
+	}
+
 	__pasid_setup_fl(iommu, pte, param->domain_pgd_gpa,
 			param->did, param->force_snooping);
 
@@ -469,6 +490,7 @@ static int pasid_setup_sl(struct pkvm_iommu *hyp_iommu, struct pkvm_pasid_table_
 {
 	struct intel_iommu *iommu;
 	struct pasid_entry *pte;
+	struct pkvm_iommu_domain *domain;
 	int ret = -EINVAL;
 
 	pkvm_spin_lock(&hyp_iommu->lock);
@@ -499,6 +521,19 @@ static int pasid_setup_sl(struct pkvm_iommu *hyp_iommu, struct pkvm_pasid_table_
 		goto out_unlock;
 	}
 
+	if (param->domain_pgd_gpa != pkvm_host_ept_pgd()) {
+		/*
+		 * Verify that the domain exists in pkvm.
+		 */
+		domain = pkvm_get_iommu_domain(param->domain_pgd_gpa);
+		if (!domain) {
+			pkvm_err("pkvm: %s: Failed to locate domain with pgd: %llx\n",
+					__func__, param->domain_pgd_gpa);
+			ret = -EFAULT;
+			goto out_unlock;
+		}
+		pkvm_put_iommu_domain(domain);
+	}
 	__pasid_setup_sl(iommu, pte, param->domain_pgd_gpa, param->did,
 			param->domain_agaw, param->dirty_tracking);
 
