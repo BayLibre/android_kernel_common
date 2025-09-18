@@ -497,7 +497,8 @@ unsigned long pkvm_iommu_domain_alloc(u64 param_va)
 	pgd = host_gpa2hpa(param->pgd_gpa);
 	domain = pkvm_alloc_iommu_domain(pgd);
 	if (IS_ERR(domain)) {
-		pkvm_err("pkvm: %s: failed to allocate ptdev for bdf: %x\n", __func__, param->bdf);
+		pkvm_err("pkvm: %s: failed to allocate iommu domain for bdf: %x (err=%ld)\n",
+			 __func__, param->bdf, PTR_ERR(domain));
 		return PTR_ERR(domain);
 	}
 
@@ -548,14 +549,16 @@ unsigned long pkvm_iommu_domain_free(u64 pgd_gpa)
 	}
 	ret = pkvm_free_iommu_domain(domain);
 	if (ret) {
-		pkvm_err("pkvm: %s: Failed to free the domain[pgd:%llx]\n", __func__, pgd);
+		pkvm_err("pkvm: %s: Failed to free the domain[pgd:%llx] (err=%d)\n",
+			 __func__, pgd, ret);
 		return ret;
 	}
 
 	pkvm_dbg("pkvm: %s: remove write protect pgd: %llx\n", __func__, pgd);
 	ret = __pkvm_hyp_donate_host_unshare_ro(pgd, VTD_PAGE_SIZE);
 	if (ret) {
-		pkvm_err("pkvm: %s: failed to remove write protect pgd!\n", __func__);
+		pkvm_err("pkvm: %s: failed to remove write protect pgd: %llx (err=%d)\n",
+			 __func__, pgd, ret);
 	}
 
 	return ret;
