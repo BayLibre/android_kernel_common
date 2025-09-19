@@ -44,6 +44,24 @@
       ],
       "revId": "74d18297a1d91ca3d901385af7277820b074c593",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03b72c1f_403b7b95",
+        "filename": "init/Kconfig.gki",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1898165
+      },
+      "writtenOn": "2025-09-19T07:47:19Z",
+      "side": 1,
+      "message": "It\u0027s not directly settable because of not fulfilled visibility condition. This is the menuconfig entry in android16-6.12: ```Symbol: MTK_TIMER [\u003dn]                                                                │  \n  │ Type  : bool                                                                          │  \n  │ Defined at drivers/clocksource/Kconfig:478                                            │  \n  │   Prompt: Mediatek timer driver                                                       │  \n  │   Depends on: GENERIC_CLOCKEVENTS [\u003dy] \u0026\u0026 HAS_IOMEM [\u003dy]                              │  \n  │   Visible if: GENERIC_CLOCKEVENTS [\u003dy] \u0026\u0026 HAS_IOMEM [\u003dy] \u0026\u0026 COMPILE_TEST [\u003dn]         │  \n  │   Location:                                                                           │  \n  │     -\u003e Device Drivers                                                                 │  \n  │ (1)   -\u003e Clock Source drivers                                                         │  \n  │         -\u003e Mediatek timer driver (MTK_TIMER [\u003dn])                                     │  \n  │ Selects: TIMER_OF [\u003dy] \u0026\u0026 CLKSRC_MMIO [\u003dy]                                            │  \n  │ Selected by [n]:                                                                      │  \n  │   - ARCH_MEDIATEK [\u003dn]                                     ``` \n  The build will fail on the stage of config checks if COMPILE_TEST is not set.",
+      "parentUuid": "b67c74a8_7f1904ee",
+      "revId": "74d18297a1d91ca3d901385af7277820b074c593",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
