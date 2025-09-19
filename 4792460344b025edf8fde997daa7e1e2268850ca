@@ -16,6 +16,23 @@
       "message": "Hi, Paul\n\nCould you help review this change?\n\nThanks",
       "revId": "4792460344b025edf8fde997daa7e1e2268850ca",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b66f0926_1cfac1af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1044551
+      },
+      "writtenOn": "2025-09-19T19:49:50Z",
+      "side": 1,
+      "message": "This change would break all existing GKI uses of overlayfs, specifically adb remount would no longer work on any debug build. Sorry, but no.",
+      "revId": "4792460344b025edf8fde997daa7e1e2268850ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
