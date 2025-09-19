@@ -34,6 +34,24 @@
       "parentUuid": "991b41ad_2ca04ff1",
       "revId": "2842f0798ab2b89aead698857abbbaeb4d717c48",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d60ad47f_4dd25cae",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 2022147
+      },
+      "writtenOn": "2025-09-19T14:55:38Z",
+      "side": 1,
+      "message": "If this approach is risky, could we \n\n1. take this for x86 only and remove ARM\n2. a new CL to add CONFIG_PROC_MEM_ALWAYS_FORCE in 6.12 for ARM, and AL will use  kernel cmd line (proc_mem.force_override\u003dptrace).",
+      "parentUuid": "1a937c76_010108d1",
+      "revId": "2842f0798ab2b89aead698857abbbaeb4d717c48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
