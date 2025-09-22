@@ -95,6 +95,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "527d40c0_1f3963fe",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-22T18:40:03Z",
+      "side": 1,
+      "message": "The reason is that we change the flush_tlb callback at runtime: https://android-review.googlesource.com/c/kernel/common/+/3672457/16/arch/x86/kvm/pkvm/mmu.c#199\n\nBut actually we discussed that with Chuanxiao and Kevin during v6.15 review, for example here: https://github.com/intel-staging/pKVM-IA/pull/40#discussion_r2315634205 (in the context of improving the pgtable API to enforce using const pointers for these ops), and concluded that it\u0027s not a big problem to do that differently and avoid changing flush_tlb at runtime and thus avoid this per-VM copy. Maybe I\u0027ll already do that in this series.\n\npKVM-ARM also has this per-VM copy of mm_ops, I\u0027m not sure what for.",
+      "parentUuid": "7f09d161_10dbc040",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 3
+      },
+      "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e51ee6db_28b7cf37",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 16
