@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dca1d78_a0314ade",
+        "filename": "arch/x86/kvm/pkvm/mmu.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-09-22T15:48:11Z",
+      "side": 1,
+      "message": "super minor nit: would it be okay to rename it to something that has pgtable in it - like guest_mmu_pgtops or such? While reading next patch, I got confused with mm_ops and mmu_ops ;-).",
+      "range": {
+        "startLine": 9,
+        "startChar": 31,
+        "endLine": 9,
+        "endChar": 44
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7f6da811_aab20781",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/mmu.h",
+              "range": {
+                "startLine": 9,
+                "startChar": 0,
+                "endLine": 10,
+                "endChar": 0
+              },
+              "replacement": "extern struct pkvm_pgtable_ops guest_mmu_pgtops;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8936fbf91a74be0a7dd529777a8e1e5292402458",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
