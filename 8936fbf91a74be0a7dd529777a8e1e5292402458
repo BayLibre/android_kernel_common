@@ -40,6 +40,30 @@
       ],
       "revId": "8936fbf91a74be0a7dd529777a8e1e5292402458",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02bffea9_12a6671b",
+        "filename": "arch/x86/kvm/pkvm/mmu.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-22T16:59:26Z",
+      "side": 1,
+      "message": "Yeah, indeed... Some time ago I changed `guest_pgt*` names to `guest_mmu*` in these patches, to be consistent with the convention used in Chuanxiao\u0027s WIP v6.15 patches for hypervisor and host pgtables, but hadn\u0027t noticed that there are actually the following names used there for pgt ops: \n\nhyp_mmu_pgt_ops\nhyp_mmu_mm_ops\nhost_ept_pgt_ops\nhost_ept_mm_ops\n\nSo I can change these to `guest_mmu_pgt_ops` and `guest_mmu_pgt_cap`.\n\n...While we\u0027re at it, perhaps it\u0027s good idea to rename these:\n```\n\tstruct pkvm_pgtable pgt;\n\tstruct pkvm_mm_ops pgt_mm_ops;\n\tpkvm_spinlock_t pgt_lock;\n```\n\nto these:\n```\n\tstruct pkvm_pgtable mmu;\n\tstruct pkvm_mm_ops mmu_mm_ops;\n\tpkvm_spinlock_t mmu_lock;\n```\n\nagain, for consistency with `hyp_mmu` and `host_mmu` names in v6.15.",
+      "parentUuid": "6dca1d78_a0314ade",
+      "range": {
+        "startLine": 9,
+        "startChar": 31,
+        "endLine": 9,
+        "endChar": 44
+      },
+      "revId": "8936fbf91a74be0a7dd529777a8e1e5292402458",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
