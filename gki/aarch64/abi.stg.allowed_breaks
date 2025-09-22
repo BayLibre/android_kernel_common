@@ -1,2 +1,20 @@
 # How to use this file: http://go/approve-abi-break
 
+function symbol 'void __balance_callbacks(struct rq*)' changed
+  CRC changed from 0x25592252 to 0x36774ec9
+
+function symbol 'struct rq* __migrate_task(struct rq*, struct rq_flags*, struct task_struct*, int)' changed
+  CRC changed from 0x131b2825 to 0x2a246b8
+
+function symbol 'struct rq* __task_rq_lock(struct task_struct*, struct rq_flags*)' changed
+  CRC changed from 0x1cc8dc1e to 0x75d85048
+
+... 152 omitted; 155 symbols have only CRC changes
+
+type 'struct cfs_rq' changed
+  member 'unsigned int h_nr_queued' was removed
+  member 'unsigned int h_nr_runnable' was removed
+  member 'unsigned int h_nr_running' was added
+  3 members ('unsigned int idle_nr_running' .. 'unsigned int h_nr_delayed') changed
+    offset changed by -32
+
