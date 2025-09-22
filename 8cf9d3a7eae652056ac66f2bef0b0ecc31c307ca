@@ -338,6 +338,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ae2125af_3ae0e4fa",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-22T14:37:29Z",
+      "side": 1,
+      "message": "On the hypervisor side it is calling vmx_vm_destroy(), not pkvm_vm_destroy(). In arch/x86/kvm/pkvm/vmx/vmx.c:\n```\n\t.vm_destroy \u003d vmx_vm_destroy,\n```\n\nOn the host side (arch/x86/kvm/vmx/pkvm_high.c) it is calling pkvm_vm_destroy() but that is a different pkvm_vm_destroy().",
+      "parentUuid": "b7f47ee6_278c0a13",
+      "revId": "8cf9d3a7eae652056ac66f2bef0b0ecc31c307ca",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b740cc0_e10e6555",
         "filename": "arch/x86/kvm/pkvm/pkvm.h",
         "patchSetId": 13
