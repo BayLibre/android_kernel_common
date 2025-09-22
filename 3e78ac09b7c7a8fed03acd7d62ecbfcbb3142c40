@@ -117,6 +117,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38a03555_7a46bc51",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-09-22T19:51:29Z",
+      "side": 1,
+      "message": "Ahh I see, thanks for the background. Went through the discussion and I think it makes sense to do the check in the tlb_flush callback and avoid the runtime check",
+      "parentUuid": "527d40c0_1f3963fe",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 3
+      },
+      "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e51ee6db_28b7cf37",
