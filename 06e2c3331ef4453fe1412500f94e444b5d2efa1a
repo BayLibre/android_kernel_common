@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "94b70657_13378b80",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-22T12:40:17Z",
+      "side": 1,
+      "message": "I think the way to fix this is to implement tracking guest pages in some data structure on the host side, so that instead of relying on pKVM to distinguish \"good\" errors (spurious page faults, indicated by -EEXIST) and \"bad\" ones, the host can check for spurious page faults on its own before making the hypercall. That would be useful for different reasons as well. That is a bit orthogonal to the 6.15 rework. We might want to implement that soon, for both 6.12 and 6.15.\n\n\u003e can\u0027t we just check the pgt_entry_to_prot here?\n\nWe can\u0027t just do that, since pgt_entry_to_prot actually returns all PTE bits other than the address bits or the huge page bit, so the bits it returns include e.g. pKVM\u0027s page ownership bits or the access/dirty bits, which may change at runtime and should not be used in this check.",
+      "parentUuid": "00bb3b00_e42802e7",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 34
+      },
+      "revId": "06e2c3331ef4453fe1412500f94e444b5d2efa1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64d16b8b_ee30b174",
         "filename": "arch/x86/kvm/pkvm/pkvm.h",
         "patchSetId": 15
@@ -37,6 +61,30 @@
       "writtenOn": "2025-09-22T10:59:29Z",
       "side": 1,
       "message": "nit: maybe move those 2 functions above to group with to_(p)kvm helpers?",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 0
+      },
+      "revId": "06e2c3331ef4453fe1412500f94e444b5d2efa1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76cc2a7f_9cf2f7d6",
+        "filename": "arch/x86/kvm/pkvm/pkvm.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-22T12:40:17Z",
+      "side": 1,
+      "message": "Why exactly? Because page tables are more important than vCPUs? :)",
+      "parentUuid": "64d16b8b_ee30b174",
       "range": {
         "startLine": 112,
         "startChar": 0,
