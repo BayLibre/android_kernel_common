@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "192eadf9_c99f65c7",
+        "filename": "arch/x86/kvm/pkvm/mmu.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-09-22T08:36:07Z",
+      "side": 1,
+      "message": "Just making sure: all those FIXME comments related to header files are left by purpose? and the reason for putting them in new files like this one is to mark that due to file hierarchy rework in 6.15 some of them may change e.g. vmx/pkvm/hyp/pgtable.h will be moved to different location, right?",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 34
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f42134ad_07a21863",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/mmu.h",
+              "range": {
+                "startLine": 5,
+                "startChar": 0,
+                "endLine": 6,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "172bf1ce15cc27b5f137c1030aa788f1483e19bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
