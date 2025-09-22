@@ -60,6 +60,30 @@
       ],
       "revId": "10e8dcdb6807f9571e42cdb7546dea0be5ce21c8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39c2d448_2996bba3",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-22T11:43:07Z",
+      "side": 1,
+      "message": "Yeah, I can add a pgt_ops variable.\nAs for squashing the two ifs into one, it is actually quite common in Linux kernel code to use multiple ifs in such cases, for readability?",
+      "parentUuid": "d1ac83d3_6353f5a6",
+      "range": {
+        "startLine": 821,
+        "startChar": 0,
+        "endLine": 825,
+        "endChar": 11
+      },
+      "revId": "10e8dcdb6807f9571e42cdb7546dea0be5ce21c8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
