@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fecf6a27_14c02244",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-09-22T19:01:39Z",
+      "side": 1,
+      "message": "\u003e I think the way to fix this is to implement tracking guest pages in some data structure on the host side, so that instead of relying on pKVM to distinguish \"good\" errors (spurious page faults, indicated by -EEXIST) and \"bad\" ones, the host can check for spurious page faults on its own before making the hypercall. That would be useful for different reasons as well. That is a bit orthogonal to the 6.15 rework. We might want to implement that soon, for both 6.12 and 6.15.\n\nOk, seems reasonable to implement tracking guest pages on the host side in future patches - not insisting but maybe a good idea is to move +/- your above description to this FIXME comment?\n\n\u003e We can\u0027t just do that, since pgt_entry_to_prot actually returns all PTE bits other than the address bits or the huge page bit, so the bits it returns include e.g. pKVM\u0027s page ownership bits or the access/dirty bits, which may change at runtime and should not be used in this check.\n\nYeah - I meant use it with some extra masking to exclude not related bits but due to above regarding tracking on the host side I think it is ok to not bother too much about it",
+      "parentUuid": "94b70657_13378b80",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 34
+      },
+      "revId": "06e2c3331ef4453fe1412500f94e444b5d2efa1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64d16b8b_ee30b174",
         "filename": "arch/x86/kvm/pkvm/pkvm.h",
         "patchSetId": 15
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Why exactly? Because page tables are more important than vCPUs? :)",
       "parentUuid": "64d16b8b_ee30b174",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 0
+      },
+      "revId": "06e2c3331ef4453fe1412500f94e444b5d2efa1a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8a35d3e_e7c0dad7",
+        "filename": "arch/x86/kvm/pkvm/pkvm.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-09-22T19:01:39Z",
+      "side": 1,
+      "message": "No:) just to group with previous to_(p)kvm helpers and not intermix them with to_(p)kvm_vcpu ones, so it will be grouped as below:\n((p)kvm related non-cpu related helpers, followed by (p)kvm-cpu related ones):\n```\nstatic inline struct kvm *to_kvm(struct pkvm_vm *pkvm_vm)\nstatic inline struct pkvm_vm *to_pkvm(struct kvm *kvm)\nstatic inline struct pkvm_vm *pgt_to_pkvm(struct pkvm_pgtable *pgt)\nstatic inline struct kvm *pgt_to_kvm(struct pkvm_pgtable *pgt)\nstatic inline struct kvm_vcpu *to_kvm_vcpu(struct pkvm_vcpu *pkvm_vcpu)\nstatic inline struct pkvm_vcpu *to_pkvm_vcpu(struct kvm_vcpu *vcpu)\n```\nor\n```\nstatic inline struct kvm *to_kvm(struct pkvm_vm *pkvm_vm)\nstatic inline struct kvm *pgt_to_kvm(struct pkvm_pgtable *pgt)\nstatic inline struct pkvm_vm *to_pkvm(struct kvm *kvm)\nstatic inline struct pkvm_vm *pgt_to_pkvm(struct pkvm_pgtable *pgt)\nstatic inline struct kvm_vcpu *to_kvm_vcpu(struct pkvm_vcpu *pkvm_vcpu)\nstatic inline struct pkvm_vcpu *to_pkvm_vcpu(struct kvm_vcpu *vcpu)\n```\n\nBut again it is only nit-kind suggestion which doesn\u0027t matter feel free to ignore:) - it is only preference related.",
+      "parentUuid": "76cc2a7f_9cf2f7d6",
       "range": {
         "startLine": 112,
         "startChar": 0,
