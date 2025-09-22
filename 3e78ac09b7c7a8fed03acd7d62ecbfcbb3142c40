@@ -1,0 +1,137 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c29381b7_f9487b77",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-09-22T16:02:07Z",
+      "side": 1,
+      "message": "nit: might not be necessary I think",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 22
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "574560d3_43b8b203",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/mmu.c",
+              "range": {
+                "startLine": 45,
+                "startChar": 0,
+                "endLine": 46,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f09d161_10dbc040",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-09-22T16:02:07Z",
+      "side": 1,
+      "message": "Is there a need for per vm copy of this ops? If not, would it be better to have a static instance and get assigned as a pointer?",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 3
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "2c001357_f150ed36",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/mmu.c",
+              "range": {
+                "startLine": 36,
+                "startChar": 0,
+                "endLine": 36,
+                "endChar": 0
+              },
+              "replacement": "static const struct pkvm_mm_ops pkvm_guest_mm_ops \u003d {\n\t.phys_to_virt \u003d pkvm_phys_to_virt,\n\t.virt_to_phys \u003d pkvm_virt_to_phys,\n\t.zalloc_page \u003d guest_mmu_zalloc_page,\n\t.get_page \u003d guest_mmu_get_page,\n\t.put_page \u003d guest_mmu_put_page,\n\t.page_count \u003d hyp_page_count,\n\t.flush_tlb \u003d NULL,\n\t.flush_cache \u003d NULL,\n};\n\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/mmu.c",
+              "range": {
+                "startLine": 38,
+                "startChar": 0,
+                "endLine": 48,
+                "endChar": 0
+              },
+              "replacement": "\tpkvm_vm-\u003epgt_mm_ops \u003d pkvm_guest_mm_ops;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e51ee6db_28b7cf37",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-09-22T16:02:07Z",
+      "side": 1,
+      "message": "Not related to this change, but I am a bit confused here. Should we be calling `pkvm_vm_destroy` here? I feel `free_pkvm_vm_handle` will not be called in case of failure as vmx_vm_destroy doesn\u0027t do that. `pkvm_vm_destroy` would basically cleanup everything that is partially setup in this function and seems the logical thing to do. What do you think?",
+      "range": {
+        "startLine": 193,
+        "startChar": 14,
+        "endLine": 193,
+        "endChar": 24
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "967b052e_6609cd32",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 190,
+                "startChar": 0,
+                "endLine": 190,
+                "endChar": 0
+              },
+              "replacement": "// The cleanup labels below handle failures at different stages of pkvm_vm_init.\n// pkvm_vm_destroy is not used in these failure paths because it assumes a\n// fully initialized VM, including a successfully allocated handle. Since\n// failures can occur before allocate_pkvm_vm_handle(), the current structure\n// ensures that only resources that were successfully set up are properly torn down.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
