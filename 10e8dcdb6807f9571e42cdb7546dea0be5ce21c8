@@ -1,0 +1,65 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1ac83d3_6353f5a6",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-09-22T08:52:13Z",
+      "side": 1,
+      "message": "Maybe add:\nstruct pkvm_pgtable_ops *pgt_ops \u003d pgt-\u003epgt_ops;\nand then squash those two ifs into one to make it more compact?",
+      "range": {
+        "startLine": 821,
+        "startChar": 0,
+        "endLine": 825,
+        "endChar": 11
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ef6f9c24_91a4b484",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.c",
+              "range": {
+                "startLine": 819,
+                "startChar": 0,
+                "endLine": 819,
+                "endChar": 0
+              },
+              "replacement": "\tstruct pkvm_pgtable_ops *pgt_ops \u003d pgt-\u003epgt_ops;\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.c",
+              "range": {
+                "startLine": 821,
+                "startChar": 0,
+                "endLine": 825,
+                "endChar": 0
+              },
+              "replacement": "\tif (!pgt_ops-\u003epgt_entry_present(ptep) || !pgt_ops-\u003epgt_entry_young(ptep))\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.c",
+              "range": {
+                "startLine": 830,
+                "startChar": 0,
+                "endLine": 831,
+                "endChar": 0
+              },
+              "replacement": "\t\tpgt_ops-\u003epgt_entry_mkold(ptep);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "10e8dcdb6807f9571e42cdb7546dea0be5ce21c8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
