@@ -40,6 +40,30 @@
       ],
       "revId": "172bf1ce15cc27b5f137c1030aa788f1483e19bc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c832d90b_0739345a",
+        "filename": "arch/x86/kvm/pkvm/mmu.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-22T11:35:55Z",
+      "side": 1,
+      "message": "Right, they are left on purpose since the objective is that generic files shouldn\u0027t include vmx-specific headers. In 6.15 we already have the new file hierarchy so this is already solved. In 6.12 we are unlikely to change the file hierarchy, so these FIXMEs will probably remain.\n\nBTW, FWIW these FIXMEs follow Chuanxiao\u0027s FIXMEs in arch/x86/kvm/pkvm/pkvm.c etc.",
+      "parentUuid": "192eadf9_c99f65c7",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 34
+      },
+      "revId": "172bf1ce15cc27b5f137c1030aa788f1483e19bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
