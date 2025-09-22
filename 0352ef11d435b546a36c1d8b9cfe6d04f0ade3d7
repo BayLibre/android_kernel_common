@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54959c57_ab351ff0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2023081
+      },
+      "writtenOn": "2025-09-22T12:20:36Z",
+      "side": 1,
+      "message": "ag/3720013 and ag/3720016 are currently breaking ABI, but they are still being upstreamed. They were tagged with `desktop-6.12-x86-64-kmi-breakage`.\n\nThis feature is critical for desktop devices and user experience, so to enable early testing on 6.12 kernel, the FROMLIST patches (even breaking ABI) are allowed in this particular case.\n\nUpstream of those patches is critical and Andrei commited to do his best to land it for the next GKI.",
+      "revId": "0352ef11d435b546a36c1d8b9cfe6d04f0ade3d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
