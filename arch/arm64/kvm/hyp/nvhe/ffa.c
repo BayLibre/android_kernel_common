@@ -113,12 +113,12 @@ static struct kvm_ffa_buffers *ffa_get_buffers(struct pkvm_hyp_vcpu *hyp_vcpu)
 
 DECLARE_STATIC_KEY_FALSE(kvm_ffa_unmap_on_lend);
 
-static int ffa_host_store_handle(u64 ffa_handle, bool is_lend)
+static struct ffa_handle *ffa_host_alloc_handle(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
 	u32 i;
 	struct ffa_handle *free_handle = NULL;
 
-	if (!static_branch_unlikely(&kvm_ffa_unmap_on_lend))
+	if (!static_branch_unlikely(&kvm_ffa_unmap_on_lend) || hyp_vcpu)
 		return 0;
 
 	if (spm_free_handle) {
@@ -132,14 +132,12 @@ static int ffa_host_store_handle(u64 ffa_handle, bool is_lend)
 				break;
 
 		if (i == num_spm_handles)
-			return -ENOSPC;
+			return ERR_PTR(-ENOSPC);
 
 		free_handle = &spm_handles[i];
 	}
 
-	free_handle->handle = ffa_handle;
-	free_handle->is_lend = is_lend;
-	return 0;
+	return free_handle;
 }
 
 static struct ffa_handle *ffa_host_get_handle(u64 ffa_handle)
@@ -909,6 +907,7 @@ static int __do_ffa_mem_xfer(const u64 func_id,
 	struct ffa_mem_transfer *transfer = NULL;
 	u64 ffa_handle;
 	bool is_lend = func_id == FFA_FN64_MEM_LEND;
+	struct ffa_handle *free_handle = NULL;
 
 	if (addr_mbz || npages_mbz || fraglen > len ||
 	    fraglen > KVM_FFA_MBOX_NR_PAGES * PAGE_SIZE) {
@@ -1009,6 +1008,12 @@ static int __do_ffa_mem_xfer(const u64 func_id,
 	if (ret)
 		goto out_unlock;
 
+	free_handle = ffa_host_alloc_handle(hyp_vcpu);
+	if (IS_ERR(free_handle)) {
+		ret = PTR_ERR(free_handle);
+		goto out_unlock;
+	}
+
 	ffa_mem_xfer(res, func_id, len, fraglen);
 	if (fraglen != len) {
 		if (res->a0 != FFA_MEM_FRAG_RX)
@@ -1027,10 +1032,9 @@ static int __do_ffa_mem_xfer(const u64 func_id,
 	if (hyp_vcpu && transfer) {
 		transfer->ffa_handle = ffa_handle;
 		list_add(&transfer->node, &ffa_buf->xfer_list);
-	} else if (!hyp_vcpu) {
-		ret = ffa_host_store_handle(ffa_handle, is_lend);
-		if (ret)
-			goto err_unshare;
+	} else if (free_handle) {
+		free_handle->handle = ffa_handle;
+		free_handle->is_lend = is_lend;
 	}
 	hyp_spin_unlock(&kvm_ffa_hyp_lock);
 	return 0;
