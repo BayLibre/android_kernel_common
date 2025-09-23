@@ -70,6 +70,24 @@
       "parentUuid": "c1166601_fa3826d0",
       "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05def0c9_3737280f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-23T16:54:51Z",
+      "side": 1,
+      "message": "\u003e In the pkvm side, we need to to host_gpa2hpa(), but other than that, the logic would not change much.\n\nAnd pkvm_phys_to_virt(), right? (Or the host could just pass the virtual address in the first place.)\n\nBut we should be careful about such things, since the host is untrusted. What if this address passed by the host points, for example, to a page donated to a pVM, or to a page that is not mapped in the hypervisor page tables at all, or for example to the IOMMU MMIO?\n\nYou can also look at this TODO: https://docs.google.com/spreadsheets/d/1kWc608crmrGzYvAgGukm9l2Ruv6geTVBj6i6nK5hh48/edit?gid\u003d185256579#gid\u003d185256579\u0026range\u003dA13\nand this discussion: https://android-review.git.corp.google.com/c/kernel/common/+/3666639/13/arch/x86/kvm/pkvm/pkvm.c#1693\n\n\u003e for eg: pkvm expects a u32, but hypercall uses u64 and there is nothing that stops a caller from passing a u64 (either accidental or malicious)\n\npKVM (or KVM, for that matter) always expects u64. It casts it to the needed (smaller) type on its own.",
+      "parentUuid": "873f71ec_90819a6e",
+      "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
