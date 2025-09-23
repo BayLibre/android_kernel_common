@@ -83,4 +83,16 @@ static inline long pkvm_hc_iommu_domain_free(u64 pgd_gpa)
 	return kvm_hypercall1(PKVM_HC_IOMMU_DOMAIN_FREE, pgd_gpa);
 
 }
+
+static inline long pkvm_hc_iommu_map_pages(struct pkvm_iommu_map_param *param)
+{
+	return pkvm_iommu_hypercall(PKVM_HC_IOMMU_MAP_PAGES,
+			iommu_map_param, param);
+}
+
+static inline long pkvm_hc_iommu_unmap_pages(unsigned long pgd_gpa, unsigned long start_pfn,
+		unsigned long last_pfn)
+{
+	return kvm_hypercall3(PKVM_HC_IOMMU_UNMAP_PAGES, pgd_gpa, start_pfn, last_pfn);
+}
 #endif
