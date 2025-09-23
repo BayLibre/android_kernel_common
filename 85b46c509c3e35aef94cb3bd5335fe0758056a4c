@@ -16,6 +16,24 @@
       "message": "Just curious if you had considered using a struct to consolidate the params to the hypercall and use existing versions of hypercall. That could probably avoid the biolerplate code in this and next cl and also avoid size mismatch of the parameters",
       "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "982572c8_505b25a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-23T15:30:27Z",
+      "side": 1,
+      "message": "I\u0027m not sure what exactly you mean by \"boilerplate code\" and \"size mismatch\" in this case?\n\nAnd among the 5 arguments in https://android-review.googlesource.com/c/kernel/common/+/3666639/16/arch/x86/kvm/pkvm/mmu.c#95 only one argument (`bool writable`) is less than 8 bytes, i.e. those 5 arguments won\u0027t fit into 4 registers in any case, so we could only pass that struct by pointer, which would complicate the code a bit?\n\nBTW, as we recently discussed with Chuanxiao, in 6.15 possibly we will not need to pass the vcpu pointer as an argument to hypercalls (since pKVM itself can find out which vCPU is loaded on current CPU), including this MMU map hypercall, so possibly max 4 arguments will be enough and this patch will not be needed in 6.15. (But for 6.12 we are not planning that.)",
+      "parentUuid": "11abf5fc_9f27102d",
+      "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
