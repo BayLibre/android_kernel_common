@@ -1441,7 +1441,7 @@ static void domain_exit(struct dmar_domain *domain)
 		domain_unmap(domain, 0, DOMAIN_MAX_PFN(domain->gaw), &freelist);
 		iommu_put_pages_list(&freelist);
 
-		if (pkvm_pviommu_enabled() && domain->pgd) {
+		if (pkvm_pviommu_enabled()) {
 			pkvm_hc_iommu_domain_free(virt_to_phys(domain->pgd));
 			iommu_free_page(domain->pgd);
 		}
