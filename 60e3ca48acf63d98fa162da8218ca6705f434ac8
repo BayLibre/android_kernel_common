@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c16bafe1_60fd9be7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3485565
+      },
+      "writtenOn": "2025-09-23T07:04:24Z",
+      "side": 1,
+      "message": "If I\u0027m not mistaken it looks as if all those changes to ZRAM could land as a vendor module in `desktop-google` repository [1]. ZRAM is a GKI module, but on 6.12 it\u0027s unprotected [2, 3], meaning it can be substituted.\n\n[1] go/al-gki-vmm\n[2] https://source.android.com/docs/core/architecture/kernel/modules#unprotected-GKI-module\n[3] https://android.googlesource.com/kernel/common/+/refs/heads/android16-6.12/modules.bzl#206",
+      "revId": "60e3ca48acf63d98fa162da8218ca6705f434ac8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
