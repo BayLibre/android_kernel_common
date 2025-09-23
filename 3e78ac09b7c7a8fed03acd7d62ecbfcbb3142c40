@@ -276,6 +276,30 @@
       },
       "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8e826d3_b50611e7",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-23T12:48:53Z",
+      "side": 1,
+      "message": "It\u0027s the other way around. In `arch/x86/kvm/pkvm/x86.c`:\n```\nvoid kvm_arch_destroy_vm(struct kvm *kvm)\n{\n#ifdef __PKVM_HYP__\n\tkvm_x86_call(vm_destroy)(kvm);\n#else\n\t...\n#endif\n}\n```",
+      "parentUuid": "58ef2886_2dfdbd66",
+      "range": {
+        "startLine": 193,
+        "startChar": 14,
+        "endLine": 193,
+        "endChar": 24
+      },
+      "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
