@@ -599,22 +599,21 @@ unsigned long pkvm_iommu_domain_attach(u64 phys, u64 param_gpa)
 	if (!hyp_iommu)
 		return -EINVAL;
 
+	iommu = &hyp_iommu->iommu;
+
 	param = host_gpa2hva(param_gpa);
 	if (!param)
 		return -EINVAL;
 	pgd = host_gpa2hpa(param->pgd_gpa);
 	pgdptr = pkvm_phys_to_virt(pgd);
-	// TODO: Enable this once we have hypercalls for map/unmap
-	//
-	//pkvm_dbg("pkvm: %s: write protecting pgd: %llx\n", __func__, pgd);
-	//if (pkvm_switch_host_ept_ro(pgd, VTD_PAGE_SIZE)) {
-	//	pkvm_err("pkvm: %s: failed to write protect pgd!\n", __func__);
-	//	goto out_unlock;
-	//}
+	pkvm_dbg("pkvm: %s: write protecting pgd: %llx\n", __func__, pgd);
+	if (pkvm_switch_host_ept_ro(pgd, VTD_PAGE_SIZE)) {
+		pkvm_err("pkvm: %s: failed to write protect pgd!\n", __func__);
+		goto out_unlock;
+	}
 	memset(pgdptr, 0, VTD_PAGE_SIZE);
 
 	pkvm_spin_lock(&hyp_iommu->lock);
-	iommu = &hyp_iommu->iommu;
 
 	pkvm_dbg("pkvm: %s: attaching device(bdf=%x) to domain(pgd=%llx) use_first_level:%d\n",
 			__func__, param->bdf, pgd, param->use_first_level);
@@ -678,13 +677,11 @@ unsigned long pkvm_iommu_domain_detach(u64 phys, u64 bdf, u64 pgd_gpa)
 	}
 
 	pkvm_put_iommu_domain(domain);
-	// TODO: Enable this once we have hypercalls for map/unmap
-	//
-	//pkvm_dbg("pkvm: %s: remove write protect pgd: %llx\n", __func__, pgd);
-	//if (pkvm_switch_host_ept_default(pgd, VTD_PAGE_SIZE)) {
-	//	pkvm_err("pkvm: %s: failed to remove write protect pgd!\n", __func__);
-	//	goto out_unlock;
-	//}
+	pkvm_dbg("pkvm: %s: remove write protect pgd: %llx\n", __func__, pgd);
+	if (pkvm_switch_host_ept_default(pgd, VTD_PAGE_SIZE)) {
+		pkvm_err("pkvm: %s: failed to remove write protect pgd!\n", __func__);
+		goto out_unlock;
+	}
 
 out_unlock:
 	pkvm_spin_unlock(&hyp_iommu->lock);
