@@ -204,6 +204,30 @@
       },
       "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76ade991_8956290a",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-09-23T00:41:21Z",
+      "side": 1,
+      "message": "Yes youre right, I didn\u0027t realize `pkvm_vm_destroy()` takes handle to do cleanup. Ideally I envisioned `pkvm_vm_destroy` to the exact wind down of this function so that we need not call cleanup of each init logic on failure(like mmu_destroy, followed by arch_destroy_vm followed by undonate pages). Instead of cleaning up each of these with multiple gotos, a single call to `pkvm_vm_destroy` logic on error which cleans up each of the above based on whether it was initialized or not. Its doable, but looks like its needs a rewrite of `pkvm_vm_destroy()` and is not in the scope of this patch. So as you suggested, lets handle `kvm_arch_destroy_vm` which is the only one left out in the current logic",
+      "parentUuid": "771af41d_46f0b683",
+      "range": {
+        "startLine": 193,
+        "startChar": 14,
+        "endLine": 193,
+        "endChar": 24
+      },
+      "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
