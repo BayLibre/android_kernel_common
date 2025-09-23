@@ -6,6 +6,13 @@
 
 #include "pkvm_hyp.h"
 
+#define __DOMAIN_MAX_PFN(gaw)  ((((uint64_t)1) << ((gaw) - VTD_PAGE_SHIFT)) - 1)
+
+/* We limit DOMAIN_MAX_PFN to fit in an unsigned long, and DOMAIN_MAX_ADDR
+   to match. That way, we can use 'unsigned long' for PFNs with impunity. */
+#define DOMAIN_MAX_PFN(gaw)	((unsigned long) min_t(uint64_t, \
+				__DOMAIN_MAX_PFN(gaw), (unsigned long)-1))
+
 /*
  * Represents a host iommu_domain/dmar_domain
  * Main function is to manage IO page tables.
@@ -37,4 +44,8 @@ void pkvm_put_iommu_domain(struct pkvm_iommu_domain *iommu_domain);
 
 int pkvm_domain_attach_device(u64 pgd, u16 bdf, u32 pasid, bool iommu_coherency);
 int pkvm_domain_detach_device(struct pkvm_iommu_domain *domain, u16 bdf, u32 pasid);
+
+unsigned long pkvm_iommu_domain_map(unsigned long param_gpa, unsigned long donation_gpa);
+unsigned long pkvm_iommu_domain_unmap(unsigned long pgd_gpa, unsigned long start_pfn,
+					unsigned long last_pfn, unsigned long donation_gpa);
 #endif

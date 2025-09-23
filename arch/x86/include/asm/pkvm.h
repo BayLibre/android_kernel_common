@@ -26,6 +26,8 @@
 #define PKVM_HC_IOMMU_SET_SM_CE_PRE	19
 #define PKVM_HC_IOMMU_DOMAIN_ALLOC	20
 #define PKVM_HC_IOMMU_DOMAIN_FREE	21
+#define PKVM_HC_IOMMU_MAP_PAGES		22
+#define PKVM_HC_IOMMU_UNMAP_PAGES	23
 
 /*
  * Internal hypercall to commit the pkvm initialization
@@ -59,6 +61,21 @@ struct pkvm_iommu_driver {
 };
 
 #ifdef CONFIG_PKVM_INTEL
+
+#define PKVM_MAX_IOMMU_PAGE_DONATION	64
+/*
+ * For managing IOMMU page tables, pkvm would need free pages and host
+ * donates the pages as needed. This avoids static allocation of pages
+ * in pkvm during boot. map and unmap hypercalls use this structure as
+ * a two-way communication mechanism to manage page donation. Host
+ * allocates pages and updates nr_donated for the map hypercall. pkvm
+ * updates nr_returned with the pages not used or freed during map/unmap
+ * hypercalls.
+ */
+struct pkvm_iommu_page_donation {
+	int nr_pages;
+	phys_addr_t pages[PKVM_MAX_IOMMU_PAGE_DONATION]; /* page gpa */
+};
 
 /*
  * Generic hypercall parameter for clearing legacy
@@ -131,6 +148,17 @@ struct pkvm_domain_param {
 	u8 use_first_level: 1;
 	u64 max_addr;
 	u64 pgd_gpa;
+};
+
+/*
+ * parameters passed by host for MAP_PAGES hypercall.
+ */
+struct pkvm_iommu_map_param {
+	u64 pgd_gpa;
+	u64 iov_pfn;
+	u64 phys_pfn;
+	u64 nr_pages;
+	u64 prot;
 };
 
 #ifndef __PKVM_HYP__
@@ -322,6 +350,30 @@ static inline long pkvm_hc_iommu_domain_free(u64 pgd_gpa)
 
 	if (pkvm_pviommu_enabled())
 		ret = kvm_hypercall1(PKVM_HC_IOMMU_DOMAIN_FREE, pgd_gpa);
+
+	return ret;
+}
+
+static inline long pkvm_hc_iommu_map_pages(struct pkvm_iommu_map_param *param,
+		struct pkvm_iommu_page_donation *donation)
+{
+	long ret = 0;
+	if (pkvm_pviommu_enabled()) {
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_MAP_PAGES,
+				virt_to_phys(param), virt_to_phys(donation));
+	}
+
+	return ret;
+}
+
+static inline long pkvm_hc_iommu_unmap_pages(unsigned long pgd_gpa, unsigned long start_pfn,
+		unsigned long last_pfn, struct pkvm_iommu_page_donation *donation)
+{
+	long ret = 0;
+	if (pkvm_pviommu_enabled()) {
+		ret = kvm_hypercall4(PKVM_HC_IOMMU_UNMAP_PAGES, pgd_gpa, start_pfn, last_pfn,
+				virt_to_phys(donation));
+	}
 
 	return ret;
 }
