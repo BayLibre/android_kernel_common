@@ -228,6 +228,30 @@
       },
       "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a5b61bd_532579e3",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-23T08:52:36Z",
+      "side": 1,
+      "message": "\u003e So as you suggested, lets handle `kvm_arch_destroy_vm` which is the only one left out in the current logic\n\nIt is not left out, it itself calls `kvm_x86_call(vm_destroy)(kvm)` and does nothing more, so replacing it with `kvm_arch_destroy_vm()` here would be just a cosmetic improvement.",
+      "parentUuid": "76ade991_8956290a",
+      "range": {
+        "startLine": 193,
+        "startChar": 14,
+        "endLine": 193,
+        "endChar": 24
+      },
+      "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
