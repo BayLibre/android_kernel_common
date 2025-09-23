@@ -638,13 +638,11 @@ unsigned long pkvm_iommu_domain_alloc(u64 phys, u64 param_gpa)
 		return -EINVAL;
 	pgd = host_gpa2hpa(param->pgd_gpa);
 	pgdptr = pkvm_phys_to_virt(pgd);
-	// TODO: Enable this once we have hypercalls for map/unmap
-	//
-	//pkvm_dbg("pkvm: %s: write protecting pgd: %llx\n", __func__, pgd);
-	//if (pkvm_switch_host_ept_ro(pgd, VTD_PAGE_SIZE)) {
-	//	pkvm_err("pkvm: %s: failed to write protect pgd!\n", __func__);
-	//	goto out_unlock;
-	//}
+	pkvm_dbg("pkvm: %s: write protecting pgd: %llx\n", __func__, pgd);
+	if (pkvm_switch_host_ept_ro(pgd, VTD_PAGE_SIZE)) {
+		pkvm_err("pkvm: %s: failed to write protect pgd!\n", __func__);
+		return -EFAULT;
+	}
 	memset(pgdptr, 0, VTD_PAGE_SIZE);
 
 	pkvm_spin_lock(&hyp_iommu->lock);
@@ -684,6 +682,7 @@ unsigned long pkvm_iommu_domain_free(u64 phys, u64 pgd_gpa)
 	struct pkvm_iommu *hyp_iommu = find_iommu_by_reg_phys(phys);
 	struct intel_iommu *iommu;
 	u64 pgd = host_gpa2hpa(pgd_gpa);
+	int ret;
 
 	if (!hyp_iommu)
 		return -EINVAL;
@@ -693,15 +692,13 @@ unsigned long pkvm_iommu_domain_free(u64 phys, u64 pgd_gpa)
 
 	pkvm_free_iommu_domain(pgd);
 
-	// TODO: Enable this once we have hypercalls for map/unmap
-	//
-	//pkvm_dbg("pkvm: %s: remove write protect pgd: %llx\n", __func__, pgd);
-	//if (pkvm_switch_host_ept_default(pgd, VTD_PAGE_SIZE)) {
-	//	pkvm_err("pkvm: %s: failed to remove write protect pgd!\n", __func__);
-	//	goto out_unlock;
-	//}
+	pkvm_dbg("pkvm: %s: remove write protect pgd: %llx\n", __func__, pgd);
+	ret = pkvm_switch_host_ept_default(pgd, VTD_PAGE_SIZE);
+	if (ret) {
+		pkvm_err("pkvm: %s: failed to remove write protect pgd!\n", __func__);
+	}
 
 	pkvm_spin_unlock(&hyp_iommu->lock);
 
-	return 0;
+	return ret;
 }
