@@ -252,6 +252,30 @@
       },
       "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58ef2886_2dfdbd66",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-09-23T12:43:48Z",
+      "side": 1,
+      "message": "`vmx_vm_destroy` defined in `arch/x86/kvm/pkvm/vmx/vmx.c` does not call `kvm_arch_destroy_vm()` as far as I can see.\n```\nvoid vmx_vm_destroy(struct kvm *kvm)\n{\n#ifdef __PKVM_HYP__\n       /*\n        * FIXME: Teardown shadow vm as it is initialized when doing\n        * vm init. Should revisit when PV method is ready.\n        */\n       pkvm_teardown_shadow_vm(kvm);\n\n       /*\n        * TODO: Support teardown the pid_table in the pkvm hypervisor when ipiv\n        * is supported.\n        */\n#else\n       struct kvm_vmx *kvm_vmx \u003d to_kvm_vmx(kvm);\n\n       free_pages((unsigned long)kvm_vmx-\u003epid_table, vmx_get_pid_table_order(kvm));\n#endif\n}\n```\n\nNot sure if I am looking at the wrong place?",
+      "parentUuid": "6a5b61bd_532579e3",
+      "range": {
+        "startLine": 193,
+        "startChar": 14,
+        "endLine": 193,
+        "endChar": 24
+      },
+      "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
