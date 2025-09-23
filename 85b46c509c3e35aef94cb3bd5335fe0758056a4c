@@ -34,6 +34,24 @@
       "parentUuid": "11abf5fc_9f27102d",
       "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1166601_fa3826d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-09-23T15:40:24Z",
+      "side": 1,
+      "message": "This patch and the next patch is what I meant about the boiler plate code(code to support hypercalls that is needed in the mmu map cl). If we convert the arguments to a structure, we could avoid the extra parameter support:\n\n```\nstruct mmu_map_params {\n u64 gpa,\n u64 hpa,\n u64 size,\n bool writable\n };\n```\n\nAnd then we can pass the gpa of this struct to pkvm. I have seen precedence of this in linux kernel..\n\nRegarding the size mismatch, what I meant is passing smaller size variables in u64 may cause sideffects due to unintended or malicious invocation of hypercalls( for eg: pkvm expects a u32, but hypercall uses u64 and there is nothing that stops a caller from passing a u64 (either accidental or malicious)). With this existing implementation its not an issue, but I was generalizing it and saying this is one of the reason I prefer structures if we have arguments less than u64.",
+      "parentUuid": "982572c8_505b25a2",
+      "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
