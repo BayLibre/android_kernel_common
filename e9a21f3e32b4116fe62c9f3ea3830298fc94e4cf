@@ -16,6 +16,24 @@
       "message": "If now pkvm relies on enable_ept_ad_bits to be 1, then probably we should also make sure hardware has this feature?\n\nE.g., in vmx_hardware_setup() line 7604, there is an if (!cpu_has_vmx_ept_ad_bits() || !enable_ept), which will still set enable_ept_ad_bits to 0.",
       "revId": "e9a21f3e32b4116fe62c9f3ea3830298fc94e4cf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc8c4ec_d65816d7",
+        "filename": "arch/x86/kvm/pkvm/vmx/vmx.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 8138,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-24T12:25:43Z",
+      "side": 0,
+      "message": "We check that in this patch in https://android-review.googlesource.com/c/kernel/common/+/3751568/4/arch/x86/kvm/vmx/vmx.c#8532 as an extension of the existing check for enable_ept.\n\nBut after a closer look, I see that:\n1. That check is done by KVM-high after vmx_pkvm_init() already succeeded, so if this check fails, KVM initialization completely fails, instead of falling back to initializing without pKVM, which isn\u0027t quite nice.\n2. That enable_ept check seems redundant, since we already checked it during pKVM initialization, since your patch aosp/3608634\n\nSo yeah, I can add a similar check for `enable_ept_ad_bits` in pKVM, e.g.:\n```\n@@ -7580,7 +7580,11 @@ __init int vmx_hardware_setup(void)\n \t}\n \n \tif (!cpu_has_vmx_ept_ad_bits() || !enable_ept)\n+#ifdef __PKVM_HYP__\n+\t\treturn -EOPNOTSUPP;\n+#else\n \t\tenable_ept_ad_bits \u003d 0;\n+#endif\n \n \tif (!cpu_has_vmx_unrestricted_guest() || !enable_ept)\n \t\tenable_unrestricted_guest \u003d 0;\n```\n\nand then probably can remove that later check for both `enable_ept` and `enable_ept_ad_bits`.\n\nWhile we\u0027re at it, any reason why in aosp/3608634 and aosp/3608650 you return -EINVAL, not -EOPNOTSUPP?\n\n...Alternatively, we could check these caps even earlier, in the host in pkvm_host_check_and_setup_vmx_cap() (so that if these checks fail, we fail as early as possible, before deprivileging etc, and thus don\u0027t need to re-privilege etc)?\n\nThat might be actually better? Strictly speaking, all these caps:\n```\n\tif (!cpu_has_vmx_ept() ||\n\t    !cpu_has_vmx_ept_4levels() ||\n\t    !cpu_has_vmx_ept_mt_wb() ||\n\t    !cpu_has_vmx_invept_global())\n```\n\nare required even just for hypervisor isolation from host, without VMs, i.e. in particular, your patches https://github.com/intel-staging/pKVM-IA/pull/40 already rely on all these caps?",
+      "parentUuid": "f98d3f7d_c3b2b9b6",
+      "revId": "e9a21f3e32b4116fe62c9f3ea3830298fc94e4cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
