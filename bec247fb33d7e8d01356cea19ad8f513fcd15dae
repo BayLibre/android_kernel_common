@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8086c563_4b0ce2cf",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 4740,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-24T08:28:55Z",
+      "side": 1,
+      "message": "nit: Probably can move WARN_ON_ONCE to if condition, like below?\n```suggestion\n\t\tif (unlikely(WARN_ON_ONCE(r !\u003d RET_PF_EMULATE \u0026\u0026 r !\u003d RET_PF_RETRY \u0026\u0026 r !\u003d -EINTR)))\n\t\t\tpr_warn_ratelimited(\"pkvm: unexpected page fault result %d\\n\", r);\n```",
+      "range": {
+        "startLine": 4737,
+        "startChar": 0,
+        "endLine": 4740,
+        "endChar": 3
+      },
+      "revId": "bec247fb33d7e8d01356cea19ad8f513fcd15dae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c37eeec_fb17e4e9",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 4757,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-24T08:28:55Z",
+      "side": 1,
+      "message": "For v6.15, I plan to remove the kvm_vcpu parameter for some pvvmcs interfaces because the kvm_vcpu can be retrieved by pkvm hypervisor itself if the kvm_vcpu is already loaded by the host. This is true for the pvvmcs interfaces as these interfaces relying on vcpu to be loaded first.\n\nFor the pvmmu interfaces, seems it is not necessary to load a vcpu first, as the mmu_map/mmu_unmap can operate the EPT even the vcpu is not loaded. But seems there is no such usage as this function is used to handle ept violation so the kvm_vcpu is a loaded in this code path. If so, probably can also remove the kvm_vcpu parameter for this pv interface, so that 4 input parameters are enough and no need to extend the kvm_call_pkvm in v6.15?",
+      "revId": "bec247fb33d7e8d01356cea19ad8f513fcd15dae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
