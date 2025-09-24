@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13f556bd_7432f604",
+        "filename": "arch/x86/kvm/mmu/spte.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-09-24T13:13:40Z",
+      "side": 1,
+      "message": "Would it be better to call `kvm_mmu_set_mmio_spte_mask(0, 0, 0)` from hardware_setup to disable mmio_caching? That way, we can pass the appropriate values to `kvm_mmu_set_mmio_spte_mask` when we plan to enable this back without having to reverting this CL?",
+      "fixSuggestions": [
+        {
+          "fixId": "85083259_0584bdb5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/mmu/spte.c",
+              "range": {
+                "startLine": 68,
+                "startChar": 0,
+                "endLine": 71,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "4783236d2c55ee24e60b09e71b34f24e7d244685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
