@@ -34,6 +34,24 @@
       ],
       "revId": "4783236d2c55ee24e60b09e71b34f24e7d244685",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea10ebcf_11430711",
+        "filename": "arch/x86/kvm/mmu/spte.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-24T19:31:11Z",
+      "side": 1,
+      "message": "I\u0027m not sure we will ever plan to enable this back. And even if we will, I\u0027m not sure why it would be a problem to revert this 2-line change.\n\nAnd this \"if (!mmio_value) enable_mmio_caching \u003d false;\" logic in kvm_mmu_set_mmio_spte_mask() looks rather like its internal implementation detail.\n\n...That said, as Chuanxiao noted in aosp/3700491, doing this here in kvm_mmu_spte_module_init() (called from kvm_x86_init()) is a bit too early.",
+      "parentUuid": "13f556bd_7432f604",
+      "revId": "4783236d2c55ee24e60b09e71b34f24e7d244685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
