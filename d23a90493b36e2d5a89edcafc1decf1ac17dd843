@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f2abf0b_234772e2",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 5925,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-24T10:24:13Z",
+      "side": 1,
+      "message": "can we just call `kvm_mmu_load_pgd(vcpu); and return 0;` rather than `goto load_pgd;`? The difference is `goto load_pgd;` will have a `kvm_x86_call(flush_tlb_current)(vcpu);`, which seems we should not depend on the host to flush, otherwise there might be issue if a malicious host doesn\u0027t do so?",
+      "revId": "d23a90493b36e2d5a89edcafc1decf1ac17dd843",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
