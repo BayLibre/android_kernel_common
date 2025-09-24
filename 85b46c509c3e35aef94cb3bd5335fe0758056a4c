@@ -88,6 +88,24 @@
       "parentUuid": "873f71ec_90819a6e",
       "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40380728_49f1274d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-09-24T12:59:40Z",
+      "side": 1,
+      "message": "\u003e But we should be careful about such things, since the host is untrusted. What if this address passed by the host points, for example, to a page donated to a pVM, or to a page that is not mapped in the hypervisor page tables at all, or for example to the IOMMU MMIO?\n\nYeah very valid point. We had some real use cases to pass structures holding input and output fields for pviommu and this security concern was what motivated me to use read_gva/write_gva. It doesn\u0027t have any security checks implemented atm, but I was planning to make it robust to be something like copy_to_user/copy_from_user in linux kernel. You had mentioned in the pviommu cls that read_gva/write_gva might go away, but it would be nice to have a robust implementation of those to address the above concerns :-)\n\n\u003e pKVM (or KVM, for that matter) always expects u64. It casts it to the needed (smaller) type on its own.\n\nThe vmexit handler expects u64. I was mentioning about the target function (called by vmexit handler function) which expects the actual type. down casting is not always safe especially when we do not trust the origin of the data.",
+      "parentUuid": "05def0c9_3737280f",
+      "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
