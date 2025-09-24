@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f98d3f7d_c3b2b9b6",
+        "filename": "arch/x86/kvm/pkvm/vmx/vmx.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 8138,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-24T07:37:31Z",
+      "side": 0,
+      "message": "If now pkvm relies on enable_ept_ad_bits to be 1, then probably we should also make sure hardware has this feature?\n\nE.g., in vmx_hardware_setup() line 7604, there is an if (!cpu_has_vmx_ept_ad_bits() || !enable_ept), which will still set enable_ept_ad_bits to 0.",
+      "revId": "e9a21f3e32b4116fe62c9f3ea3830298fc94e4cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
