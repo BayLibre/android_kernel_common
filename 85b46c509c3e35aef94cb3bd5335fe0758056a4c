@@ -124,6 +124,24 @@
       "parentUuid": "40380728_49f1274d",
       "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72e7296f_7e6d2fc9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-09-24T14:27:25Z",
+      "side": 1,
+      "message": "\u003e The question is if it\u0027s worth it. Such a generic implementation would need at least to check the pages ownership, and to pin the pages (increase their refcount) to prevent changing their ownership on another CPU in the meantime.\n\nread_gva/write_gva the api copies the data locally and will need to have host_ept_lock held during the validation and copying and then the page is free to be changed if needed by the host. And yes, validation involves checking host_ept for a valid mapping. I think we may have some valid use cases for this in pviommu. But since this CLs are going away with 6.15, I don\u0027t feel strongly about it for this particular case.\n\n\u003e I\u0027m not sure what you mean. Could you give an example? \n\nA larger type may cause an overflow when downcasted and the downcasted value could be a valid value for the target function. So even if the validation checks in target function passes, it may be unintended request from guest. I know this is hypothetical, but just wanted to let you know this was my line of thought against downcasting and I was generalizing. I know this is not an issue here specifically as we use hypercall wrappers and callers of this wrapper will be passing in the actual typed variables and it will be an upcast in host followed by downcast in pkvm. So it should not be an issue here.",
+      "parentUuid": "bb90dd4b_90f0f14a",
+      "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
