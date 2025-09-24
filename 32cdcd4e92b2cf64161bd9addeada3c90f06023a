@@ -68,6 +68,24 @@
       "message": "Can you please let us know the error that you are seeing while cherry-picking? We do not see any errors while cherry-picking to android13-5.10 branch.",
       "revId": "32cdcd4e92b2cf64161bd9addeada3c90f06023a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3258e396_408f0e95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-09-24T14:42:33Z",
+      "side": 1,
+      "message": "Cherry pick does not have same author as original commit.\n\nOriginal author: \u0027quic_wcheng@quicinc.com\nCherry pick author: \u0027akash.m5@samsung.com\n\nPlease cherry-pick using: git cherry-pick -s -x 5265397f94424eaea596026fd34dc7acf474dcec.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "parentUuid": "07ada3ba_b3183625",
+      "revId": "32cdcd4e92b2cf64161bd9addeada3c90f06023a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
