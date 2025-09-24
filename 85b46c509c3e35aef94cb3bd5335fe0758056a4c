@@ -106,6 +106,24 @@
       "parentUuid": "05def0c9_3737280f",
       "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb90dd4b_90f0f14a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-24T13:23:33Z",
+      "side": 1,
+      "message": "\u003e It doesn\u0027t have any security checks implemented atm, but I was planning to make it robust to be something like copy_to_user/copy_from_user in linux kernel. You had mentioned in the pviommu cls that read_gva/write_gva might go away, but it would be nice to have a robust implementation of those to address the above concerns :-)\n\nThe question is if it\u0027s worth it. Such a generic implementation would need at least to check the pages ownership, and to pin the pages (increase their refcount) to prevent changing their ownership on another CPU in the meantime.\n\n\u003e down casting is not always safe especially when we do not trust the origin of the data.\n\nI\u0027m not sure what you mean. Could you give an example? The host can always pass an invalid value, yes, and if pKVM\u0027s target function needs to check this value for validity, it needs to check it independently of whether it was downcasted or not, right?",
+      "parentUuid": "40380728_49f1274d",
+      "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
