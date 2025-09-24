@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "78d595d9_17e41e0a",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 4740,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-24T12:54:39Z",
+      "side": 1,
+      "message": "The reason I did it this way is just to have this error message above the call trace, not below it.",
+      "parentUuid": "8086c563_4b0ce2cf",
+      "range": {
+        "startLine": 4737,
+        "startChar": 0,
+        "endLine": 4740,
+        "endChar": 3
+      },
+      "revId": "bec247fb33d7e8d01356cea19ad8f513fcd15dae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "7c37eeec_fb17e4e9",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-09-24T08:28:55Z",
       "side": 1,
       "message": "For v6.15, I plan to remove the kvm_vcpu parameter for some pvvmcs interfaces because the kvm_vcpu can be retrieved by pkvm hypervisor itself if the kvm_vcpu is already loaded by the host. This is true for the pvvmcs interfaces as these interfaces relying on vcpu to be loaded first.\n\nFor the pvmmu interfaces, seems it is not necessary to load a vcpu first, as the mmu_map/mmu_unmap can operate the EPT even the vcpu is not loaded. But seems there is no such usage as this function is used to handle ept violation so the kvm_vcpu is a loaded in this code path. If so, probably can also remove the kvm_vcpu parameter for this pv interface, so that 4 input parameters are enough and no need to extend the kvm_call_pkvm in v6.15?",
+      "revId": "bec247fb33d7e8d01356cea19ad8f513fcd15dae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28106410_9982fa9e",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 4757,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-24T12:54:39Z",
+      "side": 1,
+      "message": "Yeah, I think so. Actually this page fault handler can be also called from kvm_vcpu_pre_fault_memory() which is triggered by userspace, but kvm_vcpu_pre_fault_memory() itself loads the vCPU before doing that, so that should be also fine.\n\nSo yeah, I hope 4 arguments will be enough in v6.15.\n\nBTW the difference of this vm_mmu_map is that other for PV interfaces we switch to the guest VMCS and then back to the host VMCS (in .switch_to_guest_vcpu() and .switch_to_host_vcpu()) while in vm_mmu_map we don\u0027t need to. I hope that won\u0027t be a problem.",
+      "parentUuid": "7c37eeec_fb17e4e9",
       "revId": "bec247fb33d7e8d01356cea19ad8f513fcd15dae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
