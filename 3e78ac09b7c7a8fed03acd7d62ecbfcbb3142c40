@@ -143,6 +143,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b1fe208d_990a0391",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-24T11:17:00Z",
+      "side": 1,
+      "message": "I\u0027m actually considering changing this to avoid changing the callback at runtime, at the cost of doing the runtime check (since that is what we are planning for v6.15 anyway, and as Kevin noted, that is good for security, since mm_ops can be in .rodata and thus mapped RO), so reopening the comment.",
+      "parentUuid": "38a03555_7a46bc51",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 3
+      },
+      "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e51ee6db_28b7cf37",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 16
