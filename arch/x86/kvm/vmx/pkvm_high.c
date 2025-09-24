@@ -1029,16 +1029,20 @@ static int pkvm_vcpu_create(struct kvm_vcpu *vcpu)
 	if (!pkvm_vcpu)
 		goto free_ve;
 
-	/* TODO: share struct vcpu_vmx with pkvm */
+	ret = kvm_share_hyp(vcpu, (void *)vcpu + sizeof(struct vcpu_vmx));
+	if (ret)
+		goto free_pages;
 
 	ret = kvm_call_pkvm(vcpu_create, vcpu, __pa(pkvm_vcpu));
 	if (ret < 0)
-		goto free_pages;
+		goto unshare;
 
 	vcpu->arch.pkvm_vcpu_handle = ret;
 
 	return 0;
 
+unshare:
+	kvm_unshare_hyp(vcpu, (void *)vcpu + sizeof(struct vcpu_vmx));
 free_pages:
 	free_pages_exact(pkvm_vcpu, pkvm_vcpu_sz);
 free_ve:
@@ -1054,7 +1058,7 @@ static void pkvm_vcpu_free(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_vmx *vmx = to_vmx(vcpu);
 
-	/* TODO: unshare struct vcpu_vmx with pkvm */
+	kvm_unshare_hyp(vcpu, (void *)vcpu + sizeof(struct vcpu_vmx));
 
 	if (enable_pml)
 		free_pml_buffer(vmx);
