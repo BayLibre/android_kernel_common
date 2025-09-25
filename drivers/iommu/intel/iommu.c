@@ -3315,12 +3315,11 @@ static int pv_paging_domain_alloc(struct device_domain_info *info, struct dmar_d
 		.max_addr = domain->max_addr,
 		.iommu_coherency = domain->iommu_coherency,
 		.iommu_superpage = domain->iommu_superpage,
-
 	};
 	int ret = pkvm_hc_iommu_domain_alloc(&param);
 
 	if (ret)
-		pr_err("%s: pv domain alloc failed for device[%x:%x:%x] ret=%d\n", __func__,
+		pr_err("%s: pv domain alloc failed for device[%x:%x.%x] ret=%d\n", __func__,
 		       info->bus, PCI_SLOT(info->devfn), PCI_FUNC(info->devfn), ret);
 
 	return ret;
@@ -3384,7 +3383,7 @@ static struct dmar_domain *paging_domain_alloc(struct device *dev, bool first_st
 	}
 
 	if (pkvm_pviommu_enabled()) {
-		int ret  = pv_paging_domain_alloc(info, domain);
+		int ret = pv_paging_domain_alloc(info, domain);
 
 		if (ret) {
 			iommu_free_page(domain->pgd);
