@@ -123,6 +123,24 @@
       "parentUuid": "28106410_9982fa9e",
       "revId": "bec247fb33d7e8d01356cea19ad8f513fcd15dae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6f10082_3bd33a8c",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 4757,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-25T08:47:55Z",
+      "side": 1,
+      "message": "To be clear, what I meant is that I hope that in v6.15 we will not need to do this unneeded VMCS loading in this MMU hypercall just to find out which vCPU is loaded on the current pCPU. :)",
+      "parentUuid": "ddbc0799_a0d183fb",
+      "revId": "bec247fb33d7e8d01356cea19ad8f513fcd15dae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
