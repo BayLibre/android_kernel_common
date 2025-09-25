@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f55aceab_aef7c3c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-09-25T18:32:54Z",
+      "side": 1,
+      "message": "In `ANDROID: export symbols for zram module` you added a new export, so this series updates the ABI. You need to post a patch at the top of this patchset which updates symbols list and ABI definition. Here is an example patch that does this: https://android-review.git.corp.google.com/c/kernel/common/+/3664317 but instead of gki/aarch64/symbols/vivo you will need to add new symbols into gki/aarch64/symbols/base as zram writeback is expected to be a generic feature. See also https://source.android.com/docs/core/architecture/kernel/abi-monitor in case you haven\u0027t done that yet.",
+      "revId": "974a634927e3e4655c8c3ff185af49babf9088ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
