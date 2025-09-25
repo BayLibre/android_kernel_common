@@ -85,6 +85,7 @@ struct pkvm_iommu_domain *pkvm_alloc_iommu_domain(u64 pgd)
 		domain = &iommu_domains[index];
 		domain->pgd = pgd;
 		domain->index = index;
+		domain->qi_batch.index = 0;
 		atomic_set(&domain->refcount, 1);
 		pkvm_spin_lock_init(&domain->lock);
 		hash_add(iommu_domain_hasht, &domain->hnode, pgd);
@@ -376,9 +377,8 @@ static void switch_to_super_page(struct pkvm_iommu_domain *domain,
 			dma_pte_free_pagetable(domain, donation, start_pfn,
 					       start_pfn + lvl_pages - 1,
 					       level + 1);
-			for_each_valid_iommu(iommu) {
+			for_each_valid_iommu(iommu)
 				flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
-			}
 		}
 
 		pte++;
