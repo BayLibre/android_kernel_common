@@ -52,6 +52,24 @@
       "parentUuid": "7cc8c4ec_d65816d7",
       "revId": "e9a21f3e32b4116fe62c9f3ea3830298fc94e4cf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea4b443a_c793eca8",
+        "filename": "arch/x86/kvm/pkvm/vmx/vmx.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 8138,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-25T09:34:43Z",
+      "side": 0,
+      "message": "Yeah, you are right, host VMX setup and guest VMX setup are different things, we shouldn\u0027t mix them.\n\nSo yeah, for guest we can just do all the capability checks (including this ept_ad_bits) in vmx_hardware_setup() in pKVM, for simplicity. (Although that means that in case of lack of ept_ad_bits we need to re-privilege, since we check ept_ad_bits only after we already deprivileged; but that\u0027s probably ok, that\u0027s a corner case that shouldn\u0027t occur on modern HW anyway).\n\nSpeaking of host VMX setup, yes, cpu_has_vmx_ept() is already implicitly guaranteed by the VMCS config check, so we could just add explicit checks for those other 3 caps, just for more correctness (i.e. just to detect unexpected/broken HW setups, I guess? I doubt there is some real HW that supports EPT but doesn\u0027t support these 3 caps).",
+      "parentUuid": "2ceec1b5_005917df",
+      "revId": "e9a21f3e32b4116fe62c9f3ea3830298fc94e4cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
