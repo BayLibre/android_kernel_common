@@ -34,6 +34,24 @@
       "parentUuid": "f98d3f7d_c3b2b9b6",
       "revId": "e9a21f3e32b4116fe62c9f3ea3830298fc94e4cf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ceec1b5_005917df",
+        "filename": "arch/x86/kvm/pkvm/vmx/vmx.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 8138,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-25T01:13:34Z",
+      "side": 0,
+      "message": "\u003e While we\u0027re at it, any reason why in aosp/3608634 and aosp/3608650 you return -EINVAL, not -EOPNOTSUPP?\n\nAh, indeed, `-ENOPNOTSUPP` is more suitable for this to indicate not supporting.\n\n\u003e pkvm_host_check_and_setup_vmx_cap() (so that if these checks fail, we fail as early as possible, before deprivileging etc, and thus don\u0027t need to re-privilege etc)?\n\nNot sure if that is easy to do as supposing we want to use the existing cpu_has_vmx_xxx wrapper to check, and these wrappers checks from the global vmcs_config and vmx_capbility. vmx_capability is fine for the depriviliege code to initialize (done in v6.15) as the capability are for hardware and doesn\u0027t rely on the vmcs settings. But vmcs_config is depending on the vmcs settings. So the deprivilege code just has a vmcs_config for host VM. And here we actually refer to the vmcs_config for all the guest VMs.\n\n\u003e are required even just for hypervisor isolation from host, without VMs, i.e. in particular, your patches https://github.com/intel-staging/pKVM-IA/pull/40 already rely on all these caps?\n\nGood point. We don\u0027t need `cpu_has_vmx_ept()` as this is guaranteed by the vmcs setting in `pkvm_setup_host_vmcs_config()`. So we will need the other 3 to make sure the required EPT features are valid. And the other 3 checks are checking the global vmx_capability, which is initialized by the v6.15 deprivilege code. I can add these checks for v6.15",
+      "parentUuid": "7cc8c4ec_d65816d7",
+      "revId": "e9a21f3e32b4116fe62c9f3ea3830298fc94e4cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
