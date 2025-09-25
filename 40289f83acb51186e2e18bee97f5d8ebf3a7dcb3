@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bca904f_8bf0bf4e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1830,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-09-25T17:49:22Z",
+      "side": 1,
+      "message": "I don\u0027t think we should return an error code back in these cases. Rather, the guest-visible behaviour should match how KVM normally handles guest SMCs.\n\nSo I don\u0027t think we need this patch.",
+      "range": {
+        "startLine": 1822,
+        "startChar": 0,
+        "endLine": 1830,
+        "endChar": 0
+      },
+      "revId": "40289f83acb51186e2e18bee97f5d8ebf3a7dcb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
