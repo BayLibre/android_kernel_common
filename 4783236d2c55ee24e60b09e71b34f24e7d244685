@@ -52,6 +52,24 @@
       "parentUuid": "13f556bd_7432f604",
       "revId": "4783236d2c55ee24e60b09e71b34f24e7d244685",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4dc6857_a58a6650",
+        "filename": "arch/x86/kvm/mmu/spte.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-25T08:42:38Z",
+      "side": 1,
+      "message": "\u003e And this \"if (!mmio_value) enable_mmio_caching \u003d false;\" logic in kvm_mmu_set_mmio_spte_mask() looks rather like its internal implementation detail.\n\nAlso the commit log in https://lore.kernel.org/all/20220420002747.3287931-1-seanjc@google.com/ suggests that this detail might change, so it\u0027s better not to rely on the assumption that mmio_value\u003d\u003d0 disables mmio caching.",
+      "parentUuid": "ea10ebcf_11430711",
+      "revId": "4783236d2c55ee24e60b09e71b34f24e7d244685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
