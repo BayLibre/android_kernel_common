@@ -81,6 +81,7 @@ struct pkvm_iommu_domain *pkvm_alloc_iommu_domain(u64 pgd)
 		domain = &iommu_domains[index];
 		domain->pgd = pgd;
 		domain->index = index;
+		domain->qi_batch.index = 0;
 		atomic_set(&domain->refcount, 1);
 		pkvm_spin_lock_init(&domain->lock);
 		hash_add(iommu_domain_hasht, &domain->hnode, pgd);
