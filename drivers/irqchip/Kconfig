@@ -71,6 +71,7 @@ config ARM_VIC_NR
 
 config IRQ_MSI_LIB
 	bool
+	select GENERIC_MSI_IRQ
 
 config ARMADA_370_XP_IRQ
 	bool
@@ -701,6 +702,10 @@ config MST_IRQ
 	select IRQ_DOMAIN_HIERARCHY
 	help
 	  Support MStar Interrupt Controller.
+
+config MTK_IRQ
+	bool
+	default ARCH_MEDIATEK
 
 config WPCM450_AIC
 	bool "Nuvoton WPCM450 Advanced Interrupt Controller"

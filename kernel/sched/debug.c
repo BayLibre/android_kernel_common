@@ -380,10 +380,20 @@ static ssize_t sched_fair_server_write(struct file *filp, const char __user *ubu
 			return  -EINVAL;
 		}
 
+<<<<<<< HEAD   (c2b5f378bf0b4c02b987006ea9abc800eaa593e0 Merge android16-6.12 into android16-6.12-kminext)
 		if (rq->cfs.h_nr_queued) {
 			update_rq_clock(rq);
 			dl_server_stop(&rq->fair_server);
 		}
+||||||| BASE   (6879524e1c5adf156b4cf196ed96b6aa21e16b2f ANDROID: GKI: Update symbol list for Amlogic)
+		if (rq->cfs.h_nr_running) {
+			update_rq_clock(rq);
+			dl_server_stop(&rq->fair_server);
+		}
+=======
+		update_rq_clock(rq);
+		dl_server_stop(&rq->fair_server);
+>>>>>>> BRANCH (3907c0eb526dc266b3e4740a2fb5f8da519797b8 ANDROID: rust_binder: Add newline to ref logging)
 
 		retval = dl_server_apply_params(&rq->fair_server, runtime, period, 0);
 		if (retval)

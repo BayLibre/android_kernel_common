@@ -194,7 +194,12 @@ struct drm_framebuffer {
 	/**
 	 * @internal_flags: Framebuffer flags like DRM_FRAMEBUFFER_HAS_HANDLE_REF.
 	 */
+<<<<<<< HEAD   (c2b5f378bf0b4c02b987006ea9abc800eaa593e0 Merge android16-6.12 into android16-6.12-kminext)
 	unsigned int internal_flags;
+||||||| BASE   (6879524e1c5adf156b4cf196ed96b6aa21e16b2f ANDROID: GKI: Update symbol list for Amlogic)
+=======
+	ANDROID_KABI_IGNORE(0, unsigned int internal_flags);
+>>>>>>> BRANCH (3907c0eb526dc266b3e4740a2fb5f8da519797b8 ANDROID: rust_binder: Add newline to ref logging)
 	/**
 	 * @filp_head: Placed on &drm_file.fbs, protected by &drm_file.fbs_lock.
 	 */
