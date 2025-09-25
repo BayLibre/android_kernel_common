@@ -1,0 +1,143 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4f76e28_f1fc9c6b",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-25T18:05:35Z",
+      "side": 1,
+      "message": "Just thinking aloud: shouldn\u0027t such page alignment checks be done by __pkvm_host_donate_hyp() itself, instead of this donate_host_memory() wrapper? i.e. shouldn\u0027t we just require page alignment for all donations?\n\nIt seems that a non-aligned donation always means a bug: the host expects to still have access to the rest of the page, but it will not have access to it, since the entire page was donated to the hypervisor?\n\nSomething to consider for v6.15...",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95ee9786_2383777c",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 907,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-25T18:05:35Z",
+      "side": 1,
+      "message": "nit: s/excat/exact/",
+      "fixSuggestions": [
+        {
+          "fixId": "4c7e6221_72090b02",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 907,
+                "startChar": 0,
+                "endLine": 908,
+                "endChar": 0
+              },
+              "replacement": "\t\t * corresponding memory via free_page_exact() with the size\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a84d813_571d3e3e",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 912,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-25T18:05:35Z",
+      "side": 1,
+      "message": "nit: just to make it a bit more clear, something like: \"We should not write any data to such memory since it might be used by the pkvm hypervisor or a pVM.\"?",
+      "fixSuggestions": [
+        {
+          "fixId": "290a5fc7_8ef184ef",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 909,
+                "startChar": 0,
+                "endLine": 916,
+                "endChar": 0
+              },
+              "replacement": "\t\t * invalid to be donated, or the gpa memory region doesn\u0027t fully\n\t\t * belong to the host. This should not happen unless the host is\n\t\t * malicious or has some bug. We should not write any data to\n\t\t * such memory since it might be used by the pkvm hypervisor or\n\t\t * a pVM. So in this case, returning the valid gpa can result\n\t\t * the host to free the corresponding memory with some random\n\t\t * size. To avoid this, just return INVALID_PAGE.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c32a6711_99603dbd",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 913,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-25T18:05:35Z",
+      "side": 1,
+      "message": "nit: \"can result in the host freeing\", or \"can cause the host to free\"?",
+      "fixSuggestions": [
+        {
+          "fixId": "7ad942bf_a06fbed7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 913,
+                "startChar": 0,
+                "endLine": 916,
+                "endChar": 0
+              },
+              "replacement": "\t\t * in this case, returning the valid gpa can result in the host\n\t\t * freeing the corresponding memory with some random size. To\n\t\t * avoid this, just return INVALID_PAGE.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76156533_fa381b12",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-25T18:05:35Z",
+      "side": 1,
+      "message": "I assume we clear this memory because we think it may contain potentially sensitive data unknown to the host?\n\nIf so, what kind of data is it? Isn\u0027t it the same data the host itself passed to pKVM in previous `__pkvm__vcpu_after_set_cpuid` call?\n\nIf we still need to clear it, do we need also a cache flush (to protect this data also against DMA read, as I noted in https://android-review.googlesource.com/c/kernel/common/+/3666640/comment/a60fb7ca_caa75236/)?\n\nAlso wondering: do we need to clear undonated memory in any other cases when we use __pkvm_hyp_donate_host()?",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
