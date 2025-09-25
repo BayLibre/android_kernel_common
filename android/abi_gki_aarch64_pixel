@@ -927,6 +927,7 @@
   drm_prime_pages_to_sg
   drm_prime_sg_to_page_array
   drm_printf
+  __drm_printfn_coredump
   __drm_printfn_debug
   __drm_printfn_info
   __drm_printfn_seq_file
@@ -942,6 +943,7 @@
   drm_property_create_signed_range
   drm_property_lookup_blob
   drm_property_replace_blob
+  __drm_puts_coredump
   __drm_puts_seq_file
   drm_read
   drm_rect_clip_scaled
@@ -952,6 +954,7 @@
   drm_send_event
   drm_send_event_locked
   drm_simple_encoder_init
+  drm_state_dump
   drm_sysfs_connector_property_event
   drm_universal_plane_init
   drm_vblank_init
@@ -1181,6 +1184,7 @@
   i2c_find_adapter_by_fwnode
   i2c_find_device_by_fwnode
   i2c_for_each_dev
+  i2c_freq_mode_string
   i2c_generic_scl_recovery
   i2c_get_adapter
   i2c_match_id
@@ -2708,6 +2712,7 @@
   __traceiter_android_vh_free_one_page_flag_check
   __traceiter_android_vh_free_pages_prepare_init
   __traceiter_android_vh_ipi_stop
+  __traceiter_android_vh_kvmalloc_node_use_vmalloc
   __traceiter_android_vh_mm_compaction_begin
   __traceiter_android_vh_mm_compaction_end
   __traceiter_android_vh_mm_kcompactd_cpu_online
@@ -2853,6 +2858,7 @@
   __tracepoint_android_vh_free_one_page_flag_check
   __tracepoint_android_vh_free_pages_prepare_init
   __tracepoint_android_vh_ipi_stop
+  __tracepoint_android_vh_kvmalloc_node_use_vmalloc
   __tracepoint_android_vh_mm_compaction_begin
   __tracepoint_android_vh_mm_compaction_end
   __tracepoint_android_vh_mm_kcompactd_cpu_online
