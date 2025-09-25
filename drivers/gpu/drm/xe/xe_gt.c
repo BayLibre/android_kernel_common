@@ -767,9 +767,15 @@ static int gt_reset(struct xe_gt *gt)
 	err = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
 	if (err)
 		goto err_msg;
+<<<<<<< HEAD   (5b4fa14ec430a4c7d291904c37eb054b159c1142 Merge android16-6.12 into android16-6.12-kminext)
 
 	if (IS_SRIOV_PF(gt_to_xe(gt)))
 		xe_gt_sriov_pf_stop_prepare(gt);
+||||||| BASE   (3907c0eb526dc266b3e4740a2fb5f8da519797b8 ANDROID: rust_binder: Add newline to ref logging)
+		goto err_out;
+	}
+=======
+>>>>>>> BRANCH (e6f3cb87365428583a0d0c845630b8a1221e2127 BACKPORT: FROMLIST: scsi: ufs: core: Fix data race in CPU la)
 
 	if (IS_SRIOV_PF(gt_to_xe(gt)))
 		xe_gt_sriov_pf_stop_prepare(gt);
