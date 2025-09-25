@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6adb4d36_f3717fe9",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 4740,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-25T00:53:09Z",
+      "side": 1,
+      "message": "I see, makes sense to me.",
+      "parentUuid": "78d595d9_17e41e0a",
+      "range": {
+        "startLine": 4737,
+        "startChar": 0,
+        "endLine": 4740,
+        "endChar": 3
+      },
+      "revId": "bec247fb33d7e8d01356cea19ad8f513fcd15dae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "7c37eeec_fb17e4e9",
         "filename": "arch/x86/kvm/mmu/mmu.c",
         "patchSetId": 17
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "Yeah, I think so. Actually this page fault handler can be also called from kvm_vcpu_pre_fault_memory() which is triggered by userspace, but kvm_vcpu_pre_fault_memory() itself loads the vCPU before doing that, so that should be also fine.\n\nSo yeah, I hope 4 arguments will be enough in v6.15.\n\nBTW the difference of this vm_mmu_map is that other for PV interfaces we switch to the guest VMCS and then back to the host VMCS (in .switch_to_guest_vcpu() and .switch_to_host_vcpu()) while in vm_mmu_map we don\u0027t need to. I hope that won\u0027t be a problem.",
       "parentUuid": "7c37eeec_fb17e4e9",
+      "revId": "bec247fb33d7e8d01356cea19ad8f513fcd15dae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddbc0799_a0d183fb",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 4757,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-25T00:53:09Z",
+      "side": 1,
+      "message": "\u003e BTW the difference of this vm_mmu_map is that other for PV interfaces we switch to the guest VMCS and then back to the host VMCS (in .switch_to_guest_vcpu() and .switch_to_host_vcpu()) while in vm_mmu_map we don\u0027t need to. I hope that won\u0027t be a problem.\n\nIndeed. It should not be a problem but sounds like not necessary. Anyway, we can continue this discussion in v6.15 rebasing work. Thanks!",
+      "parentUuid": "28106410_9982fa9e",
       "revId": "bec247fb33d7e8d01356cea19ad8f513fcd15dae",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
