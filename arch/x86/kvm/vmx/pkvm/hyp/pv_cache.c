@@ -2,14 +2,48 @@
 /* Copyright(c) 2025 Google. */
 
 #include <../drivers/iommu/intel/iommu.h>
+#include <asm/pkvm_spinlock.h>
+#include <pkvm.h>
+#include <linux/bits.h>
 #include "iommu_internal.h"
 #include "iommu_domain.h"
+#include "memory.h"
+#include "debug.h"
 
-#define PCI_DEVID(bus, devfn)	((((u16)(bus)) << 8) | (devfn))
+#define MAX_CACHETAG_NUM 1024
+static DECLARE_BITMAP(cache_tag_bitmap, MAX_CACHETAG_NUM);
+static struct pkvm_cache_tag cache_tags[MAX_CACHETAG_NUM];
+static pkvm_spinlock_t cache_tag_lock = __PKVM_SPINLOCK_UNLOCKED;
+
+static struct pkvm_cache_tag *pkvm_alloc_cache_tag(void)
+{
+	struct pkvm_cache_tag *cache_tag = NULL;
+	unsigned long index;
+
+	pkvm_spin_lock(&cache_tag_lock);
+	index = find_next_zero_bit(cache_tag_bitmap, MAX_CACHETAG_NUM, 0);
+	if (index < MAX_CACHETAG_NUM) {
+		__set_bit(index, cache_tag_bitmap);
+		cache_tag = &cache_tags[index];
+		cache_tag->index = index;
+		INIT_LIST_HEAD(&cache_tag->node);
+	}
+	pkvm_spin_unlock(&cache_tag_lock);
+
+	return cache_tag;
+}
+
+static void pkvm_free_cache_tag(struct pkvm_cache_tag *cache_tag)
+{
+	pkvm_spin_lock(&cache_tag_lock);
+	__clear_bit(cache_tag->index, cache_tag_bitmap);
+	memset(cache_tag, 0, sizeof (struct pkvm_cache_tag));
+	pkvm_spin_unlock(&cache_tag_lock);
+}
 
 static void qi_batch_flush_descs(struct pkvm_iommu *iommu, struct qi_batch *batch)
 {
-	if (!batch->index)
+	if (!iommu || !batch->index)
 		return;
 
 	submit_qi(iommu, batch->descs, batch->index);
@@ -132,6 +166,7 @@ static void qi_batch_add_pasid_dev_iotlb(struct pkvm_iommu *iommu, u16 sid, u16 
 	qi_batch_increment_index(iommu, batch);
 }
 
+#define PCI_DEVID(bus, devfn)	((((u16)(bus)) << 8) | (devfn))
 static void cache_tag_flush_devtlb_psi(struct pkvm_iommu_domain *domain, struct pkvm_cache_tag *tag,
 				       unsigned long addr, unsigned long mask)
 {
@@ -201,4 +236,110 @@ void pkvm_cache_tag_flush_range(struct pkvm_iommu_domain *domain, unsigned long 
 	}
 	qi_batch_flush_descs(iommu, &domain->qi_batch);
 	pkvm_spin_unlock(&domain->cache_lock);
+}
+
+/*
+ * Invalidate a range of IOVA when new mappings are created in the target
+ * domain.
+ *
+ * - VT-d spec, Section 6.1 Caching Mode: When the CM field is reported as
+ *   Set, any software updates to remapping structures other than first-
+ *   stage mapping requires explicit invalidation of the caches.
+ * - VT-d spec, Section 6.8 Write Buffer Flushing: For hardware that requires
+ *   write buffer flushing, software must explicitly perform write-buffer
+ *   flushing, if cache invalidation is not required.
+ */
+void pkvm_cache_tag_flush_range_np(struct pkvm_iommu_domain *domain, unsigned long start,
+			      unsigned long end)
+{
+	struct pkvm_iommu *iommu = NULL;
+	unsigned long pages, mask, addr;
+	struct pkvm_cache_tag *tag;
+
+	addr = calculate_psi_aligned_address(start, end, &pages, &mask);
+
+	pkvm_spin_lock(&domain->cache_lock);
+	list_for_each_entry(tag, &domain->cache_tags, node) {
+		if (iommu && iommu != tag->iommu)
+			qi_batch_flush_descs(iommu, &domain->qi_batch);
+		iommu = tag->iommu;
+
+		if (!cap_caching_mode(iommu->iommu.cap) || domain->use_first_level) {
+			flush_write_buffer(iommu);
+			continue;
+		}
+
+		if (tag->type == CACHE_TAG_IOTLB ||
+		    tag->type == CACHE_TAG_NESTING_IOTLB)
+			cache_tag_flush_iotlb(domain, tag, addr, pages, mask, 0);
+
+	}
+	qi_batch_flush_descs(iommu, &domain->qi_batch);
+	pkvm_spin_unlock(&domain->cache_lock);
+}
+
+void pkvm_iommu_cache_assign(u64 param_gpa)
+{
+	struct pkvm_cache_tag_param *param = host_gpa2hva(param_gpa);
+	struct pkvm_iommu *iommu = find_iommu_by_reg_phys(param->phys);
+	u64 pgd = host_gpa2hpa(param->pgd_gpa);
+	struct pkvm_iommu_domain *domain = pkvm_get_iommu_domain(pgd);
+	struct pkvm_cache_tag *cache_tag = pkvm_alloc_cache_tag();
+
+	cache_tag->type = param->type;
+	cache_tag->iommu = iommu;
+	cache_tag->bus = param->bus;
+	cache_tag->devfn = param->devfn;
+	cache_tag->pfsid = param->pfsid;
+	cache_tag->ats_qdep = param->ats_qdep;
+	cache_tag->dtlb_extra_inval = param->dtlb_extra_inval;
+	cache_tag->domain_id = param->domain_id;
+	cache_tag->pasid = param->pasid;
+
+	pkvm_spin_lock(&domain->cache_lock);
+	list_add_tail(&cache_tag->node, &domain->cache_tags);
+	pkvm_spin_unlock(&domain->cache_lock);
+
+	pkvm_put_iommu_domain(domain);
+}
+
+static bool cache_tag_match(struct pkvm_cache_tag *tag, u16 domain_id,
+			     struct pkvm_iommu *iommu, u8 bus, u8 devfn,
+			     u32 pasid, enum cache_tag_type type)
+{
+	if (tag->type != type)
+		return false;
+
+	if (tag->domain_id != domain_id || tag->pasid != pasid)
+		return false;
+
+	if (type == CACHE_TAG_IOTLB || type == CACHE_TAG_NESTING_IOTLB)
+		return tag->iommu == iommu;
+
+	if (type == CACHE_TAG_DEVTLB || type == CACHE_TAG_NESTING_DEVTLB)
+		return tag->bus == bus && tag->devfn == devfn;
+
+	return false;
+}
+
+void pkvm_iommu_cache_unassign(u64 param_gpa)
+{
+	struct pkvm_cache_tag_param *param = host_gpa2hva(param_gpa);
+	struct pkvm_iommu *iommu = find_iommu_by_reg_phys(param->phys);
+	u64 pgd = host_gpa2hpa(param->pgd_gpa);
+	struct pkvm_iommu_domain *domain = pkvm_get_iommu_domain(pgd);
+	struct pkvm_cache_tag *cache_tag;
+
+	pkvm_spin_lock(&domain->cache_lock);
+	list_for_each_entry(cache_tag, &domain->cache_tags, node) {
+		if (cache_tag_match(cache_tag, param->domain_id, iommu, param->bus,
+					param->devfn, param->pasid, param->type)) {
+			list_del(&cache_tag->node);
+			pkvm_free_cache_tag(cache_tag);
+			break;
+		}
+	}
+	pkvm_spin_unlock(&domain->cache_lock);
+
+	pkvm_put_iommu_domain(domain);
 }
