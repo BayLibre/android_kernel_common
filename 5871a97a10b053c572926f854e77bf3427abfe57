@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "336ab435_39b9742a",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-26T02:00:06Z",
+      "side": 1,
+      "message": "\u003eIt seems that a non-aligned donation always means a bug: the host expects to still have access to the rest of the page, but it will not have access to it, since the entire page was donated to the hypervisor?\n\nYeah, makes sense to me. I will consider adding the alignment check for the host_donate_hyp() and hyp_donate_host() in v6.15",
+      "parentUuid": "a4f76e28_f1fc9c6b",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95ee9786_2383777c",
