@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e7619fcc_1728e6b4",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 907,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-26T01:38:48Z",
+      "side": 1,
+      "message": "Thanks. Will fix this.",
+      "parentUuid": "95ee9786_2383777c",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a84d813_571d3e3e",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 2
@@ -84,6 +102,24 @@
           ]
         }
       ],
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83a8b531_636ccfb1",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 912,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-26T01:38:48Z",
+      "side": 1,
+      "message": "I have an impression that it is better to avoid using \"we\" but more objective way, but seems the coding-style document is not mentioning this. So this probably not true... But how about \"Such memory page should not be modified since it might be used by the pkvm hypervisor or a pVM\"?",
+      "parentUuid": "1a84d813_571d3e3e",
       "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -125,6 +161,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "be531f1f_1a0c834f",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 913,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-26T01:38:48Z",
+      "side": 1,
+      "message": "Seems \"can cause the host to free\" is simpler.",
+      "parentUuid": "c32a6711_99603dbd",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "76156533_fa381b12",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 2
@@ -136,6 +190,24 @@
       "writtenOn": "2025-09-25T18:05:35Z",
       "side": 1,
       "message": "I assume we clear this memory because we think it may contain potentially sensitive data unknown to the host?\n\nIf so, what kind of data is it? Isn\u0027t it the same data the host itself passed to pKVM in previous `__pkvm__vcpu_after_set_cpuid` call?\n\nIf we still need to clear it, do we need also a cache flush (to protect this data also against DMA read, as I noted in https://android-review.googlesource.com/c/kernel/common/+/3666640/comment/a60fb7ca_caa75236/)?\n\nAlso wondering: do we need to clear undonated memory in any other cases when we use __pkvm_hyp_donate_host()?",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dcbaf6d_7dbccc2b",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-26T01:38:48Z",
+      "side": 1,
+      "message": "\u003e I assume we clear this memory because we think it may contain potentially sensitive data unknown to the host?\n\nThe CPUID may be updated by the pkvm hypervisor according to some feature\u0027s enabling by the guest or not(we have kvm_update_cpuid_runtime() for this). Just not sure if this kind of data is sensitive or not, so just clearing the memory for safe.\n\n\u003eIf we still need to clear it, do we need also a cache flush (to protect this data also against DMA read, as I noted in https://android-review.googlesource.com/c/kernel/common/+/3666640/comment/a60fb7ca_caa75236/)?\n\nI missed your last reply. It makes sense to protect against the non-coherent DMA.\nThen that means if we need to clear some memory pages which may contain sensitive data and donate this memory page to host, then we need to flush cache? If so, probably need a wrapper for this.\n\n\u003e Also wondering: do we need to clear undonated memory in any other cases when we use __pkvm_hyp_donate_host()?\n\nThanks for pointing this out. Probably not every page, may depending on the contents. Currently in vmx.c, there are some pages not being cleared before donate to host, i.e., vmcs/msr_bitmap/pml(not used)/ve_info(not used). Just not sure if these pages are sensitive or not, as they are not normal memory pages thus doesn\u0027t have guest secret, and not containing the guest general purpose registers/fpu registers. But they contains some information which can describe the guest behavior, rsp/rip/debug registers/...However donating these memory pages are done when destroying the guest, attacking the guest via these information is impossible. So seems clearing these memory pages is a simple way to avoid potential security issues?",
+      "parentUuid": "76156533_fa381b12",
       "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
