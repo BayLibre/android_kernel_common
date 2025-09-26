@@ -83,11 +83,13 @@ struct pkvm_iommu_domain *pkvm_alloc_iommu_domain(u64 pgd)
 	if (index < MAX_IOMMU_DOMAIN_NUM) {
 		__set_bit(index, iommu_domains_bitmap);
 		domain = &iommu_domains[index];
+		INIT_LIST_HEAD(&domain->cache_tags);
 		domain->pgd = pgd;
 		domain->index = index;
 		domain->qi_batch.index = 0;
 		atomic_set(&domain->refcount, 1);
 		pkvm_spin_lock_init(&domain->lock);
+		pkvm_spin_lock_init(&domain->cache_lock);
 		hash_add(iommu_domain_hasht, &domain->hnode, pgd);
 	}
 
@@ -350,11 +352,6 @@ static void dma_pte_free_pagetable(struct pkvm_iommu_domain *domain,
 			   pgd, 0, start_pfn, last_pfn);
 }
 
-#define for_each_valid_iommu(p)						\
-	for ((p) = iommus; (p) < iommus + PKVM_MAX_IOMMU_NUM; (p)++)	\
-		if (!(p) || !(p)->iommu.reg_phys) {			\
-			continue;					\
-		} else
 /*
  * Ensure that old small page tables are removed to make room for superpage(s).
  * We're going to add new large pages, so make sure we don't remove their parent
@@ -367,7 +364,6 @@ static void switch_to_super_page(struct pkvm_iommu_domain *domain,
 {
 	unsigned long lvl_pages = lvl_to_nr_pages(level);
 	struct dma_pte *pte = NULL;
-	struct pkvm_iommu *iommu;
 
 	while (start_pfn <= end_pfn) {
 		if (!pte)
@@ -377,8 +373,8 @@ static void switch_to_super_page(struct pkvm_iommu_domain *domain,
 			dma_pte_free_pagetable(domain, donation, start_pfn,
 					       start_pfn + lvl_pages - 1,
 					       level + 1);
-			for_each_valid_iommu(iommu)
-				flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
+			pkvm_cache_tag_flush_range(domain, start_pfn << VTD_PAGE_SHIFT,
+					end_pfn << VTD_PAGE_SHIFT, 0);
 		}
 
 		pte++;
@@ -554,6 +550,9 @@ unsigned long pkvm_iommu_domain_map(unsigned long param_gpa,
 	}
 	pkvm_spin_lock(&domain->lock);
 	ret = domain_map(domain, param, donation);
+	if (ret == 0)
+		pkvm_cache_tag_flush_range_np(domain, param->iov_pfn >> VTD_PAGE_SHIFT,
+				(param->iov_pfn + param->nr_pages - 1) >> VTD_PAGE_SHIFT);
 	pkvm_spin_unlock(&domain->lock);
 	pkvm_put_iommu_domain(domain);
 
