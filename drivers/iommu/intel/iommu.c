@@ -2042,6 +2042,9 @@ static bool dev_is_real_dma_subdevice(struct device *dev)
 static bool domain_need_iotlb_sync_map(struct dmar_domain *domain,
 				       struct intel_iommu *iommu)
 {
+	if (pkvm_pviommu_enabled())
+		return false;
+
 	if (cap_caching_mode(iommu->cap) && !domain->use_first_level)
 		return true;
 

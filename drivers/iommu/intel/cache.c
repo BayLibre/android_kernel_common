@@ -78,6 +78,23 @@ static int cache_tag_assign(struct dmar_domain *domain, u16 did,
 	spin_unlock_irqrestore(&domain->cache_lock, flags);
 	trace_cache_tag_assign(tag);
 
+	if (pkvm_enabled()) {
+		struct pkvm_cache_tag_param param;
+
+		param.pgd_gpa = virt_to_phys(domain->pgd);
+		param.type = tag->type;
+		param.phys = iommu->reg_phys;
+		param.bus = info->bus;
+		param.devfn = info->devfn;
+		param.pfsid = info->pfsid;
+		param.ats_qdep = info->ats_qdep;
+		param.dtlb_extra_inval = info->dtlb_extra_inval;
+		param.domain_id = did;
+		param.pasid = pasid;
+
+		pkvm_hc_cache_tag_assign(virt_to_phys(&param));
+	}
+
 	return 0;
 }
 
@@ -98,6 +115,19 @@ static void cache_tag_unassign(struct dmar_domain *domain, u16 did,
 			if (--tag->users == 0) {
 				list_del(&tag->node);
 				kfree(tag);
+				if (pkvm_enabled()) {
+					struct pkvm_cache_tag_param param;
+
+					param.pgd_gpa = virt_to_phys(domain->pgd);
+					param.type = tag->type;
+					param.phys = iommu->reg_phys;
+					param.bus = info->bus;
+					param.devfn = info->devfn;
+					param.domain_id = did;
+					param.pasid = pasid;
+
+					pkvm_hc_cache_tag_unassign(virt_to_phys(&param));
+				}
 			}
 			break;
 		}
