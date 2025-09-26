@@ -14,8 +14,6 @@
 #define EPT_PROT_MASK		(VMX_EPT_RWX_MASK | VMX_EPT_MT_MASK | VMX_EPT_IPAT_BIT)
 #define EPT_PROT_DEF		VMX_EPT_SUPPRESS_VE_BIT
 
-#define SHADOW_EPT_MMIO_ENTRY	0
-
 enum sept_handle_ret {
 	PKVM_NOT_HANDLED,
 	PKVM_HANDLED,
@@ -37,7 +35,6 @@ void pkvm_flush_host_ept(void);
 int pkvm_shadow_ept_pool_init(void *ept_pool_base, unsigned long ept_pool_pages);
 enum sept_handle_ret
 pkvm_handle_shadow_ept_violation(struct shadow_vcpu_state *shadow_vcpu, u64 l2_gpa, u64 exit_quali);
-void pkvm_shadow_clear_suppress_ve(struct kvm_vcpu *vcpu, unsigned long gfn);
 
 int pkvm_pgstate_pgt_init(struct pkvm_shadow_vm *vm);
 void pkvm_pgstate_pgt_deinit(struct pkvm_shadow_vm *vm);
