@@ -4404,6 +4404,9 @@ static int intel_iommu_iotlb_sync_map(struct iommu_domain *domain,
 {
 	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
 
+	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled())
+		return 0;
+
 	if (dmar_domain->iotlb_sync_map)
 		cache_tag_flush_range_np(dmar_domain, iova, iova + size - 1);
 
