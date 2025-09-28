@@ -264,6 +264,24 @@
       "parentUuid": "6dcbaf6d_7dbccc2b",
       "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a6e28d7_10d1c9d6",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-28T07:11:26Z",
+      "side": 1,
+      "message": "Currently the `teardown_donated_memory()` function in the pkvm.c construct pkvm_memcache in the undonated memory pages first then undonate to host. So if clearing memory unconditionally when undonating, then the pkvm_memcache information will be lost. But I didn\u0027t see a reason to prevent us to undonate first then construct pkvm_memcache in the undonated memory pages.\n\nSo probably let\u0027s do it unconditionally in __pkvm_hyp_donate_host() until we find a case which requires not to clear data then we add another api e.g., __pkvm_hyp_donate_host_noclear()?",
+      "parentUuid": "86e6fca9_af36c9d5",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
