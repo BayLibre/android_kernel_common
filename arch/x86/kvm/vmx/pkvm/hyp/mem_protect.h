@@ -76,13 +76,14 @@ int __pkvm_host_donate_hyp(u64 hpa, u64 size);
  *
  * @hpa:	Start hpa of being donated pages, must be continuous.
  * @size:	The size of memory to be donated.
+ * @clear:	Flag indicating whether to clear memory pages or not.
  *
  * A range of pages [hpa, hpa + size) will be donated from hyp to host. This
  * will create mapping in host ept for these pages, and nothing to do with hyp
  * mmu. This is paired with __pkvm_host_donate_hyp(), and same as host reclaiming
  * these pages back.
  */
-int __pkvm_hyp_donate_host(u64 hpa, u64 size);
+int __pkvm_hyp_donate_host(u64 hpa, u64 size, bool clear);
 
 /*
  * __pkvm_host_share_guest() - Share pages between host and guest. Host still

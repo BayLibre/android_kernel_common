@@ -405,7 +405,7 @@ int __pkvm_host_donate_hyp(u64 hpa, u64 size)
 	return ret;
 }
 
-int __pkvm_hyp_donate_host(u64 hpa, u64 size)
+int __pkvm_hyp_donate_host(u64 hpa, u64 size, bool clear)
 {
 	int ret;
 	u64 hyp_addr = (u64)__pkvm_va(hpa);
@@ -425,6 +425,18 @@ int __pkvm_hyp_donate_host(u64 hpa, u64 size)
 			.prot	= HOST_EPT_DEF_MEM_PROT,
 		},
 	};
+
+	if (clear) {
+		void *va = __pkvm_va(hpa);
+
+		memset(va, 0, size);
+		/*
+		 * Flush CPU cache for the memory range [va, va + size) to make
+		 * sure the host cannot get the previous contents in RAM via
+		 * non-coherent DMA.
+		 */
+		pkvm_clflush_cache_range(va, size);
+	}
 
 	host_ept_lock();
 
