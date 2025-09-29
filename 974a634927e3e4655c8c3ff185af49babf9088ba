@@ -16,6 +16,24 @@
       "message": "In `ANDROID: export symbols for zram module` you added a new export, so this series updates the ABI. You need to post a patch at the top of this patchset which updates symbols list and ABI definition. Here is an example patch that does this: https://android-review.git.corp.google.com/c/kernel/common/+/3664317 but instead of gki/aarch64/symbols/vivo you will need to add new symbols into gki/aarch64/symbols/base as zram writeback is expected to be a generic feature. See also https://source.android.com/docs/core/architecture/kernel/abi-monitor in case you haven\u0027t done that yet.",
       "revId": "974a634927e3e4655c8c3ff185af49babf9088ba",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3dffe95_3f69b1cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1060234
+      },
+      "writtenOn": "2025-09-29T21:38:58Z",
+      "side": 1,
+      "message": "I\u0027m a bit confused by what\u0027s going on with the ABI monitoring. The Build ABI Changes check on the export change finds changes for x86_64 but not aarch64, even though there shouldn\u0027t be anything architecture specific. Also, I can\u0027t figure out how to work with the x86_64 ABI locally - I just get an error that the ABI targets aren\u0027t set up.",
+      "parentUuid": "f55aceab_aef7c3c6",
+      "revId": "974a634927e3e4655c8c3ff185af49babf9088ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
