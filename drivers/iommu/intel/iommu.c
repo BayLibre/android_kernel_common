@@ -1740,8 +1740,10 @@ static int domain_context_mapping_one(struct dmar_domain *domain,
 	context_set_present(context);
 	if (!ecap_coherent(iommu->ecap))
 		clflush_cache_range(context, sizeof(*context));
-	context_present_cache_flush(iommu, did, bus, devfn);
+
 	ret = 0;
+
+	context_present_cache_flush(iommu, did, bus, devfn);
 
 out_unlock:
 	spin_unlock(&iommu->lock);
@@ -2156,6 +2158,7 @@ static void intel_iommu_init_qi(struct intel_iommu *iommu)
 		iommu->flush.flush_iotlb = __iommu_flush_iotlb;
 		pr_info("%s: Using Register based invalidation\n",
 			iommu->name);
+
 	} else {
 		iommu->flush.flush_context = qi_flush_context;
 		iommu->flush.flush_iotlb = qi_flush_iotlb;
@@ -4404,9 +4407,6 @@ static int intel_iommu_iotlb_sync_map(struct iommu_domain *domain,
 {
 	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
 
-	if (IS_ENABLED(CONFIG_PKVM_INTEL_PVIOMMU) && pkvm_enabled())
-		return 0;
-
 	if (dmar_domain->iotlb_sync_map)
 		cache_tag_flush_range_np(dmar_domain, iova, iova + size - 1);
 
@@ -4713,6 +4713,7 @@ static int context_setup_pass_through(struct device *dev, u8 bus, u8 devfn)
 	context_set_present(context);
 	if (!ecap_coherent(iommu->ecap))
 		clflush_cache_range(context, sizeof(*context));
+
 	context_present_cache_flush(iommu, FLPT_DEFAULT_DID, bus, devfn);
 out_unlock:
 	spin_unlock(&iommu->lock);
