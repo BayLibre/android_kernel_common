@@ -282,6 +282,24 @@
       "parentUuid": "86e6fca9_af36c9d5",
       "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0f46e4f_24b44134",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-29T08:52:07Z",
+      "side": 1,
+      "message": "Hmm, actually in this very example in pkvm_vcpu_after_set_cpuid(), we need to write `size` to this memory, after clearing it but before undonating it? (We shouldn\u0027t do that _after_ undonating it, i.e. when it may be already potentially donated to a pVM and so on.)",
+      "parentUuid": "7a6e28d7_10d1c9d6",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
