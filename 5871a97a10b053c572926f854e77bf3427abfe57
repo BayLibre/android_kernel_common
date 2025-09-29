@@ -300,6 +300,24 @@
       "parentUuid": "7a6e28d7_10d1c9d6",
       "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "471f4f2b_969765a3",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-29T08:57:23Z",
+      "side": 1,
+      "message": "A normal host will not do that as these memory pages are not freed back to the kernel yet, but a malicious host will indeed do that. So you are right, we should not writing anything after undonating it thus seems we will need a __noclear version for this case, as well as for teardown_donated_memory() case.",
+      "parentUuid": "e0f46e4f_24b44134",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
