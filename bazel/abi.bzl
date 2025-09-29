@@ -16,6 +16,7 @@ load(
     "//build/kernel/kleaf:kernel.bzl",
     "android_filegroup",
 )
+load("//third_party/bazel_rules/rules_cc/cc:cc_binary.bzl", "cc_binary")
 
 visibility("private")
 
@@ -87,7 +88,7 @@ def cc_binary_with_abi(
             The output filename. Default is `name`.
         **kwargs: the rest args that cc_binary uses.
     """
-    native.cc_binary(
+    cc_binary(
         name = name,
         visibility = visibility,
         **kwargs
