@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7a6eb17_a4535a85",
+        "filename": "arch/x86/kvm/pkvm/vmx/vmx.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4487,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-29T15:23:40Z",
+      "side": 1,
+      "message": "The comment needs updating (we don\u0027t go back to host anymore)?",
+      "revId": "0f6e982e7e309e3518c219cb53be74a46808c1e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "212b9123_985fc1a3",
+        "filename": "arch/x86/kvm/pkvm/x86.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1778,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-29T15:23:40Z",
+      "side": 1,
+      "message": "Just a thought: alternatively, we could let pKVM emulate XFD for pVM only, while for npVM still let the host emulate it? Perhaps that would make the logic simpler in other places (but maybe not, so I\u0027m not suggesting to do that).",
+      "revId": "0f6e982e7e309e3518c219cb53be74a46808c1e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
