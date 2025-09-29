@@ -318,6 +318,24 @@
       "parentUuid": "e0f46e4f_24b44134",
       "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3ae8cf7_3c744032",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-29T09:06:10Z",
+      "side": 1,
+      "message": "Perhaps it is better as you suggested, to pass a flag to  __pkvm_hyp_donate_host(), so we would not forget to think whether we should clear this memory in each case",
+      "parentUuid": "471f4f2b_969765a3",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
