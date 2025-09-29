@@ -1,0 +1,121 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad504eb7_3b421a69",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-29T13:21:47Z",
+      "side": 1,
+      "message": "nit: s/statue/state/ ?",
+      "revId": "c5fedabe2214d6d64f600bd744ab8a9b4f9e0270",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbcc7841_b321a130",
+        "filename": "arch/x86/kvm/pkvm/fpu/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-29T13:21:47Z",
+      "side": 1,
+      "message": "Why need to include smap.h?",
+      "fixSuggestions": [
+        {
+          "fixId": "2f7f2b60_fa92ae76",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/fpu/core.c",
+              "range": {
+                "startLine": 9,
+                "startChar": 0,
+                "endLine": 10,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "c5fedabe2214d6d64f600bd744ab8a9b4f9e0270",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13a85347_c4a27292",
+        "filename": "arch/x86/kvm/pkvm/fpu/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-29T13:21:47Z",
+      "side": 1,
+      "message": "nit: s/If enters/If entering/, s/If exits/If exiting/ (here and in other places in this function) would be more correct?",
+      "fixSuggestions": [
+        {
+          "fixId": "89cc411b_6f34b42e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/fpu/core.c",
+              "range": {
+                "startLine": 197,
+                "startChar": 0,
+                "endLine": 199,
+                "endChar": 0
+              },
+              "replacement": "\t * If entering the npVM, the FPU are already loaded with the npVM fpu\n\t * state by the host. If exiting from the npVM, the fpu registers will be\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/fpu/core.c",
+              "range": {
+                "startLine": 201,
+                "startChar": 0,
+                "endLine": 202,
+                "endChar": 0
+              },
+              "replacement": "\t * If entering the pVM, the FPU are loaded with the host fpu state, which\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/fpu/core.c",
+              "range": {
+                "startLine": 203,
+                "startChar": 0,
+                "endLine": 204,
+                "endChar": 0
+              },
+              "replacement": "\t * hypervisor. If exiting from the pVM, then the fpu state should be saved\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/fpu/core.c",
+              "range": {
+                "startLine": 233,
+                "startChar": 0,
+                "endLine": 234,
+                "endChar": 0
+              },
+              "replacement": "\t * If entering the pVM, restore the FPU with the pVM fpu state. If exiting\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c5fedabe2214d6d64f600bd744ab8a9b4f9e0270",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
