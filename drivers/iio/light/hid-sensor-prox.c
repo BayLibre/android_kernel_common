@@ -263,7 +263,18 @@ static int prox_parse_report(struct platform_device *pdev,
 
 	st->num_channels = index;
 
+<<<<<<< HEAD   (7184052ee7f8196fc100492f3da25c1e43682fc7 FROMGIT: xhci: dbc: Fix full DbC transfer ring after several)
 	return 0;
+||||||| BASE   (3907c0eb526dc266b3e4740a2fb5f8da519797b8 ANDROID: rust_binder: Add newline to ref logging)
+	return ret;
+=======
+	st->scale_precision = hid_sensor_format_scale(hsdev->usage,
+						      &st->prox_attr,
+						      &st->scale_pre_decml,
+						      &st->scale_post_decml);
+
+	return ret;
+>>>>>>> BRANCH (9ebce096bcb211ebadbbb4743b5d6eafaaf6b0d2 Merge tag 'android16-6.12.45_r00' into android16-6.12)
 }
 
 /* Function to initialize the processing for usage id */
