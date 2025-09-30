@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b32a76a_c26785ef",
+        "filename": "arch/x86/kvm/pkvm/vmx/vmx.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4487,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-30T07:01:12Z",
+      "side": 1,
+      "message": "Yes, I will update this.",
+      "parentUuid": "c7a6eb17_a4535a85",
+      "revId": "0f6e982e7e309e3518c219cb53be74a46808c1e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "212b9123_985fc1a3",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-09-29T15:23:40Z",
       "side": 1,
       "message": "Just a thought: alternatively, we could let pKVM emulate XFD for pVM only, while for npVM still let the host emulate it? Perhaps that would make the logic simpler in other places (but maybe not, so I\u0027m not suggesting to do that).",
+      "revId": "0f6e982e7e309e3518c219cb53be74a46808c1e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90971534_ccd97865",
+        "filename": "arch/x86/kvm/pkvm/x86.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1778,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-30T07:01:12Z",
+      "side": 1,
+      "message": "I feel it will not be simpler. We will need to check if it is pVM or npVM, and handle differently, not only here for MSR, but also for the #NM exception handling in vmx.c. And probably the \"REVERTME\" patch (reverted by the last patch) cannot be reverted.",
+      "parentUuid": "212b9123_985fc1a3",
       "revId": "0f6e982e7e309e3518c219cb53be74a46808c1e6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
