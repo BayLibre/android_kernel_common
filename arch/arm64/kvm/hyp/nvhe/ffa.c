@@ -118,9 +118,6 @@ static struct ffa_handle *ffa_host_alloc_handle(void)
 	u32 i;
 	struct ffa_handle *handle;
 
-	if (!static_branch_unlikely(&kvm_ffa_unmap_on_lend))
-		return NULL;
-
 	if (spm_free_handle) {
 		WARN_ON(spm_free_handle < spm_handles ||
 			spm_free_handle >= (spm_handles + num_spm_handles));
@@ -1010,7 +1007,7 @@ static int __do_ffa_mem_xfer(const u64 func_id,
 	if (ret)
 		goto out_unlock;
 
-	if (!hyp_vcpu) {
+	if (!hyp_vcpu && static_branch_unlikely(&kvm_ffa_unmap_on_lend))
 		handle = ffa_host_alloc_handle();
 		if (!handle) {
 			ret = -ENOSPC;
