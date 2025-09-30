@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2922bf1_64f9c74e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1070555
+      },
+      "writtenOn": "2025-09-30T08:49:03Z",
+      "side": 1,
+      "message": "I get the error:\n```\nERROR: modpost: \"acpi_walk_resources\" [drivers/platform/chrome/cros_ec_lpcs.ko] undefined!\n```\nWhich I don\u0027t get locally. This is unexpected, `acpi_walk_resources` is part of the ACPI interpreter, loaded when CONFIG_ACPI is set.",
+      "revId": "f8debf0a58758e5e540afd55dac7e3ae704817f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
