@@ -336,6 +336,24 @@
       "parentUuid": "471f4f2b_969765a3",
       "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8a630fc_012eca8f",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-30T00:59:32Z",
+      "side": 1,
+      "message": "BTW, this reminds me that, after donate these memory pages back to the host, a malicious host can also write data to these memory pages before donating to a pVM at the running time. Not sure if this is something we will need to enhance or this is pVM\u0027s responsibility to not trust contents? The way to enhance may be we pre-fault all the meaningful memory pages before pVM to run, i.e., pvmfw, kernel image and all the boot data pages required by kernel, then the subsequent EPT violation can be handled by clearing the memory page first. Or if it is pVM\u0027s responsibility, then we probably don\u0027t need to care about this.",
+      "parentUuid": "e3ae8cf7_3c744032",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
