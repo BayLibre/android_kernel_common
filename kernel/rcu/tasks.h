@@ -957,7 +957,53 @@ static void rcu_tasks_postscan(struct list_head *hop)
 	 * This handles the part 1). And postgp will handle part 2) with a
 	 * call to synchronize_rcu().
 	 */
+<<<<<<< HEAD   (7400c39d6747cc733d61aad4b1189cffdc69cea6 Revert "rcu-tasks: Eliminate deadlocks involving do_exit() a)
 	synchronize_srcu(&tasks_rcu_exit_srcu);
+||||||| BASE   (d89abc4fbee8fb669150fefd3cec2295501599bc rcu-tasks: Eliminate deadlocks involving do_exit() and RCU t)
+
+	for_each_possible_cpu(cpu) {
+		struct rcu_tasks_percpu *rtpcp = per_cpu_ptr(rcu_tasks.rtpcpu, cpu);
+		struct task_struct *t;
+
+		raw_spin_lock_irq_rcu_node(rtpcp);
+		list_for_each_entry(t, &rtpcp->rtp_exit_list, rcu_tasks_exit_list)
+			if (list_empty(&t->rcu_tasks_holdout_list))
+				rcu_tasks_pertask(t, hop);
+		raw_spin_unlock_irq_rcu_node(rtpcp);
+	}
+=======
+
+	for_each_possible_cpu(cpu) {
+		unsigned long j = jiffies + 1;
+		struct rcu_tasks_percpu *rtpcp = per_cpu_ptr(rcu_tasks.rtpcpu, cpu);
+		struct task_struct *t;
+		struct task_struct *t1;
+		struct list_head tmp;
+
+		raw_spin_lock_irq_rcu_node(rtpcp);
+		list_for_each_entry_safe(t, t1, &rtpcp->rtp_exit_list, rcu_tasks_exit_list) {
+			if (list_empty(&t->rcu_tasks_holdout_list))
+				rcu_tasks_pertask(t, hop);
+
+			// RT kernels need frequent pauses, otherwise
+			// pause at least once per pair of jiffies.
+			if (!IS_ENABLED(CONFIG_PREEMPT_RT) && time_before(jiffies, j))
+				continue;
+
+			// Keep our place in the list while pausing.
+			// Nothing else traverses this list, so adding a
+			// bare list_head is OK.
+			list_add(&tmp, &t->rcu_tasks_exit_list);
+			raw_spin_unlock_irq_rcu_node(rtpcp);
+			cond_resched(); // For CONFIG_PREEMPT=n kernels
+			raw_spin_lock_irq_rcu_node(rtpcp);
+			t1 = list_entry(tmp.next, struct task_struct, rcu_tasks_exit_list);
+			list_del(&tmp);
+			j = jiffies + 1;
+		}
+		raw_spin_unlock_irq_rcu_node(rtpcp);
+	}
+>>>>>>> BRANCH (2b8a1969cae5191ec94b5ca98468575c6eaa211b rcu-tasks: Maintain real-time response in rcu_tasks_postscan)
 
 	if (!IS_ENABLED(CONFIG_TINY_RCU))
 		del_timer_sync(&tasks_rcu_exit_srcu_stall_timer);
