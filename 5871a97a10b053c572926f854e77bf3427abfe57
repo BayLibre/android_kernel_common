@@ -372,6 +372,24 @@
       "parentUuid": "a8a630fc_012eca8f",
       "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2b24ba1_2e2b5526",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-09-30T14:12:12Z",
+      "side": 1,
+      "message": "\u003eThis applies not just to the case after we donate pages back to the host, this is just a general concern that the initial contents of pVM memory are populated by the host, and thus initially are untrusted, right?\n\nYes it is.\n\n\u003e We already do that with pvmfw pages,\n\nYeah, I understand for the ept violation in the pvmfw region, as the pkvm hypervisor knows this region, it can copy pvmfw data to this region to make sure the host cannot overwritten this region.\n\nFor the ept violation in the other region, if it is a boot region, the pkvm should not clear this region as the pvmfw expect to load boot data from this region and verify it. If it is not a boot region, then clearing this region should make sure this region doesn\u0027t contain the untrusted data from the host. However as the pkvm hypervisor cannot tell if a region is for boot or not, thus the pkvm cannot clear any memory region, thus cannot avoid the general concern that the initial contents of pVM memory (non pvmfw region, non boot data region) are populated by the host thus initially are untrusted.\n\nIf the pkvm knows which is the boot data region, then the pkvm can selectively clear the memory pages when handling EPT violation. And most likely the way to let the pkvm hypervisor know is the host use some PV interface to tell? If the host doesn\u0027t tell things right, then boot data verify by the pvmfw will be failed.\n\nBack to this review comment, if there is objection, I will update by extending __pkvm_hyp_donate_host() with a clear flag to selectively clearing the memory pages with cpu cache flushed.",
+      "parentUuid": "f08bc2b7_9641b23d",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
