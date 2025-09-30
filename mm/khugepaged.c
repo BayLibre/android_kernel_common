@@ -1366,7 +1366,13 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
 		 * has excessive GUP pins (i.e. 512).  Anyway the same check
 		 * will be done again later the risk seems low.
 		 */
+<<<<<<< HEAD   (024d85b91fc9bf2023114b0aa63c5d3303afcb43 Merge 2b8a1969cae5 ("rcu-tasks: Maintain real-time response )
 		if (!is_refcount_suitable(folio)) {
+||||||| BASE   (2b8a1969cae5191ec94b5ca98468575c6eaa211b rcu-tasks: Maintain real-time response in rcu_tasks_postscan)
+		if (!is_refcount_suitable(page)) {
+=======
+		if (!is_refcount_suitable(&folio->page)) {
+>>>>>>> BRANCH (af1544b5d072514b219695b0a9fba0b1e0d5e289 Linux 6.6.107)
 			result = SCAN_PAGE_COUNT;
 			goto out_unmap;
 		}
@@ -1377,8 +1383,16 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
 		 */
 		if (cc->is_khugepaged &&
 		    (pte_young(pteval) || folio_test_young(folio) ||
+<<<<<<< HEAD   (024d85b91fc9bf2023114b0aa63c5d3303afcb43 Merge 2b8a1969cae5 ("rcu-tasks: Maintain real-time response )
 		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
 								     address)))
+||||||| BASE   (2b8a1969cae5191ec94b5ca98468575c6eaa211b rcu-tasks: Maintain real-time response in rcu_tasks_postscan)
+		     PageReferenced(page) || mmu_notifier_test_young(vma->vm_mm,
+								     address)))
+=======
+		     folio_test_referenced(folio) ||
+		     mmu_notifier_test_young(vma->vm_mm, _address)))
+>>>>>>> BRANCH (af1544b5d072514b219695b0a9fba0b1e0d5e289 Linux 6.6.107)
 			referenced++;
 	}
 	if (!writable) {
