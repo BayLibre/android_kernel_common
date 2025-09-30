@@ -390,6 +390,24 @@
       "parentUuid": "f08bc2b7_9641b23d",
       "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bbbbc5f_33644246",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-30T15:46:52Z",
+      "side": 1,
+      "message": "\u003e However as the pkvm hypervisor cannot tell if a region is for boot or not, thus the pkvm cannot clear any memory region, thus cannot avoid the general concern that the initial contents of pVM memory (non pvmfw region, non boot data region) are populated by the host thus initially are untrusted.\n\nIf at all, this should be rather a responsibility of pvmfw, not pKVM. Unlike pKVM, pvmfw knows something about the pVM\u0027s memory layout, and if pvmfw wants to clear some memory before starting the pVM, it can easily do that without pKVM\u0027s help.\n\nIt\u0027s better to keep the pKVM hypervisor simple and agnostic of the details of the pVM memory layout (apart from the address and size of pvmfw)?\n\n\u003e Back to this review comment, if there is objection, I will update by extending __pkvm_hyp_donate_host() with a clear flag to selectively clearing the memory pages with cpu cache flushed.\n\nYeah, no objections from me.",
+      "parentUuid": "e2b24ba1_2e2b5526",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
