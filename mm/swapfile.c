@@ -3673,6 +3673,7 @@ struct swap_info_struct *swp_swap_info(swp_entry_t entry)
 {
 	return swap_type_to_swap_info(swp_type(entry));
 }
+EXPORT_SYMBOL_GPL(swp_swap_info);
 
 /*
  * add_swap_count_continuation - called when a swap count is duplicated
