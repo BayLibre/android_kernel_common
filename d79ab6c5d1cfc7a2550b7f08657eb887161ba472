@@ -77,6 +77,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d64f5e65_e2d9c3a6",
+        "filename": "drivers/usb/gadget/function/u_ether.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 894,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2025-09-30T22:04:43Z",
+      "side": 1,
+      "message": "gether_set_gadget() is only ever called from a drivers bind(). It was my understanding that the gadget framework protects against the removal of the gadget during framework api calls. `struct usb_gadget` doesn\u0027t have an explicit lock from what I can tell.\n\nDoing some further digging on this, I don\u0027t think we need to worry about the disconnect events as bind is called before the connection is established, but was concerned about the potential for a role switch from gadget to host mode to cause an issue.\n\nBecause this goes back to the driver core, I believe the device lock protects us from the role switch case because unbind() can\u0027t be called while bind() is active.\n\nPlease let me know if there\u0027s something I\u0027m missing",
+      "parentUuid": "914d55c2_2d199e29",
+      "range": {
+        "startLine": 894,
+        "startChar": 0,
+        "endLine": 894,
+        "endChar": 6
+      },
+      "revId": "d79ab6c5d1cfc7a2550b7f08657eb887161ba472",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8870b1a2_f2e81a72",
         "filename": "drivers/usb/gadget/function/u_ether.h",
         "patchSetId": 1
@@ -88,6 +112,30 @@
       "writtenOn": "2025-09-29T17:55:46Z",
       "side": 1,
       "message": "if you want to unbind, make it a different function name please.",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 55
+      },
+      "revId": "d79ab6c5d1cfc7a2550b7f08657eb887161ba472",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e670bf35_4a4111d0",
+        "filename": "drivers/usb/gadget/function/u_ether.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2025-09-30T22:04:43Z",
+      "side": 1,
+      "message": "I can do that though I\u0027m still trying to figure out if the unbind logic is necessary. Is gether_update_gadget or gether_bind_gadget more appropriate here? Alternatively, I can rename this function and wrap it in gether_set_gadget() and gether_unset_gadget() to prevent having to refactor multiple gadgets.\n\nThat being said, the patch this is attempting to address (a04224da1f34) changes the f_ncm.c logic, but does not change the same pattern for other gadgets which call gether_update_gadget(), including f_ecm.c, f_eem.c, f_rndis.c, and f_subset.c. I\u0027m starting to think that an upstream revert of this patch is more appropriate while identifying a more extensive refactor of all the network gadgets to handle this properly.",
+      "parentUuid": "8870b1a2_f2e81a72",
       "range": {
         "startLine": 147,
         "startChar": 0,
