@@ -354,6 +354,24 @@
       "parentUuid": "e3ae8cf7_3c744032",
       "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f08bc2b7_9641b23d",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-09-30T10:51:20Z",
+      "side": 1,
+      "message": "\u003e BTW, this reminds me that, after donate these memory pages back to the host, a malicious host can also write data to these memory pages before donating to a pVM at the running time.\n\nThis applies not just to the case after we donate pages back to the host, this is just a general concern that the initial contents of pVM memory are populated by the host, and thus _initially_ are untrusted, right?\n\n\u003e The way to enhance may be we pre-fault all the meaningful memory pages before pVM to run, i.e., pvmfw, kernel image and all the boot data pages required by kernel, then the subsequent EPT violation can be handled by clearing the memory page first.\n\nWe already do that with pvmfw pages, not by pre-faulting (pvmfw pages are faulted-in lazily like any other pVM pages) but just by ensuring copying pvmfw to those pages when donating them to pVM, overwriting whatever the host has written there. That is implemented in https://android-review.googlesource.com/c/kernel/common/+/3485408 and now also in https://android-review.googlesource.com/c/kernel/common/+/3672458.\n\nThen, as we ensure that pvmfw is the first code running in the pVM, it is pvmfw\u0027s responsibility to verify that the pVM kernel image is trusted, and so on. In particular, if there is some boot data that needs to be trusted by the pVM when it boots, it is pvmfw\u0027s responsibility to provide this data, or to validate it if it is provided by the host. Any other initial data, not ensured by pvmfw, should be treated by the pVM as untrusted, yes. BTW I also mentioned that here: https://docs.google.com/document/d/1LKYecyzgOZ-0uihat5uRFabhnbuAqqg8hNcgHYlme8w/edit?tab\u003dt.0#heading\u003dh.ndhfvr3nm7s8",
+      "parentUuid": "a8a630fc_012eca8f",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
