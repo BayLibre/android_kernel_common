@@ -748,6 +748,13 @@ void kvm_load_host_xsave_state(struct kvm_vcpu *vcpu)
 }
 EXPORT_SYMBOL_GPL(kvm_load_host_xsave_state);
 
+#ifdef CONFIG_X86_64
+static inline u64 kvm_guest_supported_xfd(struct kvm_vcpu *vcpu)
+{
+	return vcpu->arch.guest_supported_xcr0 & XFEATURE_MASK_USER_DYNAMIC;
+}
+#endif
+
 static int __kvm_set_xcr(struct kvm_vcpu *vcpu, u32 index, u64 xcr)
 {
 	u64 xcr0 = xcr;
@@ -1768,6 +1775,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 			return 1;
 		vcpu->arch.msr_misc_features_enables = data;
 		break;
+#endif
 #ifdef CONFIG_X86_64
 	case MSR_IA32_XFD:
 		if (!msr_info->host_initiated &&
@@ -1789,7 +1797,6 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 
 		vcpu->arch.guest_fpu.xfd_err = data;
 		break;
-#endif
 #endif
 	default:
 #ifndef __PKVM_HYP__ /* FIXME: Leave to the host to emulate */
@@ -2087,6 +2094,7 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 	case MSR_K7_HWCR:
 		msr_info->data = vcpu->arch.msr_hwcr;
 		break;
+#endif
 #ifdef CONFIG_X86_64
 	case MSR_IA32_XFD:
 		if (!msr_info->host_initiated &&
@@ -2102,7 +2110,6 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 
 		msr_info->data = vcpu->arch.guest_fpu.xfd_err;
 		break;
-#endif
 #endif
 	default:
 #ifndef __PKVM_HYP__ /* FIXME: Leave to the host to emulate */
@@ -3362,6 +3369,9 @@ static int __kvm_vcpu_enter_guest(struct kvm_vcpu *vcpu, bool force_immediate_ex
 	if (req_immediate_exit)
 		run_flags |= KVM_RUN_FORCE_IMMEDIATE_EXIT;
 
+	if (vcpu->arch.guest_fpu.xfd_err)
+		wrmsrl(MSR_IA32_XFD_ERR, vcpu->arch.guest_fpu.xfd_err);
+
 	if (unlikely(vcpu->arch.switch_db_regs)) {
 		set_debugreg(0, 7);
 		set_debugreg(vcpu->arch.eff_db[0], 0);
@@ -3392,6 +3402,18 @@ static int __kvm_vcpu_enter_guest(struct kvm_vcpu *vcpu, bool force_immediate_ex
 
 	if (unlikely(exit_fastpath == EXIT_FASTPATH_REENTER_GUEST))
 		return 1;
+	/*
+	 * Sync xfd before calling handle_exit_irqoff() which may
+	 * rely on the fact that guest_fpu::xfd is up-to-date (e.g.
+	 * in #NM irqoff handler).
+	 */
+	if (vcpu->arch.xfd_no_write_intercept)
+		fpu_sync_guest_vmexit_xfd_state();
+
+	kvm_x86_call(handle_exit_irqoff)(vcpu);
+
+	if (vcpu->arch.guest_fpu.xfd_err)
+		wrmsrl(MSR_IA32_XFD_ERR, 0);
 
 	if (kvm_x86_call(handle_exit)(vcpu, exit_fastpath) <= 0) {
 		pkvm_make_req_to_host(HOST_HANDLE_EXIT, vcpu);
