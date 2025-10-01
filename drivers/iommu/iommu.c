@@ -18,6 +18,7 @@
 #include <linux/errno.h>
 #include <linux/host1x_context_bus.h>
 #include <linux/iommu.h>
+#include <linux/iommu-debug.h>
 #include <linux/idr.h>
 #include <linux/err.h>
 #include <linux/pci.h>
@@ -223,6 +224,9 @@ static int __init iommu_subsys_init(void)
 	if (!nb)
 		return -ENOMEM;
 
+#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
+	iommu_debug_init();
+#endif
 	for (int i = 0; i < ARRAY_SIZE(iommu_buses); i++) {
 		nb[i].notifier_call = iommu_bus_notifier;
 		bus_register_notifier(iommu_buses[i], &nb[i]);
@@ -2507,6 +2511,10 @@ static int __iommu_map(struct iommu_domain *domain, unsigned long iova,
 		paddr += mapped;
 	}
 
+#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
+	iommu_debug_map(domain, orig_paddr, orig_size - size);
+#endif
+
 	/* unroll mapping in case something went wrong */
 	if (ret)
 		iommu_unmap(domain, orig_iova, orig_size - size);
@@ -2582,6 +2590,10 @@ static size_t __iommu_unmap(struct iommu_domain *domain,
 
 	pr_debug("unmap this: iova 0x%lx size 0x%zx\n", iova, size);
 
+#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
+	iommu_debug_unmap(domain, iova, size);
+#endif
+
 	/*
 	 * Keep iterating until we either unmap 'size' bytes (or more)
 	 * or we hit an area that isn't mapped.
@@ -2599,6 +2611,11 @@ static size_t __iommu_unmap(struct iommu_domain *domain,
 		iova += unmapped_page;
 		unmapped += unmapped_page;
 	}
+
+#ifdef CONFIG_IOMMU_DEBUG_PAGEALLOC
+	if (unmapped < size)
+		iommu_debug_remap(domain, iova, size- unmapped);
+#endif
 
 	trace_unmap(orig_iova, size, unmapped);
 	return unmapped;
