@@ -819,4 +819,12 @@ config SUNPLUS_SP7021_INTC
 	  chained controller, routing all interrupt source in P-Chip to
 	  the primary controller on C-Chip.
 
+config ARM_GIC_V3_ITS_PKVM
+	tristate "pKVM ARM GIC V3 ITS trap and emulate"
+	depends on KVM && ARM64
+	help
+	  Support the hardening of the GIC/ITS controller in the pKVM
+	  confidential compute environment. This enables trapping
+	  and emulating the access to the GIC/ITS controller to
+	  sanitize its memory accesses.
 endmenu
