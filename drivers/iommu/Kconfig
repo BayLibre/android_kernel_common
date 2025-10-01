@@ -502,4 +502,12 @@ config SPRD_IOMMU
 
 	  Say Y here if you want to use the multimedia devices listed above.
 
+config IOMMU_DEBUG_PAGEALLOC
+	bool "Debug page memory allocations against IOMMU"
+	depends on DEBUG_PAGEALLOC && IOMMU_API && PAGE_EXTENSION
+	help
+		Similary to the DEBUG_PAGEALLOC, this config checks that freed
+		pages are not mapped in the IOMMUs, to avoid bugs such as
+		use after free.
+
 endif # IOMMU_SUPPORT
