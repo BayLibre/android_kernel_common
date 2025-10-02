@@ -1568,6 +1568,8 @@ lenout:
  */
 static inline void sock_lock_init(struct sock *sk)
 {
+	sk_owner_clear(sk);
+
 	if (sk->sk_kern_sock)
 		sock_lock_init_class_and_name(
 			sk,
@@ -1656,7 +1658,14 @@ static void sk_prot_free(struct proto *prot, struct sock *sk)
 	cgroup_sk_free(&sk->sk_cgrp_data);
 	mem_cgroup_sk_free(sk);
 	security_sk_free(sk);
+<<<<<<< HEAD   (5732d3717691609a2ecd07ef055c6f0490dfc77b Merge android11-5.4 into android11-5.4-lts)
 	trace_android_rvh_sk_free(sk);
+||||||| BASE   (08c21a7a8d77131bb79b4611d19d9f45844053a8 Linux 5.4.299)
+=======
+
+	sk_owner_put(sk);
+
+>>>>>>> BRANCH (86b57fd7c54e976bdcee78ead678932821a68e2d Linux 5.4.300)
 	if (slab != NULL)
 		kmem_cache_free(slab, sk);
 	else
