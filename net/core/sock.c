@@ -1661,6 +1661,8 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
  */
 static inline void sock_lock_init(struct sock *sk)
 {
+	sk_owner_clear(sk);
+
 	if (sk->sk_kern_sock)
 		sock_lock_init_class_and_name(
 			sk,
@@ -1750,7 +1752,14 @@ static void sk_prot_free(struct proto *prot, struct sock *sk)
 	cgroup_sk_free(&sk->sk_cgrp_data);
 	mem_cgroup_sk_free(sk);
 	security_sk_free(sk);
+<<<<<<< HEAD   (0a91f603159ed277ddc143367a5851ffde3d0f5a Merge android13-5.10 into android13-5.10-lts)
 	trace_android_rvh_sk_free(sk);
+||||||| BASE   (863b76df7d1e327979946a2d3893479c3275bfa4 Linux 5.10.244)
+=======
+
+	sk_owner_put(sk);
+
+>>>>>>> BRANCH (d3d0b4e274d20103634bc7100cfb6d05ea3ec4d2 Linux 5.10.245)
 	if (slab != NULL)
 		kmem_cache_free(slab, sk);
 	else
