@@ -16,6 +16,24 @@
       "message": "this races with userspace and will cause tools to miss this, so should probably be fixed upstream correctly 😞",
       "revId": "e8d93950fd85be991c7fb969dccbd0081a91e30f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a3b6b58_2822f9f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-10-02T09:19:37Z",
+      "side": 1,
+      "message": "well, I think it races, it\u0027s hard to tell as it\u0027s too many levels deep.  If this is only called from the device probe, then it should be ok, otherwise it will not be, it\u0027s hard to determine.",
+      "parentUuid": "f1466a0c_aebf0ef7",
+      "revId": "e8d93950fd85be991c7fb969dccbd0081a91e30f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
