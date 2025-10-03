@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4765dbff_d50584fc",
+        "filename": "arch/arm64/include/asm/kvm_asm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-10-03T22:56:50Z",
+      "side": 1,
+      "message": "Used nested for the names",
+      "parentUuid": "b48bf4bd_afa2479b",
+      "range": {
+        "startLine": 115,
+        "startChar": 41,
+        "endLine": 115,
+        "endChar": 56
+      },
+      "revId": "924fbb7e3eeac93f4d091a4af0104ff016031bd1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2252f9f7_25c11418",
         "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2025-09-25T12:50:20Z",
       "side": 1,
       "message": "I think size must be passed also to this call, as the driver is the only one knowing the actual size of this opaque object. So, it must verify it against what was actually pinned.\nOtherwise, we do the pinning from the driver.",
+      "range": {
+        "startLine": 463,
+        "startChar": 22,
+        "endLine": 463,
+        "endChar": 39
+      },
+      "revId": "924fbb7e3eeac93f4d091a4af0104ff016031bd1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cd1ffb2_49ae78b4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-10-03T22:56:50Z",
+      "side": 1,
+      "message": "I\u0027ll move the pinning to the driver, so I only have to pass the descriptor host virtual address. This saves having to complicate this even more on 6.12 where we also pass flags, since including the size causes us to run out of number of args.",
+      "parentUuid": "2252f9f7_25c11418",
       "range": {
         "startLine": 463,
         "startChar": 22,
