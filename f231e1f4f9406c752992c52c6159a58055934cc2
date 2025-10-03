@@ -34,6 +34,24 @@
       "parentUuid": "0e2bc1ec_527ae9b3",
       "revId": "f231e1f4f9406c752992c52c6159a58055934cc2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48d99a25_7e4d2467",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3438,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-10-03T23:33:41Z",
+      "side": 0,
+      "message": "Yeah, I\u0027m not saying you can get away without the NUMA_BALANCING but it might avoid having another ifdef in the function, which is usually not preferred.",
+      "parentUuid": "70e26630_5c3e5b22",
+      "revId": "f231e1f4f9406c752992c52c6159a58055934cc2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
