@@ -3435,7 +3435,6 @@ void set_task_cpu(struct task_struct *p, unsigned int new_cpu)
 EXPORT_SYMBOL_GPL(set_task_cpu);
 #endif /* CONFIG_SMP */
 
-#ifdef CONFIG_NUMA_BALANCING
 static void __migrate_swap_task(struct task_struct *p, int cpu)
 {
 	if (task_on_rq_queued(p)) {
@@ -3539,7 +3538,7 @@ int migrate_swap(struct task_struct *cur, struct task_struct *p,
 out:
 	return ret;
 }
-#endif /* CONFIG_NUMA_BALANCING */
+EXPORT_SYMBOL_GPL(migrate_swap);
 
 /***
  * kick_process - kick a running thread to enter/exit the kernel
