@@ -16,6 +16,24 @@
       "message": "would switching this to CONFIG_SMP simplify the follow on patch?",
       "revId": "f231e1f4f9406c752992c52c6159a58055934cc2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70e26630_5c3e5b22",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3438,
+      "author": {
+        "id": 1928805
+      },
+      "writtenOn": "2025-10-03T22:55:33Z",
+      "side": 0,
+      "message": "I doubt that will work because the tracepoint trace_sched_swap_numa looks like it should specifically be protected by CONFIG_NUMA_BALANCING (which is dependent on CONFIG_SMP). So, while CONFIG_SMP is needed, CONFIG_NUMA_BALANCING adds another guard layer.",
+      "parentUuid": "0e2bc1ec_527ae9b3",
+      "revId": "f231e1f4f9406c752992c52c6159a58055934cc2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
