@@ -34,6 +34,24 @@
       "parentUuid": "f1466a0c_aebf0ef7",
       "revId": "e8d93950fd85be991c7fb969dccbd0081a91e30f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2fdf5fa_a22f45a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2025-10-03T17:31:19Z",
+      "side": 1,
+      "message": "HID is a UFS device feature. The UFS host controller becomes visible in sysfs long before the HID attribute is queried. Is my understanding correct that the following call chain makes the UFS host controller visible in sysfs if the UFS host controller is a platform device?\n```\nkernel_init()\n  kernel_init_freeable()\n    do_basic_setup()\n      do_initcalls()\n        do_initcall_level()\n          do_one_initcall()\n            of_platform_default_populate_init()\n              of_platform_populate()\n                of_platform_bus_create()\n                  of_platform_device_create_pdata()\n                    device_add()\n```",
+      "parentUuid": "9a3b6b58_2822f9f3",
+      "revId": "e8d93950fd85be991c7fb969dccbd0081a91e30f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
