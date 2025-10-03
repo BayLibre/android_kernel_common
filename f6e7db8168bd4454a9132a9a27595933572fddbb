@@ -22,6 +22,30 @@
       },
       "revId": "f6e7db8168bd4454a9132a9a27595933572fddbb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ef69979_c92d2b0d",
+        "filename": "include/kvm/iommu.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-10-03T22:31:35Z",
+      "side": 1,
+      "message": "Right, but this is an agreement that the IOMMU driver and the hypervisor have, so shouldn\u0027t this live in the hypervisor? Also, this does get used in the hypervisor driver so that it knows what VMID to use for stage-1 only domains.",
+      "parentUuid": "bdf6368f_94280925",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 32
+      },
+      "revId": "f6e7db8168bd4454a9132a9a27595933572fddbb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
