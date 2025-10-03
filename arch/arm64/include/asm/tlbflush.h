@@ -80,6 +80,22 @@ static inline unsigned long get_trans_granule(void)
 	}
 }
 
+#ifdef CONFIG_ARM64_ERRATUM_SME_DVMSYNC
+void sme_do_dvmsync(void);
+
+static inline void sme_dvmsync(struct mm_struct *mm)
+{
+	if (!cpus_have_final_cap(ARM64_WORKAROUND_SME_DVMSYNC))
+		return;
+	if (mm && !test_bit(ilog2(MMCF_SME_DVMSYNC), &mm->context.flags))
+		return;
+
+	sme_do_dvmsync();
+}
+#else
+static inline void sme_dvmsync(struct mm_struct *mm) { }
+#endif
+
 /*
  * Level-based TLBI operations.
  *
@@ -189,6 +205,7 @@ static inline void __tlbi_sync_s1ish(struct mm_struct *mm)
 {
 	dsb(ish);
 	__repeat_tlbi_sync(vale1is, 0);
+	sme_dvmsync(mm);
 }
 
 static inline void __tlbi_sync_s1ish_kernel(void)

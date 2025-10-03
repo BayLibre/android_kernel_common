@@ -429,6 +429,32 @@ static inline size_t sme_state_size(struct task_struct const *task)
 	return __sme_state_size(task_get_sme_vl(task));
 }
 
+#ifdef CONFIG_ARM64_ERRATUM_SME_DVMSYNC
+
+void sme_enable_dvmsync(void);
+void sme_set_active(unsigned int cpu);
+void sme_clear_active(unsigned int cpu);
+
+#else
+
+static inline void sme_enable_dvmsync(void) { }
+static inline void sme_set_active(unsigned int cpu) { }
+static inline void sme_clear_active(unsigned int cpu) { }
+
+#endif /* CONFIG_ARM64_ERRATUM_SME_DVMSYNC */
+
+static inline void sme_enter_from_user_mode(void)
+{
+	if (test_thread_flag(TIF_SME))
+		sme_clear_active(smp_processor_id());
+}
+
+static inline void sme_exit_to_user_mode(void)
+{
+	if (test_thread_flag(TIF_SME))
+		sme_set_active(smp_processor_id());
+}
+
 #else
 
 static inline void sme_user_disable(void) { BUILD_BUG(); }
@@ -456,6 +482,9 @@ static inline size_t sme_state_size(struct task_struct const *task)
 {
 	return 0;
 }
+
+static inline void sme_enter_from_user_mode(void) { }
+static inline void sme_exit_to_user_mode(void) { }
 
 #endif /* ! CONFIG_ARM64_SME */
 
