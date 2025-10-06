@@ -70,6 +70,24 @@
       "parentUuid": "d2fdf5fa_a22f45a3",
       "revId": "e8d93950fd85be991c7fb969dccbd0081a91e30f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49873a5d_54847e44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869780
+      },
+      "writtenOn": "2025-10-06T22:15:08Z",
+      "side": 1,
+      "message": "In the context of UFS devices HID means \"Host Initiated Defragmenation\".\n\nAs far as I can see it\u0027s not possible to make `ufs_sysfs_hid_group` a default device attribute group because `of_platform_device_create_pdata()` doesn\u0027t allow to set any driver-specific attribute groups. I checked all code in of_platform_device_create_pdata() and also all called code but I couldn\u0027t find any calls to driver functions. If I overlooked something, please reopen this comment.",
+      "parentUuid": "83a72526_c7a6896f",
+      "revId": "e8d93950fd85be991c7fb969dccbd0081a91e30f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
