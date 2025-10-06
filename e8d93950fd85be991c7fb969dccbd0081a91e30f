@@ -52,6 +52,24 @@
       "parentUuid": "9a3b6b58_2822f9f3",
       "revId": "e8d93950fd85be991c7fb969dccbd0081a91e30f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83a72526_c7a6896f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2025-10-06T11:24:06Z",
+      "side": 1,
+      "message": "If a probe() callback is made, then adding sysfs files after that will cause them to be ignored by userspace monitoring tools like libudev.  Why aren\u0027t these just part of the default device attributes and show up only when the device has HID attributes?\n\nAnd is this the same \"HID\" as USB and bluetooth?  or is it something else?",
+      "parentUuid": "d2fdf5fa_a22f45a3",
+      "revId": "e8d93950fd85be991c7fb969dccbd0081a91e30f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
