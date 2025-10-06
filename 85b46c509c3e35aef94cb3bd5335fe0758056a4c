@@ -142,6 +142,24 @@
       "parentUuid": "bb90dd4b_90f0f14a",
       "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f6752ff_dabc21e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-06T13:07:27Z",
+      "side": 1,
+      "message": "Resolving comment.\n\n...For the sake of accuracy, I was probably wrong about this:\n\n\u003e ...Such a generic implementation would need at least to check the pages ownership, and to pin the pages (increase their refcount) to prevent changing their ownership on another CPU in the meantime.\n\nProbably no need to increase the refcount. What we\u0027d probably need to do in such cases is *just* use the page state API to temporarily share or donate the pages from host to hypervisor (which will automatically imply checking the current ownership state).",
+      "parentUuid": "72e7296f_7e6d2fc9",
+      "revId": "85b46c509c3e35aef94cb3bd5335fe0758056a4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
