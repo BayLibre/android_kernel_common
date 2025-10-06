@@ -34,6 +34,24 @@
       "parentUuid": "7f2abf0b_234772e2",
       "revId": "d23a90493b36e2d5a89edcafc1decf1ac17dd843",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f4bc538_d6459ac3",
+        "filename": "arch/x86/kvm/mmu/mmu.c",
+        "patchSetId": 17
+      },
+      "lineNbr": 5925,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-06T13:49:12Z",
+      "side": 1,
+      "message": "Done. You are right that TLB flush is not required here. In pKVM, we are relying on flushing pCPU\u0027s TLB every time a new vCPU is loaded on that pCPU (as we discussed elsewhere), plus on the fact that the same page table is used throughout the VM lifetime i.e. there is no actual \"MMU load/unload\" (as explained in this patch\u0027s commit message).\n\nIf we implement the actual MMU load/unload in the future to support SMM, we will need to flush TLB in that case, but yeah, it will need to be ensured on the pKVM side anyway, not on the host side.",
+      "parentUuid": "16d04624_4583d6b1",
+      "revId": "d23a90493b36e2d5a89edcafc1decf1ac17dd843",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
