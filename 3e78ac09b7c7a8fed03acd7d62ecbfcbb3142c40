@@ -42,6 +42,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5434cdc7_39ae1d6d",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-06T12:54:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c29381b7_f9487b77",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 22
+      },
+      "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f09d161_10dbc040",
@@ -155,6 +179,30 @@
       "side": 1,
       "message": "I\u0027m actually considering changing this to avoid changing the callback at runtime, at the cost of doing the runtime check (since that is what we are planning for v6.15 anyway, and as Kevin noted, that is good for security, since mm_ops can be in .rodata and thus mapped RO), so reopening the comment.",
       "parentUuid": "38a03555_7a46bc51",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 3
+      },
+      "revId": "3e78ac09b7c7a8fed03acd7d62ecbfcbb3142c40",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "491f6539_18e10367",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-06T12:54:28Z",
+      "side": 1,
+      "message": "Done: removed the per-vm copy of mm_ops. Instead, in aosp/3672457 check at runtime if need to flush TLB or not.",
+      "parentUuid": "b1fe208d_990a0391",
       "range": {
         "startLine": 38,
         "startChar": 0,
