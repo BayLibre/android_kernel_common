@@ -88,6 +88,24 @@
       "parentUuid": "e4dc6857_a58a6650",
       "revId": "4783236d2c55ee24e60b09e71b34f24e7d244685",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b63a8df0_2c9183b1",
+        "filename": "arch/x86/kvm/mmu/spte.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-06T13:09:26Z",
+      "side": 1,
+      "message": "\u003e That said, as Chuanxiao noted in aosp/3700491, doing this here in kvm_mmu_spte_module_init() (called from kvm_x86_init()) is a bit too early.\n\nMoved it to kvm_mmu_set_mmio_spte_mask(). That\u0027s the simplest way, since kvm_mmu_set_mmio_spte_mask() is the place where the actual _final_ value of enable_mmio_caching is decided.",
+      "parentUuid": "c328ea76_9d8a694f",
+      "revId": "4783236d2c55ee24e60b09e71b34f24e7d244685",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
