@@ -64,6 +64,30 @@
       },
       "revId": "8936fbf91a74be0a7dd529777a8e1e5292402458",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fa1faeb_b29cd666",
+        "filename": "arch/x86/kvm/pkvm/mmu.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-06T12:51:19Z",
+      "side": 1,
+      "message": "Done: renamed to `guest_mmu_pgt_ops` and `guest_mmu_pgt_cap`, and while at it, renamed `-\u003epgt` and `-\u003epgt_lock` to `-\u003emmu` and `-\u003emmu_lock` just for consistency with the naming used for hyp and host mmu in v6.15.",
+      "parentUuid": "02bffea9_12a6671b",
+      "range": {
+        "startLine": 9,
+        "startChar": 31,
+        "endLine": 9,
+        "endChar": 44
+      },
+      "revId": "8936fbf91a74be0a7dd529777a8e1e5292402458",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
