@@ -22,6 +22,30 @@
       },
       "revId": "b4ced7622c5ae9dc14e1afaa531311fc80273a28",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ad4eb37_b4040d05",
+        "filename": "arch/x86/kvm/pkvm/vmx/ept.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-07T11:53:06Z",
+      "side": 1,
+      "message": "Actually they are not exactly \"shadow related\". In regular KVM (w/o pKVM) these SPTE_xxx macros are used for EPT page tables as well (which are _not_ shadow page tables, they are stage-2 page tables managed solely by KVM), and generally the terms \"spte\" or \"shadow page\" refer to EPT page tables as well (so they are a bit of a misnomer), for historical reasons. https://docs.kernel.org/virt/kvm/x86/mmu.html#shadow-pages\n\nWhereas PTE_PFN_xxx macros are used by kernel for stage-1, not stage-2 page tables.\n\nSo, it\u0027s probably more consistent and reliable if in pKVM we also use SPTE_xxx (i.e. follow what KVM does for EPT), not PTE_PFN_xxx?",
+      "parentUuid": "b13ce0e4_5a84f2dd",
+      "range": {
+        "startLine": 43,
+        "startChar": 23,
+        "endLine": 43,
+        "endChar": 42
+      },
+      "revId": "b4ced7622c5ae9dc14e1afaa531311fc80273a28",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
