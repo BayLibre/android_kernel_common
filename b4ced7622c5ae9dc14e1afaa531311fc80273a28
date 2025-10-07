@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b13ce0e4_5a84f2dd",
+        "filename": "arch/x86/kvm/pkvm/vmx/ept.c",
+        "patchSetId": 16
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-10-07T08:17:26Z",
+      "side": 1,
+      "message": "I think we should use PTE_PFN_MASK instead of SPTE_BASE_ADDR_MASK and replace other shadow related SPTE_ defines with PTE equivalents as we are moving away form shadow EPT to pvEPT, which will finally allow to drop `#include \u003cmmu/spte.h\u003e`.\n\nI understand how it get here and was well described in commit log that \"The pgtable ops implementation is almost copied from the existing shadow EPT code.\" It is not so important to improve it now (maybe adding some TODO to not forget about it? but not insisting) but I think we could improve it when moving to new kernel version - so just leaving this comment here.",
+      "range": {
+        "startLine": 43,
+        "startChar": 23,
+        "endLine": 43,
+        "endChar": 42
+      },
+      "revId": "b4ced7622c5ae9dc14e1afaa531311fc80273a28",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
