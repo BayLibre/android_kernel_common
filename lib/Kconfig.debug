@@ -1426,7 +1426,13 @@ config PROVE_LOCKING
 	 For more details, see Documentation/locking/lockdep-design.rst.
 
 config PROVE_RAW_LOCK_NESTING
+<<<<<<< HEAD   (cc0d550bd93c74002276098568ca0090fba87f22 Revert "ANDROID: virtio: disable virtio_dma_buf callback che)
 	bool "Enable raw_spinlock - spinlock nesting checks"
+||||||| BASE   (1cc8a421fc980e67a2fdaa384371a18a9441b012 ANDROID: GKI: arm64 Enable SafeSetID to limit CAP_SET{U/G}ID)
+	bool "Enable raw_spinlock - spinlock nesting checks" if !ARCH_SUPPORTS_RT
+=======
+	bool "Enable raw_spinlock - spinlock nesting checks" if !PREEMPT_RT
+>>>>>>> CHANGE (bed1201d409479f214f31f35a6bf99f7b7097e64 ANDROID: locking/lockdep: Enforce PROVE_RAW_LOCK_NESTING onl)
 	depends on PROVE_LOCKING
 	default n
 	help
