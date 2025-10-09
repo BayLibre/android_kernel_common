@@ -89,6 +89,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "222a1cc5_f1311f57",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 907,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-10-09T00:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7619fcc_1728e6b4",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a84d813_571d3e3e",
@@ -160,6 +178,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fa5db46_11fbe97f",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 912,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-10-09T00:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8cc7f42_8a859180",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c32a6711_99603dbd",
@@ -209,6 +245,24 @@
       "side": 1,
       "message": "Seems \"can cause the host to free\" is simpler.",
       "parentUuid": "c32a6711_99603dbd",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d305300_effe0d2d",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 913,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-10-09T00:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be531f1f_1a0c834f",
       "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -406,6 +460,24 @@
       "side": 1,
       "message": "\u003e However as the pkvm hypervisor cannot tell if a region is for boot or not, thus the pkvm cannot clear any memory region, thus cannot avoid the general concern that the initial contents of pVM memory (non pvmfw region, non boot data region) are populated by the host thus initially are untrusted.\n\nIf at all, this should be rather a responsibility of pvmfw, not pKVM. Unlike pKVM, pvmfw knows something about the pVM\u0027s memory layout, and if pvmfw wants to clear some memory before starting the pVM, it can easily do that without pKVM\u0027s help.\n\nIt\u0027s better to keep the pKVM hypervisor simple and agnostic of the details of the pVM memory layout (apart from the address and size of pvmfw)?\n\n\u003e Back to this review comment, if there is objection, I will update by extending __pkvm_hyp_donate_host() with a clear flag to selectively clearing the memory pages with cpu cache flushed.\n\nYeah, no objections from me.",
       "parentUuid": "e2b24ba1_2e2b5526",
+      "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a5a38fd_f4f847d3",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-10-09T00:50:33Z",
+      "side": 1,
+      "message": "\u003e Yeah, no objections from me.\n\nThis is done by a new patch at https://android-review.googlesource.com/c/kernel/common/+/3787907",
+      "parentUuid": "7bbbbc5f_33644246",
       "revId": "5871a97a10b053c572926f854e77bf3427abfe57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
