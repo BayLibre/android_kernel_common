@@ -52,6 +52,9 @@ struct pkvm_mem_transition {
 	struct pkvm_mem_trans_desc	completer;
 };
 
+static int __pkvm_pin_unpin_mem(u64 phys, u64 size, bool pin,
+				enum pkvm_page_state expt_pgstate);
+
 static void guest_mmu_lock(struct pkvm_pgtable *pgt)
 {
 	pkvm_spin_lock(&pgt_to_pkvm(pgt)->mmu_lock);
@@ -697,6 +700,11 @@ int __pkvm_host_share_guest(u64 hpa, struct pkvm_pgtable *guest_pgt,
 	host_ept_lock();
 
 	ret = do_share(&share);
+	/*
+	 * Pin memory pages which successfully become to PKVM_PAGE_SHARED_OWNED
+	 * to prevent them from being unshared via __pkvm_host_unshare_hyp().
+	 */
+	__pkvm_pin_unpin_mem(hpa, size, true, PKVM_PAGE_SHARED_OWNED);
 
 	host_ept_unlock();
 
@@ -966,6 +974,11 @@ int __pkvm_host_unshare_guest(u64 hpa, struct pkvm_pgtable *guest_pgt,
 	host_ept_lock();
 
 	ret = do_unshare(&share);
+	/*
+	 * Unpin memory pages which successfully become to PKVM_PAGE_OWNED to
+	 * reverse the pin operations done in __pkvm_host_share_guest().
+	 */
+	__pkvm_pin_unpin_mem(hpa, size, false, PKVM_PAGE_OWNED);
 
 	host_ept_unlock();
 
