@@ -68,6 +68,8 @@ enum sm_level {
 extern const struct pkvm_mm_ops iommu_pw_coherency_mm_ops;
 extern const struct pkvm_mm_ops iommu_pw_noncoherency_mm_ops;
 
+#define __DOMAIN_MAX_ADDR(gaw) ((((uint64_t)1) << (gaw)) - 1)
+
 #define LAST_LEVEL(level)	\
 	(((level) == 1) ? true : false)
 
@@ -237,6 +239,8 @@ unsigned long pkvm_iommu_set_lm_ce(u64 param_va);
 unsigned long pkvm_iommu_set_sm_ce(u64 param_va);
 struct context_entry *pkvm_iommu_context_addr(struct intel_iommu *iommu, u8 bus,
 					 u8 devfn, u64 context_phys);
+unsigned long pkvm_iommu_domain_alloc(u64 param_va);
+unsigned long pkvm_iommu_domain_free(u64 pgd_gpa);
 #else
 int handle_descriptor(struct pkvm_iommu *iommu, struct qi_desc *desc);
 int free_shadow_id(struct pkvm_iommu *iommu, unsigned long vaddr,
