@@ -1914,10 +1914,12 @@ int hyp_ffa_init(void *pages)
 	if (kvm_host_psci_config.smccc_version < ARM_SMCCC_VERSION_1_1)
 		return 0;
 
+	__hyp_exit();
 	arm_smccc_1_2_smc(&(struct arm_smccc_1_2_regs) {
 		.a0 = FFA_VERSION,
 		.a1 = FFA_VERSION_1_2,
 	}, &res);
+	__hyp_enter();
 	if (res.a0 == FFA_RET_NOT_SUPPORTED)
 		return 0;
 
