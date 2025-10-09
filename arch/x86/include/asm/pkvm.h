@@ -24,6 +24,8 @@
 #define PKVM_HC_IOMMU_SET_PASID_FL	17
 #define PKVM_HC_IOMMU_SET_PASID_SL	18
 #define PKVM_HC_IOMMU_SET_SM_CE_PRE	19
+#define PKVM_HC_IOMMU_DOMAIN_ALLOC	20
+#define PKVM_HC_IOMMU_DOMAIN_FREE	21
 
 /*
  * Internal hypercall to commit the pkvm initialization
@@ -118,6 +120,17 @@ struct pkvm_pasid_table_param {
 	u16 domain_gaw;
 	u16 domain_agaw;
 	u64 domain_pgd_gpa;
+};
+
+struct pkvm_domain_param {
+	u16 bdf;
+	u16 gaw;
+	u8 agaw;
+	u8 iommu_superpage: 4;
+	u8 iommu_coherency: 1;
+	u8 use_first_level: 1;
+	u64 max_addr;
+	u64 pgd_gpa;
 };
 
 #ifndef __PKVM_HYP__
@@ -297,6 +310,28 @@ static inline long pkvm_hc_iommu_set_pasid_sl(unsigned long reg_phys,
 	if (pkvm_pviommu_enabled())
 		ret = kvm_hypercall2(PKVM_HC_IOMMU_SET_PASID_SL, reg_phys,
 				virt_to_phys(param));
+
+	return ret;
+}
+
+static inline long pkvm_hc_iommu_domain_alloc(unsigned long reg_phys,
+		struct pkvm_domain_param *param)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_DOMAIN_ALLOC, reg_phys,
+				virt_to_phys(param));
+
+	return ret;
+}
+
+static inline long pkvm_hc_iommu_domain_free(u64 pgd_gpa)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall1(PKVM_HC_IOMMU_DOMAIN_FREE, pgd_gpa);
 
 	return ret;
 }
