@@ -18,6 +18,7 @@
 #include "iommu_spgt.h"
 #include "bug.h"
 #include "iommu.h"
+#include "iommu_domain.h"
 
 static void __pasid_setup_fl(struct intel_iommu *iommu, struct pasid_entry *pe, u64 flptr,
 		u16 did, bool force_snoop)
@@ -183,6 +184,7 @@ int pkvm_iommu_clear_pasid_entry(u64 param_va)
 	struct intel_iommu *iommu;
 	struct pasid_entry *pte;
 	int ret = -ENODEV;
+	u64 pgd_pa = 0;
 	u16 pgtt;
 
 	if (!param_va)
@@ -213,8 +215,15 @@ int pkvm_iommu_clear_pasid_entry(u64 param_va)
 
 	param->did = pasid_get_domain_id(pte);
 	pgtt = pasid_get_translation_type(pte);
-	pkvm_dbg("pkvm: %s: clear_pe: dev[%x] pasid: %x, did: %x\n",
-			__func__, param->bdf, param->pasid, param->did);
+	if (pgtt == PASID_ENTRY_PGTT_FL_ONLY)
+		pgd_pa = pasid_get_flptr(pte);
+	else if (pgtt == PASID_ENTRY_PGTT_SL_ONLY)
+		pgd_pa = pasid_get_slptr(pte);
+	if (pgd_pa && pgd_pa != pkvm_host_ept_pgd())
+		pkvm_free_iommu_domain(pgd_pa);
+
+	pkvm_dbg("pkvm: %s: clear_pe: dev[%x] pasid: %u, did: %x, pgd: %llx\n",
+			__func__, param->bdf, param->pasid, param->did, pgd_pa);
 	pasid_clear_entry(pte);
 	ret = 0;
 
@@ -281,6 +290,16 @@ int pkvm_iommu_set_pasid_fl(u64 param_va)
 		goto out_unlock;
 	}
 
+	/*
+	 * Verify the domain is present and take a reference.
+	 */
+	if (!pkvm_get_iommu_domain(param->domain_pgd_gpa)) {
+		pkvm_err("pkvm: %s: Failed to locate domain with pgd: %llx\n",
+				__func__, param->domain_pgd_gpa);
+		ret = -EFAULT;
+		goto out_unlock;
+	}
+
 	__pasid_setup_fl(iommu, pte, param->domain_pgd_gpa,
 			param->did, param->force_snooping);
 
@@ -324,6 +343,17 @@ static int pasid_setup_sl(struct pkvm_iommu *hyp_iommu, struct pkvm_pasid_table_
 
 	if (pasid_pte_is_present(pte)) {
 		ret = -EBUSY;
+		goto out_unlock;
+	}
+
+	/*
+	 * Verify the domain is present and take a reference.
+	 */
+	if (param->domain_pgd_gpa != pkvm_host_ept_pgd() &&
+			!pkvm_get_iommu_domain(param->domain_pgd_gpa)) {
+		pkvm_err("pkvm: %s: Failed to locate domain with pgd: %llx\n",
+				__func__, param->domain_pgd_gpa);
+		ret = -EFAULT;
 		goto out_unlock;
 	}
 

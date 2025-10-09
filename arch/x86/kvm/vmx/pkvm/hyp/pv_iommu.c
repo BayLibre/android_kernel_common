@@ -18,6 +18,7 @@
 #include "iommu_spgt.h"
 #include "bug.h"
 #include "iommu.h"
+#include "iommu_domain.h"
 
 static void __set_lm_context(struct context_entry *context, u16 did, u8 aw, u8 tt, u64 slptr)
 {
@@ -83,6 +84,7 @@ unsigned long pkvm_iommu_clear_ce(u64 param_va)
 	struct pkvm_clear_translation_param *param;
 	struct context_entry *context;
 	struct pkvm_iommu *hyp_iommu;
+	u64 pgd_pa = 0;
 	int ret = 0;
 
 	if (!param_va)
@@ -111,12 +113,18 @@ unsigned long pkvm_iommu_clear_ce(u64 param_va)
 			goto out;
 	}
 
+	if (!sm_supported(&hyp_iommu->iommu)) {
+		pgd_pa = context_lm_get_slptr(context);
+		if (pgd_pa && pgd_pa != pkvm_host_ept_pgd())
+			pkvm_free_iommu_domain(pgd_pa);
+	}
+
 	/*
 	 * Pass the did back to host for iommu cache flush.
 	 */
 	param->did = context_domain_id(context);
-	pkvm_dbg("pkvm: %s: clear_ce: dev[%x] did: %u\n",
-			__func__, param->bdf, param->did);
+	pkvm_dbg("pkvm: %s: clear_ce: dev[%x] did: %u, pgd: %llx\n",
+			__func__, param->bdf, param->did, pgd_pa);
 	context_clear_entry(context);
 	__pkvm_iommu_flush_cache(&hyp_iommu->iommu, context, sizeof(*context));
 out:
@@ -148,6 +156,17 @@ unsigned long set_context_entry(struct pkvm_iommu *hyp_iommu,
 
 	if (context_present(context))
 		return -EBUSY;
+
+	/*
+	 * Verify the domain is present and take a reference.
+	 */
+	if (param->domain_pgd_gpa != pkvm_host_ept_pgd()) {
+		if (!pkvm_get_iommu_domain(param->domain_pgd_gpa)) {
+			pkvm_err("pkvm: %s: Failed to locate domain with pgd: %llx\n",
+					__func__, param->domain_pgd_gpa);
+			return -EFAULT;
+		}
+	}
 
 	__set_lm_context(context, param->did, param->domain_agaw,
 			CONTEXT_TT_MULTI_LEVEL, param->domain_pgd_gpa);
@@ -288,6 +307,97 @@ unsigned long pkvm_iommu_set_sm_ce(u64 param_va)
 
 out_unlock:
 	pkvm_spin_unlock(&hyp_iommu->lock);
+
+	return ret;
+}
+
+static int iommu_superpage_capability(struct intel_iommu *iommu, bool use_first_level)
+{
+	if (!intel_iommu_superpage)
+		return 0;
+
+	if (use_first_level)
+		return cap_fl1gp_support(iommu->cap) ? 2 : 1;
+
+	return fls(cap_super_page_val(iommu->cap));
+}
+
+unsigned long pkvm_iommu_domain_alloc(u64 param_va)
+{
+	struct pkvm_iommu_domain *domain;
+	struct pkvm_domain_param *param;
+	struct pkvm_iommu *hyp_iommu;
+	struct intel_iommu *iommu;
+	u8 addr_width;
+	u64 pgd;
+	void *pgdptr;
+	int ret = -EFAULT;
+
+	if (!param_va)
+		return -EINVAL;
+
+	param = (struct pkvm_domain_param *)kern_pkvm_va((void *)param_va);
+	if (WARN_ON_ONCE(param != this_pv_param(domain_param)))
+		return -EINVAL;
+
+	hyp_iommu = find_iommu_by_reg_phys(param->phys);
+	if (!hyp_iommu)
+		return -EINVAL;
+
+	pgd = host_gpa2hpa(param->pgd_gpa);
+	pgdptr = pkvm_phys_to_virt(pgd);
+
+	pkvm_dbg("pkvm: %s: write protecting pgd: %llx\n", __func__, pgd);
+	if (pkvm_switch_host_ept_ro(pgd, PAGE_SIZE)) {
+		pkvm_err("pkvm: %s: failed to write protect pgd!\n", __func__);
+		return -EINVAL;
+	}
+	memset(pgdptr, 0, PAGE_SIZE);
+
+	pkvm_spin_lock(&hyp_iommu->lock);
+	iommu = &hyp_iommu->iommu;
+
+	domain = pkvm_alloc_iommu_domain(pgd);
+	if (!domain) {
+		pkvm_err("pkvm: %s: failed to allocate ptdev for bdf: %x\n", __func__, param->bdf);
+		goto out_unlock;
+	}
+
+	addr_width = agaw_to_width(iommu->agaw);
+	if (addr_width > cap_mgaw(iommu->cap))
+		addr_width = cap_mgaw(iommu->cap);
+	domain->gaw = param->gaw = addr_width;
+	domain->agaw = param->agaw = iommu->agaw;
+	domain->max_addr = param->max_addr = __DOMAIN_MAX_ADDR(addr_width);
+	domain->use_first_level = param->use_first_level;
+	domain->iommu_superpage = param->iommu_superpage = iommu_superpage_capability(iommu, param->use_first_level);
+	domain->iommu_coherency = param->iommu_coherency = iommu_coherency(iommu);
+
+	ret = 0;
+out_unlock:
+	__pkvm_iommu_flush_cache(iommu, pgdptr, PAGE_SIZE);
+
+	pkvm_spin_unlock(&hyp_iommu->lock);
+
+	pkvm_dbg("pkvm: %s: allocating domain(pgd=%llx) for device(bdf=%x) %s\n", __func__,
+			pgd, param->bdf, ret ? "failed" : "succeeded");
+
+	return ret;
+}
+
+unsigned long pkvm_iommu_domain_free(u64 pgd_gpa)
+{
+	u64 pgd = host_gpa2hpa(pgd_gpa);
+	int ret;
+
+	pkvm_free_iommu_domain(pgd);
+
+	memset(pkvm_phys_to_virt(pgd), 0, PAGE_SIZE);
+	pkvm_dbg("pkvm: %s: remove write protect pgd: %llx\n", __func__, pgd);
+	ret = pkvm_switch_host_ept_default(pgd, PAGE_SIZE);
+	if (ret) {
+		pkvm_err("pkvm: %s: failed to remove write protect pgd!\n", __func__);
+	}
 
 	return ret;
 }
