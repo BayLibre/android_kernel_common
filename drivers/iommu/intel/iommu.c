@@ -588,6 +588,18 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
 			pr_info("legacy mode page table is not present\n");
 			return;
 		}
+
+		if (pkvm_pviommu_enabled() &&
+				 context_domain_id(ctx_entry) == FLPT_DEFAULT_DID) {
+			/*
+			 * Do not try to walk the page table with pviommu if
+			 * device is identity mapped. pkvm converts identity
+			 * to DMA mapping and uses host ept which the host do
+			 * not have access.
+			 */
+			pr_info("passthrough mode is shadowed and write protected by pkvm\n");
+			return;
+		}
 		level = agaw_to_level(ctx_entry->hi & 7);
 		pgtable = phys_to_virt(ctx_entry->lo & VTD_PAGE_MASK);
 		goto pgtable_walk;
@@ -622,6 +634,17 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
 
 	if (!pasid_pte_is_present(pte)) {
 		pr_info("scalable mode page table is not present\n");
+		return;
+	}
+
+	if (pkvm_pviommu_enabled() && pasid_get_domain_id(pte) == FLPT_DEFAULT_DID) {
+		/*
+		 * Do not try to walk the page table with pviommu if
+		 * device is identity mapped. pkvm converts identity
+		 * to DMA mapping and uses host ept which the host do
+		 * not have access.
+		 */
+		pr_info("passthrough mode is shadowed and write protected by pkvm\n");
 		return;
 	}
 
