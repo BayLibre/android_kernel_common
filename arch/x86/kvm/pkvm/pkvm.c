@@ -349,6 +349,53 @@ undonate:
 	return ret;
 }
 
+static int __pkvm_vcpu_free(struct pkvm_vm *pkvm_vm, int vcpu_handle)
+{
+	struct kvm_protected_vm *shared_pkvm;
+	struct pkvm_vcpu *pkvm_vcpu;
+	struct kvm_vcpu *vcpu;
+
+	pkvm_vcpu = detach_pkvm_vcpu_from_vm(pkvm_vm, vcpu_handle);
+	if (!pkvm_vcpu)
+		return -EINVAL;
+
+	vcpu = to_kvm_vcpu(pkvm_vcpu);
+	kvm_x86_call(vcpu_free)(vcpu);
+
+	shared_pkvm = &pkvm_vm->shared_kvm->arch.pkvm;
+	teardown_donated_memory(&shared_pkvm->teardown_mc,
+				(void *)vcpu->arch.cpuid_entries,
+				sizeof(struct kvm_cpuid_entry2) *
+				vcpu->arch.cpuid_nent);
+	teardown_donated_memory(&shared_pkvm->teardown_mc,
+				(void *)pkvm_vcpu, pkvm_vcpu->size);
+
+	/* TODO: unpin shared kvm_vcpu */
+
+	return 0;
+}
+
+static int pkvm_vcpu_free(struct kvm_vcpu *shared_vcpu)
+{
+	struct kvm *shared_kvm = kern_pkvm_va(shared_vcpu->kvm);
+	int vcpu_handle = shared_vcpu->arch.pkvm_vcpu_handle;
+	struct pkvm_vm *pkvm_vm;
+	int ret;
+
+	if (!shared_kvm || vcpu_handle < 0 || vcpu_handle >= KVM_MAX_VCPUS)
+		return -EINVAL;
+
+	pkvm_vm = get_pkvm_vm(shared_kvm->arch.pkvm.pkvm_vm_handle);
+	if (!pkvm_vm)
+		return -EINVAL;
+
+	vcpu_handle = array_index_nospec(vcpu_handle, KVM_MAX_VCPUS);
+	ret = __pkvm_vcpu_free(pkvm_vm, vcpu_handle);
+
+	put_pkvm_vm(pkvm_vm);
+	return ret;
+}
+
 static int pkvm_vm_finalize(int handle)
 {
 	struct kvm *kvm, *shared_kvm;
@@ -427,25 +474,13 @@ static void pkvm_vm_destroy(int handle)
 		return;
 	shared_pkvm = &pkvm_vm->shared_kvm->arch.pkvm;
 
-	for (i = 0; i < to_kvm(pkvm_vm)->created_vcpus; i++) {
-		struct pkvm_vcpu *pkvm_vcpu;
-		struct kvm_vcpu *vcpu;
-
-		pkvm_vcpu = detach_pkvm_vcpu_from_vm(pkvm_vm, i);
-		if (!pkvm_vcpu)
-			continue;
-
-		vcpu = to_kvm_vcpu(pkvm_vcpu);
-		kvm_x86_call(vcpu_free)(vcpu);
-
-		teardown_donated_memory(&shared_pkvm->teardown_mc,
-					(void *)vcpu->arch.cpuid_entries,
-					sizeof(struct kvm_cpuid_entry2) *
-					vcpu->arch.cpuid_nent);
-		teardown_donated_memory(&shared_pkvm->teardown_mc,
-					(void *)pkvm_vcpu, pkvm_vcpu->size);
-		/* TODO: unpin shared kvm_vcpu */
-	}
+	/*
+	 * Suppose all the created pkvm_vcpus have been freed already by the
+	 * host via the vcpu_free PV interface. In case any of the pkvm_vcpu
+	 * is not freed, try to free it at here.
+	 */
+	for (i = 0; i < to_kvm(pkvm_vm)->created_vcpus; i++)
+		__pkvm_vcpu_free(pkvm_vm, i);
 
 	kvm_arch_destroy_vm(to_kvm(pkvm_vm));
 	teardown_donated_memory(&shared_pkvm->teardown_mc,
@@ -1716,6 +1751,9 @@ unsigned long handle_kvm_call(unsigned long fn, unsigned long p1,
 		break;
 	case __pkvm__vcpu_create:
 		ret = pkvm_vcpu_create((struct kvm_vcpu *)kern_pkvm_va((void *)p1), p2);
+		break;
+	case __pkvm__vcpu_free:
+		ret = pkvm_vcpu_free((struct kvm_vcpu *)kern_pkvm_va((void *)p1));
 		break;
 	default:
 		ret = pkvm_vcpu_handle_kvm_call(fn, (struct kvm_vcpu *)kern_pkvm_va((void *)p1),
