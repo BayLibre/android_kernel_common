@@ -666,8 +666,14 @@ static void pkvm_vcpu_load(struct pkvm_vcpu *pkvm_vcpu, int cpu)
 	vcpu = to_kvm_vcpu(pkvm_vcpu);
 	loaded_cpu = cmpxchg(&vcpu->cpu, -1, cpu);
 	if (loaded_cpu == -1) {
-		/* Not loaded yet */
-		get_pkvm_vm(vcpu->kvm->arch.pkvm.pkvm_vm_handle);
+		/*
+		 * Get to prevent the pkvm_vcpu from being freed via the
+		 * vcpu_free PV interface without a pkvm_vcpu_put. If the
+		 * got pkvm_vcpu is not the same with the original pkvm_vcpu, it
+		 * must be a code bug.
+		 */
+		BUG_ON(pkvm_vcpu != get_pkvm_vcpu(vcpu->kvm->arch.pkvm.pkvm_vm_handle,
+						  pkvm_vcpu->vcpu_idx));
 	} else if (WARN_ON_ONCE(loaded_cpu != cpu)) {
 		/* Already loaded on another CPU */
 		return;
@@ -698,7 +704,11 @@ static void pkvm_vcpu_put(struct pkvm_vcpu *pkvm_vcpu)
 
 	kvm_x86_call(vcpu_put)(vcpu);
 
-	put_pkvm_vm(pkvm_vcpu->pkvm_vm);
+	/*
+	 * Put this pkvm_vcpu to allow it to be freed via the vcpu_free PV
+	 * interface.
+	 */
+	put_pkvm_vcpu(pkvm_vcpu);
 }
 
 static void pkvm_vcpu_pvmfw_entry_init(struct kvm_vcpu *vcpu)
