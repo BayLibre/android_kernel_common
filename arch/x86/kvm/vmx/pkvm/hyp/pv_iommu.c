@@ -533,3 +533,96 @@ out_unlock:
 
 	return ret;
 }
+
+static int iommu_superpage_capability(struct intel_iommu *iommu, bool use_first_level)
+{
+	if (!intel_iommu_superpage)
+		return 0;
+
+	if (use_first_level)
+		return cap_fl1gp_support(iommu->cap) ? 2 : 1;
+
+	return fls(cap_super_page_val(iommu->cap));
+}
+
+unsigned long pkvm_iommu_domain_alloc(u64 param_va)
+{
+	struct pkvm_iommu_domain *domain;
+	struct pkvm_domain_param *param;
+	struct pkvm_iommu *hyp_iommu;
+	struct intel_iommu *iommu;
+	u8 addr_width;
+	u64 pgd;
+	void *pgdptr;
+	int ret = -EFAULT;
+
+	if (!param_va)
+		return -EINVAL;
+
+	param = (struct pkvm_domain_param *)kern_pkvm_va((void *)param_va);
+	if (WARN_ON_ONCE(param != this_pv_param(domain_param)))
+		return -EINVAL;
+
+	hyp_iommu = find_iommu_by_reg_phys(param->phys);
+	if (!hyp_iommu)
+		return -EINVAL;
+
+	pgd = host_gpa2hpa(param->pgd_gpa);
+	pgdptr = pkvm_phys_to_virt(pgd);
+	// TODO: Enable this once we have hypercalls for map/unmap
+	//
+	//pkvm_dbg("pkvm: %s: write protecting pgd: %llx\n", __func__, pgd);
+	//if (pkvm_switch_host_ept_ro(pgd, VTD_PAGE_SIZE)) {
+	//	pkvm_err("pkvm: %s: failed to write protect pgd!\n", __func__);
+	//	goto out_unlock;
+	//}
+	memset(pgdptr, 0, VTD_PAGE_SIZE);
+
+	pkvm_spin_lock(&hyp_iommu->lock);
+	iommu = &hyp_iommu->iommu;
+
+	domain = pkvm_alloc_iommu_domain(pgd);
+	if (!domain) {
+		pkvm_err("pkvm: %s: failed to allocate ptdev for bdf: %x\n", __func__, param->bdf);
+		goto out_unlock;
+	}
+
+	addr_width = agaw_to_width(iommu->agaw);
+	if (addr_width > cap_mgaw(iommu->cap))
+		addr_width = cap_mgaw(iommu->cap);
+	domain->gaw = param->gaw = addr_width;
+	domain->agaw = param->agaw = iommu->agaw;
+	domain->max_addr = param->max_addr = __DOMAIN_MAX_ADDR(addr_width);
+	domain->use_first_level = param->use_first_level;
+	domain->iommu_superpage = param->iommu_superpage = iommu_superpage_capability(iommu, param->use_first_level);
+	domain->iommu_coherency = param->iommu_coherency = iommu_coherency(iommu);
+
+	ret = 0;
+out_unlock:
+	if (!ecap_coherent(iommu->ecap))
+		pkvm_clflush_cache_range(pgdptr, VTD_PAGE_SIZE);
+
+	pkvm_spin_unlock(&hyp_iommu->lock);
+
+	pkvm_dbg("pkvm: %s: allocating domain(pgd=%llx) for device(bdf=%x) %s\n", __func__,
+			pgd, param->bdf, ret ? "failed" : "succeeded");
+
+	return ret;
+}
+
+unsigned long pkvm_iommu_domain_free(u64 pgd_gpa)
+{
+	u64 pgd = host_gpa2hpa(pgd_gpa);
+
+	pkvm_free_iommu_domain(pgd);
+
+	// TODO: Enable this once we have hypercalls for map/unmap
+	//
+	//pkvm_dbg("pkvm: %s: remove write protect pgd: %llx\n", __func__, pgd);
+	//if (pkvm_switch_host_ept_default(pgd, VTD_PAGE_SIZE)) {
+	//	pkvm_err("pkvm: %s: failed to remove write protect pgd!\n", __func__);
+	//	goto out_unlock;
+	//}
+
+	return 0;
+}
