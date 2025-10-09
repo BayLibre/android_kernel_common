@@ -316,6 +316,7 @@ union pkvm_pv_param {
 	struct pkvm_sm_context_param sm_context_param;
 	struct pkvm_sm_context_pre_param sm_context_pre_param;
 	struct pkvm_pasid_table_param pasid_table_param;
+	struct pkvm_domain_param domain_param;
 } __aligned(PAGE_SIZE);
 
 #ifdef __PKVM_HYP__
