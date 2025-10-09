@@ -585,7 +585,14 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
 
 	/* legacy mode does not require PASID entries */
 	if (!sm_supported(iommu)) {
-		if (!context_present(ctx_entry)) {
+		/*
+		 * Do not try to walk the page table if pviommu is enabled and
+		 * device is identity mapped. pkvm converts identity to DMA mapping
+		 * and uses host ept which the host do not have access.
+		 */
+		if (!context_present(ctx_entry) ||
+				(pkvm_pviommu_enabled() &&
+				 context_domain_id(ctx_entry) == FLPT_DEFAULT_DID)) {
 			pr_info("legacy mode page table is not present\n");
 			return;
 		}
@@ -621,7 +628,9 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
 	for (i = 0; i < ARRAY_SIZE(pte->val); i++)
 		pr_info("pasid table entry[%d]: 0x%016llx\n", i, pte->val[i]);
 
-	if (!pasid_pte_is_present(pte)) {
+	if (!pasid_pte_is_present(pte) ||
+			(pkvm_pviommu_enabled() &&
+			 pasid_get_domain_id(pte) == FLPT_DEFAULT_DID)) {
 		pr_info("scalable mode page table is not present\n");
 		return;
 	}
