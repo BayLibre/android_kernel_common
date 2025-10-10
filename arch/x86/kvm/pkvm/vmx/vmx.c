@@ -5105,6 +5105,7 @@ static int kvm_pkvm_hypercall(struct kvm_vcpu *vcpu)
 	u64 nr, a0, a1, a2, a3;
 	struct shadow_vcpu_state *shadow_vcpu = kvm_vcpu_to_shadow(vcpu);
 	struct pkvm_pgtable *pgstate_pgt = &shadow_vcpu->vm->pgstate_pgt;
+	struct pkvm_vm *pkvm_vm = to_pkvm(vcpu->kvm);
 	int cpl = vmx_get_cpl(vcpu);
 	int ret = -KVM_EPERM;
 
@@ -5131,6 +5132,14 @@ static int kvm_pkvm_hypercall(struct kvm_vcpu *vcpu)
 		/* Hypercall for MMIO accessing should be forwared to the host */
 		kvm_skip_emulated_instruction(vcpu);
 		return 0;
+	case PKVM_GHC_START_CPU:
+		ret = pkvm_start_secondary_vcpu(pkvm_vm, a0, a1);
+		if (!ret) {
+			/* Let the host finish handling the hypercall. */
+			kvm_skip_emulated_instruction(vcpu);
+			return 0;
+		}
+		break;
 	default:
 		/* The other hypercalls are not supported */
 		break;
