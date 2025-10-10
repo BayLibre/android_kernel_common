@@ -69,6 +69,11 @@ struct pkvm_vm {
 	pkvm_spinlock_t lock;
 
 	struct pkvm_vcpu *vcpus[KVM_MAX_VCPUS];
+	/*
+	 * Reference counters for each possible pkvm_vcpu to indicate if a
+	 * pkvm_vcpu is in use or not.
+	 */
+	atomic_t vcpu_refs[KVM_MAX_VCPUS];
 };
 
 struct pkvm_vm_ref {
