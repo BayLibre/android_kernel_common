@@ -359,9 +359,21 @@ static inline bool iommu_coherency(struct intel_iommu *iommu)
 
 extern void root_tbl_walk(struct pkvm_iommu *iommu);
 
+void flush_context_cache(struct pkvm_iommu *iommu, u16 did,
+				u16 sid, u8 fm, u64 type);
+void flush_iotlb(struct pkvm_iommu *iommu, u16 did, u64 addr,
+			unsigned int size_order, u64 type);
+void flush_pasid_cache(struct pkvm_iommu *iommu, u16 did,
+			      u64 granu, u32 pasid);
+void flush_write_buffer(struct pkvm_iommu *iommu);
+
+struct pkvm_iommu *find_iommu_by_reg_phys(unsigned long phys);
+
 bool is_dev_in_satc(u16 bdf);
 
 int initialize_iommu_pgt(struct pkvm_iommu *iommu);
+int enable_translation(struct pkvm_iommu *iommu);
+void disable_translation(struct pkvm_iommu *iommu);
 #ifdef CONFIG_PKVM_INTEL_PVIOMMU
 static inline int handle_descriptor(struct pkvm_iommu *iommu, struct qi_desc *desc)
 {
@@ -377,6 +389,9 @@ static inline int sync_shadow_id(struct pkvm_iommu *iommu, unsigned long vaddr,
 {
 	return 0;
 }
+
+unsigned long pkvm_iommu_enable(u64 phys, u64 rta_gpa);
+unsigned long pkvm_iommu_disable(u64 phys);
 #else
 int handle_descriptor(struct pkvm_iommu *iommu, struct qi_desc *desc);
 int free_shadow_id(struct pkvm_iommu *iommu, unsigned long vaddr,
