@@ -36,6 +36,35 @@ static inline bool shadow_vm_is_protected(struct pkvm_shadow_vm *vm)
 	return vm->vm_type == KVM_X86_PKVM_PROTECTED_VM;
 }
 
+static inline bool shadow_vcpu_is_protected(struct shadow_vcpu_state *shadow_vcpu)
+{
+	return shadow_vm_is_protected(shadow_vcpu->vm);
+}
+
+static inline bool gpa_range_has_pvmfw(struct pkvm_shadow_vm *vm, u64 gpa_start, u64 gpa_end)
+{
+	struct kvm_protected_vm *pkvm = &shadow_to_kvm(vm)->arch.pkvm;
+	u64 pvmfw_load_end = pkvm->pvmfw_load_addr + pvmfw_size;
+
+	if (!pvmfw_present)
+		return false;
+
+	if (pkvm->pvmfw_load_addr == INVALID_GPA)
+		return false;
+
+	return gpa_end > pkvm->pvmfw_load_addr && gpa_start < pvmfw_load_end;
+}
+
+static inline unsigned long pkvm_host_ept_pgd(void)
+{
+	return pkvm_hyp->host_vm.ept->root_pa;
+}
+
+static inline int pkvm_host_ept_level(void)
+{
+	return pkvm_hyp->host_vm.ept->level;
+}
+
 int pkvm_init_shadow_vm(struct kvm *kvm);
 void pkvm_teardown_shadow_vm(struct kvm *kvm);
 int pkvm_init_shadow_vcpu(struct kvm_vcpu *vcpu);
