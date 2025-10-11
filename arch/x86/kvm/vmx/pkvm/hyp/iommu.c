@@ -466,7 +466,7 @@ static void submit_qi(struct pkvm_iommu *iommu, struct qi_desc *base, int count)
 	} while (count > 0);
 }
 
-static void flush_context_cache(struct pkvm_iommu *iommu, u16 did,
+void flush_context_cache(struct pkvm_iommu *iommu, u16 did,
 				u16 sid, u8 fm, u64 type)
 {
 	struct qi_desc desc = {.qw1 = 0, .qw2 = 0, .qw3 = 0};
@@ -477,7 +477,7 @@ static void flush_context_cache(struct pkvm_iommu *iommu, u16 did,
 	submit_qi(iommu, &desc, 1);
 }
 
-static void flush_pasid_cache(struct pkvm_iommu *iommu, u16 did,
+void flush_pasid_cache(struct pkvm_iommu *iommu, u16 did,
 			      u64 granu, u32 pasid)
 {
 	struct qi_desc desc = {.qw1 = 0, .qw2 = 0, .qw3 = 0};
@@ -486,6 +486,21 @@ static void flush_pasid_cache(struct pkvm_iommu *iommu, u16 did,
 		   QI_PC_GRAN(granu) | QI_PC_TYPE;
 
 	submit_qi(iommu, &desc, 1);
+}
+
+void flush_write_buffer(struct pkvm_iommu *iommu)
+{
+	void __iomem *reg = iommu->iommu.reg;
+	u32 val;
+
+	if (!cap_rwbf(iommu->iommu.cap))
+		return;
+
+	writel(iommu->iommu.gcmd | DMA_GCMD_WBF, reg + DMAR_GCMD_REG);
+
+	PKVM_IOMMU_WAIT_OP(reg + DMAR_GSTS_REG,
+		      readl, (!(val & DMA_GSTS_WBFS)), val);
+
 }
 
 static void setup_iotlb_qi_desc(struct pkvm_iommu *iommu,
@@ -508,7 +523,7 @@ static void setup_iotlb_qi_desc(struct pkvm_iommu *iommu,
 	desc->qw3 = 0;
 }
 
-static void flush_iotlb(struct pkvm_iommu *iommu, u16 did, u64 addr,
+void flush_iotlb(struct pkvm_iommu *iommu, u16 did, u64 addr,
 			unsigned int size_order, u64 type)
 {
 	struct qi_desc desc;
@@ -522,6 +537,8 @@ static void set_root_table(struct pkvm_iommu *iommu)
 	u64 val = iommu->pgt.root_pa;
 	void __iomem *reg = iommu->iommu.reg;
 	u32 sts;
+
+	flush_write_buffer(iommu);
 
 	/* Set scalable mode */
 	if (sm_supported(&iommu->iommu))
@@ -552,9 +569,10 @@ static void set_root_table(struct pkvm_iommu *iommu)
 	if (sm_supported(&iommu->iommu))
 		flush_pasid_cache(iommu, 0, QI_PC_GLOBAL, 0);
 	flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
+	iommu->viommu.vreg.gsts |= DMA_GSTS_RTPS;
 }
 
-static int enable_translation(struct pkvm_iommu *iommu)
+int enable_translation(struct pkvm_iommu *iommu)
 {
 	unsigned long vaddr = 0, vaddr_end = MAX_NUM_OF_ADDRESS_SPACE(iommu);
 	void __iomem *reg = iommu->iommu.reg;
@@ -602,7 +620,7 @@ static int enable_translation(struct pkvm_iommu *iommu)
 	return ret;
 }
 
-static void disable_translation(struct pkvm_iommu *iommu)
+void disable_translation(struct pkvm_iommu *iommu)
 {
 	unsigned long vaddr = 0, vaddr_end = MAX_NUM_OF_ADDRESS_SPACE(iommu);
 
@@ -711,6 +729,7 @@ static int handle_qi_invalidation(struct pkvm_iommu *iommu, unsigned long val)
 	return ret;
 }
 
+#ifndef CONFIG_PKVM_INTEL_PVIOMMU
 static void handle_gcmd_te(struct pkvm_iommu *iommu, bool en)
 {
 	if (en) {
@@ -729,7 +748,9 @@ static void handle_gcmd_te(struct pkvm_iommu *iommu, bool en)
 
 	root_tbl_walk(iommu);
 }
+#endif
 
+#ifndef CONFIG_PKVM_INTEL_PVIOMMU
 static void handle_gcmd_srtp(struct pkvm_iommu *iommu)
 {
 	struct viommu_reg *vreg = &iommu->viommu.vreg;
@@ -749,6 +770,7 @@ static void handle_gcmd_srtp(struct pkvm_iommu *iommu)
 
 	vreg->gsts |= DMA_GSTS_RTPS;
 }
+#endif
 
 static void handle_gcmd_qie(struct pkvm_iommu *iommu, bool en)
 {
@@ -840,11 +862,23 @@ static void handle_global_cmd(struct pkvm_iommu *iommu, u32 val)
 	pkvm_dbg("pkvm: iommu%d: handle gcmd val 0x%x gsts 0x%x changed 0x%x\n",
 		  iommu->iommu.seq_id, val, iommu->viommu.vreg.gsts, changed);
 
-	if (changed & DMA_GCMD_TE)
+	if (changed & DMA_GCMD_TE) {
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+		pkvm_err("pkvm: iommu%d: DMA_GCMD_TE supported only via hypercall!\n",
+				iommu->iommu.seq_id);
+#else
 		handle_gcmd_te(iommu, !!(val & DMA_GCMD_TE));
+#endif
+	}
 
-	if (val & DMA_GCMD_SRTP)
+	if (val & DMA_GCMD_SRTP) {
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+		pkvm_err("pkvm: iommu%d: DMA_GCMD_SRTP supported only via hypercall!\n",
+				iommu->iommu.seq_id);
+#else
 		handle_gcmd_srtp(iommu);
+#endif
+	}
 
 	if (changed & DMA_GCMD_QIE)
 		handle_gcmd_qie(iommu, !!(val & DMA_GCMD_QIE));
@@ -852,7 +886,7 @@ static void handle_global_cmd(struct pkvm_iommu *iommu, u32 val)
 	handle_gcmd_direct(iommu, val);
 }
 
-static struct pkvm_iommu *find_iommu_by_reg_phys(unsigned long phys)
+struct pkvm_iommu *find_iommu_by_reg_phys(unsigned long phys)
 {
 	struct pkvm_iommu *iommu;
 
