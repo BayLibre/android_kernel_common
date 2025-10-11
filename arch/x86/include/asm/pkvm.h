@@ -15,6 +15,9 @@
 #define PKVM_HC_MMIO_ACCESS		7
 #define PKVM_HC_ADD_PTDEV		10
 
+#define PKVM_HC_ENABLE_IOMMU		11
+#define PKVM_HC_DISABLE_IOMMU		12
+
 /*
  * Internal hypercall to commit the pkvm initialization
  * status to success or failure. This is to make internal
@@ -65,6 +68,18 @@ static inline bool pkvm_enabled(void)
 	return static_branch_likely(&pkvm_enabled_key);
 }
 
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+static inline bool pkvm_pviommu_enabled(void)
+{
+	return pkvm_enabled();
+}
+#else
+static inline bool pkvm_pviommu_enabled(void)
+{
+	return false;
+}
+#endif
+
 int pkvm_iommu_register_driver(const struct pkvm_iommu_driver *kern_ops);
 
 static inline u64 pkvm_readq(void __iomem *reg, unsigned long reg_phys,
@@ -107,6 +122,27 @@ static inline void pkvm_writel(void __iomem *reg, unsigned long reg_phys,
 		writel(val, reg + offset);
 }
 
+static inline long pkvm_hc_enable_iommu(unsigned long reg_phys,
+		unsigned long root_gpa)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall2(PKVM_HC_ENABLE_IOMMU,
+				reg_phys, root_gpa);
+
+	return ret;
+}
+
+static inline long pkvm_hc_disable_iommu(unsigned long reg_phys)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall1(PKVM_HC_DISABLE_IOMMU, reg_phys);
+
+	return ret;
+}
 #else /* __PKVM_HYP__ */
 
 /* we are in pkvm hypervisor, pkvm is enabled by definition */
@@ -169,6 +205,11 @@ static inline void pkvm_update_iommu_virtual_caps(u64 *cap, u64 *ecap)
 #define enable_pkvm false
 
 static inline bool pkvm_enabled(void)
+{
+	return false;
+}
+
+static inline bool pkvm_pviommu_enabled(void)
 {
 	return false;
 }
