@@ -393,6 +393,7 @@ struct pkvm_iommu *find_iommu_by_reg_phys(unsigned long phys);
 unsigned long pkvm_iommu_submit_qi(u64 reg, u64 desc_base, int count);
 unsigned long pkvm_iommu_clear_ce(u64 param_va);
 unsigned long pkvm_iommu_set_lm_ce(u64 param_va);
+unsigned long pkvm_iommu_set_sm_ce(u64 param_va);
 #else
 int initialize_iommu_pgt(struct pkvm_iommu *iommu);
 int handle_descriptor(struct pkvm_iommu *iommu, struct qi_desc *desc);
