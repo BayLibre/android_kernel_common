@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76e6d7eb_10422364",
+        "filename": "arch/x86/configs/gki_defconfig",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 2022147
+      },
+      "writtenOn": "2025-10-13T22:27:57Z",
+      "side": 1,
+      "message": "I don\u0027t understand this change, so it is not set in gki previously ? or it is enabled by default ?",
+      "fixSuggestions": [
+        {
+          "fixId": "8a272412_a2b7be11",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/configs/gki_defconfig",
+              "range": {
+                "startLine": 62,
+                "startChar": 0,
+                "endLine": 63,
+                "endChar": 0
+              },
+              "replacement": "CONFIG_X86_VSYSCALL_EMULATION\u003dy\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fcc3c603e66f5be93b239c7a6f4cfb07ab94b9a1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
