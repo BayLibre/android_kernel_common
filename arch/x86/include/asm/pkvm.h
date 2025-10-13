@@ -19,6 +19,7 @@
 #define PKVM_HC_DISABLE_IOMMU		12
 #define PKVM_HC_IOMMU_CLEAR_CE		13
 #define PKVM_HC_IOMMU_SET_LM_CE		14
+#define PKVM_HC_IOMMU_SET_SM_CE		15
 
 /*
  * Internal hypercall to commit the pkvm initialization
@@ -35,11 +36,15 @@
  */
 #define __PKVM_HC_REPRIVILEGE_VCPU	101
 
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+#define PKVM_MAX_PASID_BITS	20
+#else
 /*
  * 15bits for PASID, DO NOT change it, based on it,
  * the size of PASID DIR table can kept as one page
  */
 #define PKVM_MAX_PASID_BITS	15
+#endif
 #define PKVM_MAX_PASID		(1 << PKVM_MAX_PASID_BITS)
 
 struct pkvm_iommu_driver {
@@ -79,6 +84,15 @@ struct pkvm_lm_context_param {
 	u16 did;
 	u16 domain_agaw;
 	u64 domain_pgd_gpa;
+	u64 context_gpa;
+};
+
+struct pkvm_sm_context_param {
+	u16 bdf;
+	u8 ats_supported:1;
+	u8 pasid_supported:1;
+	u32 max_pasid;
+	u64 pasid_dir_gpa;
 	u64 context_gpa;
 };
 
@@ -188,6 +202,18 @@ static inline long pkvm_hc_iommu_set_lm_ce(unsigned long reg_phys,
 
 	if (pkvm_pviommu_enabled())
 		ret = kvm_hypercall2(PKVM_HC_IOMMU_SET_LM_CE, reg_phys,
+				virt_to_phys(param));
+
+	return ret;
+}
+
+static inline long pkvm_hc_iommu_set_sm_ce(unsigned long reg_phys,
+		struct pkvm_sm_context_param *param)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_SET_SM_CE, reg_phys,
 				virt_to_phys(param));
 
 	return ret;
