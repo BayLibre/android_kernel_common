@@ -853,6 +853,7 @@ static void __context_flush_dev_iotlb(struct device_domain_info *info)
  * IOMMU is in scalable mode and all PASID table entries of the device were
  * non-present, set flush_domains to false. Otherwise, true.
  */
+// TODO: Implement this functionality in pkvm
 void intel_context_flush_present(struct device_domain_info *info,
 				 u16 did, bool flush_domains)
 {
