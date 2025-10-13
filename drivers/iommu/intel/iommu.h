@@ -773,6 +773,10 @@ struct intel_iommu {
 	void *perf_statistic;
 
 	struct iommu_pmu *pmu;
+
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+	bool pv_translation;
+#endif
 };
 
 /* PCI domain-device relationship */
@@ -1039,6 +1043,26 @@ clear_context_copied(struct intel_iommu *iommu, u8 bus, u8 devfn)
 {
 	clear_bit(((long)bus << 8) | devfn, iommu->copied_tables);
 }
+
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+static inline void iommu_set_pv_translation(struct intel_iommu *iommu)
+{
+	iommu->pv_translation = true;
+}
+
+static inline bool iommu_pv_translation(struct intel_iommu *iommu)
+{
+	return iommu->pv_translation;
+}
+#else
+static inline bool iommu_pv_translation(struct intel_iommu *iommu)
+{
+	return false;
+}
+static inline void iommu_set_pv_translation(struct intel_iommu *iommu)
+{
+}
+#endif
 #endif /* CONFIG_INTEL_IOMMU */
 
 /*
