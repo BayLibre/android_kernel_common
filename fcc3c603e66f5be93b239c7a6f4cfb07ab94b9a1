@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8e230d49_009bcbd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022147
+      },
+      "writtenOn": "2025-10-13T22:34:18Z",
+      "side": 1,
+      "message": "@enh@google.com\n\nChromeOS has an open bug: b/400772196 to remove vsyscall.\n\nvdso shall replace vsyscall, modern glibc doesn\u0027t need vsyscall anymore,  and is bionic OK with this change ?",
+      "revId": "fcc3c603e66f5be93b239c7a6f4cfb07ab94b9a1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "76e6d7eb_10422364",
         "filename": "arch/x86/configs/gki_defconfig",
         "patchSetId": 1
