@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed1d531b_004e8735",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-13T14:26:27Z",
+      "side": 1,
+      "message": "nit: just to make it sound clearer: \"Get the pkvm_vcpu to prevent it from being freed via the vcpu_free PV interface while it is still loaded. If the obtained pkvm_vcpu is not the same as the original one, it must be a pkvm bug.\"?",
+      "fixSuggestions": [
+        {
+          "fixId": "87fc5080_30a5c5e5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 684,
+                "startChar": 0,
+                "endLine": 688,
+                "endChar": 0
+              },
+              "replacement": "\t\t * Get the pkvm_vcpu to prevent it from being freed via the\n\t\t * vcpu_free PV interface while it is still loaded. If the\n\t\t * obtained pkvm_vcpu is not the same as the original one, it\n\t\t * must be a pkvm bug.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2d5621106ff3716288d56076a7c45204fa1e4dc2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
