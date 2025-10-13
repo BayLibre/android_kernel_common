@@ -232,6 +232,7 @@ unsigned long pkvm_iommu_enable(u64 phys, u64 rta_gpa);
 unsigned long pkvm_iommu_disable(u64 phys);
 unsigned long pkvm_iommu_clear_ce(u64 param_va);
 unsigned long pkvm_iommu_set_lm_ce(u64 param_va);
+unsigned long pkvm_iommu_set_sm_ce(u64 param_va);
 #else
 int handle_descriptor(struct pkvm_iommu *iommu, struct qi_desc *desc);
 int free_shadow_id(struct pkvm_iommu *iommu, unsigned long vaddr,
