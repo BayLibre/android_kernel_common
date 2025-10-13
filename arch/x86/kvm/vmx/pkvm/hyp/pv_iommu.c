@@ -397,3 +397,94 @@ unsigned long pkvm_iommu_set_lm_ce(u64 param_va)
 
 	return ret;
 }
+
+static unsigned long context_get_sm_pds(u32 max_pasid)
+{
+	unsigned long pds, max_pde;
+
+	max_pde = max_pasid >> PASIDDIR_SHIFT;
+	pds = find_first_bit(&max_pde, MAX_NR_PASID_BITS);
+	if (pds < 7)
+		return 0;
+
+	return pds - 7;
+}
+
+unsigned long pkvm_iommu_set_sm_ce(u64 param_va)
+{
+	struct pkvm_sm_context_param *param;
+	struct context_entry *context;
+	struct pkvm_iommu *hyp_iommu;
+	struct intel_iommu *iommu;
+	unsigned long pds;
+	u8 bus, devfn;
+	int ret = 0;
+
+	if (!param_va)
+		return -EINVAL;
+
+	param = (struct pkvm_sm_context_param *)kern_pkvm_va((void *)param_va);
+	if (WARN_ON_ONCE(param != this_pv_param(sm_context_param)))
+		return -EINVAL;
+
+	hyp_iommu = find_iommu_by_reg_phys(param->phys);
+	if (!hyp_iommu)
+		return -EINVAL;
+
+	if (!param->pasid_dir_gpa) {
+		return -EINVAL;
+	}
+
+	if (param->ats_supported && !is_dev_in_satc(param->bdf)) {
+		pkvm_err("pkvm: %s host reports ats supported for device[%x], but not in satc\n",
+				__func__, param->bdf);
+		param->ats_supported = 0;
+	}
+
+	pkvm_spin_lock(&hyp_iommu->lock);
+	iommu = &hyp_iommu->iommu;
+
+	pkvm_dbg("pkvm: %s: set_sm_ce: dev[%x] max_pasid: %u, pasid_dir: %llx\n",
+			__func__, param->bdf, param->max_pasid, param->pasid_dir_gpa);
+
+	if (!sm_supported(iommu)) {
+		pkvm_err("pkvm: %s: iommu%d doesn't support scalable mode!\n",
+				__func__, iommu->seq_id);
+		return -EINVAL;
+	};
+
+	bus = PCI_BUS_NUM(param->bdf);
+	devfn = PCI_DEV_FN(param->bdf);
+	context = pkvm_iommu_context_addr(iommu, bus, devfn, param->context_gpa);
+	if (!context) {
+		ret = -ENOMEM;
+		goto out_unlock;
+	}
+
+	if (context_present(context))
+		goto out_unlock;
+
+	context_clear_entry(context);
+
+	pds = context_get_sm_pds(param->max_pasid);
+	context->lo = param->pasid_dir_gpa | context_pdts(pds);
+	context_set_sm_rid2pasid(context, IOMMU_NO_PASID);
+
+	if (param->ats_supported)
+		context_set_sm_dte(context);
+	if (ecap_pasid(iommu->ecap))
+		context_set_pasid(context);
+
+	context_set_fault_enable(context);
+	context_set_present(context);
+
+	if (!iommu_coherency(iommu))
+		pkvm_clflush_cache_range(context, sizeof(*context));
+
+	pkvm_context_present_cache_flush(hyp_iommu, param->bdf, 0);
+
+out_unlock:
+	pkvm_spin_unlock(&hyp_iommu->lock);
+
+	return ret;
+}

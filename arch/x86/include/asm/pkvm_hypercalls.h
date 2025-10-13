@@ -83,6 +83,7 @@ PKVM_HC(iommu_enable)
 PKVM_HC(iommu_disable)
 PKVM_HC(iommu_clear_ce)
 PKVM_HC(iommu_set_lm_ce)
+PKVM_HC(iommu_set_sm_ce)
 
 /* pKVM vmexit tracing/profiling */
 PKVM_HC(set_vmexit_trace)
