@@ -29,5 +29,29 @@ static inline long pkvm_hc_disable_iommu(unsigned long reg_phys)
 
 	return ret;
 }
+
+static inline long pkvm_hc_iommu_clear_ce(unsigned long reg_phys,
+		struct pkvm_clear_translation_param *param)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_CLEAR_CE,
+				reg_phys, virt_to_phys(param));
+
+	return ret;
+}
+
+static inline long pkvm_hc_iommu_set_lm_ce(unsigned long reg_phys,
+		struct pkvm_lm_context_param *param)
+{
+	long ret = 0;
+
+	if (pkvm_pviommu_enabled())
+		ret = kvm_hypercall2(PKVM_HC_IOMMU_SET_LM_CE, reg_phys,
+				virt_to_phys(param));
+
+	return ret;
+}
 #endif
 
