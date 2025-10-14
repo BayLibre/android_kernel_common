@@ -44,6 +44,24 @@
       ],
       "revId": "32e5426da9dfedb6bde6fcb7ec0749cc5c959018",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da02e6bb_4d9b2dbf",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 1339,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2025-10-14T00:19:27Z",
+      "side": 1,
+      "message": "No, we use the vendor_boot image from the Android build and just update it via fastboot with the new initramfs and dtb iamges like this:\n\n```\nfastboot flash --dtb out/raviole_upstream/dist/dtb.img vendor_boot:dlkm out/raviole_upstream/dist/initramfs.img\n```",
+      "parentUuid": "fa6f8f65_cd93e7f4",
+      "revId": "32e5426da9dfedb6bde6fcb7ec0749cc5c959018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
