@@ -941,6 +941,10 @@ static void verity_status(struct dm_target *ti, status_type_t type,
 	switch (type) {
 	case STATUSTYPE_INFO:
 		DMEMIT("%c", v->hash_failed ? 'C' : 'V');
+		if (verity_fec_is_enabled(v))
+            DMEMIT(" %lld ", atomic64_read(&v->fec->corrected));
+        else
+            DMEMIT(" _");
 		break;
 	case STATUSTYPE_TABLE:
 		DMEMIT("%u %s %s %u %u %llu %llu %s ",
@@ -1873,6 +1877,7 @@ static int verity_preresume(struct dm_target *ti)
 	int r;
 
 	v = ti->private;
+
 	bdev = dm_disk(dm_table_get_md(ti->table))->part0;
 	root_digest.digest = v->root_digest;
 	root_digest.digest_len = v->digest_size;

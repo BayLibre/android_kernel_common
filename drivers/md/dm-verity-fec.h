@@ -8,6 +8,8 @@
 #ifndef DM_VERITY_FEC_H
 #define DM_VERITY_FEC_H
 
+#include "dm.h"
+#include "dm-core.h"
 #include "dm-verity.h"
 #include <linux/rslib.h>
 
@@ -48,6 +50,7 @@ struct dm_verity_fec {
 	mempool_t extra_pool;	/* mempool for extra buffers */
 	mempool_t output_pool;	/* mempool for output */
 	struct kmem_cache *cache;	/* cache for buffers */
+	atomic64_t corrected;		/* corrected errors */
 };
 
 /* per-bio data */
@@ -86,6 +89,7 @@ extern void verity_fec_dtr(struct dm_verity *v);
 
 extern int verity_fec_ctr_alloc(struct dm_verity *v);
 extern int verity_fec_ctr(struct dm_verity *v);
+
 
 #else /* !CONFIG_DM_VERITY_FEC */
 
@@ -146,6 +150,7 @@ static inline int verity_fec_ctr(struct dm_verity *v)
 {
 	return 0;
 }
+
 
 #endif /* CONFIG_DM_VERITY_FEC */
 
