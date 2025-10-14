@@ -164,12 +164,11 @@ int topup_hyp_memcache_gfp(struct kvm_hyp_memcache *mc, unsigned long min_pages,
 static inline void init_hyp_memcache(struct kvm_hyp_memcache *mc)
 {
 	memset(mc, 0, sizeof(*mc));
-	mc->mapping = ZERO_SIZE_PTR; /* Prevent allocation, solely useful for stage2 memcache */
 }
 
 static inline void init_hyp_stage2_memcache(struct kvm_hyp_memcache *mc)
 {
-	memset(mc, 0, sizeof(*mc));
+	init_hyp_memcache(mc);
 	mc->flags = HYP_MEMCACHE_ACCOUNT_KMEMCG | HYP_MEMCACHE_ACCOUNT_STAGE2;
 }
 
