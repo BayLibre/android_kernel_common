@@ -45,6 +45,7 @@
 #include <linux/dma-mapping.h>
 
 #include "hub.h"
+#include "trace.h"
 
 const char *usbcore_name = "usbcore";
 
@@ -754,9 +755,14 @@ struct usb_device *usb_alloc_dev(struct usb_device *parent,
 #endif
 
 	dev->authorized = usb_dev_authorized(dev, usb_hcd);
+<<<<<<< HEAD   (5a2ba3209d1f98452425c72af2a845d412dd1242 FROMGIT: usb: core: Centralize device state update logic)
 	if (!root_hub)
 		dev->wusb = usb_bus_is_wusb(bus) ? 1 : 0;
 
+||||||| BASE   (0739461cb9187962cebaf603d1721b7a19ed946a FROMGIT: usb: core: Centralize device state update logic)
+=======
+	trace_usb_alloc_dev(dev);
+>>>>>>> CHANGE (e0051150a4203788fc26dcc916937958bfaf3c04 FROMGIT: usb: core: Add tracepoints for device allocation an)
 	return dev;
 }
 EXPORT_SYMBOL_GPL(usb_alloc_dev);
