@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1fcc82b_b4bfed78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1082649
+      },
+      "writtenOn": "2025-10-14T19:31:08Z",
+      "side": 1,
+      "message": "This is about the \"vsyscall\" x86_64 VMA page, and is only on x86_64, it doesn\u0027t show up at all on a 32-bit VMA. As far as I can see, AT_SYSINFO points to the vdso region that contains the vsyscall entry point. Isn\u0027t AT_SYSINFO is the \"modern\" way to find vsyscall entry point, instead of using the named \"vsyscall\" page?\n\nIt should be possible to test this by booting with \"vsyscall\u003dnone\" to validate that it\u0027s not needed for bionic.",
+      "parentUuid": "d3b1a014_f5646286",
+      "revId": "fcc3c603e66f5be93b239c7a6f4cfb07ab94b9a1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "76e6d7eb_10422364",
         "filename": "arch/x86/configs/gki_defconfig",
         "patchSetId": 1
