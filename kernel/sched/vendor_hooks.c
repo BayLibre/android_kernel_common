@@ -129,6 +129,29 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_alloc);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_free);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_entity_delayed);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmput);
+<<<<<<< HEAD   (76ff62b7e46d37bd31563d4dcc41c89f7b444c0e ANDROID: GKI: add symbol list for telechips)
+||||||| BASE   (ef7a79a82e815c952b05bb89cecbe6fd547f9a9d UPSTREAM: mm/oom_kill: the OOM reaper traverses the VMA mapl)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmput_mm);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_attach_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_detach_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_remove_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_blocked_fair);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_rt_rq_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_uclamp_validate);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_set_sugov_sched_attr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmput_mm);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_attach_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_detach_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_remove_entity_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_blocked_fair);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_rt_rq_load_avg);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_uclamp_validate);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
+>>>>>>> CHANGE (45af5787c1d9edb15f5df8f43009053d0fe9cabc Revert "ANDROID: sched: Add vendor hooks for override sugov )
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_inheritance);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_prio_restore);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_update_rt_rq_load_avg);
