@@ -8,6 +8,11 @@
 
 #include <nvhe/spinlock.h>
 
+#include <linux/irqchip/arm-gic-v3.h>
+
+#define GITS_TRANSLATER_PAGE ALIGN_DOWN(GITS_TRANSLATER, PAGE_SIZE)
+#define GITS_TRANSLATER_PFN (GITS_TRANSLATER_PAGE >> PAGE_SHIFT)
+
 struct hyp_gic_v3_its {
 	void __iomem *base;
 	struct emulate emulate;
@@ -52,7 +57,11 @@ static int hyp_gic_v3_its_protect(u64 paddr, u64 size)
 	if (ret)
 		return ret;
 
-	return 0;
+	/* Allow DMA/IO access back to the GITS_TRANSLATER */
+	ret = host_stage2_mod_prot((paddr >> PAGE_SHIFT) + GITS_TRANSLATER_PFN,
+				   KVM_PGTABLE_PROT_RW | KVM_PGTABLE_PROT_DEVICE, 1, true);
+
+	return ret;
 }
 
 void hyp_gic_v3_its_protect_hvc(struct user_pt_regs *regs)
