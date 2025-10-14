@@ -105,6 +105,24 @@
       "parentUuid": "12806126_90042875",
       "revId": "24b2a098ef3cf9b0f8e9a4009c0a7b7ecfe6cb27",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "991876b7_6160ef1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3616649
+      },
+      "writtenOn": "2025-10-14T12:44:30Z",
+      "side": 1,
+      "message": "Dear Greg\nThe 6.13 kernel release has replaced the original semaphore with rtnl_net_lock(\u0026init_net), the implementation adds a mutex in struct net, we cannot add this mutex in the current kernel version because it breaks KMI.\nSo should I call rtnl_link_register() instead __rtnl_link_register and remove the \npernet_ops_rwsem directly? Is that OK?",
+      "parentUuid": "0d22f1ba_458dbc8f",
+      "revId": "24b2a098ef3cf9b0f8e9a4009c0a7b7ecfe6cb27",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
