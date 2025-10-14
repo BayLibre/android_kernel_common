@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa6f8f65_cd93e7f4",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 1339,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2025-10-14T00:10:25Z",
+      "side": 1,
+      "message": "question: since raviole doesn\u0027t have vendor_boot, don\u0027t you need to embed the dtb.img in the boot partition?",
+      "fixSuggestions": [
+        {
+          "fixId": "5b76ba2a_5c11ac2c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 1337,
+                "startChar": 0,
+                "endLine": 1337,
+                "endChar": 0
+              },
+              "replacement": "    dtb_binary \u003d \":raviole_dtb\",\n"
+            },
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 1365,
+                "startChar": 0,
+                "endLine": 1366,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "32e5426da9dfedb6bde6fcb7ec0749cc5c959018",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
