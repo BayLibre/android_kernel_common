@@ -1,0 +1,74 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a92d056_1629b7be",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-14T16:12:37Z",
+      "side": 1,
+      "message": "nit: this comment seems unnecessary, it is clear what is checked by the below check.",
+      "fixSuggestions": [
+        {
+          "fixId": "63b9f1ae_e5f36fd6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 43,
+                "startChar": 0,
+                "endLine": 47,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "065948e092c00ad236f966c744f49988536f8532",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01ef2f8e_18ddfeec",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-14T16:12:37Z",
+      "side": 1,
+      "message": "nit: the 2nd sentence seems redundant. The size is, by definition, how much memory to free.",
+      "fixSuggestions": [
+        {
+          "fixId": "a132f6e9_489ac727",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 942,
+                "startChar": 0,
+                "endLine": 944,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t * host to retrieve.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "065948e092c00ad236f966c744f49988536f8532",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
