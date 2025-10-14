@@ -1,0 +1,69 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1495a9a6_c33dbaf7",
+        "filename": "drivers/virtio/virtio_balloon.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1101,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-10-14T13:16:47Z",
+      "side": 1,
+      "message": "nit: do we need this ifdef? pkvm_guest has ifdefed the implementation of pkvm_is_protected_guest() and it will always returns false, so we should be safe to unconditionally check `if pkvm_is_protected_guest() { }`. Same goes for the above ifdef.",
+      "fixSuggestions": [
+        {
+          "fixId": "a267f70e_6541c25a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/virtio/virtio_balloon.c",
+              "range": {
+                "startLine": 22,
+                "startChar": 0,
+                "endLine": 23,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "drivers/virtio/virtio_balloon.c",
+              "range": {
+                "startLine": 24,
+                "startChar": 0,
+                "endLine": 25,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "drivers/virtio/virtio_balloon.c",
+              "range": {
+                "startLine": 1101,
+                "startChar": 0,
+                "endLine": 1102,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "drivers/virtio/virtio_balloon.c",
+              "range": {
+                "startLine": 1104,
+                "startChar": 0,
+                "endLine": 1105,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "aab45e2c2071d9578a7f4611822c2edcb46aec4b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
