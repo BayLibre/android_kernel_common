@@ -1873,6 +1873,10 @@ static int verity_preresume(struct dm_target *ti)
 	int r;
 
 	v = ti->private;
+	if (verity_fec_is_enabled(v)) {
+		verity_fec_create_sysfs(v);
+	}
+
 	bdev = dm_disk(dm_table_get_md(ti->table))->part0;
 	root_digest.digest = v->root_digest;
 	root_digest.digest_len = v->digest_size;
