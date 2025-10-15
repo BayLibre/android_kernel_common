@@ -52,6 +52,24 @@
       "parentUuid": "c3dffe95_3f69b1cb",
       "revId": "974a634927e3e4655c8c3ff185af49babf9088ba",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce88b412_4126b523",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1060234
+      },
+      "writtenOn": "2025-10-15T00:34:26Z",
+      "side": 1,
+      "message": "I did build virtual-device with zram as an in-tree module, and the only symbols which zram needs that aren\u0027t already in abi.stg are `pidfd_get_task` and `get_swap_device` (and `kernel_read_file_from_path` which I\u0027ll come back to). However, I\u0027m not sure if it\u0027s appropriate to put those symbols in gki/aarch64/symbols/base. The symbols in that file are extremely limited, so putting zram related symbols in seems a little strange. There are also a lot of other symbols that zram would need which aren\u0027t included in that file.\n\nI think we can just wait until someone actually takes these patches into their out-of-tree zram module to update abi.stg. Since zram uses kernel_read_file_from_path (which is on the symbol blocklist), it\u0027s currently impossible to build zram as an in-tree module. That means merging this series can\u0027t actually break any vendor builds.",
+      "parentUuid": "a4a9dff0_ca07d6be",
+      "revId": "974a634927e3e4655c8c3ff185af49babf9088ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
