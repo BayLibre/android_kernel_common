@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "422d4259_0c7a1b45",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2025-10-15T22:19:23Z",
+      "side": 1,
+      "message": "The goal for this target is for GKI testing. So we want to use the `gki_defconfig` as the base kernel config and then add the Pixel 6 modules on top of that. If there is something missing in the gki_defconfig that you need/want from the arm64 defconfig, we can consider adding it. In general though the gki_defconfig is targeting Android. \n\nWith regards to the debug configs, kleaf supports the `--debug` flag to add the debug configs. Likewise, if something is missing from there, we can considering adding it.",
+      "parentUuid": "f3e02fe8_e265712f",
+      "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67d7ef9d_ae66f7b8",
@@ -100,6 +118,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d14ff8af_c59511e9",
+        "filename": "arch/arm64/configs/raviole_gki.fragment",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2025-10-15T22:19:23Z",
+      "side": 1,
+      "message": "Do we need ARM_DSU_PMU module though? I see it\u0027s present in the downstream `slider_gki.fragment`.",
+      "parentUuid": "a26a4dc2_271a5e86",
+      "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3be47a3c_96ff7837",
         "filename": "arch/arm64/configs/raviole_gki.fragment",
         "patchSetId": 8
@@ -135,6 +171,30 @@
           ]
         }
       ],
+      "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4982c1cb_8760856b",
+        "filename": "arch/arm64/configs/raviole_gki.fragment",
+        "patchSetId": 8
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2025-10-15T22:19:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3be47a3c_96ff7837",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 20
+      },
       "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -205,6 +265,42 @@
           ]
         }
       ],
+      "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aedb6de_0e35ce69",
+        "filename": "arch/arm64/configs/raviole_gki.fragment",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2025-10-15T22:19:23Z",
+      "side": 1,
+      "message": "I was going to wait for the ACPM clock driver to be merged into android-mainline before adding the cpufreq-dt driver. I also need to make the cpufreq-dt-platdev driver tristate so that we can enable that as a module as well.",
+      "parentUuid": "29c77c69_b7fd9d0e",
+      "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22871aa9_24aa345e",
+        "filename": "arch/arm64/configs/raviole_gki.fragment",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2025-10-15T22:19:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd924ab2_1e37d369",
       "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
