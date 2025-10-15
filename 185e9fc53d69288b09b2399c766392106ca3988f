@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4db1ccf8_204fe30f",
+        "filename": "BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 1327,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2025-10-15T23:13:34Z",
+      "side": 1,
+      "message": "@willmcvicker@google.com\n\nI just noticed that this is the kernel/common project.\n\nCould you please add a comment here that raviole is special (in what way?) that it needs to use this `boot_image` rule, and other devices should use GKI\u0027s released/signed boot image instead of building their own, and they should put the vendor-specific bits in vendor_boot image instead?",
+      "fixSuggestions": [
+        {
+          "fixId": "974f5f56_0d510a39",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 1327,
+                "startChar": 0,
+                "endLine": 1327,
+                "endChar": 0
+              },
+              "replacement": "# raviole_upstream is a special case used for testing and development purposes\n# where a custom boot image is required. Production devices should use the\n# GKI released/signed boot image rather than building their own with this rule.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "185e9fc53d69288b09b2399c766392106ca3988f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
