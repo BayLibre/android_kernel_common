@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85bb8c40_5f62fdb7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3938928
+      },
+      "writtenOn": "2025-10-15T19:29:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b31b80fc_31fe0941",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 49
+      },
+      "revId": "26130a3a29e5cd9fde65f7fb93f52ca439ed2750",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67e368f6_3bf06e90",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-10-15T16:26:31Z",
       "side": 1,
       "message": "Why is this using `XE_FW_GT` instead of `fw_ref`?\n\nFor comparison, upstream has:\n\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003da66c19895396e66e578e28d9b598959a5406a6cb\n```\n\t\txe_force_wake_put(gt_to_fw(gt), fw_ref);\n```",
+      "revId": "26130a3a29e5cd9fde65f7fb93f52ca439ed2750",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e972c2d_3669255e",
+        "filename": "drivers/gpu/drm/xe/xe_gt_idle.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 3938928
+      },
+      "writtenOn": "2025-10-15T19:29:44Z",
+      "side": 1,
+      "message": "Missed this one. fixing it now",
+      "parentUuid": "67e368f6_3bf06e90",
       "revId": "26130a3a29e5cd9fde65f7fb93f52ca439ed2750",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
