@@ -100,6 +100,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3be47a3c_96ff7837",
+        "filename": "arch/arm64/configs/raviole_gki.fragment",
+        "patchSetId": 8
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1981286
+      },
+      "writtenOn": "2025-10-15T11:29:49Z",
+      "side": 1,
+      "message": "We don\u0027t strictly need SEC_I2C, it\u0027s for the non-acpm (i2c) versions of the S2MPx PMICs.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 20
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "54233b40_df9bbace",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/configs/raviole_gki.fragment",
+              "range": {
+                "startLine": 24,
+                "startChar": 0,
+                "endLine": 25,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29c77c69_b7fd9d0e",
         "filename": "arch/arm64/configs/raviole_gki.fragment",
         "patchSetId": 8
@@ -125,6 +166,41 @@
                 "endChar": 0
               },
               "replacement": "CONFIG_CPUFREQ_DT\u003dm\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd924ab2_1e37d369",
+        "filename": "arch/arm64/configs/raviole_gki.fragment",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1981286
+      },
+      "writtenOn": "2025-10-15T11:29:49Z",
+      "side": 1,
+      "message": "I\u0027d suggest to also add CONFIG_COMMON_CLK_S2MPS11\u003dm to get the S2MPG10 PMIC clock driver.",
+      "fixSuggestions": [
+        {
+          "fixId": "c9667a08_c0d48bd8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/configs/raviole_gki.fragment",
+              "range": {
+                "startLine": 26,
+                "startChar": 0,
+                "endLine": 26,
+                "endChar": 0
+              },
+              "replacement": "CONFIG_COMMON_CLK_S2MPS11\u003dm\n"
             }
           ]
         }
