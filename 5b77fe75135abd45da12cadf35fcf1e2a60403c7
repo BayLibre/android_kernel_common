@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3e02fe8_e265712f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1984890
+      },
+      "writtenOn": "2025-10-15T09:12:41Z",
+      "side": 1,
+      "message": "can we use\n```\nKCONFIG_CONFIG\u003d$(OUT)/linux/arch/arm64/configs/gs101_defconfig \\\n            $(LINUX)/scripts/kconfig/merge_config.sh -m -r \\\n                $(LINUX)/arch/arm64/configs/defconfig \\\n                $(LINUX)/kernel/configs/debug.config \\\n                src/pixelscripts/gs101_config.fragment \\\n                raviole_gki.fragment\n``\nhttps://git.codelinaro.org/linaro/googlelt/pixelscripts/-/blob/clo/main/gs101_config.fragment?ref_type\u003dheads`\n\n?",
+      "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67d7ef9d_ae66f7b8",
+        "filename": "BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 1294,
+      "author": {
+        "id": 1984890
+      },
+      "writtenOn": "2025-10-15T09:12:41Z",
+      "side": 1,
+      "message": "pixel6 chipid hasn\u0027t reached upstream yet",
+      "fixSuggestions": [
+        {
+          "fixId": "ccbb8430_0b9f92da",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "BUILD.bazel",
+              "range": {
+                "startLine": 1294,
+                "startChar": 0,
+                "endLine": 1295,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a26a4dc2_271a5e86",
+        "filename": "arch/arm64/configs/raviole_gki.fragment",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1984890
+      },
+      "writtenOn": "2025-10-15T09:12:41Z",
+      "side": 1,
+      "message": "this is not a pixel specific module",
+      "fixSuggestions": [
+        {
+          "fixId": "47e784b0_dff01b70",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/configs/raviole_gki.fragment",
+              "range": {
+                "startLine": 11,
+                "startChar": 0,
+                "endLine": 11,
+                "endChar": 0
+              },
+              "replacement": "CONFIG_ARM_DSU_PMU\u003dm\n\n"
+            },
+            {
+              "path": "arch/arm64/configs/raviole_gki.fragment",
+              "range": {
+                "startLine": 12,
+                "startChar": 0,
+                "endLine": 13,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29c77c69_b7fd9d0e",
+        "filename": "arch/arm64/configs/raviole_gki.fragment",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1984890
+      },
+      "writtenOn": "2025-10-15T09:12:41Z",
+      "side": 1,
+      "message": "CONFIG_CPUFREQ_DT\u003dm. Although one typically wants this as y, to have the cpufreq very early.",
+      "fixSuggestions": [
+        {
+          "fixId": "d2dc6af7_68db037a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/configs/raviole_gki.fragment",
+              "range": {
+                "startLine": 26,
+                "startChar": 0,
+                "endLine": 26,
+                "endChar": 0
+              },
+              "replacement": "CONFIG_CPUFREQ_DT\u003dm\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5b77fe75135abd45da12cadf35fcf1e2a60403c7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
