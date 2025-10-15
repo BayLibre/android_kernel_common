@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b31b80fc_31fe0941",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-10-15T16:26:31Z",
+      "side": 1,
+      "message": "There is a conflict. Here is the complaint:\n\n```\n      ## drivers/gpu/drm/xe/xe_gt_idle.c ##\n     @@ drivers/gpu/drm/xe/xe_gt_idle.c: void xe_gt_idle_enable_pg(struct xe_gt *gt)\n    @@ drivers/gpu/drm/xe/xe_gt_idle.c: int xe_gt_idle_pg_print(struct xe_gt *gt, struc\n              pg_status \u003d xe_mmio_read32(\u0026gt-\u003emmio, POWERGATE_DOMAIN_STATUS);\n\n     -        XE_WARN_ON(xe_force_wake_put(gt_to_fw(gt), XE_FW_GT));\n    -+        xe_force_wake_put(gt_to_fw(gt), fw_ref);\n    ++        xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);\n          }\n\n          if (gt-\u003einfo.engine_mask \u0026 XE_HW_ENGINE_RCS_MASK) {\n\n```\n\nI\u0027ve also added a comment on the line asking why the patch doesn\u0027t match upstream.",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 49
+      },
+      "revId": "26130a3a29e5cd9fde65f7fb93f52ca439ed2750",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67e368f6_3bf06e90",
+        "filename": "drivers/gpu/drm/xe/xe_gt_idle.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-10-15T16:26:31Z",
+      "side": 1,
+      "message": "Why is this using `XE_FW_GT` instead of `fw_ref`?\n\nFor comparison, upstream has:\n\nhttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id\u003da66c19895396e66e578e28d9b598959a5406a6cb\n```\n\t\txe_force_wake_put(gt_to_fw(gt), fw_ref);\n```",
+      "revId": "26130a3a29e5cd9fde65f7fb93f52ca439ed2750",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
