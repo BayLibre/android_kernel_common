@@ -516,31 +516,26 @@ bool pm_sleep_transition_in_progress(void)
 	return pm_suspend_in_progress() || hibernation_in_progress();
 }
 
-static bool pm_sleep_fs_sync_queued;
-static DEFINE_SPINLOCK(pm_sleep_fs_sync_lock);
+static atomic_t pm_sleep_nr_fs_sync_enqueued = ATOMIC_INIT(0);
 static DECLARE_COMPLETION(pm_sleep_fs_sync_complete);
 
 /**
- * abort_sleep_during_fs_sync - Abort fs_sync to abort sleep early
+ * pm_stop_waiting_for_fs_sync - Abort fs_sync to abort sleep early
  *
- * This function aborts the fs_sync stage of suspend/hibernate so that
- * suspend/hibernate itself can be aborted early.
+ * This function causes the suspend process to stop waiting on an in-progress
+ * filesystem sync, such that the suspend process can be aborted before the
+ * filesystem sync is complete.
  */
-void abort_sleep_during_fs_sync(void)
+void pm_stop_waiting_for_fs_sync(void)
 {
-	spin_lock(&pm_sleep_fs_sync_lock);
 	complete(&pm_sleep_fs_sync_complete);
-	spin_unlock(&pm_sleep_fs_sync_lock);
 }
 
 static void sync_filesystems_fn(struct work_struct *work)
 {
 	ksys_sync_helper();
-
-	spin_lock(&pm_sleep_fs_sync_lock);
-	pm_sleep_fs_sync_queued = false;
+	atomic_dec(&pm_sleep_nr_fs_sync_enqueued);
 	complete(&pm_sleep_fs_sync_complete);
-	spin_unlock(&pm_sleep_fs_sync_lock);
 }
 static DECLARE_WORK(sync_filesystems, sync_filesystems_fn);
 
@@ -552,35 +547,25 @@ static DECLARE_WORK(sync_filesystems, sync_filesystems_fn);
  */
 int pm_sleep_fs_sync(void)
 {
-	bool need_pm_sleep_fs_sync_requeue;
-
-Start_fs_sync:
-	spin_lock(&pm_sleep_fs_sync_lock);
-	reinit_completion(&pm_sleep_fs_sync_complete);
+	atomic_inc(&pm_sleep_nr_fs_sync_enqueued);
 	/*
 	 * Handle the case where a sleep immediately follows a previous sleep
 	 * that was aborted during fs_sync. In this case, wait for the previous
-	 * filesystem sync to finish. Then do another filesystem sync so any
+	 * filesystem sync to finish and then do another filesystem sync so any
 	 * subsequent filesystem changes are synced before sleeping.
 	 */
-	if (pm_sleep_fs_sync_queued) {
-		need_pm_sleep_fs_sync_requeue = true;
-	} else {
-		need_pm_sleep_fs_sync_requeue = false;
-		pm_sleep_fs_sync_queued = true;
-		schedule_work(&sync_filesystems);
-	}
-	spin_unlock(&pm_sleep_fs_sync_lock);
-
-	/*
-	 * Completion is triggered by fs_sync finishing or an abort sleep
-	 * signal, whichever comes first
-	 */
-	wait_for_completion(&pm_sleep_fs_sync_complete);
-	if (pm_wakeup_pending())
-		return -EBUSY;
-	if (need_pm_sleep_fs_sync_requeue)
-		goto Start_fs_sync;
+	do {
+		reinit_completion(&pm_sleep_fs_sync_complete);
+		if (atomic_read(&pm_sleep_nr_fs_sync_enqueued) > 0)
+			schedule_work(&sync_filesystems);
+		/*
+		 * Completion is triggered by fs_sync finishing or an abort
+		 * sleep signal, whichever comes first
+		 */
+		wait_for_completion(&pm_sleep_fs_sync_complete);
+		if (pm_wakeup_pending())
+			return -EBUSY;
+	} while (atomic_read(&pm_sleep_nr_fs_sync_enqueued) > 0);
 
 	return 0;
 }

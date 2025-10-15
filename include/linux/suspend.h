@@ -500,7 +500,7 @@ void restore_processor_state(void);
 extern int register_pm_notifier(struct notifier_block *nb);
 extern int unregister_pm_notifier(struct notifier_block *nb);
 extern void ksys_sync_helper(void);
-extern void abort_sleep_during_fs_sync(void);
+extern void pm_stop_waiting_for_fs_sync(void);
 extern int pm_sleep_fs_sync(void);
 extern void pm_report_hw_sleep_time(u64 t);
 extern void pm_report_max_hw_sleep(u64 t);
@@ -558,7 +558,7 @@ static inline void pm_restrict_gfp_mask(void) {}
 static inline void pm_restore_gfp_mask(void) {}
 
 static inline void ksys_sync_helper(void) {}
-static inline abort_sleep_during_fs_sync(void) {}
+static inline pm_stop_waiting_for_fs_sync(void) {}
 static inline int pm_sleep_fs_sync(void) {}
 
 #define pm_notifier(fn, pri)	do { (void)(fn); } while (0)

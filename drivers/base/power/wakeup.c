@@ -579,7 +579,7 @@ static void wakeup_source_activate(struct wakeup_source *ws)
 	 * fs_sync only if events_check_enabled is set.
 	 */
 	if (events_check_enabled)
-		abort_sleep_during_fs_sync();
+		pm_stop_waiting_for_fs_sync();
 
 	trace_wakeup_source_activate(ws->name, cec);
 }
@@ -945,7 +945,7 @@ EXPORT_SYMBOL_GPL(pm_wakeup_pending);
 void pm_system_wakeup(void)
 {
 	atomic_inc(&pm_abort_suspend);
-	abort_sleep_during_fs_sync();
+	pm_stop_waiting_for_fs_sync();
 	s2idle_wake();
 }
 EXPORT_SYMBOL_GPL(pm_system_wakeup);
