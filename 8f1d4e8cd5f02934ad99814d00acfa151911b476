@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf63549c_cb8c5522",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-10-16T03:18:18Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by KernelCommit: Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [sourc...\n\nCherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/66b74bb79ddfe12ea63b05880eef0548aa4bf6d8).\n\n```\n    - ## include/trace/hooks/sched.h ##\n    -@@ include/trace/hooks/sched.h: DECLARE_HOOK(android_vh_map_util_freq,\n    - \t\tunsigned long cap, unsigned long *next_freq),\n    - \tTP_ARGS(util, freq, cap, next_freq));\n    - \n    -+struct cgroup_subsys_state;\n    -+DECLARE_HOOK(android_vh_sched_move_task,\n    -+\tTP_PROTO(struct task_struct *tsk),\n    -+\tTP_ARGS(tsk));\n    -+DECLARE_HOOK(android_vh_cpu_cgroup_css_alloc,\n    -+\tTP_PROTO(struct task_group *tg, struct cgroup_subsys_state *parent_css),\n    -+\tTP_ARGS(tg, parent_css));\n    -+DECLARE_HOOK(android_vh_cpu_cgroup_css_alloc_early,\n    -+\tTP_PROTO(struct task_group *parent),\n    -+\tTP_ARGS(parent));\n    -+DECLARE_HOOK(android_vh_cpu_cgroup_css_free,\n    -+\tTP_PROTO(struct cgroup_subsys_state *css),\n    -+\tTP_ARGS(css));\n    -+\n    - /* macro versions of hooks are no longer required */\n    - \n    - #endif /* _TRACE_HOOK_SCHED_H */\n    +    (cherry picked from commit 66b74bb79ddfe12ea63b05880eef0548aa4bf6d8)\n    +    Signed-off-by: pugaowei \u003cpugaowei@oppo.com\u003e\n     \n      ## kernel/sched/core.c ##\n     @@ kernel/sched/core.c: void sched_move_task(struct task_struct *tsk)\n    @@ kernel/sched/core.c: void sched_move_task(struct task_struct *tsk)\n      \n     +\ttrace_android_vh_sched_move_task(tsk);\n      \trq \u003d task_rq_lock(tsk, \u0026rf);\n    - \t/*\n    - \t * Esp. with SCHED_AUTOGROUP enabled it is possible to get superfluous\n    + \tupdate_rq_clock(rq);\n    + \n     @@ kernel/sched/core.c: cpu_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)\n      \tstruct task_group *tg;\n      \n    @@ kernel/sched/core.c: struct cgroup_subsys cpu_cgrp_subsys \u003d {\n      #endif\t/* CONFIG_CGROUP_SCHED */\n      \n      void dump_cpu_task(int cpu)\n    -\n    - ## kernel/sched/vendor_hooks.c ##\n    -@@ kernel/sched/vendor_hooks.c: EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_cpus_allowed_comm);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_setaffinity_early);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tick_nohz_idle_stop_tick);\n    - EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_map_util_freq);\n    -+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sched_move_task);\n    -+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_alloc_early);\n    -+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_alloc);\n    -+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpu_cgroup_css_free);\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "8f1d4e8cd5f02934ad99814d00acfa151911b476",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd405958_5703c2a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-10-16T03:18:18Z",
+      "side": 1,
+      "message": "This seems to be missing portions of the patch you\u0027re cherry-picking:   https://r.android.com/3732226",
+      "revId": "8f1d4e8cd5f02934ad99814d00acfa151911b476",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
