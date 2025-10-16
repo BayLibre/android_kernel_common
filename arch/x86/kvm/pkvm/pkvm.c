@@ -1063,6 +1063,9 @@ static unsigned long pkvm_vcpu_after_set_cpuid(struct pkvm_vcpu *pkvm_vcpu,
 	old_nent = vcpu->arch.cpuid_nent;
 
 	new_nent = size / sizeof(struct kvm_cpuid_entry2);
+	if (pkvm_enforce_cpuid(new, new_nent))
+		goto out_free;
+
 	if (!kvm_set_cpuid(vcpu, new, new_nent) && (vcpu->arch.cpuid_entries == new)) {
 		/*
 		 * New physical page is consumed. Tear down the old cpuid
@@ -1082,6 +1085,7 @@ static unsigned long pkvm_vcpu_after_set_cpuid(struct pkvm_vcpu *pkvm_vcpu,
 		}
 	}
 
+out_free:
 	/*
 	 * Undonate the physical pages which are going to be freed by the host.
 	 * There is no need to clear these pages for npVM. For pVM, it is also

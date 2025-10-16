@@ -6,5 +6,6 @@
 
 int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2, int nent);
 int pkvm_get_cpuid(struct kvm_cpuid_entry2 *entries, int *nent);
+int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int nent);
 
 #endif
