@@ -27,26 +27,29 @@ static int handle_emulate(struct emulate *emulate, struct user_pt_regs *regs,
 			  u64 esr, u64 addr)
 {
 	unsigned int len;
-	u64 offset;
-	u32 reg_value;
+	u64 offset, reg_value;
 	int reg, ret;
 	bool write;
 
 	len = BIT((esr & ESR_ELx_SAS) >> ESR_ELx_SAS_SHIFT);
-	if (len != sizeof(u32))
+	if (len != sizeof(u32) && len != sizeof(u64))
 		return -EFAULT;
 
 	reg = (esr & ESR_ELx_SRT_MASK) >> ESR_ELx_SRT_SHIFT;
 	write = (esr & ESR_ELx_WNR) == ESR_ELx_WNR;
 	offset = addr - emulate->base;
-	reg_value = write ? regs->regs[reg] : 0xdeadbeef;
 
-	ret = emulate->handler(emulate, offset, write, &reg_value);
+	reg_value = write ? regs->regs[reg] : 0xdeadbeefdeadbeef;
+	reg_value &= GENMASK_ULL((len << 3) - 1, 0);
+
+	ret = emulate->handler(emulate, offset, write, &reg_value, len);
 	if (ret)
 		return ret;
 
-	if (!write)
+	if (!write) {
+		reg_value &= BIT(len << 3) - 1;
 		regs->regs[reg] = reg_value;
+	}
 
 	write_sysreg_el2(read_sysreg_el2(SYS_ELR) + 4, SYS_ELR);
 
