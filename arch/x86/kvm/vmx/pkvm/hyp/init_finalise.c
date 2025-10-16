@@ -11,6 +11,7 @@
 
 #include <pkvm.h>
 #include <capabilities.h>
+#include <pkvm/cpuid.h>
 #include "pkvm_hyp.h"
 #include "gfp.h"
 #include "early_alloc.h"
@@ -305,6 +306,22 @@ static int create_iommu(void)
 	return pkvm_init_iommu(pkvm_virt_to_phys(iommu_mem_base), nr_pages);
 }
 
+static int pkvm_init_cpuid(void)
+{
+	int nent, r;
+
+	if (pkvm_hyp->cpuid_nent)
+		return 0;
+
+	nent = KVM_MAX_CPUID_ENTRIES;
+	r = pkvm_get_cpuid(pkvm_hyp->cpuid_def, &nent);
+	if (r)
+		return r;
+
+	pkvm_hyp->cpuid_nent = nent;
+	return 0;
+}
+
 /*
  * Flag indicating if pkvm(mainly ept and iommu) is setup and enabled
  * on at least one cpu but does not indicate pkvm is fully initialized.
@@ -496,6 +513,14 @@ switch_pgt:
 	ept_sync_global();
 
 	pkvm_init_percpu_fpu();
+
+	/*
+	 * Must be called after fpu initialization, as the latter affects
+	 * the fpu related bits in the supported cpuid leaves.
+	 */
+	ret = pkvm_init_cpuid();
+	if (ret)
+		goto out;
 
 	pkvm_vcpu_perf_init(vcpu);
 

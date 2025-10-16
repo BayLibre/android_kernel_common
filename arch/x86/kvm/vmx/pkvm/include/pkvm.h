@@ -84,6 +84,10 @@ struct pkvm_hyp {
 	/* Store BDF of all devices in the SATC ACPI table */
 	u16 satc_dev_bdf[PKVM_MAX_DEVS_IN_SATC];
 	int satc_dev_cnt;
+
+	/* Store KVM supported CPUID bits */
+	struct kvm_cpuid_entry2 *cpuid_def;
+	int cpuid_nent;
 };
 
 static inline struct pkvm_host_vcpu *vmx_to_pkvm_hvcpu(struct vcpu_vmx *vmx)
@@ -113,10 +117,13 @@ struct pkvm_section {
 	u64 prot;
 };
 
+#define PKVM_CPUID_MAX_SIZE (sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES)
+#define PKVM_CPUID_PAGES (ALIGN(PKVM_CPUID_MAX_SIZE, PAGE_SIZE) >> PAGE_SHIFT)
 #define PKVM_REQUIRES_L1D_FLUSH_PAGES \
 	(boot_cpu_has_bug(X86_BUG_L1TF) && !boot_cpu_has(X86_FEATURE_FLUSH_L1D))
 #define PKVM_PAGES (ALIGN(sizeof(struct pkvm_hyp), PAGE_SIZE) >> PAGE_SHIFT)
-#define PKVM_GLOBAL_PAGES (PKVM_PAGES + (PKVM_REQUIRES_L1D_FLUSH_PAGES ? 1 << L1D_CACHE_ORDER : 0))
+#define PKVM_GLOBAL_PAGES (PKVM_PAGES + PKVM_CPUID_PAGES + \
+		(PKVM_REQUIRES_L1D_FLUSH_PAGES ? 1 << L1D_CACHE_ORDER : 0))
 #define PKVM_PCPU_PAGES (ALIGN(sizeof(struct pkvm_pcpu), PAGE_SIZE) >> PAGE_SHIFT)
 #define PKVM_HOST_VCPU_PAGES (ALIGN(sizeof(struct pkvm_host_vcpu), PAGE_SIZE) >> PAGE_SHIFT)
 #define PKVM_HOST_VCPU_VMCS_PAGES 3 /*vmxarea+vmcs+msr_bitmap*/

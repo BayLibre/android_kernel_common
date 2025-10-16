@@ -1691,6 +1691,12 @@ static int __init __vmx_pkvm_init(void)
 
 	setup_pkvm_syms();
 
+	pkvm->cpuid_def = pkvm_sym(pkvm_early_alloc_contig)(PKVM_CPUID_PAGES);
+	if (!pkvm->cpuid_def) {
+		ret = -ENOMEM;
+		goto out;
+	}
+
 	ret = setup_pkvm_l1d();
 	if (ret)
 		goto out;
