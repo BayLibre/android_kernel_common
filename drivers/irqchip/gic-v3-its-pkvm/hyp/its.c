@@ -23,14 +23,21 @@ static size_t its_dev_count;
 static DEFINE_HYP_SPINLOCK(its_devs_lock);
 
 static int its_emulate_handler(struct emulate *emulate, u64 offset, bool write,
-			       u32 *reg)
+			       u64 *reg, int reg_size)
 {
 	struct hyp_gic_v3_its *its = emulate->priv;
 
-	if (write)
-		writel_relaxed(*reg, its->base + offset);
-	else
-		*reg = readl_relaxed(its->base + offset);
+	if (reg_size == sizeof(u32)) {
+		if (write)
+			writel_relaxed(*reg, its->base + offset);
+		else
+			*reg = readl_relaxed(its->base + offset);
+	} else {
+		if (write)
+			writeq_relaxed(*reg, its->base + offset);
+		else
+			*reg = readq_relaxed(its->base + offset);
+	}
 
 	return 0;
 }

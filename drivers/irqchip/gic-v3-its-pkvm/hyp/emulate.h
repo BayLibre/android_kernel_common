@@ -10,7 +10,7 @@
 struct emulate;
 
 typedef int(emulate_handler_t)(struct emulate *emulate, u64 offset, bool write,
-			       u32 *reg);
+			       u64 *reg, int reg_size);
 
 struct emulate {
 	u64 base;
