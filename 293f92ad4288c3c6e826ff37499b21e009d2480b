@@ -16,6 +16,24 @@
       "message": "Are we confident that this won\u0027t break any devices in the field for Android 16?",
       "revId": "293f92ad4288c3c6e826ff37499b21e009d2480b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56619409_6fe52b49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1936147
+      },
+      "writtenOn": "2025-10-16T05:24:38Z",
+      "side": 1,
+      "message": "Yeah. Safesetid is \u0027allow-by-default\u0027 so any UIDs not present in the policy are unaffected. Since the policy can only be changed by writing to the config file in securityfs and since securityfs isn\u0027t mounted currently, this config change is a no-op.",
+      "parentUuid": "83069409_e6432bbb",
+      "revId": "293f92ad4288c3c6e826ff37499b21e009d2480b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
