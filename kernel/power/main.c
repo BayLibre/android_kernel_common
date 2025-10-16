@@ -515,6 +515,76 @@ bool pm_sleep_transition_in_progress(void)
 {
 	return pm_suspend_in_progress() || hibernation_in_progress();
 }
+
+static bool pm_sleep_fs_sync_queued;
+static DEFINE_SPINLOCK(pm_sleep_fs_sync_lock);
+static DECLARE_COMPLETION(pm_sleep_fs_sync_complete);
+
+/**
+ * abort_sleep_during_fs_sync - Abort fs_sync to abort sleep early
+ *
+ * This function aborts the fs_sync stage of suspend/hibernate so that
+ * suspend/hibernate itself can be aborted early.
+ */
+void abort_sleep_during_fs_sync(void)
+{
+	spin_lock(&pm_sleep_fs_sync_lock);
+	complete(&pm_sleep_fs_sync_complete);
+	spin_unlock(&pm_sleep_fs_sync_lock);
+}
+
+static void sync_filesystems_fn(struct work_struct *work)
+{
+	ksys_sync_helper();
+
+	spin_lock(&pm_sleep_fs_sync_lock);
+	pm_sleep_fs_sync_queued = false;
+	complete(&pm_sleep_fs_sync_complete);
+	spin_unlock(&pm_sleep_fs_sync_lock);
+}
+static DECLARE_WORK(sync_filesystems, sync_filesystems_fn);
+
+/**
+ * pm_sleep_fs_sync - Trigger fs_sync with ability to abort
+ *
+ * Return 0 on successful file system sync, otherwise returns -EBUSY if file
+ * system sync was aborted.
+ */
+int pm_sleep_fs_sync(void)
+{
+	bool need_pm_sleep_fs_sync_requeue;
+
+Start_fs_sync:
+	spin_lock(&pm_sleep_fs_sync_lock);
+	reinit_completion(&pm_sleep_fs_sync_complete);
+	/*
+	 * Handle the case where a sleep immediately follows a previous sleep
+	 * that was aborted during fs_sync. In this case, wait for the previous
+	 * filesystem sync to finish. Then do another filesystem sync so any
+	 * subsequent filesystem changes are synced before sleeping.
+	 */
+	if (pm_sleep_fs_sync_queued) {
+		need_pm_sleep_fs_sync_requeue = true;
+	} else {
+		need_pm_sleep_fs_sync_requeue = false;
+		pm_sleep_fs_sync_queued = true;
+		schedule_work(&sync_filesystems);
+	}
+	spin_unlock(&pm_sleep_fs_sync_lock);
+
+	/*
+	 * Completion is triggered by fs_sync finishing or an abort sleep
+	 * signal, whichever comes first
+	 */
+	wait_for_completion(&pm_sleep_fs_sync_complete);
+	if (pm_wakeup_pending())
+		return -EBUSY;
+	if (need_pm_sleep_fs_sync_requeue)
+		goto Start_fs_sync;
+
+	return 0;
+}
+
 #endif /* CONFIG_PM_SLEEP */
 
 #ifdef CONFIG_PM_SLEEP_DEBUG
