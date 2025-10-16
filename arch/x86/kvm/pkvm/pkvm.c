@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <asm/processor.h>
+#include <asm/perf_event.h>
 #include <asm/kvm_pkvm.h>
 #include "x86.h"
 #include "pkvm.h"
@@ -19,6 +20,11 @@
  * hypervisor, define the tdp_enabled here to simplify.
  */
 bool tdp_enabled = true;
+/*
+ * similarly pmu.c is not compiled. define kvm_mmu_cap here for the use
+ * in cpuid.c
+ */
+struct x86_pmu_capability __read_mostly kvm_pmu_cap = {0};
 DEFINE_PER_CPU(struct kvm_vcpu *, host_vcpu);
 /*
  * In the pkvm hypervisor, the kvm_rebooting is never to be set as there is no
