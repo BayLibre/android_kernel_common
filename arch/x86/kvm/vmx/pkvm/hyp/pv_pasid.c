@@ -226,6 +226,10 @@ int pkvm_iommu_clear_pasid_entry(u64 param_va)
 	pkvm_dbg("pkvm: %s: clear_pe: dev[%x] pasid: %x, did: %x\n",
 		 __func__, param->bdf, param->pasid, did);
 	pasid_clear_entry(pte);
+
+	if (did == FLPT_DEFAULT_DID)
+		atomic_dec(&hyp_iommu->pt_cnt);
+
 	ret = 0;
 
 out_unlock:
@@ -360,6 +364,8 @@ int pkvm_iommu_set_pasid_sl(u64 param_va)
 	}
 
 	if (param->did == FLPT_DEFAULT_DID) {
+		atomic_inc(&hyp_iommu->pt_cnt);
+
 		/*
 		 * Passthrough will break pkvm security guarantees as
 		 * device would be able to access the whole physical
