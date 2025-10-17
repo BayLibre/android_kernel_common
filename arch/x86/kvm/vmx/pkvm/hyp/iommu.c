@@ -2397,102 +2397,22 @@ bool pkvm_iommu_coherency(u16 bdf, u32 pasid)
 	return iommu_coherency(&iommu->iommu);
 }
 
-struct iotlb_flush_data {
-	unsigned long desired_root_pa;
-	unsigned long addr;
-	int size_order;
-	struct qi_desc *desc;
-	int desc_max_index;
-};
-
-static void iommu_flush_iotlb(struct pkvm_iommu *iommu, struct iotlb_flush_data *data)
+void pkvm_iommu_flush_iotlb(unsigned long addr, unsigned long size)
 {
-	struct pkvm_ptdev *ptdev;
-	struct qi_desc *desc = data->desc;
-	int qi_desc_index = 0;
+	struct pkvm_iommu *iommu;
+	struct qi_desc desc;
+	unsigned int size_order = ilog2(__roundup_pow_of_two(size >> VTD_PAGE_SHIFT));
+	addr = ALIGN_DOWN(addr, (1ULL << (VTD_PAGE_SHIFT + size_order)));
 
-	pkvm_spin_lock(&iommu->lock);
-
-	/* No need to flush IOTLB if there is no device on this IOMMU */
-	if (list_empty(&iommu->ptdev_head))
-		goto out;
-
-	/*
-	 * If the descriptor buffer is NULL, pKVM has to submit the QI
-	 * request one by one which may be slow if there are a lot of
-	 * devices connected to this IOMMU unit. So in this case, choose
-	 * to submit one single global flush request to flush the IOTLB
-	 * for all the devices.
-	 */
-	if (!desc) {
-		flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
-		goto out;
-	}
-
-	/* Flush per domain */
-	list_for_each_entry(ptdev, &iommu->ptdev_head, iommu_node) {
-		struct qi_desc *tmp = desc;
-		bool did_exist = false;
-		int i;
-
-		if (!ptdev->pgt || ptdev->pgt->root_pa != data->desired_root_pa)
-			continue;
-
-		for (i = 0; i < qi_desc_index; i++, tmp++) {
-			/* The same did is already in descriptor page */
-			if (ptdev->did == QI_DESC_IOTLB_DID(tmp->qw0)) {
-				did_exist = true;
-				break;
-			}
-		}
-
-		if (did_exist)
-			continue;
-		/*
-		 * Setup the page-selective or domain-selective qi descriptor
-		 * based on IOMMU capability, and submit to HW when qi descriptor
-		 * number reaches to the maximum count.
-		 */
+	for_each_valid_iommu(iommu) {
 		if (cap_pgsel_inv(iommu->iommu.cap) &&
-		    data->size_order <= cap_max_amask_val(iommu->iommu.cap))
-			setup_iotlb_qi_desc(iommu, desc + qi_desc_index++,
-					    ptdev->did, data->addr, data->size_order,
-					    DMA_TLB_PSI_FLUSH);
+		    size_order <= cap_max_amask_val(iommu->iommu.cap))
+			setup_iotlb_qi_desc(iommu, &desc, FLPT_DEFAULT_DID, addr, size_order,
+					DMA_TLB_PSI_FLUSH);
 		else
-			setup_iotlb_qi_desc(iommu, desc + qi_desc_index++,
-					    ptdev->did, 0, 0,
+			setup_iotlb_qi_desc(iommu, &desc, FLPT_DEFAULT_DID, 0, 0,
 					    DMA_TLB_DSI_FLUSH);
 
-		if (qi_desc_index == data->desc_max_index) {
-			submit_qi(iommu, desc, qi_desc_index);
-			qi_desc_index = 0;
-		}
+		__submit_qi(iommu, &desc, 1);
 	}
-
-	if (qi_desc_index)
-		submit_qi(iommu, desc, qi_desc_index);
-out:
-	pkvm_spin_unlock(&iommu->lock);
-}
-
-void pkvm_iommu_flush_iotlb(struct pkvm_pgtable *pgt, unsigned long addr, unsigned long size)
-{
-	int size_order = ilog2(__roundup_pow_of_two(size >> VTD_PAGE_SHIFT));
-	struct iotlb_flush_data data = {
-		.desired_root_pa = pgt->root_pa,
-		.addr = ALIGN_DOWN(addr, (1ULL << (VTD_PAGE_SHIFT + size_order))),
-		.size_order = size_order,
-	};
-	struct pkvm_iommu *iommu;
-
-	data.desc = iommu_zalloc_pages(PKVM_QI_DESC_ALIGNED_SIZE);
-	if (data.desc)
-		/* Reserve space for one wait desc and one desc between head and tail */
-		data.desc_max_index = PKVM_QI_DESC_ALIGNED_SIZE / sizeof(struct qi_desc) - 2;
-
-	for_each_valid_iommu(iommu)
-		iommu_flush_iotlb(iommu, &data);
-
-	if (data.desc)
-		iommu_put_page(data.desc);
 }
