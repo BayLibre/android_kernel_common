@@ -135,6 +135,13 @@ do {									\
 #define QI_DESC_IOTLB_ADDR(qw)		((qw) & VTD_PAGE_MASK)
 #define QI_DESC_IOTLB_AM(qw)		((qw) & GENMASK_ULL(5, 0))
 
+/*
+ * Domain ID reserved for pasid entries programmed for first-level
+ * only and pass-through transfer modes.
+ * (copied from drivers/iommu/intel/pasid.h)
+ */
+#define FLPT_DEFAULT_DID		1
+
 #define pgt_to_pkvm_iommu(_pgt) container_of(_pgt, struct pkvm_iommu, pgt)
 
 struct pasid_dir_entry {
