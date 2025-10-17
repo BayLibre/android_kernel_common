@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87092850_38872b4f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 805,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-10-17T10:27:24Z",
+      "side": 1,
+      "message": "EFAULT only I believe.\n\nOtherwise, LGTM",
+      "fixSuggestions": [
+        {
+          "fixId": "a6c2faf0_5502af64",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+              "range": {
+                "startLine": 805,
+                "startChar": 0,
+                "endLine": 806,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tif (ret \u003d\u003d -EFAULT) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d9b6c0e3cb7520694a2938db5afca0fd4601f116",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
