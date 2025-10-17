@@ -217,6 +217,10 @@ int pkvm_iommu_clear_pasid_entry(u64 param_va)
 	pkvm_dbg("pkvm: %s: clear_pe: dev[%x] pasid: %x, did: %x\n",
 			__func__, param->bdf, param->pasid, did);
 	pasid_clear_entry(pte);
+
+	if (did == FLPT_DEFAULT_DID)
+		atomic_dec(&hyp_iommu->pt_cnt);
+
 	ret = 0;
 
 out_unlock:
@@ -343,6 +347,9 @@ static int pasid_setup_sl(struct pkvm_iommu *hyp_iommu, struct pkvm_pasid_table_
 		ret = -EBUSY;
 		goto out_unlock;
 	}
+
+	if (param->did == FLPT_DEFAULT_DID)
+		atomic_inc(&hyp_iommu->pt_cnt);
 
 	__pasid_setup_sl(iommu, pte, param->domain_pgd_gpa, param->did,
 			param->domain_agaw, param->dirty_tracking);
