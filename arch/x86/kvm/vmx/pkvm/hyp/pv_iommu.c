@@ -181,6 +181,10 @@ unsigned long pkvm_iommu_clear_ce(u64 param_va)
 
 	context_flush_present_no_pasid(hyp_iommu, did, param->bdf,
 				       param->ats_qdep, param->ats_enabled);
+
+	if (!sm && did == FLPT_DEFAULT_DID)
+		atomic_dec(&hyp_iommu->pt_cnt);
+
 	return ret;
 }
 
@@ -218,6 +222,9 @@ unsigned long set_context_entry(struct pkvm_iommu *hyp_iommu,
 
 	if (context_present(context))
 		return 0;
+
+	if (param->did == FLPT_DEFAULT_DID)
+		atomic_inc(&hyp_iommu->pt_cnt);
 
 	__set_lm_context(context, param->did, agaw, tt, param->domain_pgd_gpa);
 
