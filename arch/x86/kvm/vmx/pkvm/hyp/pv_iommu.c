@@ -166,6 +166,10 @@ unsigned long pkvm_iommu_clear_ce(u64 param_va)
 	pkvm_dbg("pkvm: %s: clear_ce: dev[%x] did: %u\n",
 			__func__, param->bdf, did);
 	context_clear_entry(context);
+
+	if (!sm_supported(&hyp_iommu->iommu) && did == FLPT_DEFAULT_DID)
+		atomic_dec(&hyp_iommu->pt_cnt);
+
 	__pkvm_iommu_flush_cache(&hyp_iommu->iommu, context, sizeof(*context));
 	pkvm_spin_unlock(&hyp_iommu->lock);
 
@@ -203,6 +207,9 @@ unsigned long set_context_entry(struct pkvm_iommu *hyp_iommu,
 
 	if (context_present(context))
 		return -EBUSY;
+
+	if (param->did == FLPT_DEFAULT_DID)
+		atomic_inc(&hyp_iommu->pt_cnt);
 
 	__set_lm_context(context, param->did, param->domain_agaw,
 			tt, param->domain_pgd_gpa);
