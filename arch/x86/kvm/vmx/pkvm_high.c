@@ -793,11 +793,13 @@ static int pkvm_vm_init(struct kvm *kvm)
 	if (!pkvm_vm)
 		return -ENOMEM;
 
-	/* TODO: share struct kvm_vmx with pkvm */
+	ret = kvm_share_hyp(kvm, (void *)kvm + sizeof(struct kvm_vmx));
+	if (ret)
+		goto free_page;
 
 	ret = kvm_call_pkvm(vm_init, kvm, __pa(pkvm_vm));
 	if (ret < 0)
-		goto free_page;
+		goto unshare;
 
 	pkvm->pkvm_vm_handle = ret;
 
@@ -806,6 +808,8 @@ static int pkvm_vm_init(struct kvm *kvm)
 
 	return 0;
 
+unshare:
+	kvm_unshare_hyp(kvm, (void *)kvm + sizeof(struct kvm_vmx));
 free_page:
 	free_pages_exact(pkvm_vm, pkvm_vm_sz);
 	return ret;
@@ -821,7 +825,7 @@ static void pkvm_vm_destroy(struct kvm *kvm)
 	if (ret)
 		return;
 
-	/* TODO: unshare struct kvm_vmx with pkvm */
+	kvm_unshare_hyp(kvm, (void *)kvm + sizeof(struct kvm_vmx));
 
 	free_pkvm_memcache(&pkvm->teardown_mc);
 
