@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f39104a5_f93f371a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 3938928
+      },
+      "writtenOn": "2025-10-17T16:41:33Z",
+      "side": 1,
+      "message": "This file already exist. its the changes in xe_guc_log.c is related to this upstream change: d8ce1a97722617317b04eb9f19ab8d6d95379f7a drm/xe/guc: Use a two stage dump for GuC logs and add more info\n\nThis change would require me to pull another series related to devcoredump and guc logging which might introduce further conflicts\nhttps://patchwork.freedesktop.org/series/137985/\n\nI can do that if needed but i thought it was an overkill just for the minor delta",
+      "parentUuid": "c72c4797_dc783511",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 39
+      },
+      "revId": "5c722c876bc287c3f5445100a9f0bceb14e3e641",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e43dc6c7_623dc0fb",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fb27dc1_5ba9edc6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 3938928
+      },
+      "writtenOn": "2025-10-17T16:41:33Z",
+      "side": 1,
+      "message": "This file already exist. its the changes in xe_guc_log.c is related to this upstream change: d8ce1a97722617317b04eb9f19ab8d6d95379f7a drm/xe/guc: Use a two stage dump for GuC logs and add more info\n\nThis change would require me to pull another series related to devcoredump and guc logging which might introduce further conflicts\nhttps://patchwork.freedesktop.org/series/137985/\n\nI can do that if needed but i thought it was an overkill just for the minor delta",
+      "parentUuid": "e43dc6c7_623dc0fb",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 42
+      },
+      "revId": "5c722c876bc287c3f5445100a9f0bceb14e3e641",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41cc598d_0571c1d8",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-10-15T16:37:19Z",
       "side": 1,
       "message": "This diff isn\u0027t super useful, and the tooling already provides us with a diff report. Instead, please replace this with a description of the conflicts and why they are necessary.\n\nFull diff from upstream that\u0027s reported by the tooling:\n\n```\n      ## drivers/gpu/drm/xe/xe_guc.c ##\n     @@ drivers/gpu/drm/xe/xe_guc.c: static void guc_fini_hw(void *arg)\n    @@ drivers/gpu/drm/xe/xe_guc.c: void xe_guc_print_info(struct xe_guc *guc, struct d\n          xe_guc_ct_print(\u0026guc-\u003ect, p);\n          xe_guc_submit_print(guc, p);\n\n    - ## drivers/gpu/drm/xe/xe_guc_log.c ##\n    -@@ drivers/gpu/drm/xe/xe_guc_log.c: struct xe_guc_log_snapshot *xe_guc_log_snapshot_capture(struct xe_guc_log *log,\n    -     struct xe_device *xe \u003d log_to_xe(log);\n    -     struct xe_guc *guc \u003d log_to_guc(log);\n    -     struct xe_gt *gt \u003d log_to_gt(log);\n    -+    unsigned int fw_ref;\n    -     size_t remain;\n    --    int i, err;\n    -+    int i;\n    - \n    -     if (!log-\u003ebo) {\n    -         xe_gt_err(gt, \"GuC log buffer not allocated\\n\");\n    -@@ drivers/gpu/drm/xe/xe_guc_log.c: struct xe_guc_log_snapshot *xe_guc_log_snapshot_capture(struct xe_guc_log *log,\n    -         remain -\u003d size;\n    -     }\n    - \n    --    err \u003d xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);\n    --    if (err) {\n    -+    fw_ref \u003d xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);\n    -+    if (!fw_ref) {\n    -         snapshot-\u003estamp \u003d ~0;\n    -     } else {\n    -         snapshot-\u003estamp \u003d xe_mmio_read32(\u0026gt-\u003emmio, GUC_PMTIMESTAMP);\n    --        xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);\n    -+        xe_force_wake_put(gt_to_fw(gt), fw_ref);\n    -     }\n    -     snapshot-\u003ektime \u003d ktime_get_boottime_ns();\n    -     snapshot-\u003elevel \u003d log-\u003elevel;\n    -\n      ## drivers/gpu/drm/xe/xe_guc_pc.c ##\n     @@ drivers/gpu/drm/xe/xe_guc_pc.c: u32 xe_guc_pc_get_act_freq(struct xe_guc_pc *pc)\n      int xe_guc_pc_get_cur_freq(struct xe_guc_pc *pc, u32 *freq)\n    @@ drivers/gpu/drm/xe/xe_guc_pc.c: static void xe_guc_pc_fini_hw(void *arg)\n      }\n\n      /**\n    -\n    - ## drivers/gpu/drm/xe/xe_guc_submit.c ##\n    -@@ drivers/gpu/drm/xe/xe_guc_submit.c: guc_exec_queue_timedout_job(struct drm_sched_job *drm_job)\n    -     struct xe_guc *guc \u003d exec_queue_to_guc(q);\n    -     const char *process_name \u003d \"no process\";\n    -     struct xe_device *xe \u003d guc_to_xe(guc);\n    -+    unsigned int fw_ref;\n    -     int err \u003d -ETIME;\n    -     pid_t pid \u003d -1;\n    -     int i \u003d 0;\n    -@@ drivers/gpu/drm/xe/xe_guc_submit.c: guc_exec_queue_timedout_job(struct drm_sched_job *drm_job)\n    -     if (!exec_queue_killed(q) \u0026\u0026 !xe-\u003edevcoredump.captured \u0026\u0026\n    -         !xe_guc_capture_get_matching_and_lock(job)) {\n    -         /* take force wake before engine register manual capture */\n    --        if (xe_force_wake_get(gt_to_fw(q-\u003egt), XE_FORCEWAKE_ALL))\n    -+        fw_ref \u003d xe_force_wake_get(gt_to_fw(q-\u003egt), XE_FORCEWAKE_ALL);\n    -+        if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL))\n    -             xe_gt_info(q-\u003egt, \"failed to get forcewake for coredump capture\\n\");\n    - \n    -         xe_engine_snapshot_capture_for_job(job);\n    - \n    --        xe_force_wake_put(gt_to_fw(q-\u003egt), XE_FORCEWAKE_ALL);\n    -+        xe_force_wake_put(gt_to_fw(q-\u003egt), fw_ref);\n    -     }\n    - \n    -     /*\n```",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 56
+      },
+      "revId": "5c722c876bc287c3f5445100a9f0bceb14e3e641",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dc4157a_a735a2f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3938928
+      },
+      "writtenOn": "2025-10-17T16:41:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "41cc598d_0571c1d8",
       "range": {
         "startLine": 48,
         "startChar": 0,
