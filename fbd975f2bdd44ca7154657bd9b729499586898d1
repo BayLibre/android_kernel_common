@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b69b07ee_b20453bf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-18T14:17:01Z",
+      "side": 1,
+      "message": "I\u0027m wondering if we really need to do all this in the same complicated way as pKVM-ARM does (i.e. let the host itself decide when to share or unshare memory, plus introduce an infrastructure in the host to prevent it from asking pKVM to share the same page twice, plus introduce extra pinning/unpinning infrastructure in pKVM to prevent the host from unsharing pages that are still used by the hypervisor).\n\nCouldn\u0027t we do the following instead:\n\n1. Instead of providing host_share_hyp and host_unshare_hyp hypercalls to the host, just do sharing and unsharing automatically in pKVM in vm_init/vm_destroy/vcpu_create/vcpu_free hypercalls (like we automatically do donation/undonation).\n\n2. Allow sharing the same page with the hypervisor multiple times, and increase its refcount every time.\n\n3. Check hyp_page-\u003ehost_share_guest_count (we could port it from pKVM-ARM) to prevent sharing a page with the hypervisor if it\u0027s already shared with a guest.\n\nBTW hyp_page-\u003ehost_share_guest_count was introduced much later than https://lore.kernel.org/all/20211215161232.1480836-1-qperret@google.com/, which might explain why pKVM-ARM historically does this in a way that seems more complicated than needed.",
+      "revId": "fbd975f2bdd44ca7154657bd9b729499586898d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
