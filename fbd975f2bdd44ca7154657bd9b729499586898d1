@@ -34,6 +34,24 @@
       "parentUuid": "b69b07ee_b20453bf",
       "revId": "fbd975f2bdd44ca7154657bd9b729499586898d1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be2a55dd_c33635d5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-19T21:31:08Z",
+      "side": 1,
+      "message": "\u003e So probably the modification for host_request_share() is to check refcount first for each memory page in the range, and if a memory page\u0027s refcount is 0, walk the host ept to see if the page state is PKVM_PAGE_OWNED or not. This walk may happen multiple times depending on how discrete the shared/unshared pages are, which may increase the cost.\n\nWhy not the other way around: walk the host EPT once to check the page state of all pages in the range (like we currently do) but also, while walking, if a page\u0027s state is not PKVM_PAGE_OWNED but PKVM_PAGE_SHARED_OWNED, do not immediately return an error but check the page\u0027s refcount first. (That would mean adjusting __check_page_state_walker() or something.)\n\nThat is also similar to pKVM-ARM\u0027s logic for allowing sharing a page with npVM multiple times: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/kvm/hyp/nvhe/mem_protect.c?h\u003dv6.18-rc1#n963\n\n...That said, I\u0027m probably fine if we don\u0027t do that in v6.12 and instead merge what you\u0027ve already implemented (since we don\u0027t exactly want to invest time in reworking the old overcomplicated version of mem_protect.c that we have in v6.12).\n\nBut in v6.15 (where we have it reworked and simplified anyway, and where we store the host page state in struct pkvm_page instead of the host EPT anyway), I\u0027d vote for letting the hypervisor lead share/unshare (i.e. do more or less p.1-3 from my last comment). That seems much simpler and more elegant.\n\n...Speaking of details, regarding this:\n\n\u003e And if the refcount is non-zero, may still be better to walk the host EPT to confirm the page state is already PKVM_PAGE_SHARED_OWNED (which will also increase the cost), or not to do it to believe there is no code bug.\n\nActually it is not necessarily a bug if a host page state is PKVM_PAGE_OWNED while the refcount is non-zero. We increase the refcount of host\u0027s pages that are DMA-mapped (i.e. mapped in host IOMMU page tables), to prevent donating them. (And such a DMA-mapped page may be PKVM_PAGE_SHARED_OWNED as well, since there is no reason why we shouldn\u0027t allow the host to share DMA-mapped pages with npVMs.)\n\nThis means it\u0027s probably not ok to use pkvm_page-\u003erefcount for counting multiple sharings of a page with hypervisor like I suggested, since we already use it for a different thing. \n\nSo we\u0027d probably need a separate counter pkvm_page-\u003ehost_share_hyp_count for that (similar to host_share_guest_count).\n\nThat would mean adding yet another field to struct pkvm_page and thus increasing the vmemmap size... OTOH, host_share_guest_count doesn\u0027t need to be u32 like on ARM, it could be u16 (that should be still plenty enough), and then  host_share_hyp_count could be u16 too, so the memory overhead would be the same as on ARM.\n\n...So, what I\u0027m proposing for v6.15: add pkvm_page-\u003ehost_share_guest_count and let pkvm_host_share_guest() allow sharing the same page with npVM multiple times like in pKVM-ARM, but in addition to that (and very similarly to that) add pkvm_page-\u003ehost_share_hyp_count and let pkvm_host_share_hyp() allow sharing the same page with hypervisor multiple times. Makes sense?",
+      "parentUuid": "dacf18a7_27fff70e",
+      "revId": "fbd975f2bdd44ca7154657bd9b729499586898d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
