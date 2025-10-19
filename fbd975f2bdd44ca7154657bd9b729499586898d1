@@ -16,6 +16,24 @@
       "message": "I\u0027m wondering if we really need to do all this in the same complicated way as pKVM-ARM does (i.e. let the host itself decide when to share or unshare memory, plus introduce an infrastructure in the host to prevent it from asking pKVM to share the same page twice, plus introduce extra pinning/unpinning infrastructure in pKVM to prevent the host from unsharing pages that are still used by the hypervisor).\n\nCouldn\u0027t we do the following instead:\n\n1. Instead of providing host_share_hyp and host_unshare_hyp hypercalls to the host, just do sharing and unsharing automatically in pKVM in vm_init/vm_destroy/vcpu_create/vcpu_free hypercalls (like we automatically do donation/undonation).\n\n2. Allow sharing the same page with the hypervisor multiple times, and increase its refcount every time.\n\n3. Check hyp_page-\u003ehost_share_guest_count (we could port it from pKVM-ARM) to prevent sharing a page with the hypervisor if it\u0027s already shared with a guest.\n\nBTW hyp_page-\u003ehost_share_guest_count was introduced much later than https://lore.kernel.org/all/20211215161232.1480836-1-qperret@google.com/, which might explain why pKVM-ARM historically does this in a way that seems more complicated than needed.",
       "revId": "fbd975f2bdd44ca7154657bd9b729499586898d1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dacf18a7_27fff70e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-10-19T02:58:40Z",
+      "side": 1,
+      "message": "I have thought about this, and feels with the current memory page protection implementation, making the pKVM to share/unshare these unaligned page with managing a refcount may be less efficient.\n\nWith the current page protection implementation, sharing a host memory page with the pKVM hypervisor will be done by check_share()-\u003ehost_request_share(), then __do_share()-\u003ehost_initiate_share(). \n\nThe host_request_share() was implemented to check if the memory pages in the range is PKVM_PAGE_OWNED or not. Thit will not work if the memory range contains some memory pages which was already shared. So probably the modification for host_request_share() is to check refcount first for each memory page in the range, and if a memory page\u0027s refcount is 0, walk the host ept to see if the page state is PKVM_PAGE_OWNED or not. This walk may happen multiple times depending on how discrete the shared/unshared pages are, which may increase the cost. And if the refcount is non-zero, may still be better to walk the host EPT to confirm the page state is already PKVM_PAGE_SHARED_OWNED (which will also increase the cost), or not to do it to believe there is no code bug.\n\nThen goes to host_initiate_share(), which was implemented to change the memory pages in the range as PKVM_PAGE_SHARED_OWNED. This will also not work if some memory pages are already shared. As we are not able to pass the information of which memory pages\u0027s refcount is 0 to this function, we have to check each memory page\u0027s refcount again. If it is 0, walk the host EPT to change the page state as PKVM_PAGE_SHARED_OWNED and increase the refcount. Similarly, this walk may happen multiple times depending on how discrete the shared/unshared pages are, which may increase the cost. If it is non-zero, just increment the refcount.\n\nAnd unsharing a host memory page with the pKVM is the similar. The host_request_unshare() seems fine as it checks the PKVM_PAGE_SHARED_OWNED page state and all the shared memory pages should be in this state regardless its refcount. The host_initial_unshare() cannot directly change the page state to PKVM_PAGE_OWNED but needs to check and decrement refcounts. If the refcount becomes to non-zero, do nothing. If refcount becomes 0, walks host EPT to change the page state. Thus may also have multiple host EPT walks.\n\nAllowing the host to lead the share/unshare can avoid these potential multiple host ept walks as the host can filter out the already shared memory pages otherwise the pKVM just return failure. Understand these additional host ept walks will not impact the runtime performance as this is only for sharing kvm/kvm_vcpu before running. But following what pKVM-ARM did can totally avoid this, and also doesn\u0027t need to change these memory protection logic, so decide to follow the pKVM-ARM.\n\nIn v6.15, as the page state is in hyp_page and doesn\u0027t need to walk host mmu, it may be more suitable for allowing the pKVM to lead the host memory pages sharing/unsharing.\n\nWhat do you think?",
+      "parentUuid": "b69b07ee_b20453bf",
+      "revId": "fbd975f2bdd44ca7154657bd9b729499586898d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
