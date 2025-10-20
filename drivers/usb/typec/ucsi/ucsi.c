@@ -343,6 +343,16 @@ void ucsi_altmode_update_active(struct ucsi_connector *con)
 			typec_altmode_update_active(con->partner_altmode[i],
 					    con->partner_altmode[i] == altmode);
 	}
+
+	if (con->ucsi->ops->update_altmode) {
+		u16 svid = 0;
+
+		if (usb4_active)
+			svid = USB_TYPEC_USB4_SID;
+		else if (altmode)
+			svid = altmode->svid;
+		con->ucsi->ops->update_altmode(con, svid);
+	}
 }
 
 static int ucsi_altmode_next_mode(struct typec_altmode **alt, u16 svid)
@@ -632,6 +642,7 @@ static int ucsi_register_altmodes(struct ucsi_connector *con, u8 recipient)
 			desc.vdo = alt[j].mid;
 			desc.svid = alt[j].svid;
 			desc.roles = TYPEC_PORT_DRD;
+			desc.mode_selection = con->ucsi->ops->add_altmodes != NULL;
 
 			ret = ucsi_register_altmode(con, &desc, recipient);
 			if (ret)
@@ -859,6 +870,8 @@ static int ucsi_check_altmodes(struct ucsi_connector *con)
 	if (con->partner_altmode[0]) {
 		num_partner_am = ucsi_get_num_altmode(con->partner_altmode);
 		typec_partner_set_num_altmodes(con->partner, num_partner_am);
+		if (con->ucsi->ops->add_altmodes)
+			con->ucsi->ops->add_altmodes(con);
 		ucsi_altmode_update_active(con);
 		return 0;
 	} else {
@@ -1122,6 +1135,8 @@ static void ucsi_unregister_partner(struct ucsi_connector *con)
 		return;
 
 	typec_set_mode(con->port, TYPEC_STATE_SAFE);
+	if (con->ucsi->ops->remove_altmodes)
+		con->ucsi->ops->remove_altmodes(con);
 
 	typec_partner_set_usb_power_delivery(con->partner, NULL);
 	ucsi_unregister_partner_pdos(con);
