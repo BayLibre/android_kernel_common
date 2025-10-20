@@ -70,6 +70,24 @@
       "parentUuid": "be2a55dd_c33635d5",
       "revId": "fbd975f2bdd44ca7154657bd9b729499586898d1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c22c264e_7dbc4866",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-20T08:05:26Z",
+      "side": 1,
+      "message": "\u003e This is for the case of using a shadow IOMMU page table, right?\n\nNot only, for pvIOMMU as well, for the same reasons. (And pKVM-ARM also does the same.)\n\nIt probably doesn\u0027t apply to the case when we use nested IOMMU translation. But nested translation is not always available (even on PTL some IOMMUs don\u0027t support it), and pvIOMMU AFAIK doesn\u0027t currently use nested translation, for simplicity.\n\n\u003e For the host_share_guest_count, shall we introduce it later when adding the support of sharing the guest memory pages?\n\nSure, we don\u0027t need to introduce it until we actually use it.",
+      "parentUuid": "34fc32d4_80eb05b4",
+      "revId": "fbd975f2bdd44ca7154657bd9b729499586898d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
