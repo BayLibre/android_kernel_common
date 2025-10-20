@@ -152,7 +152,12 @@ struct af_alg_ctx {
 	size_t used;
 	atomic_t rcvused;
 
+<<<<<<< HEAD   (a721b467ac4cafd99319a03bfe92f8316cf177a7 ANDROID: GKI: Add symbols to symbol list for SUNMI)
 	u32		more:1,
+||||||| BASE   (f06b723c6fa4f8cf9750f131eaf8991b291f16bd Merge tag 'android12-5.10.243_r00' into android12-5.10)
+=======
+	bool		more:1,
+>>>>>>> BRANCH (865e403e6a32f66940f74cbaf37b009bbd17d83b Revert "genirq: Export affinity setter for modules")
 			merge:1,
 			enc:1,
 			write:1,
