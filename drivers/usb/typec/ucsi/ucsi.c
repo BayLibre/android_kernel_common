@@ -313,6 +313,7 @@ void ucsi_altmode_update_active(struct ucsi_connector *con)
 {
 	const struct typec_altmode *altmode = NULL;
 	u64 command;
+	u16 svid = 0;
 	int ret;
 	u8 cur;
 	int i;
@@ -334,6 +335,18 @@ void ucsi_altmode_update_active(struct ucsi_connector *con)
 	for (i = 0; con->partner_altmode[i]; i++)
 		typec_altmode_update_active(con->partner_altmode[i],
 					    con->partner_altmode[i] == altmode);
+
+	if ((con->ucsi->version >= UCSI_VERSION_3_0) &&
+	    (UCSI_CONSTAT_PARTNER_FLAGS(con->status.flags) &
+	     UCSI_CONSTAT_PARTNER_FLAG_USB4_GEN4))
+		svid = USB_TYPEC_USB4_SID;
+	else if ((con->ucsi->version >= UCSI_VERSION_2_0) &&
+		 (UCSI_CONSTAT_PARTNER_FLAGS(con->status.flags) &
+		  UCSI_CONSTAT_PARTNER_FLAG_USB4_GEN3))
+		svid = USB_TYPEC_USB4_SID;
+	else if (altmode)
+		svid = altmode->svid;
+	typec_altmode_state_update(con->partner, svid, 0);
 }
 
 static int ucsi_altmode_next_mode(struct typec_altmode **alt, u16 svid)
@@ -612,6 +625,8 @@ static int ucsi_register_altmodes(struct ucsi_connector *con, u8 recipient)
 			desc.vdo = alt[j].mid;
 			desc.svid = alt[j].svid;
 			desc.roles = TYPEC_PORT_DRD;
+			desc.mode_selection = con->ucsi->ops->add_partner_altmodes &&
+					con->ucsi->cap.features & UCSI_CAP_ALT_MODE_OVERRIDE;
 
 			ret = ucsi_register_altmode(con, &desc, recipient);
 			if (ret)
@@ -821,6 +836,9 @@ static int ucsi_check_altmodes(struct ucsi_connector *con)
 		dev_err(con->ucsi->dev,
 			"con%d: failed to register partner alt modes (%d)\n",
 			con->num, ret);
+
+	if (con->ucsi->ops->add_partner_altmodes)
+		con->ucsi->ops->add_partner_altmodes(con);
 
 	/* Ignoring the errors in this case. */
 	if (con->partner_altmode[0]) {
@@ -1085,6 +1103,8 @@ static void ucsi_unregister_partner(struct ucsi_connector *con)
 		return;
 
 	typec_set_mode(con->port, TYPEC_STATE_SAFE);
+	if (con->ucsi->ops->remove_partner_altmodes)
+		con->ucsi->ops->remove_partner_altmodes(con);
 
 	typec_partner_set_usb_power_delivery(con->partner, NULL);
 	ucsi_unregister_partner_pdos(con);
