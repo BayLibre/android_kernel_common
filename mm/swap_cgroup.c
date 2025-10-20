@@ -6,18 +6,17 @@
 #include <linux/swapops.h> /* depends on mm.h include */
 
 static DEFINE_MUTEX(swap_cgroup_mutex);
-
-struct swap_cgroup {
-	unsigned short		id;
-};
-
 struct swap_cgroup_ctrl {
-	struct swap_cgroup *map;
+	struct page **map;
+	unsigned long length;
 	spinlock_t	lock;
 };
 
 static struct swap_cgroup_ctrl swap_cgroup_ctrl[MAX_SWAPFILES];
 
+struct swap_cgroup {
+	unsigned short		id;
+};
 #define SC_PER_PAGE	(PAGE_SIZE/sizeof(struct swap_cgroup))
 
 /*
@@ -34,10 +33,44 @@ static struct swap_cgroup_ctrl swap_cgroup_ctrl[MAX_SWAPFILES];
  * TODO: we can push these buffers out to HIGHMEM.
  */
 
+/*
+ * allocate buffer for swap_cgroup.
+ */
+static int swap_cgroup_prepare(int type)
+{
+	struct page *page;
+	struct swap_cgroup_ctrl *ctrl;
+	unsigned long idx, max;
+
+	ctrl = &swap_cgroup_ctrl[type];
+
+	for (idx = 0; idx < ctrl->length; idx++) {
+		page = alloc_page(GFP_KERNEL | __GFP_ZERO);
+		if (!page)
+			goto not_enough_page;
+		ctrl->map[idx] = page;
+
+		if (!(idx % SWAP_CLUSTER_MAX))
+			cond_resched();
+	}
+	return 0;
+not_enough_page:
+	max = idx;
+	for (idx = 0; idx < max; idx++)
+		__free_page(ctrl->map[idx]);
+
+	return -ENOMEM;
+}
+
 static struct swap_cgroup *__lookup_swap_cgroup(struct swap_cgroup_ctrl *ctrl,
 						pgoff_t offset)
 {
-	return &ctrl->map[offset];
+	struct page *mappage;
+	struct swap_cgroup *sc;
+
+	mappage = ctrl->map[offset / SC_PER_PAGE];
+	sc = page_address(mappage);
+	return sc + offset % SC_PER_PAGE;
 }
 
 static struct swap_cgroup *lookup_swap_cgroup(swp_entry_t ent,
@@ -135,20 +168,32 @@ unsigned short lookup_swap_cgroup_id(swp_entry_t ent)
 
 int swap_cgroup_swapon(int type, unsigned long max_pages)
 {
-	struct swap_cgroup *map;
+	void *array;
+	unsigned long length;
 	struct swap_cgroup_ctrl *ctrl;
 
 	if (mem_cgroup_disabled())
 		return 0;
 
-	map = vcalloc(max_pages, sizeof(struct swap_cgroup));
-	if (!map)
+	length = DIV_ROUND_UP(max_pages, SC_PER_PAGE);
+
+	array = vcalloc(length, sizeof(void *));
+	if (!array)
 		goto nomem;
 
 	ctrl = &swap_cgroup_ctrl[type];
 	mutex_lock(&swap_cgroup_mutex);
-	ctrl->map = map;
+	ctrl->length = length;
+	ctrl->map = array;
 	spin_lock_init(&ctrl->lock);
+	if (swap_cgroup_prepare(type)) {
+		/* memory shortage */
+		ctrl->map = NULL;
+		ctrl->length = 0;
+		mutex_unlock(&swap_cgroup_mutex);
+		vfree(array);
+		goto nomem;
+	}
 	mutex_unlock(&swap_cgroup_mutex);
 
 	return 0;
@@ -160,7 +205,8 @@ nomem:
 
 void swap_cgroup_swapoff(int type)
 {
-	struct swap_cgroup *map;
+	struct page **map;
+	unsigned long i, length;
 	struct swap_cgroup_ctrl *ctrl;
 
 	if (mem_cgroup_disabled())
@@ -169,8 +215,19 @@ void swap_cgroup_swapoff(int type)
 	mutex_lock(&swap_cgroup_mutex);
 	ctrl = &swap_cgroup_ctrl[type];
 	map = ctrl->map;
+	length = ctrl->length;
 	ctrl->map = NULL;
+	ctrl->length = 0;
 	mutex_unlock(&swap_cgroup_mutex);
 
-	vfree(map);
+	if (map) {
+		for (i = 0; i < length; i++) {
+			struct page *page = map[i];
+			if (page)
+				__free_page(page);
+			if (!(i % SWAP_CLUSTER_MAX))
+				cond_resched();
+		}
+		vfree(map);
+	}
 }
