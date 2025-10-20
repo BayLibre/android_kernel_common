@@ -32,4 +32,12 @@ config TYPEC_TBT_ALTMODE
 	  To compile this driver as a module, choose M here: the
 	  module will be called typec_thunderbolt.
 
+config TYPEC_USB4_ALTMODE
+	tristate "USB4 Mode driver"
+	help
+	  Select this option if you have USB4 hardware on your system.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called typec_usb4.
+
 endmenu
