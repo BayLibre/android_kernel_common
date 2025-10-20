@@ -52,6 +52,24 @@
       "parentUuid": "dacf18a7_27fff70e",
       "revId": "fbd975f2bdd44ca7154657bd9b729499586898d1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34fc32d4_80eb05b4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-10-20T01:24:08Z",
+      "side": 1,
+      "message": "\u003e Why not the other way around: walk the host EPT once to check the page state of all pages in the range (like we currently do) but also, while walking, if a page\u0027s state is not PKVM_PAGE_OWNED but PKVM_PAGE_SHARED_OWNED, do not immediately return an error but check the page\u0027s refcount first. (That would mean adjusting __check_page_state_walker() or something.)\n\nYeah, that is a good idea. Probably needs to add dedicated walker for host_request_share() as __check_page_state_walker() is pretty generic and used to check other page tables as well, e.g., check for a memory page state which is PKVM_PAGE_SHARED_OWNED in guest mmu.\n\nBut for host_initiate_share() and host initiate_unshare(), they are using pkvm_pgtable_map() to change the page state to PKVM_PAGE_SHARED_OWNED and PKVM_PAGE_OWNED. We probably still need to use the way I mentioned in the above comment or add a new customer map_leaf function to do this.\n\n\u003e ...That said, I\u0027m probably fine if we don\u0027t do that in v6.12 and instead merge what you\u0027ve already implemented (since we don\u0027t exactly want to invest time in reworking the old overcomplicated version of mem_protect.c that we have in v6.12).\n\nYeah, that will save the effort.\n\n\u003e But in v6.15 (where we have it reworked and simplified anyway, and where we store the host page state in struct pkvm_page instead of the host EPT anyway), I\u0027d vote for letting the hypervisor lead share/unshare (i.e. do more or less p.1-3 from my last comment). That seems much simpler and more elegant.\n\nAgree. That is implemented in the pvvmcs part 1.\n\n\u003e We increase the refcount of host\u0027s pages that are DMA-mapped (i.e. mapped in host IOMMU page tables), to prevent donating them.\n\nThanks for reminding this. Indeed. This is for the case of using a shadow IOMMU page table, right? With shadow IOMMU page table, donating a DMA-mapped page should also unmap this page from the shadow IOMMU page table, which is costly to walk all the shadow IOMMU page tables. And increasing the refcount to prevent donating such page is a good idea.\n\n\u003e (And such a DMA-mapped page may be PKVM_PAGE_SHARED_OWNED as well, since there is no reason why we shouldn\u0027t allow the host to share DMA-mapped pages with npVMs.)\n\nThat also reminds me that, if the host wants to share such DMA-mapped page with the pKVM, then such memory page cannot be unshared (in v6.12 with the implemented by this patch serail) as its reference is always non-zero (pinned when mapped in shadow IOMMU page table). We probably can prevent the host to share such already pinned memory pages with the pKVM as we don\u0027t have such usages. Probably we can also leave it as it is, since a normal host doesn\u0027t share such DMA-mapped page with the pKVM, and only shares the kvm/kvm_vcpu structure memory pages.\n\n\u003e ...So, what I\u0027m proposing for v6.15: add pkvm_page-\u003ehost_share_guest_count and let pkvm_host_share_guest() allow sharing the same page with npVM multiple times like in pKVM-ARM, but in addition to that (and very similarly to that) add pkvm_page-\u003ehost_share_hyp_count and let pkvm_host_share_hyp() allow sharing the same page with hypervisor multiple times. Makes sense?\n\nMakes sense to me. The v6.15 is implemented by making the pKVM to lead the sharing/unsharing, but still use the refcount. I will introduce the host_share_hyp_count as u16 in pkvm_page for this purpose. For the host_share_guest_count, shall we introduce it later when adding the support of sharing the guest memory pages?",
+      "parentUuid": "be2a55dd_c33635d5",
+      "revId": "fbd975f2bdd44ca7154657bd9b729499586898d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
