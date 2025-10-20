@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0759ec62_25b1e8d5",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7503,
+      "author": {
+        "id": 1945342
+      },
+      "writtenOn": "2025-10-20T21:42:30Z",
+      "side": 1,
+      "message": "There\u0027s a possibility that the value returned by `trace_event_name()` could be NULL. I would change this to:\n```\nchar *name \u003d trace_event_name(call);\nif (!name || strncmp(name, \"binder_\", 7))\n         continue;\n```",
+      "fixSuggestions": [
+        {
+          "fixId": "184c5b1b_5c6d5a71",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/android/binder.c",
+              "range": {
+                "startLine": 7503,
+                "startChar": 0,
+                "endLine": 7504,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tchar *name \u003d trace_event_name(call);\n\n\t\t\tif (!name || strncmp(name, \"binder_\", 7))\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6ea81278ce756858912d4f50d22d2b76cd438c59",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
