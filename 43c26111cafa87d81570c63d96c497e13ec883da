@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aee206cd_1992b0d8",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7488,
+      "author": {
+        "id": 1945342
+      },
+      "writtenOn": "2025-10-21T20:29:09Z",
+      "side": 1,
+      "message": "So you are removing only tracepoints from this module? Are there tracepoints in this module you want to keep? If not, do you still need the `strncmp()` above?",
+      "fixSuggestions": [
+        {
+          "fixId": "b98f9024_a1c43a5a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/android/binder.c",
+              "range": {
+                "startLine": 7479,
+                "startChar": 0,
+                "endLine": 7480,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "drivers/android/binder.c",
+              "range": {
+                "startLine": 7485,
+                "startChar": 0,
+                "endLine": 7488,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "43c26111cafa87d81570c63d96c497e13ec883da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
