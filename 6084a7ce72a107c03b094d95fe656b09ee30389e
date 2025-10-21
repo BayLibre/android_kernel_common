@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e118ca49_08791380",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 7469,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-10-21T15:27:56Z",
+      "side": 1,
+      "message": "fwiw, you could use relative paths inclusions. e.g `../../kernel/trace/trace.h` maybe that is better than this?",
+      "range": {
+        "startLine": 7469,
+        "startChar": 0,
+        "endLine": 7469,
+        "endChar": 68
+      },
+      "revId": "6084a7ce72a107c03b094d95fe656b09ee30389e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47b57932_02fe5660",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 7476,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-10-21T15:27:56Z",
+      "side": 1,
+      "message": "This seems pretty hacky, particularly the strcmp() but I can\u0027t think of a better way to do it.",
+      "range": {
+        "startLine": 7476,
+        "startChar": 5,
+        "endLine": 7476,
+        "endChar": 31
+      },
+      "revId": "6084a7ce72a107c03b094d95fe656b09ee30389e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
