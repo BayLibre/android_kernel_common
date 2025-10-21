@@ -34,6 +34,24 @@
       ],
       "revId": "c1480d3ccfaa977100e254eb25efe467403c56ee",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d8f9501_3f68f81c",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1096846
+      },
+      "writtenOn": "2025-10-21T21:53:02Z",
+      "side": 1,
+      "message": "I\u0027m definitely using:\n\npower_manageable\nset_power_state\nget_power_state\nchoose_state\n\nThe others are not used at the moment, and indeed, there\u0027s some element of \"completeness\" in there. But I also suspect I _might_ need to hook more of them for aspects of item (2) in the commit message, where some features are still in flux. That might require:\n\nneed_resume\nset_wakeup\nrefresh_power_state\n\nbridge_d3 is probably not needed, especially since aosp/3743616",
+      "parentUuid": "93405305_56fe13e5",
+      "revId": "c1480d3ccfaa977100e254eb25efe467403c56ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
