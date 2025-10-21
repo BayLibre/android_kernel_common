@@ -140,6 +140,7 @@ unsigned long pkvm_iommu_clear_ce(u64 param_va)
 	struct pkvm_iommu *hyp_iommu;
 	struct intel_iommu *iommu;
 	u16 did = 0;
+	int ret = 0;
 	bool sm;
 
 	if (!param_va)
@@ -165,8 +166,15 @@ unsigned long pkvm_iommu_clear_ce(u64 param_va)
 		return 0;
 	}
 
-	if (!sm)
+	if (sm) {
+		ret = pkvm_pasid_free_table(pkvm_phys_to_virt(context->lo & VTD_PAGE_MASK),
+					    get_pasid_dir_size(context));
+		if (ret)
+			pkvm_err("pkvm: %s: failed to free pasid table for device: %x\n",
+				 __func__, param->bdf);
+	} else {
 		did = context_domain_id(context);
+	}
 	pkvm_dbg("pkvm: %s: [SM: %d]clear_ce: dev[%x] did: %u\n", __func__,
 		 sm, param->bdf, did);
 
@@ -176,7 +184,7 @@ unsigned long pkvm_iommu_clear_ce(u64 param_va)
 
 	context_flush_present_no_pasid(hyp_iommu, did, param->bdf,
 				       param->ats_qdep, param->ats_enabled);
-	return 0;
+	return ret;
 }
 
 /* Copied from drivers/iommu/intel/iommu.c:context_present_cache_flush() */
