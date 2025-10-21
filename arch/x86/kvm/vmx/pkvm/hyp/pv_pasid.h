@@ -289,4 +289,5 @@ int validate_sm_context_entries(struct pkvm_iommu *iommu,
 int pkvm_iommu_clear_pasid_entry(u64 phys, u64 param_gpa);
 int pkvm_iommu_pasid_setup_fl(u64 phys, u64 param_gpa);
 int pkvm_iommu_pasid_setup_sl(u64 phys, u64 param_gpa);
+int pkvm_pasid_free_table(struct pasid_dir_entry *dir, int max_pde);
 #endif /* __PKVM_PV_PASID_H */
