@@ -300,6 +300,7 @@ unsigned long pkvm_iommu_clear_ce(u64 phys, u64 param_gpa)
 	struct pkvm_iommu *hyp_iommu = find_iommu_by_reg_phys(phys);
 	struct pkvm_clear_translation_param *param;
 	struct context_entry *context;
+	int ret = 0;
 
 	if (!hyp_iommu)
 		return -EINVAL;
@@ -315,6 +316,13 @@ unsigned long pkvm_iommu_clear_ce(u64 phys, u64 param_gpa)
 	if (!context)
 		goto out;
 
+	if (sm_supported(&hyp_iommu->iommu) && context_present(context)) {
+		ret = pkvm_pasid_free_table(
+				pkvm_phys_to_virt(context->lo & VTD_PAGE_MASK),
+				1 << (((context->lo >> 9) & 0x7) + 7));
+		if (ret)
+			goto out;
+	}
 	/*
 	 * Pass the did back to host for iommu cache flush.
 	 */
@@ -326,7 +334,7 @@ unsigned long pkvm_iommu_clear_ce(u64 phys, u64 param_gpa)
 		iommu_flush_cache(context, sizeof(*context));
 out:
 	pkvm_spin_unlock(&hyp_iommu->lock);
-	return 0;
+	return ret;
 }
 
 static void pkvm_context_present_cache_flush(struct pkvm_iommu *iommu, u16 bdf, u16 did)
