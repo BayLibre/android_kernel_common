@@ -16,6 +16,24 @@
       "message": "Please fix this ERROR reported by Kernel Symbol Tracker (aarch64): Missing tracepoint symbols for the following traceiter symbols:\n  __traceiter_an...\n\nMissing tracepoint symbols for the following traceiter symbols:\n  __traceiter_android_vh_platform_pci_bridge_d3\n  __traceiter_android_vh_platform_pci_set_power_state\n  __traceiter_android_vh_platform_pci_choose_state\n  __traceiter_android_vh_platform_pci_get_power_state\n  __traceiter_android_vh_platform_pci_power_manageable\n  __traceiter_android_vh_platform_pci_need_resume\n  __traceiter_android_vh_platform_pci_refresh_power_state\n  __traceiter_android_vh_platform_pci_set_wakeup\n\nfor example, if you have __traceiter_android_vh_platform_pci_bridge_d3, there must also be a __tracepoint_android_vh_platform_pci_bridge_d3",
       "revId": "e6212755c44cd664deb3652c01600b690fd05fa7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3792982_183f7fa3",
+        "filename": "gki/aarch64/symbols/pixel",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096846
+      },
+      "writtenOn": "2025-10-21T21:03:54Z",
+      "side": 1,
+      "message": "Sorry, all this GKI symbol stuff is a bit hard to follow. And Pixel\u0027s aosp-bringup staging area makes it even more difficult, since the symbol list is actually quite out of date for the bringup variant.\n\nI think I\u0027ve updated it properly this time.",
+      "parentUuid": "977d51d2_bad00545",
+      "revId": "e6212755c44cd664deb3652c01600b690fd05fa7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
