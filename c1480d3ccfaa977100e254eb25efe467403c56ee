@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93405305_56fe13e5",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-21T21:43:32Z",
+      "side": 1,
+      "message": "are you planning to use all of these? Or are some of these just for completeness to cover all of what used to be hookable? If the later, do you think they are really ever going to be used?",
+      "fixSuggestions": [
+        {
+          "fixId": "23c39ac1_fe37b8a8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/android/vendor_hooks.c",
+              "range": {
+                "startLine": 191,
+                "startChar": 0,
+                "endLine": 192,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "c1480d3ccfaa977100e254eb25efe467403c56ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
