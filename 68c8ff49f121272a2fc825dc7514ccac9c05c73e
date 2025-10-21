@@ -16,6 +16,24 @@
       "message": "resolve the comment on aosp/3811703 first. Then we need to know why it is needed in android-mainline.",
       "revId": "68c8ff49f121272a2fc825dc7514ccac9c05c73e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "139ce8cd_4414d782",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096846
+      },
+      "writtenOn": "2025-10-21T21:09:24Z",
+      "side": 1,
+      "message": "I guess technically not needed in mainline at the moment, since we also apparently have a bringup branch there: pa/3520017\n\nBut we\u0027ll eventually want mainline too, I think, if we deploy this on 6.12.",
+      "parentUuid": "1191c0aa_26cbb0a6",
+      "revId": "68c8ff49f121272a2fc825dc7514ccac9c05c73e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
