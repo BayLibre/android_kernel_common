@@ -44,6 +44,24 @@
       ],
       "revId": "43c26111cafa87d81570c63d96c497e13ec883da",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2424f848_c5a34cff",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7488,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-10-21T20:30:03Z",
+      "side": 1,
+      "message": "C Binder has THIS_MODULE \u003d\u003d NULL, so we can\u0027t rely on `call-\u003emodule` alone.",
+      "parentUuid": "aee206cd_1992b0d8",
+      "revId": "43c26111cafa87d81570c63d96c497e13ec883da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
