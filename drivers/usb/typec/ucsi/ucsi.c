@@ -14,6 +14,7 @@
 #include <linux/slab.h>
 #include <linux/usb/typec_dp.h>
 #include <linux/usb/typec_tbt.h>
+#include <linux/usb/pd_vdo.h>
 
 #include "ucsi.h"
 #include "trace.h"
@@ -318,6 +319,8 @@ void ucsi_altmode_update_active(struct ucsi_connector *con)
 	int ret;
 	u8 cur;
 	int i;
+	const bool usb4_active = UCSI_CONSTAT(con, PARTNER_FLAG_USB4_GEN4) ||
+			UCSI_CONSTAT(con, PARTNER_FLAG_USB4_GEN3);
 
 	command = UCSI_GET_CURRENT_CAM | UCSI_CONNECTOR_NUMBER(con->num);
 	ret = ucsi_send_command(con->ucsi, command, &cur, sizeof(cur));
@@ -333,9 +336,13 @@ void ucsi_altmode_update_active(struct ucsi_connector *con)
 	if (cur < UCSI_MAX_ALTMODES)
 		altmode = typec_altmode_get_partner(con->port_altmode[cur]);
 
-	for (i = 0; con->partner_altmode[i]; i++)
-		typec_altmode_update_active(con->partner_altmode[i],
+	for (i = 0; con->partner_altmode[i]; i++) {
+		if (con->partner_altmode[i]->svid == USB_TYPEC_USB4_SID)
+			typec_altmode_update_active(con->partner_altmode[i], usb4_active);
+		else
+			typec_altmode_update_active(con->partner_altmode[i],
 					    con->partner_altmode[i] == altmode);
+	}
 }
 
 static int ucsi_altmode_next_mode(struct typec_altmode **alt, u16 svid)
@@ -415,6 +422,9 @@ static int ucsi_register_altmode(struct ucsi_connector *con,
 			break;
 		case USB_TYPEC_TBT_SID:
 			alt = ucsi_register_thunderbolt(con, override, i, desc);
+			break;
+		case USB_TYPEC_USB4_SID:
+			alt = ucsi_register_usb4(con, override, i, desc);
 			break;
 		default:
 			alt = typec_port_register_altmode(con->port, desc);
@@ -584,6 +594,15 @@ static int ucsi_register_altmodes(struct ucsi_connector *con, u8 recipient)
 	if (recipient == UCSI_RECIPIENT_CON)
 		max_altmodes = con->ucsi->cap.num_alt_modes;
 
+	if (recipient == UCSI_RECIPIENT_SOP &&
+		PD_VDO_UFP_DEVCAP(con->partner_identity.vdo[0]) & DEV_USB4_CAPABLE) {
+		memset(&desc, 0, sizeof(desc));
+		desc.svid = USB_TYPEC_USB4_SID;
+		ret = ucsi_register_altmode(con, &desc, UCSI_RECIPIENT_SOP);
+		if (ret)
+			return ret;
+	}
+
 	for (i = 0; i < max_altmodes;) {
 		memset(alt, 0, sizeof(alt));
 		command = UCSI_GET_ALTERNATE_MODES;
@@ -653,6 +672,8 @@ static void ucsi_unregister_altmodes(struct ucsi_connector *con, u8 recipient)
 				ucsi_displayport_remove_partner((void *)pdev);
 			else if (adev[i]->svid == USB_TYPEC_TBT_SID)
 				ucsi_thunderbolt_remove_partner((void *)pdev);
+			else if (adev[i]->svid == USB_TYPEC_USB4_SID)
+				ucsi_usb4_remove_partner((void *)pdev);
 		}
 		typec_unregister_altmode(adev[i]);
 		adev[i++] = NULL;
@@ -1660,6 +1681,12 @@ static int ucsi_register_port(struct ucsi *ucsi, struct ucsi_connector *con)
 
 	/* Alternate modes */
 	ret = ucsi_register_altmodes(con, UCSI_RECIPIENT_CON);
+	if (!ret && con->typec_cap.usb_capability | USB_CAPABILITY_USB4) {
+		struct typec_altmode_desc desc;
+		memset(&desc, 0, sizeof(desc));
+		desc.svid = USB_TYPEC_USB4_SID;
+		ret = ucsi_register_altmode(con, &desc, UCSI_RECIPIENT_CON);
+	}
 	if (ret) {
 		dev_err(ucsi->dev, "con%d: failed to register alt modes\n",
 			con->num);

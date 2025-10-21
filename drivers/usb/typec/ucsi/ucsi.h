@@ -208,6 +208,9 @@ void ucsi_connector_change(struct ucsi *ucsi, u8 num);
 #define   UCSI_GET_PD_MESSAGE_TYPE_IDENTITY	4
 #define   UCSI_GET_PD_MESSAGE_TYPE_REVISION	5
 
+/* SET_USB command bits */
+#define UCSI_USB3_ENABLE		((u64)1 << 23)
+#define UCSI_USB4_ENABLE		((u64)1 << 24)
 /* -------------------------------------------------------------------------- */
 
 /* Error information returned by PPM in response to GET_ERROR_STATUS command. */
@@ -607,6 +610,23 @@ ucsi_register_thunderbolt(struct ucsi_connector *con,
 static inline void
 ucsi_thunderbolt_remove_partner(struct typec_altmode *adev) { }
 #endif /* CONFIG_TYPEC_TBT_ALTMODE */
+
+#if IS_ENABLED(CONFIG_TYPEC_USB4_ALTMODE)
+struct typec_altmode *
+ucsi_register_usb4(struct ucsi_connector *con,
+			  bool override, int offset,
+			  struct typec_altmode_desc *desc);
+
+#else
+static inline struct typec_altmode *
+ucsi_register_usb4(struct ucsi_connector *con,
+			  bool override, int offset,
+			  struct typec_altmode_desc *desc)
+{
+	return typec_port_register_altmode(con->port, desc);
+}
+#endif /* CONFIG_TYPEC_TBT_ALTMODE */
+static inline void ucsi_usb4_remove_partner(struct typec_altmode *adev) { }
 
 #ifdef CONFIG_DEBUG_FS
 void ucsi_debugfs_init(void);
