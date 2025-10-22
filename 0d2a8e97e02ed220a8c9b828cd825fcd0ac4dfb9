@@ -46,6 +46,30 @@
       },
       "revId": "0d2a8e97e02ed220a8c9b828cd825fcd0ac4dfb9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b42ec0e2_09c7d33b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-10-22T16:56:44Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m not convinced that until swap-out is complete you can consider these pages free but that is debatable. For example, the temporarily pinned pages are also accounted as reclaimed because they will be reclaimed \"shortly\". I\u0027ll accept the vendor hook but keep in mind that this might result in reclaims being cut short before required number of pages are actually reclaimed.",
+      "parentUuid": "50cdddf4_ffdf12de",
+      "range": {
+        "startLine": 12,
+        "startChar": 54,
+        "endLine": 13,
+        "endChar": 21
+      },
+      "revId": "0d2a8e97e02ed220a8c9b828cd825fcd0ac4dfb9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
