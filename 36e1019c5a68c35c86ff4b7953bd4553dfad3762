@@ -33,6 +33,23 @@
       "message": "Also breaks x86 allmodconfig builds:\n```\n/mnt/disks/build-disk/src/android/common-android12-5.10/common/kernel/power/hibernate.c:1421:22: error: too many arguments to function call, expected 0, have 1\n        unlock_system_sleep(sleep_flags);\n        ~~~~~~~~~~~~~~~~~~~ ^~~~~~~~~~~\n/mnt/disks/build-disk/src/android/common-android12-5.10/common/include/linux/suspend.h:521:13: note: \u0027unlock_system_sleep\u0027 declared here\nextern void unlock_system_sleep(void);\n            ^\n2 errors generated.\nmake[3]: *** [/mnt/disks/build-disk/src/android/common-android12-5.10/common/scripts/Makefile.build:273: kernel/power/hibernate.o] Error 1\nmake[3]: *** Waiting for unfinished jobs....\nmake[2]: *** [/mnt/disks/build-disk/src/android/common-android12-5.10/common/scripts/Makefile.build:516: kernel/power] Error 2\nmake[2]: *** Waiting for unfinished jobs....\nusr/include/linux/fuse.h:888: found __[us]{8,16,32,64} type without #include \u003clinux/types.h\u003e\nIn file included from \u003cbuilt-in\u003e:1:\n...warning: field \u0027\u0027 with variable sized type \u0027union jset::(anonymous at ./usr/include/linux/bcache.h:354:2)\u0027 not at the end of a struct or class is a GNU extension [-Wgnu-variable-sized-type-not-at-end]\n        BKEY_PADDED(uuid_bucket);\n        ^\n./usr/include/linux/bcache.h:134:2: note: expanded from macro \u0027BKEY_PADDED\u0027\n        union { struct bkey key; __u64 key ## _pad[BKEY_PAD]; }\n        ^\n...warning: field \u0027\u0027 with variable sized type \u0027union jset::(anonymous at ./usr/include/linux/bcache.h:355:2)\u0027 not at the end of a struct or class is a GNU extension [-Wgnu-variable-sized-type-not-at-end]\n        BKEY_PADDED(btree_root);\n        ^\n./usr/include/linux/bcache.h:134:2: note: expanded from macro \u0027BKEY_PADDED\u0027\n        union { struct bkey key; __u64 key ## _pad[BKEY_PAD]; }\n        ^\n2 warnings generated.\n```",
       "revId": "36e1019c5a68c35c86ff4b7953bd4553dfad3762",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "281174cb_10e807cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-22T18:22:46Z",
+      "side": 1,
+      "message": "This is not a clean cherry-pick. Please reclassify as BACKPORT and add an annotation for the changes (see https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md)",
+      "revId": "36e1019c5a68c35c86ff4b7953bd4553dfad3762",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
