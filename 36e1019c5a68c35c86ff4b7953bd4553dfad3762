@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3badd07_445f192c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-22T18:20:06Z",
+      "side": 1,
+      "message": "The series breaks allmodconfig builds:\n```\n/mnt/disks/build-disk/src/android/common-android12-5.10/common/kernel/power/hibernate.c:1409:14: error: assigning to \u0027unsigned int\u0027 from incompatible type \u0027void\u0027\n        sleep_flags \u003d lock_system_sleep();\n                    ^ ~~~~~~~~~~~~~~~~~~~\n/mnt/disks/build-disk/src/android/common-android12-5.10/common/kernel/power/hibernate.c:1421:22: error: too many arguments to function call, expected 0, have 1\n        unlock_system_sleep(sleep_flags);\n        ~~~~~~~~~~~~~~~~~~~ ^~~~~~~~~~~\n/mnt/disks/build-disk/src/android/common-android12-5.10/common/include/linux/suspend.h:521:13: note: \u0027unlock_system_sleep\u0027 declared here\nextern void unlock_system_sleep(void);\n            ^\n2 errors generated.\n```\nPlease fix.",
+      "revId": "36e1019c5a68c35c86ff4b7953bd4553dfad3762",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
