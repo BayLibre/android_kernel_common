@@ -303,3 +303,13 @@ noinstr void alt_cb_patch_nops(struct alt_instr *alt, __le32 *origptr,
 		updptr[i] = cpu_to_le32(aarch64_insn_gen_nop());
 }
 EXPORT_SYMBOL(alt_cb_patch_nops);
+
+/*
+ * For nVHE builds, the compiler prefixes symbols used in EL2 code
+ * with __kvm_nvhe_. Modules will be linked against the correct symbol,
+ * but without export modpost would complain about non-existing function
+ */
+
+noinstr void __kvm_nvhe_alt_cb_patch_nops(struct alt_instr *alt, __le32 *origptr,
+					  __le32 *updptr, int nr_inst) __alias(alt_cb_patch_nops);
+EXPORT_SYMBOL(__kvm_nvhe_alt_cb_patch_nops);
