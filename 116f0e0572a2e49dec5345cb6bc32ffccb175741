@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95c294c9_64867443",
+        "filename": "drivers/gpu/drm/xe/xe_uc_fw.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2025-10-22T22:52:55Z",
+      "side": 1,
+      "message": "Fix the formatting to match the following lines (tabs, not spaces).",
+      "fixSuggestions": [
+        {
+          "fixId": "05f2769b_80220fcd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/gpu/drm/xe/xe_uc_fw.c",
+              "range": {
+                "startLine": 141,
+                "startChar": 0,
+                "endLine": 142,
+                "endChar": 0
+              },
+              "replacement": "\tfw_def(PANTHERLAKE,\tGT_TYPE_ANY,\tmajor_ver(xe,\tgsc,\tptl,\t105, 1, 0))\t\\\n"
+            }
+          ]
+        }
+      ],
+      "revId": "116f0e0572a2e49dec5345cb6bc32ffccb175741",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
