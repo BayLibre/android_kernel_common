@@ -52,6 +52,24 @@
       "parentUuid": "1a937c76_010108d1",
       "revId": "2842f0798ab2b89aead698857abbbaeb4d717c48",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cafec3ee_158fb6d7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 2022147
+      },
+      "writtenOn": "2025-10-23T18:59:34Z",
+      "side": 1,
+      "message": "let\u0027s change the CL to use CONFIG_PROC_MEM_ALWAYS_PTRACE for both arm and x86, that will be backward compatible with  the existing behavior.\n\nThen AL could use kernel cmdline proc_mem.force_override \u003d ptrace \nto enforce for both x86 and arm.",
+      "parentUuid": "d60ad47f_4dd25cae",
+      "revId": "2842f0798ab2b89aead698857abbbaeb4d717c48",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
