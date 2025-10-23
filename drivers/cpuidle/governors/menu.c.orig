@@ -265,8 +265,19 @@ again:
 	 * unless there is a clear indication that the given CPU is most likley
 	 * going to be woken up shortly.
 	 */
+<<<<<<< HEAD
+	if ((divisor * 4) <= INTERVALS * 3)
+		return UINT_MAX;
+=======
 	if (divisor * 4 <= INTERVALS * 3)
 		return UINT_MAX;
+
+	/* Update the thresholds for the next round. */
+	if (avg - min > max - avg)
+		min_thresh = min;
+	else
+		max_thresh = max;
+>>>>>>> 10fad4012234 (Revert "cpuidle: menu: Avoid discarding useful information")
 
 	thresh = max - 1;
 	goto again;
