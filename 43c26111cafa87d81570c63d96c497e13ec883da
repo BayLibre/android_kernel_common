@@ -151,6 +151,24 @@
       "parentUuid": "92322081_a6657774",
       "revId": "43c26111cafa87d81570c63d96c497e13ec883da",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "682b8bc6_c5f6d120",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7521,
+      "author": {
+        "id": 1945342
+      },
+      "writtenOn": "2025-10-23T18:41:16Z",
+      "side": 1,
+      "message": "The reason I\u0027m confused is that `THIS_MODULE` will always be `NULL` (as it is built in). Why call it out and not just pass NULL in `unload_binder()`?",
+      "parentUuid": "6a0d634b_d61b6894",
+      "revId": "43c26111cafa87d81570c63d96c497e13ec883da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
