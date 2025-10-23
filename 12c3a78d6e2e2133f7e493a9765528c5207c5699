@@ -3,6 +3,63 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "baaab47a_aef3e64c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-10-23T00:12:15Z",
+      "side": 1,
+      "message": "Why is an `ANDROID` patch necessary?\n\nIt looks like there are other `XE_GSC_FIRMWARE_DEFS` values, so I think that least that portion should be upstreamable, rather than including it in the other batch of downstream patches we maintain.\n\nWould they accept the `!full_ver_required` check also?",
+      "revId": "12c3a78d6e2e2133f7e493a9765528c5207c5699",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "402e9a3c_3e1c8bbd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-10-23T00:12:15Z",
+      "side": 1,
+      "message": "nit: \n1. Remove leading whitespace.\n2. Line length \u003e72",
+      "revId": "12c3a78d6e2e2133f7e493a9765528c5207c5699",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75a3e045_cf403089",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-10-23T00:12:15Z",
+      "side": 1,
+      "message": "This extra whitespace is triggering the KernelCheckPatch warning.",
+      "range": {
+        "startLine": 22,
+        "startChar": 15,
+        "endLine": 22,
+        "endChar": 16
+      },
+      "revId": "12c3a78d6e2e2133f7e493a9765528c5207c5699",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e5c37210_4a2415e5",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -14,6 +71,23 @@
       "writtenOn": "2025-10-22T23:50:03Z",
       "side": 1,
       "message": "Please fix lint failure in the commit message for the following reason:\n\nWARNING:BAD_SIGN_OFF: Use a single space after Signed-off-by:",
+      "revId": "12c3a78d6e2e2133f7e493a9765528c5207c5699",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0091b8b_d8c501e5",
+        "filename": "drivers/gpu/drm/xe/xe_gsc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-10-23T00:12:15Z",
+      "side": 1,
+      "message": "Admittedly, I\u0027m not sure how this is all supposed to work so maybe this is a silly question. The commit message states:\n\n\u003e  This is a full version binary, so add support for that with the definition.\n\nWhy does adding a full version binary also require a check for if the full version is not required?",
       "revId": "12c3a78d6e2e2133f7e493a9765528c5207c5699",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
