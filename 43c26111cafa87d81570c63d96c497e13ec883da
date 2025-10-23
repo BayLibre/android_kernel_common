@@ -80,6 +80,24 @@
       "parentUuid": "2424f848_c5a34cff",
       "revId": "43c26111cafa87d81570c63d96c497e13ec883da",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef0c5716_68148e11",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7488,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-10-23T07:26:57Z",
+      "side": 1,
+      "message": "It\u0027s called with a non-null parameter when you load Rust Binder but it decides to bail out and use C Binder. This can happen if you load the module too late in the boot process.",
+      "parentUuid": "93e343df_e31655fd",
+      "revId": "43c26111cafa87d81570c63d96c497e13ec883da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
