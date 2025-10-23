@@ -98,6 +98,41 @@
       "parentUuid": "93e343df_e31655fd",
       "revId": "43c26111cafa87d81570c63d96c497e13ec883da",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92322081_a6657774",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7521,
+      "author": {
+        "id": 1945342
+      },
+      "writtenOn": "2025-10-23T14:10:24Z",
+      "side": 1,
+      "message": "My confusion is here. `THIS_MODULE` is NULL if this is a builtin, or its the module of what compiled it. My question is, where is this code compiled in? The kernel proper or a module? If a module, is it the C binder module that needs to be loaded for the Rust binder module to use?",
+      "fixSuggestions": [
+        {
+          "fixId": "e60cb8c8_27b5fa49",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/android/binder.c",
+              "range": {
+                "startLine": 7521,
+                "startChar": 0,
+                "endLine": 7521,
+                "endChar": 0
+              },
+              "replacement": "\t\t/*\n\t\t * THIS_MODULE is a pointer to the module structure if this code\n\t\t * is compiled as a loadable module. If it\u0027s built into the\n\t\t * kernel, THIS_MODULE is NULL. binder_remove_trace_events()\n\t\t * handles both cases. */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "43c26111cafa87d81570c63d96c497e13ec883da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
