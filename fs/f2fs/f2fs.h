@@ -2383,7 +2383,13 @@ static inline unsigned int get_available_block_count(struct f2fs_sb_info *sbi,
 	avail_user_block_count = sbi->user_block_count -
 					sbi->current_reserved_blocks;
 
+<<<<<<< HEAD   (0ec07e90ace0c2d011e61236e477008a0dd7b280 Merge 08cb3dc9d2b4 ("bpf: Enforce expected_attach_type for t)
 	if (test_opt(sbi, RESERVE_ROOT) && !__allow_reserved_root(sbi, inode, cap))
+||||||| BASE   (08cb3dc9d2b44f153d0bcf2cb966e4a94b5d0f32 bpf: Enforce expected_attach_type for tailcall compatibility)
+	if (!__allow_reserved_blocks(sbi, inode, cap))
+=======
+	if (test_opt(sbi, RESERVE_ROOT) && !__allow_reserved_blocks(sbi, inode, cap))
+>>>>>>> BRANCH (b859d612303a9398b0ca11ae2c8cec81aef189c4 misc: genwqe: Fix incorrect cmd field being reported in erro)
 		avail_user_block_count -= F2FS_OPTION(sbi).root_reserved_blocks;
 
 	if (unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED))) {
