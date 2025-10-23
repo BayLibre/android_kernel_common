@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d50bd193_6637e9d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2025-10-23T19:59:31Z",
+      "side": 1,
+      "message": "Better to call it \"stats\" or similar.",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "cfd779188a6d3c09fcc55ded1c229ea5813e0007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35f6a009_44c19823",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2025-10-23T19:59:31Z",
+      "side": 1,
+      "message": "Is there any precedent for dm targets putting sysfs files in the block sysfs directory like this?  There are several issues with doing it that way.  It looks like the usual pattern for returning stats from dm targets is to use STATUSTYPE_INFO.  Check out dm-delay.c, dm-era-target.c, dm-integrity.c, etc.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 26
+      },
+      "revId": "cfd779188a6d3c09fcc55ded1c229ea5813e0007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea016035_8a16ef7a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2025-10-23T19:59:31Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by KernelCommit: Commit is not signed off by the author!\n\nMissing tag: Signed-off-by: Shubhankar ...\n\nCommit is not signed off by the author!\n\nMissing tag: Signed-off-by: Shubhankar Mishra \u003cshubhankarm@google.com\u003e\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 0
+      },
+      "revId": "cfd779188a6d3c09fcc55ded1c229ea5813e0007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "029f227b_81a2b716",
+        "filename": "drivers/md/dm-verity-fec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2025-10-23T19:59:31Z",
+      "side": 1,
+      "message": "Probably should be 64-bit.",
+      "range": {
+        "startLine": 53,
+        "startChar": 1,
+        "endLine": 53,
+        "endChar": 9
+      },
+      "revId": "cfd779188a6d3c09fcc55ded1c229ea5813e0007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
