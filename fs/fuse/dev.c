@@ -335,6 +335,7 @@ void fuse_request_end(struct fuse_req *req)
 		/* Wake up waiter sleeping in request_wait_answer() */
 		wake_up(&req->waitq);
 		trace_android_vh_fuse_request_end(current);
+		trace_android_vh_fuse_request_end_ext(req, current);
 	}
 
 	if (test_bit(FR_ASYNC, &req->flags))
@@ -436,10 +437,33 @@ static void __fuse_request_send(struct fuse_req *req)
 		__fuse_get_request(req);
 		queue_request_and_unlock(fiq, req, true);
 
+<<<<<<< HEAD   (9129a20e2343292daee253ef8f31e94b42fac726 ANDROID: GKI: Update symbol list for Pixel Watch)
 		request_wait_answer(req);
 		/* Pairs with smp_wmb() in fuse_request_end() */
 		smp_rmb();
 	}
+||||||| BASE   (9750048dd86dbffe581c4beb5de1c07537217c64 UPSTREAM: HID: hid-input: only ignore 0 battery events for d)
+	trace_android_vh_fuse_request_send(&fiq->waitq);
+	/* acquire extra reference, since request is still needed after
+	   fuse_request_end() */
+	__fuse_get_request(req);
+	fuse_send_one(fiq, req, true);
+
+	request_wait_answer(req);
+	/* Pairs with smp_wmb() in fuse_request_end() */
+	smp_rmb();
+=======
+	trace_android_vh_fuse_request_send(&fiq->waitq);
+	trace_android_vh_fuse_request_send_ext(req, &fiq->waitq);
+	/* acquire extra reference, since request is still needed after
+	   fuse_request_end() */
+	__fuse_get_request(req);
+	fuse_send_one(fiq, req, true);
+
+	request_wait_answer(req);
+	/* Pairs with smp_wmb() in fuse_request_end() */
+	smp_rmb();
+>>>>>>> CHANGE (2d01a3fbce2836313bc40f5acc481e1e99816a43 ANDROID: vendor_hooks: Add hooks for fuse)
 }
 
 static void fuse_adjust_compat(struct fuse_conn *fc, struct fuse_args *args)
