@@ -133,6 +133,24 @@
       ],
       "revId": "43c26111cafa87d81570c63d96c497e13ec883da",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a0d634b_d61b6894",
+        "filename": "drivers/android/binder.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7521,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2025-10-23T14:56:33Z",
+      "side": 1,
+      "message": "What happens is that:\n1. C Binder is built-in to core kernel.\n2. Rust Binder is a module.\n\nDuring loading Rust Binder we decide whether to use Rust or C Binder. If we use C Binder, then Rust Binder calls `binder_remove_trace_events()` with a pointer to the Rust Binder module. If we use Rust Binder, then C Binder calls `binder_remove_trace_events()` with a null pointer.",
+      "parentUuid": "92322081_a6657774",
+      "revId": "43c26111cafa87d81570c63d96c497e13ec883da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
