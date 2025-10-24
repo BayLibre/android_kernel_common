@@ -105,7 +105,9 @@ struct selinux_state {
 	struct mutex policy_mutex;
 } __randomize_layout;
 
-extern bool selinux_memfd_class_policycap;
+/* ANDROID: put newer capabilities outside the struct to preserve the KMI*/
+extern bool selinux_state_policycap_android[__POLICYDB_CAP_MAX_ANDROID -
+					    __POLICYDB_CAP_MAX];
 
 void selinux_avc_init(void);
 
@@ -201,7 +203,9 @@ static inline bool selinux_policycap_userspace_initial_context(void)
 
 static inline bool selinux_policycap_memfd_class(void)
 {
-	return READ_ONCE(selinux_memfd_class_policycap);
+	return READ_ONCE(
+		selinux_state_policycap_android[POLICYDB_CAP_MEMFD_CLASS -
+						__POLICYDB_CAP_MAX]);
 }
 
 static inline bool selinux_android_nlroute_getlink(void)

@@ -2128,6 +2128,7 @@ static void security_load_policycaps(struct selinux_policy *policy)
 {
 	struct policydb *p;
 	unsigned int i;
+	unsigned int bit_offset_android = ARRAY_SIZE(selinux_state.policycap);
 	struct ebitmap_node *node;
 
 	p = &policy->policydb;
@@ -2136,19 +2137,31 @@ static void security_load_policycaps(struct selinux_policy *policy)
 		WRITE_ONCE(selinux_state.policycap[i],
 			ebitmap_get_bit(&p->policycaps, i));
 
-	WRITE_ONCE(selinux_memfd_class_policycap, ebitmap_get_bit(&p->policycaps,
-								  POLICYDB_CAP_MEMFD_CLASS));
+	/* ANDROID: handle selinux_policycap_names_android separately to preserve ABI */
+	for (i = 0; i < ARRAY_SIZE(selinux_state_policycap_android); i++)
+		WRITE_ONCE(selinux_state_policycap_android[i],
+			   ebitmap_get_bit(&p->policycaps,
+					   i + bit_offset_android));
 
 	for (i = 0; i < ARRAY_SIZE(selinux_policycap_names); i++)
 		pr_info("SELinux:  policy capability %s=%d\n",
 			selinux_policycap_names[i],
 			ebitmap_get_bit(&p->policycaps, i));
 
-	pr_info("SELinux: policy capability memfd_class=%d\n",
-		ebitmap_get_bit(&p->policycaps, POLICYDB_CAP_MEMFD_CLASS));
+	/* ANDROID: handle selinux_policycap_names_android separately to preserve ABI */
+	for (i = 0; i < ARRAY_SIZE(selinux_policycap_names_android); i++)
+		pr_info("SELinux:  policy capability %s=%d\n",
+			selinux_policycap_names_android[i],
+			ebitmap_get_bit(&p->policycaps,
+					i + bit_offset_android));
 
 	ebitmap_for_each_positive_bit(&p->policycaps, node, i) {
-		if (i >= ARRAY_SIZE(selinux_policycap_names) && i != POLICYDB_CAP_MEMFD_CLASS)
+		if (i >= ARRAY_SIZE(selinux_policycap_names) +
+				    ARRAY_SIZE(
+					    selinux_policycap_names_android) ||
+		    (i >= ARRAY_SIZE(selinux_policycap_names) &&
+		     !selinux_policycap_implemented_android[i -
+							    bit_offset_android]))
 			pr_info("SELinux:  unknown policy capability %u\n",
 				i);
 	}
