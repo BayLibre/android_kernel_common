@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d2013914_5de2327b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1076784
+      },
+      "writtenOn": "2025-10-24T18:31:09Z",
+      "side": 1,
+      "message": "... x86: add \"memcache\" argument to zalloc_page()\n\n?",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0f1ce9ea_412842c1",
         "filename": "/COMMIT_MSG",
         "patchSetId": 8
@@ -14,6 +31,40 @@
       "writtenOn": "2025-10-15T14:19:32Z",
       "side": 1,
       "message": "nit: might be useful to clarify that it will be a per-vCPU memcache, not per VM (which is why we cannot just remember this pointer in struct pkvm_pgtable, and need to pass it around instead)?",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e6ac9ff_5852d9fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1076784
+      },
+      "writtenOn": "2025-10-24T18:31:09Z",
+      "side": 1,
+      "message": "..., pass memcache parameter to zalloc_page()",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4747a15c_eb95b493",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1076784
+      },
+      "writtenOn": "2025-10-24T18:31:09Z",
+      "side": 1,
+      "message": "Can it be something else than void*? What stops us from using a proper name here (declaring the name above, like it is done with pkvm_pgtable)?",
       "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
