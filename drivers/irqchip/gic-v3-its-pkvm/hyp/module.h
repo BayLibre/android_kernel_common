@@ -22,6 +22,13 @@ extern const struct pkvm_module_ops *mod_ops;
 #define create_private_mapping(phys, size, prot, haddr) \
 	CALL_FROM_OPS(create_private_mapping, phys, size, prot, haddr)
 
+#define host_share_hyp(pfn) CALL_FROM_OPS(host_share_hyp, pfn)
+
+#define host_unshare_hyp(pfn) CALL_FROM_OPS(host_unshare_hyp, pfn)
+
+#define host_stage2_get_leaf(phys, ptep, level) \
+	CALL_FROM_OPS(host_stage2_get_leaf, phys, ptep, level)
+
 #endif /* defined(__KVM_NVHE_HYPERVISOR__) && defined(MODULE) */
 
 #endif /* __GIC_V3_ITS_PKVM_MODULES__ */
