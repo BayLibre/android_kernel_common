@@ -112,10 +112,11 @@
 struct selinux_state selinux_state;
 
 /*
- * ANDROID: selinux_state is part of the KMI, and adding memfd_class as part of the policycap
+ * ANDROID: selinux_state is part of the KMI, and adding new policycaps to the
  * array in the structure would break the KMI, so declare it outside.
  */
-bool selinux_memfd_class_policycap;
+bool selinux_state_policycap_android[__POLICYDB_CAP_MAX_ANDROID -
+				     __POLICYDB_CAP_MAX];
 
 /* SECMARK reference count */
 static atomic_t selinux_secmark_refcount = ATOMIC_INIT(0);

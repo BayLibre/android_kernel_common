@@ -30,6 +30,13 @@ static char *selinux_ima_collect_state(void)
 	for (i = 0; i < __POLICYDB_CAP_MAX; i++)
 		buf_len += strlen(selinux_policycap_names[i]) + len;
 
+	/* ANDROID: handle selinux_policycap_names_android separately to preserve ABI */
+	for (i = 0; i < __POLICYDB_CAP_MAX_ANDROID - __POLICYDB_CAP_MAX; i++) {
+		if (selinux_policycap_implemented_android[i])
+			buf_len += strlen(selinux_policycap_names_android[i]) +
+				   len;
+	}
+
 	buf = kzalloc(buf_len, GFP_KERNEL);
 	if (!buf)
 		return NULL;
@@ -61,15 +68,17 @@ static char *selinux_ima_collect_state(void)
 		WARN_ON(rc >= buf_len);
 	}
 
-	/*
-	 * ANDROID: memfd_class is handled separately from the rest of the policycaps to preserve
-	 * the ABI.
-	 */
-	rc = strlcat(buf, "memfd_class", buf_len);
-	WARN_ON(rc >= buf_len);
+	/* ANDROID: handle selinux_policycap_names_android separately to preserve ABI */
+	for (i = 0; i < __POLICYDB_CAP_MAX_ANDROID - __POLICYDB_CAP_MAX; i++) {
+		if (!selinux_policycap_implemented_android[i])
+			continue;
+		rc = strlcat(buf, selinux_policycap_names_android[i], buf_len);
+		WARN_ON(rc >= buf_len);
 
-	rc = strlcat(buf, selinux_memfd_class_policycap ? on : off, buf_len);
-	WARN_ON(rc >= buf_len);
+		rc = strlcat(buf, selinux_state_policycap_android[i] ? on : off,
+			     buf_len);
+		WARN_ON(rc >= buf_len);
+	}
 
 	return buf;
 }
