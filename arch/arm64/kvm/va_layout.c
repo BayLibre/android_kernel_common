@@ -179,7 +179,7 @@ static u32 compute_instruction(int n, u32 rd, u32 rn)
 	return insn;
 }
 
-void __init kvm_update_va_mask(struct alt_instr *alt,
+void noinstr kvm_update_va_mask(struct alt_instr *alt,
 			       __le32 *origptr, __le32 *updptr, int nr_inst)
 {
 	int i;
@@ -324,3 +324,18 @@ void kvm_compute_final_ctr_el0(struct alt_instr *alt,
 	generate_mov_q(read_sanitised_ftr_reg(SYS_CTR_EL0),
 		       origptr, updptr, nr_inst);
 }
+
+noinstr void kvm_patch_physvirt_offset(struct alt_instr *alt, __le32 *origptr, __le32 *updptr, int nr_inst)
+{
+	BUG_ON(nr_inst != 5);
+
+	generate_mov_q(hyp_physvirt_offset, origptr, updptr, nr_inst - 1);
+}
+
+void __kvm_nvhe_kvm_patch_physvirt_offset(struct alt_instr *alt, __le32 *origptr, __le32 *updptr,
+					  int nr_inst) __alias(kvm_patch_physvirt_offset);
+EXPORT_SYMBOL(__kvm_nvhe_kvm_patch_physvirt_offset);
+
+void __kvm_nvhe_kvm_update_va_mask(struct alt_instr *alt, __le32 *origptr, __le32 *updptr,
+				   int nr_inst) __alias(kvm_update_va_mask);
+EXPORT_SYMBOL(__kvm_nvhe_kvm_update_va_mask);
