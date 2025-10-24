@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40cad11d_9a0bc787",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2025-10-24T05:38:19Z",
+      "side": 1,
+      "message": "Please fix the following errors:\n\n1. Cherry pick does not have same author date as original commit.\n\nOriginal author date: Sat Oct 18 14:27:15 2025 +0200\nCherry pick author date: Thu Oct 23 17:18:50 2025 +0800\n\nPlease cherry-pick using: git cherry-pick -s -x 10fad4012234a7dea621ae17c0c9486824f645a0.\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md\n\n2. The commit message seems to have an extraneous Fixes line, please remove it.",
+      "revId": "7167814b24989116b611de9654a602eeee69b902",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
