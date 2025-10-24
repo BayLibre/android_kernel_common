@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de6c7b03_9d62e3c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-10-24T18:07:12Z",
+      "side": 1,
+      "message": "Looks ok to me, though the symbol update should be in a separate patch along with kABI update.",
+      "revId": "26e8ffc917c842b49607d51b7139fa3ebf75e9be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a495c6e_59771c96",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 2
+      },
+      "lineNbr": 2827,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-10-24T18:07:12Z",
+      "side": 1,
+      "message": "This change should be in a separate commit, along with the STG file update.",
+      "fixSuggestions": [
+        {
+          "fixId": "9340ab38_a4d4a4cd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gki/aarch64/symbols/qcom",
+              "range": {
+                "startLine": 2827,
+                "startChar": 0,
+                "endLine": 2828,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "26e8ffc917c842b49607d51b7139fa3ebf75e9be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
