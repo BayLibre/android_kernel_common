@@ -66,6 +66,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac18eb7e_80ae75b0",
+        "filename": "drivers/pci/pci.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1161,
+      "author": {
+        "id": 1096846
+      },
+      "writtenOn": "2025-10-24T18:04:23Z",
+      "side": 1,
+      "message": "for cases where MID has no possible side effects (as in, just `return true` or `return PCI_POWER_ERROR`, sure. But for other cases, it\u0027s not as obvious that this would be a faithful transformation/extension.\n\nso I\u0027d rather share a similar structure, and leave it as-is",
+      "parentUuid": "38611c8c_ab6e2326",
+      "revId": "c98ff0f41ce19e76dfaf17ffb08f20a55f70ae0a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8e35955_7d3bbb33",
@@ -101,6 +119,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69e434dd_73ecb6b0",
+        "filename": "drivers/pci/pci.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 1096846
+      },
+      "writtenOn": "2025-10-24T18:04:23Z",
+      "side": 1,
+      "message": "oops, sorry, I should have re-read the diff after I \"reverted\" these hooks.\n\ndone",
+      "parentUuid": "b8e35955_7d3bbb33",
+      "revId": "c98ff0f41ce19e76dfaf17ffb08f20a55f70ae0a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4dda7669_a6bc9e61",
@@ -114,6 +150,24 @@
       "writtenOn": "2025-10-24T17:49:47Z",
       "side": 1,
       "message": "Please remove this change since this is reverted to the original behavior",
+      "revId": "c98ff0f41ce19e76dfaf17ffb08f20a55f70ae0a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a069027_a9ccc446",
+        "filename": "drivers/pci/pci.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1243,
+      "author": {
+        "id": 1096846
+      },
+      "writtenOn": "2025-10-24T18:04:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4dda7669_a6bc9e61",
       "revId": "c98ff0f41ce19e76dfaf17ffb08f20a55f70ae0a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
