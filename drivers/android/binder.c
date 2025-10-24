@@ -113,6 +113,7 @@ enum {
 	BINDER_DEBUG_INTERNAL_REFS          = 1U << 12,
 	BINDER_DEBUG_PRIORITY_CAP           = 1U << 13,
 	BINDER_DEBUG_SPINLOCKS              = 1U << 14,
+	BINDER_DEBUG_FREEZE                 = 1U << 15,
 };
 static uint32_t binder_debug_mask = BINDER_DEBUG_USER_ERROR |
 	BINDER_DEBUG_FAILED_TRANSACTION | BINDER_DEBUG_DEAD_TRANSACTION;
@@ -5820,6 +5821,38 @@ static bool binder_txns_pending_ilocked(struct binder_proc *proc)
 	return false;
 }
 
+/**
+ * binder_convert_to_init_ns_pid() - Convert pid to global pid(init namespace)
+ * @pid:    pid from user space
+ *
+ * To support PID_NS, convert local pid(from user space) to global pid.
+ *
+ * Return: if there's a pid in init namespace, returns that pid.
+ *		Otherwise returns Zero.
+ */
+static int binder_convert_to_init_ns_pid(int pid)
+{
+	int init_ns_pid = pid;
+
+	if (!task_is_in_init_pid_ns(current)) {
+		struct task_struct *task;
+
+		rcu_read_lock();
+		task = pid_task(find_vpid(pid), PIDTYPE_PID);
+		if (task)
+			init_ns_pid = task_tgid_nr_ns(task, &init_pid_ns);
+		else
+			init_ns_pid = 0;
+		rcu_read_unlock();
+	}
+
+	binder_debug(BINDER_DEBUG_FREEZE,
+		     "%s: pid %d -> init_ns_pid %d\n",
+		     __func__, pid, init_ns_pid);
+
+	return init_ns_pid;
+}
+
 static void binder_add_freeze_work(struct binder_proc *proc, bool is_frozen)
 {
 	struct binder_node *prev = NULL;
@@ -5928,13 +5961,18 @@ static int binder_ioctl_get_freezer_info(
 	struct binder_proc *target_proc;
 	bool found = false;
 	__u32 txns_pending;
+	int init_ns_pid = 0;
 
 	info->sync_recv = 0;
 	info->async_recv = 0;
 
+	init_ns_pid = binder_convert_to_init_ns_pid(info->pid);
+	if (!init_ns_pid)
+		return -EINVAL;
+
 	mutex_lock(&binder_procs_lock);
 	hlist_for_each_entry(target_proc, &binder_procs, proc_node) {
-		if (target_proc->pid == info->pid) {
+		if (target_proc->pid == init_ns_pid) {
 			found = true;
 			binder_inner_proc_lock(target_proc);
 			txns_pending = binder_txns_pending_ilocked(target_proc);
@@ -6090,6 +6128,7 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		struct binder_freeze_info info;
 		struct binder_proc **target_procs = NULL, *target_proc;
 		int target_procs_count = 0, i = 0;
+		int init_ns_pid = 0;
 
 		ret = 0;
 
@@ -6098,9 +6137,15 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			goto err;
 		}
 
+		init_ns_pid = binder_convert_to_init_ns_pid(info.pid);
+		if (!init_ns_pid) {
+			ret = -EINVAL;
+			goto err;
+		}
+
 		mutex_lock(&binder_procs_lock);
 		hlist_for_each_entry(target_proc, &binder_procs, proc_node) {
-			if (target_proc->pid == info.pid)
+			if (target_proc->pid == init_ns_pid)
 				target_procs_count++;
 		}
 
@@ -6121,7 +6166,7 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		}
 
 		hlist_for_each_entry(target_proc, &binder_procs, proc_node) {
-			if (target_proc->pid != info.pid)
+			if (target_proc->pid != init_ns_pid)
 				continue;
 
 			binder_inner_proc_lock(target_proc);
