@@ -30,6 +30,9 @@ static char *selinux_ima_collect_state(void)
 	for (i = 0; i < __POLICYDB_CAP_MAX; i++)
 		buf_len += strlen(selinux_policycap_names[i]) + len;
 
+	for (i = 0; i < __POLICYDB_CAP_MAX_2 - __POLICYDB_CAP_MAX; i++)
+		buf_len += strlen(selinux_policycap_names_2[i]) + len;
+
 	buf = kzalloc(buf_len, GFP_KERNEL);
 	if (!buf)
 		return NULL;
@@ -57,6 +60,15 @@ static char *selinux_ima_collect_state(void)
 		WARN_ON(rc >= buf_len);
 
 		rc = strlcat(buf, selinux_state.policycap[i] ? on : off,
+			buf_len);
+		WARN_ON(rc >= buf_len);
+	}
+
+	for (i = 0; i < __POLICYDB_CAP_MAX_2 - __POLICYDB_CAP_MAX; i++) {
+		rc = strlcat(buf, selinux_policycap_names_2[i], buf_len);
+		WARN_ON(rc >= buf_len);
+
+		rc = strlcat(buf, selinux_state.policycap_2[i] ? on : off,
 			buf_len);
 		WARN_ON(rc >= buf_len);
 	}

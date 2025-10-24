@@ -97,6 +97,8 @@ struct selinux_state {
 	bool policycap[__POLICYDB_CAP_MAX];
 	bool android_netlink_route;
 	bool android_netlink_getneigh;
+	// New capabilities should be after bool members, otherwise KMI is broken
+	bool policycap_2[__POLICYDB_CAP_MAX_2 - __POLICYDB_CAP_MAX];
 
 	struct page *status_page;
 	struct mutex status_lock;
