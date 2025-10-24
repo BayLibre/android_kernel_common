@@ -84,3 +84,19 @@ bool __list_del_entry_valid_or_report(struct list_head *entry)
 	return CALL_FROM_OPS(list_del_entry_valid_or_report, entry);
 }
 #endif
+
+void hyp_emulate_passthrough(void __iomem *base, u64 offset, bool write,
+			     u64 *reg, int reg_size)
+{
+	if (reg_size == sizeof(u32)) {
+		if (write)
+			writel_relaxed(*reg, base + offset);
+		else
+			*reg = readl_relaxed(base + offset);
+	} else {
+		if (write)
+			writeq_relaxed(*reg, base + offset);
+		else
+			*reg = readq_relaxed(base + offset);
+	}
+}
