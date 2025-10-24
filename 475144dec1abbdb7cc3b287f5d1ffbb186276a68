@@ -121,6 +121,24 @@
       "parentUuid": "d25c674a_decb10b3",
       "revId": "475144dec1abbdb7cc3b287f5d1ffbb186276a68",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c37261c_14a75cbb",
+        "filename": "drivers/gpu/drm/xe/xe_device.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2025-10-24T22:16:23Z",
+      "side": 1,
+      "message": "Marked as resolved.\n\nThe VSR recommends to emit within 1s and no longer than 2s after a period ends.\n\nhttps://android.googlesource.com/platform/frameworks/native/+/refs/heads/main/services/gpuservice/gpuwork/bpfprogs/gpuWork.c#53\n\nQueuing for emission ever ~500ms in the steady-state is reasonable.",
+      "parentUuid": "b3b19c21_980af74f",
+      "revId": "475144dec1abbdb7cc3b287f5d1ffbb186276a68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
