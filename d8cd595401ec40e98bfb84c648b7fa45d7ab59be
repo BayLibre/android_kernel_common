@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0341e653_947e0dfb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-24T19:14:44Z",
+      "side": 1,
+      "message": "\u003e which is why we cannot just remember this pointer in struct pkvm_pgtable, and need to pass it around instead\n\nBTW I imagine we could avoid passing it around: since we eventually feed the pages from the memcache to the per-VM pool (in guest_mmu_put_page()) anyway, we could just do that right away, i.e. in admit_host_page(). Thus guest_mmu_zalloc_page() would just always allocate from the per-VM pool instead of the memcache.\n\nI guess the only reason not to do that is the unneeded overhead of attaching the page to the pool in hyp_put_page() -\u003e __hyp_attach_page() every time.",
+      "parentUuid": "0f1ce9ea_412842c1",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e6ac9ff_5852d9fb",
         "filename": "/COMMIT_MSG",
         "patchSetId": 8
