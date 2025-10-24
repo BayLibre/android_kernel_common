@@ -204,6 +204,24 @@
       "parentUuid": "f0091b8b_d8c501e5",
       "revId": "12c3a78d6e2e2133f7e493a9765528c5207c5699",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f993f85b_a2c6d75a",
+        "filename": "drivers/gpu/drm/xe/xe_gsc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2025-10-24T15:36:57Z",
+      "side": 1,
+      "message": "Good question. Looks like it might be bypassing the full version check whenever the firmware blob indicates that it is a \"full version firmware\", but I don\u0027t know for certain.\n\nIn any case, this was tested and we can leave the cleanup to be done in https://partnerissuetracker.corp.google.com/issues/454463101 to realign with upstream.",
+      "parentUuid": "0d3538be_5c710700",
+      "revId": "12c3a78d6e2e2133f7e493a9765528c5207c5699",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
