@@ -2,6 +2,7 @@ subdir-ccflags-y += -I$(srctree)/arch/arm64/kvm/hyp/include/
 subdir-ccflags-y += -DMODULE
 hyp-obj-y := hyp.o
 hyp-obj-y += its.o
+hyp-obj-y += gicr.o
 hyp-obj-y += emulate.o
 
 include $(srctree)/arch/arm64/kvm/hyp/nvhe/Makefile.module
