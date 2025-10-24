@@ -16,6 +16,23 @@
       "message": "LGTM after addressing the few minor comments that remain here.",
       "revId": "4c93bfca561d5727b7caf98603b031eefded65f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "481b3538_bb4e70fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2025-10-24T22:37:02Z",
+      "side": 1,
+      "message": "Presubmit failure falsely implicates unlinkable `get_task_cred`, but the subsequent CL in this series exposes it.\n\nThat presubmit run must have been without that CL included.\n\nI\u0027ll re-run the whole chain and it should pass.",
+      "revId": "4c93bfca561d5727b7caf98603b031eefded65f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
