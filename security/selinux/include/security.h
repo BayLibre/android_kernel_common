@@ -103,6 +103,8 @@ struct selinux_state {
 
 	struct selinux_policy __rcu *policy;
 	struct mutex policy_mutex;
+	// New capabilities should be at the end, otherwise KMI is broken
+	bool policycap_2[__POLICYDB_CAP_MAX_2 - __POLICYDB_CAP_MAX];
 } __randomize_layout;
 
 void selinux_avc_init(void);

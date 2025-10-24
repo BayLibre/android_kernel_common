@@ -2128,7 +2128,7 @@ bad:
 static void security_load_policycaps(struct selinux_policy *policy)
 {
 	struct policydb *p;
-	unsigned int i;
+	unsigned int i, bit_offset;
 	struct ebitmap_node *node;
 
 	p = &policy->policydb;
@@ -2137,13 +2137,24 @@ static void security_load_policycaps(struct selinux_policy *policy)
 		WRITE_ONCE(selinux_state.policycap[i],
 			ebitmap_get_bit(&p->policycaps, i));
 
+	bit_offset = i;
+	for (i = 0; i < ARRAY_SIZE(selinux_state.policycap_2); i++)
+		WRITE_ONCE(selinux_state.policycap_2[i],
+			ebitmap_get_bit(&p->policycaps, i + bit_offset));
+
 	for (i = 0; i < ARRAY_SIZE(selinux_policycap_names); i++)
 		pr_info("SELinux:  policy capability %s=%d\n",
 			selinux_policycap_names[i],
 			ebitmap_get_bit(&p->policycaps, i));
 
+	bit_offset = i;
+	for (i = 0; i < ARRAY_SIZE(selinux_policycap_names_2); i++)
+		pr_info("SELinux:  policy capability %s=%d\n",
+			selinux_policycap_names_2[i],
+			ebitmap_get_bit(&p->policycaps, i + bit_offset));
+
 	ebitmap_for_each_positive_bit(&p->policycaps, node, i) {
-		if (i >= ARRAY_SIZE(selinux_policycap_names))
+		if (i >= ARRAY_SIZE(selinux_policycap_names) + ARRAY_SIZE(selinux_policycap_names_2))
 			pr_info("SELinux:  unknown policy capability %u\n",
 				i);
 	}
