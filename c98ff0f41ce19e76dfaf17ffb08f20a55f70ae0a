@@ -1,0 +1,121 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38611c8c_ab6e2326",
+        "filename": "drivers/pci/pci.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1161,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-24T17:49:47Z",
+      "side": 1,
+      "message": "optional change, but I\u0027d prefer this slight simplification:\n```\n  bool ret \u003d true;\n  \n  if (!pci_use_mid_pm())\n      ret \u003d acpi_pci_power_manageable(dev);\n\n  trace_android_vh_platform_pci_power_manageable(dev, \u0026ret);\n\n  return ret;\n```\nSame suggestion for the other changes below.",
+      "fixSuggestions": [
+        {
+          "fixId": "4a5ce4e2_d2dbc1c0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/pci/pci.c",
+              "range": {
+                "startLine": 1161,
+                "startChar": 0,
+                "endLine": 1162,
+                "endChar": 0
+              },
+              "replacement": "\tbool ret \u003d true;\n"
+            },
+            {
+              "path": "drivers/pci/pci.c",
+              "range": {
+                "startLine": 1163,
+                "startChar": 0,
+                "endLine": 1166,
+                "endChar": 0
+              },
+              "replacement": "\tif (!pci_use_mid_pm())\n"
+            },
+            {
+              "path": "drivers/pci/pci.c",
+              "range": {
+                "startLine": 1210,
+                "startChar": 0,
+                "endLine": 1211,
+                "endChar": 0
+              },
+              "replacement": "\tpci_power_t state \u003d PCI_POWER_ERROR;\n"
+            },
+            {
+              "path": "drivers/pci/pci.c",
+              "range": {
+                "startLine": 1212,
+                "startChar": 0,
+                "endLine": 1215,
+                "endChar": 0
+              },
+              "replacement": "\tif (!pci_use_mid_pm())\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c98ff0f41ce19e76dfaf17ffb08f20a55f70ae0a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8e35955_7d3bbb33",
+        "filename": "drivers/pci/pci.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-24T17:49:47Z",
+      "side": 1,
+      "message": "Please remove this change since this is reverted to the original behavior",
+      "fixSuggestions": [
+        {
+          "fixId": "b422f6cb_307e303e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/pci/pci.c",
+              "range": {
+                "startLine": 1225,
+                "startChar": 0,
+                "endLine": 1228,
+                "endChar": 0
+              },
+              "replacement": "\t\treturn -EINVAL;\n\n\treturn acpi_pci_wakeup(dev, enable);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c98ff0f41ce19e76dfaf17ffb08f20a55f70ae0a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dda7669_a6bc9e61",
+        "filename": "drivers/pci/pci.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1243,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-24T17:49:47Z",
+      "side": 1,
+      "message": "Please remove this change since this is reverted to the original behavior",
+      "revId": "c98ff0f41ce19e76dfaf17ffb08f20a55f70ae0a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
