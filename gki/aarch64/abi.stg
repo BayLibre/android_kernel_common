@@ -44070,6 +44070,11 @@ array {
   element_type_id: 0x5bc93c81
 }
 array {
+  id: 0x099a22c9
+  number_of_elements: 3
+  element_type_id: 0x6d7f5ff6
+}
+array {
   id: 0x09e0bda0
   number_of_elements: 3
   element_type_id: 0x6c952252
@@ -187432,6 +187437,12 @@ member {
   offset: 16
 }
 member {
+  id: 0xc915111c
+  name: "policycap_2"
+  type_id: 0x099a22c9
+  offset: 104
+}
+member {
   id: 0x37828654
   name: "policycaps"
   type_id: 0x86a931f9
@@ -328628,6 +328639,7 @@ struct_union {
     member_id: 0x0d282368
     member_id: 0x395a2e99
     member_id: 0x6fc674e0
+    member_id: 0xc915111c
     member_id: 0xd41c6df7
     member_id: 0x8e288971
     member_id: 0x60ddb37d
