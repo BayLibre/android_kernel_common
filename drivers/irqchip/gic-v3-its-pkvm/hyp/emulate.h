@@ -27,4 +27,7 @@ int hyp_add_emulate(struct emulate *emulate);
 
 int hyp_emulate_perm_fault(struct user_pt_regs *regs, u64 esr, u64 addr);
 
+void hyp_emulate_passthrough(void __iomem *base, u64 offset, bool write,
+			     u64 *reg, int reg_size);
+
 #endif /* __GIC_V3_ITS_PKVM_EMULATE__ */
