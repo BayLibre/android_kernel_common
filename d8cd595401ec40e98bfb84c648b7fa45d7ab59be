@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e39aafbe_9f3521cb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-10-25T21:51:55Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "d2013914_5de2327b",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0f1ce9ea_412842c1",
         "filename": "/COMMIT_MSG",
         "patchSetId": 8
@@ -55,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "21d3a612_01736c7a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-10-25T21:51:55Z",
+      "side": 1,
+      "message": "\u003e nit: might be useful to clarify that it will be a per-vCPU memcache, not per VM (which is why we cannot just remember this pointer in struct pkvm_pgtable, and need to pass it around instead)?\n\nSure, I will mention per-vCPU memcache (I\u0027ve mentioned it later in this patch-set but this is first one related to this memcache so it is better to mention it here).\n\n\u003e BTW I imagine we could avoid passing it around: since we eventually feed the pages from the memcache to the per-VM pool (in guest_mmu_put_page()) anyway\n\nThey are put to the per-VM pool quite rarely: note that guest_mmu_put_page actually call __hyp_put_page which puts the page to the pool only when the page is not used anymore (hyp_page_ref_dec_and_test(p)), which happen mostly during VM teardown (could happen due to MMU notifiers, e.g. when ballooning jumps in but even then it is rare that all PTE for a given page-table page (all 512 PTE) are not used and therefore page table page is freed and put to the pool). I\u0027ve also propose improved commit log here: https://android-review.git.corp.google.com/c/kernel/common/+/3702537/comment/afd7c32e_22600f0b/\n\n\u003e I guess the only reason not to do that is the unneeded overhead of attaching the page to the pool in hyp_put_page() -\u003e __hyp_attach_page() every time.\n\nYeah seems like unneeded overhead.",
+      "parentUuid": "0341e653_947e0dfb",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e6ac9ff_5852d9fb",
         "filename": "/COMMIT_MSG",
         "patchSetId": 8
@@ -72,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95559d0e_cc60d603",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-10-25T21:51:55Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "7e6ac9ff_5852d9fb",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4747a15c_eb95b493",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.h",
         "patchSetId": 8
@@ -83,6 +137,24 @@
       "writtenOn": "2025-10-24T18:31:09Z",
       "side": 1,
       "message": "Can it be something else than void*? What stops us from using a proper name here (declaring the name above, like it is done with pkvm_pgtable)?",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bb6f8e2_f1a69d0f",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-10-25T21:51:55Z",
+      "side": 1,
+      "message": "Yeah, I think I can convert it to `struct pkvm_memcache *`",
+      "parentUuid": "4747a15c_eb95b493",
       "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
