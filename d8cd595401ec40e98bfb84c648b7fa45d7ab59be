@@ -193,6 +193,24 @@
       "parentUuid": "1bb6f8e2_f1a69d0f",
       "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2cd1558_b5c5970d",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1076784
+      },
+      "writtenOn": "2025-10-26T18:11:10Z",
+      "side": 1,
+      "message": "Not sure how that would actually work. If you do not have neither common API (argument is void* to pass different types) nor the common implementation (there are different implementations of zalloc_page() for different cases) then callers need to know which one to call, so abstracting this into \"ops\" structure does not buy us much... I think this only works if it is purely a pass-through mechanism.",
+      "parentUuid": "49aad87b_24dd8c59",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
