@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "da6b7b4e_ad2e7018",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-26T14:12:06Z",
+      "side": 1,
+      "message": "\u003e They are put to the per-VM pool quite rarely: note that guest_mmu_put_page actually call __hyp_put_page which puts the page to the pool only when the page is not used anymore (hyp_page_ref_dec_and_test(p)), which happen mostly during VM teardown (could happen due to MMU notifiers, e.g. when ballooning jumps in but even then it is rare that all PTE for a given page-table page (all 512 PTE) are not used and therefore page table page is freed and put to the pool).\n\nI see, makes sense. Still, in those rare cases when it still happens, the next allocation (e.g. after the next page fault, if it requires allocating a new page table page to map the faulted page) will be done using the VM pool instead of the memcache, right?\n\nAlso I can imagine a synthetic test that triggers this case frequently...",
+      "parentUuid": "21d3a612_01736c7a",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e6ac9ff_5852d9fb",
         "filename": "/COMMIT_MSG",
         "patchSetId": 8
@@ -155,6 +173,24 @@
       "side": 1,
       "message": "Yeah, I think I can convert it to `struct pkvm_memcache *`",
       "parentUuid": "4747a15c_eb95b493",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49aad87b_24dd8c59",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-26T14:12:06Z",
+      "side": 1,
+      "message": "\u003e Can it be something else than void*? What stops us from using a proper name here\n\nI guess the idea is that it can be abstract. In this particular implementation of pkvm_mm_ops (used for guest page tables) this pointer is used as a memcache pointer, in other implementations it may be used for anything else. (Currently in those other implementations, i.e. for host and hypervisor page tables, it is not used at all.)",
+      "parentUuid": "1bb6f8e2_f1a69d0f",
       "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
