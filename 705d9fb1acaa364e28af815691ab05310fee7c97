@@ -34,6 +34,24 @@
       "parentUuid": "f8fa80fb_0288044f",
       "revId": "705d9fb1acaa364e28af815691ab05310fee7c97",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "091dbaad_6fa38324",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-10-27T15:58:05Z",
+      "side": 1,
+      "message": "Yeah, I remember that this is for 6.6 - just thought about it since there is still reference to PKVM_GHC_GET_VE_INFO in `nested_handle_vmcall` even if we removed PKVM_GHC_GET_VE_INFO in this commit (which BTW makes pkvm_get_ve_info useless as well - that\u0027s why I thought about reverting it). But probably not a big deal since, yes we used 6.6-desktop for guest only.",
+      "parentUuid": "c13aa2d6_98975cd1",
+      "revId": "705d9fb1acaa364e28af815691ab05310fee7c97",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
