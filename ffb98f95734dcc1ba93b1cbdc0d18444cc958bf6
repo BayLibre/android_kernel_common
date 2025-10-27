@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3e75139_a55057fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-27T18:39:10Z",
+      "side": 1,
+      "message": "This change aims to pull https://android-review.googlesource.com/c/kernel/common/+/3107078 / https://android-review.googlesource.com/c/kernel/common/+/3107078 into android-mainline so that Tegra SoC enablement configs can continue to be included in generic kernel images in kernels moving forward.\nI\u0027m aware that the more correct flow is to merge into android-mainline first, and then port changes to kernel branches, but at the time we merged the above linked change we had a short-term goal in our 6.1/6.6 branches and hence merging into android-mainline was not pursued.\n\nNow that we are working towards our long-term gki goal I\u0027m looking to port that change to android-mainline branch.\n\nIn total, the number of drivers enabled as built-in by this change are 17, and these configs are boot critical for our SoC\u0027s\n\nAs an effort to reduce the increase in kernel size, I\u0027ve made some changes to Kconfig files to remove configs that are tristate and not boot-critical for Android, but are being forced as built-in\n\nThe list of new built-in configs can be found below:\n```\nCONFIG_ARCH_HAS_PMEM_API\u003dy\nCONFIG_ARCH_HAS_UACCESS_FLUSHCACHE\u003dy\nCONFIG_ARCH_TEGRA_234_SOC\u003dy\nCONFIG_ARCH_TEGRA\u003dy\nCONFIG_ARM64_PMEM\u003dy\nCONFIG_ARM_GIC_PM\u003dy\nCONFIG_MEMORY\u003dy\nCONFIG_PINCTRL_TEGRA234\u003dy\nCONFIG_PINCTRL_TEGRA_XUSB\u003dy\nCONFIG_PINCTRL_TEGRA\u003dy\nCONFIG_SERIAL_TEGRA_TCU_CONSOLE\u003dy\nCONFIG_SERIAL_TEGRA_TCU\u003dy\nCONFIG_SOC_TEGRA_CBB\u003dy\nCONFIG_SOC_TEGRA_FUSE\u003dy\nCONFIG_SOC_TEGRA_PMC\u003dy\nCONFIG_TEGRA_HSP_MBOX\u003dy\nCONFIG_TEGRA_MC\u003dy\n```\n\nIt has actually been reduced from the initial list that was merged into the 6.1/6.6 kernel previously\n\nPlease review at your earliest convenience, thank you!",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
