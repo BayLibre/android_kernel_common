@@ -361,11 +361,13 @@ int pps_register_cdev(struct pps_device *pps)
 			       pps->info.name);
 			err = -EBUSY;
 		}
+		kfree(pps);
 		goto out_unlock;
 	}
 	pps->id = err;
 	mutex_unlock(&pps_idr_lock);
 
+<<<<<<< HEAD   (26b2edf2fa8dd9c9b2c961ffda19ba09c3825ffc Merge b859d612303a ("misc: genwqe: Fix incorrect cmd field b)
 	devt = MKDEV(MAJOR(pps_devt), pps->id);
 
 	cdev_init(&pps->cdev, &pps_cdev_fops);
@@ -375,6 +377,24 @@ int pps_register_cdev(struct pps_device *pps)
 	if (err) {
 		pr_err("%s: failed to add char device %d:%d\n",
 				pps->info.name, MAJOR(pps_devt), pps->id);
+||||||| BASE   (b859d612303a9398b0ca11ae2c8cec81aef189c4 misc: genwqe: Fix incorrect cmd field being reported in erro)
+	pps->dev.class = pps_class;
+	pps->dev.parent = pps->info.dev;
+	pps->dev.devt = MKDEV(pps_major, pps->id);
+	dev_set_drvdata(&pps->dev, pps);
+	dev_set_name(&pps->dev, "pps%d", pps->id);
+	err = device_register(&pps->dev);
+	if (err)
+=======
+	pps->dev.class = pps_class;
+	pps->dev.parent = pps->info.dev;
+	pps->dev.devt = MKDEV(pps_major, pps->id);
+	dev_set_drvdata(&pps->dev, pps);
+	dev_set_name(&pps->dev, "pps%d", pps->id);
+	pps->dev.release = pps_device_destruct;
+	err = device_register(&pps->dev);
+	if (err)
+>>>>>>> BRANCH (cf71834a0cfc394c72d62fd6dbb470ee13cf8f5e pps: fix warning in pps_register_cdev when register device f)
 		goto free_idr;
 	}
 	pps->dev = device_create(pps_class, pps->info.dev, devt, pps,
@@ -384,11 +404,22 @@ int pps_register_cdev(struct pps_device *pps)
 		goto del_cdev;
 	}
 
+<<<<<<< HEAD   (26b2edf2fa8dd9c9b2c961ffda19ba09c3825ffc Merge b859d612303a ("misc: genwqe: Fix incorrect cmd field b)
 	/* Override the release function with our own */
 	pps->dev->release = pps_device_destruct;
 
 	pr_debug("source %s got cdev (%d:%d)\n", pps->info.name,
 			MAJOR(pps_devt), pps->id);
+||||||| BASE   (b859d612303a9398b0ca11ae2c8cec81aef189c4 misc: genwqe: Fix incorrect cmd field being reported in erro)
+	/* Override the release function with our own */
+	pps->dev.release = pps_device_destruct;
+
+	pr_debug("source %s got cdev (%d:%d)\n", pps->info.name, pps_major,
+		 pps->id);
+=======
+	pr_debug("source %s got cdev (%d:%d)\n", pps->info.name, pps_major,
+		 pps->id);
+>>>>>>> BRANCH (cf71834a0cfc394c72d62fd6dbb470ee13cf8f5e pps: fix warning in pps_register_cdev when register device f)
 
 	return 0;
 
