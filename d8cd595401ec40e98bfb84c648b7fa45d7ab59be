@@ -211,6 +211,24 @@
       "parentUuid": "49aad87b_24dd8c59",
       "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "764d54f0_0666f6cc",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-27T10:15:58Z",
+      "side": 1,
+      "message": "It is basically pass-through. The users of the pgtable API _implement_ these ops, including zalloc_page(), and those same users call into the pgtable API which passes the memcache pointer down to zalloc_page(). There is no logic in pgtable.c that would depend on it being specifically a memcache, not just an arbitrary pointer.\n\nOTOH, the fact that pkvm_pgtable_map() is the only function among the pgtable API functions that allows the users to pass this pointer (while other functions, which also need to call zalloc_page() in some cases, just pass NULL to it) suggests a particular assumption about the use case for this pointer. Plus, the internal `struct pkvm_pgtable_map_data`\u0027s field is named `memcache`, not `arg` or something...\n\nSo as far as I\u0027m concerned, I\u0027m ok with either leaving it as `void *` or changing it to `struct pkvm_memcache *`. We can always change it either way in the future if needed.",
+      "parentUuid": "e2cd1558_b5c5970d",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
