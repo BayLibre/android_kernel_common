@@ -16,6 +16,24 @@
       "message": "Maybe revert entire \"ANDROID: pkvm: x86: Enable Virtualization Exception Information\" so some leftovers from arch/x86/kvm/vmx/pkvm/hyp/nested.c (and pkvm_hyp.h) will be removed as well?",
       "revId": "705d9fb1acaa364e28af815691ab05310fee7c97",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c13aa2d6_98975cd1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-27T15:22:47Z",
+      "side": 1,
+      "message": "Remember, this is 6.6-desktop, it still has the old emulation-based pKVM implementation, not pvVMCS (so we cannot revert that patch or any other pKVM hypervisor patches). And we don\u0027t exactly care, since we are not using 6.6-desktop for the host kernel anyway. In this series I only revert guest kernel patches.",
+      "parentUuid": "f8fa80fb_0288044f",
+      "revId": "705d9fb1acaa364e28af815691ab05310fee7c97",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
