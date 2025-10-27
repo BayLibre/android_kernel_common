@@ -152,7 +152,12 @@ struct af_alg_ctx {
 	size_t used;
 	atomic_t rcvused;
 
+<<<<<<< HEAD   (2da0075ca9b8fc338a36dd5e4b88ad10ec8e31a1 UPSTREAM: crypto: af_alg - Disallow concurrent writes in af_)
 	u32		more:1,
+||||||| BASE   (bd0e4cef233d7f95e320d36ced31a23b952ab0cd Merge tag 'android13-5.10.243_r00' into android13-5.10)
+=======
+	bool		more:1,
+>>>>>>> BRANCH (2ece552169c277a60a8b4ee62c478d6224db2db1 Revert "genirq: Export affinity setter for modules")
 			merge:1,
 			enc:1,
 			write:1,
