@@ -229,6 +229,24 @@
       "parentUuid": "e2cd1558_b5c5970d",
       "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "830aa653_58b6a784",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-10-27T10:33:36Z",
+      "side": 1,
+      "message": "To be honest I do not have strong opinion here either: probably I will switch to `struct pkvm_memcache *` agreeing that we can change it back to `void *` in the future if needed.",
+      "parentUuid": "764d54f0_0666f6cc",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
