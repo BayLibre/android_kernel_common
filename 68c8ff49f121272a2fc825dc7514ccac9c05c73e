@@ -52,6 +52,24 @@
       "parentUuid": "139ce8cd_4414d782",
       "revId": "68c8ff49f121272a2fc825dc7514ccac9c05c73e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "058035f2_13904384",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-27T16:13:50Z",
+      "side": 1,
+      "message": "The \"until an alternative arrives\" is the key phrase. If we just pollute android-mainline with hooks, then no one ever checks if there is an alternative or attempts to create one.\n\nOur general policy is to accept hooks and other out-of-tree patches into android-mainline to support testing of android-mainline. Most of the hooks you see in android mainline are needed for pre/post-submit testing with Pixel.\n\nIf we know for sure that no \"alternative will arrive\" and it is needed in the future, we could consider it. If it becomes needed for pre/post-submit testing of android-mainline, we\u0027d definitely accept it.",
+      "parentUuid": "630effab_92e4cb27",
+      "revId": "68c8ff49f121272a2fc825dc7514ccac9c05c73e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
