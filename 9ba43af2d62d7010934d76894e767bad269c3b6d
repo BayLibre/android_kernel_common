@@ -16,6 +16,24 @@
       "message": "Not sure if related to this commit but maybe comment https://source.corp.google.com/h/android/kernel/common/+/android16-6.12-desktop:arch/x86/kvm/pkvm/pkvm.c;l\u003d676 should be updated?\n\n1) now after aosp/3796082 not only bootstrap CPU gets initial state via `pkvm_vcpu_pvmfw_entry_init` but also secondary CPUs via `pkvm_vcpu_ap_entry_init` (vcpu state is beaing reset + sipi vector set by hypervisor)?\n2) Regarding FIXME - IIUC we still need all this logic just the FIXME could be removed, right?",
       "revId": "9ba43af2d62d7010934d76894e767bad269c3b6d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61c2e84c_916be940",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-27T13:58:11Z",
+      "side": 1,
+      "message": "That comment is already updated in aosp/3796082, right? Or do you mean it should be updated differently?",
+      "parentUuid": "f38248cb_e2c68de3",
+      "revId": "9ba43af2d62d7010934d76894e767bad269c3b6d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
