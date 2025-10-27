@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d345011e_87d83631",
+        "filename": "arch/x86/events/intel/core.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2813,
+      "author": {
+        "id": 2018217
+      },
+      "writtenOn": "2025-10-27T15:37:19Z",
+      "side": 1,
+      "message": "Why `is_topdown_count()` is not here?",
+      "range": {
+        "startLine": 2813,
+        "startChar": 6,
+        "endLine": 2813,
+        "endChar": 22
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "29a3d7d9_0c969f01",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/events/intel/core.c",
+              "range": {
+                "startLine": 2813,
+                "startChar": 0,
+                "endLine": 2814,
+                "endChar": 0
+              },
+              "replacement": "\t\tif (is_topdown_count(event) \u0026\u0026 !is_pebs_counter_event_group(event))\n"
+            }
+          ]
+        }
+      ],
+      "revId": "249d7048787edddc0498e9a0e078195f5cf3bfec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
