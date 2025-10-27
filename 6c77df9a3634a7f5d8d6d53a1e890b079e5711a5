@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ad4f5cc_bf5a0997",
+        "filename": "drivers/gpu/drm/i915/display/intel_display_power.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1164,
+      "author": {
+        "id": 2018217
+      },
+      "writtenOn": "2025-10-27T17:18:50Z",
+      "side": 1,
+      "message": "s/dev_priv/display ?",
+      "range": {
+        "startLine": 1164,
+        "startChar": 15,
+        "endLine": 1164,
+        "endChar": 23
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "dd4b43c4_7c4e4e7e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/gpu/drm/i915/display/intel_display_power.c",
+              "range": {
+                "startLine": 1164,
+                "startChar": 0,
+                "endLine": 1165,
+                "endChar": 0
+              },
+              "replacement": "\t\tintel_de_rmw(display, MBUS_ABOX_CTL(i), mask, val);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6c77df9a3634a7f5d8d6d53a1e890b079e5711a5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
