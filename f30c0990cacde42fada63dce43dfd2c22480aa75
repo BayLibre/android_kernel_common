@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c21517c1_cc0b5fa1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-28T23:52:09Z",
+      "side": 1,
+      "message": "build-break on rockpi build. It looks like this change causes some modules to become \u003dm. See the config fragment at arch/arm64/configs/rockpi4_gki.fragment.\n```\nINFO: Analyzed target //common:rockpi4_dist (75 packages loaded, 112089 targets configured).\n... kernel (notrim;rockpi4_gki.fragment) //common:rockpi4 failed: (Exit 1): bash failed: error executing KernelBuild command (from target //common:rockpi4) /bin/bash -c ... (remaining 1 argument skipped)\n\nUse --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\nERROR: The following kernel modules are built but not copied. Add these lines to the module_outs attribute of @@//common:rockpi4:\n    \"drivers/cpufreq/tegra124-cpufreq.ko\",\n    \"drivers/cpufreq/tegra20-cpufreq.ko\",\n```",
+      "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
