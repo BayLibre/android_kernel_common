@@ -37,6 +37,42 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9123a363_8f186c34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-28T04:21:15Z",
+      "side": 1,
+      "message": "My thought process was that if it\u0027s in android-mainline, these changes can be automatically pulled into each respective androidX-6.X branch respectively rather than having the need to manually push a change to enable Tegra soc configs for each specific kernel branch. Eg right now we might want them added to android16-6.12, but down the line would want them in android17-6.18. So wouldn\u0027t it be easier if they\u0027re automatically pulled in rather than pushed manually for each branch?\nWhat\u0027s your opinion",
+      "parentUuid": "32a721d8_93085921",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b72d4e74_8226fbe7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-28T04:21:15Z",
+      "side": 1,
+      "message": "Updated list after adding bpmp configs (required for boot)\n\n```\nCONFIG_ARCH_HAS_PMEM_API\u003dy\nCONFIG_ARCH_HAS_UACCESS_FLUSHCACHE\u003dy\nCONFIG_ARCH_TEGRA_234_SOC\u003dy\nCONFIG_ARCH_TEGRA\u003dy\nCONFIG_ARM64_PMEM\u003dy\nCONFIG_ARM_GIC_PM\u003dy\nCONFIG_ARM_TEGRA194_CPUFREQ\u003dy\nCONFIG_CLK_TEGRA_BPMP\u003dy\nCONFIG_MEMORY\u003dy\nCONFIG_PINCTRL_TEGRA234\u003dy\nCONFIG_PINCTRL_TEGRA_XUSB\u003dy\nCONFIG_PINCTRL_TEGRA\u003dy\nCONFIG_RESET_TEGRA_BPMP\u003dy\nCONFIG_SERIAL_TEGRA_TCU_CONSOLE\u003dy\nCONFIG_SERIAL_TEGRA_TCU\u003dy\nCONFIG_SOC_TEGRA_CBB\u003dy\nCONFIG_SOC_TEGRA_FUSE\u003dy\nCONFIG_SOC_TEGRA_PMC\u003dy\nCONFIG_SOC_TEGRA_POWERGATE_BPMP\u003dy\nCONFIG_TEGRA_BPMP\u003dy\nCONFIG_TEGRA_HSP_MBOX\u003dy\nCONFIG_TEGRA_IVC\u003dy\nCONFIG_TEGRA_MC\u003dy\n```",
+      "parentUuid": "d3e75139_a55057fc",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e09a46cc_a48647c1",
         "filename": "arch/arm64/configs/gki_defconfig",
         "patchSetId": 2
@@ -72,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0893bf9b_357a1769",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-28T04:21:15Z",
+      "side": 1,
+      "message": "Not sure if I\u0027m misunderstanding here. This addition is for arm64 arch gki_defconfig, the entries you\u0027ve mentioned seem to be from the arm arch. \n\nEven in the output .config from the build I ran with the tegra additions, I see that CONFIG_SMP is enabled but these other configs HAVE_ARM_SCU and HAVE_ARM_TWD are not enabled.\nSo I\u0027d say that nor HAVE_ARM_SCU or HAVE_ARM_TWD are enabled by CONFIG_ARCH_TEGRA, nor any further dependencies according the above 2 configs being enabled since they are not enabled.",
+      "parentUuid": "e09a46cc_a48647c1",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6623686f_36704835",
         "filename": "arch/arm64/configs/gki_defconfig",
         "patchSetId": 2
@@ -83,6 +137,24 @@
       "writtenOn": "2025-10-27T19:47:33Z",
       "side": 1,
       "message": "why can\u0027t this be a vendor module?",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baa4faf0_8b840ed6",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-28T04:21:15Z",
+      "side": 1,
+      "message": "It could in theory, but we would like it built-in so that we have access to early uart output and kernel boot logs. If we build and load it as a vendor-module we\u0027ll miss early printk output and only see logs once the module is inserted. Those early debug logs can be essential for debugging some issues or kernel panics before init.",
+      "parentUuid": "6623686f_36704835",
       "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -124,6 +196,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64e96cb1_f38a4f5f",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 601,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-28T04:21:15Z",
+      "side": 1,
+      "message": "CONFIG_TEGRA_HSP_MBOX is essential for communication with BPMP in very-early kernel boot. If we build it as a module and load then the mbox is not available early on and so tegra bpmp cannot init and leads to failure for our device boot. Tegra bpmp driver also depends on TEGRA_HSP_MBOX enablement\n\nSpeaking of which, I missed that in the latest Linux kernel, Tegra bpmp is no longer selected by default by our arch config. Our Tegra BPMP is also critical for boot and needs to be enabled for our devices to boot. I\u0027ve updated the change to add that.",
+      "parentUuid": "c28f6cde_41ba6270",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "79c92d4a_958220a1",
         "filename": "arch/arm64/configs/gki_defconfig",
         "patchSetId": 2
@@ -159,6 +249,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a6924d6f_b0c7ec15",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-28T04:21:15Z",
+      "side": 1,
+      "message": "CONFIG_ARCH_TEGRA_234_SOC is actually a platform configuration flag depended on throughout the tegra driver source in the kernel eg ifdef CONFIG_ARCH_TEGRA_234_SOC codeblocks and further acts as a dependency config for the enablement of other tegra related drivers. It\u0027s also used for the inclusion of certain files in other tegra related drivers. While it does also build the driver tegra234-cbb.o, I don\u0027t think it would make sense to convert and deploy it as a vendor module in this case due to its responsibility far beyond just enabling the building of that driver.",
+      "parentUuid": "79c92d4a_958220a1",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e1bae4ce_f0ffccdf",
         "filename": "arch/arm64/configs/gki_defconfig",
         "patchSetId": 2
@@ -188,6 +296,24 @@
           ]
         }
       ],
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beaad370_01c479fb",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-28T04:21:15Z",
+      "side": 1,
+      "message": "I\u0027m looking to enable the CONFIG_TEGRA_MC memory controller which is boolean, it can be seen in the list of implicit additions in my first unresolved comment.\nThat controller is only exposed when CONFIG_MEMORY is set, and when this is the case then CONFIG_TEGRA_MC is included in the built-in kernel image as it\u0027s default y. This driver is critical for our device boot",
+      "parentUuid": "e1bae4ce_f0ffccdf",
       "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
