@@ -34,6 +34,24 @@
       "parentUuid": "d3f5acf1_d19e27b5",
       "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edb2172d_55ba2fd4",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1475,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-28T10:48:13Z",
+      "side": 1,
+      "message": "\u003e it\u0027s legal for the host to have trailing empty entries in the buffer.\n\nHmm, seems non-intuitive. Could you point to some documentation or KVM code that suggests that it is legal, or some code in qemu/crosvm/whatever that relies on it, or whatever?\n\nAnyway, if so, the comment also says \"In _typical_ case cpuid entries are contiguous\", which suggests that non-contiguous ones are legal too? So why do we need to assume that there are no non-empty entries after the first empty one? All entries have the same size, so we could just stick every missing required entry into the first available empty entry (regardless of whether there are non-empty entries after it or not), right?",
+      "parentUuid": "db12165c_b7868cc2",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
