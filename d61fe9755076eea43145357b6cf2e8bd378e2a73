@@ -16,6 +16,24 @@
       "message": "This seems like a workaround for the fact that the host doesn\u0027t pass the original `cpuid_nent` value to pKVM in the `__pkvm__vcpu_after_set_cpuid hypercall`, it just passes the size of the allocated page-aligned buffer, so pKVM has to calculate its `new_nent` on its own.\n\nThat fact might be potentially troublesome in other cases as well. So it seems worth fixing it instead of working around it? It actually seems easy to fix, by doing it the other way around: the host could just pass the original `cpuid_nent` instead of passing `PAGE_ALIGN(size)`, and then pKVM could calculate the size of the donated memory as `PAGE_ALIGN(nent * sizeof(struct kvm_cpuid_entry2))`, right?",
       "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db12165c_b7868cc2",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1475,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-10-28T01:59:34Z",
+      "side": 1,
+      "message": "I considered that option, but gave up for another reason - it\u0027s legal for the host to have trailing empty entries in the buffer. So even if cpuid_nent is passed in from the host, pkvm could still scan the buffer to find empty slots so it can fill in cpuid leaves which are not provided by the host. From this angle I\u0027m inclined to keep this scanning logic.\n\nAnother way is to require the host to provide the same set of leaves as pkvm requires, otherwise pkvm just fails the hypercall. Then we extend the hypercall to carry the original cpuid_nent.",
+      "parentUuid": "d3f5acf1_d19e27b5",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
