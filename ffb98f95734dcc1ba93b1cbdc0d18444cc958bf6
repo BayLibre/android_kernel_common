@@ -125,6 +125,42 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf50e5ac_a5b96063",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-28T19:25:31Z",
+      "side": 1,
+      "message": "I see Carlos, maybe I misunderstood initially. I was going based off my interpretation of what I\u0027d read here https://source.android.com/docs/core/architecture/kernel/kernel-code#ack-patches\n\nLike Todd mentioned though it would be beneficial if this could be taken into mainline similar to other vendors - it would remove the added effort of having to adapt and merge this change into each LTS dev branch, especially as we upgrade our android version / kernels as they\u0027re released in the future",
+      "parentUuid": "08552817_af6251a4",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d5b3430_25ada7dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-28T19:25:31Z",
+      "side": 1,
+      "message": "Yes, sorry I\u0027ve removed this from built-in. We do build and load this as a vendor module on our side",
+      "parentUuid": "16431ea9_87ba75bd",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e09a46cc_a48647c1",

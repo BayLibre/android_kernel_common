@@ -52,6 +52,41 @@
       "parentUuid": "db400ad2_46a49fd2",
       "revId": "3deedb2e8aad4dfc875fdf4af31f817067ca4106",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51cca3b0_158677bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-28T19:25:31Z",
+      "side": 1,
+      "message": "Final resulting diffconfig of all the above changes below\n\n```\nCONFIG_ARCH_HAS_PMEM_API\u003dy\nCONFIG_ARCH_HAS_UACCESS_FLUSHCACHE\u003dy\nCONFIG_ARCH_TEGRA_234_SOC\u003dy\nCONFIG_ARCH_TEGRA\u003dy\nCONFIG_ARM64_PMEM\u003dy\nCONFIG_ARM_GIC_PM\u003dy\nCONFIG_CLK_TEGRA_BPMP\u003dy\nCONFIG_MEMORY\u003dy\nCONFIG_PINCTRL_TEGRA234\u003dy\nCONFIG_PINCTRL_TEGRA_XUSB\u003dy\nCONFIG_PINCTRL_TEGRA\u003dy\nCONFIG_RESET_TEGRA_BPMP\u003dy\nCONFIG_SERIAL_TEGRA_TCU_CONSOLE\u003dy\nCONFIG_SERIAL_TEGRA_TCU\u003dy\nCONFIG_SOC_TEGRA_CBB\u003dy\nCONFIG_SOC_TEGRA_FUSE\u003dy\nCONFIG_SOC_TEGRA_PMC\u003dy\nCONFIG_SOC_TEGRA_POWERGATE_BPMP\u003dy\nCONFIG_TEGRA_AHB\u003dy\nCONFIG_TEGRA_BPMP\u003dy\nCONFIG_TEGRA_HSP_MBOX\u003dy\nCONFIG_TEGRA_IVC\u003dy\nCONFIG_TEGRA_MC\u003dy\n```",
+      "revId": "3deedb2e8aad4dfc875fdf4af31f817067ca4106",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7686ba09_14741c54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-28T19:25:31Z",
+      "side": 1,
+      "message": "Thanks for the suggestions, I\u0027ve instead disabled these configs via gki_defconfig rather than Kconfig.\nFor now since as Aaron\u0027s mentioned, the Amba config has been left enabled, as we cannot unset it via the defconfig and are not looking to modify Kconfig files in ack but rather in upstream.\nI will start an effort internally to handle the removal of default selections where not necessary in upstream so that this issue doesn\u0027t persist in the future and can be avoided.",
+      "parentUuid": "c7fee2b5_4b96598d",
+      "revId": "3deedb2e8aad4dfc875fdf4af31f817067ca4106",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
