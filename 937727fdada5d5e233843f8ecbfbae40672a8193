@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9720c650_de104c81",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ffa.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1742,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-10-28T13:04:07Z",
+      "side": 1,
+      "message": "Wouldn\u0027t we be better off just combining all of this with the check above? That is:\n\n```\nif (!is_ffa_call(func_id) || !VM_FFA_SUPPORTED(vcpu)) {\n\tsmccc_set_retval(vcpu, SMCCC_RET_NOT_SUPPORTED, 0, 0, 0);\n\treturn true;\n```\n\nThat way, when FFA is not supported these calls behave in the same way as other unsupposed SMCs.",
+      "range": {
+        "startLine": 1735,
+        "startChar": 0,
+        "endLine": 1742,
+        "endChar": 0
+      },
+      "revId": "937727fdada5d5e233843f8ecbfbae40672a8193",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
