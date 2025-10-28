@@ -87,6 +87,24 @@
       "parentUuid": "c7fee2b5_4b96598d",
       "revId": "3deedb2e8aad4dfc875fdf4af31f817067ca4106",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b8588ee_e603d510",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-28T19:59:49Z",
+      "side": 1,
+      "message": "Let\u0027s go ahead and disable the amba config...perhaps with something like `default y if ARCH_TEGRA \u0026\u0026 !GKI_HACKS_TO_FIX`. Then we remove this when the upstream fix is present.",
+      "parentUuid": "7686ba09_14741c54",
+      "revId": "3deedb2e8aad4dfc875fdf4af31f817067ca4106",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
