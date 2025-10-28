@@ -1288,6 +1288,7 @@
   get_random_u8
   get_state_synchronize_rcu
   __get_task_comm
+  get_task_cred
   get_task_pid
   get_tree_bdev
   get_unused_fd_flags
@@ -2359,6 +2360,7 @@
   ptp_clock_register
   ptp_clock_unregister
   ptp_find_pin
+  __put_cred
   put_device
   put_disk
   put_iova_domain
