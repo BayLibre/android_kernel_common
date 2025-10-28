@@ -89,6 +89,42 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08552817_af6251a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-28T17:56:10Z",
+      "side": 1,
+      "message": "I guess since we\u0027ve taken CONFIG_ARCH_SUNXI, CONFIG_ARCH_HISI, and CONFIG_ARCH_QCOM, we should take this too.",
+      "parentUuid": "3a224060_0ab6250e",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16431ea9_87ba75bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-28T17:56:10Z",
+      "side": 1,
+      "message": "CONFIG_ARM_TEGRA194_CPUFREQ isn\u0027t enabled in android15-6.6, can it be a vendor module?",
+      "parentUuid": "b72d4e74_8226fbe7",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e09a46cc_a48647c1",
@@ -142,6 +178,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7eae2f2_cf5d45e6",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-28T17:56:10Z",
+      "side": 1,
+      "message": "I was just looking at the Kconfig for ARCH_TEGRA, and didn\u0027t notice those selected configs are arm32.",
+      "parentUuid": "0893bf9b_357a1769",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6623686f_36704835",
@@ -173,6 +227,24 @@
       "side": 1,
       "message": "It could in theory, but we would like it built-in so that we have access to early uart output and kernel boot logs. If we build and load it as a vendor-module we\u0027ll miss early printk output and only see logs once the module is inserted. Those early debug logs can be essential for debugging some issues or kernel panics before init.",
       "parentUuid": "6623686f_36704835",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab6c93c8_8cb82133",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-28T17:56:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "baa4faf0_8b840ed6",
       "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -230,6 +302,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5ab8b6d_d9a4f73b",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 601,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-28T17:56:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64e96cb1_f38a4f5f",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79c92d4a_958220a1",
@@ -283,6 +373,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8b29a6d_e68139ce",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-28T17:56:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6924d6f_b0c7ec15",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1bae4ce_f0ffccdf",
@@ -332,6 +440,24 @@
       "side": 1,
       "message": "I\u0027m looking to enable the CONFIG_TEGRA_MC memory controller which is boolean, it can be seen in the list of implicit additions in my first unresolved comment.\nThat controller is only exposed when CONFIG_MEMORY is set, and when this is the case then CONFIG_TEGRA_MC is included in the built-in kernel image as it\u0027s default y. This driver is critical for our device boot",
       "parentUuid": "e1bae4ce_f0ffccdf",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af356e0c_be5db0f8",
+        "filename": "arch/arm64/configs/gki_defconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-28T17:56:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "beaad370_01c479fb",
       "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
