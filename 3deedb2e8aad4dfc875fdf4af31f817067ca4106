@@ -16,6 +16,24 @@
       "message": "Have the removal of the `default` selections being pursued upstream? If it makes sense here, why wouldn\u0027t it make sense upstream too?",
       "revId": "3deedb2e8aad4dfc875fdf4af31f817067ca4106",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db400ad2_46a49fd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1637924
+      },
+      "writtenOn": "2025-10-28T17:20:40Z",
+      "side": 1,
+      "message": "As a user of tegra gki in an oss AOSP fork, can I make a suggestion? All but the amba config can be set to \u0027is not set\u0027 in the defconfig, there\u0027s no need to change the kconfigs. The amba one cannot do this because there\u0027s no description in the config, making it not changeable from the defconfig. It would be cleaner to just unset the unneeded tristates in the defconfig than to change the kconfigs, and would reduce the ongoing maintenance burden.",
+      "parentUuid": "32956ad9_7a9e5b0c",
+      "revId": "3deedb2e8aad4dfc875fdf4af31f817067ca4106",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
