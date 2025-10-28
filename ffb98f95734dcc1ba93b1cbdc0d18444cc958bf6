@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3a224060_0ab6250e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-10-28T17:11:29Z",
+      "side": 1,
+      "message": "\u003e I\u0027m aware that the more correct flow is to merge into android-mainline first.\n\nWe rather only land patches in android-mainline that are _required_ in that branch for a strong reason. There is no practice or suggestion that a patch going into LTS dev branches e.g. android16-6.12 should first land in android-mainline. It is more the opposite actually, as there are higher stakes of technical debt when merged in android-mainline.",
+      "parentUuid": "9123a363_8f186c34",
+      "revId": "ffb98f95734dcc1ba93b1cbdc0d18444cc958bf6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e09a46cc_a48647c1",
         "filename": "arch/arm64/configs/gki_defconfig",
         "patchSetId": 2
