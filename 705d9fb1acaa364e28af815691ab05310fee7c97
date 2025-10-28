@@ -88,6 +88,24 @@
       "parentUuid": "b850ae49_0c845e9c",
       "revId": "705d9fb1acaa364e28af815691ab05310fee7c97",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e015f71b_5eb0440e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-28T12:00:33Z",
+      "side": 1,
+      "message": "Ok, now this is causing a presubmit failure (since presubmit does build it is as a host kernel), so it\u0027s better to fix it... And the `#ifdef CONFIG_PKVM_INTEL` trick doesn\u0027t work:\n```\ndmaluka@dmaluka:~/src/android-kernel$ tools/bazel run --config\u003dfast //common:kernel_x86_64_microdroid_dist -- --dist_dir\u003dout/dist\nStarting local Bazel server and connecting to it...\nINFO: Analyzed target //common:kernel_x86_64_microdroid_dist (63 packages loaded, 99408 targets configured).\nERROR: /usr/local/google/home/dmaluka/src/android-kernel/common/BUILD.bazel:267:13: Building kernel (lto\u003ddefault;notrim) @@//common:kernel_x86_64_microdroid failed: (Exit 2): bash failed: error executing KernelBuild command (from target //common:kernel_x86_64_microdroid) /bin/bash -c ... (remaining 1 argument skipped)\nerror: /usr/local/google/home/dmaluka/src/android-kernel/common/include/uapi/linux/kvm_para.h: leak CONFIG_PKVM_INTEL to user-space\nmake[3]: *** [/usr/local/google/home/dmaluka/src/android-kernel/common/scripts/Makefile.headersinst:63: usr/include/linux/kvm_para.h] Error 1\n```",
+      "parentUuid": "86420e96_3d6ae4b6",
+      "revId": "705d9fb1acaa364e28af815691ab05310fee7c97",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
