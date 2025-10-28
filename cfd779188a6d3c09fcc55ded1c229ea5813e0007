@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b816e8ef_23d62ac7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3746392
+      },
+      "writtenOn": "2025-10-28T17:05:25Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "d50bd193_6637e9d3",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "cfd779188a6d3c09fcc55ded1c229ea5813e0007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "35f6a009_44c19823",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2025-10-23T19:59:31Z",
       "side": 1,
       "message": "Is there any precedent for dm targets putting sysfs files in the block sysfs directory like this?  There are several issues with doing it that way.  It looks like the usual pattern for returning stats from dm targets is to use STATUSTYPE_INFO.  Check out dm-delay.c, dm-era-target.c, dm-integrity.c, etc.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 26
+      },
+      "revId": "cfd779188a6d3c09fcc55ded1c229ea5813e0007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b93d044_52e729c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 3746392
+      },
+      "writtenOn": "2025-10-28T17:05:25Z",
+      "side": 1,
+      "message": "Thank you for this constructive feedback. I did not find an example of dm targets putting files in /sys/block. STATUSTYPE_INFO is being used for exposing the runtime information. Few examples of dm targets exposing counter via STATUSTYPE_INFO:\ndm-integrity --\u003e the number of integrity mismatches, etc\ndm-era --\u003e  current era\nI have updated the verity-fec to do similar.",
+      "parentUuid": "35f6a009_44c19823",
       "range": {
         "startLine": 12,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "45c82ec7_b21480e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 3746392
+      },
+      "writtenOn": "2025-10-28T17:05:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea016035_8a16ef7a",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 0
+      },
+      "revId": "cfd779188a6d3c09fcc55ded1c229ea5813e0007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "029f227b_81a2b716",
         "filename": "drivers/md/dm-verity-fec.h",
         "patchSetId": 3
@@ -83,6 +155,30 @@
       "writtenOn": "2025-10-23T19:59:31Z",
       "side": 1,
       "message": "Probably should be 64-bit.",
+      "range": {
+        "startLine": 53,
+        "startChar": 1,
+        "endLine": 53,
+        "endChar": 9
+      },
+      "revId": "cfd779188a6d3c09fcc55ded1c229ea5813e0007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a4b2a01_cbc4a5d4",
+        "filename": "drivers/md/dm-verity-fec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3746392
+      },
+      "writtenOn": "2025-10-28T17:05:25Z",
+      "side": 1,
+      "message": "I have changed the counter to 64-bit.",
+      "parentUuid": "029f227b_81a2b716",
       "range": {
         "startLine": 53,
         "startChar": 1,
