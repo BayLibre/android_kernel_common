@@ -46,6 +46,30 @@
       },
       "revId": "202d9482913cbcfbe66cce96a5cfaed087b472fa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45c237e4_166804a8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-10-29T13:54:57Z",
+      "side": 1,
+      "message": "My point is that you introduced `BPF_TRAMP_F_INDIRECT` in \"BACKPORT: x86/cfi,bpf: Fix bpf_struct_ops CFI\" so the comment here is inaccurate. In fact, I don\u0027t think you did anything apart from dropping the hunk in `bpf_jit_free()` so the comment in `[]` needs updating.",
+      "parentUuid": "1fc838ff_1b31962a",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 0
+      },
+      "revId": "202d9482913cbcfbe66cce96a5cfaed087b472fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
