@@ -46,6 +46,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c77a26d_b212d64c",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1383,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-10-29T04:51:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "230f7087_5d53f1a3",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "718f9e72_bd5944b3",
@@ -59,6 +77,24 @@
       "writtenOn": "2025-10-28T22:11:52Z",
       "side": 1,
       "message": "VMs seem to be working fine in my tests with crosvm. But I\u0027ve added some tracing here to see which leaves are enforced to different values by pKVM:\n```\n--- a/arch/x86/kvm/pkvm/cpuid.c\n+++ b/arch/x86/kvm/pkvm/cpuid.c\n@@ -1427,8 +1427,17 @@ static void kvm_enforce_cpuid_entry(struct kvm_cpuid_entry2 *entry,\n \t\tbreak;\n \t}\n \n-\tif (update)\n+\tif (update) {\n+\t\tif (memcmp(entry, \u0026tmp, sizeof(struct kvm_cpuid_entry2))) {\n+\t\t\tpr_info(\"pkvm: orig cpuid: func\u003d%x idx\u003d%x flags\u003d%x eax\u003d%x ebx\u003d%x ecx\u003d%x edx\u003d%x\\n\",\n+\t\t\t\tentry-\u003efunction, entry-\u003eindex, entry-\u003eflags, entry-\u003eeax, entry-\u003eebx,\n+\t\t\t\tentry-\u003eecx, entry-\u003eedx);\n+\t\t\tpr_info(\"pkvm:  new cpuid: func\u003d%x idx\u003d%x flags\u003d%x eax\u003d%x ebx\u003d%x ecx\u003d%x edx\u003d%x\\n\",\n+\t\t\t\ttmp.function, tmp.index, tmp.flags, tmp.eax, tmp.ebx,\n+\t\t\t\ttmp.ecx, tmp.edx);\n+\t\t}\n \t\t*entry \u003d tmp;\n+\t}\n }\n \n /*\n```\n\nAnd I have the following observations, for example on ADL:\n\n1. On some (not all) vCPUs, pKVM enforces different values of some cache parameters (functions 0x2, 0x4 and 0x80000006):\n\n```\n[  230.416961] pkvm: orig cpuid: func\u003d2 idx\u003d0 flags\u003d0 eax\u003dfeff01 ebx\u003df0 ecx\u003d0 edx\u003d0\n[  230.425248] pkvm:  new cpuid: func\u003d2 idx\u003d0 flags\u003d0 eax\u003dfeff01 ebx\u003d0 ecx\u003d0 edx\u003d0\n[  230.433418] pkvm: orig cpuid: func\u003d4 idx\u003d0 flags\u003d1 eax\u003d4121 ebx\u003d2c0003f ecx\u003d3f edx\u003d0\n[  230.442067] pkvm:  new cpuid: func\u003d4 idx\u003d0 flags\u003d1 eax\u003d4121 ebx\u003d1c0003f ecx\u003d3f edx\u003d0\n[  230.450718] pkvm: orig cpuid: func\u003d4 idx\u003d1 flags\u003d1 eax\u003d4122 ebx\u003d1c0003f ecx\u003d3f edx\u003d0\n[  230.459366] pkvm:  new cpuid: func\u003d4 idx\u003d1 flags\u003d1 eax\u003d4122 ebx\u003d1c0003f ecx\u003d7f edx\u003d0\n[  230.468016] pkvm: orig cpuid: func\u003d4 idx\u003d2 flags\u003d1 eax\u003d1c143 ebx\u003d240003f ecx\u003d7ff edx\u003d0\n[  230.476862] pkvm:  new cpuid: func\u003d4 idx\u003d2 flags\u003d1 eax\u003d1c143 ebx\u003d3c0003f ecx\u003d7ff edx\u003d0\n[  230.517974] pkvm: orig cpuid: func\u003d80000006 idx\u003d0 flags\u003d0 eax\u003d0 ebx\u003d0 ecx\u003d5007040 edx\u003d0\n[  230.526917] pkvm:  new cpuid: func\u003d80000006 idx\u003d0 flags\u003d0 eax\u003d0 ebx\u003d0 ecx\u003d8008040 edx\u003d0\n```\n\nAnd AFAICS crosvm actually sets native values of those leaves (it executes the CPUID instruction to obtain them).\n\nSo, I believe, those cache parameters are different on different CPU cores, whereas pKVM enforces the same values (which it obtained once during bootup, on one CPU) for all vCPUs, regardless on which CPU the given vCPU is running. Seems like a problem?\n\n(Of course crosvm\u0027s setup is also not 100% correct in this regard, since a vCPU may migrate to a different CPU at runtime. But that\u0027s not the point.)\n\n2. On all vCPUs, pKVM enforces different values of some FPU params (according to SDM, those params are \"Maximum size (bytes, from the beginning of the XSAVE/XRSTOR save area) required by\nenabled features in XCR0\" and \"supported bits of the lower 32 bits of the IA32_XSS MSR\"):\n\n```\n[  230.485715] pkvm: orig cpuid: func\u003dd idx\u003d0 flags\u003d1 eax\u003d207 ebx\u003d240 ecx\u003da88 edx\u003d0\n[  230.493979] pkvm:  new cpuid: func\u003dd idx\u003d0 flags\u003d1 eax\u003d207 ebx\u003da88 ecx\u003da88 edx\u003d0\n[  230.502230] pkvm: orig cpuid: func\u003dd idx\u003d1 flags\u003d1 eax\u003df ebx\u003d240 ecx\u003d0 edx\u003d0\n[  230.510102] pkvm:  new cpuid: func\u003dd idx\u003d1 flags\u003d1 eax\u003df ebx\u003d348 ecx\u003d0 edx\u003d0\n```\n\nI haven\u0027t analyzed if it is ok that pKVM changes these values. So, is it ok?\n\n3. On all vCPUs, pKVM enforces KVM PV features enumerated in KVM_CPUID_FEATURES:\n```\n[  230.535860] pkvm: orig cpuid: func\u003d40000001 idx\u003d0 flags\u003d0 eax\u003d0 ebx\u003d0 ecx\u003d0 edx\u003d0\n[  230.544217] pkvm:  new cpuid: func\u003d40000001 idx\u003d0 flags\u003d0 eax\u003d1007efb ebx\u003d0 ecx\u003d0 edx\u003d0\n```\n\nSeems not quite correct, since we don\u0027t really support those KVM features for pVMs (although probably harmless, since pVM will not try to use those features anyway, since KVM_CPUID_SIGNATURE is set to PKVMPKVMPKVM instead of KVMKVMKVM).\n\n4. Also if I run a VM with `--host-cpu-topology`, pKVM for some reason enforces the \"Core type\" value to zero, instead of the correct native value set by crosvm (0x40 \u003d \"Intel Core\" for P-cores, 0x20 \u003d \"Intel Atom\" for E-cores):\n\n```\n[ 7161.292958] pkvm: orig cpuid: func\u003d1a idx\u003d0 flags\u003d0 eax\u003d20000001 ebx\u003d0 ecx\u003d0 edx\u003d0\n[ 7161.292960] pkvm:  new cpuid: func\u003d1a idx\u003d0 flags\u003d0 eax\u003d0 ebx\u003d0 ecx\u003d0 edx\u003d0\n[ 7161.292961] pkvm: orig cpuid: func\u003d1a idx\u003d0 flags\u003d0 eax\u003d40000001 ebx\u003d0 ecx\u003d0 edx\u003d0\n[ 7161.292963] pkvm:  new cpuid: func\u003d1a idx\u003d0 flags\u003d0 eax\u003d0 ebx\u003d0 ecx\u003d0 edx\u003d0\n```\n\nI have no idea why this happens.",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55892690_2b95b12b",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-10-29T04:51:17Z",
+      "side": 1,
+      "message": "1. it\u0027s deliberate for cache/TLB related info. I didn\u0027t see how software may utilize that information, especially when the vcpu is not pinned. If you know a certain usage relying on accurate cache/TLB info, then we should discuss how to achieve that (which is beyond cpuid) and any security concern letting the host manage. Otherwise I prefer to keeping it simple, as this patch does.\n\n2. FPU is managed by pKVM hence the state size must be set by pKVM (e.g. it doesn\u0027t sound secure if the host reports a smaller area size than supported FPU features to guest, leading to xsave/xrstor not covering the full state in guest). In this specific case the difference comes from:\n\n  a) crosvm gets size a88 from kvm-high, based on supported FPU features\n  b) crosvm passes a88 to kvm-high\n  c) kvm-high updates it to 240 based on initial xcr0 value. See kvm_set_cpuid() calls __kvm_update_cpuid_runtime()\n  d) kvm-high issues hypercall with 240 to pkvm, at the end of kvm_set_cpuid()\n  e) pkvm calls pkvm_enforce_cpuid(), which updates 240 to a88 based on supported FPU features\n  f) pkvm calls kvm_set_cpuid(), same as step c). Then 240 again\n\nat run-time, guest kernel updates xcr0, emulated by __kvm_set_xcr() which calls kvm_update_cpuid_runtime() to change 240 to a88 based on the new xcr0 value.\n  \nSo in the end the guest observes the desired value. btw there is an userspace utility called \u0027cpuid\u0027 to list all leafs/bits in readable format. You can use it to compare the end output before and after applying this series. 😊\n\n3. It\u0027s cleared later in kvm_update_pv_runtime():\n        struct kvm_cpuid_entry2 *best \u003d kvm_find_kvm_cpuid_features(vcpu);\n        \n        /*\n         * save the feature bitmap to avoid cpuid lookup for every PV\n         * operation\n         */\n        if (best) {\n                /* Disable PV features for pkvm protected vm */\n                if (pkvm_is_protected_vcpu(vcpu))\n                        best-\u003eeax \u003d 0; \n\nI try to keep the same style as other cpuid functions in pkvm_get_cpuid(), to collect all possible leaves first which are then sanitized in various latter places. But if you prefer to removing the info at the first place, I could do that too.\n\n4. the entire hybrid topology support is broken. we discussed earlier that it\u0027s unnecessary to expose virtual hybrid to the guest in pKVM. and similar to cache/TLB, such info is misleading w/o pinning the vcpu. that\u0027s why I didn\u0027t reuse the host bits here. allowing it is easy, but maybe it\u0027s better to not do it until seeing a real problem then we can better understand the usage to support?",
+      "parentUuid": "718f9e72_bd5944b3",
       "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -136,6 +172,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8b60868b_6f3c2ba5",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1475,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-10-29T04:51:17Z",
+      "side": 1,
+      "message": "yeah, that makes sense. will change it.",
+      "parentUuid": "1813169c_f091c408",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da54eea5_7efd1dea",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 1
@@ -169,6 +223,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5b14764_131349bb",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1505,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-10-29T04:51:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "da54eea5_7efd1dea",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "030cc74b_4189cbde",
@@ -182,6 +254,24 @@
       "writtenOn": "2025-10-28T20:55:34Z",
       "side": 1,
       "message": "We should only enforce it for pVM, not for npVM?",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7a0f253_a0047c06",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-10-29T04:51:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "030cc74b_4189cbde",
       "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
