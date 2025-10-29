@@ -16,6 +16,24 @@
       "message": "build-break on rockpi build. It looks like this change causes some modules to become \u003dm. See the config fragment at arch/arm64/configs/rockpi4_gki.fragment.\n```\nINFO: Analyzed target //common:rockpi4_dist (75 packages loaded, 112089 targets configured).\n... kernel (notrim;rockpi4_gki.fragment) //common:rockpi4 failed: (Exit 1): bash failed: error executing KernelBuild command (from target //common:rockpi4) /bin/bash -c ... (remaining 1 argument skipped)\n\nUse --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\nERROR: The following kernel modules are built but not copied. Add these lines to the module_outs attribute of @@//common:rockpi4:\n    \"drivers/cpufreq/tegra124-cpufreq.ko\",\n    \"drivers/cpufreq/tegra20-cpufreq.ko\",\n```",
       "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37e0a9c1_9ca60777",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-29T05:01:45Z",
+      "side": 1,
+      "message": "Hm. I see that the configs for those 2 drivers, `CONFIG_ARM_TEGRA20_CPUFREQ` \nand `CONFIG_ARM_TEGRA124_CPUFREQ` are defined in the Kconfig.arm file rather than the general Kconfig\n\nI was curious why they would be selected since they\u0027re only defined in the Kconfig.arm file, and we\u0027ve only defined CONFIG_ARCH_TEGRA in the arm64 arch and rockpi build is also an arm64 arch, but I looked through the Kconfig for cpufreq and look like the Kconfig.arm file is sourced unconditionally for cpufreq https://cs.android.com/android/kernel/superproject/+/common-android-mainline:common/drivers/cpufreq/Kconfig;l\u003d276\nSince `CONFIG_CPUFREQ_DT\u003dm` is set in the rockpi fragment, it leads to all the dependencies for the 2 tegra cpufreq drivers being fulfilled, and then they are enabled.\n\nAccordingly, I tested explicitly disabling these 2 drivers in the defconfig so that they are not unintentionally built due to the above interaction (eg. `# CONFIG_ARM_TEGRA20_CPUFREQ is not set`). With this change I\u0027ve tested rockpi build locally and it was successful, however the standard kernel aarch64 build fails at the kernel config step since it expects the 2 configs being unset to not be present in the defconfig\n\nAny suggestions for a clean way we might go about resolving this?\nOne option I see is to add an ` \u0026\u0026 ARM` dependency to each of the 2 above drivers\u0027 Kconfig.arm entries\nAnother option is to update their Kconfig entries to depend on a specific tegra arch rather than just `ARCH_TEGRA`, eg `depends on ARCH_TEGRA_210_SOC`\nIf any of the above are pursued, I recognize that it\u0027s a temporary solution and again, another Kconfig update I need to pursue from our side to upstream to prevent these issues in the future.\n\nNot sure if there\u0027s a better way you may suggest for us to resolve this build issue.",
+      "parentUuid": "c21517c1_cc0b5fa1",
+      "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
