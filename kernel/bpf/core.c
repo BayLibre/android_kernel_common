@@ -1909,7 +1909,11 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
 	/* In case of BPF to BPF calls, verifier did all the prep
 	 * work with regards to JITing, etc.
 	 */
+#ifdef CONFIG_ARM64
 	bool jit_needed = fp->jit_requested;
+#else
+	bool jit_needed = false;
+#endif
 
 	if (fp->bpf_func)
 		goto finalize;
