@@ -244,6 +244,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "060833e5_5fb2a960",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1497,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-29T21:43:47Z",
+      "side": 1,
+      "message": "Finally got to testing it on PTL... It doesn\u0027t work well: I\u0027m hitting this -EINVAL here, so pKVM-high reports `Failed to set cpuid pages for pkvm vcpu` errors, and VMs fail to start.\n\nThe problematic unknown leaf is the following one:\n\n```\n[   22.989251] pkvm_enforce_cpuid: unknown leaf: func\u003d4 idx\u003d4 flags\u003d1 eax\u003d0 ebx\u003d0 ecx\u003d0 edx\u003d0\n```\n\nSo, some cores have 4 levels of caches, while others have only 3. So this is a similar observation to the one we\u0027ve been discussing in another comment, but in this case the CPUID entry not just has a different value from the one in `pkvm_hyp-\u003ecpuid_def` but is simply missing in `pkvm_hyp-\u003ecpuid_def`.\n\nI\u0027ve tried replacing `return -EINVAL` with `memset(\u0026e2[i], 0, sizeof(struct kvm_cpuid_entry2))` here, and now it appears to work fine.\n\nIf we apply this fix, then, echoing my question from the other comment: I hope it won\u0027t be a problem if the pVM will think there is no L4 cache (or, depending on luck, the other way around: if it will wrongly think there are L4 caches on all cores)?",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da54eea5_7efd1dea",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 1
