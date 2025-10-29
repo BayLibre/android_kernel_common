@@ -33,6 +33,29 @@
       "message": "I think the issue might be fixed by: https://git.kernel.org/torvalds/c/df0cb5cb50bd so it would be best to pick the upstream patch.",
       "revId": "b4e841f65a620170ef9e36491c6af88bebaf46ee",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17fd61c8_34403751",
+        "filename": "kernel/bpf/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1912,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2025-10-29T17:02:58Z",
+      "side": 1,
+      "message": "this is clearly the wrong condition, what about x86-64, riscv64 ?",
+      "range": {
+        "startLine": 1912,
+        "startChar": 7,
+        "endLine": 1912,
+        "endChar": 19
+      },
+      "revId": "b4e841f65a620170ef9e36491c6af88bebaf46ee",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
