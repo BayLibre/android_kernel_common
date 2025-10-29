@@ -119,6 +119,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2a8f03fb_fd489a55",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-29T15:19:22Z",
+      "side": 1,
+      "message": "\u003e I\u0027ve been thinking that we could call pkvm_get_cpuid() not once during pKVM init, but every time when loading a vCPU on a pCPU, i.e. in pkvm_vcpu_load(), and then enforce it. Thereby we would be sure that the native CPUID values we enforce were obtained on the actual pCPU on which the given vCPU will actually run.\n\nAlthough after more thought, this might be a rather bad idea: the guest would unexpectedly see CPUID values _changing_ at runtime on a given CPU.\n\nUnless we enforce pinning vCPUs... which would mean pKVM forbidding re-loading a pVM\u0027s vCPU to a different pCPU at runtime. If we actually need to do that for security, that would be unfortunate. So I hope we don\u0027t need to do that for security. :) \n\nSo, I hope we can keep this global-only CPUID enforcement as is...\n\nSo, just to confirm (as I barely know anything about the mitigations for CPU vulnerabilities): in this observed case, the cache parameters that are different on different CPU cores are AFAICS:  number of ways of associativity, number of sets, cache size, prefetching capabilities. Are we certain that none of the Linux kernel\u0027s mitigations rely on correct information about these parameters? (i.e. that they only rely on the cache line size, which, we assume, is unlikely to be different on different cores, or different from 64 bytes at all?)\n\n...Regarding this:\n\n\u003e So, yeah, we don\u0027t have a use case for exposing hybrid topology to a pVM on x86 yet, so keeping it as is is fine (for now). But still, since letting the host set these bits here is easy, maybe let\u0027s do that right away (to make it more correct right away)?\n\nAfter a bit more thought, it might be indeed better to not do this for now, to keep things as simple as possible.",
+      "parentUuid": "c26d9604_1727e45e",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d3f5acf1_d19e27b5",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 1
