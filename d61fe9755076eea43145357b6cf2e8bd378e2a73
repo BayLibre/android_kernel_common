@@ -101,6 +101,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c26d9604_1727e45e",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-29T13:18:15Z",
+      "side": 1,
+      "message": "\u003e it\u0027s deliberate for cache/TLB related info. I didn\u0027t see how software may utilize that information, especially when the vcpu is not pinned. If you know a certain usage relying on accurate cache/TLB info, then we should discuss how to achieve that (which is beyond cpuid) and any security concern letting the host manage.\n\nI\u0027ve been assuming that the reason why we don\u0027t want to allow the host to set cache/TLB info (and instead want to enforce it in pKVM) is that it may be needed by pVM to correctly apply various mitigations for side-channel attacks. And thus we need to enforce not just _some_ info (from any pCPU) but _accurate_ info, from the pCPU on which the given vCPU actually runs.\n\nNow, I\u0027m not an expert in those mitigations, so maybe that\u0027s not the case, i.e. maybe none of those mitigations rely on accurate cache/TLB info from those particular CPUID leaves. But if so, why enforce it in pKVM, instead of letting the host set it?\n\nSo IIUC you are saying that it is not for security but just for simplicity, to let the host set the bare required minimum and no more than that. If so, I\u0027m ok with that.\n\nStill, in case if exposing accurate cache/TLB info to pVM is actually needed for security, I\u0027ve been thinking that we could call pkvm_get_cpuid() not once during pKVM init, but every time when loading a vCPU on a pCPU, i.e. in pkvm_vcpu_load(), and then enforce it. Thereby we would be sure that the native CPUID values we enforce were obtained on the actual pCPU on which the given vCPU will actually run.\n\nAlso perhaps there are more such corner cases (besides cache/TLB info) where different CPUs have different CPUID leaves values and it might be important to keep them accurate for pVM for security, so such enforce-on-vcpu-load approach might be more preferable in general? IOW, if we just ensure that _any_ CPUID values we enforce are accurate per pCPU, we don\u0027t need to scrutinize which of those cases are important for security and which are not?\n\nWDYT?\n\n2. Regarding FPU, I see, thanks for explanation. (Although besides that, now I\u0027m not sure it is correct to rely on pkvm_init_percpu_fpu(), which I just wrote about in another comment.)\n\n\u003e btw there is an userspace utility called \u0027cpuid\u0027 to list all leafs/bits in readable format.\n\nI know, but for some reason `apt search cpuid` didn\u0027t find it last time I tried it inside my guest VM, so I gave up on that. :) \n\n3. Regarding KVM_CPUID_FEATURES, I\u0027m probably fine with keeping it as is. Although perhaps it would be good to consolidate our setting of KVM_CPUID_SIGNATURE and KVM_CPUID_FEATURES here in (p)kvm_enforce_cpuid_entry() instead of keeping it spread across the code. But I haven\u0027t carefully thought about that yet anyway.\n\n4. Regarding hybrid topology: first of all I\u0027m just wondering _why_ pKVM appears to enforce an _incorrect_ value here. Is the value pKVM reads from CPUID at boot time different from the value crosvm reads from CPUID, for some reason?\n\n\u003e the entire hybrid topology support is broken. [...] such info is misleading w/o pinning the vcpu.\n\nWell, I suppose the case when vCPUs are pinned is precisely the use case for exposing the hybrid topology to the guest. That was the case in ManaTEE, for which `--host-cpu-topology` was originally introduced.\n\nAlthough now AVF appears to use `--host-cpu-topology` even if vCPUs are not pinned, which seems like an overkill, but that\u0027s another story...\n\nSo, yeah, we don\u0027t have a use case for exposing hybrid topology to a pVM on x86 yet, so keeping it as is is fine (for now). But still, since letting the host set these bits here is easy, maybe let\u0027s do that right away (to make it more correct right away)?\n\nOr alternatively, don\u0027t let the host set it but (automatically) correctly enforce it per pCPU, as a part of the enforce-on-vcpu-load approach I suggested above?",
+      "parentUuid": "55892690_2b95b12b",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d3f5acf1_d19e27b5",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 1
