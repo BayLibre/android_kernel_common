@@ -16,6 +16,24 @@
       "message": "Please explain why message queue ipc is needed? What features does it enable?",
       "revId": "9fc74c85a111c0efeea1729aac5501dd58c51f7b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e48c6841_c0234439",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4431829
+      },
+      "writtenOn": "2025-10-29T02:50:15Z",
+      "side": 1,
+      "message": "LG\u0027s existing legacy services internally use MQ (message queue) for inter-service communication. so POSIX_MQUEUE config is necessary to reuse this logic.",
+      "parentUuid": "509d0b8d_3a242371",
+      "revId": "9fc74c85a111c0efeea1729aac5501dd58c51f7b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
