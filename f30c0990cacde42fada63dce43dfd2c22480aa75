@@ -142,6 +142,24 @@
       "parentUuid": "ae716879_0eea862f",
       "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "320c11f9_4d1354f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-30T18:09:59Z",
+      "side": 1,
+      "message": "Thanks for bringing up this concern Aaron, it\u0027s a valuable point. It would be pretty unfair to completely disable a driver from being built with the gki hacks to fix dependency, especially if a fork is looking to build that driver based on their target.\nI\u0027ve discussed internally and we will be pushing a patch to upstream to modify the Kconfig default for each of the 2 drivers like below\n\n```\nconfig ARM_TEGRA20_CPUFREQ\n         tristate \"Tegra20/30 CPUFreq support\"\n         depends on ARCH_TEGRA || COMPILE_TEST\n         depends on CPUFREQ_DT\n-       default ARCH_TEGRA\n+       default ARCH_TEGRA_2x_SOC || ARCH_TEGRA_3x_SOC\n         help\n           This adds the CPUFreq driver support for Tegra20/30 SOCs.\n \nconfig ARM_TEGRA124_CPUFREQ\n         tristate \"Tegra124 CPUFreq support\"\n         depends on ARCH_TEGRA || COMPILE_TEST\n         depends on CPUFREQ_DT\n-       default ARCH_TEGRA\n+       default ARCH_TEGRA_114_SOC || ARCH_TEGRA_124_SOC || ARCH_TEGRA_132_SOC || ARCH_TEGRA_210_SOC\n```\n\nIn that case Todd do you think it\u0027s fine to for now, disable the config in rockpi\u0027s vendor fragment while we wait for the upstream process on the correct solution? That way forks like Aaron\u0027s are still able to build drivers used by their targets without the additional steps he\u0027s listed.",
+      "parentUuid": "502db0a4_4fe50586",
+      "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
