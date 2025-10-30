@@ -16,6 +16,24 @@
       "message": "why are these patches needed here given they are not part of the GKI build. They should be maintained as a vendor module downstream",
       "revId": "a9a173d19b9c176024f5f7fce3a204b81590d6c8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f5b8ca7_98b54db9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1898165
+      },
+      "writtenOn": "2025-10-30T05:26:13Z",
+      "side": 1,
+      "message": "Our device has 3 patches related to tas2781 in the tree. The first one was merged to android16-6.12 (aosp/3725729) so I figured the rest should also be. They are already in android-mainiline and upstream.",
+      "parentUuid": "a50fe392_005e8403",
+      "revId": "a9a173d19b9c176024f5f7fce3a204b81590d6c8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
