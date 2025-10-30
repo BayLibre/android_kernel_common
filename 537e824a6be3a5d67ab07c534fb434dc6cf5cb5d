@@ -22,6 +22,30 @@
       },
       "revId": "537e824a6be3a5d67ab07c534fb434dc6cf5cb5d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6eb11c93_da545c68",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-10-30T15:18:17Z",
+      "side": 1,
+      "message": "I believe into 25-bits, as the last bit will be for the sign, hence the BIT(27) \u003d\u003d BIT(25 + 2)?\n\nBut yeah, with that imm \u003d -offset, that looks nicer, and aarch64_insn_encode_immediate will mask the top bits anyway!",
+      "parentUuid": "9c8cb481_c03aaed8",
+      "range": {
+        "startLine": 1262,
+        "startChar": 12,
+        "endLine": 1262,
+        "endChar": 13
+      },
+      "revId": "537e824a6be3a5d67ab07c534fb434dc6cf5cb5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
