@@ -34,6 +34,24 @@
       "parentUuid": "a50fe392_005e8403",
       "revId": "a9a173d19b9c176024f5f7fce3a204b81590d6c8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f254fa4_7b12a349",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-30T17:26:46Z",
+      "side": 1,
+      "message": "The fact that they are in upstream and android-mainline is irrelevant (since these are UPSTREAM patches, they should be in those branches). The problem is that since we neither build or test these in android16-6.12, we can\u0027t really support patches like this that only affect vendor modules. If we already took one of them, I guess we can take these two as well, but be aware that any bug that comes up in tas2781 is going to be assigned to your team or result in the patches being reverted.\n\nClose this comment if you agree and I\u0027ll merge the two patches.",
+      "parentUuid": "5f5b8ca7_98b54db9",
+      "revId": "a9a173d19b9c176024f5f7fce3a204b81590d6c8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
