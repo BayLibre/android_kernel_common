@@ -52,6 +52,24 @@
       "parentUuid": "37e0a9c1_9ca60777",
       "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a696354c_874967f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2025-10-30T15:57:37Z",
+      "side": 1,
+      "message": "Sure I\u0027m pursuing the path internally to see how we could update our kconfig entries for those drivers.\nI had another suggestion for a solution that works well right now without overhead which is making an addition to rockpi\u0027s gki fragment to disable these 2 drivers explicitly. This allows the builds to succeed without issue and seems like a viable option. Can we pursue that path for now to allow for error resolution and merge, while I pursue our Kconfig entries on our side?",
+      "parentUuid": "a6f87a77_5a0b32d4",
+      "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
