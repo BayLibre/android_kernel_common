@@ -173,6 +173,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d7010354_81d07960",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-30T19:12:08Z",
+      "side": 1,
+      "message": "BTW, AFAICS the latest version of TDX Module ABI spec says that CPUID and MSR virtualization tables are provided in separate files cpuid_virtualization.pdf and msr_virtualization.pdf - where can I find those files?",
+      "parentUuid": "b27e68ff_4702de8e",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d3f5acf1_d19e27b5",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 1
