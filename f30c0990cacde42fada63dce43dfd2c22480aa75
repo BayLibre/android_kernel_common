@@ -70,6 +70,24 @@
       "parentUuid": "a6f87a77_5a0b32d4",
       "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3a3919d_b8a2f035",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-30T17:16:29Z",
+      "side": 1,
+      "message": "I don\u0027t prefer that since it would require the same change for any other downstream user (most of which we don\u0027t have visibility to their fragment files). If for some reason we can\u0027t list a particular SOC config, let use !GKI_HACKS_TO_FIX as the condition until we have the appropriate upstream version. This also leaves us with a reminder of a hack that needs to be fixed.",
+      "parentUuid": "a696354c_874967f5",
+      "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
