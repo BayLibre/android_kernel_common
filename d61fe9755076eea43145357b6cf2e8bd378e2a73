@@ -315,6 +315,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c204bdd8_254fe787",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1497,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-30T10:16:54Z",
+      "side": 1,
+      "message": "Ok. And irregardless of this particular case with cache info, would it make sense to silently zero unknown leaves here like I suggested, instead of letting it fail? (In other cases we do silently replace bits in CPUID leaves with the enforced ones without returning an error, so it would be more consistent to do that here as well?)\n\nOr if we decide to keep returning an error here, then maybe also print information about the unknown leaf here (to make it easier to debug when it happens)?",
+      "parentUuid": "fef13d21_34dd9022",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da54eea5_7efd1dea",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 1
