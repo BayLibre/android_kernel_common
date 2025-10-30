@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c8cb481_c03aaed8",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-10-30T15:11:17Z",
+      "side": 1,
+      "message": "Hmm, so we want `offset \u003e\u003e 2` to fit into 26 bits, right? In which case, something like:\n\n```\noffset \u003e\u003e\u003d 2;\nif (offset \u003e\u003d BIT(26)) {\n\tpr_warn(...);\n\treturn -ERANGE\n}\n\nimm \u003d -offset;\n```\n\nmight be easier to read?",
+      "range": {
+        "startLine": 1262,
+        "startChar": 12,
+        "endLine": 1262,
+        "endChar": 13
+      },
+      "revId": "537e824a6be3a5d67ab07c534fb434dc6cf5cb5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
