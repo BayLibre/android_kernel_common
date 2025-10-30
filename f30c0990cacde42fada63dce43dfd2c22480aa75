@@ -124,6 +124,24 @@
       "parentUuid": "c3a3919d_b8a2f035",
       "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "502db0a4_4fe50586",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1637924
+      },
+      "writtenOn": "2025-10-30T17:47:45Z",
+      "side": 1,
+      "message": "Also, tegra210 is one of the targets for tegra gki on my fork. This \npatchset makes it impossible to build the tegra124-cpufreq driver which \nis used by tegra210. I can make a downstream commit to drop the changes \nto Kconfig.arm once android17 forks and I start working on it, but \nthat\u0027s not preferable.",
+      "parentUuid": "ae716879_0eea862f",
+      "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
