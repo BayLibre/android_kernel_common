@@ -160,6 +160,24 @@
       "parentUuid": "502db0a4_4fe50586",
       "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a490029_797199f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-10-30T21:09:23Z",
+      "side": 1,
+      "message": "I really would rather not touch rockpi, since the fact you need to modify means that other downstream fragments that we don\u0027t know about would need the change too. We need a fix that doesn\u0027t require modifying the configs for other devices.\n\nWhy can\u0027t we use the change you propose above with TEGRA_114 and TEGRA_2x specified given that is what you intend to push upstream?",
+      "parentUuid": "320c11f9_4d1354f5",
+      "revId": "f30c0990cacde42fada63dce43dfd2c22480aa75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
