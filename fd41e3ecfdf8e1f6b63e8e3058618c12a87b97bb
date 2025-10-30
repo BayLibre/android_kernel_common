@@ -70,6 +70,30 @@
       },
       "revId": "fd41e3ecfdf8e1f6b63e8e3058618c12a87b97bb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f44d0cb_839ae063",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1501,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-10-30T16:12:07Z",
+      "side": 1,
+      "message": "That\u0027s correct. kvm_apply_hyp_module_relocations() is solely used to fixup absolute addressing.",
+      "parentUuid": "c9ef1abd_5b5ec91d",
+      "range": {
+        "startLine": 1501,
+        "startChar": 1,
+        "endLine": 1501,
+        "endChar": 33
+      },
+      "revId": "fd41e3ecfdf8e1f6b63e8e3058618c12a87b97bb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
