@@ -22,6 +22,30 @@
       },
       "revId": "2e1dbb424f6a2b0972abbf83949e92091abde401",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02733873_7241d67c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1966380
+      },
+      "writtenOn": "2025-10-30T12:49:32Z",
+      "side": 1,
+      "message": "We make use of Resource manager(RM) notifiers for this purpose.\n\n\nWe have something like this:\n\n1) During the start of the VM, we use the vendor hook in ACK VM manager driver to pass memory handle of pvmfw.\n\n2) We have a vendor module common to PVM and QTVM.\n\n3) On PVM, it makes note of the pvmfw mem handle(only if VMID matches \nthat with QTVM\u0027s). It listens to Resource Manager(RM) notifications. \nOnce it gets QTVM startup, i.e GH_RM_VM_STATUS_RUNNING notification from\n RM, PVM would notify the mem_handle to QTVM.\n\n4) The same vendor module running on QTVM listens to memory notifiers and releases the corresponding memory.\n\n5) Now, PVM reclaims it using gunyah_reclaim_fw_parcel.",
+      "parentUuid": "933fbd24_f3356baf",
+      "range": {
+        "startLine": 11,
+        "startChar": 65,
+        "endLine": 12,
+        "endChar": 28
+      },
+      "revId": "2e1dbb424f6a2b0972abbf83949e92091abde401",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
