@@ -150,7 +150,12 @@ struct af_alg_ctx {
 	size_t used;
 	atomic_t rcvused;
 
+<<<<<<< HEAD   (bf3f5d88ab1b003d0eed02fe398164710ba9a1d2 BACKPORT: f2fs: fix to avoid migrating empty section)
 	u32		more:1,
+||||||| BASE   (74715c47d57ccbff2f2f00bb9d87288e10642325 UPSTREAM: tls: fix handling of zero-length records on the rx)
+=======
+	bool		more:1,
+>>>>>>> BRANCH (eb31ef0a789d8102e24d92b2bf65a495a3646f78 Merge 6.6.111 into android15-6.6-lts)
 			merge:1,
 			enc:1,
 			write:1,
