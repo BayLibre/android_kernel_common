@@ -137,6 +137,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "28c0d0d9_ec21cb33",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-10-30T07:21:19Z",
+      "side": 1,
+      "message": "\u003e\u003eSo IIUC you are saying that it is not for security but just for simplicity, to let the host set the bare required minimum and no more than that. If so, I\u0027m ok with that.\n\nHere is the rationale. CPUID is related to security in two ways:\n\n1) enumerates capabilities required to enable certain mitigations, e.g. func7-leaf0-edx-bit26 reporting availability of IBRS/IBPB msr. We certainly don\u0027t want the host to hide them.\n\n2) some bits have security implications, e.g. SMEP/SMAP which if missing may lead to weaker hardening inside guest, or if the host misreports a clflush cacheline size it could lead to insufficient cache flushing which becomes an attacking interface.\n\nthe 1st category could be figured out based on the list of the mitigations, but the 2nd category requires careful audit of every bit. We want to avoid it, hence adopt the policy of allowing the host to set a bare minimum.\n\ncache/tlb is one such example. It\u0027s not directly related to mitigations, but I was not sure whether wrong information from the host may have security implication, when working on the first version.\n\nBut now since we are at it (and you already observed issue on PTL), I\u0027ll add it to the allowed set for two reasons:\n\n1) w/o vcpu pinning the enforcement also doesn\u0027t give accurate info. If we think inaccurate info is unsecure, then it\u0027s also broken in the enforcement way. Then seems allowing the host to set it instead is a better approach.\n\n2) for this specific case we can turn to TDX for reference. :) I checked there that function4 leaves are configurable by the host, except several bits (e.g. system coherency line size) enforced by the TDX module.\n\n\u003e\u003eRegarding hybrid topology: first of all I\u0027m just wondering why pKVM appears to enforce an incorrect value here. Is the value pKVM reads from CPUID at boot time different from the value crosvm reads from CPUID, for some reason?\n\nthis is because __do_cpuid_func() clears the entry for 0x1a, intending to let it set by VMM in normal KVM. We use the same function to collect the default cpuid set, so the host entry is replaced with all zero\u0027s in registers.\n\nbut yes even if we use the native value, it\u0027s possible to see different value enforced as long as vcpu is not pinned. \n\nI also checked TDX side for policy on this leaf. The model id is fixed to 1 if migration is required, otherwise uses the native value. the core type is also fixed to 1 if migration required (which seems wrong, as only 0x20-atom and 0x40-Core is valid), otherwise uses the native value. Maybe I didn\u0027t check the latest version.\n\nbut either way seems not elegant w/o vcpu pinning. and it seems better to trigger an error consistently (by presenting an all-zero entry) when a usage relying on this info is identified, instead of observing it intermittently (then hard to debug) based on vcpu/pcpu scheduling choice.\n\nso yes let\u0027s leave it as this patch does for now.\n\n\u003e\u003eAre we certain that none of the Linux kernel\u0027s mitigations rely on correct information about these parameters? (i.e. that they only rely on the cache line size, which, we assume, is unlikely to be different on different cores, or different from 64 bytes at all?)\n\nI cannot 100% tell, will take another look. but overall it should be the case otherwise there is a problem in upstream KVM too on a hybrid platform. Again w/o vcpu pinning whatever the VMM sets would be inaccurate when the CPU on which it acquires info is different from the one which vcpu runs on to query cpuid. Then guest mitigations could only work correctly in vcpu pinned scenario. I never heard about such limitation. 😊\n\nfor cacheline size, yes, it\u0027s same on all types of cores. iirc Linux kernel maintains the info globally.\n\nIf you are okay with above analysis, I\u0027ll try to work out a new version by allowing host to manage tlb/cache i.e. function-4, plus your other comments which we have agreed.",
+      "parentUuid": "2a8f03fb_fd489a55",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d3f5acf1_d19e27b5",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 1
@@ -255,6 +273,24 @@
       "writtenOn": "2025-10-29T21:43:47Z",
       "side": 1,
       "message": "Finally got to testing it on PTL... It doesn\u0027t work well: I\u0027m hitting this -EINVAL here, so pKVM-high reports `Failed to set cpuid pages for pkvm vcpu` errors, and VMs fail to start.\n\nThe problematic unknown leaf is the following one:\n\n```\n[   22.989251] pkvm_enforce_cpuid: unknown leaf: func\u003d4 idx\u003d4 flags\u003d1 eax\u003d0 ebx\u003d0 ecx\u003d0 edx\u003d0\n```\n\nSo, some cores have 4 levels of caches, while others have only 3. So this is a similar observation to the one we\u0027ve been discussing in another comment, but in this case the CPUID entry not just has a different value from the one in `pkvm_hyp-\u003ecpuid_def` but is simply missing in `pkvm_hyp-\u003ecpuid_def`.\n\nI\u0027ve tried replacing `return -EINVAL` with `memset(\u0026e2[i], 0, sizeof(struct kvm_cpuid_entry2))` here, and now it appears to work fine.\n\nIf we apply this fix, then, echoing my question from the other comment: I hope it won\u0027t be a problem if the pVM will think there is no L4 cache (or, depending on luck, the other way around: if it will wrongly think there are L4 caches on all cores)?",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fef13d21_34dd9022",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1497,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-10-30T07:21:19Z",
+      "side": 1,
+      "message": "As replied to another comment, I\u0027ll rework the code to allow the host set cache/tlb info",
+      "parentUuid": "060833e5_5fb2a960",
       "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
