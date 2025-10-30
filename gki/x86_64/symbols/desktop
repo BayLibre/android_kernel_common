@@ -63,6 +63,7 @@
   acpi_install_address_space_handler
   acpi_install_notify_handler
   acpi_is_video_device
+  acpi_kobj
   acpi_lpat_free_conversion_table
   acpi_lpat_get_conversion_table
   acpi_lpat_raw_to_temp
@@ -273,6 +274,7 @@
   class_create
   class_destroy
   class_find_device
+  class_for_each_device
   class_register
   class_unregister
   cleanup_srcu_struct
@@ -3085,6 +3087,7 @@
   sysfs_remove_link
   sysfs_streq
   sysfs_unmerge_group
+  sysfs_update_group
   system_freezable_wq
   system_highpri_wq
   system_long_wq
