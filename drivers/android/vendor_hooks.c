@@ -286,6 +286,40 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_futex_wake_traverse_plist);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_futex_wake_this);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_futex_wake_up_q_finish);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_futex_wait_queue_start);
+<<<<<<< HEAD   (3759a115b8fa400d5ac1f6b6d552c41580c87ea3 UPSTREAM: x86/cpu_entry_area: Annotate percpu_setup_exceptio)
+||||||| BASE   (087f4434a20872505b3a7c50990b5cb5c9ac2154 BACKPORT: dma-fence: Add safe access helpers and document th)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_report_bug);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_acct_update_power);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_swappiness);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf_pr_cont);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_calc_alloc_flags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_regmap_update);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_shmem_suitable_orders);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_shmem_allowable_huge_orders);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_shmem_get_folio);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shmem_mod_shmem);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shmem_mod_swapped);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_slab_folio_alloced);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_kmalloc_large_alloced);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_report_bug);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_cpufreq_acct_update_power);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_tune_swappiness);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_handle_folio_writeback);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_reclaim_before_kswapd);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_logbuf_pr_cont);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_calc_alloc_flags);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_regmap_update);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_shmem_suitable_orders);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_shmem_allowable_huge_orders);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_shmem_get_folio);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shmem_mod_shmem);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_shmem_mod_swapped);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_slab_folio_alloced);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_kmalloc_large_alloced);
+>>>>>>> CHANGE (c6c58a1140a9b512156beb0355ac9414a6253c70 ANDROID: vendor_hook: Add hooks to maintain folios that are )
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_ctl_dirty_rate);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sha256);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_aes_expandkey);

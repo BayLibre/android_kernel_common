@@ -99,6 +99,7 @@ DECLARE_HOOK(android_vh_use_vm_swappiness,
 DECLARE_HOOK(android_vh_tune_scan_control,
 	TP_PROTO(bool *skip_swap),
 	TP_ARGS(skip_swap));
+<<<<<<< HEAD   (3759a115b8fa400d5ac1f6b6d552c41580c87ea3 UPSTREAM: x86/cpu_entry_area: Annotate percpu_setup_exceptio)
 DECLARE_HOOK(android_vh_handle_trylock_failed_folio,
 	TP_PROTO(struct list_head *folio_list),
 	TP_ARGS(folio_list));
@@ -115,6 +116,75 @@ DECLARE_HOOK(android_vh_do_folio_trylock,
 	TP_PROTO(struct folio *folio, struct rw_semaphore *sem,
 		bool *got_lock, bool *skip),
 	TP_ARGS(folio, sem, got_lock, skip));
+||||||| BASE   (087f4434a20872505b3a7c50990b5cb5c9ac2154 BACKPORT: dma-fence: Add safe access helpers and document th)
+DECLARE_HOOK(android_vh_page_referenced_check_bypass,
+	TP_PROTO(struct folio *folio, unsigned long nr_to_scan, int lru, bool *bypass),
+	TP_ARGS(folio, nr_to_scan, lru, bypass));
+enum scan_balance;
+DECLARE_HOOK(android_vh_tune_scan_type,
+	TP_PROTO(enum scan_balance *scan_type),
+	TP_ARGS(scan_type));
+DECLARE_HOOK(android_vh_shrink_slab_bypass,
+	TP_PROTO(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg, int priority, bool *bypass),
+	TP_ARGS(gfp_mask, nid, memcg, priority, bypass));
+DECLARE_HOOK(android_vh_vmscan_kswapd_done,
+	TP_PROTO(int node_id, unsigned int highest_zoneidx, unsigned int alloc_order,
+		unsigned int reclaim_order),
+	TP_ARGS(node_id, highest_zoneidx, alloc_order, reclaim_order));
+DECLARE_RESTRICTED_HOOK(android_rvh_vmscan_kswapd_wake,
+	TP_PROTO(int node_id, unsigned int highest_zoneidx, unsigned int alloc_order),
+	TP_ARGS(node_id, highest_zoneidx, alloc_order), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_vmscan_kswapd_done,
+	TP_PROTO(int node_id, unsigned int highest_zoneidx, unsigned int alloc_order,
+		unsigned int reclaim_order),
+	TP_ARGS(node_id, highest_zoneidx, alloc_order, reclaim_order), 1);
+DECLARE_HOOK(android_vh_direct_reclaim_begin,
+	TP_PROTO(int *prio),
+	TP_ARGS(prio));
+DECLARE_HOOK(android_vh_direct_reclaim_end,
+	TP_PROTO(int prio),
+	TP_ARGS(prio));
+DECLARE_HOOK(android_vh_throttle_direct_reclaim_bypass,
+	TP_PROTO(bool *bypass),
+	TP_ARGS(bypass));
+=======
+DECLARE_HOOK(android_vh_handle_folio_writeback,
+	TP_PROTO(struct folio *folio, bool *bypass),
+	TP_ARGS(folio, bypass));
+DECLARE_HOOK(android_vh_reclaim_before_kswapd,
+	TP_PROTO(unsigned long *nr_reclaimed),
+	TP_ARGS(nr_reclaimed));
+DECLARE_HOOK(android_vh_page_referenced_check_bypass,
+	TP_PROTO(struct folio *folio, unsigned long nr_to_scan, int lru, bool *bypass),
+	TP_ARGS(folio, nr_to_scan, lru, bypass));
+enum scan_balance;
+DECLARE_HOOK(android_vh_tune_scan_type,
+	TP_PROTO(enum scan_balance *scan_type),
+	TP_ARGS(scan_type));
+DECLARE_HOOK(android_vh_shrink_slab_bypass,
+	TP_PROTO(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg, int priority, bool *bypass),
+	TP_ARGS(gfp_mask, nid, memcg, priority, bypass));
+DECLARE_HOOK(android_vh_vmscan_kswapd_done,
+	TP_PROTO(int node_id, unsigned int highest_zoneidx, unsigned int alloc_order,
+		unsigned int reclaim_order),
+	TP_ARGS(node_id, highest_zoneidx, alloc_order, reclaim_order));
+DECLARE_RESTRICTED_HOOK(android_rvh_vmscan_kswapd_wake,
+	TP_PROTO(int node_id, unsigned int highest_zoneidx, unsigned int alloc_order),
+	TP_ARGS(node_id, highest_zoneidx, alloc_order), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_vmscan_kswapd_done,
+	TP_PROTO(int node_id, unsigned int highest_zoneidx, unsigned int alloc_order,
+		unsigned int reclaim_order),
+	TP_ARGS(node_id, highest_zoneidx, alloc_order, reclaim_order), 1);
+DECLARE_HOOK(android_vh_direct_reclaim_begin,
+	TP_PROTO(int *prio),
+	TP_ARGS(prio));
+DECLARE_HOOK(android_vh_direct_reclaim_end,
+	TP_PROTO(int prio),
+	TP_ARGS(prio));
+DECLARE_HOOK(android_vh_throttle_direct_reclaim_bypass,
+	TP_PROTO(bool *bypass),
+	TP_ARGS(bypass));
+>>>>>>> CHANGE (c6c58a1140a9b512156beb0355ac9414a6253c70 ANDROID: vendor_hook: Add hooks to maintain folios that are )
 DECLARE_HOOK(android_vh_shrink_node,
 	TP_PROTO(pg_data_t *pgdat, struct mem_cgroup *memcg),
 	TP_ARGS(pgdat, memcg));
