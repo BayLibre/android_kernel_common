@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f347d8cc_757fe5c0",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/mem_protect.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-31T07:42:30Z",
+      "side": 1,
+      "message": "\"of being shared pages\" sounds weird. \"of pages being shared\"? or probably better \"of memory to be shared\" (for consistency with `@size` in the next line, and also in particular because `@phys` is not required to be page-aligned, it just points to a buffer at an arbitrary address).\n\nThough I see we have the same above in __pkvm_guest_share_host() etc anyway, so in 6.12 we can keep it as is...",
+      "revId": "423212a2e9aa3c98898fa7067fbc66e0ebe58e0b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
