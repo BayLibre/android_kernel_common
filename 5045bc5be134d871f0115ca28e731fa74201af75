@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4786a6d8_9d8a5bd7",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-31T16:09:01Z",
+      "side": 1,
+      "message": "Why check if apic_regs is not NULL but don\u0027t check if apic is not NULL?",
+      "revId": "5045bc5be134d871f0115ca28e731fa74201af75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "819e817d_c37e714b",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-31T16:09:01Z",
+      "side": 1,
+      "message": "Do we actually require vcpu-\u003earch.apic to be non-NULL? i.e. do we actually enforce in-kernel irqchip?",
+      "revId": "5045bc5be134d871f0115ca28e731fa74201af75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b91b8f04_3b889720",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-31T16:09:01Z",
+      "side": 1,
+      "message": "While we\u0027re at it, this comment sounds like lapic_in_kernel() is the only thing use vcpu-\u003earch.apic for (which would mean that we don\u0027t really need to share this memory with hypervisor).\n\nWhereas it looks like pKVM actually uses vcpu-\u003earch.apic-\u003eregs at least for VIRTUAL_APIC_PAGE_ADDR (which is BTW quite critical, right?), plus in some other places, at least in kvm_lapic_readable_reg_mask().\n\nSo this comment is misleading?\n\n...And BTW speaking of kvm_lapic_readable_reg_mask(), it seems to check some things that may change at runtime (apic_x2apic_mode() and kvm_lapic_lvt_supported())? So isn\u0027t it a problem that kvm_lapic_readable_reg_mask() in pKVM  relies on the initial snapshot on the host\u0027s APIC state, captured at vCPU creation time, not the up-to-date APIC state?",
+      "revId": "5045bc5be134d871f0115ca28e731fa74201af75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
