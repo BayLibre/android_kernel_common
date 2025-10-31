@@ -27,6 +27,11 @@
 						BIT(DP_PIN_ASSIGN_D) | \
 						BIT(DP_PIN_ASSIGN_E)))
 
+/* Delay between mode entry/exit attempts, ms */
+static const unsigned int mode_selection_delay = 1000;
+/* Timeout for a mode entry attempt, ms */
+static const unsigned int mode_selection_timeout = 4000;
+
 static void cros_typec_role_switch_quirk(struct fwnode_handle *fwnode)
 {
 #ifdef CONFIG_ACPI
@@ -325,6 +330,7 @@ static void cros_typec_remove_partner(struct cros_typec_data *typec,
 	if (!port->partner)
 		return;
 
+	typec_mode_selection_delete(port->partner);
 	cros_typec_unregister_altmodes(typec, port_num, true);
 
 	typec_partner_set_usb_power_delivery(port->partner, NULL);
@@ -757,6 +763,7 @@ static int cros_typec_configure_mux(struct cros_typec_data *typec, int port_num,
 	enum typec_orientation orientation;
 	struct cros_typec_altmode_node *node;
 	int ret;
+	u16 active_svid = 0;
 
 	ret = cros_ec_cmd(typec->ec, 0, EC_CMD_USB_PD_MUX_INFO,
 			  &req, sizeof(req), &resp, sizeof(resp));
@@ -795,10 +802,13 @@ static int cros_typec_configure_mux(struct cros_typec_data *typec, int port_num,
 
 	if (port->mux_flags & USB_PD_MUX_USB4_ENABLED) {
 		ret = cros_typec_enable_usb4(typec, port_num, pd_ctrl);
+		active_svid = USB_TYPEC_USB4_SID;
 	} else if (port->mux_flags & USB_PD_MUX_TBT_COMPAT_ENABLED) {
 		ret = cros_typec_enable_tbt(typec, port_num, pd_ctrl);
+		active_svid = USB_TYPEC_TBT_SID;
 	} else if (port->mux_flags & USB_PD_MUX_DP_ENABLED) {
 		ret = cros_typec_enable_dp(typec, port_num, pd_ctrl);
+		active_svid = USB_TYPEC_DP_SID;
 	} else if (port->mux_flags & USB_PD_MUX_SAFE_MODE) {
 		ret = cros_typec_usb_safe_state(port);
 	} else if (port->mux_flags & USB_PD_MUX_USB_ENABLED) {
@@ -813,6 +823,9 @@ static int cros_typec_configure_mux(struct cros_typec_data *typec, int port_num,
 			"Unrecognized mode requested, mux flags: %x\n",
 			port->mux_flags);
 	}
+
+	if (port->partner)
+		typec_altmode_state_update(port->partner, active_svid, ret);
 
 	/* Iterate all partner alt-modes and set the active alternate mode. */
 	list_for_each_entry(node, &port->partner_mode_list, list) {
@@ -914,6 +927,7 @@ static int cros_typec_register_altmodes(struct cros_typec_data *typec, int port_
 			memset(&desc, 0, sizeof(desc));
 			desc.svid = sop_disc->svids[i].svid;
 			desc.mode = j + 1;
+			desc.mode_selection = true;
 			desc.vdo = sop_disc->svids[i].mode_vdo[j];
 
 			if (is_partner)
@@ -949,6 +963,7 @@ static int cros_typec_register_altmodes(struct cros_typec_data *typec, int port_
 			memset(&desc, 0, sizeof(desc));
 			desc.svid = USB_TYPEC_USB4_SID;
 			desc.mode = 1;
+			desc.mode_selection = true;
 			amode = typec_partner_register_altmode(port->partner, &desc);
 			node = devm_kzalloc(typec->dev, sizeof(*node), GFP_KERNEL);
 			if (!node) {
@@ -968,6 +983,19 @@ static int cros_typec_register_altmodes(struct cros_typec_data *typec, int port_
 		dev_err(typec->dev, "Unable to set %s num_altmodes for port: %d\n",
 			is_partner ? "partner" : "plug", port_num);
 		goto err_cleanup;
+	}
+
+	/* Once all partner alt-modes are added, we should also trigger
+	 * mode selection if the system expects AP driven mode selection.
+	 */
+	if (is_partner && num_altmodes) {
+		ret = typec_mode_selection_start(port->partner,
+			mode_selection_delay, mode_selection_timeout);
+		if (ret < 0) {
+			dev_err(typec->dev,
+				"Unable to run mode selection on port%d partner\n",
+				port_num);
+		}
 	}
 
 	return 0;

@@ -41,12 +41,16 @@ static void cros_typec_altmode_work(struct work_struct *work)
 {
 	struct cros_typec_altmode_data *data =
 		container_of(work, struct cros_typec_altmode_data, work);
+	int ret;
 
 	mutex_lock(&data->lock);
 
-	if (typec_altmode_vdm(data->alt, data->header, data->vdo_data,
-			      data->vdo_size))
+	ret = typec_altmode_vdm(data->alt, data->header, data->vdo_data,
+			      data->vdo_size);
+	if (ret) {
 		dev_err(&data->alt->dev, "VDM 0x%x failed\n", data->header);
+		typec_altmode_state_update(data->port->partner, data->sid, ret);
+	}
 
 	data->header = 0;
 	data->vdo_data = NULL;
@@ -255,20 +259,21 @@ static int cros_typec_altmode_vdm(struct typec_altmode *alt, u32 header,
 				      const u32 *data, int count)
 {
 	struct cros_typec_altmode_data *adata = typec_altmode_get_drvdata(alt);
+	int ret = -EINVAL;
 
 	if (!adata->ap_mode_entry)
-		return -EOPNOTSUPP;
-
-	if (adata->sid == USB_TYPEC_DP_SID)
-		return cros_typec_displayport_vdm(alt, header, data, count);
-
-	if (adata->sid == USB_TYPEC_TBT_SID)
-		return cros_typec_thunderbolt_vdm(alt, header, data, count);
-
-	if (adata->sid == USB_TYPEC_USB4_SID)
+		ret = -EOPNOTSUPP;
+	else if (adata->sid == USB_TYPEC_DP_SID)
+		ret = cros_typec_displayport_vdm(alt, header, data, count);
+	else if (adata->sid == USB_TYPEC_TBT_SID)
+		ret = cros_typec_thunderbolt_vdm(alt, header, data, count);
+	else if (adata->sid == USB_TYPEC_USB4_SID)
 		return 0;
 
-	return -EINVAL;
+	if (ret)
+		typec_altmode_state_update(adata->port->partner, adata->sid, ret);
+
+	return ret;
 }
 
 static const struct typec_altmode_ops cros_typec_altmode_ops = {
