@@ -48,4 +48,15 @@ cros_typec_register_thunderbolt(struct cros_typec_port *port,
 }
 #endif
 
+#if IS_ENABLED(CONFIG_TYPEC_USB4_ALTMODE)
+struct typec_altmode *cros_typec_register_usb4(struct cros_typec_port *port,
+				struct typec_altmode_desc *desc);
+#else
+struct typec_altmode *cros_typec_register_usb4(struct cros_typec_port *port,
+				struct typec_altmode_desc *desc)
+{
+	return typec_port_register_altmode(port->port, desc);
+}
+#endif
+
 #endif /* __CROS_TYPEC_ALTMODE_H__ */

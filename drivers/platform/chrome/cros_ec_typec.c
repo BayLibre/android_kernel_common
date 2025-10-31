@@ -400,17 +400,6 @@ static int cros_typec_register_port_altmodes(struct cros_typec_data *typec,
 	struct typec_altmode_desc desc;
 	struct typec_altmode *amode;
 
-	/* All PD capable CrOS devices are assumed to support DP altmode. */
-	memset(&desc, 0, sizeof(desc));
-	desc.svid = USB_TYPEC_DP_SID;
-	desc.mode = USB_TYPEC_DP_MODE;
-	desc.vdo = DP_PORT_VDO;
-	amode = cros_typec_register_displayport(port, &desc,
-						typec->ap_driven_altmode);
-	if (IS_ERR(amode))
-		return PTR_ERR(amode);
-	port->port_altmode[CROS_EC_ALTMODE_DP] = amode;
-
 	/*
 	 * Register TBT compatibility alt mode. The EC will not enter the mode
 	 * if it doesn't support it and it will not enter automatically by
@@ -426,6 +415,27 @@ static int cros_typec_register_port_altmodes(struct cros_typec_data *typec,
 		if (IS_ERR(amode))
 			return PTR_ERR(amode);
 		port->port_altmode[CROS_EC_ALTMODE_TBT] = amode;
+	}
+
+	/* All PD capable CrOS devices are assumed to support DP altmode. */
+	memset(&desc, 0, sizeof(desc));
+	desc.svid = USB_TYPEC_DP_SID;
+	desc.mode = USB_TYPEC_DP_MODE;
+	desc.vdo = DP_PORT_VDO;
+	amode = cros_typec_register_displayport(port, &desc,
+						typec->ap_driven_altmode);
+	if (IS_ERR(amode))
+		return PTR_ERR(amode);
+	port->port_altmode[CROS_EC_ALTMODE_DP] = amode;
+
+	if (typec->ap_driven_altmode &&
+		port->caps.usb_capability & USB_CAPABILITY_USB4) {
+		memset(&desc, 0, sizeof(desc));
+		desc.svid = USB_TYPEC_USB4_SID;
+		amode = cros_typec_register_usb4(port, &desc);
+		if (IS_ERR(amode))
+			return PTR_ERR(amode);
+		port->port_altmode[CROS_EC_ALTMODE_USB4] = amode;
 	}
 
 	port->state.alt = NULL;
@@ -706,6 +716,7 @@ static int cros_typec_enable_usb4(struct cros_typec_data *typec,
 {
 	struct cros_typec_port *port = typec->ports[port_num];
 	struct enter_usb_data data;
+	int ret;
 
 	data.eudo = EUDO_USB_MODE_USB4 << EUDO_USB_MODE_SHIFT;
 
@@ -727,7 +738,11 @@ static int cros_typec_enable_usb4(struct cros_typec_data *typec,
 	port->state.data = &data;
 	port->state.mode = TYPEC_MODE_USB4;
 
-	return typec_mux_set(port->mux, &port->state);
+	ret = typec_mux_set(port->mux, &port->state);
+
+	port->state.alt = port->port_altmode[CROS_EC_ALTMODE_USB4];
+
+	return ret;
 }
 
 static int cros_typec_configure_mux(struct cros_typec_data *typec, int port_num,
@@ -929,9 +944,24 @@ static int cros_typec_register_altmodes(struct cros_typec_data *typec, int port_
 		}
 	}
 
-	if (is_partner)
+	if (is_partner) {
+		if (PD_VDO_UFP_DEVCAP(port->p_identity.vdo[0]) & DEV_USB4_CAPABLE) {
+			memset(&desc, 0, sizeof(desc));
+			desc.svid = USB_TYPEC_USB4_SID;
+			desc.mode = 1;
+			amode = typec_partner_register_altmode(port->partner, &desc);
+			node = devm_kzalloc(typec->dev, sizeof(*node), GFP_KERNEL);
+			if (!node) {
+				ret = -ENOMEM;
+				typec_unregister_altmode(amode);
+				goto err_cleanup;
+			}
+			node->amode = amode;
+			list_add_tail(&node->list, &port->partner_mode_list);
+			num_altmodes++;
+		}
 		ret = typec_partner_set_num_altmodes(port->partner, num_altmodes);
-	else
+	} else
 		ret = typec_plug_set_num_altmodes(port->plug, num_altmodes);
 
 	if (ret < 0) {

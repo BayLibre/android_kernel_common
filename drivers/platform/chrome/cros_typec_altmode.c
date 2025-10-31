@@ -75,12 +75,14 @@ static int cros_typec_altmode_enter(struct typec_altmode *alt, u32 *vdo)
 		req.mode_to_enter = CROS_EC_ALTMODE_DP;
 	else if (adata->sid == USB_TYPEC_TBT_SID)
 		req.mode_to_enter = CROS_EC_ALTMODE_TBT;
+	else if (adata->sid == USB_TYPEC_USB4_SID)
+		req.mode_to_enter = CROS_EC_ALTMODE_USB4;
 	else
 		return -EOPNOTSUPP;
 
 	ret = cros_ec_cmd(adata->port->typec_data->ec, 0, EC_CMD_TYPEC_CONTROL,
 			  &req, sizeof(req), NULL, 0);
-	if (ret < 0)
+	if (ret < 0 || adata->sid == USB_TYPEC_USB4_SID)
 		return ret;
 
 	svdm_version = typec_altmode_get_svdm_version(alt);
@@ -119,7 +121,7 @@ static int cros_typec_altmode_exit(struct typec_altmode *alt)
 	ret = cros_ec_cmd(adata->port->typec_data->ec, 0, EC_CMD_TYPEC_CONTROL,
 			  &req, sizeof(req), NULL, 0);
 
-	if (ret < 0)
+	if (ret < 0 || adata->sid == USB_TYPEC_USB4_SID)
 		return ret;
 
 	svdm_version = typec_altmode_get_svdm_version(alt);
@@ -263,6 +265,9 @@ static int cros_typec_altmode_vdm(struct typec_altmode *alt, u32 header,
 	if (adata->sid == USB_TYPEC_TBT_SID)
 		return cros_typec_thunderbolt_vdm(alt, header, data, count);
 
+	if (adata->sid == USB_TYPEC_USB4_SID)
+		return 0;
+
 	return -EINVAL;
 }
 
@@ -359,6 +364,38 @@ cros_typec_register_thunderbolt(struct cros_typec_port *port,
 	}
 
 	INIT_WORK(&adata->work, cros_typec_altmode_work);
+	adata->alt = alt;
+	adata->port = port;
+	adata->ap_mode_entry = true;
+	adata->sid = desc->svid;
+	adata->mode = desc->mode;
+
+	typec_altmode_set_ops(alt, &cros_typec_altmode_ops);
+	typec_altmode_set_drvdata(alt, adata);
+
+	return alt;
+}
+#endif
+
+#if IS_ENABLED(CONFIG_TYPEC_USB4_ALTMODE)
+struct typec_altmode *cros_typec_register_usb4(struct cros_typec_port *port,
+				struct typec_altmode_desc *desc)
+{
+	struct typec_altmode *alt;
+	struct cros_typec_altmode_data *adata;
+
+	alt = typec_port_register_altmode(port->port, desc);
+	if (IS_ERR(alt))
+		return alt;
+
+	adata = devm_kzalloc(&alt->dev, sizeof(*adata), GFP_KERNEL);
+	if (!adata) {
+		typec_unregister_altmode(alt);
+		return ERR_PTR(-ENOMEM);
+	}
+
+	INIT_WORK(&adata->work, cros_typec_altmode_work);
+	mutex_init(&adata->lock);
 	adata->alt = alt;
 	adata->port = port;
 	adata->ap_mode_entry = true;
