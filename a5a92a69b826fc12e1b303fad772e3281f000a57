@@ -1,0 +1,74 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f10c7087_d702922a",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-31T16:16:15Z",
+      "side": 1,
+      "message": "nit: s/can/could/ (since we are describing how it could be done, not how it is actually done)?",
+      "fixSuggestions": [
+        {
+          "fixId": "6edbc076_f26503e7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 72,
+                "startChar": 0,
+                "endLine": 73,
+                "endChar": 0
+              },
+              "replacement": "\t * The host could follow the way of sharing struct kvm and kvm_vcpu by\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a5a92a69b826fc12e1b303fad772e3281f000a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daf74796_4846c1e5",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-31T16:16:15Z",
+      "side": 1,
+      "message": "nit: s/Alternatively/So instead of that/ or something like that (since we are describing the actual implemented solution, not an alternative to it)?",
+      "fixSuggestions": [
+        {
+          "fixId": "732e1527_f5bc9737",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 79,
+                "startChar": 0,
+                "endLine": 82,
+                "endChar": 0
+              },
+              "replacement": "\t * So instead of that, ensure the pv_param memory as PAGE_SIZE aligned\n\t * and let the pkvm hypervisor to proactively share/unshare the\n\t * pv_param page without involving the host.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a5a92a69b826fc12e1b303fad772e3281f000a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
