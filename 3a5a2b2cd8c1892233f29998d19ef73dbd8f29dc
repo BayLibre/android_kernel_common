@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "19709f88_9b1510cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-10-31T21:41:54Z",
+      "side": 1,
+      "message": "There are tons of .sh files marked as executable in the same folder. Also, if I don\u0027t mark it as executable, I don\u0027t think git send-email likes it for the `--to-cmd` option.",
+      "parentUuid": "aae2508b_c5ee5b28",
+      "revId": "3a5a2b2cd8c1892233f29998d19ef73dbd8f29dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eaf6a5af_92bad0c7",
         "filename": "scripts/get_emails.sh",
         "patchSetId": 3
@@ -48,6 +66,30 @@
       "writtenOn": "2025-10-31T08:13:08Z",
       "side": 1,
       "message": "needs copyright  line.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 22
+      },
+      "revId": "3a5a2b2cd8c1892233f29998d19ef73dbd8f29dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cc001a5_113eda19",
+        "filename": "scripts/get_emails.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1446383
+      },
+      "writtenOn": "2025-10-31T21:41:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "eaf6a5af_92bad0c7",
       "range": {
         "startLine": 1,
         "startChar": 0,
