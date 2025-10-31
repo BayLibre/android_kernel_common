@@ -191,6 +191,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8c374822_4472a095",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-10-31T00:54:19Z",
+      "side": 1,
+      "message": "Thanks for your suggestions and test. It\u0027s quite helpful!\n\nRegarding to the spec, I was looking at a local version which is not up-to-date. but when I search in public web I cannot find it too. Let me check with TDX folks.",
+      "parentUuid": "d7010354_81d07960",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d3f5acf1_d19e27b5",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 1
@@ -345,6 +363,24 @@
       "side": 1,
       "message": "Ok. And irregardless of this particular case with cache info, would it make sense to silently zero unknown leaves here like I suggested, instead of letting it fail? (In other cases we do silently replace bits in CPUID leaves with the enforced ones without returning an error, so it would be more consistent to do that here as well?)\n\nOr if we decide to keep returning an error here, then maybe also print information about the unknown leaf here (to make it easier to debug when it happens)?",
       "parentUuid": "fef13d21_34dd9022",
+      "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdffb35f_bc2183ba",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1497,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-10-31T00:54:19Z",
+      "side": 1,
+      "message": "let\u0027s clear the entry as you suggested.",
+      "parentUuid": "c204bdd8_254fe787",
       "revId": "d61fe9755076eea43145357b6cf2e8bd378e2a73",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
