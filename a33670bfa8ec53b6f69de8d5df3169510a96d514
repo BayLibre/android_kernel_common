@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40e8cd25_198b32b2",
+        "filename": "Documentation/admin-guide/device-mapper/verity.rst",
+        "patchSetId": 10
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 3746392
+      },
+      "writtenOn": "2025-10-31T17:37:40Z",
+      "side": 1,
+      "message": "Took reference from https://www.kernel.org/doc/Documentation/admin-guide/device-mapper/dm-integrity.rst for numbering",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 50
+      },
+      "revId": "a33670bfa8ec53b6f69de8d5df3169510a96d514",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8212df4_906038ff",
+        "filename": "drivers/md/dm-verity-fec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3746392
+      },
+      "writtenOn": "2025-10-31T17:37:40Z",
+      "side": 1,
+      "message": "This alignment gets adjusted after running git clang-format @~",
+      "range": {
+        "startLine": 51,
+        "startChar": 22,
+        "endLine": 51,
+        "endChar": 45
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "731896e2_baa06721",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/md/dm-verity-fec.h",
+              "range": {
+                "startLine": 51,
+                "startChar": 0,
+                "endLine": 52,
+                "endChar": 0
+              },
+              "replacement": "\tatomic64_t corrected;\t/* corrected errors */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a33670bfa8ec53b6f69de8d5df3169510a96d514",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
