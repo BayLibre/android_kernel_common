@@ -732,6 +732,40 @@ get_alias_quirk(struct usb_device *dev, unsigned int id)
 	return NULL;
 }
 
+<<<<<<< HEAD   (8a8f52308945f4b0f1a168fa91bd7de0a76e59c4 Merge android13-5.15 into android13-5.15-lts)
+||||||| BASE   (ac56c046adf41fdb64ddda46fd66090f21dc381a Linux 5.15.195)
+/* register card if we reach to the last interface or to the specified
+ * one given via option
+ */
+static int try_to_register_card(struct snd_usb_audio *chip, int ifnum)
+{
+	if (check_delayed_register_option(chip) == ifnum ||
+	    chip->last_iface == ifnum ||
+	    usb_interface_claimed(usb_ifnum_to_if(chip->dev, chip->last_iface)))
+		return snd_card_register(chip->card);
+	return 0;
+}
+
+=======
+/* register card if we reach to the last interface or to the specified
+ * one given via option
+ */
+static int try_to_register_card(struct snd_usb_audio *chip, int ifnum)
+{
+	struct usb_interface *iface;
+
+	if (check_delayed_register_option(chip) == ifnum ||
+	    chip->last_iface == ifnum)
+		return snd_card_register(chip->card);
+
+	iface = usb_ifnum_to_if(chip->dev, chip->last_iface);
+	if (iface && usb_interface_claimed(iface))
+		return snd_card_register(chip->card);
+
+	return 0;
+}
+
+>>>>>>> BRANCH (2dc2bc27578c36a4e38626e25bd8e1830f0ddb59 xfs: fix log CRC mismatches between i386 and other architect)
 /*
  * probe the active usb device
  *
