@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7762ab5b_3916078f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-10-31T22:36:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e39aafbe_9f3521cb",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f1ce9ea_412842c1",
@@ -107,6 +125,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a280b29a_1100e1a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-10-31T22:36:04Z",
+      "side": 1,
+      "message": "\u003e I see, makes sense. Still, in those rare cases when it still happens, the next allocation (e.g. after the next page fault, if it requires allocating a new page table page to map the faulted page) will be done using the VM pool instead of the memcache, right?\n\nyes, exactly\n\n\u003e Also I can imagine a synthetic test that triggers this case frequently...\n\nagree\n\nCommit log updated, also in  https://android-review.git.corp.google.com/c/kernel/common/+/3702537 with more detailed description - resolving.",
+      "parentUuid": "da6b7b4e_ad2e7018",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e6ac9ff_5852d9fb",
@@ -138,6 +174,24 @@
       "side": 1,
       "message": "Ok",
       "parentUuid": "7e6ac9ff_5852d9fb",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7afdb1a3_742f6c93",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-10-31T22:36:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95559d0e_cc60d603",
       "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -245,6 +299,24 @@
       "side": 1,
       "message": "To be honest I do not have strong opinion here either: probably I will switch to `struct pkvm_memcache *` agreeing that we can change it back to `void *` in the future if needed.",
       "parentUuid": "764d54f0_0666f6cc",
+      "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7be67647_c218713c",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pgtable.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-10-31T22:36:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "830aa653_58b6a784",
       "revId": "d8cd595401ec40e98bfb84c648b7fa45d7ab59be",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
