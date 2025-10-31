@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4607188f_39cef1d1",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1207,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-10-31T16:55:21Z",
+      "side": 1,
+      "message": "Just a note: this probably could be addressed in a more general way than adding such check to every PV call that uses pv_param. For example handle_kvm_call() could just return an error for any calls except `__pkvm_enable_virtualization_cpu` and `__pkvm_check_processor_compatibility` if `__pkvm_enable_virtualization_cpu` was never called before.",
+      "revId": "73f84ef0b35ff09590d3f9c001e365e97ac2f3e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
