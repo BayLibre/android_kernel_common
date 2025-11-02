@@ -170,4 +170,6 @@ PKVM_DECLARE(unsigned int, pkvm_per_cpu_nr_pages, (void));
 PKVM_DECLARE(int, setup_pkvm_per_cpu, (int cpu, unsigned long base));
 PKVM_DECLARE(void, set_x86_spec_ctrl, (u64 spec_ctrl));
 
+extern int pkvm_sym(intel_iommu_sm);
+
 #endif
