@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb6374a5_8387f2ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3273303
+      },
+      "writtenOn": "2025-11-02T16:22:53Z",
+      "side": 1,
+      "message": "You are a highly experienced code reviewer specializing in Git patches. Your\ntask is to analyze the provided Git patch (`patch`) and provide comprehensive\nfeedback.  Focus on identifying potential bugs, inconsistencies, security\nvulnerabilities, and areas for improvement in code style and readability.\nYour response should be detailed and constructive, offering specific suggestions\nfor remediation where applicable. Prioritize clarity and conciseness in your\nfeedback.\n\n# Step by Step Instructions\n\n1.  Read the provided `patch` carefully.  Understand the changes it introduces to the codebase.\n\n2.  Analyze the `patch` for potential issues:\n    * **Functionality:** Does the code work as intended? Are there any bugs or unexpected behavior?\n    * **Security:** Are there any security vulnerabilities introduced by the patch?\n    * **Style:** Does the code adhere to the project\u0027s coding style guidelines? Is it readable and maintainable?\n    * **Consistency:** Are there any inconsistencies with existing code or design patterns?\n    * **Testing:** Does the patch include sufficient tests to cover the changes?\n\n3.  Formulate concise and constructive feedback for each identified issue.  Provide specific suggestions for remediation where possible.\n\n4.  Summarize your findings in a clear and organized manner.  Prioritize critical issues over minor ones.\n\n5.  Review the feedback written so far. Is the feedback comprehensive and sufficiently detailed?\nIf not, go back to step 2, focusing on any areas that require further analysis or clarification.\n If yes, proceed to step 6.\n\n6.  Output the complete review.\n\n\nPatch: \n\"\"\"\nFrom 4ca4f1f5c0afa2825849e928e18f6a9dfdc59ada Mon Sep 17 00:00:00 2001\nFrom: Carlos Llamas \u003ccmllamas@google.com\u003e\nDate: Sun, 02 Nov 2025 14:01:49 +0000\nSubject: [PATCH] ANDROID: rockpi4: add new module DWMAC_SUN55I\n\nUpstream has added a new stmmac module \"dwmac-sun55i.ko\" selected as\ndefault for ARCH_SUNXI. Add it to the rockpi4 modules list along with\nits dependency \"mdio-mux.ko\".\n\nFixes: f603808a98af (\"net: stmmac: Add support for Allwinner A523 GMAC200\")\nChange-Id: I947e1e72c0f6d5da6b5151ce131bfe360b9360ae\nSigned-off-by: Carlos Llamas \u003ccmllamas@google.com\u003e\n---\n\ndiff --git a/BUILD.bazel b/BUILD.bazel\nindex 5ddebf54..38f4fc3 100644\n--- a/BUILD.bazel\n+++ b/BUILD.bazel\n@@ -931,8 +931,10 @@\n     \"drivers/mmc/host/dw_mmc-rockchip.ko\",\n     \"drivers/mmc/host/sdhci-of-arasan.ko\",\n     \"drivers/net/ethernet/stmicro/stmmac/dwmac-rk.ko\",\n+    \"drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.ko\",\n     \"drivers/net/ethernet/stmicro/stmmac/stmmac.ko\",\n     \"drivers/net/ethernet/stmicro/stmmac/stmmac-platform.ko\",\n+    \"drivers/net/mdio/mdio-mux.ko\",\n     \"drivers/net/net_failover.ko\",\n     \"drivers/net/pcs/pcs_xpcs.ko\",\n     \"drivers/net/virtio_net.ko\",\n\n\"\"\"\nIMPORTANT NOTE: Start directly with the output, do not output any delimiters.\nTake a Deep Breath, read the instructions again, read the inputs again. Each instruction is crucial and must be executed with utmost care and attention to detail.\n\nReview:",
+      "revId": "4ca4f1f5c0afa2825849e928e18f6a9dfdc59ada",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
