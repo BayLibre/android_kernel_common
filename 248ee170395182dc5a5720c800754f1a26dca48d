@@ -34,6 +34,24 @@
       "parentUuid": "3dd5e3e1_8ea7ea3d",
       "revId": "248ee170395182dc5a5720c800754f1a26dca48d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "469e6fa5_b53b4d44",
+        "filename": "arch/x86/kvm/vmx/pkvm_high.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-11-02T03:23:11Z",
+      "side": 1,
+      "message": "Noticed `kvm_create_lapic()` will check `irqchip_in_kernel` before allocating memory for `vcpu-\u003earch.apic`. Then checking `vcpu-\u003earch.apic` is needed, for both `pkvm_unshare_vcpu` and `pkvm_share_vcpu`.",
+      "parentUuid": "e3bb952c_e2455a90",
+      "revId": "248ee170395182dc5a5720c800754f1a26dca48d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
