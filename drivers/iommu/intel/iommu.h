@@ -62,6 +62,8 @@
 #define CONTEXT_TT_PASS_THROUGH 2
 #define CONTEXT_PASIDE		BIT_ULL(3)
 
+#define DEFAULT_DOMAIN_ADDRESS_WIDTH 57
+
 /*
  * Intel IOMMU register specification per version 1.0 public spec.
  */
