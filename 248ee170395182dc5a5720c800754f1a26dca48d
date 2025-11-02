@@ -16,6 +16,24 @@
       "message": "Are we sure `vcpu-\u003earch.apic` is not NULL? I don\u0027t recall if we enforce lapic_in_kernel()...",
       "revId": "248ee170395182dc5a5720c800754f1a26dca48d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3bb952c_e2455a90",
+        "filename": "arch/x86/kvm/vmx/pkvm_high.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-11-02T03:00:46Z",
+      "side": 1,
+      "message": "The `kvm_arch_vcpu_create()` unconditionally calls `kvm_create_lapic()` which allocate the memory for `vcpu-\u003earch.apic`. If it is NULL, `kvm_arch_vcpu_create()` will be failed. As this `pkvm_unshare_vcpu` is part of KVM\u0027s code, we can assume `vcpu-\u003earch.apic` is not NULL if we are here?",
+      "parentUuid": "3dd5e3e1_8ea7ea3d",
+      "revId": "248ee170395182dc5a5720c800754f1a26dca48d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
