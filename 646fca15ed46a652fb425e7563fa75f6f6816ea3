@@ -16,6 +16,24 @@
       "message": "`kvm_x86_call(vm_size)` seems hacky, since `vm_size` is not a function.\nCan\u0027t we just use `kvm_x86_ops.vm_size`, like kvm_arch_alloc_vm() does?",
       "revId": "646fca15ed46a652fb425e7563fa75f6f6816ea3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "205a4c5d_30eebd07",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-11-02T03:13:28Z",
+      "side": 1,
+      "message": "Make sense. Will use `kvm_x86_ops.vm_size`",
+      "parentUuid": "9d5cb18e_8d6a1bb1",
+      "revId": "646fca15ed46a652fb425e7563fa75f6f6816ea3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
