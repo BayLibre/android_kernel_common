@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bfbdd6c6_8445afc6",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-02T14:13:40Z",
+      "side": 1,
+      "message": "In any case, if apic is not NULL, apic_regs should be also not NULL (and we should return an error in pkvm_pin_shared_vcpu() if apic is non-NULL but apic_regs is NULL), so checking specifically apic_regs here is not necessary?",
+      "parentUuid": "f7172676_e93e8bb4",
+      "revId": "5045bc5be134d871f0115ca28e731fa74201af75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "819e817d_c37e714b",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 3
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "\u003e So this comment is misleading?\n\nSure, I can enhance this comment.\n\n\u003e ...And BTW speaking of kvm_lapic_readable_reg_mask(), it seems to check some things that may change at runtime (apic_x2apic_mode() and kvm_lapic_lvt_supported())? So isn\u0027t it a problem that kvm_lapic_readable_reg_mask() in pKVM relies on the initial snapshot on the host\u0027s APIC state, captured at vCPU creation time, not the up-to-date APIC state?\n\nThe pKVM\u0027s kvm_vcpu-\u003earch.apic points to host\u0027s kvm_vcpu-\u003earch.apic, so apic_x2apic_mode() and kernel_lapic_lvt_supported() should be update-to-date APIC state. What is not good, is that, apic_x2apic_mode() checks the apic_base via apic-\u003evcpu-\u003earch.apic_base, which means the pKVM hypervisor access the host\u0027s kvm_vcpu via the pointer stored in apic, not via the pointer in its pkvm_vcpu. The apic_base in pKVM\u0027s kvm_vcpu-\u003earch is also update-to-date via pkvm_set_virtual_apic_mode, probably can re-write kvm_lapic_readable_reg_mask() for pKVM if necessary, for v6.18?.",
       "parentUuid": "b91b8f04_3b889720",
+      "revId": "5045bc5be134d871f0115ca28e731fa74201af75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dd7a31e_f841bd62",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-02T14:13:40Z",
+      "side": 1,
+      "message": "\u003e The pKVM\u0027s kvm_vcpu-\u003earch.apic points to host\u0027s kvm_vcpu-\u003earch.apic, so apic_x2apic_mode() and kernel_lapic_lvt_supported() should be update-to-date APIC state.\n\nAh, indeed. I\u0027ve been contradicting myself. :) \n\n\u003e What is not good, is that, apic_x2apic_mode() checks the apic_base via apic-\u003evcpu-\u003earch.apic_base, which means the pKVM hypervisor access the host\u0027s kvm_vcpu via the pointer stored in apic, not via the pointer in its pkvm_vcpu.\n\nDo you mean there is a potential security issue? i.e. with a correctly working host it should work correctly (and the host\u0027s kvm_vcpu is shared with pKVM anyway), but a malicious host may change its apic-\u003evcpu to point to any address?\n\n\u003e probably can re-write kvm_lapic_readable_reg_mask() for pKVM if necessary, for v6.18?.\n\nYeah, I guess in 6.15+ we want to implement it in a secure way anyway. And then it shouldn\u0027t be hard to backport that to 6.12 later.",
+      "parentUuid": "d537e978_5677fa40",
       "revId": "5045bc5be134d871f0115ca28e731fa74201af75",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
