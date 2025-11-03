@@ -824,6 +824,7 @@ static int ucsi_get_partner_identity(struct ucsi_connector *con)
 
 	ret = ucsi_get_pd_message(con, UCSI_RECIPIENT_SOP, sizeof(vdo), vdo,
 				  UCSI_GET_PD_MESSAGE_TYPE_IDENTITY);
+printk("__%s num %d ret %d vdo %x %x %x %x, /%x/ %x %x ------------[2]\n", __func__, con->num, ret, vdo[0], vdo[1], vdo[2], vdo[3], vdo[4], vdo[5], vdo[6]);
 	if (ret < 0)
 		return ret;
 
@@ -861,6 +862,7 @@ static int ucsi_check_altmodes(struct ucsi_connector *con)
 	int ret, num_partner_am;
 
 	ret = ucsi_register_altmodes(con, UCSI_RECIPIENT_SOP);
+printk("__%s %d num %d----[1]\n", __func__, ret, ucsi_get_num_altmode(con->partner_altmode));
 	if (ret && ret != -ETIMEDOUT)
 		dev_err(con->ucsi->dev,
 			"con%d: failed to register partner alt modes (%d)\n",
@@ -1288,6 +1290,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
 	change = UCSI_CONSTAT(con, CHANGE);
 	role = UCSI_CONSTAT(con, PWR_DIR);
 
+printk("_____> ucsi_handle_connector_change %x\n", change);
 	if (change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
 		typec_set_pwr_role(con->port, role);
 		ucsi_port_psy_changed(con);

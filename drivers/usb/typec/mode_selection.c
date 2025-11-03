@@ -51,6 +51,7 @@ void typec_altmode_state_update(struct typec_partner *partner, const u16 svid,
 	struct mode_state *ms;
 
 	if (sel) {
+printk("__%s1 %x error %d\n", __func__, svid, error);
 		mutex_lock(&sel->lock);
 		ms = list_first_entry_or_null(&sel->mode_list, struct mode_state, list);
 		if (ms && ms->altmode->svid == svid) {
@@ -131,17 +132,20 @@ static void mode_selection_work_fn(struct work_struct *work)
 	}
 
 	if (sel->active_svid == ms->altmode->svid) {
+		printk("_____%s ACTIVE %s\n", __func__, ms->altmode->desc);
 		dev_dbg(&sel->partner->dev, "%s altmode is active\n",
 				ms->altmode->desc);
 		mode_list_clean(sel);
 	} else if (sel->active_svid != 0) {
 		res = device_for_each_child(&sel->partner->dev, sel, exit_active_mode);
+		printk("_____%s EXIT %x: %d\n", __func__, sel->active_svid, res);
 		if (res <= 0) {
 			dev_dbg(&sel->partner->dev, "enable to exit %x altmode\n",
 					sel->active_svid);
 			mode_list_clean(sel);
 		}
 	} else if (ms->error) {
+		printk("_____%s ERROR %d\n", __func__, ms->error);
 		dev_dbg(&sel->partner->dev, "%s: entry error %pe\n",
 				ms->altmode->desc, ERR_PTR(ms->error));
 		mode_selection_activate(sel, ms->altmode, 0);
@@ -150,6 +154,7 @@ static void mode_selection_work_fn(struct work_struct *work)
 	} else {
 		ms->error = -ETIMEDOUT;
 		res = mode_selection_activate(sel, ms->altmode, 1);
+		printk("_____%s %s activate %d\n", __func__, ms->altmode->desc, res);
 		if (res) {
 			dev_dbg(&sel->partner->dev, "%s: activation error %pe\n",
 					ms->altmode->desc, ERR_PTR(res));
