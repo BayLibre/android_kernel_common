@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64a6f4f9_aaba5d60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-11-03T22:57:02Z",
+      "side": 1,
+      "message": "Fix the build-break:\n```\n/tmp/bazel-working-directory/_main/common/../private/google-modules/bms/google_dual_batt_gauge.c:31:9: error: \u0027MAX\u0027 macro redefined [-Werror,-Wmacro-redefined]\n   31 | #define MAX(x, y)       ((x) \u003c (y) ? (y) : (x))\n      |         ^\n/tmp/bazel-working-directory/_main/common/include/linux/minmax.h:315:9: note: previous definition is here\n  315 | #define MAX(a, b) __cmp(max, a, b)\n      |         ^\n1 error generated.\n\n```",
+      "revId": "13b5b4d6ab67a9185486f5d41581ab76e7b07a33",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
