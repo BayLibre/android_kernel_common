@@ -90,6 +90,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f897d78_a049e292",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-11-03T07:11:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99ace6f3_d3277a84",
+      "revId": "5045bc5be134d871f0115ca28e731fa74201af75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "819e817d_c37e714b",
@@ -121,6 +139,24 @@
       "side": 1,
       "message": "Yeah, if the host user space VMM doesn\u0027t create irqchip, then host will not allocate apic memory page.",
       "parentUuid": "819e817d_c37e714b",
+      "revId": "5045bc5be134d871f0115ca28e731fa74201af75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c71af9d4_cefe7af1",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-11-03T07:11:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a5232bf_c7234395",
       "revId": "5045bc5be134d871f0115ca28e731fa74201af75",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -192,6 +228,24 @@
       "side": 1,
       "message": "\u003e Do you mean there is a potential security issue? i.e. with a correctly working host it should work correctly (and the host\u0027s kvm_vcpu is shared with pKVM anyway), but a malicious host may change its apic-\u003evcpu to point to any address?\n\nYes, probably.\n\n\u003e Yeah, I guess in 6.15+ we want to implement it in a secure way anyway. And then it shouldn\u0027t be hard to backport that to 6.12 later.\n\nSure.",
       "parentUuid": "7dd7a31e_f841bd62",
+      "revId": "5045bc5be134d871f0115ca28e731fa74201af75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7943a04e_a19a070f",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-11-03T07:11:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02c49091_f2e6098e",
       "revId": "5045bc5be134d871f0115ca28e731fa74201af75",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
