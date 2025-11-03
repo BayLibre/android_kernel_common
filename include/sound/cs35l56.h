@@ -282,6 +282,7 @@ struct cs35l56_base {
 	s8 cal_index;
 	struct cirrus_amp_cal_data cal_data;
 	struct gpio_desc *reset_gpio;
+	u64 silicon_uid;
 	struct cs35l56_spi_payload *spi_payload_buf;
 };
 
