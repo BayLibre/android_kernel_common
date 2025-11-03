@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "99ace6f3_d3277a84",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-11-03T04:07:07Z",
+      "side": 1,
+      "message": "It is better to check apic_regs as well, since we got apic_regs from the apic memory which is owned by the host, not owned by the pKVM. A malicious host may change the apic_regs as a NULL pointer.",
+      "parentUuid": "07aabae5_6103a5e9",
+      "revId": "5045bc5be134d871f0115ca28e731fa74201af75",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "819e817d_c37e714b",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 3
