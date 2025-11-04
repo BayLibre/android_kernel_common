@@ -34,6 +34,7 @@ struct pkvm_pcpu {
 	struct idt_page idt_page;
 	struct tss_struct tss;
 	void *lapic;
+	struct kvm_cpuid_entry2 *cpuid_def;
 };
 
 struct pkvm_host_vcpu {
@@ -113,6 +114,8 @@ struct pkvm_section {
 	u64 prot;
 };
 
+#define PKVM_CPUID_MAX_SIZE (sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES)
+#define PKVM_CPUID_PAGES (ALIGN(PKVM_CPUID_MAX_SIZE, PAGE_SIZE) >> PAGE_SHIFT)
 #define PKVM_REQUIRES_L1D_FLUSH_PAGES \
 	(boot_cpu_has_bug(X86_BUG_L1TF) && !boot_cpu_has(X86_FEATURE_FLUSH_L1D))
 #define PKVM_PAGES (ALIGN(sizeof(struct pkvm_hyp), PAGE_SIZE) >> PAGE_SHIFT)
@@ -161,10 +164,11 @@ PKVM_DECLARE(void, init_msr_emulation, (struct vcpu_vmx *vmx));
 #ifndef CONFIG_PKVM_INTEL_DEBUG
 PKVM_DECLARE(unsigned int, pkvm_per_cpu_nr_pages, (void));
 #define PKVM_PERCPU_PAGES (PKVM_PCPU_PAGES + PKVM_HOST_VCPU_PAGES + \
-			   PKVM_HOST_VCPU_VMCS_PAGES + pkvm_sym(pkvm_per_cpu_nr_pages)())
+			   PKVM_HOST_VCPU_VMCS_PAGES + PKVM_CPUID_PAGES + \
+			   pkvm_sym(pkvm_per_cpu_nr_pages)())
 #else
 #define PKVM_PERCPU_PAGES (PKVM_PCPU_PAGES + PKVM_HOST_VCPU_PAGES + \
-			   PKVM_HOST_VCPU_VMCS_PAGES)
+			   PKVM_HOST_VCPU_VMCS_PAGES + PKVM_CPUID_PAGES)
 #endif
 PKVM_DECLARE(int, setup_pkvm_per_cpu, (int cpu, unsigned long base));
 PKVM_DECLARE(void, set_x86_spec_ctrl, (u64 spec_ctrl));

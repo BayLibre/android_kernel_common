@@ -896,6 +896,10 @@ static __init int pkvm_setup_pcpu(struct pkvm_hyp *pkvm, int cpu)
 	init_idt(pcpu);
 	init_tss(pcpu);
 
+	pcpu->cpuid_def = pkvm_sym(pkvm_early_alloc_contig)(PKVM_CPUID_PAGES);
+	if (!pcpu->cpuid_def)
+		return -ENOMEM;
+
 	pkvm->pcpus[cpu] = pcpu;
 
 	return 0;
