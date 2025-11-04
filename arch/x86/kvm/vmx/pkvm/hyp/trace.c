@@ -34,16 +34,30 @@ static inline unsigned long long pkvm_rdtsc_ordered(void)
 	return EAX_EDX_VAL(val, low, high);
 }
 
+static inline bool is_host_vcpu(struct kvm_vcpu *vcpu)
+{
+	return this_cpu_read(host_vcpu) == vcpu;
+}
+
 static inline struct vmexit_perf *vcpu_to_perf(struct kvm_vcpu *vcpu)
 {
-	return (this_cpu_read(host_vcpu) == vcpu) ? this_cpu_ptr(&hvcpu_perf) :
-						    &to_pkvm_vcpu(vcpu)->perf;
+	return is_host_vcpu(vcpu) ? this_cpu_ptr(&hvcpu_perf) :
+				    &to_pkvm_vcpu(vcpu)->perf;
 }
 
 static void refresh_vmexit_perf(struct perf_ctrl *pctrl, struct vmexit_perf *perf)
 {
 	perf->age = pctrl->age;
 	memset(&perf->data.vmexit, 0, sizeof(struct vmexit_data));
+}
+
+static void trace_vmexit_perf(struct vmexit_perf *perf, u32 index,
+			 unsigned long long cycles)
+{
+	perf->data.vmexit.cycles[index] += cycles;
+	perf->data.vmexit.total_cycles += cycles;
+	perf->data.vmexit.total_count++;
+	perf->data.vmexit.reasons[index]++;
 }
 
 void trace_vmexit_start(struct kvm_vcpu *vcpu)
@@ -58,10 +72,12 @@ void trace_vmexit_start(struct kvm_vcpu *vcpu)
 	if (pctrl->age != perf->age)
 		refresh_vmexit_perf(pctrl, perf);
 
+	perf->rax = vcpu->arch.regs[VCPU_REGS_RAX];
+
 	perf->tsc = pkvm_rdtsc_ordered();
 }
 
-void trace_vmexit_end(struct kvm_vcpu *vcpu, u32 index)
+void trace_vmexit_end(struct kvm_vcpu *vcpu, u32 reason)
 {
 	struct perf_ctrl *pctrl = this_cpu_ptr(&perf_ctrl);
 	struct vmexit_perf *perf;
@@ -76,16 +92,18 @@ void trace_vmexit_end(struct kvm_vcpu *vcpu, u32 index)
 		return;
 	}
 
-	if (index >= MAX_EXIT_REASONS)
+	if (reason >= MAX_EXIT_REASONS)
 		return;
 
 	cycles = pkvm_rdtsc_ordered() - perf->tsc;
 
 	pkvm_spin_lock(&perf->lock);
-	perf->data.vmexit.cycles[index] += cycles;
-	perf->data.vmexit.total_cycles += cycles;
-	perf->data.vmexit.total_count++;
-	perf->data.vmexit.reasons[index]++;
+
+	trace_vmexit_perf(perf, reason, cycles);
+
+	if (is_host_vcpu(vcpu) && reason == EXIT_REASON_VMCALL && perf->rax < PKVM_MAX_HC)
+		trace_vmexit_perf(perf, MAX_EXIT_REASONS + perf->rax, cycles);
+
 	pkvm_spin_unlock(&perf->lock);
 }
 

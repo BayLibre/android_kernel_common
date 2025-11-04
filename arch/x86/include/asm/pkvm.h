@@ -12,8 +12,17 @@
 /* PKVM Hypercalls */
 #define PKVM_HC_KVM_CALL		0
 #define PKVM_HC_INIT_FINALISE		1
-#define PKVM_HC_MMIO_ACCESS		7
-#define PKVM_HC_ADD_PTDEV		10
+#define PKVM_HC_MMIO_ACCESS		2
+#define PKVM_HC_ADD_PTDEV		3
+#define PKVM_MAX_HC			(PKVM_HC_ADD_PTDEV + 1)
+
+#define PKVM_HC_NAMES {						\
+	[PKVM_HC_KVM_CALL]	= "PKVM_HC_KVM_CALL",		\
+	[PKVM_HC_INIT_FINALISE]	= "PKVM_HC_INIT_FINALISE",	\
+	[PKVM_HC_MMIO_ACCESS]	= "PKVM_HC_MMIO_ACCESS",	\
+	[PKVM_HC_ADD_PTDEV]	= "PKVM_HC_ADD_PTDEV",		\
+	[PKVM_MAX_HC]		= NULL				\
+}
 
 /*
  * Internal hypercall to commit the pkvm initialization

@@ -33,16 +33,24 @@ static int set_vmexit_trace(void *data, u64 val)
 DEFINE_SIMPLE_ATTRIBUTE(set_vmexit_trace_fops, NULL, set_vmexit_trace, "%llu\n");
 
 static struct trace_print_flags vmexit_reasons[] = { VMX_EXIT_REASONS, { -1, NULL }};
+static const char *pkvm_hc_names[] = PKVM_HC_NAMES;
 
 static const char *get_vmexit_reason(int index)
 {
-	struct trace_print_flags *p = vmexit_reasons;
+	if (index < MAX_EXIT_REASONS) {
+		struct trace_print_flags *p = vmexit_reasons;
 
-	while (p->name) {
-		if (p->mask == index)
-			return p->name;
-		p++;
+		while (p->name) {
+			if (p->mask == index)
+				return p->name;
+			p++;
+		}
+		return NULL;
 	}
+
+	index -= MAX_EXIT_REASONS;
+	if (index < PKVM_MAX_HC)
+		return pkvm_hc_names[index];
 
 	return NULL;
 }
@@ -52,7 +60,7 @@ static void dump_perf_data(struct seq_file *m, struct perf_data *perf,
 {
 	int i;
 
-	for (i = 0 ; i < MAX_EXIT_REASONS; i++) {
+	for (i = 0; i < PKVM_TRACE_MAX_EXIT_REASONS; i++) {
 		if (!perf->vmexit.reasons[i])
 			continue;
 
@@ -79,7 +87,7 @@ static void print_summary(struct seq_file *m, struct perf_data *summary)
 {
 	int i;
 
-	for (i = 0 ; i < MAX_EXIT_REASONS; i++) {
+	for (i = 0; i < PKVM_TRACE_MAX_EXIT_REASONS; i++) {
 		if (!summary->vmexit.reasons[i])
 			continue;
 
