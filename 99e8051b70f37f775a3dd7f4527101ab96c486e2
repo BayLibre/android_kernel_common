@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bcb75a02_dac039e0",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-11-04T13:41:04Z",
+      "side": 1,
+      "message": "\u003e IIUC we would still share/unshare apic-\u003eregs, at least to use it for VIRTUAL_APIC_PAGE_ADDR (since we still want the host to back the APIC registers, since it\u0027s the host that emulates APIC for the guest)?\n\nI didn\u0027t mention about apic-\u003eregs, but yes, it is still shared.\n\n\u003e Although, to know its value we need to dereference the apic pointer. So we\u0027d better also temporarily share the apic structure, just to read the apic-\u003eregs value from it (and after that we can immediately unshare it back)?\n\nYes, for v6.15+, temporary sharing and unsharing can be done with just a few lines of code 😊",
+      "parentUuid": "3ba5933e_9a37a7a1",
+      "revId": "99e8051b70f37f775a3dd7f4527101ab96c486e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c59d6351_70f71773",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 4
