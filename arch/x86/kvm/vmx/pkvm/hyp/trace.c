@@ -73,6 +73,7 @@ void trace_vmexit_start(struct kvm_vcpu *vcpu)
 		refresh_vmexit_perf(pctrl, perf);
 
 	perf->rax = vcpu->arch.regs[VCPU_REGS_RAX];
+	perf->rbx = vcpu->arch.regs[VCPU_REGS_RBX];
 
 	perf->tsc = pkvm_rdtsc_ordered();
 }
@@ -101,8 +102,14 @@ void trace_vmexit_end(struct kvm_vcpu *vcpu, u32 reason)
 
 	trace_vmexit_perf(perf, reason, cycles);
 
-	if (is_host_vcpu(vcpu) && reason == EXIT_REASON_VMCALL && perf->rax < PKVM_MAX_HC)
+	if (is_host_vcpu(vcpu) && reason == EXIT_REASON_VMCALL && perf->rax < PKVM_MAX_HC) {
 		trace_vmexit_perf(perf, MAX_EXIT_REASONS + perf->rax, cycles);
+
+		if (perf->rax == PKVM_HC_KVM_CALL && perf->rbx < PKVM_MAX_FN)
+			trace_vmexit_perf(perf,
+					  MAX_EXIT_REASONS + PKVM_MAX_HC + perf->rbx,
+					  cycles);
+	}
 
 	pkvm_spin_unlock(&perf->lock);
 }

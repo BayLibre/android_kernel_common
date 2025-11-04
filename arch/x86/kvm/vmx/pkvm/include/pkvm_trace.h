@@ -7,9 +7,10 @@
 
 #include <asm/pkvm.h>
 #include <asm/pkvm_spinlock.h>
+#include <asm/kvm_pkvm.h>
 #include <asm/vmx.h>
 
-#define PKVM_TRACE_MAX_EXIT_REASONS	(MAX_EXIT_REASONS + PKVM_MAX_HC)
+#define PKVM_TRACE_MAX_EXIT_REASONS	(MAX_EXIT_REASONS + PKVM_MAX_HC + PKVM_MAX_FN)
 
 struct vmexit_data {
 	u64 total_count;
@@ -30,6 +31,7 @@ struct vmexit_perf {
 	unsigned long long tsc;
 	unsigned int age;
 	unsigned long rax;
+	unsigned long rbx;
 };
 
 #define PKVM_HC_SET_VMEXIT_TRACE	0xabcd0001

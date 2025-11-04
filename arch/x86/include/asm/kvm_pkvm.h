@@ -332,7 +332,75 @@ enum pkvm_fn {
 	__pkvm__update_cpuid_runtime,
 	__pkvm__update_exception_bitmap,
 	__pkvm__vcpu_add_fpstate,
+	PKVM_MAX_FN
 };
+
+#define PKVM_FN_NAMES {									\
+	[__pkvm__enable_virtualization_cpu]	= "enable_virtualization_cpu",		\
+	[__pkvm__disable_virtualization_cpu]	= "disable_virtualization_cpu",		\
+	[__pkvm__check_processor_compatibility]	= "check_processor_compatibility",	\
+	[__pkvm__vm_init]			= "vm_init",				\
+	[__pkvm__vm_finalize]			= "vm_finalize",			\
+	[__pkvm__vm_destroy]			= "vm_destroy",				\
+	[__pkvm__vm_mmu_map]			= "vm_mmu_map",				\
+	[__pkvm__vm_mmu_unmap]			= "vm_mmu_unmap",			\
+	[__pkvm__vm_mmu_age]			= "vm_mmu_age",				\
+	[__pkvm__vcpu_create]			= "vcpu_create",			\
+	[__pkvm__vcpu_free]			= "vcpu_free",				\
+	[__pkvm__vcpu_reset]			= "vcpu_reset",				\
+	[__pkvm__vcpu_load]			= "vcpu_load",				\
+	[__pkvm__vcpu_put]			= "vcpu_put",				\
+	[__pkvm__vcpu_run]			= "vcpu_run",				\
+	[__pkvm__vcpu_after_set_cpuid]		= "vcpu_after_set_cpuid",		\
+	[__pkvm__get_segment_base]		= "get_segment_base",			\
+	[__pkvm__get_segment]			= "get_segment",			\
+	[__pkvm__set_segment]			= "set_segment",			\
+	[__pkvm__set_cr0]			= "set_cr0",				\
+	[__pkvm__set_cr4]			= "set_cr4",				\
+	[__pkvm__set_msr]			= "set_msr",				\
+	[__pkvm__get_msr]			= "get_msr",				\
+	[__pkvm__set_efer]			= "set_efer",				\
+	[__pkvm__get_idt]			= "get_idt",				\
+	[__pkvm__set_idt]			= "set_idt",				\
+	[__pkvm__get_gdt]			= "get_gdt",				\
+	[__pkvm__set_gdt]			= "set_gdt",				\
+	[__pkvm__set_dr7]			= "set_dr7",				\
+	[__pkvm__get_rflags]			= "get_rflags",				\
+	[__pkvm__set_rflags]			= "set_rflags",				\
+	[__pkvm__flush_tlb_all]			= "flush_tlb_all",			\
+	[__pkvm__flush_tlb_current]		= "flush_tlb_current",			\
+	[__pkvm__flush_tlb_gva]			= "flush_tlb_gva",			\
+	[__pkvm__flush_tlb_guest]		= "flush_tlb_guest",			\
+	[__pkvm__set_interrupt_shadow]		= "set_interrupt_shadow",		\
+	[__pkvm__get_interrupt_shadow]		= "get_interrupt_shadow",		\
+	[__pkvm__complete_emulated_msr]		= "complete_emulated_msr",		\
+	[__pkvm__interrupt_allowed]		= "interrupt_allowed",			\
+	[__pkvm__nmi_allowed]			= "nmi_allowed",			\
+	[__pkvm__inject_irq]			= "inject_irq",				\
+	[__pkvm__inject_nmi]			= "inject_nmi",				\
+	[__pkvm__inject_exception]		= "inject_exception",			\
+	[__pkvm__cancel_injection]		= "cancel_injection",			\
+	[__pkvm__get_nmi_mask]			= "get_nmi_mask",			\
+	[__pkvm__set_nmi_mask]			= "set_nmi_mask",			\
+	[__pkvm__enable_nmi_window]		= "enable_nmi_window",			\
+	[__pkvm__enable_irq_window]		= "enable_irq_window",			\
+	[__pkvm__update_cr8_intercept]		= "update_cr8_intercept",		\
+	[__pkvm__set_virtual_apic_mode]		= "set_virtual_apic_mode",		\
+	[__pkvm__refresh_apicv_exec_ctrl]	= "refresh_apicv_exec_ctrl",		\
+	[__pkvm__load_eoi_exitmap]		= "load_eoi_exitmap",			\
+	[__pkvm__hwapic_irr_update]		= "hwapic_irr_update",			\
+	[__pkvm__hwapic_isr_update]		= "hwapic_isr_update",			\
+	[__pkvm__write_tsc_offset]		= "write_tsc_offset",			\
+	[__pkvm__write_tsc_multiplier]		= "write_tsc_multiplier",		\
+	[__pkvm__post_set_cr3]			= "post_set_cr3",			\
+	[__pkvm__load_mmu_pgd]			= "load_mmu_pgd",			\
+	[__pkvm__setup_mce]			= "setup_mce",				\
+	[__pkvm__cache_reg]			= "cache_reg",				\
+	[__pkvm__update_cpuid_runtime]		= "update_cpuid_runtime",		\
+	[__pkvm__update_exception_bitmap]	= "update_exception_bitmap",		\
+	[__pkvm__vcpu_add_fpstate]		= "vcpu_add_fpstate",			\
+	[PKVM_MAX_FN]				= NULL					\
+}
 
 #define HOST_HANDLE_EXIT		0
 #define HOST_RESET_MMU			1

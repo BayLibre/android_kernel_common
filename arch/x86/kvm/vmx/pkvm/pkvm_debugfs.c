@@ -34,6 +34,7 @@ DEFINE_SIMPLE_ATTRIBUTE(set_vmexit_trace_fops, NULL, set_vmexit_trace, "%llu\n")
 
 static struct trace_print_flags vmexit_reasons[] = { VMX_EXIT_REASONS, { -1, NULL }};
 static const char *pkvm_hc_names[] = PKVM_HC_NAMES;
+static const char *pkvm_fn_names[] = PKVM_FN_NAMES;
 
 static const char *get_vmexit_reason(int index)
 {
@@ -51,6 +52,10 @@ static const char *get_vmexit_reason(int index)
 	index -= MAX_EXIT_REASONS;
 	if (index < PKVM_MAX_HC)
 		return pkvm_hc_names[index];
+
+	index -= PKVM_MAX_HC;
+	if (index < PKVM_MAX_FN)
+		return pkvm_fn_names[index];
 
 	return NULL;
 }
