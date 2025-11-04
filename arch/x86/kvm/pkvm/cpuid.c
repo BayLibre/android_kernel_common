@@ -1374,17 +1374,120 @@ out:
 	return r;
 }
 
+static bool pkvm_cpuid_entry_host_owned(struct kvm_cpuid_entry2 *e2)
+{
+	bool host_owned = false;
+
+	switch(e2->function) {
+	case 4: /* Deterministic cache parameters */
+	case 0xb: /* topology */
+	case 0x1f: /* topology */
+	case 0x80000002: /* Processor Brand String */
+	case 0x80000003: /* Processor Brand String */
+	case 0x80000004: /* Processor Brand String */
+		host_owned = true;
+		break;
+	default:
+		break;
+	}
+
+	return host_owned;
+}
+
+#define CPUID_4_EAX_VALID_MASK		GENMASK(4, 0)
+#define CPUID_4_EBX_COH_LINE_SIZE_MASK	GENMASK(11, 0)
+static void pkvm_update_host_cpuid_entry(struct kvm_cpuid_entry2 *e2)
+{
+	switch(e2->function) {
+	case 4:
+		/*
+		 * Deterministic cache parameters.
+		 *
+		 * Owned by host, with the coherency line size fixed to 64
+		 * bytes following TDX.
+		 */
+		if (e2->eax & CPUID_4_EAX_VALID_MASK) {
+			e2->ebx &= ~CPUID_4_EBX_COH_LINE_SIZE_MASK;
+			e2->ebx |= 0x3F;
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+#define CPUID_1_EBX_ID_MASK		GENMASK(31, 16)
+#define CPUID_1_ECX_TSC_DLTIMER		(1 << 24)
+#define CPUID_1_ECX_HYP			(1 << 31)
+#define CPUID_1_EDX_HTT			(1 << 28)
+#define CPUID_7_0_EDX_HYBRID		(1 << 15)
+static void pkvm_enforce_cpuid_entry(struct kvm_cpuid_entry2 *entry,
+				   struct kvm_cpuid_entry2 *def)
+{
+	struct kvm_cpuid_entry2 tmp = *def;
+
+	switch (entry->function) {
+	case 1:
+		tmp.ecx |= entry->ecx & (CPUID_1_ECX_TSC_DLTIMER |
+					 CPUID_1_ECX_HYP);
+		/* clflush line size must be kept */
+		tmp.ebx &= ~CPUID_1_EBX_ID_MASK;
+		/* max number of addressable IDs, initial APIC ID */
+		tmp.ebx |= entry->ebx & CPUID_1_EBX_ID_MASK;
+		tmp.edx |= entry->edx & CPUID_1_EDX_HTT;
+		break;
+	case 7: /* Extended features */
+		if (tmp.index)
+			break;
+
+		tmp.edx |= entry->edx & CPUID_7_0_EDX_HYBRID;
+		break;
+	default:
+		break;
+	}
+
+	*entry = tmp;
+}
+
 static bool cpuid_entry_is_empty(struct kvm_cpuid_entry2 *e2)
 {
 	return !e2->function && !e2->eax;
 }
 
+/*
+ * pKVM enforces a simple CPUID policy (similar to QEMU '--cpu host') for
+ * pVM, by using the pKVM supported bits as the base plus a small set
+ * allowing the host to manage. This saves a lot of effort of defining/
+ * maintaining a bit-wise complex policy as TDX does.
+ *
+ * As crosvm is the main VMM targeted in the pKVM project, the allowed set
+ * is currently scrutinized/defined based on the bits mangled by crosvm.
+ * It is not flexible but good for security/simplicity. The allowed set
+ * could be extended case-by-case when seeing new demand for the host
+ * to set.
+ *
+ * The enforcement includes:
+ *   - for every cpuid entry provided by the host, there must be a
+ *     matching one in the default set if it's not fully host-controlled.
+ *     otherwise the original entry is cleared.
+ *
+ *   - if an entry is fully host-controlled, leave it intact
+ *
+ *   - if an entry is pkvm-controlled, override it with the default value
+ *
+ *   - if an entry is controlled by both pkvm and host, merge the host
+ *     bits with default
+ *
+ *   - Append a default entry to the buffer if it's not included by
+ *     the host, to prevent the host attack by hiding cpuid leaves which
+ *     may affect pVM security
+ */
 int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int nent)
 {
 	int cpu = raw_smp_processor_id();
 	struct kvm_cpuid_entry2 *de2;
 	struct pkvm_pcpu *pcpu;
-	int def_nent, r;
+	int def_nent, r, i, j, n;
 
 	pcpu = pkvm_hyp->pcpus[cpu];
 	de2 = pcpu->cpuid_def;
@@ -1395,6 +1498,64 @@ int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int nent)
 	r = pkvm_get_cpuid(de2, &def_nent);
 	if (r)
 		return r;
+
+	for (i = 0; i < nent; i++) {
+		if (cpuid_entry_is_empty(&e2[i]))
+		       continue;
+
+		if (pkvm_cpuid_entry_host_owned(&e2[i])) {
+			pkvm_update_host_cpuid_entry(&e2[i]);
+			continue;
+		}
+
+		for (j = 0; j < def_nent; j++) {
+			if ((e2[i].function == de2[j].function) &&
+			    (e2[i].index == de2[j].index) &&
+			    (e2[i].flags == de2[j].flags))
+				break;
+		}
+
+		if (j == def_nent)
+			/* Unknown leaf */
+			memset(&e2[i], 0, sizeof(struct kvm_cpuid_entry2));
+		else
+			pkvm_enforce_cpuid_entry(&e2[i], &de2[j]);
+	}
+
+	/*
+	 * Host buffer may not include a cpuid entry containing features
+	 * affecting the pVM security. Try to add the default entry
+	 * to the buffer if the space allows. Otherwise error out.
+	 */
+	n = 0;
+	for (i = 0; i < def_nent; i++) {
+		if (pkvm_cpuid_entry_host_owned(&de2[i]))
+			continue;
+
+		for (j = 0; j < nent; j++) {
+			if (cpuid_entry_is_empty(&e2[j]))
+				continue;
+
+			if ((de2[i].function == e2[j].function) &&
+			    (de2[i].index == e2[j].index) &&
+			    (de2[i].flags == e2[j].flags))
+				break;
+		}
+
+		/* already enforced */
+		if (j < nent)
+			continue;
+
+		/* find an empty slot */
+		while (n < nent && !cpuid_entry_is_empty(&e2[n]))
+			n++;
+
+		if (n == nent)
+			return -ENOSPC;
+
+		/* append */
+		e2[n++] = de2[i];
+	}
 
 	return 0;
 }
