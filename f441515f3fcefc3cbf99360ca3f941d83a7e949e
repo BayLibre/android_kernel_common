@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f27cd0b_abb334bc",
+        "filename": "include/uapi/linux/userfaultfd.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-11-04T16:43:50Z",
+      "side": 1,
+      "message": "6.1 had a different bit used for that. Why aren\u0027t you using the same bits? That would simplify the userspace checks.",
+      "range": {
+        "startLine": 368,
+        "startChar": 4,
+        "endLine": 368,
+        "endChar": 6
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "be4186cb_c2a0612d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/uapi/linux/userfaultfd.h",
+              "range": {
+                "startLine": 368,
+                "startChar": 0,
+                "endLine": 368,
+                "endChar": 0
+              },
+              "replacement": "\t * Note: In Linux kernel 6.1, a different bit was used for this\n\t * functionality.\n\t *\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f441515f3fcefc3cbf99360ca3f941d83a7e949e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
