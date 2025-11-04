@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ae7808a_2c7a538a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-11-04T20:19:22Z",
+      "side": 1,
+      "message": "So, can you provide some clarity in the bug as to why this \"non-functional change\" is important to merge?",
+      "revId": "4b99710e07440a14c20c8d46c9e5b3363fd99f5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9801cfd0_8ac4b184",
+        "filename": "include/linux/cgroup-defs.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-11-04T20:19:22Z",
+      "side": 1,
+      "message": "Unfortunately, modifying the structures here break the KABI. So we can\u0027t include this as is. Since this change doesn\u0027t have a clear motivation other then moving structure elements around, can you clarify the goal of including this change so we can better understand what is needed to consider how this might be done in a KABI compliant way?",
+      "revId": "4b99710e07440a14c20c8d46c9e5b3363fd99f5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
