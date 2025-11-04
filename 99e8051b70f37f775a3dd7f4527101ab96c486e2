@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6e7134b8_a22300ad",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-04T11:09:50Z",
+      "side": 1,
+      "message": "\u003e It is possible for the host to modify apic_regs to point to NULL or something else.\n\nAh, yeah indeed. This actually means we\u0027d better not rely on this host\u0027s apic-\u003eregs pointer value at runtime, i.e. we should copy the initial value of it to our own pointer in pkvm_pin_shared_vcpu() and use our own pointer afterwards?\n\nAnd the natural way to achieve that is, indeed, like you suggested, maintain our own instance of the apic structure, and only share/unshare the APIC regs page pointed to by apic-\u003eregs.\n\n\u003e For v6.15+, my initial idea to improve this, together with the potential security issue we discussed, is to make apic structure private to the pKVM, so that everything stored in this structure cannot be modified by the host. It is not necessary to make all the elements in apic structure up-to-date, just the elements needed by the pKVM hypervisor, which are apicv_active and nr_lvt_entries. And they can be updated via the existing PV interface refresh_apicv_exec_ctrl and setup_mce, which seems pretty nature.\n\nYeah, sounds reasonable.\n\nIIUC we would still share/unshare apic-\u003eregs, at least to use it for VIRTUAL_APIC_PAGE_ADDR (since we still want the host to back the APIC registers, since it\u0027s the host that emulates APIC for the guest)?\n\n...For 6.12 maybe let\u0027s keep it is as is for now (unless it\u0027s easy to backport that improvement to 6.12 right away).",
+      "parentUuid": "8bfc8370_4623f40b",
+      "revId": "99e8051b70f37f775a3dd7f4527101ab96c486e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c59d6351_70f71773",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 4
@@ -138,6 +156,24 @@
       "side": 1,
       "message": "Well, seems this is depending on the meaning of normal memory, 😊, which I think it means for a memory page which can be used normally for the pKVM, e.g., storing its private data.\n\nTo emphasize this, how about \"The pKVM hypervisor should not store private data to this apic structure\"?",
       "parentUuid": "67fbe970_0728a3b4",
+      "revId": "99e8051b70f37f775a3dd7f4527101ab96c486e2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac7c74cf_e04a72f1",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-04T11:09:50Z",
+      "side": 1,
+      "message": "SGTM",
+      "parentUuid": "8f1ee3a8_af20814b",
       "revId": "99e8051b70f37f775a3dd7f4527101ab96c486e2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
