@@ -51,6 +51,24 @@
       ],
       "revId": "271b94e378619b5442fb9e28983ecee8e89e1173",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "302a4c2c_1923dde7",
+        "filename": "arch/x86/include/asm/kvm_host.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T02:05:15Z",
+      "side": 1,
+      "message": "After looking closer, a comment actually might be useful (but a clear one), e.g. \"Used for passing additional parameters in requests from pKVM to host\"?",
+      "parentUuid": "45ab0831_d2b5409b",
+      "revId": "271b94e378619b5442fb9e28983ecee8e89e1173",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
