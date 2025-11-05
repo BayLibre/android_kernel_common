@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "de663005_0cffe9d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T14:59:49Z",
+      "side": 1,
+      "message": "Ok, yes, implicitly pkvm_make_req_to_host() is involved.\n\n\u003e The motivation for it is the next patch in which pKVM requests memcache                                                                                                                                                                                                                                                        \nrefill from the host by forwarding the PKVM_GHC_SHARE_MEM hypercall to                                                                                                                                                                                                                                                         \nthe host (which happens via pkvm_make_req_to_host()) and there is a need                                                                                                                                                                                                                                                       \nto inform the host about refill size.\n\nIMHO \"(which happens via pkvm_make_req_to_host())\" is an unnecessary detail here. We don\u0027t need to describe here how exactly hypercall forwarding works. :)",
+      "parentUuid": "9a5c67bf_769c3a99",
+      "revId": "3c0996b2c5fb9acac651f4e90633ec600de30f23",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "572c7921_c0284917",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
