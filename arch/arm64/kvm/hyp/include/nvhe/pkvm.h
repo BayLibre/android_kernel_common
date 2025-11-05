@@ -14,7 +14,7 @@
 #include <nvhe/spinlock.h>
 
 /*
- * Holds the relevant data for maintaining the vcpu state completely at hyp.
+ * Holds the relevant data for maintaining the vcpu state at hyp.
  */
 struct pkvm_hyp_vcpu {
 	struct kvm_vcpu vcpu;
