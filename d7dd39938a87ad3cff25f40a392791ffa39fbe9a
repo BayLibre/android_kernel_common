@@ -44,6 +44,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eb5054e7_e243dcb5",
+        "filename": "arch/x86/include/asm/pkvm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T12:56:28Z",
+      "side": 1,
+      "message": "\u003e nit: Would it be better to hardcode PKVM_MAX_HC as 4? More hypercalls will be added(for pviommu and so on) and everytime we would need to change the last hypercall here. We would need to change the hardcoded value anyways, but less characters and probably a bit more readable :-).\n\nYeah, sure.\n\n\u003e I am starting to think if it would be better to change to an enum so that MAX_HC will always be generated automatically. WDYT?\n\nIn 6.15+ this PKVM_HC_xxx stuff will go away anyway, i.e. all hypercalls (including IOMMU ones) will use enum pkvm_fn, I believe. Thus not much point in cleaning this up here in 6.12, I guess.\n\nEDIT: actually just changing it to an enum right here is very easy, so maybe why not.",
+      "parentUuid": "d6b69ee9_10dcdc45",
+      "range": {
+        "startLine": 17,
+        "startChar": 23,
+        "endLine": 17,
+        "endChar": 40
+      },
+      "revId": "d7dd39938a87ad3cff25f40a392791ffa39fbe9a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2cbd0352_3218228f",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
         "patchSetId": 2
@@ -73,6 +97,24 @@
           ]
         }
       ],
+      "revId": "d7dd39938a87ad3cff25f40a392791ffa39fbe9a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c563448_93fed335",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T12:56:28Z",
+      "side": 1,
+      "message": "\u003e Would we be double counting total_count and total_cycles for EXIT_REASON_VMCALL- One at line 102 and one here?\n\nYeah, indeed. Thanks for catching.\n\n\u003e Instead of appending hypercall stats to perf data, would it make sense to have a separate struct and embed it in perf so as to avoid confusion?\n\nI\u0027ll try to add separate arrays perf-\u003ehypercalls and perf-\u003efunctions (alongside perf-\u003ereasons).",
+      "parentUuid": "2cbd0352_3218228f",
       "revId": "d7dd39938a87ad3cff25f40a392791ffa39fbe9a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
