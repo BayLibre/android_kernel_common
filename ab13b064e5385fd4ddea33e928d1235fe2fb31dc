@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93447203_34dcca99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-05T15:16:57Z",
+      "side": 1,
+      "message": "For pviommu, we have a use case to have a read only sharing of pages with host. This is to share the translation structures such that host can read(for virt_to_phys, debugfs usage etc) but not modify the page. I have cooked up a temporary api in the pviommu patchset: aosp/3788748. But it would be great if you could consider that in this series as well :-)",
+      "revId": "ab13b064e5385fd4ddea33e928d1235fe2fb31dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
