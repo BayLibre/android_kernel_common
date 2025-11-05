@@ -1,0 +1,36 @@
+27ceb246e735 ANDROID: Add kcmp tests for all architectures (Wake Liu, 3 months ago)
+95e5c0e9e3ea ANDROID: Add futex tests for all architectures (Wake Liu, 3 months ago)
+78037b8f65fc ANDROID: Add capabilities test for all architectures (Wake Liu, 3 months ago)
+
+
+請先用 git show 閱讀這些 commit, 我現在希望參考 Android.bp, 
+":kselftest_net_tests_socket",
+":kselftest_net_tests_psock_fanout",
+":kselftest_net_tests_psock_tpacket",
+":kselftest_net_tests_reuseport_dualstack",
+":kselftest_net_tests_reuseaddr_conflict",
+":kselftest_net_test_bpf",
+
+
+開始寫 net 的 vts test, 應該要修改 build.bazel 
+vts_kselftest_tests_x86
+vts_kselftest_tests_x86_64
+vts_kselftest_tests_arm
+vts_kselftest_tests_arm64
+這些 targets
+
+這些是可能需要新增的 test targets:
+":kselftest_net_tests_socket_arm64",
+":kselftest_net_tests_psock_fanout_arm64",
+":kselftest_net_tests_psock_tpacket_arm64",
+":kselftest_net_tests_reuseport_dualstack_arm64",
+":kselftest_net_tests_reuseaddr_conflict_arm64",
+":kselftest_net_test_bpf_arm64",
+
+
+以及 
+vts_config_x86.xml
+vts_config_x86_64.xml
+vts_config_arm.xml
+vts_config_arm64.xml
+
