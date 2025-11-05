@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9a5c67bf_769c3a99",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-11-05T14:49:46Z",
+      "side": 1,
+      "message": "It does: `pkvm_make_req_to_host` is used when passing hypercalls to host for handling.\n\nThe `handle_vmcall,` is handled by `__vmx_handle_exit`/`vmx_handle_exit` which returns value is used by `__kvm_vcpu_enter_guest` where `handle_exit` is handled.\n\nBased on that (since during PKVM_GHC_SHARE_MEM handling in pKVM we return 0), `__kvm_vcpu_enter_guest` triggers\n`pkvm_make_req_to_host`:\n\n```\n          if (kvm_x86_call(handle_exit)(vcpu, exit_fastpath) \u003c\u003d 0) { \n                  pkvm_make_req_to_host(HOST_HANDLE_EXIT, vcpu);\n                  return false;\n          }   \n```\n\nright?\n\nMaybe:\n```\nThe motivation for it is the next patch in which pKVM requests memcache                                                                                                                                                                                                                                                        \nrefill from the host by forwarding the PKVM_GHC_SHARE_MEM hypercall to                                                                                                                                                                                                                                                         \nthe host (which happens via pkvm_make_req_to_host()) and there is a need                                                                                                                                                                                                                                                       \nto inform the host about refill size.\n```",
+      "parentUuid": "6001d913_33a499e7",
+      "revId": "3c0996b2c5fb9acac651f4e90633ec600de30f23",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "572c7921_c0284917",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "\u003e \"...to pass it in an unused hypercall arg register not used by the given hypercall\n\ns/an unused/a/ :)",
       "parentUuid": "572c7921_c0284917",
+      "revId": "3c0996b2c5fb9acac651f4e90633ec600de30f23",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e691dbe2_87f98165",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-11-05T14:49:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "54a2e0bc_3d8469fb",
       "revId": "3c0996b2c5fb9acac651f4e90633ec600de30f23",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
