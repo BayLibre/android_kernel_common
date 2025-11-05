@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6001d913_33a499e7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T13:40:43Z",
+      "side": 1,
+      "message": "It doesn\u0027t? It requests it simply by forwarding the PKVM_GHC_SHARE_MEM hypercall to the host, without using pkvm_make_req_to_host()?",
+      "revId": "3c0996b2c5fb9acac651f4e90633ec600de30f23",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "572c7921_c0284917",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T13:40:43Z",
+      "side": 1,
+      "message": "Not \"some hypercall\" if we talking precisely about rsi?\n\nHow about this:\n\n\"...to pass it in an unused hypercall arg register not used by the given hypercall issued by the guest, e.g. in rsi in this case of PKVM_GHC_SHARE_MEM, but that would be unsafe because if the guest issues the hypercall via inline asm, e.g. the following one in Linux guests:\n\n[...]\n\nthe compiler expects that only rax [...]\"\n\n?",
+      "revId": "3c0996b2c5fb9acac651f4e90633ec600de30f23",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
