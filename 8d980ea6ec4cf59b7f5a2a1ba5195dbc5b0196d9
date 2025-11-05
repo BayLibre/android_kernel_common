@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b9da69a_3d869485",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1381,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T22:22:00Z",
+      "side": 1,
+      "message": "nit: checkpatch reports some errors:\n\n```\nERROR: space required before the open parenthesis \u0027(\u0027\n#40: FILE: arch/x86/kvm/pkvm/cpuid.c:1381:\n+\tswitch(e2-\u003efunction) {\n\nERROR: space required before the open parenthesis \u0027(\u0027\n#60: FILE: arch/x86/kvm/pkvm/cpuid.c:1401:\n+\tswitch(e2-\u003efunction) {\n\nWARNING: suspect code indent for conditional statements (16, 23)\n#159: FILE: arch/x86/kvm/pkvm/cpuid.c:1503:\n+\t\tif (cpuid_entry_is_empty(\u0026e2[i]))\n+\t\t       continue;\n\nWARNING: Statements should start on a tabstop\n#160: FILE: arch/x86/kvm/pkvm/cpuid.c:1504:\n+\t\t       continue;\n```",
+      "fixSuggestions": [
+        {
+          "fixId": "1c4baeca_17abc2a1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/cpuid.c",
+              "range": {
+                "startLine": 1381,
+                "startChar": 0,
+                "endLine": 1382,
+                "endChar": 0
+              },
+              "replacement": "\tswitch (e2-\u003efunction) {\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/cpuid.c",
+              "range": {
+                "startLine": 1401,
+                "startChar": 0,
+                "endLine": 1402,
+                "endChar": 0
+              },
+              "replacement": "\tswitch (e2-\u003efunction) {\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/cpuid.c",
+              "range": {
+                "startLine": 1504,
+                "startChar": 0,
+                "endLine": 1505,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tcontinue;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbe9fee3_8c35d5aa",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1388,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T22:22:00Z",
+      "side": 1,
+      "message": "nit: we don\u0027t need `host_owned` variable, we can just `return true` here?",
+      "fixSuggestions": [
+        {
+          "fixId": "24c87150_02e17893",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/cpuid.c",
+              "range": {
+                "startLine": 1379,
+                "startChar": 0,
+                "endLine": 1381,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/cpuid.c",
+              "range": {
+                "startLine": 1388,
+                "startChar": 0,
+                "endLine": 1390,
+                "endChar": 0
+              },
+              "replacement": "\t\treturn true;\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/cpuid.c",
+              "range": {
+                "startLine": 1394,
+                "startChar": 0,
+                "endLine": 1395,
+                "endChar": 0
+              },
+              "replacement": "\treturn false;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f76c329_7a31705d",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1407,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T22:22:00Z",
+      "side": 1,
+      "message": "I see in intel-tdx-module-1.5-abi-spec-348551001.pdf (not the newest one, but still) it says \"Native\" rather than hardcoded to 64 bytes. So would it be better to enforce the bits from cpuid_def rather than just hardcode 0x3F?\n\n(Though I understand it is probably always 64 bytes anyway, so this is probably a very theoretical concern...)",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6912f2f9_cebfba44",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1432,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T22:22:00Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we clear these bits in tmp.ecx before adding the bits from entry-\u003eecx?\n\nSame question about tmp.edx below.",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f7f7a9e_51263281",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1528,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T22:22:00Z",
+      "side": 1,
+      "message": "In your first version, `nent` was based on the page-aligned size, so it was almost guaranteed that there are enough empty entries. Now, with aosp/3836474, `nent` is exactly the host\u0027s vcpu-\u003earch.cpuid_nent, so, I suppose, most likely there will be no empty entries at all?\n\nSo, should we do something like this? (I\u0027ve quickly tested that this seems to work fine in my normal tests, but haven\u0027t tested the actual corner cases it addresses.)\n\n```\ndiff --git a/arch/x86/kvm/pkvm/cpuid.c b/arch/x86/kvm/pkvm/cpuid.c\nindex 49a02b0831ae..0d57ef236ab2 100644\n--- a/arch/x86/kvm/pkvm/cpuid.c\n+++ b/arch/x86/kvm/pkvm/cpuid.c\n@@ -1501,12 +1501,13 @@ static bool cpuid_entry_is_empty(struct kvm_cpuid_entry2 *e2)\n  *     the host, to prevent the host attack by hiding cpuid leaves which\n  *     may affect pVM security\n  */\n-int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int nent)\n+int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int *nent, int max_nent)\n {\n \tint cpu \u003d raw_smp_processor_id();\n \tstruct kvm_cpuid_entry2 *de2;\n \tstruct pkvm_pcpu *pcpu;\n \tint def_nent, r, i, j, n;\n+\tint orig_nent \u003d *nent;\n \n \tpcpu \u003d pkvm_hyp-\u003epcpus[cpu];\n \tde2 \u003d pcpu-\u003ecpuid_def;\n@@ -1518,7 +1519,7 @@ int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int nent)\n \tif (r)\n \t\treturn r;\n \n-\tfor (i \u003d 0; i \u003c nent; i++) {\n+\tfor (i \u003d 0; i \u003c orig_nent; i++) {\n \t\tif (cpuid_entry_is_empty(\u0026e2[i]))\n \t\t       continue;\n \n@@ -1553,7 +1554,7 @@ int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int nent)\n \t\tif (pkvm_cpuid_entry_host_owned(\u0026de2[i]))\n \t\t\tcontinue;\n \n-\t\tfor (j \u003d 0; j \u003c nent; j++) {\n+\t\tfor (j \u003d 0; j \u003c orig_nent; j++) {\n \t\t\tif (cpuid_entry_is_empty(\u0026e2[j]))\n \t\t\t\tcontinue;\n \n@@ -1564,20 +1565,23 @@ int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int nent)\n \t\t}\n \n \t\t/* already enforced */\n-\t\tif (j \u003c nent)\n+\t\tif (j \u003c orig_nent)\n \t\t\tcontinue;\n \n \t\t/* find an empty slot */\n-\t\twhile (n \u003c nent \u0026\u0026 !cpuid_entry_is_empty(\u0026e2[n]))\n+\t\twhile (n \u003c max_nent \u0026\u0026 !cpuid_entry_is_empty(\u0026e2[n]))\n \t\t\tn++;\n \n-\t\tif (n \u003d\u003d nent)\n+\t\tif (n \u003d\u003d max_nent)\n \t\t\treturn -ENOSPC;\n \n \t\t/* append */\n \t\te2[n++] \u003d de2[i];\n \t}\n \n+\tif (n \u003e orig_nent)\n+\t\t*nent \u003d n;\n+\n \treturn 0;\n }\n \ndiff --git a/arch/x86/kvm/pkvm/cpuid.h b/arch/x86/kvm/pkvm/cpuid.h\nindex 6eb2486ab449..16bdf3478250 100644\n--- a/arch/x86/kvm/pkvm/cpuid.h\n+++ b/arch/x86/kvm/pkvm/cpuid.h\n@@ -5,6 +5,6 @@\n #include \u003ccpuid.h\u003e\n \n int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2, int nent);\n-int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int nent);\n+int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int *nent, int max_nent);\n \n #endif\ndiff --git a/arch/x86/kvm/pkvm/pkvm.c b/arch/x86/kvm/pkvm/pkvm.c\nindex d3a14f972b2d..07c5395da15c 100644\n--- a/arch/x86/kvm/pkvm/pkvm.c\n+++ b/arch/x86/kvm/pkvm/pkvm.c\n@@ -1089,7 +1089,11 @@ static unsigned long pkvm_vcpu_after_set_cpuid(struct pkvm_vcpu *pkvm_vcpu,\n \told \u003d vcpu-\u003earch.cpuid_entries;\n \told_nent \u003d vcpu-\u003earch.cpuid_nent;\n \n-\tif (pkvm_is_protected_vcpu(vcpu) \u0026\u0026 pkvm_enforce_cpuid(new, new_nent))\n+\tmemset((void *)new + size, 0, PAGE_ALIGN(size) - size);\n+\n+\tif (pkvm_is_protected_vcpu(vcpu) \u0026\u0026\n+\t    pkvm_enforce_cpuid(new, \u0026new_nent,\n+\t\t\t       PAGE_ALIGN(size) / sizeof(struct kvm_cpuid_entry2)))\n \t\tgoto out_free;\n \n \tif (!kvm_set_cpuid(vcpu, new, new_nent) \u0026\u0026 (vcpu-\u003earch.cpuid_entries \u003d\u003d new)) {\n```",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20972ea5_b35937f8",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1533,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T22:22:00Z",
+      "side": 1,
+      "message": "Entry with function \u003d\u003d 4 is \"host owned\" but still subject to updating by pkvm_update_host_cpuid_entry() (to enforce the cacheline size). So is it ok if the host doesn\u0027t provide an entry with function \u003d\u003d 4 at all and we do nothing about it? Shouldn\u0027t we enforce the one from pcpu-\u003ecpuid_def in such case?\n\nAnd same question, more generally, about any other such entries that we might have in the future, that are \"host owned but not quite fully\".\n\n...So maybe we should drop pkvm_update_host_cpuid_entry(), and remove leaf 4 from the list of host-owned leaves in pkvm_update_host_cpuid_entry(), and instead update it in pkvm_enforce_cpuid_entry() like we update leaf 1 and 7?",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
