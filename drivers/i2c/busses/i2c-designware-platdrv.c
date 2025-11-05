@@ -114,7 +114,7 @@ static void dw_i2c_plat_pm_cleanup(struct dw_i2c_dev *dev)
 {
 	pm_runtime_disable(dev->dev);
 
-	if (dev->shared_with_punit)
+	if (true)
 		pm_runtime_put_noidle(dev->dev);
 }
 
@@ -298,7 +298,7 @@ static int dw_i2c_plat_probe(struct platform_device *pdev)
 	pm_runtime_use_autosuspend(device);
 	pm_runtime_set_active(device);
 
-	if (dev->shared_with_punit)
+	if (true)
 		pm_runtime_get_noresume(device);
 
 	pm_runtime_enable(device);
