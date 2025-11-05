@@ -15,5 +15,6 @@ obj-y					+= starfive/
 obj-y					+= sunxi/
 obj-y					+= tegra/
 obj-y					+= ti/
+obj-y					+= virt/
 obj-y					+= xilinx/
 obj-y					+= core.o governor.o
