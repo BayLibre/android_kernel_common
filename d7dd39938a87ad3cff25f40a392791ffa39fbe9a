@@ -1,0 +1,80 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6b69ee9_10dcdc45",
+        "filename": "arch/x86/include/asm/pkvm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-05T11:37:48Z",
+      "side": 1,
+      "message": "nit: Would it be better to hardcode PKVM_MAX_HC as 4? More hypercalls will be added(for pviommu and so on) and everytime we would need to change the last hypercall here. We would need to change the hardcoded value anyways, but less characters and probably a bit more readable :-).\n\nI am starting to think if it would be better to change to an enum so that MAX_HC will always be generated automatically. WDYT?",
+      "range": {
+        "startLine": 17,
+        "startChar": 23,
+        "endLine": 17,
+        "endChar": 40
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b5325d52_f0a395f7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/include/asm/pkvm.h",
+              "range": {
+                "startLine": 13,
+                "startChar": 0,
+                "endLine": 18,
+                "endChar": 0
+              },
+              "replacement": "enum pkvm_hypercall {\n\tPKVM_HC_KVM_CALL \u003d 0,\n\tPKVM_HC_INIT_FINALISE,\n\tPKVM_HC_MMIO_ACCESS,\n\tPKVM_HC_ADD_PTDEV,\n\tPKVM_MAX_HC,\n};\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d7dd39938a87ad3cff25f40a392791ffa39fbe9a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cbd0352_3218228f",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-05T11:37:48Z",
+      "side": 1,
+      "message": "Would we be double counting total_count and total_cycles for EXIT_REASON_VMCALL- One at line 102 and one here? Instead of appending hypercall stats to perf data, would it make sense to have a separate struct and embed it in perf so as to avoid confusion?",
+      "fixSuggestions": [
+        {
+          "fixId": "34068251_25e93d67",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+              "range": {
+                "startLine": 105,
+                "startChar": 0,
+                "endLine": 106,
+                "endChar": 0
+              },
+              "replacement": "\t{\n\t\tu32 hc_index \u003d MAX_EXIT_REASONS + perf-\u003erax;\n\n\t\tperf-\u003edata.vmexit.cycles[hc_index] +\u003d cycles;\n\t\tperf-\u003edata.vmexit.reasons[hc_index]++;\n\t}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d7dd39938a87ad3cff25f40a392791ffa39fbe9a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
