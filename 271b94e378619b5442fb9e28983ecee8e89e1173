@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccc92e39_269f53a3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T01:33:38Z",
+      "side": 1,
+      "message": "This description is gonna sound confusing to anyone except those familiar with the next patch and the history of its creation, right? Like, why are we even talking about rax-rsi registers and all that stuff here. Hypercall handling is not the only possible case when pKVM may want to pass some parameters in a request to the host, right?\n\nDocumenting all these considerations here is probably indeed not a bad idea, but we\u0027d better reshuffle the description to make it clear what it is about, like:\n\n\"Introduce req_param in kvm_protected_vcpu which can be used to pass some extra parameters from pKVM to the host when doing a request via pkvm_make_req_to_host().\n\nThe motivation for it is the next patch which [...] An alternative solution could be to pass it in the unused hypercall arg register, i.e. rsi, but that would be unsafe because [...]\"\n\n?",
+      "revId": "271b94e378619b5442fb9e28983ecee8e89e1173",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45ab0831_d2b5409b",
+        "filename": "arch/x86/include/asm/kvm_host.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-05T01:33:38Z",
+      "side": 1,
+      "message": "Argument of what?\n\nI think there is not much need for a comment here.",
+      "fixSuggestions": [
+        {
+          "fixId": "ef77752d_0d0a98d4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/include/asm/kvm_host.h",
+              "range": {
+                "startLine": 839,
+                "startChar": 0,
+                "endLine": 840,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "271b94e378619b5442fb9e28983ecee8e89e1173",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
