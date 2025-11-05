@@ -117,6 +117,24 @@
       "parentUuid": "2cbd0352_3218228f",
       "revId": "d7dd39938a87ad3cff25f40a392791ffa39fbe9a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "124e5cf8_515eac9e",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-05T14:05:48Z",
+      "side": 1,
+      "message": "makes sense. I was thinking of something like:\n```\nstruct hc_perf_Data {\n    u64 cycles;\n    u64 count;\n};\n```\n and embedding it in vmexit_data:\n\n```\nstruct vmexit_data {\n\tu64 total_count;\n\tu64 total_cycles;\n\tu64 reasons[MAX_EXIT_REASONS];\n\tu64 cycles[MAX_EXIT_REASONS];\n\tstruct hc_perf_data[PKVM_MAX_HC];\n};\n```\n\nHaving separate counters as you mentioned would also be perfect, just thought of pitching this :-)",
+      "parentUuid": "6c563448_93fed335",
+      "revId": "d7dd39938a87ad3cff25f40a392791ffa39fbe9a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
