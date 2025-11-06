@@ -182,6 +182,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e3e72b8_b15b425f",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1407,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-06T12:32:34Z",
+      "side": 1,
+      "message": "I see, thanks for the link.",
+      "parentUuid": "89ae91be_8e23f9e8",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6912f2f9_cebfba44",
@@ -272,6 +290,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "901c31cf_558ccac1",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1528,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-06T12:32:34Z",
+      "side": 1,
+      "message": "Ok, I\u0027m probably fine with either keeping it as is for simplicity or making it more failsafe like I suggested.\n\nThe test case in question would be, as I understand: the VMM removes a \"required\" entry, but doesn\u0027t add any \"unsupported\" entries. So pKVM needs to append the \"required\" entry, but there is no room, since there are no \"unsupported\" entries to zap.\n\n...Hmm, what if the required entry that crosvm \"removes\" is a func\u003d4 entry for L4 cache? i.e. if crosvm doesn\u0027t actually remove it, it just calls KVM_GET_SUPPORTED_CPUID on a different pCPU than the one on which pKVM enforces the CPUID later (due to the crosvm\u0027s vcpu thread migrated to a different pCPU by the host Linux scheduler during the time window between these two events), and this func\u003d4 entry doesn\u0027t exist on the initial pCPU but exists on the final one?\n\nSo, we either need to take this scenario into account when addressing the has_func4 special case (which we are discussing in another comment), or we do need a failsafe mechanism like I suggested?\n\nBut even if we address this with has_func4, what about other such potential cases of CPUID leaves that exist on some pCPUs (and whose native values are preserved by __do_cpuid_func() and thus enforced by pKVM) but don\u0027t exist on other pCPUs? Are we sure there will be no other such cases?",
+      "parentUuid": "522943d1_10b50753",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20972ea5_b35937f8",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 2
@@ -337,6 +373,24 @@
       "side": 1,
       "message": "sorry above change is not readable. some symbols are interpreted to format markers...",
       "parentUuid": "f06e722f_8e0db5d0",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5dec670_985ce45e",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1533,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-06T12:32:34Z",
+      "side": 1,
+      "message": "You can use \\``` (in a separate line before the 1st line and after the last line of your code) to avoid formatting:\n\n\\```\n\u003cyour code\u003e\n\\```",
+      "parentUuid": "2fa52269_e246cf88",
       "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
