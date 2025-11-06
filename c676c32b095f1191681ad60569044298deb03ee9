@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "061f26c3_60582124",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/mem_protect.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1063,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-06T14:26:40Z",
+      "side": 1,
+      "message": "Doesn\u0027t compile on ToT, need to update it to pass a memcache pointer (NULL in this case) to do_share().",
+      "revId": "c676c32b095f1191681ad60569044298deb03ee9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
