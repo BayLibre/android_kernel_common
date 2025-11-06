@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95072af3_8b169418",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2025-11-06T18:27:53Z",
+      "side": 1,
+      "message": "4cbc08649a is the hash of the original commit on `drm-xe-next` (xe maintainer\u0027s dev branch).\n\nNow that the correct upstream hash is included (1852d27aa), I think the KernelCommit check is getting confused (still checking against the former hash, since it comes first?).\n\nI would like to treat this as a presubmit bug and keep both hashes in the commit message, since that is how it actually appears upstream.\n\nSo I\u0027m in favor of giving my own Bypass-Presubmit+1 to ignore this failing check.\n\nTim, what are you thoughts?",
+      "parentUuid": "ca4b766c_913511fe",
+      "revId": "8d3eabdc8c05f5421a72c1f487b9627a729d312c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1cb82362_bbfcfdb9",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2025-10-28T15:32:15Z",
       "side": 1,
       "message": "Please add `Bug` and `Test` tags.",
+      "revId": "8d3eabdc8c05f5421a72c1f487b9627a729d312c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6144856a_5a6fe76d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2025-11-06T18:27:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cb82362_bbfcfdb9",
       "revId": "8d3eabdc8c05f5421a72c1f487b9627a729d312c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
