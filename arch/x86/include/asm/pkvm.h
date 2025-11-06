@@ -163,6 +163,19 @@ struct pkvm_domain_param {
 	u64 pgd_gpa;
 };
 
+struct pkvm_cache_tag_param {
+	u64 phys;
+	u64 pgd_gpa;
+	int type;
+	u8 bus;
+	u8 devfn;
+	u16 pfsid;
+	u8 ats_qdep;
+	u8 dtlb_extra_inval;
+	u16 domain_id;
+	u32 pasid;
+};
+
 #ifndef __PKVM_HYP__
 
 extern bool __read_mostly enable_pkvm;	/* kernel command-line flag */
