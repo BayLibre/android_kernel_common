@@ -39,13 +39,7 @@ static pkvm_spinlock_t pkvm_vms_lock = __PKVM_SPINLOCK_UNLOCKED;
 static struct pkvm_vm_ref pkvm_vms_ref[MAX_PKVM_VMS];
 struct pkvm_x86_ops pkvm_x86_ops __read_mostly;
 
-static DEFINE_PER_CPU(union pkvm_pv_param *, pv_param);
-
-#define this_pv_param(f)						\
-	({								\
-		union pkvm_pv_param *p = this_cpu_read(pv_param);	\
-		p ? &p->f : NULL;					\
-	})
+DEFINE_PER_CPU(union pkvm_pv_param *, pv_param);
 
 static void *donate_host_memory(unsigned long gpa, size_t size, bool clear)
 {
