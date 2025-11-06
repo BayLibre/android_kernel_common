@@ -39,6 +39,7 @@
 
 #include <asm/cputype.h>
 #include <asm/exception.h>
+#include <asm/kvm_host.h>
 
 #include "irq-gic-common.h"
 #include "irq-gic-its-msi-parent.h"
@@ -115,6 +116,7 @@ struct its_node {
 	u64			(*get_msi_base)(struct its_device *its_dev);
 	u64			typer;
 	u64			cbaser_save;
+	void			*shadow_cmd_base;
 	u32			ctlr_save;
 	u32			mpidr;
 	struct list_head	its_device_list;
@@ -5228,6 +5230,22 @@ static int __init its_compute_its_list_map(struct its_node *its)
 	return its_number;
 }
 
+static void *its_get_cmd_base(struct its_node *its)
+{
+	void *page;
+
+	if (kvm_get_mode() != KVM_MODE_PROTECTED)
+		return its->cmd_base;
+
+	page = alloc_pages_node(its->numa_node, GFP_KERNEL | __GFP_ZERO,
+				get_order(ITS_CMD_QUEUE_SZ));
+	if (!page)
+		return NULL;
+
+	its->shadow_cmd_base = (void *)page_address(page);
+	return its->shadow_cmd_base;
+}
+
 static int __init its_probe_one(struct its_node *its)
 {
 	u64 baser, tmp;
@@ -5285,7 +5303,7 @@ static int __init its_probe_one(struct its_node *its)
 	if (err)
 		goto out_free_tables;
 
-	baser = (virt_to_phys(its->cmd_base)	|
+	baser = (virt_to_phys(its_get_cmd_base(its))	|
 		 GITS_CBASER_RaWaWb		|
 		 GITS_CBASER_InnerShareable	|
 		 (ITS_CMD_QUEUE_SZ / SZ_4K - 1)	|
