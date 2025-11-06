@@ -46,6 +46,16 @@ struct pkvm_iommu_driver {
 
 #ifndef __PKVM_HYP__
 
+DECLARE_PER_CPU(char[PAGE_SIZE], pv_param);
+
+#define get_this_pv_param()		(&per_cpu(pv_param, get_cpu()))
+#define put_this_pv_param(ptr)		\
+({					\
+	memset(ptr, 0, sizeof(*ptr));	\
+	ptr = NULL;			\
+	put_cpu();			\
+})
+
 extern bool __read_mostly enable_pkvm;	/* kernel command-line flag */
 
 extern struct static_key_false pkvm_enabled_key;
@@ -101,6 +111,10 @@ static inline void pkvm_writel(void __iomem *reg, unsigned long reg_phys,
 
 /* we are in pkvm hypervisor, pkvm is enabled by definition */
 #define enable_pkvm true
+
+DECLARE_PER_CPU(void *, pv_param);
+
+#define this_pv_param()	(this_cpu_read(pv_param))
 
 #endif /* __PKVM_HYP__ */
 

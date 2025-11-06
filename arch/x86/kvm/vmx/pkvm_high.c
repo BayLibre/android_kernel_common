@@ -15,15 +15,7 @@
 #include <trace/events/ipi.h>
 #include "trace.h"
 
-static DEFINE_PER_CPU(union pkvm_pv_param, pv_param);
-
-#define get_this_pv_param(f)		(&per_cpu(pv_param, get_cpu()).f)
-#define put_this_pv_param(ptr)		\
-({					\
-	memset(ptr, 0, sizeof(*ptr));	\
-	ptr = NULL;			\
-	put_cpu();			\
-})
+DEFINE_PER_CPU(char[PAGE_SIZE], pv_param);
 
 static void pkvm_mc_free_fn(void *addr, void *unused)
 {
@@ -1025,7 +1017,7 @@ static int pkvm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 	/* Use PV interface to get the MSR emulated by the pkvm hypervisor */
 	if (pkvm_hyp_emulated_msr(msr_info->index)) {
 		if (!vcpu->arch.guest_state_protected) {
-			struct msr_data *msr = get_this_pv_param(msr);
+			struct msr_data *msr = (struct msr_data *)get_this_pv_param();
 			int ret;
 
 			*msr = *msr_info;
@@ -1048,7 +1040,7 @@ static int pkvm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 	/* Use PV interface to set the MSR emulated by the pkvm hypervisor */
 	if (pkvm_hyp_emulated_msr(msr_info->index)) {
 		if (!vcpu->arch.guest_state_protected) {
-			struct msr_data *msr = get_this_pv_param(msr);
+			struct msr_data *msr = (struct msr_data *)get_this_pv_param();
 			int ret;
 
 			*msr = *msr_info;
@@ -1098,7 +1090,7 @@ static void pkvm_get_segment(struct kvm_vcpu *vcpu, struct kvm_segment *var, int
 	    !pkvm_segment_cache_test(vmx, seg, SEG_FIELD_BASE) ||
 	    !pkvm_segment_cache_test(vmx, seg, SEG_FIELD_LIMIT) ||
 	    !pkvm_segment_cache_test(vmx, seg, SEG_FIELD_AR)) {
-		struct kvm_segment *pkvm_var = get_this_pv_param(seg);
+		struct kvm_segment *pkvm_var = (struct kvm_segment *)get_this_pv_param();
 
 		kvm_call_pkvm(get_segment, vcpu, pkvm_var, seg);
 
@@ -1137,7 +1129,7 @@ static void pkvm_set_segment(struct kvm_vcpu *vcpu, struct kvm_segment *var, int
 	if (vcpu->arch.guest_state_protected)
 		return;
 
-	pkvm_var = get_this_pv_param(seg);
+	pkvm_var = (struct kvm_segment *)get_this_pv_param();
 	*pkvm_var = *var;
 	kvm_call_pkvm(set_segment, vcpu, pkvm_var, seg);
 	put_this_pv_param(pkvm_var);
@@ -1234,7 +1226,7 @@ static void pkvm_access_idt_gdt(struct kvm_vcpu *vcpu, struct desc_ptr *dt,
 		return;
 	}
 
-	desc = get_this_pv_param(desc);
+	desc = (struct desc_ptr *)get_this_pv_param();
 
 	if (set) {
 		desc->size = dt->size;
@@ -1654,7 +1646,7 @@ static void pkvm_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap)
 	if (!kvm_vcpu_apicv_active(vcpu))
 		return;
 
-	exitmap = get_this_pv_param(eoi_exit_bitmap[0]);
+	exitmap = (u64 *)get_this_pv_param();
 
 	exitmap[0] = eoi_exit_bitmap[0];
 	exitmap[1] = eoi_exit_bitmap[1];

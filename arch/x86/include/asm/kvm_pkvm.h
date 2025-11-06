@@ -339,11 +339,4 @@ enum pkvm_fn {
 #define HOST_INIT_MMU			2
 #define HOST_HANDLE_GUESTDBG_SINGLESTEP	3
 
-union pkvm_pv_param {
-	struct kvm_segment seg;
-	struct msr_data msr;
-	struct desc_ptr desc;
-	u64 eoi_exit_bitmap[4];
-} __aligned(PAGE_SIZE);
-
 #endif
