@@ -5,6 +5,8 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/of_address.h>
+#include <linux/irqchip/arm-gic-v3.h>
+
 #include <asm/kvm_pkvm_module.h>
 
 #include "hyp/gic-v3-its.h"
