@@ -116,7 +116,7 @@ static unsigned long handle_vmcall(struct kvm_vcpu *vcpu)
 	 * invoked after pkvm initialization.
 	 */
 	case PKVM_HC_INIT_FINALISE:
-		ret = __pkvm_init_finalise(vcpu, (struct pkvm_section *)a0, a1);
+		ret = __pkvm_init_finalise(vcpu, (struct pkvm_section *)a0, a1, a2);
 		break;
 	case __PKVM_HC_COMMIT_FINALISE:
 		ret = pkvm_commit_finalise(a0);
