@@ -28,6 +28,8 @@
 #define PKVM_HC_IOMMU_DOMAIN_FREE	21
 #define PKVM_HC_IOMMU_MAP_PAGES		22
 #define PKVM_HC_IOMMU_UNMAP_PAGES	23
+#define PKVM_HC_IOMMU_CACHE_ASSIGN	24
+#define PKVM_HC_IOMMU_CACHE_UNASSIGN	25
 
 /*
  * Internal hypercall to commit the pkvm initialization
@@ -148,6 +150,19 @@ struct pkvm_domain_param {
 	u8 use_first_level: 1;
 	u64 max_addr;
 	u64 pgd_gpa;
+};
+
+struct pkvm_cache_tag_param {
+	u64 pgd_gpa;
+	int type;
+	u64 phys;
+	u8 bus;
+	u8 devfn;
+	u16 pfsid;
+	u8 ats_qdep;
+	u8 dtlb_extra_inval;
+	u16 domain_id;
+	u32 pasid;
 };
 
 /*
