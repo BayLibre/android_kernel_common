@@ -243,4 +243,24 @@ union pkvm_pv_param {
 	u64 eoi_exit_bitmap[4];
 } __aligned(PAGE_SIZE);
 
+#ifdef __PKVM_HYP__
+DECLARE_PER_CPU(union pkvm_pv_param *, pv_param);
+
+#define this_pv_param(f)						\
+	({								\
+		union pkvm_pv_param *p = this_cpu_read(pv_param);	\
+		p ? &p->f : NULL;					\
+	})
+#else
+DECLARE_PER_CPU(union pkvm_pv_param, pv_param);
+
+#define get_this_pv_param(f)		(&per_cpu(pv_param, get_cpu()).f)
+#define put_this_pv_param(ptr)		\
+({					\
+	memset(ptr, 0, sizeof(*ptr));	\
+	ptr = NULL;			\
+	put_cpu();			\
+})
+#endif
+
 #endif
