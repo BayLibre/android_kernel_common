@@ -108,4 +108,10 @@ static inline long pkvm_hc_cache_tag_unassign(struct pkvm_cache_tag_param *param
 	return pkvm_iommu_hypercall(PKVM_HC_IOMMU_CACHE_UNASSIGN,
 			cache_tag_param, param);
 }
+
+static inline int pkvm_hc_qi_submit_sync(unsigned long reg_phys, unsigned long desc,
+		unsigned int count)
+{
+	return kvm_hypercall3(PKVM_HC_SUBMIT_QI, reg_phys, desc, count);
+}
 #endif
