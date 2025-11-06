@@ -25,6 +25,7 @@
 #include <uapi/linux/iommufd.h>
 
 #include "iommu.h"
+#include "iommu_pkvm.h"
 #include "../dma-iommu.h"
 #include "../irq_remapping.h"
 #include "../iommu-pages.h"
@@ -1235,6 +1236,11 @@ static void iommu_disable_translation(struct intel_iommu *iommu)
 	u32 sts;
 	unsigned long flag;
 
+	if (pkvm_pviommu_enabled()) {
+		pkvm_hc_disable_iommu(iommu->reg_phys);
+		return;
+	}
+
 	if (iommu_skip_te_disable && iommu->drhd->gfx_dedicated &&
 	    (cap_read_drain(iommu->cap) || cap_write_drain(iommu->cap)))
 		return;
@@ -2253,13 +2259,25 @@ static void __init init_no_remapping_devices(void)
 	}
 }
 
-static void intel_iommu_enable(struct intel_iommu *iommu)
+static int intel_iommu_enable(struct intel_iommu *iommu)
 {
+	if (pkvm_pviommu_enabled()) {
+		int ret = pkvm_hc_enable_iommu(iommu->reg_phys,
+				virt_to_phys(iommu->root_entry));
+
+		if (!ret)
+			iommu->gcmd |= DMA_GCMD_TE;
+
+		return ret;
+	}
+
 	iommu_flush_write_buffer(iommu);
 	iommu_set_root_entry(iommu);
 	if (!translation_pre_enabled(iommu)) {
 		iommu_enable_translation(iommu);
 	}
+
+	return 0;
 }
 
 #ifdef CONFIG_SUSPEND
@@ -2288,7 +2306,9 @@ static int init_iommu_hw(void)
 			continue;
 		}
 
-		intel_iommu_enable(iommu);
+		ret = intel_iommu_enable(iommu);
+		if (ret)
+			return ret;
 		iommu_disable_protect_mem_regions(iommu);
 	}
 
@@ -2626,7 +2646,9 @@ static int intel_iommu_add(struct dmar_drhd_unit *dmaru)
 	if (ret)
 		goto disable_iommu;
 
-	intel_iommu_enable(iommu);
+	ret = intel_iommu_enable(iommu);
+	if (ret)
+		goto disable_iommu;
 
 	iommu_disable_protect_mem_regions(iommu);
 	return 0;
@@ -3147,8 +3169,15 @@ int __init intel_iommu_init(void)
 
 	/* Finally, we enable the DMA remapping hardware. */
 	for_each_iommu(iommu, drhd) {
-		if (!drhd->ignored)
-			intel_iommu_enable(iommu);
+		if (!drhd->ignored) {
+			ret = intel_iommu_enable(iommu);
+			if (ret) {
+				pr_warn("Failed to enable iommu: %d\n", iommu->seq_id);
+				up_read(&dmar_global_lock);
+				down_write(&dmar_global_lock);
+				goto out_free_dmar;
+			}
+		}
 
 		iommu_disable_protect_mem_regions(iommu);
 	}
