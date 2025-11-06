@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8d26b07d_7aa3530c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-11-06T21:09:15Z",
+      "side": 1,
+      "message": "\u003e Now that the correct upstream hash is included (1852d27aa), I think the KernelCommit check is getting confused (still checking against the former hash, since it comes first?).\n\nThat could be, but it was also modified locally:\n\nUpstream:\n\u003e `(cherry picked from commit 4cbc086)`\n\nHere (downstream):\n\u003e `(cherry picked from commit 4cbc08649a54c3d533df9832342d52d409dfbbf0)`\n\nSince it\u0027s being modified already, I suggest removing the reference to `4cbc086` entirely and keeping the KernelCommit check happy. That bot is very useful for reviewers, since it automates any checks of divergence from upstream that may have snuck in (intentionally, or otherwise).\n\nI\u0027d rather keep us in the habit of satisfying KernelCommit\u0027s requirements (a single \"cherry picked from\" line), instead of pushing the responsibility on to the reviewers to manually check if a cherry pick is clean or not.",
+      "parentUuid": "95072af3_8b169418",
+      "revId": "8d3eabdc8c05f5421a72c1f487b9627a729d312c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1cb82362_bbfcfdb9",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
