@@ -16,6 +16,24 @@
       "message": "For pviommu, we have a use case to have a read only sharing of pages with host. This is to share the translation structures such that host can read(for virt_to_phys, debugfs usage etc) but not modify the page. I have cooked up a temporary api in the pviommu patchset: aosp/3788748. But it would be great if you could consider that in this series as well :-)",
       "revId": "ab13b064e5385fd4ddea33e928d1235fe2fb31dc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9127319c_c399956a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-11-06T01:01:27Z",
+      "side": 1,
+      "message": "The API introduced by this patch is to share a host owned page with the pkvm. It cannot remove the write property as it is for the host to share a its owned page with pkvm. The host should remain the full access as the host may still need to write data to this page.\n\nFor the pviommu usage, it sounds like pkvm shares a page with host? If so, it may be the host first donate a page to the pkvm, then later when the host needs to read, the pkvm share this page with the host, with the read-only property so that the host cannot write? In this case, the page state for host is SHARED_BORROWED.\n\nIf it is still host shares a page with pkvm by removing its own write access, then the page state for host is SHARED_OWNED. The page state will be different in this two ways.\n\nBut anyway, seems the APIs for this pviommu usage will not be used by this serial. Maybe it is better for us to introduce them in another serial which will use them?",
+      "parentUuid": "93447203_34dcca99",
+      "revId": "ab13b064e5385fd4ddea33e928d1235fe2fb31dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
