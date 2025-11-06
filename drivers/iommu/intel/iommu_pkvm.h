@@ -101,4 +101,10 @@ static inline long pkvm_hc_iommu_unmap_pages(unsigned long pgd_gpa, unsigned lon
 {
 	return pkvm_hypercall(iommu_unmap_pages, pgd_gpa, start_pfn, last_pfn);
 }
+
+static inline int pkvm_hc_qi_submit_sync(unsigned long reg_phys, unsigned long desc,
+		unsigned int count)
+{
+	return pkvm_hypercall(iommu_submit_qi, reg_phys, desc, count);
+}
 #endif
