@@ -46,6 +46,7 @@ struct pkvm_iommu {
 };
 
 struct pkvm_cache_tag {
+	unsigned int index;
 	struct list_head node;
 	enum cache_tag_type type;
 	struct pkvm_iommu *iommu;
@@ -257,6 +258,8 @@ void flush_iotlb(struct pkvm_iommu *iommu, u16 did, u64 addr,
 void submit_qi(struct pkvm_iommu *iommu, struct qi_desc *base, int count);
 void pkvm_cache_tag_flush_range(struct pkvm_iommu_domain *domain, unsigned long start,
 			   unsigned long end, int ih);
+void pkvm_cache_tag_flush_range_np(struct pkvm_iommu_domain *domain, unsigned long start,
+			      unsigned long end);
 void flush_piotlb(struct pkvm_iommu *iommu, u16 did, u32 pasid, u64 addr,
 		     unsigned long npages, bool ih);
 void flush_pasid_cache(struct pkvm_iommu *iommu, u16 did,
@@ -274,6 +277,8 @@ struct context_entry *pkvm_iommu_context_addr(struct intel_iommu *iommu, u8 bus,
 					 u8 devfn, u64 *context_phys);
 unsigned long pkvm_iommu_domain_alloc(u64 param_va);
 unsigned long pkvm_iommu_domain_free(u64 pgd_gpa);
+unsigned long pkvm_iommu_cache_assign(u64 param_va);
+unsigned long pkvm_iommu_cache_unassign(u64 param_va);
 #else
 int initialize_iommu_pgt(struct pkvm_iommu *iommu);
 int handle_descriptor(struct pkvm_iommu *iommu, struct qi_desc *desc);
