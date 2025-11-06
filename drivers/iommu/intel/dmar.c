@@ -31,6 +31,7 @@
 #include <asm/irq_remapping.h>
 
 #include "iommu.h"
+#include "iommu_pkvm.h"
 #include "../irq_remapping.h"
 #include "../iommu-pages.h"
 #include "perf.h"
@@ -1385,43 +1386,15 @@ static int qi_check_fault(struct intel_iommu *iommu, int index, int wait_index)
 	return 0;
 }
 
-/*
- * Function to submit invalidation descriptors of all types to the queued
- * invalidation interface(QI). Multiple descriptors can be submitted at a
- * time, a wait descriptor will be appended to each submission to ensure
- * hardware has completed the invalidation before return. Wait descriptors
- * can be part of the submission but it will not be polled for completion.
- */
-int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
+static int __qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
 		   unsigned int count, unsigned long options)
 {
 	struct q_inval *qi = iommu->qi;
-	s64 devtlb_start_ktime = 0;
-	s64 iotlb_start_ktime = 0;
-	s64 iec_start_ktime = 0;
 	struct qi_desc wait_desc;
 	int wait_index, index;
 	unsigned long flags;
 	int offset, shift;
 	int rc, i;
-	u64 type;
-
-	if (!qi)
-		return 0;
-
-	type = desc->qw0 & GENMASK_ULL(3, 0);
-
-	if ((type == QI_IOTLB_TYPE || type == QI_EIOTLB_TYPE) &&
-	    dmar_latency_enabled(iommu, DMAR_LATENCY_INV_IOTLB))
-		iotlb_start_ktime = ktime_to_ns(ktime_get());
-
-	if ((type == QI_DIOTLB_TYPE || type == QI_DEIOTLB_TYPE) &&
-	    dmar_latency_enabled(iommu, DMAR_LATENCY_INV_DEVTLB))
-		devtlb_start_ktime = ktime_to_ns(ktime_get());
-
-	if (type == QI_IEC_TYPE &&
-	    dmar_latency_enabled(iommu, DMAR_LATENCY_INV_IEC))
-		iec_start_ktime = ktime_to_ns(ktime_get());
 
 restart:
 	rc = 0;
@@ -1504,6 +1477,45 @@ restart:
 
 	if (rc == -EAGAIN)
 		goto restart;
+
+	return rc;
+}
+
+/*
+ * Function to submit invalidation descriptors of all types to the queued
+ * invalidation interface(QI). Multiple descriptors can be submitted at a
+ * time, a wait descriptor will be appended to each submission to ensure
+ * hardware has completed the invalidation before return. Wait descriptors
+ * can be part of the submission but it will not be polled for completion.
+ */
+int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
+		unsigned int count, unsigned long options)
+{
+	u64 type = desc->qw0 & GENMASK_ULL(3, 0);
+	s64 devtlb_start_ktime = 0;
+	s64 iotlb_start_ktime = 0;
+	s64 iec_start_ktime = 0;
+	int rc;
+
+	if (!iommu->qi)
+		return 0;
+
+	if ((type == QI_IOTLB_TYPE || type == QI_EIOTLB_TYPE) &&
+	    dmar_latency_enabled(iommu, DMAR_LATENCY_INV_IOTLB))
+		iotlb_start_ktime = ktime_to_ns(ktime_get());
+
+	if ((type == QI_DIOTLB_TYPE || type == QI_DEIOTLB_TYPE) &&
+	    dmar_latency_enabled(iommu, DMAR_LATENCY_INV_DEVTLB))
+		devtlb_start_ktime = ktime_to_ns(ktime_get());
+
+	if (type == QI_IEC_TYPE &&
+	    dmar_latency_enabled(iommu, DMAR_LATENCY_INV_IEC))
+		iec_start_ktime = ktime_to_ns(ktime_get());
+
+	if (pkvm_pviommu_enabled())
+		rc = pkvm_hc_qi_submit_sync(iommu->reg_phys, virt_to_phys(desc), count);
+	else
+		rc = __qi_submit_sync(iommu, desc, count, options);
 
 	if (iotlb_start_ktime)
 		dmar_latency_update(iommu, DMAR_LATENCY_INV_IOTLB,
@@ -1730,6 +1742,9 @@ int dmar_enable_qi(struct intel_iommu *iommu)
 	 * if the remapping hardware supports scalable mode translation.
 	 */
 	order = ecap_smts(iommu->ecap) ? 1 : 0;
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+	order++;
+#endif
 	desc = iommu_alloc_pages_node(iommu->node, GFP_ATOMIC, order);
 	if (!desc) {
 		kfree(qi);
@@ -1738,7 +1753,7 @@ int dmar_enable_qi(struct intel_iommu *iommu)
 	}
 
 	qi->desc = desc;
-
+#ifndef CONFIG_PKVM_INTEL_PVIOMMU
 	qi->desc_status = kcalloc(QI_LENGTH, sizeof(int), GFP_ATOMIC);
 	if (!qi->desc_status) {
 		iommu_free_page(qi->desc);
@@ -1746,7 +1761,14 @@ int dmar_enable_qi(struct intel_iommu *iommu)
 		iommu->qi = NULL;
 		return -ENOMEM;
 	}
-
+#else
+	/*
+	 * Allocate desc_status contiguously after desc, so that it's easier
+	 * to donate in pKVM hypervisor. Note that this allocation may happen
+	 * even before pKVM is enabled, during IRQ remapping setup.
+	 */
+	qi->desc_status = (int *)((u64)desc + (1 << (order - 1)) * VTD_PAGE_SIZE);
+#endif
 	raw_spin_lock_init(&qi->q_lock);
 
 	__dmar_enable_qi(iommu);
