@@ -49,6 +49,9 @@ static int cache_tag_assign(struct dmar_domain *domain, u16 did,
 	struct cache_tag *tag, *temp;
 	unsigned long flags;
 
+	if (pkvm_pviommu_enabled())
+		return 0;
+
 	tag = kzalloc(sizeof(*tag), GFP_KERNEL);
 	if (!tag)
 		return -ENOMEM;
@@ -90,6 +93,9 @@ static void cache_tag_unassign(struct dmar_domain *domain, u16 did,
 	struct intel_iommu *iommu = info->iommu;
 	struct cache_tag *tag;
 	unsigned long flags;
+
+	if (pkvm_pviommu_enabled())
+		return;
 
 	spin_lock_irqsave(&domain->cache_lock, flags);
 	list_for_each_entry(tag, &domain->cache_tags, node) {
