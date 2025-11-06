@@ -56,6 +56,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15b0f465_c9da60a3",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1381,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-11-06T06:34:06Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2b9da69a_3d869485",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bbe9fee3_8c35d5aa",
@@ -111,6 +129,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fe0e4b9_be0d763f",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1388,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-11-06T06:34:06Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bbe9fee3_8c35d5aa",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f76c329_7a31705d",
@@ -130,6 +166,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89ae91be_8e23f9e8",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1407,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-11-06T06:34:06Z",
+      "side": 1,
+      "message": "the latest spec (released Sep. this year) is here:\n\nhttps://www.intel.com/content/www/us/en/developer/tools/trust-domain-extensions/documentation.html\n\nit says the value is fixed:\n\n      \"EBX\": [\n        {\n          \"MSB\": \"11\",\n          \"LSB\": \"0\",\n          \"Field Size\": \"12\",\n          \"Field Name\": \"L\",\n          \"Configuration Details\": null,\n          \"Bit or Field Virtualization Type\": \"Fixed\",\n          \"Virtualization Details\": \"0x3F\"\n        },",
+      "parentUuid": "1f76c329_7a31705d",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6912f2f9_cebfba44",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 2
@@ -141,6 +195,24 @@
       "writtenOn": "2025-11-05T22:22:00Z",
       "side": 1,
       "message": "Shouldn\u0027t we clear these bits in tmp.ecx before adding the bits from entry-\u003eecx?\n\nSame question about tmp.edx below.",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b90b92e6_7527284a",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1432,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-11-06T06:34:06Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6912f2f9_cebfba44",
       "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -182,6 +254,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "522943d1_10b50753",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1528,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-11-06T06:34:06Z",
+      "side": 1,
+      "message": "I intended to make it simple as there is no reason for crosvm to require such appending when it\u0027s already doing \"-cpu host\" behavior. But I\u0027m also fine to make it more failsafe as you suggested, though this path may not be exercised in production.\n\nI did run lots of test cases to catch corner cases including this one. If I simply cut nent by half, the hypercall failed as there is no space to append. But if I keep nent intact but zapping a random entry, it will be filled with the default one as expected.",
+      "parentUuid": "80c40953_bff3ec97",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20972ea5_b35937f8",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 2
@@ -193,6 +283,24 @@
       "writtenOn": "2025-11-05T22:22:00Z",
       "side": 1,
       "message": "Entry with function \u003d\u003d 4 is \"host owned\" but still subject to updating by pkvm_update_host_cpuid_entry() (to enforce the cacheline size). So is it ok if the host doesn\u0027t provide an entry with function \u003d\u003d 4 at all and we do nothing about it? Shouldn\u0027t we enforce the one from pcpu-\u003ecpuid_def in such case?\n\nAnd same question, more generally, about any other such entries that we might have in the future, that are \"host owned but not quite fully\".\n\n...So maybe we should drop pkvm_update_host_cpuid_entry(), and remove leaf 4 from the list of host-owned leaves in pkvm_update_host_cpuid_entry(), and instead update it in pkvm_enforce_cpuid_entry() like we update leaf 1 and 7?",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "970d29dd_c4f34b1c",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1533,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-11-06T06:34:06Z",
+      "side": 1,
+      "message": "that makes sense. \n\nthe actual change is a bit tricky, as the number of host entries of leaf4 could be different from the default one. So when enforcing a host leaf4 entry, the index may not exist in default which is different from other enforced leaves. and even if it exists, we will fill it with hard-coded 64 bytes instead of using the default value. Then when appending a default leaf4 entry, it should be done only when there is no any leaf4 entry in the host buffer. Otherwise appending should be skipped as the host decides the hierarchy (if smaller than the native).\n\nI\u0027ll see how to make it simple/clean.",
+      "parentUuid": "20972ea5_b35937f8",
       "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
