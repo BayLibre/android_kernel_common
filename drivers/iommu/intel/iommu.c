@@ -1465,6 +1465,7 @@ static int pv_context_mapping(struct dmar_domain *domain, struct intel_iommu *io
 		.domain_pgd_gpa = virt_to_phys(domain->pgd),
 		.did = domain_id_iommu(domain, iommu),
 		.ats_supported = info ? info->ats_supported : 0,
+		.ats_qdep = info->ats_qdep,
 	};
 	int ret;
 
@@ -1855,9 +1856,11 @@ static int dmar_domain_attach_device(struct dmar_domain *domain,
 
 	iommu_enable_pci_caps(info);
 
-	ret = cache_tag_assign_domain(domain, dev, IOMMU_NO_PASID);
-	if (ret)
-		goto out_block_translation;
+	if (!pkvm_pviommu_enabled()) {
+		ret = cache_tag_assign_domain(domain, dev, IOMMU_NO_PASID);
+		if (ret)
+			goto out_block_translation;
+	}
 
 	domain->iotlb_sync_map |= domain_need_iotlb_sync_map(domain, iommu);
 
@@ -3250,7 +3253,7 @@ void device_block_translation(struct device *dev)
 	if (!info->domain_attached)
 		return;
 
-	if (info->domain)
+	if (!pkvm_pviommu_enabled() && info->domain)
 		cache_tag_unassign_domain(info->domain, dev, IOMMU_NO_PASID);
 
 	iommu_disable_pci_caps(info);
@@ -4154,7 +4157,8 @@ static void intel_iommu_remove_dev_pasid(struct device *dev, ioasid_t pasid,
 	}
 	spin_unlock_irqrestore(&dmar_domain->lock, flags);
 
-	cache_tag_unassign_domain(dmar_domain, dev, pasid);
+	if (!pkvm_pviommu_enabled())
+		cache_tag_unassign_domain(dmar_domain, dev, pasid);
 	domain_detach_iommu(dmar_domain, iommu);
 	if (!WARN_ON_ONCE(!dev_pasid)) {
 		intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
@@ -4195,9 +4199,11 @@ static int intel_iommu_set_dev_pasid(struct iommu_domain *domain,
 	if (ret)
 		goto out_free;
 
-	ret = cache_tag_assign_domain(dmar_domain, dev, pasid);
-	if (ret)
-		goto out_detach_iommu;
+	if (!pkvm_pviommu_enabled()) {
+		ret = cache_tag_assign_domain(dmar_domain, dev, pasid);
+		if (ret)
+			goto out_detach_iommu;
+	}
 
 	if (dmar_domain->use_first_level)
 		ret = domain_setup_first_level(iommu, dmar_domain,
@@ -4219,7 +4225,8 @@ static int intel_iommu_set_dev_pasid(struct iommu_domain *domain,
 
 	return 0;
 out_unassign_tag:
-	cache_tag_unassign_domain(dmar_domain, dev, pasid);
+	if (!pkvm_pviommu_enabled())
+		cache_tag_unassign_domain(dmar_domain, dev, pasid);
 out_detach_iommu:
 	domain_detach_iommu(dmar_domain, iommu);
 out_free:
