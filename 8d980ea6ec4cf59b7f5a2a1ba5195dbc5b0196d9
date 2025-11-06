@@ -303,6 +303,24 @@
       "parentUuid": "20972ea5_b35937f8",
       "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f06e722f_8e0db5d0",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1533,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-11-06T06:49:00Z",
+      "side": 1,
+      "message": "I\u0027ll change it like below:\n\n@@ -1488,6 +1482,7 @@ int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int nent)\n        struct kvm_cpuid_entry2 *de2;\n        struct pkvm_pcpu *pcpu;\n        int def_nent, r, i, j, n;\n+       bool has_func4 \u003d false;\n \n        pcpu \u003d pkvm_hyp-\u003epcpus[cpu];\n        de2 \u003d pcpu-\u003ecpuid_def;\n@@ -1503,8 +1498,13 @@ int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int nent)\n                if (cpuid_entry_is_empty(\u0026e2[i]))\n                       continue;\n \n-               if (pkvm_cpuid_entry_host_owned(\u0026e2[i])) {\n-                       pkvm_update_host_cpuid_entry(\u0026e2[i]);\n+               if (pkvm_cpuid_entry_host_owned(\u0026e2[i]))\n+                       continue;\n+\n+               /* func4 is enforced with hard-coded value */\n+               if (e2[i].function \u003d\u003d 4) {\n+                       has_func4 \u003d true;\n+                       pkvm_enforce_func4_entry(\u0026e2[i]);\n                        continue;\n                }\n \n@@ -1532,6 +1532,9 @@ int pkvm_enforce_cpuid(struct kvm_cpuid_entry2 *e2, int nent)\n                if (pkvm_cpuid_entry_host_owned(\u0026de2[i]))\n                        continue;\n \n+               if ((de2[i].function \u003d\u003d 4) \u0026\u0026 has_func4)\n+                       continue;\n+\n                for (j \u003d 0; j \u003c nent; j++) {\n                        if (cpuid_entry_is_empty(\u0026e2[j]))\n                                continue;",
+      "parentUuid": "970d29dd_c4f34b1c",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
