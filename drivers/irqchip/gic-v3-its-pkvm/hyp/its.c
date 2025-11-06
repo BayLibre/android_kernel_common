@@ -45,6 +45,14 @@ static int its_emulate_handler(struct emulate *emulate, u64 offset, bool write,
 	return 0;
 }
 
+static int hyp_gic_v3_its_shadow_cmdq(struct hyp_gic_v3_its *its)
+{
+	u64 cbaser = readq_relaxed(its->base + GITS_CBASER);
+
+	return host_donate_hyp(GITS_CBASER_ADDRESS(cbaser) >> PAGE_SHIFT,
+			       ITS_CMD_QUEUE_SZ >> PAGE_SHIFT, false);
+}
+
 static int hyp_gic_v3_its_protect(u64 paddr, u64 size)
 {
 	struct hyp_gic_v3_its *its;
@@ -63,6 +71,10 @@ static int hyp_gic_v3_its_protect(u64 paddr, u64 size)
 	its->emulate.size = size;
 	its->emulate.handler = its_emulate_handler;
 	its->emulate.priv = its;
+
+	ret = hyp_gic_v3_its_shadow_cmdq(its);
+	if (ret)
+		return ret;
 
 	ret = hyp_add_emulate(&its->emulate);
 	if (ret)
