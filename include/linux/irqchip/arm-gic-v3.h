@@ -611,6 +611,8 @@
  */
 #define GIC_IRQ_TYPE_LPI		0xa110c8ed
 
+#define ITS_CMD_QUEUE_SZ		SZ_64K
+
 struct rdists {
 	struct {
 		raw_spinlock_t	rd_lock;
