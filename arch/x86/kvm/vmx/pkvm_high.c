@@ -15,15 +15,7 @@
 #include <trace/events/ipi.h>
 #include "trace.h"
 
-static DEFINE_PER_CPU(union pkvm_pv_param, pv_param);
-
-#define get_this_pv_param(f)		(&per_cpu(pv_param, get_cpu()).f)
-#define put_this_pv_param(ptr)		\
-({					\
-	memset(ptr, 0, sizeof(*ptr));	\
-	ptr = NULL;			\
-	put_cpu();			\
-})
+DEFINE_PER_CPU(union pkvm_pv_param, pv_param);
 
 static void free_pml_buffer(struct vcpu_vmx *vmx)
 {
