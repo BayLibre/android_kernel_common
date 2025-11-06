@@ -16,6 +16,24 @@
       "message": "teardown_donated_memory() below modifies shared_pkvm-\u003eteardown_mc, so we should unpin shared_kvm after that, not before?\n\nLess importantly: if so, then also in pkvm_vm_init() we may want to pin shared_kvm before donating pkvm_vm_pa, not after that (just for consistency)?",
       "revId": "62836622abbb192a71dd4bc18bbe8c24742afc60",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f4df8cf_be413498",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-11-06T00:31:30Z",
+      "side": 1,
+      "message": "Makes sense. Will update this.",
+      "parentUuid": "00689851_2f192057",
+      "revId": "62836622abbb192a71dd4bc18bbe8c24742afc60",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
