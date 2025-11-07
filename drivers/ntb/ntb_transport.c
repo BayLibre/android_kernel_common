@@ -59,7 +59,6 @@
 #include <linux/slab.h>
 #include <linux/types.h>
 #include <linux/uaccess.h>
-#include <linux/mutex.h>
 #include "linux/ntb.h"
 #include "linux/ntb_transport.h"
 
@@ -242,9 +241,6 @@ struct ntb_transport_ctx {
 	struct work_struct link_cleanup;
 
 	struct dentry *debugfs_node_dir;
-
-	/* Make sure workq of link event be executed serially */
-	struct mutex link_event_lock;
 };
 
 enum {
@@ -1028,7 +1024,6 @@ static void ntb_transport_link_cleanup_work(struct work_struct *work)
 	struct ntb_transport_ctx *nt =
 		container_of(work, struct ntb_transport_ctx, link_cleanup);
 
-	guard(mutex)(&nt->link_event_lock);
 	ntb_transport_link_cleanup(nt);
 }
 
@@ -1051,8 +1046,6 @@ static void ntb_transport_link_work(struct work_struct *work)
 	resource_size_t size;
 	u32 val;
 	int rc = 0, i, spad;
-
-	guard(mutex)(&nt->link_event_lock);
 
 	/* send the local info, in the opposite order of the way we read it */
 
