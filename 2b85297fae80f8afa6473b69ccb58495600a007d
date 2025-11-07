@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b92581f_03732dbe",
+        "filename": "drivers/gpu/drm/xe/xe_user.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2025-11-07T17:15:57Z",
+      "side": 1,
+      "message": "Fix the formatting here (delete the leading spaces and empty line), which is causing a presubmit failure on `checkpatch`:\n\n```\nErrors were reported from checkpatch.pl.\n\nSummary:\n\nERROR:CODE_INDENT: code indent should use tabs where possible\n#244: FILE: drivers/gpu/drm/xe/xe_user.c:274:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#245: FILE: drivers/gpu/drm/xe/xe_user.c:275:\n\nSee /tmp/.tmp.checkpatch.log.ogEgnC for complete output.\nINFO: See checkpatch.log for complete output.\n```",
+      "range": {
+        "startLine": 274,
+        "startChar": 0,
+        "endLine": 276,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "04e68b91_4ad0f3d1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/gpu/drm/xe/xe_user.c",
+              "range": {
+                "startLine": 274,
+                "startChar": 0,
+                "endLine": 277,
+                "endChar": 0
+              },
+              "replacement": "\t\t\txe_user_put(user);\n\t}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2b85297fae80f8afa6473b69ccb58495600a007d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
