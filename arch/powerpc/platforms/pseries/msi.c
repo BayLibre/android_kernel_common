@@ -443,7 +443,8 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
  */
 static void pseries_msi_ops_teardown(struct irq_domain *domain, msi_alloc_info_t *arg)
 {
-	struct pci_dev *pdev = to_pci_dev(domain->dev);
+	struct msi_desc *desc = arg->desc;
+	struct pci_dev *pdev = msi_desc_to_pci_dev(desc);
 
 	rtas_disable_msi(pdev);
 }
