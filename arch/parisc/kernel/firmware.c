@@ -464,8 +464,7 @@ int pdc_system_map_find_mods(struct pdc_system_map_mod_info *pdc_mod_info,
 	unsigned long flags;
 
 	spin_lock_irqsave(&pdc_lock, flags);
-	memcpy(pdc_result2, mod_path, sizeof(*mod_path));
-	retval = mem_pdc_call(PDC_SYSTEM_MAP, PDC_FIND_MODULE, __pa(pdc_result),
+	retval = mem_pdc_call(PDC_SYSTEM_MAP, PDC_FIND_MODULE, __pa(pdc_result), 
 			      __pa(pdc_result2), mod_index);
 	convert_to_wide(pdc_result);
 	memcpy(pdc_mod_info, pdc_result, sizeof(*pdc_mod_info));

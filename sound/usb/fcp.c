@@ -641,9 +641,12 @@ static int fcp_ioctl_set_meter_map(struct usb_mixer_interface *mixer,
 		return -EINVAL;
 
 	/* Allocate and copy the map data */
-	tmp_map = memdup_array_user(arg->map, map.map_size, sizeof(s16));
-	if (IS_ERR(tmp_map))
-		return PTR_ERR(tmp_map);
+	tmp_map = kmalloc_array(map.map_size, sizeof(s16), GFP_KERNEL);
+	if (!tmp_map)
+		return -ENOMEM;
+
+	if (copy_from_user(tmp_map, arg->map, map.map_size * sizeof(s16)))
+		return -EFAULT;
 
 	err = validate_meter_map(tmp_map, map.map_size, map.meter_slots);
 	if (err < 0)
