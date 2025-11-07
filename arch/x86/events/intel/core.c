@@ -7596,7 +7596,6 @@ __init int intel_pmu_init(void)
 		break;
 
 	case INTEL_PANTHERLAKE_L:
-	case INTEL_WILDCATLAKE_L:
 		pr_cont("Pantherlake Hybrid events, ");
 		name = "pantherlake_hybrid";
 		goto lnl_common;
