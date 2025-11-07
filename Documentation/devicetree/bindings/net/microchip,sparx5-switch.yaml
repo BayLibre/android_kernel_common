@@ -180,9 +180,9 @@ allOf:
     then:
       properties:
         reg:
-          maxItems: 2
+          minItems: 2
         reg-names:
-          maxItems: 2
+          minItems: 2
     else:
       properties:
         reg:
