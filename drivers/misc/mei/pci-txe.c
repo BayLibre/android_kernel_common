@@ -109,18 +109,18 @@ static int mei_txe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		goto end;
 	}
 
-	err = mei_register(dev, &pdev->dev);
-	if (err)
-		goto release_irq;
-
 	if (mei_start(dev)) {
 		dev_err(&pdev->dev, "init hw failure.\n");
 		err = -ENODEV;
-		goto deregister;
+		goto release_irq;
 	}
 
 	pm_runtime_set_autosuspend_delay(&pdev->dev, MEI_TXI_RPM_TIMEOUT);
 	pm_runtime_use_autosuspend(&pdev->dev);
+
+	err = mei_register(dev, &pdev->dev);
+	if (err)
+		goto stop;
 
 	pci_set_drvdata(pdev, dev);
 
@@ -144,8 +144,8 @@ static int mei_txe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	return 0;
 
-deregister:
-	mei_deregister(dev);
+stop:
+	mei_stop(dev);
 release_irq:
 	mei_cancel_work(dev);
 	mei_disable_interrupts(dev);
