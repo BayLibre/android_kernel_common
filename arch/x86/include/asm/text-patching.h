@@ -178,9 +178,9 @@ void int3_emulate_ret(struct pt_regs *regs)
 }
 
 static __always_inline
-bool __emulate_cc(unsigned long flags, u8 cc)
+void int3_emulate_jcc(struct pt_regs *regs, u8 cc, unsigned long ip, unsigned long disp)
 {
-	static const unsigned long cc_mask[6] = {
+	static const unsigned long jcc_mask[6] = {
 		[0] = X86_EFLAGS_OF,
 		[1] = X86_EFLAGS_CF,
 		[2] = X86_EFLAGS_ZF,
@@ -193,21 +193,15 @@ bool __emulate_cc(unsigned long flags, u8 cc)
 	bool match;
 
 	if (cc < 0xc) {
-		match = flags & cc_mask[cc >> 1];
+		match = regs->flags & jcc_mask[cc >> 1];
 	} else {
-		match = ((flags & X86_EFLAGS_SF) >> X86_EFLAGS_SF_BIT) ^
-			((flags & X86_EFLAGS_OF) >> X86_EFLAGS_OF_BIT);
+		match = ((regs->flags & X86_EFLAGS_SF) >> X86_EFLAGS_SF_BIT) ^
+			((regs->flags & X86_EFLAGS_OF) >> X86_EFLAGS_OF_BIT);
 		if (cc >= 0xe)
-			match = match || (flags & X86_EFLAGS_ZF);
+			match = match || (regs->flags & X86_EFLAGS_ZF);
 	}
 
-	return (match && !invert) || (!match && invert);
-}
-
-static __always_inline
-void int3_emulate_jcc(struct pt_regs *regs, u8 cc, unsigned long ip, unsigned long disp)
-{
-	if (__emulate_cc(regs->flags, cc))
+	if ((match && !invert) || (!match && invert))
 		ip += disp;
 
 	int3_emulate_jmp(regs, ip);
