@@ -839,7 +839,7 @@ static int match_free_decoder(struct device *dev, const void *data)
 }
 
 static bool region_res_match_cxl_range(const struct cxl_region_params *p,
-				       const struct range *range)
+				       struct range *range)
 {
 	if (!p->res)
 		return false;
@@ -3398,7 +3398,10 @@ static int match_region_by_range(struct device *dev, const void *data)
 	p = &cxlr->params;
 
 	guard(rwsem_read)(&cxl_rwsem.region);
-	return region_res_match_cxl_range(p, r);
+	if (p->res && p->res->start == r->start && p->res->end == r->end)
+		return 1;
+
+	return 0;
 }
 
 static int cxl_extended_linear_cache_resize(struct cxl_region *cxlr,
@@ -3663,14 +3666,14 @@ static int validate_region_offset(struct cxl_region *cxlr, u64 offset)
 
 	if (offset < p->cache_size) {
 		dev_err(&cxlr->dev,
-			"Offset %#llx is within extended linear cache %pa\n",
+			"Offset %#llx is within extended linear cache %pr\n",
 			offset, &p->cache_size);
 		return -EINVAL;
 	}
 
 	region_size = resource_size(p->res);
 	if (offset >= region_size) {
-		dev_err(&cxlr->dev, "Offset %#llx exceeds region size %pa\n",
+		dev_err(&cxlr->dev, "Offset %#llx exceeds region size %pr\n",
 			offset, &region_size);
 		return -EINVAL;
 	}
