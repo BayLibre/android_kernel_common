@@ -2022,7 +2022,7 @@ static int op_prepare(struct xe_vm *vm,
 	case DRM_GPUVA_OP_MAP:
 		if ((!op->map.immediate && xe_vm_in_fault_mode(vm) &&
 		     !op->map.invalidate_on_bind) ||
-		    (op->map.vma_flags & XE_VMA_SYSTEM_ALLOCATOR))
+		    op->map.is_cpu_addr_mirror)
 			break;
 
 		err = bind_op_prepare(vm, tile, pt_update_ops, op->map.vma,
@@ -2252,7 +2252,7 @@ static void op_commit(struct xe_vm *vm,
 	switch (op->base.op) {
 	case DRM_GPUVA_OP_MAP:
 		if ((!op->map.immediate && xe_vm_in_fault_mode(vm)) ||
-		    (op->map.vma_flags & XE_VMA_SYSTEM_ALLOCATOR))
+		    op->map.is_cpu_addr_mirror)
 			break;
 
 		bind_op_commit(vm, tile, pt_update_ops, op->map.vma, fence,
