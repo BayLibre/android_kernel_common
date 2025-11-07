@@ -166,7 +166,8 @@ extern void __add_wrong_size(void)
 	{								\
 		volatile u8 *__ptr = (volatile u8 *)(_ptr);		\
 		asm_inline volatile(lock "cmpxchgb %[new], %[ptr]"	\
-			     : "=@ccz" (success),			\
+			     CC_SET(z)					\
+			     : CC_OUT(z) (success),			\
 			       [ptr] "+m" (*__ptr),			\
 			       [old] "+a" (__old)			\
 			     : [new] "q" (__new)			\
@@ -177,7 +178,8 @@ extern void __add_wrong_size(void)
 	{								\
 		volatile u16 *__ptr = (volatile u16 *)(_ptr);		\
 		asm_inline volatile(lock "cmpxchgw %[new], %[ptr]"	\
-			     : "=@ccz" (success),			\
+			     CC_SET(z)					\
+			     : CC_OUT(z) (success),			\
 			       [ptr] "+m" (*__ptr),			\
 			       [old] "+a" (__old)			\
 			     : [new] "r" (__new)			\
@@ -188,7 +190,8 @@ extern void __add_wrong_size(void)
 	{								\
 		volatile u32 *__ptr = (volatile u32 *)(_ptr);		\
 		asm_inline volatile(lock "cmpxchgl %[new], %[ptr]"	\
-			     : "=@ccz" (success),			\
+			     CC_SET(z)					\
+			     : CC_OUT(z) (success),			\
 			       [ptr] "+m" (*__ptr),			\
 			       [old] "+a" (__old)			\
 			     : [new] "r" (__new)			\
@@ -199,7 +202,8 @@ extern void __add_wrong_size(void)
 	{								\
 		volatile u64 *__ptr = (volatile u64 *)(_ptr);		\
 		asm_inline volatile(lock "cmpxchgq %[new], %[ptr]"	\
-			     : "=@ccz" (success),			\
+			     CC_SET(z)					\
+			     : CC_OUT(z) (success),			\
 			       [ptr] "+m" (*__ptr),			\
 			       [old] "+a" (__old)			\
 			     : [new] "r" (__new)			\
