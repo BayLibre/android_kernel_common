@@ -326,6 +326,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "36f2a92b_fb17b17a",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1528,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-11-07T04:06:56Z",
+      "side": 1,
+      "message": "security-wise, if a bit related to security (e.g. SMEP) exists on big core but not on small core (hypothetical), and enforcement is done on big core, then pKVM needs to prevent vcpu migration/vmx loading to a small core otherwise guest use of SMEP would be broken. \n\nThen this means pKVM needs to keep track of a list of cpuid bits having a security implication (which we want to avoid as it requires a full study of all CPUID leaves/bits), maintain the difference among big/little cores, record where the enforcement was originally done, and add checks to prevent migration to incompatible cores if such migration may break the earlier enforcement. from security p.o.v. pkvm cannot rely on host to do vcpu pinning.\n\nanother issue is that @vcpu_load in kvm-high is void. there is no way to tell host scheduler when pkvm rejects migration.\n\nlots of complexity, better we can avoid now.\n\nlet me at least check ADL/PTL to see any other cases like func4 and do a study case-by-case.",
+      "parentUuid": "bbfc9d29_ab923516",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20972ea5_b35937f8",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 2
