@@ -434,7 +434,7 @@ int xe_migrate_init(struct xe_migrate *m)
 
 	err = xe_migrate_lock_prepare_vm(tile, m, vm);
 	if (err)
-		goto err_out;
+		return err;
 
 	if (xe->info.has_usm) {
 		struct xe_hw_engine *hwe = xe_gt_hw_engine(primary_gt,
@@ -2113,9 +2113,7 @@ int xe_migrate_access_memory(struct xe_migrate *m, struct xe_bo *bo,
 		if (current_bytes & ~PAGE_MASK) {
 			int pitch = 4;
 
-			current_bytes = min_t(int, current_bytes,
-					      round_down(S16_MAX * pitch,
-							 XE_CACHELINE_BYTES));
+			current_bytes = min_t(int, current_bytes, S16_MAX * pitch);
 		}
 
 		__fence = xe_migrate_vram(m, current_bytes,
