@@ -70,7 +70,7 @@ __success
 int BPF_PROG(path_d_path_from_file_argument, struct file *file)
 {
 	int ret;
-	const struct path *path;
+	struct path *path;
 
 	/* The f_path member is a path which is embedded directly within a
 	 * file. Therefore, a pointer to such embedded members are still

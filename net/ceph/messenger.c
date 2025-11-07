@@ -1794,9 +1794,9 @@ void ceph_msg_revoke(struct ceph_msg *msg)
 		WARN_ON(con->state != CEPH_CON_S_OPEN);
 		dout("%s con %p msg %p was sending\n", __func__, con, msg);
 		if (ceph_msgr2(from_msgr(con->msgr)))
-			ceph_con_v2_revoke(con, msg);
+			ceph_con_v2_revoke(con);
 		else
-			ceph_con_v1_revoke(con, msg);
+			ceph_con_v1_revoke(con);
 		ceph_msg_put(con->out_msg);
 		con->out_msg = NULL;
 	} else {
@@ -2111,13 +2111,11 @@ int ceph_con_in_msg_alloc(struct ceph_connection *con,
 	return ret;
 }
 
-struct ceph_msg *ceph_con_get_out_msg(struct ceph_connection *con)
+void ceph_con_get_out_msg(struct ceph_connection *con)
 {
 	struct ceph_msg *msg;
 
-	if (list_empty(&con->out_queue))
-		return NULL;
-
+	BUG_ON(list_empty(&con->out_queue));
 	msg = list_first_entry(&con->out_queue, struct ceph_msg, list_head);
 	WARN_ON(msg->con != con);
 
@@ -2144,7 +2142,7 @@ struct ceph_msg *ceph_con_get_out_msg(struct ceph_connection *con)
 	 * message or in case of a fault.
 	 */
 	WARN_ON(con->out_msg);
-	return con->out_msg = ceph_msg_get(msg);
+	con->out_msg = ceph_msg_get(msg);
 }
 
 /*
