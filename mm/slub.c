@@ -2199,15 +2199,8 @@ static inline void free_slab_obj_exts(struct slab *slab)
 	struct slabobj_ext *obj_exts;
 
 	obj_exts = slab_obj_exts(slab);
-	if (!obj_exts) {
-		/*
-		 * If obj_exts allocation failed, slab->obj_exts is set to
-		 * OBJEXTS_ALLOC_FAIL. In this case, we end up here and should
-		 * clear the flag.
-		 */
-		slab->obj_exts = 0;
+	if (!obj_exts)
 		return;
-	}
 
 	/*
 	 * obj_exts was created with __GFP_NO_OBJ_EXT flag, therefore its
@@ -6479,16 +6472,15 @@ static void free_deferred_objects(struct irq_work *work)
 		slab = virt_to_slab(x);
 		s = slab->slab_cache;
 
-		/* Point 'x' back to the beginning of allocated object */
-		x -= s->offset;
-
 		/*
 		 * We used freepointer in 'x' to link 'x' into df->objects.
 		 * Clear it to NULL to avoid false positive detection
 		 * of "Freepointer corruption".
 		 */
-		set_freepointer(s, x, NULL);
+		*(void **)x = NULL;
 
+		/* Point 'x' back to the beginning of allocated object */
+		x -= s->offset;
 		__slab_free(s, slab, x, x, 1, _THIS_IP_);
 	}
 
