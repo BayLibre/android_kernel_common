@@ -392,27 +392,11 @@ static long cifs_fallocate(struct file *file, int mode, loff_t off, loff_t len)
 	struct cifs_sb_info *cifs_sb = CIFS_FILE_SB(file);
 	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
 	struct TCP_Server_Info *server = tcon->ses->server;
-	struct inode *inode = file_inode(file);
-	int rc;
 
-	if (!server->ops->fallocate)
-		return -EOPNOTSUPP;
+	if (server->ops->fallocate)
+		return server->ops->fallocate(file, tcon, mode, off, len);
 
-	rc = inode_lock_killable(inode);
-	if (rc)
-		return rc;
-
-	netfs_wait_for_outstanding_io(inode);
-
-	rc = file_modified(file);
-	if (rc)
-		goto out_unlock;
-
-	rc = server->ops->fallocate(file, tcon, mode, off, len);
-
-out_unlock:
-	inode_unlock(inode);
-	return rc;
+	return -EOPNOTSUPP;
 }
 
 static int cifs_permission(struct mnt_idmap *idmap,
