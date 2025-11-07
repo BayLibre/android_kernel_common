@@ -689,14 +689,7 @@ static int cp2112_xfer(struct i2c_adapter *adap, u16 addr,
 			count = cp2112_write_read_req(buf, addr, read_length,
 						      command, NULL, 0);
 		} else {
-			/* Copy starts from data->block[1] so the length can
-			 * be at max I2C_SMBUS_CLOCK_MAX + 1
-			 */
-
-			if (data->block[0] > I2C_SMBUS_BLOCK_MAX + 1)
-				count = -EINVAL;
-			else
-				count = cp2112_write_req(buf, addr, command,
+			count = cp2112_write_req(buf, addr, command,
 						 data->block + 1,
 						 data->block[0]);
 		}
@@ -707,14 +700,7 @@ static int cp2112_xfer(struct i2c_adapter *adap, u16 addr,
 						      I2C_SMBUS_BLOCK_MAX,
 						      command, NULL, 0);
 		} else {
-			/* data_length here is data->block[0] + 1
-			 * so make sure that the data->block[0] is
-			 * less than or equals I2C_SMBUS_BLOCK_MAX + 1
-			*/
-			if (data->block[0] > I2C_SMBUS_BLOCK_MAX + 1)
-				count = -EINVAL;
-			else
-				count = cp2112_write_req(buf, addr, command,
+			count = cp2112_write_req(buf, addr, command,
 						 data->block,
 						 data->block[0] + 1);
 		}
@@ -723,14 +709,7 @@ static int cp2112_xfer(struct i2c_adapter *adap, u16 addr,
 		size = I2C_SMBUS_BLOCK_DATA;
 		read_write = I2C_SMBUS_READ;
 
-		/* data_length is data->block[0] + 1, so
-		 * so data->block[0] should be less than or
-		 * equal to the I2C_SMBUS_BLOCK_MAX + 1
-		*/
-		if (data->block[0] > I2C_SMBUS_BLOCK_MAX + 1)
-			count = -EINVAL;
-		else
-			count = cp2112_write_read_req(buf, addr, I2C_SMBUS_BLOCK_MAX,
+		count = cp2112_write_read_req(buf, addr, I2C_SMBUS_BLOCK_MAX,
 					      command, data->block,
 					      data->block[0] + 1);
 		break;

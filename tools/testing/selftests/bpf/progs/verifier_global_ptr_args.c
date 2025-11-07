@@ -225,7 +225,7 @@ int trusted_to_untrusted(void *ctx)
 }
 
 char mem[16];
-u32 offset;
+u32 off;
 
 SEC("tp_btf/sys_enter")
 __success
@@ -240,9 +240,9 @@ int anything_to_untrusted(void *ctx)
 	/* scalar to untrusted */
 	subprog_untrusted(0);
 	/* variable offset to untrusted (map) */
-	subprog_untrusted((void *)mem + offset);
+	subprog_untrusted((void *)mem + off);
 	/* variable offset to untrusted (trusted) */
-	subprog_untrusted((void *)bpf_get_current_task_btf() + offset);
+	subprog_untrusted((void *)bpf_get_current_task_btf() + off);
 	return 0;
 }
 
@@ -298,12 +298,12 @@ int anything_to_untrusted_mem(void *ctx)
 	/* scalar to untrusted mem */
 	subprog_void_untrusted(0);
 	/* variable offset to untrusted mem (map) */
-	subprog_void_untrusted((void *)mem + offset);
+	subprog_void_untrusted((void *)mem + off);
 	/* variable offset to untrusted mem (trusted) */
-	subprog_void_untrusted(bpf_get_current_task_btf() + offset);
+	subprog_void_untrusted(bpf_get_current_task_btf() + off);
 	/* variable offset to untrusted char/enum (map) */
-	subprog_char_untrusted(mem + offset);
-	subprog_enum_untrusted((void *)mem + offset);
+	subprog_char_untrusted(mem + off);
+	subprog_enum_untrusted((void *)mem + off);
 	return 0;
 }
 
