@@ -60,7 +60,6 @@
 #include <linux/soc/pxa/cpu.h>
 #include <video/of_display_timing.h>
 #include <video/videomode.h>
-#include <linux/string_choices.h>
 
 #include <asm/io.h>
 #include <asm/irq.h>
@@ -1420,7 +1419,7 @@ static inline void __pxafb_lcd_power(struct pxafb_info *fbi, int on)
 
 		if (ret < 0)
 			pr_warn("Unable to %s LCD supply regulator: %d\n",
-				str_enable_disable(on), ret);
+				on ? "enable" : "disable", ret);
 		else
 			fbi->lcd_supply_enabled = on;
 	}
