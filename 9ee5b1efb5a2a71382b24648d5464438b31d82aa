@@ -34,6 +34,24 @@
       "parentUuid": "df5cfa4c_005cac27",
       "revId": "9ee5b1efb5a2a71382b24648d5464438b31d82aa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8109c00_9bc676f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-11-07T16:28:39Z",
+      "side": 1,
+      "message": "I don\u0027t mean there is some overlap between the two tests. I mean that `validate_cap` is not for standalone use. Instead, it is a \"helper\" executable that is called from the `test_execve` test. Have a look at the source. The point is to check the capabilities are correctly \"inherited\" across the execve calls.\n\nI would revert this commit as it seems incorrect to me.",
+      "parentUuid": "96bfb749_44dfca82",
+      "revId": "9ee5b1efb5a2a71382b24648d5464438b31d82aa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
