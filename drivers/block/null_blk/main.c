@@ -1949,7 +1949,6 @@ static int null_add_dev(struct nullb_device *dev)
 		.logical_block_size	= dev->blocksize,
 		.physical_block_size	= dev->blocksize,
 		.max_hw_sectors		= dev->max_sectors,
-		.dma_alignment		= dev->blocksize - 1,
 	};
 
 	struct nullb *nullb;
