@@ -16,6 +16,24 @@
       "message": "Isn\u0027t this already executed as part of the `test_execve` test?",
       "revId": "9ee5b1efb5a2a71382b24648d5464438b31d82aa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96bfb749_44dfca82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4079418
+      },
+      "writtenOn": "2025-11-07T01:52:43Z",
+      "side": 1,
+      "message": "While there might be some overlap with the test_execve test, it is difficult to definitively prove that test_execve covers all the test cases in validate_cap. To ensure comprehensive test coverage and eliminate any ambiguity, it\u0027s more practical and robust to explicitly include the validate_cap test. This approach guarantees that all validate_cap tests are executed.",
+      "parentUuid": "df5cfa4c_005cac27",
+      "revId": "9ee5b1efb5a2a71382b24648d5464438b31d82aa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
