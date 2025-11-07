@@ -76,18 +76,20 @@ mlx5_devcom_dev_alloc(struct mlx5_core_dev *dev)
 struct mlx5_devcom_dev *
 mlx5_devcom_register_device(struct mlx5_core_dev *dev)
 {
-	struct mlx5_devcom_dev *devc = NULL;
+	struct mlx5_devcom_dev *devc;
 
 	mutex_lock(&dev_list_lock);
 
 	if (devcom_dev_exists(dev)) {
-		mlx5_core_err(dev, "devcom device already exists");
+		devc = ERR_PTR(-EEXIST);
 		goto out;
 	}
 
 	devc = mlx5_devcom_dev_alloc(dev);
-	if (!devc)
+	if (!devc) {
+		devc = ERR_PTR(-ENOMEM);
 		goto out;
+	}
 
 	list_add_tail(&devc->list, &devcom_dev_list);
 out:
@@ -108,10 +110,8 @@ mlx5_devcom_dev_release(struct kref *ref)
 
 void mlx5_devcom_unregister_device(struct mlx5_devcom_dev *devc)
 {
-	if (!devc)
-		return;
-
-	kref_put(&devc->ref, mlx5_devcom_dev_release);
+	if (!IS_ERR_OR_NULL(devc))
+		kref_put(&devc->ref, mlx5_devcom_dev_release);
 }
 
 static struct mlx5_devcom_comp *
@@ -122,7 +122,7 @@ mlx5_devcom_comp_alloc(u64 id, const struct mlx5_devcom_match_attr *attr,
 
 	comp = kzalloc(sizeof(*comp), GFP_KERNEL);
 	if (!comp)
-		return NULL;
+		return ERR_PTR(-ENOMEM);
 
 	comp->id = id;
 	comp->key.key = attr->key;
@@ -160,7 +160,7 @@ devcom_alloc_comp_dev(struct mlx5_devcom_dev *devc,
 
 	devcom = kzalloc(sizeof(*devcom), GFP_KERNEL);
 	if (!devcom)
-		return NULL;
+		return ERR_PTR(-ENOMEM);
 
 	kref_get(&devc->ref);
 	devcom->devc = devc;
@@ -240,28 +240,31 @@ mlx5_devcom_register_component(struct mlx5_devcom_dev *devc,
 			       mlx5_devcom_event_handler_t handler,
 			       void *data)
 {
-	struct mlx5_devcom_comp_dev *devcom = NULL;
+	struct mlx5_devcom_comp_dev *devcom;
 	struct mlx5_devcom_comp *comp;
 
-	if (!devc)
-		return NULL;
+	if (IS_ERR_OR_NULL(devc))
+		return ERR_PTR(-EINVAL);
 
 	mutex_lock(&comp_list_lock);
 	comp = devcom_component_get(devc, id, attr, handler);
-	if (IS_ERR(comp))
+	if (IS_ERR(comp)) {
+		devcom = ERR_PTR(-EINVAL);
 		goto out_unlock;
+	}
 
 	if (!comp) {
 		comp = mlx5_devcom_comp_alloc(id, attr, handler);
-		if (!comp)
+		if (IS_ERR(comp)) {
+			devcom = ERR_CAST(comp);
 			goto out_unlock;
-
+		}
 		list_add_tail(&comp->comp_list, &devcom_comp_list);
 	}
 	mutex_unlock(&comp_list_lock);
 
 	devcom = devcom_alloc_comp_dev(devc, comp, data);
-	if (!devcom)
+	if (IS_ERR(devcom))
 		kref_put(&comp->ref, mlx5_devcom_comp_release);
 
 	return devcom;
@@ -273,10 +276,8 @@ out_unlock:
 
 void mlx5_devcom_unregister_component(struct mlx5_devcom_comp_dev *devcom)
 {
-	if (!devcom)
-		return;
-
-	devcom_free_comp_dev(devcom);
+	if (!IS_ERR_OR_NULL(devcom))
+		devcom_free_comp_dev(devcom);
 }
 
 int mlx5_devcom_comp_get_size(struct mlx5_devcom_comp_dev *devcom)
@@ -295,7 +296,7 @@ int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
 	int err = 0;
 	void *data;
 
-	if (!devcom)
+	if (IS_ERR_OR_NULL(devcom))
 		return -ENODEV;
 
 	comp = devcom->comp;
@@ -337,7 +338,7 @@ void mlx5_devcom_comp_set_ready(struct mlx5_devcom_comp_dev *devcom, bool ready)
 
 bool mlx5_devcom_comp_is_ready(struct mlx5_devcom_comp_dev *devcom)
 {
-	if (!devcom)
+	if (IS_ERR_OR_NULL(devcom))
 		return false;
 
 	return READ_ONCE(devcom->comp->ready);
@@ -347,7 +348,7 @@ bool mlx5_devcom_for_each_peer_begin(struct mlx5_devcom_comp_dev *devcom)
 {
 	struct mlx5_devcom_comp *comp;
 
-	if (!devcom)
+	if (IS_ERR_OR_NULL(devcom))
 		return false;
 
 	comp = devcom->comp;
@@ -420,21 +421,21 @@ void *mlx5_devcom_get_next_peer_data_rcu(struct mlx5_devcom_comp_dev *devcom,
 
 void mlx5_devcom_comp_lock(struct mlx5_devcom_comp_dev *devcom)
 {
-	if (!devcom)
+	if (IS_ERR_OR_NULL(devcom))
 		return;
 	down_write(&devcom->comp->sem);
 }
 
 void mlx5_devcom_comp_unlock(struct mlx5_devcom_comp_dev *devcom)
 {
-	if (!devcom)
+	if (IS_ERR_OR_NULL(devcom))
 		return;
 	up_write(&devcom->comp->sem);
 }
 
 int mlx5_devcom_comp_trylock(struct mlx5_devcom_comp_dev *devcom)
 {
-	if (!devcom)
+	if (IS_ERR_OR_NULL(devcom))
 		return 0;
 	return down_write_trylock(&devcom->comp->sem);
 }
