@@ -308,6 +308,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bbfc9d29_ab923516",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1528,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-11-07T00:20:16Z",
+      "side": 1,
+      "message": "for func4, I choose to keep the host provided entries as long as they exist in the new implementation I\u0027m working on. No append even if the native has more cache levels in case of vcpu migration. If crosvm cares about the accuracy, it should try to pin vcpus. It\u0027s not a problem of pkvm.\n\nnative entries are appended to the host buffer only when there is no any func4 entry, as a failsafe mechanism.\n\nthere might be other cases like func4. But as we discussed earlier the entire hybrid support is incomplete. Even w/o enforcement, it\u0027s still a possible case where crosvm get supported cpuid leaves on one cpu but then observed by the guest on a different cpu. somehow vcpu pinning is the only way to ensure correctness in that configuration. and once we have vcpu pinning, then this worry is invalid w/ or w/o enforcement, right?",
+      "parentUuid": "901c31cf_558ccac1",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20972ea5_b35937f8",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 2
