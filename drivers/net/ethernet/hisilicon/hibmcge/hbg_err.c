@@ -136,11 +136,12 @@ static pci_ers_result_t hbg_pci_err_detected(struct pci_dev *pdev,
 {
 	struct net_device *netdev = pci_get_drvdata(pdev);
 
-	if (state == pci_channel_io_perm_failure) {
-		netif_device_detach(netdev);
-		return PCI_ERS_RESULT_DISCONNECT;
-	}
+	netif_device_detach(netdev);
 
+	if (state == pci_channel_io_perm_failure)
+		return PCI_ERS_RESULT_DISCONNECT;
+
+	pci_disable_device(pdev);
 	return PCI_ERS_RESULT_NEED_RESET;
 }
 
@@ -148,9 +149,6 @@ static pci_ers_result_t hbg_pci_err_slot_reset(struct pci_dev *pdev)
 {
 	struct net_device *netdev = pci_get_drvdata(pdev);
 	struct hbg_priv *priv = netdev_priv(netdev);
-
-	netif_device_detach(netdev);
-	pci_disable_device(pdev);
 
 	if (pci_enable_device(pdev)) {
 		dev_err(&pdev->dev,
