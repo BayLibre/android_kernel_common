@@ -1430,10 +1430,11 @@ static int mlx5_lag_register_hca_devcom_comp(struct mlx5_core_dev *dev)
 		mlx5_devcom_register_component(dev->priv.devc,
 					       MLX5_DEVCOM_HCA_PORTS,
 					       &attr, NULL, dev);
-	if (!dev->priv.hca_devcom_comp) {
+	if (IS_ERR(dev->priv.hca_devcom_comp)) {
 		mlx5_core_err(dev,
-			      "Failed to register devcom HCA component.");
-		return -EINVAL;
+			      "Failed to register devcom HCA component, err: %ld\n",
+			      PTR_ERR(dev->priv.hca_devcom_comp));
+		return PTR_ERR(dev->priv.hca_devcom_comp);
 	}
 
 	return 0;
