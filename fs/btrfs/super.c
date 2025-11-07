@@ -2068,13 +2068,7 @@ static int btrfs_get_tree_subvol(struct fs_context *fc)
 	fs_info->super_copy = kzalloc(BTRFS_SUPER_INFO_SIZE, GFP_KERNEL);
 	fs_info->super_for_commit = kzalloc(BTRFS_SUPER_INFO_SIZE, GFP_KERNEL);
 	if (!fs_info->super_copy || !fs_info->super_for_commit) {
-		/*
-		 * Dont call btrfs_free_fs_info() to free it as it's still
-		 * initialized partially.
-		 */
-		kfree(fs_info->super_copy);
-		kfree(fs_info->super_for_commit);
-		kvfree(fs_info);
+		btrfs_free_fs_info(fs_info);
 		return -ENOMEM;
 	}
 	btrfs_init_fs_info(fs_info);
