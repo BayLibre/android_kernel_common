@@ -44,8 +44,6 @@ struct xfs_open_zone {
 	 * the life time of an open zone.
 	 */
 	struct xfs_rtgroup	*oz_rtg;
-
-	struct rcu_head		oz_rcu;
 };
 
 /*
