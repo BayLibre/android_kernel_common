@@ -24,14 +24,20 @@ static const struct cred *spnego_cred;
 static int
 cifs_spnego_key_instantiate(struct key *key, struct key_preparsed_payload *prep)
 {
-	char *payload = kmemdup(prep->data, prep->datalen, GFP_KERNEL);
+	char *payload;
+	int ret;
 
+	ret = -ENOMEM;
+	payload = kmemdup(prep->data, prep->datalen, GFP_KERNEL);
 	if (!payload)
-		return -ENOMEM;
+		goto error;
 
 	/* attach the data */
 	key->payload.data[0] = payload;
-	return 0;
+	ret = 0;
+
+error:
+	return ret;
 }
 
 static void
