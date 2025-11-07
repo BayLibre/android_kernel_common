@@ -178,6 +178,7 @@ static int cifs_xattr_set(const struct xattr_handler *handler,
 			memcpy(pacl, value, size);
 			if (pTcon->ses->server->ops->set_acl) {
 				int aclflags = 0;
+				rc = 0;
 
 				switch (handler->flags) {
 				case XATTR_CIFS_NTSD_FULL:

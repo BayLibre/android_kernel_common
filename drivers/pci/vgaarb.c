@@ -556,8 +556,10 @@ EXPORT_SYMBOL(vga_put);
 
 static bool vga_is_firmware_default(struct pci_dev *pdev)
 {
-#if defined CONFIG_X86
-	return pdev == screen_info_pci_dev(&screen_info);
+#ifdef CONFIG_SCREEN_INFO
+	struct screen_info *si = &screen_info;
+
+	return pdev == screen_info_pci_dev(si);
 #else
 	return false;
 #endif
