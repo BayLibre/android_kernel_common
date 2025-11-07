@@ -308,7 +308,7 @@ out_failed:
 	}
 
 	/* Release any IO and OO objects not processed. */
-	for (; i < num_params && u[i].type; i++) {
+	for (; u[i].type && i < num_params; i++) {
 		if (u[i].type == QCOMTEE_ARG_TYPE_OO ||
 		    u[i].type == QCOMTEE_ARG_TYPE_IO)
 			qcomtee_object_put(u[i].o);
