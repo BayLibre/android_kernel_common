@@ -309,7 +309,8 @@ do {									\
 									\
 	asm qual (__pcpu_op_##size("cmpxchg") "%[nval], "		\
 		  __percpu_arg([var])					\
-		  : "=@ccz" (success),					\
+		  CC_SET(z)						\
+		  : CC_OUT(z) (success),				\
 		    [oval] "+a" (pco_old__),				\
 		    [var] "+m" (__my_cpu_var(_var))			\
 		  : [nval] __pcpu_reg_##size(, pco_new__)		\
@@ -366,7 +367,8 @@ do {									\
 	asm_inline qual (						\
 		ALTERNATIVE("call this_cpu_cmpxchg8b_emu",		\
 			    "cmpxchg8b " __percpu_arg([var]), X86_FEATURE_CX8) \
-		: ALT_OUTPUT_SP("=@ccz" (success),			\
+		CC_SET(z)						\
+		: ALT_OUTPUT_SP(CC_OUT(z) (success),			\
 				[var] "+m" (__my_cpu_var(_var)),	\
 				"+a" (old__.low), "+d" (old__.high))	\
 		: "b" (new__.low), "c" (new__.high),			\
@@ -434,7 +436,8 @@ do {									\
 	asm_inline qual (						\
 		ALTERNATIVE("call this_cpu_cmpxchg16b_emu",		\
 			    "cmpxchg16b " __percpu_arg([var]), X86_FEATURE_CX16) \
-		: ALT_OUTPUT_SP("=@ccz" (success),			\
+		CC_SET(z)						\
+		: ALT_OUTPUT_SP(CC_OUT(z) (success),			\
 				[var] "+m" (__my_cpu_var(_var)),	\
 				"+a" (old__.low), "+d" (old__.high))	\
 		: "b" (new__.low), "c" (new__.high),			\
@@ -582,7 +585,8 @@ do {									\
 	bool oldbit;							\
 									\
 	asm volatile("btl %[nr], " __percpu_arg([var])			\
-		     : "=@ccc" (oldbit)					\
+		     CC_SET(c)						\
+		     : CC_OUT(c) (oldbit)				\
 		     : [var] "m" (__my_cpu_var(_var)),			\
 		       [nr] "rI" (_nr));				\
 	oldbit;								\
