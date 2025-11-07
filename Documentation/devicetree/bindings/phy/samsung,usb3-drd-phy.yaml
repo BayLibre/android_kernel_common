@@ -125,9 +125,7 @@ allOf:
           contains:
             const: google,gs101-usb31drd-phy
     then:
-      allOf:
-        - $ref: /schemas/usb/usb-switch.yaml#
-        - $ref: /schemas/usb/usb-switch-ports.yaml#
+      $ref: /schemas/usb/usb-switch.yaml#
 
       properties:
         clocks:
