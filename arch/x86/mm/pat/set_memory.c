@@ -446,7 +446,7 @@ static void cpa_flush(struct cpa_data *cpa, int cache)
 	}
 
 	start = fix_addr(__cpa_addr(cpa, 0));
-	end =   start + cpa->numpages * PAGE_SIZE;
+	end =   fix_addr(__cpa_addr(cpa, cpa->numpages));
 	if (cpa->force_flush_all)
 		end = TLB_FLUSH_ALL;
 
