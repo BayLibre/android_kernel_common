@@ -741,11 +741,13 @@ static void vm_vcpu_rm(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
 	int ret;
 
 	if (vcpu->dirty_gfns) {
-		kvm_munmap(vcpu->dirty_gfns, vm->dirty_ring_size);
+		ret = munmap(vcpu->dirty_gfns, vm->dirty_ring_size);
+		TEST_ASSERT(!ret, __KVM_SYSCALL_ERROR("munmap()", ret));
 		vcpu->dirty_gfns = NULL;
 	}
 
-	kvm_munmap(vcpu->run, vcpu_mmap_sz());
+	ret = munmap(vcpu->run, vcpu_mmap_sz());
+	TEST_ASSERT(!ret, __KVM_SYSCALL_ERROR("munmap()", ret));
 
 	ret = close(vcpu->fd);
 	TEST_ASSERT(!ret,  __KVM_SYSCALL_ERROR("close()", ret));
@@ -781,16 +783,20 @@ void kvm_vm_release(struct kvm_vm *vmp)
 static void __vm_mem_region_delete(struct kvm_vm *vm,
 				   struct userspace_mem_region *region)
 {
+	int ret;
+
 	rb_erase(&region->gpa_node, &vm->regions.gpa_tree);
 	rb_erase(&region->hva_node, &vm->regions.hva_tree);
 	hash_del(&region->slot_node);
 
 	sparsebit_free(&region->unused_phy_pages);
 	sparsebit_free(&region->protected_phy_pages);
-	kvm_munmap(region->mmap_start, region->mmap_size);
+	ret = munmap(region->mmap_start, region->mmap_size);
+	TEST_ASSERT(!ret, __KVM_SYSCALL_ERROR("munmap()", ret));
 	if (region->fd >= 0) {
 		/* There's an extra map when using shared memory. */
-		kvm_munmap(region->mmap_alias, region->mmap_size);
+		ret = munmap(region->mmap_alias, region->mmap_size);
+		TEST_ASSERT(!ret, __KVM_SYSCALL_ERROR("munmap()", ret));
 		close(region->fd);
 	}
 	if (region->region.guest_memfd >= 0)
@@ -1047,9 +1053,12 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
 		region->fd = kvm_memfd_alloc(region->mmap_size,
 					     src_type == VM_MEM_SRC_SHARED_HUGETLB);
 
-	region->mmap_start = kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE,
-				      vm_mem_backing_src_alias(src_type)->flag,
-				      region->fd);
+	region->mmap_start = mmap(NULL, region->mmap_size,
+				  PROT_READ | PROT_WRITE,
+				  vm_mem_backing_src_alias(src_type)->flag,
+				  region->fd, 0);
+	TEST_ASSERT(region->mmap_start != MAP_FAILED,
+		    __KVM_SYSCALL_ERROR("mmap()", (int)(unsigned long)MAP_FAILED));
 
 	TEST_ASSERT(!is_backing_src_hugetlb(src_type) ||
 		    region->mmap_start == align_ptr_up(region->mmap_start, backing_src_pagesz),
@@ -1120,10 +1129,12 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
 
 	/* If shared memory, create an alias. */
 	if (region->fd >= 0) {
-		region->mmap_alias = kvm_mmap(region->mmap_size,
-					      PROT_READ | PROT_WRITE,
-					      vm_mem_backing_src_alias(src_type)->flag,
-					      region->fd);
+		region->mmap_alias = mmap(NULL, region->mmap_size,
+					  PROT_READ | PROT_WRITE,
+					  vm_mem_backing_src_alias(src_type)->flag,
+					  region->fd, 0);
+		TEST_ASSERT(region->mmap_alias != MAP_FAILED,
+			    __KVM_SYSCALL_ERROR("mmap()",  (int)(unsigned long)MAP_FAILED));
 
 		/* Align host alias address */
 		region->host_alias = align_ptr_up(region->mmap_alias, alignment);
@@ -1333,8 +1344,10 @@ struct kvm_vcpu *__vm_vcpu_add(struct kvm_vm *vm, uint32_t vcpu_id)
 	TEST_ASSERT(vcpu_mmap_sz() >= sizeof(*vcpu->run), "vcpu mmap size "
 		"smaller than expected, vcpu_mmap_sz: %zi expected_min: %zi",
 		vcpu_mmap_sz(), sizeof(*vcpu->run));
-	vcpu->run = kvm_mmap(vcpu_mmap_sz(), PROT_READ | PROT_WRITE,
-			     MAP_SHARED, vcpu->fd);
+	vcpu->run = (struct kvm_run *) mmap(NULL, vcpu_mmap_sz(),
+		PROT_READ | PROT_WRITE, MAP_SHARED, vcpu->fd, 0);
+	TEST_ASSERT(vcpu->run != MAP_FAILED,
+		    __KVM_SYSCALL_ERROR("mmap()", (int)(unsigned long)MAP_FAILED));
 
 	if (kvm_has_cap(KVM_CAP_BINARY_STATS_FD))
 		vcpu->stats.fd = vcpu_get_stats_fd(vcpu);
@@ -1781,8 +1794,9 @@ void *vcpu_map_dirty_ring(struct kvm_vcpu *vcpu)
 			    page_size * KVM_DIRTY_LOG_PAGE_OFFSET);
 		TEST_ASSERT(addr == MAP_FAILED, "Dirty ring mapped exec");
 
-		addr = __kvm_mmap(size, PROT_READ | PROT_WRITE, MAP_SHARED, vcpu->fd,
-				  page_size * KVM_DIRTY_LOG_PAGE_OFFSET);
+		addr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, vcpu->fd,
+			    page_size * KVM_DIRTY_LOG_PAGE_OFFSET);
+		TEST_ASSERT(addr != MAP_FAILED, "Dirty ring map failed");
 
 		vcpu->dirty_gfns = addr;
 		vcpu->dirty_gfns_count = size / sizeof(struct kvm_dirty_gfn);
@@ -2329,9 +2343,4 @@ bool vm_is_gpa_protected(struct kvm_vm *vm, vm_paddr_t paddr)
 
 	pg = paddr >> vm->page_shift;
 	return sparsebit_is_set(region->protected_phy_pages, pg);
-}
-
-__weak bool kvm_arch_has_default_irqchip(void)
-{
-	return false;
 }

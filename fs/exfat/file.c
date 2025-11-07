@@ -509,8 +509,8 @@ static int exfat_ioctl_get_volume_label(struct super_block *sb, unsigned long ar
 static int exfat_ioctl_set_volume_label(struct super_block *sb,
 					unsigned long arg)
 {
-	int ret = 0, lossy, label_len;
-	char label[FSLABEL_MAX] = {0};
+	int ret = 0, lossy;
+	char label[FSLABEL_MAX];
 	struct exfat_uni_name uniname;
 
 	if (!capable(CAP_SYS_ADMIN))
@@ -520,9 +520,8 @@ static int exfat_ioctl_set_volume_label(struct super_block *sb,
 		return -EFAULT;
 
 	memset(&uniname, 0, sizeof(uniname));
-	label_len = strnlen(label, FSLABEL_MAX - 1);
 	if (label[0]) {
-		ret = exfat_nls_to_utf16(sb, label, label_len,
+		ret = exfat_nls_to_utf16(sb, label, FSLABEL_MAX,
 					 &uniname, &lossy);
 		if (ret < 0)
 			return ret;

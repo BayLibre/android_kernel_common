@@ -66,7 +66,7 @@ static int nr_timers(struct kvm_vcpu *vcpu)
 
 u32 timer_get_ctl(struct arch_timer_context *ctxt)
 {
-	struct kvm_vcpu *vcpu = timer_context_to_vcpu(ctxt);
+	struct kvm_vcpu *vcpu = ctxt->vcpu;
 
 	switch(arch_timer_ctx_index(ctxt)) {
 	case TIMER_VTIMER:
@@ -85,7 +85,7 @@ u32 timer_get_ctl(struct arch_timer_context *ctxt)
 
 u64 timer_get_cval(struct arch_timer_context *ctxt)
 {
-	struct kvm_vcpu *vcpu = timer_context_to_vcpu(ctxt);
+	struct kvm_vcpu *vcpu = ctxt->vcpu;
 
 	switch(arch_timer_ctx_index(ctxt)) {
 	case TIMER_VTIMER:
@@ -104,7 +104,7 @@ u64 timer_get_cval(struct arch_timer_context *ctxt)
 
 static void timer_set_ctl(struct arch_timer_context *ctxt, u32 ctl)
 {
-	struct kvm_vcpu *vcpu = timer_context_to_vcpu(ctxt);
+	struct kvm_vcpu *vcpu = ctxt->vcpu;
 
 	switch(arch_timer_ctx_index(ctxt)) {
 	case TIMER_VTIMER:
@@ -126,7 +126,7 @@ static void timer_set_ctl(struct arch_timer_context *ctxt, u32 ctl)
 
 static void timer_set_cval(struct arch_timer_context *ctxt, u64 cval)
 {
-	struct kvm_vcpu *vcpu = timer_context_to_vcpu(ctxt);
+	struct kvm_vcpu *vcpu = ctxt->vcpu;
 
 	switch(arch_timer_ctx_index(ctxt)) {
 	case TIMER_VTIMER:
@@ -144,6 +144,16 @@ static void timer_set_cval(struct arch_timer_context *ctxt, u64 cval)
 	default:
 		WARN_ON(1);
 	}
+}
+
+static void timer_set_offset(struct arch_timer_context *ctxt, u64 offset)
+{
+	if (!ctxt->offset.vm_offset) {
+		WARN(offset, "timer %ld\n", arch_timer_ctx_index(ctxt));
+		return;
+	}
+
+	WRITE_ONCE(*ctxt->offset.vm_offset, offset);
 }
 
 u64 kvm_phys_timer_read(void)
@@ -333,7 +343,7 @@ static enum hrtimer_restart kvm_hrtimer_expire(struct hrtimer *hrt)
 	u64 ns;
 
 	ctx = container_of(hrt, struct arch_timer_context, hrtimer);
-	vcpu = timer_context_to_vcpu(ctx);
+	vcpu = ctx->vcpu;
 
 	trace_kvm_timer_hrtimer_expire(ctx);
 
@@ -426,9 +436,8 @@ static void kvm_timer_update_status(struct arch_timer_context *ctx, bool level)
 	 *
 	 * But hey, it's fast, right?
 	 */
-	struct kvm_vcpu *vcpu = timer_context_to_vcpu(ctx);
-	if (is_hyp_ctxt(vcpu) &&
-	    (ctx == vcpu_vtimer(vcpu) || ctx == vcpu_ptimer(vcpu))) {
+	if (is_hyp_ctxt(ctx->vcpu) &&
+	    (ctx == vcpu_vtimer(ctx->vcpu) || ctx == vcpu_ptimer(ctx->vcpu))) {
 		unsigned long val = timer_get_ctl(ctx);
 		__assign_bit(__ffs(ARCH_TIMER_CTRL_IT_STAT), &val, level);
 		timer_set_ctl(ctx, val);
@@ -461,7 +470,7 @@ static void timer_emulate(struct arch_timer_context *ctx)
 	trace_kvm_timer_emulate(ctx, should_fire);
 
 	if (should_fire != ctx->irq.level)
-		kvm_timer_update_irq(timer_context_to_vcpu(ctx), should_fire, ctx);
+		kvm_timer_update_irq(ctx->vcpu, should_fire, ctx);
 
 	kvm_timer_update_status(ctx, should_fire);
 
@@ -489,7 +498,7 @@ static void set_cntpoff(u64 cntpoff)
 
 static void timer_save_state(struct arch_timer_context *ctx)
 {
-	struct arch_timer_cpu *timer = vcpu_timer(timer_context_to_vcpu(ctx));
+	struct arch_timer_cpu *timer = vcpu_timer(ctx->vcpu);
 	enum kvm_arch_timers index = arch_timer_ctx_index(ctx);
 	unsigned long flags;
 
@@ -600,7 +609,7 @@ static void kvm_timer_unblocking(struct kvm_vcpu *vcpu)
 
 static void timer_restore_state(struct arch_timer_context *ctx)
 {
-	struct arch_timer_cpu *timer = vcpu_timer(timer_context_to_vcpu(ctx));
+	struct arch_timer_cpu *timer = vcpu_timer(ctx->vcpu);
 	enum kvm_arch_timers index = arch_timer_ctx_index(ctx);
 	unsigned long flags;
 
@@ -659,7 +668,7 @@ static inline void set_timer_irq_phys_active(struct arch_timer_context *ctx, boo
 
 static void kvm_timer_vcpu_load_gic(struct arch_timer_context *ctx)
 {
-	struct kvm_vcpu *vcpu = timer_context_to_vcpu(ctx);
+	struct kvm_vcpu *vcpu = ctx->vcpu;
 	bool phys_active = false;
 
 	/*
@@ -668,7 +677,7 @@ static void kvm_timer_vcpu_load_gic(struct arch_timer_context *ctx)
 	 * this point and the register restoration, we'll take the
 	 * interrupt anyway.
 	 */
-	kvm_timer_update_irq(vcpu, kvm_timer_should_fire(ctx), ctx);
+	kvm_timer_update_irq(ctx->vcpu, kvm_timer_should_fire(ctx), ctx);
 
 	if (irqchip_in_kernel(vcpu->kvm))
 		phys_active = kvm_vgic_map_is_active(vcpu, timer_irq(ctx));
@@ -1054,7 +1063,7 @@ static void timer_context_init(struct kvm_vcpu *vcpu, int timerid)
 	struct arch_timer_context *ctxt = vcpu_get_timer(vcpu, timerid);
 	struct kvm *kvm = vcpu->kvm;
 
-	ctxt->timer_id = timerid;
+	ctxt->vcpu = vcpu;
 
 	if (timerid == TIMER_VTIMER)
 		ctxt->offset.vm_offset = &kvm->arch.timer_data.voffset;
@@ -1112,6 +1121,49 @@ void kvm_timer_cpu_down(void)
 		disable_percpu_irq(host_ptimer_irq);
 }
 
+int kvm_arm_timer_set_reg(struct kvm_vcpu *vcpu, u64 regid, u64 value)
+{
+	struct arch_timer_context *timer;
+
+	switch (regid) {
+	case KVM_REG_ARM_TIMER_CTL:
+		timer = vcpu_vtimer(vcpu);
+		kvm_arm_timer_write(vcpu, timer, TIMER_REG_CTL, value);
+		break;
+	case KVM_REG_ARM_TIMER_CNT:
+		if (!test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET,
+			      &vcpu->kvm->arch.flags)) {
+			timer = vcpu_vtimer(vcpu);
+			timer_set_offset(timer, kvm_phys_timer_read() - value);
+		}
+		break;
+	case KVM_REG_ARM_TIMER_CVAL:
+		timer = vcpu_vtimer(vcpu);
+		kvm_arm_timer_write(vcpu, timer, TIMER_REG_CVAL, value);
+		break;
+	case KVM_REG_ARM_PTIMER_CTL:
+		timer = vcpu_ptimer(vcpu);
+		kvm_arm_timer_write(vcpu, timer, TIMER_REG_CTL, value);
+		break;
+	case KVM_REG_ARM_PTIMER_CNT:
+		if (!test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET,
+			      &vcpu->kvm->arch.flags)) {
+			timer = vcpu_ptimer(vcpu);
+			timer_set_offset(timer, kvm_phys_timer_read() - value);
+		}
+		break;
+	case KVM_REG_ARM_PTIMER_CVAL:
+		timer = vcpu_ptimer(vcpu);
+		kvm_arm_timer_write(vcpu, timer, TIMER_REG_CVAL, value);
+		break;
+
+	default:
+		return -1;
+	}
+
+	return 0;
+}
+
 static u64 read_timer_ctl(struct arch_timer_context *timer)
 {
 	/*
@@ -1126,6 +1178,31 @@ static u64 read_timer_ctl(struct arch_timer_context *timer)
 		ctl |= ARCH_TIMER_CTRL_IT_STAT;
 
 	return ctl;
+}
+
+u64 kvm_arm_timer_get_reg(struct kvm_vcpu *vcpu, u64 regid)
+{
+	switch (regid) {
+	case KVM_REG_ARM_TIMER_CTL:
+		return kvm_arm_timer_read(vcpu,
+					  vcpu_vtimer(vcpu), TIMER_REG_CTL);
+	case KVM_REG_ARM_TIMER_CNT:
+		return kvm_arm_timer_read(vcpu,
+					  vcpu_vtimer(vcpu), TIMER_REG_CNT);
+	case KVM_REG_ARM_TIMER_CVAL:
+		return kvm_arm_timer_read(vcpu,
+					  vcpu_vtimer(vcpu), TIMER_REG_CVAL);
+	case KVM_REG_ARM_PTIMER_CTL:
+		return kvm_arm_timer_read(vcpu,
+					  vcpu_ptimer(vcpu), TIMER_REG_CTL);
+	case KVM_REG_ARM_PTIMER_CNT:
+		return kvm_arm_timer_read(vcpu,
+					  vcpu_ptimer(vcpu), TIMER_REG_CNT);
+	case KVM_REG_ARM_PTIMER_CVAL:
+		return kvm_arm_timer_read(vcpu,
+					  vcpu_ptimer(vcpu), TIMER_REG_CVAL);
+	}
+	return (u64)-1;
 }
 
 static u64 kvm_arm_timer_read(struct kvm_vcpu *vcpu,
