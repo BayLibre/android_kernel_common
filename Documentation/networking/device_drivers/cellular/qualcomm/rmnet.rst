@@ -137,20 +137,16 @@ d. Checksum offload header v5
 
 Checksum offload header fields are in big endian format.
 
-Packet format::
-
   Bit            0 - 6          7               8-15              16-31
   Function     Header Type    Next Header     Checksum Valid    Reserved
 
 Header Type is to indicate the type of header, this usually is set to CHECKSUM
 
 Header types
-
-= ===============
+= ==========================================
 0 Reserved
 1 Reserved
 2 checksum header
-= ===============
 
 Checksum Valid is to indicate whether the header checksum is valid. Value of 1
 implies that checksum is calculated on this packet and is valid, value of 0
@@ -187,11 +183,9 @@ rmnet in a single linear skb. rmnet will process the individual
 packets and either ACK the MAP command or deliver the IP packet to the
 network stack as needed
 
-Packet format::
+MAP header|IP Packet|Optional padding|MAP header|IP Packet|Optional padding....
 
-  MAP header|IP Packet|Optional padding|MAP header|IP Packet|Optional padding....
-
-  MAP header|IP Packet|Optional padding|MAP header|Command Packet|Optional pad...
+MAP header|IP Packet|Optional padding|MAP header|Command Packet|Optional pad...
 
 3. Userspace configuration
 ==========================
