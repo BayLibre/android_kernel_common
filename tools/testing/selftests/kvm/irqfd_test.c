@@ -89,19 +89,11 @@ static void juggle_eventfd_primary(struct kvm_vm *vm, int eventfd)
 int main(int argc, char *argv[])
 {
 	pthread_t racing_thread;
-	struct kvm_vcpu *unused;
 	int r, i;
 
-	TEST_REQUIRE(kvm_arch_has_default_irqchip());
-
-	/*
-	 * Create "full" VMs, as KVM_IRQFD requires an in-kernel IRQ chip. Also
-	 * create an unused vCPU as certain architectures (like arm64) need to
-	 * complete IRQ chip initialization after all possible vCPUs for a VM
-	 * have been created.
-	 */
-	vm1 = vm_create_with_one_vcpu(&unused, NULL);
-	vm2 = vm_create_with_one_vcpu(&unused, NULL);
+	/* Create "full" VMs, as KVM_IRQFD requires an in-kernel IRQ chip. */
+	vm1 = vm_create(1);
+	vm2 = vm_create(1);
 
 	WRITE_ONCE(__eventfd, kvm_new_eventfd());
 

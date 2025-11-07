@@ -142,17 +142,19 @@ FIXTURE_SETUP(uc_kvm)
 	self->kvm_run_size = ioctl(self->kvm_fd, KVM_GET_VCPU_MMAP_SIZE, NULL);
 	ASSERT_GE(self->kvm_run_size, sizeof(struct kvm_run))
 		  TH_LOG(KVM_IOCTL_ERROR(KVM_GET_VCPU_MMAP_SIZE, self->kvm_run_size));
-	self->run = kvm_mmap(self->kvm_run_size, PROT_READ | PROT_WRITE,
-			     MAP_SHARED, self->vcpu_fd);
+	self->run = (struct kvm_run *)mmap(NULL, self->kvm_run_size,
+		    PROT_READ | PROT_WRITE, MAP_SHARED, self->vcpu_fd, 0);
+	ASSERT_NE(self->run, MAP_FAILED);
 	/**
 	 * For virtual cpus that have been created with S390 user controlled
 	 * virtual machines, the resulting vcpu fd can be memory mapped at page
 	 * offset KVM_S390_SIE_PAGE_OFFSET in order to obtain a memory map of
 	 * the virtual cpu's hardware control block.
 	 */
-	self->sie_block = __kvm_mmap(PAGE_SIZE, PROT_READ | PROT_WRITE,
-				     MAP_SHARED, self->vcpu_fd,
-				     KVM_S390_SIE_PAGE_OFFSET << PAGE_SHIFT);
+	self->sie_block = (struct kvm_s390_sie_block *)mmap(NULL, PAGE_SIZE,
+			  PROT_READ | PROT_WRITE, MAP_SHARED,
+			  self->vcpu_fd, KVM_S390_SIE_PAGE_OFFSET << PAGE_SHIFT);
+	ASSERT_NE(self->sie_block, MAP_FAILED);
 
 	TH_LOG("VM created %p %p", self->run, self->sie_block);
 
@@ -184,8 +186,8 @@ FIXTURE_SETUP(uc_kvm)
 
 FIXTURE_TEARDOWN(uc_kvm)
 {
-	kvm_munmap(self->sie_block, PAGE_SIZE);
-	kvm_munmap(self->run, self->kvm_run_size);
+	munmap(self->sie_block, PAGE_SIZE);
+	munmap(self->run, self->kvm_run_size);
 	close(self->vcpu_fd);
 	close(self->vm_fd);
 	close(self->kvm_fd);
