@@ -469,7 +469,7 @@ static int ls2k_bmc_probe(struct pci_dev *dev, const struct pci_device_id *id)
 		return ret;
 
 	ddata = devm_kzalloc(&dev->dev, sizeof(*ddata), GFP_KERNEL);
-	if (!ddata) {
+	if (IS_ERR(ddata)) {
 		ret = -ENOMEM;
 		goto disable_pci;
 	}
@@ -495,13 +495,9 @@ static int ls2k_bmc_probe(struct pci_dev *dev, const struct pci_device_id *id)
 		goto disable_pci;
 	}
 
-	ret = devm_mfd_add_devices(&dev->dev, PLATFORM_DEVID_AUTO,
-				   ls2k_bmc_cells, ARRAY_SIZE(ls2k_bmc_cells),
-				   &dev->resource[0], 0, NULL);
-	if (ret)
-		goto disable_pci;
-
-	return 0;
+	return devm_mfd_add_devices(&dev->dev, PLATFORM_DEVID_AUTO,
+				    ls2k_bmc_cells, ARRAY_SIZE(ls2k_bmc_cells),
+				    &dev->resource[0], 0, NULL);
 
 disable_pci:
 	pci_disable_device(dev);
