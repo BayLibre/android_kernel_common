@@ -15,7 +15,6 @@ select:
     compatible:
       contains:
         enum:
-          - qcom,kaanapali-ufshc
           - qcom,sm8650-ufshc
           - qcom,sm8750-ufshc
   required:
@@ -25,7 +24,6 @@ properties:
   compatible:
     items:
       - enum:
-          - qcom,kaanapali-ufshc
           - qcom,sm8650-ufshc
           - qcom,sm8750-ufshc
       - const: qcom,ufshc
