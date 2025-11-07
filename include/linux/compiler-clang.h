@@ -115,6 +115,11 @@
 # define __noscs	__attribute__((__no_sanitize__("shadow-call-stack")))
 #endif
 
+#if __has_feature(kcfi)
+/* Disable CFI checking inside a function. */
+#define __nocfi		__attribute__((__no_sanitize__("kcfi")))
+#endif
+
 /*
  * Turn individual warnings and errors on and off locally, depending
  * on version.
