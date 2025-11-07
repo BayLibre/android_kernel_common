@@ -106,22 +106,13 @@ impl DeliverToRead for FreezeMessage {
             return Ok(true);
         }
         if freeze.is_clearing {
-            kernel::warn_on!(freeze.num_cleared_duplicates != 0);
-            if freeze.num_pending_duplicates > 0 {
-                // The primary freeze listener was deleted, so convert a pending duplicate back
-                // into the primary one.
-                freeze.num_pending_duplicates -= 1;
-                freeze.is_pending = true;
-                freeze.is_clearing = true;
-            } else {
-                _removed_listener = freeze_entry.remove_node();
-            }
+            _removed_listener = freeze_entry.remove_node();
             drop(node_refs);
             writer.write_code(BR_CLEAR_FREEZE_NOTIFICATION_DONE)?;
             writer.write_payload(&self.cookie.0)?;
             Ok(true)
         } else {
-            let is_frozen = freeze.node.owner.inner.lock().is_frozen.is_fully_frozen();
+            let is_frozen = freeze.node.owner.inner.lock().is_frozen;
             if freeze.last_is_frozen == Some(is_frozen) {
                 return Ok(true);
             }
@@ -254,9 +245,8 @@ impl Process {
                 );
                 return Err(EINVAL);
             }
-            let is_frozen = freeze.node.owner.inner.lock().is_frozen.is_fully_frozen();
-            if freeze.is_clearing || freeze.last_is_frozen != Some(is_frozen) {
-                // Immediately send another FreezeMessage.
+            if freeze.is_clearing {
+                // Immediately send another FreezeMessage for BR_CLEAR_FREEZE_NOTIFICATION_DONE.
                 clear_msg = Some(FreezeMessage::init(alloc, cookie));
             }
             freeze.is_pending = false;
