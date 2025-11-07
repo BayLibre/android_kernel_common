@@ -5,9 +5,7 @@
  * Datasheet:
  * https://image.dfrobot.com/image/data/TOY0021/SD2405AL%20datasheet%20(Angelo%20v0.1).pdf
  *
- * I2C slave address: 0x32
- *
- * Copyright (C) 2024-2025 Tóth János <gomba007@gmail.com>
+ * Copyright (C) 2024 Tóth János <gomba007@gmail.com>
  */
 
 #include <linux/bcd.h>
