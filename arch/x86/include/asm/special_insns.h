@@ -75,7 +75,9 @@ static inline u32 rdpkru(void)
 	 * "rdpkru" instruction.  Places PKRU contents in to EAX,
 	 * clears EDX and requires that ecx=0.
 	 */
-	asm volatile("rdpkru" : "=a" (pkru), "=d" (edx) : "c" (ecx));
+	asm volatile(".byte 0x0f,0x01,0xee\n\t"
+		     : "=a" (pkru), "=d" (edx)
+		     : "c" (ecx));
 	return pkru;
 }
 
@@ -87,7 +89,8 @@ static inline void wrpkru(u32 pkru)
 	 * "wrpkru" instruction.  Loads contents in EAX to PKRU,
 	 * requires that ecx = edx = 0.
 	 */
-	asm volatile("wrpkru" : : "a" (pkru), "c"(ecx), "d"(edx));
+	asm volatile(".byte 0x0f,0x01,0xef\n\t"
+		     : : "a" (pkru), "c"(ecx), "d"(edx));
 }
 
 #else
@@ -284,7 +287,8 @@ static inline int enqcmds(void __iomem *dst, const void *src)
 	 * See movdir64b()'s comment on operand specification.
 	 */
 	asm volatile(".byte 0xf3, 0x0f, 0x38, 0xf8, 0x02, 0x66, 0x90"
-		     : "=@ccz" (zf), "+m" (*__dst)
+		     CC_SET(z)
+		     : CC_OUT(z) (zf), "+m" (*__dst)
 		     : "m" (*__src), "a" (__dst), "d" (__src));
 
 	/* Submission failure is indicated via EFLAGS.ZF=1 */
