@@ -320,6 +320,7 @@ err_dma_unmap:
 err_free:
 	kfree(buf);
 err_out:
+	priv_rx->rq_stats->tls_resync_req_skip++;
 	return err;
 }
 
@@ -338,19 +339,14 @@ static void resync_handle_work(struct work_struct *work)
 
 	if (unlikely(test_bit(MLX5E_PRIV_RX_FLAG_DELETING, priv_rx->flags))) {
 		mlx5e_ktls_priv_rx_put(priv_rx);
-		priv_rx->rq_stats->tls_resync_req_skip++;
-		tls_offload_rx_resync_async_request_cancel(&resync->core);
 		return;
 	}
 
 	c = resync->priv->channels.c[priv_rx->rxq];
 	sq = &c->async_icosq;
 
-	if (resync_post_get_progress_params(sq, priv_rx)) {
-		priv_rx->rq_stats->tls_resync_req_skip++;
-		tls_offload_rx_resync_async_request_cancel(&resync->core);
+	if (resync_post_get_progress_params(sq, priv_rx))
 		mlx5e_ktls_priv_rx_put(priv_rx);
-	}
 }
 
 static void resync_init(struct mlx5e_ktls_rx_resync_ctx *resync,
@@ -429,21 +425,14 @@ void mlx5e_ktls_handle_get_psv_completion(struct mlx5e_icosq_wqe_info *wi,
 {
 	struct mlx5e_ktls_rx_resync_buf *buf = wi->tls_get_params.buf;
 	struct mlx5e_ktls_offload_context_rx *priv_rx;
-	struct tls_offload_resync_async *async_resync;
-	struct tls_offload_context_rx *rx_ctx;
 	u8 tracker_state, auth_state, *ctx;
 	struct device *dev;
 	u32 hw_seq;
 
 	priv_rx = buf->priv_rx;
 	dev = mlx5_core_dma_dev(sq->channel->mdev);
-	rx_ctx = tls_offload_ctx_rx(tls_get_ctx(priv_rx->sk));
-	async_resync = rx_ctx->resync_async;
-	if (unlikely(test_bit(MLX5E_PRIV_RX_FLAG_DELETING, priv_rx->flags))) {
-		priv_rx->rq_stats->tls_resync_req_skip++;
-		tls_offload_rx_resync_async_request_cancel(async_resync);
+	if (unlikely(test_bit(MLX5E_PRIV_RX_FLAG_DELETING, priv_rx->flags)))
 		goto out;
-	}
 
 	dma_sync_single_for_cpu(dev, buf->dma_addr, PROGRESS_PARAMS_PADDED_SIZE,
 				DMA_FROM_DEVICE);
@@ -454,13 +443,11 @@ void mlx5e_ktls_handle_get_psv_completion(struct mlx5e_icosq_wqe_info *wi,
 	if (tracker_state != MLX5E_TLS_PROGRESS_PARAMS_RECORD_TRACKER_STATE_TRACKING ||
 	    auth_state != MLX5E_TLS_PROGRESS_PARAMS_AUTH_STATE_NO_OFFLOAD) {
 		priv_rx->rq_stats->tls_resync_req_skip++;
-		tls_offload_rx_resync_async_request_cancel(async_resync);
 		goto out;
 	}
 
 	hw_seq = MLX5_GET(tls_progress_params, ctx, hw_resync_tcp_sn);
-	tls_offload_rx_resync_async_request_end(async_resync,
-						cpu_to_be32(hw_seq));
+	tls_offload_rx_resync_async_request_end(priv_rx->sk, cpu_to_be32(hw_seq));
 	priv_rx->rq_stats->tls_resync_req_end++;
 out:
 	mlx5e_ktls_priv_rx_put(priv_rx);
@@ -485,10 +472,8 @@ static bool resync_queue_get_psv(struct sock *sk)
 
 	resync = &priv_rx->resync;
 	mlx5e_ktls_priv_rx_get(priv_rx);
-	if (unlikely(!queue_work(resync->priv->tls->rx_wq, &resync->work))) {
+	if (unlikely(!queue_work(resync->priv->tls->rx_wq, &resync->work)))
 		mlx5e_ktls_priv_rx_put(priv_rx);
-		return false;
-	}
 
 	return true;
 }
@@ -497,7 +482,6 @@ static bool resync_queue_get_psv(struct sock *sk)
 static void resync_update_sn(struct mlx5e_rq *rq, struct sk_buff *skb)
 {
 	struct ethhdr *eth = (struct ethhdr *)(skb->data);
-	struct tls_offload_resync_async *resync_async;
 	struct net_device *netdev = rq->netdev;
 	struct net *net = dev_net(netdev);
 	struct sock *sk = NULL;
@@ -543,8 +527,7 @@ static void resync_update_sn(struct mlx5e_rq *rq, struct sk_buff *skb)
 
 	seq = th->seq;
 	datalen = skb->len - depth;
-	resync_async = tls_offload_ctx_rx(tls_get_ctx(sk))->resync_async;
-	tls_offload_rx_resync_async_request_start(resync_async, seq, datalen);
+	tls_offload_rx_resync_async_request_start(sk, seq, datalen);
 	rq->stats->tls_resync_req_start++;
 
 unref:
@@ -571,18 +554,6 @@ void mlx5e_ktls_rx_resync(struct net_device *netdev, struct sock *sk,
 	c = priv->channels.c[priv_rx->rxq];
 
 	resync_handle_seq_match(priv_rx, c);
-}
-
-void
-mlx5e_ktls_rx_resync_async_request_cancel(struct mlx5e_icosq_wqe_info *wi)
-{
-	struct mlx5e_ktls_offload_context_rx *priv_rx;
-	struct mlx5e_ktls_rx_resync_buf *buf;
-
-	buf = wi->tls_get_params.buf;
-	priv_rx = buf->priv_rx;
-	priv_rx->rq_stats->tls_resync_req_skip++;
-	tls_offload_rx_resync_async_request_cancel(&priv_rx->resync.core);
 }
 
 /* End of resync section */
