@@ -70,4 +70,16 @@ static inline long pkvm_hc_iommu_domain_free(u64 pgd_gpa)
 	return pkvm_hypercall(iommu_domain_free, pgd_gpa);
 
 }
+
+static inline long pkvm_hc_cache_tag_assign(struct pkvm_cache_tag_param *param)
+{
+	return pkvm_iommu_hypercall(iommu_cache_assign,
+			cache_tag_param, param);
+}
+
+static inline long pkvm_hc_cache_tag_unassign(struct pkvm_cache_tag_param *param)
+{
+	return pkvm_iommu_hypercall(iommu_cache_unassign,
+			cache_tag_param, param);
+}
 #endif
