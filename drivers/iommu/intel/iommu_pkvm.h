@@ -96,4 +96,16 @@ static inline long pkvm_hc_iommu_unmap_pages(unsigned long pgd_gpa, unsigned lon
 	return kvm_hypercall4(PKVM_HC_IOMMU_UNMAP_PAGES, pgd_gpa, start_pfn, last_pfn,
 				virt_to_phys(donation));
 }
+
+static inline long pkvm_hc_cache_tag_assign(struct pkvm_cache_tag_param *param)
+{
+	return pkvm_iommu_hypercall(PKVM_HC_IOMMU_CACHE_ASSIGN,
+			cache_tag_param, param);
+}
+
+static inline long pkvm_hc_cache_tag_unassign(struct pkvm_cache_tag_param *param)
+{
+	return pkvm_iommu_hypercall(PKVM_HC_IOMMU_CACHE_UNASSIGN,
+			cache_tag_param, param);
+}
 #endif
