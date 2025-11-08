@@ -93,6 +93,7 @@ PKVM_HC(iommu_cache_assign)
 PKVM_HC(iommu_cache_unassign)
 PKVM_HC(iommu_map_pages)
 PKVM_HC(iommu_unmap_pages)
+PKVM_HC(iommu_submit_qi)
 
 /* pKVM vmexit tracing/profiling */
 PKVM_HC(set_vmexit_trace)
