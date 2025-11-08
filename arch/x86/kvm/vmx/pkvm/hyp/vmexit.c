@@ -156,6 +156,9 @@ static unsigned long handle_vmcall(struct kvm_vcpu *vcpu)
 	case __pkvm__iommu_unmap_pages:
 		ret = pkvm_iommu_domain_unmap(a0, a1, a2);
 		break;
+	case __pkvm__iommu_submit_qi:
+		ret = pkvm_iommu_submit_qi(a0, a1, a2);
+		break;
 #endif
 	case __pkvm__add_ptdev:
 		ret = pkvm_add_ptdev(a0, a1, a2);
