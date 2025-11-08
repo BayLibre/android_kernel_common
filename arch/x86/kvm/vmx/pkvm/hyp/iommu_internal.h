@@ -135,6 +135,13 @@ do {									\
 #define QI_DESC_IOTLB_ADDR(qw)		((qw) & VTD_PAGE_MASK)
 #define QI_DESC_IOTLB_AM(qw)		((qw) & GENMASK_ULL(5, 0))
 
+/*
+ * Domain ID reserved for pasid entries programmed for first-level
+ * only and pass-through transfer modes.
+ * (copied from drivers/iommu/intel/pasid.h)
+ */
+#define FLPT_DEFAULT_DID		1
+
 #define pgt_to_pkvm_iommu(_pgt) container_of(_pgt, struct pkvm_iommu, pgt)
 
 struct pasid_dir_entry {
@@ -353,9 +360,12 @@ extern void root_tbl_walk(struct pkvm_iommu *iommu);
 
 bool is_dev_in_satc(u16 bdf);
 
-#ifndef CONFIG_PKVM_INTEL_PVIOMMU
+#ifdef CONFIG_PKVM_INTEL_PVIOMMU
+unsigned long pkvm_iommu_submit_qi(u64 reg, u64 desc_base, int count);
+#else
 int initialize_iommu_pgt(struct pkvm_iommu *iommu);
 int handle_descriptor(struct pkvm_iommu *iommu, struct qi_desc *desc);
+int handle_qi_invalidation(struct pkvm_iommu *iommu, unsigned long val);
 int free_shadow_id(struct pkvm_iommu *iommu, unsigned long vaddr,
 		       unsigned long vaddr_end);
 int sync_shadow_id(struct pkvm_iommu *iommu, unsigned long vaddr,
