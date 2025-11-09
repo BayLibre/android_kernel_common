@@ -2863,6 +2863,7 @@ pkg_filegroup(
         ":kselftest_kcmp_kcmp_test_x86_64",
         ":kselftest_ptrace_peeksiginfo_x86_64",
         ":kselftest_rtc_rtctest_x86_64",
+        ":kselftest_seccomp_seccomp_bpf_x86_64",
         # ":kselftest_net_tests_bpf_x86_64", # Disabled due to test failures
         # ":kselftest_net_tests_psock_fanout_x86_64", # Disabled due to test failures
         ":kselftest_net_tests_psock_tpacket_x86_64",
@@ -2960,6 +2961,7 @@ pkg_filegroup(
         ":kselftest_kcmp_kcmp_test_x86",
         ":kselftest_ptrace_peeksiginfo_x86",
         ":kselftest_rtc_rtctest_x86",
+        ":kselftest_seccomp_seccomp_bpf_x86",
         # ":kselftest_net_tests_bpf_x86", Disabled due to test failures
         # ":kselftest_net_tests_psock_fanout_x86", Disabled due to test failures
         ":kselftest_net_tests_psock_tpacket_x86",
@@ -3050,6 +3052,7 @@ pkg_filegroup(
         ":kselftest_kcmp_kcmp_test_arm",
         ":kselftest_ptrace_peeksiginfo_arm",
         ":kselftest_rtc_rtctest_arm",
+        # ":kselftest_seccomp_seccomp_bpf_arm", Disabled due to not supported for this architecture
         # ":kselftest_net_tests_bpf_arm", Disabled due to test failures
         # ":kselftest_net_tests_psock_fanout_arm", Disabled due to test failures
         ":kselftest_net_tests_psock_tpacket_arm",
@@ -3142,6 +3145,7 @@ pkg_filegroup(
         ":kselftest_kcmp_kcmp_test_arm64",
         ":kselftest_ptrace_peeksiginfo_arm64",
         ":kselftest_rtc_rtctest_arm64",
+        ":kselftest_seccomp_seccomp_bpf_arm64",
         # ":kselftest_net_tests_bpf_arm64", Disabled due to test failures
         # ":kselftest_net_tests_psock_fanout_arm64", Disabled due to test failures
         ":kselftest_net_tests_psock_tpacket_arm64",
