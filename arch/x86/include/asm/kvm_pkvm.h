@@ -232,15 +232,18 @@ static inline void pkvm_create_vm_debugfs(struct kvm *kvm) {}
 #endif
 
 enum pkvm_fn {
+	/* Hypercalls used only during pKVM initialization */
+	__pkvm__init_finalize,
+	__pkvm__commit_finalize,
+	__pkvm__reprivilege_cpu,
+
+	/* KVM ops */
 	__pkvm__enable_virtualization_cpu,
 	__pkvm__disable_virtualization_cpu,
 	__pkvm__check_processor_compatibility,
 	__pkvm__vm_init,
 	__pkvm__vm_finalize,
 	__pkvm__vm_destroy,
-	__pkvm__vm_mmu_map,
-	__pkvm__vm_mmu_unmap,
-	__pkvm__vm_mmu_age,
 	__pkvm__vcpu_create,
 	__pkvm__vcpu_free,
 	__pkvm__vcpu_reset,
@@ -297,6 +300,21 @@ enum pkvm_fn {
 	__pkvm__vcpu_add_fpstate,
 	__pkvm__host_share_hyp,
 	__pkvm__host_unshare_hyp,
+
+	/* KVM MMU hypercalls */
+	__pkvm__vm_mmu_map,
+	__pkvm__vm_mmu_unmap,
+	__pkvm__vm_mmu_age,
+
+	/* IOMMU driver hypercalls */
+	__pkvm__iommu_mmio_access,
+
+	/* pKVM vmexit tracing/profiling */
+	__pkvm__set_vmexit_trace,
+	__pkvm__dump_vmexit_trace,
+
+	/* Deprecated */
+	__pkvm__add_ptdev,
 };
 
 #define HOST_HANDLE_EXIT		0

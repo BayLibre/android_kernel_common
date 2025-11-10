@@ -25,6 +25,7 @@
 
 #include <asm/cacheflush.h>
 #include <asm/pkvm.h>
+#include <asm/kvm_pkvm.h>
 #include <asm/iommu.h>
 #include <uapi/linux/iommufd.h>
 
@@ -802,7 +803,7 @@ struct dev_pasid_info {
 static inline u64 dmar_readq(struct intel_iommu *iommu, unsigned long offset)
 {
 	if (pkvm_enabled())
-		return (u64)kvm_hypercall3(PKVM_HC_MMIO_ACCESS, true,
+		return (u64)pkvm_hypercall(iommu_mmio_access, true,
 					   sizeof(u64), iommu->reg_phys + offset);
 	else
 		return readq(iommu->reg + offset);
@@ -811,7 +812,7 @@ static inline u64 dmar_readq(struct intel_iommu *iommu, unsigned long offset)
 static inline u32 dmar_readl(struct intel_iommu *iommu, unsigned long offset)
 {
 	if (pkvm_enabled())
-		return (u32)kvm_hypercall3(PKVM_HC_MMIO_ACCESS, true,
+		return (u32)pkvm_hypercall(iommu_mmio_access, true,
 					   sizeof(u32), iommu->reg_phys + offset);
 	else
 		return readl(iommu->reg + offset);
@@ -821,7 +822,7 @@ static inline void dmar_writeq(struct intel_iommu *iommu, unsigned long offset,
 			       u64 val)
 {
 	if (pkvm_enabled())
-		kvm_hypercall4(PKVM_HC_MMIO_ACCESS, false, sizeof(u64),
+		pkvm_hypercall(iommu_mmio_access, false, sizeof(u64),
 			       iommu->reg_phys + offset, val);
 	else
 		writeq(val, iommu->reg + offset);
@@ -831,7 +832,7 @@ static inline void dmar_writel(struct intel_iommu *iommu, unsigned long offset,
 			       u32 val)
 {
 	if (pkvm_enabled())
-		kvm_hypercall4(PKVM_HC_MMIO_ACCESS, false, sizeof(u32),
+		pkvm_hypercall(iommu_mmio_access, false, sizeof(u32),
 			       iommu->reg_phys + offset, (u64)val);
 	else
 		writel(val, iommu->reg + offset);

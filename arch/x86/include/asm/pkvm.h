@@ -9,27 +9,6 @@
 #include <asm/io.h>
 #include <asm/coco.h>
 
-/* PKVM Hypercalls */
-#define PKVM_HC_KVM_CALL		0
-#define PKVM_HC_INIT_FINALISE		1
-#define PKVM_HC_MMIO_ACCESS		7
-#define PKVM_HC_ADD_PTDEV		10
-
-/*
- * Internal hypercall to commit the pkvm initialization
- * status to success or failure. This is to make internal
- * hypercalls to be unavailable for general use after
- * successful pkvm initialization and to rollback pkvm
- * initialization actions on failure.
- */
-#define __PKVM_HC_COMMIT_FINALISE	100
-
-/*
- * Internal hypercall to reprivilege cpus on pkvm
- * initialization failure.
- */
-#define __PKVM_HC_REPRIVILEGE_VCPU	101
-
 /*
  * 15bits for PASID, DO NOT change it, based on it,
  * the size of PASID DIR table can kept as one page
@@ -57,52 +36,50 @@ static inline bool pkvm_enabled(void)
 
 static inline unsigned long __pkvm_hypercall(unsigned long nr, unsigned long p1,
 					     unsigned long p2, unsigned long p3,
-					     unsigned long p4, unsigned long p5,
-					     unsigned long p6)
+					     unsigned long p4, unsigned long p5)
 {
-	register unsigned long r8 asm("r8") = p6;
 	unsigned long ret;
 
 	asm volatile(KVM_HYPERCALL
 		     : "=a"(ret)
-		     : "a"(nr), "b"(p1), "c"(p2), "d"(p3), "S"(p4), "D"(p5), "r"(r8)
+		     : "a"(nr), "b"(p1), "c"(p2), "d"(p3), "S"(p4), "D"(p5)
 		     : "memory");
 	return ret;
 }
 
 #define CALL_PKVM(f)		CONCATENATE(__pkvm__, f)
 
-#define __pkvm_hypercall_0(f)	__pkvm_hypercall(PKVM_HC_KVM_CALL, f, 0, 0, 0, 0, 0)
+#define __pkvm_hypercall_0(f)	__pkvm_hypercall(f, 0, 0, 0, 0, 0)
 
 #define __pkvm_hypercall_1(f, a1)							\
 	({										\
-		__pkvm_hypercall(PKVM_HC_KVM_CALL, f,					\
+		__pkvm_hypercall(f,							\
 			(unsigned long)(a1), 0, 0, 0, 0);				\
 	})
 
 #define __pkvm_hypercall_2(f, a1, a2)							\
 	({										\
-		__pkvm_hypercall(PKVM_HC_KVM_CALL, f,					\
+		__pkvm_hypercall(f,							\
 			(unsigned long)(a1), (unsigned long)(a2), 0, 0, 0);		\
 	})
 
 #define __pkvm_hypercall_3(f, a1, a2, a3)						\
 	({										\
-		__pkvm_hypercall(PKVM_HC_KVM_CALL, f,					\
+		__pkvm_hypercall(f,							\
 			(unsigned long)(a1), (unsigned long)(a2),			\
 			(unsigned long)(a3), 0, 0);					\
 	})
 
 #define __pkvm_hypercall_4(f, a1, a2, a3, a4)						\
 	({										\
-		__pkvm_hypercall(PKVM_HC_KVM_CALL, f,					\
+		__pkvm_hypercall(f,							\
 			(unsigned long)(a1), (unsigned long)(a2),			\
 			(unsigned long)(a3), (unsigned long)(a4), 0);			\
 	})
 
 #define __pkvm_hypercall_5(f, a1, a2, a3, a4, a5)					\
 	({										\
-		__pkvm_hypercall(PKVM_HC_KVM_CALL, f,					\
+		__pkvm_hypercall(f,							\
 			(unsigned long)(a1), (unsigned long)(a2),			\
 			(unsigned long)(a3), (unsigned long)(a4),			\
 			(unsigned long)(a5));						\
