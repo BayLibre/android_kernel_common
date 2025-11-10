@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65385228_38f12a7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-11-10T15:01:13Z",
+      "side": 1,
+      "message": "Kleaf is currently unsetting MODULE_SIG_PROTECT when export protection is to be disabled (in debug builds?).\n\nIs this going to work correctly here? Should it be blanking `MODULE_SIG_PROTECT_LIST` instead?\n\nAlternatively, do you need to always:\n\n```\n#ifdef MODULE_SIG_PROTECT\n#ifdef MODULE_SIG_PROTECT_LIST (you know what I mean)\n...\n#endif\n#endif\n```",
+      "revId": "1dc8a28fd2add92e0ff06bb6e3ee471b424e666b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
