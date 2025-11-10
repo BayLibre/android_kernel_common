@@ -855,34 +855,9 @@ static __init void init_tss(struct pkvm_pcpu *pcpu)
 static __init int pkvm_setup_pcpu(struct pkvm_hyp *pkvm, int cpu)
 {
 	struct pkvm_pcpu *pcpu;
-#ifndef CONFIG_PKVM_INTEL_DEBUG
-	int nr_pages;
-#endif
 
 	if (cpu >= CONFIG_NR_CPUS)
 		return -ENOMEM;
-
-#ifndef CONFIG_PKVM_INTEL_DEBUG
-	nr_pages = pkvm_sym(pkvm_per_cpu_nr_pages)();
-	if (nr_pages) {
-		void *per_cpu_base = pkvm_sym(pkvm_early_alloc_contig)(nr_pages);
-
-		if (!per_cpu_base || pkvm_sym(setup_pkvm_per_cpu)(cpu, __pa(per_cpu_base))) {
-			pr_err("%s: No page for pKVM per cpu data\n", __func__);
-			return -ENOMEM;
-		}
-	}
-#else
-	/*
-	 * Overwrite the pkvm's percpu setup symbols with the host percpu value
-	 * as the same percpu base will be used by the pkvm and the host in the
-	 * debug build.
-	 */
-	if (pkvm_sym(setup_pkvm_per_cpu)(cpu, __pa(__per_cpu_offset[cpu]))) {
-		pr_err("%s: Setup pkvm percpu data failed\n", __func__);
-		return -EINVAL;
-	}
-#endif
 
 	pcpu = pkvm_sym(pkvm_early_alloc_contig)(PKVM_PCPU_PAGES);
 	if (!pcpu)
@@ -917,6 +892,40 @@ static __init int pkvm_host_setup_vcpu(struct pkvm_hyp *pkvm, int cpu)
 	hvcpu->vmx.vcpu.mode = OUTSIDE_GUEST_MODE;
 
 	pkvm->host_vm.host_vcpus[cpu] = hvcpu;
+
+	return 0;
+}
+
+static __init int pkvm_setup_per_cpu(struct pkvm_hyp *pkvm, int cpu)
+{
+#ifndef CONFIG_PKVM_INTEL_DEBUG
+	int nr_pages;
+#endif
+
+	if (cpu >= CONFIG_NR_CPUS)
+		return -ENOMEM;
+
+#ifndef CONFIG_PKVM_INTEL_DEBUG
+	nr_pages = pkvm_sym(pkvm_per_cpu_nr_pages)();
+	if (nr_pages) {
+		void *per_cpu_base = pkvm_sym(pkvm_early_alloc_contig)(nr_pages);
+
+		if (!per_cpu_base || pkvm_sym(setup_pkvm_per_cpu)(cpu, __pa(per_cpu_base))) {
+			pr_err("%s: No page for pKVM per cpu data\n", __func__);
+			return -ENOMEM;
+		}
+	}
+#else
+	/*
+	 * Overwrite the pkvm's percpu setup symbols with the host percpu value
+	 * as the same percpu base will be used by the pkvm and the host in the
+	 * debug build.
+	 */
+	if (pkvm_sym(setup_pkvm_per_cpu)(cpu, __pa(__per_cpu_offset[cpu]))) {
+		pr_err("%s: Setup pkvm percpu data failed\n", __func__);
+		return -EINVAL;
+	}
+#endif
 
 	return 0;
 }
@@ -1711,6 +1720,9 @@ static int __init __vmx_pkvm_init(void)
 		if (ret)
 			goto out;
 		ret = pkvm_host_setup_vcpu(pkvm, cpu);
+		if (ret)
+			goto out;
+		ret = pkvm_setup_per_cpu(pkvm, cpu);
 		if (ret)
 			goto out;
 	}
