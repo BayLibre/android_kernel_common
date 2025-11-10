@@ -661,3 +661,5 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_keep_reclaimed_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clear_reclaimed_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_evict_folios_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_may_unmap_folio);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_oom_victim);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_oom_killer_disable);
