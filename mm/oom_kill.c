@@ -803,6 +803,7 @@ static void mark_oom_victim(struct task_struct *tsk)
 	atomic_inc(&oom_victims);
 	cred = get_task_cred(tsk);
 	trace_mark_victim(tsk, cred->uid.val);
+	trace_android_vh_mark_oom_victim(tsk);
 	put_cred(cred);
 }
 
@@ -813,6 +814,7 @@ void exit_oom_victim(void)
 {
 	clear_thread_flag(TIF_MEMDIE);
 
+	trace_android_vh_exit_oom_victim(current);
 	if (!atomic_dec_return(&oom_victims))
 		wake_up_all(&oom_victims_wait);
 }
@@ -857,6 +859,7 @@ bool oom_killer_disable(signed long timeout)
 	ret = wait_event_interruptible_timeout(oom_victims_wait,
 			!atomic_read(&oom_victims), timeout);
 	if (ret <= 0) {
+		trace_android_vh_oom_killer_disable(atomic_read(&oom_victims));
 		oom_killer_enable();
 		return false;
 	}
