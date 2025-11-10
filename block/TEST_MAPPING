@@ -238,6 +238,17 @@
     },
     {
       "name": "vts_kernel_net_tests"
+    },
+    {
+      "name": "selftests",
+      "options": [
+        {
+          "exclude-filter": "kselftest_ptrace_peeksiginfo"
+        }
+      ],
+      "test_options": [
+        "page_size=16k"
+      ]
     }
   ],
   "presubmit-large": [
