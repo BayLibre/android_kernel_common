@@ -116,46 +116,6 @@ static inline unsigned long __pkvm_hypercall(unsigned long nr, unsigned long p1,
 
 int pkvm_iommu_register_driver(const struct pkvm_iommu_driver *kern_ops);
 
-static inline u64 pkvm_readq(void __iomem *reg, unsigned long reg_phys,
-			     unsigned long offset)
-{
-	if (pkvm_enabled())
-		return (u64)kvm_hypercall3(PKVM_HC_MMIO_ACCESS, true,
-					   sizeof(u64), reg_phys + offset);
-	else
-		return readq(reg + offset);
-}
-
-static inline u32 pkvm_readl(void __iomem *reg, unsigned long reg_phys,
-			     unsigned long offset)
-{
-	if (pkvm_enabled())
-		return (u32)kvm_hypercall3(PKVM_HC_MMIO_ACCESS, true,
-					   sizeof(u32), reg_phys + offset);
-	else
-		return readl(reg + offset);
-}
-
-static inline void pkvm_writeq(void __iomem *reg, unsigned long reg_phys,
-			       unsigned long offset, u64 val)
-{
-	if (pkvm_enabled())
-		kvm_hypercall4(PKVM_HC_MMIO_ACCESS, false, sizeof(u64),
-			       reg_phys + offset, val);
-	else
-		writeq(val, reg + offset);
-}
-
-static inline void pkvm_writel(void __iomem *reg, unsigned long reg_phys,
-			       unsigned long offset, u32 val)
-{
-	if (pkvm_enabled())
-		kvm_hypercall4(PKVM_HC_MMIO_ACCESS, false, sizeof(u32),
-			       reg_phys + offset, (u64)val);
-	else
-		writel(val, reg + offset);
-}
-
 #else /* __PKVM_HYP__ */
 
 /* we are in pkvm hypervisor, pkvm is enabled by definition */

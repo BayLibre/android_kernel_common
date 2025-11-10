@@ -149,18 +149,6 @@
 
 #define OFFSET_STRIDE		(9)
 
-#ifdef CONFIG_PKVM_INTEL
-#define dmar_readq(iommu, o)		pkvm_readq((iommu)->reg, (iommu)->reg_phys, o)
-#define dmar_writeq(iommu, o, v)	pkvm_writeq((iommu)->reg, (iommu)->reg_phys, o, v)
-#define dmar_readl(iommu, o)		pkvm_readl((iommu)->reg, (iommu)->reg_phys, o)
-#define dmar_writel(iommu, o, v)	pkvm_writel((iommu)->reg, (iommu)->reg_phys, o, v)
-#else
-#define dmar_readq(iommu, o) readq((iommu)->reg + o)
-#define dmar_writeq(iommu, o, v) writeq(v, (iommu)->reg + o)
-#define dmar_readl(iommu, o) readl((iommu)->reg + o)
-#define dmar_writel(iommu, o, v) writel(v, (iommu)->reg + o)
-#endif
-
 #define DMAR_VER_MAJOR(v)		(((v) & 0xf0) >> 4)
 #define DMAR_VER_MINOR(v)		((v) & 0x0f)
 
@@ -808,6 +796,55 @@ struct dev_pasid_info {
 	struct dentry *debugfs_dentry; /* pointer to pasid directory dentry */
 #endif
 };
+
+#if defined(CONFIG_PKVM_INTEL) && !defined(__PKVM_HYP__)
+
+static inline u64 dmar_readq(struct intel_iommu *iommu, unsigned long offset)
+{
+	if (pkvm_enabled())
+		return (u64)kvm_hypercall3(PKVM_HC_MMIO_ACCESS, true,
+					   sizeof(u64), iommu->reg_phys + offset);
+	else
+		return readq(iommu->reg + offset);
+}
+
+static inline u32 dmar_readl(struct intel_iommu *iommu, unsigned long offset)
+{
+	if (pkvm_enabled())
+		return (u32)kvm_hypercall3(PKVM_HC_MMIO_ACCESS, true,
+					   sizeof(u32), iommu->reg_phys + offset);
+	else
+		return readl(iommu->reg + offset);
+}
+
+static inline void dmar_writeq(struct intel_iommu *iommu, unsigned long offset,
+			       u64 val)
+{
+	if (pkvm_enabled())
+		kvm_hypercall4(PKVM_HC_MMIO_ACCESS, false, sizeof(u64),
+			       iommu->reg_phys + offset, val);
+	else
+		writeq(val, iommu->reg + offset);
+}
+
+static inline void dmar_writel(struct intel_iommu *iommu, unsigned long offset,
+			       u32 val)
+{
+	if (pkvm_enabled())
+		kvm_hypercall4(PKVM_HC_MMIO_ACCESS, false, sizeof(u32),
+			       iommu->reg_phys + offset, (u64)val);
+	else
+		writel(val, iommu->reg + offset);
+}
+
+#else /* defined(CONFIG_PKVM_INTEL) && !defined(__PKVM_HYP__) */
+
+#define dmar_readq(iommu, o) readq((iommu)->reg + o)
+#define dmar_writeq(iommu, o, v) writeq(v, (iommu)->reg + o)
+#define dmar_readl(iommu, o) readl((iommu)->reg + o)
+#define dmar_writel(iommu, o, v) writel(v, (iommu)->reg + o)
+
+#endif /* defined(CONFIG_PKVM_INTEL) && !defined(__PKVM_HYP__) */
 
 static inline void __iommu_flush_cache(
 	struct intel_iommu *iommu, void *addr, int size)
