@@ -7,6 +7,7 @@
 #include <asm/page.h>
 #include <pkvm.h>
 #include "cpu.h"
+#include "pkvm.h"
 
 unsigned long __per_cpu_offset[NR_CPUS];
 DEFINE_PER_CPU_READ_MOSTLY(unsigned long, this_cpu_off);
@@ -33,6 +34,7 @@ unsigned int pkvm_per_cpu_nr_pages(void)
 
 int setup_pkvm_per_cpu(int cpu, unsigned long base)
 {
+	struct pkvm_host_vcpu *hvcpu;
 	struct task_struct *task;
 
 	if (cpu >= ARRAY_SIZE(__per_cpu_offset))
@@ -46,6 +48,9 @@ int setup_pkvm_per_cpu(int cpu, unsigned long base)
 #endif
 	per_cpu(this_cpu_off, cpu) = __per_cpu_offset[cpu];
 	per_cpu(pcpu_hot.cpu_number, cpu) = cpu;
+
+	hvcpu = pkvm_hyp->host_vm.host_vcpus[cpu];
+	per_cpu(host_vcpu, cpu) = &hvcpu->vmx.vcpu;
 
 	task = per_cpu_ptr(&cur_task, cpu);
 	task->group_leader = task;

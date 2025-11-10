@@ -2,9 +2,8 @@
 #ifndef __PKVM_X86_INIT_FINALISE_H
 #define __PKVM_X86_INIT_FINALISE_H
 
-int __pkvm_init_finalise(struct kvm_vcpu *vcpu, struct pkvm_section sections[],
-			 int section_sz);
+int __pkvm_init_finalise(struct pkvm_section sections[], int section_sz);
 int pkvm_commit_finalise(bool success);
 
-int pkvm_reprivilege_vcpu(struct kvm_vcpu *vcpu);
+int pkvm_reprivilege_vcpu(void);
 #endif

@@ -319,8 +319,10 @@ static bool pkvm_setup_done __ro_after_init;
  */
 static bool pkvm_initialized __ro_after_init;
 
-int pkvm_reprivilege_vcpu(struct kvm_vcpu *vcpu)
+int pkvm_reprivilege_vcpu(void)
 {
+	struct kvm_vcpu *vcpu = this_cpu_read(host_vcpu);
+
 	if (pkvm_initialized) {
 		pkvm_err("reprivilege request after pkvm initialization is not allowed!\n");
 		return -EPERM;
@@ -382,10 +384,10 @@ int pkvm_commit_finalise(bool success)
 }
 
 #define TMP_SECTION_SZ	16UL
-int __pkvm_init_finalise(struct kvm_vcpu *vcpu, struct pkvm_section sections[],
-			 int section_sz)
+int __pkvm_init_finalise(struct pkvm_section sections[], int section_sz)
 {
 	int i, ret = 0;
+	struct kvm_vcpu *vcpu = this_cpu_read(host_vcpu);
 	struct pkvm_host_vcpu *hvcpu = to_pkvm_hvcpu(vcpu);
 	struct pkvm_pcpu *pcpu = hvcpu->pcpu;
 	struct pkvm_section tmp_sections[TMP_SECTION_SZ];
@@ -395,8 +397,6 @@ int __pkvm_init_finalise(struct kvm_vcpu *vcpu, struct pkvm_section sections[],
 		pkvm_err("INIT_FINALISE hypercall after pkvm initialization is not allowed!\n");
 		return -EPERM;
 	}
-
-	this_cpu_write(host_vcpu, vcpu);
 
 	if (pkvm_setup_done) {
 		/* Switch to pkvm mmu in root mode in case some setup may need this */
