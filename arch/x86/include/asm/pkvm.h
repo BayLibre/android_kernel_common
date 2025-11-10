@@ -55,6 +55,65 @@ static inline bool pkvm_enabled(void)
 	return static_branch_likely(&pkvm_enabled_key);
 }
 
+static inline unsigned long __pkvm_hypercall(unsigned long nr, unsigned long p1,
+					     unsigned long p2, unsigned long p3,
+					     unsigned long p4, unsigned long p5,
+					     unsigned long p6)
+{
+	register unsigned long r8 asm("r8") = p6;
+	unsigned long ret;
+
+	asm volatile(KVM_HYPERCALL
+		     : "=a"(ret)
+		     : "a"(nr), "b"(p1), "c"(p2), "d"(p3), "S"(p4), "D"(p5), "r"(r8)
+		     : "memory");
+	return ret;
+}
+
+#define CALL_PKVM(f)		CONCATENATE(__pkvm__, f)
+
+#define __pkvm_hypercall_0(f)	__pkvm_hypercall(PKVM_HC_KVM_CALL, f, 0, 0, 0, 0, 0)
+
+#define __pkvm_hypercall_1(f, a1)							\
+	({										\
+		__pkvm_hypercall(PKVM_HC_KVM_CALL, f,					\
+			(unsigned long)(a1), 0, 0, 0, 0);				\
+	})
+
+#define __pkvm_hypercall_2(f, a1, a2)							\
+	({										\
+		__pkvm_hypercall(PKVM_HC_KVM_CALL, f,					\
+			(unsigned long)(a1), (unsigned long)(a2), 0, 0, 0);		\
+	})
+
+#define __pkvm_hypercall_3(f, a1, a2, a3)						\
+	({										\
+		__pkvm_hypercall(PKVM_HC_KVM_CALL, f,					\
+			(unsigned long)(a1), (unsigned long)(a2),			\
+			(unsigned long)(a3), 0, 0);					\
+	})
+
+#define __pkvm_hypercall_4(f, a1, a2, a3, a4)						\
+	({										\
+		__pkvm_hypercall(PKVM_HC_KVM_CALL, f,					\
+			(unsigned long)(a1), (unsigned long)(a2),			\
+			(unsigned long)(a3), (unsigned long)(a4), 0);			\
+	})
+
+#define __pkvm_hypercall_5(f, a1, a2, a3, a4, a5)					\
+	({										\
+		__pkvm_hypercall(PKVM_HC_KVM_CALL, f,					\
+			(unsigned long)(a1), (unsigned long)(a2),			\
+			(unsigned long)(a3), (unsigned long)(a4),			\
+			(unsigned long)(a5));						\
+	})
+
+#define pkvm_hypercall(f, ...)								\
+	({										\
+		CONCATENATE(__pkvm_hypercall_,						\
+			    COUNT_ARGS(__VA_ARGS__))(CALL_PKVM(f), ##__VA_ARGS__);	\
+	})
+
 int pkvm_iommu_register_driver(const struct pkvm_iommu_driver *kern_ops);
 
 static inline u64 pkvm_readq(void __iomem *reg, unsigned long reg_phys,
