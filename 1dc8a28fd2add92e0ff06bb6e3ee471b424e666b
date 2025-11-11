@@ -34,6 +34,24 @@
       "parentUuid": "65385228_38f12a7f",
       "revId": "1dc8a28fd2add92e0ff06bb6e3ee471b424e666b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07606e73_52d545eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-11-11T09:37:06Z",
+      "side": 1,
+      "message": "Doesn\u0027t this make for a non-continuous function?\n\n\n- 2 symbol lists, some symbols are available\n- 1 symbol list, fewer symbols are available\n- 0 symbol lists, all symbols are available, but it should be none\n\nIt sounds like it might be better to let Kleaf set both things, `_LIST` is only meaningful if `_PROTECT` is set?",
+      "parentUuid": "0fdfbc05_8da30a45",
+      "revId": "1dc8a28fd2add92e0ff06bb6e3ee471b424e666b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
