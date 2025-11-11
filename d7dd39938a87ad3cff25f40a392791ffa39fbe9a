@@ -66,6 +66,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72507c56_0707a853",
+        "filename": "arch/x86/include/asm/pkvm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-11T00:31:34Z",
+      "side": 1,
+      "message": "I ended up refactoring all this, instead of trying to pile temporary hacks on top of temporary hacks. Please see previous patches in this series.",
+      "parentUuid": "eb5054e7_e243dcb5",
+      "range": {
+        "startLine": 17,
+        "startChar": 23,
+        "endLine": 17,
+        "endChar": 40
+      },
+      "revId": "d7dd39938a87ad3cff25f40a392791ffa39fbe9a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2cbd0352_3218228f",
@@ -133,6 +157,24 @@
       "side": 1,
       "message": "makes sense. I was thinking of something like:\n```\nstruct hc_perf_Data {\n    u64 cycles;\n    u64 count;\n};\n```\n and embedding it in vmexit_data:\n\n```\nstruct vmexit_data {\n\tu64 total_count;\n\tu64 total_cycles;\n\tu64 reasons[MAX_EXIT_REASONS];\n\tu64 cycles[MAX_EXIT_REASONS];\n\tstruct hc_perf_data[PKVM_MAX_HC];\n};\n```\n\nHaving separate counters as you mentioned would also be perfect, just thought of pitching this :-)",
       "parentUuid": "6c563448_93fed335",
+      "revId": "d7dd39938a87ad3cff25f40a392791ffa39fbe9a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "922c29d3_0377fd7d",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-11T00:31:34Z",
+      "side": 1,
+      "message": "Done. I ended up refactoring it to use a separate struct like you suggested.\n\nBTW regarding double counting total_count and total_cycles: I\u0027ve noticed that this bug would be \"harmless\", since total_count and total_cycles are not actually used.",
+      "parentUuid": "124e5cf8_515eac9e",
       "revId": "d7dd39938a87ad3cff25f40a392791ffa39fbe9a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
