@@ -19,6 +19,7 @@
 #include "debug.h"
 #include "init_finalise.h"
 #include "iommu_internal.h"
+#include "iommu_domain.h"
 
 #define CR4	4
 
@@ -148,6 +149,12 @@ static unsigned long handle_vmcall(struct kvm_vcpu *vcpu)
 		break;
 	case __pkvm__iommu_cache_unassign:
 		ret = pkvm_iommu_cache_unassign(a0);
+		break;
+	case __pkvm__iommu_map_pages:
+		ret = pkvm_iommu_domain_map(a0);
+		break;
+	case __pkvm__iommu_unmap_pages:
+		ret = pkvm_iommu_domain_unmap(a0, a1, a2);
 		break;
 #endif
 	case __pkvm__add_ptdev:
