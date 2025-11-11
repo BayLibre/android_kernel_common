@@ -26,6 +26,8 @@
 #define PKVM_HC_IOMMU_SET_SM_CE_PRE	19
 #define PKVM_HC_IOMMU_DOMAIN_ALLOC	20
 #define PKVM_HC_IOMMU_DOMAIN_FREE	21
+#define PKVM_HC_IOMMU_MAP_PAGES		22
+#define PKVM_HC_IOMMU_UNMAP_PAGES	23
 
 /*
  * Internal hypercall to commit the pkvm initialization
@@ -170,6 +172,14 @@ struct pkvm_domain_param {
 	u8 use_first_level: 1;
 	u64 max_addr;
 	u64 pgd_gpa;
+};
+
+struct pkvm_iommu_map_param {
+	u64 pgd_gpa;
+	u64 iov_pfn;
+	u64 phys_pfn;
+	u64 nr_pages;
+	u64 prot;
 };
 
 #ifndef __PKVM_HYP__
