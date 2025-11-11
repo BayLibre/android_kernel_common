@@ -16,6 +16,23 @@
       "message": "Haven\u0027t tested this latest version on real HW yet, only in QEMU.",
       "revId": "848d7518695ba9873464f8c99929625ce59083d8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dbc7b2e_4f625f47",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2025-11-11T09:18:43Z",
+      "side": 1,
+      "message": "nit: In `trace_vmexit_end`, we only use it if the vcpu is host. But here RAX is saved regardless vcpu is host or guest. Maybe only save RAX for host vcpu?",
+      "revId": "848d7518695ba9873464f8c99929625ce59083d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
