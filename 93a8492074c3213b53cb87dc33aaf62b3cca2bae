@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e617cdc_dd5f838b",
+        "filename": "include/trace/hooks/bl_hib.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-11-11T18:10:41Z",
+      "side": 1,
+      "message": "Please, no \"qcom\". This can be used by anyone. How about `android_vh_hibernate_resume_state` or something like that. Also, let\u0027s use an enum (can be defined here) instead of a string. Your handler for this hook can convert the enum into a string.",
+      "revId": "93a8492074c3213b53cb87dc33aaf62b3cca2bae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
