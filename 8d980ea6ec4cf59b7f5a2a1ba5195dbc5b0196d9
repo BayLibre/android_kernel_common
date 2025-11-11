@@ -398,6 +398,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab0ac839_00c6dbdc",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1528,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-11-11T06:57:16Z",
+      "side": 1,
+      "message": "\u003e and I\u0027ll apply the failsafe to other host owned entries too,\n\nafter another thought I\u0027ll drop this change. Currently kvm __do_cpuid_func() clears the entry for 0xb/0x1f, fully letting userspace to own. Then we need add more divergence to keep the native value in that function for failsafe. More importantly, we define 0xb/0x1f to host-owned, implying the host can provide arbitrary content there including a zero topology. It\u0027d be weird that we think failsafe required for zero topology but no worry for any other configuration. at least not justify from security p.o.v.\n\nso I\u0027ll keep failsafe only for func#4 (though still not that strong, it at least contains a enforced field - cache line size).",
+      "parentUuid": "f0992cd3_f618e03f",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20972ea5_b35937f8",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 2
