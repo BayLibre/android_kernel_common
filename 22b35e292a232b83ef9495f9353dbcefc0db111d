@@ -34,6 +34,57 @@
       "parentUuid": "b9c21492_a0668d22",
       "revId": "22b35e292a232b83ef9495f9353dbcefc0db111d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de234992_386d49b0",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-11-11T02:22:24Z",
+      "side": 1,
+      "message": "How do we protect against a hook handler that thinks it has locked this with the alloc-\u003elock?",
+      "revId": "22b35e292a232b83ef9495f9353dbcefc0db111d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f79aa2b_bd70df81",
+        "filename": "drivers/android/binder_alloc.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-11-11T02:22:24Z",
+      "side": 1,
+      "message": "is this true? what about the mutex in the wrap struct? Can we be sure that vendor modules using struct alloc are safe?",
+      "revId": "22b35e292a232b83ef9495f9353dbcefc0db111d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53fcc5d6_36db21bf",
+        "filename": "drivers/android/binder_internal.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-11-11T02:22:24Z",
+      "side": 1,
+      "message": "If this is the \"real\" alloc mutex, what happens if a hook handler tries to lock with alloc-\u003elock?",
+      "revId": "22b35e292a232b83ef9495f9353dbcefc0db111d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
