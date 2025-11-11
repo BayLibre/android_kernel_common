@@ -380,6 +380,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f0992cd3_f618e03f",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1528,
+      "author": {
+        "id": 4222956
+      },
+      "writtenOn": "2025-11-11T06:37:32Z",
+      "side": 1,
+      "message": "I compared cpuid between big/little cores on ADL/PTL. Within the pkvm supported set, the following leaves have difference besides func#4:\n\n- func#2: cache/TLB info (only on ADL, differ on whether support 64 byte prefetching)\n\ninformational. 64-byte prefetching has no functional/security implication. not touched by crosvm. Okay to let pKVM enforce it. \n\n- func#1a - native model ID (core vs. atom), which we have discussed before to let it enforced by pKVM based on native value. \n\nbtw after another thought I prefer to fixing it to the \u0027core\u0027 type (as TDX does) instead of presenting inaccurate physical hybrid info to pVM w/o vcpu pinning. Similarly I\u0027ll fix to clear the HYBRID bit in func#7-index#0-EDX, instead of allowing the host to poke it. As explained in earlier reply, supporting hybrid is way too complex. Exposing partial/inaccurate hybrid info may instead lead to undefined behavior in pVM which we haven\u0027t audit whether a security hole will be opened. It\u0027s safer to hide it for now.\n\n- #80000006 - cache info (brief version compared to func#4)\n\nideally it could be controlled by the host too, similar to func#4. But crosvm doesn\u0027t touch it. probably it\u0027s not used by Linux when func#4 already exists hence is not really relevant. I\u0027ll continue to let pKVM enforce it for simplicity.\n\nthere are other differences in pKVM-unsupported leaves, e.g. L2 CAT, frequency scaling, LBR, key locker, PMU, etc. But since they are not supported/exposed to pVM, can be ignored.",
+      "parentUuid": "79eed494_6097f678",
+      "revId": "8d980ea6ec4cf59b7f5a2a1ba5195dbc5b0196d9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20972ea5_b35937f8",
         "filename": "arch/x86/kvm/pkvm/cpuid.c",
         "patchSetId": 2
