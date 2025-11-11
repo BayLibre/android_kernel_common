@@ -42,6 +42,8 @@ int pkvm_sym(intel_iommu_sm);
  */
 int pkvm_sym(intel_iommu_superpage);
 
+DEFINE_PER_CPU(union pkvm_iommu_page_donation, iommu_page_donation);
+
 static int __init early_pkvm_parse_cmdline(char *buf)
 {
 	return kstrtobool(buf, &enable_pkvm);
@@ -1097,8 +1099,9 @@ static __init int pkvm_host_deprivilege_cpus(struct pkvm_hyp *pkvm)
  */
 static int __this_cpu_do_finalise_hc(struct pkvm_section *sections, unsigned long size)
 {
-	return kvm_hypercall3(PKVM_HC_INIT_FINALISE, (unsigned long)sections,
-			size, __pa(this_cpu_ptr(&pv_param)));
+	return kvm_hypercall4(PKVM_HC_INIT_FINALISE, (unsigned long)sections,
+			size, __pa(this_cpu_ptr(&pv_param)),
+			__pa(this_cpu_ptr(&iommu_page_donation)));
 }
 
 /* Called with preemption disabled but interrupts enabled. */
