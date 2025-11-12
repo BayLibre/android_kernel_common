@@ -2342,7 +2342,12 @@ int __weak arch_prctl_spec_ctrl_set(struct task_struct *t, unsigned long which,
 
 #ifdef CONFIG_ANON_VMA_NAME
 
-#define ANON_VMA_NAME_MAX_LEN		80
+/*
+ * Allow 250 byte strings for the name to avoid truncation.
+ * We use 250 and not 256 to avoid going to the 512 slab due to
+ * associated slab metadata. -- TODO: Need to double check this?
+ */
+#define ANON_VMA_NAME_MAX_LEN		250
 #define ANON_VMA_NAME_INVALID_CHARS	"\\`$[]"
 
 static inline bool is_valid_name_char(char ch)
