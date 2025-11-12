@@ -5,14 +5,15 @@
 #include "module.h"
 #include "emulate.h"
 #include "gic-v3-its.h"
-
-#include <nvhe/spinlock.h>
+#include "memory_util.h"
 
 #include <nvhe/spinlock.h>
 #include <linux/irqchip/arm-gic-v3.h>
 
 #define GITS_TRANSLATER_PAGE ALIGN_DOWN(GITS_TRANSLATER, PAGE_SIZE)
 #define GITS_TRANSLATER_PFN (GITS_TRANSLATER_PAGE >> PAGE_SHIFT)
+
+DEFINE_MEM_TRACKER(tracker_its, &region_tracker_shared_ops);
 
 struct hyp_gic_v3_its {
 	void __iomem *base;
@@ -21,6 +22,7 @@ struct hyp_gic_v3_its {
 	void *host_cmd_base_va;
 	void *host_cmd_cwriter_va;
 	void *shadow_cmd;
+	u64 typer;
 };
 
 struct hyp_gic_v3_its_handler {
@@ -60,8 +62,58 @@ static int creadr_read(struct hyp_gic_v3_its *its, u64 offset, u64 *read)
 	return 0;
 }
 
+struct its_cmd_block {
+	union {
+		u64	raw_cmd[4];
+		__le64	raw_cmd_le[4];
+	};
+};
+
+static int parse_its_mapd(struct hyp_gic_v3_its *its, struct its_cmd_block *cmd)
+{
+	int nr_ites, len = cmd->raw_cmd[1] & GENMASK(4, 0);
+	phys_addr_t itt_addr_end, itt_addr = cmd->raw_cmd[2] & GENMASK(51, 8);
+	bool remove = (cmd->raw_cmd[2] & BIT(63)) == 0;
+	u64 sz;
+
+	nr_ites = 1 << (len + 1);
+	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
+	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
+	sz = max(sz, PAGE_SIZE);
+
+	itt_addr = PAGE_ALIGN_DOWN(itt_addr);
+	if (check_add_overflow(itt_addr, sz, &itt_addr_end))
+		return -EINVAL;
+
+	if (remove)
+		return region_tracker_dec(&tracker_its, itt_addr, itt_addr_end);
+
+	return region_tracker_inc(&tracker_its, itt_addr, itt_addr_end);
+}
+
 static int parse_its_cmdq(struct hyp_gic_v3_its *its, int cmd_offset, size_t len)
 {
+	struct its_cmd_block *cmd = its->shadow_cmd + cmd_offset;
+	u8 cmd_req;
+	int ret;
+
+	while (len > 0) {
+		cmd_req = cmd->raw_cmd[0] & GENMASK(7, 0);
+
+		switch (cmd_req) {
+		case GITS_CMD_MAPD:
+			ret = parse_its_mapd(its, cmd);
+			if (ret)
+				return ret;
+			break;
+		default:
+			break;
+		}
+
+		cmd++;
+		len -= sizeof(struct its_cmd_block);
+	}
+
 	return 0;
 }
 
@@ -232,6 +284,7 @@ static int hyp_gic_v3_its_protect(u64 paddr, u64 size, u64 host_cmd_base_pa)
 	its->emulate.size = size;
 	its->emulate.handler = its_emulate_handler;
 	its->emulate.priv = its;
+	its->typer = gic_read_typer(its->base + GITS_TYPER);
 
 	ret = hyp_gic_v3_its_shadow_cmdq(its, host_cmd_base_pa);
 	if (ret)
