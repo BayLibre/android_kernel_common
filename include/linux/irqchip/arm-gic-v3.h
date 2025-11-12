@@ -612,6 +612,7 @@
 #define GIC_IRQ_TYPE_LPI		0xa110c8ed
 
 #define ITS_CMD_QUEUE_SZ		SZ_64K
+#define ITS_ITT_ALIGN			SZ_256
 
 struct rdists {
 	struct {
