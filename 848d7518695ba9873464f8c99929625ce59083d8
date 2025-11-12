@@ -69,6 +69,24 @@
       "parentUuid": "e5591ffc_46d753e2",
       "revId": "848d7518695ba9873464f8c99929625ce59083d8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca36b780_8be1cadf",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/trace.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-12T11:33:41Z",
+      "side": 1,
+      "message": "Ok, so I\u0027d prefer to keep saving it in both cases, since it actually seems a bit more consistent: even though we don\u0027t use it for guest vcpu, it is still the correct value of RAX for a guest vcpu as well; whereas if we don\u0027t save it, perf-\u003erax will not be the actual RAX value.",
+      "parentUuid": "1f413e16_5bd0cee4",
+      "revId": "848d7518695ba9873464f8c99929625ce59083d8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
