@@ -10,6 +10,8 @@ extern const struct pkvm_module_ops *mod_ops;
 
 #define CALL_FROM_OPS(fn, ...) ((mod_ops)->(fn)(__VA_ARGS__))
 
+#undef memcpy
+
 #define register_host_perm_fault_handler(fn) \
 	CALL_FROM_OPS(register_host_perm_fault_handler, fn)
 
@@ -18,6 +20,9 @@ extern const struct pkvm_module_ops *mod_ops;
 
 #define host_donate_hyp(pfn, nr_pages) \
 	CALL_FROM_OPS(host_donate_hyp, pfn, nr_pages)
+
+#define hyp_donate_host(pfn, nr_pages) \
+	CALL_FROM_OPS(hyp_donate_host, pfn, nr_pages)
 
 #define create_private_mapping(phys, size, prot, haddr) \
 	CALL_FROM_OPS(create_private_mapping, phys, size, prot, haddr)
@@ -28,6 +33,12 @@ extern const struct pkvm_module_ops *mod_ops;
 
 #define host_stage2_get_leaf(phys, ptep, level) \
 	CALL_FROM_OPS(host_stage2_get_leaf, phys, ptep, level)
+
+#define hyp_phys_to_virt(x) CALL_FROM_OPS(hyp_va, x)
+
+#define memcpy(to, from, count) CALL_FROM_OPS(memcpy, to, from, count)
+
+#define hyp_pin_shared_mem(x, y) CALL_FROM_OPS(pin_shared_mem, x, y)
 
 #endif /* defined(__KVM_NVHE_HYPERVISOR__) && defined(MODULE) */
 
