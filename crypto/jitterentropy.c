@@ -611,7 +611,8 @@ int jent_read_entropy(struct rand_data *ec, unsigned char *data,
 			 * Perform startup health tests and return permanent
 			 * error if it fails.
 			 */
-			if (jent_entropy_init(0, 0, NULL, ec))
+			if (jent_entropy_init(ec->osr, ec->flags,
+					      ec->hash_state))
 				return -3;
 
 			return -2;
@@ -685,30 +686,14 @@ void jent_entropy_collector_free(struct rand_data *entropy_collector)
 	jent_zfree(entropy_collector);
 }
 
-int jent_entropy_init(unsigned int osr, unsigned int flags, void *hash_state,
-		      struct rand_data *p_ec)
+int jent_entropy_init(unsigned int osr, unsigned int flags, void *hash_state)
 {
-	/*
-	 * If caller provides an allocated ec, reuse it which implies that the
-	 * health test entropy data is used to further still the available
-	 * entropy pool.
-	 */
-	struct rand_data *ec = p_ec;
-	int i, time_backwards = 0, ret = 0, ec_free = 0;
+	struct rand_data *ec;
+	int i, time_backwards = 0, ret = 0;
 
-	if (!ec) {
-		ec = jent_entropy_collector_alloc(osr, flags, hash_state);
-		if (!ec)
-			return JENT_EMEM;
-		ec_free = 1;
-	} else {
-		/* Reset the APT */
-		jent_apt_reset(ec, 0);
-		/* Ensure that a new APT base is obtained */
-		ec->apt_base_set = 0;
-		/* Reset the RCT */
-		ec->rct_count = 0;
-	}
+	ec = jent_entropy_collector_alloc(osr, flags, hash_state);
+	if (!ec)
+		return JENT_EMEM;
 
 	/* We could perform statistical tests here, but the problem is
 	 * that we only have a few loop counts to do testing. These
@@ -798,8 +783,7 @@ int jent_entropy_init(unsigned int osr, unsigned int flags, void *hash_state,
 	}
 
 out:
-	if (ec_free)
-		jent_entropy_collector_free(ec);
+	jent_entropy_collector_free(ec);
 
 	return ret;
 }
