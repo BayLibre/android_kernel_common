@@ -18,9 +18,9 @@ BUILD_BUG("gic_v3_its_pkvm must be compiled as a module");
 static int hyp_gic_v3_its_protect_hvc_no;
 static int hyp_gic_v3_redist_protect_hvc_no;
 
-static int hyp_gic_v3_its_protect(u64 paddr, u64 size)
+static int hyp_gic_v3_its_protect(u64 paddr, u64 size, void *host_cmd_base)
 {
-	return pkvm_el2_mod_call(hyp_gic_v3_its_protect_hvc_no, paddr, size);
+	return pkvm_el2_mod_call(hyp_gic_v3_its_protect_hvc_no, paddr, size, __pa(host_cmd_base));
 }
 
 static int hyp_gic_v3_redist_protect(u64 paddr, u64 size, u64 stride)
@@ -73,6 +73,7 @@ static int __init gic_v3_its_pkvm_init(void)
 	struct resource res;
 	size_t count = 0;
 	int ret = 0;
+	void *host_cmd_base;
 
 	if (!is_protected_kvm_enabled())
 		return 0;
@@ -121,7 +122,8 @@ static int __init gic_v3_its_pkvm_init(void)
 			return ret;
 		}
 
-		ret = hyp_gic_v3_its_protect(res.start, resource_size(&res));
+		host_cmd_base = its_get_cmd_base(&np->fwnode);
+		ret = hyp_gic_v3_its_protect(res.start, resource_size(&res), host_cmd_base);
 		if (ret) {
 			pr_err("Hypervisor failed to register ITS: %d\n", ret);
 			return ret;

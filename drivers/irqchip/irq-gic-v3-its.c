@@ -110,6 +110,7 @@ struct its_node {
 	phys_addr_t		phys_base;
 	struct its_cmd_block	*cmd_base;
 	struct its_cmd_block	*cmd_write;
+	struct its_cmd_block    *cmd_base_tmp;
 	struct its_baser	tables[GITS_BASER_NR_REGS];
 	struct its_collection	*collections;
 	struct fwnode_handle	*fwnode_handle;
@@ -5230,7 +5231,7 @@ static int __init its_compute_its_list_map(struct its_node *its)
 	return its_number;
 }
 
-static void *its_get_cmd_base(struct its_node *its)
+static void *its_get_shadow_cmd_base(struct its_node *its)
 {
 	void *page;
 
@@ -5247,8 +5248,29 @@ static void *its_get_cmd_base(struct its_node *its)
 		return NULL;
 
 	its->shadow_cmd_base = (void *)page_address(page);
+	its->cmd_base_tmp = its->cmd_base;
+	its->cmd_base = its->shadow_cmd_base;
+	its->cmd_write = its->cmd_base;
 	return its->shadow_cmd_base;
 }
+
+void *its_get_cmd_base(struct fwnode_handle *fwnode_handle)
+{
+	struct its_node *its;
+	uintptr_t offset;
+
+	list_for_each_entry(its, &its_nodes, entry) {
+		if (its->fwnode_handle == fwnode_handle) {
+			offset = its->cmd_write - its->cmd_base;
+			its->cmd_base = its->cmd_base_tmp;
+			its->cmd_write = its->cmd_base + offset;
+			return its->cmd_base;
+		}
+	}
+
+	return NULL;
+}
+EXPORT_SYMBOL_GPL(its_get_cmd_base);
 
 static int __init its_probe_one(struct its_node *its)
 {
@@ -5307,7 +5329,7 @@ static int __init its_probe_one(struct its_node *its)
 	if (err)
 		goto out_free_tables;
 
-	baser = (virt_to_phys(its_get_cmd_base(its))	|
+	baser = (virt_to_phys(its_get_shadow_cmd_base(its))	|
 		 GITS_CBASER_RaWaWb		|
 		 GITS_CBASER_InnerShareable	|
 		 (ITS_CMD_QUEUE_SZ / SZ_4K - 1)	|
