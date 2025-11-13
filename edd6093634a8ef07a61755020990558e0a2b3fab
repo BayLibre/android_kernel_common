@@ -16,6 +16,24 @@
       "message": "How??? It should be, like, 10x less. :)\n\ne.g. on my PTL board with 16GB:\n```\n[    0.066138] kvm [0]: Reserved 226 MiB at 0x460600000\n```",
       "revId": "edd6093634a8ef07a61755020990558e0a2b3fab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ebff3e4_cabdb091",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-11-13T13:34:03Z",
+      "side": 1,
+      "message": "exactly: as quoted in https://android-review.git.corp.google.com/c/kernel/common/+/3851466/comment/341ff4c1_401207f9/ without pvIOMMU rework (but after pvMMU with memcache) it was:\n```\n[    0.025325] kvm [0]: Reserved 226 MiB at 0x460800000\n```\non my Brya:)\n\nI wonder if this is typo or for some reason this series introduced some bug and inflate the pool somehow?",
+      "parentUuid": "d508c76c_14f90525",
+      "revId": "edd6093634a8ef07a61755020990558e0a2b3fab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
