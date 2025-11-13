@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abb13af7_1ce6edbc",
+        "filename": "drivers/iommu/intel/cache.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-11-13T15:33:25Z",
+      "side": 1,
+      "message": "s/,/; ?\n:)\n\nBTW such issues could be caught by checkpatch script: I\u0027ve run it on entire series and see quite a lot checkpatch warnings which should be fixed",
+      "range": {
+        "startLine": 85,
+        "startChar": 30,
+        "endLine": 85,
+        "endChar": 31
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "d67720eb_0d1182da",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/cache.c",
+              "range": {
+                "startLine": 85,
+                "startChar": 0,
+                "endLine": 86,
+                "endChar": 0
+              },
+              "replacement": "\t\tparam.phys \u003d iommu-\u003ereg_phys;\n"
+            },
+            {
+              "path": "drivers/iommu/intel/cache.c",
+              "range": {
+                "startLine": 122,
+                "startChar": 0,
+                "endLine": 123,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t\t\tparam.phys \u003d iommu-\u003ereg_phys;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4f2b55beca272106f57458ebff70ec9bc6b25fdd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
