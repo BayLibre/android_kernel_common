@@ -64,6 +64,7 @@
 #include <linux/io_uring.h>
 #include <linux/syscall_user_dispatch.h>
 #include <linux/coredump.h>
+#include <linux/dma-buf.h>
 
 #include <linux/uaccess.h>
 #include <asm/mmu_context.h>
@@ -1251,6 +1252,7 @@ void __set_task_comm(struct task_struct *tsk, const char *buf, bool exec)
 int begin_new_exec(struct linux_binprm * bprm)
 {
 	struct task_struct *me = current;
+	struct files_struct *old_files, *my_files;
 	int retval;
 
 	/* Once we are committed compute the creds */
@@ -1275,10 +1277,67 @@ int begin_new_exec(struct linux_binprm * bprm)
 	 */
 	io_uring_task_cancel();
 
+	/*
+	 * This is kind of like copy_process except:
+	 *   - We always get a new, empty mm_struct
+	 *   - We always keep existing files, duping files_struct if it's shared
+	 *
+	 * So we'll always need a new task_dma_buf_info to separate this task from any relatives.
+	 */
+	struct task_dma_buf_info *new_dmabuf_info = alloc_task_dma_buf_info();
+	if (IS_ENABLED(CONFIG_DMA_SHARED_BUFFER) && !new_dmabuf_info) {
+		retval = -ENOMEM;
+		goto out;
+	}
+
+	/*
+	 * unshare_files() may not do anything, but we still need to account dmabufs against the
+	 * new_dmabuf_info even if it doesn't. We need to keep track of the original files_struct
+	 * to handle task_dma_buf_info refcounting.
+	 */
+	old_files = me->files;
+
 	/* Ensure the files table is not shared. */
 	retval = unshare_files();
-	if (retval)
+	if (retval) {
+		kfree(new_dmabuf_info);
 		goto out;
+	}
+
+	/* Any dmabufs need to be accounted to new_dmabuf_info */
+	my_files = current->files;
+	if (IS_ENABLED(CONFIG_DMA_SHARED_BUFFER) && my_files) {
+		unsigned int n = 0;
+
+		spin_lock(&my_files->file_lock);
+		for (struct fdtable *fdt = files_fdtable(my_files); n < fdt->max_fds; n++) {
+			int err;
+			struct file *file = files_lookup_fd_locked(my_files, n);
+			if (!file || !is_dma_buf_file(file))
+				continue;
+
+			err = dma_buf_account_task(file->private_data, new_dmabuf_info);
+			if (err)
+				pr_err("dmabuf accounting failed during begin_new_exec, err %d\n",
+				       err);
+		}
+
+		/*
+		 * put_files_struct puts the dmabuf_info, but not if we're reusing the original
+		 * files_struct.
+		 */
+		if (my_files == old_files)
+			put_dmabuf_info(my_files->dmabuf_info);
+
+		refcount_inc(&new_dmabuf_info->refcnt);
+		my_files->dmabuf_info = new_dmabuf_info;
+		spin_unlock(&my_files->file_lock);
+	}
+
+	struct task_dma_buf_info *old = me->dmabuf_info;
+	me->dmabuf_info = new_dmabuf_info; // refcount from alloc_task_dma_buf_info
+	if (old)
+		put_dmabuf_info(old);
 
 	/*
 	 * Must be called _before_ exec_mmap() as bprm->mm is
@@ -1303,6 +1362,10 @@ int begin_new_exec(struct linux_binprm * bprm)
 		goto out;
 
 	bprm->mm = NULL;
+	if (IS_ENABLED(CONFIG_DMA_SHARED_BUFFER)) {
+		refcount_inc(&new_dmabuf_info->refcnt);
+		me->mm->dmabuf_info = new_dmabuf_info;
+	}
 
 #ifdef CONFIG_POSIX_TIMERS
 	spin_lock_irq(&me->sighand->siglock);

@@ -29,6 +29,7 @@
 #include <linux/mm.h>
 #include <linux/mount.h>
 #include <linux/pseudo_fs.h>
+#include <linux/fdtable.h>
 
 #ifndef __GENKSYMS__
 #include <trace/events/kmem.h>
@@ -408,9 +409,8 @@ static void add_task_dmabuf_record(struct task_dma_buf_info *dmabuf_info,
  * * 0 on success
  * * A negative error code upon error
  */
-int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
+int dma_buf_account_task(struct dma_buf *dmabuf, struct task_dma_buf_info *dmabuf_info)
 {
-	struct task_dma_buf_info *dmabuf_info = task->dmabuf_info;
 	struct task_dma_buf_record *rec;
 
 	if (!static_key_enabled(&dmabuf_accounting_key))
@@ -448,9 +448,8 @@ int dma_buf_account_task(struct dma_buf *dmabuf, struct task_struct *task)
  * references to @dmabuf are removed from @task, the buffer's size is removed
  * from the task's dmabuf RSS.
  */
-void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
+void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_dma_buf_info *dmabuf_info)
 {
-	struct task_dma_buf_info *dmabuf_info = task->dmabuf_info;
 	struct task_dma_buf_record *rec;
 
 	if (!static_key_enabled(&dmabuf_accounting_key))
@@ -472,15 +471,15 @@ void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
 			rec = NULL;
 		}
 	} else {
-		pr_err("Could not find dmabuf %lu in unaccount for task %d\n",
-		       file_inode(dmabuf->file)->i_ino, task_pid_nr(task));
+		pr_err("Could not find dmabuf %lu in unaccount\n",
+		       file_inode(dmabuf->file)->i_ino);
 	}
 	spin_unlock(&dmabuf_info->lock);
 	if (rec)
 		free_task_dmabuf_record(rec);
 }
 
-static struct task_dma_buf_info *alloc_task_dma_buf_info(void)
+struct task_dma_buf_info *alloc_task_dma_buf_info(void)
 {
 	struct task_dma_buf_info *dmabuf_info;
 
@@ -603,6 +602,16 @@ int copy_dmabuf_info(u64 clone_flags, struct task_struct *task)
 	if (share_vm && share_fs) {
 		refcount_inc(&parent_dmabuf_info->refcnt);
 		task->dmabuf_info = parent_dmabuf_info;
+
+		if (task->mm) {
+			refcount_inc(&task->dmabuf_info->refcnt);
+			task->mm->dmabuf_info = task->dmabuf_info;
+		}
+
+		if (task->files) {
+			refcount_inc(&task->dmabuf_info->refcnt);
+			task->files->dmabuf_info = task->dmabuf_info;
+		}
 		return 0;
 	}
 
@@ -616,25 +625,34 @@ int copy_dmabuf_info(u64 clone_flags, struct task_struct *task)
 
 	task->dmabuf_info = child_dmabuf_info;
 
+	if (task->mm) {
+		refcount_inc(&child_dmabuf_info->refcnt);
+		task->mm->dmabuf_info = child_dmabuf_info;
+	}
+	if (task->files) {
+		refcount_inc(&child_dmabuf_info->refcnt);
+		task->files->dmabuf_info = child_dmabuf_info;
+	}
+
 	return 0;
 }
 
-void put_dmabuf_info(struct task_struct *task)
+void put_dmabuf_info(struct task_dma_buf_info *dmabuf_info)
 {
-	if (!task->dmabuf_info)
+	if (!dmabuf_info)
 		return;
 
-	if (!refcount_dec_and_test(&task->dmabuf_info->refcnt))
+	if (!refcount_dec_and_test(&dmabuf_info->refcnt))
 		return;
 
-	if (task->dmabuf_info->rss)
-		pr_alert("destroying task with non-zero dmabuf rss %lu\n", task->dmabuf_info->rss);
+	if (dmabuf_info->rss)
+		pr_alert("destroying task_dma_buf_info with non-zero dmabuf rss %lu\n", dmabuf_info->rss);
 
-	if (!list_empty(&task->dmabuf_info->dmabufs) || task->dmabuf_info->dmabuf_count > 0)
-		pr_alert("destroying task with non-empty dmabuf list %u\n",
-			 task->dmabuf_info->dmabuf_count);
+	if (!list_empty(&dmabuf_info->dmabufs) || dmabuf_info->dmabuf_count > 0)
+		pr_alert("destroying task_dma_buf_info with non-empty dmabuf list %u\n",
+			 dmabuf_info->dmabuf_count);
 
-	kfree(task->dmabuf_info);
+	kfree(dmabuf_info);
 }
 
 static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)
@@ -661,7 +679,7 @@ static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)
 
 	ret = dmabuf->ops->mmap(dmabuf, vma);
 	if (!ret) {
-		int err = dma_buf_account_task(dmabuf, current);
+		int err = dma_buf_account_task(dmabuf, vma->vm_mm->dmabuf_info);
 
 		if (err)
 			pr_err("dmabuf accounting failed during mmap operation, err %d\n", err);
@@ -1052,14 +1070,6 @@ static void dma_buf_show_fdinfo(struct seq_file *m, struct file *file)
 		seq_printf(m, "name:\t%s\n", dmabuf->name);
 	spin_unlock(&dmabuf->name_lock);
 }
-
-static int dma_buf_flush(struct file *file, fl_owner_t id)
-{
-	/* When dmabuf FD is closed we should unaccount it */
-	dma_buf_unaccount_task(file->private_data, current);
-	return 0;
-}
-
 static const struct file_operations dma_buf_fops = {
 	.release	= dma_buf_file_release,
 	.mmap		= dma_buf_mmap_internal,
@@ -1068,7 +1078,6 @@ static const struct file_operations dma_buf_fops = {
 	.unlocked_ioctl	= dma_buf_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,
 	.show_fdinfo	= dma_buf_show_fdinfo,
-	.flush		= dma_buf_flush,
 };
 
 /*
@@ -2030,7 +2039,7 @@ int dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma,
 
 	ret = dmabuf->ops->mmap(dmabuf, vma);
 	if (!ret) {
-		int err = dma_buf_account_task(dmabuf, current);
+		int err = dma_buf_account_task(dmabuf, vma->vm_mm->dmabuf_info);
 
 		if (err)
 			pr_err("dmabuf accounting failed during mmap operation, err %d\n", err);
