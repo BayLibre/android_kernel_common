@@ -1,0 +1,125 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4286e0db_184e89dd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-13T20:14:15Z",
+      "side": 1,
+      "message": "nit: s/complexy/complex/",
+      "revId": "d378047b288c730a6f38de5f3f671cb01e5a0f4f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d78f99be_b9e58635",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-13T20:14:15Z",
+      "side": 1,
+      "message": "Apart from a couple of minor comments I\u0027ve left, LGTM and works fine in my tests on PTL and ADL.",
+      "revId": "d378047b288c730a6f38de5f3f671cb01e5a0f4f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ab2a8ee_4864cced",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1440,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-13T20:14:15Z",
+      "side": 1,
+      "message": "nit: it doesn\u0027t actually enforce these bits but quite the opposite, it preserves the bits in the host\u0027s entry, copying them to `tmp`, right? So maybe name it e.g. just COPY_BITS() or whatever?\n\nBTW I\u0027m wondering if there is any ready-to-use helper function or macro for this in Linux kernel...",
+      "revId": "d378047b288c730a6f38de5f3f671cb01e5a0f4f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82888806_1fbc8a87",
+        "filename": "arch/x86/kvm/pkvm/cpuid.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1559,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-13T20:14:15Z",
+      "side": 1,
+      "message": "nit: maybe also briefly explain it may contain more entries, e.g.: \"(due to different number of levels of cache on different physical CPUs on a hybrid system)\"?",
+      "fixSuggestions": [
+        {
+          "fixId": "c09df4ad_edd6586c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/cpuid.c",
+              "range": {
+                "startLine": 1558,
+                "startChar": 0,
+                "endLine": 1560,
+                "endChar": 0
+              },
+              "replacement": "\t\t * comparing func/index doesn\u0027t work as the default set may\n\t\t * contain more entries than host provides (due to different\n\t\t * number of levels of cache on different physical CPUs on a\n\t\t * hybrid system).\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d378047b288c730a6f38de5f3f671cb01e5a0f4f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9fb1714_e5eb98fa",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1210,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-13T20:14:15Z",
+      "side": 1,
+      "message": "nit: maybe add an empty line above this line (just to separate memset() and its comment from pkvm_enforce_cpuid())?",
+      "fixSuggestions": [
+        {
+          "fixId": "c64583fb_ba16bd41",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 1210,
+                "startChar": 0,
+                "endLine": 1210,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d378047b288c730a6f38de5f3f671cb01e5a0f4f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
