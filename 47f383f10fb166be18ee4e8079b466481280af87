@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d837cce_aaf856ea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-11-13T12:13:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f1a0f9e_30445fa1",
+      "range": {
+        "startLine": 12,
+        "startChar": 24,
+        "endLine": 12,
+        "endChar": 30
+      },
+      "revId": "47f383f10fb166be18ee4e8079b466481280af87",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "341ff4c1_401207f9",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-11-13T10:42:15Z",
       "side": 1,
       "message": "Maybe it is worth giving an example how much memory we will save with PV implementation. Similar as done here: https://android.googlesource.com/kernel/common/+/8a95fbea76c4bf38d7a6cadd6f6b3897b91ce561\n\nsomething like:\n```\nThis change reduce the pKVM footprint about 100+MB on 16GB systems (and\n70+MB on 8GB ones).\nE.g. with this change:\n[    0.025325] kvm [0]: Reserved 226 MiB at 0x460800000\nwithout it:\n[    0.025526] kvm [0]: Reserved 332 MiB at 0x459e00000\n```\n?",
+      "revId": "47f383f10fb166be18ee4e8079b466481280af87",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11fa066f_373f2a65",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-11-13T12:13:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "341ff4c1_401207f9",
       "revId": "47f383f10fb166be18ee4e8079b466481280af87",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
