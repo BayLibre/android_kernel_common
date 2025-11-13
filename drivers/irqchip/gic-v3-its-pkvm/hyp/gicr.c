@@ -20,6 +20,8 @@ static DEFINE_HYP_SPINLOCK(redist_lock);
 static struct hyp_gic_v3_redist redist_devs[CONFIG_NR_CPUS];
 static size_t redist_dev_count = 0;
 
+#define GICR_VLPI_OFFSET SZ_128K
+
 #define PROPBASER_IDBITS(propbaser) ((propbaser) & GICR_PROPBASER_IDBITS_MASK)
 
 #define PROPBASE_SZ(id_bits) ALIGN(BIT_ULL(id_bits + 1), SZ_64K)
@@ -89,9 +91,9 @@ static inline u64 gicr_stride(u32 typer, u64 dt_stride)
 		return dt_stride;
 
 	if (typer & GICR_TYPER_VLPIS)
-		return SZ_64K * 4;
+		return SZ_256K;
 
-	return SZ_64K * 2;
+	return SZ_128K;
 }
 
 static inline bool gicr_lpi_enabled(struct hyp_gic_v3_redist *gicr)
@@ -407,12 +409,12 @@ static const struct hyp_gicr_handler {
 		.read = pendbaser_read,
 	},
 	{
-		.offset = 2 * SZ_64 + GICR_VPROPBASER,
+		.offset = GICR_VLPI_OFFSET + GICR_VPROPBASER,
 		.size = sizeof(u64),
 		.write = forbidden_write,
 	},
 	{
-		.offset = 2 * SZ_64 + GICR_VPENDBASER,
+		.offset = GICR_VLPI_OFFSET + GICR_VPENDBASER,
 		.size = sizeof(u64),
 		.write = forbidden_write,
 	},
@@ -455,7 +457,7 @@ static int emulate_handler(struct emulate *emulate, u64 offset, bool write,
 }
 
 static int redist_protect_locked(struct hyp_gic_v3_redist *gicr, u64 paddr,
-				 void __iomem *base, u64 stride)
+				 void __iomem *base, u64 dt_stride)
 {
 	int ret;
 
@@ -466,9 +468,26 @@ static int redist_protect_locked(struct hyp_gic_v3_redist *gicr, u64 paddr,
 	gicr->pendbaser = 0;
 
 	gicr->emulate.base = paddr;
-	gicr->emulate.size = stride;
 	gicr->emulate.handler = emulate_handler;
 	gicr->emulate.priv = gicr;
+	gicr->emulate.size = gicr_stride(gicr->typer, dt_stride);
+
+	/* If GIC support Virtual LPI, make sure that it is not used */
+	if (gicr->typer & GICR_TYPER_VLPIS) {
+		/* Check if VLPI registers are accessiable */
+		if (gicr->emulate.size < GICR_VLPI_OFFSET)
+			return -EINVAL;
+
+		/* Check if VLPI Property table is not valid */
+		if (readq_relaxed(base + GICR_VLPI_OFFSET + GICR_VPROPBASER) &
+		    GICR_VPROPBASER_4_1_VALID)
+			return -EINVAL;
+
+		/* Check if VLPI Pending table is not valid */
+		if (readq_relaxed(base + GICR_VLPI_OFFSET + GICR_VPENDBASER) &
+		    GICR_VPENDBASER_Valid)
+			return -EINVAL;
+	}
 
 	if (gicr_lpi_enabled(gicr)) {
 		ret = handle_lpi_enable(gicr);
@@ -487,8 +506,7 @@ static int hyp_gic_v3_redist_protect(u64 paddr, u64 size, u64 dt_stride)
 {
 	struct hyp_gic_v3_redist *gicr;
 	void *gicr_base;
-	u64 stride, end;
-	u32 typer;
+	u64 end;
 	int ret;
 
 	if (!PAGE_ALIGNED(paddr) || !PAGE_ALIGNED(size) ||
@@ -509,19 +527,16 @@ static int hyp_gic_v3_redist_protect(u64 paddr, u64 size, u64 dt_stride)
 		gicr = &redist_devs[redist_dev_count];
 		redist_dev_count++;
 
-		typer = readl_relaxed(gicr_base + GICR_TYPER);
-		stride = gicr_stride(typer, dt_stride);
-
-		ret = redist_protect_locked(gicr, paddr, gicr_base, stride);
+		ret = redist_protect_locked(gicr, paddr, gicr_base, dt_stride);
 		if (ret) {
 			redist_dev_count--;
 			goto err;
 		}
 
-		paddr += stride;
-		gicr_base += stride;
+		paddr += gicr->emulate.size;
+		gicr_base += gicr->emulate.size;
 
-		if (typer & GICR_TYPER_LAST)
+		if (gicr->typer & GICR_TYPER_LAST)
 			break;
 	}
 
