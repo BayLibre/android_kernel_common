@@ -1,0 +1,86 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39b57395_abf00994",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-11-14T10:47:49Z",
+      "side": 1,
+      "message": "nit: You could collapse this to `return hyp_vm \u003d\u003d LEAKED_ENTRY ? NULL : hyp_vm;`",
+      "range": {
+        "startLine": 333,
+        "startChar": 0,
+        "endLine": 338,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "4bc58463_e46fa42f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+              "range": {
+                "startLine": 334,
+                "startChar": 0,
+                "endLine": 338,
+                "endChar": 0
+              },
+              "replacement": "\treturn hyp_vm \u003d\u003d LEAKED_ENTRY ? NULL : hyp_vm;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9f51fca6f89f7367ff2c0bcead5df1a9919cc3da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7af6717_cad21b68",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-11-14T10:47:49Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to change this function now that you\u0027ve fixed `get_vm_by_handle()` to return `NULL` for leaked entries. Callers shouldn\u0027t try to drop the handle when there is no vm associated with it.",
+      "range": {
+        "startLine": 804,
+        "startChar": 0,
+        "endLine": 816,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "be957d42_b29cc418",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+              "range": {
+                "startLine": 804,
+                "startChar": 0,
+                "endLine": 807,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "9f51fca6f89f7367ff2c0bcead5df1a9919cc3da",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
