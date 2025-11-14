@@ -1686,6 +1686,8 @@ err_free_pages:
 static int __pkvm_mem_abort_device(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
 				   gfn_t gfn, u64 nr_pages)
 {
+	int ret = 0;
+
 	while (nr_pages--) {
 		kvm_pfn_t pfn = __gfn_to_pfn_memslot(memslot, gfn, false, false, NULL,
 						     kvm_is_write_fault(vcpu), NULL, NULL);
@@ -1693,14 +1695,18 @@ static int __pkvm_mem_abort_device(struct kvm_vcpu *vcpu, struct kvm_memory_slot
 			return -EFAULT;
 
 		if (kvm_is_device_pfn(pfn)) {
-			int ret = kvm_call_hyp_nvhe(__pkvm_host_map_guest_mmio, pfn, gfn);
-
+			ret = kvm_call_hyp_nvhe(__pkvm_host_map_guest_mmio, pfn, gfn);
+			/* -EEXIST is returned if we've raced with another vCPU */
 			if (ret == -EEXIST)
-				ret = 0; /* We might have raced with another vCPU. */
+				ret = 0;
 		} else {
+			ret = -EFAULT;
+		}
+
+		if (ret) {
 			/* Release pin from __gfn_to_pfn_memslot(). */
 			kvm_release_pfn_clean(pfn);
-			return -EFAULT;
+			return ret;
 		}
 
 		gfn++;
