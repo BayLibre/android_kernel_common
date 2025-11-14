@@ -213,6 +213,14 @@ enum pkvm_smc_handler_ret {
  *				panic to avoid leaking any information.
  *				Direction of assignment can be deduced from pkvm_device::ctxt
  *				where NULL means host to guest and vice versa.
+ * @device_register_power_lock: Register a power lock callback for a device. It
+ *				is expected from this callback to protect or
+ *				unprotect (according to the @lock value) the
+ *				device against power cycle.
+ *				Similar to @device_register_reset, the device is
+ *				identified by the base address of the MMIO as
+ *				defined in the device-tree. @cookie may be NULL
+ *				but it has to match the one in @device_register_reset.
  * @iommu_register_pviommu_drv:	Register an IOMMU driver to handle guest VMs pvIOMMU
  * @register_guest_trng_ops:    Register a ARM SMCCC TRNG alternative implementation
  *				for pVMs. The @ops.trng_uuid is used to advertise the
@@ -290,6 +298,8 @@ struct pkvm_module_ops {
 	int (*init_hvc_pd)(struct kvm_power_domain *pd, const struct kvm_power_domain_ops *ops);
 	int (*device_register_reset)(u64 phys, void *cookie,
 				     int (*cb)(void *cookie, bool host_to_guest));
+	int (*device_register_power_lock)(u64 phys, void *cookie,
+					     int(*cb)(void *cookie, bool lock));
 	int (*iommu_register_pviommu_drv)(pkvm_handle_t drv_id);
 	int (*register_guest_trng_ops)(const struct pkvm_module_trng_ops *ops);
 	int (*guest_accept_module_prot_page)(u64 ipa, u64 nr_pages);

@@ -341,6 +341,7 @@ const struct pkvm_module_ops module_ops = {
 	.pkvm_unuse_dma = iommu_pkvm_unuse_dma,
 	.init_hvc_pd = pkvm_init_hvc_pd,
 	.device_register_reset = pkvm_device_register_reset,
+	.device_register_power_lock = pkvm_device_register_power_lock,
 	.iommu_register_pviommu_drv = kvm_iommu_register_pviommu_drv,
 	.register_guest_trng_ops = __register_guest_trng_ops,
 	.guest_accept_module_prot_page = __pkvm_accept_module_prot_page,
