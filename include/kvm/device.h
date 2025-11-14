@@ -39,6 +39,7 @@ struct pkvm_device {
 	void *ctxt; /* Current context of the device*/
 	unsigned short refcount;
 	int (*reset_handler)(void *cookie, bool host_to_guest);
+	int (*power_handler)(void *cookie, bool on);
 	void *cookie; /* cookie from drivers. */
 };
 
