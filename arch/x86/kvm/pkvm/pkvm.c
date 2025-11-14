@@ -1304,13 +1304,47 @@ static void pkvm_set_cr4(struct pkvm_vcpu *pkvm_vcpu, unsigned long cr4)
 
 static int pkvm_set_msr(struct pkvm_vcpu *pkvm_vcpu, struct msr_data *msr)
 {
+	struct kvm_vcpu *vcpu;
+
 	if (WARN_ON_ONCE(!pkvm_vcpu))
 		return -EINVAL;
 
 	if (WARN_ON_ONCE(msr != this_pv_param(msr) || !msr))
 		return -EINVAL;
 
-	return kvm_x86_call(set_msr)(to_kvm_vcpu(pkvm_vcpu), msr);
+	vcpu = to_kvm_vcpu(pkvm_vcpu);
+
+	if (pkvm_is_protected_vcpu(vcpu)) {
+		u64 cur_data;
+
+		if (kvm_vcpu_has_run(vcpu))
+			return -EPERM;
+
+		/*
+		 * For simplicity and security, allow the host to set initial
+		 * values of those MSRs that are currently set by crosvm, and
+		 * only those. The allowed set can be extended as needed.
+		 */
+		switch (msr->index) {
+		case MSR_MTRRcap:
+		case MTRRphysBase_MSR(0) ... MSR_MTRRfix4K_F8000:
+		case MSR_MTRRdefType:
+			break;
+		default:
+			/*
+			 * Allow the host to set an MSR to a value to which it is
+			 * already set by pKVM anyway, i.e. if setting is a no-op.
+			 */
+			if (__kvm_get_msr(vcpu, msr->index, &cur_data, true))
+				return -EINVAL;
+			if (msr->data == cur_data)
+				return 0;
+
+			return -EPERM;
+		}
+	}
+
+	return kvm_x86_call(set_msr)(vcpu, msr);
 }
 
 static int pkvm_get_msr(struct pkvm_vcpu *pkvm_vcpu, struct msr_data *msr)
