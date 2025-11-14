@@ -212,6 +212,18 @@ struct pkvm_sglist_page {
  *				panic to avoid leaking any information.
  *				Direction of assignment can be deduced from pkvm_device::ctxt
  *				where NULL means host to guest and vice versa.
+ * @device_register_power_handler:
+ *				Register a power callback for a device. Similar
+ *				to @device_register_reset, the device is
+ *				identified by the base address of the MMIO as
+ *				defined in the device-tree. The handler is
+ *				called whenever the guest who owns the device
+ *				wants to power on or off. @cookie may be NULL
+ *				but it has to match the one in
+ *				@device_register_reset. When @on is 0, the
+ *				device must be powered-off. Otherwise
+ *				powered-on. If the handler returns an error, the
+ *				power switch process aborts.
  * @iommu_register_pviommu_drv:	Register an IOMMU driver to handle guest VMs pvIOMMU
  * @register_guest_trng_ops:    Register a ARM SMCCC TRNG alternative implementation
  *				for pVMs. The @ops.trng_uuid is used to advertise the
@@ -292,6 +304,8 @@ struct pkvm_module_ops {
 	int (*init_hvc_pd)(struct kvm_power_domain *pd, const struct kvm_power_domain_ops *ops);
 	int (*device_register_reset)(u64 phys, void *cookie,
 				     int (*cb)(void *cookie, bool host_to_guest));
+	int (*device_register_power_handler)(u64 phys, void *cookie,
+					     int(*handler)(void *cookie, bool on));
 	int (*iommu_register_pviommu_drv)(pkvm_handle_t drv_id);
 	int (*register_guest_trng_ops)(const struct pkvm_module_trng_ops *ops);
 	ANDROID_KABI_RESERVE(1);
