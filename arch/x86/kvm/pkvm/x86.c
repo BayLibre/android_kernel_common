@@ -3255,6 +3255,20 @@ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
 		vcpu->arch.ia32_misc_enable_msr = MSR_IA32_MISC_ENABLE_PEBS_UNAVAIL |
 						  MSR_IA32_MISC_ENABLE_BTS_UNAVAIL;
 
+#ifdef __PKVM_HYP__
+		if (pkvm_is_protected_vcpu(vcpu)) {
+			/*
+			 * Force native values of FAST_STRING, PEBS and BTS bits,
+			 * following what TDX does, so that no need to rely on the VMM
+			 * to initialize them with the desired values.
+			 */
+			rdmsrl(MSR_IA32_MISC_ENABLE, vcpu->arch.ia32_misc_enable_msr);
+			vcpu->arch.ia32_misc_enable_msr &= MSR_IA32_MISC_ENABLE_FAST_STRING |
+							   MSR_IA32_MISC_ENABLE_PEBS_UNAVAIL |
+							   MSR_IA32_MISC_ENABLE_BTS_UNAVAIL;
+		}
+#endif
+
 		__kvm_set_xcr(vcpu, 0, XFEATURE_MASK_FP);
 		__kvm_set_msr(vcpu, MSR_IA32_XSS, 0, true);
 	}
