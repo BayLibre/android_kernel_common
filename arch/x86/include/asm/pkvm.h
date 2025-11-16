@@ -187,6 +187,14 @@ static inline void pkvm_update_iommu_virtual_caps(u64 *cap, u64 *ecap)
 		 */
 		*ecap &= ~((1UL << 46) | (1UL << 26));
 
+		/*
+		 * Disable PRS(Page Request Support) for simplicity.
+		 * Users of PRS are currently iommufd and user mode iommu management
+		 * and not relevant for pkvm now.
+		 * TODO: Will revisit this later with device assignment feature.
+		 */
+		*ecap &= ~(1UL << 29);
+
 		/* limit PASID to reduce the memory consumptions */
 		tmp = min_t(u64, (PKVM_MAX_PASID_BITS - 1),
 			    (*ecap & GENMASK_ULL(39, 35)) >> 35);
