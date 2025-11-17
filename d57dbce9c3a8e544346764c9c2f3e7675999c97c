@@ -115,6 +115,24 @@
       "parentUuid": "150ae2e1_367611f8",
       "revId": "d57dbce9c3a8e544346764c9c2f3e7675999c97c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e116bfd_88d21071",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1344,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-17T17:27:51Z",
+      "side": 1,
+      "message": "I think the fact that we don\u0027t reset the vCPU unless the host asks us to is a much bigger problem than these 2 bits in this MSR.",
+      "parentUuid": "01870a7b_08dc7604",
+      "revId": "d57dbce9c3a8e544346764c9c2f3e7675999c97c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
