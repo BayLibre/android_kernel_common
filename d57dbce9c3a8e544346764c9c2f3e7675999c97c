@@ -97,6 +97,24 @@
       "parentUuid": "70865e4b_53d09376",
       "revId": "d57dbce9c3a8e544346764c9c2f3e7675999c97c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01870a7b_08dc7604",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1344,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-17T16:33:01Z",
+      "side": 1,
+      "message": "Ahh ok, thanks for digging deeper. So the plan is to set this MSR in kvm_vcpu_reset()?",
+      "parentUuid": "150ae2e1_367611f8",
+      "revId": "d57dbce9c3a8e544346764c9c2f3e7675999c97c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
