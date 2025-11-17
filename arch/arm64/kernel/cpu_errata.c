@@ -87,6 +87,29 @@ has_mismatched_cache_type(const struct arm64_cpu_capabilities *entry,
 	return (ctr_real != sys) && (ctr_raw != sys);
 }
 
+#ifdef CONFIG_ARM64_ERRATUM_4311569
+DEFINE_STATIC_KEY_FALSE(android_apply_double_cmo);
+static int __init early_android_apply_double_cmo_cfg(char *arg)
+{
+	static_branch_enable(&android_apply_double_cmo);
+
+	return 0;
+}
+early_param("android.apply_double_cmo", early_android_apply_double_cmo_cfg);
+
+/*
+ * We have some earlier use cases to call cache maintenance operation functions, for example,
+ * dcache_inval_poc() and dcache_clean_poc() in head.S, before making decision to turn on this
+ * workaround. Since the scope of this workaround is limited to non-coherent DMA agents, its
+ * safe to have the workaround off by default.
+ */
+static bool
+need_double_cmo_workaround(const struct arm64_cpu_capabilities *entry, int scope)
+{
+	return static_branch_unlikely(&android_apply_double_cmo);
+}
+#endif
+
 static void
 cpu_enable_trap_ctr_access(const struct arm64_cpu_capabilities *cap)
 {
@@ -785,6 +808,14 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
 		.desc = "AmpereOne erratum AC03_CPU_38",
 		.capability = ARM64_WORKAROUND_AMPERE_AC03_CPU_38,
 		ERRATA_MIDR_RANGE_LIST(erratum_ac03_cpu_38_list),
+	},
+#endif
+#ifdef CONFIG_ARM64_ERRATUM_4311569
+	{
+		.desc = "Android ARM erratum 4311569 for premature CMO completion",
+		.capability = ARM64_WORKAROUND_4311569,
+		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
+		.matches = need_double_cmo_workaround,
 	},
 #endif
 	{
