@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7980fc23_935b6961",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3616649
+      },
+      "writtenOn": "2025-11-17T06:13:19Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by KernelCommit: Cherry pick is not clean. Checked against Android commit.\nAndroid commit: [sourc...\n\nCherry pick is not clean. Checked against Android commit.\nAndroid commit: [source](https://android.googlesource.com/kernel/common/+/2ab34b6d4334246273f89d3c1202c3d92a1e7416).\n\n```\n      ## include/linux/tcp.h ##\n     @@ include/linux/tcp.h: struct tcp_sock {\n    + \t */\n      \tstruct request_sock __rcu *fastopen_rsk;\n      \tstruct saved_syn *saved_syn;\n    - \n    ++\n     +\tANDROID_OEM_DATA(1);\n    - \tANDROID_KABI_RESERVE(1);\n      };\n      \n    + enum tsq_enum {\n```\n\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "352529514f07017d7d2d7de2ba339fadcfadba83",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "225835d3_bcc96fe6",
@@ -14,6 +31,24 @@
       "writtenOn": "2025-11-14T16:26:43Z",
       "side": 1,
       "message": "create a patch on top of this one to add the symbols to your symbol list",
+      "revId": "352529514f07017d7d2d7de2ba339fadcfadba83",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2e1feb1_f3e4a2a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3616649
+      },
+      "writtenOn": "2025-11-17T06:13:19Z",
+      "side": 1,
+      "message": "Adding OEM data, no symbols are needed, right?",
+      "parentUuid": "225835d3_bcc96fe6",
       "revId": "352529514f07017d7d2d7de2ba339fadcfadba83",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
