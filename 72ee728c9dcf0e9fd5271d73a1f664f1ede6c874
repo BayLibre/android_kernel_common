@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c462eac0_bb12f6f9",
+        "filename": "kernel/hung_task.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1893826
+      },
+      "writtenOn": "2025-11-17T09:51:32Z",
+      "side": 1,
+      "message": "may need #undef CREATE_TRACE_POINTS first?",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 34
+      },
+      "revId": "72ee728c9dcf0e9fd5271d73a1f664f1ede6c874",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9145e47d_637d7954",
+        "filename": "kernel/hung_task.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1893826
+      },
+      "writtenOn": "2025-11-17T09:51:32Z",
+      "side": 1,
+      "message": "The steps here should be first call the check hook, then determine if need to check the task by need_check flag, so it should be like:\ntrace_android_vh_check_uninterruptible_tasks(t, timeout, \u0026need_check);\nif (need_check)\n    check_hung_task(t, timeout);",
+      "range": {
+        "startLine": 326,
+        "startChar": 0,
+        "endLine": 334,
+        "endChar": 3
+      },
+      "revId": "72ee728c9dcf0e9fd5271d73a1f664f1ede6c874",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
