@@ -22,6 +22,7 @@
 #include <linux/scatterlist.h>
 #include <linux/string.h>
 #include <linux/jump_label.h>
+#include <trace/hooks/blk.h>
 
 #define DM_MSG_PREFIX			"verity"
 
@@ -717,6 +718,7 @@ static void verity_end_io(struct bio *bio)
 	struct dm_verity_io *io = bio->bi_private;
 	unsigned short ioprio = IOPRIO_PRIO_CLASS(bio->bi_ioprio);
 	unsigned int bytes = io->n_blocks << io->v->data_dev_block_bits;
+	bool skip = false;
 
 	if (bio->bi_status &&
 	    (!verity_fec_is_enabled(io->v) ||
@@ -740,6 +742,9 @@ static void verity_end_io(struct bio *bio)
 		}
 	}
 	INIT_WORK(&io->work, verity_work);
+	trace_android_vh_dm_skip_verity_work(&io->work, bio_prio(bio), &skip);
+	if (skip)
+		return;
 	queue_work(io->v->verify_wq, &io->work);
 }
 
@@ -792,6 +797,7 @@ static void verity_submit_prefetch(struct dm_verity *v, struct dm_verity_io *io,
 	sector_t block = io->block;
 	unsigned int n_blocks = io->n_blocks;
 	struct dm_verity_prefetch_work *pw;
+	bool skip = false;
 
 	if (v->validated_blocks) {
 		while (n_blocks && test_bit(block, v->validated_blocks)) {
@@ -816,6 +822,10 @@ static void verity_submit_prefetch(struct dm_verity *v, struct dm_verity_io *io,
 	pw->block = block;
 	pw->n_blocks = n_blocks;
 	pw->ioprio = ioprio;
+	trace_android_vh_dm_skip_prefetch_work(&pw->work, ioprio, &skip);
+	if (skip)
+		return;
+
 	queue_work(v->verify_wq, &pw->work);
 }
 
