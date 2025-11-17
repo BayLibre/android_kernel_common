@@ -55,6 +55,13 @@ struct request;
 DECLARE_HOOK(android_vh_loop_skip_queue_work,
         TP_PROTO(struct request *req, bool *skip),
         TP_ARGS(req, skip));
+DECLARE_HOOK(android_vh_dm_skip_verity_work,
+       TP_PROTO(struct work_struct *work, unsigned short ioprio, bool *skip),
+       TP_ARGS(work, ioprio, skip));
+
+DECLARE_HOOK(android_vh_dm_skip_prefetch_work,
+       TP_PROTO(struct work_struct *work, unsigned short ioprio, bool *skip),
+       TP_ARGS(work, ioprio, skip));
 
 #endif /* _TRACE_HOOK_BLK_H */
 /* This part must be outside protection */
