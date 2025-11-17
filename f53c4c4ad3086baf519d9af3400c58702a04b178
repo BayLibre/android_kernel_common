@@ -16,6 +16,24 @@
       "message": "Question: any specific examples of code paths that may trigger qi_submit_sync() with type !\u003d QI_IEC_TYPE while translation is disabled?\n\nAsking because I\u0027m wondering why exactly it is ok to just silently ignore such submit requests, without any WARN_ON or even returning an error.",
       "revId": "f53c4c4ad3086baf519d9af3400c58702a04b178",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0acd215c_2cbd01c7",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 32
+      },
+      "lineNbr": 1416,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-17T22:01:31Z",
+      "side": 1,
+      "message": "Existing implementation in host driver sets the Root Table pointer early during initialization followed by context/pasid updates for all devices and then towards the end of the iommu initialization we enable translation. context/pasid updates invoke a cache flush which calls into qi_submit_sync(). These flushes were not needed as translation was not enabled, but since the code for context/pasid updates needed to handle cases with or without translation enabled, so it did call the flush.\n\nBut as part of pviommu, we delay the root table set operation until we enable the translation(aosp/3786913). This is to make it easy to have a single hypercall to activate iommu.\n\nBut submitting qi to hardware without setting root table pointer causes hang. So the cl is addressing that. In other words, it was not an issue before because we set RTP very early, qi_submit_sync succeeded even though the flush was not needed.\n\nThe other option is not to flush caches for all operations (context/pasid updates) if translation was not enabled. I thought it would be simpler to handle it here with one line code change rather than changing all the update functions which calls into qi_submit_sync.",
+      "parentUuid": "81b07853_9f60c03d",
+      "revId": "f53c4c4ad3086baf519d9af3400c58702a04b178",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
