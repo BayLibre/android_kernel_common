@@ -4,6 +4,7 @@ arm_smmu_v3-y := arm-smmu-v3.o
 arm_smmu_v3-y += arm-smmu-v3-common.o
 arm_smmu_v3-$(CONFIG_ARM_SMMU_V3_SVA) += arm-smmu-v3-sva.o
 arm_smmu_v3-$(CONFIG_TEGRA241_CMDQV) += tegra241-cmdqv.o
+arm_smmu_v3-$(CONFIG_ARM_SMMU_V3_PKVM_NESTED) += arm-smmu-v3-kvm-nested.o
 
 obj-$(CONFIG_ARM_SMMU_V3_KUNIT_TEST) += arm-smmu-v3-test.o
 
