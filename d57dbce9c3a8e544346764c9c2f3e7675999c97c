@@ -133,6 +133,24 @@
       "parentUuid": "01870a7b_08dc7604",
       "revId": "d57dbce9c3a8e544346764c9c2f3e7675999c97c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b3a1bfe_83c363aa",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1344,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-17T17:48:41Z",
+      "side": 1,
+      "message": "Agreed, I thought it will be handled in a separate CL anyways. I thought set_msr does something more than updating `vcpu-\u003earch.ia32_misc_enable_msr`, but I got it wrong. So looks nothing more is needed in this cl. Resolving",
+      "parentUuid": "2e116bfd_88d21071",
+      "revId": "d57dbce9c3a8e544346764c9c2f3e7675999c97c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
