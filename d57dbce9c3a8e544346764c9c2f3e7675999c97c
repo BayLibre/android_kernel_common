@@ -79,6 +79,24 @@
       ],
       "revId": "d57dbce9c3a8e544346764c9c2f3e7675999c97c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "150ae2e1_367611f8",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1344,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-17T16:25:21Z",
+      "side": 1,
+      "message": "1. We do this in kvm_vcpu_reset() anyway, at vCPU creation. [*]\n2. pkvm_vcpu_pvmfw_entry_init() is only called for the primary vCPU, and only if the pVM runs with pvmfw.\n\n[*] Well, not really. I _thought_ we called kvm_vcpu_reset() in pKVM at vCPU creation, but now I see we don\u0027t...",
+      "parentUuid": "70865e4b_53d09376",
+      "revId": "d57dbce9c3a8e544346764c9c2f3e7675999c97c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
