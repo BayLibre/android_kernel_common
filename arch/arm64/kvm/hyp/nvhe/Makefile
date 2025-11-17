@@ -30,6 +30,9 @@ endif
 HYP_SMMU_V3_DRV_PATH = ../../../../../drivers/iommu/arm/arm-smmu-v3
 ifeq ($(CONFIG_ARM_SMMU_V3_PKVM_NESTED),y)
 hyp-obj-$(CONFIG_ARM_SMMU_V3_PKVM_NESTED) += $(HYP_SMMU_V3_DRV_PATH)/pkvm/arm-smmu-v3-nested.o
+hyp-obj-$(CONFIG_ARM_SMMU_V3_PKVM_NESTED) += $(HYP_SMMU_V3_DRV_PATH)/pkvm/io-pgtable-arm.o
+hyp-obj-$(CONFIG_ARM_SMMU_V3_PKVM_NESTED) += ../../../../../drivers/iommu/io-pgtable-arm-common.o
+hyp-obj-$(CONFIG_ARM_SMMU_V3_PKVM_NESTED) += $(HYP_SMMU_V3_DRV_PATH)/arm-smmu-v3-common-lib.o
 endif
 
 $(obj)/hyp.lds: $(src)/hyp.lds.S FORCE

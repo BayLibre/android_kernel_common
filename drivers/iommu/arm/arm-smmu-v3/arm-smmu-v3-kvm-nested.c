@@ -144,7 +144,7 @@ static int smmu_alloc_atomic_mc(struct kvm_hyp_memcache *atomic_mc)
 	/* Topup hyp alloc so IOMMU driver can allocate domains. */
 	__pkvm_topup_hyp_alloc(1);
 
-	return ret;
+	return 0;
 }
 
 static int kvm_arm_smmu_v3_post_init(void)

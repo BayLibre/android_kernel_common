@@ -98,7 +98,7 @@ static int kvm_arm_io_pgtable_init(struct io_pgtable_cfg *cfg,
 
 struct io_pgtable *kvm_arm_io_pgtable_alloc(struct io_pgtable_cfg *cfg,
 					    void *cookie,
-					    int *out_ret)
+					    int *out_ret, bool idmapped)
 {
 	size_t pgd_size, alignment;
 	struct arm_lpae_io_pgtable *data;
@@ -110,6 +110,7 @@ struct io_pgtable *kvm_arm_io_pgtable_alloc(struct io_pgtable_cfg *cfg,
 		return NULL;
 	}
 
+	data->idmapped = idmapped;
 	ret = kvm_arm_io_pgtable_init(cfg, data);
 	if (ret)
 		goto out_free;
