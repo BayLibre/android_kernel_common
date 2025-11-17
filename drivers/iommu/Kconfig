@@ -553,4 +553,10 @@ config PKVM_PVIOMMU_SELFTEST
 	help
 	  Basic test for PKVM_PVIOMMU
 
+config ARM_SMMU_V3_PKVM_NESTED
+	bool "ARM SMMUv3 nested support for protected Virtual Machines"
+	depends on KVM && ARM64 && ARM_SMMU_V3
+	help
+	  Enable a SMMUv3 driver in the KVM hypervisor, to protect VMs against
+	  memory accesses from devices owned by the host.
 endif # IOMMU_SUPPORT
