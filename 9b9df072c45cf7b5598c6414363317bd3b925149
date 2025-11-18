@@ -122,6 +122,24 @@
       "message": "As I understand, this validation is essentially optional, since this hypercall is issued when the host is still trusted (and the above check for iommu-\u003eactivated basically protects against the untrusted host issuing this hypercall again later)?\n\nAlthough I see in later patches there are also pkvm_switch_host_ept_ro() calls added to these validate_\\*() functions, and that is surely not optional. Which IMO makes it confusing, since the functions are called validate_\\*() while actually they do quite a bit more than just validation. (And makes the review confusing, since that is only added in a later patch.)",
       "revId": "9b9df072c45cf7b5598c6414363317bd3b925149",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a773f9f_74993814",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 32
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-18T20:33:50Z",
+      "side": 1,
+      "message": "\u003e As I understand, this validation is essentially optional, since this hypercall is issued when the host is still trusted (and the above check for iommu-\u003eactivated basically protects against the untrusted host issuing this hypercall again later)?\n\nYeah validation is optional and I just had it as a basic and bare minimal sanitization as we had some comments in the v1 about sanitization. But since we trust the host, this is just to make sure that we catch any accidental issues/bugs in host code affecting the basic functionality of the translation structures.\n\n\u003e Although I see in later patches there are also pkvm_switch_host_ept_ro() calls added to these validate_*() functions, and that is surely not optional. Which IMO makes it confusing, since the functions are called validate_*() while actually they do quite a bit more than just validation. (And makes the review confusing, since that is only added in a later patch.)\n\nUnderstood. I wanted to move the readonly api before this and have the write protection implemented in this patch itself, but could not yet get to it. Will do that refactor and rename this function to be more clear about its intent.",
+      "parentUuid": "549933cc_b0b431cd",
+      "revId": "9b9df072c45cf7b5598c6414363317bd3b925149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
