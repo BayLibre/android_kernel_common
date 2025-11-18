@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fa6177b_9ddc66fa",
+        "filename": "arch/x86/include/asm/pkvm.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-18T16:08:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95fb1b76_f14fd488",
+      "revId": "9b9df072c45cf7b5598c6414363317bd3b925149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5058eb9_b5061794",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Ahh my bad, this has gone through numerous rebases due to lot of incoming patches, and some where it creeped in. Other than full testing for all functionality, I did double passes only on patches which had conflicts and which I did more edits, this was one among the patches I missed.  I need to do one more full pass and see if similar extra code has made its way without notice.. Will clean it up as well. Thanks for catching!",
       "parentUuid": "c5058eb9_b5061794",
+      "revId": "9b9df072c45cf7b5598c6414363317bd3b925149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d97f0e69_90ee2251",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pkvm_hyp.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-18T16:08:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61e46586_d338890b",
       "revId": "9b9df072c45cf7b5598c6414363317bd3b925149",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
