@@ -34,6 +34,24 @@
       "parentUuid": "81b07853_9f60c03d",
       "revId": "f53c4c4ad3086baf519d9af3400c58702a04b178",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f9fc0b2_7e87fb43",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 32
+      },
+      "lineNbr": 1416,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-18T00:32:03Z",
+      "side": 1,
+      "message": "\u003e Existing implementation in host driver sets the Root Table pointer early during initialization followed by context/pasid updates for all devices and then towards the end of the iommu initialization we enable translation. context/pasid updates invoke a cache flush which calls into qi_submit_sync(). These flushes were not needed as translation was not enabled, but since the code for context/pasid updates needed to handle cases with or without translation enabled, so it did call the flush.\n\nI see, thx.\n\nStill I\u0027m just curious where exactly in the code we do context/pasid updates for all devices after iommu_set_root_entry() but before iommu_enable_translation(). I haven\u0027t quickly found that in the code. Could you point at where that is done?",
+      "parentUuid": "0acd215c_2cbd01c7",
+      "revId": "f53c4c4ad3086baf519d9af3400c58702a04b178",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
