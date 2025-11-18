@@ -105,6 +105,23 @@
       "parentUuid": "61e46586_d338890b",
       "revId": "9b9df072c45cf7b5598c6414363317bd3b925149",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "549933cc_b0b431cd",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 32
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-18T19:03:00Z",
+      "side": 1,
+      "message": "As I understand, this validation is essentially optional, since this hypercall is issued when the host is still trusted (and the above check for iommu-\u003eactivated basically protects against the untrusted host issuing this hypercall again later)?\n\nAlthough I see in later patches there are also pkvm_switch_host_ept_ro() calls added to these validate_\\*() functions, and that is surely not optional. Which IMO makes it confusing, since the functions are called validate_\\*() while actually they do quite a bit more than just validation. (And makes the review confusing, since that is only added in a later patch.)",
+      "revId": "9b9df072c45cf7b5598c6414363317bd3b925149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
