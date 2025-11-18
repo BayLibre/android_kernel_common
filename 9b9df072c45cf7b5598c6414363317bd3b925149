@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51976153_9dbeb971",
+        "filename": "arch/x86/include/asm/pkvm.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-18T01:08:06Z",
+      "side": 1,
+      "message": "Any reason for adding pkvm_pviommu_enabled() specifically in this patch which adds enable/disable hypercalls, not in some other patch?",
+      "revId": "9b9df072c45cf7b5598c6414363317bd3b925149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5058eb9_b5061794",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pkvm_hyp.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-18T01:08:06Z",
+      "side": 1,
+      "message": "At first I got scared that pvIOMMU does anything with pvmfw. But looks like this is just accidentally copied from some old version of pKVM-IA code? (And same about shadow_vcpu_is_protected() above.)",
+      "revId": "9b9df072c45cf7b5598c6414363317bd3b925149",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
