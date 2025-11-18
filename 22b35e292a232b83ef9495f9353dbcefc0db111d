@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "984440b2_cfb6441f",
+        "filename": "drivers/android/binder_alloc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-11-18T22:13:17Z",
+      "side": 1,
+      "message": "We can\u0027t be 100% certain of this, but...\n\nWe\u0027ve previously sent announcements on this topic such as this one: https://docs.partner.android.com/partners/guides/gki/whatsnew#2023-dec-15\n\n... and we received no complaints. So we could send another announcement if needed.\n\nIMO, there aren\u0027t really any vendor hooks that would make use of this e.g. in `binder_alloc.c`. The `struct binder_alloc` internals are only exposed because the compiler needs the complete type to be defined under `struct binder_proc`. However, it is still exposed so there is always a chance that someone might use it behind the vendor hook.\n\nI\u0027ll double check how badly this is needed fist and we\u0027ll send an announcement before merging.",
+      "parentUuid": "de234992_386d49b0",
+      "revId": "22b35e292a232b83ef9495f9353dbcefc0db111d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f79aa2b_bd70df81",
         "filename": "drivers/android/binder_alloc.h",
         "patchSetId": 4
