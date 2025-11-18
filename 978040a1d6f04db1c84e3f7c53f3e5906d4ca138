@@ -1,0 +1,125 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cccc5a96_3d377139",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 1185,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-18T20:01:28Z",
+      "side": 1,
+      "message": "I\u0027m wondering why exactly we need this hypercall which is basically useless.\n\nIf we just want to let the IOMMU driver keep calling iommu_disable_translation() even though it knows that it doesn\u0027t really work, can\u0027t we just return here without doing anything?\n\nPerhaps we may even consider making sure the IOMMU driver doesn\u0027t trigger iommu_disable_translation() with pKVM, and add a WARN_ON here in case it is still triggered...",
+      "revId": "978040a1d6f04db1c84e3f7c53f3e5906d4ca138",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87961e1e_2cb56e80",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 2254,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-18T20:01:28Z",
+      "side": 1,
+      "message": "Likewise, this isn\u0027t really gonna work anyway, so we could just do nothing? (Perhaps the entire init_iommu_hw() could do nothing?)\n\nOr we may be ok with this useless but harmless hypercall here, so we may ignore the return value here (and thus avoid changing the existing code here)?\n\nActually, looks like pKVM will return -EPERM, so iommu_resume() will trigger `WARN(1, \"IOMMU setup failed, DMAR can not resume!\\n\")`? Don\u0027t you see this warning in dmesg after suspend/resume?\n\nOr if we\u0027re lucky and `force_on` is true, it will even trigger a panic?",
+      "revId": "978040a1d6f04db1c84e3f7c53f3e5906d4ca138",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a25ce0a_e116fede",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 2594,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-18T20:01:28Z",
+      "side": 1,
+      "message": "Hmm... is it possible for intel_iommu_add() so be called after pKVM initialization? What is our (security) stance on IOMMU hotplug? (Frankly I don\u0027t know anything about it.)",
+      "revId": "978040a1d6f04db1c84e3f7c53f3e5906d4ca138",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8ec809d_56681ec5",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 2596,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-18T20:01:28Z",
+      "side": 1,
+      "message": "At least conceptually, if we failed to enable iommu, we don\u0027t need to disable it, we can proceed to `out:`  instead of `disable_iommu:`?",
+      "fixSuggestions": [
+        {
+          "fixId": "644e3f34_44215080",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 2596,
+                "startChar": 0,
+                "endLine": 2597,
+                "endChar": 0
+              },
+              "replacement": "\t\tgoto out;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "978040a1d6f04db1c84e3f7c53f3e5906d4ca138",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78250c64_8a1d7c5f",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 3120,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-18T20:01:28Z",
+      "side": 1,
+      "message": "Would be useful to print `ret` as well?",
+      "fixSuggestions": [
+        {
+          "fixId": "490b94b9_0f5cc2f7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 3120,
+                "startChar": 0,
+                "endLine": 3121,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t\tpr_warn(\"Failed to enable iommu %d: %d\\n\", iommu-\u003eseq_id, ret);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "978040a1d6f04db1c84e3f7c53f3e5906d4ca138",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
