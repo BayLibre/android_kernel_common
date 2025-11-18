@@ -52,6 +52,24 @@
       "parentUuid": "0acd215c_2cbd01c7",
       "revId": "f53c4c4ad3086baf519d9af3400c58702a04b178",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "464db820_162fd994",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 32
+      },
+      "lineNbr": 1416,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-18T02:27:42Z",
+      "side": 1,
+      "message": "yeah, the code is a bit convoluted in this space and it goes through different layers. after `init_dmars()` (which sets RTP) , the code calls iommu_device_register for each iommu and it subsequently goes to different codepaths leading to qi_submit_sync. One such path is:\n```\niommu_device_register\n-\u003e bus_iommu_probe\n   -\u003e probe_iommu_group\n      -\u003e __iommu_probe_device\n         -\u003e iommu_init_device -\u003e ops-\u003eprobe_device\n            -\u003e intel_iommu_probe_device\n               -\u003e intel_pasid_setup_sm_context\n                  -\u003e ...\n                     -\u003e device_pasid_table_setup\n```\nThere are other paths in `iommu_device_register` which does domain attach and calls into context entries updates.\n\nThe logic is basically, start with the root table, set root table pointer and work all the way through creating the translation structures and then enable translation. We in this series changed it slightly to have root table pointer set just before translation, but rest everything remains the same.",
+      "parentUuid": "0f9fc0b2_7e87fb43",
+      "revId": "f53c4c4ad3086baf519d9af3400c58702a04b178",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
