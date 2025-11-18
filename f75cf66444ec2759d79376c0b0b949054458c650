@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8352b5f_e855539c",
+        "filename": "arch/x86/include/asm/kvm_pkvm.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-18T21:14:01Z",
+      "side": 1,
+      "message": "nit: `/* */`?",
+      "fixSuggestions": [
+        {
+          "fixId": "f771a52b_208f1103",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/include/asm/kvm_pkvm.h",
+              "range": {
+                "startLine": 245,
+                "startChar": 0,
+                "endLine": 246,
+                "endChar": 0
+              },
+              "replacement": "\t/* IOMMU hypercall params */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f75cf66444ec2759d79376c0b0b949054458c650",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
