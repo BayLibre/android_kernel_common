@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4df39803_7dd6e5e1",
+        "filename": "drivers/android/vendor_hooks.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2025-11-19T22:18:28Z",
+      "side": 1,
+      "message": "Looks like a cherry-pick issue. You\u0027re missing the export of android_vh_try_to_freeze_todo_logging",
+      "fixSuggestions": [
+        {
+          "fixId": "7235def2_7d2f8b84",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/android/vendor_hooks.c",
+              "range": {
+                "startLine": 275,
+                "startChar": 0,
+                "endLine": 276,
+                "endChar": 0
+              },
+              "replacement": "EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_try_to_freeze_todo_logging);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "232db04dedbc45a161f1ee7fb6b571914f245de6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
