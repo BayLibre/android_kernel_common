@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "19617011_5394cd9d",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 23
+      },
+      "lineNbr": 2254,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-19T19:53:17Z",
+      "side": 1,
+      "message": "As I\u0027ve found out, these iommu suspend/resume callbacks are only called with S3 suspend, not with s2idle. This explains why we are not seeing this warning.\n\nSince we don\u0027t really care about S3 for now, I guess we can just leave the code of these suspend/resume callbacks unmodified.",
+      "parentUuid": "87961e1e_2cb56e80",
+      "revId": "978040a1d6f04db1c84e3f7c53f3e5906d4ca138",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a25ce0a_e116fede",
         "filename": "drivers/iommu/intel/iommu.c",
         "patchSetId": 23
