@@ -1037,7 +1037,7 @@ again:
 
 		SOCK_TEST_TCPULP(remotesock, 0);
 
-		err = copyfd_io(fd, remotesock, 1, true);
+		err = copyfd_io(fd, remotesock, 1, true, &winfo);
 	} else {
 		perror("accept");
 		return 1;
