@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "128731e1_14270740",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 10466,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-11-19T18:42:14Z",
+      "side": 1,
+      "message": "unnecessary whitespace (tab) addition here",
+      "fixSuggestions": [
+        {
+          "fixId": "e221e969_62a60484",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/sched/core.c",
+              "range": {
+                "startLine": 10466,
+                "startChar": 0,
+                "endLine": 10467,
+                "endChar": 0
+              },
+              "replacement": "#endif /* CONFIG_CGROUP_SCHED */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b17138d7bb7dbcb04554646e7f7af3b55f50b680",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
