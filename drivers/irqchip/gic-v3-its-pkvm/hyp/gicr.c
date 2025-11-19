@@ -2,6 +2,7 @@
 #include "module.h"
 #include "emulate.h"
 #include "gic-v3-its.h"
+#include "memory_util.h"
 
 #include <nvhe/spinlock.h>
 #include <linux/irqchip/arm-gic-v3.h>
@@ -31,37 +32,16 @@ static size_t redist_dev_count = 0;
 	for (__gicr = redist_devs; __gicr != &redist_devs[redist_dev_count]; \
 	     __gicr++)
 
-static int host_unshare_pages_hyp(u64 addr, u64 num_pages)
+DEFINE_MEM_TRACKER(tracker_lpitab, &region_tracker_shared_ops);
+
+static inline int region_inc_refcnt(u64 phys, u64 size)
 {
-	u64 base_pfn = addr >> PAGE_SHIFT;
-	u64 i = 0;
-	int ret = 0;
-
-	for (i = 0; i < num_pages; i++) {
-		ret |= host_unshare_hyp(base_pfn + i);
-	}
-
-	return ret;
+	return region_tracker_inc(&tracker_lpitab, phys, phys + size);
 }
 
-static int host_share_pages_hyp(u64 addr, u64 num_pages)
+static inline int region_dec_refcnt(u64 phys, u64 size)
 {
-	u64 base_pfn = addr >> PAGE_SHIFT;
-	u64 i = 0;
-	u64 j = 0;
-	int ret;
-
-	for (i = 0; i < num_pages; i++) {
-		ret = host_share_hyp(base_pfn + i);
-		if (ret)
-			goto failed;
-	}
-
-	return 0;
-
-failed:
-	host_unshare_pages_hyp(addr, j);
-	return ret;
+	return region_tracker_dec(&tracker_lpitab, phys, phys + size);
 }
 
 static int host_owns_pages(u64 phys, u64 num_pages)
@@ -206,7 +186,6 @@ static int pendbaser_read(struct hyp_gic_v3_redist *gicr, u64 *pendbaser)
 static int handle_lpi_enable(struct hyp_gic_v3_redist *gicr)
 {
 	struct hyp_gic_v3_redist *other_gicr;
-	bool leader = true;
 	u64 id_bits;
 	int ret;
 
@@ -244,32 +223,19 @@ static int handle_lpi_enable(struct hyp_gic_v3_redist *gicr)
 		/* Require all GICRs in the affinity to share the same propbaser */
 		if (gicr->propbaser != other_gicr->propbaser)
 			return -EFAULT;
-		/*
-		 * There is already a GICR with LPI enabled in the LPI
-		 * affinity group. Property table was already shared.
-		 */
-		leader = false;
 	}
 
-	/*
-	 * If this is the first GICR in LPI affinity group, share the property
-	 * table. We only need to to this once for the affinity group as
-	 * all in the group share the same property table.
- 	 */
-	if (leader) {
-		/* Try to share new LPI property table */
-		ret = host_share_pages_hyp(
-			GICR_PROPBASER_ADDRESS(gicr->propbaser),
-			PROPBASE_SZ(id_bits) >> PAGE_SHIFT);
-		if (ret) {
-			mod_ops->puts("Denied (share LPI property table)");
-			return ret;
-		}
+	/* Try to share new LPI property table */
+	ret = region_inc_refcnt(GICR_PROPBASER_ADDRESS(gicr->propbaser),
+				PROPBASE_SZ(id_bits));
+	if (ret) {
+		mod_ops->puts("Denied (share LPI property table)");
+		return ret;
 	}
 
 	/* Try to share new LPI pending table */
-	ret = host_share_pages_hyp(GICR_PENDBASER_ADDRESS(gicr->pendbaser),
-				   PENDBASE_SZ(id_bits) >> PAGE_SHIFT);
+	ret = region_inc_refcnt(GICR_PENDBASER_ADDRESS(gicr->pendbaser),
+				PENDBASE_SZ(id_bits));
 	if (ret) {
 		mod_ops->puts("Denied (share LPI pending table)");
 		goto pend_share_fail;
@@ -279,7 +245,20 @@ static int handle_lpi_enable(struct hyp_gic_v3_redist *gicr)
 	writeq_relaxed(gicr->propbaser, gicr->base + GICR_PROPBASER);
 	writeq_relaxed(gicr->pendbaser, gicr->base + GICR_PENDBASER);
 
+	if (readq_relaxed(gicr->base + GICR_PROPBASER) != gicr->propbaser ||
+	    readq_relaxed(gicr->base + GICR_PENDBASER) != gicr->pendbaser) {
+		mod_ops->puts("Register write failed");
+		ret = -EFAULT;
+		writeq_relaxed(0, gicr->base + GICR_PROPBASER);
+		writeq_relaxed(0, gicr->base + GICR_PENDBASER);
+		goto commit_write_fail;
+	}
+
 	return 0;
+
+commit_write_fail:
+	WARN_ON(region_dec_refcnt(GICR_PENDBASER_ADDRESS(gicr->pendbaser),
+				  PENDBASE_SZ(id_bits)));
 
 pend_share_fail:
 	/*
@@ -287,52 +266,30 @@ pend_share_fail:
 	 * property table and LPI won't be enabled, the property table
 	 * has to be unshared to avoid error state.
 	 */
-	if (leader) {
-		host_unshare_pages_hyp(GICR_PROPBASER_ADDRESS(gicr->propbaser),
-				       PROPBASE_SZ(id_bits) >> PAGE_SHIFT);
-	}
-	return -EFAULT;
+	WARN_ON(region_dec_refcnt(GICR_PROPBASER_ADDRESS(gicr->propbaser),
+				  PROPBASE_SZ(id_bits)));
+
+	return ret;
 }
 
 static int handle_lpi_disable(struct hyp_gic_v3_redist *gicr)
 {
-	struct hyp_gic_v3_redist *other_gicr;
-	bool last = true;
 	u64 id_bits;
 	int ret = 0;
 
 	mod_ops->puts("Disabling LPI");
 
-	for_each_gicr(other_gicr)
-	{
-		/* Ignore self and GICR with disabled LPI */
-		if (gicr == other_gicr || !gicr_lpi_enabled(other_gicr))
-			continue;
-
-		/* Check if GICR is the last in LPI affinity group with LPI enabled. */
-		if (gicr_lpi_aff(gicr) == gicr_lpi_aff(other_gicr))
-			last = false;
-	}
-
 	id_bits = PROPBASER_IDBITS(gicr->propbaser);
 
-	/*
-	 * If this is the last GICR in affinity group to have LPI disabled
-	 * we need to unshare the property table.
-	 */
-	if (last) {
-		ret = host_unshare_pages_hyp(
-			GICR_PROPBASER_ADDRESS(gicr->propbaser),
-			PROPBASE_SZ(id_bits) >> PAGE_SHIFT);
-		if (ret)
-			return -EFAULT;
-	}
+	ret = region_dec_refcnt(GICR_PROPBASER_ADDRESS(gicr->propbaser),
+				PROPBASE_SZ(id_bits));
+	if (ret)
+		return -EFAULT;
 
 	/* Unshare old LPI pending table */
 	if (gicr->pendbaser != 0)
-		ret = host_unshare_pages_hyp(
-			GICR_PENDBASER_ADDRESS(gicr->pendbaser),
-			PENDBASE_SZ(id_bits) >> PAGE_SHIFT);
+		ret = region_dec_refcnt(GICR_PENDBASER_ADDRESS(gicr->pendbaser),
+					PENDBASE_SZ(id_bits));
 	if (ret)
 		goto pend_unshare_fail;
 
@@ -343,10 +300,8 @@ pend_unshare_fail:
 	 * property table and LPI won't be disabled, the property table
 	 * has to be shared back to avoid error state.
 	 */
-	if (last) {
-		host_share_pages_hyp(GICR_PROPBASER_ADDRESS(gicr->propbaser),
-				     PROPBASE_SZ(id_bits) >> PAGE_SHIFT);
-	}
+	region_inc_refcnt(GICR_PROPBASER_ADDRESS(gicr->propbaser),
+			  PROPBASE_SZ(id_bits));
 
 	return -EFAULT;
 }
