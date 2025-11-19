@@ -4,5 +4,6 @@ hyp-obj-y := hyp.o
 hyp-obj-y += its.o
 hyp-obj-y += gicr.o
 hyp-obj-y += emulate.o
+hyp-obj-y += memory_util.o
 
 include $(srctree)/arch/arm64/kvm/hyp/nvhe/Makefile.module
