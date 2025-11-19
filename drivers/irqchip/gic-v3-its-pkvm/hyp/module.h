@@ -5,6 +5,7 @@
 #if defined(__KVM_NVHE_HYPERVISOR__) && defined(MODULE)
 
 #include <asm/kvm_pkvm_module.h>
+#include <asm/kvm_mmu.h>
 
 extern const struct pkvm_module_ops *mod_ops;
 
@@ -34,11 +35,21 @@ extern const struct pkvm_module_ops *mod_ops;
 #define host_stage2_get_leaf(phys, ptep, level) \
 	CALL_FROM_OPS(host_stage2_get_leaf, phys, ptep, level)
 
-#define hyp_phys_to_virt(x) CALL_FROM_OPS(hyp_va, x)
+#define hyp_phys_to_virt(x) __hyp_va(x)
 
 #define memcpy(to, from, count) CALL_FROM_OPS(memcpy, to, from, count)
 
 #define hyp_pin_shared_mem(x, y) CALL_FROM_OPS(pin_shared_mem, x, y)
+
+#define hyp_unpin_shared_mem(x, y) CALL_FROM_OPS(unpin_shared_mem, x, y)
+
+#define hyp_alloc(sz) CALL_FROM_OPS(hyp_alloc, sz)
+
+#define hyp_free(p) CALL_FROM_OPS(hyp_free, p)
+
+#define hyp_puts(s) CALL_FROM_OPS(puts, s)
+
+#define hyp_putx64(n) CALL_FROM_OPS(putx64, n)
 
 #endif /* defined(__KVM_NVHE_HYPERVISOR__) && defined(MODULE) */
 

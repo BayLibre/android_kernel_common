@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-only
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
+#include <asm/kvm_pkvm.h>
+
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -100,6 +102,9 @@ static int __init gic_v3_its_pkvm_init(void)
 	}
 
 	hyp_gic_v3_its_protect_hvc_no = ret;
+
+	/* Topup the hyp memcache for metadata tracking */
+	__pkvm_topup_hyp_alloc(1);
 
 	ret = pkvm_register_el2_mod_call(hyp_gic_v3_redist_protect_hvc);
 	if (ret < 0) {
