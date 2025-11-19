@@ -512,6 +512,7 @@ void folio_add_lru(struct folio *folio)
 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
 
 	/* see the comment in lru_gen_add_folio() */
+	trace_android_vh_folio_add_lru(folio);
 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
 	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
 		bool bypass = false;
