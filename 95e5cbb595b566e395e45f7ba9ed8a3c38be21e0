@@ -16,6 +16,40 @@
       "message": "Please review, Ths",
       "revId": "95e5cbb595b566e395e45f7ba9ed8a3c38be21e0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80806b6c_cc43cc56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-11-20T18:35:17Z",
+      "side": 1,
+      "message": "Pulling in Neill for input.",
+      "revId": "95e5cbb595b566e395e45f7ba9ed8a3c38be21e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "564df063_cd3a7ec8",
+        "filename": "drivers/usb/host/xhci.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-11-20T18:35:17Z",
+      "side": 1,
+      "message": "Only hesitancy here is this looks like it ignores the full_reset value set by the vendorhook. Not sure exactly what the right approach would be here.",
+      "revId": "95e5cbb595b566e395e45f7ba9ed8a3c38be21e0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
