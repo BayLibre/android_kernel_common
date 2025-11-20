@@ -48,11 +48,6 @@ struct madvise_walk_private {
 	void *private;
 };
 
-struct madvise_behavior {
-	int behavior;
-	struct mmu_gather *tlb;
-};
-
 /*
  * Any behaviour which results in changes to the vma->vm_flags needs to
  * take mmap_lock for writing. Others, which simply traverse vmas, need
@@ -946,9 +941,8 @@ static bool madvise_dontneed_free_valid_vma(struct vm_area_struct *vma,
 static long madvise_dontneed_free(struct vm_area_struct *vma,
 				  struct vm_area_struct **prev,
 				  unsigned long start, unsigned long end,
-				  struct madvise_behavior *madv_behavior)
+				  int behavior)
 {
-	int behavior = madv_behavior->behavior;
 	struct mm_struct *mm = vma->vm_mm;
 
 	*prev = vma;
@@ -1108,10 +1102,8 @@ static long madvise_remove(struct vm_area_struct *vma,
 static int madvise_vma_behavior(struct vm_area_struct *vma,
 				struct vm_area_struct **prev,
 				unsigned long start, unsigned long end,
-				void *behavior_arg)
+				unsigned long behavior)
 {
-	struct madvise_behavior *arg = behavior_arg;
-	int behavior = arg->behavior;
 	int error;
 	struct anon_vma_name *anon_name;
 	unsigned long new_flags = vma->vm_flags;
@@ -1131,7 +1123,7 @@ static int madvise_vma_behavior(struct vm_area_struct *vma,
 	case MADV_FREE:
 	case MADV_DONTNEED:
 	case MADV_DONTNEED_LOCKED:
-		return madvise_dontneed_free(vma, prev, start, end, arg);
+		return madvise_dontneed_free(vma, prev, start, end, behavior);
 	case MADV_POPULATE_READ:
 	case MADV_POPULATE_WRITE:
 		return madvise_populate(vma, prev, start, end, behavior);
@@ -1316,10 +1308,10 @@ static bool process_madvise_behavior_valid(int behavior)
  */
 static
 int madvise_walk_vmas(struct mm_struct *mm, unsigned long start,
-		      unsigned long end, void *arg,
+		      unsigned long end, unsigned long arg,
 		      int (*visit)(struct vm_area_struct *vma,
 				   struct vm_area_struct **prev, unsigned long start,
-				   unsigned long end, void *arg))
+				   unsigned long end, unsigned long arg))
 {
 	struct vm_area_struct *vma;
 	struct vm_area_struct *prev;
@@ -1377,7 +1369,7 @@ int madvise_walk_vmas(struct mm_struct *mm, unsigned long start,
 static int madvise_vma_anon_name(struct vm_area_struct *vma,
 				 struct vm_area_struct **prev,
 				 unsigned long start, unsigned long end,
-				 void *anon_name)
+				 unsigned long anon_name)
 {
 	int error;
 
@@ -1387,7 +1379,7 @@ static int madvise_vma_anon_name(struct vm_area_struct *vma,
 
 	trace_android_vh_update_vma_flags(vma);
 	error = madvise_update_vma(vma, prev, start, end, vma->vm_flags,
-				   anon_name);
+				   (struct anon_vma_name *)anon_name);
 
 	/*
 	 * madvise() returns EAGAIN if kernel resources, such as
@@ -1419,7 +1411,7 @@ int madvise_set_anon_name(struct mm_struct *mm, unsigned long start,
 	if (end == start)
 		return 0;
 
-	return madvise_walk_vmas(mm, start, end, anon_name,
+	return madvise_walk_vmas(mm, start, end, (unsigned long)anon_name,
 				 madvise_vma_anon_name);
 }
 #endif /* CONFIG_ANON_VMA_NAME */
@@ -1545,7 +1537,6 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
 	int error;
 	size_t len;
 	struct blk_plug plug;
-	struct madvise_behavior madv_behavior = {.behavior = behavior};
 
 	if (!madvise_behavior_valid(behavior))
 		return -EINVAL;
@@ -1583,7 +1574,7 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
 	end = start + len;
 
 	blk_start_plug(&plug);
-	error = madvise_walk_vmas(mm, start, end, &madv_behavior,
+	error = madvise_walk_vmas(mm, start, end, behavior,
 			madvise_vma_behavior);
 	blk_finish_plug(&plug);
 
