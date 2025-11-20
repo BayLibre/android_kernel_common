@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9534ed82_a271eb37",
+        "filename": "arch/x86/include/asm/pkvm.h",
+        "patchSetId": 35
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-20T17:32:09Z",
+      "side": 1,
+      "message": "nit: we document other params here but don\u0027t document the least obvious one?\n\nI mean, it is not quite obvious that this is the base physical address of the IOMMU MMIO region and that we are using it _just_ to identify the IOMMU.",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "947e9bbc_1d01a2bd",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-20T17:32:09Z",
+      "side": 1,
+      "message": "Just a note: as we (I assume) already agreed, we\u0027d better enable protection of this memory in this patch already, not in some later patch. Otherwise it at least makes it confusing to review (\"what, we are just using whatever address the host gives us, without any validation?\").",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0f4ff19_458a618c",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-20T17:32:09Z",
+      "side": 1,
+      "message": "iommu_coherency() actually checks page table coherency, while here we are dealing with a context table, not a page table. So we should use ecap_coherent() instead (like the host driver\u0027s __iommu_flush_cache() does)?\n\nVT-d spec about ecap_coherent(): \"This field indicates if hardware access to the root, scalable-mode root, context, scalable-mode-context, scalable-mode PASIDdirectory, scalable-mode PASID-table, and interrupt-remap tables, and legacy-mode second-stage paging structures are coherent (snooped) or not.\" - i.e. when it comes to root, context and PASID tables (not page tables), it is for both legacy and scalable modes. Whereas ecap_smpwc() is for page tables only, thus shouldn\u0027t be used here.\n\n...BTW regarding iommu_coherency(), in the future (e.g. in 6.18) we\u0027d better reuse the host driver\u0027s iommu_paging_structure_coherency() helper (moving it to a header) instead of introducing our own one. (And maybe similarly for various other helpers.)",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0362a50d_22f6cf0c",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-20T17:32:09Z",
+      "side": 1,
+      "message": "Any reason why do this in the host, not in pKVM right away?\n\nFrom upstream commit 4c293add5874 (\"iommu/vt-d: Cleanup intel_context_flush_present()\") seems looks like it shouldn\u0027t be a problem to do this in pKVM right away.",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc0a0d6b_c36cddca",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-20T17:32:09Z",
+      "side": 1,
+      "message": "If sm_supported(iommu) is true, we shouldn\u0027t get here?",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4189fe9_d5967953",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-20T17:32:09Z",
+      "side": 1,
+      "message": "We enable device TLB even if the host didn\u0027t ask us to?\n\n...I think we should just always set CONTEXT_TT_MULTI_LEVEL. Even if we cared about supporting SATC on platforms that use legacy mode, see this comment in dmar_ats_supported():\n\n```\n\tsatcu \u003d dmar_find_matched_satc_unit(dev);\n\tif (satcu)\n\t\t/*\n\t\t * This device supports ATS as it is in SATC table.\n\t\t * When IOMMU is in legacy mode, enabling ATS is done\n\t\t * automatically by HW for the device that requires\n\t\t * ATS, hence OS should not enable this device ATS\n\t\t * to avoid duplicated TLB invalidation.\n\t\t */\n\t\treturn !(satcu-\u003eatc_required \u0026\u0026 !sm_supported(iommu));\n```",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "124be53a_6eeec568",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-20T17:32:09Z",
+      "side": 1,
+      "message": "nit: might be worth adding a helper e.g. level_to_agaw(), similar to agaw_to_level()?",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
