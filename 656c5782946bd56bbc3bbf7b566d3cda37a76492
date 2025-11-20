@@ -16,6 +16,24 @@
       "message": "So, any reason why we _need_ to remove this unused argument in 6.12?",
       "revId": "656c5782946bd56bbc3bbf7b566d3cda37a76492",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d82e1bf0_40001bfc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 35
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-20T15:01:15Z",
+      "side": 1,
+      "message": "While paravirtualizing context/pasid updates, I needed to call this function after the hypercall. The hypercall invocation path did not need the context and was not initialized. But this function was taking context arguement and then I figured out the argument was not used. So we could either pass NULL or cleanup this function and call without the argument. I chose the latter :-). The upstream has done this cleanup and renamed the function, thats the reason I did not send it upstream.\n\none example is here: 3786922/35/drivers/iommu/intel/pasid.c#693\n\nSorry that the commit message was not clear. I shall add more context",
+      "parentUuid": "155e5ffa_557baa2d",
+      "revId": "656c5782946bd56bbc3bbf7b566d3cda37a76492",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
