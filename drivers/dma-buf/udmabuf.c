@@ -392,7 +392,15 @@ static long udmabuf_create(struct miscdevice *device,
 	if (!ubuf)
 		return -ENOMEM;
 
+<<<<<<< HEAD   (5e798e91a9ca6249c3c7bb77bb1312e202c3b906 Merge 6.12.56 into android16-6.12-lts)
 	pglimit = (size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
+||||||| BASE   (4408a3d67ea73cb72b57992118eea98cf9a8e007 Linux 6.12.56)
+	INIT_LIST_HEAD(&ubuf->unpin_list);
+	pglimit = (size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
+=======
+	INIT_LIST_HEAD(&ubuf->unpin_list);
+	pglimit = ((u64)size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
+>>>>>>> BRANCH (8a243ecde1f6447b8e237f2c1c67c0bb67d16d67 Linux 6.12.57)
 	for (i = 0; i < head->count; i++) {
 		pgoff_t subpgcnt;
 
