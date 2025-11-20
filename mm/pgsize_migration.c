@@ -168,6 +168,8 @@ static __always_inline bool str_has_suffix(const char *str, const char *suffix)
  * VMAs of the current task.
  *
  * Returns true if in linker context, otherwise false.
+ *
+ * Caller must hold mmap lock in read mode.
  */
 static inline bool linker_ctx(void)
 {
@@ -179,7 +181,7 @@ static inline bool linker_ctx(void)
 	if (!regs)
 		return false;
 
-	vma = lock_vma_under_rcu(mm, instruction_pointer(regs));
+	vma = find_vma(mm, instruction_pointer(regs));
 
 	/*
 	 * lock_vma_under_rcu() is a try-lock that can fail if the
@@ -209,7 +211,7 @@ static inline bool linker_ctx(void)
 
 	file = vma->vm_file;
 	if (!file)
-		goto out;
+		return false;
 
 	if ((vma->vm_flags & VM_EXEC)) {
 		char buf[64];
@@ -227,13 +229,10 @@ static inline bool linker_ctx(void)
 		 *
 		 * Check the base name (linker64).
 		 */
-		if (!strcmp(kbasename(path), "linker64")) {
-			vma_end_read(vma);
+		if (!strcmp(kbasename(path), "linker64"))
 			return true;
-		}
 	}
-out:
-	vma_end_read(vma);
+
 	return false;
 }
 
