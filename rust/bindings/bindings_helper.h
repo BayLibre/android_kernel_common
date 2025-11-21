@@ -52,6 +52,7 @@ const gfp_t RUST_CONST_HELPER___GFP_ZERO = __GFP_ZERO;
 const gfp_t RUST_CONST_HELPER___GFP_HIGHMEM = ___GFP_HIGHMEM;
 const gfp_t RUST_CONST_HELPER___GFP_NOWARN = ___GFP_NOWARN;
 const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL = BLK_FEAT_ROTATIONAL;
+<<<<<<< HEAD   (a5c6f3e3e97a16ef8fb8ff83e7d3c6ab06d5c006 ANDROID: GKI: explain ANDROID_KABI_TYPE_STRING usage)
 
 #ifdef CONFIG_ASHMEM_RUST
 #include "../../drivers/staging/android/ashmem.h"
@@ -65,3 +66,7 @@ const size_t RUST_CONST_HELPER_ASHMEM_FULL_NAME_LEN = ASHMEM_FULL_NAME_LEN;
 #include "../../drivers/android/binder/rust_binder_events.h"
 #include "../../drivers/android/binder/page_range_helper.h"
 #endif
+||||||| BASE   (bcdbf4d7d9138d57ac33fe80242e308f587a1b36 tcp: cache RTAX_QUICKACK metric in a hot cache line)
+=======
+const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
+>>>>>>> BRANCH (4fc43debf5047d2469bdef3b25c02121afa7ef3d Linux 6.12.55)
