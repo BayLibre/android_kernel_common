@@ -1891,6 +1891,7 @@ static int f2fs_expand_inode_data(struct inode *inode, loff_t offset,
 next_alloc:
 		f2fs_down_write(&sbi->pin_sem);
 
+<<<<<<< HEAD   (ad3920935cd244fbc795556dbba8ed6a9941132d Merge 6.12.56 into android16-6.12-lts)
 		if (unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED))) {
 			if (has_not_enough_free_secs(sbi, 0, 0)) {
 				f2fs_up_write(&sbi->pin_sem);
@@ -1905,6 +1906,13 @@ next_alloc:
 
 		if (has_not_enough_free_secs(sbi, 0,
 				sbi->reserved_pin_section)) {
+||||||| BASE   (4408a3d67ea73cb72b57992118eea98cf9a8e007 Linux 6.12.56)
+			GET_SEC_FROM_SEG(sbi, overprovision_segments(sbi)))) {
+=======
+		if (has_not_enough_free_secs(sbi, 0, f2fs_sb_has_blkzoned(sbi) ?
+			ZONED_PIN_SEC_REQUIRED_COUNT :
+			GET_SEC_FROM_SEG(sbi, overprovision_segments(sbi)))) {
+>>>>>>> BRANCH (8a243ecde1f6447b8e237f2c1c67c0bb67d16d67 Linux 6.12.57)
 			f2fs_down_write(&sbi->gc_lock);
 			stat_inc_gc_call_count(sbi, FOREGROUND);
 			err = f2fs_gc(sbi, &gc_control);
