@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b006824d_2a87db7c",
+        "filename": "arch/x86/include/asm/pkvm.h",
+        "patchSetId": 35
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-21T17:33:34Z",
+      "side": 1,
+      "message": "Agreed. Documented phys as well.",
+      "parentUuid": "9534ed82_a271eb37",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "947e9bbc_1d01a2bd",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d65e45e_661f707d",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-21T17:33:34Z",
+      "side": 1,
+      "message": "Yeah, moved around the cls to make it more clear",
+      "parentUuid": "947e9bbc_1d01a2bd",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0f4ff19_458a618c",
@@ -48,6 +84,24 @@
       "writtenOn": "2025-11-20T17:32:09Z",
       "side": 1,
       "message": "iommu_coherency() actually checks page table coherency, while here we are dealing with a context table, not a page table. So we should use ecap_coherent() instead (like the host driver\u0027s __iommu_flush_cache() does)?\n\nVT-d spec about ecap_coherent(): \"This field indicates if hardware access to the root, scalable-mode root, context, scalable-mode-context, scalable-mode PASIDdirectory, scalable-mode PASID-table, and interrupt-remap tables, and legacy-mode second-stage paging structures are coherent (snooped) or not.\" - i.e. when it comes to root, context and PASID tables (not page tables), it is for both legacy and scalable modes. Whereas ecap_smpwc() is for page tables only, thus shouldn\u0027t be used here.\n\n...BTW regarding iommu_coherency(), in the future (e.g. in 6.18) we\u0027d better reuse the host driver\u0027s iommu_paging_structure_coherency() helper (moving it to a header) instead of introducing our own one. (And maybe similarly for various other helpers.)",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5cac851_3c7e371f",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-21T17:33:34Z",
+      "side": 1,
+      "message": "\u003e iommu_coherency() actually checks page table coherency, while here we are dealing with a context table, not a page table. So we should use ecap_coherent() instead (like the host driver\u0027s __iommu_flush_cache() does)?\n\nThanks for catching this, fixed it.\n\n\u003e ...BTW regarding iommu_coherency(), in the future (e.g. in 6.18) we\u0027d better reuse the host driver\u0027s iommu_paging_structure_coherency() helper (moving it to a header) instead of introducing our own one. (And maybe similarly for various other helpers.)\n\nmakes sense, will do",
+      "parentUuid": "e0f4ff19_458a618c",
       "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -71,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3cd2470e_df6118a6",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-21T17:33:34Z",
+      "side": 1,
+      "message": "Indeed, I was planning to do it. I had a comment in aosp/3786920/35/drivers/iommu/intel/pasid.c so that I do not forget(you commented on that comment - I admit that comment was very vague :-)). For moving it to pkvm, we need couple more values like ats_qdep, pfsid etc. I was trying to figure out if we can cache it in pkvm or pass it in param. Looks like its better to pass it in param for now and I shall move this to pkvm soon.",
+      "parentUuid": "0362a50d_22f6cf0c",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc0a0d6b_c36cddca",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 35
@@ -82,6 +154,24 @@
       "writtenOn": "2025-11-20T17:32:09Z",
       "side": 1,
       "message": "If sm_supported(iommu) is true, we shouldn\u0027t get here?",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "333d2e4a_607709ee",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-21T17:33:34Z",
+      "side": 1,
+      "message": "You are right, left over from an implementation where I had some common code between lm and sm . Thanks for catching, removed it.",
+      "parentUuid": "bc0a0d6b_c36cddca",
       "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -105,6 +195,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b2a62d46_b6b66d26",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-21T17:33:34Z",
+      "side": 1,
+      "message": "\u003e We enable device TLB even if the host didn\u0027t ask us to?\n\nI was minimally mimicking the host driver (`domain_context_mapping_one`), but it was not complete as info-\u003eats_supported is derived from more factors than just presence in satc.\n\n\u003e ...I think we should just always set CONTEXT_TT_MULTI_LEVEL. Even if we cared about supporting SATC on platforms that use legacy mode, see this comment in dmar_ats_supported():\n\nMakes sense. I was mimicking the host driver as mentioned above, but info-\u003eats_supported is derived a bit complicated fashion and not worth porting to pkvm. So I have modified as you suggested.",
+      "parentUuid": "e4189fe9_d5967953",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "124be53a_6eeec568",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 35
@@ -116,6 +224,24 @@
       "writtenOn": "2025-11-20T17:32:09Z",
       "side": 1,
       "message": "nit: might be worth adding a helper e.g. level_to_agaw(), similar to agaw_to_level()?",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6db3764_a8435819",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-21T17:33:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "124be53a_6eeec568",
       "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
