@@ -905,6 +905,7 @@ next:
 static void pv_domain_unmap(struct dmar_domain *domain, unsigned long start_pfn,
 			 unsigned long last_pfn, struct list_head *freelist)
 {
+	bool dma_strict_mode = domain->domain.type == IOMMU_DOMAIN_DMA;
 	union pkvm_iommu_page_donation *donation;
 	unsigned long flags;
 	int nr_pages;
@@ -917,7 +918,8 @@ static void pv_domain_unmap(struct dmar_domain *domain, unsigned long start_pfn,
 	donation = (union pkvm_iommu_page_donation *)this_cpu_ptr(&iommu_page_donation);
 	nr_pages = donation->nr_pages;
 
-	pkvm_hc_iommu_unmap_pages(virt_to_phys(domain->pgd), start_pfn, last_pfn);
+	pkvm_hc_iommu_unmap_pages(virt_to_phys(domain->pgd), start_pfn,
+			last_pfn, dma_strict_mode);
 	pr_debug("IOMMU: %s donated_pages: %d, returning %d pages to gatherlist\n",
 			__func__, (int)donation->nr_pages, (int)donation->nr_pages - nr_pages);
 
@@ -3753,7 +3755,8 @@ static size_t intel_iommu_unmap_pages(struct iommu_domain *domain,
 static void intel_iommu_tlb_sync(struct iommu_domain *domain,
 				 struct iommu_iotlb_gather *gather)
 {
-	cache_tag_flush_range(to_dmar_domain(domain), gather->start,
+	if (!pkvm_pviommu_enabled() || domain->type != IOMMU_DOMAIN_DMA)
+		cache_tag_flush_range(to_dmar_domain(domain), gather->start,
 			      gather->end, list_empty(&gather->freelist));
 	iommu_put_pages_list(&gather->freelist);
 }
