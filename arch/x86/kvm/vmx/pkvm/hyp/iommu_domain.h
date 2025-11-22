@@ -50,5 +50,5 @@ int pkvm_domain_detach_device(struct pkvm_iommu_domain *domain, u16 bdf, u32 pas
 
 unsigned long pkvm_iommu_domain_map(unsigned long param_va);
 unsigned long pkvm_iommu_domain_unmap(unsigned long pgd_gpa, unsigned long start_pfn,
-					unsigned long last_pfn);
+					unsigned long last_pfn, bool dma_strict_mode);
 #endif
