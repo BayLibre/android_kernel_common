@@ -129,6 +129,7 @@
   lookup_one_len_unlocked
   lookup_one_positive_unlocked
   lookup_one_unlocked
+  loop_process_cmd_list
   memcg_kmem_online_key
   memcg_page_state
   mem_cgroup_from_id
@@ -333,6 +334,7 @@
   __traceiter_android_vh_kvmalloc_node_use_vmalloc
   __traceiter_android_vh_look_around
   __traceiter_android_vh_look_around_migrate_folio
+  __traceiter_android_vh_loop_skip_queue_work
   __traceiter_android_vh_map_util_freq
   __traceiter_android_vh_mem_cgroup_alloc
   __traceiter_android_vh_mem_cgroup_css_offline
@@ -475,6 +477,7 @@
   __tracepoint_android_vh_kvmalloc_node_use_vmalloc
   __tracepoint_android_vh_look_around
   __tracepoint_android_vh_look_around_migrate_folio
+  __tracepoint_android_vh_loop_skip_queue_work
   __tracepoint_android_vh_map_util_freq
   __tracepoint_android_vh_mem_cgroup_alloc
   __tracepoint_android_vh_mem_cgroup_css_offline
