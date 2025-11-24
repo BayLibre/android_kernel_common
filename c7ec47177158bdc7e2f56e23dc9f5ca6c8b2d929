@@ -249,6 +249,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "656f9df0_f7bd8b56",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-24T11:35:10Z",
+      "side": 1,
+      "message": "This makes it insecure, right? We should never enable Device TLB (i.e. effectively let the device bypass the IOMMU) unless we know that the device is trusted to implement Device TLB securely independently of the host, and we use is_dev_in_satc() as the criterion for that.\n\nTherefore, we have 2 cases:\n- The device is not in SATC, but the host asks pKVM to enable device TLB for it, by passing ats_supported\u003d1. In such can we should _deny_ that to the host.\n- The device is in SATC. In such case, according to the comment I pasted above, in legacy mode Device TLB is enabled transparently by hardware anyway, and setting CONTEXT_TT_DEV_IOTLB is redundant and undesirable (and the host doesn\u0027t do it).\n\nTherefore, we should just always set CONTEXT_TT_MULTI_LEVEL, and we don\u0027t need the ats_supported parameter for this hypercall (for legacy mode), right?\n\nTherefore,",
+      "parentUuid": "f6d07292_e2e742a5",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "124be53a_6eeec568",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 35
