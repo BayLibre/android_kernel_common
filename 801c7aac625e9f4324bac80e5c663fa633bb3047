@@ -52,6 +52,24 @@
       "parentUuid": "a6265db2_641acd52",
       "revId": "801c7aac625e9f4324bac80e5c663fa633bb3047",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ead53526_a8a12300",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 66
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-24T11:19:50Z",
+      "side": 1,
+      "message": "There is no functional change and dependency issues. The only reason I moved this patch down, is because this also refactors some code out to shadow_iommu.c. When this patch was far apart, making changes to iommu.c caused merge conflicts. By moving this down and getting it reviewed soon, we can minimize the merge conflicts when we modify iommu.c",
+      "parentUuid": "948bc743_12d4b76c",
+      "revId": "801c7aac625e9f4324bac80e5c663fa633bb3047",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
