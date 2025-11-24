@@ -34,6 +34,24 @@
       "parentUuid": "55937d44_02bd179c",
       "revId": "801c7aac625e9f4324bac80e5c663fa633bb3047",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "948bc743_12d4b76c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 66
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-24T11:16:48Z",
+      "side": 1,
+      "message": "Merging aosp/3590994 earlier makes sense to me, but that is not what I was asking about. My question was: any reason why implement QI paravirtualization _before_ the rest of paravirtualization (context/PASID table updates etc)? Anything special about QI paravirtualization that makes the rest depend on it?",
+      "parentUuid": "a6265db2_641acd52",
+      "revId": "801c7aac625e9f4324bac80e5c663fa633bb3047",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
