@@ -16,6 +16,24 @@
       "message": "Any particular reason for moving these QI invalidation patches earlier in the series than most other patches?",
       "revId": "801c7aac625e9f4324bac80e5c663fa633bb3047",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6265db2_641acd52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 66
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-24T11:00:58Z",
+      "side": 1,
+      "message": "The main reason is to bring down all shadow_iommu/iommu refactor changes as much as possible. It has been a pain point to resolve merge conflicts when ever there is a change in iommu.c. The hope is to get first few patches(hopefully uptill here) to be merged as soon as possible so that new external changes to pviommu if any will land directly on shadow_iommu.c and does not cause merge conlict. I assume there will not be much changes now. Wanted to do this for sometime, but got a bit delayed. I hope most of the changes uptill this patch is mostly straight forward(except of potential bugs) and could get reviewed soon and merged. The introduction of PVIOMMU config(aosp/3590994) is a major overhaul but functionally does not change much code. I shall try to split that patch into 2 as Greg suggested and hopefully will become a tad more easier to review I guess :-)",
+      "parentUuid": "55937d44_02bd179c",
+      "revId": "801c7aac625e9f4324bac80e5c663fa633bb3047",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
