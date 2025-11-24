@@ -1621,6 +1621,69 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag)
 	pgofs =	(pgoff_t)map->m_lblk;
 	end = pgofs + maxblocks;
 
+<<<<<<< HEAD   (a3ca0e90726bf2b10c4b24ea8c7a20ded52671a3 Merge a0cbe40d17f8 ("f2fs: add a f2fs_get_block_locked helpe)
+||||||| BASE   (a0cbe40d17f8de8ec7a5996903304eb450b36bc5 f2fs: add a f2fs_get_block_locked helper)
+	if (!create && f2fs_lookup_read_extent_cache(inode, pgofs, &ei)) {
+		if (f2fs_lfs_mode(sbi) && flag == F2FS_GET_BLOCK_DIO &&
+							map->m_may_create)
+			goto next_dnode;
+
+		map->m_pblk = ei.blk + pgofs - ei.fofs;
+		map->m_len = min((pgoff_t)maxblocks, ei.fofs + ei.len - pgofs);
+		map->m_flags = F2FS_MAP_MAPPED;
+		if (map->m_next_extent)
+			*map->m_next_extent = pgofs + map->m_len;
+
+		/* for hardware encryption, but to avoid potential issue in future */
+		if (flag == F2FS_GET_BLOCK_DIO)
+			f2fs_wait_on_block_writeback_range(inode,
+						map->m_pblk, map->m_len);
+
+		if (map->m_multidev_dio) {
+			block_t blk_addr = map->m_pblk;
+
+			bidx = f2fs_target_device_index(sbi, map->m_pblk);
+
+			map->m_bdev = FDEV(bidx).bdev;
+			map->m_pblk -= FDEV(bidx).start_blk;
+			map->m_len = min(map->m_len,
+				FDEV(bidx).end_blk + 1 - map->m_pblk);
+
+			if (map->m_may_create)
+				f2fs_update_device_state(sbi, inode->i_ino,
+							blk_addr, map->m_len);
+		}
+		goto out;
+	}
+
+=======
+	if (map->m_may_create ||
+	    !f2fs_lookup_read_extent_cache(inode, pgofs, &ei))
+		goto next_dnode;
+
+	/* Found the map in read extent cache */
+	map->m_pblk = ei.blk + pgofs - ei.fofs;
+	map->m_len = min((pgoff_t)maxblocks, ei.fofs + ei.len - pgofs);
+	map->m_flags = F2FS_MAP_MAPPED;
+	if (map->m_next_extent)
+		*map->m_next_extent = pgofs + map->m_len;
+
+	/* for hardware encryption, but to avoid potential issue in future */
+	if (flag == F2FS_GET_BLOCK_DIO)
+		f2fs_wait_on_block_writeback_range(inode,
+						map->m_pblk, map->m_len);
+
+	if (map->m_multidev_dio) {
+		bidx = f2fs_target_device_index(sbi, map->m_pblk);
+
+		map->m_bdev = FDEV(bidx).bdev;
+		map->m_pblk -= FDEV(bidx).start_blk;
+		map->m_len = min(map->m_len,
+				FDEV(bidx).end_blk + 1 - map->m_pblk);
+	}
+	goto out;
+
+>>>>>>> BRANCH (9cadfcda1ea0377b2c0223c914e35ba1cdcf851e f2fs: remove the create argument to f2fs_map_blocks)
 next_dnode:
 	if (map->m_may_create)
 		f2fs_map_lock(sbi, flag);
@@ -1680,9 +1743,61 @@ next_block:
 			err = -EIO;
 			goto sync_out;
 		}
+<<<<<<< HEAD   (a3ca0e90726bf2b10c4b24ea8c7a20ded52671a3 Merge a0cbe40d17f8 ("f2fs: add a f2fs_get_block_locked helpe)
 
 		blkaddr = dn.data_blkaddr;
 		if (is_hole)
+||||||| BASE   (a0cbe40d17f8de8ec7a5996903304eb450b36bc5 f2fs: add a f2fs_get_block_locked helper)
+	} else {
+		if (create) {
+			if (unlikely(f2fs_cp_error(sbi))) {
+				err = -EIO;
+				goto sync_out;
+			}
+			if (flag == F2FS_GET_BLOCK_PRE_AIO) {
+				if (blkaddr == NULL_ADDR) {
+					prealloc++;
+					last_ofs_in_node = dn.ofs_in_node;
+				}
+			} else {
+				WARN_ON(flag != F2FS_GET_BLOCK_PRE_DIO &&
+					flag != F2FS_GET_BLOCK_DIO);
+				err = __allocate_data_block(&dn,
+							map->m_seg_type);
+				if (!err) {
+					if (flag == F2FS_GET_BLOCK_PRE_DIO)
+						file_need_truncate(inode);
+					set_inode_flag(inode, FI_APPEND_WRITE);
+				}
+			}
+			if (err)
+				goto sync_out;
+=======
+	} else {
+		if (map->m_may_create) {
+			if (unlikely(f2fs_cp_error(sbi))) {
+				err = -EIO;
+				goto sync_out;
+			}
+			if (flag == F2FS_GET_BLOCK_PRE_AIO) {
+				if (blkaddr == NULL_ADDR) {
+					prealloc++;
+					last_ofs_in_node = dn.ofs_in_node;
+				}
+			} else {
+				WARN_ON(flag != F2FS_GET_BLOCK_PRE_DIO &&
+					flag != F2FS_GET_BLOCK_DIO);
+				err = __allocate_data_block(&dn,
+							map->m_seg_type);
+				if (!err) {
+					if (flag == F2FS_GET_BLOCK_PRE_DIO)
+						file_need_truncate(inode);
+					set_inode_flag(inode, FI_APPEND_WRITE);
+				}
+			}
+			if (err)
+				goto sync_out;
+>>>>>>> BRANCH (9cadfcda1ea0377b2c0223c914e35ba1cdcf851e f2fs: remove the create argument to f2fs_map_blocks)
 			map->m_flags |= F2FS_MAP_NEW;
 	} else if (is_hole) {
 		if (f2fs_compressed_file(inode) &&
