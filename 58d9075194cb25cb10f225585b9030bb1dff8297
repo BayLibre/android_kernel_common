@@ -52,6 +52,24 @@
       "parentUuid": "b11b5323_224f67f0",
       "revId": "58d9075194cb25cb10f225585b9030bb1dff8297",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ec27f3d_a97c8dda",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2025-11-24T22:08:05Z",
+      "side": 1,
+      "message": "Chatted offline.\n\nWe actually want this command:\n\nhttps://source.android.com/docs/core/architecture/kernel/howto-abi-monitor#build-abi\n```\n$ tools/bazel run //common:kernel_aarch64_abi_dist -- --destdir\u003dout/dist\n...\nINFO: Installing to /code2/common-android16-6.12-desktop/out/dist\nERROR: ABI DIFFERENCES HAVE BEEN DETECTED!\nERROR: Report summary:\n\n1 function symbol(s) added\n  \u0027void drm_show_memory_stats(struct drm_printer*, struct drm_file*)\u0027\n```\n\n```\n$ cat out/dist/abi_stgdiff/abi.report.short\n1 function symbol(s) added\n  \u0027void drm_show_memory_stats(struct drm_printer*, struct drm_file*)\u0027\n```",
+      "parentUuid": "f1f9a7f8_8ada1b52",
+      "revId": "58d9075194cb25cb10f225585b9030bb1dff8297",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
