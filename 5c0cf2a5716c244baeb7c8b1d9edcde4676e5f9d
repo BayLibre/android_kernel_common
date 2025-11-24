@@ -16,6 +16,24 @@
       "message": "Should I update the symbols from the currently submitted changes now, or wait until later to add all the symbols that are used in 6.12 and also needed in 6.18 into the list at once?",
       "revId": "5c0cf2a5716c244baeb7c8b1d9edcde4676e5f9d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99bb33c5_f2c666e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-11-24T19:00:27Z",
+      "side": 1,
+      "message": "When submitting a patch that creates new symbols, add the symbols for the new symbols at the end of the series. For pre-existing symbols that you need, please submit a separate patch (maybe breaking them up by topic, as I know Greg has pushed back on mass symbol additions in a single patch)",
+      "parentUuid": "f10b7ca6_d7927470",
+      "revId": "5c0cf2a5716c244baeb7c8b1d9edcde4676e5f9d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
