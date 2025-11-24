@@ -114,8 +114,28 @@ static vm_fault_t f2fs_vm_page_mkwrite(struct vm_fault *vmf)
 	set_new_dnode(&dn, inode, NULL, NULL, 0);
 	if (need_alloc) {
 		/* block allocation */
+<<<<<<< HEAD   (52ae440ced60c2d7df2dbedb34924958f70a3e7d Merge 27e8acaa3b3c ("PCI: tegra194: Reset BARs when running )
 		err = f2fs_get_block_locked(&dn, page->index);
 	} else {
+||||||| BASE   (27e8acaa3b3c070696f42c62e9de56fef53b34aa PCI: tegra194: Reset BARs when running in PCIe endpoint mode)
+		f2fs_do_map_lock(sbi, F2FS_GET_BLOCK_PRE_AIO, true);
+		set_new_dnode(&dn, inode, NULL, NULL, 0);
+		err = f2fs_get_block(&dn, page->index);
+		f2fs_do_map_lock(sbi, F2FS_GET_BLOCK_PRE_AIO, false);
+	}
+
+#ifdef CONFIG_F2FS_FS_COMPRESSION
+	if (!need_alloc) {
+		set_new_dnode(&dn, inode, NULL, NULL, 0);
+=======
+		set_new_dnode(&dn, inode, NULL, NULL, 0);
+		err = f2fs_get_block_locked(&dn, page->index);
+	}
+
+#ifdef CONFIG_F2FS_FS_COMPRESSION
+	if (!need_alloc) {
+		set_new_dnode(&dn, inode, NULL, NULL, 0);
+>>>>>>> BRANCH (a0cbe40d17f8de8ec7a5996903304eb450b36bc5 f2fs: add a f2fs_get_block_locked helper)
 		err = f2fs_get_dnode_of_data(&dn, page->index, LOOKUP_NODE);
 		f2fs_put_dnode(&dn);
 		if (f2fs_is_pinned_file(inode) &&

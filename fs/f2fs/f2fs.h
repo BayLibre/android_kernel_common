@@ -3818,7 +3818,16 @@ struct page *f2fs_get_lock_data_page(struct inode *inode, pgoff_t index,
 struct page *f2fs_get_new_data_page(struct inode *inode,
 			struct page *ipage, pgoff_t index, bool new_i_size);
 int f2fs_do_write_data_page(struct f2fs_io_info *fio);
+<<<<<<< HEAD   (52ae440ced60c2d7df2dbedb34924958f70a3e7d Merge 27e8acaa3b3c ("PCI: tegra194: Reset BARs when running )
 int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag);
+||||||| BASE   (27e8acaa3b3c070696f42c62e9de56fef53b34aa PCI: tegra194: Reset BARs when running in PCIe endpoint mode)
+void f2fs_do_map_lock(struct f2fs_sb_info *sbi, int flag, bool lock);
+int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map,
+			int create, int flag);
+=======
+int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map,
+			int create, int flag);
+>>>>>>> BRANCH (a0cbe40d17f8de8ec7a5996903304eb450b36bc5 f2fs: add a f2fs_get_block_locked helper)
 int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
 			u64 start, u64 len);
 int f2fs_encrypt_one_page(struct f2fs_io_info *fio);

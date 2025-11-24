@@ -1270,6 +1270,36 @@ int f2fs_reserve_block(struct dnode_of_data *dn, pgoff_t index)
 	return err;
 }
 
+<<<<<<< HEAD   (52ae440ced60c2d7df2dbedb34924958f70a3e7d Merge 27e8acaa3b3c ("PCI: tegra194: Reset BARs when running )
+||||||| BASE   (27e8acaa3b3c070696f42c62e9de56fef53b34aa PCI: tegra194: Reset BARs when running in PCIe endpoint mode)
+int f2fs_get_block(struct dnode_of_data *dn, pgoff_t index)
+{
+	struct extent_info ei = {0, };
+	struct inode *inode = dn->inode;
+
+	if (f2fs_lookup_read_extent_cache(inode, index, &ei)) {
+		dn->data_blkaddr = ei.blk + index - ei.fofs;
+		return 0;
+	}
+
+	return f2fs_reserve_block(dn, index);
+}
+
+=======
+static int f2fs_get_block(struct dnode_of_data *dn, pgoff_t index)
+{
+	struct extent_info ei = {0, };
+	struct inode *inode = dn->inode;
+
+	if (f2fs_lookup_read_extent_cache(inode, index, &ei)) {
+		dn->data_blkaddr = ei.blk + index - ei.fofs;
+		return 0;
+	}
+
+	return f2fs_reserve_block(dn, index);
+}
+
+>>>>>>> BRANCH (a0cbe40d17f8de8ec7a5996903304eb450b36bc5 f2fs: add a f2fs_get_block_locked helper)
 struct page *f2fs_get_read_data_page(struct inode *inode, pgoff_t index,
 				     blk_opf_t op_flags, bool for_write,
 				     pgoff_t *next_pgofs)
@@ -1497,7 +1527,13 @@ static int __allocate_data_block(struct dnode_of_data *dn, int seg_type)
 	return 0;
 }
 
+<<<<<<< HEAD   (52ae440ced60c2d7df2dbedb34924958f70a3e7d Merge 27e8acaa3b3c ("PCI: tegra194: Reset BARs when running )
 static void f2fs_map_lock(struct f2fs_sb_info *sbi, int flag)
+||||||| BASE   (27e8acaa3b3c070696f42c62e9de56fef53b34aa PCI: tegra194: Reset BARs when running in PCIe endpoint mode)
+void f2fs_do_map_lock(struct f2fs_sb_info *sbi, int flag, bool lock)
+=======
+static void f2fs_do_map_lock(struct f2fs_sb_info *sbi, int flag, bool lock)
+>>>>>>> BRANCH (a0cbe40d17f8de8ec7a5996903304eb450b36bc5 f2fs: add a f2fs_get_block_locked helper)
 {
 	if (flag == F2FS_GET_BLOCK_PRE_AIO)
 		f2fs_down_read(&sbi->node_change);
@@ -1582,6 +1618,18 @@ static bool f2fs_map_blocks_cached(struct inode *inode,
 		map->m_bdev = inode->i_sb->s_bdev;
 	}
 	return true;
+}
+
+int f2fs_get_block_locked(struct dnode_of_data *dn, pgoff_t index)
+{
+	struct f2fs_sb_info *sbi = F2FS_I_SB(dn->inode);
+	int err;
+
+	f2fs_do_map_lock(sbi, F2FS_GET_BLOCK_PRE_AIO, true);
+	err = f2fs_get_block(dn, index);
+	f2fs_do_map_lock(sbi, F2FS_GET_BLOCK_PRE_AIO, false);
+
+	return err;
 }
 
 /*
