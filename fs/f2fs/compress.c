@@ -1240,8 +1240,14 @@ int f2fs_truncate_partial_cluster(struct inode *inode, u64 from, bool lock)
 		int i;
 
 		for (i = cluster_size - 1; i >= 0; i--) {
+<<<<<<< HEAD   (bb362a4b5ee3881ccfd3a565d7560dee2c7155e6 Revert "block: make REQ_OP_ZONE_OPEN a write operation")
 			struct folio *folio = page_folio(rpages[i]);
 			loff_t start = folio->index << PAGE_SHIFT;
+||||||| BASE   (7475d784169c7df48b0c55525fb862e06674d63c Linux 6.12.58)
+			loff_t start = rpages[i]->index << PAGE_SHIFT;
+=======
+			loff_t start = (loff_t)rpages[i]->index << PAGE_SHIFT;
+>>>>>>> BRANCH (d5dc97879a97b328a89ec092271faa3db9f2bff3 Linux 6.12.59)
 
 			if (from <= start) {
 				folio_zero_segment(folio, 0, folio_size(folio));
