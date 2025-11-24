@@ -267,6 +267,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1a6ee089_5cc8c187",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-24T12:27:46Z",
+      "side": 1,
+      "message": "\u003e The device is not in SATC, but the host asks pKVM to enable device TLB for it, by passing ats_supported\u003d1. In such can we should deny that to the host.\n\nYou are right, we could use `is_dev_in_satc` to validate that.\n\n\u003e The device is in SATC. In such case, according to the comment I pasted above, in legacy mode Device TLB is enabled transparently by hardware anyway, and setting CONTEXT_TT_DEV_IOTLB is redundant and undesirable (and the host doesn\u0027t do it).\n\nThe host actually does it I think:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android16-6.12-desktop/drivers/iommu/intel/iommu.c#2735\n\nThats the reason I thought I shall keep this change.\n\nFrom reading the code and VT-d spec(8.8), what I understand is - ATC_REQUIRED flag is set in SATC if all the devices enumerated in the table need ATC to be enabled. I think this would make the hardware enable it transparently. if ATC_REQUIRED is unset, then it might not be transparent and host driver sets tt\u003dCONTEXT_TT_DEV_IOTLB. VT-d spec also says, the device should be able to function(with probably reduced performance) if ATC is not enabled. So it would not harm not to set CONTEXT_TT_DEV_IOTLB I guess.\n\nWhat do you feel about adding `is_dev_in_satc()` check for security validation and keeping this change? I shall remove this code if you feel its not worth doing it for legacy mode",
+      "parentUuid": "656f9df0_f7bd8b56",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "124be53a_6eeec568",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 35
