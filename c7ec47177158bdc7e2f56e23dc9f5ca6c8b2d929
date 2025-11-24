@@ -285,6 +285,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d6affe9_6ce25633",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-24T13:07:34Z",
+      "side": 1,
+      "message": "Ok, after a closer look, I see dmar_ats_supported() actually returns true in legacy mode in the case when ATS is supported but _not_ required by the given device (i.e. if the device is in SATC but with ATC_REQUIRED\u003d0). So yeah, to support this, we can let the host pass ats_supported\u003d1 (although we have no hardware to test that on). But yeah, we absolutely should check is_dev_in_satc() here before allowing that.\n\n(According to VT-d spec section 4.4, any devices in SATC are required to implement \"HPA isolation boundary\" and thus are trusted, regardless of their ATC_REQUIRED value.)\n\n\u003e ATC_REQUIRED flag is set in SATC if all the devices enumerated in the table need ATC to be enabled. I think this would make the hardware enable it transparently.\n\nI believe in scalable mode it does _not_ make the hardware enable it transparently. We saw that on PTL: devices with ATC_REQUIRED didn\u0027t work successfully when the Device TLB Enable bit was cleared in their scalable-mode context entries. But in legacy mode, as this comment in the IOMMU driver code suggests, it is different (I\u0027m not sure if this difference is documented in the VT-d spec).",
+      "parentUuid": "1a6ee089_5cc8c187",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "124be53a_6eeec568",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 35
