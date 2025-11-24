@@ -231,6 +231,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f6d07292_e2e742a5",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 35
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-24T11:03:14Z",
+      "side": 1,
+      "message": "While looking at it again, I feel it would be better to keep it like what host does. So now, I am passing ats_supported as a param to pkvm so that pkvm can do what host does.",
+      "parentUuid": "31d9d58d_5c14d2a5",
+      "revId": "c7ec47177158bdc7e2f56e23dc9f5ca6c8b2d929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "124be53a_6eeec568",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 35
