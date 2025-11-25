@@ -10,9 +10,12 @@
 #include <linux/debugfs.h>
 #include <linux/kernel.h>
 #include <linux/mmzone.h>
+#include <linux/module.h>
 #include <linux/nodemask.h>
 #include <linux/printk.h>
 #include <linux/spinlock.h>
+
+struct dentry *mmdir;
 
 static inline void create_migrate_type_subdirs(struct dentry *orderdir)
 {
@@ -76,8 +79,6 @@ static inline void create_nodes_subdirs(struct dentry *mmdir)
 
 static int __init page_alloc_debugfs_init(void)
 {
-	struct dentry *mmdir;
-
 	pr_info("Starting");
 	mmdir = debugfs_create_dir("mm", NULL);
 	if (IS_ERR(mmdir))
@@ -88,5 +89,15 @@ static int __init page_alloc_debugfs_init(void)
 	return 0;
 }
 
-subsys_initcall(page_alloc_debugfs_init);
+static void __exit page_alloc_debugfs_exit(void)
+{
+	debugfs_remove_recursive(mmdir);
+}
+
+module_init(page_alloc_debugfs_init);
+module_exit(page_alloc_debugfs_exit);
+
+MODULE_AUTHOR("Juan Yescas");
+MODULE_DESCRIPTION("Module to alloc pages using the debugfs filesystem");
+MODULE_LICENSE("GPL v2");
 
