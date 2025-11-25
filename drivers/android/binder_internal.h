@@ -77,8 +77,8 @@ extern const struct file_operations binder_fops;
 extern char *binder_devices_param;
 
 #ifdef CONFIG_ANDROID_BINDERFS
-extern bool is_binderfs_device(const struct inode *inode);
-extern struct dentry *binderfs_create_file(struct dentry *dir, const char *name,
+bool is_binderfs_device(const struct inode *inode);
+struct dentry *binderfs_create_file(struct dentry *dir, const char *name,
 					   const struct file_operations *fops,
 					   void *data);
 #else
@@ -96,7 +96,8 @@ static inline struct dentry *binderfs_create_file(struct dentry *dir,
 #endif
 
 #ifdef CONFIG_ANDROID_BINDERFS
-extern int __init init_binderfs(void);
+int __init init_binderfs(void);
+void unload_binderfs(void);
 #else
 static inline int __init init_binderfs(void)
 {
