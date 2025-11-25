@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39e4fb4b_20a083e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2025-11-25T19:51:04Z",
+      "side": 1,
+      "message": "Please refer to my other comment. I have a bug for upstreaming this new feature -- http://b/463707572.",
+      "parentUuid": "f75d7e0f_a4adc934",
+      "revId": "3fe8111cdf7d18fe638983c51cdbcde63c97db38",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb845e7f_d1d0bddf",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-11-25T04:42:33Z",
       "side": 1,
       "message": "With only a limited understanding, It seems like this should somehow tie into the normal reboot-reason handling? Could the commit message be improved to explain why it requires a vendorhook instead of extending kernel_shutdown_prepare()?",
+      "revId": "3fe8111cdf7d18fe638983c51cdbcde63c97db38",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ba5396f_dd8e0494",
+        "filename": "kernel/reboot.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2025-11-25T19:51:04Z",
+      "side": 1,
+      "message": "We have upstreamed the normal reboot reasoning logic already for Pixel 6 -- https://lore.kernel.org/all/20250401-syscon-reboot-reset-mode-v5-0-5b9357442363@linaro.org/.\n\nThis is a special emergency shutdown/reboot path that doesn\u0027t support setting the reboot reason. So additional work needs to be added to handle that. I filed http://b/463707572 for this and asked @draszik@google.com to take a look.\n\nIn the meantime, this helps debug stability issues when the device abnormally shuts down as seen in http://b/406502591",
+      "parentUuid": "eb845e7f_d1d0bddf",
       "revId": "3fe8111cdf7d18fe638983c51cdbcde63c97db38",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
