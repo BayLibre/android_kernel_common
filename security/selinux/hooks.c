@@ -93,6 +93,7 @@
 #include <linux/fanotify.h>
 #include <linux/io_uring/cmd.h>
 #include <uapi/linux/lsm.h>
+#include <linux/vm_sockets.h>
 
 #include "avc.h"
 #include "objsec.h"
@@ -4869,6 +4870,7 @@ static int selinux_socket_socketpair(struct socket *socka,
 
 static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, int addrlen)
 {
+	// pr_warn("mtgvsock: selinux_socket_bind");
 	struct sock *sk = sock->sk;
 	struct sk_security_struct *sksec = selinux_sock(sk);
 	u16 family;
@@ -4990,6 +4992,40 @@ static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, in
 		if (err)
 			goto out;
 	}
+
+	if (family == PF_VSOCK) {
+		// pr_warn("mtgvsock: PF_VSOCK");
+		struct sockaddr_vm *addr_vm;
+		u32 sid;
+
+		if (addrlen < sizeof(struct sockaddr_vm))
+			return -EINVAL;
+
+		addr_vm = (struct sockaddr_vm *)address;
+		if (addr_vm->svm_port != VMADDR_PORT_ANY) {
+			// pr_warn("mtgvsock: port != VMADDR_PORT_ANY: %d, cid: %d", addr_vm->svm_port, addr_vm->svm_cid);
+			err = sel_netport_sid(sk->sk_protocol,
+					      addr_vm->svm_port, &sid);
+			if (err)
+				goto out;
+
+			err = avc_has_perm(sksec->sid, sid,
+					   sksec->sclass,
+					   SOCKET__NAME_BIND, NULL);
+			if (err)
+				goto out;
+		}
+
+		err = sel_netnode_sid((char *)&addr_vm->svm_cid, family, &sid);
+		if (err)
+			goto out;
+
+		err = avc_has_perm(sksec->sid, sid,
+				   sksec->sclass, VSOCK_SOCKET__NODE_BIND,
+				   NULL);
+		if (err)
+			goto out;
+	}
 out:
 	return err;
 err_af:
@@ -5026,11 +5062,13 @@ static int selinux_socket_connect_helper(struct socket *sock,
 	 * for the port.
 	 */
 	if (sksec->sclass == SECCLASS_TCP_SOCKET ||
-	    sksec->sclass == SECCLASS_SCTP_SOCKET) {
+	    sksec->sclass == SECCLASS_SCTP_SOCKET ||
+	    sksec->sclass == SECCLASS_VSOCK_SOCKET) {
 		struct common_audit_data ad;
 		struct lsm_network_audit net = {0,};
 		struct sockaddr_in *addr4 = NULL;
 		struct sockaddr_in6 *addr6 = NULL;
+		struct sockaddr_vm *addr_vm = NULL;
 		unsigned short snum;
 		u32 sid, perm;
 
@@ -5051,6 +5089,12 @@ static int selinux_socket_connect_helper(struct socket *sock,
 			if (addrlen < SIN6_LEN_RFC2133)
 				return -EINVAL;
 			snum = ntohs(addr6->sin6_port);
+			break;
+		case AF_VSOCK:
+			addr_vm = (struct sockaddr_vm *)address;
+			if (addrlen < sizeof(struct sockaddr_vm))
+				return -EINVAL;
+			snum = addr_vm->svm_port;
 			break;
 		default:
 			/* Note that SCTP services expect -EINVAL, whereas
@@ -5073,12 +5117,18 @@ static int selinux_socket_connect_helper(struct socket *sock,
 		case SECCLASS_SCTP_SOCKET:
 			perm = SCTP_SOCKET__NAME_CONNECT;
 			break;
+		case SECCLASS_VSOCK_SOCKET:
+			perm = VSOCK_SOCKET__NAME_CONNECT;
+			break;
 		}
 
 		ad.type = LSM_AUDIT_DATA_NET;
 		ad.u.net = &net;
 		ad.u.net->dport = htons(snum);
 		ad.u.net->family = address->sa_family;
+		// if (perm == VSOCK_SOCKET__NAME_CONNECT && snum == 5555) {
+		// 	pr_warn("mtgvsock: about to call connect avc_has_perm for vsock: port: %d, sid: %d", snum, sid);Z
+		// }
 		err = avc_has_perm(sksec->sid, sid, sksec->sclass, perm, &ad);
 		if (err)
 			return err;

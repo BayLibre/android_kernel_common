@@ -91,6 +91,20 @@ static unsigned int sel_netnode_hashfn_ipv6(const struct in6_addr *addr)
 }
 
 /**
+ * sel_netnode_hashfn_vsock - VSOCK hashing function for the node table
+ * @addr: VSOCK address (CID)
+ *
+ * Description:
+ * This is the VSOCK hashing function for the node interface table, it returns
+ * the bucket number for the given VSOCK CID.
+ *
+ */
+static unsigned int sel_netnode_hashfn_vsock(u32 addr)
+{
+	return (addr & (SEL_NETNODE_HASH_SIZE - 1));
+}
+
+/**
  * sel_netnode_find - Search for a node record
  * @addr: IP address
  * @family: address family
@@ -112,6 +126,9 @@ static struct sel_netnode *sel_netnode_find(const void *addr, u16 family)
 	case PF_INET6:
 		idx = sel_netnode_hashfn_ipv6(addr);
 		break;
+	case PF_VSOCK:
+		idx = sel_netnode_hashfn_vsock(*(const u32 *)addr);
+		break;
 	default:
 		BUG();
 		return NULL;
@@ -127,6 +144,10 @@ static struct sel_netnode *sel_netnode_find(const void *addr, u16 family)
 			case PF_INET6:
 				if (ipv6_addr_equal(&node->nsec.addr.ipv6,
 						    addr))
+					return node;
+				break;
+			case PF_VSOCK:
+				if (node->nsec.addr.vsock == *(const u32 *)addr)
 					return node;
 				break;
 			}
@@ -152,6 +173,9 @@ static void sel_netnode_insert(struct sel_netnode *node)
 		break;
 	case PF_INET6:
 		idx = sel_netnode_hashfn_ipv6(&node->nsec.addr.ipv6);
+		break;
+	case PF_VSOCK:
+		idx = sel_netnode_hashfn_vsock(node->nsec.addr.vsock);
 		break;
 	default:
 		BUG();
@@ -217,6 +241,12 @@ static int sel_netnode_sid_slow(const void *addr, u16 family, u32 *sid)
 					addr, sizeof(struct in6_addr), sid);
 		if (new)
 			new->nsec.addr.ipv6 = *(const struct in6_addr *)addr;
+		break;
+	case PF_VSOCK:
+		ret = security_node_sid(PF_VSOCK,
+					addr, sizeof(u32), sid);
+		if (new)
+			new->nsec.addr.vsock = *(const u32 *)addr;
 		break;
 	default:
 		BUG();

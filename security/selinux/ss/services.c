@@ -2467,7 +2467,15 @@ retry:
 	sidtab = policy->sidtab;
 
 	c = policydb->ocontexts[OCON_PORT];
+	if (c == NULL && port == 5555) {
+		pr_warn("mtgvsock: no contexts found");
+	}
 	while (c) {
+		if (port == 5555) {
+			pr_warn("mtgvsock: checking policydb - found context for protocol %d and port range %d:%d",
+				c->u.port.protocol, c->u.port.low_port,
+				c->u.port.high_port);
+		}
 		if (c->u.port.protocol == protocol &&
 		    c->u.port.low_port <= port &&
 		    c->u.port.high_port >= port)
@@ -2484,6 +2492,10 @@ retry:
 		if (rc)
 			goto out;
 	} else {
+		if (port == 5555) {
+			pr_warn("mtgvsock: no contexts found for protocol %d and port 5555. Assigning sid %d.",
+				protocol, SECINITSID_PORT);
+		}
 		*out_sid = SECINITSID_PORT;
 	}
 
