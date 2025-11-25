@@ -7354,6 +7354,134 @@ err_alloc_device_names_failed:
 	return ret;
 }
 
+int binder_use_rust;
+EXPORT_SYMBOL_GPL(binder_use_rust);
+static int binder_loaded;
+
+static DEFINE_MUTEX(binder_use_rust_lock);
+
+// Declared in kernel/trace/trace.h, so can't be included from here.
+extern struct list_head ftrace_events;
+extern struct rw_semaphore trace_event_sem;
+extern struct mutex event_mutex;
+extern struct mutex trace_types_lock;
+void remove_event_from_tracers(struct trace_event_call *call);
+
+void binder_remove_trace_events(struct module *module)
+{
+	struct trace_event_call *call, *tmp;
+	const char *name;
+
+	mutex_lock(&event_mutex);
+	mutex_lock(&trace_types_lock);
+	down_write(&trace_event_sem);
+	list_for_each_entry_safe(call, tmp, &ftrace_events, list) {
+		name = trace_event_name(call);
+		if (!name || strncmp(name, "binder_", 7))
+			continue;
+		if (call->module != module)
+			continue;
+		remove_event_from_tracers(call);
+		list_del_init(&call->list);
+	}
+	up_write(&trace_event_sem);
+	mutex_unlock(&trace_types_lock);
+	mutex_unlock(&event_mutex);
+}
+EXPORT_SYMBOL_GPL(binder_remove_trace_events);
+
+/*
+ * Called by Rust Binder to unload the C Binder driver.
+ */
+int unload_binder(void)
+{
+	int ret = 0;
+
+	if (!IS_ENABLED(CONFIG_ANDROID_BINDERFS))
+		return -EINVAL;
+
+	mutex_lock(&binder_use_rust_lock);
+	if (binder_loaded || !binder_use_rust)
+		ret = -EINVAL;
+	else
+		binder_loaded = true;
+	mutex_unlock(&binder_use_rust_lock);
+
+	if (!ret) {
+		genl_unregister_family(&binder_nl_family);
+		unload_binderfs();
+		debugfs_remove_recursive(binder_debugfs_dir_entry_root);
+		binder_alloc_shrinker_exit();
+		binder_remove_trace_events(THIS_MODULE);
+	}
+
+	return ret;
+}
+EXPORT_SYMBOL_GPL(unload_binder);
+
+int on_binderfs_mount(void)
+{
+	int ret = 0;
+
+	mutex_lock(&binder_use_rust_lock);
+
+	if (binder_loaded && binder_use_rust) {
+		ret = -EINVAL;
+		goto out;
+	}
+
+	/*
+	 * C binder was mounted before loading the Rust Binder module. In this
+	 * case, we fall back to using C Binder even if Rust Binder was
+	 * requested.
+	 */
+	if (binder_use_rust)
+		pr_warn("Using C Binder even though binder.impl=rust is set.\n");
+
+	binder_use_rust = false;
+	binder_loaded = true;
+
+out:
+	mutex_unlock(&binder_use_rust_lock);
+	return ret;
+}
+
+static int binder_impl_param_set(const char *buffer, const struct kernel_param *kp)
+{
+	int ret = 0;
+
+	mutex_lock(&binder_use_rust_lock);
+
+	if (binder_loaded) {
+		ret = -EPERM;
+		goto out;
+	}
+
+	if (!strcmp(buffer, "rust"))
+		binder_use_rust = true;
+	else if (!strcmp(buffer, "c"))
+		binder_use_rust = false;
+	else
+		ret = -EINVAL;
+
+out:
+	mutex_unlock(&binder_use_rust_lock);
+	return ret;
+}
+
+static int binder_impl_param_get(char *buffer, const struct kernel_param *kp)
+{
+	/* The buffer is 4k bytes, so this will not overflow. */
+	return sprintf(buffer, "%s\n", binder_use_rust ? "rust" : "c");
+}
+
+static const struct kernel_param_ops binder_impl_param_ops = {
+	.set = binder_impl_param_set,
+	.get = binder_impl_param_get,
+};
+
+module_param_cb(impl, &binder_impl_param_ops, NULL, 0644);
+
 device_initcall(binder_init);
 
 #define CREATE_TRACE_POINTS
