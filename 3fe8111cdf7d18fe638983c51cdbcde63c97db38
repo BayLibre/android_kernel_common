@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb845e7f_d1d0bddf",
+        "filename": "kernel/reboot.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-11-25T04:42:33Z",
+      "side": 1,
+      "message": "With only a limited understanding, It seems like this should somehow tie into the normal reboot-reason handling? Could the commit message be improved to explain why it requires a vendorhook instead of extending kernel_shutdown_prepare()?",
+      "revId": "3fe8111cdf7d18fe638983c51cdbcde63c97db38",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
