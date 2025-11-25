@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaa00d5f_7ebf78d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-11-25T06:14:26Z",
+      "side": 1,
+      "message": "Seeing build failures due to checkpatch failing:\n\n```\nERROR:CODE_INDENT: code indent should use tabs where possible\n#48: FILE: drivers/block/loop.c:794:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#49: FILE: drivers/block/loop.c:795:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#71: FILE: include/trace/hooks/blk.h:47:\n--\nERROR:CODE_INDENT: code indent should use tabs where possible\n#72: FILE: include/trace/hooks/blk.h:48:\n```\n\nPlease fix",
+      "revId": "981897ebdd5e494774cdb645e67a636b5d5384be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
