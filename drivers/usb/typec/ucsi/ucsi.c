@@ -13,6 +13,7 @@
 #include <linux/delay.h>
 #include <linux/slab.h>
 #include <linux/usb/typec_dp.h>
+#include <linux/usb/pd_vdo.h>
 
 #include "ucsi.h"
 #include "trace.h"
@@ -1518,7 +1519,51 @@ out_unlock:
 	return ret;
 }
 
+static int ucsi_enter_usb_mode(struct typec_port *port, enum usb_mode mode)
+{
+	struct ucsi_connector *con = typec_get_drvdata(port);
+	struct enter_usb_data data = {.eudo = 0};
+	const u32 speed = VDO_TYPEC_CABLE_SPEED(con->cable_identity.vdo[0]);
+	u64 command;
+	int ret;
+
+	command = UCSI_SET_USB | UCSI_CONNECTOR_NUMBER(con->num);
+	if (mode == USB_MODE_USB3) {
+		command |= UCSI_USB3_ENABLE;
+		data.eudo = EUDO_USB_MODE_USB3 << EUDO_USB_MODE_SHIFT;
+	} else if (mode == USB_MODE_USB4) {
+		command |= UCSI_USB4_ENABLE;
+		data.eudo = EUDO_USB_MODE_USB4 << EUDO_USB_MODE_SHIFT;
+		data.eudo |= EUDO_PCIE_SUPPORT;
+		data.eudo |= EUDO_DP_SUPPORT;
+		data.eudo |= EUDO_TBT_SUPPORT;
+		data.eudo |= EUDO_HOST_PRESENT;
+	}
+
+	switch (speed) {
+	case CABLE_USB32_GEN1:
+		data.eudo |= (EUDO_CABLE_SPEED_USB3_GEN1 << EUDO_CABLE_SPEED_SHIFT);
+		break;
+	case CABLE_USB32_4_GEN2:
+		data.eudo |= (EUDO_CABLE_SPEED_USB4_GEN2 << EUDO_CABLE_SPEED_SHIFT);
+		break;
+	case CABLE_USB4_GEN3:
+		data.eudo |= (EUDO_CABLE_SPEED_USB4_GEN3 << EUDO_CABLE_SPEED_SHIFT);
+		break;
+	}
+
+	command |= ((u64)data.eudo << 29);
+
+	if(!ucsi_con_mutex_lock(con))
+		return -ENOTCONN;
+	ret = ucsi_send_command(con->ucsi, command, NULL, 0);
+	ucsi_con_mutex_unlock(con);
+
+	return ret;
+}
+
 static const struct typec_operations ucsi_ops = {
+	.enter_usb_mode = ucsi_enter_usb_mode,
 	.dr_set = ucsi_dr_swap,
 	.pr_set = ucsi_pr_swap
 };
