@@ -2751,7 +2751,10 @@ static int btintel_set_dsbr(struct hci_dev *hdev, struct intel_version_tlv *ver)
 	/* DSBR command needs to be sent for,
 	 * 1. BlazarI or BlazarIW + B0 step product in IML image.
 	 * 2. Gale Peak2 or BlazarU in OP image.
+<<<<<<< HEAD
 	 * 3. Scorpious Peak in IML image.
+=======
+>>>>>>> fe486d3412a36e74e999e3c84ffd43edcfc1db0c
 	 */
 
 	switch (cnvi) {
@@ -2767,10 +2770,13 @@ static int btintel_set_dsbr(struct hci_dev *hdev, struct intel_version_tlv *ver)
 		    hdev->bus == HCI_USB)
 			break;
 		return 0;
+<<<<<<< HEAD
 	case BTINTEL_CNVI_SCP:
 		if (ver->img_type == BTINTEL_IMG_IML)
 			break;
 		return 0;
+=======
+>>>>>>> fe486d3412a36e74e999e3c84ffd43edcfc1db0c
 	default:
 		return 0;
 	}
