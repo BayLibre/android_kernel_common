@@ -34,6 +34,24 @@
       "parentUuid": "a1e1694b_e4158847",
       "revId": "910547a378ceea161c874abbe70d7186ed9dc578",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc6cc132_75279e09",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3759,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-26T15:53:47Z",
+      "side": 1,
+      "message": "Sorry, We need this change as well to avoid flushing in DMA strict mode. So yes you are right, in addition to lazy mode changes, this `domain-\u003etype !\u003d IOMMU_DOMAIN_DMA` will be removed.",
+      "parentUuid": "5b43b3a4_b322a476",
+      "revId": "910547a378ceea161c874abbe70d7186ed9dc578",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
