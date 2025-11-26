@@ -16,6 +16,24 @@
       "message": "So, as we\u0027ve agreed in aosp/3863270, we should just always flush IOTLB in pKVM after unmap. Which also means that we never need to do it in the host (in either strict or lazy or passthrough mode)? So we don\u0027t need the `domain-\u003etype !\u003d IOMMU_DOMAIN_DMA` check here?",
       "revId": "910547a378ceea161c874abbe70d7186ed9dc578",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b43b3a4_b322a476",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3759,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-11-26T15:43:16Z",
+      "side": 1,
+      "message": "Yes correct, this whole change would go away. lazy mode doesn\u0027t take this route and call tlb_sync but goes through a flush queue mechanism. We need to put a check there. I shall post the changes soon after some more testing.",
+      "parentUuid": "a1e1694b_e4158847",
+      "revId": "910547a378ceea161c874abbe70d7186ed9dc578",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
