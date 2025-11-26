@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1e1694b_e4158847",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3759,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-26T15:36:07Z",
+      "side": 1,
+      "message": "So, as we\u0027ve agreed in aosp/3863270, we should just always flush IOTLB in pKVM after unmap. Which also means that we never need to do it in the host (in either strict or lazy or passthrough mode)? So we don\u0027t need the `domain-\u003etype !\u003d IOMMU_DOMAIN_DMA` check here?",
+      "revId": "910547a378ceea161c874abbe70d7186ed9dc578",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
