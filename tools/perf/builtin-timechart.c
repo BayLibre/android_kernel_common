@@ -1541,7 +1541,7 @@ static int __cmd_timechart(struct timechart *tchart, const char *output_name)
 {
 	const struct evsel_str_handler power_tracepoints[] = {
 		{ "power:cpu_idle",		process_sample_cpu_idle },
-		{ "power:cpu_frequency",	process_sample_cpu_frequency },
+		{ "power:policy_frequency",	process_sample_policy_frequency },
 		{ "sched:sched_wakeup",		process_sample_sched_wakeup },
 		{ "sched:sched_switch",		process_sample_sched_switch },
 #ifdef SUPPORT_OLD_POWER_EVENTS
@@ -1804,7 +1804,7 @@ static int timechart__record(struct timechart *tchart, int argc, const char **ar
 	unsigned int backtrace_args_no = ARRAY_SIZE(backtrace_args);
 
 	const char * const power_args[] = {
-		"-e", "power:cpu_frequency",
+		"-e", "power:policy_frequency",
 		"-e", "power:cpu_idle",
 	};
 	unsigned int power_args_nr = ARRAY_SIZE(power_args);
