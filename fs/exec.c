@@ -1322,7 +1322,7 @@ int begin_new_exec(struct linux_binprm * bprm)
 	 */
 	if (IS_ENABLED(CONFIG_DMA_SHARED_BUFFER)) {
 		refcount_inc(&current->dmabuf_info->refcnt);
-		me->mm->dmabuf_info = current->dmabuf_info;
+		me->mm->abi_extend->dmabuf_info = current->dmabuf_info;
 	}
 
 #ifdef CONFIG_POSIX_TIMERS
