@@ -96,6 +96,24 @@
       ],
       "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4720346a_5b55f8dd",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 1756,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-26T21:13:51Z",
+      "side": 1,
+      "message": "BTW maybe also worth adding `BUILD_BUG_ON(QI_LENGTH * sizeof(int) \u003e (1 \u003c\u003c (order - 1)) * VTD_PAGE_SIZE)`?",
+      "parentUuid": "b904956d_44d0f482",
+      "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
