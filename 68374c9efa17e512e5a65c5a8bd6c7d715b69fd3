@@ -34,6 +34,24 @@
       "parentUuid": "b384c3a1_fa3b804c",
       "revId": "68374c9efa17e512e5a65c5a8bd6c7d715b69fd3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7336a50_7735a140",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 70
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-26T17:04:50Z",
+      "side": 1,
+      "message": "Yes, that\u0027s exactly my point. I understand we do need this hypercall since we do want the host to remain in charge of interrupt remapping. I\u0027m just wondering if the host needs this hypercall for any other types of QI invalidations (because it looks like it doesn\u0027t).\n\nSo if it doesn\u0027t, yeah, what I\u0027m suggesting is precisely to add some checks not to allow any non interrupt entry cache invalidations.\n\n(And if in the future we will use nested translation, I guess then we will also allow QI_EIOTLB_TYPE to let the host invalidate 1st-stage IOTLB.)",
+      "parentUuid": "3ab2f3f7_e0d5f5a8",
+      "revId": "68374c9efa17e512e5a65c5a8bd6c7d715b69fd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
