@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b384c3a1_fa3b804c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 70
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-26T15:53:15Z",
+      "side": 1,
+      "message": "Just a quick question: since, as we agreed in aosp/3863270, we should always flush IOTLB in pKVM after unmap (and thus don\u0027t need to initiate flushing IOTLB from the host), do we still need to allow the host to submit any other QI descriptors than QI_IEC_TYPE (interrupt remapping)?\n\nIf not, maybe we shouldn\u0027t allow the host to submit any other descriptors?\n\nI.e. since we are not using nested translation for now, we can assume that IOTLB, context and PASID caches etc are fully \"owned\" by pKVM, and don\u0027t allow the host to meddle in their state, since the host has no reason to need to do that?",
+      "revId": "68374c9efa17e512e5a65c5a8bd6c7d715b69fd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
