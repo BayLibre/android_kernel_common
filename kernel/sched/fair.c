@@ -4944,7 +4944,12 @@ static inline void util_est_update(struct cfs_rq *cfs_rq,
 	 * To avoid underestimate of task utilization, skip updates of EWMA if
 	 * we cannot grant that thread got all CPU time it wanted.
 	 */
+<<<<<<< HEAD   (34021ead7e323584780aa41eae3ff1f56b03ace1 Revert "block: make REQ_OP_ZONE_OPEN a write operation")
 	if ((dequeued + UTIL_EST_MARGIN) < task_runnable(p))
+||||||| BASE   (482b568e8680b089751fc0eae3456ca0ea7b9d9b block: make REQ_OP_ZONE_OPEN a write operation)
+=======
+	if ((ue.enqueued + UTIL_EST_MARGIN) < task_runnable(p))
+>>>>>>> BRANCH (efa623350136faa9d18729f490f9bf108b2f9ea7 hwmon: (dell-smm) Add support for Dell OptiPlex 7040)
 		goto done;
 
 
