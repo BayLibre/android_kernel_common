@@ -264551,6 +264551,10 @@ enumeration {
       name: "CODEC_RT1308"
       value: 20
     }
+    enumerator {
+      name: "CODEC_TAS2563"
+      value: 21
+    }
   }
 }
 enumeration {
@@ -278328,6 +278332,14 @@ function {
   parameter_id: 0x064d6086
   parameter_id: 0x33756485
   parameter_id: 0x7f7172c7
+}
+function {
+  id: 0x5c4b7130
+  return_type_id: 0x295c7202
+  parameter_id: 0x3f0185ef
+  parameter_id: 0x3f0185ef
+  parameter_id: 0xf435685e
+  parameter_id: 0x295c7202
 }
 function {
   id: 0x5c4f178f
@@ -305748,6 +305760,24 @@ elf_symbol {
   full_name: "crc32_le"
 }
 elf_symbol {
+  id: 0xec1b66f9
+  name: "crc8"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x80ecca9f
+  type_id: 0x5c4b7130
+  full_name: "crc8"
+}
+elf_symbol {
+  id: 0xac913841
+  name: "crc8_populate_msb"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xfa29f41b
+  type_id: 0x100ce912
+  full_name: "crc8_populate_msb"
+}
+elf_symbol {
   id: 0xab0e3dee
   name: "crc_ccitt_table"
   is_defined: true
@@ -326901,7 +326931,7 @@ elf_symbol {
   name: "snd_soc_acpi_intel_detect_amp_type"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6d933dd9
+  crc: 0x2e1f4ef7
   namespace: "SND_SOC_ACPI_INTEL_MATCH"
   type_id: 0xf7516c84
   full_name: "snd_soc_acpi_intel_detect_amp_type"
@@ -326911,7 +326941,7 @@ elf_symbol {
   name: "snd_soc_acpi_intel_detect_codec_type"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6d933dd9
+  crc: 0x2e1f4ef7
   namespace: "SND_SOC_ACPI_INTEL_MATCH"
   type_id: 0xf7516c84
   full_name: "snd_soc_acpi_intel_detect_codec_type"
@@ -326930,7 +326960,7 @@ elf_symbol {
   name: "snd_soc_acpi_intel_get_amp_tplg_suffix"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x70c297bb
+  crc: 0xe914eb3d
   namespace: "SND_SOC_ACPI_INTEL_MATCH"
   type_id: 0xafef0b76
   full_name: "snd_soc_acpi_intel_get_amp_tplg_suffix"
@@ -326940,7 +326970,7 @@ elf_symbol {
   name: "snd_soc_acpi_intel_get_codec_tplg_suffix"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x70c297bb
+  crc: 0xe914eb3d
   namespace: "SND_SOC_ACPI_INTEL_MATCH"
   type_id: 0xafef0b76
   full_name: "snd_soc_acpi_intel_get_codec_tplg_suffix"
@@ -336048,6 +336078,8 @@ interface {
   symbol_id: 0xa49d0aea
   symbol_id: 0x1c25c16f
   symbol_id: 0xd6cf566d
+  symbol_id: 0xec1b66f9
+  symbol_id: 0xac913841
   symbol_id: 0xab0e3dee
   symbol_id: 0xcd2564d1
   symbol_id: 0x2968f72a
