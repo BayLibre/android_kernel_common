@@ -3562,13 +3562,7 @@ static inline void *skb_frag_address(const skb_frag_t *frag)
  */
 static inline void *skb_frag_address_safe(const skb_frag_t *frag)
 {
-	struct page *page = skb_frag_page(frag);
-	void *ptr;
-
-	if (!page)
-		return NULL;
-
-	ptr = page_address(page);
+	void *ptr = page_address(skb_frag_page(frag));
 	if (unlikely(!ptr))
 		return NULL;
 

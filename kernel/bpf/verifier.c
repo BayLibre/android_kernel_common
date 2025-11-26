@@ -460,8 +460,7 @@ static bool reg_not_null(const struct bpf_reg_state *reg)
 		type == PTR_TO_MAP_KEY ||
 		type == PTR_TO_SOCK_COMMON ||
 		(type == PTR_TO_BTF_ID && is_trusted_reg(reg)) ||
-		type == PTR_TO_MEM ||
-		type == CONST_PTR_TO_MAP;
+		type == PTR_TO_MEM;
 }
 
 static bool type_is_ptr_alloc_obj(u32 type)
