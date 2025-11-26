@@ -128,6 +128,7 @@ static int mode_selection_activate(struct mode_selection *sel,
 
 	__must_hold(&sel->lock)
 {
+	struct typec_port *port = to_typec_port(sel->partner->dev.parent);
 	struct mode_order order = {.svid = svid, .enter = enter, .result = -ENODEV};
 
 	/*
@@ -139,7 +140,14 @@ static int mode_selection_activate(struct mode_selection *sel,
 	 * interval.
 	 */
 	mutex_unlock(&sel->lock);
-	device_for_each_child(&sel->partner->dev, &order, activate_altmode);
+	if (svid == USB_TYPEC_USB4_SID) {
+		if (port->ops && port->ops->enter_usb_mode)
+			order.result = port->ops->enter_usb_mode(port,
+					enter ? USB_MODE_USB4 : USB_MODE_USB3);
+		else
+			order.result = -EOPNOTSUPP;
+	} else
+		device_for_each_child(&sel->partner->dev, &order, activate_altmode);
 	mutex_lock(&sel->lock);
 
 	return order.result;
@@ -292,7 +300,9 @@ static int altmode_add_to_list(struct device *dev, void *data)
 int typec_mode_selection_start(struct typec_partner *partner,
 	const unsigned int delay, const unsigned int timeout)
 {
+	struct typec_port *port = to_typec_port(partner->dev.parent);
 	struct mode_selection *sel;
+	struct mode_state *ms;
 	int ret;
 
 	if (partner->sel)
@@ -307,13 +317,26 @@ int typec_mode_selection_start(struct typec_partner *partner,
 	ret = device_for_each_child(
 		&partner->dev, &sel->mode_list, altmode_add_to_list);
 
+	if (!ret) {
+		list_sort(NULL, &sel->mode_list, compare_priorities);
+
+		if (port->usb_mode == USB_MODE_USB4 &&
+			partner->usb_capability & USB_CAPABILITY_USB4 &&
+			port->ops && port->ops->enter_usb_mode) {
+			ms = create_mode_entry(USB_TYPEC_USB4_SID, 0);
+			if (!ms)
+				ret = -ENOMEM;
+			else
+				list_add(&ms->list, &sel->mode_list);
+		}
+	}
+
 	if (ret || list_empty(&sel->mode_list)) {
 		mode_list_clean(sel);
 		kfree(sel);
 		return ret;
 	}
 
-	list_sort(NULL, &sel->mode_list, compare_priorities);
 	sel->partner = partner;
 	sel->delay = delay;
 	sel->timeout = timeout;
