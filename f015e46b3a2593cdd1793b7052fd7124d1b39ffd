@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04892f50_3da863e7",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 1396,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-26T21:08:27Z",
+      "side": 1,
+      "message": "This function can be static?\n\nAnd the above comment should be rather for qi_submit_sync()?",
+      "fixSuggestions": [
+        {
+          "fixId": "14d38f31_318255c4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/dmar.c",
+              "range": {
+                "startLine": 1389,
+                "startChar": 0,
+                "endLine": 1397,
+                "endChar": 0
+              },
+              "replacement": "static int __qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,\n"
+            },
+            {
+              "path": "drivers/iommu/intel/dmar.c",
+              "range": {
+                "startLine": 1491,
+                "startChar": 0,
+                "endLine": 1491,
+                "endChar": 0
+              },
+              "replacement": "/*\n * Function to submit invalidation descriptors of all types to the queued\n * invalidation interface(QI). Multiple descriptors can be submitted at a\n * time, a wait descriptor will be appended to each submission to ensure\n * hardware has completed the invalidation before return. Wait descriptors\n * can be part of the submission but it will not be polled for completion.\n */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f00f168_c6bed37d",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 1747,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-26T21:08:27Z",
+      "side": 1,
+      "message": "This means allocating even 4 pages?\n\nSo it would be cleaner to allocate a separate page for qi-\u003edesc_status instead. But I understand it would require to somehow tell pKVM what is its address...\n\n...So if we keep this, maybe at least make it conditional on pkvm_pviommu_enabled()?",
+      "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b904956d_44d0f482",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 1756,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-26T21:08:27Z",
+      "side": 1,
+      "message": "Better `(1 \u003c\u003c (order - 1))` instead of `order` (so that it would remain correct if `order` was bigger than 2)?",
+      "fixSuggestions": [
+        {
+          "fixId": "07ce90e0_7636d62e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/dmar.c",
+              "range": {
+                "startLine": 1756,
+                "startChar": 0,
+                "endLine": 1757,
+                "endChar": 0
+              },
+              "replacement": "\tqi-\u003edesc_status \u003d (int *)((u64)desc + (1 \u003c\u003c (order - 1)) * VTD_PAGE_SIZE);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
