@@ -9,6 +9,8 @@
 
 #define MODE_DISCOVERY_MAX	6
 
+#define USB_TYPEC_USB4_SID 0xFF00
+
 struct typec_altmode_ops;
 
 /**
