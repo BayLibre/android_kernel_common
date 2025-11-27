@@ -1,0 +1,83 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b40f0bf6_4b92852e",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 44
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-27T00:02:41Z",
+      "side": 1,
+      "message": "basically nit: I see the host\u0027s iommu_flush_write_buffer() locks iommu-\u003eregister_lock here. And looking at how we are using flush_write_buffer() in pKVM code, looks like we also should have a lock for this...\n\nBut we don\u0027t really care, since cap_rwbf() is only true on ancient hardware anyway.\n\nSo we could just require cap_rwbf\u003d0 in check_and_init_iommu(), like we require ecap_qis\u003d1, and not bother about flush_write_buffer() (for example, its implementation could be just empty)?",
+      "fixSuggestions": [
+        {
+          "fixId": "38dd2047_00526492",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+              "range": {
+                "startLine": 152,
+                "startChar": 0,
+                "endLine": 152,
+                "endChar": 0
+              },
+              "replacement": "\t\tif (cap_rwbf(piommu-\u003eiommu.cap)) {\n\t\t\tpkvm_err(\"pkvm: %s: IOMMU with Write Buffer Flush capability is not supported (seq_id \u003d %d)\\n\",\n\t\t\t\t __func__, piommu-\u003eiommu.seq_id);\n\t\t\treturn -EOPNOTSUPP;\n\t\t}\n\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+              "range": {
+                "startLine": 532,
+                "startChar": 0,
+                "endLine": 542,
+                "endChar": 0
+              },
+              "replacement": "\t/* Not needed as cap_rwbf is required to be 0. */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "314ff9184f0b92db9f8ff70a48ffe4cac121466a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f89986b3_4939fd4c",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 44
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-27T00:02:41Z",
+      "side": 1,
+      "message": "We\u0027d better check if iommu-\u003eroot_entry is already set up?\n\nIOW these hypercalls should fail if called before before SRTP (like TE fails if done before SRTP)?\n\n(Although, assuming that pKVM initialization shouldn\u0027t succeed if SRTP and TE were not done, that would be rather a sanity check than a strictly required security check. But still...)",
+      "revId": "314ff9184f0b92db9f8ff70a48ffe4cac121466a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3fa1d7d_79dc14fc",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 44
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-27T00:02:41Z",
+      "side": 1,
+      "message": "nit: maybe s/PAGE_SIZE/VTD_PAGE_SIZE/ (throughout this file), at least for consistency with the code in pv_pasid.c?",
+      "revId": "314ff9184f0b92db9f8ff70a48ffe4cac121466a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}

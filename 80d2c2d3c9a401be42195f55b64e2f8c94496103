@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f336760_9df9109f",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 45
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-27T00:02:41Z",
+      "side": 1,
+      "message": "We\u0027d save a few cycles if we check param-\u003eats_supported first? :)\n\nMore importantly: if param-\u003eats_supported but the device is not in SATC, shouldn\u0027t we rather return -EPERM to host?\n\nBTW if we do that, the context page is already donated to pKVM by pkvm_iommu_context_addr(), so we\u0027d better undonate it before returning error? And to avoid that, we may do this check before calling pkvm_iommu_context_addr()? (We may actually do it even before locking hyp_iommu-\u003elock.)",
+      "revId": "80d2c2d3c9a401be42195f55b64e2f8c94496103",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
