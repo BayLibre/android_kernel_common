@@ -296,20 +296,49 @@ remove_donation:
 	return ret;
 }
 
+DEFINE_MEM_TRACKER(tracker_devtab, &region_tracker_donated_ops);
+
 static int table_emulate_handler(struct emulate *emulate, u64 offset,
 				 bool write, u64 *reg, int reg_size)
 {
 	struct hyp_gic_v3_its_baser *baser = emulate->priv;
+	struct hyp_gic_v3_its *its;
+	phys_addr_t addr, len;
+	int ret;
 
 	/* In a flat configuration the table is only populated with commands */
 	if (!(baser->value & GITS_BASER_INDIRECT))
 		return -EFAULT;
 
-	if (write)
-		writeq_relaxed(*reg, baser->table + offset);
-	else
+	if (reg_size != sizeof(u64))
+		return -EINVAL;
+
+	if (!write) {
 		*reg = readq_relaxed(baser->table + offset);
-	return 0;
+		return 0;
+	}
+
+	/* We can only protect in page granularity - make sure the driver
+	 * allocates the second level page aligned.
+	 */
+	if (!PAGE_ALIGNED(*reg))
+		return -EINVAL;
+
+	addr = *reg & GENMASK_ULL(52, PAGE_SHIFT);
+	its = container_of(baser, struct hyp_gic_v3_its, basers[baser->baser_n]);
+	len = (baser->value & (3 << GITS_BASER_PAGE_SIZE_SHIFT)) >> GITS_BASER_PAGE_SIZE_SHIFT;
+	/* The size of the level 2 table is determined by GITS_BASER<n>.Page_Size */
+	len = SZ_4K << len;
+
+	if (*reg & GITS_BASER_VALID)
+		ret = region_tracker_inc(&tracker_devtab, addr, addr + len);
+	else
+		ret = region_tracker_dec(&tracker_devtab, addr, addr + len);
+
+	if (!ret)
+		writeq_relaxed(*reg, baser->table + offset);
+
+	return ret;
 }
 
 static int setup_first_lvl_table_traps(struct hyp_gic_v3_its *its, int baser_n, u64 baser_val)
