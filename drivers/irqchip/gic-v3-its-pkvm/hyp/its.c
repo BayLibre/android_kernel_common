@@ -15,6 +15,14 @@
 
 DEFINE_MEM_TRACKER(tracker_its, &region_tracker_shared_ops);
 
+struct hyp_gic_v3_its_baser {
+	int baser_n;
+	u64 value;
+	void __iomem *table;
+
+	struct emulate emulate;
+};
+
 struct hyp_gic_v3_its {
 	void __iomem *base;
 	struct emulate emulate;
@@ -23,6 +31,8 @@ struct hyp_gic_v3_its {
 	void *host_cmd_cwriter_va;
 	void *shadow_cmd;
 	u64 typer;
+
+	struct hyp_gic_v3_its_baser basers[GITS_BASER_NR_REGS];
 };
 
 struct hyp_gic_v3_its_handler {
@@ -157,6 +167,18 @@ static int cwriter_read(struct hyp_gic_v3_its *its, u64 offset, u64 *read)
 	return 0;
 }
 
+static int baser_write(struct hyp_gic_v3_its *its, u64 offset, u64 value)
+{
+	writeq_relaxed(value, its->base + offset);
+	return 0;
+}
+
+static int baser_read(struct hyp_gic_v3_its *its, u64 offset, u64 *read)
+{
+	*read = readq_relaxed(its->base + offset);
+	return 0;
+}
+
 #define GIC_V3_ITS_HANDLER(off, sz, write_cb, read_cb)	\
 {							\
 	.offset = (off),				\
@@ -174,10 +196,22 @@ static int cwriter_read(struct hyp_gic_v3_its *its, u64 offset, u64 *read)
 #define GIC_V3_ITS_HANDLER_RONLY_64(off, read) \
 	GIC_V3_ITS_HANDLER_RONLY(off, sizeof(u64), read)
 
+#define GIT_V3_ITS_BASERn_HANDER(n) \
+	GIC_V3_ITS_HANDLER_64(GITS_BASER + ((n) << 3), baser_write, baser_read)
+
 static const struct hyp_gic_v3_its_handler gic_v3_its_handlers[] = {
 	GIC_V3_ITS_HANDLER_64(GITS_CBASER, cbaser_write, cbaser_read),
 	GIC_V3_ITS_HANDLER_RONLY_64(GITS_CREADR, creadr_read),
 	GIC_V3_ITS_HANDLER_64(GITS_CWRITER, cwriter_write, cwriter_read),
+
+	GIT_V3_ITS_BASERn_HANDER(0),
+	GIT_V3_ITS_BASERn_HANDER(1),
+	GIT_V3_ITS_BASERn_HANDER(2),
+	GIT_V3_ITS_BASERn_HANDER(3),
+	GIT_V3_ITS_BASERn_HANDER(4),
+	GIT_V3_ITS_BASERn_HANDER(5),
+	GIT_V3_ITS_BASERn_HANDER(6),
+	GIT_V3_ITS_BASERn_HANDER(7),
 	{},
 };
 
@@ -262,6 +296,78 @@ remove_donation:
 	return ret;
 }
 
+static int table_emulate_handler(struct emulate *emulate, u64 offset,
+				 bool write, u64 *reg, int reg_size)
+{
+	struct hyp_gic_v3_its_baser *baser = emulate->priv;
+
+	/* In a flat configuration the table is only populated with commands */
+	if (!(baser->value & GITS_BASER_INDIRECT))
+		return -EFAULT;
+
+	if (write)
+		writeq_relaxed(*reg, baser->table + offset);
+	else
+		*reg = readq_relaxed(baser->table + offset);
+	return 0;
+}
+
+static int setup_first_lvl_table_traps(struct hyp_gic_v3_its *its, int baser_n, u64 baser_val)
+{
+	struct hyp_gic_v3_its_baser *baser;
+	int ret;
+	u64 len, page_sz;
+	phys_addr_t paddr;
+
+	paddr = GITS_BASER_ADDR_48_to_52(baser_val);
+	page_sz = (baser_val & (3 << GITS_BASER_PAGE_SIZE_SHIFT)) >> GITS_BASER_PAGE_SIZE_SHIFT;
+	len = GITS_BASER_NR_PAGES(baser_val) * (SZ_4K << page_sz);
+
+	baser = &its->basers[baser_n];
+	baser->baser_n = baser_n;
+	baser->emulate.base = paddr;
+	baser->emulate.size = len;
+	baser->value = baser_val;
+	baser->emulate.handler = table_emulate_handler;
+	baser->emulate.priv = baser;
+
+	ret = create_private_mapping(paddr, len, KVM_PGTABLE_PROT_RW | KVM_PGTABLE_PROT_DEVICE,
+				     (unsigned long *)&baser->table);
+	if (ret)
+		return ret;
+
+	return hyp_add_emulate(&baser->emulate);
+}
+
+static int hyp_gic_v3_its_init_baser_traps(struct hyp_gic_v3_its *its)
+{
+	int i;
+	int ret;
+	u64 baser_val;
+
+	for (i = 0; i < GITS_BASER_NR_REGS; i++) {
+		baser_val = readq_relaxed(its->base + GITS_BASER + (i << 3));
+
+		if (!(baser_val & GITS_BASER_VALID))
+			continue;
+
+		switch (GITS_BASER_TYPE(baser_val)) {
+		case GITS_BASER_TYPE_DEVICE:
+		case GITS_BASER_TYPE_VCPU:
+		case GITS_BASER_TYPE_COLLECTION:
+			break;
+		default:
+			return -EINVAL;
+		}
+
+		ret = setup_first_lvl_table_traps(its, i, baser_val);
+		if (ret)
+			return ret;
+	}
+
+	return 0;
+}
+
 static int hyp_gic_v3_its_protect(u64 paddr, u64 size, u64 host_cmd_base_pa)
 {
 	struct hyp_gic_v3_its *its;
@@ -292,6 +398,10 @@ static int hyp_gic_v3_its_protect(u64 paddr, u64 size, u64 host_cmd_base_pa)
 	/* Allow DMA/IO access back to the GITS_TRANSLATER */
 	ret = host_stage2_mod_prot((paddr >> PAGE_SHIFT) + GITS_TRANSLATER_PFN,
 				   KVM_PGTABLE_PROT_RW | KVM_PGTABLE_PROT_DEVICE, 1, true);
+
+	ret = hyp_gic_v3_its_init_baser_traps(its);
+	if (ret)
+		return ret;
 
 	return ret;
 }
