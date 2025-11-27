@@ -83,6 +83,24 @@ struct region_tracker_ops region_tracker_shared_ops = {
 	.priv = NULL,
 };
 
+static int donated_init(struct tracked_region *reg)
+{
+	return host_donate_hyp(reg->start >> PAGE_SHIFT,
+			       (reg->end - reg->start) >> PAGE_SHIFT);
+}
+
+static int donated_free(struct tracked_region *reg)
+{
+	return hyp_donate_host(reg->start >> PAGE_SHIFT,
+			       (reg->end - reg->start) >> PAGE_SHIFT);
+}
+
+struct region_tracker_ops region_tracker_donated_ops = {
+	.init = donated_init,
+	.free = donated_free,
+	.priv = NULL,
+};
+
 #define for_each_region(__tracker, __reg) \
 	list_for_each_entry(__reg, &(__tracker)->regions_head, list)
 
