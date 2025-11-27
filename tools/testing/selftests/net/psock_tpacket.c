@@ -22,6 +22,7 @@
  *   - TPACKET_V3: RX_RING
  */
 
+#undef NDEBUG
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -33,9 +34,14 @@
 #include <ctype.h>
 #include <fcntl.h>
 #include <unistd.h>
+<<<<<<< HEAD   (f3d21d03f711be48419de2f1fc5c6b4defb7284e UPSTREAM: ACPICA: Update dsmethod.c to get rid of unused var)
 #ifndef __ANDROID__
 #include <bits/wordsize.h>
 #endif
+||||||| BASE   (efa623350136faa9d18729f490f9bf108b2f9ea7 hwmon: (dell-smm) Add support for Dell OptiPlex 7040)
+#include <bits/wordsize.h>
+=======
+>>>>>>> BRANCH (9e2c2d3e720977372b81691bd0f657c284ef96a6 iio: adc: imx93_adc: load calibrated values even calibration)
 #include <net/ethernet.h>
 #include <netinet/ip.h>
 #include <arpa/inet.h>
@@ -787,7 +793,7 @@ static int test_kernel_bit_width(void)
 
 static int test_user_bit_width(void)
 {
-	return __WORDSIZE;
+	return sizeof(long) * 8;
 }
 
 static const char *tpacket_str[] = {
