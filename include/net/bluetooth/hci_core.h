@@ -29,7 +29,14 @@
 #include <linux/idr.h>
 #include <linux/leds.h>
 #include <linux/rculist.h>
+<<<<<<< HEAD   (ac0361248dfb4ea3c0a1aa66df6bbcde3ea43a44 Merge b5de1eb5bc20 ("ASoC: tas2781: fix getting the wrong de)
 #include <linux/android_kabi.h>
+||||||| BASE   (b5de1eb5bc20a96b850ce1ee3703622fabbef7c2 ASoC: tas2781: fix getting the wrong device number)
+#include <linux/srcu.h>
+=======
+#include <linux/spinlock.h>
+#include <linux/srcu.h>
+>>>>>>> BRANCH (c645693180a98606c430825223d2029315d85e9d net: netpoll: fix incorrect refcount handling causing incorr)
 
 #include <net/bluetooth/hci.h>
 #include <net/bluetooth/hci_sync.h>
@@ -95,6 +102,7 @@ struct discovery_state {
 	unsigned long		scan_start;
 	unsigned long		scan_duration;
 	unsigned long		name_resolve_timeout;
+	spinlock_t		lock;
 };
 
 #define SUSPEND_NOTIFIER_TIMEOUT	msecs_to_jiffies(2000) /* 2 seconds */
@@ -912,6 +920,7 @@ static inline void iso_recv(struct hci_conn *hcon, struct sk_buff *skb,
 
 static inline void discovery_init(struct hci_dev *hdev)
 {
+	spin_lock_init(&hdev->discovery.lock);
 	hdev->discovery.state = DISCOVERY_STOPPED;
 	INIT_LIST_HEAD(&hdev->discovery.all);
 	INIT_LIST_HEAD(&hdev->discovery.unknown);
@@ -926,8 +935,12 @@ static inline void hci_discovery_filter_clear(struct hci_dev *hdev)
 	hdev->discovery.report_invalid_rssi = true;
 	hdev->discovery.rssi = HCI_RSSI_INVALID;
 	hdev->discovery.uuid_count = 0;
+
+	spin_lock(&hdev->discovery.lock);
 	kfree(hdev->discovery.uuids);
 	hdev->discovery.uuids = NULL;
+	spin_unlock(&hdev->discovery.lock);
+
 	hdev->discovery.scan_start = 0;
 	hdev->discovery.scan_duration = 0;
 }
