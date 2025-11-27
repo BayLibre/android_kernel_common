@@ -34,6 +34,24 @@
       "parentUuid": "5c24733c_c036c1af",
       "revId": "4c016e9c14c32276d8e294c804110e8ec40cee3c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10905d04_4be52a15",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2025-11-27T05:54:15Z",
+      "side": 1,
+      "message": "\u003e Upstream community will only accept changes when we have sufficient properties enabled.\n\nSo how has progress moved on enabling those properties upstream? \n\nThe commit message says:\n\"In parallel, we are checking with upstream community to use dynamic property\nallocation instead of static count to allow increased usage without impacting any ACK change.\"\n\nAre there links to these discussions that you can share?\n\n\n\n\u003e In the previous target, our downstream usage has already been supported, and this change does not involve any kernel upgrade conflicts\n\nYes, but we still don\u0027t really want to carry patches that aren\u0027t moving upstream. So seeing some progress, or context in the commit message makes accepting this easier.",
+      "parentUuid": "cea675bf_dd67461b",
+      "revId": "4c016e9c14c32276d8e294c804110e8ec40cee3c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
