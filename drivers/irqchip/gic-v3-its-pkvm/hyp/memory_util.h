@@ -27,6 +27,7 @@ struct region_tracker_ops {
 };
 
 extern struct region_tracker_ops region_tracker_shared_ops;
+extern struct region_tracker_ops region_tracker_donated_ops;
 
 struct region_tracker {
 	const struct region_tracker_ops *ops;
