@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e383be2f_f7f49ab8",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 46
+      },
+      "lineNbr": 3303,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-30T20:44:31Z",
+      "side": 1,
+      "message": "Duplicates iommu_free_page(domain-\u003epgd) in paging_domain_alloc() if pv_paging_domain_alloc() fails?",
+      "fixSuggestions": [
+        {
+          "fixId": "cf6b1191_0532cda9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 3303,
+                "startChar": 0,
+                "endLine": 3304,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "35e38ce5e11f1b6899388fc80f438474523c5397",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30cc6e08_830d7750",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 46
+      },
+      "lineNbr": 3311,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-30T20:44:31Z",
+      "side": 1,
+      "message": "Is it necessary to get these values from pKVM? What if we don\u0027t do this and just keep calculating them in the usual way in paging_domain_alloc()?\n\nIntuitively it seems it would be still correct (those calculated values should be the same as pKVM\u0027s ones anyway?), and it would simplify the code and would allow to avoid duplication of the \"pagesize bitmap\" and \"geometry\" logic below (as all that logic would be done by paging_domain_alloc() as usual, while pv_paging_domain_alloc() would just make the hypercall)?",
+      "revId": "35e38ce5e11f1b6899388fc80f438474523c5397",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
