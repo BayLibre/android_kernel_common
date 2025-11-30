@@ -51,6 +51,24 @@
       "message": "Is it necessary to get these values from pKVM? What if we don\u0027t do this and just keep calculating them in the usual way in paging_domain_alloc()?\n\nIntuitively it seems it would be still correct (those calculated values should be the same as pKVM\u0027s ones anyway?), and it would simplify the code and would allow to avoid duplication of the \"pagesize bitmap\" and \"geometry\" logic below (as all that logic would be done by paging_domain_alloc() as usual, while pv_paging_domain_alloc() would just make the hypercall)?",
       "revId": "35e38ce5e11f1b6899388fc80f438474523c5397",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cab3482d_0ef18202",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 46
+      },
+      "lineNbr": 3311,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-11-30T20:47:22Z",
+      "side": 1,
+      "message": "Maybe also we don\u0027t need a separate function pv_paging_domain_alloc() then, we can just directly call pkvm_hc_iommu_domain_alloc() (like domain_exit() directly calls pkvm_hc_iommu_domain_free())?",
+      "parentUuid": "30cc6e08_830d7750",
+      "revId": "35e38ce5e11f1b6899388fc80f438474523c5397",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
