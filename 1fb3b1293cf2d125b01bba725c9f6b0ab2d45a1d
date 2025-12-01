@@ -34,6 +34,24 @@
       "parentUuid": "ac0603a5_df3b78a8",
       "revId": "1fb3b1293cf2d125b01bba725c9f6b0ab2d45a1d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09fd7ee3_2f07d3fa",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 50
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-01T20:36:12Z",
+      "side": 1,
+      "message": "Reading more about QAT(Quick Assist Technology) devices which is what this quirk is targeting, looks like they are server grade devices embedded in xeon processors. Google also tells me there exists addon cards as well, but not sure if it will affect us. So for 6.12, I think both routes should be fine for 6.12 - always double flush for devices in SATC(not a huge perf hit I guess) or ignore it and trust the host?",
+      "parentUuid": "cf1f8659_516aba52",
+      "revId": "1fb3b1293cf2d125b01bba725c9f6b0ab2d45a1d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
