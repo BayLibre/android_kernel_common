@@ -2318,9 +2318,13 @@ static bool task_can_run_on_remote_rq(struct task_struct *p, struct rq *rq,
 				      bool trigger_error)
 {
 	int cpu = cpu_of(rq);
+	bool disallow = false;
 
 	SCHED_WARN_ON(task_cpu(p) == cpu);
 
+	trace_android_vh_scx_task_can_run_on(&disallow, p, rq);
+	if (disallow)
+		return false;
 	/*
 	 * If @p has migration disabled, @p->cpus_ptr is updated to contain only
 	 * the pinned CPU in migrate_disable_switch() while @p is being switched
@@ -5076,7 +5080,8 @@ static void scx_ops_error_irq_workfn(struct irq_work *irq_work)
 
 	if (ei->kind >= SCX_EXIT_ERROR)
 		scx_dump_state(ei, scx_ops.exit_dump_len);
-
+	
+	trace_android_vh_scx_exit_on_abnormal(ei);
 	schedule_scx_ops_disable_work();
 }
 
