@@ -8184,7 +8184,7 @@ int default_wake_function(wait_queue_entry_t *curr, unsigned mode, int wake_flag
 }
 EXPORT_SYMBOL(default_wake_function);
 
-const struct sched_class *__setscheduler_class(int policy, int prio)
+const struct sched_class *__setscheduler_class(struct task_struct *p, int policy, int prio)
 {
 #ifdef CONFIG_SCHED_CLASS_EXT
 	int should_scx = 0;
@@ -8194,6 +8194,7 @@ const struct sched_class *__setscheduler_class(int policy, int prio)
 		return &dl_sched_class;
 
 #ifdef CONFIG_SCHED_CLASS_EXT
+	trace_android_vh_task_switch_scx(&should_scx, p, p->policy, p->prio);
 	trace_android_vh_task_should_scx(&should_scx, policy, prio);
 	if (should_scx)
 		return &ext_sched_class;
@@ -8312,7 +8313,7 @@ void rt_mutex_setprio(struct task_struct *p, struct task_struct *pi_task)
 		queue_flag &= ~DEQUEUE_MOVE;
 
 	prev_class = p->sched_class;
-	next_class = __setscheduler_class(p->policy, prio);
+	next_class = __setscheduler_class(p, p->policy, prio);
 
 	if (prev_class != next_class && p->se.sched_delayed)
 		dequeue_task(rq, p, DEQUEUE_SLEEP | DEQUEUE_DELAYED | DEQUEUE_NOCLOCK);
