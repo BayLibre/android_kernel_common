@@ -16,6 +16,24 @@
       "message": "Just wondering, what exactly happens if this is a virtual function?",
       "revId": "3709bdd70813b5ac8c30ce22c46e5b399fa1059e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1667495_23e4a1e6",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 46
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-01T20:15:12Z",
+      "side": 1,
+      "message": "I _guess_ what would happen is: device TLB is not successfully flushed, since the invalidation descriptor is incorrect: it contains the virtual function\u0027s BDF in place of the physical function\u0027s one?\n\nBut since we only get here if the device is in SATC, I guess security-wise we are safe, assuming that we trust the bootloader that all BDFs listed in SATC are BDFs of physical devices, not virtual functions?",
+      "parentUuid": "d75c274c_f8459ad9",
+      "revId": "3709bdd70813b5ac8c30ce22c46e5b399fa1059e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
