@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac0603a5_df3b78a8",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 50
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-01T19:46:16Z",
+      "side": 1,
+      "message": "`dtlb_extra_inval` seems security related, and we cannot trust the host to set it? If the host wrongly sets it to false for those quirky devices for which it should be set to true, then device TLB flush done by pKVM may be insufficient?\n\nSo, pKVM should rather copy/reimplement the host\u0027s dev_needs_extra_dtlb_flush(), to set dtlb_extra_inval on its own?",
+      "revId": "1fb3b1293cf2d125b01bba725c9f6b0ab2d45a1d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
