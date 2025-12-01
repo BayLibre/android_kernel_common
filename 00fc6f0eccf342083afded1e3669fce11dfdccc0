@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f0ffdd9_d1d26e99",
+        "filename": "drivers/iommu/intel/cache.c",
+        "patchSetId": 28
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-01T19:06:18Z",
+      "side": 1,
+      "message": "Cache tag allocation in pKVM may fail (it may exceed MAX_CACHETAG_NUM), so we\u0027d better check if it suceeded?",
+      "revId": "00fc6f0eccf342083afded1e3669fce11dfdccc0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
