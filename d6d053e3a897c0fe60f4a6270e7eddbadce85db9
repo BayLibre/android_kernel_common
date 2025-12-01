@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "caf2958f_817e855a",
+        "filename": "kernel/module/main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1478,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2025-12-01T17:16:06Z",
+      "side": 1,
+      "message": "You might be able to do:\n\n```\n#ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS\n\texport \u003d offset_to_ptr(export);\n#endif\n\treturn strcmp((const char *)sym, (const char *)export);\n```",
+      "range": {
+        "startLine": 1474,
+        "startChar": 0,
+        "endLine": 1478,
+        "endChar": 6
+      },
+      "revId": "d6d053e3a897c0fe60f4a6270e7eddbadce85db9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
