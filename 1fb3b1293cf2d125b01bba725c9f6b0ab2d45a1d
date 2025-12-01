@@ -70,6 +70,24 @@
       "parentUuid": "cf1f8659_516aba52",
       "revId": "1fb3b1293cf2d125b01bba725c9f6b0ab2d45a1d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "387cf99e_873c7479",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 50
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-01T20:58:52Z",
+      "side": 1,
+      "message": "\u003e Luckily in this case it seems we don\u0027t need to worry about hotplug devices. Device TLB is only allowed for SATC devices anyway, and S in SATC stands for \"SoC-integrated\".\n\nAhh yes true :-)\n\n\u003e Context/pasid teardown is not the only case when dtlb_extra_inval is used. It is also used in pkvm_cache_tag_flush_range() -\u003e cache_tag_flush_devtlb_psi() and that is a hot path, right?\n\nTrue, missed that, we are passing it in cache tag hypercalls as well.\n\n\u003e Anyway, for 6.12, I guess at least it simply doesn\u0027t make sense to pass this parameter in the host\u0027s hypercalls (since that is not trusted anyway)? we may just never do this extra validation?\n\nMakes sense, will remove this and add some comments.\n\n\u003e For 6.18, we might consider checking dev_needs_extra_dtlb_flush() for SATC devices during pKVM initialization (and, for example, just failing pKVM initialization if it returns true for any of them, since we are unlikely to actually care about such devices)...\n\nyeah that is a good idea.",
+      "parentUuid": "79a22eb3_f69678b5",
+      "revId": "1fb3b1293cf2d125b01bba725c9f6b0ab2d45a1d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
