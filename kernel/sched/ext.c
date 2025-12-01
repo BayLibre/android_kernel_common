@@ -4677,7 +4677,7 @@ static void scx_ops_disable_workfn(struct kthread_work *work)
 	while ((p = scx_task_iter_next_locked(&sti))) {
 		const struct sched_class *old_class = p->sched_class;
 		const struct sched_class *new_class =
-			__setscheduler_class(p->policy, p->prio);
+			__setscheduler_class(p, p->policy, p->prio);
 		struct sched_enq_and_set_ctx ctx;
 
 		if (old_class != new_class && p->se.sched_delayed)
@@ -5397,7 +5397,7 @@ static int scx_ops_enable(struct sched_ext_ops *ops, struct bpf_link *link)
 	while ((p = scx_task_iter_next_locked(&sti))) {
 		const struct sched_class *old_class = p->sched_class;
 		const struct sched_class *new_class =
-			__setscheduler_class(p->policy, p->prio);
+			__setscheduler_class(p, p->policy, p->prio);
 		struct sched_enq_and_set_ctx ctx;
 
 		if (!tryget_task_struct(p))
