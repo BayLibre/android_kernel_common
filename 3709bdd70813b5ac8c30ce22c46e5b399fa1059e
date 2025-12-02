@@ -34,6 +34,24 @@
       "parentUuid": "d75c274c_f8459ad9",
       "revId": "3709bdd70813b5ac8c30ce22c46e5b399fa1059e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67245bdb_a0fcefb9",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 46
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-02T10:35:36Z",
+      "side": 1,
+      "message": "\u003e I guess what would happen is: device TLB is not successfully flushed, since the invalidation descriptor is incorrect: it contains the virtual function\u0027s BDF in place of the physical function\u0027s one?\n\nNice catch. Reading the VT-d spec again, it doesn\u0027t clearly say anything on this error, but invalid descriptor generates a fault reported in IQE(and error record), but the invalidation continues from the next descriptor onwards. \n\n\u003e But since we only get here if the device is in SATC, I guess security-wise we are safe, assuming that we trust the bootloader that all BDFs listed in SATC are BDFs of physical devices, not virtual functions?\n\nYeah, I also didn\u0027t expect virtual functions support yet and assumed only physical functions, but I forgot to put a comment. I think there is no security issue here if we omit this field as this is used as a hint to throttle the number of requests to the device. If we omit this and ats_qdep field, iommu will assume the device can handle upto 32 pending invalidations.\n\nSince a bad value from host cannot tamper security, I guess we can let host pass this value and if its greater than 32, we can unset ats_qdep and pfsid when calling flush_dev_iotlb. 0 value for ats_qdep(MAx invalidation Pending field in the descriptor) makes iommu assume 32. What do you think?",
+      "parentUuid": "e1667495_23e4a1e6",
+      "revId": "3709bdd70813b5ac8c30ce22c46e5b399fa1059e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

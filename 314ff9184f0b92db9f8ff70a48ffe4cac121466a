@@ -48,6 +48,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "742b0caa_c216ed51",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 44
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-02T10:35:36Z",
+      "side": 1,
+      "message": "\u003e basically nit: I see the host\u0027s iommu_flush_write_buffer() locks iommu-\u003eregister_lock here. And looking at how we are using flush_write_buffer() in pKVM code, looks like we also should have a lock for this...\n\nIn all the code path that leads to flush_write_buffer, we take iommu-\u003elock and thats the reason I avoided another lock. Like always, I should have put a comment, but missed ;-)\n\n\u003e So we could just require cap_rwbf\u003d0 in check_and_init_iommu(), like we require ecap_qis\u003d1, and not bother about flush_write_buffer() (for example, its implementation could be just empty)?\n\nMakes sense, will do this.",
+      "parentUuid": "b40f0bf6_4b92852e",
+      "revId": "314ff9184f0b92db9f8ff70a48ffe4cac121466a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f89986b3_4939fd4c",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 44
@@ -59,6 +77,24 @@
       "writtenOn": "2025-11-27T00:02:41Z",
       "side": 1,
       "message": "We\u0027d better check if iommu-\u003eroot_entry is already set up?\n\nIOW these hypercalls should fail if called before before SRTP (like TE fails if done before SRTP)?\n\n(Although, assuming that pKVM initialization shouldn\u0027t succeed if SRTP and TE were not done, that would be rather a sanity check than a strictly required security check. But still...)",
+      "revId": "314ff9184f0b92db9f8ff70a48ffe4cac121466a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5166b00_adc5bd93",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 44
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-02T10:35:36Z",
+      "side": 1,
+      "message": "will do.",
+      "parentUuid": "f89986b3_4939fd4c",
       "revId": "314ff9184f0b92db9f8ff70a48ffe4cac121466a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
