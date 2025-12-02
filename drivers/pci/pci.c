@@ -3025,55 +3025,81 @@ static const struct dmi_system_id bridge_d3_blacklist[] = {
  */
 bool pci_bridge_d3_possible(struct pci_dev *bridge)
 {
-	if (!pci_is_pcie(bridge))
-		return false;
+	bool d3_possible = false;
+
+	if (!pci_is_pcie(bridge)) {
+		pci_info(bridge, "Non-PCIe bridge cannot enter D3\n");
+		goto before_return;
+	}
 
 	switch (pci_pcie_type(bridge)) {
 	case PCI_EXP_TYPE_ROOT_PORT:
 	case PCI_EXP_TYPE_UPSTREAM:
 	case PCI_EXP_TYPE_DOWNSTREAM:
-		if (pci_bridge_d3_disable)
-			return false;
+		if (pci_bridge_d3_disable) {
+			pci_info(bridge, "D3 for PCIe bridge disabled by kernel parameter\n");
+			goto before_return;
+		}
 
 		/*
 		 * Hotplug ports handled by firmware in System Management Mode
 		 * may not be put into D3 by the OS (Thunderbolt on non-Macs).
 		 */
-		if (bridge->is_hotplug_bridge && !pciehp_is_native(bridge))
-			return false;
+		if (bridge->is_hotplug_bridge && !pciehp_is_native(bridge)) {
+			pci_info(bridge, "Firmware-handled hotplug bridge cannot enter D3\n");
+			goto before_return;
+		}
 
-		if (pci_bridge_d3_force)
-			return true;
+		if (pci_bridge_d3_force) {
+			pci_info(bridge, "D3 for PCIe bridge forced by kernel parameter\n");
+			d3_possible = true;
+			goto before_return;
+		}
 
 		/* Even the oldest 2010 Thunderbolt controller supports D3. */
-		if (bridge->is_thunderbolt)
-			return true;
+		if (bridge->is_thunderbolt) {
+			pci_info(bridge, "D3 for Thunderbolt bridge\n");
+			d3_possible = true;
+			goto before_return;
+		}
 
 		/* Platform might know better if the bridge supports D3 */
-		if (platform_pci_bridge_d3(bridge))
-			return true;
+		if (platform_pci_bridge_d3(bridge)) {
+			pci_info(bridge, "D3 for PCIe bridge supported by platform\n");
+			d3_possible = true;
+			goto before_return;
+		}
 
 		/*
 		 * Hotplug ports handled natively by the OS were not validated
 		 * by vendors for runtime D3 at least until 2018 because there
 		 * was no OS support.
 		 */
-		if (bridge->is_hotplug_bridge)
-			return false;
-
-		if (dmi_check_system(bridge_d3_blacklist))
-			return false;
+		if (bridge->is_hotplug_bridge) {
+			pci_info(bridge, "Firmware-handled hotplug bridge cannot enter D3\n");
+			d3_possible = false;
+			goto before_return;
+		}
+		if (dmi_check_system(bridge_d3_blacklist)) {
+			pci_info(bridge, "D3 for PCIe bridge disabled by DMI blacklist\n");
+			d3_possible = false;
+			goto before_return;
+		}
 
 		/*
 		 * It should be safe to put PCIe ports from 2015 or newer
 		 * to D3.
 		 */
-		if (dmi_get_bios_year() >= 2015)
-			return true;
+		if (dmi_get_bios_year() >= 2015) {
+			pci_info(bridge, "D3 for PCIe bridge supported by BIOS date\n");
+			d3_possible = true;
+			goto before_return;
+		}
 		break;
 	}
-
-	return false;
+before_return:
+	pci_info(bridge, "final: %d\n", d3_possible);
+	return d3_possible;
 }
 
 static int pci_dev_check_d3cold(struct pci_dev *dev, void *data)

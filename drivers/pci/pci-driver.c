@@ -905,7 +905,7 @@ static int pci_pm_suspend_noirq(struct device *dev)
 			pci_prepare_to_sleep(pci_dev);
 	}
 
-	pci_dbg(pci_dev, "PCI PM: Suspend power state: %s\n",
+	pci_info(pci_dev, "PCI PM: Suspend power state: %s\n",
 		pci_power_name(pci_dev->current_state));
 
 	if (pci_dev->current_state == PCI_D0) {
