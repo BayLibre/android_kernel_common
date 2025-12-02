@@ -62,6 +62,24 @@
       "parentUuid": "eff08cd5_7fecee8f",
       "revId": "0316e02dc8dfcab1493dc3ac6e052f76658b5fd4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce957b3a_fd48501d",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 53
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-02T23:06:43Z",
+      "side": 1,
+      "message": "Probably its better to unset ats_supported in the driver if pkvm enabled and not in satc so that we would not even go to enabling ats? That way we can return error from pkvm if compromised host driver sends ats_supported for a device not in satc",
+      "parentUuid": "8c084aa2_143dde35",
+      "revId": "0316e02dc8dfcab1493dc3ac6e052f76658b5fd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
