@@ -3,6 +3,71 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2a7b67c2_c3493f77",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 52
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-02T17:54:41Z",
+      "side": 1,
+      "message": "Maybe it would be more readable to put the rest of this function under this `if` instead of returning here? (like in pkvm_iommu_clear_pasid_entry())",
+      "fixSuggestions": [
+        {
+          "fixId": "a674aeb9_371777e1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+              "range": {
+                "startLine": 97,
+                "startChar": 0,
+                "endLine": 99,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+              "range": {
+                "startLine": 105,
+                "startChar": 0,
+                "endLine": 107,
+                "endChar": 0
+              },
+              "replacement": "\tif (is_dev_in_satc(bdf) \u0026\u0026 ats_enabled) {\n\t\tu16 pfsid \u003d 0;\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+              "range": {
+                "startLine": 108,
+                "startChar": 0,
+                "endLine": 111,
+                "endChar": 0
+              },
+              "replacement": "\t\tif (ecap_dit(hyp_iommu-\u003eiommu.ecap))\n\t\t\tpfsid \u003d bdf;\n\t\tflush_dev_iotlb(hyp_iommu, bdf, pfsid, ats_qdep, 0, MAX_AGAW_PFN_WIDTH);\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+              "range": {
+                "startLine": 112,
+                "startChar": 0,
+                "endLine": 120,
+                "endChar": 0
+              },
+              "replacement": "\t\tif (dtlb_extra_inval) {\n\t\t\t/*\n\t\t\t * There is no guarantee that the device DMA is stopped when it reaches\n\t\t\t * here. Therefore, always attempt the extra device TLB invalidation\n\t\t\t * quirk. The impact on performance is acceptable since this is not a\n\t\t\t * performance-critical path.\n\t\t\t */\n\t\t\tflush_dev_iotlb(hyp_iommu, bdf, pfsid, ats_qdep, 0, MAX_AGAW_PFN_WIDTH);\n\t\t}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7eb9641815a07d53fc150ef5e7060da9bd4ff0dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9a15e37b_6db97e72",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 52

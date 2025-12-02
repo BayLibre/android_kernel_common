@@ -66,6 +66,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8015ce43_12f5bb5b",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 44
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-02T17:54:41Z",
+      "side": 1,
+      "message": "\u003e In all the code path that leads to flush_write_buffer, we take iommu-\u003elock\n\nNot really: for example, pasid_setup_sl() -\u003e pkvm_pasid_flush_caches() -\u003e flush_write_buffer() is called with iommu-\u003elock unlocked, right? And that\u0027s not the only such case I see. (BTW that\u0027s exactly what I meant when I said \"And looking at how we are using flush_write_buffer() in pKVM code, looks like we also should have a lock for this\")",
+      "parentUuid": "742b0caa_c216ed51",
+      "revId": "314ff9184f0b92db9f8ff70a48ffe4cac121466a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f89986b3_4939fd4c",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 44

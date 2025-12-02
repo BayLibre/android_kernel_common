@@ -52,6 +52,24 @@
       "parentUuid": "e1667495_23e4a1e6",
       "revId": "3709bdd70813b5ac8c30ce22c46e5b399fa1059e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2d441e6_a9fa25d8",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 46
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-02T17:54:41Z",
+      "side": 1,
+      "message": "\u003e Since a bad value from host cannot tamper security\n\nAs long as it doesn\u0027t result, again, in an unsuccessful invalidation, due to the descriptor rejected by hardware.\n\nSo... I guess we _should_ allow the host to set ats_qdep, otherwise we potentially introduce a performance regression? But yeah, it seems a good idea to validate if it is not greater than 32 (aka PCI_ATS_MAX_QDEP).\n\nAs for how exactly we handle an incorrect ats_qdep value:\n\n\u003e we can unset ats_qdep and pfsid when calling flush_dev_iotlb.\n\nWhy not just return -EINVAL instead?\n\n...As for pfsid, it seems we should keep doing what we are doing, i.e. just unconditionally set it to the bdf (and put a comment that we are assuming that all BDFs in SATC are physical functions, not virtual ones)?",
+      "parentUuid": "67245bdb_a0fcefb9",
+      "revId": "3709bdd70813b5ac8c30ce22c46e5b399fa1059e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
