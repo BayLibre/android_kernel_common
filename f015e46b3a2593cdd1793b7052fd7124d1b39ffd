@@ -65,6 +65,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8d50bd94_b1594b0e",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 1747,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-02T03:20:37Z",
+      "side": 1,
+      "message": "This allocation happens even before pkvm is enabled (common case when CONFIG_IRQ_REMAP is set), so making it conditional on pkvm_pviommu_enabled() won\u0027t work. \nInstead I can put an ifdef for CONFIG_PKVM_INTEL_PVIOMMU?",
+      "parentUuid": "0f00f168_c6bed37d",
+      "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b904956d_44d0f482",
         "filename": "drivers/iommu/intel/dmar.c",
         "patchSetId": 19
