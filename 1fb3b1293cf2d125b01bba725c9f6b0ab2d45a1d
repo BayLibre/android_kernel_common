@@ -88,6 +88,24 @@
       "parentUuid": "79a22eb3_f69678b5",
       "revId": "1fb3b1293cf2d125b01bba725c9f6b0ab2d45a1d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a128a1f2_e344bbd8",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 50
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-02T20:35:49Z",
+      "side": 1,
+      "message": "\u003e\u003e Anyway, for 6.12, I guess at least it simply doesn\u0027t make sense to pass this parameter in the host\u0027s hypercalls (since that is not trusted anyway)? we may just never do this extra validation?\n\n\u003e Makes sense, will remove this and add some comments.\n\nDone",
+      "parentUuid": "387cf99e_873c7479",
+      "revId": "1fb3b1293cf2d125b01bba725c9f6b0ab2d45a1d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

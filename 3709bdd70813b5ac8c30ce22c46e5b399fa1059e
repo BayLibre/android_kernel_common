@@ -106,6 +106,24 @@
       "parentUuid": "d299feb8_811539fe",
       "revId": "3709bdd70813b5ac8c30ce22c46e5b399fa1059e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ad3fdc4_c923c659",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 46
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-02T20:35:49Z",
+      "side": 1,
+      "message": "\u003e ...As for pfsid, it seems we should keep doing what we are doing, i.e. just unconditionally set it to the bdf (and put a comment that we are assuming that all BDFs in SATC are physical functions, not virtual ones)?\n\nOk, will add the comments",
+      "parentUuid": "69f5f9cf_6cbd6b00",
+      "revId": "3709bdd70813b5ac8c30ce22c46e5b399fa1059e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
