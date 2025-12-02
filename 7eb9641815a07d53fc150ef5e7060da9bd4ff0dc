@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a15e37b_6db97e72",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 52
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-02T13:43:09Z",
+      "side": 1,
+      "message": "It seems better to decrement after clearing the entry and flushing caches, not before? Otherwise there may be a small window when pt_cnt is already 0 (so we won\u0027t flush IOTLB when donating a page) but a device still has access to the page being donated?",
+      "fixSuggestions": [
+        {
+          "fixId": "68f35973_3faa6cb4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+              "range": {
+                "startLine": 152,
+                "startChar": 0,
+                "endLine": 155,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+              "range": {
+                "startLine": 163,
+                "startChar": 0,
+                "endLine": 163,
+                "endChar": 0
+              },
+              "replacement": "\n\tif (!sm_supported(\u0026hyp_iommu-\u003eiommu) \u0026\u0026 did \u003d\u003d FLPT_DEFAULT_DID)\n\t\tatomic_dec(\u0026hyp_iommu-\u003ept_cnt);\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7eb9641815a07d53fc150ef5e7060da9bd4ff0dc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
