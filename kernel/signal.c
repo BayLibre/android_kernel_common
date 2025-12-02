@@ -4016,10 +4016,7 @@ err:
 	}
 	}
 
-	ret = do_pidfd_send_signal(pid, sig, type, info, flags);
-	put_pid(pid);
-
-	return ret;
+	return do_pidfd_send_signal(pid, sig, type, info, flags);
 }
 
 static int
