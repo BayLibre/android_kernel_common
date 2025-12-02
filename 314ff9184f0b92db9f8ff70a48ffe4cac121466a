@@ -84,6 +84,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "69cea530_85bad2c8",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 44
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-02T18:21:22Z",
+      "side": 1,
+      "message": "Ahh yes. I had previously done it inside the lock and then moved it outside to be similar to host driver.\n\nI have the check for cap_rwbf and removed flush_write_buffer from pkvm now.",
+      "parentUuid": "8015ce43_12f5bb5b",
+      "revId": "314ff9184f0b92db9f8ff70a48ffe4cac121466a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f89986b3_4939fd4c",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 44

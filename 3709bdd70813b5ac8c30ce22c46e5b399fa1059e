@@ -88,6 +88,24 @@
       "parentUuid": "c2d441e6_a9fa25d8",
       "revId": "3709bdd70813b5ac8c30ce22c46e5b399fa1059e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69f5f9cf_6cbd6b00",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 46
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-02T18:21:22Z",
+      "side": 1,
+      "message": "\u003e\u003e we can unset ats_qdep and pfsid when calling flush_dev_iotlb.\n\n\u003e Why not just return -EINVAL instead?\n\nSince it was not security related, I thought we could continue safely without failing the host. But -EINVAL also sounds good.\n\n\u003e we can\u0027t really trust the host to assign the needed cache tags? So pKVM should rather assign the needed cache tags on its own, every time when associating a BDF with an IOMMU domain (when setting a context or PASID entry)?\"\n\nExactly this was what I was going to do as I was working on the flush logic in  aosp/3788755. Host calls `cache_tag_assign_domain` in `dmar_domain_attach_device` after setting context/pasid entry. So I was about to club the cache_tag_assign with context/pasid hypercall. I didn\u0027t have ats_qdep in mind when I was about to code this, but as you said, by having pkvm take over assigning cache tags, we could avoid the cache tag assign hypercalls and have a single point to validate values passed by host.",
+      "parentUuid": "d299feb8_811539fe",
+      "revId": "3709bdd70813b5ac8c30ce22c46e5b399fa1059e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
