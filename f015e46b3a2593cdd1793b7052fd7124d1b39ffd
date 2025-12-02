@@ -83,6 +83,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "67c18b0b_9849287d",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 1747,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-02T19:59:01Z",
+      "side": 1,
+      "message": "\u003e This allocation happens even before pkvm is enabled (common case when CONFIG_IRQ_REMAP is set)\n\nOk, I see the dilemma.\n\n\u003e Instead I can put an ifdef for CONFIG_PKVM_INTEL_PVIOMMU?\n\nMaybe...\n\nE.g. something like this?\n\n```\n--- a/drivers/iommu/intel/dmar.c\n+++ b/drivers/iommu/intel/dmar.c\n@@ -1740,11 +1740,11 @@ int dmar_enable_qi(struct intel_iommu *iommu)\n \t/*\n \t * Need two pages to accommodate 256 descriptors of 256 bits each\n \t * if the remapping hardware supports scalable mode translation.\n-\t *\n-\t * Allocate desc and desc_status pages contiguously so that it\u0027s\n-\t * easier to donate in pKVM hypervisor.\n \t */\n-\torder \u003d ecap_smts(iommu-\u003eecap) ? 2 : 1;\n+\torder \u003d ecap_smts(iommu-\u003eecap) ? 1 : 0;\n+#ifdef CONFIG_PKVM_INTEL_PVIOMMU\n+\torder++;\n+#endif\n \tdesc \u003d iommu_alloc_pages_node(iommu-\u003enode, GFP_ATOMIC, order);\n \tif (!desc) {\n \t\tkfree(qi);\n@@ -1753,7 +1753,23 @@ int dmar_enable_qi(struct intel_iommu *iommu)\n \t}\n \n \tqi-\u003edesc \u003d desc;\n-\tqi-\u003edesc_status \u003d (int *)((u64)desc + order * VTD_PAGE_SIZE);\n+#ifndef CONFIG_PKVM_INTEL_PVIOMMU\n+\tqi-\u003edesc_status \u003d kcalloc(QI_LENGTH, sizeof(int), GFP_ATOMIC);\n+\tif (!qi-\u003edesc_status) {\n+\t\tiommu_free_page(qi-\u003edesc);\n+\t\tkfree(qi);\n+\t\tiommu-\u003eqi \u003d NULL;\n+\t\treturn -ENOMEM;\n+\t}\n+#else\n+\t/*\n+\t * Allocate desc_status contiguously after desc, so that it\u0027s easier\n+\t * to donate in pKVM hypervisor. Note that this allocation may happen\n+\t * even before pKVM is enabled, during IRQ remapping setup.\n+\t */\n+\tBUILD_BUG_ON(QI_LENGTH * sizeof(int) \u003e (1 \u003c\u003c (order - 1)) * VTD_PAGE_SIZE);\n+\tqi-\u003edesc_status \u003d (int *)((u64)desc + (1 \u003c\u003c (order - 1)) * VTD_PAGE_SIZE);\n+#endif\n \n \traw_spin_lock_init(\u0026qi-\u003eq_lock);\n```",
+      "parentUuid": "8d50bd94_b1594b0e",
+      "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b904956d_44d0f482",
         "filename": "drivers/iommu/intel/dmar.c",
         "patchSetId": 19
@@ -148,6 +166,24 @@
       "side": 1,
       "message": "\u003eBetter (1 \u003c\u003c (order - 1)) instead of order (so that it would remain correct if order was bigger than 2)?\n\nHere though, order can only be 2 or 1. I understand for a future scenario, order can go beyond 2, let\u0027s say 3. But then, QI may be stipulated to be only 3 pages (not 4) and QI desc may happen to occupy 5 pages, in case which `(1 \u003c\u003c (order - 1))` would be wrong.",
       "parentUuid": "4720346a_5b55f8dd",
+      "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e6d6113_32fb996c",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 1756,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-02T19:59:01Z",
+      "side": 1,
+      "message": "\u003e But then, QI may be stipulated to be only 3 pages (not 4) and QI desc may happen to occupy 5 pages\n\nThat would be addressed (well, detected) by the BUILD_BUG_ON I suggested above, right?\n\nMy actual motivation here is not to prepare for a future scenario with order \u003e 2 (which is unlikely to happen) but just to make it clearer what exactly your code is already doing here (and why its usage of `order` here is correct). What your code is doing is: allocate twice more pages than normally, and allocate `desc_status` at the beginning of the extra pages (i.e. non-overlapping with the original pages). Using `(1 \u003c\u003c (order - 1))` makes it explicit.",
+      "parentUuid": "84f69365_78fe8a7b",
       "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
