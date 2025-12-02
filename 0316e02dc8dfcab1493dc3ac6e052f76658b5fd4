@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eff08cd5_7fecee8f",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 53
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-02T21:38:23Z",
+      "side": 1,
+      "message": "Why not return -EPERM if the device is not in SATC (like in pkvm_iommu_set_sm_ce()), instead of just silently refusing to enable Device TLB?",
+      "fixSuggestions": [
+        {
+          "fixId": "3a72bb1d_2d773427",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+              "range": {
+                "startLine": 191,
+                "startChar": 0,
+                "endLine": 192,
+                "endChar": 0
+              },
+              "replacement": "\tif (param-\u003eats_supported) {\n\t\tif (!is_dev_in_satc(param-\u003ebdf))\n\t\t\treturn -EPERM;\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+              "range": {
+                "startLine": 193,
+                "startChar": 0,
+                "endLine": 193,
+                "endChar": 0
+              },
+              "replacement": "\t}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0316e02dc8dfcab1493dc3ac6e052f76658b5fd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
