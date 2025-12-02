@@ -412,6 +412,23 @@ DECLARE_RESTRICTED_HOOK(android_rvh_set_task_comm,
 DECLARE_HOOK(android_vh_move_entity,
 	TP_PROTO(int *move, unsigned int flags),
 	TP_ARGS(move, flags));
+
+DECLARE_HOOK(android_vh_enq_to_priq,
+	TP_PROTO(struct scx_dispatch_q *dsq, struct task_struct *p, bool *enq_priq),
+	TP_ARGS(dsq, p, enq_priq));
+
+DECLARE_HOOK(android_vh_task_tick_scx,
+	TP_PROTO(struct rq *rq, struct task_struct *p, int queued),
+	TP_ARGS(rq, p, queued));
+
+DECLARE_HOOK(android_vh_before_switch,
+	TP_PROTO(bool enable),
+	TP_ARGS(enable));
+
+DECLARE_HOOK(android_vh_skip_switch,
+	TP_PROTO(bool enable, struct task_struct *p, bool *skip),
+	TP_ARGS(enable, p, skip));
+
 DECLARE_HOOK(android_vh_task_should_scx,
 	TP_PROTO(int *should_scx, int policy, int prio),
 	TP_ARGS(should_scx, policy, prio));
