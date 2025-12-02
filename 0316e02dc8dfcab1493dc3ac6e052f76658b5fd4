@@ -44,6 +44,24 @@
       ],
       "revId": "0316e02dc8dfcab1493dc3ac6e052f76658b5fd4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c084aa2_143dde35",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 53
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-02T23:01:35Z",
+      "side": 1,
+      "message": "I was going to respond to the actual comment down, but you beat me to it :-). So, on testing, I could see that integrated graphics in brya reports ats_supported and returning failure would cause iommu and pkvm initialization to fail. So forcing it to use CONTEXT_TT_MULTI_LEVEL seemed the best option.\n\nI guess I would also need to modify the host driver to not enable ats for the device if pkvm is enabled. I don\u0027t see any issues with driver enabling ats for the graphics device, but as a complete fix, I think its better to not enable ats if pkvm enabled and dev not in satc.",
+      "parentUuid": "eff08cd5_7fecee8f",
+      "revId": "0316e02dc8dfcab1493dc3ac6e052f76658b5fd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
