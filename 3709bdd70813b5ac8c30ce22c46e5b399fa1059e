@@ -70,6 +70,24 @@
       "parentUuid": "67245bdb_a0fcefb9",
       "revId": "3709bdd70813b5ac8c30ce22c46e5b399fa1059e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d299feb8_811539fe",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 46
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-02T18:07:31Z",
+      "side": 1,
+      "message": "That said, the question is how _exactly_ we let the host set ats_qdep. This clear_ce hypercall is not the only case when we need an ats_qdep value from the host. Most often we need it for TLB invalidations after DMA unmap, and in that case we are relying on those cache assign/unassign hypercalls to pass ats_qdep. But as I wrote in aosp/3788755: \"we can\u0027t really trust the host to assign the needed cache tags? So pKVM should rather assign the needed cache tags on its own, every time when associating a BDF with an IOMMU domain (when setting a context or PASID entry)?\"",
+      "parentUuid": "c2d441e6_a9fa25d8",
+      "revId": "3709bdd70813b5ac8c30ce22c46e5b399fa1059e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
