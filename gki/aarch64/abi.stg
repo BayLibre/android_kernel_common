@@ -374063,6 +374063,11 @@ function {
   parameter_id: 0x0206e690
 }
 function {
+  id: 0x101bdac8
+  return_type_id: 0x48b5725f
+  parameter_id: 0x020e2d6c
+}
+function {
   id: 0x101c2d25
   return_type_id: 0x48b5725f
   parameter_id: 0x0258f96e
@@ -385085,6 +385090,11 @@ function {
   parameter_id: 0x3a232845
   parameter_id: 0x347303b4
   parameter_id: 0x3e10b518
+}
+function {
+  id: 0x1d64d869
+  return_type_id: 0x48b5725f
+  parameter_id: 0x37f227e9
 }
 function {
   id: 0x1d657c6d
@@ -488953,6 +488963,42 @@ elf_symbol {
   full_name: "pci_ats_supported"
 }
 elf_symbol {
+  id: 0xad049f3d
+  name: "pci_bus_add_device"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x466c6b90
+  type_id: 0x14e1f000
+  full_name: "pci_bus_add_device"
+}
+elf_symbol {
+  id: 0x082c11eb
+  name: "pci_bus_add_devices"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x08860e11
+  type_id: 0x1d64d869
+  full_name: "pci_bus_add_devices"
+}
+elf_symbol {
+  id: 0x375c1ee2
+  name: "pci_bus_assign_resources"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x600ecd92
+  type_id: 0x1d64d869
+  full_name: "pci_bus_assign_resources"
+}
+elf_symbol {
+  id: 0x2ad69fc2
+  name: "pci_bus_claim_resources"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x78ecf14e
+  type_id: 0x185a3adc
+  full_name: "pci_bus_claim_resources"
+}
+elf_symbol {
   id: 0xbec826c0
   name: "pci_bus_read_config_dword"
   is_defined: true
@@ -488969,6 +489015,15 @@ elf_symbol {
   crc: 0x8162be6f
   type_id: 0xcd829c8f
   full_name: "pci_bus_resource_n"
+}
+elf_symbol {
+  id: 0x22e85b74
+  name: "pci_bus_size_bridges"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x98beef86
+  type_id: 0x185a3adc
+  full_name: "pci_bus_size_bridges"
 }
 elf_symbol {
   id: 0x1540c319
@@ -489113,6 +489168,15 @@ elf_symbol {
   crc: 0xe28244c0
   type_id: 0x9ec927c4
   full_name: "pci_ecam_create"
+}
+elf_symbol {
+  id: 0x0df090d1
+  name: "pci_ecam_free"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x58fb63c3
+  type_id: 0x101bdac8
+  full_name: "pci_ecam_free"
 }
 elf_symbol {
   id: 0x0872d05c
@@ -489302,6 +489366,15 @@ elf_symbol {
   crc: 0x1e4f182b
   type_id: 0x578fa618
   full_name: "pci_find_next_capability"
+}
+elf_symbol {
+  id: 0xbbf8a63b
+  name: "pci_flags"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xf296206e
+  type_id: 0x4585663f
+  full_name: "pci_flags"
 }
 elf_symbol {
   id: 0x08190210
@@ -489781,6 +489854,15 @@ elf_symbol {
   full_name: "pci_save_state"
 }
 elf_symbol {
+  id: 0x18af963b
+  name: "pci_scan_root_bus_bridge"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x604ec397
+  type_id: 0x93acae9b
+  full_name: "pci_scan_root_bus_bridge"
+}
+elf_symbol {
   id: 0xc62d75dd
   name: "pci_select_bars"
   is_defined: true
@@ -489968,6 +490050,15 @@ elf_symbol {
   crc: 0x2eebc444
   type_id: 0xfaddfa97
   full_name: "pcie_aspm_enabled"
+}
+elf_symbol {
+  id: 0x4f554530
+  name: "pcie_bus_configure_settings"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x300ea93b
+  type_id: 0x185a3adc
+  full_name: "pcie_bus_configure_settings"
 }
 elf_symbol {
   id: 0xb0cf8b54
@@ -525192,8 +525283,13 @@ interface {
   symbol_id: 0xbab6c772
   symbol_id: 0x66f0c8cd
   symbol_id: 0xb10958e7
+  symbol_id: 0xad049f3d
+  symbol_id: 0x082c11eb
+  symbol_id: 0x375c1ee2
+  symbol_id: 0x2ad69fc2
   symbol_id: 0xbec826c0
   symbol_id: 0x45091f48
+  symbol_id: 0x22e85b74
   symbol_id: 0x1540c319
   symbol_id: 0x06548b7e
   symbol_id: 0xe99b6d83
@@ -525210,6 +525306,7 @@ interface {
   symbol_id: 0x01a00013
   symbol_id: 0xb9d0b3a8
   symbol_id: 0x2b8efaa9
+  symbol_id: 0x0df090d1
   symbol_id: 0x0872d05c
   symbol_id: 0x96b46225
   symbol_id: 0x35a3d772
@@ -525231,6 +525328,7 @@ interface {
   symbol_id: 0x780d1110
   symbol_id: 0xbbb674cc
   symbol_id: 0xdea420f5
+  symbol_id: 0xbbf8a63b
   symbol_id: 0x08190210
   symbol_id: 0x8ffabaa9
   symbol_id: 0x10f42cee
@@ -525284,6 +525382,7 @@ interface {
   symbol_id: 0xd2a1df18
   symbol_id: 0x18bfee32
   symbol_id: 0x53d0da35
+  symbol_id: 0x18af963b
   symbol_id: 0xc62d75dd
   symbol_id: 0x9595d229
   symbol_id: 0xfc86cde9
@@ -525305,6 +525404,7 @@ interface {
   symbol_id: 0x52200b18
   symbol_id: 0xfda7b705
   symbol_id: 0xefd6d09b
+  symbol_id: 0x4f554530
   symbol_id: 0xb0cf8b54
   symbol_id: 0x5092d9d9
   symbol_id: 0xf1513a2c
