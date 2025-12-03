@@ -211,9 +211,15 @@ int swap_writepage(struct page *page, struct writeback_control *wbc)
 static inline void count_swpout_vm_event(struct folio *folio)
 {
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-	if (unlikely(folio_test_pmd_mappable(folio)))
+	if (unlikely(folio_test_pmd_mappable(folio))) {
+		count_memcg_folio_events(folio, THP_SWPOUT, 1);
 		count_vm_event(THP_SWPOUT);
+<<<<<<< HEAD   (ec05b975a0a9dd29261baf3083c9c1a3f08abeba Merge 57692c303132 ("scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PE)
 	count_mthp_stat(folio_order(folio), MTHP_STAT_SWPOUT);
+||||||| BASE   (57692c303132857fda531adf273086826b409296 scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ON)
+=======
+	}
+>>>>>>> BRANCH (2c356873691214c44dcccf68d08cc24ff57f8bae mm: memcg: add THP swap out info for anonymous reclaim)
 #endif
 	count_vm_events(PSWPOUT, folio_nr_pages(folio));
 }
@@ -282,9 +288,6 @@ static void sio_write_complete(struct kiocb *iocb, long ret)
 			set_page_dirty(page);
 			ClearPageReclaim(page);
 		}
-	} else {
-		for (p = 0; p < sio->pages; p++)
-			count_swpout_vm_event(page_folio(sio->bvec[p].bv_page));
 	}
 
 	for (p = 0; p < sio->pages; p++)
@@ -300,6 +303,7 @@ static void swap_writepage_fs(struct page *page, struct writeback_control *wbc)
 	struct file *swap_file = sis->swap_file;
 	loff_t pos = page_file_offset(page);
 
+	count_swpout_vm_event(page_folio(page));
 	set_page_writeback(page);
 	unlock_page(page);
 	if (wbc->swap_plug)

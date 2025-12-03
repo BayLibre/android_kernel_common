@@ -1998,10 +1998,17 @@ retry:
 					if (split_folio_to_list(folio, folio_list))
 						goto activate_locked;
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+<<<<<<< HEAD   (ec05b975a0a9dd29261baf3083c9c1a3f08abeba Merge 57692c303132 ("scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PE)
 					if (nr_pages >= HPAGE_PMD_NR) {
 						count_vm_event(THP_SWPOUT_FALLBACK);
 					}
 					count_mthp_stat(order, MTHP_STAT_SWPOUT_FALLBACK);
+||||||| BASE   (57692c303132857fda531adf273086826b409296 scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ON)
+					count_vm_event(THP_SWPOUT_FALLBACK);
+=======
+					count_memcg_folio_events(folio, THP_SWPOUT_FALLBACK, 1);
+					count_vm_event(THP_SWPOUT_FALLBACK);
+>>>>>>> BRANCH (2c356873691214c44dcccf68d08cc24ff57f8bae mm: memcg: add THP swap out info for anonymous reclaim)
 #endif
 					if (!add_to_swap(folio))
 						goto activate_locked_split;
