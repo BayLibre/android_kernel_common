@@ -29,9 +29,7 @@
   bpf_trace_run8
   bus_find_device
   bus_register
-  bus_register_notifier
   bus_unregister
-  bus_unregister_notifier
   call_rcu
   cancel_delayed_work
   cancel_delayed_work_sync
@@ -578,7 +576,6 @@
   param_ops_uint
   pci_alloc_irq_vectors
   pci_assign_resource
-  pci_bus_type
   pci_dev_put
   pci_disable_device
   pcie_capability_clear_and_set_word_locked
@@ -971,6 +968,7 @@
   iommu_fwspec_free
   iommu_group_ref_get
   of_dma_is_coherent
+  pci_bus_type
   pci_device_group
   platform_irq_count
   report_iommu_fault
@@ -1227,6 +1225,8 @@
   i2c_recover_bus
 
 # required by i2c-dev.ko
+  bus_register_notifier
+  bus_unregister_notifier
   i2c_bus_type
   i2c_for_each_dev
   i2c_get_adapter
@@ -1772,13 +1772,10 @@
   mipi_dsi_driver_register_full
   mipi_dsi_driver_unregister
 
-# required by pci-pwrctrl-core.ko
-  pci_lock_rescan_remove
-  pci_rescan_bus
-  pci_unlock_rescan_remove
-
 # required by pci-pwrctrl-pwrseq.ko
+  devm_pci_pwrctrl_device_set_ready
   devm_pwrseq_get
+  pci_pwrctrl_init
   pwrseq_power_off
   pwrseq_power_on
 
