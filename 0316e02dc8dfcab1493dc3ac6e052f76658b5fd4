@@ -80,6 +80,24 @@
       "parentUuid": "8c084aa2_143dde35",
       "revId": "0316e02dc8dfcab1493dc3ac6e052f76658b5fd4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "334f16cb_aa2bac3c",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 53
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-03T02:32:19Z",
+      "side": 1,
+      "message": "Hmm, interesting. I didn\u0027t realize that dmar_ats_supported() returns true in far more cases than just SATC devices.\n\nAnd BTW I see it equally applies to scalable mode as well. We didn\u0027t encounter this on PTL just because all non-SATC devices on it are behind an IOMMU which has no ecap_dev_iotlb_support().\n\nSo if we want to address it just by silently forcing CONTEXT_TT_MULTI_LEVEL, we\u0027d better use the same approach for scalable mode as well, i.e. silently force disabling DTE instead of returning an error?\n\nSo if we don\u0027t want to do that and want to address this \"properly\"... Yeah, it seems the simplest and easiest solution would be just to force ats_supported to false:\n\n```\n--- a/drivers/iommu/intel/iommu.c\n+++ b/drivers/iommu/intel/iommu.c\n@@ -2721,6 +2721,10 @@ static bool dmar_ats_supported(struct pci_dev *dev, struct intel_iommu *iommu)\n \t\t */\n \t\treturn !(satcu-\u003eatc_required \u0026\u0026 !sm_supported(iommu));\n \n+\t/* add comment here */\n+\tif (pkvm_pviommu_enabled())\n+\t\treturn false;\n+\n \tfor (bus \u003d dev-\u003ebus; bus; bus \u003d bus-\u003eparent) {\n \t\tbridge \u003d bus-\u003eself;\n \t\t/* If it\u0027s an integrated device, allow ATS */\n```\n\nAlthough actually we have full control of what we pass to pKVM in hypercalls, so instead of changing info-\u003eats_supported to false we could just pass a different value, based on dmar_find_matched_satc_unit(). But OTOH, changing info-\u003eats_supported to false seems to make things overall more consistent in the host as well (it automatically ensures disabling info-\u003eats_enabled as well, and so on).",
+      "parentUuid": "ce957b3a_fd48501d",
+      "revId": "0316e02dc8dfcab1493dc3ac6e052f76658b5fd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
