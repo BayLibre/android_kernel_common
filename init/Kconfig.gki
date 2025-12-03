@@ -244,6 +244,14 @@ config GKI_HIDDEN_PHY_CONFIGS
 	  Dummy config option used to enable the hidden PHY configs,
 	  required by various SoC platforms.
 
+config GKI_HIDDEN_PCI_CONFIGS
+	bool "Hidden PCI configuration needed for GKI"
+	select PCI_PWRCTL if HAVE_PWRCTL
+	help
+	  Dummy config option used to enable the hidden PCI configs.
+	  These are normally selected implicitly when a module
+	  that relies on it is configured.
+
 config GKI_HIDDEN_MM_CONFIGS
 	bool "Hidden MM configuration needed for GKI"
 	select PAGE_REPORTING
@@ -320,6 +328,7 @@ config GKI_HACKS_TO_FIX
 	select GKI_HIDDEN_HYPERVISOR_CONFIGS
 	select GKI_HIDDEN_NET_CONFIGS
 	select GKI_HIDDEN_PHY_CONFIGS
+	select GKI_HIDDEN_PCI_CONFIGS
 	select GKI_HIDDEN_MM_CONFIGS
 	select GKI_HIDDEN_ETHERNET_CONFIGS
 	select GKI_HIDDEN_DMA_CONFIGS
