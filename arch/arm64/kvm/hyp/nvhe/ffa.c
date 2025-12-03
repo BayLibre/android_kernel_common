@@ -475,6 +475,15 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 	}
 
 	if (check_add_overflow(offset, sizeof(struct ffa_composite_mem_region), &checked_offset)) {
+<<<<<<< HEAD   (ee7206a4cbbb27e619612d4c00a3a20716bfedd9 ANDROID: GKI: Fix up CRC issues with mm/memory.c)
+||||||| BASE   (1e89a1be4fe907d9c573fe98875bff132e7ac6c8 Linux 6.6.117)
+=======
+		ret = FFA_RET_INVALID_PARAMETERS;
+		goto out_unlock;
+	}
+
+	if (fraglen < checked_offset) {
+>>>>>>> BRANCH (4791134e4aebe300af2b409dc550610ef69fae3e Linux 6.6.118)
 		ret = FFA_RET_INVALID_PARAMETERS;
 		goto out_unlock;
 	}
