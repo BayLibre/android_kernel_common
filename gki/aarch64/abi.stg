@@ -36309,6 +36309,11 @@ pointer_reference {
   pointee_type_id: 0xd37226bc
 }
 pointer_reference {
+  id: 0x3e4d0b70
+  kind: POINTER
+  pointee_type_id: 0xd374cb5f
+}
+pointer_reference {
   id: 0x3e4e8ffc
   kind: POINTER
   pointee_type_id: 0xd37ad96d
@@ -148659,6 +148664,12 @@ member {
   offset: 256
 }
 member {
+  id: 0x559a17bf
+  name: "link"
+  type_id: 0x2488f94c
+  offset: 256
+}
+member {
   id: 0x55a5e4f4
   name: "link"
   type_id: 0x1b7b196f
@@ -167178,6 +167189,12 @@ member {
   name: "nb"
   type_id: 0x449a775b
   offset: 1024
+}
+member {
+  id: 0xd5e016eb
+  name: "nb"
+  type_id: 0x449a775b
+  offset: 64
 }
 member {
   id: 0xd5e01e21
@@ -257482,6 +257499,12 @@ member {
   offset: 2048
 }
 member {
+  id: 0xd6e66070
+  name: "work"
+  type_id: 0x1f3c8679
+  offset: 320
+}
+member {
   id: 0xd6e660c0
   name: "work"
   type_id: 0x1f3c8679
@@ -323812,6 +323835,18 @@ struct_union {
   }
 }
 struct_union {
+  id: 0xd374cb5f
+  kind: STRUCT
+  name: "pci_pwrctrl"
+  definition {
+    bytesize: 72
+    member_id: 0xce3bbab3
+    member_id: 0xd5e016eb
+    member_id: 0x559a17bf
+    member_id: 0xd6e66070
+  }
+}
+struct_union {
   id: 0xa508516e
   kind: STRUCT
   name: "pci_saved_state"
@@ -385702,6 +385737,12 @@ function {
   parameter_id: 0x3e6239e1
 }
 function {
+  id: 0x1f0270aa
+  return_type_id: 0x48b5725f
+  parameter_id: 0x3e4d0b70
+  parameter_id: 0x0258f96e
+}
+function {
   id: 0x1f060fb8
   return_type_id: 0x48b5725f
   parameter_id: 0x3f222c68
@@ -419990,6 +420031,12 @@ function {
   parameter_id: 0x3e10b518
   parameter_id: 0x0258f96e
   parameter_id: 0x3e10b518
+}
+function {
+  id: 0x9defe959
+  return_type_id: 0x6720d32f
+  parameter_id: 0x0258f96e
+  parameter_id: 0x3e4d0b70
 }
 function {
   id: 0x9df11d57
@@ -460206,6 +460253,15 @@ elf_symbol {
   full_name: "devm_pci_alloc_host_bridge"
 }
 elf_symbol {
+  id: 0x48d0e63d
+  name: "devm_pci_pwrctrl_device_set_ready"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xc9c5ac92
+  type_id: 0x9defe959
+  full_name: "devm_pci_pwrctrl_device_set_ready"
+}
+elf_symbol {
   id: 0x92ffc2e2
   name: "devm_pci_remap_cfg_resource"
   is_defined: true
@@ -488542,6 +488598,15 @@ elf_symbol {
   crc: 0x733bd9e3
   type_id: 0x99f942bc
   full_name: "pci_prepare_to_sleep"
+}
+elf_symbol {
+  id: 0x34eab68c
+  name: "pci_pwrctrl_init"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x9b7f03a0
+  type_id: 0x1f0270aa
+  full_name: "pci_pwrctrl_init"
 }
 elf_symbol {
   id: 0x162de729
@@ -520852,6 +520917,7 @@ interface {
   symbol_id: 0x9311b982
   symbol_id: 0x1ed62a9d
   symbol_id: 0x5df7b359
+  symbol_id: 0x48d0e63d
   symbol_id: 0x92ffc2e2
   symbol_id: 0x6676bb1c
   symbol_id: 0xd6e5f7c7
@@ -523996,6 +524062,7 @@ interface {
   symbol_id: 0xf32782d8
   symbol_id: 0x258080ab
   symbol_id: 0x4d0b5a53
+  symbol_id: 0x34eab68c
   symbol_id: 0x162de729
   symbol_id: 0x5983afac
   symbol_id: 0x8c3e2fab
