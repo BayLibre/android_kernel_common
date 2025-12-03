@@ -357,11 +357,11 @@ static int sm4_xts_crypt(struct skcipher_request *req, bool encrypt)
 		tail = 0;
 	}
 
+	kernel_neon_begin();
+
 	while ((nbytes = walk.nbytes) >= SM4_BLOCK_SIZE) {
 		if (nbytes < walk.total)
 			nbytes &= ~(SM4_BLOCK_SIZE - 1);
-
-		kernel_neon_begin();
 
 		if (encrypt)
 			sm4_ce_xts_enc(ctx->key1.rkey_enc, walk.dst.virt.addr,
@@ -372,17 +372,14 @@ static int sm4_xts_crypt(struct skcipher_request *req, bool encrypt)
 				       walk.src.virt.addr, walk.iv, nbytes,
 				       rkey2_enc);
 
-		kernel_neon_end();
 
 		rkey2_enc = NULL;
 
 		err = skcipher_walk_done(&walk, walk.nbytes - nbytes);
-		if (err)
-			return err;
 	}
 
-	if (likely(tail == 0))
-		return 0;
+	if (err || likely(tail == 0))
+		goto out;
 
 	/* handle ciphertext stealing */
 
@@ -395,9 +392,7 @@ static int sm4_xts_crypt(struct skcipher_request *req, bool encrypt)
 
 	err = skcipher_walk_virt(&walk, &subreq, false);
 	if (err)
-		return err;
-
-	kernel_neon_begin();
+		goto out;
 
 	if (encrypt)
 		sm4_ce_xts_enc(ctx->key1.rkey_enc, walk.dst.virt.addr,
@@ -408,9 +403,10 @@ static int sm4_xts_crypt(struct skcipher_request *req, bool encrypt)
 			       walk.src.virt.addr, walk.iv, walk.nbytes,
 			       rkey2_enc);
 
+	err = skcipher_walk_done(&walk, 0);
+out:
 	kernel_neon_end();
-
-	return skcipher_walk_done(&walk, 0);
+	return err;
 }
 
 static int sm4_xts_encrypt(struct skcipher_request *req)
