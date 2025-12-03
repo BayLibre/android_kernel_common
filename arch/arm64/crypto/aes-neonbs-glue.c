@@ -313,13 +313,14 @@ static int __xts_crypt(struct skcipher_request *req, bool encrypt,
 	if (err)
 		return err;
 
+	kernel_neon_begin();
+
 	while (walk.nbytes >= AES_BLOCK_SIZE) {
 		int blocks = (walk.nbytes / AES_BLOCK_SIZE) & ~7;
 		out = walk.dst.virt.addr;
 		in = walk.src.virt.addr;
 		nbytes = walk.nbytes;
 
-		kernel_neon_begin();
 		if (blocks >= 8) {
 			if (first == 1)
 				neon_aes_ecb_encrypt(walk.iv, walk.iv,
@@ -345,12 +346,11 @@ static int __xts_crypt(struct skcipher_request *req, bool encrypt,
 						     ctx->twkey, walk.iv, first);
 			nbytes = first = 0;
 		}
-		kernel_neon_end();
 		err = skcipher_walk_done(&walk, nbytes);
 	}
 
 	if (err || likely(!tail))
-		return err;
+		goto out;
 
 	/* handle ciphertext stealing */
 	dst = src = scatterwalk_ffwd(sg_src, req->src, req->cryptlen);
@@ -362,22 +362,23 @@ static int __xts_crypt(struct skcipher_request *req, bool encrypt,
 
 	err = skcipher_walk_virt(&walk, req, false);
 	if (err)
-		return err;
+		goto out;
 
 	out = walk.dst.virt.addr;
 	in = walk.src.virt.addr;
 	nbytes = walk.nbytes;
 
-	kernel_neon_begin();
 	if (encrypt)
 		neon_aes_xts_encrypt(out, in, ctx->cts.key_enc, ctx->key.rounds,
 				     nbytes, ctx->twkey, walk.iv, first);
 	else
 		neon_aes_xts_decrypt(out, in, ctx->cts.key_dec, ctx->key.rounds,
 				     nbytes, ctx->twkey, walk.iv, first);
-	kernel_neon_end();
 
-	return skcipher_walk_done(&walk, 0);
+	err = skcipher_walk_done(&walk, 0);
+out:
+	kernel_neon_end();
+	return err;
 }
 
 static int xts_encrypt(struct skcipher_request *req)

@@ -573,22 +573,22 @@ static int __maybe_unused xts_encrypt(struct skcipher_request *req)
 		tail = 0;
 	}
 
+	kernel_neon_begin();
+
 	for (first = 1; walk.nbytes >= AES_BLOCK_SIZE; first = 0) {
 		int nbytes = walk.nbytes;
 
 		if (walk.nbytes < walk.total)
 			nbytes &= ~(AES_BLOCK_SIZE - 1);
 
-		kernel_neon_begin();
 		aes_xts_encrypt(walk.dst.virt.addr, walk.src.virt.addr,
 				ctx->key1.key_enc, rounds, nbytes,
 				ctx->key2.key_enc, walk.iv, first);
-		kernel_neon_end();
 		err = skcipher_walk_done(&walk, walk.nbytes - nbytes);
 	}
 
 	if (err || likely(!tail))
-		return err;
+		goto out;
 
 	dst = src = scatterwalk_ffwd(sg_src, req->src, req->cryptlen);
 	if (req->dst != req->src)
@@ -599,15 +599,16 @@ static int __maybe_unused xts_encrypt(struct skcipher_request *req)
 
 	err = skcipher_walk_virt(&walk, &subreq, false);
 	if (err)
-		return err;
+		goto out;
 
-	kernel_neon_begin();
 	aes_xts_encrypt(walk.dst.virt.addr, walk.src.virt.addr,
 			ctx->key1.key_enc, rounds, walk.nbytes,
 			ctx->key2.key_enc, walk.iv, first);
-	kernel_neon_end();
 
-	return skcipher_walk_done(&walk, 0);
+	err = skcipher_walk_done(&walk, 0);
+out:
+	kernel_neon_end();
+	return err;
 }
 
 static int __maybe_unused xts_decrypt(struct skcipher_request *req)
@@ -645,22 +646,22 @@ static int __maybe_unused xts_decrypt(struct skcipher_request *req)
 		tail = 0;
 	}
 
+	kernel_neon_begin();
+
 	for (first = 1; walk.nbytes >= AES_BLOCK_SIZE; first = 0) {
 		int nbytes = walk.nbytes;
 
 		if (walk.nbytes < walk.total)
 			nbytes &= ~(AES_BLOCK_SIZE - 1);
 
-		kernel_neon_begin();
 		aes_xts_decrypt(walk.dst.virt.addr, walk.src.virt.addr,
 				ctx->key1.key_dec, rounds, nbytes,
 				ctx->key2.key_enc, walk.iv, first);
-		kernel_neon_end();
 		err = skcipher_walk_done(&walk, walk.nbytes - nbytes);
 	}
 
 	if (err || likely(!tail))
-		return err;
+		goto out;
 
 	dst = src = scatterwalk_ffwd(sg_src, req->src, req->cryptlen);
 	if (req->dst != req->src)
@@ -671,16 +672,16 @@ static int __maybe_unused xts_decrypt(struct skcipher_request *req)
 
 	err = skcipher_walk_virt(&walk, &subreq, false);
 	if (err)
-		return err;
+		goto out;
 
-
-	kernel_neon_begin();
 	aes_xts_decrypt(walk.dst.virt.addr, walk.src.virt.addr,
 			ctx->key1.key_dec, rounds, walk.nbytes,
 			ctx->key2.key_enc, walk.iv, first);
-	kernel_neon_end();
 
-	return skcipher_walk_done(&walk, 0);
+	err = skcipher_walk_done(&walk, 0);
+out:
+	kernel_neon_end();
+	return err;
 }
 
 static struct skcipher_alg aes_algs[] = { {
