@@ -46,6 +46,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78c247da_7ec4847b",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 1396,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-03T03:57:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04892f50_3da863e7",
+      "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f00f168_c6bed37d",
@@ -113,6 +131,24 @@
       "side": 1,
       "message": "Ok, BUILD_BUG_ON wouldn\u0027t work, since `order` is a variable...",
       "parentUuid": "67c18b0b_9849287d",
+      "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2f710ce_beebda2a",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 1747,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-03T03:57:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50bffbba_4fc22eac",
       "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -202,6 +238,24 @@
       "side": 1,
       "message": "\u003e But then, QI may be stipulated to be only 3 pages (not 4) and QI desc may happen to occupy 5 pages\n\nThat would be addressed (well, detected) by the BUILD_BUG_ON I suggested above, right?\n\nMy actual motivation here is not to prepare for a future scenario with order \u003e 2 (which is unlikely to happen) but just to make it clearer what exactly your code is already doing here (and why its usage of `order` here is correct). What your code is doing is: allocate twice more pages than normally, and allocate `desc_status` at the beginning of the extra pages (i.e. non-overlapping with the original pages). Using `(1 \u003c\u003c (order - 1))` makes it explicit.",
       "parentUuid": "84f69365_78fe8a7b",
+      "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4533510d_f835869d",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 19
+      },
+      "lineNbr": 1756,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-03T03:57:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e6d6113_32fb996c",
       "revId": "f015e46b3a2593cdd1793b7052fd7124d1b39ffd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
