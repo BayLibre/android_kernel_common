@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25d72c88_cdb3b17a",
+        "filename": "drivers/media/common/videobuf2/videobuf2-v4l2.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-12-03T19:13:15Z",
+      "side": 1,
+      "message": "Can we be sure this is safe? I\u0027d prefer this be done in a vendor hook instead, especially given the rationale for not taking this upstream is that data_offset has other uses.",
+      "revId": "78f61a50cf8bc8de587aaefad74ff41f86cd76de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
