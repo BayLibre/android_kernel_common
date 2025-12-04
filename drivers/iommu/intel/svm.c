@@ -113,6 +113,12 @@ int intel_svm_finish_prq(struct intel_iommu *iommu)
 
 void intel_svm_check(struct intel_iommu *iommu)
 {
+	if (pkvm_enabled()) {
+		pr_warn("%s SVM disabled, running virtualized in pKVM hypervisor\n",
+		       iommu->name);
+		return;
+	}
+
 	if (!pasid_supported(iommu))
 		return;
 
