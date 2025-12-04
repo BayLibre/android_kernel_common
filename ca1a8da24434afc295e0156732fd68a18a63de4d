@@ -16,6 +16,24 @@
       "message": "nit: we disable it not just because we have no use cases but because pKVM simply doesn\u0027t support it yet (otherwise we wouldn\u0027t need to disable it even without use cases)?",
       "revId": "ca1a8da24434afc295e0156732fd68a18a63de4d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "379348e7_647bd3c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-04T23:41:18Z",
+      "side": 1,
+      "message": "Yeah true, Reworded.\n\nOne reason for disabling without usecases is to avoid the plumbing work in the driver(and partly in pkvm). Nested could be supported with pviommu, but needed plumbing work, so for simplicity I thought disabling it would be better until we wanted to really use it.",
+      "parentUuid": "dbc9e005_b7895f0b",
+      "revId": "ca1a8da24434afc295e0156732fd68a18a63de4d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
