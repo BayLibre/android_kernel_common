@@ -1,0 +1,59 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4f66ce2_f63bac3b",
+        "filename": "drivers/iommu/intel/svm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-04T23:50:55Z",
+      "side": 1,
+      "message": "Just wondering:\n\n1. Maybe it should be pr_info, not pr_warn (since if someone enables SVM in Kconfig, it doesn\u0027t necessary mean that the lack of SVM support on the given platform is an error condition; and the below !pasid_supported() check doesn\u0027t print any warning).\n2. Maybe worth moving this after the below !pasid_supported() check (since if the given IOMMU doesn\u0027t support SVM in the first place, this log message is not relevant).",
+      "fixSuggestions": [
+        {
+          "fixId": "d663b483_6038ae92",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/svm.c",
+              "range": {
+                "startLine": 116,
+                "startChar": 0,
+                "endLine": 116,
+                "endChar": 0
+              },
+              "replacement": "\tif (!pasid_supported(iommu))\n\t\treturn;\n\n"
+            },
+            {
+              "path": "drivers/iommu/intel/svm.c",
+              "range": {
+                "startLine": 117,
+                "startChar": 0,
+                "endLine": 118,
+                "endChar": 0
+              },
+              "replacement": "\t\tpr_info(\"%s SVM disabled, running virtualized in pKVM hypervisor\\n\",\n"
+            },
+            {
+              "path": "drivers/iommu/intel/svm.c",
+              "range": {
+                "startLine": 121,
+                "startChar": 0,
+                "endLine": 124,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "c71ef13b51793871673fd2a357d704a15cf23027",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
