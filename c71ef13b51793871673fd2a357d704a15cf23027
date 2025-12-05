@@ -54,6 +54,24 @@
       ],
       "revId": "c71ef13b51793871673fd2a357d704a15cf23027",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94be0dfe_730d7d8d",
+        "filename": "drivers/iommu/intel/svm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-05T01:30:50Z",
+      "side": 1,
+      "message": "\u003e Maybe it should be pr_info, not pr_warn (since if someone enables SVM in Kconfig, it doesn\u0027t necessary mean that the lack of SVM support on the given platform is an error condition; and the below !pasid_supported() check doesn\u0027t print any warning).\n\nmakes sense. changed.\n\n\u003e Maybe worth moving this after the below !pasid_supported() check (since if the given IOMMU doesn\u0027t support SVM in the first place, this log message is not relevant).\n\nI thought about it, but then the following conditions also may take precedence as the hardware doesn\u0027t support it. So I thought to have it as the first check - maybe save some cycles if everything is supported but pkvm is enabled :-). I do not have a strong opinion and can change as you suggested if you feel strongly.",
+      "parentUuid": "a4f66ce2_f63bac3b",
+      "revId": "c71ef13b51793871673fd2a357d704a15cf23027",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
