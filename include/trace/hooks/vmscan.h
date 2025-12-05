@@ -87,6 +87,12 @@ DECLARE_HOOK(android_vh_file_is_tiny_bypass,
 DECLARE_HOOK(android_vh_mglru_should_abort_scan,
 	TP_PROTO(u64 *ext, bool *bypass),
 	TP_ARGS(ext, bypass));
+DECLARE_HOOK(android_vh_handle_folio_writeback,
+	TP_PROTO(struct folio *folio, bool *bypass),
+	TP_ARGS(folio, bypass));
+DECLARE_HOOK(android_vh_reclaim_before_kswapd,
+	TP_PROTO(unsigned long *nr_reclaimed),
+	TP_ARGS(nr_reclaimed));
 DECLARE_HOOK(android_vh_mglru_should_abort_scan_order,
 	TP_PROTO(unsigned int order, bool *bypass),
 	TP_ARGS(order, bypass));
