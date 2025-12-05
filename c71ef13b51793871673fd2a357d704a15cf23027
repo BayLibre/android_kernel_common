@@ -72,6 +72,24 @@
       "parentUuid": "a4f66ce2_f63bac3b",
       "revId": "c71ef13b51793871673fd2a357d704a15cf23027",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb7838c2_78446dcc",
+        "filename": "drivers/iommu/intel/svm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-05T02:28:01Z",
+      "side": 1,
+      "message": "My only intention here is to avoid irrelevant logs being printed for each IOMMU. (BTW I would be fine with not printing anything at all, too.) Moving the check even below those cpu_feature_enabled checks sounds good to me too. And surely those cycles are barely measurable. :)",
+      "parentUuid": "94be0dfe_730d7d8d",
+      "revId": "c71ef13b51793871673fd2a357d704a15cf23027",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
