@@ -54,6 +54,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a35babf3_95b5dea6",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 85
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-05T14:57:05Z",
+      "side": 1,
+      "message": "Or, just replace all this with a __host_check_page_state_range() call and be done with it? :)",
+      "parentUuid": "a2c4b88a_c3a29fb5",
+      "range": {
+        "startLine": 409,
+        "startChar": 46,
+        "endLine": 409,
+        "endChar": 60
+      },
+      "revId": "c54a21d99f43af7506120b97591197461890b862",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea132af7_75f28be1",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
         "patchSetId": 85
