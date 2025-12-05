@@ -34,6 +34,24 @@
       "parentUuid": "d508c76c_14f90525",
       "revId": "edd6093634a8ef07a61755020990558e0a2b3fab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6b76759_16b2b1c7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-05T14:29:49Z",
+      "side": 1,
+      "message": "This was because pviommu increased the pasid limit and we took the message from the logs with a kernel that was still statically allocating memory for pasid tables.\n\nNow I have ran the test again:\nWith Shadow IOMMU:\n```\nkvm [0]: Reserved 224 MiB at 0x460800000\n```\n\nWith pvIOMMU:\n```\nkvm [0]: Reserved 114 MiB at 0x467600000\n```",
+      "parentUuid": "6ebff3e4_cabdb091",
+      "revId": "edd6093634a8ef07a61755020990558e0a2b3fab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
