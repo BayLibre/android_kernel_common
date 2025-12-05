@@ -1,0 +1,83 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "813457ab_28400168",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 82
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-05T01:20:50Z",
+      "side": 1,
+      "message": "s/onwership/ownership/ ?",
+      "fixSuggestions": [
+        {
+          "fixId": "d0b4be5d_df8318a6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+              "range": {
+                "startLine": 393,
+                "startChar": 0,
+                "endLine": 394,
+                "endChar": 0
+              },
+              "replacement": "static inline int verify_page_ownership(unsigned long phys_start, int level)\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+              "range": {
+                "startLine": 494,
+                "startChar": 0,
+                "endLine": 495,
+                "endChar": 0
+              },
+              "replacement": "\t\tif (!verify_page_ownership(pteval \u0026 VTD_PAGE_MASK, largepage_lvl))\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dfb4a1d1c61b6ea549d4e28721a440115f0cd99a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ace2e452_be338bc5",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 82
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-05T01:20:50Z",
+      "side": 1,
+      "message": "It is not quite enough anymore to merely check if the page is mapped in the host EPT. For instance, IOMMU root/context/PASID/page tables are shared R/O with the host, i.e. they are obviously mapped in the host EPT, but we definitely don\u0027t want to allow the host to do DMA on those pages? (Well, we could allow it read-only DMA on them, but y\u0027know, that\u0027s not the point. 😊)\n\nSo we should check if the page state in the host EPT is PKVM_PAGE_OWNED?\n\n...So, I haven\u0027t looked into this and next patch very deeply yet, but it seems like it would be easier _and_ cleaner to implement all this generically as a part of mem_protect.c, perhaps similarly to pKVM-ARM\u0027s __pkvm_use_dma(). (Why easier - because mem_protect.c has __host_check_page_state_range(), at least.)",
+      "revId": "dfb4a1d1c61b6ea549d4e28721a440115f0cd99a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3afe1f4_85220aa3",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 82
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-05T01:20:50Z",
+      "side": 1,
+      "message": "Can\u0027t we verify the whole range of pages _before_ doing all the above? We know `phys_pfn` and `nr_pages` from the beginning, so why need to fetch the address from the PTE here if we already know beforehand which address range we need to verify?\n\nIf we verify it beforehand, we don\u0027t fail in the middle after we already mapped some pages in the range, and thus don\u0027t need to worry what to do with those already mapped pages.",
+      "revId": "dfb4a1d1c61b6ea549d4e28721a440115f0cd99a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
