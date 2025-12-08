@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37ec6ba7_45f0ccec",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2854,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-08T13:28:16Z",
+      "side": 1,
+      "message": "nit: we use `phys` everywhere in that file. Would be nice to keep it that way.",
+      "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3d55c5d4_97bee58e",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 1
@@ -50,6 +67,99 @@
       "side": 1,
       "message": "It access the range `struct kvm_mem_range r` not the reg",
       "parentUuid": "3d55c5d4_97bee58e",
+      "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c32f4c02_2ff3bf55",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2876,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-08T13:28:16Z",
+      "side": 1,
+      "message": "Duh! you\u0027re right!",
+      "parentUuid": "25a0ab65_2806aeb4",
+      "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "578f819a_9a9cabac",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2884,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-08T13:28:16Z",
+      "side": 1,
+      "message": "nit: borrowed",
+      "range": {
+        "startLine": 2884,
+        "startChar": 55,
+        "endLine": 2884,
+        "endChar": 64
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b288b9ba_2e4529c2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 2884,
+                "startChar": 0,
+                "endLine": 2885,
+                "endChar": 0
+              },
+              "replacement": "\t *   refcounted, taint them by marking them as shared borrowed, and that\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bd70ed8_d06efe1b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2906,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-08T13:28:16Z",
+      "side": 1,
+      "message": "for_each_hyp_page(page, phys, size)\n\nAnd why not ___host_check_page_state_range() here?",
+      "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75bb2dea_54e52982",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2958,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-08T13:28:16Z",
+      "side": 1,
+      "message": "Why WARN_ON()?",
       "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
