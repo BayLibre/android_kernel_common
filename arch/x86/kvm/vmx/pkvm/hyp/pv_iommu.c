@@ -145,6 +145,7 @@ unsigned long pkvm_iommu_clear_ce(u64 param_va)
 	u16 did = 0;
 	int ret = 0;
 	bool sm;
+	u8 tt;
 
 	if (!param_va)
 		return -EINVAL;
@@ -178,6 +179,7 @@ unsigned long pkvm_iommu_clear_ce(u64 param_va)
 	} else {
 		did = context_domain_id(context);
 		pgd_pa = context_lm_get_slptr(context);
+		tt = context_lm_get_tt(context);
 
 		if (did != FLPT_DEFAULT_DID) {
 			/*
@@ -198,10 +200,17 @@ unsigned long pkvm_iommu_clear_ce(u64 param_va)
 	context_clear_entry(context);
 
 	if (!sm) {
-		if (did == FLPT_DEFAULT_DID)
+		if (did == FLPT_DEFAULT_DID) {
 			atomic_dec(&hyp_iommu->pt_cnt);
-		else
+		} else {
+			pkvm_iommu_cache_unassign(hyp_iommu, domain, did, param->bdf,
+						  IOMMU_NO_PASID, CACHE_TAG_IOTLB);
+			if (tt == CONTEXT_TT_DEV_IOTLB)
+				pkvm_iommu_cache_unassign(hyp_iommu, domain, did, param->bdf,
+							  IOMMU_NO_PASID, CACHE_TAG_DEVTLB);
+
 			pkvm_put_iommu_domain(domain);
+		}
 	}
 
 	__pkvm_iommu_flush_cache(iommu, context, sizeof(*context));
@@ -250,11 +259,27 @@ unsigned long set_context_entry(struct pkvm_iommu *hyp_iommu,
 	if (param->did == FLPT_DEFAULT_DID) {
 		atomic_inc(&hyp_iommu->pt_cnt);
 	} else {
+		struct pkvm_iommu_domain *domain;
+		int ret;
+
 		/* Verify the domain is present and take a reference. */
-		if (!pkvm_get_iommu_domain(param->domain_pgd_gpa)) {
+		domain = pkvm_get_iommu_domain(param->domain_pgd_gpa);
+		if (!domain) {
 			pkvm_err("pkvm: %s: Failed to locate domain with pgd: %llx\n",
 				 __func__, param->domain_pgd_gpa);
 			return -EFAULT;
+		}
+
+		ret = pkvm_iommu_cache_assign(hyp_iommu, domain, param->did,
+					      param->bdf, param->ats_qdep,
+					      IOMMU_NO_PASID, CACHE_TAG_IOTLB);
+		if (!ret && param->ats_supported)
+			ret = pkvm_iommu_cache_assign(hyp_iommu, domain, param->did,
+						      param->bdf, param->ats_qdep,
+						      IOMMU_NO_PASID, CACHE_TAG_DEVTLB);
+		if (ret) {
+			pkvm_put_iommu_domain(domain);
+			return ret;
 		}
 	}
 

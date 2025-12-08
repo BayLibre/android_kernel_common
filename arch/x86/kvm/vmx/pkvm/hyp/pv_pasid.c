@@ -188,6 +188,17 @@ static void pkvm_pasid_flush_caches(struct pkvm_iommu *hyp_iommu,
 	}
 }
 
+bool __context_devtlb_enabled(struct intel_iommu *iommu, u16 bdf)
+{
+	struct context_entry *context = pkvm_iommu_context_addr(iommu,
+							PCI_BUS_NUM(bdf),
+							PCI_DEV_FN(bdf), NULL);
+
+	if (WARN_ON(!context || !context_present(context)))
+		return false;
+	return context_get_sm_dte(context);
+}
+
 int pkvm_iommu_clear_pasid_entry(u64 param_va)
 {
 	struct pkvm_clear_translation_param *param;
@@ -248,10 +259,17 @@ int pkvm_iommu_clear_pasid_entry(u64 param_va)
 
 	pasid_clear_entry(pte);
 
-	if (did == FLPT_DEFAULT_DID)
+	if (did == FLPT_DEFAULT_DID) {
 		atomic_dec(&hyp_iommu->pt_cnt);
-	else
+	} else {
+		pkvm_iommu_cache_unassign(hyp_iommu, domain, did, param->bdf,
+					  param->pasid, CACHE_TAG_IOTLB);
+		if (__context_devtlb_enabled(iommu, param->bdf))
+			pkvm_iommu_cache_unassign(hyp_iommu, domain, did, param->bdf,
+						  param->pasid, CACHE_TAG_DEVTLB);
+
 		pkvm_put_iommu_domain(domain);
+	}
 
 	ret = 0;
 
@@ -291,6 +309,7 @@ out_unlock:
 int pkvm_iommu_set_pasid_fl(u64 param_va)
 {
 	struct pkvm_pasid_table_param *param;
+	struct pkvm_iommu_domain *domain;
 	struct pkvm_iommu *hyp_iommu;
 	struct intel_iommu *iommu;
 	struct pasid_entry *pte;
@@ -329,10 +348,23 @@ int pkvm_iommu_set_pasid_fl(u64 param_va)
 	}
 
 	/* Verify the domain is present and take a reference. */
-	if (!pkvm_get_iommu_domain(param->domain_pgd_gpa)) {
+	domain = pkvm_get_iommu_domain(param->domain_pgd_gpa);
+	if (!domain) {
 		pkvm_err("pkvm: %s: Failed to locate domain with pgd: %llx\n",
 			 __func__, param->domain_pgd_gpa);
 		ret = -EFAULT;
+		goto out_unlock;
+	}
+
+	ret = pkvm_iommu_cache_assign(hyp_iommu, domain, param->did, param->bdf,
+				      param->ats_qdep, param->pasid, CACHE_TAG_IOTLB);
+	if (!ret && __context_devtlb_enabled(iommu, param->bdf)) {
+		ret = pkvm_iommu_cache_assign(hyp_iommu, domain, param->did,
+					      param->bdf, param->ats_qdep,
+					      param->pasid, CACHE_TAG_DEVTLB);
+	}
+	if (ret) {
+		pkvm_put_iommu_domain(domain);
 		goto out_unlock;
 	}
 
@@ -407,14 +439,30 @@ int pkvm_iommu_set_pasid_sl(u64 param_va)
 		agaw = level_to_agaw(pkvm_host_ept_level());
 		pgd_pa = pkvm_host_ept_pgd();
 	} else {
+		struct pkvm_iommu_domain *domain;
+
 		agaw = iommu->agaw;
 		pgd_pa = host_gpa2hpa(param->domain_pgd_gpa);
 
 		/* Verify the domain is present and take a reference. */
-		if (!pkvm_get_iommu_domain(pgd_pa)) {
+		domain = pkvm_get_iommu_domain(pgd_pa);
+		if (!domain) {
 			pkvm_err("pkvm: %s: Failed to locate domain with pgd: %llx\n",
 				 __func__, param->domain_pgd_gpa);
 			ret = -EFAULT;
+			goto out_unlock;
+		}
+
+		ret = pkvm_iommu_cache_assign(hyp_iommu, domain, param->did,
+					      param->bdf, param->ats_qdep,
+					      param->pasid, CACHE_TAG_IOTLB);
+		if (!ret && __context_devtlb_enabled(iommu, param->bdf)) {
+			ret = pkvm_iommu_cache_assign(hyp_iommu, domain, param->did,
+						      param->bdf, param->ats_qdep,
+						      param->pasid, CACHE_TAG_DEVTLB);
+		}
+		if (ret) {
+			pkvm_put_iommu_domain(domain);
 			goto out_unlock;
 		}
 	}
