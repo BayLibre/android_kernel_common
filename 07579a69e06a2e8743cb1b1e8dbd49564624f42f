@@ -1,0 +1,207 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d1f6c8a_3004f190",
+        "filename": "drivers/iommu/intel/debugfs.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-08T20:40:21Z",
+      "side": 1,
+      "message": "What is this exactly about and how does this relate to the rest of the patch?",
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72261ffd_b2b1a2f4",
+        "filename": "drivers/iommu/intel/debugfs.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-08T20:40:21Z",
+      "side": 1,
+      "message": "What is this exactly about and how does this relate to the rest of the patch?",
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a1cb1ea_05838ca8",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-08T20:40:21Z",
+      "side": 1,
+      "message": "nit: since the unmap hypercall returns an error anyway, it seems useful to print it in case of failure? Otherwise, you know, unless CONFIG_PKVM_INTEL_DEBUG is enabled and pKVM itself prints something, we won\u0027t get any error diagnostics.",
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e3225d4_e40f8f70",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 938,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-08T20:40:21Z",
+      "side": 1,
+      "message": "nit: s/relased/released/ ?",
+      "fixSuggestions": [
+        {
+          "fixId": "53834df1_20302e40",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 938,
+                "startChar": 0,
+                "endLine": 939,
+                "endChar": 0
+              },
+              "replacement": "\t * Add all the pages released by unmap hypercall to freelist.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c6d5882_aca82402",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-08T20:40:21Z",
+      "side": 1,
+      "message": "I find this hard to comprehend... Could we implement something simple like __pkvm_pgtable_max_pages() instead?",
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eff46c0_a79f58ae",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 999,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-08T20:40:21Z",
+      "side": 1,
+      "message": "nit: s/pagetablei/pagetable/ ?",
+      "fixSuggestions": [
+        {
+          "fixId": "bd99ec95_1619939b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 999,
+                "startChar": 0,
+                "endLine": 1000,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tpr_warn(\"iommu: %s: failed to allocate iommu pagetable, needs %d more pages\\n\",\n"
+            }
+          ]
+        }
+      ],
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41b742c1_277efeaa",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 1782,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-08T20:40:21Z",
+      "side": 1,
+      "message": "nit: looks like `attr` is unused if pkvm_pviommu_enabled(), so we could move the pv_domain_mapping() call (with the domain-\u003ehas_mappings setting before it) before this `attr` setting?",
+      "fixSuggestions": [
+        {
+          "fixId": "ff33f016_4d35935f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 1768,
+                "startChar": 0,
+                "endLine": 1768,
+                "endChar": 0
+              },
+              "replacement": "\tu64 attr;\n"
+            },
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 1769,
+                "startChar": 0,
+                "endLine": 1770,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 1781,
+                "startChar": 0,
+                "endLine": 1781,
+                "endChar": 0
+              },
+              "replacement": "\n\tdomain-\u003ehas_mappings \u003d true;\n\n\tif (pkvm_pviommu_enabled())\n\t\treturn pv_domain_mapping(domain, iov_pfn, phys_pfn, nr_pages, prot, gfp);\n"
+            },
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 1789,
+                "startChar": 0,
+                "endLine": 1795,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
