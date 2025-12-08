@@ -1,0 +1,76 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff1b09e2_ddb1f095",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-08T11:45:25Z",
+      "side": 1,
+      "message": "And what about host_stage2_idmap()?",
+      "revId": "c6fd26469a832b88647df9ce2cf88bb8b6139222",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a70ab83_f5e49aa4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1556,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-08T11:45:25Z",
+      "side": 1,
+      "message": "perhaps instead of defining size you could use end - addr?",
+      "fixSuggestions": [
+        {
+          "fixId": "398e16a9_5e446979",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 1556,
+                "startChar": 0,
+                "endLine": 1557,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 1604,
+                "startChar": 0,
+                "endLine": 1605,
+                "endChar": 0
+              },
+              "replacement": "\t\tret \u003d __host_stage2_set_owner_locked(addr, end - addr,\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 1609,
+                "startChar": 0,
+                "endLine": 1611,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t\taddr, end - addr, prot);\n\t\tkvm_iommu_host_stage2_idmap(addr, end, prot);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c6fd26469a832b88647df9ce2cf88bb8b6139222",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
