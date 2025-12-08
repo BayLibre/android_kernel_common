@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fabba208_92543be2",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 46
+      },
+      "lineNbr": 3303,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-08T10:51:36Z",
+      "side": 1,
+      "message": "Ahh yes, fixed.",
+      "parentUuid": "e383be2f_f7f49ab8",
+      "revId": "35e38ce5e11f1b6899388fc80f438474523c5397",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30cc6e08_830d7750",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Maybe also we don\u0027t need a separate function pv_paging_domain_alloc() then, we can just directly call pkvm_hc_iommu_domain_alloc() (like domain_exit() directly calls pkvm_hc_iommu_domain_free())?",
       "parentUuid": "30cc6e08_830d7750",
+      "revId": "35e38ce5e11f1b6899388fc80f438474523c5397",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "542602c7_94d649c1",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 46
+      },
+      "lineNbr": 3311,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-08T10:51:36Z",
+      "side": 1,
+      "message": "I designed it this way to have a single source of truth at the pkvm side. But seems like none of them have security implications. So as you suggested, using host provided values and just validating in pkvm for sanity and also make sure that host and pkvm has same values for all parameters.\n\nShall I keep the function separate? param initialization has enough lines of code now as we are passing in all the values. It would be a bit more readable as a separate function I guess.",
+      "parentUuid": "cab3482d_0ef18202",
       "revId": "35e38ce5e11f1b6899388fc80f438474523c5397",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
