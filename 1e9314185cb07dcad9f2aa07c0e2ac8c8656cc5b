@@ -16,6 +16,24 @@
       "message": "Would it make sense to also sanity-check if QI is enabled?",
       "revId": "1e9314185cb07dcad9f2aa07c0e2ac8c8656cc5b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe6d528f_8a24bfd2",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 72
+      },
+      "lineNbr": 1198,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-08T18:23:49Z",
+      "side": 1,
+      "message": "This only gets called when pKVM is up and running (like any other HyperCall). And pKVM is up and running only when QI gets enabled. So if this function is getting called, it\u0027s given that QI is running. Adding \u0027if QI enabled\u0027 check is redundant.",
+      "parentUuid": "e84b92f8_148a37a2",
+      "revId": "1e9314185cb07dcad9f2aa07c0e2ac8c8656cc5b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

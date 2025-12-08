@@ -106,6 +106,24 @@
       "parentUuid": "13255b3c_881cec77",
       "revId": "68374c9efa17e512e5a65c5a8bd6c7d715b69fd3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab6d0e3d_94a51a38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 70
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-08T18:23:49Z",
+      "side": 1,
+      "message": "By adding cache tags in pKVM itself now and also doing flushing after every map/unmap in the pkvm, by security wise we have all our bases covered. Adding a check here will be redundant. \n\nEven if a host makes QI submits other than the IEC type (which normally it would not), it won\u0027t hamper security. So the host should make sure it doesn\u0027t do that, not pKVM.",
+      "parentUuid": "52440cf4_f331607b",
+      "revId": "68374c9efa17e512e5a65c5a8bd6c7d715b69fd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
