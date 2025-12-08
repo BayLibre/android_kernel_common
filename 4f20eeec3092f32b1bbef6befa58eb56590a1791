@@ -3,6 +3,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3d55c5d4_97bee58e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2876,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-08T12:21:01Z",
+      "side": 1,
+      "message": "I believe here reg can be null. \"is_in_mem_range()\" might try to access it nonetheless?",
+      "fixSuggestions": [
+        {
+          "fixId": "a0d86392_2776cd94",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+              "range": {
+                "startLine": 2876,
+                "startChar": 0,
+                "endLine": 2877,
+                "endChar": 0
+              },
+              "replacement": "\tif (WARN_ON(!PAGE_ALIGNED(phys_addr | size)))\n\t\treturn -EINVAL;\n\t/*\n\t * find_mem_range always populates the provided kvm_mem_range struct \u0027r\u0027,\n\t * even when it returns NULL (indicating an MMIO region). Thus,\n\t * is_in_mem_range is safe to call here.\n\t */\n\tif (WARN_ON(!is_in_mem_range(phys_addr + size - 1, \u0026r)))\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eaae02f1_08e0e138",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 1
