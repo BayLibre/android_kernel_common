@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaae02f1_08e0e138",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2960,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-08T12:18:11Z",
+      "side": 1,
+      "message": "```\nif (!pfn_range_is_valid(hyp_phys_to_pfn(phys), nr_pages)\n    return -EINVAL;\n```\n\nditto __pkvm_host_use_dma.",
+      "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
