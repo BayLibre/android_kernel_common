@@ -105,6 +105,24 @@
       "parentUuid": "cab3482d_0ef18202",
       "revId": "35e38ce5e11f1b6899388fc80f438474523c5397",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48807271_e45c6b6a",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 46
+      },
+      "lineNbr": 3311,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-08T11:39:56Z",
+      "side": 1,
+      "message": "\u003e So as you suggested, using host provided values and just validating in pkvm for sanity\n\nI didn\u0027t suggest to pass them to pKVM, but maybe it\u0027s not a bad idea (as long as pKVM still basically ignores them and uses its own values instead anyway, and merely validates the host\u0027s values to help the host detect occasional mistakes).\n\n\u003e param initialization has enough lines of code now as we are passing in all the values. It would be a bit more readable as a separate function I guess.\n\nYeah.",
+      "parentUuid": "542602c7_94d649c1",
+      "revId": "35e38ce5e11f1b6899388fc80f438474523c5397",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
