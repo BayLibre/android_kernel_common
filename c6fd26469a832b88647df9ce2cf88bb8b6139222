@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ad43743e_a12c5a9e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-12-08T15:44:27Z",
+      "side": 1,
+      "message": "No need for that as this is called from the host abort handler (lazy mapping)\nBut the IOMMU is always updated eagerly on transitions.",
+      "parentUuid": "ff1b09e2_ddb1f095",
+      "revId": "c6fd26469a832b88647df9ce2cf88bb8b6139222",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4a70ab83_f5e49aa4",
         "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
         "patchSetId": 1
@@ -69,6 +87,24 @@
           ]
         }
       ],
+      "revId": "c6fd26469a832b88647df9ce2cf88bb8b6139222",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1836d04e_cb653385",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1556,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-12-08T15:44:27Z",
+      "side": 1,
+      "message": "`size` is used three times, so it made sense to add it instead having in each call `end - addr` but nos strong opinion",
+      "parentUuid": "4a70ab83_f5e49aa4",
       "revId": "c6fd26469a832b88647df9ce2cf88bb8b6139222",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
