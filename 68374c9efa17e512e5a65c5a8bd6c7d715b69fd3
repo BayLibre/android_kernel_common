@@ -124,6 +124,24 @@
       "parentUuid": "52440cf4_f331607b",
       "revId": "68374c9efa17e512e5a65c5a8bd6c7d715b69fd3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "774dc334_7535df39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 70
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-08T19:24:23Z",
+      "side": 1,
+      "message": "\u003e Even if a host makes QI submits other than the IEC type (which normally it would not), it won\u0027t hamper security.\n\nAre we 100% sure? If e.g. excessive redundant IOTLB invalidations submitted by a malicious host cause only performance degradation or a DoS, that is fine, but what if they also could be used e.g. for some side-channels attacks, or e.g. for exploiting some bugs in the IOMMU hardware, or whatever? Although frankly I\u0027m just speculating, I don\u0027t know any specific examples of such attacks (I\u0027m not a security expert), so it might be paranoid thinking, but OTOH if it\u0027s easy to forbid the host to submit other QI types than IEC (i.e. those that a well-behaving host won\u0027t submit anyway), then maybe why not?\n\nOr to put it another way: pKVM itself absolutely relies on properly working 2nd-level IOTLB, context/PASID caches etc (unlike the interrupt entry cache, which is not pKVM\u0027s concern), so it feels better to not allow the host to meddle in the internal state of those caches without real need?",
+      "parentUuid": "ab6d0e3d_94a51a38",
+      "revId": "68374c9efa17e512e5a65c5a8bd6c7d715b69fd3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
