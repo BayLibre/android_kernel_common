@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "977c309b_80e58b57",
+        "filename": "Documentation/virt/kvm/arm/pkvm-iommu.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-12-08T16:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0ac78e4_6d025072",
+      "revId": "208e7a53e62ef9d85e10280a4c646ebace614df8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "406a7fd6_5538e577",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-12-08T14:25:52Z",
       "side": 1,
       "message": "Do you mean the handler registered with `register_host_perm_fault_handler`?",
+      "revId": "208e7a53e62ef9d85e10280a4c646ebace614df8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5adb7fdb_e8a47281",
+        "filename": "Documentation/virt/kvm/arm/pkvm-iommu.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-12-08T16:32:28Z",
+      "side": 1,
+      "message": "No, the iommu_ops have a special dabt_handler for MMIO",
+      "parentUuid": "406a7fd6_5538e577",
       "revId": "208e7a53e62ef9d85e10280a4c646ebace614df8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
