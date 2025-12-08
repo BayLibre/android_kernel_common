@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0b5b3bb_29438fa8",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2854,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-12-08T16:32:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37ec6ba7_45f0ccec",
+      "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d55c5d4_97bee58e",
@@ -130,6 +148,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdfc7f60_c853e442",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2884,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-12-08T16:32:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "578f819a_9a9cabac",
+      "range": {
+        "startLine": 2884,
+        "startChar": 55,
+        "endLine": 2884,
+        "endChar": 64
+      },
+      "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bd70ed8_d06efe1b",
@@ -143,6 +185,24 @@
       "writtenOn": "2025-12-08T13:28:16Z",
       "side": 1,
       "message": "for_each_hyp_page(page, phys, size)\n\nAnd why not ___host_check_page_state_range() here?",
+      "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e302adc9_4fee992c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2906,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-12-08T16:32:10Z",
+      "side": 1,
+      "message": "`___host_check_page_state_range() ` doesn\u0027t allow carveouts to be mapped (`MEMBLOCK_NOMAP`) see aosp/3582650",
+      "parentUuid": "7bd70ed8_d06efe1b",
       "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -164,6 +224,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9dbd71c_e0622058",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2958,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-12-08T16:32:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75bb2dea_54e52982",
+      "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eaae02f1_08e0e138",
@@ -177,6 +255,24 @@
       "writtenOn": "2025-12-08T12:18:11Z",
       "side": 1,
       "message": "```\nif (!pfn_range_is_valid(hyp_phys_to_pfn(phys), nr_pages)\n    return -EINVAL;\n```\n\nditto __pkvm_host_use_dma.",
+      "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc0f5aee_786ead0c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2960,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2025-12-08T16:32:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaae02f1_08e0e138",
       "revId": "4f20eeec3092f32b1bbef6befa58eb56590a1791",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
