@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48df6b4d_4ff232b4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-08T16:04:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad43743e_a12c5a9e",
+      "revId": "c6fd26469a832b88647df9ce2cf88bb8b6139222",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a70ab83_f5e49aa4",
@@ -105,6 +123,24 @@
       "side": 1,
       "message": "`size` is used three times, so it made sense to add it instead having in each call `end - addr` but nos strong opinion",
       "parentUuid": "4a70ab83_f5e49aa4",
+      "revId": "c6fd26469a832b88647df9ce2cf88bb8b6139222",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a08f971_d8ad552b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1556,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-08T16:04:36Z",
+      "side": 1,
+      "message": "Twice, you have \"end\" already for kvm_iommu_host_stage2_idmap()\n\nIt was just to avoid another declaration especially when \"end\" is the actual verified value.",
+      "parentUuid": "1836d04e_cb653385",
       "revId": "c6fd26469a832b88647df9ce2cf88bb8b6139222",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
