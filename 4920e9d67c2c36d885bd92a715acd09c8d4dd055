@@ -122,6 +122,24 @@
       "parentUuid": "1e66ff22_24b1db50",
       "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c785b173_e4596cbf",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 97
+      },
+      "lineNbr": 1213,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-09T23:37:00Z",
+      "side": 1,
+      "message": "Would it be better to just paravirtualize IEC, given that it\u0027s our only use case right now?\n\nA generic QI submit approach is messy because we can\u0027t import iommu.h inside asm/pkvm.h to see struct qi_desc. To work around that, we\u0027d have to use an opaque array and enforce build-time checks on the size:\n\n```\nstruct pkvm_qi_submit_param { \n    u8 descs[PKVM_QI_BATCH_DESC_SZ]; /* Checked against sizeof(struct qi_desc) * QI_MAX_BATCHED_DESC_COUNT */\n    u64 count;\n    u64 phys;\n};\n```\n\nIf we switch to an IEC-only hypercall, we can drop the parameter struct entirely and and in pkvm_iommu_access_mmio() we can check and warn if a qi access(IQT) happens.",
+      "parentUuid": "0d6ac940_5360e1ce",
+      "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
