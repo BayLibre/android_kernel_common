@@ -1010,6 +1010,7 @@ static inline int rdev_start_nan(struct cfg80211_registered_device *rdev,
 
 	trace_rdev_start_nan(&rdev->wiphy, wdev, conf);
 	ret = rdev->ops->start_nan(&rdev->wiphy, wdev, conf);
+	pr_err("wangfe rdev->ops->start_nan returned %d\n", ret);
 	trace_rdev_return_int(&rdev->wiphy, ret);
 	return ret;
 }

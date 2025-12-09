@@ -4663,8 +4663,11 @@ static int _nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
 	if (info->attrs[NL80211_ATTR_IFTYPE])
 		type = nla_get_u32(info->attrs[NL80211_ATTR_IFTYPE]);
 
+	pr_err("wangfe rdev->ops->add_virtual_intf %p\n", rdev->ops->add_virtual_intf);
+	pr_err("wangfe: _nl80211_new_interface called, type=%d\n", type);
+
 	if (!rdev->ops->add_virtual_intf)
-		return -EOPNOTSUPP;
+		return -96;
 
 	if ((type == NL80211_IFTYPE_P2P_DEVICE || type == NL80211_IFTYPE_NAN ||
 	     rdev->wiphy.features & NL80211_FEATURE_MAC_ON_CREATE) &&
@@ -10358,6 +10361,7 @@ nl80211_check_scan_flags_reg(struct wiphy *wiphy, struct wireless_dev *wdev,
 
 static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
 {
+	pr_err("wangfe: nl80211_trigger_scan called\n");
 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
 	struct wireless_dev *wdev = info->user_ptr[1];
 	struct cfg80211_scan_request_int *request;
@@ -15702,6 +15706,8 @@ static int nl80211_start_nan(struct sk_buff *skb, struct genl_info *info)
 	struct cfg80211_nan_conf conf = {};
 	int err;
 
+	pr_err("wangfe nl80211_start_nan\n");
+
 	if (wdev->iftype != NL80211_IFTYPE_NAN)
 		return -EOPNOTSUPP;
 
@@ -15716,6 +15722,7 @@ static int nl80211_start_nan(struct sk_buff *skb, struct genl_info *info)
 		return -EINVAL;
 
 	err = nl80211_parse_nan_conf(&rdev->wiphy, info, &conf, NULL);
+	pr_err("wangfe: nl80211_parse_nan_conf ret %d\n", err);
 	if (err)
 		return err;
 
@@ -21902,6 +21909,7 @@ int __init nl80211_init(void)
 	if (err)
 		goto err_out;
 
+	pr_info("wangfe nl80211_init\n");
 	return 0;
  err_out:
 	genl_unregister_family(&nl80211_fam);
