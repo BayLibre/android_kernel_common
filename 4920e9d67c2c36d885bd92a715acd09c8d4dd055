@@ -63,6 +63,23 @@
       ],
       "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e66ff22_24b1db50",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 97
+      },
+      "lineNbr": 1213,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-09T16:04:23Z",
+      "side": 1,
+      "message": "Hmm... just realized that we should make sure this memory address is valid (i.e. that is is not a pVM memory, not MMIO and so on) before accessing it, as well as prevent this memory from being donated to a pVM etc while we are using it. \n\nIn the general case we are using share/unshare API for that (and in 6.12 also pin_shared_mem/unpin_shared_mem API). But that\u0027s a bit of a hassle (especially in 6.12; in 6.18 it is much easier), whereas in this case all we are talking about just a few bytes of data (struct qi_desc), so doing share/unshare for them every time seems a bit of an overkill...\n\nSo maybe we can pass the qi_desc simply as a hypercall param, i.e. in the pv_param page? Especially since qi_flush_iec() submits just one descriptor, so IIUC we only need to support the count\u003d1 case, at least for now (and even if we needed more descriptors, the pv_param page could easily hold more; although for 6.18 we\u0027ve been considering dropping the pv_param page...).\n\nThat might be not the prettiest solution, but seems to be the easiest one for now?",
+      "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
