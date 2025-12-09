@@ -104,6 +104,24 @@
       "message": "Hmm... just realized that we should make sure this memory address is valid (i.e. that is is not a pVM memory, not MMIO and so on) before accessing it, as well as prevent this memory from being donated to a pVM etc while we are using it. \n\nIn the general case we are using share/unshare API for that (and in 6.12 also pin_shared_mem/unpin_shared_mem API). But that\u0027s a bit of a hassle (especially in 6.12; in 6.18 it is much easier), whereas in this case all we are talking about just a few bytes of data (struct qi_desc), so doing share/unshare for them every time seems a bit of an overkill...\n\nSo maybe we can pass the qi_desc simply as a hypercall param, i.e. in the pv_param page? Especially since qi_flush_iec() submits just one descriptor, so IIUC we only need to support the count\u003d1 case, at least for now (and even if we needed more descriptors, the pv_param page could easily hold more; although for 6.18 we\u0027ve been considering dropping the pv_param page...).\n\nThat might be not the prettiest solution, but seems to be the easiest one for now?",
       "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d6ac940_5360e1ce",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 97
+      },
+      "lineNbr": 1213,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-09T16:30:04Z",
+      "side": 1,
+      "message": "And then perhaps also something like this might be useful?\n\n```\n--- a/drivers/iommu/intel/dmar.c\n+++ b/drivers/iommu/intel/dmar.c\n@@ -1512,10 +1512,12 @@ int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,\n            dmar_latency_enabled(iommu, DMAR_LATENCY_INV_IEC))\n                iec_start_ktime \u003d ktime_to_ns(ktime_get());\n \n-       if (pkvm_pviommu_enabled())\n+       if (pkvm_pviommu_enabled()) {\n+               WARN_ON_ONCE(type !\u003d QI_IEC_TYPE || count !\u003d 1);\n                rc \u003d pkvm_hc_qi_submit_sync(iommu-\u003ereg_phys, virt_to_phys(desc), count);\n-       else\n+       } else {\n                rc \u003d __qi_submit_sync(iommu, desc, count, options);\n+       }\n \n        if (iotlb_start_ktime)\n                dmar_latency_update(iommu, DMAR_LATENCY_INV_IOTLB,\n```",
+      "parentUuid": "1e66ff22_24b1db50",
+      "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
