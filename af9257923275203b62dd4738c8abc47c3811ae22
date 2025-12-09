@@ -1,0 +1,109 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b718b078_1a5c9999",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 74
+      },
+      "lineNbr": 3318,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-09T19:24:17Z",
+      "side": 1,
+      "message": "nit: unneeded line?",
+      "fixSuggestions": [
+        {
+          "fixId": "9e4b5f71_c90f7335",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 3318,
+                "startChar": 0,
+                "endLine": 3319,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "af9257923275203b62dd4738c8abc47c3811ae22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14cfc0ba_8bc112a5",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 74
+      },
+      "lineNbr": 3323,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-09T19:24:17Z",
+      "side": 1,
+      "message": "nit: s/%x:%x:%x/%x:%x.%x/ ?",
+      "fixSuggestions": [
+        {
+          "fixId": "33e10e85_af190093",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 3323,
+                "startChar": 0,
+                "endLine": 3324,
+                "endChar": 0
+              },
+              "replacement": "\t\tpr_err(\"%s: pv domain alloc failed for device[%x:%x.%x] ret\u003d%d\\n\", __func__,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "af9257923275203b62dd4738c8abc47c3811ae22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b18d220_29337c74",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 74
+      },
+      "lineNbr": 3387,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-09T19:24:17Z",
+      "side": 1,
+      "message": "micro-nit: redundant space?",
+      "fixSuggestions": [
+        {
+          "fixId": "f974ad67_57509d08",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 3387,
+                "startChar": 0,
+                "endLine": 3388,
+                "endChar": 0
+              },
+              "replacement": "\t\tint ret \u003d pv_paging_domain_alloc(info, domain);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "af9257923275203b62dd4738c8abc47c3811ae22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
