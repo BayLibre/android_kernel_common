@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29c552b5_f4479056",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 75
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-09T16:41:12Z",
+      "side": 1,
+      "message": "nit: s/devie/device/, s/needs/need/ ?",
+      "revId": "d4db24f441cd50101ef6349919d43046337e229b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c8ef70a_b6a4a2dd",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.h",
+        "patchSetId": 75
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-09T16:41:12Z",
+      "side": 1,
+      "message": "nit: align tabs?",
+      "fixSuggestions": [
+        {
+          "fixId": "2aaedf0f_a72c7171",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.h",
+              "range": {
+                "startLine": 24,
+                "startChar": 0,
+                "endLine": 25,
+                "endChar": 0
+              },
+              "replacement": "\tpkvm_spinlock_t cache_lock;\t/* Protect the cache tag list */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d4db24f441cd50101ef6349919d43046337e229b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
