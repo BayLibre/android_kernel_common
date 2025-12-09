@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95077410_f59c992e",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 97
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-09T16:17:13Z",
+      "side": 1,
+      "message": "\"Other invalidation types will be managed internally within pKVM\" and \"forbid write access to IQT register\" are two independent things, I think. The IQT register is used for any invalidation type.",
+      "parentUuid": "a5e2795d_3baddfa9",
+      "range": {
+        "startLine": 948,
+        "startChar": 7,
+        "endLine": 948,
+        "endChar": 32
+      },
+      "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b7dac216_e0e495f6",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
         "patchSetId": 97
