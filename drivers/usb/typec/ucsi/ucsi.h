@@ -218,6 +218,7 @@ void ucsi_connector_change(struct ucsi *ucsi, u8 num);
 #define UCSI_ERROR_SET_SINK_PATH_REJECTED	BIT(14)
 
 #define UCSI_SET_NEW_CAM_ENTER(x)		(((x) >> 23) & 0x1)
+#define UCSI_SET_NEW_CAM_SET_ENTER(x)		(((x) & 1) << 23)
 #define UCSI_SET_NEW_CAM_GET_AM(x)		(((x) >> 24) & 0xff)
 #define UCSI_SET_NEW_CAM_AM_MASK		(0xff << 24)
 #define UCSI_SET_NEW_CAM_SET_AM(x)		(((x) & 0xff) << 24)
@@ -514,6 +515,25 @@ ucsi_register_displayport(struct ucsi_connector *con,
 static inline void
 ucsi_displayport_remove_partner(struct typec_altmode *adev) { }
 #endif /* CONFIG_TYPEC_DP_ALTMODE */
+
+#if IS_ENABLED(CONFIG_TYPEC_TBT_ALTMODE)
+struct typec_altmode *
+ucsi_register_thunderbolt(struct ucsi_connector *con,
+			  bool override, int offset,
+			  struct typec_altmode_desc *desc);
+
+void ucsi_thunderbolt_remove_partner(struct typec_altmode *adev);
+#else
+static inline struct typec_altmode *
+ucsi_register_thunderbolt(struct ucsi_connector *con,
+			  bool override, int offset,
+			  struct typec_altmode_desc *desc)
+{
+	return typec_port_register_altmode(con->port, desc);
+}
+static inline void
+ucsi_thunderbolt_remove_partner(struct typec_altmode *adev) { }
+#endif /* CONFIG_TYPEC_TBT_ALTMODE */
 
 #ifdef CONFIG_DEBUG_FS
 void ucsi_debugfs_init(void);
