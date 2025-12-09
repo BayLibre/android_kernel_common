@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32519c7d_a7d4e699",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1582,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-12-09T00:33:21Z",
+      "side": 1,
+      "message": "Can you also explain in this comment why it is safe to skip the locking? Is there any risk that migratetype will be wrong when you enter your hook handler?",
+      "revId": "e1f75e0323c88eec058cb36b9e20c3e5973afe33",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
