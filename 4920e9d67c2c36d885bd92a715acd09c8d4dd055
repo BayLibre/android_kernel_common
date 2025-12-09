@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5e2795d_3baddfa9",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 97
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-12-09T13:40:39Z",
+      "side": 1,
+      "message": "nit: Maybe explicitly mention in commit log that access_iommu_mmio was modified to not allow IQT write. E.g by extending commit log to contain: \"Other invalidation types will be managed internally within pKVM (therefore forbid write access to IQT register) \"",
+      "range": {
+        "startLine": 948,
+        "startChar": 7,
+        "endLine": 948,
+        "endChar": 32
+      },
+      "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7dac216_e0e495f6",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 97
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-12-09T13:40:39Z",
+      "side": 1,
+      "message": "Missing \"\\n\"",
+      "range": {
+        "startLine": 949,
+        "startChar": 59,
+        "endLine": 949,
+        "endChar": 64
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "66ba8fc9_a80221e8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+              "range": {
+                "startLine": 949,
+                "startChar": 0,
+                "endLine": 950,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tpkvm_err(\"pkvm: %s: IQT write not allowed with paravirt iommu\\n\", __func__);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
