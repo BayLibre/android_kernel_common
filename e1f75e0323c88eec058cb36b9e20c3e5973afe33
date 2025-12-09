@@ -16,6 +16,42 @@
       "message": "Can you also explain in this comment why it is safe to skip the locking? Is there any risk that migratetype will be wrong when you enter your hook handler?",
       "revId": "e1f75e0323c88eec058cb36b9e20c3e5973afe33",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12406e5b_ba1c65f8",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1582,
+      "author": {
+        "id": 4361992
+      },
+      "writtenOn": "2025-12-09T03:11:16Z",
+      "side": 1,
+      "message": "When a page is in the release process, its migratetype will not be changed, so obtaining the migratetype here can skip locking. In the hook, we save the page in a page pool categorized by migratetype, which is risk-free.",
+      "parentUuid": "32519c7d_a7d4e699",
+      "revId": "e1f75e0323c88eec058cb36b9e20c3e5973afe33",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af4d8f0b_ee47a36a",
+        "filename": "mm/page_alloc.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1582,
+      "author": {
+        "id": 4361992
+      },
+      "writtenOn": "2025-12-09T03:11:16Z",
+      "side": 1,
+      "message": "When a page is in the release process, its migratetype will not be changed, so obtaining the migratetype here can skip locking. In the hook, we save the page in a page pool categorized by migratetype, which is risk-free.",
+      "parentUuid": "32519c7d_a7d4e699",
+      "revId": "e1f75e0323c88eec058cb36b9e20c3e5973afe33",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
