@@ -3,6 +3,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "123a09c6_1588606a",
+        "filename": "arch/x86/include/asm/pkvm.h",
+        "patchSetId": 73
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-10T14:33:36Z",
+      "side": 1,
+      "message": "`pasid` param seems unused?",
+      "fixSuggestions": [
+        {
+          "fixId": "43104ae0_00a7e547",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/include/asm/pkvm.h",
+              "range": {
+                "startLine": 108,
+                "startChar": 0,
+                "endLine": 109,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "73d827d9_34314423",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 73
