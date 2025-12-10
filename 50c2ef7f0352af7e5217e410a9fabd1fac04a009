@@ -22,6 +22,30 @@
       },
       "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c13964d_c71fab1e",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-10T12:14:17Z",
+      "side": 1,
+      "message": "pv_param is a percpu variable and when host makes a hypercall it disables interrupt and preemption while using this pv_param. So it is guaranteed that the host cpu that invoked this hypercall is not accessing it until hypercall returns and host calls `put_this_pv_param()`.\n\nBut now when I think about it, another cpu might be able to access it if it choses to. So its a security gap I guess. Thanks for bringing this up. Its used in kvm hypercalls as well. @dmaluka@google.com, what do you think?\n\nI can have pkvm verion of get_pv_param and put_pv_param which takes a local pv_param variable and copy from and to to it(similar to kernel\u0027s copy_from_user/copy_to_user). Or probably unmap from host ept while pkvm is using it(but its heavyweight than copy)",
+      "parentUuid": "885c4dec_733eb609",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 72
+      },
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
