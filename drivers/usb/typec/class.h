@@ -10,7 +10,6 @@
 struct typec_mux;
 struct typec_switch;
 struct usb_device;
-struct altmode_selection;
 
 struct typec_plug {
 	struct device			dev;
@@ -43,7 +42,6 @@ struct typec_partner {
 	u8				usb_capability;
 
 	struct usb_power_delivery	*pd;
-	struct altmode_selection	*sel;
 
 	void (*attach)(struct typec_partner *partner, struct device *dev);
 	void (*deattach)(struct typec_partner *partner, struct device *dev);
