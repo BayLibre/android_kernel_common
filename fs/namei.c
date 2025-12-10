@@ -2708,6 +2708,7 @@ struct dentry *kern_path_locked(const char *name, struct path *path)
 	putname(filename);
 	return res;
 }
+EXPORT_SYMBOL_GPL(kern_path_locked);
 
 struct dentry *user_path_locked_at(int dfd, const char __user *name, struct path *path)
 {

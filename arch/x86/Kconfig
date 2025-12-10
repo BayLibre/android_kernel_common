@@ -150,6 +150,7 @@ config X86
 	# Word-size accesses may read uninitialized data past the trailing \0
 	# in strings and cause false KMSAN reports.
 	select DCACHE_WORD_ACCESS		if !KMSAN
+	select DMA_DECLARE_COHERENT
 	select DYNAMIC_SIGFRAME
 	select EDAC_ATOMIC_SCRUB
 	select EDAC_SUPPORT

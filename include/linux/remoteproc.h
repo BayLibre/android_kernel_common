@@ -608,7 +608,7 @@ struct rproc_subdev {
 
 /* we currently support only two vrings per rvdev */
 
-#define RVDEV_NUM_VRINGS 2
+#define RVDEV_NUM_VRINGS 4
 
 /**
  * struct rproc_vring - remoteproc vring state
