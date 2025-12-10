@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "73d827d9_34314423",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-10T14:06:01Z",
+      "side": 1,
+      "message": "If the device is in SATC, shouldn\u0027t we ensure flushing device TLB regardless of whether the host ask us to?\n\nAnd if so, param-\u003eats_enabled also seems unneeded?",
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be0dbe94_8abc3537",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-10T14:06:01Z",
+      "side": 1,
+      "message": "Why unsigned long?",
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "885c4dec_733eb609",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 73
