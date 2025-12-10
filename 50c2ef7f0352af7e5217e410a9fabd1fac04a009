@@ -70,6 +70,30 @@
       },
       "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b11e8e0e_11d22c8c",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-10T13:42:22Z",
+      "side": 1,
+      "message": "\u003e Let\u0027s keep it simple. We can just copy pkvm_lm_context_param to a local variable instead of accessing it by pointer, right?\n\nFixing it for all uses (by using get/put) is not that hard and I thought I could do it in a simple patch. But auditing each usage and fixing only those which may have a security impact is also fine with me.",
+      "parentUuid": "cf3314c2_bd1c5e13",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 72
+      },
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
