@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "885c4dec_733eb609",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-12-10T11:04:01Z",
+      "side": 1,
+      "message": "I think using param that way here and in other places may be dangerous and I think we should copy them in the first place and use the copy all way long.\n\nWhat I mean in this case:\n1) in line 247 we check `param-\u003edid \u003d\u003d FLPT_DEFAULT_DID`\nlater the host could change the params since it still accessed by host, so lets assume we go to line 259 and sets pgd to host provided one)\n2) in `set_context_entry` (after patch https://android-review.git.corp.google.com/c/kernel/common/+/3818903) the `param-\u003edid \u003d\u003d FLPT_DEFAULT_DID` is checked again but malicious host could change it so it will now use host provided `domain_pgd_gpa` (instead `pkvm_host_ept_pgd`) but `set_context_entry` will skip the domain presence verification and so one.\n\nI think there are other cases which could cause a security issue if the pramas could be changed by the malicious host in the middle. e.g. if params were change later on the  `context_present_cache_flush` could flush wrong bdf and so one?\n\nOr am I missing something?",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 72
+      },
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
