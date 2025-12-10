@@ -16,6 +16,24 @@
       "message": "I just wonder if we shouldn\u0027t do the same for other functions which cast hypercalls parameters to some struct pointers in pkvm_vcpu_handle_kvm_call and originally use pv_param, e.g:  pkvm_set_segment etc.",
       "revId": "68df4481758a29b6f873cde41471cb1746504484",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78e33cc5_acd4e313",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-10T15:29:37Z",
+      "side": 1,
+      "message": "Other hypercalls, unlike set_msr, take the host\u0027s values as is, don\u0027t validate them... OTOH, after a closer look, it may be still problematic to allow the host to change these values while pKVM is using them. For example, looking at this logic in __vmx_set_segment():\n```\n                vmx-\u003ermode.segs[seg] \u003d *var;\n                if (seg \u003d\u003d VCPU_SREG_TR)\n                        vmcs_write16(sf-\u003eselector, var-\u003eselector);\n                else if (var-\u003es)\n                        fix_rmode_seg(seg, \u0026vmx-\u003ermode.segs[seg]);\n```\n\nSo generally it would be probably indeed better to address this generically (e.g. something like what Vineeth suggested: throw away this_pv_param() and instead provide macros for getting/setting pv_param value to/from a local variable).",
+      "parentUuid": "76feccab_a727e00a",
+      "revId": "68df4481758a29b6f873cde41471cb1746504484",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
