@@ -219,6 +219,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b2fab5f6_ab55b5ef",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-10T15:32:46Z",
+      "side": 1,
+      "message": "Ok, after more thinking, it might be indeed easy to implement simple generic macros for copying pv_param to/from a local variable (and throw away the existing this_pv_param() so that no one will occasionally use it).",
+      "parentUuid": "b11e8e0e_11d22c8c",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 72
+      },
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54bc535d_0389ae21",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 73
