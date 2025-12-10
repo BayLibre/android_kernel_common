@@ -38,6 +38,15 @@
 
 struct eth_dev;
 
+struct gether_opts {
+	char			name[IFNAMSIZ];
+	unsigned int		qmult;
+	u8			host_mac[ETH_ALEN];
+	u8			dev_mac[ETH_ALEN];
+	bool			ifname_set;
+	unsigned char		addr_assign_type;
+};
+
 /*
  * This represents the USB side of an "ethernet" link, managed by a USB
  * function which provides control and (maybe) framing.  Two functions
@@ -258,6 +267,9 @@ int gether_get_ifname(struct net_device *net, char *name, int len);
 int gether_set_ifname(struct net_device *net, const char *name, int len);
 
 void gether_cleanup(struct eth_dev *dev);
+
+void gether_setup_opts_default(struct gether_opts *opts, const char *name);
+void gether_apply_opts(struct net_device *net, struct gether_opts *opts);
 
 void gether_suspend(struct gether *link);
 void gether_resume(struct gether *link);
