@@ -1,0 +1,65 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "532facaf_3bb70917",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 45
+      },
+      "lineNbr": 1745,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-12-10T09:47:29Z",
+      "side": 1,
+      "message": "nit: maybe `if pkvm_pviommu_enabled()` to be consistent with above (line 1515)? Same for line 1756",
+      "range": {
+        "startLine": 1745,
+        "startChar": 7,
+        "endLine": 1745,
+        "endChar": 32
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8199974f_1b104822",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/dmar.c",
+              "range": {
+                "startLine": 1745,
+                "startChar": 0,
+                "endLine": 1748,
+                "endChar": 0
+              },
+              "replacement": "\tif (pkvm_pviommu_enabled())\n\t\torder++;\n"
+            },
+            {
+              "path": "drivers/iommu/intel/dmar.c",
+              "range": {
+                "startLine": 1756,
+                "startChar": 0,
+                "endLine": 1765,
+                "endChar": 0
+              },
+              "replacement": "\tif (!pkvm_pviommu_enabled()) {\n\t\tqi-\u003edesc_status \u003d kcalloc(QI_LENGTH, sizeof(int), GFP_ATOMIC);\n\t\tif (!qi-\u003edesc_status) {\n\t\t\tiommu_free_page(qi-\u003edesc);\n\t\t\tkfree(qi);\n\t\t\tiommu-\u003eqi \u003d NULL;\n\t\t\treturn -ENOMEM;\n\t\t}\n\t} else {\n"
+            },
+            {
+              "path": "drivers/iommu/intel/dmar.c",
+              "range": {
+                "startLine": 1771,
+                "startChar": 0,
+                "endLine": 1772,
+                "endChar": 0
+              },
+              "replacement": "\t}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a2fa6166b00934447f6f7010ad90f26bda59d89e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
