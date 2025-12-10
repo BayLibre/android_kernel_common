@@ -46,6 +46,30 @@
       },
       "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf3314c2_bd1c5e13",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-10T13:11:50Z",
+      "side": 1,
+      "message": "\u003e another cpu might be able to access it if it choses to.\n\nExactly. So I believe Greg has raised a very good point.\n\nI\u0027ve quickly prepared a fix for the KVM set_msr hypercall: aosp/3884781\n\nThis suggests that this pv_param mechanism is tricky, and it\u0027s a good thing that we are dropping it in v6.18. BTW in v6.18 Chuanxiao has already implemented a convenient interface for passing structures via hypercall arg registers instead of passing them in memory, and allowing to easily increase the number of those registers as needed, and it looks like each of the pvIOMMU hypercall param structures fits in 6 registers, so we\u0027ll probably we able to use that for pvIOMMU without trouble.\n\n\u003e I can have pkvm verion of get_pv_param and put_pv_param which takes a local pv_param variable and copy from and to to it(similar to kernel\u0027s copy_from_user/copy_to_user). \n\nLet\u0027s keep it simple. We can _just_ copy pkvm_lm_context_param to a local variable instead of accessing it by pointer, right?\n\n\u003e Or probably unmap from host ept while pkvm is using it(but its heavyweight than copy)\n\nOr we could have different host EPT page tables for different CPUs. Which is doable (CR3 register is per CPU), but obviously not desirable either (at least because we\u0027d need to reserve N times more memory for the host EPT memory pool).",
+      "parentUuid": "6c13964d_c71fab1e",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 72
+      },
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
