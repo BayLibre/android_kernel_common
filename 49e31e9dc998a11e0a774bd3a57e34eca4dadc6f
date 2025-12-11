@@ -50,6 +50,30 @@
       ],
       "revId": "49e31e9dc998a11e0a774bd3a57e34eca4dadc6f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b526005f_1c48d79c",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 76
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-11T14:26:52Z",
+      "side": 1,
+      "message": "The clean copy of code might not compile for pkvm as we do not have some apis like page allocation(but I could stub it). For 6.18, the plan is to use the driver code directly with #ifdefing out the logic that pkvm needs to customize. So, would it be okay to leave the comment as it is?",
+      "parentUuid": "d4b08fa0_78d3dfde",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 39
+      },
+      "revId": "49e31e9dc998a11e0a774bd3a57e34eca4dadc6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
