@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2af1df67_0aa246dd",
+        "filename": "arch/x86/include/asm/pkvm.h",
+        "patchSetId": 73
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-11T11:19:15Z",
+      "side": 1,
+      "message": "This same structure is used for sm context clear and pasid entry clear. And pasid entry clear uses pasid. I will remove this in this CL and add it back in pasid update hypercall cl to avoid confusion.",
+      "parentUuid": "123a09c6_1588606a",
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73d827d9_34314423",
@@ -49,6 +67,24 @@
       "writtenOn": "2025-12-10T14:06:01Z",
       "side": 1,
       "message": "If the device is in SATC, shouldn\u0027t we ensure flushing device TLB regardless of whether the host ask us to?\n\nAnd if so, param-\u003eats_enabled also seems unneeded?",
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d51fee4_0c5f1ea3",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-11T11:19:15Z",
+      "side": 1,
+      "message": "Yeah true, removed ats_enabled param",
+      "parentUuid": "73d827d9_34314423",
       "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -70,6 +106,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "931b202d_91537581",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-11T11:19:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3694d73f_3ebae516",
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be0dbe94_8abc3537",
@@ -83,6 +137,24 @@
       "writtenOn": "2025-12-10T14:06:01Z",
       "side": 1,
       "message": "Why unsigned long?",
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54c55883_35dbcb6b",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-11T11:19:15Z",
+      "side": 1,
+      "message": "handle_vmcall returns unsigned long and pkvm_access_iommu() also returned unsigned long. So I thought of just keeping it consistent for all iommu hypercall handlers.",
+      "parentUuid": "be0dbe94_8abc3537",
       "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -118,6 +190,24 @@
           ]
         }
       ],
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1616f65d_75473359",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-11T11:19:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11e0130b_d237791e",
       "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -243,6 +333,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3ba55634_b23b181a",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-11T11:19:15Z",
+      "side": 1,
+      "message": "Fixed it by copying the param to local variable. Thanks",
+      "parentUuid": "b11e8e0e_11d22c8c",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 72
+      },
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54bc535d_0389ae21",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 73
@@ -272,6 +386,24 @@
           ]
         }
       ],
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed575d54_08b30b5b",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-11T11:19:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54bc535d_0389ae21",
       "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
