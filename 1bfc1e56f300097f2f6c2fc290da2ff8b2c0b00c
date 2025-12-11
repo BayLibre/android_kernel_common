@@ -1,0 +1,109 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "936e7258_ee61ee39",
+        "filename": "drivers/iommu/intel/dmar.c",
+        "patchSetId": 49
+      },
+      "lineNbr": 1532,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-11T14:09:03Z",
+      "side": 1,
+      "message": "nit: s/1/true/ ?",
+      "fixSuggestions": [
+        {
+          "fixId": "69bc5847_dbaa2c06",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/dmar.c",
+              "range": {
+                "startLine": 1532,
+                "startChar": 0,
+                "endLine": 1533,
+                "endChar": 0
+              },
+              "replacement": "\t\tpkvm_hc_qi_iec_flush(iommu-\u003ereg_phys, true, 0, 0);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1bfc1e56f300097f2f6c2fc290da2ff8b2c0b00c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9512cec6_2ed98672",
+        "filename": "drivers/iommu/intel/iommu_pkvm.h",
+        "patchSetId": 49
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-11T14:09:03Z",
+      "side": 1,
+      "message": "nit: s/int global/bool global/ ?",
+      "fixSuggestions": [
+        {
+          "fixId": "f588cdb6_61887ac1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu_pkvm.h",
+              "range": {
+                "startLine": 11,
+                "startChar": 0,
+                "endLine": 12,
+                "endChar": 0
+              },
+              "replacement": "static inline int pkvm_hc_qi_iec_flush(unsigned long reg_phys, bool global, unsigned long index,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1bfc1e56f300097f2f6c2fc290da2ff8b2c0b00c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0040f718_b5f00e8b",
+        "filename": "drivers/iommu/intel/irq_remapping.c",
+        "patchSetId": 49
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-11T14:09:03Z",
+      "side": 1,
+      "message": "nit: s/0/false/ ?",
+      "fixSuggestions": [
+        {
+          "fixId": "ff18a059_99a280a9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/irq_remapping.c",
+              "range": {
+                "startLine": 148,
+                "startChar": 0,
+                "endLine": 149,
+                "endChar": 0
+              },
+              "replacement": "\t\treturn pkvm_hc_qi_iec_flush(iommu-\u003ereg_phys, false, index, mask);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1bfc1e56f300097f2f6c2fc290da2ff8b2c0b00c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
