@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4b08fa0_78d3dfde",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 76
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-12-11T14:05:10Z",
+      "side": 1,
+      "message": "Nit: iommu_context_addr loks different than this one. Also in 6.18 intel_context_flush_no_pasid function looks different than context_flush_present_no_pasid. For clarity and readability we could add clean copy of this function first and then modify it in consecutive patches as needed. That way it is much easier to review: we do not have to accurately review such purely copied functions knowing that they are already integrated and reviewed in the upstream but just the diff that we introduced.\n\nBut just to speed-up things maybe mention it in comment and add TODO for 6.18?",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 39
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7aa028d7_51c53135",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+              "range": {
+                "startLine": 36,
+                "startChar": 0,
+                "endLine": 37,
+                "endChar": 0
+              },
+              "replacement": " * Based on drivers/iommu/intel/iommu.c:iommu_context_addr(), but modified\n * to handle pkvm specific requirements like write-protecting the context table.\n"
+            },
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+              "range": {
+                "startLine": 97,
+                "startChar": 0,
+                "endLine": 99,
+                "endChar": 0
+              },
+              "replacement": " * Based on drivers/iommu/intel/iommu.c:intel_context_flush_no_pasid() (6.18)\n * and drivers/iommu/intel/iommu.c:intel_context_flush_present() (6.12).\n * TODO(b/323042428): The 6.18 version of intel_context_flush_no_pasid() has\n * diverged. Consider aligning with the upstream version in a future patch.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "49e31e9dc998a11e0a774bd3a57e34eca4dadc6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
