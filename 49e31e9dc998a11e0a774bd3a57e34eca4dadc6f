@@ -98,6 +98,30 @@
       },
       "revId": "49e31e9dc998a11e0a774bd3a57e34eca4dadc6f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bedc5ca3_26071c53",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 76
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-12-11T14:39:12Z",
+      "side": 1,
+      "message": "Ok lets leave it than, I know that the plan is to try directly using original files with `#ifdef __PKVM_HYP__` in 6.18. I just wanted only emphasis that this is actually not a copy as comment says. Probably \"Based on ..\" would be better but it is nit-like comment so I think it is fine. Maybe my assumption was too naive to expect clear copy after reading it ;)",
+      "parentUuid": "fe69f00d_c6aedb78",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 39
+      },
+      "revId": "49e31e9dc998a11e0a774bd3a57e34eca4dadc6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
