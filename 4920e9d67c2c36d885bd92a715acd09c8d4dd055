@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9c219cf_124191a0",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 97
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-11T07:22:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95077410_f59c992e",
+      "range": {
+        "startLine": 948,
+        "startChar": 7,
+        "endLine": 948,
+        "endChar": 32
+      },
+      "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7dac216_e0e495f6",
@@ -85,6 +109,30 @@
           ]
         }
       ],
+      "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97942230_43bedbdc",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 97
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-11T07:22:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7dac216_e0e495f6",
+      "range": {
+        "startLine": 949,
+        "startChar": 59,
+        "endLine": 949,
+        "endChar": 64
+      },
       "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -156,6 +204,24 @@
       "side": 1,
       "message": "\u003e we can\u0027t import iommu.h inside asm/pkvm.h to see struct qi_desc.\n\nBummer.\n\nBut yeah, it should be ok to just paravirtualize IEC. Although I was thinking it might be still useful to keep it generic, so that e.g. when/if we support nested translation in the future, we can extend it to allow the host to flush 1st-level IOTLB/DEVTLB. But yeah, we could just add a dedicated hypercall for that as well, we don\u0027t need this to be super generic.\n\n...Actually I\u0027ve been also thinking: any actual reason why need to paravirtualize QI for IEC at all, instead of just emulating IQT and other registers for it? Like, in this latest version of pvIOMMU we don\u0027t paravirtualize SRTP and TE anymore, we just emulate those registers, for simplicity (while also sanitize that they are not done more than once, that TE is not done before SRTP, etc), so any reason why we can\u0027t do something similar with QI for IEC, instead of paravirtualizing it? (I\u0027m not saying there is no reason, I\u0027m just asking)",
       "parentUuid": "c785b173_e4596cbf",
+      "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c97a16ba_c0c18953",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 97
+      },
+      "lineNbr": 1213,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-11T07:22:05Z",
+      "side": 1,
+      "message": "I have paravirtualized only IEC calls now and don\u0027t pass any address.",
+      "parentUuid": "944b57aa_663b8d49",
       "revId": "4920e9d67c2c36d885bd92a715acd09c8d4dd055",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
