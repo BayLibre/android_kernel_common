@@ -146,6 +146,30 @@
       },
       "revId": "49e31e9dc998a11e0a774bd3a57e34eca4dadc6f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e06fe0f_4d04dc25",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 76
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-12-11T14:48:01Z",
+      "side": 1,
+      "message": "and just to be clear I do not rise this just because we had to use different params since we are in hyp so it is slightly modified copy but it looks just different e.g.\n```\nvoid intel_context_flush_no_pasid(struct device_domain_info *info,\n                                  struct context_entry *context, u16 did)\n{\n        struct intel_iommu *iommu \u003d info-\u003eiommu;\n\n        /*\n         * Device-selective context-cache invalidation. The Domain-ID field\n         * of the Context-cache Invalidate Descriptor is ignored by hardware\n         * when operating in scalable mode. Therefore the @did value doesn\u0027t\n         * matter in scalable mode.\n         */\n        iommu-\u003eflush.flush_context(iommu, did, PCI_DEVID(info-\u003ebus, info-\u003edevfn),\n                                   DMA_CCMD_MASK_NOBIT, DMA_CCMD_DEVICE_INVL);\n\n        /*\n         * For legacy mode:\n         * - Domain-selective IOTLB invalidation\n         * - Global Device-TLB invalidation to all affected functions\n         */\n        if (!sm_supported(iommu)) {\n                iommu-\u003eflush.flush_iotlb(iommu, did, 0, 0, DMA_TLB_DSI_FLUSH);\n                __context_flush_dev_iotlb(info);\n\n                return;\n        }\n\n        __context_flush_dev_iotlb(info);\n}\n```\nfrom 6.18, vs one used in this patch:\n\n```\nstatic void context_flush_present_no_pasid(struct pkvm_iommu *hyp_iommu, u16 did,\n\t\t\t\t\t   u16 bdf, u8 ats_qdep)\n{\n\tu16 pfsid \u003d 0;\n\n\tflush_context_cache(hyp_iommu, did, bdf,\n\t\t\t    DMA_CCMD_MASK_NOBIT, DMA_CCMD_DEVICE_INVL);\n\n\tif (!sm_supported(\u0026hyp_iommu-\u003eiommu))\n\t\tflush_iotlb(hyp_iommu, did, 0, 0, DMA_TLB_DSI_FLUSH);\n\n\tif (is_dev_in_satc(bdf)) {\n\t\t/*\n\t\t * Device is in SATC and optimistically assuming that a well crafted SATC\n\t\t * would contain only physical functions, its safe to set pfsid \u003d bdf.\n\t\t * TODO: We should probably be verifying SATC for existence of only\n\t\t * physical functions during pkvm initialization.\n\t\t */\n\t\tif (ecap_dit(hyp_iommu-\u003eiommu.ecap))\n\t\t\tpfsid \u003d bdf;\n\n\t\tflush_dev_iotlb(hyp_iommu, bdf, pfsid, ats_qdep, 0, MAX_AGAW_PFN_WIDTH);\n\n\t\t/*\n\t\t * NOTE:\n\t\t * There are devices(QAT: PCI device IDs ranging from 0x4940 to 0x4943)\n\t\t * which doesn\u0027t perform devtlb flush correctly and needs an extra flush\n\t\t * operation from the driver side.\n\t\t *\n\t\t * Since these devices are not concerning to pkvm and we don\u0027t trust host\n\t\t * to pass this information correctly(if the host is compromised), we don\u0027t\n\t\t * do the second flush.\n\t\t */\n\t}\n}\n```",
+      "parentUuid": "168fcc30_c38416ec",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 39
+      },
+      "revId": "49e31e9dc998a11e0a774bd3a57e34eca4dadc6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
