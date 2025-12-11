@@ -16,6 +16,24 @@
       "message": "what does it mean that these symbols were \"allowed in 5.*\"? I hope you are not just blindly using symbols just because they were used in 5.15. You must only add symbols that you actually use in android17-6.18. Please elaborate on what you are doing here in the commit message.",
       "revId": "9288b4f0bef3f3d28843d627a21f63ff4bbcacd5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3c82f95_a4461782",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2024627
+      },
+      "writtenOn": "2025-12-11T21:57:27Z",
+      "side": 1,
+      "message": "Done, we were asked to split the symbols per subsystem and per kernel, instead of introducing all symbols in one giant patch.\nAll the symbols are still needed for android17-6.18",
+      "parentUuid": "3820cead_405dcaa6",
+      "revId": "9288b4f0bef3f3d28843d627a21f63ff4bbcacd5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
