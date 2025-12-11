@@ -74,6 +74,30 @@
       },
       "revId": "49e31e9dc998a11e0a774bd3a57e34eca4dadc6f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe69f00d_c6aedb78",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 76
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-11T14:27:15Z",
+      "side": 1,
+      "message": "\u003e For clarity and readability we could add clean copy of this function first and then modify it in consecutive patches as needed. \n\nA clean copy may not even compile, I suppose...\n\nAnd in v6.18, I assume, we\u0027re gonna directly use the original iommu_context_addr() by adding `#ifdef __PKVM_HYP__`s to it a la pvVMCS (unless that\u0027s gonna be too messy; but in pvVMCS this approach is working well for us so far).",
+      "parentUuid": "d4b08fa0_78d3dfde",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 39
+      },
+      "revId": "49e31e9dc998a11e0a774bd3a57e34eca4dadc6f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

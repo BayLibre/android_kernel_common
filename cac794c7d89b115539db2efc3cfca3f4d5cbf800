@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df00f986_e31b2487",
+        "filename": "arch/x86/include/asm/pkvm.h",
+        "patchSetId": 77
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-11T14:27:15Z",
+      "side": 1,
+      "message": "Just a note: looks like we could just pass these params as hypercall args instead of using a structure, without any trouble.\n\nWe can leave this as is in 6.12. But for 6.18 I\u0027d suggest to simply pass params as args whenever we can do that without increasing the number of registers used for hypercall args (while in other cases use a structure and Chuanxiao\u0027s new in/out mechanism, if it allows to avoid increasing the number of those registers).",
+      "revId": "cac794c7d89b115539db2efc3cfca3f4d5cbf800",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
