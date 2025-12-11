@@ -9,6 +9,8 @@
 
 #include <linux/lockdep.h>
 
+#include <trace/hooks/rcu.h>
+
 static void rcu_exp_handler(void *unused);
 static int rcu_print_task_exp_stall(struct rcu_node *rnp);
 static void rcu_exp_print_detail_task_stall_rnp(struct rcu_node *rnp);
@@ -1016,9 +1018,15 @@ void synchronize_rcu_expedited(void)
 
 	/* Wait for expedited grace period to complete. */
 	rnp = rcu_get_root();
+	trace_android_vh_sync_rcu_wait_start(current);
 	wait_event(rnp->exp_wq[rcu_seq_ctr(s) & 0x3],
 		   sync_exp_work_done(s));
+<<<<<<< HEAD   (06e4e6b55e9429d780c29efc060d28660f2b9432 ANDROID: Kleaf: Add build test for unsafe DDK headers)
 	smp_mb(); /* Work actions happen before return. */
+||||||| BASE   (7489090d13be9f02235c921587cf4e4085778c52 ANDROID: dma-buf: system_heap: Set allocation orders for lar)
+=======
+	trace_android_vh_sync_rcu_wait_end(current);
+>>>>>>> CHANGE (419dd9ec591526d218610da5bd65324faf663774 ANDROID: vendor_hooks: Add vendor hooks for rcu)
 
 	/* Let the next expedited grace period start. */
 	mutex_unlock(&rcu_state.exp_mutex);

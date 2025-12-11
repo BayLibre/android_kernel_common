@@ -70,6 +70,7 @@
 #include <trace/hooks/signal.h>
 #include <trace/hooks/logbuf.h>
 #include <trace/hooks/usb.h>
+<<<<<<< HEAD   (06e4e6b55e9429d780c29efc060d28660f2b9432 ANDROID: Kleaf: Add build test for unsafe DDK headers)
 #include <trace/hooks/compaction.h>
 #include <trace/hooks/sd.h>
 #include <trace/hooks/user.h>
@@ -84,6 +85,16 @@
 #include <trace/hooks/typec.h>
 #include <trace/events/android_vendor_lmk.h>
 #include <trace/hooks/swapfile.h>
+||||||| BASE   (7489090d13be9f02235c921587cf4e4085778c52 ANDROID: dma-buf: system_heap: Set allocation orders for lar)
+#include <trace/hooks/kasan.h>
+#include <trace/hooks/dmv_debug.h>
+#include <trace/hooks/vb2.h>
+=======
+#include <trace/hooks/kasan.h>
+#include <trace/hooks/dmv_debug.h>
+#include <trace/hooks/vb2.h>
+#include <trace/hooks/rcu.h>
+>>>>>>> CHANGE (419dd9ec591526d218610da5bd65324faf663774 ANDROID: vendor_hooks: Add vendor hooks for rcu)
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -499,7 +510,15 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_folio_drop_mmap_end);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_update_page);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fuse_request_send_ext);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fuse_request_end_ext);
+<<<<<<< HEAD   (06e4e6b55e9429d780c29efc060d28660f2b9432 ANDROID: Kleaf: Add build test for unsafe DDK headers)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fuse_request_fetch);
+||||||| BASE   (7489090d13be9f02235c921587cf4e4085778c52 ANDROID: dma-buf: system_heap: Set allocation orders for lar)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sync_rcu_wait_start);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_sync_rcu_wait_end);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rcu_boost_start);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_rcu_boost_end);
+>>>>>>> CHANGE (419dd9ec591526d218610da5bd65324faf663774 ANDROID: vendor_hooks: Add vendor hooks for rcu)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lruvec_add_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lruvec_del_folio);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_add_lazyfree_bypass);
