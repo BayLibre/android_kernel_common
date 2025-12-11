@@ -161,6 +161,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "202d4ce9_557d8665",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
+        "patchSetId": 73
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-11T12:33:03Z",
+      "side": 1,
+      "message": "pkvm_access_iommu() returns unsigned long because it returns an IOMMU MMIO register value. pkvm_iommu_clear_ce() and other pvIOMMU hypercall handlers return an error value, which is int. \n\n\u003e So I thought of just keeping it consistent for all iommu hypercall handlers.\n\nAFAICS only the handlers implemented by you return unsigned long. The ones implemented by Aashish return int. And IMO Aashish\u0027s way is cleaner.\n\n__pkvm_init_finalise(), pkvm_commit_finalise() etc also return int.",
+      "parentUuid": "54c55883_35dbcb6b",
+      "revId": "50c2ef7f0352af7e5217e410a9fabd1fac04a009",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "11e0130b_d237791e",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/pv_iommu.c",
         "patchSetId": 73
