@@ -1298,6 +1298,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
 
 	if (con->partner && con->status.change & UCSI_CONSTAT_PARTNER_CHANGE) {
 		ucsi_partner_change(con);
+		ucsi_altmode_update_active(con);
 
 		/* Complete pending data role swap */
 		if (!completion_done(&con->complete))
