@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c27a7f4_735c14ea",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 101
+      },
+      "lineNbr": 950,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-11T18:56:00Z",
+      "side": 1,
+      "message": "I prefer keeping these together because blocking the IQT MMIO immediately creates a need for the alternative IEC flush mechanism. one necessitates the other to keep the invalidation logic complete.\n\nI am happy to split them if you insist, but I believe the current structure better reflects the atomic nature of the change. Let me know what you prefer.",
+      "parentUuid": "8cddc728_619287a2",
+      "revId": "8fe2a50f4ed0558aac64ecbabe07d17d56caee91",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "940140d6_d0302d53",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
         "patchSetId": 101
@@ -31,6 +49,24 @@
       "writtenOn": "2025-12-11T14:04:10Z",
       "side": 1,
       "message": "nit: `global` should be rather bool?",
+      "revId": "8fe2a50f4ed0558aac64ecbabe07d17d56caee91",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f8ecc30_58bb20d2",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu.c",
+        "patchSetId": 101
+      },
+      "lineNbr": 1204,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-11T18:56:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "940140d6_d0302d53",
       "revId": "8fe2a50f4ed0558aac64ecbabe07d17d56caee91",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2025-12-11T14:04:10Z",
       "side": 1,
       "message": "Not exactly relevant to this patch?",
+      "revId": "8fe2a50f4ed0558aac64ecbabe07d17d56caee91",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebc45d43_bc51e190",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_internal.h",
+        "patchSetId": 101
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-11T18:56:00Z",
+      "side": 1,
+      "message": "Move it to aosp/3786919\nDone",
+      "parentUuid": "22309a74_50ace6dc",
       "revId": "8fe2a50f4ed0558aac64ecbabe07d17d56caee91",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
