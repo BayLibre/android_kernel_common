@@ -39,6 +39,24 @@
       "message": "can we really assume that task is always equal to mm-\u003eowner?\n\nHow about:\n```\n#ifdef CONFIG_MEMCG\n    trace_android_vh_process_madvise_iter(mm-\u003eowner, behavior, \u0026ret);\n#endif\n```",
       "revId": "35603a4d0b612a2eb5fcbbd39642b6e3cbef32d1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dff391c5_fa380a2d",
+        "filename": "mm/madvise.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2019,
+      "author": {
+        "id": 1759142
+      },
+      "writtenOn": "2025-12-12T03:36:45Z",
+      "side": 1,
+      "message": "Actually I think we shouldn\u0027t use mm-\u003eowner at the first place\n\nLook at the caller, at line 2117\n\n`trace_android_vh_process_madvise_begin(task, behavior)` tracepoint \"begin\"s with `task`, and `trace_android_vh_process_madvise_iter` should use the same task structure of what `trace_android_vh_process_madvise_begin` uses. That is why I fix this with passing task down to this function to ensure they are using the same object.",
+      "parentUuid": "b9e168da_e3d2749f",
+      "revId": "35603a4d0b612a2eb5fcbbd39642b6e3cbef32d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
