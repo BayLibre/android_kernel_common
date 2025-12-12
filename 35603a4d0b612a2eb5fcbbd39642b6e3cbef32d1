@@ -75,6 +75,24 @@
       "parentUuid": "dff391c5_fa380a2d",
       "revId": "35603a4d0b612a2eb5fcbbd39642b6e3cbef32d1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cb00996_df4ceb46",
+        "filename": "mm/madvise.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2019,
+      "author": {
+        "id": 1759142
+      },
+      "writtenOn": "2025-12-12T05:19:43Z",
+      "side": 1,
+      "message": "Hi Carlos, I understand the effort of maintenance that we should minimize the changes comparing upstream.\n\nI didn\u0027t look through all the details but I found at least for this function existence it shows it\u0027s a valid case that task-\u003emm-\u003eowner !\u003d task as mm-\u003eowner can be changed: https://elixir.bootlin.com/linux/v6.18/source/kernel/exit.c#L488\n\nAlso note on GKI 6.12, trace_android_vh_process_madvise_iter() uses `task` within the caller function (SYSCALL_DEFINE5(process_madvise)). To ensure the correct functionality for the tracepoints, it seems properer to me to pass down `task`, otherwise the iter tracepoints here could be misaligned with the trace begin events.\n\nOr if we don\u0027t really need to ensure the correctness of trace points here - I can guard here with CONFIG_MEMCG as suggested.",
+      "parentUuid": "1fecbdf3_a1d61053",
+      "revId": "35603a4d0b612a2eb5fcbbd39642b6e3cbef32d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
