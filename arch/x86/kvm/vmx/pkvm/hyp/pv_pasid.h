@@ -24,6 +24,8 @@
 #define PASIDDIR_BITS		(MAX_NR_PASID_BITS - PASIDTAB_BITS)
 #define PASIDDIR_SHIFT		PASIDTAB_BITS
 
+struct pkvm_iommu;
+
 struct pasid_dir_entry {
 	u64 val;
 };

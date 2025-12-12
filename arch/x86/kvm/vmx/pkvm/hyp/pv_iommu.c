@@ -33,6 +33,27 @@ static void __set_lm_context(struct context_entry *context, u16 did, u8 aw, u8 t
 	context_set_present(context);
 }
 
+static int context_has_active_pasid(struct pasid_dir_entry *dir, int max_pde)
+{
+	int i;
+	for (i = 0; i < max_pde; i++) {
+		int j;
+		struct pasid_entry *table = get_pasid_table_from_pde(&dir[i]);
+
+		if (!table)
+			continue;
+
+		for (j = 0; j < PASIDTAB_ENTRIES; j++)
+			if (pasid_pte_is_present(&table[j])) {
+				u32 pasid = (i << PASIDTAB_BITS) + j;
+				pkvm_err("%s: failed to clear context: found active PASID %x",
+						__func__, pasid);
+				return -EBUSY;
+			}
+	}
+	return 0;
+}
+
 /*
  * Copied from drivers/iommu/intel/iommu.c:iommu_context_addr()
  */
@@ -145,7 +166,7 @@ int pkvm_iommu_clear_ce(u64 param_va)
 	u64 pasid_dir_sz, pgd_pa = 0;
 	u16 did = 0;
 	int ret = 0;
-	bool sm;
+	bool sm, dte;
 	u8 tt;
 
 	if (!param_va)
@@ -177,6 +198,11 @@ int pkvm_iommu_clear_ce(u64 param_va)
 	if (sm) {
 		pasid_dir = pkvm_phys_to_virt(context->lo & VTD_PAGE_MASK);
 		pasid_dir_sz = get_pasid_dir_size(context);
+		if (context_has_active_pasid(pasid_dir, pasid_dir_sz)) {
+			pkvm_spin_unlock(&hyp_iommu->lock);
+			return -EBUSY;
+		}
+		dte = context_get_sm_dte(context);
 	} else {
 		did = context_domain_id(context);
 		pgd_pa = context_lm_get_slptr(context);
@@ -206,9 +232,9 @@ int pkvm_iommu_clear_ce(u64 param_va)
 
 	context_flush_present_no_pasid(hyp_iommu, did, param.bdf, param.ats_qdep);
 
-	if (sm) {
+	if (sm)
 		ret = pkvm_pasid_free_table(pasid_dir, pasid_dir_sz);
-	} else {
+	else {
 		if (did == FLPT_DEFAULT_DID)
 			atomic_dec(&hyp_iommu->pt_cnt);
 		else {

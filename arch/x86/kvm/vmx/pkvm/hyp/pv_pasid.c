@@ -64,6 +64,7 @@ int pkvm_pasid_free_table(struct pasid_dir_entry *dir, int max_pde)
 		table = get_pasid_table_from_pde(&dir[i]);
 		if (!table)
 			continue;
+
 		_ret = __pkvm_hyp_donate_host_unshare_ro(pkvm_virt_to_phys(table), VTD_PAGE_SIZE);
 		if (_ret) {
 			pkvm_err("pkvm: %s: failed to remove write protect pasid entry: %llx (err=%d)\n",
