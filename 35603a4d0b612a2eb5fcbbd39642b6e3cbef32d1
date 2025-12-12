@@ -93,6 +93,24 @@
       "parentUuid": "1fecbdf3_a1d61053",
       "revId": "35603a4d0b612a2eb5fcbbd39642b6e3cbef32d1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8961673d_ecebcbc2",
+        "filename": "mm/madvise.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2019,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-12-12T16:24:54Z",
+      "side": 1,
+      "message": "Since mm_struct is already part of the KMI, let\u0027s change the signature to take mm as the first argument. No need to guard with CONFIG_MEMCG then.\n```\ntrace_android_vh_process_madvise_iter(mm, behavior, \u0026ret);\n```",
+      "parentUuid": "7cb00996_df4ceb46",
+      "revId": "35603a4d0b612a2eb5fcbbd39642b6e3cbef32d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
