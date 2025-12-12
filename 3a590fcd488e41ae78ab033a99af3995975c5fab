@@ -22,6 +22,30 @@
       },
       "revId": "3a590fcd488e41ae78ab033a99af3995975c5fab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8638462_ffefe699",
+        "filename": "gki/aarch64/symbols/galaxy",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2025-12-12T23:01:22Z",
+      "side": 1,
+      "message": "Yes, these are just for compression, not for cryptography.  They are the kernel\u0027s interface to access hardware accelerated (de)compression.  It\u0027s not a good interface, but it is what it is.  It\u0027s not clear to me what the use case is in this particular case, as this CL simply adds a symbol list with no context.  But it\u0027s okay if there is one.",
+      "parentUuid": "c56e1a43_22abc773",
+      "range": {
+        "startLine": 7,
+        "startChar": 2,
+        "endLine": 9,
+        "endChar": 20
+      },
+      "revId": "3a590fcd488e41ae78ab033a99af3995975c5fab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
