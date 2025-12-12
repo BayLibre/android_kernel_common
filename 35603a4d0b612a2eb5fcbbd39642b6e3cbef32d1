@@ -57,6 +57,24 @@
       "parentUuid": "b9e168da_e3d2749f",
       "revId": "35603a4d0b612a2eb5fcbbd39642b6e3cbef32d1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fecbdf3_a1d61053",
+        "filename": "mm/madvise.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2019,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-12-12T03:45:13Z",
+      "side": 1,
+      "message": "I think that would be fine if you didn\u0027t need to change the signature of vector_madvise(). However, I would also rather see the tracepoint call behind CONFIG_MEMCG as it could make maintenance easier.",
+      "parentUuid": "dff391c5_fa380a2d",
+      "revId": "35603a4d0b612a2eb5fcbbd39642b6e3cbef32d1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
