@@ -55,15 +55,47 @@ static void __pasid_setup_sl(struct intel_iommu *iommu, struct pasid_entry *pe, 
 	pasid_set_present(pe);
 }
 
-int pkvm_pasid_free_table(struct pasid_dir_entry *dir, int max_pde)
+int pkvm_pasid_free_table(struct pkvm_iommu *hyp_iommu, struct pasid_dir_entry *dir,
+		int max_pde, u16 bdf, bool dte)
 {
 	struct pasid_entry *table;
 	int i, ret = 0, _ret;
 
 	for (i = 0; i < max_pde; i++) {
+		int j;
 		table = get_pasid_table_from_pde(&dir[i]);
 		if (!table)
 			continue;
+
+		for (j = 0; j < PASIDTAB_ENTRIES; j++) {
+			u64 pgd_pa = 0;
+			u32 pasid = (i << PASIDTAB_BITS) + j;
+			u16 did, pgtt;
+			struct pkvm_iommu_domain *domain;
+
+			if (!pasid_pte_is_present(&table[j]))
+				continue;
+
+			did = pasid_get_domain_id(&table[j]);
+			if (did == FLPT_DEFAULT_DID) {
+				atomic_dec(&hyp_iommu->pt_cnt);
+				continue;
+			}
+
+			pgtt = pasid_get_translation_type(&table[j]);
+			if (pgtt == PASID_ENTRY_PGTT_FL_ONLY)
+				pgd_pa = pasid_get_flptr(&table[j]);
+			else if (pgtt == PASID_ENTRY_PGTT_SL_ONLY)
+				pgd_pa = pasid_get_slptr(&table[j]);
+
+			domain = pkvm_get_iommu_domain_noref(pgd_pa);
+			if (WARN_ON(!domain))
+				continue;
+
+			pkvm_iommu_cache_unassign_domain(hyp_iommu, domain, did, bdf, pasid, dte);
+			pkvm_put_iommu_domain(domain);
+		}
+
 		_ret = __pkvm_hyp_donate_host_unshare_ro(pkvm_virt_to_phys(table), VTD_PAGE_SIZE);
 		if (_ret) {
 			pkvm_err("pkvm: %s: failed to remove write protect pasid entry: %llx (err=%d)\n",

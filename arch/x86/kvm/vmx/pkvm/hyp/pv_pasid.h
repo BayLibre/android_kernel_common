@@ -24,6 +24,8 @@
 #define PASIDDIR_BITS		(MAX_NR_PASID_BITS - PASIDTAB_BITS)
 #define PASIDDIR_SHIFT		PASIDTAB_BITS
 
+struct pkvm_iommu;
+
 struct pasid_dir_entry {
 	u64 val;
 };
@@ -283,5 +285,6 @@ static inline bool pasid_copy_entry(struct pasid_entry *to, struct pasid_entry *
 int pkvm_iommu_clear_pasid_entry(u64 param_va);
 int pkvm_iommu_set_pasid_fl(u64 param_va);
 int pkvm_iommu_set_pasid_sl(u64 param_va);
-int pkvm_pasid_free_table(struct pasid_dir_entry *dir, int max_pde);
+int pkvm_pasid_free_table(struct pkvm_iommu *hyp_iommu, struct pasid_dir_entry *dir,
+		int max_pde, u16 bdf, bool dte);
 #endif /* __PKVM_PV_PASID_H */

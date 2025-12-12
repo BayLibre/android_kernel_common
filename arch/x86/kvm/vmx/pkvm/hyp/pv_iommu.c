@@ -145,7 +145,7 @@ int pkvm_iommu_clear_ce(u64 param_va)
 	u64 pasid_dir_sz, pgd_pa = 0;
 	u16 did = 0;
 	int ret = 0;
-	bool sm;
+	bool sm, dte;
 	u8 tt;
 
 	if (!param_va)
@@ -177,6 +177,7 @@ int pkvm_iommu_clear_ce(u64 param_va)
 	if (sm) {
 		pasid_dir = pkvm_phys_to_virt(context->lo & VTD_PAGE_MASK);
 		pasid_dir_sz = get_pasid_dir_size(context);
+		dte = context_get_sm_dte(context);
 	} else {
 		did = context_domain_id(context);
 		pgd_pa = context_lm_get_slptr(context);
@@ -206,9 +207,10 @@ int pkvm_iommu_clear_ce(u64 param_va)
 
 	context_flush_present_no_pasid(hyp_iommu, did, param.bdf, param.ats_qdep);
 
-	if (sm) {
-		ret = pkvm_pasid_free_table(pasid_dir, pasid_dir_sz);
-	} else {
+	if (sm)
+		ret = pkvm_pasid_free_table(hyp_iommu, pasid_dir, pasid_dir_sz, param.bdf,
+				dte);
+	else {
 		if (did == FLPT_DEFAULT_DID)
 			atomic_dec(&hyp_iommu->pt_cnt);
 		else {
