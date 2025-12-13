@@ -78,6 +78,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "30d047a8_6352779e",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 85
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-13T07:47:26Z",
+      "side": 1,
+      "message": "Yes, this function is very useful. I propose we optimize the flow by calling it at the start of the mapping process for the entire range.\n\nPerformance: Currently, we check the state for every pteval, resulting in `O(level * range)` complexity. Checking the full range upfront reduces this to `O(range)` as this function is doing a pagewalk.\n\nLocking \u0026 Refcounts: Since we would already take the lock for `__host_check_page_state_range()`, we can increment the refcount for the range while holding that lock. This directly addresses the feedback in aosp/3693107.\n\nError Handling: In the rare event of a mapping failure (e.g., a malicious host), we can simply re-acquire the lock and decrement the refcount to roll back.",
+      "parentUuid": "a35babf3_95b5dea6",
+      "range": {
+        "startLine": 409,
+        "startChar": 46,
+        "endLine": 409,
+        "endChar": 60
+      },
+      "revId": "c54a21d99f43af7506120b97591197461890b862",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea132af7_75f28be1",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
         "patchSetId": 85
