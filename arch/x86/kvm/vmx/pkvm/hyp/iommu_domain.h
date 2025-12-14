@@ -41,5 +41,10 @@ struct pkvm_iommu_domain *pkvm_alloc_iommu_domain(struct pkvm_domain_param *para
 struct pkvm_iommu_domain *pkvm_get_iommu_domain(u64 pgd);
 struct pkvm_iommu_domain *pkvm_get_iommu_domain_noref(u64 pgd);
 void pkvm_put_iommu_domain(struct pkvm_iommu_domain *domain);
-int pkvm_free_iommu_domain(struct pkvm_iommu_domain *domain);
+int pkvm_free_iommu_domain(struct pkvm_iommu_domain *domain,
+			   struct pkvm_memcache *teardown_mc);
+
+int pkvm_iommu_domain_map(unsigned long param_va);
+int pkvm_iommu_domain_unmap(unsigned long pgd_gpa, unsigned long start_pfn,
+			    unsigned long last_pfn);
 #endif
