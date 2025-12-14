@@ -905,6 +905,54 @@ next:
 				   (void *)++last_pte - (void *)first_pte);
 }
 
+/*
+ * IOMMU page allocation api(iommu_alloc_page_node) requires
+ * NUMA node id and memory allocation flags.
+ */
+struct mc_alloc_arg {
+	int	nid;
+	gfp_t	gfp;
+};
+
+static void *domain_mc_alloc_fn(void *arg)
+{
+	struct mc_alloc_arg *alloc_arg = (struct mc_alloc_arg *)arg;
+
+	return iommu_alloc_page_node(alloc_arg->nid, alloc_arg->gfp);
+}
+
+static phys_addr_t host_pa(void *addr)
+{
+	return __pa(addr);
+}
+
+static int fill_domain_memcache(struct pkvm_memcache *mc, unsigned long nr_pages,
+				int nid, gfp_t gfp)
+{
+	struct mc_alloc_arg arg = {
+		.nid = nid,
+		.gfp = gfp
+	};
+
+	return __topup_pkvm_memcache(mc, nr_pages, domain_mc_alloc_fn,
+				     host_pa, &arg);
+}
+
+static void *host_va(phys_addr_t phys)
+{
+	return __va(phys);
+}
+
+static void domain_mc_free_fn(void *addr, void *arg)
+{
+	iommu_free_page(addr);
+}
+
+static void free_domain_memcache(struct pkvm_memcache *mc)
+{
+	__free_pkvm_memcache(mc, domain_mc_free_fn, host_va, NULL);
+}
+
 /* We can't just free the pages because the IOMMU may still be walking
    the page tables, and may have cached the intermediate levels. The
    pages can only be freed after the IOTLB flush has been done. */
