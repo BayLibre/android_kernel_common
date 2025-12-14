@@ -25,6 +25,8 @@ struct pkvm_iommu_domain {
 	pkvm_spinlock_t cache_lock;	/* Protect the cache tag list */
 	struct list_head cache_tags;	/* Cache tag list */
 
+	struct pkvm_memcache mc;
+
 	/*
 	 * Lock to protect the mapping operations
 	 * on this domain.
