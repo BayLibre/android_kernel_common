@@ -27,6 +27,7 @@ struct pkvm_iommu_domain {
 
 	struct pkvm_memcache mc;
 
+	unsigned long nr_donations;
 	/*
 	 * Lock to protect the mapping operations
 	 * on this domain.

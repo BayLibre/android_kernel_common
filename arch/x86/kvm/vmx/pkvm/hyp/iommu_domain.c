@@ -146,8 +146,8 @@ int pkvm_free_iommu_domain(struct pkvm_iommu_domain *domain, struct pkvm_memcach
 	push_pkvm_memcache(teardown_mc, pkvm_phys_to_virt(pgd), hyp_virt_to_phys);
 	WARN_ON(__pkvm_hyp_donate_host_unshare_ro(pgd, VTD_PAGE_SIZE));
 
-	pkvm_dbg("pkvm: %s: freeing domain[pgd: %llx], freed pages: %lu\n",
-		 __func__, pgd, teardown_mc->nr_pages);
+	pkvm_dbg("pkvm: %s: freeing domain[pgd: %llx], donated_pages: %lu freed pages: %lu\n",
+		 __func__, pgd, domain->nr_donations, teardown_mc->nr_pages);
 
 	pkvm_spin_lock(&iommu_domain_lock);
 	hash_del(&domain->hnode);
@@ -637,6 +637,7 @@ int pkvm_iommu_domain_map(unsigned long param_va)
 {
 	struct pkvm_iommu_map_param param, *param_ptr;
 	struct pkvm_iommu_domain *domain;
+	unsigned long nr_pgtbl_pages;
 	u64 size;
 	int ret;
 
@@ -670,14 +671,20 @@ int pkvm_iommu_domain_map(unsigned long param_va)
 
 	pkvm_spin_lock(&domain->lock);
 	if (param.mc.nr_pages) {
+		domain->nr_donations += param.mc.nr_pages;
 		ret = refill_domain_memcache(domain, &param.mc);
 		if (ret) {
 			pkvm_err("pkvm: %s: failed to refill memcache for domain[pgd: %llx] (err=%d)\n",
 				 __func__, domain->pgd, ret);
+			domain->nr_donations -= param.mc.nr_pages;
 			goto out_unlock;
 		}
 	}
-	if (domain->mc.nr_pages < __pkvm_pgtable_max_pages(param.nr_pages)) {
+
+	nr_pgtbl_pages = __pkvm_pgtable_max_pages(param.nr_pages);
+	if (domain->mc.nr_pages < nr_pgtbl_pages) {
+		pkvm_dbg("pkvm: %s: mc_nr_pages=%lu, required_pages=%lu\n",
+			 __func__, domain->mc.nr_pages, nr_pgtbl_pages);
 		ret = -ENOMEM;
 		goto out_unlock;
 	}
