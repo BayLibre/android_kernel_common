@@ -963,6 +963,11 @@ static void domain_unmap(struct dmar_domain *domain, unsigned long start_pfn,
 	    WARN_ON(start_pfn > last_pfn))
 		return;
 
+	if (pkvm_pviommu_enabled()) {
+		pkvm_hc_iommu_unmap_pages(virt_to_phys(domain->pgd), start_pfn, last_pfn);
+		return;
+	}
+
 	/* we don't need lock here; nobody else touches the iova range */
 	dma_pte_clear_level(domain, agaw_to_level(domain->agaw),
 			    domain->pgd, 0, start_pfn, last_pfn, freelist);
@@ -1421,22 +1426,32 @@ void domain_detach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu)
 	spin_unlock(&iommu->lock);
 }
 
+static int pv_domain_free(struct dmar_domain *domain)
+{
+	struct pkvm_domain_param param = {
+		.pgd_gpa = virt_to_phys(domain->pgd),
+	};
+	int ret = pkvm_hc_iommu_domain_free(&param);
+
+	if (ret)
+		pr_warn("%s: pkvm failed to free domain[pgd=%p] (err=%d)\n",
+			__func__, domain->pgd, ret);
+
+	free_domain_memcache(&param.mc);
+
+	return ret;
+}
+
 static void domain_exit(struct dmar_domain *domain)
 {
 	if (domain->pgd) {
-		LIST_HEAD(freelist);
-
-		domain_unmap(domain, 0, DOMAIN_MAX_PFN(domain->gaw), &freelist);
-		iommu_put_pages_list(&freelist);
-
 		if (pkvm_pviommu_enabled()) {
-			int ret = pkvm_hc_iommu_domain_free(virt_to_phys(domain->pgd));
+			pv_domain_free(domain);
+		} else {
+			LIST_HEAD(freelist);
 
-			if (ret)
-				pr_warn("%s: pkvm failed to free domain[pgd=%p] (err=%d)\n",
-					__func__, domain->pgd, ret);
-			else
-				iommu_free_page(domain->pgd);
+			domain_unmap(domain, 0, DOMAIN_MAX_PFN(domain->gaw), &freelist);
+			iommu_put_pages_list(&freelist);
 		}
 	}
 
@@ -1679,6 +1694,36 @@ static void switch_to_super_page(struct dmar_domain *domain,
 	}
 }
 
+static int pv_domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
+			     unsigned long phys_pfn, unsigned long nr_pages, int prot, int gfp)
+{
+	struct pkvm_iommu_map_param param = {
+		.pgd_gpa = virt_to_phys(domain->pgd),
+		.iov_pfn = iov_pfn,
+		.phys_pfn = phys_pfn,
+		.nr_pages = nr_pages,
+		.prot = prot,
+	};
+	int ret;
+
+	ret = pkvm_hc_iommu_map_pages(&param);
+	if (ret == -ENOMEM) {
+		ret = fill_domain_memcache(&param.mc, __pkvm_pgtable_max_pages(nr_pages),
+					   domain->nid, gfp);
+		if (ret) {
+			pr_err("%s: failed to allocate pages for pkvm donation(err=%d)\n",
+			       __func__, ret);
+			return ret;
+		}
+		ret = pkvm_hc_iommu_map_pages(&param);
+	}
+	if (ret)
+		pr_err("%s: domain map[iov_pfn: %lx, pfn: %lx, nr_pages: %lu] failed (err=%d)\n",
+		       __func__, iov_pfn, phys_pfn, nr_pages, ret);
+
+	return ret;
+}
+
 static int
 __domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
 		 unsigned long phys_pfn, unsigned long nr_pages, int prot,
@@ -1701,6 +1746,12 @@ __domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
 		return -EINVAL;
 	}
 
+	domain->has_mappings = true;
+
+	if (pkvm_pviommu_enabled()) {
+		return pv_domain_mapping(domain, iov_pfn, phys_pfn, nr_pages, prot, gfp);
+	}
+
 	attr = prot & (DMA_PTE_READ | DMA_PTE_WRITE | DMA_PTE_SNP);
 	attr |= DMA_FL_PTE_PRESENT;
 	if (domain->use_first_level) {
@@ -1708,8 +1759,6 @@ __domain_mapping(struct dmar_domain *domain, unsigned long iov_pfn,
 		if (prot & DMA_PTE_WRITE)
 			attr |= DMA_FL_PTE_DIRTY;
 	}
-
-	domain->has_mappings = true;
 
 	pteval = ((phys_addr_t)phys_pfn << VTD_PAGE_SHIFT) | attr;
 
