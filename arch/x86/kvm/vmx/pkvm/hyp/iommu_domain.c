@@ -10,6 +10,7 @@
 #include "iommu_internal.h"
 #include "iommu.h"
 #include "iommu_domain.h"
+#include "mem_protect.h"
 #include "bug.h"
 
 /*
@@ -70,7 +71,45 @@ void pkvm_put_iommu_domain(struct pkvm_iommu_domain *domain)
 	WARN_ON_ONCE(atomic_dec_and_test(&domain->refcount));
 }
 
-int pkvm_free_iommu_domain(struct pkvm_iommu_domain *domain)
+static void *admit_host_page(void *arg)
+{
+	struct pkvm_memcache *host_mc = arg;
+
+	if (!host_mc->nr_pages)
+		return NULL;
+
+	if (WARN_ON(__pkvm_host_donate_hyp_share_ro(host_mc->head, VTD_PAGE_SIZE)))
+		return NULL;
+
+	return pop_pkvm_memcache(host_mc, hyp_phys_to_virt);
+}
+
+static int refill_domain_memcache(struct pkvm_iommu_domain *domain, struct pkvm_memcache *host_mc)
+{
+	struct pkvm_memcache *mc = &domain->mc;
+	unsigned long min_pages;
+	int ret;
+
+	min_pages = mc->nr_pages + host_mc->nr_pages;
+	ret =  __topup_pkvm_memcache(mc, min_pages, admit_host_page,
+				     hyp_virt_to_phys, host_mc);
+
+	return ret;
+}
+
+static void free_domain_memcache(struct pkvm_iommu_domain *domain, struct pkvm_memcache *teardown_mc)
+{
+	struct pkvm_memcache *mc = &domain->mc;
+
+	while (mc->nr_pages) {
+		void *addr = pop_pkvm_memcache(mc, hyp_phys_to_virt);
+
+		push_pkvm_memcache(teardown_mc, addr, hyp_virt_to_phys);
+		WARN_ON(__pkvm_hyp_donate_host_unshare_ro(pkvm_virt_to_phys(addr), VTD_PAGE_SIZE));
+	}
+}
+
+int pkvm_free_iommu_domain(struct pkvm_iommu_domain *domain, struct pkvm_memcache *teardown_mc)
 {
 	if (atomic_cmpxchg(&domain->refcount, 1, 0) != 1) {
 		pkvm_err("%s: domain[pgd:%llx] has users, refcount %d\n",
