@@ -122,28 +122,13 @@ static bool pxp_session_is_in_play(struct xe_pxp *pxp, u32 id)
 	return xe_mmio_read32(&gt->mmio, KCR_SIP) & BIT(id);
 }
 
-static int pxp_wait_for_sessions_state(struct xe_pxp *pxp, u32 mask, bool in_play)
+static int pxp_wait_for_session_state(struct xe_pxp *pxp, u32 id, bool in_play)
 {
 	struct xe_gt *gt = pxp->gt;
+	u32 mask = BIT(id);
 
 	return xe_mmio_wait32(&gt->mmio, KCR_SIP, mask, in_play ? mask : 0,
 			      250, NULL, false);
-}
-
-int xe_pxp_wait_for_session_state(struct xe_pxp *pxp, u32 id, bool in_play)
-{
-	unsigned int fw_ref;
-	int ret;
-
-	fw_ref = xe_force_wake_get(gt_to_fw(pxp->gt), XE_FW_GT);
-	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FW_GT))
-		return -EIO;
-
-	ret = pxp_wait_for_sessions_state(pxp, BIT(id), in_play);
-
-	xe_force_wake_put(gt_to_fw(pxp->gt), fw_ref);
-
-	return ret;
 }
 
 static void pxp_invalidate_queues(struct xe_pxp *pxp);
@@ -161,37 +146,21 @@ static int pxp_terminate_hw(struct xe_pxp *pxp)
 	struct xe_gt *gt = pxp->gt;
 	unsigned int fw_ref;
 	int ret = 0;
-	u32 idx;
-	u32 mask;
-
-	lockdep_assert_held(&pxp->multi_session.mutex);
 
 	drm_dbg(&pxp->xe->drm, "Terminating PXP\n");
 
-	/* Trigger full HW cleanup */
 	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
 	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FW_GT)) {
 		ret = -EIO;
 		goto out;
 	}
 
-	mask = xe_mmio_read32(&gt->mmio, KCR_SIP);
-
-	for_each_set_bit(idx, pxp->multi_session.reserved_sessions, INTEL_PXP_MAX_HWDRM_SESSIONS) {
-		pxp->multi_session.sessions[idx].owner = NULL;
-		pxp->multi_session.sessions[idx].tag = 0;
-
-		if (idx != ARB_SESSION)
-			clear_bit(idx, pxp->multi_session.reserved_sessions);
-		mask |= BIT(idx);
-	}
-
 	/* terminate the hw session */
-	ret = xe_pxp_submit_session_termination(pxp, mask);
+	ret = xe_pxp_submit_session_termination(pxp, ARB_SESSION);
 	if (ret)
 		goto out;
 
-	ret = pxp_wait_for_sessions_state(pxp, mask, false);
+	ret = pxp_wait_for_session_state(pxp, ARB_SESSION, false);
 	if (ret)
 		goto out;
 
@@ -199,7 +168,7 @@ static int pxp_terminate_hw(struct xe_pxp *pxp)
 	xe_mmio_write32(&gt->mmio, KCR_GLOBAL_TERMINATE, 1);
 
 	/* now we can tell the GSC to clean up its own state */
-	xe_pxp_invalidate_sessions(pxp, mask);
+	ret = xe_pxp_submit_session_invalidation(&pxp->gsc_res, ARB_SESSION);
 
 out:
 	xe_force_wake_put(gt_to_fw(gt), fw_ref);
@@ -223,7 +192,6 @@ static void pxp_terminate(struct xe_pxp *pxp)
 					 msecs_to_jiffies(PXP_ACTIVATION_TIMEOUT_MS)))
 		drm_err(&xe->drm, "failed to wait for PXP start before termination\n");
 
-	mutex_lock(&pxp->multi_session.mutex);
 	mutex_lock(&pxp->mutex);
 
 	pxp_invalidate_state(pxp);
@@ -234,7 +202,7 @@ static void pxp_terminate(struct xe_pxp *pxp)
 	 */
 	if (pxp->status == XE_PXP_SUSPENDED) {
 		mutex_unlock(&pxp->mutex);
-		goto out_multi_unlock;
+		return;
 	}
 
 	/*
@@ -246,7 +214,7 @@ static void pxp_terminate(struct xe_pxp *pxp)
 	if (pxp->status == XE_PXP_TERMINATION_IN_PROGRESS) {
 		pxp->status = XE_PXP_NEEDS_ADDITIONAL_TERMINATION;
 		mutex_unlock(&pxp->mutex);
-		goto out_multi_unlock;
+		return;
 	}
 
 	mark_termination_in_progress(pxp);
@@ -261,9 +229,6 @@ static void pxp_terminate(struct xe_pxp *pxp)
 		complete_all(&pxp->termination);
 		mutex_unlock(&pxp->mutex);
 	}
-
-out_multi_unlock:
-	mutex_unlock(&pxp->multi_session.mutex);
 }
 
 static void pxp_terminate_complete(struct xe_pxp *pxp)
@@ -509,7 +474,7 @@ static int __pxp_start_arb_session(struct xe_pxp *pxp)
 		goto out_force_wake;
 	}
 
-	ret = pxp_wait_for_sessions_state(pxp, BIT(ARB_SESSION), true);
+	ret = pxp_wait_for_session_state(pxp, ARB_SESSION, true);
 	if (ret) {
 		drm_err(&pxp->xe->drm, "PXP ARB session failed to go in play%pe\n", ERR_PTR(ret));
 		goto out_force_wake;
@@ -551,10 +516,9 @@ static void __exec_queue_add(struct xe_pxp *pxp, struct xe_exec_queue *q)
 }
 
 /**
- * xe_pxp_start - start the PXP default session
+ * xe_pxp_exec_queue_add - add a queue to the PXP list
  * @pxp: the xe->pxp pointer (it will be NULL if PXP is disabled)
- * @type: the type of PXP session
- * @q: optional pointer to the queue that caused the session to be started
+ * @q: the queue to add to the list
  *
  * If PXP is enabled and the prerequisites are done, start the PXP ARB
  * session (if not already running) and add the queue to the PXP list. Note
@@ -565,19 +529,26 @@ static void __exec_queue_add(struct xe_pxp *pxp, struct xe_exec_queue *q)
  * -ENODEV if PXP is disabled, -EBUSY if the PXP prerequisites are not done,
  * other errno value if something goes wrong during the session start.
  */
-int xe_pxp_start(struct xe_pxp *pxp, u8 type, struct xe_exec_queue *q)
+int xe_pxp_exec_queue_add(struct xe_pxp *pxp, struct xe_exec_queue *q)
 {
 	int ret = 0;
-	bool restart = false;
 
 	if (!xe_pxp_is_enabled(pxp))
 		return -ENODEV;
 
 	/* we only support HWDRM sessions right now */
-	xe_assert(pxp->xe, type == DRM_XE_PXP_TYPE_HWDRM);
+	xe_assert(pxp->xe, q->pxp.type == DRM_XE_PXP_TYPE_HWDRM);
 
-	if (!pxp_prerequisites_done(pxp))
-		return -EBUSY;
+	/*
+	 * Runtime suspend kills PXP, so we take a reference to prevent it from
+	 * happening while we have active queues that use PXP
+	 */
+	xe_pm_runtime_get(pxp->xe);
+
+	if (!pxp_prerequisites_done(pxp)) {
+		ret = -EBUSY;
+		goto out;
+	}
 
 wait_for_idle:
 	/*
@@ -586,25 +557,28 @@ wait_for_idle:
 	 * Note that the two action should never be pending at the same time.
 	 */
 	if (!wait_for_completion_timeout(&pxp->termination,
-					 msecs_to_jiffies(PXP_TERMINATION_TIMEOUT_MS)))
-		return -ETIMEDOUT;
+					 msecs_to_jiffies(PXP_TERMINATION_TIMEOUT_MS))) {
+		ret = -ETIMEDOUT;
+		goto out;
+	}
 
 	if (!wait_for_completion_timeout(&pxp->activation,
-					 msecs_to_jiffies(PXP_ACTIVATION_TIMEOUT_MS)))
-		return -ETIMEDOUT;
+					 msecs_to_jiffies(PXP_ACTIVATION_TIMEOUT_MS))) {
+		ret = -ETIMEDOUT;
+		goto out;
+	}
 
-	mutex_lock(&pxp->multi_session.mutex);
 	mutex_lock(&pxp->mutex);
 
 	/* If PXP is not already active, turn it on */
 	switch (pxp->status) {
 	case XE_PXP_ERROR:
 		ret = -EIO;
-		goto out_unlock;
+		break;
 	case XE_PXP_ACTIVE:
-		if (q)
-			__exec_queue_add(pxp, q);
-		goto out_unlock;
+		__exec_queue_add(pxp, q);
+		mutex_unlock(&pxp->mutex);
+		goto out;
 	case XE_PXP_READY_TO_START:
 		pxp->status = XE_PXP_START_IN_PROGRESS;
 		reinit_completion(&pxp->activation);
@@ -612,8 +586,8 @@ wait_for_idle:
 	case XE_PXP_START_IN_PROGRESS:
 		/* If a start is in progress then the completion must not be done */
 		XE_WARN_ON(completion_done(&pxp->activation));
-		restart = true;
-		goto out_unlock;
+		mutex_unlock(&pxp->mutex);
+		goto wait_for_idle;
 	case XE_PXP_NEEDS_TERMINATION:
 		mark_termination_in_progress(pxp);
 		break;
@@ -621,16 +595,19 @@ wait_for_idle:
 	case XE_PXP_NEEDS_ADDITIONAL_TERMINATION:
 		/* If a termination is in progress then the completion must not be done */
 		XE_WARN_ON(completion_done(&pxp->termination));
-		restart = true;
-		goto out_unlock;
+		mutex_unlock(&pxp->mutex);
+		goto wait_for_idle;
 	case XE_PXP_SUSPENDED:
 	default:
 		drm_err(&pxp->xe->drm, "unexpected state during PXP start: %u\n", pxp->status);
 		ret = -EIO;
-		goto out_unlock;
+		break;
 	}
 
 	mutex_unlock(&pxp->mutex);
+
+	if (ret)
+		goto out;
 
 	if (!completion_done(&pxp->termination)) {
 		ret = pxp_terminate_hw(pxp);
@@ -638,12 +615,12 @@ wait_for_idle:
 			drm_err(&pxp->xe->drm, "PXP termination failed before start\n");
 			mutex_lock(&pxp->mutex);
 			pxp->status = XE_PXP_ERROR;
+			mutex_unlock(&pxp->mutex);
 
-			goto out_unlock;
-		} else {
-			mutex_unlock(&pxp->multi_session.mutex);
-			goto wait_for_idle;
+			goto out;
 		}
+
+		goto wait_for_idle;
 	}
 
 	/* All the cases except for start should have exited earlier */
@@ -662,56 +639,21 @@ wait_for_idle:
 	if (pxp->status != XE_PXP_START_IN_PROGRESS) {
 		drm_err(&pxp->xe->drm, "unexpected state after PXP start: %u\n", pxp->status);
 		pxp->status = XE_PXP_NEEDS_TERMINATION;
-		restart = true;
-		goto out_unlock;
+		mutex_unlock(&pxp->mutex);
+		goto wait_for_idle;
 	}
 
 	/* If everything went ok, update the status and add the queue to the list */
 	if (!ret) {
 		pxp->status = XE_PXP_ACTIVE;
-		if (q)
-			__exec_queue_add(pxp, q);
+		__exec_queue_add(pxp, q);
 	} else {
 		pxp->status = XE_PXP_ERROR;
 	}
 
-out_unlock:
 	mutex_unlock(&pxp->mutex);
-	mutex_unlock(&pxp->multi_session.mutex);
 
-	if (restart)
-		goto wait_for_idle;
-
-	return ret;
-}
-
-/**
- * xe_pxp_exec_queue_add - add a queue to the PXP list
- * @pxp: the xe->pxp pointer (it will be NULL if PXP is disabled)
- * @q: the queue to add to the list
- *
- * If PXP is enabled and the prerequisites are done, start the PXP default
- * session (if not already running) and add the queue to the PXP list.
- *
- * Returns 0 if the PXP session is running and the queue is in the list,
- * -ENODEV if PXP is disabled, -EBUSY if the PXP prerequisites are not done,
- * other errno value if something goes wrong during the session start.
- */
-int xe_pxp_exec_queue_add(struct xe_pxp *pxp, struct xe_exec_queue *q)
-{
-	int ret;
-
-	if (!xe_pxp_is_enabled(pxp))
-		return -ENODEV;
-
-	/*
-	 * Runtime suspend kills PXP, so we need to turn it off while we have
-	 * active queues that use PXP
-	 */
-	xe_pm_runtime_get(pxp->xe);
-
-	ret = xe_pxp_start(pxp, q->pxp.type, q);
-
+out:
 	/*
 	 * in the successful case the PM ref is released from
 	 * xe_pxp_exec_queue_remove
@@ -905,12 +847,6 @@ wait_for_activation:
 			break;
 		fallthrough;
 	case XE_PXP_ACTIVE:
-		/*
-		 * Note that we do not clean the multi-session status here. This
-		 * is fine because any multi-session OP needs the ARB session
-		 * to be active first and as part of re-starting the arb we're
-		 * going to do a termination and clean-up the state.
-		 */
 		pxp_invalidate_state(pxp);
 		break;
 	default:
