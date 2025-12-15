@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d916940c_bdd51586",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 63
+      },
+      "lineNbr": 3819,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-15T17:31:17Z",
+      "side": 1,
+      "message": "nit: maybe something like \"pKVM enforces immediate flush\" instead, to make it more clear why we need to disable deferred flush capability?",
+      "fixSuggestions": [
+        {
+          "fixId": "f746b714_3c350a6b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 3819,
+                "startChar": 0,
+                "endLine": 3820,
+                "endChar": 0
+              },
+              "replacement": "\t\t/* pKVM enforces immediate flush */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7d1910b9b8e0b7997c4ff77e581974544fc34a82",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
