@@ -69,6 +69,41 @@
       "parentUuid": "8fe2ee7b_c4b7bd21",
       "revId": "018dfb5f7e41b94710de249a1f526e21b37ce502",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51a9b1e5_d70feea8",
+        "filename": "include/trace/hooks/sched.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-12-15T17:30:16Z",
+      "side": 1,
+      "message": "Please drop the extra underbars: `android_rvh_set_task_cpu`",
+      "fixSuggestions": [
+        {
+          "fixId": "a0cede93_93a2cbfd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/sched.h",
+              "range": {
+                "startLine": 29,
+                "startChar": 0,
+                "endLine": 30,
+                "endChar": 0
+              },
+              "replacement": "DECLARE_RESTRICTED_HOOK(android_rvh_set_task_cpu,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "018dfb5f7e41b94710de249a1f526e21b37ce502",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
