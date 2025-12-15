@@ -12,8 +12,16 @@ cflags-$(CONFIG_CPU_LOONGSON64)	+= -Wa,--trap
 # by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
 # can't easily be used safely within the kbuild framework.
 #
+<<<<<<< HEAD   (9286af17ed5fa9f8cfcf84d6f1c7076790bfe794 Merge android13-5.10 into android13-5.10-lts)
 ifeq ($(call cc-ifversion, -ge, 0409, y), y)
   ifeq ($(call ld-ifversion, -ge, 22500, y), y)
+||||||| BASE   (df70e44fa05b01476a78d0f6a210354784ff0992 Linux 5.10.246)
+ifeq ($(call cc-ifversion, -ge, 0409, y), y)
+  ifeq ($(call ld-ifversion, -ge, 225000000, y), y)
+=======
+ifeq ($(call gcc-min-version, 40900), y)
+  ifeq ($(call ld-ifversion, -ge, 225000000, y), y)
+>>>>>>> BRANCH (f964b940099f9982d723d4c77988d4b0dda9c165 Linux 5.10.247)
     cflags-$(CONFIG_CPU_LOONGSON64)  += \
       $(call cc-option,-march=loongson3a -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
   else
