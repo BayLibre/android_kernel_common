@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdf75e4a_575657a0",
+        "filename": "drivers/iommu/intel/debugfs.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-15T16:28:52Z",
+      "side": 1,
+      "message": "Sorry this is a left over of the implementation where we donated the page and pagetable was not accessible to host. Now host can read and its no longer necessary. But we still need to take care of host ept when did \u003d\u003d FLPT_DEFAULT_DID. So I moved it to a separate patch: aosp/3889748",
+      "parentUuid": "2d1f6c8a_3004f190",
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72261ffd_b2b1a2f4",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05f0ad04_57fd235b",
+        "filename": "drivers/iommu/intel/debugfs.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-15T16:28:52Z",
+      "side": 1,
+      "message": "Left over code, removing",
+      "parentUuid": "72261ffd_b2b1a2f4",
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a1cb1ea_05838ca8",
@@ -48,6 +84,24 @@
       "writtenOn": "2025-12-08T20:40:21Z",
       "side": 1,
       "message": "nit: since the unmap hypercall returns an error anyway, it seems useful to print it in case of failure? Otherwise, you know, unless CONFIG_PKVM_INTEL_DEBUG is enabled and pKVM itself prints something, we won\u0027t get any error diagnostics.",
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5954a7e_26683e25",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-15T16:28:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a1cb1ea_05838ca8",
       "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -87,6 +141,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "412f8fd6_b0f9b26b",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 938,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-15T16:28:52Z",
+      "side": 1,
+      "message": "code removed as part of memcache implementation",
+      "parentUuid": "2e3225d4_e40f8f70",
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c6d5882_aca82402",
@@ -100,6 +172,24 @@
       "writtenOn": "2025-12-08T20:40:21Z",
       "side": 1,
       "message": "I find this hard to comprehend... Could we implement something simple like __pkvm_pgtable_max_pages() instead?",
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e91e26f_15148e34",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-15T16:28:52Z",
+      "side": 1,
+      "message": "Using __pkvm_pgtable_max_pages() as it seems to fit worst case of iommu scenario. Thanks for the pointer.",
+      "parentUuid": "3c6d5882_aca82402",
       "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -135,6 +225,24 @@
           ]
         }
       ],
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97dd71e5_c336b221",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 999,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-15T16:28:52Z",
+      "side": 1,
+      "message": "removed as part of memcache implementation",
+      "parentUuid": "1eff46c0_a79f58ae",
       "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -200,6 +308,24 @@
           ]
         }
       ],
+      "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa8eb024_d7386e31",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 103
+      },
+      "lineNbr": 1782,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-15T16:28:52Z",
+      "side": 1,
+      "message": "make sense. done",
+      "parentUuid": "41b742c1_277efeaa",
       "revId": "07579a69e06a2e8743cb1b1e8dbd49564624f42f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
