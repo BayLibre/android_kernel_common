@@ -3136,15 +3136,8 @@ static int arm_smmu_device_reset(struct arm_smmu_device *smmu)
 		}
 	}
 
-	ret = arm_smmu_setup_irqs(smmu, arm_smmu_combined_irq_thread,
-				  arm_smmu_combined_irq_handler,
-				  arm_smmu_evtq_thread,
-				  arm_smmu_gerror_handler,
-				  arm_smmu_priq_thread);
-	if (ret) {
-		dev_err(smmu->dev, "failed to setup irqs\n");
-		return ret;
-	}
+	/* Enable interrupt generation on the SMMU */
+	arm_smmu_enable_irqs(smmu);
 
 	if (is_kdump_kernel())
 		enables &= ~(CR0_EVTQEN | CR0_PRIQEN);
@@ -3337,6 +3330,17 @@ static int arm_smmu_device_probe(struct platform_device *pdev)
 
 	/* Check for RMRs and install bypass STEs if any */
 	arm_smmu_rmr_install_bypass_ste(smmu);
+
+	/* Setup interrupt handlers */
+	ret = arm_smmu_setup_irqs(smmu, arm_smmu_combined_irq_thread,
+				  arm_smmu_combined_irq_handler,
+				  arm_smmu_evtq_thread,
+				  arm_smmu_gerror_handler,
+				  arm_smmu_priq_thread);
+	if (ret) {
+		dev_err(smmu->dev, "failed to setup irqs\n");
+		return ret;
+	}
 
 	/* Reset the device */
 	ret = arm_smmu_device_reset(smmu);

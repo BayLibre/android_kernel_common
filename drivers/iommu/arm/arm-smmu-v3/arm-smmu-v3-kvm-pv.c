@@ -597,12 +597,7 @@ static int kvm_arm_smmu_device_reset(struct host_arm_smmu_device *host_smmu)
 	writel_relaxed(smmu->evtq.q.llq.prod, smmu->base + SZ_64K + ARM_SMMU_EVTQ_PROD);
 	writel_relaxed(smmu->evtq.q.llq.cons, smmu->base + SZ_64K + ARM_SMMU_EVTQ_CONS);
 
-	ret = arm_smmu_setup_irqs(smmu,
-				  kvm_arm_smmu_evt_handler,
-				  kvm_arm_smmu_combined_handler,
-				  kvm_arm_smmu_evt_handler,
-				  kvm_arm_smmu_gerror_handler,
-				  kvm_arm_smmu_pri_handler);
+	arm_smmu_enable_irqs(smmu);
 	return 0;
 }
 
@@ -693,6 +688,17 @@ static int kvm_arm_smmu_probe(struct platform_device *pdev)
 	ret = arm_smmu_init_strtab(smmu);
 	if (ret)
 		return ret;
+
+	ret = arm_smmu_setup_irqs(smmu,
+				  kvm_arm_smmu_evt_handler,
+				  kvm_arm_smmu_combined_handler,
+				  kvm_arm_smmu_evt_handler,
+				  kvm_arm_smmu_gerror_handler,
+				  kvm_arm_smmu_pri_handler);
+	if (ret) {
+		dev_err(smmu->dev, "failed to setup irqs\n");
+		return ret;
+	}
 
 	ret = kvm_arm_smmu_device_reset(host_smmu);
 	if (ret)

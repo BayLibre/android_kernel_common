@@ -794,15 +794,24 @@ static void arm_smmu_setup_unique_irqs(struct arm_smmu_device *smmu,
 	}
 }
 
-int arm_smmu_setup_irqs(struct arm_smmu_device *smmu,
-			irqreturn_t combined_thrd(int irq, void *dev),
-			irqreturn_t combined_irq(int irq, void *dev),
-			irqreturn_t evtqirq(int irq, void *dev),
-			irqreturn_t gerrorirq(int irq, void *dev),
-			irqreturn_t priirq(int irq, void *dev))
+void arm_smmu_enable_irqs(struct arm_smmu_device *smmu)
 {
-	int ret, irq;
+	int ret;
 	u32 irqen_flags = IRQ_CTRL_EVTQ_IRQEN | IRQ_CTRL_GERROR_IRQEN;
+
+	if (smmu->features & ARM_SMMU_FEAT_PRI)
+		irqen_flags |= IRQ_CTRL_PRIQ_IRQEN;
+
+	/* Enable interrupt generation on the SMMU */
+	ret = arm_smmu_write_reg_sync(smmu, irqen_flags,
+				      ARM_SMMU_IRQ_CTRL, ARM_SMMU_IRQ_CTRLACK);
+	if (ret)
+		dev_warn(smmu->dev, "failed to enable irqs\n");
+}
+
+static int arm_smmu_disable_irqs(struct arm_smmu_device *smmu)
+{
+	int ret;
 
 	/* Disable IRQs first */
 	ret = arm_smmu_write_reg_sync(smmu, 0, ARM_SMMU_IRQ_CTRL,
@@ -811,6 +820,22 @@ int arm_smmu_setup_irqs(struct arm_smmu_device *smmu,
 		dev_err(smmu->dev, "failed to disable irqs\n");
 		return ret;
 	}
+
+	return 0;
+}
+
+int arm_smmu_setup_irqs(struct arm_smmu_device *smmu,
+			irqreturn_t combined_thrd(int irq, void *dev),
+			irqreturn_t combined_irq(int irq, void *dev),
+			irqreturn_t evtqirq(int irq, void *dev),
+			irqreturn_t gerrorirq(int irq, void *dev),
+			irqreturn_t priirq(int irq, void *dev))
+{
+	int ret, irq;
+
+	ret = arm_smmu_disable_irqs(smmu);
+	if (ret)
+		return ret;
 
 	irq = smmu->combined_irq;
 	if (irq) {
@@ -828,15 +853,6 @@ int arm_smmu_setup_irqs(struct arm_smmu_device *smmu,
 	} else
 		arm_smmu_setup_unique_irqs(smmu, evtqirq,
 					   gerrorirq, priirq);
-
-	if (smmu->features & ARM_SMMU_FEAT_PRI)
-		irqen_flags |= IRQ_CTRL_PRIQ_IRQEN;
-
-	/* Enable interrupt generation on the SMMU */
-	ret = arm_smmu_write_reg_sync(smmu, irqen_flags,
-				      ARM_SMMU_IRQ_CTRL, ARM_SMMU_IRQ_CTRLACK);
-	if (ret)
-		dev_warn(smmu->dev, "failed to enable irqs\n");
 
 	return 0;
 }

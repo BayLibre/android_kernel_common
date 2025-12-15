@@ -1364,6 +1364,7 @@ int arm_smmu_register_iommu(struct arm_smmu_device *smmu,
 void arm_smmu_unregister_iommu(struct arm_smmu_device *smmu);
 void arm_smmu_probe_irq(struct platform_device *pdev,
 			struct arm_smmu_device *smmu);
+void arm_smmu_enable_irqs(struct arm_smmu_device *smmu);
 int arm_smmu_setup_irqs(struct arm_smmu_device *smmu,
 			irqreturn_t combined_thrd(int irq, void *dev),
 			irqreturn_t combined_irq(int irq, void *dev),
