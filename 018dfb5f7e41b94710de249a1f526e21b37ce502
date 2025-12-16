@@ -104,6 +104,24 @@
       ],
       "revId": "018dfb5f7e41b94710de249a1f526e21b37ce502",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0efa2322_aa331d74",
+        "filename": "include/trace/hooks/sched.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1897063
+      },
+      "writtenOn": "2025-12-16T03:11:51Z",
+      "side": 1,
+      "message": "actually the hook is in \"__set_task_cpu\" function so tried keeping format similar to other hooks.\n- android_rvh_set_task_cpu -- this is already present in \"set_task_cpu\" function.\n\nAre you suggesting keeping some other differentiator instead of using exact function name\" ?",
+      "parentUuid": "51a9b1e5_d70feea8",
+      "revId": "018dfb5f7e41b94710de249a1f526e21b37ce502",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
