@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1bf5b51_2838015b",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-12-16T23:18:59Z",
+      "side": 1,
+      "message": "This function is copied form host and it works well on host but in pKVM we have to care also about refcount so I think we should decrease the refcont here if the PTE was present by calling  `decrease_page_ref` (from the next patches)?\n\nIn other words: this function is called as consequence of switch_to_super_page\u003edma_pte_free_pagetable which as I understand remaps range of pages as superpage so old pages which are used to construct this new superpage doesn\u0027t need mapping anymore which is handled but refcount decrease for page in page tables for this old mapping is missing, right?\n\nSimilar as done in other places in https://android-review.git.corp.google.com/c/kernel/common/+/3693107/127 so probably this CL is better to address it if you agree",
+      "range": {
+        "startLine": 352,
+        "startChar": 0,
+        "endLine": 352,
+        "endChar": 6
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "9533761f_817a523c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+              "range": {
+                "startLine": 353,
+                "startChar": 0,
+                "endLine": 353,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tif (dma_pte_present(pte)) {\n\t\t\t\tphys_addr_t phys_addr \u003d dma_pte_addr(pte);\n\n\t\t\t\tdecrease_page_ref(phys_addr);\n\t\t\t}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b0ac547c2acf4e36410c89672de9dccdbae912d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
