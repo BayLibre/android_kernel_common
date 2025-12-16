@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e42b0aee_e02e5f4d",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 75
+      },
+      "lineNbr": 3821,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-16T16:06:43Z",
+      "side": 1,
+      "message": "nit (sorry): we are not disabling advertising this capability because it is not \"required\", we are disabling it because it is simply not supported?\n\nMaybe e.g. \"pKVM enforces immediate flush and hence does not support deferred flush capability.\"? (to make it clear that it is pKVM that doesn\u0027t support it, otherwise (without pKVM) it is supported)",
+      "fixSuggestions": [
+        {
+          "fixId": "e324005a_b4c68c88",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 3820,
+                "startChar": 0,
+                "endLine": 3822,
+                "endChar": 0
+              },
+              "replacement": "\t\t * pKVM enforces immediate flush and hence does not support\n\t\t * deferred flush capability.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "26e327ff5905e76bf411b4a7af501c11e906c704",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
