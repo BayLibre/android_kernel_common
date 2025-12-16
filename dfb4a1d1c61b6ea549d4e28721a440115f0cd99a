@@ -46,6 +46,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaba1361_02c77303",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 82
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-16T01:50:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "813457ab_28400168",
+      "revId": "dfb4a1d1c61b6ea549d4e28721a440115f0cd99a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ace2e452_be338bc5",
@@ -63,6 +81,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef46d50b_668e383d",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 82
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-16T01:50:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ace2e452_be338bc5",
+      "revId": "dfb4a1d1c61b6ea549d4e28721a440115f0cd99a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3afe1f4_85220aa3",
@@ -76,6 +112,24 @@
       "writtenOn": "2025-12-05T01:20:50Z",
       "side": 1,
       "message": "Can\u0027t we verify the whole range of pages _before_ doing all the above? We know `phys_pfn` and `nr_pages` from the beginning, so why need to fetch the address from the PTE here if we already know beforehand which address range we need to verify?\n\nIf we verify it beforehand, we don\u0027t fail in the middle after we already mapped some pages in the range, and thus don\u0027t need to worry what to do with those already mapped pages.",
+      "revId": "dfb4a1d1c61b6ea549d4e28721a440115f0cd99a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9298a9cf_5e1b2d10",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 82
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2025-12-16T01:50:55Z",
+      "side": 1,
+      "message": "ah I just saw this comment. Yes I made changes as per this.",
+      "parentUuid": "a3afe1f4_85220aa3",
       "revId": "dfb4a1d1c61b6ea549d4e28721a440115f0cd99a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
