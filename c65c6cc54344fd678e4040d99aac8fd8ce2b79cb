@@ -16,6 +16,24 @@
       "message": "Splitted it from aosp/3599511 for easier reviewing. But looks like it might not help much ;-). Probably worth squashing back?\n\nSimilarly, worth squashing aosp/3599512 and aosp/3889747?",
       "revId": "c65c6cc54344fd678e4040d99aac8fd8ce2b79cb",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bce40f2b_1c95e62e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-16T11:48:46Z",
+      "side": 1,
+      "message": "I have refactored in a slightly different way such that hypercall stubs(aosp/3599511) in one patch(this also includes the 3 memcache helper functions) and the copied host code in another patch(aosp/3890763). Hope this would make it easier to review. WIll abandon this patch",
+      "parentUuid": "f10f5c89_a4334cbf",
+      "revId": "c65c6cc54344fd678e4040d99aac8fd8ce2b79cb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
