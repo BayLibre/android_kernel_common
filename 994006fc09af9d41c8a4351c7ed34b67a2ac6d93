@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79067a2c_a29587cd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-16T15:25:54Z",
+      "side": 1,
+      "message": "We don\u0027t use \"Test\" in ACK, especially when this is so obvious :-)",
+      "revId": "994006fc09af9d41c8a4351c7ed34b67a2ac6d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08789851_cdb169ab",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/mem_protect.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-16T15:25:54Z",
+      "side": 1,
+      "message": "That\u0027s ABI, so it should be defined in include/linux/arm-smccc.h",
+      "revId": "994006fc09af9d41c8a4351c7ed34b67a2ac6d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d59de00c_85b2e88e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-16T15:25:54Z",
+      "side": 1,
+      "message": "nit: !(flags \u0026\u0026 GUEST_RELINQUISH_TO_HOST_NO_POISON_FLAG)",
+      "revId": "994006fc09af9d41c8a4351c7ed34b67a2ac6d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2a9faff_f30a3735",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1789,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-16T15:25:54Z",
+      "side": 1,
+      "message": "No \"//\" style comments in the kernel and no Google internal links",
+      "revId": "994006fc09af9d41c8a4351c7ed34b67a2ac6d93",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
