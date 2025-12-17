@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "137fbcc9_d0443e2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1276894
+      },
+      "writtenOn": "2025-12-17T20:52:15Z",
+      "side": 1,
+      "message": "https://android-review.git.corp.google.com/c/kernel/common/+/3878682/5..7\n\nAdded these lines to videobuf2-v4l2.c to avoid CRC mismatch\n\u003e #include \u003clinux/android_kabi.h\u003e\n\u003e ANDROID_KABI_DECLONLY(trace_eval_map);",
+      "revId": "ad4664dd81709b35982e3c859e688b6462fb940a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
