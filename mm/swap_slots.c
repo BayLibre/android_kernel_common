@@ -35,6 +35,8 @@
 #include <linux/mutex.h>
 #include <linux/mm.h>
 
+#include <trace/hooks/mm.h>
+
 static DEFINE_PER_CPU(struct swap_slots_cache, swp_slots);
 static bool	swap_slot_cache_active;
 bool	swap_slot_cache_enabled;
@@ -306,6 +308,7 @@ swp_entry_t folio_alloc_swap(struct folio *folio)
 {
 	swp_entry_t entry;
 	struct swap_slots_cache *cache;
+	bool bypass = false;
 
 	entry.val = 0;
 
@@ -314,6 +317,10 @@ swp_entry_t folio_alloc_swap(struct folio *folio)
 			get_swap_pages(1, &entry, folio_order(folio));
 		goto out;
 	}
+
+	trace_android_vh_folio_alloc_swap(folio, &entry, &bypass);
+	if (bypass)
+		goto out;
 
 	/*
 	 * Preemption is allowed here, because we may sleep

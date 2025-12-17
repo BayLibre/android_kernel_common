@@ -107,8 +107,10 @@ static PLIST_HEAD(swap_active_head);
  * is held and the locking order requires swap_lock to be taken
  * before any swap_info_struct->lock.
  */
-static struct plist_head *swap_avail_heads;
-static DEFINE_SPINLOCK(swap_avail_lock);
+struct plist_head *swap_avail_heads;
+EXPORT_SYMBOL_GPL(swap_avail_heads);
+DEFINE_SPINLOCK(swap_avail_lock);
+EXPORT_SYMBOL_GPL(swap_avail_lock);
 
 static struct swap_info_struct *swap_info[MAX_SWAPFILES];
 
@@ -1072,7 +1074,7 @@ static int cluster_alloc_swap(struct swap_info_struct *si,
 	return n_ret;
 }
 
-static int scan_swap_map_slots(struct swap_info_struct *si,
+int scan_swap_map_slots(struct swap_info_struct *si,
 			       unsigned char usage, int nr,
 			       swp_entry_t slots[], int order)
 {
@@ -1267,6 +1269,7 @@ no_page:
 	si->flags -= SWP_SCANNING;
 	return n_ret;
 }
+EXPORT_SYMBOL_GPL(scan_swap_map_slots);
 
 int get_swap_pages(int n_goal, swp_entry_t swp_entries[], int entry_order)
 {
@@ -1718,6 +1721,7 @@ void swapcache_free_entries(swp_entry_t *entries, int n)
 	if (p)
 		spin_unlock(&p->lock);
 }
+EXPORT_SYMBOL_GPL(swapcache_free_entries);
 
 int __swap_count(swp_entry_t entry)
 {

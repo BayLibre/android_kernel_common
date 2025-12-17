@@ -244,6 +244,9 @@ DECLARE_HOOK(android_vh_calc_alloc_flags,
 	TP_PROTO(gfp_t gfp_mask, unsigned int *alloc_flags,
 		bool *bypass),
 	TP_ARGS(gfp_mask, alloc_flags, bypass));
+DECLARE_HOOK(android_vh_folio_alloc_swap,
+	TP_PROTO(struct folio *folio, swp_entry_t *entry, bool *bypass),
+	TP_ARGS(folio, entry, bypass));
 
 DECLARE_HOOK(android_vh_should_fault_around,
 	TP_PROTO(struct vm_fault *vmf, bool *should_around),
