@@ -40,6 +40,41 @@
       ],
       "revId": "b0ac547c2acf4e36410c89672de9dccdbae912d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "400440ca_82a7a3ec",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-17T13:32:08Z",
+      "side": 1,
+      "message": "domain_flush_cache()?",
+      "fixSuggestions": [
+        {
+          "fixId": "d3c29d6c_d1eca768",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+              "range": {
+                "startLine": 544,
+                "startChar": 0,
+                "endLine": 545,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tdomain_flush_cache(domain, first_pte, (void *)pte - (void *)first_pte);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b0ac547c2acf4e36410c89672de9dccdbae912d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
