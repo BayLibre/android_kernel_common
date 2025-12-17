@@ -92,6 +92,15 @@ static bool pkvm_guest_iommu_attach_dev(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exi
 
 	ret = kvm_iommu_attach_dev(iommu_id, domain_id, sid, pasid, pasid_bits, 0);
 	if (ret == -ENOMEM) {
+		struct kvm_hyp_req *req;
+
+		/* Drivers can't create requests for the allocator, so create on their behalf. */
+		if (hyp_alloc_errno() == -ENOMEM) {
+			req = pkvm_hyp_req_reserve(hyp_vcpu, REQ_MEM_DEST_HYP_ALLOC);
+			req->mem.nr_pages = hyp_alloc_missing_donations();
+			req->mem.sz_alloc = PAGE_SIZE;
+		}
+
 		/*
 		 * The driver will request memory when returning -ENOMEM, so go back to host to
 		 * fulfill the request and repeat the HVC.
@@ -168,6 +177,13 @@ static bool pkvm_guest_iommu_alloc_domain(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *e
 
 	ret = kvm_iommu_alloc_domain(domain_id, KVM_IOMMU_DOMAIN_ANY_TYPE);
 	if (ret == -ENOMEM) {
+		/* See pkvm_guest_iommu_attach_dev() */
+		if (hyp_alloc_errno() == -ENOMEM) {
+			req = pkvm_hyp_req_reserve(hyp_vcpu, REQ_MEM_DEST_HYP_ALLOC);
+			req->mem.nr_pages = hyp_alloc_missing_donations();
+			req->mem.sz_alloc = PAGE_SIZE;
+		}
+
 		pkvm_guest_iommu_free_id(domain_id);
 		hyp_spin_unlock(&pviommu_guest_domain_lock);
 		hyp_free(guest_domain);
