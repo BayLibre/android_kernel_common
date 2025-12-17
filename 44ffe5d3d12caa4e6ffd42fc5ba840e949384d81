@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfc43c7d_851dbb48",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 128
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-17T13:54:15Z",
+      "side": 1,
+      "message": "Any reason why not implement this inside mem_protect.c, in a dedicated API function like pKVM-ARM\u0027s __pkvm_use_dma()?",
+      "revId": "44ffe5d3d12caa4e6ffd42fc5ba840e949384d81",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "baf506b6_20ae8e7e",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/mem_protect.c",
+        "patchSetId": 128
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-17T13:54:15Z",
+      "side": 1,
+      "message": "Just a note: in 6.12 all this is messy anyway: lots of mem_protect API function names start with `__`. So we could spare the trouble of removing `__` from this. :)",
+      "revId": "44ffe5d3d12caa4e6ffd42fc5ba840e949384d81",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
