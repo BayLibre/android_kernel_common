@@ -3,6 +3,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2c8caaf1_ad04ebff",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 144
+      },
+      "lineNbr": 967,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-17T14:45:53Z",
+      "side": 1,
+      "message": "nit: worth printing a warning if the hypercall fails, like we do in other cases?\n\ne.g. similarly to pkvm_hc_iommu_map_pages(): `pr_err(\"%s: domain unmap[start_pfn: %lx, .....`",
+      "fixSuggestions": [
+        {
+          "fixId": "225ba9d2_042b8cc5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 967,
+                "startChar": 0,
+                "endLine": 968,
+                "endChar": 0
+              },
+              "replacement": "\t\tint ret \u003d pkvm_hc_iommu_unmap_pages(virt_to_phys(domain-\u003epgd), start_pfn, last_pfn);\n\n\t\tif (ret)\n\t\t\tpr_warn(\"%s: pkvm failed to unmap pages[start_pfn: %lx, last_pfn: %lx] (err\u003d%d)\\n\",\n\t\t\t\t__func__, start_pfn, last_pfn, ret);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8e15d14867d6a508aa7f580be41a38c597bda32f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d2f6ab9e_52f8561c",
         "filename": "drivers/iommu/intel/iommu.c",
         "patchSetId": 144
