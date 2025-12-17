@@ -72,6 +72,19 @@ static void pkvm_pviommu_hyp_req(u64 *exit_code)
 	*exit_code = ARM_EXCEPTION_HYP_REQ;
 }
 
+static void __request_hyp_alloc(struct pkvm_hyp_vcpu *hyp_vcpu)
+{
+	struct kvm_hyp_req *req = pkvm_hyp_req_reserve(hyp_vcpu, KVM_HYP_REQ_TYPE_MEM);
+
+	if (!req)
+		return;
+
+	req->mem.dest = REQ_MEM_DEST_HYP_ALLOC;
+	req->mem.nr_pages = hyp_alloc_missing_donations();
+	req->mem.sz_alloc = PAGE_SIZE;
+
+}
+
 static bool pkvm_guest_iommu_attach_dev(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 {
 	int ret;
@@ -92,6 +105,10 @@ static bool pkvm_guest_iommu_attach_dev(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exi
 
 	ret = kvm_iommu_attach_dev(iommu_id, domain_id, sid, pasid, pasid_bits, 0);
 	if (ret == -ENOMEM) {
+		/* Drivers can't create requests for the allocator, so create on their behalf. */
+		if (hyp_alloc_errno() == -ENOMEM)
+			__request_hyp_alloc(hyp_vcpu);
+
 		/*
 		 * The driver will request memory when returning -ENOMEM, so go back to host to
 		 * fulfill the request and repeat the HVC.
@@ -143,15 +160,12 @@ static bool pkvm_guest_iommu_alloc_domain(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *e
 	int domain_id = 0;
 	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
 	struct pviommu_guest_domain *guest_domain;
-	struct kvm_hyp_req *req;
 	struct pkvm_hyp_vm *vm = pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu);
 
 	guest_domain = hyp_alloc(sizeof(*guest_domain));
 	if (!guest_domain) {
 		BUG_ON(hyp_alloc_errno() != -ENOMEM);
-		req = pkvm_hyp_req_reserve(hyp_vcpu, REQ_MEM_DEST_HYP_ALLOC);
-		req->mem.nr_pages = hyp_alloc_missing_donations();
-		req->mem.sz_alloc = PAGE_SIZE;
+		__request_hyp_alloc(hyp_vcpu);
 		pkvm_pviommu_hyp_req(exit_code);
 		return false;
 	}
@@ -168,6 +182,10 @@ static bool pkvm_guest_iommu_alloc_domain(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *e
 
 	ret = kvm_iommu_alloc_domain(domain_id, KVM_IOMMU_DOMAIN_ANY_TYPE);
 	if (ret == -ENOMEM) {
+		/* See pkvm_guest_iommu_attach_dev() */
+		if (hyp_alloc_errno() == -ENOMEM)
+			__request_hyp_alloc(hyp_vcpu);
+
 		pkvm_guest_iommu_free_id(domain_id);
 		hyp_spin_unlock(&pviommu_guest_domain_lock);
 		hyp_free(guest_domain);
