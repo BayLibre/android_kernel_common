@@ -44865,6 +44865,12 @@ member {
   offset: 1024
 }
 member {
+  id: 0xed700362
+  name: "android_vendor_data1"
+  type_id: 0x92233392
+  offset: 3392
+}
+member {
   id: 0xed7008ac
   name: "android_vendor_data1"
   type_id: 0x92233392
@@ -225467,6 +225473,7 @@ struct_union {
     member_id: 0x4a965b63
     member_id: 0x0de573d8
     member_id: 0x2bc3997f
+    member_id: 0xed700362
   }
 }
 struct_union {
@@ -307464,7 +307471,7 @@ elf_symbol {
   name: "__amba_driver_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x080f1641
+  crc: 0xe81838ab
   type_id: 0x9284e891
   full_name: "__amba_driver_register"
 }
@@ -307906,7 +307913,7 @@ elf_symbol {
   name: "__devm_drm_panel_alloc"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb3e002bd
+  crc: 0xa1bdc67d
   type_id: 0x55edafd5
   full_name: "__devm_drm_panel_alloc"
 }
@@ -307924,7 +307931,7 @@ elf_symbol {
   name: "__devm_irq_alloc_descs"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x10dd8041
+  crc: 0x0a01154a
   type_id: 0x9c9a309d
   full_name: "__devm_irq_alloc_descs"
 }
@@ -307951,7 +307958,7 @@ elf_symbol {
   name: "__devm_pwmchip_add"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa78dd8b3
+  crc: 0xb475d22c
   namespace: "PWM"
   type_id: 0x9d86419d
   full_name: "__devm_pwmchip_add"
@@ -307970,7 +307977,7 @@ elf_symbol {
   name: "__devm_regmap_init_i2c"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf9bb93a5
+  crc: 0x40dcc712
   type_id: 0x80dd5700
   full_name: "__devm_regmap_init_i2c"
 }
@@ -308015,7 +308022,7 @@ elf_symbol {
   name: "__devm_reset_control_bulk_get"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8f2022b6
+  crc: 0x6b164f35
   type_id: 0x9c836ae5
   full_name: "__devm_reset_control_bulk_get"
 }
@@ -308024,7 +308031,7 @@ elf_symbol {
   name: "__devm_reset_control_get"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0a30aa68
+  crc: 0xcba2a55b
   type_id: 0x10b3303c
   full_name: "__devm_reset_control_get"
 }
@@ -308042,7 +308049,7 @@ elf_symbol {
   name: "__devm_spi_alloc_controller"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9d723824
+  crc: 0x66cc34be
   type_id: 0x5179d95b
   full_name: "__devm_spi_alloc_controller"
 }
@@ -308555,7 +308562,7 @@ elf_symbol {
   name: "__i2c_smbus_xfer"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb28168c2
+  crc: 0x7ca83cb3
   type_id: 0x8a03b82b
   full_name: "__i2c_smbus_xfer"
 }
@@ -308564,7 +308571,7 @@ elf_symbol {
   name: "__i2c_transfer"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6cea40b4
+  crc: 0xd1d2e6f5
   type_id: 0x9480cdfa
   full_name: "__i2c_transfer"
 }
@@ -308663,7 +308670,7 @@ elf_symbol {
   name: "__irq_resolve_mapping"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x42c1baf5
+  crc: 0x8853250e
   type_id: 0xc252de0a
   full_name: "__irq_resolve_mapping"
 }
@@ -309122,7 +309129,7 @@ elf_symbol {
   name: "__of_reset_control_get"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8630e828
+  crc: 0x378e6f5e
   type_id: 0x1d39ce8a
   full_name: "__of_reset_control_get"
 }
@@ -309185,7 +309192,7 @@ elf_symbol {
   name: "__platform_driver_probe"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xeb25350b
+  crc: 0xe1bb5184
   type_id: 0x9bf6c118
   full_name: "__platform_driver_probe"
 }
@@ -309194,7 +309201,7 @@ elf_symbol {
   name: "__platform_driver_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xea197622
+  crc: 0xb7df53e6
   type_id: 0x9b609a6d
   full_name: "__platform_driver_register"
 }
@@ -309464,7 +309471,7 @@ elf_symbol {
   name: "__reset_control_get"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0a30aa68
+  crc: 0xcba2a55b
   type_id: 0x10b3303c
   full_name: "__reset_control_get"
 }
@@ -309680,7 +309687,7 @@ elf_symbol {
   name: "__spi_alloc_controller"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9d723824
+  crc: 0x66cc34be
   type_id: 0x5179d95b
   full_name: "__spi_alloc_controller"
 }
@@ -309689,7 +309696,7 @@ elf_symbol {
   name: "__spi_register_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x02b8673f
+  crc: 0xf4930ba5
   type_id: 0x9f83d2d0
   full_name: "__spi_register_driver"
 }
@@ -313874,7 +313881,7 @@ elf_symbol {
   name: "__video_register_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x189b1ced
+  crc: 0x1221c091
   type_id: 0x9f0d3989
   full_name: "__video_register_device"
 }
@@ -314585,7 +314592,7 @@ elf_symbol {
   name: "amba_bustype"
   is_defined: true
   symbol_type: OBJECT
-  crc: 0x29e78699
+  crc: 0x29e1c134
   type_id: 0xd54fa0c8
   full_name: "amba_bustype"
 }
@@ -314594,7 +314601,7 @@ elf_symbol {
   name: "amba_driver_unregister"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc4efebe9
+  crc: 0xde5b1b1f
   type_id: 0x1fb0c55c
   full_name: "amba_driver_unregister"
 }
@@ -314603,7 +314610,7 @@ elf_symbol {
   name: "amba_release_regions"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x37a7ac05
+  crc: 0x46c7cc6f
   type_id: 0x1edfcb66
   full_name: "amba_release_regions"
 }
@@ -314612,7 +314619,7 @@ elf_symbol {
   name: "amba_request_regions"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe072f558
+  crc: 0xfcf089ea
   type_id: 0x933f3b0e
   full_name: "amba_request_regions"
 }
@@ -314802,7 +314809,7 @@ elf_symbol {
   name: "backlight_device_set_brightness"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7932f0a6
+  crc: 0x24646781
   type_id: 0x916a6d3b
   full_name: "backlight_device_set_brightness"
 }
@@ -315774,7 +315781,7 @@ elf_symbol {
   name: "cec_notifier_conn_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9ad5ac17
+  crc: 0xa12af343
   type_id: 0xa25aca5d
   full_name: "cec_notifier_conn_register"
 }
@@ -317471,7 +317478,7 @@ elf_symbol {
   name: "desc_to_gpio"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc0f6ba49
+  crc: 0x17386f09
   type_id: 0x901afa25
   full_name: "desc_to_gpio"
 }
@@ -317606,7 +317613,7 @@ elf_symbol {
   name: "dev_is_amba"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf0ea1eb8
+  crc: 0xf4c3b22f
   type_id: 0xf14dc7bb
   full_name: "dev_is_amba"
 }
@@ -318695,7 +318702,7 @@ elf_symbol {
   name: "devm_backlight_device_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7b41a556
+  crc: 0x8659ec43
   type_id: 0x7cd5f8d0
   full_name: "devm_backlight_device_register"
 }
@@ -318704,7 +318711,7 @@ elf_symbol {
   name: "devm_backlight_device_unregister"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xedc850c1
+  crc: 0xd1f70947
   type_id: 0x10cc1a70
   full_name: "devm_backlight_device_unregister"
 }
@@ -318920,7 +318927,7 @@ elf_symbol {
   name: "devm_free_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9c77999c
+  crc: 0x30f16328
   type_id: 0x111e5509
   full_name: "devm_free_irq"
 }
@@ -318929,7 +318936,7 @@ elf_symbol {
   name: "devm_fwnode_gpiod_get_index"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd62b0e24
+  crc: 0x886464ba
   type_id: 0x5fc92844
   full_name: "devm_fwnode_gpiod_get_index"
 }
@@ -318965,7 +318972,7 @@ elf_symbol {
   name: "devm_gpio_request_one"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x77c7dc6b
+  crc: 0x4d55afa7
   type_id: 0x9c0cedf7
   full_name: "devm_gpio_request_one"
 }
@@ -318974,7 +318981,7 @@ elf_symbol {
   name: "devm_gpiochip_add_data_with_key"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb209bc53
+  crc: 0x74501a1e
   type_id: 0x9d7300d0
   full_name: "devm_gpiochip_add_data_with_key"
 }
@@ -318983,7 +318990,7 @@ elf_symbol {
   name: "devm_gpiod_get"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd5289f91
+  crc: 0x6cf64e54
   type_id: 0x5f272d07
   full_name: "devm_gpiod_get"
 }
@@ -318992,7 +318999,7 @@ elf_symbol {
   name: "devm_gpiod_get_array"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1312b54e
+  crc: 0x201b03d0
   type_id: 0x8dd5f3b8
   full_name: "devm_gpiod_get_array"
 }
@@ -319001,7 +319008,7 @@ elf_symbol {
   name: "devm_gpiod_get_index"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd7b35acb
+  crc: 0x313945ec
   type_id: 0x5f3cfa16
   full_name: "devm_gpiod_get_index"
 }
@@ -319010,7 +319017,7 @@ elf_symbol {
   name: "devm_gpiod_get_index_optional"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1b55b5c8
+  crc: 0x4c98ecd2
   type_id: 0x5f3cfa16
   full_name: "devm_gpiod_get_index_optional"
 }
@@ -319019,7 +319026,7 @@ elf_symbol {
   name: "devm_gpiod_get_optional"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd5289f91
+  crc: 0x6cf64e54
   type_id: 0x5f272d07
   full_name: "devm_gpiod_get_optional"
 }
@@ -319028,7 +319035,7 @@ elf_symbol {
   name: "devm_gpiod_put"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2aaa4da7
+  crc: 0x67c7d695
   type_id: 0x109bed40
   full_name: "devm_gpiod_put"
 }
@@ -319037,7 +319044,7 @@ elf_symbol {
   name: "devm_gpiod_put_array"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x04e914a5
+  crc: 0x2675bb7e
   type_id: 0x10c7c629
   full_name: "devm_gpiod_put_array"
 }
@@ -319064,7 +319071,7 @@ elf_symbol {
   name: "devm_i2c_new_dummy_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x06e18691
+  crc: 0x1b79ea09
   type_id: 0x8c93d036
   full_name: "devm_i2c_new_dummy_device"
 }
@@ -319244,7 +319251,7 @@ elf_symbol {
   name: "devm_mfd_add_devices"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x22606d6f
+  crc: 0x586be1fd
   type_id: 0x9c874975
   full_name: "devm_mfd_add_devices"
 }
@@ -319343,7 +319350,7 @@ elf_symbol {
   name: "devm_of_platform_populate"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8e95dc08
+  crc: 0xd425affd
   type_id: 0x9d16dd74
   full_name: "devm_of_platform_populate"
 }
@@ -319388,7 +319395,7 @@ elf_symbol {
   name: "devm_pinctrl_get"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x71bcbb03
+  crc: 0xd04f7bb0
   type_id: 0x4df5d8bb
   full_name: "devm_pinctrl_get"
 }
@@ -319397,7 +319404,7 @@ elf_symbol {
   name: "devm_pinctrl_put"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x00f57746
+  crc: 0x8069de6b
   type_id: 0x1ad9d0a2
   full_name: "devm_pinctrl_put"
 }
@@ -319406,7 +319413,7 @@ elf_symbol {
   name: "devm_pinctrl_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2833cecf
+  crc: 0x3c16bf2c
   type_id: 0xefe7fd65
   full_name: "devm_pinctrl_register"
 }
@@ -319415,7 +319422,7 @@ elf_symbol {
   name: "devm_pinctrl_register_and_init"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x835ba91f
+  crc: 0x1fa4584b
   type_id: 0x9dd0519c
   full_name: "devm_pinctrl_register_and_init"
 }
@@ -319424,7 +319431,7 @@ elf_symbol {
   name: "devm_platform_get_and_ioremap_resource"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x72add97c
+  crc: 0x9fe6da60
   type_id: 0x584c42dc
   full_name: "devm_platform_get_and_ioremap_resource"
 }
@@ -319433,7 +319440,7 @@ elf_symbol {
   name: "devm_platform_ioremap_resource"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x54e58d60
+  crc: 0xead2dc55
   type_id: 0x584d521c
   full_name: "devm_platform_ioremap_resource"
 }
@@ -319442,7 +319449,7 @@ elf_symbol {
   name: "devm_platform_ioremap_resource_byname"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc8bfa18a
+  crc: 0x196e2c56
   type_id: 0x59a30550
   full_name: "devm_platform_ioremap_resource_byname"
 }
@@ -319523,7 +319530,7 @@ elf_symbol {
   name: "devm_pwmchip_alloc"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6d78d03e
+  crc: 0x0ddba6e1
   namespace: "PWM"
   type_id: 0x623204d2
   full_name: "devm_pwmchip_alloc"
@@ -319578,7 +319585,7 @@ elf_symbol {
   name: "devm_regmap_add_irq_chip"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xec9d435e
+  crc: 0x707115cb
   type_id: 0x9d28302f
   full_name: "devm_regmap_add_irq_chip"
 }
@@ -319686,7 +319693,7 @@ elf_symbol {
   name: "devm_request_any_context_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc33e99a9
+  crc: 0x5bb7ddbf
   type_id: 0x9c364018
   full_name: "devm_request_any_context_irq"
 }
@@ -319695,7 +319702,7 @@ elf_symbol {
   name: "devm_request_threaded_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xfb408662
+  crc: 0x5e8799be
   type_id: 0x9c35eaa4
   full_name: "devm_request_threaded_irq"
 }
@@ -319704,7 +319711,7 @@ elf_symbol {
   name: "devm_reset_control_array_get"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa5976023
+  crc: 0xd91e213c
   type_id: 0x119122fc
   full_name: "devm_reset_control_array_get"
 }
@@ -319713,7 +319720,7 @@ elf_symbol {
   name: "devm_reset_controller_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc4deeeac
+  crc: 0x87d2998f
   type_id: 0x9d9d4b64
   full_name: "devm_reset_controller_register"
 }
@@ -319767,7 +319774,7 @@ elf_symbol {
   name: "devm_spi_register_controller"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf10f305a
+  crc: 0x8ccfa1de
   type_id: 0x9d15ab3e
   full_name: "devm_spi_register_controller"
 }
@@ -321105,7 +321112,7 @@ elf_symbol {
   name: "drm_add_modes_noedid"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2f6989b8
+  crc: 0x536463ca
   type_id: 0x90eafe75
   full_name: "drm_add_modes_noedid"
 }
@@ -322185,7 +322192,7 @@ elf_symbol {
   name: "drm_cvt_mode"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8cf139ca
+  crc: 0xa296dfc1
   type_id: 0xc6a0fca0
   full_name: "drm_cvt_mode"
 }
@@ -322302,7 +322309,7 @@ elf_symbol {
   name: "drm_display_mode_from_cea_vic"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe72f0bdb
+  crc: 0xd45b5b4f
   type_id: 0xc7814062
   full_name: "drm_display_mode_from_cea_vic"
 }
@@ -322329,7 +322336,7 @@ elf_symbol {
   name: "drm_edid_connector_add_modes"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x32dcc0da
+  crc: 0x46e447c0
   type_id: 0x91ed8ab4
   full_name: "drm_edid_connector_add_modes"
 }
@@ -322338,7 +322345,7 @@ elf_symbol {
   name: "drm_edid_connector_update"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x87ddbb41
+  crc: 0xbf5960fb
   type_id: 0x913b61f7
   full_name: "drm_edid_connector_update"
 }
@@ -322401,7 +322408,7 @@ elf_symbol {
   name: "drm_edid_read"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7c841b0b
+  crc: 0xe7ada82b
   type_id: 0xad11a121
   full_name: "drm_edid_read"
 }
@@ -322410,7 +322417,7 @@ elf_symbol {
   name: "drm_edid_read_custom"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd2019a3f
+  crc: 0xab33641a
   type_id: 0xadcc121f
   full_name: "drm_edid_read_custom"
 }
@@ -322419,7 +322426,7 @@ elf_symbol {
   name: "drm_edid_read_ddc"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xbc6e9ab6
+  crc: 0x7f45005a
   type_id: 0xad83c446
   full_name: "drm_edid_read_ddc"
 }
@@ -322464,7 +322471,7 @@ elf_symbol {
   name: "drm_event_cancel_free"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7456dcc3
+  crc: 0x2f46b0da
   type_id: 0x1e4577e0
   full_name: "drm_event_cancel_free"
 }
@@ -322473,7 +322480,7 @@ elf_symbol {
   name: "drm_event_reserve_init"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xfca233a7
+  crc: 0x4c5d33f0
   type_id: 0x930bf787
   full_name: "drm_event_reserve_init"
 }
@@ -323049,7 +323056,7 @@ elf_symbol {
   name: "drm_hdmi_avi_infoframe_from_display_mode"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8acc7183
+  crc: 0x3a4118ba
   type_id: 0x99c0ccec
   full_name: "drm_hdmi_avi_infoframe_from_display_mode"
 }
@@ -323058,7 +323065,7 @@ elf_symbol {
   name: "drm_hdmi_avi_infoframe_quant_range"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x03007458
+  crc: 0x31cd2506
   type_id: 0x14d9bc35
   full_name: "drm_hdmi_avi_infoframe_quant_range"
 }
@@ -323076,7 +323083,7 @@ elf_symbol {
   name: "drm_hdmi_vendor_infoframe_from_display_mode"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x23805116
+  crc: 0xb4c8cb54
   type_id: 0x92320486
   full_name: "drm_hdmi_vendor_infoframe_from_display_mode"
 }
@@ -323283,7 +323290,7 @@ elf_symbol {
   name: "drm_mode_destroy"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xca559a64
+  crc: 0x30981484
   type_id: 0x1ef285a9
   full_name: "drm_mode_destroy"
 }
@@ -323292,7 +323299,7 @@ elf_symbol {
   name: "drm_mode_duplicate"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8eb3a275
+  crc: 0xe745888a
   type_id: 0xc7f20e7c
   full_name: "drm_mode_duplicate"
 }
@@ -323373,7 +323380,7 @@ elf_symbol {
   name: "drm_mode_probed_add"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xcc59af3f
+  crc: 0x359b5b70
   type_id: 0x1c5ec399
   full_name: "drm_mode_probed_add"
 }
@@ -323562,7 +323569,7 @@ elf_symbol {
   name: "drm_open"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb8f64f42
+  crc: 0xff1d2502
   type_id: 0x9b022eae
   full_name: "drm_open"
 }
@@ -323571,7 +323578,7 @@ elf_symbol {
   name: "drm_panel_add"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6beef30e
+  crc: 0xc99f98e4
   type_id: 0x14800eb8
   full_name: "drm_panel_add"
 }
@@ -323616,7 +323623,7 @@ elf_symbol {
   name: "drm_panel_disable"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6beef30e
+  crc: 0xc99f98e4
   type_id: 0x14800eb8
   full_name: "drm_panel_disable"
 }
@@ -323625,7 +323632,7 @@ elf_symbol {
   name: "drm_panel_enable"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6beef30e
+  crc: 0xc99f98e4
   type_id: 0x14800eb8
   full_name: "drm_panel_enable"
 }
@@ -323634,7 +323641,7 @@ elf_symbol {
   name: "drm_panel_get_modes"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9fe4c440
+  crc: 0x78ede994
   type_id: 0x995e6a9d
   full_name: "drm_panel_get_modes"
 }
@@ -323643,7 +323650,7 @@ elf_symbol {
   name: "drm_panel_init"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x88b08e5f
+  crc: 0x01950232
   type_id: 0x1486e519
   full_name: "drm_panel_init"
 }
@@ -323652,7 +323659,7 @@ elf_symbol {
   name: "drm_panel_of_backlight"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xaf9372dd
+  crc: 0xfdd43af9
   type_id: 0x9998bc04
   full_name: "drm_panel_of_backlight"
 }
@@ -323661,7 +323668,7 @@ elf_symbol {
   name: "drm_panel_prepare"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6beef30e
+  crc: 0xc99f98e4
   type_id: 0x14800eb8
   full_name: "drm_panel_prepare"
 }
@@ -323670,7 +323677,7 @@ elf_symbol {
   name: "drm_panel_remove"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6beef30e
+  crc: 0xc99f98e4
   type_id: 0x14800eb8
   full_name: "drm_panel_remove"
 }
@@ -323679,7 +323686,7 @@ elf_symbol {
   name: "drm_panel_unprepare"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6beef30e
+  crc: 0xc99f98e4
   type_id: 0x14800eb8
   full_name: "drm_panel_unprepare"
 }
@@ -323760,7 +323767,7 @@ elf_symbol {
   name: "drm_poll"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x39cd47e8
+  crc: 0x174945ae
   type_id: 0x25b50dfa
   full_name: "drm_poll"
 }
@@ -323823,7 +323830,7 @@ elf_symbol {
   name: "drm_probe_ddc"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6de2a1b9
+  crc: 0xdea63ce9
   type_id: 0xf7820d73
   full_name: "drm_probe_ddc"
 }
@@ -323940,7 +323947,7 @@ elf_symbol {
   name: "drm_read"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xdcedaac7
+  crc: 0xd0eb3438
   type_id: 0x12e4741f
   full_name: "drm_read"
 }
@@ -323985,7 +323992,7 @@ elf_symbol {
   name: "drm_release"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb8f64f42
+  crc: 0xff1d2502
   type_id: 0x9b022eae
   full_name: "drm_release"
 }
@@ -324021,7 +324028,7 @@ elf_symbol {
   name: "drm_send_event"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb291490a
+  crc: 0xe9812513
   type_id: 0x1e4577e0
   full_name: "drm_send_event"
 }
@@ -324030,7 +324037,7 @@ elf_symbol {
   name: "drm_send_event_locked"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb291490a
+  crc: 0xe9812513
   type_id: 0x1e4577e0
   full_name: "drm_send_event_locked"
 }
@@ -324039,7 +324046,7 @@ elf_symbol {
   name: "drm_set_preferred_mode"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf552343c
+  crc: 0xb83e3816
   type_id: 0x1d707370
   full_name: "drm_set_preferred_mode"
 }
@@ -324048,7 +324055,7 @@ elf_symbol {
   name: "drm_show_fdinfo"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0b09a7ea
+  crc: 0x67ce882b
   type_id: 0x11628195
   full_name: "drm_show_fdinfo"
 }
@@ -324057,7 +324064,7 @@ elf_symbol {
   name: "drm_show_memory_stats"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xacafc81a
+  crc: 0xe3c73802
   type_id: 0x1a0db72f
   full_name: "drm_show_memory_stats"
 }
@@ -324147,7 +324154,7 @@ elf_symbol {
   name: "drm_sysfs_connector_property_event"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x72b485c0
+  crc: 0x58738480
   type_id: 0x1c5ca425
   full_name: "drm_sysfs_connector_property_event"
 }
@@ -324309,7 +324316,7 @@ elf_symbol {
   name: "dw_handle_msi_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x84805071
+  crc: 0x5d1ef3ab
   type_id: 0x2ba2f0cc
   full_name: "dw_handle_msi_irq"
 }
@@ -324327,7 +324334,7 @@ elf_symbol {
   name: "dw_pcie_host_init"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x264529c6
+  crc: 0x5ae35cc9
   type_id: 0x94e69702
   full_name: "dw_pcie_host_init"
 }
@@ -324354,7 +324361,7 @@ elf_symbol {
   name: "dw_pcie_setup_rc"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x264529c6
+  crc: 0x5ae35cc9
   type_id: 0x94e69702
   full_name: "dw_pcie_setup_rc"
 }
@@ -325186,7 +325193,7 @@ elf_symbol {
   name: "fwnode_gpiod_get_index"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x605feb9e
+  crc: 0xd4b9dfef
   type_id: 0x5e864c76
   full_name: "fwnode_gpiod_get_index"
 }
@@ -325465,7 +325472,7 @@ elf_symbol {
   name: "generic_handle_domain_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3323dc63
+  crc: 0x0702f8e0
   type_id: 0x9abe486f
   full_name: "generic_handle_domain_irq"
 }
@@ -326068,7 +326075,7 @@ elf_symbol {
   name: "gpio_device_find"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc2058b7f
+  crc: 0x9674689f
   type_id: 0xd7432796
   full_name: "gpio_device_find"
 }
@@ -326077,7 +326084,7 @@ elf_symbol {
   name: "gpio_device_get_chip"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x78b1b106
+  crc: 0x06fc60d5
   type_id: 0x46351c36
   full_name: "gpio_device_get_chip"
 }
@@ -326095,7 +326102,7 @@ elf_symbol {
   name: "gpio_generic_chip_init"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xbb1976c8
+  crc: 0x561fd4a7
   type_id: 0x9105a3cf
   full_name: "gpio_generic_chip_init"
 }
@@ -326122,7 +326129,7 @@ elf_symbol {
   name: "gpio_to_desc"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8ebadd01
+  crc: 0x7611287b
   type_id: 0x4e221f3c
   full_name: "gpio_to_desc"
 }
@@ -326131,7 +326138,7 @@ elf_symbol {
   name: "gpiochip_add_data_with_key"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xde452327
+  crc: 0x41edc398
   type_id: 0x9bdd396a
   full_name: "gpiochip_add_data_with_key"
 }
@@ -326140,7 +326147,7 @@ elf_symbol {
   name: "gpiochip_add_pin_range_with_pins"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd072a814
+  crc: 0xebf0fc8a
   type_id: 0x9b514a0f
   full_name: "gpiochip_add_pin_range_with_pins"
 }
@@ -326149,7 +326156,7 @@ elf_symbol {
   name: "gpiochip_disable_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6b0595c1
+  crc: 0x55c2135e
   type_id: 0x17b7d7d6
   full_name: "gpiochip_disable_irq"
 }
@@ -326158,7 +326165,7 @@ elf_symbol {
   name: "gpiochip_enable_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6b0595c1
+  crc: 0x55c2135e
   type_id: 0x17b7d7d6
   full_name: "gpiochip_enable_irq"
 }
@@ -326167,7 +326174,7 @@ elf_symbol {
   name: "gpiochip_generic_config"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7fe0e216
+  crc: 0x59a9de54
   type_id: 0x9aa3b833
   full_name: "gpiochip_generic_config"
 }
@@ -326176,7 +326183,7 @@ elf_symbol {
   name: "gpiochip_generic_free"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6b0595c1
+  crc: 0x55c2135e
   type_id: 0x17b7d7d6
   full_name: "gpiochip_generic_free"
 }
@@ -326185,7 +326192,7 @@ elf_symbol {
   name: "gpiochip_generic_request"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x40016a92
+  crc: 0x9801ccda
   type_id: 0x9aaf656a
   full_name: "gpiochip_generic_request"
 }
@@ -326194,7 +326201,7 @@ elf_symbol {
   name: "gpiochip_get_data"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x146db4b0
+  crc: 0x114498e1
   type_id: 0x50af222c
   full_name: "gpiochip_get_data"
 }
@@ -326203,7 +326210,7 @@ elf_symbol {
   name: "gpiochip_irq_relres"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3505d386
+  crc: 0x0a270c97
   type_id: 0x1247424a
   full_name: "gpiochip_irq_relres"
 }
@@ -326212,7 +326219,7 @@ elf_symbol {
   name: "gpiochip_irq_reqres"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd30f9fb7
+  crc: 0x629b1060
   type_id: 0x9f5ff0f6
   full_name: "gpiochip_irq_reqres"
 }
@@ -326221,7 +326228,7 @@ elf_symbol {
   name: "gpiochip_line_is_valid"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc81611c7
+  crc: 0x8b3a520f
   type_id: 0xf1f03942
   full_name: "gpiochip_line_is_valid"
 }
@@ -326230,7 +326237,7 @@ elf_symbol {
   name: "gpiochip_lock_as_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x40016a92
+  crc: 0x9801ccda
   type_id: 0x9aaf656a
   full_name: "gpiochip_lock_as_irq"
 }
@@ -326239,7 +326246,7 @@ elf_symbol {
   name: "gpiochip_populate_parent_fwspec_fourcell"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x417f8625
+  crc: 0xe2f3e63e
   type_id: 0x9b54e21c
   full_name: "gpiochip_populate_parent_fwspec_fourcell"
 }
@@ -326248,7 +326255,7 @@ elf_symbol {
   name: "gpiochip_remove"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x14215f3e
+  crc: 0x3dedc5d9
   type_id: 0x16a1c24e
   full_name: "gpiochip_remove"
 }
@@ -326257,7 +326264,7 @@ elf_symbol {
   name: "gpiochip_unlock_as_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6b0595c1
+  crc: 0x55c2135e
   type_id: 0x17b7d7d6
   full_name: "gpiochip_unlock_as_irq"
 }
@@ -326266,7 +326273,7 @@ elf_symbol {
   name: "gpiod_cansleep"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc0f6ba49
+  crc: 0x17386f09
   type_id: 0x901afa25
   full_name: "gpiod_cansleep"
 }
@@ -326275,7 +326282,7 @@ elf_symbol {
   name: "gpiod_count"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xfc12574c
+  crc: 0xbc7e64b0
   type_id: 0x9dee9fa0
   full_name: "gpiod_count"
 }
@@ -326284,7 +326291,7 @@ elf_symbol {
   name: "gpiod_direction_input"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc3b27ae7
+  crc: 0xf9b77226
   type_id: 0x94d8cba3
   full_name: "gpiod_direction_input"
 }
@@ -326293,7 +326300,7 @@ elf_symbol {
   name: "gpiod_direction_output"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x72324bb5
+  crc: 0x81cf98f0
   type_id: 0x954448ef
   full_name: "gpiod_direction_output"
 }
@@ -326302,7 +326309,7 @@ elf_symbol {
   name: "gpiod_direction_output_raw"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x72324bb5
+  crc: 0x81cf98f0
   type_id: 0x954448ef
   full_name: "gpiod_direction_output_raw"
 }
@@ -326311,7 +326318,7 @@ elf_symbol {
   name: "gpiod_get"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1276e78c
+  crc: 0x5c84c2bb
   type_id: 0x5f272d07
   full_name: "gpiod_get"
 }
@@ -326320,7 +326327,7 @@ elf_symbol {
   name: "gpiod_get_optional"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1276e78c
+  crc: 0x5c84c2bb
   type_id: 0x5f272d07
   full_name: "gpiod_get_optional"
 }
@@ -326329,7 +326336,7 @@ elf_symbol {
   name: "gpiod_get_raw_value"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc0f6ba49
+  crc: 0x17386f09
   type_id: 0x901afa25
   full_name: "gpiod_get_raw_value"
 }
@@ -326338,7 +326345,7 @@ elf_symbol {
   name: "gpiod_get_raw_value_cansleep"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc0f6ba49
+  crc: 0x17386f09
   type_id: 0x901afa25
   full_name: "gpiod_get_raw_value_cansleep"
 }
@@ -326347,7 +326354,7 @@ elf_symbol {
   name: "gpiod_get_value"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc0f6ba49
+  crc: 0x17386f09
   type_id: 0x901afa25
   full_name: "gpiod_get_value"
 }
@@ -326356,7 +326363,7 @@ elf_symbol {
   name: "gpiod_get_value_cansleep"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc0f6ba49
+  crc: 0x17386f09
   type_id: 0x901afa25
   full_name: "gpiod_get_value_cansleep"
 }
@@ -326365,7 +326372,7 @@ elf_symbol {
   name: "gpiod_is_active_low"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc0f6ba49
+  crc: 0x17386f09
   type_id: 0x901afa25
   full_name: "gpiod_is_active_low"
 }
@@ -326374,7 +326381,7 @@ elf_symbol {
   name: "gpiod_put"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa8601c80
+  crc: 0x6b20f2cb
   type_id: 0x19c0791f
   full_name: "gpiod_put"
 }
@@ -326383,7 +326390,7 @@ elf_symbol {
   name: "gpiod_set_consumer_name"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3c56c78f
+  crc: 0x060d0821
   type_id: 0x94208977
   full_name: "gpiod_set_consumer_name"
 }
@@ -326392,7 +326399,7 @@ elf_symbol {
   name: "gpiod_set_debounce"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xad495318
+  crc: 0xd9fde534
   type_id: 0x95cede3b
   full_name: "gpiod_set_debounce"
 }
@@ -326401,7 +326408,7 @@ elf_symbol {
   name: "gpiod_set_raw_value"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x72324bb5
+  crc: 0x81cf98f0
   type_id: 0x954448ef
   full_name: "gpiod_set_raw_value"
 }
@@ -326410,7 +326417,7 @@ elf_symbol {
   name: "gpiod_set_raw_value_cansleep"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x72324bb5
+  crc: 0x81cf98f0
   type_id: 0x954448ef
   full_name: "gpiod_set_raw_value_cansleep"
 }
@@ -326419,7 +326426,7 @@ elf_symbol {
   name: "gpiod_set_value"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x72324bb5
+  crc: 0x81cf98f0
   type_id: 0x954448ef
   full_name: "gpiod_set_value"
 }
@@ -326428,7 +326435,7 @@ elf_symbol {
   name: "gpiod_set_value_cansleep"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x72324bb5
+  crc: 0x81cf98f0
   type_id: 0x954448ef
   full_name: "gpiod_set_value_cansleep"
 }
@@ -326437,7 +326444,7 @@ elf_symbol {
   name: "gpiod_to_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc0f6ba49
+  crc: 0x17386f09
   type_id: 0x901afa25
   full_name: "gpiod_to_irq"
 }
@@ -326500,7 +326507,7 @@ elf_symbol {
   name: "handle_bad_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4cb3d474
+  crc: 0x5e4c6d7e
   type_id: 0x1c4a186e
   full_name: "handle_bad_irq"
 }
@@ -326509,7 +326516,7 @@ elf_symbol {
   name: "handle_edge_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9459b892
+  crc: 0x72904dfc
   type_id: 0x1c4a186e
   full_name: "handle_edge_irq"
 }
@@ -326518,7 +326525,7 @@ elf_symbol {
   name: "handle_fasteoi_ack_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9459b892
+  crc: 0x72904dfc
   type_id: 0x1c4a186e
   full_name: "handle_fasteoi_ack_irq"
 }
@@ -326527,7 +326534,7 @@ elf_symbol {
   name: "handle_fasteoi_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9459b892
+  crc: 0x72904dfc
   type_id: 0x1c4a186e
   full_name: "handle_fasteoi_irq"
 }
@@ -326536,7 +326543,7 @@ elf_symbol {
   name: "handle_level_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9459b892
+  crc: 0x72904dfc
   type_id: 0x1c4a186e
   full_name: "handle_level_irq"
 }
@@ -326554,7 +326561,7 @@ elf_symbol {
   name: "handle_simple_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9459b892
+  crc: 0x72904dfc
   type_id: 0x1c4a186e
   full_name: "handle_simple_irq"
 }
@@ -326959,7 +326966,7 @@ elf_symbol {
   name: "i2c_adapter_type"
   is_defined: true
   symbol_type: OBJECT
-  crc: 0x214cb437
+  crc: 0x54734b25
   type_id: 0xe0b568e1
   full_name: "i2c_adapter_type"
 }
@@ -326968,7 +326975,7 @@ elf_symbol {
   name: "i2c_add_adapter"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc8ccd295
+  crc: 0x3ead9e22
   type_id: 0x94a6b558
   full_name: "i2c_add_adapter"
 }
@@ -326977,7 +326984,7 @@ elf_symbol {
   name: "i2c_add_numbered_adapter"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6649bcf0
+  crc: 0x7c0cd86b
   type_id: 0x94a6b558
   full_name: "i2c_add_numbered_adapter"
 }
@@ -326986,7 +326993,7 @@ elf_symbol {
   name: "i2c_bus_type"
   is_defined: true
   symbol_type: OBJECT
-  crc: 0xa1ba8001
+  crc: 0x35cd7953
   type_id: 0xd54fa0c8
   full_name: "i2c_bus_type"
 }
@@ -326995,7 +327002,7 @@ elf_symbol {
   name: "i2c_client_get_device_id"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2ae8126d
+  crc: 0x8d5fc023
   type_id: 0xbe3c7750
   full_name: "i2c_client_get_device_id"
 }
@@ -327004,7 +327011,7 @@ elf_symbol {
   name: "i2c_client_type"
   is_defined: true
   symbol_type: OBJECT
-  crc: 0x214cb437
+  crc: 0x54734b25
   type_id: 0xe0b568e1
   full_name: "i2c_client_type"
 }
@@ -327013,7 +327020,7 @@ elf_symbol {
   name: "i2c_del_adapter"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1fce2314
+  crc: 0x1cd8805b
   type_id: 0x19be07e4
   full_name: "i2c_del_adapter"
 }
@@ -327022,7 +327029,7 @@ elf_symbol {
   name: "i2c_del_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x34c9e038
+  crc: 0x10813b04
   type_id: 0x1c0343dd
   full_name: "i2c_del_driver"
 }
@@ -327031,7 +327038,7 @@ elf_symbol {
   name: "i2c_find_adapter_by_fwnode"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x14524dc9
+  crc: 0x727f1c16
   type_id: 0x6da28a60
   full_name: "i2c_find_adapter_by_fwnode"
 }
@@ -327040,7 +327047,7 @@ elf_symbol {
   name: "i2c_find_device_by_fwnode"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x77f62222
+  crc: 0x5ab43cee
   type_id: 0x8d97f6b7
   full_name: "i2c_find_device_by_fwnode"
 }
@@ -327049,7 +327056,7 @@ elf_symbol {
   name: "i2c_for_each_dev"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc35e9171
+  crc: 0x664819f8
   type_id: 0x9b188ead
   full_name: "i2c_for_each_dev"
 }
@@ -327058,7 +327065,7 @@ elf_symbol {
   name: "i2c_generic_scl_recovery"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6649bcf0
+  crc: 0x7c0cd86b
   type_id: 0x94a6b558
   full_name: "i2c_generic_scl_recovery"
 }
@@ -327067,7 +327074,7 @@ elf_symbol {
   name: "i2c_get_adapter"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3f664f42
+  crc: 0xef138e29
   type_id: 0x754e9079
   full_name: "i2c_get_adapter"
 }
@@ -327076,7 +327083,7 @@ elf_symbol {
   name: "i2c_get_adapter_by_fwnode"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x14524dc9
+  crc: 0x727f1c16
   type_id: 0x6da28a60
   full_name: "i2c_get_adapter_by_fwnode"
 }
@@ -327085,7 +327092,7 @@ elf_symbol {
   name: "i2c_get_device_id"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0ef091a6
+  crc: 0xc46e6c44
   type_id: 0x91c515b1
   full_name: "i2c_get_device_id"
 }
@@ -327103,7 +327110,7 @@ elf_symbol {
   name: "i2c_get_match_data"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x5f628b15
+  crc: 0x08a855c6
   type_id: 0x5b450f90
   full_name: "i2c_get_match_data"
 }
@@ -327112,7 +327119,7 @@ elf_symbol {
   name: "i2c_new_ancillary_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf119225e
+  crc: 0x62376d65
   type_id: 0x80f6512d
   full_name: "i2c_new_ancillary_device"
 }
@@ -327121,7 +327128,7 @@ elf_symbol {
   name: "i2c_new_client_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x5e333024
+  crc: 0x315e29c5
   type_id: 0x8546debe
   full_name: "i2c_new_client_device"
 }
@@ -327130,7 +327137,7 @@ elf_symbol {
   name: "i2c_new_dummy_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9a5394e0
+  crc: 0xa12ac721
   type_id: 0x87d0b8ed
   full_name: "i2c_new_dummy_device"
 }
@@ -327139,7 +327146,7 @@ elf_symbol {
   name: "i2c_new_scanned_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xbb2f919a
+  crc: 0x3b492b71
   type_id: 0x85273440
   full_name: "i2c_new_scanned_device"
 }
@@ -327148,7 +327155,7 @@ elf_symbol {
   name: "i2c_parse_fw_timings"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf29d86c6
+  crc: 0x1822fe82
   type_id: 0x10b9d05d
   full_name: "i2c_parse_fw_timings"
 }
@@ -327157,7 +327164,7 @@ elf_symbol {
   name: "i2c_put_adapter"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1fce2314
+  crc: 0x1cd8805b
   type_id: 0x19be07e4
   full_name: "i2c_put_adapter"
 }
@@ -327175,7 +327182,7 @@ elf_symbol {
   name: "i2c_recover_bus"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6649bcf0
+  crc: 0x7c0cd86b
   type_id: 0x94a6b558
   full_name: "i2c_recover_bus"
 }
@@ -327184,7 +327191,7 @@ elf_symbol {
   name: "i2c_register_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc121d49f
+  crc: 0x76cf016c
   type_id: 0x9f80a51b
   full_name: "i2c_register_driver"
 }
@@ -327193,7 +327200,7 @@ elf_symbol {
   name: "i2c_smbus_read_byte"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1f1ee6e0
+  crc: 0x90226cd3
   type_id: 0x8db808c2
   full_name: "i2c_smbus_read_byte"
 }
@@ -327202,7 +327209,7 @@ elf_symbol {
   name: "i2c_smbus_read_byte_data"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc8191a82
+  crc: 0xbb34203e
   type_id: 0x8d1d790a
   full_name: "i2c_smbus_read_byte_data"
 }
@@ -327211,7 +327218,7 @@ elf_symbol {
   name: "i2c_smbus_read_i2c_block_data"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xdd6744d9
+  crc: 0x3236c462
   type_id: 0x8d172d0a
   full_name: "i2c_smbus_read_i2c_block_data"
 }
@@ -327220,7 +327227,7 @@ elf_symbol {
   name: "i2c_smbus_write_byte"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe0ea77f2
+  crc: 0x1837b223
   type_id: 0x8d1d790a
   full_name: "i2c_smbus_write_byte"
 }
@@ -327229,7 +327236,7 @@ elf_symbol {
   name: "i2c_smbus_write_byte_data"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe746af15
+  crc: 0x79274a0c
   type_id: 0x8d172e16
   full_name: "i2c_smbus_write_byte_data"
 }
@@ -327238,7 +327245,7 @@ elf_symbol {
   name: "i2c_smbus_write_i2c_block_data"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xdeb17d6c
+  crc: 0xef0b1777
   type_id: 0x8d17d210
   full_name: "i2c_smbus_write_i2c_block_data"
 }
@@ -327247,7 +327254,7 @@ elf_symbol {
   name: "i2c_smbus_xfer"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb28168c2
+  crc: 0x7ca83cb3
   type_id: 0x8a03b82b
   full_name: "i2c_smbus_xfer"
 }
@@ -327256,7 +327263,7 @@ elf_symbol {
   name: "i2c_transfer"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6cea40b4
+  crc: 0xd1d2e6f5
   type_id: 0x9480cdfa
   full_name: "i2c_transfer"
 }
@@ -327265,7 +327272,7 @@ elf_symbol {
   name: "i2c_transfer_buffer_flags"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa9f2933a
+  crc: 0xae5dcd52
   type_id: 0x916314a3
   full_name: "i2c_transfer_buffer_flags"
 }
@@ -327274,7 +327281,7 @@ elf_symbol {
   name: "i2c_unregister_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa29fd23d
+  crc: 0x96ea2c5e
   type_id: 0x1c01c960
   full_name: "i2c_unregister_device"
 }
@@ -327283,7 +327290,7 @@ elf_symbol {
   name: "i2c_verify_adapter"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc1ef39f0
+  crc: 0x5e7db2b9
   type_id: 0x6c109ae9
   full_name: "i2c_verify_adapter"
 }
@@ -327292,7 +327299,7 @@ elf_symbol {
   name: "i2c_verify_client"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xed3fff8d
+  crc: 0xde913c28
   type_id: 0x8c25e63e
   full_name: "i2c_verify_client"
 }
@@ -327301,7 +327308,7 @@ elf_symbol {
   name: "i3c_device_disable_ibi"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x49395eae
+  crc: 0xb0c2ca26
   type_id: 0x915b403a
   full_name: "i3c_device_disable_ibi"
 }
@@ -327310,7 +327317,7 @@ elf_symbol {
   name: "i3c_device_do_priv_xfers"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd79e7286
+  crc: 0x971ef6ce
   type_id: 0x91e7d0ce
   full_name: "i3c_device_do_priv_xfers"
 }
@@ -327319,7 +327326,7 @@ elf_symbol {
   name: "i3c_device_enable_ibi"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x49395eae
+  crc: 0xb0c2ca26
   type_id: 0x915b403a
   full_name: "i3c_device_enable_ibi"
 }
@@ -327328,7 +327335,7 @@ elf_symbol {
   name: "i3c_device_free_ibi"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xdd1e0e8f
+  crc: 0x5e9d960e
   type_id: 0x1c43f286
   full_name: "i3c_device_free_ibi"
 }
@@ -327337,7 +327344,7 @@ elf_symbol {
   name: "i3c_device_get_info"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xde46e195
+  crc: 0xfb33584e
   type_id: 0x1c1b7688
   full_name: "i3c_device_get_info"
 }
@@ -327346,7 +327353,7 @@ elf_symbol {
   name: "i3c_device_request_ibi"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x84fa4046
+  crc: 0x301dd811
   type_id: 0x918dbcbc
   full_name: "i3c_device_request_ibi"
 }
@@ -327355,7 +327362,7 @@ elf_symbol {
   name: "i3c_driver_register_with_owner"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6ae7e91f
+  crc: 0xf52f55c5
   type_id: 0x952ae349
   full_name: "i3c_driver_register_with_owner"
 }
@@ -327364,7 +327371,7 @@ elf_symbol {
   name: "i3c_driver_unregister"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x38fd1339
+  crc: 0x57de9067
   type_id: 0x181ece84
   full_name: "i3c_driver_unregister"
 }
@@ -327373,7 +327380,7 @@ elf_symbol {
   name: "i3c_master_do_daa"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x149feb95
+  crc: 0x6393ed7a
   type_id: 0x9d3ba2fa
   full_name: "i3c_master_do_daa"
 }
@@ -327382,7 +327389,7 @@ elf_symbol {
   name: "i3cdev_to_dev"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3ef098cd
+  crc: 0x97b82877
   type_id: 0xa1f4932b
   full_name: "i3cdev_to_dev"
 }
@@ -328399,7 +328406,7 @@ elf_symbol {
   name: "iommu_dma_get_resv_regions"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x88df24c3
+  crc: 0xb2577edd
   type_id: 0x10f7e72f
   full_name: "iommu_dma_get_resv_regions"
 }
@@ -328678,7 +328685,7 @@ elf_symbol {
   name: "irq_chip_ack_parent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4e14f08f
+  crc: 0xcf2adf6b
   type_id: 0x1247424a
   full_name: "irq_chip_ack_parent"
 }
@@ -328687,7 +328694,7 @@ elf_symbol {
   name: "irq_chip_disable_parent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4e14f08f
+  crc: 0xcf2adf6b
   type_id: 0x1247424a
   full_name: "irq_chip_disable_parent"
 }
@@ -328696,7 +328703,7 @@ elf_symbol {
   name: "irq_chip_enable_parent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4e14f08f
+  crc: 0xcf2adf6b
   type_id: 0x1247424a
   full_name: "irq_chip_enable_parent"
 }
@@ -328705,7 +328712,7 @@ elf_symbol {
   name: "irq_chip_eoi_parent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4e14f08f
+  crc: 0xcf2adf6b
   type_id: 0x1247424a
   full_name: "irq_chip_eoi_parent"
 }
@@ -328714,7 +328721,7 @@ elf_symbol {
   name: "irq_chip_get_parent_state"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x783a7f39
+  crc: 0xe261a2fc
   type_id: 0x9eedf034
   full_name: "irq_chip_get_parent_state"
 }
@@ -328723,7 +328730,7 @@ elf_symbol {
   name: "irq_chip_mask_parent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4e14f08f
+  crc: 0xcf2adf6b
   type_id: 0x1247424a
   full_name: "irq_chip_mask_parent"
 }
@@ -328732,7 +328739,7 @@ elf_symbol {
   name: "irq_chip_retrigger_hierarchy"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3cd92c5a
+  crc: 0xf33a2e8f
   type_id: 0x9f5ff0f6
   full_name: "irq_chip_retrigger_hierarchy"
 }
@@ -328741,7 +328748,7 @@ elf_symbol {
   name: "irq_chip_set_affinity_parent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x05809c44
+  crc: 0x88d7dad6
   type_id: 0x9f809421
   full_name: "irq_chip_set_affinity_parent"
 }
@@ -328750,7 +328757,7 @@ elf_symbol {
   name: "irq_chip_set_parent_state"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x09d88564
+  crc: 0xceda47e3
   type_id: 0x9ef2dc18
   full_name: "irq_chip_set_parent_state"
 }
@@ -328759,7 +328766,7 @@ elf_symbol {
   name: "irq_chip_set_type_parent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x67686b4d
+  crc: 0x15596ec3
   type_id: 0x9e49e56e
   full_name: "irq_chip_set_type_parent"
 }
@@ -328768,7 +328775,7 @@ elf_symbol {
   name: "irq_chip_set_vcpu_affinity_parent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xfec522e9
+  crc: 0xd14be1f8
   type_id: 0x9f3d0562
   full_name: "irq_chip_set_vcpu_affinity_parent"
 }
@@ -328777,7 +328784,7 @@ elf_symbol {
   name: "irq_chip_set_wake_parent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x28e60e96
+  crc: 0x49a73e3c
   type_id: 0x9e49e56e
   full_name: "irq_chip_set_wake_parent"
 }
@@ -328786,7 +328793,7 @@ elf_symbol {
   name: "irq_chip_unmask_parent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4e14f08f
+  crc: 0xcf2adf6b
   type_id: 0x1247424a
   full_name: "irq_chip_unmask_parent"
 }
@@ -328795,7 +328802,7 @@ elf_symbol {
   name: "irq_create_mapping_affinity"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf429fa5c
+  crc: 0x07cbbfeb
   type_id: 0xc8743fe5
   full_name: "irq_create_mapping_affinity"
 }
@@ -328804,7 +328811,7 @@ elf_symbol {
   name: "irq_create_of_mapping"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x97fcd296
+  crc: 0xd206f704
   type_id: 0xcdea9cab
   full_name: "irq_create_of_mapping"
 }
@@ -328822,7 +328829,7 @@ elf_symbol {
   name: "irq_domain_alloc_irqs_parent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x881d79d0
+  crc: 0xba957a9c
   type_id: 0x9aaf4bc3
   full_name: "irq_domain_alloc_irqs_parent"
 }
@@ -328831,7 +328838,7 @@ elf_symbol {
   name: "irq_domain_disconnect_hierarchy"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0792f509
+  crc: 0x2ed75394
   type_id: 0x9abe486f
   full_name: "irq_domain_disconnect_hierarchy"
 }
@@ -328840,7 +328847,7 @@ elf_symbol {
   name: "irq_domain_free_irqs_common"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc13e2d26
+  crc: 0x9077d560
   type_id: 0x17b79b8a
   full_name: "irq_domain_free_irqs_common"
 }
@@ -328849,7 +328856,7 @@ elf_symbol {
   name: "irq_domain_get_irq_data"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xea9e2dc9
+  crc: 0x7cd2f9d9
   type_id: 0xf6d4f929
   full_name: "irq_domain_get_irq_data"
 }
@@ -328858,7 +328865,7 @@ elf_symbol {
   name: "irq_domain_instantiate"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb3ac31c9
+  crc: 0x89ccc61d
   type_id: 0x5225edba
   full_name: "irq_domain_instantiate"
 }
@@ -328867,7 +328874,7 @@ elf_symbol {
   name: "irq_domain_remove"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xea538c08
+  crc: 0x937e825c
   type_id: 0x16b0ef4b
   full_name: "irq_domain_remove"
 }
@@ -328876,7 +328883,7 @@ elf_symbol {
   name: "irq_domain_set_hwirq_and_chip"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x150c8382
+  crc: 0x6f43761f
   type_id: 0x9ab63fbc
   full_name: "irq_domain_set_hwirq_and_chip"
 }
@@ -328885,7 +328892,7 @@ elf_symbol {
   name: "irq_domain_set_info"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xbcc4e620
+  crc: 0xd75aa475
   type_id: 0x17ae8fc5
   full_name: "irq_domain_set_info"
 }
@@ -328894,7 +328901,7 @@ elf_symbol {
   name: "irq_domain_simple_ops"
   is_defined: true
   symbol_type: OBJECT
-  crc: 0x96e36ff7
+  crc: 0x66eeffbd
   type_id: 0xea94bed9
   full_name: "irq_domain_simple_ops"
 }
@@ -328903,7 +328910,7 @@ elf_symbol {
   name: "irq_domain_translate_twocell"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8c2f0236
+  crc: 0xa32b7fcc
   type_id: 0x9bad311a
   full_name: "irq_domain_translate_twocell"
 }
@@ -328912,7 +328919,7 @@ elf_symbol {
   name: "irq_domain_update_bus_token"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2d6f7dce
+  crc: 0xe8181bb0
   type_id: 0x14e196b0
   full_name: "irq_domain_update_bus_token"
 }
@@ -328921,7 +328928,7 @@ elf_symbol {
   name: "irq_domain_xlate_onecell"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7e64a908
+  crc: 0x415a8b8a
   type_id: 0x9b74c720
   full_name: "irq_domain_xlate_onecell"
 }
@@ -328930,7 +328937,7 @@ elf_symbol {
   name: "irq_domain_xlate_twocell"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x36d65cd7
+  crc: 0x5974794b
   type_id: 0x9b74c63c
   full_name: "irq_domain_xlate_twocell"
 }
@@ -328939,7 +328946,7 @@ elf_symbol {
   name: "irq_find_matching_fwspec"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x08148887
+  crc: 0xd23f1532
   type_id: 0x5d304295
   full_name: "irq_find_matching_fwspec"
 }
@@ -328957,7 +328964,7 @@ elf_symbol {
   name: "irq_get_irq_data"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x62a34930
+  crc: 0x1504e299
   type_id: 0xe08b0be6
   full_name: "irq_get_irq_data"
 }
@@ -328984,7 +328991,7 @@ elf_symbol {
   name: "irq_of_parse_and_map"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x06c7d298
+  crc: 0x5ccd60bf
   type_id: 0xc25b3d5a
   full_name: "irq_of_parse_and_map"
 }
@@ -329002,7 +329009,7 @@ elf_symbol {
   name: "irq_set_chained_handler_and_data"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe1095937
+  crc: 0x500f764c
   type_id: 0x033c2ce9
   full_name: "irq_set_chained_handler_and_data"
 }
@@ -329011,7 +329018,7 @@ elf_symbol {
   name: "irq_set_chip"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1bbe25ac
+  crc: 0x60830a74
   type_id: 0x8c3c9e58
   full_name: "irq_set_chip"
 }
@@ -329020,7 +329027,7 @@ elf_symbol {
   name: "irq_set_chip_and_handler_name"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x76abb20d
+  crc: 0x8a5425ae
   type_id: 0x0108e41c
   full_name: "irq_set_chip_and_handler_name"
 }
@@ -329056,7 +329063,7 @@ elf_symbol {
   name: "irq_to_desc"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2141464a
+  crc: 0x81323c87
   type_id: 0xd597088b
   full_name: "irq_to_desc"
 }
@@ -330950,7 +330957,7 @@ elf_symbol {
   name: "mfd_add_devices"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6298137e
+  crc: 0x9ceb7155
   type_id: 0x9c874975
   full_name: "mfd_add_devices"
 }
@@ -330959,7 +330966,7 @@ elf_symbol {
   name: "mfd_remove_devices"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xcb153070
+  crc: 0x2dbcaceb
   type_id: 0x100e6fc8
   full_name: "mfd_remove_devices"
 }
@@ -331355,7 +331362,7 @@ elf_symbol {
   name: "msi_domain_get_virq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xfbb9f6fc
+  crc: 0xefcb4c87
   type_id: 0xcf4a3461
   full_name: "msi_domain_get_virq"
 }
@@ -332534,7 +332541,7 @@ elf_symbol {
   name: "of_drm_find_panel"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3556c020
+  crc: 0xb0a76fe0
   type_id: 0x29f0e61e
   full_name: "of_drm_find_panel"
 }
@@ -332543,7 +332550,7 @@ elf_symbol {
   name: "of_find_backlight_by_node"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8b9c2154
+  crc: 0x92769848
   type_id: 0x71a7be0e
   full_name: "of_find_backlight_by_node"
 }
@@ -332561,7 +332568,7 @@ elf_symbol {
   name: "of_find_device_by_node"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xae28a5e3
+  crc: 0x8a6d9a25
   type_id: 0xc44c8212
   full_name: "of_find_device_by_node"
 }
@@ -332714,7 +332721,7 @@ elf_symbol {
   name: "of_get_drm_panel_display_mode"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0e8e4796
+  crc: 0x12a3aa9a
   type_id: 0x9039ecdf
   full_name: "of_get_drm_panel_display_mode"
 }
@@ -332732,7 +332739,7 @@ elf_symbol {
   name: "of_get_named_gpio"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xada2fe61
+  crc: 0xa30c3f0a
   type_id: 0x91ea4add
   full_name: "of_get_named_gpio"
 }
@@ -332903,7 +332910,7 @@ elf_symbol {
   name: "of_irq_count"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1bcb898c
+  crc: 0x1958f8f9
   type_id: 0x909c23c2
   full_name: "of_irq_count"
 }
@@ -332912,7 +332919,7 @@ elf_symbol {
   name: "of_irq_find_parent"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x38c74534
+  crc: 0x91d55f04
   type_id: 0x7bef1e3b
   full_name: "of_irq_find_parent"
 }
@@ -332921,7 +332928,7 @@ elf_symbol {
   name: "of_irq_get"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x00fbd527
+  crc: 0x400b6be2
   type_id: 0x9100a08e
   full_name: "of_irq_get"
 }
@@ -332930,7 +332937,7 @@ elf_symbol {
   name: "of_irq_get_byname"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xcb587f2a
+  crc: 0xbccc18d7
   type_id: 0x90646116
   full_name: "of_irq_get_byname"
 }
@@ -332939,7 +332946,7 @@ elf_symbol {
   name: "of_irq_parse_one"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x527c779f
+  crc: 0x5eee650c
   type_id: 0x9103916c
   full_name: "of_irq_parse_one"
 }
@@ -333047,7 +333054,7 @@ elf_symbol {
   name: "of_platform_depopulate"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xcb153070
+  crc: 0x2dbcaceb
   type_id: 0x100e6fc8
   full_name: "of_platform_depopulate"
 }
@@ -333056,7 +333063,7 @@ elf_symbol {
   name: "of_platform_device_create"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd31706d5
+  crc: 0xa54f9ce8
   type_id: 0xc4b456f8
   full_name: "of_platform_device_create"
 }
@@ -333065,7 +333072,7 @@ elf_symbol {
   name: "of_platform_device_destroy"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x843801e5
+  crc: 0x0078ae66
   type_id: 0x9d7428e0
   full_name: "of_platform_device_destroy"
 }
@@ -333074,7 +333081,7 @@ elf_symbol {
   name: "of_platform_populate"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x6edd3c5b
+  crc: 0x5154743f
   type_id: 0x90795841
   full_name: "of_platform_populate"
 }
@@ -333884,7 +333891,7 @@ elf_symbol {
   name: "pci_rescan_bus"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x02072d05
+  crc: 0x2fc103d4
   type_id: 0xc61915b4
   full_name: "pci_rescan_bus"
 }
@@ -334523,7 +334530,7 @@ elf_symbol {
   name: "pin_get_name"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x32057538
+  crc: 0x7bf3e381
   type_id: 0x95876807
   full_name: "pin_get_name"
 }
@@ -334577,7 +334584,7 @@ elf_symbol {
   name: "pinctrl_add_gpio_range"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xde41aedb
+  crc: 0x61f1002f
   type_id: 0x165d386a
   full_name: "pinctrl_add_gpio_range"
 }
@@ -334586,7 +334593,7 @@ elf_symbol {
   name: "pinctrl_dev_get_drvdata"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x231aac57
+  crc: 0xef19af3b
   type_id: 0x5043dbcd
   full_name: "pinctrl_dev_get_drvdata"
 }
@@ -334595,7 +334602,7 @@ elf_symbol {
   name: "pinctrl_enable"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x15d744dc
+  crc: 0xa46e3b8d
   type_id: 0x9b558913
   full_name: "pinctrl_enable"
 }
@@ -334604,7 +334611,7 @@ elf_symbol {
   name: "pinctrl_force_default"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x15d744dc
+  crc: 0xa46e3b8d
   type_id: 0x9b558913
   full_name: "pinctrl_force_default"
 }
@@ -334613,7 +334620,7 @@ elf_symbol {
   name: "pinctrl_force_sleep"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x15d744dc
+  crc: 0xa46e3b8d
   type_id: 0x9b558913
   full_name: "pinctrl_force_sleep"
 }
@@ -334622,7 +334629,7 @@ elf_symbol {
   name: "pinctrl_generic_add_group"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xcaf4d2ce
+  crc: 0xac72c68c
   type_id: 0x9ba2226e
   full_name: "pinctrl_generic_add_group"
 }
@@ -334631,7 +334638,7 @@ elf_symbol {
   name: "pinctrl_generic_get_group_count"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x15d744dc
+  crc: 0xa46e3b8d
   type_id: 0x9b558913
   full_name: "pinctrl_generic_get_group_count"
 }
@@ -334640,7 +334647,7 @@ elf_symbol {
   name: "pinctrl_generic_get_group_name"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x02761015
+  crc: 0x7e8b2456
   type_id: 0x95876807
   full_name: "pinctrl_generic_get_group_name"
 }
@@ -334649,7 +334656,7 @@ elf_symbol {
   name: "pinctrl_generic_get_group_pins"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x870f4eff
+  crc: 0x94c50a10
   type_id: 0x9a42cb81
   full_name: "pinctrl_generic_get_group_pins"
 }
@@ -334658,7 +334665,7 @@ elf_symbol {
   name: "pinctrl_generic_remove_group"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0d5ad872
+  crc: 0xa7706e50
   type_id: 0x9a439c8b
   full_name: "pinctrl_generic_remove_group"
 }
@@ -334667,7 +334674,7 @@ elf_symbol {
   name: "pinctrl_lookup_state"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x778b8d7f
+  crc: 0xd13b22da
   type_id: 0x89d1e10c
   full_name: "pinctrl_lookup_state"
 }
@@ -334676,7 +334683,7 @@ elf_symbol {
   name: "pinctrl_pm_select_default_state"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x78ff36f8
+  crc: 0xd28230a9
   type_id: 0x9d16dd74
   full_name: "pinctrl_pm_select_default_state"
 }
@@ -334685,7 +334692,7 @@ elf_symbol {
   name: "pinctrl_pm_select_idle_state"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x78ff36f8
+  crc: 0xd28230a9
   type_id: 0x9d16dd74
   full_name: "pinctrl_pm_select_idle_state"
 }
@@ -334694,7 +334701,7 @@ elf_symbol {
   name: "pinctrl_pm_select_sleep_state"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x78ff36f8
+  crc: 0xd28230a9
   type_id: 0x9d16dd74
   full_name: "pinctrl_pm_select_sleep_state"
 }
@@ -334703,7 +334710,7 @@ elf_symbol {
   name: "pinctrl_remove_gpio_range"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xde41aedb
+  crc: 0x61f1002f
   type_id: 0x165d386a
   full_name: "pinctrl_remove_gpio_range"
 }
@@ -334712,7 +334719,7 @@ elf_symbol {
   name: "pinctrl_select_default_state"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x78ff36f8
+  crc: 0xd28230a9
   type_id: 0x9d16dd74
   full_name: "pinctrl_select_default_state"
 }
@@ -334721,7 +334728,7 @@ elf_symbol {
   name: "pinctrl_select_state"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x04199662
+  crc: 0xb3fe6e14
   type_id: 0x97287db7
   full_name: "pinctrl_select_state"
 }
@@ -334793,7 +334800,7 @@ elf_symbol {
   name: "platform_bus"
   is_defined: true
   symbol_type: OBJECT
-  crc: 0x542a27f9
+  crc: 0x7b285673
   type_id: 0x23230326
   full_name: "platform_bus"
 }
@@ -334802,7 +334809,7 @@ elf_symbol {
   name: "platform_bus_type"
   is_defined: true
   symbol_type: OBJECT
-  crc: 0xacdc644d
+  crc: 0x9383a6d2
   type_id: 0xd54fa0c8
   full_name: "platform_bus_type"
 }
@@ -334811,7 +334818,7 @@ elf_symbol {
   name: "platform_device_add"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x361e0b4a
+  crc: 0x9d19d143
   type_id: 0x924d155a
   full_name: "platform_device_add"
 }
@@ -334820,7 +334827,7 @@ elf_symbol {
   name: "platform_device_add_data"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4dc98569
+  crc: 0x4fc415dd
   type_id: 0x92946457
   full_name: "platform_device_add_data"
 }
@@ -334829,7 +334836,7 @@ elf_symbol {
   name: "platform_device_add_resources"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb6d641c7
+  crc: 0x69c9d0e5
   type_id: 0x929bf9d1
   full_name: "platform_device_add_resources"
 }
@@ -334838,7 +334845,7 @@ elf_symbol {
   name: "platform_device_alloc"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x5969a91b
+  crc: 0xa94d56ab
   type_id: 0xc748ecf5
   full_name: "platform_device_alloc"
 }
@@ -334847,7 +334854,7 @@ elf_symbol {
   name: "platform_device_del"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x44e76d35
+  crc: 0x8bc49579
   type_id: 0x1f55a7e6
   full_name: "platform_device_del"
 }
@@ -334856,7 +334863,7 @@ elf_symbol {
   name: "platform_device_msi_free_irqs_all"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8d9458e7
+  crc: 0xcbabab04
   type_id: 0x100e6fc8
   full_name: "platform_device_msi_free_irqs_all"
 }
@@ -334865,7 +334872,7 @@ elf_symbol {
   name: "platform_device_msi_init_and_alloc_irqs"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x87286174
+  crc: 0x63163daf
   type_id: 0x9c3052e3
   full_name: "platform_device_msi_init_and_alloc_irqs"
 }
@@ -334874,7 +334881,7 @@ elf_symbol {
   name: "platform_device_put"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x44e76d35
+  crc: 0x8bc49579
   type_id: 0x1f55a7e6
   full_name: "platform_device_put"
 }
@@ -334883,7 +334890,7 @@ elf_symbol {
   name: "platform_device_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x361e0b4a
+  crc: 0x9d19d143
   type_id: 0x924d155a
   full_name: "platform_device_register"
 }
@@ -334892,7 +334899,7 @@ elf_symbol {
   name: "platform_device_register_full"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x5af5c396
+  crc: 0xd603deba
   type_id: 0xc5663ffe
   full_name: "platform_device_register_full"
 }
@@ -334901,7 +334908,7 @@ elf_symbol {
   name: "platform_device_unregister"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x44e76d35
+  crc: 0x8bc49579
   type_id: 0x1f55a7e6
   full_name: "platform_device_unregister"
 }
@@ -334910,7 +334917,7 @@ elf_symbol {
   name: "platform_driver_unregister"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2f43e1e3
+  crc: 0x4732e982
   type_id: 0x1654b7a0
   full_name: "platform_driver_unregister"
 }
@@ -334919,7 +334926,7 @@ elf_symbol {
   name: "platform_find_device_by_driver"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa16cd457
+  crc: 0x820dfdd0
   type_id: 0xad77a8f0
   full_name: "platform_find_device_by_driver"
 }
@@ -334928,7 +334935,7 @@ elf_symbol {
   name: "platform_get_irq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9ddd6261
+  crc: 0x8b8810ca
   type_id: 0x935b00c2
   full_name: "platform_get_irq"
 }
@@ -334937,7 +334944,7 @@ elf_symbol {
   name: "platform_get_irq_byname"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb1f10bc5
+  crc: 0x8fd82249
   type_id: 0x92b5578e
   full_name: "platform_get_irq_byname"
 }
@@ -334946,7 +334953,7 @@ elf_symbol {
   name: "platform_get_irq_byname_optional"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb1f10bc5
+  crc: 0x8fd82249
   type_id: 0x92b5578e
   full_name: "platform_get_irq_byname_optional"
 }
@@ -334955,7 +334962,7 @@ elf_symbol {
   name: "platform_get_irq_optional"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9ddd6261
+  crc: 0x8b8810ca
   type_id: 0x935b00c2
   full_name: "platform_get_irq_optional"
 }
@@ -334964,7 +334971,7 @@ elf_symbol {
   name: "platform_get_resource"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe4b9c950
+  crc: 0xaac219b3
   type_id: 0xcf28148d
   full_name: "platform_get_resource"
 }
@@ -334973,7 +334980,7 @@ elf_symbol {
   name: "platform_get_resource_byname"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x76d522c5
+  crc: 0x80e2b65a
   type_id: 0xcf36f1f9
   full_name: "platform_get_resource_byname"
 }
@@ -334982,7 +334989,7 @@ elf_symbol {
   name: "platform_irq_count"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2400d41e
+  crc: 0xf2e78431
   type_id: 0x924d155a
   full_name: "platform_irq_count"
 }
@@ -334991,7 +334998,7 @@ elf_symbol {
   name: "platform_irqchip_probe"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x21af0309
+  crc: 0x2ee2d7de
   type_id: 0x924d155a
   full_name: "platform_irqchip_probe"
 }
@@ -340311,7 +340318,7 @@ elf_symbol {
   name: "spi_async"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1747b82e
+  crc: 0x136875bd
   type_id: 0x99b7b018
   full_name: "spi_async"
 }
@@ -340320,7 +340327,7 @@ elf_symbol {
   name: "spi_bus_lock"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7f59037c
+  crc: 0x25c1bf10
   type_id: 0x9db78784
   full_name: "spi_bus_lock"
 }
@@ -340329,7 +340336,7 @@ elf_symbol {
   name: "spi_bus_unlock"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7f59037c
+  crc: 0x25c1bf10
   type_id: 0x9db78784
   full_name: "spi_bus_unlock"
 }
@@ -340338,7 +340345,7 @@ elf_symbol {
   name: "spi_controller_resume"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7f59037c
+  crc: 0x25c1bf10
   type_id: 0x9db78784
   full_name: "spi_controller_resume"
 }
@@ -340347,7 +340354,7 @@ elf_symbol {
   name: "spi_controller_suspend"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7f59037c
+  crc: 0x25c1bf10
   type_id: 0x9db78784
   full_name: "spi_controller_suspend"
 }
@@ -340365,7 +340372,7 @@ elf_symbol {
   name: "spi_finalize_current_message"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe9367547
+  crc: 0xb749f91e
   type_id: 0x10af3538
   full_name: "spi_finalize_current_message"
 }
@@ -340374,7 +340381,7 @@ elf_symbol {
   name: "spi_finalize_current_transfer"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe9367547
+  crc: 0xb749f91e
   type_id: 0x10af3538
   full_name: "spi_finalize_current_transfer"
 }
@@ -340383,7 +340390,7 @@ elf_symbol {
   name: "spi_get_device_match_data"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1dda39d1
+  crc: 0x72fc6492
   type_id: 0x594f6208
   full_name: "spi_get_device_match_data"
 }
@@ -340392,7 +340399,7 @@ elf_symbol {
   name: "spi_register_controller"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7f59037c
+  crc: 0x25c1bf10
   type_id: 0x9db78784
   full_name: "spi_register_controller"
 }
@@ -340401,7 +340408,7 @@ elf_symbol {
   name: "spi_setup"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x274cd4ed
+  crc: 0x3b969df9
   type_id: 0x9930cdbf
   full_name: "spi_setup"
 }
@@ -340410,7 +340417,7 @@ elf_symbol {
   name: "spi_sync"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1747b82e
+  crc: 0x136875bd
   type_id: 0x99b7b018
   full_name: "spi_sync"
 }
@@ -340419,7 +340426,7 @@ elf_symbol {
   name: "spi_sync_locked"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1747b82e
+  crc: 0x136875bd
   type_id: 0x99b7b018
   full_name: "spi_sync_locked"
 }
@@ -340428,7 +340435,7 @@ elf_symbol {
   name: "spi_target_abort"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x274cd4ed
+  crc: 0x3b969df9
   type_id: 0x9930cdbf
   full_name: "spi_target_abort"
 }
@@ -340437,7 +340444,7 @@ elf_symbol {
   name: "spi_unregister_controller"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe9367547
+  crc: 0xb749f91e
   type_id: 0x10af3538
   full_name: "spi_unregister_controller"
 }
@@ -340446,7 +340453,7 @@ elf_symbol {
   name: "spi_write_then_read"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xabbe02aa
+  crc: 0x72b0ac1f
   type_id: 0x99c5a325
   full_name: "spi_write_then_read"
 }
@@ -343698,7 +343705,7 @@ elf_symbol {
   name: "v4l2_ctrl_log_status"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9f89cc0a
+  crc: 0x0f443454
   type_id: 0x9bd88c03
   full_name: "v4l2_ctrl_log_status"
 }
@@ -343734,7 +343741,7 @@ elf_symbol {
   name: "v4l2_ctrl_subscribe_event"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xf6d966a4
+  crc: 0x322760e1
   type_id: 0x912c9057
   full_name: "v4l2_ctrl_subscribe_event"
 }
@@ -343743,7 +343750,7 @@ elf_symbol {
   name: "v4l2_device_register"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x952fdb65
+  crc: 0xb5508f50
   type_id: 0x9d0be11c
   full_name: "v4l2_device_register"
 }
@@ -343752,7 +343759,7 @@ elf_symbol {
   name: "v4l2_device_unregister"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3e02b82b
+  crc: 0x21b5f40a
   type_id: 0x114b9716
   full_name: "v4l2_device_unregister"
 }
@@ -343806,7 +343813,7 @@ elf_symbol {
   name: "v4l2_fh_add"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0b54e2b0
+  crc: 0x357b87eb
   type_id: 0x1c981aca
   full_name: "v4l2_fh_add"
 }
@@ -343815,7 +343822,7 @@ elf_symbol {
   name: "v4l2_fh_del"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0b54e2b0
+  crc: 0x357b87eb
   type_id: 0x1c981aca
   full_name: "v4l2_fh_del"
 }
@@ -343824,7 +343831,7 @@ elf_symbol {
   name: "v4l2_fh_exit"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xa2012f32
+  crc: 0x6ea1d316
   type_id: 0x1cfbb361
   full_name: "v4l2_fh_exit"
 }
@@ -343833,7 +343840,7 @@ elf_symbol {
   name: "v4l2_fh_init"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x7224ab90
+  crc: 0x4b0d9646
   type_id: 0x1cfc31a2
   full_name: "v4l2_fh_init"
 }
@@ -343842,7 +343849,7 @@ elf_symbol {
   name: "v4l2_fh_open"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x757f000d
+  crc: 0x5d6e4ac8
   type_id: 0x9bba7997
   full_name: "v4l2_fh_open"
 }
@@ -343860,7 +343867,7 @@ elf_symbol {
   name: "v4l2_m2m_buf_queue"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2def6cd3
+  crc: 0x253f1064
   type_id: 0x1253a5d6
   full_name: "v4l2_m2m_buf_queue"
 }
@@ -343869,7 +343876,7 @@ elf_symbol {
   name: "v4l2_m2m_buf_remove"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xebd78689
+  crc: 0x12adaf09
   type_id: 0x318cc368
   full_name: "v4l2_m2m_buf_remove"
 }
@@ -343878,7 +343885,7 @@ elf_symbol {
   name: "v4l2_m2m_ctx_init"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x09e462bd
+  crc: 0x5973dbd5
   type_id: 0x3f563d1f
   full_name: "v4l2_m2m_ctx_init"
 }
@@ -343887,7 +343894,7 @@ elf_symbol {
   name: "v4l2_m2m_ctx_release"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x470c31ce
+  crc: 0x45aaa59e
   type_id: 0x128e4140
   full_name: "v4l2_m2m_ctx_release"
 }
@@ -343896,7 +343903,7 @@ elf_symbol {
   name: "v4l2_m2m_fop_mmap"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x248e6988
+  crc: 0xa8cdd883
   type_id: 0x9b923492
   full_name: "v4l2_m2m_fop_mmap"
 }
@@ -343905,7 +343912,7 @@ elf_symbol {
   name: "v4l2_m2m_fop_poll"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x27a9430c
+  crc: 0x0b6e83e7
   type_id: 0x25ad187d
   full_name: "v4l2_m2m_fop_poll"
 }
@@ -343923,7 +343930,7 @@ elf_symbol {
   name: "v4l2_m2m_get_vq"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x581d5f06
+  crc: 0xfecd907e
   type_id: 0xdbd3d7da
   full_name: "v4l2_m2m_get_vq"
 }
@@ -343941,7 +343948,7 @@ elf_symbol {
   name: "v4l2_m2m_ioctl_dqbuf"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2c42f27f
+  crc: 0x04b301be
   type_id: 0x9bdfa419
   full_name: "v4l2_m2m_ioctl_dqbuf"
 }
@@ -343950,7 +343957,7 @@ elf_symbol {
   name: "v4l2_m2m_ioctl_querybuf"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2c42f27f
+  crc: 0x04b301be
   type_id: 0x9bdfa419
   full_name: "v4l2_m2m_ioctl_querybuf"
 }
@@ -343959,7 +343966,7 @@ elf_symbol {
   name: "v4l2_m2m_ioctl_reqbufs"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb80381c7
+  crc: 0xf2818265
   type_id: 0x9bde0e00
   full_name: "v4l2_m2m_ioctl_reqbufs"
 }
@@ -343968,7 +343975,7 @@ elf_symbol {
   name: "v4l2_m2m_ioctl_streamoff"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x09836641
+  crc: 0x175255b6
   type_id: 0x9bc4d75d
   full_name: "v4l2_m2m_ioctl_streamoff"
 }
@@ -343977,7 +343984,7 @@ elf_symbol {
   name: "v4l2_m2m_ioctl_streamon"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x09836641
+  crc: 0x175255b6
   type_id: 0x9bc4d75d
   full_name: "v4l2_m2m_ioctl_streamon"
 }
@@ -343986,7 +343993,7 @@ elf_symbol {
   name: "v4l2_m2m_job_finish"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9cfbbd50
+  crc: 0x6447cf63
   type_id: 0x1714b02d
   full_name: "v4l2_m2m_job_finish"
 }
@@ -343995,7 +344002,7 @@ elf_symbol {
   name: "v4l2_m2m_next_buf"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xebd78689
+  crc: 0x12adaf09
   type_id: 0x318cc368
   full_name: "v4l2_m2m_next_buf"
 }
@@ -344004,7 +344011,7 @@ elf_symbol {
   name: "v4l2_m2m_qbuf"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xbdf6ae8c
+  crc: 0x2657496d
   type_id: 0x9b9c3080
   full_name: "v4l2_m2m_qbuf"
 }
@@ -344040,7 +344047,7 @@ elf_symbol {
   name: "vb2_buffer_done"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe5245ed4
+  crc: 0x1626745b
   type_id: 0x1b1de99f
   full_name: "vb2_buffer_done"
 }
@@ -344076,7 +344083,7 @@ elf_symbol {
   name: "vb2_dqbuf"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2f11dacc
+  crc: 0x30a6ec44
   type_id: 0x9b4a7bac
   full_name: "vb2_dqbuf"
 }
@@ -344085,7 +344092,7 @@ elf_symbol {
   name: "vb2_fop_mmap"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x248e6988
+  crc: 0xa8cdd883
   type_id: 0x9b923492
   full_name: "vb2_fop_mmap"
 }
@@ -344094,7 +344101,7 @@ elf_symbol {
   name: "vb2_fop_poll"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x27a9430c
+  crc: 0x0b6e83e7
   type_id: 0x25ad187d
   full_name: "vb2_fop_poll"
 }
@@ -344103,7 +344110,7 @@ elf_symbol {
   name: "vb2_fop_read"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x66727bbf
+  crc: 0xc97fd427
   type_id: 0x12e4741f
   full_name: "vb2_fop_read"
 }
@@ -344112,7 +344119,7 @@ elf_symbol {
   name: "vb2_fop_release"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0cee20fc
+  crc: 0x24ff6a39
   type_id: 0x9bba7997
   full_name: "vb2_fop_release"
 }
@@ -344121,7 +344128,7 @@ elf_symbol {
   name: "vb2_ioctl_create_bufs"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x863830d9
+  crc: 0x04069ac8
   type_id: 0x9bd21a8b
   full_name: "vb2_ioctl_create_bufs"
 }
@@ -344130,7 +344137,7 @@ elf_symbol {
   name: "vb2_ioctl_dqbuf"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x83d63728
+  crc: 0x71f8473a
   type_id: 0x9bdfa419
   full_name: "vb2_ioctl_dqbuf"
 }
@@ -344139,7 +344146,7 @@ elf_symbol {
   name: "vb2_ioctl_expbuf"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3154f5e9
+  crc: 0xcd3694f9
   type_id: 0x9bd4409d
   full_name: "vb2_ioctl_expbuf"
 }
@@ -344148,7 +344155,7 @@ elf_symbol {
   name: "vb2_ioctl_qbuf"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x83d63728
+  crc: 0x71f8473a
   type_id: 0x9bdfa419
   full_name: "vb2_ioctl_qbuf"
 }
@@ -344157,7 +344164,7 @@ elf_symbol {
   name: "vb2_ioctl_querybuf"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x83d63728
+  crc: 0x71f8473a
   type_id: 0x9bdfa419
   full_name: "vb2_ioctl_querybuf"
 }
@@ -344166,7 +344173,7 @@ elf_symbol {
   name: "vb2_ioctl_reqbufs"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x5af65fb9
+  crc: 0x0750bcdd
   type_id: 0x9bde0e00
   full_name: "vb2_ioctl_reqbufs"
 }
@@ -344175,7 +344182,7 @@ elf_symbol {
   name: "vb2_ioctl_streamoff"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2665620b
+  crc: 0x7e93f9aa
   type_id: 0x9bc4d75d
   full_name: "vb2_ioctl_streamoff"
 }
@@ -344184,7 +344191,7 @@ elf_symbol {
   name: "vb2_ioctl_streamon"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2665620b
+  crc: 0x7e93f9aa
   type_id: 0x9bc4d75d
   full_name: "vb2_ioctl_streamon"
 }
@@ -344193,7 +344200,7 @@ elf_symbol {
   name: "vb2_mmap"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb0011974
+  crc: 0x98a76e3d
   type_id: 0x9b0be8d8
   full_name: "vb2_mmap"
 }
@@ -344202,7 +344209,7 @@ elf_symbol {
   name: "vb2_ops_wait_finish"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1ada1c85
+  crc: 0xf397081f
   type_id: 0x163b1761
   full_name: "vb2_ops_wait_finish"
 }
@@ -344211,7 +344218,7 @@ elf_symbol {
   name: "vb2_ops_wait_prepare"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1ada1c85
+  crc: 0xf397081f
   type_id: 0x163b1761
   full_name: "vb2_ops_wait_prepare"
 }
@@ -344220,7 +344227,7 @@ elf_symbol {
   name: "vb2_plane_cookie"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc091c122
+  crc: 0xb0b16263
   type_id: 0x5cabb760
   full_name: "vb2_plane_cookie"
 }
@@ -344229,7 +344236,7 @@ elf_symbol {
   name: "vb2_plane_vaddr"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xc091c122
+  crc: 0xb0b16263
   type_id: 0x5cabb760
   full_name: "vb2_plane_vaddr"
 }
@@ -344238,7 +344245,7 @@ elf_symbol {
   name: "vb2_poll"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x833b0d95
+  crc: 0x9e86da9e
   type_id: 0x25fe2d8e
   full_name: "vb2_poll"
 }
@@ -344247,7 +344254,7 @@ elf_symbol {
   name: "vb2_qbuf"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x0b108bc0
+  crc: 0x6c1ad372
   type_id: 0x9b7c03b3
   full_name: "vb2_qbuf"
 }
@@ -344256,7 +344263,7 @@ elf_symbol {
   name: "vb2_querybuf"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd4901326
+  crc: 0x0f522585
   type_id: 0x9b51247b
   full_name: "vb2_querybuf"
 }
@@ -344265,7 +344272,7 @@ elf_symbol {
   name: "vb2_queue_init"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4490b2dc
+  crc: 0xb676d119
   type_id: 0x9b23a5dd
   full_name: "vb2_queue_init"
 }
@@ -344274,7 +344281,7 @@ elf_symbol {
   name: "vb2_queue_release"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x58fb3e50
+  crc: 0x764a9156
   type_id: 0x163b1761
   full_name: "vb2_queue_release"
 }
@@ -344283,7 +344290,7 @@ elf_symbol {
   name: "vb2_reqbufs"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xad506f7b
+  crc: 0xd130d122
   type_id: 0x9b4b85e0
   full_name: "vb2_reqbufs"
 }
@@ -344292,7 +344299,7 @@ elf_symbol {
   name: "vb2_streamoff"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd14359cf
+  crc: 0x5301433e
   type_id: 0x9ae61038
   full_name: "vb2_streamoff"
 }
@@ -344301,7 +344308,7 @@ elf_symbol {
   name: "vb2_streamon"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd14359cf
+  crc: 0x5301433e
   type_id: 0x9ae61038
   full_name: "vb2_streamon"
 }
@@ -344319,7 +344326,7 @@ elf_symbol {
   name: "vb2_wait_for_all_buffers"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x49ed0525
+  crc: 0xc5ced46b
   type_id: 0x9b23a5dd
   full_name: "vb2_wait_for_all_buffers"
 }
@@ -344418,7 +344425,7 @@ elf_symbol {
   name: "video_devdata"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x5ee6910d
+  crc: 0xbfa9143b
   type_id: 0x969da51f
   full_name: "video_devdata"
 }
@@ -344427,7 +344434,7 @@ elf_symbol {
   name: "video_device_alloc"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x4bf90ac9
+  crc: 0x0297243a
   type_id: 0x90a73fa7
   full_name: "video_device_alloc"
 }
@@ -344436,7 +344443,7 @@ elf_symbol {
   name: "video_device_release"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x86ce7856
+  crc: 0x0ff2dbab
   type_id: 0x10e07da0
   full_name: "video_device_release"
 }
@@ -344445,7 +344452,7 @@ elf_symbol {
   name: "video_device_release_empty"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x86ce7856
+  crc: 0x0ff2dbab
   type_id: 0x10e07da0
   full_name: "video_device_release_empty"
 }
@@ -344463,7 +344470,7 @@ elf_symbol {
   name: "video_ioctl2"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x636fdcc6
+  crc: 0x60718555
   type_id: 0xa00069e0
   full_name: "video_ioctl2"
 }
@@ -344472,7 +344479,7 @@ elf_symbol {
   name: "video_unregister_device"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x86ce7856
+  crc: 0x0ff2dbab
   type_id: 0x10e07da0
   full_name: "video_unregister_device"
 }
