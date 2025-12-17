@@ -166,7 +166,8 @@ impl MiscDevice for Ashmem {
     }
 
     fn mmap(me: Pin<&Ashmem>, _file: &File, vma: &VmaNew) -> Result<()> {
-        let asma = &mut *me.inner.lock();
+        let mut guard = me.inner.lock();
+        let asma = unsafe { guard.as_mut().get_unchecked_mut() };
 
         // User needs to SET_SIZE before mapping.
         if asma.size == 0 || asma.size >= ASHMEM_MAX_SIZE {
@@ -310,7 +311,8 @@ impl Ashmem {
         let mut v = KVec::with_capacity(name.len(), GFP_KERNEL)?;
         v.extend_from_slice(name, GFP_KERNEL)?;
 
-        let mut asma = self.inner.lock();
+        let mut guard = self.inner.lock();
+        let asma = unsafe { guard.as_mut().get_unchecked_mut() };
         if asma.file.is_some() {
             return Err(EINVAL);
         }
@@ -338,7 +340,8 @@ impl Ashmem {
     }
 
     fn set_size(&self, size: usize) -> Result<isize> {
-        let mut asma = self.inner.lock();
+        let mut guard = self.inner.lock();
+        let asma = unsafe { guard.as_mut().get_unchecked_mut() };
         if asma.file.is_some() {
             return Err(EINVAL);
         }
@@ -351,7 +354,8 @@ impl Ashmem {
     }
 
     fn set_prot_mask(&self, mut prot: usize) -> Result<isize> {
-        let mut asma = self.inner.lock();
+        let mut guard = self.inner.lock();
+        let asma = unsafe { guard.as_mut().get_unchecked_mut() };
 
         if (prot & PROT_READ != 0) && read_implies_exec(current!()) {
             prot |= PROT_EXEC;
@@ -418,7 +422,8 @@ impl Ashmem {
         // C ashmem waits for in-flight shrinkers here using a separate mechanism, but we don't
         // release the lock when calling `punch_hole` in the shrinker, so we don't need to do that.
 
-        let asma = &mut *self.inner.lock();
+        let mut inner_guard = self.inner.lock();
+        let asma = unsafe { inner_guard.as_mut().get_unchecked_mut() };
         let mut new_range = match asma.file.as_ref() {
             Some(file) => new_range.map(|alloc| NewRange { file, alloc }),
             None => return Err(EINVAL),
@@ -744,7 +749,7 @@ unsafe extern "C" fn ashmem_area_vmfile(file: *mut bindings::file) -> *mut bindi
         Err(_err) => return null_mut(),
     };
 
-    let asma = &mut *ashmem.inner.lock();
+    let asma = ashmem.inner.lock();
     match asma.file.as_ref() {
         Some(shmem_file) => {
             let shmem_file_ptr = shmem_file.file().as_ptr();
