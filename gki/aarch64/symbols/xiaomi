@@ -215,6 +215,13 @@
 # required by mi_damon.ko
   folio_deactivate
   folio_mark_accessed
+  nr_swap_pages
+  swap_avail_heads
+  swap_avail_lock
+  scan_swap_map_slots
+  swapcache_free_entries
+  __traceiter_android_vh_folio_alloc_swap
+  __tracepoint_android_vh_folio_alloc_swap
 
 #required by cifs.ko
   add_swap_extent
