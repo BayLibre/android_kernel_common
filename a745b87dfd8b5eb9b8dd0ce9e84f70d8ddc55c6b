@@ -22,6 +22,30 @@
       },
       "revId": "a745b87dfd8b5eb9b8dd0ce9e84f70d8ddc55c6b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a2cc8e9_3d034ef9",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2025-12-18T18:08:33Z",
+      "side": 1,
+      "message": "This would be down to the caller to do the proper CMO. Otherwise, the hyp would still have to use the fixmap right?\n\nAnd actually that would significantly speed-up the relinquish process if the guest could handle the zero + CMO directly?\n\nAlternatively, we could use another flag to this HVC \"NO_CMO\"?",
+      "parentUuid": "76d635bb_425fd089",
+      "range": {
+        "startLine": 396,
+        "startChar": 2,
+        "endLine": 396,
+        "endChar": 17
+      },
+      "revId": "a745b87dfd8b5eb9b8dd0ce9e84f70d8ddc55c6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
