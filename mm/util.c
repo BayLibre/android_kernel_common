@@ -1148,7 +1148,6 @@ out_mm:
 out:
 	return res;
 }
-EXPORT_SYMBOL(get_cmdline);
 
 int __weak memcmp_pages(struct page *page1, struct page *page2)
 {
