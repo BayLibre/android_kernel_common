@@ -44,6 +44,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dc42bfb7_bef4ab02",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-18T11:22:21Z",
+      "side": 1,
+      "message": "Since we need to manage refcount only for pages that are used for DMA, I think its not needed here. Since the mapping is active while we manipulate the pagetables, it makes sense to keep the refcount active.",
+      "parentUuid": "b1bf5b51_2838015b",
+      "range": {
+        "startLine": 352,
+        "startChar": 0,
+        "endLine": 352,
+        "endChar": 6
+      },
+      "revId": "b0ac547c2acf4e36410c89672de9dccdbae912d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "400440ca_82a7a3ec",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
         "patchSetId": 3
@@ -73,6 +97,24 @@
           ]
         }
       ],
+      "revId": "b0ac547c2acf4e36410c89672de9dccdbae912d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d15754d5_845e7428",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-18T11:22:21Z",
+      "side": 1,
+      "message": "Ahh yes, fixed it.",
+      "parentUuid": "400440ca_82a7a3ec",
       "revId": "b0ac547c2acf4e36410c89672de9dccdbae912d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
