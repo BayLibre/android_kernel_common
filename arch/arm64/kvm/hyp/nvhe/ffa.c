@@ -86,6 +86,7 @@ static u32 hyp_ffa_version;
 static bool has_version_negotiated;
 static bool has_hyp_ffa_buffer_mapped;
 static bool has_host_signalled;
+static bool supports_rx_release;
 
 static struct ffa_handle *spm_handles, *spm_free_handle;
 static u32 num_spm_handles;
@@ -334,9 +335,12 @@ static void ffa_retrieve_req(struct arm_smccc_1_2_regs *res, u32 len)
 
 static void ffa_rx_release(struct arm_smccc_1_2_regs *res)
 {
-	nvhe_arm_smccc_1_2_smc(&(struct arm_smccc_1_2_regs) {
-		.a0 = FFA_RX_RELEASE,
-	}, res);
+	if (supports_rx_release)
+		nvhe_arm_smccc_1_2_smc(&(struct arm_smccc_1_2_regs) {
+			.a0 = FFA_RX_RELEASE,
+		}, res);
+	else
+		*res = (struct arm_smccc_1_2_regs) { .a0 = FFA_SUCCESS };
 }
 
 static int parse_vm_availability_resp(u32 partition_sz, u32 count)
@@ -1964,6 +1968,12 @@ int hyp_ffa_init(void *pages)
 
 	version_lock = __HYP_SPIN_LOCK_UNLOCKED;
 	INIT_LIST_HEAD(&host_buffers.xfer_list);
+
+	nvhe_arm_smccc_1_2_smc(&(struct arm_smccc_1_2_regs){
+		.a0 = FFA_FEATURES,
+		.a1 = FFA_RX_RELEASE,
+	}, &res);
+	supports_rx_release = (res.a0 == FFA_SUCCESS);
 
 	return 0;
 }
