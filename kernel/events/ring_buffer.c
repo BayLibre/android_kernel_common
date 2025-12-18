@@ -805,34 +805,47 @@ void rb_free_aux(struct perf_buffer *rb)
 static struct page *
 __perf_mmap_to_page(struct perf_buffer *rb, unsigned long pgoff)
 {
-	if (pgoff > rb->nr_pages)
+	int metadata_pages = __PAGE_SIZE / PAGE_SIZE;
+
+	/* Use '>=' since we explicitly include the user/metadata page(s). */
+	if (pgoff >= rb->nr_pages + metadata_pages)
 		return NULL;
 
-	if (pgoff == 0)
-		return virt_to_page(rb->user_page);
+	if (pgoff < metadata_pages)
+		return virt_to_page(rb->user_page + pgoff * PAGE_SIZE);
 
-	return virt_to_page(rb->data_pages[pgoff - 1]);
+	return virt_to_page(rb->data_pages[pgoff - metadata_pages]);
 }
 
-static void *perf_mmap_alloc_page(int cpu)
+static void *__perf_mmap_alloc_metadata_page(int cpu, int order)
 {
 	struct page *page;
 	int node;
 
 	node = (cpu == -1) ? cpu : cpu_to_node(cpu);
-	page = alloc_pages_node(node, GFP_KERNEL | __GFP_ZERO, 0);
+	page = alloc_pages_node(node, GFP_KERNEL | __GFP_ZERO, order);
 	if (!page)
 		return NULL;
 
 	return page_address(page);
 }
 
-static void perf_mmap_free_page(void *addr)
+static void __perf_mmap_free_metadata_page(void *addr, int order)
 {
 	struct page *page = virt_to_page(addr);
 
 	page->mapping = NULL;
-	__free_page(page);
+	__free_pages(page, order);
+}
+
+static void *perf_mmap_alloc_page(int cpu)
+{
+	return __perf_mmap_alloc_metadata_page(cpu, 0);
+}
+
+static void perf_mmap_free_page(void *addr)
+{
+	__perf_mmap_free_metadata_page(addr, 0);
 }
 
 struct perf_buffer *rb_alloc(int nr_pages, long watermark, int cpu, int flags)
@@ -852,7 +865,7 @@ struct perf_buffer *rb_alloc(int nr_pages, long watermark, int cpu, int flags)
 	if (!rb)
 		goto fail;
 
-	rb->user_page = perf_mmap_alloc_page(cpu);
+	rb->user_page = __perf_mmap_alloc_metadata_page(cpu, get_order(__PAGE_SIZE));
 	if (!rb->user_page)
 		goto fail_user_page;
 
@@ -872,7 +885,7 @@ fail_data_pages:
 	for (i--; i >= 0; i--)
 		perf_mmap_free_page(rb->data_pages[i]);
 
-	perf_mmap_free_page(rb->user_page);
+	__perf_mmap_free_metadata_page(rb->user_page, get_order(__PAGE_SIZE));
 
 fail_user_page:
 	kfree(rb);
@@ -885,7 +898,7 @@ void rb_free(struct perf_buffer *rb)
 {
 	int i;
 
-	perf_mmap_free_page(rb->user_page);
+	__perf_mmap_free_metadata_page(rb->user_page, get_order(__PAGE_SIZE));
 	for (i = 0; i < rb->nr_pages; i++)
 		perf_mmap_free_page(rb->data_pages[i]);
 	kfree(rb);
@@ -895,8 +908,10 @@ void rb_free(struct perf_buffer *rb)
 static struct page *
 __perf_mmap_to_page(struct perf_buffer *rb, unsigned long pgoff)
 {
-	/* The '>' counts in the user page. */
-	if (pgoff > data_page_nr(rb))
+	int metadata_pages = __PAGE_SIZE / PAGE_SIZE;
+
+	/* Use '>=' since we explicitly add the user/metadata page(s). */
+	if (pgoff >= data_page_nr(rb) + metadata_pages)
 		return NULL;
 
 	return vmalloc_to_page((void *)rb->user_page + pgoff * PAGE_SIZE);
@@ -911,6 +926,7 @@ static void perf_mmap_unmark_page(void *addr)
 
 static void rb_free_work(struct work_struct *work)
 {
+	int metadata_pages = __PAGE_SIZE / PAGE_SIZE;
 	struct perf_buffer *rb;
 	void *base;
 	int i, nr;
@@ -919,8 +935,8 @@ static void rb_free_work(struct work_struct *work)
 	nr = data_page_nr(rb);
 
 	base = rb->user_page;
-	/* The '<=' counts in the user page. */
-	for (i = 0; i <= nr; i++)
+	/* Use '<' since we explicitly include the the user/metadata page(s). */
+	for (i = 0; i < nr + metadata_pages; i++)
 		perf_mmap_unmark_page(base + (i * PAGE_SIZE));
 
 	vfree(base);
@@ -938,6 +954,7 @@ struct perf_buffer *rb_alloc(int nr_pages, long watermark, int cpu, int flags)
 	unsigned long size;
 	void *all_buf;
 	int node;
+	int metadata_pages = __PAGE_SIZE / PAGE_SIZE;
 
 	size = sizeof(struct perf_buffer);
 	size += sizeof(void *);
@@ -949,12 +966,12 @@ struct perf_buffer *rb_alloc(int nr_pages, long watermark, int cpu, int flags)
 
 	INIT_WORK(&rb->work, rb_free_work);
 
-	all_buf = vmalloc_user((nr_pages + 1) * PAGE_SIZE);
+	all_buf = vmalloc_user((nr_pages + metadata_pages) * PAGE_SIZE);
 	if (!all_buf)
 		goto fail_all_buf;
 
 	rb->user_page = all_buf;
-	rb->data_pages[0] = all_buf + PAGE_SIZE;
+	rb->data_pages[0] = all_buf + __PAGE_SIZE;
 	if (nr_pages) {
 		rb->nr_pages = 1;
 		rb->page_order = ilog2(nr_pages);
