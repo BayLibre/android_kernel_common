@@ -16,6 +16,24 @@
       "message": "Just a note: I imagine when in v6.18 we will be using the original IOMMU driver code with added #ifdefs instead of copying it, we will use something like `if (level \u003d\u003d 1) goto push_memcache;` here (to keep the below code intact).",
       "revId": "3ce7bb65c2d58ab91eb300c74fdb5b9302885524",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af7d4598_f09569ff",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-18T15:22:41Z",
+      "side": 1,
+      "message": "Yeah sure, will try to keep code as much as intact as possible in 6.18",
+      "parentUuid": "1a226460_51063b7a",
+      "revId": "3ce7bb65c2d58ab91eb300c74fdb5b9302885524",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
