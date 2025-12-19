@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29f80817_149847a4",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-12-19T15:04:30Z",
+      "side": 1,
+      "message": "I think we should validate for overflow before checking domain_pfn_support:\n```\nif (iov_pfn + nr_pages \u003c iov_pfn)\n     return -EINVAL\n```\n\nOtherwise host could fool the pKVM and cause an integer overflow bypassing this check.",
+      "range": {
+        "startLine": 475,
+        "startChar": 44,
+        "endLine": 475,
+        "endChar": 63
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "383db181_3e640623",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+              "range": {
+                "startLine": 475,
+                "startChar": 0,
+                "endLine": 475,
+                "endChar": 0
+              },
+              "replacement": "\tif (unlikely(iov_pfn + nr_pages \u003c iov_pfn))\n\t\treturn -EINVAL;\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "019debc53301b9bedad8f1a17e4aa892b003744a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
