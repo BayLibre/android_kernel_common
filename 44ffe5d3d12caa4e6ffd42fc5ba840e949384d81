@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e7d16d71_8769d569",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 128
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-19T18:54:24Z",
+      "side": 1,
+      "message": "Created APIs in the next cl: aosp/3693107. Thought of keeping the api in pviommu code itself because the unuse logic needs a bit more unmap logic.",
+      "parentUuid": "cfc43c7d_851dbb48",
+      "revId": "44ffe5d3d12caa4e6ffd42fc5ba840e949384d81",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "baf506b6_20ae8e7e",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/mem_protect.c",
         "patchSetId": 128
