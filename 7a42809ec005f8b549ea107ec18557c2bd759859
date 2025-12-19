@@ -40,6 +40,30 @@
       ],
       "revId": "7a42809ec005f8b549ea107ec18557c2bd759859",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "931f309d_40bdf9a7",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 131
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-19T15:21:54Z",
+      "side": 1,
+      "message": "BTW I recall this was my motivation when I decided to pass gpa, hpa and size rather than gfn, pfn and nr_pages in pvMMU hypercalls...",
+      "parentUuid": "f24f0560_299d2689",
+      "range": {
+        "startLine": 484,
+        "startChar": 4,
+        "endLine": 484,
+        "endChar": 28
+      },
+      "revId": "7a42809ec005f8b549ea107ec18557c2bd759859",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
