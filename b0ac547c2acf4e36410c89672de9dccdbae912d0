@@ -66,6 +66,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f39afe3_1ee4936f",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-12-19T22:46:36Z",
+      "side": 1,
+      "message": "Marking as resolved: it was reworked to dma_pte_check_range (aosp/3896236) to make sure that no overlapping ranges are trying to be set.",
+      "parentUuid": "dc42bfb7_bef4ab02",
+      "range": {
+        "startLine": 352,
+        "startChar": 0,
+        "endLine": 352,
+        "endChar": 6
+      },
+      "revId": "b0ac547c2acf4e36410c89672de9dccdbae912d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "400440ca_82a7a3ec",
