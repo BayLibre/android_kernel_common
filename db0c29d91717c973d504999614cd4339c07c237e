@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b9be962_8842bc4f",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 147
+      },
+      "lineNbr": 1733,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-12-19T11:01:27Z",
+      "side": 1,
+      "message": "nit: this check is redundant: free_domain_memcache has\n```\nwhile (mc-\u003enr_pages) {\n...\n```",
+      "range": {
+        "startLine": 1733,
+        "startChar": 2,
+        "endLine": 1733,
+        "endChar": 24
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a275f4e0_fff849f9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.c",
+              "range": {
+                "startLine": 1733,
+                "startChar": 0,
+                "endLine": 1735,
+                "endChar": 0
+              },
+              "replacement": "\t\tfree_domain_memcache(\u0026param.mc);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "db0c29d91717c973d504999614cd4339c07c237e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
