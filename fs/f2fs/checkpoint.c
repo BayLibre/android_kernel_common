@@ -16,6 +16,8 @@
 #include <linux/kthread.h>
 #include <linux/delayacct.h>
 #include <linux/ioprio.h>
+#include <linux/delay.h>
+#include <linux/sched.h>
 
 #include "f2fs.h"
 #include "node.h"
@@ -115,6 +117,12 @@ static inline void trace_lock_elapsed_time_end(struct f2fs_rwsem *sem,
 	unsigned long long runnable_time = 0;
 	unsigned long long io_sleep_time = 0;
 	unsigned long long other_time = 0;
+
+	if (!lc->lock_trace)
+		return;
+
+	if (time_to_inject(sem->sbi, FAULT_LOCK_TIMEOUT))
+		simulate_timeout(sem->sbi);
 
 	get_lock_elapsed_time(&tts);
 
