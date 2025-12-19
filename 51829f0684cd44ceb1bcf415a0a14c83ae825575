@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd4afd43_8d955700",
+        "filename": "kernel/sched/fair.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5172,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2025-12-19T18:55:50Z",
+      "side": 1,
+      "message": "please initialize fits too so we aren\u0027t passing a pointer to an undefined value.",
+      "fixSuggestions": [
+        {
+          "fixId": "2da17097_78ed69ba",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/sched/fair.c",
+              "range": {
+                "startLine": 5172,
+                "startChar": 0,
+                "endLine": 5173,
+                "endChar": 0
+              },
+              "replacement": "\tbool fits \u003d false, done \u003d false;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "51829f0684cd44ceb1bcf415a0a14c83ae825575",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
