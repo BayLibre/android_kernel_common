@@ -78,7 +78,7 @@ static inline void trace_lock_elapsed_time_end(struct f2fs_rwsem *sem,
 	get_lock_elapsed_time(&tts);
 
 	total_time = (tts.total_time - lc->ts.total_time) / NSEC_PER_MSEC;
-	if (total_time <= MAX_LOCK_ELAPSED_TIME)
+	if (total_time <= sem->sbi->max_lock_elapsed_time)
 		return;
 
 	running_time = (tts.running_time - lc->ts.running_time) / NSEC_PER_MSEC;
