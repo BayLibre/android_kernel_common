@@ -46,6 +46,30 @@
       },
       "revId": "a745b87dfd8b5eb9b8dd0ce9e84f70d8ddc55c6b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5df6ed03_97025466",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-12-19T09:03:55Z",
+      "side": 1,
+      "message": "The stage2_unmap() call above should already imply CMOs IIRC (modulo FWB), would we need more?",
+      "parentUuid": "2a2cc8e9_3d034ef9",
+      "range": {
+        "startLine": 396,
+        "startChar": 2,
+        "endLine": 396,
+        "endChar": 17
+      },
+      "revId": "a745b87dfd8b5eb9b8dd0ce9e84f70d8ddc55c6b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
