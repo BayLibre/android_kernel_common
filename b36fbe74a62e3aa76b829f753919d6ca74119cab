@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7591c141_e328f160",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-19T22:59:50Z",
+      "side": 1,
+      "message": "I\u0027m thinking: are all these changes to the upstream code in this patch really worth it? Maybe just WARN_ON_ONCE here and be done with it? Even if we keep the page refcounted after unmapping it here (so that the host can never donate it later), we assume that with a well-behaving host this should not happen anyway, so it is not pKVM\u0027s problem?",
+      "revId": "b36fbe74a62e3aa76b829f753919d6ca74119cab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9199c5a0_1661907d",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
         "patchSetId": 3
