@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24177f2e_ce2e64ed",
+        "filename": "drivers/iommu/pkvm-pviommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2025-12-19T13:17:22Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 436,
+        "startChar": 40,
+        "endLine": 436,
+        "endChar": 43
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e01b9396_87a6b930",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/pkvm-pviommu.c",
+              "range": {
+                "startLine": 436,
+                "startChar": 0,
+                "endLine": 437,
+                "endChar": 0
+              },
+              "replacement": "\t/* Hardcoded value for now as there is no way to probe this information. */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c7249503bbaf336ac6c38c4842975d284e3c97e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
