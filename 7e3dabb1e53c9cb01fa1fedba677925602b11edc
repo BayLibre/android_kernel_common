@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8dc9d03_a187aa79",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1794,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-12-19T15:03:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cf90e0fe_8e50348d",
+      "revId": "7e3dabb1e53c9cb01fa1fedba677925602b11edc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a748fc6c_42dbed9f",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-12-05T15:02:07Z",
       "side": 1,
       "message": "goto free_ppages? So that if we abort in the middle of nr_pages we do free what\u0027s has been allocated within this function? \n\nAnd actually I wonder if it wouldn\u0027t be clearer to share the return path?\n\n```\nret \u003d __pkvm_pin_user_pages()\nswitch (ret) {\ncase -EHWPOISON;\n    return 0;\ncase 0:\n    ret \u003d __pkmv_pages_to_ppages()\n    if (ret)\n        unpin_user_pages()\n     break;\ncase -EREMOTEIO:\n    ret \u003d __pkvm_mem_abort_dmabuf();\n    break;\n}\n\nif (ret || list_empty(\u0026ppages))\n    goto free_ppages; \n```\n\nWDYS?",
+      "revId": "7e3dabb1e53c9cb01fa1fedba677925602b11edc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04a411ad_965c7919",
+        "filename": "arch/arm64/kvm/mmu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2090,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2025-12-19T15:03:13Z",
+      "side": 1,
+      "message": "Yep, I fixed the error path, but I ended up not implementing this switch -- the device assignment stuff hooks in the same spot, so I followed the pattern we used for that.",
+      "parentUuid": "a748fc6c_42dbed9f",
       "revId": "7e3dabb1e53c9cb01fa1fedba677925602b11edc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
