@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f24f0560_299d2689",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 131
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2025-12-19T15:10:55Z",
+      "side": 1,
+      "message": "Similar as https://android-review.git.corp.google.com/c/kernel/common/+/3890763/comment/29f80817_149847a4/ I think we should check for overflow since nr_pages are passed by untrusted host. If malicious host use nr_pages high enough to cause multiplication overflow together with above linked overflow will allow to install mapping bypassing both domain_pfn_supported and host_check_page_state_range checks, I think.",
+      "range": {
+        "startLine": 484,
+        "startChar": 4,
+        "endLine": 484,
+        "endChar": 28
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "70743114_574073f8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+              "range": {
+                "startLine": 482,
+                "startChar": 0,
+                "endLine": 482,
+                "endChar": 0
+              },
+              "replacement": "\t/* Check for overflow before multiplying nr_pages. */\n\tif (nr_pages \u003e ULONG_MAX / VTD_PAGE_SIZE)\n\t\treturn -EINVAL;\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7a42809ec005f8b549ea107ec18557c2bd759859",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
