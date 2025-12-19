@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "158fcd6f_0961619c",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 128
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2025-12-19T22:41:38Z",
+      "side": 1,
+      "message": "I was thinking that making it a part of the memory protection API might be cleaner, as it would keep host_check_page_state_range() an implementation detail of the memory protection API.\n\n\u003e Thought of keeping the api in pviommu code itself because the unuse logic needs a bit more unmap logic.\n\nYou are referring to dma_unuse_range() in its current state in aosp/3693107 ? As I see it, that function does quite a bit more than just undoing what dma_use_range() did (in particular, it frees pages into the domain memcache), so yes, it is quite pvIOMMU specific and could remain a part of pvIOMMU itself.\n\nBut the underlying simpler functions dma_use_range() and pfn_range_ref_dec() (as they are currently asymmetrically named in aosp/3693107) could be moved to the memory protection API, right? And then the pvIOMMU code wouldn\u0027t need to directly deal with page states, page refcounts and host EPT locking.\n\nAnyway, in 6.12 we might keep this as is, just to merge it ASAP. The 6.12 code base is a mess anyway.\n\nBut in 6.18 we\u0027d better try to keep it cleaner. If we can _easily_ make the code simpler and more readable and maintainable, why neglect this chance.",
+      "parentUuid": "e7d16d71_8769d569",
+      "revId": "44ffe5d3d12caa4e6ffd42fc5ba840e949384d81",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "baf506b6_20ae8e7e",
         "filename": "arch/x86/kvm/vmx/pkvm/hyp/mem_protect.c",
         "patchSetId": 128
