@@ -174,6 +174,14 @@ static inline bool __is_emulated_pagemap_file(struct file *file)
 }
 #endif
 
+/*
+ * Adjusts PAGE_SIZE counts to __PAGE_SIZE counts for x86 page size emulation.
+ */
+static inline unsigned long __page_size_count(unsigned long val)
+{
+	return val / (__PAGE_SIZE / PAGE_SIZE);
+}
+
 static __always_inline void __adjust_cachestat_counters(struct cachestat *cs)
 {
 	unsigned int nr_sub_pages = __PAGE_SIZE / PAGE_SIZE;

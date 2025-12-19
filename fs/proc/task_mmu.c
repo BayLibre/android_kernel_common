@@ -10,6 +10,7 @@
 #include <linux/ptrace.h>
 #include <linux/slab.h>
 #include <linux/pagemap.h>
+#include <linux/page_size_compat.h>
 #include <linux/pgsize_migration.h>
 #include <linux/mempolicy.h>
 #include <linux/rmap.h>
@@ -42,9 +43,9 @@ void task_mem(struct seq_file *m, struct mm_struct *mm)
 	unsigned long text, lib, swap, anon, file, shmem;
 	unsigned long hiwater_vm, total_vm, hiwater_rss, total_rss;
 
-	anon = get_mm_counter_sum(mm, MM_ANONPAGES);
-	file = get_mm_counter_sum(mm, MM_FILEPAGES);
-	shmem = get_mm_counter_sum(mm, MM_SHMEMPAGES);
+	anon = __page_size_count(get_mm_counter_sum(mm, MM_ANONPAGES));
+	file = __page_size_count(get_mm_counter_sum(mm, MM_FILEPAGES));
+	shmem = __page_size_count(get_mm_counter_sum(mm, MM_SHMEMPAGES));
 
 	/*
 	 * Note: to minimize their overhead, mm maintains hiwater_vm and
@@ -65,7 +66,7 @@ void task_mem(struct seq_file *m, struct mm_struct *mm)
 	text = min(text, mm->exec_vm << PAGE_SHIFT);
 	lib = (mm->exec_vm << PAGE_SHIFT) - text;
 
-	swap = get_mm_counter_sum(mm, MM_SWAPENTS);
+	swap = __page_size_count(get_mm_counter_sum(mm, MM_SWAPENTS));
 	SEQ_PUT_DEC("VmPeak:\t", hiwater_vm);
 	SEQ_PUT_DEC(" kB\nVmSize:\t", total_vm);
 	SEQ_PUT_DEC(" kB\nVmLck:\t", mm->locked_vm);
@@ -98,13 +99,14 @@ unsigned long task_statm(struct mm_struct *mm,
 			 unsigned long *shared, unsigned long *text,
 			 unsigned long *data, unsigned long *resident)
 {
-	*shared = get_mm_counter_sum(mm, MM_FILEPAGES) +
-			get_mm_counter_sum(mm, MM_SHMEMPAGES);
-	*text = (PAGE_ALIGN(mm->end_code) - (mm->start_code & PAGE_MASK))
-								>> PAGE_SHIFT;
-	*data = mm->data_vm + mm->stack_vm;
-	*resident = *shared + get_mm_counter_sum(mm, MM_ANONPAGES);
-	return mm->total_vm;
+	*shared = __page_size_count(get_mm_counter_sum(mm, MM_FILEPAGES) +
+			get_mm_counter_sum(mm, MM_SHMEMPAGES));
+	*text = (__PAGE_ALIGN(mm->end_code) - (mm->start_code & __PAGE_MASK))
+								>> __PAGE_SHIFT;
+	*data = __page_size_count(mm->data_vm + mm->stack_vm);
+	*resident = __page_size_count(*shared + get_mm_counter_sum(mm, MM_ANONPAGES));
+
+	return __page_size_count(mm->total_vm);
 }
 
 #ifdef CONFIG_NUMA
