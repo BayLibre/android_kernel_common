@@ -150,6 +150,15 @@ enum f2fs_lock_name {
 	LOCK_NAME_IO_RWSEM,
 };
 
+enum f2fs_timeout_type {
+	TIMEOUT_TYPE_NONE,
+	TIMEOUT_TYPE_RUNNING,
+	TIMEOUT_TYPE_IO_SLEEP,
+	TIMEOUT_TYPE_NONIO_SLEEP,
+	TIMEOUT_TYPE_RUNNABLE,
+	TIMEOUT_TYPE_MAX,
+};
+
 /*
  * An implementation of an rwsem that is explicitly unfair to readers. This
  * prevents priority inversion when a low-priority reader acquires the read lock
@@ -1862,6 +1871,7 @@ struct f2fs_sb_info {
 
 	/* max elapsed time threshold in critical region that lock covered */
 	unsigned long long max_lock_elapsed_time;
+	unsigned long long simulate_lock_timeout;/* simulate lock timeout */
 
 #ifdef CONFIG_F2FS_FS_COMPRESSION
 	struct kmem_cache *page_array_slab;	/* page array entry */
@@ -3898,6 +3908,7 @@ static inline bool f2fs_need_rand_seg(struct f2fs_sb_info *sbi)
 void f2fs_lock_op(struct f2fs_sb_info *sbi, struct f2fs_lock_context *lc);
 int f2fs_trylock_op(struct f2fs_sb_info *sbi, struct f2fs_lock_context *lc);
 void f2fs_unlock_op(struct f2fs_sb_info *sbi, struct f2fs_lock_context *lc);
+void f2fs_simulate_lock_timeout(struct f2fs_sb_info *sbi);
 void f2fs_stop_checkpoint(struct f2fs_sb_info *sbi, bool end_io,
 							unsigned char reason);
 void f2fs_flush_ckpt_thread(struct f2fs_sb_info *sbi);

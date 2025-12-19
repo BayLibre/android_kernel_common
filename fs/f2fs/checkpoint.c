@@ -24,6 +24,47 @@
 #include <trace/events/f2fs.h>
 #include <trace/hooks/fs.h>
 
+static inline void __f2fs_schedule_timeout(long timeout, bool io)
+{
+	set_current_state(TASK_UNINTERRUPTIBLE);
+	if (io)
+		io_schedule_timeout(timeout);
+	else
+		schedule_timeout(timeout);
+}
+
+#define f2fs_io_schedule_timeout(timeout)		\
+			__f2fs_schedule_timeout(timeout, true)
+#define f2fs_schedule_timeout(timeout)			\
+			__f2fs_schedule_timeout(timeout, false)
+
+static void simulate_timeout(struct f2fs_sb_info *sbi)
+{
+	enum f2fs_timeout_type type = sbi->simulate_lock_timeout;
+	unsigned long start_time = jiffies;
+	unsigned long timeout = HZ;
+	int i = 0;
+
+	switch (type) {
+	case TIMEOUT_TYPE_RUNNING:
+		while (!time_after(jiffies, start_time + timeout))
+			i++;
+		break;
+	case TIMEOUT_TYPE_IO_SLEEP:
+		f2fs_io_schedule_timeout(timeout);
+		break;
+	case TIMEOUT_TYPE_NONIO_SLEEP:
+		f2fs_schedule_timeout(timeout);
+		break;
+	case TIMEOUT_TYPE_RUNNABLE:
+		while (!time_after(jiffies, start_time + timeout))
+			schedule();
+		break;
+	default:
+		return;
+	}
+}
+
 #ifdef CONFIG_64BIT
 static inline u64 get_sum_exec_runtime(struct task_struct *t)
 {
@@ -166,6 +207,15 @@ static inline void f2fs_lock_all(struct f2fs_sb_info *sbi)
 static inline void f2fs_unlock_all(struct f2fs_sb_info *sbi)
 {
 	f2fs_up_write(&sbi->cp_rwsem);
+}
+
+void f2fs_simulate_lock_timeout(struct f2fs_sb_info *sbi)
+{
+	struct f2fs_lock_context lc;
+
+	f2fs_lock_op(sbi, &lc);
+	simulate_timeout(sbi);
+	f2fs_unlock_op(sbi, &lc);
 }
 
 EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_write_checkpoint);
