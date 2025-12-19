@@ -337,18 +337,18 @@ static struct dma_pte *dma_pfn_level_pte(struct pkvm_iommu_domain *domain,
 	return NULL;
 }
 
-/* Copied from drivers/iommu/intel/iommu.c:dma_pte_clear_range() */
-/* clear last level pte, a tlb flush should be followed */
-static void dma_pte_clear_range(struct pkvm_iommu_domain *domain,
-				unsigned long start_pfn,
-				unsigned long last_pfn)
+/* Adapted from from drivers/iommu/intel/iommu.c:dma_pte_clear_range() */
+/* check last level pte to see if any physical pages are mapped. */
+static int dma_pte_check_range(struct pkvm_iommu_domain *domain,
+			       unsigned long start_pfn,
+			       unsigned long last_pfn)
 {
 	unsigned int large_page;
 	struct dma_pte *first_pte, *pte;
 
 	if (WARN_ON(!domain_pfn_supported(domain, last_pfn)) ||
 	    WARN_ON(start_pfn > last_pfn))
-		return;
+		return -EINVAL;
 
 	/* we don't need lock here; nobody else touches the iova range */
 	do {
@@ -359,7 +359,8 @@ static void dma_pte_clear_range(struct pkvm_iommu_domain *domain,
 			continue;
 		}
 		do {
-			dma_clear_pte(pte);
+			if (WARN_ON_ONCE(dma_pte_present(pte)))
+				return -EBUSY;
 			start_pfn += lvl_to_nr_pages(large_page);
 			pte++;
 		} while (start_pfn <= last_pfn && !first_pte_in_page(pte));
@@ -367,6 +368,8 @@ static void dma_pte_clear_range(struct pkvm_iommu_domain *domain,
 		domain_flush_cache(domain, first_pte, (void *)pte - (void *)first_pte);
 
 	} while (start_pfn && start_pfn <= last_pfn);
+
+	return 0;
 }
 
 /* Copied from drivers/iommu/intel/iommu.c:dma_pte_free_level() */
@@ -411,34 +414,40 @@ next:
 	} while (!first_pte_in_page(++pte) && pfn <= last_pfn);
 }
 
-/* Copied from drivers/iommu/intel/iommu.c:dma_pte_free_pagetable() */
+/* Adapted from drivers/iommu/intel/iommu.c:dma_pte_free_pagetable() */
 /*
  * clear last level (leaf) ptes and free page table pages below the
  * level we wish to keep intact.
  */
-static void dma_pte_free_pagetable(struct pkvm_iommu_domain *domain,
-				   unsigned long start_pfn,
-				   unsigned long last_pfn,
-				   int retain_level)
+static int dma_pte_free_pagetable(struct pkvm_iommu_domain *domain,
+				  unsigned long start_pfn,
+				  unsigned long last_pfn,
+				  int retain_level)
 {
 	struct dma_pte *pgd = (struct dma_pte *)pkvm_phys_to_virt(domain->pgd);
+	int ret = dma_pte_check_range(domain, start_pfn, last_pfn);
 
-	dma_pte_clear_range(domain, start_pfn, last_pfn);
+	if (ret)
+		return ret;
 
 	/* We don't need lock here; nobody else touches the iova range */
 	dma_pte_free_level(domain, agaw_to_level(domain->agaw), retain_level,
 			   pgd, 0, start_pfn, last_pfn);
+
+	return 0;
 }
 
-/* Copied from drivers/iommu/intel/iommu.c:switch_to_super_page() */
+/* Adapted from drivers/iommu/intel/iommu.c:switch_to_super_page() */
 /*
- * Ensure that old small page tables are removed to make room for superpage(s).
+ * Ensure that no small mappings exist in the range (start_pfn..end_pfn) and free
+ * intermediate levels upto the paremy level that were not freed during unmap.
  * We're going to add new large pages, so make sure we don't remove their parent
- * tables. The IOTLB/devTLBs should be flushed if any PDE/PTEs are cleared.
+ * tables.
+ * The IOTLB/devTLBs should be flushed if any PDE/PTEs are cleared.
  */
-static void switch_to_super_page(struct pkvm_iommu_domain *domain,
-				 unsigned long start_pfn,
-				 unsigned long end_pfn, int level)
+static int switch_to_super_page(struct pkvm_iommu_domain *domain,
+				unsigned long start_pfn,
+				unsigned long end_pfn, int level)
 {
 	unsigned long lvl_pages = lvl_to_nr_pages(level);
 	struct dma_pte *pte = NULL;
@@ -448,9 +457,12 @@ static void switch_to_super_page(struct pkvm_iommu_domain *domain,
 			pte = pfn_to_dma_pte(domain, start_pfn, &level);
 
 		if (dma_pte_present(pte)) {
-			dma_pte_free_pagetable(domain, start_pfn,
+			int ret = dma_pte_free_pagetable(domain, start_pfn,
 					       start_pfn + lvl_pages - 1,
 					       level + 1);
+			if (ret)
+				return ret;
+
 			pkvm_cache_tag_flush_range(domain, start_pfn << VTD_PAGE_SHIFT,
 					end_pfn << VTD_PAGE_SHIFT, 0);
 		}
@@ -460,6 +472,8 @@ static void switch_to_super_page(struct pkvm_iommu_domain *domain,
 		if (first_pte_in_page(pte))
 			pte = NULL;
 	}
+
+	return 0;
 }
 
 /*
@@ -565,7 +579,9 @@ static int domain_map(struct pkvm_iommu_domain *domain, struct pkvm_iommu_map_pa
 				pages_to_remove = min_t(unsigned long, nr_pages,
 							nr_pte_to_next_page(pte) * lvl_pages);
 				end_pfn = iov_pfn + pages_to_remove - 1;
-				switch_to_super_page(domain, iov_pfn, end_pfn, largepage_lvl);
+				ret = switch_to_super_page(domain, iov_pfn, end_pfn, largepage_lvl);
+				if (ret)
+					goto out;
 			} else {
 				pteval &= ~(uint64_t)DMA_PTE_LARGE_PAGE;
 			}
