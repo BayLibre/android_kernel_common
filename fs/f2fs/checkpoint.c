@@ -14,6 +14,8 @@
 #include <linux/pagevec.h>
 #include <linux/swap.h>
 #include <linux/kthread.h>
+#include <linux/delayacct.h>
+#include <linux/ioprio.h>
 
 #include "f2fs.h"
 #include "node.h"
@@ -21,6 +23,122 @@
 #include "iostat.h"
 #include <trace/events/f2fs.h>
 #include <trace/hooks/fs.h>
+
+#ifdef CONFIG_64BIT
+static inline u64 get_sum_exec_runtime(struct task_struct *t)
+{
+	return t->se.sum_exec_runtime;
+}
+#else /* !CONFIG_64BIT: */
+static u64 get_sum_exec_runtime(struct task_struct *t)
+{
+	u64 ns;
+	struct rq_flags rf;
+	struct rq *rq;
+
+	rq = task_rq_lock(t, &rf);
+	ns = t->se.sum_exec_runtime;
+	task_rq_unlock(rq, t, &rf);
+
+	return ns;
+}
+#endif /* !CONFIG_64BIT */
+
+static inline void get_lock_elapsed_time(struct f2fs_time_stat *ts)
+{
+	ts->total_time = ktime_get();
+	ts->running_time = get_sum_exec_runtime(current);
+#if defined(CONFIG_SCHED_INFO) && defined(CONFIG_SCHEDSTATS)
+	ts->runnable_time = current->sched_info.run_delay;
+#endif
+#ifdef CONFIG_TASK_DELAY_ACCT
+	if (current->delays)
+		ts->io_sleep_time = current->delays->blkio_delay;
+#endif
+}
+
+static inline void trace_lock_elapsed_time_start(struct f2fs_lock_context *lc)
+{
+	lc->lock_trace = trace_f2fs_lock_elapsed_time_enabled();
+	if (!lc->lock_trace)
+		return;
+
+	get_lock_elapsed_time(&lc->ts);
+}
+
+static inline void trace_lock_elapsed_time_end(struct f2fs_rwsem *sem,
+				struct f2fs_lock_context *lc, bool is_write)
+{
+	struct f2fs_time_stat tts;
+	unsigned long long total_time, running_time;
+	unsigned long long runnable_time = 0;
+	unsigned long long io_sleep_time = 0;
+	unsigned long long other_time = 0;
+
+	get_lock_elapsed_time(&tts);
+
+	total_time = (tts.total_time - lc->ts.total_time) / NSEC_PER_MSEC;
+	if (total_time <= MAX_LOCK_ELAPSED_TIME)
+		return;
+
+	running_time = (tts.running_time - lc->ts.running_time) / NSEC_PER_MSEC;
+
+#if defined(CONFIG_SCHED_INFO) && defined(CONFIG_SCHEDSTATS)
+	runnable_time = (tts.runnable_time - lc->ts.runnable_time) /
+							NSEC_PER_MSEC;
+#endif
+#ifdef CONFIG_TASK_DELAY_ACCT
+	io_sleep_time = (tts.io_sleep_time - lc->ts.io_sleep_time) /
+							NSEC_PER_MSEC;
+#endif
+	if (total_time > running_time + io_sleep_time + runnable_time)
+		other_time = total_time - running_time -
+				io_sleep_time - runnable_time;
+
+	trace_f2fs_lock_elapsed_time(sem->sbi, sem->name, is_write, current,
+			get_current_ioprio(), total_time, running_time,
+			runnable_time, io_sleep_time, other_time);
+}
+
+void f2fs_down_read_trace(struct f2fs_rwsem *sem, struct f2fs_lock_context *lc)
+{
+	f2fs_down_read(sem);
+	trace_lock_elapsed_time_start(lc);
+}
+
+int f2fs_down_read_trylock_trace(struct f2fs_rwsem *sem, struct f2fs_lock_context *lc)
+{
+	if (!f2fs_down_read_trylock(sem))
+		return 0;
+	trace_lock_elapsed_time_start(lc);
+	return 1;
+}
+
+void f2fs_up_read_trace(struct f2fs_rwsem *sem, struct f2fs_lock_context *lc)
+{
+	f2fs_up_read(sem);
+	trace_lock_elapsed_time_end(sem, lc, false);
+}
+
+void f2fs_down_write_trace(struct f2fs_rwsem *sem, struct f2fs_lock_context *lc)
+{
+	f2fs_down_write(sem);
+	trace_lock_elapsed_time_start(lc);
+}
+
+int f2fs_down_write_trylock_trace(struct f2fs_rwsem *sem, struct f2fs_lock_context *lc)
+{
+	if (!f2fs_down_write_trylock(sem))
+		return 0;
+	trace_lock_elapsed_time_start(lc);
+	return 1;
+}
+
+void f2fs_up_write_trace(struct f2fs_rwsem *sem, struct f2fs_lock_context *lc)
+{
+	f2fs_up_write(sem);
+	trace_lock_elapsed_time_end(sem, lc, true);
+}
 
 EXPORT_TRACEPOINT_SYMBOL_GPL(f2fs_write_checkpoint);
 
