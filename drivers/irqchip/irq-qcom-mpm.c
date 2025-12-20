@@ -268,6 +268,13 @@ static irqreturn_t qcom_mpm_handler(int irq, void *dev_id)
 	irqreturn_t ret = IRQ_NONE;
 	unsigned long flags;
 	int i, j;
+	size_t vmpm_size;
+
+	/* >>>>>>>>> core kernel >>>>>>>>>> ADDED by Gemini for full vMPM state dump */
+	vmpm_size = 8 + (5 * priv->reg_stride * sizeof(u32));
+	pr_info(">>>>>>>>>> core kernel >>>>>>>>>> MPM_IRQ_DEBUG: DUMPING vMPM memory @ %p (size: %zu)\n", priv->base, vmpm_size);
+	print_hex_dump_debug(">>>>>>>>>> core kernel >>>>>>>>>> vMPM_DUMP ", DUMP_PREFIX_OFFSET, 16, 4, priv->base, vmpm_size, true);
+	/* End of Gemini addition */
 
 	for (i = 0; i < priv->reg_stride; i++) {
 		raw_spin_lock_irqsave(&priv->lock, flags);
@@ -275,6 +282,9 @@ static irqreturn_t qcom_mpm_handler(int irq, void *dev_id)
 		pending = qcom_mpm_read(priv, MPM_REG_STATUS, i);
 		pending &= enable;
 		raw_spin_unlock_irqrestore(&priv->lock, flags);
+
+               /* >>>>>>>>>>>>>>>>>>> ADDED by Gemini for low-level debug */
+               pr_info(">>>>>>>> core kernel >>>>>>>>> MPM_IRQ_DEBUG: qcom_mpm_handler - reg_idx=%d, enable=0x%lx, pending=0x%lx\n", i, enable, pending);
 
 		for_each_set_bit(j, &pending, 32) {
 			unsigned int pin = 32 * i + j;

@@ -275,6 +275,10 @@ static void print_wakeup_sources(void)
 	struct wakeup_irq_node *n;
 	unsigned long flags;
 
+       /* ADDED by Gemini for high-level debug */
+       pr_info("========= core kernel =============> WAKEUP_REASON_DEBUG: print_wakeup_sources entered. Current wakeup_reason=%d, capture_reasons=%s\n",
+                       wakeup_reason, capture_reasons ? "true" : "false");
+
 	spin_lock_irqsave(&wakeup_reason_lock, flags);
 
 	capture_reasons = false;
@@ -287,7 +291,7 @@ static void print_wakeup_sources(void)
 
 	if (wakeup_reason == RESUME_IRQ && !list_empty(&leaf_irqs))
 		list_for_each_entry(n, &leaf_irqs, siblings)
-			pr_info("Resume caused by IRQ %d, %s\n", n->irq,
+			pr_info("||||||| core kernel ||||| ==> Resume caused by IRQ %d, %s\n", n->irq,
 				n->irq_name);
 	else if (wakeup_reason == RESUME_ABNORMAL)
 		pr_info("Resume caused by %s\n", non_irq_wake_reason);
