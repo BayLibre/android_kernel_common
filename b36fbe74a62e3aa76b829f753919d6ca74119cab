@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9ac4c01_d08f8a26",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-21T14:40:31Z",
+      "side": 1,
+      "message": "Makes sense, done",
+      "parentUuid": "7591c141_e328f160",
+      "revId": "b36fbe74a62e3aa76b829f753919d6ca74119cab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9199c5a0_1661907d",
@@ -55,6 +73,30 @@
           ]
         }
       ],
+      "revId": "b36fbe74a62e3aa76b829f753919d6ca74119cab",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f930a8c_b6d923bf",
+        "filename": "arch/x86/kvm/vmx/pkvm/hyp/iommu_domain.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2025-12-21T14:40:31Z",
+      "side": 1,
+      "message": "Reverted the change of sending error all the way up and retained this function as it is.",
+      "parentUuid": "9199c5a0_1661907d",
+      "range": {
+        "startLine": 368,
+        "startChar": 2,
+        "endLine": 368,
+        "endChar": 73
+      },
       "revId": "b36fbe74a62e3aa76b829f753919d6ca74119cab",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
