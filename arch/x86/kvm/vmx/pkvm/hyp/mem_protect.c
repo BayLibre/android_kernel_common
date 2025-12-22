@@ -314,10 +314,10 @@ static int check_donation(const struct pkvm_mem_transition *tx)
 
 static int host_initiate_donation(const struct pkvm_mem_transition *tx)
 {
-	struct mem_range range;
 	pkvm_id owner_id = completer_owner_id(tx);
 	u64 addr = tx->initiator.host.addr;
 	u64 size = tx->size;
+	u64 cur, end = addr + size;
 
 	if (owner_id == OWNER_ID_INV)
 		return -EINVAL;
@@ -326,12 +326,14 @@ static int host_initiate_donation(const struct pkvm_mem_transition *tx)
 	 * Only allow the host to donate normal memory (tracked in the hyp vmemmap),
 	 * not reserved memory, MMIO etc.
 	 */
-	if (!find_mem_range(addr, &range))
+	if (!is_mem_range(addr, size))
 		return -EPERM;
 
 	/* Prevent donating pages used by the host for DMA. */
-	if (hyp_page_count(__hyp_va(addr)))
-		return -EBUSY;
+	for (cur = addr; cur < end; cur += PAGE_SIZE) {
+		if (hyp_page_count(__pkvm_va(cur)))
+			return -EBUSY;
+	}
 
 	return host_ept_set_owner_locked(tx->initiator.host.pgt_override,
 				addr, size, owner_id);
