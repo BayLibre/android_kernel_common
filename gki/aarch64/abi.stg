@@ -289195,6 +289195,14 @@ function {
   parameter_id: 0x13580d6c
 }
 function {
+  id: 0x91c563a4
+  return_type_id: 0x6720d32f
+  parameter_id: 0x3e10b518
+  parameter_id: 0xf435685e
+  parameter_id: 0x4585663f
+  parameter_id: 0x064d6086
+}
+function {
   id: 0x91c5798d
   return_type_id: 0x6720d32f
   parameter_id: 0x3e10b518
@@ -330324,6 +330332,16 @@ elf_symbol {
   full_name: "is_console_locked"
 }
 elf_symbol {
+  id: 0x73ffe9a9
+  name: "is_dma_buf_file"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x52dd4e9e
+  namespace: "DMA_BUF"
+  type_id: 0x9bba7997
+  full_name: "is_dma_buf_file"
+}
+elf_symbol {
   id: 0x4822711b
   name: "is_midr_in_range_list"
   is_defined: true
@@ -331042,6 +331060,15 @@ elf_symbol {
   crc: 0x1e8510b3
   type_id: 0x91c51554
   full_name: "kstrtouint_from_user"
+}
+elf_symbol {
+  id: 0x35384efd
+  name: "kstrtoul_from_user"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xd600cd6d
+  type_id: 0x91c563a4
+  full_name: "kstrtoul_from_user"
 }
 elf_symbol {
   id: 0x95eb59ef
@@ -349517,6 +349544,7 @@ interface {
   symbol_id: 0x5904d735
   symbol_id: 0xc89a8e29
   symbol_id: 0x064a6e13
+  symbol_id: 0x73ffe9a9
   symbol_id: 0x4822711b
   symbol_id: 0x03de6dc5
   symbol_id: 0xe4e974b3
@@ -349597,6 +349625,7 @@ interface {
   symbol_id: 0x253268e8
   symbol_id: 0xec1bb297
   symbol_id: 0x0da18d92
+  symbol_id: 0x35384efd
   symbol_id: 0x95eb59ef
   symbol_id: 0xa074b313
   symbol_id: 0xa662c735
