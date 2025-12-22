@@ -209,6 +209,8 @@ def get_kunit_modules_list(arch = None):
 _COMMON_UNPROTECTED_MODULES_LIST = [
     "drivers/block/zram/zram.ko",
     "mm/zsmalloc.ko",
+    "net/mac80211/mac80211.ko",
+    "net/wireless/cfg80211.ko",
 ]
 
 # buildifier: disable=unnamed-macro
