@@ -868,6 +868,7 @@ Description:	This threshold is used to control triggering garbage collection whi
 		reserved section before preallocating on pinned file.
 		By default, the value is ovp_sections, especially, for zoned ufs, the
 		value is 1.
+<<<<<<< HEAD   (903aa716a69cab1545a96333dc2a4e18fa10bb67 Merge d4a4abba4584 ("f2fs: sysfs: add encoding_flags entry"))
 
 What:		/sys/fs/f2fs/<disk>/effective_lookup_mode
 Date:		August 2025
@@ -883,3 +884,6 @@ Description:
 		- "compat": Hash-based lookup with a linear search fallback enabled
 		- "auto:perf": lookup_mode is auto and fallback is disabled on-disk
 		- "auto:compat": lookup_mode is auto and fallback is enabled on-disk
+||||||| BASE   (d4a4abba458496d27fd54196597249c8cddfbb95 f2fs: sysfs: add encoding_flags entry)
+=======
+>>>>>>> BRANCH (4c5181b9e1a994b5df6de0815ef0a1cfb888a31b f2fs: introduce reserved_pin_section sysfs entry)
