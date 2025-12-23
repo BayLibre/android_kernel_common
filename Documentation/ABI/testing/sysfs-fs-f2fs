@@ -876,6 +876,7 @@ Description:	Set a multiplier for the background GC migration window when F2FS G
 		boosted. The range should be from 1 to the segment count in a section.
 		Default: 5
 
+<<<<<<< HEAD   (729973d6e082414dee71a23f3cebcb19d04e9ac5 Merge 4236c017c4ce ("f2fs: add gc_boost_gc_multiple sysfs no)
 What:		/sys/fs/f2fs/<disk>/effective_lookup_mode
 Date:		August 2025
 Contact:	"Daniel Lee" <chullee@google.com>
@@ -890,3 +891,11 @@ Description:
 		- "compat": Hash-based lookup with a linear search fallback enabled
 		- "auto:perf": lookup_mode is auto and fallback is disabled on-disk
 		- "auto:compat": lookup_mode is auto and fallback is enabled on-disk
+||||||| BASE   (4236c017c4cecd8a67d90a93adf6ed8601fa606b f2fs: add gc_boost_gc_multiple sysfs node)
+=======
+What:		/sys/fs/f2fs/<disk>/gc_boost_gc_greedy
+Date:		June 2025
+Contact:	"Daeho Jeong" <daehojeong@google.com>
+Description:	Control GC algorithm for boost GC. 0: cost benefit, 1: greedy
+		Default: 1
+>>>>>>> BRANCH (3573b620027236558902247f566ceab8be9cb542 f2fs: add gc_boost_gc_greedy sysfs node)
