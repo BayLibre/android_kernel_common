@@ -52,6 +52,10 @@
   atomic_notifier_chain_register
   atomic_notifier_chain_unregister
   autoremove_wake_function
+  __auxiliary_device_add
+  auxiliary_device_init
+  __auxiliary_driver_register
+  auxiliary_driver_unregister
   available_idle_cpu
   backing_file_real_path
   backlight_device_set_brightness
@@ -1844,6 +1848,7 @@
   param_ops_long
   param_ops_string
   param_ops_uint
+  param_ops_ullong
   param_ops_ulong
   param_set_copystring
   param_set_int
