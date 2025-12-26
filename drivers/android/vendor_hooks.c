@@ -671,3 +671,13 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_filemap_folio_mapped);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_remove_rmap_ptes);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_exit_oom_victim);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_oom_killer_disable);
+<<<<<<< HEAD   (30643dcfbe5c374e4b84071cf612121e497ec6a6 ANDROID: ABI: Update oplus symbol list)
+||||||| BASE   (cc0d550bd93c74002276098568ca0090fba87f22 Revert "ANDROID: virtio: disable virtio_dma_buf callback che)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_vb2_plane_fill_v4l2_plane);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_vb2_plane_fill_v4l2_plane);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_migration_entry_wait_enter);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_migration_entry_wait_exit);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_migrate_pages_batch_break);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_migrate_batch_nr_pages);
+>>>>>>> CHANGE (69927b2ff269bc610b270212088f9eec16b5ebb3 ANDROID: Add vendor hooks for migration)
