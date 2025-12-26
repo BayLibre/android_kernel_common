@@ -16,6 +16,47 @@
       "message": "The description of this patch does not match with what it\u0027s doing. Seems like it\u0027s adding vendor hooks rather than fixing a memory leak.",
       "revId": "2876e1c53e9f493676a82118383c283700df3169",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9bc6fc3_3917c327",
+        "filename": "mm/migrate.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2025-12-26T22:37:13Z",
+      "side": 1,
+      "message": "What are these variables? Please use more descriptive names.",
+      "range": {
+        "startLine": 416,
+        "startChar": 52,
+        "endLine": 416,
+        "endChar": 63
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "130a2eb6_255d9a04",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/migrate.c",
+              "range": {
+                "startLine": 399,
+                "startChar": 0,
+                "endLine": 401,
+                "endChar": 0
+              },
+              "replacement": "\tint result \u003d -1; /* Stores the result of migration_entry_wait_on_locked */\n\tu64 t \u003d 0; /* Stores the timestamp for tracing */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2876e1c53e9f493676a82118383c283700df3169",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
