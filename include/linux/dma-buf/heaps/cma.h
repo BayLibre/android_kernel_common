@@ -4,7 +4,7 @@
 
 struct cma;
 
-#ifdef CONFIG_DMABUF_HEAPS_CMA
+#if IS_ENABLED(CONFIG_DMABUF_HEAPS_CMA)
 int dma_heap_cma_register_heap(struct cma *cma);
 #else
 static inline int dma_heap_cma_register_heap(struct cma *cma)
