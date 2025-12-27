@@ -16,6 +16,24 @@
       "message": "Hi @c\nplease help check if this commit is necessary, or should simply wait for the upstream version",
       "revId": "5e8ea2ee3e79e673d6bc644082076a0efe2597ba",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4ca4a85_7f4b5445",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2025-12-27T14:46:31Z",
+      "side": 1,
+      "message": "It looks like we recently hooked the kselftests from this branch to a bunch of downstream builds? Things will continue to break downstream as kselftests in mainline are unstable and our branch android-mainline cannot be the place to land these temporary workarounds for everyone. There is something wrong with this workflow.\n\nIn this case, it seems very unlikely upstream will accept the approach followed by this patch as it is making several incorrect assumptions. If we land this patch here, it becomes technical-debt automatically.",
+      "parentUuid": "9adb6cdf_e60d62f8",
+      "revId": "5e8ea2ee3e79e673d6bc644082076a0efe2597ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
