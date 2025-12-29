@@ -22,6 +22,30 @@
       },
       "revId": "e936109d577b337e7c52ca363826e1f91aa76bbc",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb9da105_7685a5c1",
+        "filename": "mm/filemap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3500,
+      "author": {
+        "id": 1879222
+      },
+      "writtenOn": "2025-12-29T08:13:08Z",
+      "side": 0,
+      "message": "In our implementation, pages are marked when a high-priority thread accesses them through a page fault, regardless of why they were originally loaded into memory.\nWe can handle any necessary retries internally.\nTo avoid impacting other vendors, would it make sense to introduce a new vendor hook, trace_android_vh_filemap_fault_post_folio_locked(), instead?",
+      "parentUuid": "0e018132_ce5d0f0c",
+      "range": {
+        "startLine": 3500,
+        "startChar": 1,
+        "endLine": 3500,
+        "endChar": 44
+      },
+      "revId": "e936109d577b337e7c52ca363826e1f91aa76bbc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
