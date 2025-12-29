@@ -5238,8 +5238,18 @@ static struct rq *finish_task_switch(struct task_struct *prev)
 		if (prev->sched_class->task_dead)
 			prev->sched_class->task_dead(prev);
 
+<<<<<<< HEAD   (922915fa87d2cab317047cf9119c282b92d3306a Merge 8449d3252c26 ("Merge tag 'cgroup-for-6.19' of git://gi)
 		trace_android_rvh_flush_task(prev);
 
+||||||| BASE   (8449d3252c2603a51ffc7c36cb5bd94874378b7d Merge tag 'cgroup-for-6.19' of git://git.kernel.org/pub/scm/)
+=======
+		/*
+		 * sched_ext_dead() must come before cgroup_task_dead() to
+		 * prevent cgroups from being removed while its member tasks are
+		 * visible to SCX schedulers.
+		 */
+		sched_ext_dead(prev);
+>>>>>>> BRANCH (02baaa67d9afc2e56c6e1ac6a1fb1f1dd2be366f Merge tag 'sched_ext-for-6.19' of git://git.kernel.org/pub/s)
 		cgroup_task_dead(prev);
 
 		/* Task is done with its stack. */
