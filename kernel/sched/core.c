@@ -5238,7 +5238,12 @@ static struct rq *finish_task_switch(struct task_struct *prev)
 		if (prev->sched_class->task_dead)
 			prev->sched_class->task_dead(prev);
 
+<<<<<<< HEAD   (e9b494f04d4f01eca4146d044b6143afde11c3ff Merge 2b60145734a0 ("Merge tag 'wq-for-6.19' of git://git.ke)
 		trace_android_rvh_flush_task(prev);
+||||||| BASE   (2b60145734a0e5a4b73952a540928d2c4f4fed64 Merge tag 'wq-for-6.19' of git://git.kernel.org/pub/scm/linu)
+=======
+		cgroup_task_dead(prev);
+>>>>>>> BRANCH (8449d3252c2603a51ffc7c36cb5bd94874378b7d Merge tag 'cgroup-for-6.19' of git://git.kernel.org/pub/scm/)
 
 		/* Task is done with its stack. */
 		put_task_stack(prev);
