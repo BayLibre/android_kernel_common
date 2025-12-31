@@ -1,5 +1,6 @@
 [abi_symbol_list]
   __balance_callbacks
+  alloc_swapdev_block
   cpu_busy_with_softirqs
   dma_buf_set_name
   memblock_end_of_DRAM
@@ -13,6 +14,7 @@
   ring_buffer_peek
   ring_buffer_unlock_commit
   set_next_entity
+  snapshot_get_image_size
   __traceiter_android_rvh_before_do_sched_yield
   __traceiter_android_rvh_build_perf_domains
   __traceiter_android_rvh_cpu_capacity_show
@@ -23,11 +25,18 @@
   __traceiter_android_vh_alter_mutex_list_add
   __traceiter_android_vh_binder_restore_priority
   __traceiter_android_vh_binder_set_priority
+  __traceiter_android_vh_check_hibernation_swap
   __traceiter_android_vh_cpu_cgroup_css_free
+  __traceiter_android_vh_encrypt_page
   __traceiter_android_vh_freq_qos_add_request
   __traceiter_android_vh_freq_qos_remove_request
   __traceiter_android_vh_freq_qos_update_request
   __traceiter_android_vh_try_fixup_sea
+  __traceiter_android_vh_init_aes_encrypt
+  __traceiter_android_vh_post_image_save
+  __traceiter_android_vh_save_cpu_resume
+  __traceiter_android_vh_save_hib_resume_bdev
+  __traceiter_android_vh_skip_swap_map_write
   __tracepoint_android_rvh_before_do_sched_yield
   __tracepoint_android_rvh_build_perf_domains
   __tracepoint_android_rvh_cpu_capacity_show
@@ -39,7 +48,13 @@
   __tracepoint_android_vh_binder_restore_priority
   __tracepoint_android_vh_binder_set_priority
   __tracepoint_android_vh_cpu_cgroup_css_free
+  __tracepoint_android_vh_encrypt_page
   __tracepoint_android_vh_freq_qos_add_request
   __tracepoint_android_vh_freq_qos_remove_request
   __tracepoint_android_vh_freq_qos_update_request
   __tracepoint_android_vh_try_fixup_sea
+  __tracepoint_android_vh_init_aes_encrypt
+  __tracepoint_android_vh_post_image_save
+  __tracepoint_android_vh_save_cpu_resume
+  __tracepoint_android_vh_save_hib_resume_bdev
+  __tracepoint_android_vh_skip_swap_map_write
