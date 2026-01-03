@@ -123,7 +123,6 @@ write_file(
     ],
 )
 
-# Not enforced in android-mainline.
 common_kernel_protected_module_names(
     name = "gki_aarch64_protected_module_names",
     out = "gki/aarch64/protected_module_names",
@@ -141,7 +140,6 @@ write_file(
     ],
 )
 
-# Not enforced in android-mainline.
 common_kernel_protected_module_names(
     name = "gki_x86_64_protected_module_names",
     out = "gki/x86_64/protected_module_names",
