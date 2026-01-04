@@ -118,7 +118,6 @@ _X86_64_GKI_MODULES_LIST = [
 
 _RISCV64_GKI_MODULES_LIST = [
     # keep sorted
-    "drivers/ptp/ptp_kvm.ko",
 ]
 
 def _apply(map_each, lst):
