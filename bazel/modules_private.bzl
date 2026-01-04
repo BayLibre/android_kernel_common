@@ -269,7 +269,7 @@ def _get_kunit_modules_list_minus_select(arch, map_each):
     elif arch == "x86_64":
         kunit_modules_list.append("drivers/clk/clk_kunit_helpers.ko")
     elif arch == "riscv64":
-        kunit_modules_list.append("drivers/clk/clk_kunit_helpers.ko")
+        kunit_modules_list += _KUNIT_CLK_MODULES_LIST
 
     return _apply(map_each, kunit_modules_list)
 
