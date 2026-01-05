@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4384ce8_740f16e0",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-01-05T16:13:14Z",
+      "side": 1,
+      "message": "Is this deliberately different to later kernels where you cap the value to `IMP` (0b0001) and don\u0027t expose the 52-bit support? Or is that capping unintentional in later kernels?",
+      "range": {
+        "startLine": 116,
+        "startChar": 20,
+        "endLine": 116,
+        "endChar": 44
+      },
+      "revId": "cb1b8cdaab8f7caff4cf8bae189242204ffda4d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
