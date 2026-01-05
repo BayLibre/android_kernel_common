@@ -22,6 +22,30 @@
       },
       "revId": "cb1b8cdaab8f7caff4cf8bae189242204ffda4d5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2002fe33_e918b23f",
+        "filename": "arch/arm64/include/asm/kvm_pkvm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2026-01-05T16:15:14Z",
+      "side": 1,
+      "message": "The capping is intentional in later kernels. The old way of doing things didn\u0027t allow us to do that easily, which was part of the reason for reworking fixed configuration.",
+      "parentUuid": "c4384ce8_740f16e0",
+      "range": {
+        "startLine": 116,
+        "startChar": 20,
+        "endLine": 116,
+        "endChar": 44
+      },
+      "revId": "cb1b8cdaab8f7caff4cf8bae189242204ffda4d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
