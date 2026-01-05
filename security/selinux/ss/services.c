@@ -2737,6 +2737,24 @@ retry:
 		}
 		break;
 
+	case AF_VSOCK: {
+		u32 addr;
+
+		rc = -EINVAL;
+		if (addrlen != sizeof(u32))
+			goto out;
+
+		addr = *((const u32 *)addrp);
+
+		c = policydb->ocontexts[OCON_NODE_VSOCK];
+		while (c) {
+			if (c->u.node.addr == (addr & c->u.node.mask))
+				break;
+			c = c->next;
+		}
+		break;
+	}
+
 	default:
 		rc = 0;
 		*out_sid = SECINITSID_NODE;

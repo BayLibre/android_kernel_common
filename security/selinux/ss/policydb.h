@@ -230,7 +230,8 @@ struct genfs {
 #define OCON_NODE6     6 /* IPv6 nodes */
 #define OCON_IBPKEY    7 /* Infiniband PKeys */
 #define OCON_IBENDPORT 8 /* Infiniband end ports */
-#define OCON_NUM       9
+#define OCON_NODE_VSOCK 9 /* VSOCK nodes */
+#define OCON_NUM       10
 
 /* The policy database */
 struct policydb {

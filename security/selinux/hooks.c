@@ -5132,6 +5132,22 @@ static int selinux_socket_connect_helper(struct socket *sock,
 		err = avc_has_perm(sksec->sid, sid, sksec->sclass, perm, &ad);
 		if (err)
 			return err;
+
+		if (sksec->sclass == SECCLASS_VSOCK_SOCKET) {
+			u32 node_sid;
+
+			err = security_node_sid(AF_VSOCK, (char *)&addr_vm->svm_cid,
+						sizeof(u32), &node_sid);
+			if (err)
+				return err;
+
+			err = avc_has_perm(sksec->sid, node_sid, sksec->sclass,
+					   VSOCK_SOCKET__NODE_CONNECT, &ad);
+			if (err)
+				return err;
+		}
+
+		return 0;
 	}
 
 	return 0;
