@@ -10,6 +10,7 @@
 #ifndef __WONDER_WONDERTAP_H__
 #define __WONDER_WONDERTAP_H__
 
+#include <linux/auxiliary_bus.h>
 #include <linux/errno.h>
 #include <linux/if_ether.h>
 
@@ -515,7 +516,8 @@ enum wondertap_ver {
  * This structure holds the version information and the operations
  * table for the specific vendor implementation.
  */
-struct wondertap_priv {
+struct wondertap_aux_dev {
+	struct auxiliary_device adev;
 	/** @brief The version of the WonderTap interface being used. */
 	enum wondertap_ver ver;
 	/** @brief Pointer to the vendor-specific operations table. */
