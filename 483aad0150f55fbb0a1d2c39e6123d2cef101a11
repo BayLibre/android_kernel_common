@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf0e0278_9131b165",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2026-01-05T19:54:42Z",
+      "side": 1,
+      "message": "query: should bMaxBurst be increased instead?\nThat\u0027s what NCM uses...\n\ndrivers/usb/gadget/function/f_ncm.c\nstatic struct usb_ss_ep_comp_descriptor ss_ncm_bulk_comp_desc \u003d {\n\t.bLength \u003d\t\tsizeof(ss_ncm_bulk_comp_desc),\n\t.bDescriptorType \u003d\tUSB_DT_SS_ENDPOINT_COMP,\n\n\t/* the following 2 values can be tweaked if necessary */\n\t.bMaxBurst \u003d\t\t15,\n\t/* .bmAttributes \u003d\t0, */\n};",
+      "revId": "483aad0150f55fbb0a1d2c39e6123d2cef101a11",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
