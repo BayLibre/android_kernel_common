@@ -2373,7 +2373,6 @@ void ufshcd_send_command(struct ufs_hba *hba, unsigned int task_tag,
 		lrbp->issue_time_stamp_local_clock = local_clock();
 		lrbp->compl_time_stamp = ktime_set(0, 0);
 		lrbp->compl_time_stamp_local_clock = 0;
-		trace_android_vh_ufs_send_command(hba, lrbp);
 	}
 	ufshcd_add_command_trace(hba, task_tag, UFS_CMD_SEND);
 	if (lrbp->cmd)
@@ -2729,15 +2728,6 @@ static int ufshcd_map_sg(struct ufs_hba *hba, struct ufshcd_lrb *lrbp)
 
 	ufshcd_sgl_to_prdt(hba, lrbp, sg_segments, scsi_sglist(cmd));
 
-	/*
-	 * TODO(b/160883801): remove this vendor hook in favor of the upstream
-	 * variant op.  This isn't possible yet because the upstream variant op
-	 * doesn't yet make it possible for the host driver to get the keyslot.
-	 */
-	err = 0;
-	trace_android_vh_ufs_fill_prdt(hba, lrbp, sg_segments, &err);
-	if (err)
-		return err;
 	return ufshcd_crypto_fill_prdt(hba, lrbp);
 }
 
@@ -3074,13 +3064,6 @@ static int ufshcd_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
 	lrbp = &hba->lrb[tag];
 
 	ufshcd_setup_scsi_cmd(hba, lrbp, cmd, ufshcd_scsi_to_upiu_lun(cmd->device->lun), tag);
-
-	trace_android_vh_ufs_prepare_command(hba, scsi_cmd_to_rq(cmd), lrbp,
-					     &err);
-	if (err) {
-		ufshcd_release(hba);
-		goto out;
-	}
 
 	err = ufshcd_map_sg(hba, lrbp);
 	if (err) {
@@ -5664,7 +5647,6 @@ void ufshcd_compl_one_cqe(struct ufs_hba *hba, int task_tag,
 		lrbp->compl_time_stamp_local_clock = local_clock();
 	}
 	cmd = lrbp->cmd;
-	trace_android_vh_ufs_compl_command(hba, lrbp);
 	if (cmd) {
 		if (unlikely(ufshcd_should_inform_monitor(hba, lrbp)))
 			ufshcd_update_monitor(hba, lrbp);
