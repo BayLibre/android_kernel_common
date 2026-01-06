@@ -88,6 +88,24 @@
       "parentUuid": "9719de79_3faac55d",
       "revId": "483aad0150f55fbb0a1d2c39e6123d2cef101a11",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c5d2c68_208e238d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2026921
+      },
+      "writtenOn": "2026-01-06T03:03:44Z",
+      "side": 1,
+      "message": "What about rx?\n--------- \nThe check code value does not affect RX FIFO size.\n\n/**\n * dwc3_gadget_setup_nump - calculate and initialize NUMP field of %DWC3_DCFG\n * @dwc: pointer to our context structure\n *\n * The following looks like complex but it\u0027s actually very simple. In order to\n * calculate the number of packets we can burst at once on OUT transfers, we\u0027re\n * gonna use RxFIFO size.\n *\n * To calculate RxFIFO size we need two numbers:\n * MDWIDTH \u003d size, in bits, of the internal memory bus\n * RAM2_DEPTH \u003d depth, in MDWIDTH, of internal RAM2 (where RxFIFO sits)\n *\n * Given these two numbers, the formula is simple:\n *\n * RxFIFO Size \u003d (RAM2_DEPTH * MDWIDTH / 8) - 24 - 16;\n *\n * 24 bytes is for 3x SETUP packets\n * 16 bytes is a clock domain crossing tolerance\n *\n * Given RxFIFO Size, NUMP \u003d RxFIFOSize / 1024;\n */\nstatic void dwc3_gadget_setup_nump(struct dwc3 *dwc)\n{\n\tu32 ram2_depth;\n\tu32 mdwidth;\n\tu32 nump;\n\tu32 reg;\n\n\tram2_depth \u003d DWC3_GHWPARAMS7_RAM2_DEPTH(dwc-\u003ehwparams.hwparams7);\n\tmdwidth \u003d dwc3_mdwidth(dwc);\n\n\tnump \u003d ((ram2_depth * mdwidth / 8) - 24 - 16) / 1024;\n\tnump \u003d min_t(u32, nump, 16);\n\n\t/* update NumP */\n\treg \u003d dwc3_readl(dwc-\u003eregs, DWC3_DCFG);\n\treg \u0026\u003d ~DWC3_DCFG_NUMP_MASK;\n\treg |\u003d nump \u003c\u003c DWC3_DCFG_NUMP_SHIFT;\n\tdwc3_writel(dwc-\u003eregs, DWC3_DCFG, reg);\n}\n\nThanks",
+      "parentUuid": "5746ae2f_b29dc851",
+      "revId": "483aad0150f55fbb0a1d2c39e6123d2cef101a11",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
