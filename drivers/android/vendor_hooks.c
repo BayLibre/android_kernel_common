@@ -82,6 +82,8 @@
 #include <trace/hooks/dmv_debug.h>
 #include <trace/hooks/vb2.h>
 #include <trace/hooks/rcu.h>
+#include <trace/hooks/security.h>
+#include <trace/hooks/ptrace.h>
 
 /*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
@@ -694,3 +696,18 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_migrate_batch_nr_pages);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_add_file_rmap);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_folio_remove_rmap);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_gup_longterm_locked);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_ptrace);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_copy_process_integrity);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_process_vm_rw_core);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_exec_binprm_check);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_exec_binprm_fail);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fput);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_post_setattr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_security_inode_free);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_security_inode_setxattr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_security_inode_removexattr);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_security_file_free);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_security_mmap_file);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_security_file_open);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_security_task_alloc);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_security_task_free);

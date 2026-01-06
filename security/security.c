@@ -32,6 +32,7 @@
 #include <linux/fs.h>
 #include <net/flow.h>
 #include <net/sock.h>
+#include <trace/hooks/security.h>
 
 #define SECURITY_HOOK_ACTIVE_KEY(HOOK, IDX) security_hook_active_##HOOK##_##IDX
 
@@ -1728,6 +1729,7 @@ static void inode_free_by_rcu(struct rcu_head *head)
  */
 void security_inode_free(struct inode *inode)
 {
+	trace_android_rvh_security_inode_free(inode);
 	call_void_hook(inode_free_security, inode);
 	if (!inode->i_security)
 		return;
@@ -2419,6 +2421,11 @@ int security_inode_setxattr(struct mnt_idmap *idmap,
 			return rc;
 	}
 
+	trace_android_rvh_security_inode_setxattr(dentry, name,
+		value, size, flags, &rc);
+	if (rc)
+		return rc;
+
 	return call_int_hook(inode_setxattr, idmap, dentry, name, value, size,
 			     flags);
 }
@@ -2604,6 +2611,10 @@ int security_inode_removexattr(struct mnt_idmap *idmap,
 		if (rc)
 			return rc;
 	}
+
+	trace_android_rvh_security_inode_removexattr(dentry, name, &rc);
+	if (rc)
+		return rc;
 
 	return call_int_hook(inode_removexattr, idmap, dentry, name);
 }
@@ -2980,8 +2991,15 @@ static inline unsigned long mmap_prot(struct file *file, unsigned long prot)
 int security_mmap_file(struct file *file, unsigned long prot,
 		       unsigned long flags)
 {
-	return call_int_hook(mmap_file, file, prot, mmap_prot(file, prot),
+	int ret;
+
+	ret = call_int_hook(mmap_file, file, prot, mmap_prot(file, prot),
 			     flags);
+	if (ret)
+		return ret;
+	trace_android_rvh_security_mmap_file(file, prot, flags, &ret);
+
+	return ret;
 }
 
 /**
@@ -3114,7 +3132,13 @@ int security_file_open(struct file *file)
 	if (ret)
 		return ret;
 
-	return fsnotify_open_perm(file);
+	ret = fsnotify_open_perm(file);
+	if (ret)
+		return ret;
+
+	trace_android_rvh_security_file_open(file, &ret);
+
+	return ret;
 }
 
 /**
@@ -3160,10 +3184,15 @@ int security_file_truncate(struct file *file)
  */
 int security_task_alloc(struct task_struct *task, unsigned long clone_flags)
 {
-	int rc = lsm_task_alloc(task);
+	int rc = 0;
 
+	rc = lsm_task_alloc(task);
 	if (rc)
 		return rc;
+	trace_android_rvh_security_task_alloc(task, clone_flags, &rc);
+	if (rc)
+		return rc;
+
 	rc = call_int_hook(task_alloc, task, clone_flags);
 	if (unlikely(rc))
 		security_task_free(task);
@@ -3180,6 +3209,7 @@ int security_task_alloc(struct task_struct *task, unsigned long clone_flags)
 void security_task_free(struct task_struct *task)
 {
 	call_void_hook(task_free, task);
+	trace_android_rvh_security_task_free(task);
 
 	kfree(task->security);
 	task->security = NULL;

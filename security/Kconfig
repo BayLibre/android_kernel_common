@@ -227,6 +227,9 @@ source "security/landlock/Kconfig"
 source "security/ipe/Kconfig"
 
 source "security/integrity/Kconfig"
+#source "security/samsung/five/Kconfig"
+#source "security/samsung/proca/Kconfig"
+#source "security/samsung/proca/gaf/Kconfig"
 
 choice
 	prompt "First legacy 'major LSM' to be initialized"

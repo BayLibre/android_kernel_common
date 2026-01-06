@@ -9,10 +9,24 @@
 
 #include <trace/hooks/vendor_hooks.h>
 struct va_format;
+struct file;
+struct dentry;
 
 DECLARE_RESTRICTED_HOOK(android_rvh_f2fs_down_read,
 	TP_PROTO(wait_queue_head_t *read_waiters, struct rw_semaphore *rwsem, bool *skip),
 	TP_ARGS(read_waiters, rwsem, skip), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_post_setattr,
+	TP_PROTO(struct dentry *dentry),
+	TP_ARGS(dentry), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_exec_binprm_check,
+	TP_PROTO(struct linux_binprm *bprm, int depth),
+	TP_ARGS(bprm, depth), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_exec_binprm_fail,
+	TP_PROTO(struct task_struct *task, struct file *file),
+	TP_ARGS(task, file), 1);
 
 DECLARE_HOOK(android_vh_f2fs_improve_priority,
 	TP_PROTO(struct task_struct *p, int *saved_prio, bool *skip),
@@ -79,6 +93,10 @@ DECLARE_HOOK(android_vh_ep_create_wakeup_source,
 DECLARE_HOOK(android_vh_timerfd_create,
 	TP_PROTO(char *name, int len),
 	TP_ARGS(name, len));
+
+DECLARE_HOOK(android_vh_fput,
+	TP_PROTO(struct file *file),
+	TP_ARGS(file));
 #endif /* _TRACE_HOOK_FS_H */
 
 /* This part must be outside protection */

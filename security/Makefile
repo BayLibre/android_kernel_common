@@ -29,3 +29,6 @@ obj-$(CONFIG_SECURITY_IPE)		+= ipe/
 
 # Object integrity file lists
 obj-$(CONFIG_INTEGRITY)			+= integrity/
+obj-$(CONFIG_FIVE)			+= samsung/five/
+obj-$(CONFIG_PROCA)			+= samsung/proca/
+obj-$(CONFIG_GAF)			+= samsung/proca/gaf/
