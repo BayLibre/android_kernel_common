@@ -88,6 +88,24 @@
       "parentUuid": "dde32d70_769ee8b4",
       "revId": "4c016e9c14c32276d8e294c804110e8ec40cee3c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e67631e_060ddb8b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 4569323
+      },
+      "writtenOn": "2026-01-06T07:26:03Z",
+      "side": 1,
+      "message": "Upstreaming the downstream DRM properties and related features will take\nsignificant time, as it requires first upstreaming large portions of the\ndownstream driver functionality. Until that work is completed, the current\nupstream property limit is not sufficient for downstream use cases.\n \nAt the moment there aren’t direct lore threads specifically tracking this\nlimit increase, since the dependency is on broader driver and feature\nupstreaming rather than a standalone property-count change. For now, this\nremains a necessary ACK‑only adjustment to support downstream features, as\nhas been the case in older ACK trees.",
+      "parentUuid": "c65d854f_9e0c7745",
+      "revId": "4c016e9c14c32276d8e294c804110e8ec40cee3c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
