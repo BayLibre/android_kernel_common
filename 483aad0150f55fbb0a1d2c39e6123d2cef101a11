@@ -124,6 +124,24 @@
       "parentUuid": "9c5d2c68_208e238d",
       "revId": "483aad0150f55fbb0a1d2c39e6123d2cef101a11",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e28c1fb_7e3582fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2026-01-06T17:39:08Z",
+      "side": 1,
+      "message": "AFAIK, there\u0027s at least PLX NET2280 driver (or rather some USB3380 successor), and some intel main chipset stuff can be run in gadget mode too (especially with debug cable hacks).\n\nAnyway, if for dwc3 tx 6 and 15 are identical, then I would probably still recommend 15, since that will affect rx by virtue of affecting the sender.",
+      "parentUuid": "9758adf4_9a63c830",
+      "revId": "483aad0150f55fbb0a1d2c39e6123d2cef101a11",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
