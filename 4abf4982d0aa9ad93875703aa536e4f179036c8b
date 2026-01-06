@@ -16,6 +16,24 @@
       "message": "are these networking specific?",
       "revId": "4abf4982d0aa9ad93875703aa536e4f179036c8b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3f4b022_5cc7899f",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 3
+      },
+      "lineNbr": 1586,
+      "author": {
+        "id": 2024627
+      },
+      "writtenOn": "2026-01-06T19:21:38Z",
+      "side": 1,
+      "message": "I grouped these with networking because they are majorly consumed here:\n\ngit grep -n \"kmemdup_array\"\nbridge/netfilter/ebtables.c:1259:       ops \u003d kmemdup_array(template_ops, num_ops, sizeof(*ops), GFP_KERNEL);\ncore/filter.c:1286:     old_prog \u003d kmemdup_array(fp-\u003einsns, old_len, sizeof(struct sock_filter),\nipv4/netfilter/arp_tables.c:1550:       ops \u003d kmemdup_array(template_ops, num_ops, sizeof(*ops), GFP_KERNEL);\nipv4/netfilter/ip_tables.c:1770:        ops \u003d kmemdup_array(template_ops, num_ops, sizeof(*ops), GFP_KERNEL);\nipv6/netfilter/ip6_tables.c:1776:       ops \u003d kmemdup_array(template_ops, num_ops, sizeof(*ops), GFP_KERNEL);\nnetfilter/nf_nat_core.c:1221:           nat_ops \u003d kmemdup_array(orig_nat_ops, ops_count, sizeof(*orig_nat_ops), GFP_KERNEL);\nwireless/util.c:2461:           limits \u003d kmemdup_array(c-\u003elimits, c-\u003en_limits, sizeof(*limits),\n\ngit grep -n \"kmemdup_noprof\"\nlinux/fortify-string.h:754:extern void *__real_kmemdup(const void *src, size_t len, gfp_t gfp) __RENAME(kmemdup_noprof)\nlinux/fortify-string.h:756:__FORTIFY_INLINE void *kmemdup_noprof(const void * const POS0 p, size_t size, gfp_t gfp)\nlinux/fortify-string.h:767:#define kmemdup(...) alloc_hooks(kmemdup_noprof(__VA_ARGS__))\nlinux/string.h:304:extern void *kmemdup_noprof(const void *src, size_t len, gfp_t gfp) __realloc_size(2);\nlinux/string.h:305:#define kmemdup(...) alloc_hooks(kmemdup_noprof(__VA_ARGS__))\nnet/netlink.h:2210:     return kmemdup_noprof(nla_data(src), nla_len(src), gfp);",
+      "parentUuid": "90fb17e6_b20aacd5",
+      "revId": "4abf4982d0aa9ad93875703aa536e4f179036c8b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
