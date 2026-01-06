@@ -5656,7 +5656,6 @@ cfg80211_get_iftype_ext_capa(struct wiphy *wiphy, enum nl80211_iftype type);
  *	(0 means unknown)
  * @ftm.max_total_ltf_rx: maximum total number of LTFs that can be received
  *	(0 means unknown)
- * @ftm.support_rsta: supports operating as RSTA in PMSR FTM request
  */
 struct cfg80211_pmsr_capabilities {
 	unsigned int max_peers;
@@ -5682,7 +5681,6 @@ struct cfg80211_pmsr_capabilities {
 		u8 max_rx_sts;
 		u8 max_total_ltf_tx;
 		u8 max_total_ltf_rx;
-		u8 support_rsta:1;
 	} ftm;
 };
 
