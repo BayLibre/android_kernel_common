@@ -52,6 +52,24 @@
       "parentUuid": "67ff97fe_5fb34f5d",
       "revId": "483aad0150f55fbb0a1d2c39e6123d2cef101a11",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9719de79_3faac55d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2026921
+      },
+      "writtenOn": "2026-01-06T02:27:41Z",
+      "side": 1,
+      "message": "Hello Neill, Maciej:\n\nBecause the code logic in driver/usb/dwc3/gadget.c, whether bMaxBurst is set to 6 or 15, ultimately executes the same logic.\n\nstatic int dwc3_gadget_resize_tx_fifos(struct dwc3_ep *dep)\n{\n...\n    if (dep-\u003eendpoint.maxburst \u003e 6 \u0026\u0026 /* dep-\u003eendpoint.maxburst \u003d .bMaxBurst+1 */\n        (usb_endpoint_xfer_bulk(dep-\u003eendpoint.desc) ||\n         usb_endpoint_xfer_isoc(dep-\u003eendpoint.desc)) \u0026\u0026 DWC3_IP_IS(DWC31))\n        num_fifos \u003d dwc-\u003etx_fifo_resize_max_num;\n...\n}\n\n\n/* dep-\u003eendpoint.maxburst \u003d .bMaxBurst+1 */\nThe specific logic is as follows:\n\n257 if (g-\u003espeed \u003e\u003d USB_SPEED_SUPER) {\n258 switch (usb_endpoint_type(_ep-\u003edesc)) {\n259 case USB_ENDPOINT_XFER_ISOC:\n260 /* mult: bits 1:0 of bmAttributes */\n261 _ep-\u003emult \u003d (comp_desc-\u003ebmAttributes \u0026 0x3) + 1;\n262 fallthrough;\n263 case USB_ENDPOINT_XFER_BULK:\n264 case USB_ENDPOINT_XFER_INT:\n265 _ep-\u003emaxburst \u003d comp_desc-\u003ebMaxBurst + 1; /* here */\n266 break;\n\nThanks",
+      "parentUuid": "6cb48b97_bb0ad598",
+      "revId": "483aad0150f55fbb0a1d2c39e6123d2cef101a11",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
