@@ -22,6 +22,30 @@
       },
       "revId": "f9a71a89dff811fd8bc0a3f889d210ab71119cf5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ea0db3b_dfa7a09b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/ftrace.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-06T09:13:54Z",
+      "side": 1,
+      "message": "Hitting that BUG_ON should really never happen. Also if we do stacktrace.c and ftrace.c don\u0027t have the ftrace annotations so the stack will not be polluted with `__kvm_nvhe___hyp_ftrace_ret_tramp`.\n\nAlthough, I could return an error and then leave that `__kvm_nvhe___hyp_ftrace_ret_tramp`",
+      "parentUuid": "0cbc96d8_7bdf640f",
+      "range": {
+        "startLine": 133,
+        "startChar": 1,
+        "endLine": 133,
+        "endChar": 16
+      },
+      "revId": "f9a71a89dff811fd8bc0a3f889d210ab71119cf5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
