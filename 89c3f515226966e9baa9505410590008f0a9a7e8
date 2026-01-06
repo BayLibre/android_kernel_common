@@ -33,6 +33,24 @@
       "message": "Why did the \"Presubmit\" fail? How can I fix this problem?",
       "revId": "89c3f515226966e9baa9505410590008f0a9a7e8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3594140_0e7a088a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2026-01-06T09:56:02Z",
+      "side": 1,
+      "message": "The presubmit failed due to a type change elsewhere affecting the some symbol CRCs.\n\nI\u0027m not sure how much of this is visible externally, but we have automatic fix suggestions in Gerrit for the ABI file. I will apply these now and re-run presubmit.",
+      "parentUuid": "b2d4f66d_14ca9325",
+      "revId": "89c3f515226966e9baa9505410590008f0a9a7e8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
