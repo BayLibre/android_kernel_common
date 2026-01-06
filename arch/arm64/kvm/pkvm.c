@@ -38,6 +38,8 @@
 #include "hyp_constants.h"
 #include "hyp_trace.h"
 
+/* TO REMOVE! */
+
 /*
  * Retry the VM creation message for the host for a maximul total
  * amount of times, with sleeps in between. For the first few attempts,
