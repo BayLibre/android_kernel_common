@@ -158,6 +158,10 @@ static inline bool iommu_supports_5levels(void)
 	return iommu_pglvl_mask & IOMMU_PGT_5LEVEL;
 }
 
+struct dmar_domain *pkvm_alloc_iommu_domain(void *pgd);
+struct dmar_domain *pkvm_get_iommu_domain(void *pgd);
+struct dmar_domain *pkvm_get_iommu_domain_noref(void *pgd);
+
 struct intel_iommu *iommu_from_phys(unsigned long phys);
 static inline bool is_iommu_mmio(unsigned long phys)
 {
@@ -167,6 +171,9 @@ static inline bool is_iommu_mmio(unsigned long phys)
 bool overlaps_iommu_mmio(unsigned long phys, unsigned long size);
 bool is_dev_in_satc(u16 bdf);
 bool pkvm_iommu_paging_structure_coherency(void);
+
+void pkvm_put_iommu_domain(struct dmar_domain *domain);
+int pkvm_free_iommu_domain(struct dmar_domain *domain);
 
 int pkvm_intel_iommu_init(void);
 
