@@ -124,6 +124,24 @@
       "parentUuid": "5e67631e_060ddb8b",
       "revId": "4c016e9c14c32276d8e294c804110e8ec40cee3c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "582184b2_b81be6f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 4493970
+      },
+      "writtenOn": "2026-01-07T18:18:58Z",
+      "side": 1,
+      "message": "Upstream won\u0027t accept the direct patch to increase the property count. Community will only accept additional properties.\n\nJessica pushed few color properties in upstream community during 2025 and let me search those upstream submission link. \n\nIn any case, this patch does not cause any conflict to security patches. In past, we had conversation with Rob to move upstream DRM property allocation dynamic malloc instead of static array bound to avoid the issue. That idea is also not moving much. \n\nCurrent change is generic and it is going to help other vendors also. We need help to move this change to avoid additional delay in internal testing.",
+      "parentUuid": "c820e45e_7d1a82ec",
+      "revId": "4c016e9c14c32276d8e294c804110e8ec40cee3c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
