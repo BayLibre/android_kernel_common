@@ -158,6 +158,12 @@ static inline bool iommu_supports_5levels(void)
 	return iommu_pglvl_mask & IOMMU_PGT_5LEVEL;
 }
 
+struct dmar_domain *pkvm_alloc_iommu_domain(void *pgd);
+struct dmar_domain *pkvm_get_iommu_domain(void *pgd);
+struct dmar_domain *pkvm_get_iommu_domain_noref(void *pgd);
+void pkvm_put_iommu_domain(struct dmar_domain *domain);
+int pkvm_free_iommu_domain(struct dmar_domain *domain);
+
 struct intel_iommu *iommu_from_phys(unsigned long phys);
 static inline bool is_iommu_mmio(unsigned long phys)
 {
