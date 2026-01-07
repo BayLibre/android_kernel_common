@@ -34,6 +34,24 @@
       "parentUuid": "b6de2303_d4a0cbec",
       "revId": "5edc297fc550efe41d7bac8aace92a567c815097",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "773cd0e3_ccc06756",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2026-01-07T20:12:34Z",
+      "side": 1,
+      "message": "So, this still isn\u0027t very clear.\n\n\u003e we want to rerrwrite prio of tasks like UI threads other latency sensitive tasks.\n\nWhy?   Again, please explain the problem you are seeing first in some detail.\n\n\u003e UI threads may get janks\n\nThis doesn\u0027t quantify the impact. How frequent are the janks without this change, then how much does this hook allow you to improve things?\n\n\nAgain, please clarify these points in the commit message (if there are sensitive specifics, you can add that detail in the bug, but the commit message still needs to explain the *reason* for the change clearly).",
+      "parentUuid": "94b30046_c2dd534e",
+      "revId": "5edc297fc550efe41d7bac8aace92a567c815097",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
