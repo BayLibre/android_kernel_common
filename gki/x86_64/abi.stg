@@ -190617,6 +190617,12 @@ member {
   offset: 2176
 }
 member {
+  id: 0xdf9ebe86
+  name: "zero_vruntime"
+  type_id: 0x92233392
+  offset: 384
+}
+member {
   id: 0x58a342a0
   name: "zeromap"
   type_id: 0x064d6086
@@ -203986,7 +203992,7 @@ struct_union {
     member_id: 0x9e476925
     member_id: 0xe05adac7
     member_id: 0xbd75b94d
-    member_id: 0x63fbed8b
+    member_id: 0xdf9ebe86
     member_id: 0x197cb594
     member_id: 0x8ddd7452
     member_id: 0x11fb2d42
@@ -298546,7 +298552,7 @@ elf_symbol {
   name: "__traceiter_sched_set_state_tp"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x75e1deb5
+  crc: 0xe1a3dfcf
   type_id: 0x9bc214f0
   full_name: "__traceiter_sched_set_state_tp"
 }
@@ -298627,7 +298633,7 @@ elf_symbol {
   name: "__tracepoint_sched_set_state_tp"
   is_defined: true
   symbol_type: OBJECT
-  crc: 0xa9ca37b0
+  crc: 0x8bc85d99
   type_id: 0x18ccbd2c
   full_name: "__tracepoint_sched_set_state_tp"
 }
@@ -320302,7 +320308,7 @@ elf_symbol {
   name: "sched_set_fifo"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x757a7373
+  crc: 0x67258cff
   type_id: 0x17de3be6
   full_name: "sched_set_fifo"
 }
@@ -320311,7 +320317,7 @@ elf_symbol {
   name: "sched_set_fifo_low"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x757a7373
+  crc: 0x67258cff
   type_id: 0x17de3be6
   full_name: "sched_set_fifo_low"
 }
@@ -329914,7 +329920,7 @@ elf_symbol {
   name: "wake_up_process"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xcce0b68f
+  crc: 0xfb495a42
   type_id: 0x9ac6895a
   full_name: "wake_up_process"
 }
