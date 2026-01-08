@@ -33,6 +33,24 @@
       "message": "This is a build-break for arm32 allmodconfig builds:\n```\n/mnt/disks/build-disk/src/android/common-android17-6.18/out/bazel/output_user_root/fa9910ec2adab6e32b7b4e0019079cd9/sandbox/linux-sandbox/205/execroot/_main/common/drivers/misc/uid_sys_stats.c:506:27: error: cannot take the address of an rvalue of type \u0027int\u0027\n  506 |                 UPDATE_ANDROID_OEM_DATA(\u0026OEM_DATA(uid_entry),\n      |                                         ^~~~~~~~~~~~~~~~~~~~\n/mnt/disks/build-disk/src/android/common-android17-6.18/out/bazel/output_user_root/fa9910ec2adab6e32b7b4e0019079cd9/sandbox/linux-sandbox/205/execroot/_main/common/drivers/misc/uid_sys_stats.c:52:36: note: expanded from macro \u0027UPDATE_ANDROID_OEM_DATA\u0027\n   52 |         trace_android_vh_update_uid_stats(target, source, task, type)\n      |                                           ^~~~~~\n/mnt/disks/build-disk/src/android/common-android17-6.18/out/bazel/output_user_root/fa9910ec2adab6e32b7b4e0019079cd9/sandbox/linux-sandbox/205/execroot/_main/common/drivers/misc/uid_sys_stats.c:507:4: error: cannot take the address of an rvalue of type \u0027int\u0027\n  507 |                         \u0026OEM_DATA(usw), NULL, 0);\n      |                         ^~~~~~~~~~~~~~\n/mnt/disks/build-disk/src/android/common-android17-6.18/out/bazel/output_user_root/fa9910ec2adab6e32b7b4e0019079cd9/sandbox/linux-sandbox/205/execroot/_main/common/drivers/misc/uid_sys_stats.c:52:44: note: expanded from macro \u0027UPDATE_ANDROID_OEM_DATA\u0027\n   52 |         trace_android_vh_update_uid_stats(target, source, task, type)\n      |                                                   ^~~~~~\n/mnt/disks/build-disk/src/android/common-android17-6.18/out/bazel/output_user_root/fa9910ec2adab6e32b7b4e0019079cd9/sandbox/linux-sandbox/205/execroot/_main/common/drivers/misc/uid_sys_stats.c:545:34: error: cannot take the address of an rvalue of type \u0027int\u0027\n  545 |                         UPDATE_ANDROID_OEM_DATA(NULL, \u0026OEM_DATA(usw), task, 1);\n      |                                                       ^~~~~~~~~~~~~~\n/mnt/disks/build-disk/src/android/common-android17-6.18/out/bazel/output_user_root/fa9910ec2adab6e32b7b4e0019079cd9/sandbox/linux-sandbox/205/execroot/_main/common/drivers/misc/uid_sys_stats.c:52:44: note: expanded from macro \u0027UPDATE_ANDROID_OEM_DATA\u0027\n   52 |         trace_android_vh_update_uid_stats(target, source, task, type)\n      |                                                   ^~~~~~\n/mnt/disks/build-disk/src/android/common-android17-6.18/out/bazel/output_user_root/fa9910ec2adab6e32b7b4e0019079cd9/sandbox/linux-sandbox/205/execroot/_main/common/drivers/misc/uid_sys_stats.c:561:26: error: cannot take the address of an rvalue of type \u0027int\u0027\n  561 |         UPDATE_ANDROID_OEM_DATA(\u0026OEM_DATA(uid_entry), NULL, task, 2);\n      |                                 ^~~~~~~~~~~~~~~~~~~~\n/mnt/disks/build-disk/src/android/common-android17-6.18/out/bazel/output_user_root/fa9910ec2adab6e32b7b4e0019079cd9/sandbox/linux-sandbox/205/execroot/_main/common/drivers/misc/uid_sys_stats.c:52:36: note: expanded from macro \u0027UPDATE_ANDROID_OEM_DATA\u0027\n   52 |         trace_android_vh_update_uid_stats(target, source, task, type)\n      |                                           ^~~~~~\n4 errors generated.\n```",
       "revId": "02c1690f96ec87ea08bdd572a717d1d93aefe5cf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffacd1f1_2c042185",
+        "filename": "drivers/misc/uid_sys_stats.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 3910417
+      },
+      "writtenOn": "2026-01-08T03:14:54Z",
+      "side": 1,
+      "message": "Thanks a lot. The fix has been cherry-picked and please review again.",
+      "parentUuid": "fc23a022_56a4f480",
+      "revId": "02c1690f96ec87ea08bdd572a717d1d93aefe5cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
