@@ -1687,6 +1687,9 @@ cc_library(
     defines = [
         "_GNU_SOURCE=",
     ],
+    includes = [
+        "tools/testing/selftests",
+    ],
     visibility = ["//visibility:private"],
 )
 
