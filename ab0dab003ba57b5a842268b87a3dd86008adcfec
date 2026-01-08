@@ -34,6 +34,24 @@
       "parentUuid": "b4e395e2_f1126b35",
       "revId": "ab0dab003ba57b5a842268b87a3dd86008adcfec",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d433801e_94c2b571",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2026-01-08T11:05:55Z",
+      "side": 1,
+      "message": "Actually, I think the problem is not that your change should have been rebased.\n\nThe reference build used was likely too old. This means the ABI generated during the build would be missing some changes.",
+      "parentUuid": "6fac2897_caddacae",
+      "revId": "ab0dab003ba57b5a842268b87a3dd86008adcfec",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
