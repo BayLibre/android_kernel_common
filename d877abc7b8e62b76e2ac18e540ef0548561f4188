@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e664d310_329baa78",
+        "filename": "include/linux/mmap_lock.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2026-01-08T19:13:13Z",
+      "side": 1,
+      "message": "Please add `kcsan_atomic_next(KCSAN_SEQLOCK_REGION_MAX)` after the load acquire.",
+      "parentUuid": "b73566b0_fde29580",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 24
+      },
+      "revId": "d877abc7b8e62b76e2ac18e540ef0548561f4188",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0eec77f0_44fc1ec0",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-01-08T18:31:44Z",
       "side": 1,
       "message": "LGTM, assuming we are not concerned with the KCSAn atomic annotations.\n\n`do_read_seqcount_retry()` -\u003e `smp_rmb()` -\u003e `do___read_seqcount_retry()` -\u003e `READ_ONCE(...)`",
+      "range": {
+        "startLine": 90,
+        "startChar": 1,
+        "endLine": 91,
+        "endChar": 52
+      },
+      "revId": "d877abc7b8e62b76e2ac18e540ef0548561f4188",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8b7c681_24415146",
+        "filename": "include/linux/mmap_lock.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2026-01-08T19:13:13Z",
+      "side": 1,
+      "message": "Please add `kcsan_atomic_next(0)` before the READ_ONCE() for kcsan.",
+      "parentUuid": "0eec77f0_44fc1ec0",
       "range": {
         "startLine": 90,
         "startChar": 1,
