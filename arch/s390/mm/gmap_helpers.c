@@ -47,7 +47,6 @@ static void ptep_zap_softleaf_entry(struct mm_struct *mm, softleaf_t entry)
 void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
 {
 	struct vm_area_struct *vma;
-	unsigned long pgstev;
 	spinlock_t *ptl;
 	pgste_t pgste;
 	pte_t *ptep;
@@ -66,13 +65,9 @@ void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
 	if (pte_swap(*ptep)) {
 		preempt_disable();
 		pgste = pgste_get_lock(ptep);
-		pgstev = pgste_val(pgste);
 
-		if ((pgstev & _PGSTE_GPS_USAGE_MASK) == _PGSTE_GPS_USAGE_UNUSED ||
-		    (pgstev & _PGSTE_GPS_ZERO)) {
-			ptep_zap_softleaf_entry(mm, softleaf_from_pte(*ptep));
-			pte_clear(mm, vmaddr, ptep);
-		}
+		ptep_zap_softleaf_entry(mm, softleaf_from_pte(*ptep));
+		pte_clear(mm, vmaddr, ptep);
 
 		pgste_set_unlock(ptep, pgste);
 		preempt_enable();
