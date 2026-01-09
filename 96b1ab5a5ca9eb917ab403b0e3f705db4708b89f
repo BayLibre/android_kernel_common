@@ -16,6 +16,24 @@
       "message": "Why the __init must be removed? I would expect code patching to only happen during init.",
       "revId": "96b1ab5a5ca9eb917ab403b0e3f705db4708b89f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "657af48a_b4670148",
+        "filename": "arch/arm64/kvm/va_layout.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 4269789
+      },
+      "writtenOn": "2026-01-09T10:04:13Z",
+      "side": 0,
+      "message": "checkpatch is complaining about exporting an __init symbol also patching code should be marked noinstr but I am not sure how it works when both used. See: https://lore.kernel.org/all/20250923174903.76283-1-ada.coupriediaz@arm.com/#t",
+      "parentUuid": "f832eb60_529cfb18",
+      "revId": "96b1ab5a5ca9eb917ab403b0e3f705db4708b89f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
