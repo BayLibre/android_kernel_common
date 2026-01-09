@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1437f6a8_1ada639d",
+        "filename": "kernel/power/power.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2026-01-09T00:19:15Z",
+      "side": 1,
+      "message": "This is incorrect; this variable was introduced by this commit: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/kernel/power/main.c?h\u003dv6.19-rc4\u0026id\u003deacfbf74196f91e4c26d9f8c78e1576c1225cd8c\n\nwhich isn\u0027t on this branch; this came in after 6.12.",
+      "fixSuggestions": [
+        {
+          "fixId": "34718260_9845884b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "kernel/power/power.h",
+              "range": {
+                "startLine": 23,
+                "startChar": 0,
+                "endLine": 24,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "e5ff9022f2d318a7fadd7499c9afbffa083f4e95",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
