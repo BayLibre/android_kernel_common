@@ -32,7 +32,7 @@ struct restart_block {
 			u32 val;
 			u32 flags;
 			u32 bitset;
-			ktime_t time;
+			u64 time;
 			u32 __user *uaddr2;
 		} futex;
 		/* For nanosleep */
