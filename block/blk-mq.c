@@ -336,12 +336,12 @@ void blk_mq_quiesce_tagset(struct blk_mq_tag_set *set)
 {
 	struct request_queue *q;
 
-	rcu_read_lock();
-	list_for_each_entry_rcu(q, &set->tag_list, tag_set_list) {
+	mutex_lock(&set->tag_list_lock);
+	list_for_each_entry(q, &set->tag_list, tag_set_list) {
 		if (!blk_queue_skip_tagset_quiesce(q))
 			blk_mq_quiesce_queue_nowait(q);
 	}
-	rcu_read_unlock();
+	mutex_unlock(&set->tag_list_lock);
 
 	blk_mq_wait_quiesce_done(set);
 }
@@ -351,12 +351,12 @@ void blk_mq_unquiesce_tagset(struct blk_mq_tag_set *set)
 {
 	struct request_queue *q;
 
-	rcu_read_lock();
-	list_for_each_entry_rcu(q, &set->tag_list, tag_set_list) {
+	mutex_lock(&set->tag_list_lock);
+	list_for_each_entry(q, &set->tag_list, tag_set_list) {
 		if (!blk_queue_skip_tagset_quiesce(q))
 			blk_mq_unquiesce_queue(q);
 	}
-	rcu_read_unlock();
+	mutex_unlock(&set->tag_list_lock);
 }
 EXPORT_SYMBOL_GPL(blk_mq_unquiesce_tagset);
 
@@ -4311,7 +4311,7 @@ static void blk_mq_del_queue_tag_set(struct request_queue *q)
 	struct blk_mq_tag_set *set = q->tag_set;
 
 	mutex_lock(&set->tag_list_lock);
-	list_del_rcu(&q->tag_set_list);
+	list_del(&q->tag_set_list);
 	if (list_is_singular(&set->tag_list)) {
 		/* just transitioned to unshared */
 		set->flags &= ~BLK_MQ_F_TAG_QUEUE_SHARED;
@@ -4319,6 +4319,7 @@ static void blk_mq_del_queue_tag_set(struct request_queue *q)
 		blk_mq_update_tag_set_shared(set, false);
 	}
 	mutex_unlock(&set->tag_list_lock);
+	INIT_LIST_HEAD(&q->tag_set_list);
 }
 
 static void blk_mq_add_queue_tag_set(struct blk_mq_tag_set *set,
@@ -4337,7 +4338,7 @@ static void blk_mq_add_queue_tag_set(struct blk_mq_tag_set *set,
 	}
 	if (set->flags & BLK_MQ_F_TAG_QUEUE_SHARED)
 		queue_set_hctx_shared(q, true);
-	list_add_tail_rcu(&q->tag_set_list, &set->tag_list);
+	list_add_tail(&q->tag_set_list, &set->tag_list);
 
 	mutex_unlock(&set->tag_list_lock);
 }
@@ -5192,19 +5193,27 @@ EXPORT_SYMBOL_GPL(blk_mq_update_nr_hw_queues);
 static int blk_hctx_poll(struct request_queue *q, struct blk_mq_hw_ctx *hctx,
 			 struct io_comp_batch *iob, unsigned int flags)
 {
+	long state = get_current_state();
 	int ret;
 
 	do {
 		ret = q->mq_ops->poll(hctx, iob);
-		if (ret > 0)
+		if (ret > 0) {
+			__set_current_state(TASK_RUNNING);
 			return ret;
-		if (task_sigpending(current))
+		}
+
+		if (signal_pending_state(state, current))
+			__set_current_state(TASK_RUNNING);
+		if (task_is_running(current))
 			return 1;
+
 		if (ret < 0 || (flags & BLK_POLL_ONESHOT))
 			break;
 		cpu_relax();
 	} while (!need_resched());
 
+	__set_current_state(TASK_RUNNING);
 	return 0;
 }
 
