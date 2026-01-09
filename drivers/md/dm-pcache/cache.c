@@ -10,8 +10,7 @@ struct kmem_cache *key_cache;
 
 static inline struct pcache_cache_info *get_cache_info_addr(struct pcache_cache *cache)
 {
-	return (struct pcache_cache_info *)((char *)cache->cache_info_addr +
-						(size_t)cache->info_index * PCACHE_CACHE_INFO_SIZE);
+	return cache->cache_info_addr + cache->info_index;
 }
 
 static void cache_info_write(struct pcache_cache *cache)
@@ -22,10 +21,10 @@ static void cache_info_write(struct pcache_cache *cache)
 	cache_info->header.crc = pcache_meta_crc(&cache_info->header,
 						sizeof(struct pcache_cache_info));
 
-	cache->info_index = (cache->info_index + 1) % PCACHE_META_INDEX_MAX;
 	memcpy_flushcache(get_cache_info_addr(cache), cache_info,
 			sizeof(struct pcache_cache_info));
-	pmem_wmb();
+
+	cache->info_index = (cache->info_index + 1) % PCACHE_META_INDEX_MAX;
 }
 
 static void cache_info_init_default(struct pcache_cache *cache);
@@ -49,8 +48,6 @@ static int cache_info_init(struct pcache_cache *cache, struct pcache_cache_optio
 					cache->cache_info.flags & PCACHE_CACHE_FLAGS_DATA_CRC ? "true" : "false");
 			return -EINVAL;
 		}
-
-		cache->info_index = ((char *)cache_info_addr - (char *)cache->cache_info_addr) / PCACHE_CACHE_INFO_SIZE;
 
 		return 0;
 	}
@@ -96,10 +93,10 @@ void cache_pos_encode(struct pcache_cache *cache,
 	pos_onmedia.header.seq = seq;
 	pos_onmedia.header.crc = cache_pos_onmedia_crc(&pos_onmedia);
 
-	*index = (*index + 1) % PCACHE_META_INDEX_MAX;
-
 	memcpy_flushcache(pos_onmedia_addr, &pos_onmedia, sizeof(struct pcache_cache_pos_onmedia));
 	pmem_wmb();
+
+	*index = (*index + 1) % PCACHE_META_INDEX_MAX;
 }
 
 int cache_pos_decode(struct pcache_cache *cache,
