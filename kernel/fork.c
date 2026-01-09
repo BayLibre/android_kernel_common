@@ -888,7 +888,18 @@ void __mmdrop(struct mm_struct *mm)
 	check_mm(mm);
 	put_user_ns(mm->user_ns);
 	mm_pasid_drop(mm);
+<<<<<<< HEAD   (da3ffb22836eeee27f08ab71206c8681edc4221d ANDROID: fuse: Use vma_set_file() in fuse_backing_mmap())
 	kfree(mm->abi_extend);
+||||||| BASE   (efe16a3021b9f95eb1cb83e98d0d1db9bff94ce4 ANDROID: Clear task dmabuf_info on unshare(CLONE_FILES))
+	mm_destroy_cid(mm);
+	percpu_counter_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
+
+=======
+	mm_destroy_cid(mm);
+	percpu_counter_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
+	trace_android_vh_mmap_lock_free(&mm->mmap_lock);
+
+>>>>>>> CHANGE (938e09d3130bd79729d31faa3ab71e6e5136cd9b ANDROID: vendor_hooks: Add vendor hooks for mmap_lock)
 	trace_android_vh_mm_free(mm);
 	free_mm(mm);
 }
@@ -1217,6 +1228,12 @@ static void mm_init_uprobes_state(struct mm_struct *mm)
 #ifdef CONFIG_UPROBES
 	mm->uprobes_state.xol_area = NULL;
 #endif
+}
+
+static void mmap_init_lock(struct mm_struct *mm)
+{
+	init_rwsem(&mm->mmap_lock);
+	trace_android_vh_mmap_lock_init(&mm->mmap_lock);
 }
 
 static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
