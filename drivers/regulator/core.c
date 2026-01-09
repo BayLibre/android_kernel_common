@@ -2823,18 +2823,14 @@ static void regulator_ena_gpio_free(struct regulator_dev *rdev)
 static int regulator_ena_gpio_ctrl(struct regulator_dev *rdev, bool enable)
 {
 	struct regulator_enable_gpio *pin = rdev->ena_pin;
-	int ret;
 
 	if (!pin)
 		return -EINVAL;
 
 	if (enable) {
 		/* Enable GPIO at initial use */
-		if (pin->enable_count == 0) {
-			ret = gpiod_set_value_cansleep(pin->gpiod, 1);
-			if (ret)
-				return ret;
-		}
+		if (pin->enable_count == 0)
+			gpiod_set_value_cansleep(pin->gpiod, 1);
 
 		pin->enable_count++;
 	} else {
@@ -2845,10 +2841,7 @@ static int regulator_ena_gpio_ctrl(struct regulator_dev *rdev, bool enable)
 
 		/* Disable GPIO if not used */
 		if (pin->enable_count <= 1) {
-			ret = gpiod_set_value_cansleep(pin->gpiod, 0);
-			if (ret)
-				return ret;
-
+			gpiod_set_value_cansleep(pin->gpiod, 0);
 			pin->enable_count = 0;
 		}
 	}

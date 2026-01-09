@@ -390,8 +390,7 @@ nfs_async_rename(struct inode *old_dir, struct inode *new_dir,
 
 	nfs_sb_active(old_dir->i_sb);
 
-	NFS_PROTO(data->old_dir)->rename_setup(&msg, old_dentry, new_dentry,
-					old_dir == new_dir ? old_dir : NULL);
+	NFS_PROTO(data->old_dir)->rename_setup(&msg, old_dentry, new_dentry);
 
 	return rpc_run_task(&task_setup_data);
 }
