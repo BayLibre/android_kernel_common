@@ -1600,7 +1600,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
 
 	err = ubi_read_volume_table(ubi, ai);
 	if (err)
-		goto out_fm;
+		goto out_ai;
 
 	err = ubi_wl_init(ubi, ai);
 	if (err)
@@ -1642,8 +1642,6 @@ out_wl:
 out_vtbl:
 	ubi_free_all_volumes(ubi);
 	vfree(ubi->vtbl);
-out_fm:
-	ubi_free_fastmap(ubi);
 out_ai:
 	destroy_ai(ai);
 	return err;
