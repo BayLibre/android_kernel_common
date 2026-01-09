@@ -38,14 +38,13 @@ static int gc_thread_func(void *data)
 	struct f2fs_gc_control gc_control = {
 		.victim_segno = NULL_SEGNO,
 		.should_migrate_blocks = false,
-		.err_gc_skipped = false,
-		.one_time = false };
+		.err_gc_skipped = false };
 
 	wait_ms = gc_th->min_sleep_time;
 
 	set_freezable();
 	do {
-		bool sync_mode, foreground = false, gc_boost = false;
+		bool sync_mode, foreground = false;
 
 		wait_event_freezable_timeout(*wq,
 				kthread_should_stop() ||
@@ -53,12 +52,8 @@ static int gc_thread_func(void *data)
 				gc_th->gc_wake,
 				msecs_to_jiffies(wait_ms));
 
-		if (test_opt(sbi, GC_MERGE) && waitqueue_active(fggc_wq)) {
+		if (test_opt(sbi, GC_MERGE) && waitqueue_active(fggc_wq))
 			foreground = true;
-			gc_control.one_time = false;
-		} else if (f2fs_sb_has_blkzoned(sbi)) {
-			gc_control.one_time = true;
-		}
 
 		/* give it a try one time */
 		if (gc_th->gc_wake)
@@ -85,6 +80,8 @@ static int gc_thread_func(void *data)
 			stat_other_skip_bggc_count(sbi);
 			continue;
 		}
+
+		gc_control.one_time = false;
 
 		/*
 		 * [GC triggering condition]
@@ -135,7 +132,7 @@ static int gc_thread_func(void *data)
 		if (need_to_boost_gc(sbi)) {
 			decrease_sleep_time(gc_th, &wait_ms);
 			if (f2fs_sb_has_blkzoned(sbi))
-				gc_boost = true;
+				gc_control.one_time = true;
 		} else {
 			increase_sleep_time(gc_th, &wait_ms);
 		}
@@ -144,7 +141,7 @@ do_gc:
 					FOREGROUND : BACKGROUND);
 
 		sync_mode = (F2FS_OPTION(sbi).bggc_mode == BGGC_MODE_SYNC) ||
-			(gc_boost && gc_th->boost_gc_greedy);
+			(gc_control.one_time && gc_th->boost_gc_greedy);
 
 		/* foreground GC was been triggered via f2fs_balance_fs() */
 		if (foreground && !f2fs_sb_has_blkzoned(sbi))
@@ -774,7 +771,7 @@ int f2fs_get_victim(struct f2fs_sb_info *sbi, unsigned int *result,
 {
 	struct dirty_seglist_info *dirty_i = DIRTY_I(sbi);
 	struct sit_info *sm = SIT_I(sbi);
-	struct victim_sel_policy p = {0};
+	struct victim_sel_policy p;
 	unsigned int secno, last_victim;
 	unsigned int last_segment;
 	unsigned int nsearched;
@@ -1211,7 +1208,7 @@ static int ra_data_block(struct inode *inode, pgoff_t index)
 	struct address_space *mapping = f2fs_is_cow_file(inode) ?
 				F2FS_I(inode)->atomic_inode->i_mapping : inode->i_mapping;
 	struct dnode_of_data dn;
-	struct folio *folio, *efolio;
+	struct folio *folio;
 	struct f2fs_io_info fio = {
 		.sbi = sbi,
 		.ino = inode->i_ino,
@@ -1266,19 +1263,18 @@ got_it:
 
 	f2fs_wait_on_block_writeback(inode, dn.data_blkaddr);
 
-	efolio = f2fs_filemap_get_folio(META_MAPPING(sbi), dn.data_blkaddr,
+	fio.encrypted_page = f2fs_pagecache_get_page(META_MAPPING(sbi),
+					dn.data_blkaddr,
 					FGP_LOCK | FGP_CREAT, GFP_NOFS);
-	if (IS_ERR(efolio)) {
-		err = PTR_ERR(efolio);
+	if (!fio.encrypted_page) {
+		err = -ENOMEM;
 		goto put_folio;
 	}
-
-	fio.encrypted_page = &efolio->page;
 
 	err = f2fs_submit_page_bio(&fio);
 	if (err)
 		goto put_encrypted_page;
-	f2fs_put_page(fio.encrypted_page, false);
+	f2fs_put_page(fio.encrypted_page, 0);
 	f2fs_folio_put(folio, true);
 
 	f2fs_update_iostat(sbi, inode, FS_DATA_READ_IO, F2FS_BLKSIZE);
@@ -1286,7 +1282,7 @@ got_it:
 
 	return 0;
 put_encrypted_page:
-	f2fs_put_page(fio.encrypted_page, true);
+	f2fs_put_page(fio.encrypted_page, 1);
 put_folio:
 	f2fs_folio_put(folio, true);
 	return err;
@@ -1314,7 +1310,7 @@ static int move_data_block(struct inode *inode, block_t bidx,
 	struct dnode_of_data dn;
 	struct f2fs_summary sum;
 	struct node_info ni;
-	struct folio *folio, *mfolio, *efolio;
+	struct folio *folio, *mfolio;
 	block_t newaddr;
 	int err = 0;
 	bool lfs_mode = f2fs_lfs_mode(fio.sbi);
@@ -1408,15 +1404,13 @@ static int move_data_block(struct inode *inode, block_t bidx,
 		goto up_out;
 	}
 
-	efolio = f2fs_filemap_get_folio(META_MAPPING(fio.sbi), newaddr,
-					FGP_LOCK | FGP_CREAT, GFP_NOFS);
-	if (IS_ERR(efolio)) {
-		err = PTR_ERR(efolio);
+	fio.encrypted_page = f2fs_pagecache_get_page(META_MAPPING(fio.sbi),
+				newaddr, FGP_LOCK | FGP_CREAT, GFP_NOFS);
+	if (!fio.encrypted_page) {
+		err = -ENOMEM;
 		f2fs_folio_put(mfolio, true);
 		goto recover_block;
 	}
-
-	fio.encrypted_page = &efolio->page;
 
 	/* write target block */
 	f2fs_wait_on_page_writeback(fio.encrypted_page, DATA, true, true);
@@ -1442,7 +1436,7 @@ static int move_data_block(struct inode *inode, block_t bidx,
 	f2fs_update_data_blkaddr(&dn, newaddr);
 	set_inode_flag(inode, FI_APPEND_WRITE);
 
-	f2fs_put_page(fio.encrypted_page, true);
+	f2fs_put_page(fio.encrypted_page, 1);
 recover_block:
 	if (err)
 		f2fs_do_replace_block(fio.sbi, &sum, newaddr, fio.old_blkaddr,
@@ -1735,7 +1729,7 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
 	unsigned char type = IS_DATASEG(get_seg_entry(sbi, segno)->type) ?
 						SUM_TYPE_DATA : SUM_TYPE_NODE;
 	unsigned char data_type = (type == SUM_TYPE_DATA) ? DATA : NODE;
-	int submitted = 0, sum_blk_cnt;
+	int submitted = 0;
 
 	if (__is_large_section(sbi)) {
 		sec_end_segno = rounddown(end_segno, SEGS_PER_SEC(sbi));
@@ -1769,28 +1763,22 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
 
 	sanity_check_seg_type(sbi, get_seg_entry(sbi, segno)->type);
 
-	segno = rounddown(segno, SUMS_PER_BLOCK);
-	sum_blk_cnt = DIV_ROUND_UP(end_segno - segno, SUMS_PER_BLOCK);
 	/* readahead multi ssa blocks those have contiguous address */
 	if (__is_large_section(sbi))
 		f2fs_ra_meta_pages(sbi, GET_SUM_BLOCK(sbi, segno),
-					sum_blk_cnt, META_SSA, true);
+					end_segno - segno, META_SSA, true);
 
 	/* reference all summary page */
 	while (segno < end_segno) {
-		struct folio *sum_folio = f2fs_get_sum_folio(sbi, segno);
-
-		segno += SUMS_PER_BLOCK;
+		struct folio *sum_folio = f2fs_get_sum_folio(sbi, segno++);
 		if (IS_ERR(sum_folio)) {
 			int err = PTR_ERR(sum_folio);
 
-			end_segno = segno - SUMS_PER_BLOCK;
-			segno = rounddown(start_segno, SUMS_PER_BLOCK);
-			while (segno < end_segno) {
+			end_segno = segno - 1;
+			for (segno = start_segno; segno < end_segno; segno++) {
 				sum_folio = filemap_get_folio(META_MAPPING(sbi),
 						GET_SUM_BLOCK(sbi, segno));
 				folio_put_refs(sum_folio, 2);
-				segno += SUMS_PER_BLOCK;
 			}
 			return err;
 		}
@@ -1799,83 +1787,68 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
 
 	blk_start_plug(&plug);
 
-	segno = start_segno;
-	while (segno < end_segno) {
-		unsigned int cur_segno;
+	for (segno = start_segno; segno < end_segno; segno++) {
+		struct f2fs_summary_block *sum;
 
 		/* find segment summary of victim */
 		struct folio *sum_folio = filemap_get_folio(META_MAPPING(sbi),
 					GET_SUM_BLOCK(sbi, segno));
-		unsigned int block_end_segno = rounddown(segno, SUMS_PER_BLOCK)
-					+ SUMS_PER_BLOCK;
-
-		if (block_end_segno > end_segno)
-			block_end_segno = end_segno;
 
 		if (is_cursec(sbi, GET_SEC_FROM_SEG(sbi, segno))) {
 			f2fs_err(sbi, "%s: segment %u is used by log",
 							__func__, segno);
 			f2fs_bug_on(sbi, 1);
-			goto next_block;
+			goto skip;
 		}
 
+		if (get_valid_blocks(sbi, segno, false) == 0)
+			goto freed;
+		if (gc_type == BG_GC && __is_large_section(sbi) &&
+				migrated >= sbi->migration_granularity)
+			goto skip;
 		if (!folio_test_uptodate(sum_folio) ||
 		    unlikely(f2fs_cp_error(sbi)))
-			goto next_block;
+			goto skip;
 
-		for (cur_segno = segno; cur_segno < block_end_segno;
-				cur_segno++) {
-			struct f2fs_summary_block *sum;
+		sum = folio_address(sum_folio);
+		if (type != GET_SUM_TYPE((&sum->footer))) {
+			f2fs_err(sbi, "Inconsistent segment (%u) type [%d, %d] in SIT and SSA",
+				 segno, type, GET_SUM_TYPE((&sum->footer)));
+			f2fs_stop_checkpoint(sbi, false,
+				STOP_CP_REASON_CORRUPTED_SUMMARY);
+			goto skip;
+		}
 
-			if (get_valid_blocks(sbi, cur_segno, false) == 0)
-				goto freed;
-			if (gc_type == BG_GC && __is_large_section(sbi) &&
-					migrated >= sbi->migration_granularity)
-				continue;
+		/*
+		 * this is to avoid deadlock:
+		 * - lock_page(sum_page)         - f2fs_replace_block
+		 *  - check_valid_map()            - down_write(sentry_lock)
+		 *   - down_read(sentry_lock)     - change_curseg()
+		 *                                  - lock_page(sum_page)
+		 */
+		if (type == SUM_TYPE_NODE)
+			submitted += gc_node_segment(sbi, sum->entries, segno,
+								gc_type);
+		else
+			submitted += gc_data_segment(sbi, sum->entries, gc_list,
+							segno, gc_type,
+							force_migrate);
 
-			sum = SUM_BLK_PAGE_ADDR(sum_folio, cur_segno);
-			if (type != GET_SUM_TYPE((&sum->footer))) {
-				f2fs_err(sbi, "Inconsistent segment (%u) type "
-						"[%d, %d] in SSA and SIT",
-						cur_segno, type,
-						GET_SUM_TYPE((&sum->footer)));
-				f2fs_stop_checkpoint(sbi, false,
-						STOP_CP_REASON_CORRUPTED_SUMMARY);
-				continue;
-			}
-
-			/*
-			 * this is to avoid deadlock:
-			 *  - lock_page(sum_page)     - f2fs_replace_block
-			 *   - check_valid_map()        - down_write(sentry_lock)
-			 *    - down_read(sentry_lock) - change_curseg()
-			 *                               - lock_page(sum_page)
-			 */
-			if (type == SUM_TYPE_NODE)
-				submitted += gc_node_segment(sbi, sum->entries,
-						cur_segno, gc_type);
-			else
-				submitted += gc_data_segment(sbi, sum->entries,
-						gc_list, cur_segno,
-						gc_type, force_migrate);
-
-			stat_inc_gc_seg_count(sbi, data_type, gc_type);
-			sbi->gc_reclaimed_segs[sbi->gc_mode]++;
-			migrated++;
+		stat_inc_gc_seg_count(sbi, data_type, gc_type);
+		sbi->gc_reclaimed_segs[sbi->gc_mode]++;
+		migrated++;
 
 freed:
-			if (gc_type == FG_GC &&
-					get_valid_blocks(sbi, cur_segno, false) == 0)
-				seg_freed++;
+		if (gc_type == FG_GC &&
+				get_valid_blocks(sbi, segno, false) == 0)
+			seg_freed++;
 
-			if (__is_large_section(sbi))
-				sbi->next_victim_seg[gc_type] =
-					(cur_segno + 1 < sec_end_segno) ?
-					cur_segno + 1 : NULL_SEGNO;
-		}
-next_block:
+		if (__is_large_section(sbi))
+			sbi->next_victim_seg[gc_type] =
+				(segno + 1 < sec_end_segno) ?
+					segno + 1 : NULL_SEGNO;
+skip:
 		folio_put_refs(sum_folio, 2);
-		segno = block_end_segno;
 	}
 
 	if (submitted)
