@@ -176,7 +176,7 @@ replay_again:
 	server = cifs_pick_channel(ses);
 
 	if (!server->ops->new_lease_key)
-		return smb_EIO(smb_eio_trace_no_lease_key);
+		return -EIO;
 
 	utf16_path = cifs_convert_path_to_utf16(path, cifs_sb);
 	if (!utf16_path)

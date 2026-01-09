@@ -36,10 +36,13 @@ struct wmi_device {
  */
 #define to_wmi_device(device)	container_of_const(device, struct wmi_device, dev)
 
-acpi_status wmidev_evaluate_method(struct wmi_device *wdev, u8 instance, u32 method_id,
-				   const struct acpi_buffer *in, struct acpi_buffer *out);
+extern acpi_status wmidev_evaluate_method(struct wmi_device *wdev,
+					  u8 instance, u32 method_id,
+					  const struct acpi_buffer *in,
+					  struct acpi_buffer *out);
 
-union acpi_object *wmidev_block_query(struct wmi_device *wdev, u8 instance);
+extern union acpi_object *wmidev_block_query(struct wmi_device *wdev,
+					     u8 instance);
 
 acpi_status wmidev_block_set(struct wmi_device *wdev, u8 instance, const struct acpi_buffer *in);
 
@@ -78,9 +81,9 @@ struct wmi_driver {
  */
 #define to_wmi_driver(drv)	container_of_const(drv, struct wmi_driver, driver)
 
-int __must_check __wmi_driver_register(struct wmi_driver *driver, struct module *owner);
-
-void wmi_driver_unregister(struct wmi_driver *driver);
+extern int __must_check __wmi_driver_register(struct wmi_driver *driver,
+					      struct module *owner);
+extern void wmi_driver_unregister(struct wmi_driver *driver);
 
 /**
  * wmi_driver_register() - Helper macro to register a WMI driver

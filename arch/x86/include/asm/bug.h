@@ -129,7 +129,7 @@ do {								\
 
 #define __WARN_FLAGS(cond_str, flags)					\
 do {									\
-	auto __flags = BUGFLAG_WARNING|(flags);				\
+	__auto_type __flags = BUGFLAG_WARNING|(flags);			\
 	instrumentation_begin();					\
 	_BUG_FLAGS(cond_str, ASM_UD2, __flags, ARCH_WARN_REACHABLE);	\
 	instrumentation_end();						\

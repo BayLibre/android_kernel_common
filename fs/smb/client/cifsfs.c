@@ -28,8 +28,6 @@
 #include <linux/splice.h>
 #include <linux/uuid.h>
 #include <linux/xattr.h>
-#include <linux/mm.h>
-#include <linux/key-type.h>
 #include <uapi/linux/magic.h>
 #include <net/ipv6.h>
 #include "cifsfs.h"
@@ -37,9 +35,10 @@
 #define DECLARE_GLOBALS_HERE
 #include "cifsglob.h"
 #include "cifsproto.h"
-#include "smb2proto.h"
 #include "cifs_debug.h"
 #include "cifs_fs_sb.h"
+#include <linux/mm.h>
+#include <linux/key-type.h>
 #include "cifs_spnego.h"
 #include "fscache.h"
 #ifdef CONFIG_CIFS_DFS_UPCALL
@@ -443,7 +442,7 @@ static struct kmem_cache *cifs_io_request_cachep;
 static struct kmem_cache *cifs_io_subrequest_cachep;
 mempool_t *cifs_sm_req_poolp;
 mempool_t *cifs_req_poolp;
-mempool_t cifs_mid_pool;
+mempool_t *cifs_mid_poolp;
 mempool_t cifs_io_request_pool;
 mempool_t cifs_io_subrequest_pool;
 
@@ -1017,6 +1016,7 @@ cifs_smb3_do_mount(struct file_system_type *fs_type,
 	} else {
 		cifs_info("Attempting to mount %s\n", old_ctx->source);
 	}
+
 	cifs_sb = kzalloc(sizeof(*cifs_sb), GFP_KERNEL);
 	if (!cifs_sb)
 		return ERR_PTR(-ENOMEM);
@@ -1847,7 +1847,8 @@ static int init_mids(void)
 		return -ENOMEM;
 
 	/* 3 is a reasonable minimum number of simultaneous operations */
-	if (mempool_init_slab_pool(&cifs_mid_pool, 3, cifs_mid_cachep) < 0) {
+	cifs_mid_poolp = mempool_create_slab_pool(3, cifs_mid_cachep);
+	if (cifs_mid_poolp == NULL) {
 		kmem_cache_destroy(cifs_mid_cachep);
 		return -ENOMEM;
 	}
@@ -1857,7 +1858,7 @@ static int init_mids(void)
 
 static void destroy_mids(void)
 {
-	mempool_exit(&cifs_mid_pool);
+	mempool_destroy(cifs_mid_poolp);
 	kmem_cache_destroy(cifs_mid_cachep);
 }
 
