@@ -574,3 +574,40 @@ __traceiter_android_vh_mmap_lock_init
 __tracepoint_android_vh_mmap_lock_init
 __traceiter_android_vh_mmap_lock_free
 __tracepoint_android_vh_mmap_lock_free
+<<<<<<< HEAD   (7704a1ae279baec7789f6e19079cc4e80e62fa41 BACKPORT: usb: host: xhci-sideband: delegate offload_usage t)
+||||||| BASE   (33d2a795c3f806f90603a2d96a842797c36b5a5a ANDROID: vendor_hooks: Add vendor hooks for fuse)
+
+__tracepoint_android_vh_mm_get_zone_mark
+__traceiter_android_vh_mm_get_zone_mark
+
+__tracepoint_android_vh_folio_add_file_rmap
+__traceiter_android_vh_folio_add_file_rmap
+__tracepoint_android_vh_folio_remove_rmap
+__traceiter_android_vh_folio_remove_rmap
+
+__tracepoint_android_vh_folios_put_refs_direct_free
+__traceiter_android_vh_folios_put_refs_direct_free
+__tracepoint_android_vh_free_pages_and_swap_cache
+__traceiter_android_vh_free_pages_and_swap_cache
+__filemap_remove_folio
+inode_add_lru
+=======
+
+__tracepoint_android_vh_mm_get_zone_mark
+__traceiter_android_vh_mm_get_zone_mark
+
+__tracepoint_android_vh_folio_add_file_rmap
+__traceiter_android_vh_folio_add_file_rmap
+__tracepoint_android_vh_folio_remove_rmap
+__traceiter_android_vh_folio_remove_rmap
+
+__tracepoint_android_vh_folios_put_refs_direct_free
+__traceiter_android_vh_folios_put_refs_direct_free
+__tracepoint_android_vh_free_pages_and_swap_cache
+__traceiter_android_vh_free_pages_and_swap_cache
+__filemap_remove_folio
+inode_add_lru
+
+__traceiter_android_vh_fuse_request_fetch
+__tracepoint_android_vh_fuse_request_fetch
+>>>>>>> CHANGE (cadf47e82c5381c53ca5272a2e40c6c075059877 ANDROID: GKI: update symbol list file for xiaomi)
