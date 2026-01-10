@@ -998,6 +998,7 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
 	int i, j;
 	struct lruvec *lruvec = NULL;
 	unsigned long flags = 0;
+	bool direct_free = false;
 
 	for (i = 0, j = 0; i < folios->nr; i++) {
 		struct folio *folio = folios->folios[i];
@@ -1018,9 +1019,15 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
 			continue;
 		}
 
+		trace_android_vh_folios_put_refs_direct_free(folio, nr_refs,
+							&lruvec, &direct_free);
+		if (direct_free)
+			goto try_to_free;
+
 		if (!folio_ref_sub_and_test(folio, nr_refs))
 			continue;
 
+try_to_free:
 		/* hugetlb has its own memcg */
 		if (folio_test_hugetlb(folio)) {
 			if (lruvec) {
