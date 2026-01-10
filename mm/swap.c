@@ -1020,7 +1020,6 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
 
 		if (!folio_ref_sub_and_test(folio, nr_refs))
 			continue;
-
 		/* hugetlb has its own memcg */
 		if (folio_test_hugetlb(folio)) {
 			if (lruvec) {
