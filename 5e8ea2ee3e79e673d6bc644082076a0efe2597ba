@@ -52,6 +52,24 @@
       "parentUuid": "e4ca4a85_7f4b5445",
       "revId": "5e8ea2ee3e79e673d6bc644082076a0efe2597ba",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cfd0460_4a28eb39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2026-01-12T16:52:20Z",
+      "side": 1,
+      "message": "Well an initial impression is that you are assuming the system has access to certain userspace tools such as zcat and that the kernel configured has a config installed under /proc/ and that such config is gzipped. All of these could not be true individually and yes it is very hacky.\n\nAgain, you should either send a proper fix upstream or patch the downstream project that you are actually using to run the kselftests. However, this (android-mainline) is not the place for this patch.",
+      "parentUuid": "7b5fb545_9c213c66",
+      "revId": "5e8ea2ee3e79e673d6bc644082076a0efe2597ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
