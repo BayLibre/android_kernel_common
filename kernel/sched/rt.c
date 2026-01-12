@@ -2001,6 +2001,7 @@ static int find_lowest_rq(struct task_struct *sched_ctx, struct task_struct *exe
 
 static struct task_struct *pick_next_pushable_task(struct rq *rq)
 {
+<<<<<<< HEAD   (d329f2b3d308f218f2701e9e662acbfabe793ceb Merge 9433ba79c2ec ("hsr: hold rcu and dev lock for hsr_get_)
 	struct plist_head *head = &rq->rt.pushable_tasks;
 	struct task_struct *p, *push_task = NULL;
 
@@ -2106,6 +2107,25 @@ static inline bool rt_revalidate_rq_state(struct task_struct *task, struct rq *r
 	}
 
 	return true;
+||||||| BASE   (9433ba79c2ec3ec7c9a711748701549339c3438c hsr: hold rcu and dev lock for hsr_get_port_ndev)
+=======
+	struct task_struct *p;
+
+	if (!has_pushable_tasks(rq))
+		return NULL;
+
+	p = plist_first_entry(&rq->rt.pushable_tasks,
+			      struct task_struct, pushable_tasks);
+
+	BUG_ON(rq->cpu != task_cpu(p));
+	BUG_ON(task_current(rq, p));
+	BUG_ON(p->nr_cpus_allowed <= 1);
+
+	BUG_ON(!task_on_rq_queued(p));
+	BUG_ON(!rt_task(p));
+
+	return p;
+>>>>>>> BRANCH (debfbc047196df1f6bfd52f2d028c21dce67f0de sched/rt: Fix race in push_rt_task)
 }
 
 /* Will lock the rq it finds */
@@ -2139,7 +2159,41 @@ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
 
 		/* if the prio of this runqueue changed, try again */
 		if (double_lock_balance(rq, lowest_rq)) {
+<<<<<<< HEAD   (d329f2b3d308f218f2701e9e662acbfabe793ceb Merge 9433ba79c2ec ("hsr: hold rcu and dev lock for hsr_get_)
 			if (unlikely(!rt_revalidate_rq_state(task, rq, lowest_rq, &retry))) {
+||||||| BASE   (9433ba79c2ec3ec7c9a711748701549339c3438c hsr: hold rcu and dev lock for hsr_get_port_ndev)
+			/*
+			 * We had to unlock the run queue. In
+			 * the mean time, task could have
+			 * migrated already or had its affinity changed.
+			 * Also make sure that it wasn't scheduled on its rq.
+			 * It is possible the task was scheduled, set
+			 * "migrate_disabled" and then got preempted, so we must
+			 * check the task migration disable flag here too.
+			 */
+			if (unlikely(task_rq(task) != rq ||
+				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
+				     task_on_cpu(rq, task) ||
+				     !rt_task(task) ||
+				     is_migration_disabled(task) ||
+				     !task_on_rq_queued(task))) {
+
+=======
+			/*
+			 * We had to unlock the run queue. In
+			 * the mean time, task could have
+			 * migrated already or had its affinity changed,
+			 * therefore check if the task is still at the
+			 * head of the pushable tasks list.
+			 * It is possible the task was scheduled, set
+			 * "migrate_disabled" and then got preempted, so we must
+			 * check the task migration disable flag here too.
+			 */
+			if (unlikely(is_migration_disabled(task) ||
+				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
+				     task != pick_next_pushable_task(rq))) {
+
+>>>>>>> BRANCH (debfbc047196df1f6bfd52f2d028c21dce67f0de sched/rt: Fix race in push_rt_task)
 				double_unlock_balance(rq, lowest_rq);
 				lowest_rq = NULL;
 				break;
