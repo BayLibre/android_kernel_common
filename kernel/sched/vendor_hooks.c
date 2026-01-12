@@ -61,6 +61,13 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_dequeue_task_fair);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_util_est_update);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_setscheduler_uclamp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_task_cpu);
+<<<<<<< HEAD   (033b841bfa2bc83ff9cf12e6128c3e42e785ea57 ANDROID: GKI: update xiaomi symbol list)
+||||||| BASE   (ee0ba95121f8a409efc5c22ede813ff3f6b5b31f ANDROID: Add dm-default-key to microdroid)
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh___set_task_cpu);
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh___set_task_cpu);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_try_to_wake_up_begin);
+>>>>>>> CHANGE (141a44d156c04e708c8f8e735d8d02bb7171d306 ANDROID: sched: add vendor hook to support customized sync w)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_try_to_wake_up);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_try_to_wake_up_success);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_sched_fork);
