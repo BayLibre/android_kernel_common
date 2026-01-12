@@ -98,3 +98,24 @@ type 'struct pkvm_module_ops' changed
   member 'u64 __kabi_reserved4' was removed
   member 'union { int(* request_hyp_alloc)(); struct { u64 __kabi_reserved4; }; union { }; }' was added
 
+function symbol 'int ___pskb_trim(struct sk_buff*, unsigned int)' changed
+  CRC changed from 0xc3561ec4 to 0x19afa14f
+
+function symbol 'struct sk_buff* __alloc_skb(unsigned int, gfp_t, int, int)' changed
+  CRC changed from 0x80105d7 to 0xc180623d
+
+function symbol 'void __balance_callbacks(struct rq*)' changed
+  CRC changed from 0x25592252 to 0xb58396
+
+... 1337 omitted; 1340 symbols have only CRC changes
+
+type 'struct net' changed
+  3 members ('struct netns_packet packet' .. 'struct netns_nexthop nexthop') changed
+    offset changed by -64
+
+type 'struct netns_mib' changed
+  byte size changed from 120 to 112
+  member 'struct linux_tls_mib* tls_statistics' was removed
+  7 members ('struct udp_mib* udplite_statistics' .. 'struct proc_dir_entry* proc_net_devsnmp6') changed
+    offset changed by -64
+
