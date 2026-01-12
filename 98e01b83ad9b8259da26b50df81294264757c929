@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18b85c56_636ff2aa",
+        "filename": "mm/filemap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-01-12T20:13:37Z",
+      "side": 1,
+      "message": "Can you use already exported `truncate_inode_pages_range`? If you are removing multiple pages that might be even more efficient.\n\nFrom exported functions it looks like you want to implement filemap_remove_folio(). If so, truncate_inode_pages_range() should do what you need without any additional exports.",
+      "range": {
+        "startLine": 261,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 38
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "28c2a84d_aba27a67",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/filemap.c",
+              "range": {
+                "startLine": 260,
+                "startChar": 0,
+                "endLine": 260,
+                "endChar": 0
+              },
+              "replacement": "\t/*\n\t * Note: truncate_inode_pages_range() is a higher-level function\n\t * that uses __filemap_remove_folio() internally to remove pages\n\t * within a specified range. It is not a replacement for this function.\n\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "98e01b83ad9b8259da26b50df81294264757c929",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
