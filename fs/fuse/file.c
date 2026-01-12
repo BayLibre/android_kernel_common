@@ -110,6 +110,7 @@ static void fuse_file_put(struct inode *inode, struct fuse_file *ff, bool sync)
 #ifdef CONFIG_FUSE_BPF
 		struct fuse_err_ret fer = {0};
 
+<<<<<<< HEAD   (2269bd419b57936d1e6c7c804b7ff87df8d50b3b Merge 1ef70a0b104a ("iommu/mediatek: fix use-after-free on p)
 		if (inode)
 			fer = fuse_bpf_backing(inode, struct fuse_release_in,
 					fuse_release_initialize,
@@ -117,6 +118,19 @@ static void fuse_file_put(struct inode *inode, struct fuse_file *ff, bool sync)
 					fuse_release_finalize,
 					inode, ff);
 		if (fer.ret) {
+||||||| BASE   (1ef70a0b104ae8011811f60bcfaa55ff49385171 iommu/mediatek: fix use-after-free on probe deferral)
+		if (!args) {
+			/* Do nothing when server does not implement 'open' */
+		} else if (sync) {
+			fuse_simple_request(ff->fm, args);
+=======
+		if (!args) {
+			/* Do nothing when server does not implement 'opendir' */
+		} else if (args->opcode == FUSE_RELEASE && ff->fm->fc->no_open) {
+			fuse_release_end(ff->fm, args, 0);
+		} else if (sync) {
+			fuse_simple_request(ff->fm, args);
+>>>>>>> BRANCH (fbba8b00bbe4e4f958a2b0654cc1219a7e6597f6 fuse: fix readahead reclaim deadlock)
 			fuse_release_end(ff->fm, args, 0);
 		} else
 #endif
@@ -147,8 +161,17 @@ struct fuse_file *fuse_file_open(struct fuse_mount *fm, u64 nodeid,
 	struct fuse_file *ff;
 	int opcode = isdir ? FUSE_OPENDIR : FUSE_OPEN;
 	bool open = isdir ? !fc->no_opendir : !fc->no_open;
+	bool release = !isdir || open;
 
-	ff = fuse_file_alloc(fm, open);
+	/*
+	 * ff->args->release_args still needs to be allocated (so we can hold an
+	 * inode reference while there are pending inflight file operations when
+	 * ->release() is called, see fuse_prepare_release()) even if
+	 * fc->no_open is set else it becomes possible for reclaim to deadlock
+	 * if while servicing the readahead request the server triggers reclaim
+	 * and reclaim evicts the inode of the file being read ahead.
+	 */
+	ff = fuse_file_alloc(fm, release);
 	if (!ff)
 		return ERR_PTR(-ENOMEM);
 
@@ -168,13 +191,14 @@ struct fuse_file *fuse_file_open(struct fuse_mount *fm, u64 nodeid,
 			fuse_file_free(ff);
 			return ERR_PTR(err);
 		} else {
-			/* No release needed */
-			kfree(ff->args);
-			ff->args = NULL;
-			if (isdir)
+			if (isdir) {
+				/* No release needed */
+				kfree(ff->args);
+				ff->args = NULL;
 				fc->no_opendir = 1;
-			else
+			} else {
 				fc->no_open = 1;
+			}
 		}
 	}
 
