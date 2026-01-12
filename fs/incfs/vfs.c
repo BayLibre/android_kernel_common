@@ -14,6 +14,7 @@
 #include <linux/mmap_lock.h>
 #include <linux/namei.h>
 #include <linux/pagemap.h>
+#include <linux/page_size_compat.h>
 #include <linux/parser.h>
 #include <linux/seq_file.h>
 #include <linux/backing-dev-defs.h>
@@ -138,8 +139,14 @@ static int incfs_file_mmap(struct file *file, struct vm_area_struct *vma)
 {
 	struct address_space *mapping = file->f_mapping;
 
-	if (!mapping->a_ops->read_folio)
+	pgcompat_en_err(file, "vma_start=%#lx vma_end=%#lx",
+			vma->vm_start, vma->vm_end);
+
+	if (!mapping->a_ops->read_folio) {
+		pgcompat_en_err(file, "!mapping->a_ops->read_folio");
+		dump_stack();
 		return -ENOEXEC;
+	}
 	file_accessed(file);
 	vma->vm_ops = &incfs_file_vm_ops;
 	return 0;
