@@ -70,6 +70,24 @@
       "parentUuid": "7b5fb545_9c213c66",
       "revId": "5e8ea2ee3e79e673d6bc644082076a0efe2597ba",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f7bbb84_356cbe0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2026-01-12T18:14:07Z",
+      "side": 1,
+      "message": "Ok, now I see. That\u0027s true, these are my assumptions which are based on kernel defaults and commonly available tools. All in all this is just a test and IMO some assumptions may be done but you\u0027re definitely right, they may not be met. Thanks for the clarification.\n\n@wakel@google.com is it possible to exclude some x86 selftests from the vts execution list? As I mention before it was agreed to disable IA32_EMULATION for x86 GKI (aosp/3799766), change is on hold until all the verticals using CF for 32-bit testing are properly aligned. Currently only CF is using 32-bit support.",
+      "parentUuid": "9cfd0460_4a28eb39",
+      "revId": "5e8ea2ee3e79e673d6bc644082076a0efe2597ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
