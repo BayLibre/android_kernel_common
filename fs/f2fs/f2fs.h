@@ -260,7 +260,12 @@ enum {
 #define DEF_CP_INTERVAL			60	/* 60 secs */
 #define DEF_IDLE_INTERVAL		5	/* 5 secs */
 #define DEF_DISABLE_INTERVAL		5	/* 5 secs */
+<<<<<<< HEAD   (d3a9ee0700323e6ba920915f78388e404d69f849 Merge cccd92ec7e34 ("f2fs: clear SBI_POR_DOING before initin)
 #define DEF_ENABLE_INTERVAL		5	/* 5 secs */
+||||||| BASE   (cccd92ec7e34487593afee7f7b0dfa98108b0827 f2fs: clear SBI_POR_DOING before initing inmem curseg)
+=======
+#define DEF_ENABLE_INTERVAL		16	/* 16 secs */
+>>>>>>> BRANCH (621dc9eb90a59fe62d8589ce2489e83efad4bf21 f2fs: add timeout in f2fs_enable_checkpoint())
 #define DEF_DISABLE_QUICK_INTERVAL	1	/* 1 secs */
 #define DEF_UMOUNT_DISCARD_TIMEOUT	5	/* 5 secs */
 
