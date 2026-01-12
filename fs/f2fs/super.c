@@ -2362,7 +2362,12 @@ restore_flag:
 static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 {
 	unsigned int nr_pages = get_pages(sbi, F2FS_DIRTY_DATA) / 16;
+<<<<<<< HEAD   (323c4bf2afc38b167f5a7df6fc37155e4e53d993 Merge 341f6a26bfa9 ("f2fs: dump more information for f2fs_{e)
 	long long start, writeback, lock, sync_inode, end;
+||||||| BASE   (341f6a26bfa92c1ba45a05f7c21927300c3f8db0 f2fs: dump more information for f2fs_{enable,disable}_checkp)
+=======
+	long long start, writeback, end;
+>>>>>>> BRANCH (d01cdf6425242ed1b8870bdbf1b0999b19254290 f2fs: fix to propagate error from f2fs_enable_checkpoint())
 	int ret;
 
 	f2fs_info(sbi, "%s start, meta: %lld, node: %lld, data: %lld",
@@ -2405,6 +2410,7 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 	set_sbi_flag(sbi, SBI_IS_DIRTY);
 	f2fs_up_write(&sbi->gc_lock);
 
+<<<<<<< HEAD   (323c4bf2afc38b167f5a7df6fc37155e4e53d993 Merge 341f6a26bfa9 ("f2fs: dump more information for f2fs_{e)
 	f2fs_info(sbi, "%s sync_fs, meta: %lld, imeta: %lld, node: %lld, dents: %lld, qdata: %lld",
 					__func__,
 					get_pages(sbi, F2FS_DIRTY_META),
@@ -2412,6 +2418,9 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 					get_pages(sbi, F2FS_DIRTY_NODES),
 					get_pages(sbi, F2FS_DIRTY_DENTS),
 					get_pages(sbi, F2FS_DIRTY_QDATA));
+||||||| BASE   (341f6a26bfa92c1ba45a05f7c21927300c3f8db0 f2fs: dump more information for f2fs_{enable,disable}_checkp)
+=======
+>>>>>>> BRANCH (d01cdf6425242ed1b8870bdbf1b0999b19254290 f2fs: fix to propagate error from f2fs_enable_checkpoint())
 	ret = f2fs_sync_fs(sbi->sb, 1);
 	if (ret)
 		f2fs_err(sbi, "%s sync_fs failed, ret: %d", __func__, ret);
@@ -2423,6 +2432,7 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 
 	end = ktime_get();
 
+<<<<<<< HEAD   (323c4bf2afc38b167f5a7df6fc37155e4e53d993 Merge 341f6a26bfa9 ("f2fs: dump more information for f2fs_{e)
 	f2fs_info(sbi, "%s end, writeback:%llu, "
 				"lock:%llu, sync_inode:%llu, sync_fs:%llu",
 				__func__,
@@ -2430,6 +2440,14 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 				ktime_ms_delta(lock, writeback),
 				ktime_ms_delta(sync_inode, lock),
 				ktime_ms_delta(end, sync_inode));
+||||||| BASE   (341f6a26bfa92c1ba45a05f7c21927300c3f8db0 f2fs: dump more information for f2fs_{enable,disable}_checkp)
+	f2fs_info(sbi, "f2fs_enable_checkpoint() finishes, writeback:%llu, sync:%llu",
+					ktime_ms_delta(writeback, start),
+=======
+	f2fs_info(sbi, "f2fs_enable_checkpoint() finishes, writeback:%llu, sync:%llu",
+					ktime_ms_delta(writeback, start),
+					ktime_ms_delta(end, writeback));
+>>>>>>> BRANCH (d01cdf6425242ed1b8870bdbf1b0999b19254290 f2fs: fix to propagate error from f2fs_enable_checkpoint())
 	return ret;
 }
 
