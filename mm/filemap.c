@@ -3966,6 +3966,9 @@ int generic_file_mmap(struct file *file, struct vm_area_struct *vma)
 {
 	struct address_space *mapping = file->f_mapping;
 
+	pgcompat_en_err(file, "vma_start=%#lx vma_end=%#lx",
+			vma->vm_start, vma->vm_end);
+
 	if (!mapping->a_ops->read_folio)
 		return -ENOEXEC;
 	file_accessed(file);

@@ -27,6 +27,7 @@
 #include <linux/dax.h>
 #include <linux/quotaops.h>
 #include <linux/pagevec.h>
+#include <linux/page_size_compat.h>
 #include <linux/uio.h>
 #include <linux/mman.h>
 #include <linux/backing-dev.h>
@@ -783,6 +784,9 @@ static int ext4_file_mmap(struct file *file, struct vm_area_struct *vma)
 {
 	struct inode *inode = file->f_mapping->host;
 	struct dax_device *dax_dev = EXT4_SB(inode->i_sb)->s_daxdev;
+
+	pgcompat_en_err(file, "vma_start=%#lx vma_end=%#lx",
+			vma->vm_start, vma->vm_end);
 
 	if (unlikely(ext4_forced_shutdown(inode->i_sb)))
 		return -EIO;

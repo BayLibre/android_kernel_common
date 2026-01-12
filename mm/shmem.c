@@ -2759,6 +2759,9 @@ static int shmem_mmap(struct file *file, struct vm_area_struct *vma)
 	struct shmem_inode_info *info = SHMEM_I(inode);
 	int ret;
 
+	pgcompat_en_err(file, "vma_start=%#lx vma_end=%#lx",
+			vma->vm_start, vma->vm_end);
+
 	ret = seal_check_write(info->seals, vma);
 	if (ret)
 		return ret;
