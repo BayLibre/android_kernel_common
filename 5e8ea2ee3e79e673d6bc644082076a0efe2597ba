@@ -34,6 +34,24 @@
       "parentUuid": "9adb6cdf_e60d62f8",
       "revId": "5e8ea2ee3e79e673d6bc644082076a0efe2597ba",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b5fb545_9c213c66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981835
+      },
+      "writtenOn": "2026-01-12T13:22:02Z",
+      "side": 1,
+      "message": "Hi @cmllamas@google.com. Thanks for your comment. I understand your concerns and agree that such a patch will become technical-dept. I am just looking for other options to fix failing tests until it is done for the upstream. Any ideas are really appreciated.\n\nCould you please elaborate what you mean by saying it is making incorrect assumptions? I know it\u0027s hacky but similar workarounds are already in use in the upstream version. The best example is `install_valid_mode()` which is invoked many times during the test and conditionally skipped, either at compile time or runtime check.\n\nThanks!!",
+      "parentUuid": "e4ca4a85_7f4b5445",
+      "revId": "5e8ea2ee3e79e673d6bc644082076a0efe2597ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
