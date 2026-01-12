@@ -1016,9 +1016,8 @@ static umode_t ltc4282_in_is_visible(const struct ltc4282_state *st, u32 attr)
 	case hwmon_in_max:
 	case hwmon_in_min:
 	case hwmon_in_enable:
-		return 0644;
 	case hwmon_in_reset_history:
-		return 0200;
+		return 0644;
 	default:
 		return 0;
 	}
@@ -1037,9 +1036,8 @@ static umode_t ltc4282_curr_is_visible(u32 attr)
 		return 0444;
 	case hwmon_curr_max:
 	case hwmon_curr_min:
-		return 0644;
 	case hwmon_curr_reset_history:
-		return 0200;
+		return 0644;
 	default:
 		return 0;
 	}
@@ -1057,9 +1055,8 @@ static umode_t ltc4282_power_is_visible(u32 attr)
 		return 0444;
 	case hwmon_power_max:
 	case hwmon_power_min:
-		return 0644;
 	case hwmon_power_reset_history:
-		return 0200;
+		return 0644;
 	default:
 		return 0;
 	}

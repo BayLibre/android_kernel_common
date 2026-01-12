@@ -1429,8 +1429,7 @@ int enetc_xdp_xmit(struct net_device *ndev, int num_frames,
 	int xdp_tx_bd_cnt, i, k;
 	int xdp_tx_frm_cnt = 0;
 
-	if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags) ||
-		     !netif_carrier_ok(ndev)))
+	if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags)))
 		return -ENETDOWN;
 
 	enetc_lock_mdio();

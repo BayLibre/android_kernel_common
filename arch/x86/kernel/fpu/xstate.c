@@ -1879,7 +1879,7 @@ static int dump_xsave_layout_desc(struct coredump_params *cprm)
 		};
 
 		if (!dump_emit(cprm, &xc, sizeof(xc)))
-			return -1;
+			return 0;
 
 		num_records++;
 	}
@@ -1917,7 +1917,7 @@ int elf_coredump_extra_notes_write(struct coredump_params *cprm)
 		return 1;
 
 	num_records = dump_xsave_layout_desc(cprm);
-	if (num_records < 0)
+	if (!num_records)
 		return 1;
 
 	/* Total size should be equal to the number of records */

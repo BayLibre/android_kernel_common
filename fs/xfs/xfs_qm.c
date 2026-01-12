@@ -1134,7 +1134,7 @@ xfs_qm_quotacheck_dqadjust(
 
 	error = xfs_dquot_attach_buf(NULL, dqp);
 	if (error)
-		goto out_unlock;
+		return error;
 
 	trace_xfs_dqadjust(dqp);
 
@@ -1164,9 +1164,8 @@ xfs_qm_quotacheck_dqadjust(
 	}
 
 	dqp->q_flags |= XFS_DQFLAG_DIRTY;
-out_unlock:
 	xfs_qm_dqput(dqp);
-	return error;
+	return 0;
 }
 
 /*
