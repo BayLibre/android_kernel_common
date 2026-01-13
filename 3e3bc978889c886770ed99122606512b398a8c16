@@ -3,6 +3,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eff5113a_c61492e1",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-01-13T23:06:21Z",
+      "side": 1,
+      "message": "Discussed this with Minchan and we agreed that there needs to be a comment explaining why it\u0027s safe to use the PTR value after you dropped PTL in the previous line.",
+      "range": {
+        "startLine": 74,
+        "startChar": 2,
+        "endLine": 74,
+        "endChar": 33
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a427ba97_f54f8288",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/block/zram/zram_ioctl.c",
+              "range": {
+                "startLine": 72,
+                "startChar": 0,
+                "endLine": 72,
+                "endChar": 0
+              },
+              "replacement": "\t\t/*\n\t\t * It is safe to use the \u0027pte\u0027 value after dropping the lock\n\t\t * because ptep_get() returns a copy of the PTE value at the\n\t\t * time the lock was held.\n\t\t */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3e3bc978889c886770ed99122606512b398a8c16",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "03aa3b94_3791ffb6",
         "filename": "include/uapi/linux/zram_ioctl.h",
         "patchSetId": 1
