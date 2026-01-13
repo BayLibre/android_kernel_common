@@ -14,6 +14,8 @@
 #include <linux/arm-smccc.h>
 #include <linux/kvm_host.h>
 
+#include <iommu-pages.h>
+
 #define kvm_call_hyp_nvhe_mc(...)					\
 ({									\
 	struct arm_smccc_res __res;					\
@@ -185,19 +187,31 @@ static const u8 pmd_order = PMD_SHIFT - PAGE_SHIFT;
 
 struct page *kvm_iommu_cma_alloc(void)
 {
+	struct page *p;
+
 	if (!kvm_iommu_cma)
 		return NULL;
 
-	return cma_alloc(kvm_iommu_cma, (1 << pmd_order), pmd_order, true);
+	p = cma_alloc(kvm_iommu_cma, (1 << pmd_order), pmd_order, true);
+	if (p)
+		__iommu_alloc_account(p, pmd_order);
+
+	return p;
 }
 EXPORT_SYMBOL(kvm_iommu_cma_alloc);
 
 bool kvm_iommu_cma_release(struct page *p)
 {
+	bool freed;
+
 	if (!kvm_iommu_cma || !p)
 		return false;
 
-	return cma_release(kvm_iommu_cma, p, 1 << pmd_order);
+	freed = cma_release(kvm_iommu_cma, p, 1 << pmd_order);
+	if (freed)
+		__iommu_free_account(p, pmd_order);
+
+	return freed;
 }
 EXPORT_SYMBOL(kvm_iommu_cma_release);
 

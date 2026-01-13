@@ -160,6 +160,7 @@ void kvm_iommu_reclaim(struct kvm_hyp_memcache *host_mc, int target)
 	if (!kvm_iommu_ops)
 		return;
 
+	host_mc->flags |= HYP_MEMCACHE_ACCOUNT_IOMMU;
 	reclaim_hyp_pool(&iommu_system_pool, host_mc, target);
 
 	target -= host_mc->nr_pages - prev_nr_pages;
@@ -178,6 +179,7 @@ void kvm_iommu_reclaim(struct kvm_hyp_memcache *host_mc, int target)
 		hyp_spin_unlock(&__block_pools_lock);
 		p++;
 	}
+	host_mc->flags &= ~HYP_MEMCACHE_ACCOUNT_IOMMU;
 }
 
 int kvm_iommu_reclaimable(void)

@@ -591,6 +591,7 @@ void *admit_host_page(void *arg, unsigned long order)
 		return NULL;
 
 	mc_order = FIELD_GET(~PAGE_MASK, host_mc->head);
+	mc_order &= ~HYP_MEMCACHE_PAGE_FLAG_IOMMU;
 	BUG_ON(order != mc_order);
 
 	p = host_mc->head & PAGE_MASK;
@@ -644,6 +645,7 @@ int refill_hyp_pool(struct hyp_pool *pool, struct kvm_hyp_memcache *host_mc)
 
 	while (tmp.nr_pages) {
 		order = FIELD_GET(~PAGE_MASK, tmp.head);
+		order &= ~HYP_MEMCACHE_PAGE_FLAG_IOMMU;
 		if (check_shl_overflow(1UL, order, &nr_pages))
 			return -EINVAL;
 

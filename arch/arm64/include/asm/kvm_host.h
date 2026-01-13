@@ -93,6 +93,12 @@ struct kvm_hyp_memcache {
 	ANDROID_KABI_RESERVE(2);
 };
 
+#define HYP_MEMCACHE_ACCOUNT_KMEMCG BIT(1)
+#define HYP_MEMCACHE_ACCOUNT_STAGE2 BIT(2)
+#define HYP_MEMCACHE_ACCOUNT_IOMMU BIT(3)
+
+#define HYP_MEMCACHE_PAGE_FLAG_IOMMU BIT(ilog2(MAX_PAGE_ORDER) + 1)
+
 static inline void push_hyp_memcache(struct kvm_hyp_memcache *mc,
 				     phys_addr_t *p,
 				     phys_addr_t (*to_pa)(void *virt),
@@ -100,7 +106,8 @@ static inline void push_hyp_memcache(struct kvm_hyp_memcache *mc,
 {
 	*p = mc->head;
 	mc->head = (to_pa(p) & PAGE_MASK) |
-		   FIELD_PREP(~PAGE_MASK, order);
+		   FIELD_PREP(~PAGE_MASK, order) |
+		   ((mc->flags & HYP_MEMCACHE_ACCOUNT_IOMMU) ? HYP_MEMCACHE_PAGE_FLAG_IOMMU : 0);
 	mc->nr_pages++;
 }
 
@@ -114,6 +121,8 @@ static inline void *pop_hyp_memcache(struct kvm_hyp_memcache *mc,
 		return NULL;
 
 	*order = FIELD_GET(~PAGE_MASK, mc->head);
+	if (mc->head & HYP_MEMCACHE_PAGE_FLAG_IOMMU)
+		*order |= HYP_MEMCACHE_PAGE_FLAG_IOMMU;
 
 	mc->head = *p;
 	mc->nr_pages--;
@@ -153,9 +162,6 @@ static inline void __free_hyp_memcache(struct kvm_hyp_memcache *mc,
 	}
 }
 
-#define HYP_MEMCACHE_ACCOUNT_KMEMCG BIT(1)
-#define HYP_MEMCACHE_ACCOUNT_STAGE2 BIT(2)
-
 void free_hyp_memcache(struct kvm_hyp_memcache *mc);
 int topup_hyp_memcache(struct kvm_hyp_memcache *mc, unsigned long min_pages, unsigned long order);
 int topup_hyp_memcache_gfp(struct kvm_hyp_memcache *mc, unsigned long min_pages,
@@ -171,6 +177,12 @@ static inline void init_hyp_stage2_memcache(struct kvm_hyp_memcache *mc)
 {
 	memset(mc, 0, sizeof(*mc));
 	mc->flags = HYP_MEMCACHE_ACCOUNT_KMEMCG | HYP_MEMCACHE_ACCOUNT_STAGE2;
+}
+
+static inline void init_hyp_iommu_memcache(struct kvm_hyp_memcache *mc)
+{
+	init_hyp_memcache(mc);
+	mc->flags = HYP_MEMCACHE_ACCOUNT_IOMMU;
 }
 
 struct kvm_vmid {

@@ -1301,7 +1301,7 @@ static int kvm_arm_smmu_v3_init_drv(void)
 	kvm_hyp_arm_smmu_v3_smmus = kvm_arm_smmu_array;
 	kvm_hyp_arm_smmu_v3_count = kvm_arm_smmu_count;
 
-	init_hyp_memcache(&atomic_mc);
+	init_hyp_iommu_memcache(&atomic_mc);
 
 	ret = smmu_alloc_atomic_mc(&atomic_mc);
 	if (ret)

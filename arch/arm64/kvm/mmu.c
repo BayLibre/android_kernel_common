@@ -24,6 +24,7 @@
 #include <asm/kvm_emulate.h>
 #include <asm/kvm_pkvm.h>
 #include <asm/virt.h>
+#include <iommu-pages.h>
 
 #include "trace.h"
 
@@ -1144,7 +1145,13 @@ static void hyp_mc_free_fn(void *addr, void *flags, unsigned long order)
 	    kvm_iommu_cma_release(virt_to_page(addr)))
 		return;
 
-	free_pages((unsigned long)addr, order);
+	if (((unsigned long)flags & HYP_MEMCACHE_ACCOUNT_IOMMU) ||
+	    (order & HYP_MEMCACHE_PAGE_FLAG_IOMMU)) {
+		order &= ~((unsigned long)HYP_MEMCACHE_PAGE_FLAG_IOMMU);
+		iommu_free_pages(addr, order);
+	} else {
+		free_pages((unsigned long)addr, order);
+	}
 }
 
 static void *hyp_mc_alloc_fn(void *flags, unsigned long order)
@@ -1156,7 +1163,10 @@ static void *hyp_mc_alloc_fn(void *flags, unsigned long order)
 	gfp_mask = __flags & HYP_MEMCACHE_ACCOUNT_KMEMCG ?
 		   GFP_KERNEL_ACCOUNT : GFP_KERNEL;
 
-	addr = (void *)__get_free_pages(gfp_mask, order);
+	if (__flags & HYP_MEMCACHE_ACCOUNT_IOMMU)
+		addr = iommu_alloc_pages(gfp_mask, order);
+	else
+		addr = (void *)__get_free_pages(gfp_mask, order);
 
 	if (addr && __flags & HYP_MEMCACHE_ACCOUNT_STAGE2)
 		kvm_account_pgtable_pages(addr, 1);
@@ -1167,6 +1177,11 @@ static void *hyp_mc_alloc_fn(void *flags, unsigned long order)
 static void *hyp_mc_alloc_gfp_fn(void *flags, unsigned long order)
 {
 	return (void *)__get_free_pages(*(gfp_t *)flags, order);
+}
+
+static void *hyp_iommu_mc_alloc_gfp_fn(void *flags, unsigned long order)
+{
+	return iommu_alloc_pages(*(gfp_t *)flags, order);
 }
 
 void free_hyp_memcache(struct kvm_hyp_memcache *mc)
@@ -1222,6 +1237,7 @@ int topup_hyp_memcache_gfp(struct kvm_hyp_memcache *mc, unsigned long min_pages,
 			   unsigned long order, gfp_t gfp)
 {
 	void *flags = &gfp;
+	void *(*alloc_fn)(void *, unsigned long) = hyp_mc_alloc_gfp_fn;
 
 	if (!is_protected_kvm_enabled())
 		return 0;
@@ -1229,7 +1245,10 @@ int topup_hyp_memcache_gfp(struct kvm_hyp_memcache *mc, unsigned long min_pages,
 	if (order > PAGE_SHIFT)
 		return -E2BIG;
 
-	return __topup_hyp_memcache(mc, min_pages, hyp_mc_alloc_gfp_fn,
+	if (mc->flags & HYP_MEMCACHE_ACCOUNT_IOMMU)
+		alloc_fn = hyp_iommu_mc_alloc_gfp_fn;
+
+	return __topup_hyp_memcache(mc, min_pages, alloc_fn,
 				    kvm_host_pa, flags, order);
 }
 

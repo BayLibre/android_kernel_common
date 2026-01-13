@@ -4,6 +4,7 @@
 #
 
 ccflags-y += -I $(src)
+ccflags-y += -I $(srctree)/drivers/iommu
 
 include $(srctree)/virt/kvm/Makefile.kvm
 

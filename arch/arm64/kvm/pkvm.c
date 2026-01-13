@@ -1580,7 +1580,10 @@ int __pkvm_topup_hyp_alloc_mgt_gfp(unsigned long id, unsigned long nr_pages,
 	struct kvm_hyp_memcache mc;
 	int ret;
 
-	init_hyp_memcache(&mc);
+	if (id == HYP_ALLOC_MGT_IOMMU_ID)
+		init_hyp_iommu_memcache(&mc);
+	else
+		init_hyp_memcache(&mc);
 
 	ret = topup_hyp_memcache_gfp(&mc, nr_pages, get_order(sz_alloc), gfp);
 	if (ret)
