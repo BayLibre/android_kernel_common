@@ -33,14 +33,9 @@ static void die(const char *e)
 	exit(111);
 }
 
-static void die_port(const struct sockaddr_in *sin, uint16_t want)
+static void die_port(uint16_t got, uint16_t want)
 {
-	uint16_t got = ntohs(sin->sin_port);
-	char str[INET_ADDRSTRLEN];
-
-	inet_ntop(AF_INET, &sin->sin_addr, str, sizeof(str));
-
-	fprintf(stderr, "Port number changed, wanted %d got %d from %s\n", want, got, str);
+	fprintf(stderr, "Port number changed, wanted %d got %d\n", want, ntohs(got));
 	exit(1);
 }
 
@@ -105,7 +100,7 @@ int main(int argc, char *argv[])
 				die("child recvfrom");
 
 			if (peer.sin_port != htons(PORT))
-				die_port(&peer, PORT);
+				die_port(peer.sin_port, PORT);
 		} else {
 			if (sendto(s2, buf, LEN, 0, (struct sockaddr *)&sa1, sizeof(sa1)) != LEN)
 				continue;
@@ -114,7 +109,7 @@ int main(int argc, char *argv[])
 				die("parent recvfrom");
 
 			if (peer.sin_port != htons((PORT + 1)))
-				die_port(&peer, PORT + 1);
+				die_port(peer.sin_port, PORT + 1);
 		}
 	}
 
