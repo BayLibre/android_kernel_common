@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "040fddcb_029f57c2",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1060234
+      },
+      "writtenOn": "2026-01-14T16:34:06Z",
+      "side": 1,
+      "message": "nit: This also relies on the fact that we don\u0027t allow concurrent post-processing, which ensures the flag won\u0027t be set again after it\u0027s cleared. Probably good to mention that for clarity.\n\n```\n... , and zram-\u003epp_in_progress ensures the flag won\u0027t be set again\nwhile we still using the now stale data derived from \u0027pte\u0027.\n```",
+      "range": {
+        "startLine": 85,
+        "startChar": 58,
+        "endLine": 85,
+        "endChar": 59
+      },
+      "revId": "ad82dd6df4e1b123ff1f233cce792a97095d0e6d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
