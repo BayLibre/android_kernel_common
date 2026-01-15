@@ -70,6 +70,30 @@
       },
       "revId": "418bcb4075650af44afff555d9f253780d411a74",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22723c5b_5aa45f6f",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2026-01-15T10:45:40Z",
+      "side": 1,
+      "message": "Sounds good.\n\nI can ping you when the patches merged (it was more than one zram device attr store() handler that was breaking the \"writers take the writer-lock\" rule and used custom locking to workaround it).\n\nThanks!",
+      "parentUuid": "8434433e_d8846002",
+      "range": {
+        "startLine": 190,
+        "startChar": 1,
+        "endLine": 190,
+        "endChar": 37
+      },
+      "revId": "418bcb4075650af44afff555d9f253780d411a74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
