@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "415078a0_5ecb62c7",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2026-01-15T05:08:41Z",
+      "side": 1,
+      "message": "So, strictly speaking, this should be `guard(rwsem_write)(\u0026zram-\u003einit_lock)`.  It\u0027s okay to have it as `rwsem_read` for now because there is a `pp_in_progress` thing that guarantees exclusiveness.  Once `pp_in_progress` is gone this has to become `rwsem_write`.",
+      "range": {
+        "startLine": 190,
+        "startChar": 1,
+        "endLine": 190,
+        "endChar": 37
+      },
+      "revId": "418bcb4075650af44afff555d9f253780d411a74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
