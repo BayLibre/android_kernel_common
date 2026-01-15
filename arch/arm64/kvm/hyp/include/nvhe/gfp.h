@@ -16,6 +16,7 @@ struct hyp_pool {
 	phys_addr_t range_start;
 	phys_addr_t range_end;
 	u64 free_pages;
+	u32 reclaimable;
 	u8 max_order;
 };
 
@@ -31,6 +32,23 @@ u64 hyp_pool_free_pages(struct hyp_pool *pool);
 int hyp_pool_init(struct hyp_pool *pool, u64 pfn, unsigned int nr_pages,
 		  unsigned int reserved_pages);
 
-/* Init a pool without initial pages*/
+/* Init a pool without initial pages */
 int hyp_pool_init_empty(struct hyp_pool *pool, unsigned int nr_pages);
+
+/*
+ * Enable pool reclaim and top-up with the interface below.
+ *
+ * Use with care: must be called after fix_host_ownership() and caller must
+ * handle serialization.
+ */
+void __hyp_pool_set_reclaimable(struct hyp_pool *pool);
+
+/* Add memory to a reclaimable pool */
+int hyp_pool_admit(struct hyp_pool *pool, u64 pfn, unsigned int nr_pages);
+
+/* Reclaim one page from a reclaimable pool */
+s64 hyp_pool_reclaim(struct hyp_pool *pool, u8 order);
+
+/* Number of reclaimable pages */
+unsigned long hyp_pool_reclaimable(struct hyp_pool *pool, u8 order);
 #endif /* __KVM_HYP_GFP_H */
