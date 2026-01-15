@@ -142,6 +142,30 @@
       },
       "revId": "ad82dd6df4e1b123ff1f233cce792a97095d0e6d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db793ccd_8a303c88",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2026-01-15T05:05:24Z",
+      "side": 1,
+      "message": "For some reason we had writeback grabbing reader-lock - down_read(\u0026zram-\u003einit_lock) - which was incorrect and the reason why we had pp_in_progress.\n\nAll zram sysfs store() functions should grab exclusive writer-lock. With fixed writeback_store() we can delete pp_in_progress as it becomes unnecessary.  \n\n// I\u0027m talking about upstream zram",
+      "parentUuid": "9aa0df0d_18d5385f",
+      "range": {
+        "startLine": 85,
+        "startChar": 58,
+        "endLine": 85,
+        "endChar": 59
+      },
+      "revId": "ad82dd6df4e1b123ff1f233cce792a97095d0e6d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
