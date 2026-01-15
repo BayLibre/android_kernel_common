@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "983faffc_2a076aa1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-15T13:23:10Z",
+      "side": 1,
+      "message": "Hi folks,\n\nThis driver has been built with GKI for ages, but AFAICT, this is useless and actually a quite grep into the logs of a Pixel 10 shows\n\n```\n[    2.149857] modprobe: Failed to insmod \u0027/system/lib/modules/ptp_kvm.ko\u0027 with args \u0027\u0027: Operation not supported on transport endpoint\n```\n\nWe do not have GKI modules for Microdroid guests and it seems cuttlefish does not try to load this driver either.\n\nDid I miss a user somewhere?",
+      "revId": "43c5e9600f0d97708c2cc2789a2d2004a9255f36",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
