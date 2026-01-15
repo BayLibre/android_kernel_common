@@ -22,6 +22,30 @@
       },
       "revId": "68dde753b934ab0fa41c65002de54d6d6a942c4c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09472376_ec4f0412",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1458,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-15T16:09:45Z",
+      "side": 1,
+      "message": "Yes and it is actually even more restrictive than checking U64_MAX overflow. (Following Marc\u0027s comments on the list)",
+      "parentUuid": "ba012287_d2f37daa",
+      "range": {
+        "startLine": 1458,
+        "startChar": 1,
+        "endLine": 1458,
+        "endChar": 29
+      },
+      "revId": "68dde753b934ab0fa41c65002de54d6d6a942c4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
