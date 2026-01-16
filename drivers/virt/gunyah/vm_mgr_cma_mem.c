@@ -118,6 +118,43 @@ static int gunyah_cma_mmap(struct file *file, struct vm_area_struct *vma)
 	kvfree(pages);
 	return ret;
 }
+int gunyah_cma_demand_page(struct gunyah_vm *ghvm, struct gunyah_vm_binding *b,
+								u64 gpa, bool write)
+{
+	int ret = 0;
+	unsigned long gfn = gunyah_gpa_to_gfn(gpa);
+	struct folio *folio;
+
+	if (write && !(b->flags & GUNYAH_MEM_ALLOW_WRITE))
+		return -EPERM;
+
+	struct page *page = alloc_page(GFP_KERNEL);
+
+	if (!page) {
+		ret = -ENOMEM;
+		goto out;
+	}
+
+	folio = page_folio(page);
+
+	folio_lock(folio);
+
+	ret = gunyah_vm_provide_folio(ghvm, folio, gfn - folio_page_idx(folio, page),
+				      !(b->share_type == VM_MEM_LEND),
+				      !!(b->flags & GUNYAH_MEM_ALLOW_WRITE));
+	folio_unlock(folio);
+	if (ret) {
+		if (ret != -EAGAIN)
+			pr_err_ratelimited(
+				"Failed to provide folio for guest addr: %016llx: %d\n",
+				gpa, ret);
+		goto out;
+	}
+
+	gunyah_gfn_to_page_mapping_map_range(b, gfn, page, 1);
+out:
+	return ret;
+}
 static long gunyah_cma_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
 {
 	struct gunyah_cma *cma = file->private_data;
