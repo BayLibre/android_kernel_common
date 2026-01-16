@@ -259,6 +259,8 @@ static int __gunyah_vm_reclaim_folio_locked(struct gunyah_vm *ghvm, void *entry,
 	struct gunyah_resource *guest_extent, *host_extent, *addrspace;
 	enum gunyah_pagetable_access access;
 	enum gunyah_error gunyah_error;
+	struct gunyah_vm_binding * binding;
+	bool is_gfn_cma;
 	struct folio *folio;
 	bool write, share;
 	phys_addr_t pa;
@@ -334,8 +336,16 @@ static int __gunyah_vm_reclaim_folio_locked(struct gunyah_vm *ghvm, void *entry,
 
 	BUG_ON(mtree_erase(&ghvm->mm, gfn) != entry);
 
-	unpin_user_page(folio_page(folio, 0));
-	account_locked_vm(current->mm, 1, false);
+	is_gfn_cma = false;
+	binding = mtree_load(&ghvm->bindings, gfn);
+
+	if (binding)
+		is_gfn_cma = (binding->mem_type == VM_MEM_CMA);
+
+	if (!is_gfn_cma) {
+		unpin_user_page(folio_page(folio, 0));
+		account_locked_vm(current->mm, 1, false);
+	}
 	return 0;
 err:
 	return ret;
