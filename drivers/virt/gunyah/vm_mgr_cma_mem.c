@@ -30,6 +30,8 @@ struct gunyah_cma {
 	struct list_head list;
 	unsigned long max_size;
 	unsigned long mapped_size;
+	struct gunyah_vm *ghvm;
+	struct gunyah_vm_binding *binding;
 };
 
 struct gunyah_cma_parent {
@@ -494,6 +496,12 @@ int gunyah_vm_binding_cma_alloc(struct gunyah_vm *ghvm,
 		fput(file);
 		return -EOVERFLOW;
 	}
+
+	struct gunyah_cma *cma = file->private_data;
+
+	if (!cma)
+		return -ENODEV;
+
 	fput(file);
 
 	binding = kzalloc(sizeof(*binding), GFP_KERNEL_ACCOUNT);
@@ -508,6 +516,9 @@ int gunyah_vm_binding_cma_alloc(struct gunyah_vm *ghvm,
 	binding->size = cma_map->size;
 	binding->flags = cma_map->flags;
 	binding->vm_parcel = NULL;
+
+	cma->binding = binding;
+	cma->ghvm = ghvm;
 
 	if (binding->flags & GUNYAH_MEM_FORCE_LEND)
 		binding->share_type = VM_MEM_LEND;
