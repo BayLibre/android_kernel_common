@@ -10,6 +10,15 @@
 #include <linux/miscdevice.h>
 #include <linux/of_reserved_mem.h>
 #include <linux/platform_device.h>
+#include <linux/fs.h>
+#include <linux/falloc.h>
+#include <linux/mm.h>
+#include <linux/pagemap.h>
+#include <linux/mutex.h>
+#include <linux/errno.h>
+#include <linux/printk.h>
+#include <linux/delay.h>
+#include <linux/mm.h>
 
 #include "vm_mgr.h"
 
@@ -111,6 +120,55 @@ static int gunyah_cma_mmap(struct file *file, struct vm_area_struct *vma)
 	kvfree(pages);
 	return ret;
 }
+static long gunyah_cma_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+{
+	struct gunyah_cma *cma = file->private_data;
+	loff_t end = offset + len;
+	int ret = 0;
+
+	if (!cma->ghvm)
+		return -EINVAL;
+
+	if (offset < 0 || len <= 0)
+		return -EINVAL;
+
+	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
+		return -EOPNOTSUPP;
+
+	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
+		return -EINVAL;
+
+	if (!cma->page)
+		return -EBUSY;
+
+	if (end > cma->mapped_size)
+		return -EFBIG;
+
+	u64 start_idx = offset >> PAGE_SHIFT;
+
+	struct gunyah_vm_binding *binding = cma->binding;
+	u64 start_gfn = gunyah_gpa_to_gfn(binding->guest_phys_addr) + start_idx;
+	u32 count = PAGE_ALIGN(len) >> PAGE_SHIFT;
+
+	for (u64 gfn = start_gfn; gfn < start_gfn + count; gfn++) {
+		struct page *page = gunyah_gfn_to_page_get_mapping(binding, gfn);
+
+		if (!page)
+			continue;
+
+		if (page >= cma->page && page < (cma->page + (cma->mapped_size >> PAGE_SHIFT))) {
+			cma_release(cma->dev.cma_area, page, 1);
+			continue;
+		} else {
+			set_direct_map_default_noflush(page);
+			__free_page(page);
+		}
+	}
+
+	gunyah_gfn_to_page_mapping_unmap_range(binding, start_gfn, count);
+
+	return ret;
+}
 
 static const struct file_operations gunyah_cma_fops = {
 	.owner = THIS_MODULE,
@@ -118,6 +176,7 @@ static const struct file_operations gunyah_cma_fops = {
 	.mmap = gunyah_cma_mmap,
 	.open = generic_file_open,
 	.release = gunyah_cma_release,
+	.fallocate = gunyah_cma_fallocate,
 };
 
 int gunyah_cma_reclaim_parcel(struct gunyah_vm *ghvm, struct gunyah_vm_parcel *vm_parcel,
