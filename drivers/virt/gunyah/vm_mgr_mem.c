@@ -520,8 +520,7 @@ int gunyah_demand_page(struct gunyah_vm *ghvm, u64 gpa, bool write)
 	}
 
 	if (b->mem_type == VM_MEM_CMA) {
-		dev_warn(ghvm->parent, "Demand paging of CMA mem not supported\n");
-		ret = -EOPNOTSUPP;
+		ret = gunyah_cma_demand_page(ghvm, b, gpa, write);
 	} else {
 		ret = gunyah_gup_demand_page(ghvm, b, gpa, write);
 	}
