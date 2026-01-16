@@ -201,6 +201,57 @@ free_mem_entries:
 	return ret;
 }
 
+int gunyah_cma_unmap_from_userspace(struct gunyah_vm *ghvm)
+{
+
+	int ret = 0;
+	struct gunyah_vm_binding *binding;
+
+	unsigned long start = 0;
+	unsigned long end = ULONG_MAX;
+
+	down_read(&ghvm->bindings_lock);
+	mt_for_each(&ghvm->bindings, binding, start, end) {
+		if (binding && binding->mem_type == VM_MEM_CMA)
+			break;
+	}
+
+	if (!binding) {
+		ret = -ENOENT;
+		goto out_unlock;
+	}
+
+	struct file *file = fget(binding->cma.fd);
+
+	if (!file || !file->f_inode) {
+		ret = -EINVAL;
+		goto out_unlock;
+	}
+
+	struct vm_area_struct *vma;
+
+	MA_STATE(mas, &current->mm->mm_mt, 0, 0);
+
+	mmap_write_lock(current->mm);
+	mas_for_each(&mas, vma, ULONG_MAX) {
+		if (vma->vm_file == file) {
+			unsigned long start_addr = vma->vm_start;
+			unsigned long end_addr = vma->vm_end;
+			unsigned long len = (end_addr - start_addr);
+
+			zap_page_range_single(vma, start_addr, len, NULL);
+		}
+	}
+	mmap_write_unlock(current->mm);
+
+	fput(file);
+
+out_unlock:
+	up_read(&ghvm->bindings_lock);
+	return ret;
+}
+EXPORT_SYMBOL_GPL(gunyah_cma_unmap_from_userspace);
+
 int gunyah_vm_binding_cma_alloc(struct gunyah_vm *ghvm,
 			    struct gunyah_map_cma_mem_args *cma_map)
 {
