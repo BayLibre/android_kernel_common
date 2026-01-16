@@ -510,6 +510,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
 {
 	struct vm_area_struct *new = kmem_cache_alloc(vm_area_cachep, GFP_KERNEL);
 
+<<<<<<< HEAD   (30973577aa799f1fb35084da5aaed4b5e3a09661 Merge 994182f5aaec ("x86/mm/pat: clear VM_PAT if copy_p4d_ra)
 	if (!new)
 		return NULL;
 
@@ -523,6 +524,33 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
 	if (!vma_lock_alloc(new)) {
 		kmem_cache_free(vm_area_cachep, new);
 		return NULL;
+||||||| BASE   (994182f5aaecd2f24a877489af0c9d26380d4a59 x86/mm/pat: clear VM_PAT if copy_p4d_range failed)
+	if (new) {
+		ASSERT_EXCLUSIVE_WRITER(orig->vm_flags);
+		ASSERT_EXCLUSIVE_WRITER(orig->vm_file);
+		/*
+		 * orig->shared.rb may be modified concurrently, but the clone
+		 * will be reinitialized.
+		 */
+		*new = data_race(*orig);
+		INIT_LIST_HEAD(&new->anon_vma_chain);
+		dup_anon_vma_name(orig, new);
+=======
+	if (new) {
+		ASSERT_EXCLUSIVE_WRITER(orig->vm_flags);
+		ASSERT_EXCLUSIVE_WRITER(orig->vm_file);
+		/*
+		 * orig->shared.rb may be modified concurrently, but the clone
+		 * will be reinitialized.
+		 */
+		*new = data_race(*orig);
+		INIT_LIST_HEAD(&new->anon_vma_chain);
+		dup_anon_vma_name(orig, new);
+
+		/* track_pfn_copy() will later take care of copying internal state. */
+		if (unlikely(new->vm_flags & VM_PFNMAP))
+			untrack_pfn_clear(new);
+>>>>>>> BRANCH (a6623712ba8449876f0b3de9462831523fb851e4 x86/mm/pat: Fix VM_PAT handling when fork() fails in copy_pa)
 	}
 	INIT_LIST_HEAD(&new->anon_vma_chain);
 	dup_anon_vma_name(orig, new);
