@@ -409,3 +409,14 @@ unsigned long hyp_pool_reclaimable(struct hyp_pool *pool, u8 order)
 
 	return 0;
 }
+
+bool hyp_pool_owned(struct hyp_pool *pool, void *addr)
+{
+	struct hyp_page *p = hyp_virt_to_page(addr);
+	u64 pfn = hyp_virt_to_pfn(addr);
+
+	if (!range_in_pool(pool, pfn, 1))
+		return false;
+
+	return pool->reclaimable == p->tag;
+}
