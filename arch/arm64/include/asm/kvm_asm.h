@@ -136,6 +136,9 @@ enum __kvm_host_smccc_func {
 	__KVM_HOST_SMCCC_FUNC___pkvm_host_map_guest_mmio,
 	__KVM_HOST_SMCCC_FUNC___pkvm_pviommu_attach,
 	__KVM_HOST_SMCCC_FUNC___pkvm_pviommu_add_vsid,
+	__KVM_HOST_SMCCC_FUNC___pkvm_host_stage2_topup,
+	__KVM_HOST_SMCCC_FUNC___pkvm_host_stage2_reclaim,
+	__KVM_HOST_SMCCC_FUNC___pkvm_host_stage2_reclaimable,
 
 	/*
 	 * Start of the dynamically registered hypercalls. Start a bit

@@ -1917,6 +1917,28 @@ static void handle___pkvm_pviommu_add_vsid(struct kvm_cpu_context *host_ctxt)
 	cpu_reg(host_ctxt, 1) = pkvm_pviommu_add_vsid(host_kvm, pviommu, iommu, sid, vsid);
 }
 
+static void handle___pkvm_host_stage2_topup(struct kvm_cpu_context *host_ctxt)
+{
+	DECLARE_REG(u64, pfn, host_ctxt, 1);
+	DECLARE_REG(unsigned int, nr_pages, host_ctxt, 2);
+
+	cpu_reg(host_ctxt, 1) = __pkvm_host_stage2_topup(pfn, nr_pages);
+}
+
+static void handle___pkvm_host_stage2_reclaim(struct kvm_cpu_context *host_ctxt)
+{
+	s64 ret;
+
+	ret = __pkvm_host_stage2_reclaim(0);
+	cpu_reg(host_ctxt, 1) = ret < 0 ? ret : 0;
+	cpu_reg(host_ctxt, 2) = ret;
+}
+
+static void handle___pkvm_host_stage2_reclaimable(struct kvm_cpu_context *host_ctxt)
+{
+	cpu_reg(host_ctxt, 1) = __pkvm_host_stage2_reclaimable(0);
+}
+
 typedef void (*hcall_t)(struct kvm_cpu_context *);
 
 #define HANDLE_FUNC(x)	[__KVM_HOST_SMCCC_FUNC_##x] = (hcall_t)handle_##x
@@ -2003,6 +2025,9 @@ static const hcall_t host_hcall[] = {
 	HANDLE_FUNC(__pkvm_host_map_guest_mmio),
 	HANDLE_FUNC(__pkvm_pviommu_attach),
 	HANDLE_FUNC(__pkvm_pviommu_add_vsid),
+	HANDLE_FUNC(__pkvm_host_stage2_topup),
+	HANDLE_FUNC(__pkvm_host_stage2_reclaim),
+	HANDLE_FUNC(__pkvm_host_stage2_reclaimable),
 };
 
 static void handle_host_hcall(struct kvm_cpu_context *host_ctxt)

@@ -2855,6 +2855,21 @@ int host_stage2_get_leaf(phys_addr_t phys, kvm_pte_t *ptep, s8 *level)
 	return ret;
 }
 
+int __pkvm_host_stage2_topup(u64 pfn, unsigned int nr_pages)
+{
+	return hyp_pool_admit(&host_s2_pool, pfn, nr_pages);
+}
+
+unsigned long __pkvm_host_stage2_reclaimable(u8 order)
+{
+	return hyp_pool_reclaimable(&host_s2_pool, order);
+}
+
+s64 __pkvm_host_stage2_reclaim(u8 order)
+{
+	return hyp_pool_reclaim(&host_s2_pool, order);
+}
+
 #ifdef CONFIG_NVHE_EL2_DEBUG
 struct pkvm_expected_state {
 	enum pkvm_page_state host;
