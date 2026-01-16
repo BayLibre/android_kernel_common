@@ -1195,8 +1195,19 @@ static inline void track_pfn_insert(struct vm_area_struct *vma, pgprot_t *prot,
 }
 
 /*
+<<<<<<< HEAD   (31482b7edb631eb8bb06ac59ce9d801bd59cd8c9 Merge f9e57e7ca773 ("net: ethtool: fix the error condition i)
  * track_pfn_copy is called when vma that is covering the pfnmap gets
  * copied through copy_page_range().
+||||||| BASE   (f9e57e7ca77393b5b7072800370370b02eaad0f8 net: ethtool: fix the error condition in ethtool_get_phy_sta)
+ * track_pfn_copy is called when a VM_PFNMAP VMA is about to get the page
+ * tables copied during copy_page_range(). On success, stores the pfn to be
+ * passed to untrack_pfn_copy().
+=======
+ * track_pfn_copy is called when a VM_PFNMAP VMA is about to get the page
+ * tables copied during copy_page_range(). Will store the pfn to be
+ * passed to untrack_pfn_copy() only if there is something to be untracked.
+ * Callers should initialize the pfn to 0.
+>>>>>>> BRANCH (fc8affcc7e04ad4d928a73c435746998547c5b1a mm: (un)track_pfn_copy() fix + doc improvements)
  */
 static inline int track_pfn_copy(struct vm_area_struct *vma)
 {
@@ -1204,6 +1215,30 @@ static inline int track_pfn_copy(struct vm_area_struct *vma)
 }
 
 /*
+<<<<<<< HEAD   (31482b7edb631eb8bb06ac59ce9d801bd59cd8c9 Merge f9e57e7ca773 ("net: ethtool: fix the error condition i)
+||||||| BASE   (f9e57e7ca77393b5b7072800370370b02eaad0f8 net: ethtool: fix the error condition in ethtool_get_phy_sta)
+ * untrack_pfn_copy is called when a VM_PFNMAP VMA failed to copy during
+ * copy_page_range(), but after track_pfn_copy() was already called.
+ */
+static inline void untrack_pfn_copy(struct vm_area_struct *dst_vma,
+		unsigned long pfn)
+{
+}
+
+/*
+=======
+ * untrack_pfn_copy is called when a VM_PFNMAP VMA failed to copy during
+ * copy_page_range(), but after track_pfn_copy() was already called. Can
+ * be called even if track_pfn_copy() did not actually track anything:
+ * handled internally.
+ */
+static inline void untrack_pfn_copy(struct vm_area_struct *dst_vma,
+		unsigned long pfn)
+{
+}
+
+/*
+>>>>>>> BRANCH (fc8affcc7e04ad4d928a73c435746998547c5b1a mm: (un)track_pfn_copy() fix + doc improvements)
  * untrack_pfn is called while unmapping a pfnmap for a region.
  * untrack can be called for a specific region indicated by pfn and size or
  * can be for the entire vma (in which case pfn, size are zero).

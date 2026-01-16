@@ -510,6 +510,7 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
 {
 	struct vm_area_struct *new = kmem_cache_alloc(vm_area_cachep, GFP_KERNEL);
 
+<<<<<<< HEAD   (31482b7edb631eb8bb06ac59ce9d801bd59cd8c9 Merge f9e57e7ca773 ("net: ethtool: fix the error condition i)
 	if (!new)
 		return NULL;
 
@@ -523,6 +524,33 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
 	if (!vma_lock_alloc(new)) {
 		kmem_cache_free(vm_area_cachep, new);
 		return NULL;
+||||||| BASE   (f9e57e7ca77393b5b7072800370370b02eaad0f8 net: ethtool: fix the error condition in ethtool_get_phy_sta)
+	if (new) {
+		ASSERT_EXCLUSIVE_WRITER(orig->vm_flags);
+		ASSERT_EXCLUSIVE_WRITER(orig->vm_file);
+		/*
+		 * orig->shared.rb may be modified concurrently, but the clone
+		 * will be reinitialized.
+		 */
+		*new = data_race(*orig);
+		INIT_LIST_HEAD(&new->anon_vma_chain);
+		dup_anon_vma_name(orig, new);
+
+		/* track_pfn_copy() will later take care of copying internal state. */
+		if (unlikely(new->vm_flags & VM_PFNMAP))
+			untrack_pfn_clear(new);
+=======
+	if (new) {
+		ASSERT_EXCLUSIVE_WRITER(orig->vm_flags);
+		ASSERT_EXCLUSIVE_WRITER(orig->vm_file);
+		/*
+		 * orig->shared.rb may be modified concurrently, but the clone
+		 * will be reinitialized.
+		 */
+		*new = data_race(*orig);
+		INIT_LIST_HEAD(&new->anon_vma_chain);
+		dup_anon_vma_name(orig, new);
+>>>>>>> BRANCH (fc8affcc7e04ad4d928a73c435746998547c5b1a mm: (un)track_pfn_copy() fix + doc improvements)
 	}
 	INIT_LIST_HEAD(&new->anon_vma_chain);
 	dup_anon_vma_name(orig, new);
@@ -724,6 +752,11 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
 		tmp = vm_area_dup(mpnt);
 		if (!tmp)
 			goto fail_nomem;
+
+		/* track_pfn_copy() will later take care of copying internal state. */
+		if (unlikely(tmp->vm_flags & VM_PFNMAP))
+			untrack_pfn_clear(tmp);
+
 		retval = vma_dup_policy(mpnt, tmp);
 		if (retval)
 			goto fail_nomem_policy;

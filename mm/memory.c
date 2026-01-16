@@ -1302,6 +1302,12 @@ copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
 	struct mm_struct *dst_mm = dst_vma->vm_mm;
 	struct mm_struct *src_mm = src_vma->vm_mm;
 	struct mmu_notifier_range range;
+<<<<<<< HEAD   (31482b7edb631eb8bb06ac59ce9d801bd59cd8c9 Merge f9e57e7ca773 ("net: ethtool: fix the error condition i)
+||||||| BASE   (f9e57e7ca77393b5b7072800370370b02eaad0f8 net: ethtool: fix the error condition in ethtool_get_phy_sta)
+	unsigned long next, pfn;
+=======
+	unsigned long next, pfn = 0;
+>>>>>>> BRANCH (fc8affcc7e04ad4d928a73c435746998547c5b1a mm: (un)track_pfn_copy() fix + doc improvements)
 	bool is_cow;
 	int ret;
 
