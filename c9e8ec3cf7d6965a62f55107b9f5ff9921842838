@@ -16,6 +16,23 @@
       "message": "Respin Bug: b/476242988",
       "revId": "c9e8ec3cf7d6965a62f55107b9f5ff9921842838",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "695d146f_4a096b76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2026-01-16T03:18:42Z",
+      "side": 1,
+      "message": "The order of the cherry-picks here is upside down. Please re-base and reorder these two changes so the symbol and abi update comes after the vendorhook code change.",
+      "revId": "c9e8ec3cf7d6965a62f55107b9f5ff9921842838",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
