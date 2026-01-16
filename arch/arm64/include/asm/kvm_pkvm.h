@@ -121,6 +121,9 @@ struct pkvm_moveable_reg {
 extern struct pkvm_moveable_reg kvm_nvhe_sym(pkvm_moveable_regs)[];
 extern unsigned int kvm_nvhe_sym(pkvm_moveable_regs_nr);
 
+extern phys_addr_t kvm_nvhe_sym(host_s2_cma_base);
+extern phys_addr_t kvm_nvhe_sym(host_s2_cma_size);
+
 extern struct memblock_region kvm_nvhe_sym(hyp_memory)[];
 extern unsigned int kvm_nvhe_sym(hyp_memblock_nr);
 
@@ -305,6 +308,16 @@ void pkvm_pgtable_stage2_free_unlinked(struct kvm_pgtable_mm_ops *mm_ops,
 kvm_pte_t *pkvm_pgtable_stage2_create_unlinked(struct kvm_pgtable *pgt, u64 phys, s8 level,
 					       enum kvm_pgtable_prot prot, void *mc,
 					       bool force_pte);
+
+#ifdef CONFIG_CMA
+int pkvm_host_stage2_topup(void);
+unsigned long pkvm_host_stage2_reclaim(void);
+unsigned long pkvm_host_stage2_reclaimable(void);
+#else
+int pkvm_host_stage2_topup(void) { return -EINVAL; }
+unsigned long pkvm_host_stage2_reclaim(void) { return 0; }
+unsigned long pkvm_host_stage2_reclaimable(void) { return 0; }
+#endif
 
 int __pkvm_topup_hyp_alloc(unsigned long nr_pages);
 

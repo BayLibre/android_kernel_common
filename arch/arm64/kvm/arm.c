@@ -2451,6 +2451,10 @@ static int __init do_pkvm_init(u32 hyp_va_bits)
 	void *per_cpu_base = kvm_ksym_ref(kvm_nvhe_sym(kvm_arm_hyp_percpu_base));
 	int ret;
 
+	ret = pkvm_host_stage2_reserve();
+	if (ret)
+		return ret;
+
 	preempt_disable();
 	cpu_hyp_init_context();
 	ret = kvm_call_hyp_nvhe(__pkvm_init, hyp_mem_base, hyp_mem_size,
@@ -2464,6 +2468,9 @@ static int __init do_pkvm_init(u32 hyp_va_bits)
 	 */
 	__this_cpu_write(kvm_hyp_initialized, 1);
 	preempt_enable();
+
+	if (!ret)
+		pkvm_host_stage2_drain();
 
 	return ret;
 }

@@ -1658,6 +1658,13 @@ int kvm_trng_call(struct kvm_vcpu *vcpu);
 extern phys_addr_t hyp_mem_base;
 extern phys_addr_t hyp_mem_size;
 void __init kvm_hyp_reserve(void);
+#ifdef CONFIG_CMA
+int __init pkvm_host_stage2_reserve(void);
+void __init pkvm_host_stage2_drain(void);
+#else
+int __init pkvm_host_stage2_reserve(void) { return 0; }
+void __init pkvm_host_stage2_drain(void) { }
+#endif
 #else
 static inline void kvm_hyp_reserve(void) { }
 #endif

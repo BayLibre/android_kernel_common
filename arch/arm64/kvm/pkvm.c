@@ -5,6 +5,7 @@
  */
 
 #include <linux/arm_ffa.h>
+#include <linux/cma.h>
 #include <linux/delay.h>
 #include <linux/init.h>
 #include <linux/initrd.h>
@@ -13,7 +14,6 @@
 #include <linux/iommu.h>
 #include <linux/kmemleak.h>
 #include <linux/kvm_host.h>
-#include <asm/kvm_mmu.h>
 #include <linux/memblock.h>
 #include <linux/mutex.h>
 #include <linux/of_address.h>
@@ -63,6 +63,11 @@ phys_addr_t hyp_mem_size;
 
 extern struct pkvm_device *kvm_nvhe_sym(registered_devices);
 extern u32 kvm_nvhe_sym(registered_devices_nr);
+
+#ifdef CONFIG_CMA
+static struct cma *host_s2_cma;
+static DEFINE_MUTEX(host_s2_cma_lock);
+#endif
 
 static int __init register_memblock_regions(void)
 {
@@ -215,6 +220,7 @@ DEFINE_STATIC_KEY_FALSE(kvm_ffa_unmap_on_lend);
 void __init kvm_hyp_reserve(void)
 {
 	u64 hyp_mem_pages = 0;
+	u64 host_s2_cma_size;
 	int ret;
 
 	if (!is_hyp_mode_available() || is_kernel_in_hyp_mode())
@@ -238,7 +244,6 @@ void __init kvm_hyp_reserve(void)
 	}
 
 	hyp_mem_pages += hyp_s1_pgtable_pages();
-	hyp_mem_pages += host_s2_pgtable_pages();
 	hyp_mem_pages += hyp_vm_table_pages();
 	hyp_mem_pages += hyp_vmemmap_pages(STRUCT_HYP_PAGE_SIZE);
 	hyp_mem_pages += pkvm_selftest_pages();
@@ -247,29 +252,119 @@ void __init kvm_hyp_reserve(void)
 		hyp_mem_pages += KVM_FFA_SPM_HANDLE_NR_PAGES;
 
 	hyp_mem_pages++; /* hyp_ppages */
-
 	hyp_mem_pages += kvm_iommu_pages();
+
+	hyp_mem_size = hyp_mem_pages << PAGE_SHIFT;
+	hyp_mem_size = ALIGN(hyp_mem_size, CMA_MIN_ALIGNMENT_BYTES);
+	host_s2_cma_size = ALIGN(host_s2_pgtable_pages() << PAGE_SHIFT,
+				 CMA_MIN_ALIGNMENT_BYTES);
 
 	/*
 	 * Try to allocate a PMD-aligned region to reduce TLB pressure once
 	 * this is unmapped from the host stage-2, and fallback to PAGE_SIZE.
 	 */
-	hyp_mem_size = hyp_mem_pages << PAGE_SHIFT;
-	hyp_mem_base = memblock_phys_alloc(ALIGN(hyp_mem_size, PMD_SIZE),
+	hyp_mem_base = memblock_phys_alloc(ALIGN(hyp_mem_size + host_s2_cma_size, PMD_SIZE),
 					   PMD_SIZE);
 	if (!hyp_mem_base)
-		hyp_mem_base = memblock_phys_alloc(hyp_mem_size, PAGE_SIZE);
+		hyp_mem_base = memblock_phys_alloc(hyp_mem_size + host_s2_cma_size, PAGE_SIZE);
 	else
-		hyp_mem_size = ALIGN(hyp_mem_size, PMD_SIZE);
+		host_s2_cma_size = ALIGN(hyp_mem_size + host_s2_cma_size, PMD_SIZE) - hyp_mem_size;
 
-	if (!hyp_mem_base) {
-		kvm_err("Failed to reserve hyp memory\n");
+	kvm_info("Reserved %lld MiB at 0x%llx\n", (hyp_mem_size + host_s2_cma_size) >> 20,
+		 hyp_mem_base);
+
+#ifdef CONFIG_CMA
+	ret = cma_init_reserved_mem(hyp_mem_base + hyp_mem_size, host_s2_cma_size, 0, "pkvm,host_s2_cma",
+				    &host_s2_cma);
+	if (ret) {
+		kvm_err("Failed to init CMA region for host stage-2 (%d)\n", ret);
+		hyp_mem_size += host_s2_cma_size;
 		return;
 	}
 
-	kvm_info("Reserved %lld MiB at 0x%llx\n", hyp_mem_size >> 20,
-		 hyp_mem_base);
+	kvm_nvhe_sym(host_s2_cma_base) = hyp_mem_base + hyp_mem_size;
+	kvm_nvhe_sym(host_s2_cma_size) = host_s2_cma_size;
+#else
+	hyp_mem_size += host_s2_cma_size;
+#endif
 }
+
+#ifdef CONFIG_CMA
+/*
+ * kvm_hyp_reserve() being called way too early for CMA, this function allows to later-on reserve
+ * the host stage-2 memory pool for the hypervisor.
+ */
+int __init pkvm_host_stage2_reserve(void)
+{
+	if (!kvm_nvhe_sym(host_s2_cma_size))
+		return 0;
+
+	if (!cma_alloc(host_s2_cma, kvm_nvhe_sym(host_s2_cma_size) >> PAGE_SHIFT, 0, true)) {
+		kvm_err("Failed to Reserve CMA memory for host stage-2\n");
+		return -ENOMEM;
+	}
+
+	return 0;
+}
+
+void __init pkvm_host_stage2_drain(void)
+{
+	unsigned long reclaimed = 0;
+
+	while (pkvm_host_stage2_reclaim())
+		reclaimed += PAGE_SIZE;
+
+	kvm_info("Shrunk Hyp Reserved memory by %lu MiB\n", reclaimed >> 20);
+}
+
+int pkvm_host_stage2_topup(void)
+{
+	static atomic_t seq;
+	struct page *p;
+	int ret, tmp;
+
+	tmp = atomic_read(&seq);
+	guard(mutex)(&host_s2_cma_lock);
+
+	/* Someone already topped up the pool */
+	if (tmp != atomic_read(&seq))
+		return 0;
+
+	p = cma_alloc(host_s2_cma, 1, 0, true);
+	if (!p)
+		return -ENOMEM;
+
+	ret = kvm_call_hyp_nvhe(__pkvm_host_stage2_topup, page_to_pfn(p), 1);
+	if (ret)
+		WARN_ON(!cma_release(host_s2_cma, p, 1));
+	else
+		atomic_inc(&seq);
+
+	return ret;
+}
+
+unsigned long pkvm_host_stage2_reclaim(void)
+{
+	struct arm_smccc_res res;
+
+	guard(mutex)(&host_s2_cma_lock);
+
+	arm_smccc_1_1_hvc(KVM_HOST_SMCCC_FUNC(__pkvm_host_stage2_reclaim), &res);
+	if (WARN_ON(res.a0 != SMCCC_RET_SUCCESS) ||
+	    res.a1 == -EBUSY ||
+	    WARN_ON(res.a1))
+		return 0;
+
+	WARN_ON(!cma_release(host_s2_cma, pfn_to_page(res.a2), 1));
+
+	return 1;
+}
+
+unsigned long pkvm_host_stage2_reclaimable(void)
+{
+	return kvm_call_hyp_nvhe(__pkvm_host_stage2_reclaimable);
+}
+#endif
 
 static void __pkvm_finalize_destroy_hyp_vm(struct kvm *kvm)
 {
