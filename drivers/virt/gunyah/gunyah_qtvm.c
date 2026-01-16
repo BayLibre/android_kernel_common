@@ -143,10 +143,19 @@ static int gunyah_qtvm_pre_vm_init(struct gunyah_vm *ghvm) {
 
 static int gunyah_qtvm_pre_vm_start(struct gunyah_vm *ghvm)
 {
+	int ret = 0;
+
 	struct gunyah_qtvm *vm = ghvm->auth_vm_mgr_data;
 
+	ret = gunyah_vm_parcel_to_paged(ghvm, &ghvm->config_image.parcel.parcel,
+				ghvm->config_image.parcel.start,
+				ghvm->config_image.parcel.pages);
+
+	if (ret)
+		return ret;
+
 	gunyah_notify_clients(vm, GUNYAH_QTVM_BEFORE_POWERUP);
-	return 0;
+	return ret;
 }
 
 static void gunyah_qtvm_vm_start_fail(struct gunyah_vm *ghvm)
