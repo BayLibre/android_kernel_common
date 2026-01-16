@@ -111,6 +111,12 @@ static int gunyah_qtvm_authenticate(struct gunyah_vm *ghvm)
 		return ret;
 	}
 
+	ret = gunyah_cma_unmap_from_userspace(ghvm);
+	if (ret) {
+		dev_err(ghvm->parent,
+			"Failed to unmap QTVM CMA region from userspace.\n");
+	}
+
 	return 0;
 }
 

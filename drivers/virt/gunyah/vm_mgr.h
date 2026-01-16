@@ -254,6 +254,7 @@ int gunyah_cma_share_parcel(struct gunyah_vm *ghvm,
 int gunyah_cma_reclaim_parcel(struct gunyah_vm *ghvm,
 			      struct gunyah_vm_parcel *parcel,
 			      struct gunyah_vm_binding *b);
+int gunyah_cma_unmap_from_userspace(struct gunyah_vm *ghvm);
 #else
 static inline int gunyah_cma_mem_init(void)
 {
@@ -277,6 +278,10 @@ static inline int gunyah_cma_share_parcel(struct gunyah_vm *ghvm,
 static inline int gunyah_cma_reclaim_parcel(struct gunyah_vm *ghvm,
 			      struct gunyah_vm_parcel *parcel,
 			      struct gunyah_vm_binding *b)
+{
+	return -EINVAL;
+}
+static inline int gunyah_cma_unmap_from_userspace(struct gunyah_vm *ghvm)
 {
 	return -EINVAL;
 }
