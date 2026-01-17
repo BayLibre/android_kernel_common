@@ -10,6 +10,17 @@
   blk_start_plug
   cgroup_add_dfl_cftypes
   cgroup_add_legacy_cftypes
+<<<<<<< HEAD   (0a2e62b2578fb233b8cbc672317e4c6072711824 ANDROID: GKI: update symbol list for xiaomi)
+||||||| BASE   (77b169ee2f870daba0ac6c07a452a6ca81782d6c ANDROID: GKI: update symbol list for xiaomi)
+  config_item_init_type_name
+  console_printk
+  copy_fs_struct
+=======
+  cgroup_add_dfl_cftypes
+  config_item_init_type_name
+  console_printk
+  copy_fs_struct
+>>>>>>> CHANGE (49255a4f5b17dae8696612ce5d8aa356e26e9300 ANDROID: GKI: Export memcg functions to allow module to add )
   cpu_cgrp_subsys
   css_task_iter_end
   css_task_iter_next
