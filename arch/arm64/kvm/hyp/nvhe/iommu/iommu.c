@@ -1149,3 +1149,20 @@ int kvm_iommu_iotlb_sync_map(pkvm_handle_t domain_id,
 	domain_put(domain);
 	return ret;
 }
+
+int kvm_iommu_request(struct kvm_hyp_req *in_req)
+{
+	struct pkvm_hyp_vcpu * hyp_vcpu = __get_vcpu();
+	struct kvm_hyp_req *req;
+
+	if (hyp_vcpu)
+		req = pkvm_hyp_req_reserve(hyp_vcpu, KVM_HYP_LAST_REQ);
+	else
+		req = this_cpu_ptr(&host_hyp_reqs);
+
+	if (!req || (req->type != KVM_HYP_LAST_REQ))
+		return -EBUSY;
+
+	memcpy(req, in_req, sizeof(struct kvm_hyp_req));
+	return 0;
+}
