@@ -484,7 +484,17 @@ struct pci_dev {
 	unsigned int	no_command_memory:1;	/* No PCI_COMMAND_MEMORY */
 	unsigned int	rom_bar_overlap:1;	/* ROM BAR disable broken */
 	unsigned int	rom_attr_enabled:1;	/* Display of ROM attribute enabled? */
+
+#ifdef CONFIG_PCIE_PTM
+	unsigned int	ptm_root:1;
+	unsigned int	ptm_enabled:1;
+#endif
 	pci_dev_flags_t dev_flags;
+
+#ifdef CONFIG_PCIE_PTM
+	u16		ptm_cap;		/* PTM Capability */
+	u8		ptm_granularity;
+#endif
 	atomic_t	enable_cnt;	/* pci_enable_device has been called */
 
 	spinlock_t	pcie_cap_lock;		/* Protects RMW ops in capability accessors */
@@ -495,12 +505,6 @@ struct pci_dev {
 
 #ifdef CONFIG_HOTPLUG_PCI_PCIE
 	unsigned int	broken_cmd_compl:1;	/* No compl for some cmds */
-#endif
-#ifdef CONFIG_PCIE_PTM
-	u16		ptm_cap;		/* PTM Capability */
-	unsigned int	ptm_root:1;
-	unsigned int	ptm_enabled:1;
-	u8		ptm_granularity;
 #endif
 #ifdef CONFIG_PCI_MSI
 	void __iomem	*msix_base;
