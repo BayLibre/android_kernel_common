@@ -2018,6 +2018,7 @@ no_page:
 
 	if (!folio)
 		return ERR_PTR(-ENOENT);
+	trace_android_vh_filemap_get_folio_end(mapping, folio);
 	return folio;
 }
 EXPORT_SYMBOL(__filemap_get_folio);
