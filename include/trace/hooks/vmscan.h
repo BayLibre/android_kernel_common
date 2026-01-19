@@ -43,6 +43,28 @@ DECLARE_HOOK(android_vh_should_continue_reclaim,
 DECLARE_HOOK(android_vh_file_is_tiny_bypass,
 	TP_PROTO(bool file_is_tiny, bool *bypass),
 	TP_ARGS(file_is_tiny, bypass));
+<<<<<<< HEAD   (3416ba8f00e3efcecb1380d736413c1b4d59d585 ANDROID: GKI: Update transsion symbol list)
+||||||| BASE   (6bfa519732146afa9e20af2217316b23388a8491 ANDROID: serial: qcom-geni: Add support for Suspend-to-RAM ()
+DECLARE_HOOK(android_vh_handle_folio_writeback,
+	TP_PROTO(struct folio *folio, bool *bypass),
+	TP_ARGS(folio, bypass));
+DECLARE_HOOK(android_vh_reclaim_before_kswapd,
+	TP_PROTO(unsigned long *nr_reclaimed),
+	TP_ARGS(nr_reclaimed));
+=======
+DECLARE_HOOK(android_vh_remove_mapping,
+	TP_PROTO(struct address_space *mapping, struct folio *folio, bool reclaimed),
+	TP_ARGS(mapping, folio, reclaimed));
+DECLARE_HOOK(android_vh_remove_mapping_failed,
+	TP_PROTO(struct address_space *mapping, struct folio *folio, bool reclaimed),
+	TP_ARGS(mapping, folio, reclaimed));
+DECLARE_HOOK(android_vh_handle_folio_writeback,
+	TP_PROTO(struct folio *folio, bool *bypass),
+	TP_ARGS(folio, bypass));
+DECLARE_HOOK(android_vh_reclaim_before_kswapd,
+	TP_PROTO(unsigned long *nr_reclaimed),
+	TP_ARGS(nr_reclaimed));
+>>>>>>> CHANGE (fbcf42eacea3b50b836ec78ed17fac032ab55869 ANDROID: mm: add vendor hook to trace folio allocation and r)
 DECLARE_HOOK(android_vh_check_folio_look_around_ref,
 	TP_PROTO(struct folio *folio, int *skip),
 	TP_ARGS(folio, skip));
