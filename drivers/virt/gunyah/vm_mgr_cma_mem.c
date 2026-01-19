@@ -147,6 +147,102 @@ int gunyah_cma_reclaim_parcel(struct gunyah_vm *ghvm, struct gunyah_vm_parcel *v
 	return ret;
 }
 
+
+int gunyah_gfn_to_page_mapping_create(struct gunyah_vm_binding *binding)
+{
+	int ret = 0;
+
+	binding->gfn_to_page = kzalloc(sizeof(*binding->gfn_to_page) *
+					(binding->size >> PAGE_SHIFT),
+					GFP_KERNEL);
+
+	if (!binding->gfn_to_page) {
+		ret = -ENOMEM;
+		goto out;
+	}
+
+	spin_lock_init(&binding->gfn_to_page_lock);
+out:
+	return ret;
+}
+
+void gunyah_gfn_to_page_mapping_destroy(struct gunyah_vm_binding *binding)
+{
+	if (!binding || !binding->gfn_to_page)
+		return;
+
+	for (int ptr = 0; ptr < (binding->size >> PAGE_SHIFT); ptr++)
+		binding->gfn_to_page[ptr] = NULL;
+
+	kfree(binding->gfn_to_page);
+}
+
+struct page *gunyah_gfn_to_page_get_mapping(struct gunyah_vm_binding *binding, u64 gfn)
+{
+	struct page *page;
+
+	if (!binding)
+		return NULL;
+
+	if ((gfn - (binding->guest_phys_addr >> PAGE_SHIFT)) >= (binding->size >> PAGE_SHIFT))
+		return NULL;
+
+	spin_lock(&binding->gfn_to_page_lock);
+	page = binding->gfn_to_page[gfn - (binding->guest_phys_addr >> PAGE_SHIFT)];
+	spin_unlock(&binding->gfn_to_page_lock);
+
+	return page;
+}
+
+void gunyah_gfn_to_page_mapping_map_locked(struct gunyah_vm_binding *binding, u64 gfn,
+					struct page *page)
+{
+	if (!binding || !page)
+		return;
+
+	if ((gfn - (binding->guest_phys_addr >> PAGE_SHIFT)) >= (binding->size >> PAGE_SHIFT))
+		return;
+
+	binding->gfn_to_page[gfn - (binding->guest_phys_addr >> PAGE_SHIFT)] = page;
+}
+
+void gunyah_gfn_to_page_mapping_unmap_locked(struct gunyah_vm_binding *binding, u64 gfn)
+{
+	if (!binding)
+		return;
+
+	if ((gfn - (binding->guest_phys_addr >> PAGE_SHIFT)) >= (binding->size >> PAGE_SHIFT))
+		return;
+
+	binding->gfn_to_page[gfn - (binding->guest_phys_addr >> PAGE_SHIFT)] = NULL;
+}
+
+void gunyah_gfn_to_page_mapping_map_range(struct gunyah_vm_binding *binding, u64 gfn,
+					struct page *base, u64 count)
+{
+	u64 start_gfn = gfn;
+
+	spin_lock(&binding->gfn_to_page_lock);
+
+	for (; gfn < start_gfn + count; gfn++) {
+		struct page *page = nth_page(base, gfn - start_gfn);
+
+		gunyah_gfn_to_page_mapping_map_locked(binding, gfn, page);
+	}
+
+	spin_unlock(&binding->gfn_to_page_lock);
+}
+
+void gunyah_gfn_to_page_mapping_unmap_range(struct gunyah_vm_binding *binding, u64 gfn, u64 count)
+{
+	spin_lock(&binding->gfn_to_page_lock);
+	while (count--) {
+		gunyah_gfn_to_page_mapping_unmap_locked(binding, gfn);
+		gfn++;
+	}
+	spin_unlock(&binding->gfn_to_page_lock);
+}
+
 int gunyah_cma_share_parcel(struct gunyah_vm *ghvm, struct gunyah_vm_parcel *vm_parcel,
 				struct gunyah_vm_binding *b, u64 *gfn, u64 *nr)
 {
