@@ -42,6 +42,8 @@ struct gunyah_vm_binding {
 	u64 size;
 	u32 flags;
 	u32 label;
+	struct page **gfn_to_page;
+	spinlock_t gfn_to_page_lock;
 };
 
 static inline u64 gunyah_gpa_to_gfn(u64 gpa)
@@ -255,6 +257,16 @@ int gunyah_cma_reclaim_parcel(struct gunyah_vm *ghvm,
 			      struct gunyah_vm_parcel *parcel,
 			      struct gunyah_vm_binding *b);
 int gunyah_cma_unmap_from_userspace(struct gunyah_vm *ghvm);
+int gunyah_gfn_to_page_mapping_create(struct gunyah_vm_binding *binding);
+void gunyah_gfn_to_page_mapping_destroy(struct gunyah_vm_binding *binding);
+struct page *gunyah_gfn_to_page_get_mapping(struct gunyah_vm_binding *binding, u64 gfn);
+void gunyah_gfn_to_page_mapping_map_locked(struct gunyah_vm_binding *binding,
+						u64 gfn, struct page *page);
+void gunyah_gfn_to_page_mapping_unmap_locked(struct gunyah_vm_binding *binding, u64 gfn);
+void gunyah_gfn_to_page_mapping_map_range(struct gunyah_vm_binding *binding,
+						u64 gfn, struct page *base, u64 count);
+void gunyah_gfn_to_page_mapping_unmap_range(struct gunyah_vm_binding *binding,
+						u64 gfn, u64 count);
 #else
 static inline int gunyah_cma_mem_init(void)
 {
@@ -285,6 +297,41 @@ static inline int gunyah_cma_unmap_from_userspace(struct gunyah_vm *ghvm)
 {
 	return -EINVAL;
 }
+static inline int gunyah_gfn_to_page_mapping_create(struct gunyah_vm_binding *binding)
+{
+	return -EINVAL;
+}
+
+static inline void gunyah_gfn_to_page_mapping_destroy(struct gunyah_vm_binding *binding)
+{
+}
+
+static inline struct page *gunyah_gfn_to_page_get_mapping(struct gunyah_vm_binding *binding,
+								u64 gfn)
+{
+	return NULL;
+}
+
+static inline void gunyah_gfn_to_page_mapping_map_locked(struct gunyah_vm_binding *binding,
+								u64 gfn, struct page *page)
+{
+}
+
+static inline void gunyah_gfn_to_page_mapping_unmap_locked(struct gunyah_vm_binding *binding,
+								u64 gfn)
+{
+}
+
+static inline void gunyah_gfn_to_page_mapping_map_range(struct gunyah_vm_binding *binding,
+							u64 gfn, struct page *base, u64 count)
+{
+}
+
+static inline void gunyah_gfn_to_page_mapping_unmap_range(struct gunyah_vm_binding *binding,
+								u64 gfn, u64 count)
+{
+}
+
 #endif
 
 /* Auth VM Manager ops */
