@@ -764,6 +764,7 @@ static bool blk_zone_wplug_handle_reset_all(struct bio *bio)
 	unsigned long flags;
 	sector_t sector;
 
+<<<<<<< HEAD   (e322b07771205250f65431ed86d3ea02cfab9b2f Merge 51297686e00f ("iomap: allocate s_dio_done_wq for async)
 	/*
 	 * Set the write pointer offset of all zone write plugs to 0. This will
 	 * abort all plugged BIOs. It is fine as resetting zones while writes
@@ -777,8 +778,38 @@ static bool blk_zone_wplug_handle_reset_all(struct bio *bio)
 			disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
 			spin_unlock_irqrestore(&zwplug->lock, flags);
 			disk_put_zone_wplug(zwplug);
+||||||| BASE   (51297686e00f4d5d941b0f20f12b2f12879d753c iomap: allocate s_dio_done_wq for async reads as well)
+	/* Update the condition of all zone write plugs. */
+	rcu_read_lock();
+	for (i = 0; i < disk_zone_wplugs_hash_size(disk); i++) {
+		hlist_for_each_entry_rcu(zwplug, &disk->zone_wplugs_hash[i],
+					 node) {
+			spin_lock_irqsave(&zwplug->lock, flags);
+			disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
+			spin_unlock_irqrestore(&zwplug->lock, flags);
+=======
+	if (atomic_read(&disk->nr_zone_wplugs)) {
+		/* Update the condition of all zone write plugs. */
+		rcu_read_lock();
+		for (i = 0; i < disk_zone_wplugs_hash_size(disk); i++) {
+			hlist_for_each_entry_rcu(zwplug,
+						 &disk->zone_wplugs_hash[i],
+						 node) {
+				spin_lock_irqsave(&zwplug->lock, flags);
+				disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
+				spin_unlock_irqrestore(&zwplug->lock, flags);
+			}
+>>>>>>> BRANCH (c8cdc025a6d24e83807a1acd84fa3860f3eaded3 block: fix NULL pointer dereference in blk_zone_reset_all_bi)
 		}
+		rcu_read_unlock();
 	}
+<<<<<<< HEAD   (e322b07771205250f65431ed86d3ea02cfab9b2f Merge 51297686e00f ("iomap: allocate s_dio_done_wq for async)
+||||||| BASE   (51297686e00f4d5d941b0f20f12b2f12879d753c iomap: allocate s_dio_done_wq for async reads as well)
+	rcu_read_unlock();
+}
+=======
+}
+>>>>>>> BRANCH (c8cdc025a6d24e83807a1acd84fa3860f3eaded3 block: fix NULL pointer dereference in blk_zone_reset_all_bi)
 
 	return false;
 }
