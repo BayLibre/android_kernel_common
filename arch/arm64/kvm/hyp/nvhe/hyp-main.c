@@ -1040,6 +1040,9 @@ static int errno_to_smccc(int ret, struct kvm_cpu_context *host_ctxt)
 		req->type = KVM_HYP_REQ_TYPE_HYP_ALLOC;
 		req->mem.nr_pages = hyp_alloc_missing_donations();
 		break;
+	case -ENOMEMHOSTS2:
+		req->type = KVM_HYP_REQ_TYPE_MEM_HOST_S2;
+		break;
 	}
 
 	return hyp_req_to_smccc(ret, host_ctxt);
@@ -1062,6 +1065,7 @@ static void handle___pkvm_host_map_guest(struct kvm_cpu_context *host_ctxt)
 		goto out;
 
 	ret = pkvm_refill_memcache(hyp_vcpu);
+	ret = errno_to_smccc(ret, host_ctxt);
 	if (ret)
 		goto out;
 
@@ -1069,6 +1073,8 @@ static void handle___pkvm_host_map_guest(struct kvm_cpu_context *host_ctxt)
 		ret = __pkvm_host_donate_guest(pfn, gfn, nr_pages, hyp_vcpu);
 	else
 		ret = __pkvm_host_share_guest(pfn, gfn, nr_pages, hyp_vcpu, prot);
+
+	ret = errno_to_smccc(ret, host_ctxt);
 out:
 	cpu_reg(host_ctxt, 1) =  ret;
 }
@@ -1090,6 +1096,7 @@ static void handle___pkvm_host_donate_guest_sglist(struct kvm_cpu_context *host_
 		goto out;
 
 	ret = __pkvm_host_donate_sglist_guest(hyp_vcpu);
+	ret = errno_to_smccc(ret, host_ctxt);
 
 out:
 	cpu_reg(host_ctxt, 1) =  ret;
@@ -1693,7 +1700,7 @@ static void handle___pkvm_ptdump(struct kvm_cpu_context *host_ctxt)
 	if (op == PKVM_PTDUMP_GET_LEVEL || op == PKVM_PTDUMP_GET_RANGE)
 		cpu_reg(host_ctxt, 1) = __pkvm_ptdump_get_config(handle, op);
 	else if (op == PKVM_PTDUMP_WALK_RANGE)
-		cpu_reg(host_ctxt, 1) = __pkvm_ptdump_walk_range(handle, log);
+		cpu_reg(host_ctxt, 1) = errno_to_smccc(__pkvm_ptdump_walk_range(handle, log), host_ctxt);
 	else
 		cpu_reg(host_ctxt, 0) = SMCCC_RET_NOT_SUPPORTED;
 }
