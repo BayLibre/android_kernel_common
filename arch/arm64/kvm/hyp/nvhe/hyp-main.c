@@ -1649,8 +1649,13 @@ static void handle___pkvm_hyp_alloc_mgt_refill(struct kvm_cpu_context *host_ctxt
 	};
 
 	cpu_reg(host_ctxt, 1) = hyp_alloc_mgt_refill(id, &mc);
-	cpu_reg(host_ctxt, 2) = mc.head;
-	cpu_reg(host_ctxt, 3) = mc.nr_pages;
+
+	/*
+	 * We also need to return the updated memcache. Luckily here, the only request we will have
+	 * is HOSTS2 which doesn't take argument. We can then easily stash the memcache in X3.
+	 */
+	WARN_ON(!PAGE_ALIGNED(mc.head) || mc.nr_pages > PAGE_SIZE);
+	cpu_reg(host_ctxt, 3) = mc.head | mc.nr_pages;
 }
 
 static void handle___pkvm_hyp_alloc_mgt_reclaimable(struct kvm_cpu_context *host_ctxt)
