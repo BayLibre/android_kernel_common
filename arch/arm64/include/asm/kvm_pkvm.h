@@ -308,6 +308,8 @@ kvm_pte_t *pkvm_pgtable_stage2_create_unlinked(struct kvm_pgtable *pgt, u64 phys
 
 int __pkvm_topup_hyp_alloc(unsigned long nr_pages);
 
+int __pkvm_handle_smccc_req(struct arm_smccc_res *res, void *arg);
+
 #define kvm_call_refill_hyp_nvhe(f, ...)				\
 ({									\
 	struct arm_smccc_res res;					\

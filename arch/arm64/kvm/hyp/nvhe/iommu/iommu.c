@@ -260,10 +260,8 @@ static void *__kvm_iommu_donate_pages(struct hyp_pool *pool,
 			return NULL;
 	}
 
-	req->type = KVM_HYP_REQ_TYPE_MEM;
-	req->mem.dest = REQ_MEM_DEST_HYP_IOMMU;
-	req->mem.sz_alloc = size;
-	req->mem.nr_pages = 1;
+	req->type = KVM_HYP_REQ_TYPE_MEM_IOMMU;
+	req->mem.nr_pages = size;
 	return NULL;
 }
 
