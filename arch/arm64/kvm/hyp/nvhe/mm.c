@@ -13,6 +13,7 @@
 #include <asm/spectre.h>
 
 #include <nvhe/early_alloc.h>
+#include <nvhe/errno.h>
 #include <nvhe/gfp.h>
 #include <nvhe/memory.h>
 #include <nvhe/mem_protect.h>
@@ -629,7 +630,7 @@ int refill_memcache(struct kvm_hyp_memcache *mc, unsigned long min_pages,
 				    hyp_virt_to_phys, &tmp, 0);
 	*host_mc = tmp;
 
-	return ret;
+	return ret == -ENOMEM ? -ENOMEMHOSTS2 : ret;
 }
 
 phys_addr_t __pkvm_private_range_pa(void *va)
