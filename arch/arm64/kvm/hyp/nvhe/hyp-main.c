@@ -19,8 +19,9 @@
 
 #include <nvhe/alloc.h>
 #include <nvhe/alloc_mgt.h>
-#include <nvhe/iommu.h>
+#include <nvhe/errno.h>
 #include <nvhe/ffa.h>
+#include <nvhe/iommu.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/modules.h>
 #include <nvhe/mm.h>
@@ -1035,7 +1036,7 @@ static int errno_to_smccc(int ret, struct kvm_cpu_context *host_ctxt)
 	struct kvm_hyp_req *req = this_cpu_ptr(&host_hyp_reqs);
 
 	switch (ret) {
-	case -ENOMEM:
+	case -ENOMEMHYPALLOC:
 		req->type = KVM_HYP_REQ_TYPE_HYP_ALLOC;
 		req->mem.nr_pages = hyp_alloc_missing_donations();
 		break;
@@ -1542,7 +1543,7 @@ static void handle___pkvm_load_tracing(struct kvm_cpu_context *host_ctxt)
 	 DECLARE_REG(unsigned long, desc_hva, host_ctxt, 1);
 	 DECLARE_REG(size_t, desc_size, host_ctxt, 2);
 
-	 cpu_reg(host_ctxt, 1) = errno_to_smccc(__pkvm_load_tracing(desc_hva, desc_size));
+	 cpu_reg(host_ctxt, 1) = errno_to_smccc(__pkvm_load_tracing(desc_hva, desc_size), host_ctxt);
 }
 
 static void handle___pkvm_teardown_tracing(struct kvm_cpu_context *host_ctxt)
