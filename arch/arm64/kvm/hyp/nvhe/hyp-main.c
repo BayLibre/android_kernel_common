@@ -1019,6 +1019,20 @@ static u64 this_cpu_hyp_req_to_smccc(int ret, struct kvm_cpu_context *host_ctxt)
 	return hyp_req_to_smccc(host_ctxt, req, ret);
 }
 
+static u64 errno_to_smccc(int ret, struct kvm_cpu_context *host_ctxt)
+{
+	struct kvm_hyp_req *req = this_cpu_ptr(&host_hyp_reqs);
+
+	switch (ret) {
+	case -ENOMEM:
+		req->type = KVM_HYP_REQ_TYPE_HYP_ALLOC;
+		req->mem.nr_pages = hyp_alloc_missing_donations();
+		break;
+	}
+
+	return hyp_req_to_smccc(host_ctxt, req, ret);
+}
+
 static void handle___pkvm_host_map_guest(struct kvm_cpu_context *host_ctxt)
 {
 	DECLARE_REG(u64, pfn, host_ctxt, 1);
@@ -1465,8 +1479,7 @@ static void handle___pkvm_init_vm(struct kvm_cpu_context *host_ctxt)
 	DECLARE_REG(unsigned long, pgd_hva, host_ctxt, 2);
 
 	host_kvm = kern_hyp_va(host_kvm);
-	cpu_reg(host_ctxt, 1) = __pkvm_init_vm(host_kvm, pgd_hva);
-	cpu_reg(host_ctxt, 3) = hyp_alloc_missing_donations();
+	cpu_reg(host_ctxt, 1) = errno_to_smccc(__pkvm_init_vm(host_kvm, pgd_hva), host_ctxt);
 }
 
 static void handle___pkvm_init_vcpu(struct kvm_cpu_context *host_ctxt)
@@ -1475,8 +1488,7 @@ static void handle___pkvm_init_vcpu(struct kvm_cpu_context *host_ctxt)
 	DECLARE_REG(struct kvm_vcpu *, host_vcpu, host_ctxt, 2);
 
 	host_vcpu = kern_hyp_va(host_vcpu);
-	cpu_reg(host_ctxt, 1) = __pkvm_init_vcpu(handle, host_vcpu);
-	cpu_reg(host_ctxt, 3) = hyp_alloc_missing_donations();
+	cpu_reg(host_ctxt, 1) = errno_to_smccc(__pkvm_init_vcpu(handle, host_vcpu), host_ctxt);
 }
 
 static void handle___pkvm_reclaim_dying_guest_page(struct kvm_cpu_context *host_ctxt)
@@ -1519,8 +1531,8 @@ static void handle___pkvm_load_tracing(struct kvm_cpu_context *host_ctxt)
 	 DECLARE_REG(unsigned long, desc_hva, host_ctxt, 1);
 	 DECLARE_REG(size_t, desc_size, host_ctxt, 2);
 
-	 cpu_reg(host_ctxt, 1) = __pkvm_load_tracing(desc_hva, desc_size);
-	 cpu_reg(host_ctxt, 3) = hyp_alloc_missing_donations();
+	 cpu_reg(host_ctxt, 1) = errno_to_smccc(__pkvm_load_tracing(desc_hva, desc_size),
+						host_ctxt);
 }
 
 static void handle___pkvm_teardown_tracing(struct kvm_cpu_context *host_ctxt)
