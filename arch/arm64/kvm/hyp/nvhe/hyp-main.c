@@ -19,8 +19,9 @@
 
 #include <nvhe/alloc.h>
 #include <nvhe/alloc_mgt.h>
-#include <nvhe/iommu.h>
+#include <nvhe/errno.h>
 #include <nvhe/ffa.h>
+#include <nvhe/iommu.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/modules.h>
 #include <nvhe/mm.h>
@@ -1024,7 +1025,7 @@ static u64 errno_to_smccc(int ret, struct kvm_cpu_context *host_ctxt)
 	struct kvm_hyp_req *req = this_cpu_ptr(&host_hyp_reqs);
 
 	switch (ret) {
-	case -ENOMEM:
+	case -ENOMEMHYPALLOC:
 		req->type = KVM_HYP_REQ_TYPE_HYP_ALLOC;
 		req->mem.nr_pages = hyp_alloc_missing_donations();
 		break;
