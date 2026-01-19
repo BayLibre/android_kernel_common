@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d32d8fdc_f07ebd52",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-19T13:44:17Z",
+      "side": 1,
+      "message": "Would probably be more clear to actually be a nr_pages value...",
+      "fixSuggestions": [
+        {
+          "fixId": "2b0a1463_1109aec1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+              "range": {
+                "startLine": 250,
+                "startChar": 0,
+                "endLine": 251,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+              "range": {
+                "startLine": 264,
+                "startChar": 0,
+                "endLine": 265,
+                "endChar": 0
+              },
+              "replacement": "\treq-\u003emem.nr_pages \u003d 1 \u003c\u003c order;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8e4b4c69d6039f617aa600815339fe63483f2b73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
