@@ -15,6 +15,7 @@
 
 #include <hyp/fault.h>
 
+#include <nvhe/errno.h>
 #include <nvhe/gfp.h>
 #include <nvhe/iommu.h>
 #include <nvhe/memory.h>
@@ -774,6 +775,8 @@ static int __host_stage2_set_owner_locked(phys_addr_t addr, u64 size, u8 owner_i
 		ret = host_stage2_try(kvm_pgtable_stage2_annotate,
 				&host_mmu.pgt,
 				addr, size, region_to_pool(is_memory), annotation);
+		if (ret == -ENOMEM)
+			ret = -ENOMEMHOSTS2;
 	}
 
 	if (ret)
@@ -1529,20 +1532,24 @@ static int pkvm_host_donate_hyp(u64 pfn, u64 nr_pages, enum kvm_pgtable_prot pro
 	if (ret)
 		goto unlock;
 
+	ret = host_stage2_set_owner_locked(phys, size, PKVM_ID_HYP);
+	if (ret)
+		goto unlock;
+
+	ret = pkvm_create_mappings_locked(virt, virt + size, default_hyp_prot(phys));
+	if (ret) {
+		WARN_ON(ret != -ENOMEM);
+		/* We might have failed halfway through, so remove anything we've installed */
+		pkvm_remove_mappings_locked(virt, virt + size);
+		host_stage2_set_owner_locked(phys, size, PKVM_ID_HOST);
+		goto unlock;
+	}
+
 	/*
 	 * Only allow hyp MMIO transitions to/from the host
 	 */
 	if (range_is_memory(phys, phys + size))
 		__hyp_set_page_state_range(phys, size, PKVM_PAGE_OWNED);
-
-	ret = pkvm_create_mappings_locked(virt, virt + size, prot);
-	if (ret) {
-		WARN_ON(ret != -ENOMEM);
-		/* We might have failed halfway through, so remove anything we've installed */
-		pkvm_remove_mappings_locked(virt, virt + size);
-		goto unlock;
-	}
-	WARN_ON(host_stage2_set_owner_locked(phys, size, PKVM_ID_HYP));
 
 unlock:
 	hyp_unlock_component();
@@ -1840,7 +1847,8 @@ update:
 		}
 	}
 
-	if (WARN_ON(ret) || !page || !prot)
+	WARN_ON(ret && ret != -ENOMEMHOSTS2);
+	if (ret || !page || !prot)
 		goto unlock;
 
 	for (i = 0; i < nr_pages; i++) {
