@@ -859,6 +859,7 @@ struct kvm_hyp_req {
 #define KVM_HYP_REQ_TYPE_SPLIT		3
 #define KVM_HYP_REQ_TYPE_HYP_ALLOC	4
 #define KVM_HYP_REQ_TYPE_MEM_IOMMU	5
+#define KVM_HYP_REQ_TYPE_MEM_HOST_S2	6
 	u8 type;
 	union {
 		struct {
