@@ -40,7 +40,6 @@
 
 #include "binder.c"
 #include "bitmap.c"
-#include "bitops.c"
 #include "blk.c"
 #include "bug.c"
 #include "build_assert.c"
