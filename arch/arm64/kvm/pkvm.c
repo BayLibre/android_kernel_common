@@ -1754,7 +1754,7 @@ int __pkvm_topup_hyp_alloc(unsigned long nr_pages)
 }
 EXPORT_SYMBOL(__pkvm_topup_hyp_alloc);
 
-unsigned long __pkvm_reclaim_hyp_alloc_mgt(unsigned long nr_pages)
+unsigned long __pkvm_reclaim_hyp_alloc_mgt(unsigned long id, unsigned long nr_pages)
 {
 	unsigned long ratelimit, last_reclaim, reclaimed = 0;
 	struct kvm_hyp_memcache mc;
@@ -1767,7 +1767,7 @@ unsigned long __pkvm_reclaim_hyp_alloc_mgt(unsigned long nr_pages)
 		ratelimit = min(nr_pages, 16UL);
 
 		arm_smccc_1_1_hvc(KVM_HOST_SMCCC_FUNC(__pkvm_hyp_alloc_mgt_reclaim),
-				  ratelimit, &res);
+				  id, ratelimit, &res);
 		if (WARN_ON(res.a0 != SMCCC_RET_SUCCESS))
 			break;
 

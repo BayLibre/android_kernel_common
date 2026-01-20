@@ -2540,7 +2540,7 @@ static unsigned long kvm_hyp_shrinker_count(struct shrinker *shrinker,
 static unsigned long kvm_hyp_shrinker_scan(struct shrinker *shrinker,
 					   struct shrink_control *sc)
 {
-	return __pkvm_reclaim_hyp_alloc_mgt(sc->nr_to_scan);
+	return __pkvm_reclaim_hyp_alloc_mgt(HYP_ALLOC_MGT_ALL, sc->nr_to_scan);
 }
 
 static int __init kvm_hyp_init_protection(u32 hyp_va_bits)
