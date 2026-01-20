@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6ddb4ca_fe24d2cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-01-20T18:26:18Z",
+      "side": 1,
+      "message": "Breaks KMI. We\u0027ll have to leave these hooks in place for 6.12 to avoid causing module load failures. To disable, you could add a conditional that inhibits the hook from being invoked.",
+      "revId": "6fb5e4125b6157974e2f095b835243ed0848241d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
