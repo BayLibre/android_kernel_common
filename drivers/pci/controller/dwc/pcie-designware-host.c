@@ -671,8 +671,14 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
 	 * because that would require users to manually rescan for devices.
 	 */
 	if (!pp->use_linkup_irq)
-		/* Ignore errors, the link may come up later */
-		dw_pcie_wait_for_link(pci);
+		/*
+		* Only fail on timeout error. Other errors indicate the device may
+		* become available later, so continue without failing.
+		*/
+		ret = dw_pcie_wait_for_link(pci);
+
+	if (ret == -ETIMEDOUT)
+		goto err_stop_link;
 
 	ret = pci_host_probe(bridge);
 	if (ret)
