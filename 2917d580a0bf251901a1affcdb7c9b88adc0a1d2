@@ -1,0 +1,266 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84dc8313_4ca1b843",
+        "filename": "arch/arm64/geniezone/vm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2026-01-20T08:37:18Z",
+      "side": 1,
+      "message": "why is `ret` needed at all, just return the function call directly.",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 13
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "9634be68_bcf528e5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/geniezone/vm.c",
+              "range": {
+                "startLine": 96,
+                "startChar": 0,
+                "endLine": 98,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/arm64/geniezone/vm.c",
+              "range": {
+                "startLine": 108,
+                "startChar": 0,
+                "endLine": 110,
+                "endChar": 0
+              },
+              "replacement": "\t\treturn gzvm_cap_vm_gpa_size(argp);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2917d580a0bf251901a1affcdb7c9b88adc0a1d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e7f048e_d3bd9a14",
+        "filename": "arch/arm64/geniezone/vm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2026-01-20T08:37:18Z",
+      "side": 1,
+      "message": "wrong error value.",
+      "revId": "2917d580a0bf251901a1affcdb7c9b88adc0a1d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b761b4a_1f89d5f0",
+        "filename": "arch/arm64/geniezone/vm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2026-01-20T08:37:18Z",
+      "side": 1,
+      "message": "why is this a fallthrough to a totally different ioctl call?",
+      "range": {
+        "startLine": 200,
+        "startChar": 6,
+        "endLine": 200,
+        "endChar": 32
+      },
+      "revId": "2917d580a0bf251901a1affcdb7c9b88adc0a1d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc1fa0ad_0347db92",
+        "filename": "arch/arm64/geniezone/vm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2026-01-20T08:37:18Z",
+      "side": 1,
+      "message": "again, `ret` is not needed.",
+      "range": {
+        "startLine": 203,
+        "startChar": 2,
+        "endLine": 204,
+        "endChar": 13
+      },
+      "revId": "2917d580a0bf251901a1affcdb7c9b88adc0a1d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3593f357_f66e95a8",
+        "filename": "arch/arm64/geniezone/vm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2026-01-20T08:37:18Z",
+      "side": 1,
+      "message": "not needed.",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 9
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "81b98869_5c84c26c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/geniezone/vm.c",
+              "range": {
+                "startLine": 219,
+                "startChar": 0,
+                "endLine": 221,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/arm64/geniezone/vm.c",
+              "range": {
+                "startLine": 223,
+                "startChar": 0,
+                "endLine": 225,
+                "endChar": 0
+              },
+              "replacement": "\t\treturn gzvm_vm_ioctl_cap_pvm(gzvm, cap, argp);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2917d580a0bf251901a1affcdb7c9b88adc0a1d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a09eeeb_cffb3745",
+        "filename": "drivers/virt/geniezone/gzvm_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2026-01-20T08:37:18Z",
+      "side": 1,
+      "message": "__u64 is the type you are checking.",
+      "range": {
+        "startLine": 69,
+        "startChar": 39,
+        "endLine": 69,
+        "endChar": 47
+      },
+      "revId": "2917d580a0bf251901a1affcdb7c9b88adc0a1d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "967089a7_d7ce415c",
+        "filename": "drivers/virt/geniezone/gzvm_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2026-01-20T08:37:18Z",
+      "side": 1,
+      "message": "how can this happen?",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 17
+      },
+      "revId": "2917d580a0bf251901a1affcdb7c9b88adc0a1d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5cff9fc_88810995",
+        "filename": "drivers/virt/geniezone/gzvm_vm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2026-01-20T08:37:18Z",
+      "side": 1,
+      "message": "does not follow pattern of the ioctl above this, please be consistent.",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 12
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "dd3f6047_68a91b7b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/virt/geniezone/gzvm_vm.c",
+              "range": {
+                "startLine": 165,
+                "startChar": 0,
+                "endLine": 169,
+                "endChar": 0
+              },
+              "replacement": "\t\tif (copy_from_user(\u0026cap, argp, sizeof(cap)))\n\t\t\treturn -EFAULT;\n\n"
+            },
+            {
+              "path": "drivers/virt/geniezone/gzvm_vm.c",
+              "range": {
+                "startLine": 175,
+                "startChar": 0,
+                "endLine": 176,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "2917d580a0bf251901a1affcdb7c9b88adc0a1d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
