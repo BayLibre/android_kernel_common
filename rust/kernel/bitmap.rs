@@ -167,9 +167,7 @@ impl core::ops::Deref for BitmapVec {
         let ptr = if self.nbits <= BITS_PER_LONG {
             // SAFETY: Bitmap is represented inline.
             #[allow(unused_unsafe, reason = "Safe since Rust 1.92.0")]
-            unsafe {
-                core::ptr::addr_of!(self.repr.bitmap)
-            }
+            unsafe { core::ptr::addr_of!(self.repr.bitmap) }
         } else {
             // SAFETY: Bitmap is represented as array of `unsigned long`.
             unsafe { self.repr.ptr.as_ptr() }
@@ -186,9 +184,7 @@ impl core::ops::DerefMut for BitmapVec {
         let ptr = if self.nbits <= BITS_PER_LONG {
             // SAFETY: Bitmap is represented inline.
             #[allow(unused_unsafe, reason = "Safe since Rust 1.92.0")]
-            unsafe {
-                core::ptr::addr_of_mut!(self.repr.bitmap)
-            }
+            unsafe { core::ptr::addr_of_mut!(self.repr.bitmap) }
         } else {
             // SAFETY: Bitmap is represented as array of `unsigned long`.
             unsafe { self.repr.ptr.as_ptr() }
