@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "77209daf_ebdcc57f",
+        "filename": "arch/arm64/kvm/handle_exit.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-01-20T09:01:27Z",
+      "side": 1,
+      "message": "Move this check before the dereference on line 460",
+      "range": {
+        "startLine": 464,
+        "startChar": 6,
+        "endLine": 464,
+        "endChar": 10
+      },
+      "revId": "8e4b4c69d6039f617aa600815339fe63483f2b73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9834be49_22290bde",
+        "filename": "arch/arm64/kvm/handle_exit.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-01-20T09:01:27Z",
+      "side": 1,
+      "message": "Who else calls this ? Maybe make it private",
+      "range": {
+        "startLine": 485,
+        "startChar": 4,
+        "endLine": 485,
+        "endChar": 18
+      },
+      "revId": "8e4b4c69d6039f617aa600815339fe63483f2b73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2341b8fc_232a0e5b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-01-20T09:01:27Z",
+      "side": 1,
+      "message": "I would see it behind a macro for \u0027encoding\u0027 \u0026 the same for the \u0027decoding\u0027 from `__pkvm_handle_smccc_req`. Let me know what do you think. You can probably hide the memcpy as well in it ?",
+      "range": {
+        "startLine": 1023,
+        "startChar": 1,
+        "endLine": 1023,
+        "endChar": 31
+      },
+      "revId": "8e4b4c69d6039f617aa600815339fe63483f2b73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d32d8fdc_f07ebd52",
         "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
         "patchSetId": 1
