@@ -2641,7 +2641,12 @@ restore_flag:
 static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 {
 	unsigned int nr_pages = get_pages(sbi, F2FS_DIRTY_DATA) / 16;
+<<<<<<< HEAD   (f139be5bb5a2fb0b1308c7f0c2b7240c9619541d Merge 2ad1e2faebbd ("sched_ext: Fix missing post-enqueue han)
 	long long start, writeback, lock, sync_inode, end;
+||||||| BASE   (2ad1e2faebbdba686fcdf4d38a530763cf729244 sched_ext: Fix missing post-enqueue handling in move_local_t)
+=======
+	long long start, writeback, end;
+>>>>>>> BRANCH (a607c8f744340ad2c2486d46e96b66df47caffba Linux 6.18.3)
 	int ret;
 
 	f2fs_info(sbi, "%s start, meta: %lld, node: %lld, data: %lld",
@@ -2684,6 +2689,7 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 	set_sbi_flag(sbi, SBI_IS_DIRTY);
 	f2fs_up_write(&sbi->gc_lock);
 
+<<<<<<< HEAD   (f139be5bb5a2fb0b1308c7f0c2b7240c9619541d Merge 2ad1e2faebbd ("sched_ext: Fix missing post-enqueue han)
 	f2fs_info(sbi, "%s sync_fs, meta: %lld, imeta: %lld, node: %lld, dents: %lld, qdata: %lld",
 					__func__,
 					get_pages(sbi, F2FS_DIRTY_META),
@@ -2691,6 +2697,9 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 					get_pages(sbi, F2FS_DIRTY_NODES),
 					get_pages(sbi, F2FS_DIRTY_DENTS),
 					get_pages(sbi, F2FS_DIRTY_QDATA));
+||||||| BASE   (2ad1e2faebbdba686fcdf4d38a530763cf729244 sched_ext: Fix missing post-enqueue handling in move_local_t)
+=======
+>>>>>>> BRANCH (a607c8f744340ad2c2486d46e96b66df47caffba Linux 6.18.3)
 	ret = f2fs_sync_fs(sbi->sb, 1);
 	if (ret)
 		f2fs_err(sbi, "%s sync_fs failed, ret: %d", __func__, ret);
@@ -2702,6 +2711,7 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 
 	end = ktime_get();
 
+<<<<<<< HEAD   (f139be5bb5a2fb0b1308c7f0c2b7240c9619541d Merge 2ad1e2faebbd ("sched_ext: Fix missing post-enqueue han)
 	f2fs_info(sbi, "%s end, writeback:%llu, "
 				"lock:%llu, sync_inode:%llu, sync_fs:%llu",
 				__func__,
@@ -2709,6 +2719,14 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 				ktime_ms_delta(lock, writeback),
 				ktime_ms_delta(sync_inode, lock),
 				ktime_ms_delta(end, sync_inode));
+||||||| BASE   (2ad1e2faebbdba686fcdf4d38a530763cf729244 sched_ext: Fix missing post-enqueue handling in move_local_t)
+	f2fs_info(sbi, "f2fs_enable_checkpoint() finishes, writeback:%llu, sync:%llu",
+					ktime_ms_delta(writeback, start),
+=======
+	f2fs_info(sbi, "f2fs_enable_checkpoint() finishes, writeback:%llu, sync:%llu",
+					ktime_ms_delta(writeback, start),
+					ktime_ms_delta(end, writeback));
+>>>>>>> BRANCH (a607c8f744340ad2c2486d46e96b66df47caffba Linux 6.18.3)
 	return ret;
 }
 
