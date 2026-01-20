@@ -44,10 +44,17 @@ int hyp_alloc_mgt_reclaimable(void)
 	return reclaimable;
 }
 
-void hyp_alloc_mgt_reclaim(struct kvm_hyp_memcache *host_mc, int target)
+void hyp_alloc_mgt_reclaim(unsigned long id, struct kvm_hyp_memcache *host_mc, int target)
 {
 	struct hyp_mgt_allocator_ops *ops;
 	int i;
+
+	if (id < MAX_ALLOC_ID) {
+		ops = registered_allocators[id];
+		if (ops->reclaim)
+			ops->reclaim(host_mc, target);
+		return;
+	}
 
 	for (i = 0 ; (i < MAX_ALLOC_ID) && (host_mc->nr_pages < target) ; ++i) {
 		ops = registered_allocators[i];
