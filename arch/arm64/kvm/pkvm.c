@@ -5,6 +5,7 @@
  */
 
 #include <linux/arm_ffa.h>
+#include <linux/cma.h>
 #include <linux/delay.h>
 #include <linux/init.h>
 #include <linux/initrd.h>
@@ -13,7 +14,6 @@
 #include <linux/iommu.h>
 #include <linux/kmemleak.h>
 #include <linux/kvm_host.h>
-#include <asm/kvm_mmu.h>
 #include <linux/memblock.h>
 #include <linux/mutex.h>
 #include <linux/of_address.h>
@@ -63,6 +63,10 @@ phys_addr_t hyp_mem_size;
 
 extern struct pkvm_device *kvm_nvhe_sym(registered_devices);
 extern u32 kvm_nvhe_sym(registered_devices_nr);
+
+#ifdef CONFIG_CMA
+static struct cma *host_s2_cma;
+#endif
 
 static int __init register_memblock_regions(void)
 {
@@ -215,6 +219,7 @@ DEFINE_STATIC_KEY_FALSE(kvm_ffa_unmap_on_lend);
 void __init kvm_hyp_reserve(void)
 {
 	u64 hyp_mem_pages = 0;
+	u64 host_s2_cma_size;
 	int ret;
 
 	if (!is_hyp_mode_available() || is_kernel_in_hyp_mode())
@@ -238,7 +243,6 @@ void __init kvm_hyp_reserve(void)
 	}
 
 	hyp_mem_pages += hyp_s1_pgtable_pages();
-	hyp_mem_pages += host_s2_pgtable_pages();
 	hyp_mem_pages += hyp_vm_table_pages();
 	hyp_mem_pages += hyp_vmemmap_pages(STRUCT_HYP_PAGE_SIZE);
 	hyp_mem_pages += pkvm_selftest_pages();
@@ -247,28 +251,41 @@ void __init kvm_hyp_reserve(void)
 		hyp_mem_pages += KVM_FFA_SPM_HANDLE_NR_PAGES;
 
 	hyp_mem_pages++; /* hyp_ppages */
-
 	hyp_mem_pages += kvm_iommu_pages();
+
+	hyp_mem_size = hyp_mem_pages << PAGE_SHIFT;
+	hyp_mem_size = ALIGN(hyp_mem_size, CMA_MIN_ALIGNMENT_BYTES);
+	host_s2_cma_size = ALIGN(host_s2_pgtable_pages() << PAGE_SHIFT,
+				 CMA_MIN_ALIGNMENT_BYTES);
 
 	/*
 	 * Try to allocate a PMD-aligned region to reduce TLB pressure once
 	 * this is unmapped from the host stage-2, and fallback to PAGE_SIZE.
 	 */
-	hyp_mem_size = hyp_mem_pages << PAGE_SHIFT;
-	hyp_mem_base = memblock_phys_alloc(ALIGN(hyp_mem_size, PMD_SIZE),
+	hyp_mem_base = memblock_phys_alloc(ALIGN(hyp_mem_size + host_s2_cma_size, PMD_SIZE),
 					   PMD_SIZE);
 	if (!hyp_mem_base)
-		hyp_mem_base = memblock_phys_alloc(hyp_mem_size, PAGE_SIZE);
+		hyp_mem_base = memblock_phys_alloc(hyp_mem_size + host_s2_cma_size, PAGE_SIZE);
 	else
-		hyp_mem_size = ALIGN(hyp_mem_size, PMD_SIZE);
+		host_s2_cma_size = ALIGN(hyp_mem_size + host_s2_cma_size, PMD_SIZE) - hyp_mem_size;
 
-	if (!hyp_mem_base) {
-		kvm_err("Failed to reserve hyp memory\n");
+	kvm_info("Reserved %lld MiB at 0x%llx\n", (hyp_mem_size + host_s2_cma_size) >> 20,
+		 hyp_mem_base);
+
+#ifdef CONFIG_CMA
+	ret = cma_init_reserved_mem(hyp_mem_base + hyp_mem_size, host_s2_cma_size, 0, "pkvm,host_s2_cma",
+				    &host_s2_cma);
+	if (ret) {
+		kvm_err("Failed to init CMA region for host stage-2 (%d)\n", ret);
+		hyp_mem_size += host_s2_cma_size;
 		return;
 	}
 
-	kvm_info("Reserved %lld MiB at 0x%llx\n", hyp_mem_size >> 20,
-		 hyp_mem_base);
+	kvm_nvhe_sym(host_s2_cma_base) = hyp_mem_base + hyp_mem_size;
+	kvm_nvhe_sym(host_s2_cma_size) = host_s2_cma_size;
+#else
+	hyp_mem_size += host_s2_cma_size;
+#endif
 }
 
 static void __pkvm_finalize_destroy_hyp_vm(struct kvm *kvm)
