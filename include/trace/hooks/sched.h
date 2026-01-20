@@ -579,6 +579,17 @@ DECLARE_HOOK(android_vh_dump_dl_server,
 	TP_PROTO(struct sched_dl_entity *dl_se, struct task_struct *p),
 	TP_ARGS(dl_se, p));
 
+<<<<<<< PATCH SET (0c18b921cbba69aa6540da381113dab5adb33375 Revert "ANDROID: SPED: Add vendor hooks in Scheduler")
+||||||| BASE      (1b90bb28e90e8f29d34c84cfa7a03ecba5ce29f5 Revert "ANDROID: SPED: Add symbols for vendor hook")
+DECLARE_HOOK(android_vh_chk_task,
+	TP_PROTO(struct task_struct **pp, struct rq *rq),
+	TP_ARGS(pp, rq));
+
+DECLARE_HOOK(android_vh_put_task,
+	TP_PROTO(struct task_struct *p),
+	TP_ARGS(p));
+
+=======
 DECLARE_HOOK(android_vh_chk_task,
 	TP_PROTO(struct task_struct **pp, struct rq *rq),
 	TP_ARGS(pp, rq));
@@ -592,6 +603,7 @@ DECLARE_RESTRICTED_HOOK(android_rvh_task_fits_cpu,
 		 unsigned long uclamp_max, int cpu, bool *fits, bool *done),
 	TP_ARGS(tsk, util, uclamp_min, uclamp_max, cpu, fits, done), 1);
 
+>>>>>>> BASE      (c196242542702a254897f81f6c0d01826650c5c5 UPSTREAM: xfrm: delete x->tunnel as we delete x)
 /* macro versions of hooks are no longer required */
 
 #endif /* _TRACE_HOOK_SCHED_H */

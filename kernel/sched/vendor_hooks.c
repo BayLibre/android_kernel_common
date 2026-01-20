@@ -147,6 +147,12 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_util_fits_cpu);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_before_pick_task_fair);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_balance_fair);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_dump_dl_server);
+<<<<<<< PATCH SET (0c18b921cbba69aa6540da381113dab5adb33375 Revert "ANDROID: SPED: Add vendor hooks in Scheduler")
+||||||| BASE      (1b90bb28e90e8f29d34c84cfa7a03ecba5ce29f5 Revert "ANDROID: SPED: Add symbols for vendor hook")
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_chk_task);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_put_task);
+=======
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_chk_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_put_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_task_fits_cpu);
+>>>>>>> BASE      (c196242542702a254897f81f6c0d01826650c5c5 UPSTREAM: xfrm: delete x->tunnel as we delete x)
