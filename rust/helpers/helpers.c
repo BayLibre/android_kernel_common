@@ -39,7 +39,6 @@
 #endif
 
 #include "binder.c"
-#include "bitmap.c"
 #include "blk.c"
 #include "bug.c"
 #include "build_assert.c"
