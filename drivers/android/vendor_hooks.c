@@ -708,4 +708,11 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_fas_gpu_qos_update_tracer);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_loop_skip_queue_work);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_gup_longterm_locked);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bio_add_page_merge_bypass);
+<<<<<<< HEAD   (7116e258bf03a56518418d7a09dfe3a686fc6504 ANDROID: ABI: Update Pixel symbol list)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_swap_bio_charge);
+||||||| BASE   (ed88593b89e8bcf162b9fdd14a24e9c4e9966664 FROMGIT: KVM: arm64: vgic-v3: Fix GICv3 trapping in protecte)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resched_curr_lazy);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_restore_curr_resched);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clear_curr_lazy);
+>>>>>>> CHANGE (41cd08be1469b61c34acab96ca3350cd25e6291e ANDROID: implement lazy preemption via hooks for pre-6.13 ke)
