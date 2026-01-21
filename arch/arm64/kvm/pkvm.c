@@ -66,6 +66,7 @@ extern u32 kvm_nvhe_sym(registered_devices_nr);
 
 #ifdef CONFIG_CMA
 static struct cma *host_s2_cma;
+static DEFINE_MUTEX(host_s2_cma_lock);
 
 /*
  * kvm_hyp_reserve() being called way too early for CMA, this function allows to later-on reserve
@@ -83,6 +84,53 @@ int __init pkvm_host_stage2_reserve(void)
 
 	return 0;
 }
+
+void __init pkvm_host_stage2_drain(void)
+{
+	unsigned long reclaimed = __pkvm_reclaim_hyp_alloc_mgt_id(HYP_ALLOC_MGT_HOSTS2_ID,
+								  ULONG_MAX);
+
+	reclaimed *= PAGE_SIZE;
+	kvm_info("Shrunk Hyp Reserved memory by %lu MiB\n", reclaimed >> 20);
+}
+
+int pkvm_host_stage2_topup(void)
+{
+	struct kvm_hyp_memcache mc;
+	static atomic_t seq;
+	struct page *p;
+	int ret, tmp;
+
+	tmp = atomic_read(&seq);
+	guard(mutex)(&host_s2_cma_lock);
+
+	/* Someone already topped up the pool */
+	if (tmp != atomic_read(&seq))
+		return 0;
+
+	p = cma_alloc(host_s2_cma, 1, 0, true);
+	if (!p)
+		return -ENOMEM;
+
+	mc = (struct kvm_hyp_memcache) {
+		.head = page_to_phys(p),
+		.nr_pages = 1,
+	};
+
+	ret = __pkvm_topup_hyp_alloc_mgt_mc(HYP_ALLOC_MGT_HOSTS2_ID, &mc);
+	if (ret)
+		WARN_ON(!cma_release(host_s2_cma, p, 1));
+	else
+		atomic_inc(&seq);
+
+	return ret;
+}
+
+bool pkvm_host_stage2_free(void *addr, unsigned long order)
+{
+	return cma_release(host_s2_cma, virt_to_page(addr), 1 << order);
+}
+
 #endif
 
 static int __init register_memblock_regions(void)

@@ -1127,6 +1127,9 @@ static void hyp_mc_free_fn(void *addr, void *mc, unsigned long order)
 	if (memcache->flags & HYP_MEMCACHE_ACCOUNT_STAGE2)
 		kvm_account_pgtable_pages(addr, -1);
 
+	if (pkvm_host_stage2_free(addr, order))
+		return;
+
 	free_pages((unsigned long)addr, order);
 }
 
