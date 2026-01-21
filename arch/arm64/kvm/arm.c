@@ -2403,6 +2403,7 @@ static int __init init_subsystems(void)
 	err = hyp_trace_init_tracefs();
 	if (err)
 		kvm_err("Failed to initialize Hyp tracing\n");
+
 out:
 	if (err)
 		hyp_cpu_pm_exit();
