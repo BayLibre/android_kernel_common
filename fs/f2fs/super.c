@@ -2360,7 +2360,19 @@ restore_flag:
 
 static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 {
+<<<<<<< HEAD   (ee6de541d8790887c5e23fa43783a3cb5ccd7337 FROMGIT: f2fs: check skipped write in f2fs_enable_checkpoint)
 	int retry = DEFAULT_RETRY_IO_COUNT;
+||||||| BASE   (25c2206392b0c6bf06256f2081e779ccb442a501 ANDROID: abi_gki_aarch64_qcom: whitelist some xhci & traceit)
+	unsigned int nr_pages = get_pages(sbi, F2FS_DIRTY_DATA) / 16;
+=======
+<<<<<<< HEAD   (25c2206392b0c6bf06256f2081e779ccb442a501 ANDROID: abi_gki_aarch64_qcom: whitelist some xhci & traceit)
+	unsigned int nr_pages = get_pages(sbi, F2FS_DIRTY_DATA) / 16;
+||||||| BASE   (634672e21e0088aa4bbe23f405bff1afdcd16f33 FROMGIT: f2fs: check skipped write in f2fs_enable_checkpoint)
+	int retry = DEFAULT_RETRY_IO_COUNT;
+=======
+	int retry = MAX_FLUSH_RETRY_COUNT;
+>>>>>>> CHANGE (c0bf8d89143a9ebd7d1ac5b8db3eec9f468a632b FROMGIT: f2fs: decrease maximum flush retry count in f2fs_en)
+>>>>>>> CHANGE (3e1d6a24ac3351e077d5d0f2cd3bd0f9126453d8 FROMGIT: f2fs: decrease maximum flush retry count in f2fs_en)
 	long long start, writeback, end;
 	int ret;
 <<<<<<< HEAD   (31819981914a17b043686001018d30ba1ca55e45 FROMGIT: Revert "f2fs: add timeout in f2fs_enable_checkpoint)
