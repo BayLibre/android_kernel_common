@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67288541_5e68aa79",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2026-01-21T17:29:58Z",
+      "side": 1,
+      "message": "I would suggest doing this unconditionally from __hyp_pool_init() and unconditionally check the tag from __find_buddy_avail() to protect all hyp pool instances. Maybe in a separate patch?",
+      "range": {
+        "startLine": 308,
+        "startChar": 0,
+        "endLine": 323,
+        "endChar": 1
+      },
+      "revId": "856d6551c01b47dd5e521c60cb9fef63475b49be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c5103e5_aa235918",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2026-01-21T17:29:58Z",
+      "side": 1,
+      "message": "What is this defending against?",
+      "range": {
+        "startLine": 325,
+        "startChar": 12,
+        "endLine": 325,
+        "endChar": 32
+      },
+      "revId": "856d6551c01b47dd5e521c60cb9fef63475b49be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfb932cc_bd7de9e0",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2026-01-21T17:29:58Z",
+      "side": 1,
+      "message": "For debugging purposes we might want to check that the page refcount is 1 in here?",
+      "range": {
+        "startLine": 367,
+        "startChar": 4,
+        "endLine": 367,
+        "endChar": 20
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "2cb6157c_5954d5e1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+              "range": {
+                "startLine": 376,
+                "startChar": 0,
+                "endLine": 376,
+                "endChar": 0
+              },
+              "replacement": "\t\t/* We expect the refcount to be 1 when reclaiming a page. */\n\t\tWARN_ON(p-\u003erefcount !\u003d 1);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "856d6551c01b47dd5e521c60cb9fef63475b49be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bcd7c56_d64363b9",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2026-01-21T17:29:58Z",
+      "side": 1,
+      "message": "Now that we reclaim pages in the middle of the pool range, I think we might need to protect this with the pool lock, to avoid racing with __find_buddy_avail() on another CPU?",
+      "range": {
+        "startLine": 375,
+        "startChar": 1,
+        "endLine": 379,
+        "endChar": 2
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b7b4a928_82179a2a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+              "range": {
+                "startLine": 375,
+                "startChar": 0,
+                "endLine": 375,
+                "endChar": 0
+              },
+              "replacement": "\thyp_spin_lock(\u0026pool-\u003elock);\n\n"
+            },
+            {
+              "path": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+              "range": {
+                "startLine": 380,
+                "startChar": 0,
+                "endLine": 380,
+                "endChar": 0
+              },
+              "replacement": "\n\thyp_spin_unlock(\u0026pool-\u003elock);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "856d6551c01b47dd5e521c60cb9fef63475b49be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
