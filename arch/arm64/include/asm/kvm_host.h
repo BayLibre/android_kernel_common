@@ -1663,8 +1663,10 @@ extern phys_addr_t hyp_mem_size;
 void __init kvm_hyp_reserve(void);
 #ifdef CONFIG_CMA
 int __init pkvm_host_stage2_reserve(void);
+void __init pkvm_host_stage2_drain(void);
 #else
 int __init pkvm_host_stage2_reserve(void) { return 0; }
+void __init pkvm_host_stage2_drain(void) { }
 #endif
 #else
 static inline void kvm_hyp_reserve(void) { }
@@ -1882,6 +1884,7 @@ enum hyp_alloc_mgt_id {
 	__HYP_ALLOC_MGT_HEAP_ID_START__ = 0,
 	HYP_ALLOC_MGT_HEAP_ID = __HYP_ALLOC_MGT_HEAP_ID_START__,
 	HYP_ALLOC_MGT_IOMMU_ID,
+	HYP_ALLOC_MGT_HOSTS2_ID,
 	NR_ALLOC_MGT_IDS
 };
 
