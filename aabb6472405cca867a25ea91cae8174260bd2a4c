@@ -1,0 +1,74 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59eeba36_ac41e0b6",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1908,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-21T09:48:45Z",
+      "side": 1,
+      "message": "I would then call this _pkvm_topup_hyp_iommu() The fact it is using alloc_mgt can be hidden.",
+      "fixSuggestions": [
+        {
+          "fixId": "1fc65de7_d3b50384",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/include/asm/kvm_host.h",
+              "range": {
+                "startLine": 1908,
+                "startChar": 0,
+                "endLine": 1909,
+                "endChar": 0
+              },
+              "replacement": "int _pkvm_topup_hyp_iommu(unsigned long nr_pages, unsigned long sz_alloc, gfp_t gfp);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "aabb6472405cca867a25ea91cae8174260bd2a4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fbd7e22_1df0593d",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1819,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-21T09:48:45Z",
+      "side": 1,
+      "message": "How about moving this into arch/arm64/kvm/iommu.c ?",
+      "fixSuggestions": [
+        {
+          "fixId": "306489e9_2447e3ca",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/kvm/pkvm.c",
+              "range": {
+                "startLine": 1818,
+                "startChar": 0,
+                "endLine": 1847,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "aabb6472405cca867a25ea91cae8174260bd2a4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
