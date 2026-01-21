@@ -309,6 +309,14 @@ kvm_pte_t *pkvm_pgtable_stage2_create_unlinked(struct kvm_pgtable *pgt, u64 phys
 					       enum kvm_pgtable_prot prot, void *mc,
 					       bool force_pte);
 
+#ifdef CONFIG_CMA
+int pkvm_host_stage2_topup(void);
+bool pkvm_host_stage2_free(void *addr, unsigned long order);
+#else
+int pkvm_host_stage2_topup(void) { return -EINVAL; }
+bool pkvm_host_stage2_free(void *addr, unsigned long order) { return false }
+#endif
+
 int __pkvm_topup_hyp_alloc(unsigned long nr_pages);
 
 int __pkvm_handle_smccc_req(struct arm_smccc_res *res, void *arg);
