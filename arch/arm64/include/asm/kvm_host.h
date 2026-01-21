@@ -1660,8 +1660,10 @@ extern phys_addr_t hyp_mem_size;
 void __init kvm_hyp_reserve(void);
 #ifdef CONFIG_CMA
 int __init pkvm_host_stage2_reserve(void);
+void __init pkvm_host_stage2_drain(void);
 #else
 int __init pkvm_host_stage2_reserve(void) { return 0; }
+void __init pkvm_host_stage2_drain(void) { }
 #endif
 #else
 static inline void kvm_hyp_reserve(void) { }
@@ -1877,6 +1879,7 @@ static inline long kvm_get_cap_for_kvm_ioctl(unsigned int ioctl, long *ext)
 /* Allocator interface IDs. */
 #define HYP_ALLOC_MGT_HEAP_ID	0
 #define HYP_ALLOC_MGT_IOMMU_ID	1
+#define HYP_ALLOC_MGT_HOSTS2_ID	2
 #define HYP_ALLOC_MGT_ALL	ULONG_MAX
 
 unsigned long __pkvm_reclaim_hyp_alloc_mgt(unsigned long id, unsigned long nr_pages);

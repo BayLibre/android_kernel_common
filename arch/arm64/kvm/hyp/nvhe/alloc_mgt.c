@@ -8,10 +8,12 @@
 #include <nvhe/alloc.h>
 #include <nvhe/alloc_mgt.h>
 #include <nvhe/iommu.h>
+#include <nvhe/mem_protect.h>
 
 static struct hyp_mgt_allocator_ops *registered_allocators[] = {
 	[HYP_ALLOC_MGT_HEAP_ID] = &hyp_alloc_ops,
 	[HYP_ALLOC_MGT_IOMMU_ID] = &kvm_iommu_allocator_ops,
+	[HYP_ALLOC_MGT_HOSTS2_ID] = &host_s2_pool_ops,
 };
 
 #define MAX_ALLOC_ID		(ARRAY_SIZE(registered_allocators))
