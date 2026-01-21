@@ -2469,6 +2469,9 @@ static int __init do_pkvm_init(u32 hyp_va_bits)
 	__this_cpu_write(kvm_hyp_initialized, 1);
 	preempt_enable();
 
+	if (!ret)
+		pkvm_host_stage2_drain();
+
 	return ret;
 }
 
