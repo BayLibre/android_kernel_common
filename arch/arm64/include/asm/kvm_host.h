@@ -172,6 +172,23 @@ static inline void init_hyp_stage2_memcache(struct kvm_hyp_memcache *mc)
 	mc->flags = HYP_MEMCACHE_ACCOUNT_KMEMCG | HYP_MEMCACHE_ACCOUNT_STAGE2;
 }
 
+static inline unsigned long hyp_memcache_nr_base_pages(struct kvm_hyp_memcache *mc,
+						       void *(*to_va)(phys_addr_t phys))
+{
+	unsigned long nr_base_pages = 0;
+	unsigned long nr_pages = mc->nr_pages;
+	phys_addr_t *cur = &mc->head;
+	unsigned int order;
+
+	while (nr_pages--) {
+		order = FIELD_GET(~PAGE_MASK, *cur);
+		nr_base_pages += 1UL << order;
+		cur = to_va(*cur & PAGE_MASK);
+	}
+
+	return nr_base_pages;
+}
+
 struct kvm_vmid {
 	atomic64_t id;
 };

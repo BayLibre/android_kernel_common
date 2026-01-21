@@ -1772,7 +1772,8 @@ unsigned long __pkvm_reclaim_hyp_alloc_mgt(unsigned long nr_pages)
 			break;
 
 		mc.head = res.a1;
-		last_reclaim = mc.nr_pages = res.a2;
+		mc.nr_pages = res.a2;
+		last_reclaim = hyp_memcache_nr_base_pages(&mc, kvm_host_va);
 
 		free_hyp_memcache(&mc);
 		reclaimed += last_reclaim;
