@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c464347_9da3a6e5",
+        "filename": "drivers/pci/controller/dwc/pcie-designware.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2026-01-21T20:36:31Z",
+      "side": 0,
+      "message": "I think I know what the problem is with this conflict. The reapplys needs to go first so that `b635895918d8 (\"PCI: meson: Fix parsing the DBI register region\")` lands cleanly and I don\u0027t need to cherry-pick it on top in aosp/3923266.",
+      "range": {
+        "startLine": 173,
+        "startChar": 1,
+        "endLine": 177,
+        "endChar": 34
+      },
+      "revId": "8aa271c40cd4ef935a829008fdd4a56354c2e17f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
