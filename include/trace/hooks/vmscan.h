@@ -51,6 +51,9 @@ DECLARE_HOOK(android_vh_vmscan_kswapd_done,
 	TP_PROTO(int node_id, unsigned int highest_zoneidx, unsigned int alloc_order,
 		unsigned int reclaim_order),
 	TP_ARGS(node_id, highest_zoneidx, alloc_order, reclaim_order));
+DECLARE_HOOK(android_vh_shrink_node_memcgs,
+	TP_PROTO(struct mem_cgroup *memcg, bool *skip),
+	TP_ARGS(memcg, skip));
 #endif /* _TRACE_HOOK_VMSCAN_H */
 /* This part must be outside protection */
 #include <trace/define_trace.h>
