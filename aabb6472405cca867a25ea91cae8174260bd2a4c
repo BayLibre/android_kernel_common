@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6566a79_c1b2cb8e",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1908,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2026-01-22T19:30:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59eeba36_ac41e0b6",
+      "revId": "aabb6472405cca867a25ea91cae8174260bd2a4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fbd7e22_1df0593d",
@@ -67,6 +85,24 @@
           ]
         }
       ],
+      "revId": "aabb6472405cca867a25ea91cae8174260bd2a4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd2055cb_37427868",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1819,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2026-01-22T19:30:18Z",
+      "side": 1,
+      "message": "Should we leave this here? Otherwise, we have to expose __pkvm_topup_hyp_alloc_mgt_mc(), or are we okay with that? Also, moving this to arch/arm64/kvm/iommu.c means that I would have to have a global mc free fn for freeing the iommu pages, which I\u0027m not sure we want to expose as well. I\u0027d put everything in this file so it would be contained to here.\n\nwhat do you think?",
+      "parentUuid": "0fbd7e22_1df0593d",
       "revId": "aabb6472405cca867a25ea91cae8174260bd2a4c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
