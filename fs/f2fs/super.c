@@ -2331,6 +2331,7 @@ restore_flag:
 
 static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 {
+<<<<<<< HEAD   (8b7c625afc8e7c99585fc8588a32b9d0bbe1fdeb Merge bcd0086ee5a2 ("f2fs: fix to avoid updating compression)
 	unsigned int nr_pages = get_pages(sbi, F2FS_DIRTY_DATA) / 16;
 	long long start, writeback, lock, sync_inode, end;
 	int ret;
@@ -2344,6 +2345,12 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 	f2fs_update_time(sbi, ENABLE_TIME);
 
 	start = ktime_get();
+||||||| BASE   (bcd0086ee5a2e88c1224ff2ec1e4a43c83efe5a0 f2fs: fix to avoid updating compression context during write)
+	int retry = DEFAULT_RETRY_IO_COUNT;
+=======
+	int retry = DEFAULT_RETRY_IO_COUNT;
+	int ret;
+>>>>>>> BRANCH (34c817843cb381faeb84c8e83555a534cecc8d4b f2fs: fix to propagate error from f2fs_enable_checkpoint())
 
 	/* we should flush all the data to keep data consistency */
 	while (get_pages(sbi, F2FS_DIRTY_DATA)) {
@@ -2375,6 +2382,7 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 	set_sbi_flag(sbi, SBI_IS_DIRTY);
 	f2fs_up_write(&sbi->gc_lock);
 
+<<<<<<< HEAD   (8b7c625afc8e7c99585fc8588a32b9d0bbe1fdeb Merge bcd0086ee5a2 ("f2fs: fix to avoid updating compression)
 	f2fs_info(sbi, "%s sync_fs, meta: %lld, imeta: %lld, node: %lld, dents: %lld, qdata: %lld",
 					__func__,
 					get_pages(sbi, F2FS_DIRTY_META),
@@ -2382,6 +2390,9 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 					get_pages(sbi, F2FS_DIRTY_NODES),
 					get_pages(sbi, F2FS_DIRTY_DENTS),
 					get_pages(sbi, F2FS_DIRTY_QDATA));
+||||||| BASE   (bcd0086ee5a2e88c1224ff2ec1e4a43c83efe5a0 f2fs: fix to avoid updating compression context during write)
+=======
+>>>>>>> BRANCH (34c817843cb381faeb84c8e83555a534cecc8d4b f2fs: fix to propagate error from f2fs_enable_checkpoint())
 	ret = f2fs_sync_fs(sbi->sb, 1);
 	if (ret)
 		f2fs_err(sbi, "%s sync_fs failed, ret: %d", __func__, ret);
@@ -2389,6 +2400,7 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 	/* Let's ensure there's no pending checkpoint anymore */
 	f2fs_flush_ckpt_thread(sbi);
 
+<<<<<<< HEAD   (8b7c625afc8e7c99585fc8588a32b9d0bbe1fdeb Merge bcd0086ee5a2 ("f2fs: fix to avoid updating compression)
 	f2fs_up_write(&sbi->cp_enable_rwsem);
 
 	end = ktime_get();
@@ -2400,6 +2412,9 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
 				ktime_ms_delta(lock, writeback),
 				ktime_ms_delta(sync_inode, lock),
 				ktime_ms_delta(end, sync_inode));
+||||||| BASE   (bcd0086ee5a2e88c1224ff2ec1e4a43c83efe5a0 f2fs: fix to avoid updating compression context during write)
+=======
+>>>>>>> BRANCH (34c817843cb381faeb84c8e83555a534cecc8d4b f2fs: fix to propagate error from f2fs_enable_checkpoint())
 	return ret;
 }
 
@@ -2621,6 +2636,7 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
 			err = f2fs_enable_checkpoint(sbi);
 			if (err)
 				goto restore_discard;
+<<<<<<< HEAD   (8b7c625afc8e7c99585fc8588a32b9d0bbe1fdeb Merge bcd0086ee5a2 ("f2fs: fix to avoid updating compression)
 			need_disable_checkpoint = true;
 		}
 	}
@@ -2643,6 +2659,9 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
 			    "Failed to start F2FS issue_checkpoint_thread (%d)",
 			    err);
 			goto restore_checkpoint;
+||||||| BASE   (bcd0086ee5a2e88c1224ff2ec1e4a43c83efe5a0 f2fs: fix to avoid updating compression context during write)
+=======
+>>>>>>> BRANCH (34c817843cb381faeb84c8e83555a534cecc8d4b f2fs: fix to propagate error from f2fs_enable_checkpoint())
 		}
 	}
 
@@ -4908,10 +4927,14 @@ reset_checkpoint:
 	/* f2fs_recover_fsync_data() cleared this already */
 	clear_sbi_flag(sbi, SBI_POR_DOING);
 
+<<<<<<< HEAD   (8b7c625afc8e7c99585fc8588a32b9d0bbe1fdeb Merge bcd0086ee5a2 ("f2fs: fix to avoid updating compression)
 	err = f2fs_init_inmem_curseg(sbi);
 	if (err)
 		goto sync_free_meta;
 
+||||||| BASE   (bcd0086ee5a2e88c1224ff2ec1e4a43c83efe5a0 f2fs: fix to avoid updating compression context during write)
+=======
+>>>>>>> BRANCH (34c817843cb381faeb84c8e83555a534cecc8d4b f2fs: fix to propagate error from f2fs_enable_checkpoint())
 	if (test_opt(sbi, DISABLE_CHECKPOINT))
 		err = f2fs_disable_checkpoint(sbi);
 	else if (is_set_ckpt_flags(sbi, CP_DISABLED_FLAG))
