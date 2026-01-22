@@ -596,7 +596,7 @@ int ntfs_look_for_free_space(struct ntfs_sb_info *sbi, CLST lcn, CLST len,
 			     enum ALLOCATE_OPT opt);
 int ntfs_look_free_mft(struct ntfs_sb_info *sbi, CLST *rno, bool mft,
 		       struct ntfs_inode *ni, struct mft_inode **mi);
-void ntfs_mark_rec_free(struct ntfs_sb_info *sbi, CLST rno);
+void ntfs_mark_rec_free(struct ntfs_sb_info *sbi, CLST rno, bool is_mft);
 int ntfs_clear_mft_tail(struct ntfs_sb_info *sbi, size_t from, size_t to);
 int ntfs_refresh_zone(struct ntfs_sb_info *sbi);
 int ntfs_update_mftmirr(struct ntfs_sb_info *sbi, int wait);
@@ -740,7 +740,6 @@ static inline struct ATTRIB *rec_find_attr_le(struct mft_inode *rec,
 int mi_write(struct mft_inode *mi, int wait);
 int mi_format_new(struct mft_inode *mi, struct ntfs_sb_info *sbi, CLST rno,
 		  __le16 flags, bool is_mft);
-void mi_mark_free(struct mft_inode *mi);
 struct ATTRIB *mi_insert_attr(struct mft_inode *mi, enum ATTR_TYPE type,
 			      const __le16 *name, u8 name_len, u32 asize,
 			      u16 name_off);
