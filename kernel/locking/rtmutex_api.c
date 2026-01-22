@@ -23,6 +23,16 @@ static const struct ctl_table rtmutex_sysctl_table[] = {
 	},
 };
 
+static inline void _trace_android_vh_rtmutex_acquired(struct rt_mutex *lock)
+{
+	trace_android_vh_record_rtmutex_lock_starttime(lock, jiffies);
+}
+
+static inline void _trace_android_vh_rtmutex_released(struct rt_mutex *lock)
+{
+	trace_android_vh_record_rtmutex_lock_starttime(lock, 0);
+}
+
 static int __init init_rtmutex_sysctl(void)
 {
 	register_sysctl_init("kernel", rtmutex_sysctl_table);
@@ -49,6 +59,8 @@ static __always_inline int __rt_mutex_lock_common(struct rt_mutex *lock,
 	ret = __rt_mutex_lock(&lock->rtmutex, state);
 	if (ret)
 		mutex_release(&lock->dep_map, _RET_IP_);
+	else
+		_trace_android_vh_rtmutex_acquired(lock);
 	return ret;
 }
 
@@ -141,8 +153,10 @@ int __sched rt_mutex_trylock(struct rt_mutex *lock)
 		return 0;
 
 	ret = __rt_mutex_trylock(&lock->rtmutex);
-	if (ret)
+	if (ret) {
+		_trace_android_vh_rtmutex_acquired(lock);
 		mutex_acquire(&lock->dep_map, 0, 1, _RET_IP_);
+	}
 
 	return ret;
 }
@@ -155,6 +169,7 @@ EXPORT_SYMBOL_GPL(rt_mutex_trylock);
  */
 void __sched rt_mutex_unlock(struct rt_mutex *lock)
 {
+	_trace_android_vh_rtmutex_released(lock);
 	mutex_release(&lock->dep_map, _RET_IP_);
 	__rt_mutex_unlock(&lock->rtmutex);
 }

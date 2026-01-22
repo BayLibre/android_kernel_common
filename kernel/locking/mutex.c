@@ -46,6 +46,16 @@
 # define MUTEX_WARN_ON(cond)
 #endif
 
+static inline void _trace_android_vh_mutex_acquired(struct mutex *lock)
+{
+	trace_android_vh_record_mutex_lock_starttime(lock, jiffies);
+}
+
+static inline void _trace_android_vh_mutex_released(struct mutex *lock)
+{
+	trace_android_vh_record_mutex_lock_starttime(lock, 0);
+}
+
 void
 __mutex_init(struct mutex *lock, const char *name, struct lock_class_key *key)
 {
@@ -158,8 +168,10 @@ static __always_inline bool __mutex_trylock_fast(struct mutex *lock)
 
 	MUTEX_WARN_ON(lock->magic != lock);
 
-	if (atomic_long_try_cmpxchg_acquire(&lock->owner, &zero, curr))
+	if (atomic_long_try_cmpxchg_acquire(&lock->owner, &zero, curr)) {
+		_trace_android_vh_mutex_acquired(lock);
 		return true;
+	}
 
 	return false;
 }
@@ -547,10 +559,13 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
 void __sched mutex_unlock(struct mutex *lock)
 {
 #ifndef CONFIG_DEBUG_LOCK_ALLOC
-	if (__mutex_unlock_fast(lock))
+	if (__mutex_unlock_fast(lock)) {
+		_trace_android_vh_mutex_released(lock);
 		return;
+	}
 #endif
 	__mutex_unlock_slowpath(lock, _RET_IP_);
+	_trace_android_vh_mutex_released(lock);
 }
 EXPORT_SYMBOL(mutex_unlock);
 
@@ -622,6 +637,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
 		if (ww_ctx)
 			ww_mutex_set_context_fastpath(ww, ww_ctx);
 		trace_contention_end(lock, 0);
+		_trace_android_vh_mutex_acquired(lock);
 		preempt_enable();
 		return 0;
 	}
@@ -767,6 +783,7 @@ skip_wait:
 		ww_mutex_lock_acquired(ww, ww_ctx);
 
 	raw_spin_unlock_irqrestore_wake(&lock->wait_lock, flags, &wake_q);
+	_trace_android_vh_mutex_acquired(lock);
 	preempt_enable();
 	return 0;
 
@@ -1166,8 +1183,15 @@ __ww_mutex_lock_interruptible_slowpath(struct ww_mutex *lock,
  */
 int __sched mutex_trylock(struct mutex *lock)
 {
+	bool locked;
+
 	MUTEX_WARN_ON(lock->magic != lock);
-	return __mutex_trylock(lock);
+
+	locked = __mutex_trylock(lock);
+	if (locked)
+		_trace_android_vh_mutex_acquired(lock);
+
+	return locked;
 }
 EXPORT_SYMBOL(mutex_trylock);
 #else

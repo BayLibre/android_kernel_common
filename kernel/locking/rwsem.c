@@ -130,6 +130,16 @@
 #define RWSEM_READ_FAILED_MASK	(RWSEM_WRITER_MASK|RWSEM_FLAG_WAITERS|\
 				 RWSEM_FLAG_HANDOFF|RWSEM_FLAG_READFAIL)
 
+static inline void _trace_android_vh_rwsem_acquired(struct rw_semaphore *sem)
+{
+	trace_android_vh_record_rwsem_lock_starttime(sem, jiffies);
+}
+
+static inline void  _trace_android_vh_rwsem_released(struct rw_semaphore *sem)
+{
+	trace_android_vh_record_rwsem_lock_starttime(sem, 0);
+}
+
 /*
  * All writes to owner are protected by WRITE_ONCE() to make sure that
  * store tearing can't happen as optimistic spinners may read and use
@@ -259,6 +269,7 @@ static inline bool rwsem_read_trylock(struct rw_semaphore *sem, long *cntp)
 
 	if (!(*cntp & RWSEM_READ_FAILED_MASK)) {
 		rwsem_set_reader_owned(sem);
+		_trace_android_vh_rwsem_acquired(sem);
 		return true;
 	}
 
@@ -276,6 +287,7 @@ static inline bool rwsem_write_trylock(struct rw_semaphore *sem)
 	long tmp = RWSEM_UNLOCKED_VALUE;
 
 	if (atomic_long_try_cmpxchg_acquire(&sem->count, &tmp, RWSEM_WRITER_LOCKED)) {
+		_trace_android_vh_rwsem_acquired(sem);
 		rwsem_set_owner(sem);
 		return true;
 	}
@@ -1117,6 +1129,7 @@ wake_readers:
 			raw_spin_unlock_irq(&sem->wait_lock);
 			wake_up_q(&wake_q);
 		}
+		_trace_android_vh_rwsem_acquired(sem);
 		return sem;
 	}
 	/*
@@ -1210,6 +1223,7 @@ queue:
 		clear_task_blocked_on(current, sem);
 	lockevent_inc(rwsem_rlock);
 	trace_contention_end(sem, 0);
+	_trace_android_vh_rwsem_acquired(sem);
 	return sem;
 
 out_nolock:
@@ -1237,6 +1251,7 @@ rwsem_down_write_slowpath(struct rw_semaphore *sem, int state)
 	/* do optimistic spinning and steal lock if possible */
 	if (rwsem_can_spin_on_owner(sem) && rwsem_optimistic_spin(sem)) {
 		/* rwsem_optimistic_spin() implies ACQUIRE on success */
+		_trace_android_vh_rwsem_acquired(sem);
 		return sem;
 	}
 
@@ -1339,6 +1354,7 @@ trylock_again:
 	raw_spin_unlock_irq(&sem->wait_lock);
 	lockevent_inc(rwsem_wlock);
 	trace_contention_end(sem, 0);
+	_trace_android_vh_rwsem_acquired(sem);
 	return sem;
 
 out_nolock:
@@ -1447,6 +1463,7 @@ static inline int __down_read_trylock(struct rw_semaphore *sem)
 						    tmp + RWSEM_READER_BIAS)) {
 			rwsem_set_reader_owned(sem);
 			ret = 1;
+			_trace_android_vh_rwsem_acquired(sem);
 			break;
 		}
 	}
@@ -1518,6 +1535,7 @@ static inline void __up_read(struct rw_semaphore *sem)
 		clear_nonspinnable(sem);
 		rwsem_wake(sem);
 	}
+	_trace_android_vh_rwsem_released(sem);
 	preempt_enable();
 }
 
@@ -1541,6 +1559,7 @@ static inline void __up_write(struct rw_semaphore *sem)
 	tmp = atomic_long_fetch_add_release(-RWSEM_WRITER_LOCKED, &sem->count);
 	if (unlikely(tmp & RWSEM_FLAG_WAITERS))
 		rwsem_wake(sem);
+	_trace_android_vh_rwsem_released(sem);
 	preempt_enable();
 }
 
