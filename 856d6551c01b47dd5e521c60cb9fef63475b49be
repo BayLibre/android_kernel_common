@@ -160,6 +160,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3ac4e64_e377bbfb",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-22T15:27:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e03dc8d4_2d82928f",
+      "range": {
+        "startLine": 367,
+        "startChar": 4,
+        "endLine": 367,
+        "endChar": 20
+      },
+      "revId": "856d6551c01b47dd5e521c60cb9fef63475b49be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bcd7c56_d64363b9",
@@ -225,6 +249,30 @@
       "side": 1,
       "message": "Ha yes, good catch! Since I refactored with reclaim_hyp_pool() from mm.c, the whole thing the page is actually unmapped after resetting the refcount!!",
       "parentUuid": "6bcd7c56_d64363b9",
+      "range": {
+        "startLine": 375,
+        "startChar": 1,
+        "endLine": 379,
+        "endChar": 2
+      },
+      "revId": "856d6551c01b47dd5e521c60cb9fef63475b49be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15067b25_ea0a398e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-22T15:27:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "caf3c2c3_f6393031",
       "range": {
         "startLine": 375,
         "startChar": 1,
