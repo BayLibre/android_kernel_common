@@ -569,6 +569,7 @@ static inline void skb_dst_update_pmtu_no_confirm(struct sk_buff *skb, u32 mtu)
 		dst->ops->update_pmtu(dst, NULL, skb, mtu, false);
 }
 
+<<<<<<< HEAD   (54882670e57de4f2f6ed3129e732ea6c05ea6e3e Merge 6.6.120 into android15-6.6-lts)
 static inline struct net_device *dst_dev(const struct dst_entry *dst)
 {
 	return READ_ONCE(dst->dev);
@@ -599,6 +600,19 @@ static inline struct net *skb_dst_dev_net(const struct sk_buff *skb)
 static inline struct net *skb_dst_dev_net_rcu(const struct sk_buff *skb)
 {
 	return dev_net_rcu(skb_dst_dev(skb));
+||||||| BASE   (c596736dadab2ffef4737fa8acbc1244557126ac Linux 6.6.120)
+=======
+static inline struct net_device *dst_dev_rcu(const struct dst_entry *dst)
+{
+	/* In the future, use rcu_dereference(dst->dev) */
+	WARN_ON_ONCE(!rcu_read_lock_held());
+	return READ_ONCE(dst->dev);
+}
+
+static inline struct net_device *skb_dst_dev_rcu(const struct sk_buff *skb)
+{
+	return dst_dev_rcu(skb_dst(skb));
+>>>>>>> BRANCH (cbb31f77b879f2c1aeb5e9e69823982ef2e88efc Linux 6.6.121)
 }
 
 struct dst_entry *dst_blackhole_check(struct dst_entry *dst, u32 cookie);
