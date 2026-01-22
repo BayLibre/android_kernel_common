@@ -2023,6 +2023,7 @@ int send_sigqueue(struct sigqueue *q, struct pid *pid, enum pid_type type)
 	result = TRACE_SIGNAL_DELIVERED;
 out:
 	trace_signal_generate(sig, &q->info, t, type != PIDTYPE_PID, result);
+	trace_android_vh_signal_generate(sig, &q->info, t, type != PIDTYPE_PID, result);
 	unlock_task_sighand(t, &flags);
 ret:
 	rcu_read_unlock();
