@@ -1567,7 +1567,6 @@ static void f2fs_put_super(struct super_block *sb)
 
 	destroy_device_list(sbi);
 	f2fs_destroy_page_array_cache(sbi);
-	f2fs_destroy_xattr_caches(sbi);
 	mempool_destroy(sbi->write_io_dummy);
 #ifdef CONFIG_QUOTA
 	for (i = 0; i < MAXQUOTAS; i++)
@@ -4073,13 +4072,9 @@ try_onemore:
 		}
 	}
 
-	/* init per sbi slab cache */
-	err = f2fs_init_xattr_caches(sbi);
-	if (err)
-		goto free_io_dummy;
 	err = f2fs_init_page_array_cache(sbi);
 	if (err)
-		goto free_xattr_cache;
+		goto free_io_dummy;
 
 	/* get an inode for meta space */
 	sbi->meta_inode = f2fs_iget(sb, F2FS_META_INO(sbi));
@@ -4399,8 +4394,6 @@ free_meta_inode:
 	sbi->meta_inode = NULL;
 free_page_array_cache:
 	f2fs_destroy_page_array_cache(sbi);
-free_xattr_cache:
-	f2fs_destroy_xattr_caches(sbi);
 free_io_dummy:
 	mempool_destroy(sbi->write_io_dummy);
 free_percpu:
@@ -4559,7 +4552,12 @@ static int __init init_f2fs_fs(void)
 	err = f2fs_init_compress_cache();
 	if (err)
 		goto free_compress_mempool;
+<<<<<<< HEAD   (13f806c418349de26e3e1f4e39e82c3197613425 Revert "usb: gadget: udc: fix use-after-free in usb_gadget_s)
 	err = f2fs_create_casefold_cache();
+||||||| BASE   (6d90a061c0910ece3f9dc3e8b4f03c4d2e0cc4db xfs: fix a memory leak in xfs_buf_item_init())
+=======
+	err = f2fs_init_xattr_cache();
+>>>>>>> BRANCH (93d30fe19660dec6bf1bd3d5c186c1c737b21aa5 f2fs: use global inline_xattr_slab instead of per-sb slab ca)
 	if (err)
 		goto free_compress_cache;
 	return 0;
@@ -4600,7 +4598,12 @@ fail:
 
 static void __exit exit_f2fs_fs(void)
 {
+<<<<<<< HEAD   (13f806c418349de26e3e1f4e39e82c3197613425 Revert "usb: gadget: udc: fix use-after-free in usb_gadget_s)
 	f2fs_destroy_casefold_cache();
+||||||| BASE   (6d90a061c0910ece3f9dc3e8b4f03c4d2e0cc4db xfs: fix a memory leak in xfs_buf_item_init())
+=======
+	f2fs_destroy_xattr_cache();
+>>>>>>> BRANCH (93d30fe19660dec6bf1bd3d5c186c1c737b21aa5 f2fs: use global inline_xattr_slab instead of per-sb slab ca)
 	f2fs_destroy_compress_cache();
 	f2fs_destroy_compress_mempool();
 	f2fs_destroy_bioset();
