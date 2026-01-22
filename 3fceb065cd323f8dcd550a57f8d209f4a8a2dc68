@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "222bf2ef_f2f2c963",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1896,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2026-01-22T21:35:30Z",
+      "side": 1,
+      "message": "There\u0027s only one caller of this, and it\u0027s in the same file where it\u0027s defined, so you could argue that this should be static, but then `kvm_iommu_free_pages()` is used in two source files, and it felt odd to to export just that function and not an alloc function.",
+      "fixSuggestions": [
+        {
+          "fixId": "bcf31b0c_ec180770",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/arm64/include/asm/kvm_host.h",
+              "range": {
+                "startLine": 1896,
+                "startChar": 0,
+                "endLine": 1897,
+                "endChar": 0
+              },
+              "replacement": "static void *kvm_iommu_alloc_pages(void *gfp_flags_p, unsigned long order);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3fceb065cd323f8dcd550a57f8d209f4a8a2dc68",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
