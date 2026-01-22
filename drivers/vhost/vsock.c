@@ -65,14 +65,15 @@ static u32 vhost_transport_get_local_cid(void)
 	return VHOST_VSOCK_DEFAULT_HOST_CID;
 }
 
-/* Callers that dereference the return value must hold vhost_vsock_mutex or the
- * RCU read lock.
+/* Callers must be in an RCU read section or hold the vhost_vsock_mutex.
+ * The return value can only be dereferenced while within the section.
  */
 static struct vhost_vsock *vhost_vsock_get(u32 guest_cid)
 {
 	struct vhost_vsock *vsock;
 
-	hash_for_each_possible_rcu(vhost_vsock_hash, vsock, hash, guest_cid) {
+	hash_for_each_possible_rcu(vhost_vsock_hash, vsock, hash, guest_cid,
+				   lockdep_is_held(&vhost_vsock_mutex)) {
 		u32 other_cid = vsock->guest_cid;
 
 		/* Skip instances that have no CID yet */
@@ -727,13 +728,22 @@ static void vhost_vsock_reset_orphans(struct sock *sk)
 	 * executing.
 	 */
 
+<<<<<<< HEAD   (f05060960ffb83ac36fd98aa4ad15d08938be4a7 Merge f9dc0f45d2cd ("ethtool: Avoid overflowing userspace bu)
 	/* Only handle our own sockets */
 	if (vsk->transport != &vhost_transport.transport)
 		return;
+||||||| BASE   (f9dc0f45d2cd0189ce666288a29d2cc32c2e44d5 ethtool: Avoid overflowing userspace buffer on stats query)
+=======
+	rcu_read_lock();
+>>>>>>> BRANCH (278455a82245a572aeb218a6212a416a98e418de scsi: aic94xx: fix use-after-free in device removal path)
 
 	/* If the peer is still valid, no need to reset connection */
-	if (vhost_vsock_get(vsk->remote_addr.svm_cid))
+	if (vhost_vsock_get(vsk->remote_addr.svm_cid)) {
+		rcu_read_unlock();
 		return;
+	}
+
+	rcu_read_unlock();
 
 	/* If the close timeout is pending, let it expire.  This avoids races
 	 * with the timeout callback.
