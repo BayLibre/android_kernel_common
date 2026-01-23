@@ -16,6 +16,24 @@
       "message": "Breaks KMI. We\u0027ll have to leave these hooks in place for 6.12 to avoid causing module load failures. To disable, you could add a conditional that inhibits the hook from being invoked.",
       "revId": "6fb5e4125b6157974e2f095b835243ed0848241d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09dba16a_93bf246e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2026-01-23T01:11:28Z",
+      "side": 1,
+      "message": "I suspect we can leave the hook definition, but just drop the calls to the hook in fork.c and core.c?  At least I don\u0027t seem to hit any build warnings when I try that.\n\nThat will minimize the amount of upstream collisions we see.",
+      "parentUuid": "e6ddb4ca_fe24d2cb",
+      "revId": "6fb5e4125b6157974e2f095b835243ed0848241d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
