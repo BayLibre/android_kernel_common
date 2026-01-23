@@ -34,6 +34,24 @@
       ],
       "revId": "f9b228974428568e24bb39912b8744e1035f7e2e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c72624a_5a99c934",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 1598,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-01-23T23:28:29Z",
+      "side": 1,
+      "message": "Ok, once aosp/3927957 lands, this symbol isn\u0027t needed, but you\u0027ll want `read_comp_algo_dictionary` instead. That function is already available, so you can  add that symbol now.",
+      "parentUuid": "df156f30_aa7d98cd",
+      "revId": "f9b228974428568e24bb39912b8744e1035f7e2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
