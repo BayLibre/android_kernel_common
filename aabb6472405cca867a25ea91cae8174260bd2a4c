@@ -123,6 +123,24 @@
       "parentUuid": "dd2055cb_37427868",
       "revId": "aabb6472405cca867a25ea91cae8174260bd2a4c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1064701e_d64ebfac",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1819,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-23T09:31:49Z",
+      "side": 1,
+      "message": "Hum, I see what you mean with the free fn...\n\nBut I also find it nicer that the rest of the IOMMU functions are actually in the iommu.c file and especially the include of drivers/iommu/ WDYS?",
+      "parentUuid": "173489f5_53af1ac8",
+      "revId": "aabb6472405cca867a25ea91cae8174260bd2a4c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
