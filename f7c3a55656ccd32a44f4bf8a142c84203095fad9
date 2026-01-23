@@ -1,0 +1,59 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4d34759_2fee66e7",
+        "filename": "mm/shmem.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2539,
+      "author": {
+        "id": 1759142
+      },
+      "writtenOn": "2026-01-23T03:16:30Z",
+      "side": 1,
+      "message": "This change caused\n\ncommon/mm/shmem.c:2567:1: error: label \u0027alloced\u0027 defined but not used [-Werror\u003dunused-label]\n\nif CONFIG_TRANSPARENT_HUGEPAGE is not defined",
+      "fixSuggestions": [
+        {
+          "fixId": "109ea41c_0e5cd51c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/shmem.c",
+              "range": {
+                "startLine": 2551,
+                "startChar": 0,
+                "endLine": 2552,
+                "endChar": 0
+              },
+              "replacement": "\t\t\talloced \u003d true;\n\t\t\tgoto post_alloc;\n"
+            },
+            {
+              "path": "mm/shmem.c",
+              "range": {
+                "startLine": 2567,
+                "startChar": 0,
+                "endLine": 2568,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "mm/shmem.c",
+              "range": {
+                "startLine": 2569,
+                "startChar": 0,
+                "endLine": 2569,
+                "endChar": 0
+              },
+              "replacement": "post_alloc:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f7c3a55656ccd32a44f4bf8a142c84203095fad9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
