@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33dc7ef3_7de0ac19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2021533
+      },
+      "writtenOn": "2026-01-23T01:52:35Z",
+      "side": 1,
+      "message": "```\n\tif (checkpoint_changed) {\n\t\tif (test_opt(sbi, DISABLE_CHECKPOINT)) {\n\t\t\terr \u003d f2fs_disable_checkpoint(sbi);\n\t\t\tif (err)\n\t\t\t\tgoto restore_flush;\n\t\t} else {\n\t\t\terr \u003d f2fs_enable_checkpoint(sbi);\n\t\t\tif (err)\n\t\t\t\tgoto restore_gc;\n\t\t}\n\t}\n```\n\nThe label for the goto statement in the else branch should be changed to `restore_flush`.",
+      "revId": "e1881765a6932ab797d0c92fb6f8263c1a88ae5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
