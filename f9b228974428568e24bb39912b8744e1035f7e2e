@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df156f30_aa7d98cd",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 1
+      },
+      "lineNbr": 1598,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-01-23T22:45:17Z",
+      "side": 1,
+      "message": "this symbol is not allowed (reading directly bypasses fs protections). Looks like we need some patches from 6.12 to get this out of zram_drv.c (aosp/3803385). I\u0027ll check into it.",
+      "fixSuggestions": [
+        {
+          "fixId": "509275b5_b3691ab0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gki/aarch64/symbols/qcom",
+              "range": {
+                "startLine": 1598,
+                "startChar": 0,
+                "endLine": 1599,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "f9b228974428568e24bb39912b8744e1035f7e2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
