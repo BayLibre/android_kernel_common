@@ -1646,6 +1646,32 @@ int xhci_hub_status_data(struct usb_hcd *hcd, char *buf)
 
 	status = bus_state->resuming_ports;
 
+<<<<<<< HEAD   (e2ce3f5e23f9a6e7ab972db19e0a530101f2a2b6 ANDROID: GKI: fix crc build error in blk-mq.c)
+||||||| BASE   (f9dc0f45d2cd0189ce666288a29d2cc32c2e44d5 ethtool: Avoid overflowing userspace buffer on stats query)
+	/*
+	 * SS devices are only visible to roothub after link training completes.
+	 * Keep polling roothubs for a grace period after xHC start
+	 */
+	if (xhci->run_graceperiod) {
+		if (time_before(jiffies, xhci->run_graceperiod))
+			status = 1;
+		else
+			xhci->run_graceperiod = 0;
+	}
+
+=======
+	/*
+	 * SS devices are only visible to roothub after link training completes.
+	 * Keep polling roothubs for a grace period after xHC start
+	 */
+	if (hcd->speed >= HCD_USB3 && xhci->run_graceperiod) {
+		if (time_before(jiffies, xhci->run_graceperiod))
+			status = 1;
+		else
+			xhci->run_graceperiod = 0;
+	}
+
+>>>>>>> BRANCH (278455a82245a572aeb218a6212a416a98e418de scsi: aic94xx: fix use-after-free in device removal path)
 	mask = PORT_CSC | PORT_PEC | PORT_OCC | PORT_PLC | PORT_WRC | PORT_CEC;
 
 	/* For each port, did anything change?  If so, set that bit in buf. */
