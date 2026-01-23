@@ -1818,6 +1818,7 @@ struct f2fs_sb_info {
 
 	struct workqueue_struct *post_read_wq;	/* post read workqueue */
 
+<<<<<<< HEAD   (5601baec60aab411c7242b0138233963c7781dc3 Revert "usb: gadget: udc: fix use-after-free in usb_gadget_s)
 	struct kmem_cache *inline_xattr_slab;	/* inline xattr entry */
 	unsigned int inline_xattr_slab_size;	/* default inline xattr slab size */
 
@@ -1830,6 +1831,12 @@ struct f2fs_sb_info {
 	int max_fragment_chunk;			/* max chunk size for block fragmentation mode */
 	int max_fragment_hole;			/* max hole size for block fragmentation mode */
 
+||||||| BASE   (6d90a061c0910ece3f9dc3e8b4f03c4d2e0cc4db xfs: fix a memory leak in xfs_buf_item_init())
+	struct kmem_cache *inline_xattr_slab;	/* inline xattr entry */
+	unsigned int inline_xattr_slab_size;	/* default inline xattr slab size */
+
+=======
+>>>>>>> BRANCH (93d30fe19660dec6bf1bd3d5c186c1c737b21aa5 f2fs: use global inline_xattr_slab instead of per-sb slab ca)
 #ifdef CONFIG_F2FS_FS_COMPRESSION
 	struct kmem_cache *page_array_slab;	/* page array entry */
 	unsigned int page_array_slab_size;	/* default page array slab size */
