@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-only
 #include "linux/types.h"
-#include "linux/bitmap.h"
 #include "linux/atomic.h"
 
 #include "kvm_util.h"
@@ -8,11 +7,6 @@
 
 
 #define GUEST_UCALL_FAILED -1
-
-struct ucall_header {
-	DECLARE_BITMAP(in_use, KVM_MAX_VCPUS);
-	struct ucall ucalls[KVM_MAX_VCPUS];
-};
 
 int ucall_nr_pages_required(uint64_t page_size)
 {
@@ -58,6 +52,7 @@ void ucall_init(struct kvm_vm *vm, vm_paddr_t mmio_gpa)
 		uc = &hdr->ucalls[i];
 		uc->hva = uc;
 	}
+	hdr->gpa = addr_hva2gpa(vm, hdr);
 
 	write_guest_global(vm, ucall_pool, (struct ucall_header *)vaddr);
 
@@ -71,6 +66,8 @@ static struct ucall *ucall_alloc(void)
 
 	if (!ucall_pool)
 		goto ucall_failed;
+
+	ucall_arch_prepare_pool(ucall_pool);
 
 	for (i = 0; i < KVM_MAX_VCPUS; ++i) {
 		if (!test_and_set_bit(i, ucall_pool->in_use)) {

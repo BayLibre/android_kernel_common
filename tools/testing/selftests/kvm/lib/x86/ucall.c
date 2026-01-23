@@ -90,3 +90,12 @@ void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
 		return NULL;
 	}
 }
+
+void ucall_arch_prepare_pool(struct ucall_header *ucall_pool)
+{
+	if (vm_type == KVM_X86_PKVM_PROTECTED_VM && !ucall_pool->shared) {
+		pkvm_guest_share_mem(ucall_pool, ucall_pool->gpa,
+				    sizeof(*ucall_pool));
+		ucall_pool->shared = true;
+	}
+}

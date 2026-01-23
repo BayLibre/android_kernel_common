@@ -4,6 +4,8 @@
  */
 #ifndef SELFTEST_KVM_UCALL_COMMON_H
 #define SELFTEST_KVM_UCALL_COMMON_H
+#include "linux/bitmap.h"
+
 #include "kvm_util.h"
 #include "test_util.h"
 #include "ucall.h"
@@ -30,9 +32,18 @@ struct ucall {
 	struct ucall *hva;
 };
 
+struct ucall_header {
+	DECLARE_BITMAP(in_use, KVM_MAX_VCPUS);
+	struct ucall ucalls[KVM_MAX_VCPUS];
+	uint64_t gpa;
+	bool shared;
+};
+
 void ucall_arch_init(struct kvm_vm *vm, vm_paddr_t mmio_gpa);
 void ucall_arch_do_ucall(vm_vaddr_t uc);
 void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu);
+void ucall_arch_prepare_pool(struct ucall_header *ucall_pool);
+
 
 void ucall(uint64_t cmd, int nargs, ...);
 __printf(2, 3) void ucall_fmt(uint64_t cmd, const char *fmt, ...);
