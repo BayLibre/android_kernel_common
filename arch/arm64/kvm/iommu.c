@@ -157,31 +157,16 @@ int __pkvm_topup_hyp_iommu(unsigned long nr_pages, unsigned long sz_alloc, gfp_t
 /* Hypercall abstractions exposed to kernel IOMMU drivers */
 static int kvm_iommu_topup_memcache(struct arm_smccc_res *res, gfp_t gfp)
 {
-	struct kvm_hyp_req req;
-
-	hyp_reqs_smccc_decode(res, &req);
-
-	if ((res->a1 == -ENOMEM) && (req.type != KVM_HYP_REQ_TYPE_MEM)) {
+	if (res->a1 == -ENOMEM) {
 		/*
 		 * There is no way for drivers to populate hyp_alloc requests,
-		 * so -ENOMEM + no request indicates that.
+		 * so -ENOMEM signals hyp_alloc.
 		 */
 		return __pkvm_topup_hyp_alloc(1);
-	} else if (req.type != KVM_HYP_REQ_TYPE_MEM) {
-		return -EBADE;
 	}
 
-	if (req.mem.dest == REQ_MEM_DEST_HYP_IOMMU) {
-		return __pkvm_topup_hyp_iommu(req.mem.nr_pages, req.mem.sz_alloc, gfp);
-	} else if (req.mem.dest == REQ_MEM_DEST_HYP_ALLOC) {
-		/* Fill hyp alloc*/
-		return __pkvm_topup_hyp_alloc(req.mem.nr_pages);
-	}
-
-	pr_err("Bogus mem request");
-	return -EBADE;
+	return __pkvm_handle_smccc_req(res, (void *)(uintptr_t)gfp);
 }
-
 
 int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 			 unsigned int endpoint, unsigned int pasid,
