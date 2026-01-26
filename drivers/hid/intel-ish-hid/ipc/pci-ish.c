@@ -388,10 +388,14 @@ static int __maybe_unused ish_resume(struct device *device)
 	ish_resume_device = device;
 	dev->resume_flag = 1;
 
+<<<<<<< HEAD   (c6fe049e686d85af592f533d5eb6239068750c8a Merge b3039c526f3e ("mm: introduce deferred freeing for kern)
 	/* If ISH resume from D3, reset ishtp clients before return */
 	if (!ish_should_leave_d0i3(pdev))
 		ishtp_reset_handler(dev);
 
+||||||| BASE   (b3039c526f3e1744db0cbb7ae1f0213f5e27d3f4 mm: introduce deferred freeing for kernel page tables)
+=======
+>>>>>>> BRANCH (5dfbc5357c34bdf81c84aa78bc8e3d6d9ba10aad Linux 6.18.7)
 	queue_work(dev->unbound_wq, &resume_work);
 
 	return 0;
