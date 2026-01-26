@@ -1794,6 +1794,17 @@ unsigned long __pkvm_reclaim_hyp_alloc_mgt(unsigned long nr_pages)
 	return total;
 }
 
+int __pkvm_handle_smccc_req(struct arm_smccc_res *res, void *arg)
+{
+	struct kvm_hyp_req req;
+	int ret;
+
+	if (smccc_to_hyp_req(&req, res, &ret))
+		return handle_hyp_req(NULL, &req, arg);
+
+	return ret;
+}
+
 static int early_ffa_unmap_on_lend_cfg(char *arg)
 {
 	static_branch_enable(&kvm_ffa_unmap_on_lend);

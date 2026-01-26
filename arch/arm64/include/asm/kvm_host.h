@@ -852,21 +852,29 @@ struct vcpu_reset_state {
 
 struct vncr_tlb;
 
+enum {
+	KVM_HYP_LAST_REQ,
+	KVM_HYP_REQ_TYPE_MEM,
+	KVM_HYP_REQ_TYPE_MAP,
+	KVM_HYP_REQ_TYPE_SPLIT,
+	KVM_HYP_REQ_TYPE_HYP_ALLOC,
+	KVM_HYP_REQ_TYPE_MEM_IOMMU,
+	__KVM_HYP_REQ_TYPE_MAX
+};
+
 struct kvm_hyp_req {
-#define KVM_HYP_LAST_REQ	0
-#define KVM_HYP_REQ_TYPE_MEM	1
-#define KVM_HYP_REQ_TYPE_MAP	2
-#define KVM_HYP_REQ_TYPE_SPLIT	3
 	u8 type;
 	union {
 		struct {
-#define REQ_MEM_DEST_HYP_ALLOC		1
-#define REQ_MEM_DEST_VCPU_MEMCACHE	2
-#define REQ_MEM_DEST_HYP_IOMMU		3
+			u32	nr_pages;
+		} mem;
+		struct {
+#define REQ_MEM_DEST_VCPU_MEMCACHE	1
+#define REQ_MEM_DEST_HYP_IOMMU		2
 			u8	dest;
 			int	nr_pages;
 			int	sz_alloc; /* Size of the page. */
-		} mem;
+		} memcache;
 		struct {
 			unsigned long	guest_ipa;
 			size_t		size;
@@ -875,10 +883,46 @@ struct kvm_hyp_req {
 			unsigned long	guest_ipa;
 			size_t		size;
 		} split;
+		struct {
+			/* Just a helper for SMCCC encoding/decoding */
+			u8	args[16];
+		} args;
 	};
 };
 
 #define KVM_HYP_REQ_MAX ((PAGE_SIZE >> 4) / sizeof(struct kvm_hyp_req))
+
+/* Encode the pending kvm_hyp_req type into the SMCCC args and return x1 */
+static inline u64
+hyp_req_to_smccc(struct kvm_cpu_context *host_ctxt, struct kvm_hyp_req *req, int ret)
+{
+	u8 type = req->type;
+
+	if (type == KVM_HYP_LAST_REQ || type >= __KVM_HYP_REQ_TYPE_MAX)
+		return ret;
+
+	memcpy(&host_ctxt->regs.regs[2], &req->args, sizeof(req->args));
+	req->type = KVM_HYP_LAST_REQ;
+
+	return (u32)ret | ((u64)type << 32);
+}
+
+/* Return true if a kvm_hyp_req has been decoded from the SMCCC args */
+static inline bool smccc_to_hyp_req(struct kvm_hyp_req *req, struct arm_smccc_res *res, int *ret)
+{
+	if (!(res->a1 & ~(u64)U32_MAX)) {
+		*ret = res->a1;
+		return false;
+	}
+
+	req->type = (res->a1 & ~(u64)U32_MAX) >> 32;
+	memcpy(&req->args, &res->a2, sizeof(req->args));
+	*ret = res->a1 & (u64)U32_MAX;
+
+	return true;
+}
+
+int handle_hyp_req(struct kvm_vcpu *vcpu, struct kvm_hyp_req *req, void *arg);
 
 /*
  * Hypervisor version of kvm_pinned_page. Typically stored in per-vCPU hyp_req
@@ -916,26 +960,6 @@ next_kvm_hyp_pinned_page(struct kvm_hyp_req *page, struct kvm_hyp_pinned_page *p
 		return NULL;
 
 	return ppage;
-}
-
-/*
- * De-serialize request from SMCCC return.
- * See hyp-main.c for serialization.
- */
-/* Register a2. */
-#define	SMCCC_REQ_TYPE_MASK		GENMASK_ULL(7, 0)
-#define SMCCC_REQ_DEST_MASK		GENMASK_ULL(15, 8)
-/* Register a3. */
-#define SMCCC_REQ_NR_PAGES_MASK		GENMASK_ULL(31, 0)
-#define SMCCC_REQ_SZ_ALLOC_MASK		GENMASK_ULL(63, 32)
-
-static inline void hyp_reqs_smccc_decode(struct arm_smccc_res *res,
-					 struct kvm_hyp_req *req)
-{
-	req->type = FIELD_GET(SMCCC_REQ_TYPE_MASK, res->a2);
-	req->mem.dest = FIELD_GET(SMCCC_REQ_DEST_MASK, res->a2);
-	req->mem.nr_pages = FIELD_GET(SMCCC_REQ_NR_PAGES_MASK, res->a3);
-	req->mem.sz_alloc = FIELD_GET(SMCCC_REQ_SZ_ALLOC_MASK, res->a3);
 }
 
 struct kvm_vcpu_arch {
