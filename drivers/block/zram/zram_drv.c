@@ -1235,6 +1235,11 @@ int zram_writeback_slots(struct zram *zram,
 	u32 index = 0;
 
 	while ((pps = select_pp_slot(ctl))) {
+		if (atomic_read(&zram->prefetch_in_progress)) {
+			ret = -EAGAIN;
+			break;
+		}
+
 		if (zram->wb_limit_enable && !zram->bd_wb_limit) {
 			ret = -EIO;
 			break;
@@ -1421,6 +1426,9 @@ int scan_slots_for_writeback(struct zram *zram, u32 mode,
 	while (index < hi) {
 		bool ok = true;
 
+		if (atomic_read(&zram->prefetch_in_progress))
+			return -EAGAIN;
+
 		zram_slot_lock(zram, index);
 		if (!zram_allocated(zram, index))
 			goto next;
@@ -1473,6 +1481,11 @@ static ssize_t writeback_store(struct device *dev,
 	if (atomic_xchg(&zram->pp_in_progress, 1)) {
 		up_read(&zram->init_lock);
 		return -EAGAIN;
+	}
+
+	if (atomic_read(&zram->prefetch_in_progress)) {
+		ret = -EAGAIN;
+		goto release_init_lock;
 	}
 
 	if (!zram->backing_dev) {
@@ -1562,6 +1575,7 @@ release_init_lock:
 	release_pp_ctl(zram, pp_ctl);
 	release_wb_ctl(wb_ctl);
 	atomic_set(&zram->pp_in_progress, 0);
+	wake_up_all(&zram->pp_wait);
 	up_read(&zram->init_lock);
 
 	return ret;
@@ -2947,6 +2961,7 @@ release_init_lock:
 		__free_page(page);
 	release_pp_ctl(zram, ctl);
 	atomic_set(&zram->pp_in_progress, 0);
+	wake_up_all(&zram->pp_wait);
 	up_read(&zram->init_lock);
 	return ret;
 }
@@ -3139,6 +3154,10 @@ static void zram_reset_device(struct zram *zram)
 	zram_destroy_comps(zram);
 	memset(&zram->stats, 0, sizeof(zram->stats));
 	atomic_set(&zram->pp_in_progress, 0);
+	wake_up_all(&zram->pp_wait);
+#if defined CONFIG_ZRAM_WRITEBACK
+	atomic_set(&zram->prefetch_in_progress, 0);
+#endif
 	reset_bdev(zram);
 
 	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
@@ -3362,6 +3381,7 @@ static int zram_add(void)
 #ifdef CONFIG_ZRAM_WRITEBACK
 	zram->wb_batch_size = 32;
 	zram->wb_compressed = false;
+	atomic_set(&zram->prefetch_in_progress, 0);
 #endif
 
 	/* gendisk structure */
@@ -3381,6 +3401,7 @@ static int zram_add(void)
 	zram->disk->private_data = zram;
 	snprintf(zram->disk->disk_name, 16, "zram%d", device_id);
 	atomic_set(&zram->pp_in_progress, 0);
+	init_waitqueue_head(&zram->pp_wait);
 	zram_comp_params_reset(zram);
 	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
 

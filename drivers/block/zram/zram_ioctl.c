@@ -66,6 +66,10 @@ static int zram_process_walker(pmd_t *pmd, unsigned long start,
 	u64 nr_pages = zram->disksize >> PAGE_SHIFT;
 
 	for (addr = start; addr < end; addr += PAGE_SIZE) {
+		if (cmd == ZRAM_ANDROID_IOC_PROCESS_WRITEBACK &&
+		    atomic_read(&zram->prefetch_in_progress))
+			return -EAGAIN;
+
 		ptep = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
 		if (!ptep)
 			break;
@@ -205,6 +209,11 @@ static int zram_ioctl_process_writeback(struct zram *zram,
 	if (atomic_xchg(&zram->pp_in_progress, 1))
 		return -EAGAIN;
 
+	if (atomic_read(&zram->prefetch_in_progress)) {
+		ret = -EAGAIN;
+		goto clear_pp_in_progress;
+	}
+
 	pp_ctl = init_pp_ctl();
 	if (!pp_ctl) {
 		ret = -ENOMEM;
@@ -229,6 +238,7 @@ clear_pp_ctl:
 	release_pp_ctl(zram, pp_ctl);
 clear_pp_in_progress:
 	atomic_set(&zram->pp_in_progress, 0);
+	wake_up_all(&zram->pp_wait);
 
 	return ret;
 }
@@ -250,17 +260,24 @@ static int zram_ioctl_process_prefetch(struct zram *zram,
 	if (!zram->backing_dev)
 		return -ENODEV;
 
-	/*
-	 * Prefetch should preempt writeback for the same process to avoid
-	 * blocking the launch. However, Prefetch and Writeback work in
-	 * parallel could have a race of block index, even operate in different
-	 * processes. Currently, we do not permit concurrent post-processing
-	 * actions via pp_in_progress flag.
-	 * TBD: Prefetch will preempt writeback and allow concurrent
-	 * post-processing.
-	 */
-	if (atomic_xchg(&zram->pp_in_progress, 1))
+	/* Do not permit concurrent prefetch */
+	if (atomic_xchg(&zram->prefetch_in_progress, 1))
 		return -EAGAIN;
+
+	/*
+	 * Prefetch should preempt writeback to avoid blocking the launch.
+	 * When prefetch_in_progress is set, the writeback operation should be
+	 * stopped soon, and clear the pp_in_progress flag. Add a timeout to
+	 * prevent waiting too long.
+	 */
+	ret = wait_event_interruptible_timeout(zram->pp_wait,
+			!atomic_xchg(&zram->pp_in_progress, 1),
+			msecs_to_jiffies(1000));
+	if (ret <= 0) {
+		if (ret == 0)
+			ret = -EAGAIN;
+		goto clear_prefetch_in_progress;
+	}
 
 	pp_ctl = init_pp_ctl();
 	if (!pp_ctl) {
@@ -276,6 +293,9 @@ static int zram_ioctl_process_prefetch(struct zram *zram,
 	release_pp_ctl(zram, pp_ctl);
 clear_pp_in_progress:
 	atomic_set(&zram->pp_in_progress, 0);
+	wake_up_all(&zram->pp_wait);
+clear_prefetch_in_progress:
+	atomic_set(&zram->prefetch_in_progress, 0);
 	return ret;
 }
 
