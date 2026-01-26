@@ -15,6 +15,7 @@
 #include <linux/thermal.h>
 #include <linux/types.h>
 #include <linux/string.h>
+#include <trace/hooks/thermal.h>
 
 #include "thermal_core.h"
 
@@ -87,6 +88,7 @@ static int thermal_of_populate_trip(struct device_node *np,
 	}
 
 	trip->flags = THERMAL_TRIP_FLAG_RW_TEMP;
+	trace_android_vh_update_thermal_trip_flag(trip);
 
 	trip->priv = np;
 
