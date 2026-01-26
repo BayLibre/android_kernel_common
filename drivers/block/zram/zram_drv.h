@@ -134,11 +134,13 @@ struct zram {
 	struct block_device *bdev;
 	unsigned long *bitmap;
 	unsigned long nr_pages;
+	atomic_t prefetch_in_progress;
 #endif
 #ifdef CONFIG_ZRAM_MEMORY_TRACKING
 	struct dentry *debugfs_dir;
 #endif
 	atomic_t pp_in_progress;
+	wait_queue_head_t pp_wait;
 };
 
 bool init_done(struct zram *zram);
