@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ff1cf11_bc79eee3",
+        "filename": "arch/arm64/kvm/handle_exit.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-26T11:49:35Z",
+      "side": 1,
+      "message": "Good catch!",
+      "parentUuid": "77209daf_ebdcc57f",
+      "range": {
+        "startLine": 464,
+        "startChar": 6,
+        "endLine": 464,
+        "endChar": 10
+      },
+      "revId": "8e4b4c69d6039f617aa600815339fe63483f2b73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9834be49_22290bde",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9365d765_3989258a",
+        "filename": "arch/arm64/kvm/handle_exit.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-26T11:49:35Z",
+      "side": 1,
+      "message": "`__pkvm_handle_smccc_req` does in pkvm.c",
+      "parentUuid": "9834be49_22290bde",
+      "range": {
+        "startLine": 485,
+        "startChar": 4,
+        "endLine": 485,
+        "endChar": 18
+      },
+      "revId": "8e4b4c69d6039f617aa600815339fe63483f2b73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2341b8fc_232a0e5b",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-01-20T09:01:27Z",
       "side": 1,
       "message": "I would see it behind a macro for \u0027encoding\u0027 \u0026 the same for the \u0027decoding\u0027 from `__pkvm_handle_smccc_req`. Let me know what do you think. You can probably hide the memcpy as well in it ?",
+      "range": {
+        "startLine": 1023,
+        "startChar": 1,
+        "endLine": 1023,
+        "endChar": 31
+      },
+      "revId": "8e4b4c69d6039f617aa600815339fe63483f2b73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6ce075e_05378641",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-26T11:49:35Z",
+      "side": 1,
+      "message": "Hum, that\u0027s already what this function is about.\n\nhyp_req_to_smcc() for encoding in the hyp and then __pkvm_handle_smccc_req() for decoding from the host.",
+      "parentUuid": "2341b8fc_232a0e5b",
       "range": {
         "startLine": 1023,
         "startChar": 1,
@@ -111,6 +183,24 @@
           ]
         }
       ],
+      "revId": "8e4b4c69d6039f617aa600815339fe63483f2b73",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0668694_0161b5ff",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-01-26T11:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d32d8fdc_f07ebd52",
       "revId": "8e4b4c69d6039f617aa600815339fe63483f2b73",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
