@@ -245,10 +245,9 @@ static struct pkvm_hyp_vcpu *__get_vcpu(void)
 static void *__kvm_iommu_donate_pages(struct hyp_pool *pool,
 				      u8 order, int flags)
 {
-	void *p;
 	struct kvm_hyp_req *req = this_cpu_ptr(&host_hyp_reqs);
-	size_t size = (1 << order) * PAGE_SIZE;
 	struct pkvm_hyp_vcpu *hyp_vcpu = __get_vcpu();
+	void *p;
 
 	p = hyp_alloc_pages(pool, order);
 	if (p)
@@ -258,12 +257,15 @@ static void *__kvm_iommu_donate_pages(struct hyp_pool *pool,
 		req = pkvm_hyp_req_reserve(hyp_vcpu, KVM_HYP_REQ_TYPE_MEM);
 		if (WARN_ON(!req))
 			return NULL;
+
+		req->memcache.dest = REQ_MEM_DEST_HYP_IOMMU;
+		req->memcache.nr_pages = 1;
+		req->memcache.sz_alloc = PAGE_SIZE << order;
+	} else {
+		req->type = KVM_HYP_REQ_TYPE_MEM_IOMMU;
+		req->mem.nr_pages = 1 << order;
 	}
 
-	req->type = KVM_HYP_REQ_TYPE_MEM;
-	req->mem.dest = REQ_MEM_DEST_HYP_IOMMU;
-	req->mem.sz_alloc = size;
-	req->mem.nr_pages = 1;
 	return NULL;
 }
 
