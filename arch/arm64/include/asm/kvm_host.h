@@ -853,20 +853,24 @@ struct vcpu_reset_state {
 struct vncr_tlb;
 
 struct kvm_hyp_req {
-#define KVM_HYP_LAST_REQ	0
-#define KVM_HYP_REQ_TYPE_MEM	1
-#define KVM_HYP_REQ_TYPE_MAP	2
-#define KVM_HYP_REQ_TYPE_SPLIT	3
+#define KVM_HYP_LAST_REQ		0
+#define KVM_HYP_REQ_TYPE_MEM		1
+#define KVM_HYP_REQ_TYPE_MAP		2
+#define KVM_HYP_REQ_TYPE_SPLIT		3
+#define KVM_HYP_REQ_TYPE_HYP_ALLOC	4
+#define KVM_HYP_REQ_TYPE_MEM_IOMMU	5
 	u8 type;
 	union {
 		struct {
-#define REQ_MEM_DEST_HYP_ALLOC		1
+			u32	nr_pages;
+		} mem;
+		struct {
 #define REQ_MEM_DEST_VCPU_MEMCACHE	2
 #define REQ_MEM_DEST_HYP_IOMMU		3
 			u8	dest;
 			int	nr_pages;
 			int	sz_alloc; /* Size of the page. */
-		} mem;
+		} memcache;
 		struct {
 			unsigned long	guest_ipa;
 			size_t		size;
@@ -875,10 +879,16 @@ struct kvm_hyp_req {
 			unsigned long	guest_ipa;
 			size_t		size;
 		} split;
+		struct {
+			/* Just a helper for SMCCC encoding/decoding */
+			u8	args[1];
+		} args;
 	};
 };
 
 #define KVM_HYP_REQ_MAX ((PAGE_SIZE >> 4) / sizeof(struct kvm_hyp_req))
+
+int handle_hyp_req(struct kvm_vcpu *vcpu, struct kvm_hyp_req *req, void *arg);
 
 /*
  * Hypervisor version of kvm_pinned_page. Typically stored in per-vCPU hyp_req
@@ -916,26 +926,6 @@ next_kvm_hyp_pinned_page(struct kvm_hyp_req *page, struct kvm_hyp_pinned_page *p
 		return NULL;
 
 	return ppage;
-}
-
-/*
- * De-serialize request from SMCCC return.
- * See hyp-main.c for serialization.
- */
-/* Register a2. */
-#define	SMCCC_REQ_TYPE_MASK		GENMASK_ULL(7, 0)
-#define SMCCC_REQ_DEST_MASK		GENMASK_ULL(15, 8)
-/* Register a3. */
-#define SMCCC_REQ_NR_PAGES_MASK		GENMASK_ULL(31, 0)
-#define SMCCC_REQ_SZ_ALLOC_MASK		GENMASK_ULL(63, 32)
-
-static inline void hyp_reqs_smccc_decode(struct arm_smccc_res *res,
-					 struct kvm_hyp_req *req)
-{
-	req->type = FIELD_GET(SMCCC_REQ_TYPE_MASK, res->a2);
-	req->mem.dest = FIELD_GET(SMCCC_REQ_DEST_MASK, res->a2);
-	req->mem.nr_pages = FIELD_GET(SMCCC_REQ_NR_PAGES_MASK, res->a3);
-	req->mem.sz_alloc = FIELD_GET(SMCCC_REQ_SZ_ALLOC_MASK, res->a3);
 }
 
 struct kvm_vcpu_arch {
