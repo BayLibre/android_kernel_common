@@ -30,12 +30,34 @@ static const struct scmi_perf_proto_ops *perf_ops;
 
 static unsigned int scmi_cpufreq_get_rate(unsigned int cpu)
 {
+<<<<<<< HEAD   (fbff974dc7700db91b199c12f29fa5c52c093752 Merge 9c07bd262c13 ("f2fs: fix to avoid updating zero-sized )
 	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
 	struct scmi_data *priv = policy->driver_data;
+||||||| BASE   (9c07bd262c13ca922adad6e7613d48505f97f548 f2fs: fix to avoid updating zero-sized extent in extent cach)
+	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
+	const struct scmi_perf_ops *perf_ops = handle->perf_ops;
+	struct scmi_data *priv = policy->driver_data;
+=======
+	struct cpufreq_policy *policy;
+	struct scmi_data *priv;
+	const struct scmi_perf_ops *perf_ops = handle->perf_ops;
+>>>>>>> BRANCH (816b2eac151a9bcce4eff7119207e088ad45236f Revert "iommu/amd: Skip enabling command/event buffers for k)
 	unsigned long rate;
 	int ret;
 
+<<<<<<< HEAD   (fbff974dc7700db91b199c12f29fa5c52c093752 Merge 9c07bd262c13 ("f2fs: fix to avoid updating zero-sized )
 	ret = perf_ops->freq_get(ph, priv->domain_id, &rate, false);
+||||||| BASE   (9c07bd262c13ca922adad6e7613d48505f97f548 f2fs: fix to avoid updating zero-sized extent in extent cach)
+	ret = perf_ops->freq_get(handle, priv->domain_id, &rate, false);
+=======
+	policy = cpufreq_cpu_get_raw(cpu);
+	if (unlikely(!policy))
+		return 0;
+
+	priv = policy->driver_data;
+
+	ret = perf_ops->freq_get(handle, priv->domain_id, &rate, false);
+>>>>>>> BRANCH (816b2eac151a9bcce4eff7119207e088ad45236f Revert "iommu/amd: Skip enabling command/event buffers for k)
 	if (ret)
 		return 0;
 	return rate / 1000;
