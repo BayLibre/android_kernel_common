@@ -6073,14 +6073,26 @@ static void ufshcd_err_handler(struct work_struct *work)
 		up(&hba->host_sem);
 		return;
 	}
-	ufshcd_set_eh_in_progress(hba);
 	spin_unlock_irqrestore(hba->host->host_lock, flags);
+
 	ufshcd_err_handling_prepare(hba);
+<<<<<<< HEAD   (73c65265b5e3793ed67605cc18036bc37d6f5022 Merge bd1dcfba72aa ("cpufreq: scmi: Fix null-ptr-deref in sc)
 	/* Complete requests that have door-bell cleared by h/w */
 	ufshcd_complete_requests(hba);
+||||||| BASE   (bd1dcfba72aac4159c1d5e17cd861e702e6c19ac cpufreq: scmi: Fix null-ptr-deref in scmi_cpufreq_get_rate())
+=======
+
+>>>>>>> BRANCH (fc30126a5fa461700f8da57b93c386c2de061ea8 alpha: don't reference obsolete termio struct for TC* consta)
 	spin_lock_irqsave(hba->host->host_lock, flags);
+<<<<<<< HEAD   (73c65265b5e3793ed67605cc18036bc37d6f5022 Merge bd1dcfba72aa ("cpufreq: scmi: Fix null-ptr-deref in sc)
 	if (hba->ufshcd_state != UFSHCD_STATE_ERROR)
 		hba->ufshcd_state = UFSHCD_STATE_RESET;
+||||||| BASE   (bd1dcfba72aac4159c1d5e17cd861e702e6c19ac cpufreq: scmi: Fix null-ptr-deref in scmi_cpufreq_get_rate())
+	ufshcd_scsi_block_requests(hba);
+=======
+	ufshcd_set_eh_in_progress(hba);
+	ufshcd_scsi_block_requests(hba);
+>>>>>>> BRANCH (fc30126a5fa461700f8da57b93c386c2de061ea8 alpha: don't reference obsolete termio struct for TC* consta)
 	/*
 	 * A full reset and restore might have happened after preparation
 	 * is finished, double check whether we should stop.
