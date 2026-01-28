@@ -16,6 +16,57 @@
       "message": "Note that this would probably have been reviewed much more quickly if you had filed a bug and cited it with a \"Bug:\" tag on this patch. We get a lot of patch submissions and they can be lost in the flood of patches if there is no bug.",
       "revId": "8787ddadc8fb7403be4884fb8d0153871ce9c847",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c596d50_3f873839",
+        "filename": "mm/madvise.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 850,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-01-28T23:51:04Z",
+      "side": 1,
+      "message": "Where does this variable come from? I\u0027m guessing this patch would not compile.",
+      "range": {
+        "startLine": 850,
+        "startChar": 26,
+        "endLine": 850,
+        "endChar": 39
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "2342f909_a5efd8e7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/madvise.c",
+              "range": {
+                "startLine": 846,
+                "startChar": 0,
+                "endLine": 847,
+                "endChar": 0
+              },
+              "replacement": "\t\t\tunsigned long start_addr, unsigned long end_addr,\n\t\t\tstruct madvise_behavior *madv_behavior)\n"
+            },
+            {
+              "path": "mm/madvise.c",
+              "range": {
+                "startLine": 1001,
+                "startChar": 0,
+                "endLine": 1002,
+                "endChar": 0
+              },
+              "replacement": "\t\treturn madvise_free_single_vma(vma, start, end, madv_behavior);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8787ddadc8fb7403be4884fb8d0153871ce9c847",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
