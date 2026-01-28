@@ -9,6 +9,7 @@
 
 #include <linux/sched.h>
 #include <linux/fs.h>
+#include <linux/fsnotify.h>
 #include <linux/namei.h>
 #include <linux/idr.h>
 #include <linux/slab.h>
@@ -26,6 +27,17 @@
  */
 static DEFINE_SPINLOCK(kernfs_pr_cont_lock);
 static char kernfs_pr_cont_buf[PATH_MAX];	/* protected by pr_cont_lock */
+
+
+/* kernfs_notify_deleted() may be called from any context and bounces notifications
+ * through a work item.  To minimize space overhead in kernfs_node, the
+ * pending queue is implemented as a singly linked list of kernfs_nodes.
+ * The list is terminated with the self pointer so that whether a
+ * kernfs_node is on the list or not can be determined by testing the next
+ * pointer for %NULL.
+ */
+#define KERNFS_NOTIFY_DELETE_EOL			((void *)&kernfs_notify_deleted_list)
+static struct kernfs_node *kernfs_notify_deleted_list = KERNFS_NOTIFY_DELETE_EOL;
 
 #define rb_to_kn(X) rb_entry((X), struct kernfs_node, rb)
 
@@ -1466,6 +1478,114 @@ void kernfs_show(struct kernfs_node *kn, bool show)
 	up_write(&root->kernfs_rwsem);
 }
 
+static void kernfs_notify_deleted_workfn(struct work_struct *work)
+{
+	struct kernfs_node *kn;
+	struct kernfs_super_info *info;
+	struct kernfs_root *root;
+repeat:
+	/* pop one off the notify_list */
+	spin_lock_irq(&kernfs_notify_lock);
+	kn = kernfs_notify_deleted_list;
+	if (kn == KERNFS_NOTIFY_DELETE_EOL) {
+		spin_unlock_irq(&kernfs_notify_lock);
+		return;
+	}
+	kernfs_notify_deleted_list = kn->attr.notify_next;
+	kn->attr.notify_next = NULL;
+	spin_unlock_irq(&kernfs_notify_lock);
+
+	root = kernfs_root(kn);
+	/* kick fsnotify */
+
+	down_read(&root->kernfs_supers_rwsem);
+	down_read(&root->kernfs_rwsem);
+	list_for_each_entry(info, &kernfs_root(kn)->supers, node) {
+		struct kernfs_node *parent;
+		struct inode *p_inode = NULL;
+		const char *kn_name;
+		struct inode *inode;
+		struct qstr name;
+
+		/*
+		 * We want fsnotify_modify() on @kn but as the
+		 * modifications aren't originating from userland don't
+		 * have the matching @file available.  Look up the inodes
+		 * and generate the events manually.
+		 */
+		inode = ilookup(info->sb, kernfs_ino(kn));
+		if (!inode)
+			continue;
+
+		kn_name = kernfs_rcu_name(kn);
+		name = QSTR(kn_name);
+
+		parent = kernfs_get_parent(kn);
+		if (parent) {
+			p_inode = ilookup(info->sb, kernfs_ino(parent));
+			if (p_inode) {
+				fsnotify(FS_DELETE | FS_EVENT_ON_CHILD,
+					 inode, FSNOTIFY_EVENT_INODE,
+					 p_inode, &name, inode, 0);
+				iput(p_inode);
+			}
+
+			kernfs_put(parent);
+		}
+		if (!p_inode)
+			fsnotify_inode(inode, FS_DELETE_SELF);
+
+		iput(inode);
+	}
+
+	up_read(&root->kernfs_rwsem);
+	up_read(&root->kernfs_supers_rwsem);
+	kernfs_put(kn);
+	goto repeat;
+}
+
+static void remove_from_kernfs_notify(struct kernfs_node *kn) {
+	struct kernfs_node *cur = kernfs_notify_list;
+	struct kernfs_node *prev = NULL;
+
+	lockdep_assert_held(&kernfs_notify_lock);
+
+	while (cur != KERNFS_NOTIFY_EOL && cur != kn) {
+		prev = cur;
+		cur = cur->attr.notify_next;
+	}
+
+	if (cur == kn) {
+		if (prev)
+			prev->attr.notify_next = cur->attr.notify_next;
+		else
+			kernfs_notify_list = cur->attr.notify_next;
+		kn->attr.notify_next = NULL;
+		kernfs_put(kn);
+	}
+}
+
+static void kernfs_notify_deleted(struct kernfs_node *kn)
+{
+	static DECLARE_WORK(kernfs_notify_deleted_work,
+			    kernfs_notify_deleted_workfn);
+	unsigned long flags;
+
+	spin_lock_irqsave(&kernfs_notify_lock, flags);
+	/* modification events don't matter anymore */
+	if (kn->attr.notify_next)
+		remove_from_kernfs_notify(kn);
+
+	if (!kn->attr.notify_next) {
+		kernfs_get(kn);
+		kn->attr.notify_next = kernfs_notify_deleted_list;
+		kernfs_notify_deleted_list = kn;
+		schedule_work(&kernfs_notify_deleted_work);
+	}
+
+	spin_unlock_irqrestore(&kernfs_notify_lock, flags);
+}
+
 static void __kernfs_remove(struct kernfs_node *kn)
 {
 	struct kernfs_node *pos, *parent;
@@ -1514,6 +1634,8 @@ static void __kernfs_remove(struct kernfs_node *kn)
 		if (!parent || kernfs_unlink_sibling(pos)) {
 			struct kernfs_iattrs *ps_iattr =
 				parent ? parent->iattr : NULL;
+
+			kernfs_notify_deleted(pos);
 
 			/* update timestamps on the parent */
 			down_write(&kernfs_root(kn)->kernfs_iattr_rwsem);

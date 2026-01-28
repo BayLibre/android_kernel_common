@@ -35,10 +35,8 @@ struct kernfs_open_node {
  * kernfs_node is on the list or not can be determined by testing the next
  * pointer for %NULL.
  */
-#define KERNFS_NOTIFY_EOL			((void *)&kernfs_notify_list)
-
-static DEFINE_SPINLOCK(kernfs_notify_lock);
-static struct kernfs_node *kernfs_notify_list = KERNFS_NOTIFY_EOL;
+DEFINE_SPINLOCK(kernfs_notify_lock);
+struct kernfs_node *kernfs_notify_list = KERNFS_NOTIFY_EOL;
 
 static inline struct mutex *kernfs_open_file_mutex_ptr(struct kernfs_node *kn)
 {
