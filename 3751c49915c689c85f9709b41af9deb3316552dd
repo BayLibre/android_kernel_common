@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bba0a20_44c9d5e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2026-01-28T23:07:41Z",
+      "side": 1,
+      "message": "Which vendorhooks?  Also I\u0027d reccomend something like \"Reapply trace_android_rvh_schedule_bug vendorhooks\"",
+      "revId": "3751c49915c689c85f9709b41af9deb3316552dd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80ea88cb_45e0ef4a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2026-01-28T23:07:41Z",
+      "side": 1,
+      "message": "When reverting a change a more terse commit message can be reasonable, but when re-applying a chance (reverting the revert), you really should provide clear context in the commit message as to what is being added, as if it were a pristine submission.\n\nThe extra context that it is reapplying a reverted change is helpful to include at the end, but the rational for why the change should be applied has to be present.\n\nMy standard questions that are good to answer in the commit message:\n1) What is the problem that you are observing without this change that motivates the submission?\n\n2) Quantify the benefit of having the change. Alternatively, what would be the impact of not taking the change?\n\n3) What might be done upstream to avoid the need for this vendorhook.",
+      "revId": "3751c49915c689c85f9709b41af9deb3316552dd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
