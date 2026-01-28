@@ -128,6 +128,18 @@ int pkvm_pasid_teardown(struct device_domain_info *info, u32 pasid);
 int pkvm_alloc_domain(struct device_domain_info *info, struct dmar_domain *domain);
 int pkvm_free_domain(struct dmar_domain *domain);
 #else /* __PKVM_HYP__ */
+#include "pkvm/memory.h"
+
+static inline void *hyp_phys_to_virt(phys_addr_t phys)
+{
+	return __pkvm_va(phys);
+}
+
+static inline phys_addr_t hyp_virt_to_phys(void *addr)
+{
+	return __pkvm_pa(addr);
+}
+
 /*
  * dev_iommu_priv_get is called from quite a few places in code re-used by
  * hypervisor and is defined in include/linux/iommu.h. It takes struct device
