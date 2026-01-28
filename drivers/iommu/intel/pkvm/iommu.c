@@ -8,6 +8,7 @@
 #include "pkvm/pkvm.h"
 #include "pkvm/debug.h"
 #include "iommu.h"
+#include "iommu_domain.h"
 
 /*
  * IOMMU supported page size and page levels for second stage page table.
