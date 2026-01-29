@@ -1721,6 +1721,10 @@ int domain_map(struct dmar_domain *domain, unsigned long iov_pfn,
 	unsigned long lvl_pages = 0;
 	phys_addr_t pteval;
 	u64 attr;
+#ifdef __PKVM_HYP__
+	unsigned long flush_iov_pfn_start = iov_pfn;
+	unsigned long flush_nr_pages = nr_pages;
+#endif
 
 	if (unlikely(!domain_pfn_supported(domain, iov_pfn + nr_pages - 1)))
 		return -EINVAL;
@@ -1822,6 +1826,16 @@ int domain_map(struct dmar_domain *domain, unsigned long iov_pfn,
 		}
 	}
 
+#ifdef __PKVM_HYP__
+	if (domain->iotlb_sync_map) {
+		int flush_iov_pfn_end;
+
+		flush_nr_pages -= nr_pages;
+		flush_iov_pfn_end = flush_iov_pfn_start + flush_nr_pages - 1;
+		cache_tag_flush_range_np(domain, flush_iov_pfn_start << VTD_PAGE_SHIFT,
+					 flush_iov_pfn_end << VTD_PAGE_SHIFT);
+	}
+#endif
 	return 0;
 }
 
