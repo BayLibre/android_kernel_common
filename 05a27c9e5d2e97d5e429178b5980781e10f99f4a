@@ -16,6 +16,24 @@
       "message": "This driver is not part of GKI builds (CONFIG_DRM_XE is not enabled by arch/x86/configs/gki_defconfig). We normally don\u0027t take patches for vendor modules since we neither build nor test them. Can this be applied on a downstream branch where vendor modules are built? Or should it be enabled as a GKI module instead of a vendor module so it is part of the GKI builds?",
       "revId": "05a27c9e5d2e97d5e429178b5980781e10f99f4a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "304fb007_152fcbb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3470500
+      },
+      "writtenOn": "2026-01-29T02:52:42Z",
+      "side": 1,
+      "message": "Ah ok, I guess there was some confusion on our end thing we should keep UPSTREAM changes on AOSP and only have downstream changes on our downstream branch.\n\nI also don\u0027t see misc/mei (CONFIG_MEI) in the GKI builds either, so the entire CL chain should just land on our downstream branch as well? and ignore your CR+2 on the misc/mei CLs?",
+      "parentUuid": "36bece3d_99f4ac82",
+      "revId": "05a27c9e5d2e97d5e429178b5980781e10f99f4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
