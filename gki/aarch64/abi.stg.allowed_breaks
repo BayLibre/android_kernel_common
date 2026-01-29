@@ -89,3 +89,9 @@ type 'struct kvm_iommu_ops' changed
   member 'union { void(* iotlb_inv_nested_domain)(struct kvm_hyp_iommu_domain*, unsigned long, size_t, size_t, bool); struct { u64 __kabi_reserved4; }; union { }; }' was added
   member 'union { int(* nested_cfg_sync)(struct kvm_hyp_iommu*, void*, size_t); struct { u64 __kabi_reserved5; }; union { }; }' was added
 
+function symbol 'struct thermal_zone_device* devm_thermal_of_zone_register(struct device*, int, void*, const struct thermal_zone_device_ops*)' changed
+  CRC changed from 0x86d639a8 to 0x39632ff5
+
+function symbol 'void devm_thermal_of_zone_unregister(struct device*, struct thermal_zone_device*)' changed
+  CRC changed from 0x8c4e0f51 to 0x57ff57dd
+
