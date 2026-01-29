@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36bece3d_99f4ac82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-01-29T01:57:49Z",
+      "side": 1,
+      "message": "This driver is not part of GKI builds (CONFIG_DRM_XE is not enabled by arch/x86/configs/gki_defconfig). We normally don\u0027t take patches for vendor modules since we neither build nor test them. Can this be applied on a downstream branch where vendor modules are built? Or should it be enabled as a GKI module instead of a vendor module so it is part of the GKI builds?",
+      "revId": "05a27c9e5d2e97d5e429178b5980781e10f99f4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
