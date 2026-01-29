@@ -16,6 +16,24 @@
       "message": "We really only want to take changes into our tree that affect the core GKI or GKI modules. \n\nWhile I didn\u0027t realize before taking the initial UPSTREAM patches in this series, these changes don\u0027t seem to affect the core GKI build, so the advice is to maintain them in your own vendor modules build tree.\n\nIf I\u0027ve assessed this incorrectly, please let me know.\n\nIf the changes do land in -stable, they will likely get included eventually via a -stable tree merge. But there may be some propagation lag there, so it is best to have a way to maintain patches in your vendor modules build tree.",
       "revId": "f2641783b8853892b9ea66b185cf300e1f784d2c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2b4f138_90d48ec3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3953550
+      },
+      "writtenOn": "2026-01-29T22:04:43Z",
+      "side": 1,
+      "message": "@John Stultz, \nOK. Shall I push remaining FROMIGIT patches into  \"android17-6.18-desktop-intel\" branch then?",
+      "parentUuid": "8dd01cfa_2715fccf",
+      "revId": "f2641783b8853892b9ea66b185cf300e1f784d2c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
