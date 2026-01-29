@@ -39,6 +39,30 @@
       },
       "revId": "6b9b94b279c108966397f9594e0a25c8fc94fc15",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1435d13_da8a2d40",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2019,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2026-01-29T22:57:43Z",
+      "side": 1,
+      "message": "sorry, I think this should actually be:\n\n```\nbool force_set_fault_handler \u003d false;\n\nif (WARN_ON(!domain))\n        return;\n        \ntrace_android_vh_set_iommu_fault_handler(\u0026force_set_fault_handler, domain, handler, token);\nif (!force_set_fault_handler \u0026\u0026 WARN_ON(domain-\u003ecookie_type !\u003d IOMMU_COOKIE_NONE))\n        return;\n```",
+      "parentUuid": "7ae85e52_d684aecc",
+      "range": {
+        "startLine": 2016,
+        "startChar": 0,
+        "endLine": 2019,
+        "endChar": 9
+      },
+      "revId": "6b9b94b279c108966397f9594e0a25c8fc94fc15",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
