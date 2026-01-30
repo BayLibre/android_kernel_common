@@ -4197,6 +4197,8 @@ struct cfg80211_pmsr_result {
  *	to be indicated in case the device moves out of this range.
  *	(units mm, u64). measurement results need be sent on a burst index basis
  *	in this case.
+ * @range_report: negotiate for FTM range report. Only valid for
+ *		 EDCA based ranging.
  * See also nl80211 for the respective attribute documentation.
  */
 struct cfg80211_pmsr_ftm_request_peer {
@@ -4222,6 +4224,7 @@ struct cfg80211_pmsr_ftm_request_peer {
 	u8 measurements_per_aw;
 	u64 ingress_distancemm;
 	u64 egress_distancemm;
+	u8 range_report:1;
 };
 
 /**
@@ -5577,6 +5580,8 @@ cfg80211_get_iftype_ext_capa(struct wiphy *wiphy, enum nl80211_iftype type);
  * @ftm.support_rsta: supports operating as RSTA in PMSR FTM request
  * @ftm.support_edca_responder: supports operating as FTM responder in PMSR FTM
  *	request for EDCA-based ranging
+ * @ftm.support_range_report: capable of negotiating for FTM range report. Only
+ *	valid for EDCA based ranging.
  * @ftm.pd_edca_bandwidths: bitmap of bandwidths supported
  *	(&enum nl80211_chan_width) in case of PD request with EDCA based
  *	initiator or responder role. ignored if @pd_support is not set.
@@ -5617,7 +5622,8 @@ struct cfg80211_pmsr_capabilities {
 		u32 min_allowed_ranging_interval_edca;
 		u32 min_allowed_ranging_interval_ntb;
 		u8 support_rsta:1,
-		   support_edca_responder:1;
+		   support_edca_responder:1,
+		   support_range_report:1;
 		u32 pd_edca_bandwidths;
 		u32 pd_ntb_bandwidths;
 	} ftm;
