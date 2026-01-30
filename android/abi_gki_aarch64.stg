@@ -412018,6 +412018,15 @@ elf_symbol {
   full_name: "trace_array_set_clr_event"
 }
 elf_symbol {
+  id: 0x7ac0d9da
+  name: "trace_clock_global"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xcf28f55e
+  type_id: 0x57dbd34b
+  full_name: "trace_clock_global"
+}
+elf_symbol {
   id: 0x00fb9c6d
   name: "trace_clock_local"
   is_defined: true
@@ -412223,6 +412232,15 @@ elf_symbol {
   crc: 0x9b70c6ff
   type_id: 0x9ecd60da
   full_name: "tracepoint_probe_register_prio"
+}
+elf_symbol {
+  id: 0x7c999636
+  name: "tracepoint_probe_register_prio_may_exist"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x8ffe792f
+  type_id: 0x9ecd60da
+  full_name: "tracepoint_probe_register_prio_may_exist"
 }
 elf_symbol {
   id: 0x3df2f359
@@ -429540,6 +429558,7 @@ interface {
   symbol_id: 0xe2481840
   symbol_id: 0x86b2ecdf
   symbol_id: 0xa274099f
+  symbol_id: 0x7ac0d9da
   symbol_id: 0x00fb9c6d
   symbol_id: 0x67b21624
   symbol_id: 0x0e209244
@@ -429563,6 +429582,7 @@ interface {
   symbol_id: 0xc796457e
   symbol_id: 0xd1284f5b
   symbol_id: 0xed8ca0be
+  symbol_id: 0x7c999636
   symbol_id: 0x3df2f359
   symbol_id: 0x33172d21
   symbol_id: 0x54bbaa46
