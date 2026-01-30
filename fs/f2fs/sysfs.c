@@ -753,7 +753,27 @@ out:
 		return count;
 	}
 
+<<<<<<< HEAD   (65896c4edca1614fb2844dc27399c9347d28f86d UPSTREAM: f2fs: fix to use per-inode maxbytes and cleanup)
 	*ui = (unsigned int)t;
+||||||| BASE   (64b221d470157da1e380ed25fd2b6b058e6db07b BACKPORT: UPSTREAM: f2fs: trace elapsed time for io_rwsem lo)
+	__sbi_store_value(a, sbi, ptr + a->offset, t);
+=======
+	if (!strcmp(a->attr.name, "adjust_lock_priority")) {
+		if (t >= BIT(LOCK_NAME_MAX - 1))
+			return -EINVAL;
+		sbi->adjust_lock_priority = t;
+		return count;
+	}
+
+	if (!strcmp(a->attr.name, "lock_duration_priority")) {
+		if (t < NICE_TO_PRIO(MIN_NICE) || t > NICE_TO_PRIO(MAX_NICE))
+			return -EINVAL;
+		sbi->lock_duration_priority = t;
+		return count;
+	}
+
+	__sbi_store_value(a, sbi, ptr + a->offset, t);
+>>>>>>> CHANGE (cea96a0c7d224e603c4de8c45cd5ff691c6dab8c BACKPORT: UPSTREAM: f2fs: fix lock priority inversion issue)
 
 	return count;
 }
@@ -1021,6 +1041,16 @@ F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, hot_data_age_threshold, hot_data_age_thresh
 F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, warm_data_age_threshold, warm_data_age_threshold);
 F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, last_age_weight, last_age_weight);
 
+<<<<<<< HEAD   (65896c4edca1614fb2844dc27399c9347d28f86d UPSTREAM: f2fs: fix to use per-inode maxbytes and cleanup)
+||||||| BASE   (64b221d470157da1e380ed25fd2b6b058e6db07b BACKPORT: UPSTREAM: f2fs: trace elapsed time for io_rwsem lo)
+F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, max_lock_elapsed_time, max_lock_elapsed_time);
+
+=======
+F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, max_lock_elapsed_time, max_lock_elapsed_time);
+F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, lock_duration_priority, lock_duration_priority);
+F2FS_RW_ATTR(F2FS_SBI, f2fs_sb_info, adjust_lock_priority, adjust_lock_priority);
+
+>>>>>>> CHANGE (cea96a0c7d224e603c4de8c45cd5ff691c6dab8c BACKPORT: UPSTREAM: f2fs: fix lock priority inversion issue)
 #define ATTR_LIST(name) (&f2fs_attr_##name.attr)
 static struct attribute *f2fs_attrs[] = {
 	ATTR_LIST(gc_urgent_sleep_time),
@@ -1124,6 +1154,14 @@ static struct attribute *f2fs_attrs[] = {
 	ATTR_LIST(hot_data_age_threshold),
 	ATTR_LIST(warm_data_age_threshold),
 	ATTR_LIST(last_age_weight),
+<<<<<<< HEAD   (65896c4edca1614fb2844dc27399c9347d28f86d UPSTREAM: f2fs: fix to use per-inode maxbytes and cleanup)
+||||||| BASE   (64b221d470157da1e380ed25fd2b6b058e6db07b BACKPORT: UPSTREAM: f2fs: trace elapsed time for io_rwsem lo)
+	ATTR_LIST(max_lock_elapsed_time),
+=======
+	ATTR_LIST(max_lock_elapsed_time),
+	ATTR_LIST(lock_duration_priority),
+	ATTR_LIST(adjust_lock_priority),
+>>>>>>> CHANGE (cea96a0c7d224e603c4de8c45cd5ff691c6dab8c BACKPORT: UPSTREAM: f2fs: fix lock priority inversion issue)
 	NULL,
 };
 ATTRIBUTE_GROUPS(f2fs);

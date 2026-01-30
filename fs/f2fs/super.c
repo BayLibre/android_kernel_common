@@ -3887,6 +3887,14 @@ static void init_sb_info(struct f2fs_sb_info *sbi)
 	sbi->max_fragment_hole = DEF_FRAGMENT_SIZE;
 	spin_lock_init(&sbi->gc_remaining_trials_lock);
 	atomic64_set(&sbi->current_atomic_write, 0);
+<<<<<<< HEAD   (65896c4edca1614fb2844dc27399c9347d28f86d UPSTREAM: f2fs: fix to use per-inode maxbytes and cleanup)
+||||||| BASE   (64b221d470157da1e380ed25fd2b6b058e6db07b BACKPORT: UPSTREAM: f2fs: trace elapsed time for io_rwsem lo)
+	sbi->max_lock_elapsed_time = MAX_LOCK_ELAPSED_TIME;
+=======
+	sbi->max_lock_elapsed_time = MAX_LOCK_ELAPSED_TIME;
+	sbi->adjust_lock_priority = 0;
+	sbi->lock_duration_priority = F2FS_DEFAULT_TASK_PRIORITY;
+>>>>>>> CHANGE (cea96a0c7d224e603c4de8c45cd5ff691c6dab8c BACKPORT: UPSTREAM: f2fs: fix lock priority inversion issue)
 
 	sbi->dir_level = DEF_DIR_LEVEL;
 	sbi->interval_time[CP_TIME] = DEF_CP_INTERVAL;

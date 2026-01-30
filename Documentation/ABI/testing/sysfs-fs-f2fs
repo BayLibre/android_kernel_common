@@ -772,3 +772,47 @@ Description:
 		- "compat": Hash-based lookup with a linear search fallback enabled
 		- "auto:perf": lookup_mode is auto and fallback is disabled on-disk
 		- "auto:compat": lookup_mode is auto and fallback is enabled on-disk
+<<<<<<< HEAD   (65896c4edca1614fb2844dc27399c9347d28f86d UPSTREAM: f2fs: fix to use per-inode maxbytes and cleanup)
+||||||| BASE   (64b221d470157da1e380ed25fd2b6b058e6db07b BACKPORT: UPSTREAM: f2fs: trace elapsed time for io_rwsem lo)
+
+What:		/sys/fs/f2fs/<disk>/max_lock_elapsed_time
+Date:		December 2025
+Contact:	"Chao Yu" <chao@kernel.org>
+Description:	This is a threshold, once a thread enters critical region that lock covers, total
+		elapsed time exceeds this threshold, f2fs will print tracepoint to dump information
+		of related context. This sysfs entry can be used to control the value of threshold,
+		by default, the value is 500 ms.
+=======
+
+What:		/sys/fs/f2fs/<disk>/max_lock_elapsed_time
+Date:		December 2025
+Contact:	"Chao Yu" <chao@kernel.org>
+Description:	This is a threshold, once a thread enters critical region that lock covers, total
+		elapsed time exceeds this threshold, f2fs will print tracepoint to dump information
+		of related context. This sysfs entry can be used to control the value of threshold,
+		by default, the value is 500 ms.
+
+What:		/sys/fs/f2fs/<disk>/adjust_lock_priority
+Date:		January 2026
+Contact:	"Chao Yu" <chao@kernel.org>
+Description:	This sysfs entry can be used to enable/disable to adjust priority for task
+		which is in critical region covered by lock.
+		==========     ==================
+		Flag_Value     Flag_Description
+		==========     ==================
+		0x00000000     Disabled (default)
+		0x00000001     cp_rwsem
+		0x00000002     node_change
+		0x00000004     node_write
+		0x00000008     gc_lock
+		0x00000010     cp_global
+		0x00000020     io_rwsem
+		==========     ==================
+
+What:		/sys/fs/f2fs/<disk>/lock_duration_priority
+Date:		January 2026
+Contact:	"Chao Yu" <chao@kernel.org>
+Description:	f2fs can tune priority of thread which has entered into critical region covered by
+		f2fs rwsemphore lock. This sysfs entry can be used to control priority value, the
+		range is [100,139], by default the value is 120.
+>>>>>>> CHANGE (cea96a0c7d224e603c4de8c45cd5ff691c6dab8c BACKPORT: UPSTREAM: f2fs: fix lock priority inversion issue)

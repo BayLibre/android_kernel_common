@@ -133,6 +133,33 @@ typedef u32 nid_t;
 
 #define COMPRESS_EXT_NUM		16
 
+<<<<<<< HEAD   (65896c4edca1614fb2844dc27399c9347d28f86d UPSTREAM: f2fs: fix to use per-inode maxbytes and cleanup)
+||||||| BASE   (64b221d470157da1e380ed25fd2b6b058e6db07b BACKPORT: UPSTREAM: f2fs: trace elapsed time for io_rwsem lo)
+
+enum f2fs_lock_name {
+	LOCK_NAME_NONE,
+	LOCK_NAME_CP_RWSEM,
+	LOCK_NAME_NODE_CHANGE,
+	LOCK_NAME_NODE_WRITE,
+	LOCK_NAME_GC_LOCK,
+	LOCK_NAME_CP_GLOBAL,
+	LOCK_NAME_IO_RWSEM,
+};
+
+=======
+
+enum f2fs_lock_name {
+	LOCK_NAME_NONE,
+	LOCK_NAME_CP_RWSEM,
+	LOCK_NAME_NODE_CHANGE,
+	LOCK_NAME_NODE_WRITE,
+	LOCK_NAME_GC_LOCK,
+	LOCK_NAME_CP_GLOBAL,
+	LOCK_NAME_IO_RWSEM,
+	LOCK_NAME_MAX,
+};
+
+>>>>>>> CHANGE (cea96a0c7d224e603c4de8c45cd5ff691c6dab8c BACKPORT: UPSTREAM: f2fs: fix lock priority inversion issue)
 /*
  * An implementation of an rwsem that is explicitly unfair to readers. This
  * prevents priority inversion when a low-priority reader acquires the read lock
@@ -1291,6 +1318,49 @@ struct atgc_management {
 	unsigned long long age_threshold;	/* age threshold */
 };
 
+<<<<<<< HEAD   (65896c4edca1614fb2844dc27399c9347d28f86d UPSTREAM: f2fs: fix to use per-inode maxbytes and cleanup)
+||||||| BASE   (64b221d470157da1e380ed25fd2b6b058e6db07b BACKPORT: UPSTREAM: f2fs: trace elapsed time for io_rwsem lo)
+struct f2fs_time_stat {
+	unsigned long long total_time;		/* total wall clock time */
+#ifdef CONFIG_64BIT
+	unsigned long long running_time;	/* running time */
+#endif
+#if defined(CONFIG_SCHED_INFO) && defined(CONFIG_SCHEDSTATS)
+	unsigned long long runnable_time;	/* runnable(including preempted) time */
+#endif
+#ifdef CONFIG_TASK_DELAY_ACCT
+	unsigned long long io_sleep_time;	/* IO sleep time */
+#endif
+};
+
+struct f2fs_lock_context {
+	struct f2fs_time_stat ts;
+	bool lock_trace;
+};
+
+=======
+struct f2fs_time_stat {
+	unsigned long long total_time;		/* total wall clock time */
+#ifdef CONFIG_64BIT
+	unsigned long long running_time;	/* running time */
+#endif
+#if defined(CONFIG_SCHED_INFO) && defined(CONFIG_SCHEDSTATS)
+	unsigned long long runnable_time;	/* runnable(including preempted) time */
+#endif
+#ifdef CONFIG_TASK_DELAY_ACCT
+	unsigned long long io_sleep_time;	/* IO sleep time */
+#endif
+};
+
+struct f2fs_lock_context {
+	struct f2fs_time_stat ts;
+	int orig_nice;
+	int new_nice;
+	bool lock_trace;
+	bool need_restore;
+};
+
+>>>>>>> CHANGE (cea96a0c7d224e603c4de8c45cd5ff691c6dab8c BACKPORT: UPSTREAM: f2fs: fix lock priority inversion issue)
 struct f2fs_gc_control {
 	unsigned int victim_segno;	/* target victim segment number */
 	int init_gc_type;		/* FG_GC or BG_GC */
@@ -1397,6 +1467,18 @@ enum {
 	MEMORY_MODE_LOW,	/* memory mode for low memry devices */
 };
 
+<<<<<<< HEAD   (65896c4edca1614fb2844dc27399c9347d28f86d UPSTREAM: f2fs: fix to use per-inode maxbytes and cleanup)
+||||||| BASE   (64b221d470157da1e380ed25fd2b6b058e6db07b BACKPORT: UPSTREAM: f2fs: trace elapsed time for io_rwsem lo)
+/* a threshold of maximum elapsed time in critical region to print tracepoint */
+#define MAX_LOCK_ELAPSED_TIME		500
+
+=======
+/* a threshold of maximum elapsed time in critical region to print tracepoint */
+#define MAX_LOCK_ELAPSED_TIME		500
+
+#define F2FS_DEFAULT_TASK_PRIORITY		(DEFAULT_PRIO)
+
+>>>>>>> CHANGE (cea96a0c7d224e603c4de8c45cd5ff691c6dab8c BACKPORT: UPSTREAM: f2fs: fix lock priority inversion issue)
 static inline int f2fs_test_bit(unsigned int nr, char *addr);
 static inline void f2fs_set_bit(unsigned int nr, char *addr);
 static inline void f2fs_clear_bit(unsigned int nr, char *addr);
@@ -1774,6 +1856,22 @@ struct f2fs_sb_info {
 	u64 committed_atomic_block;
 	u64 revoked_atomic_block;
 
+<<<<<<< HEAD   (65896c4edca1614fb2844dc27399c9347d28f86d UPSTREAM: f2fs: fix to use per-inode maxbytes and cleanup)
+||||||| BASE   (64b221d470157da1e380ed25fd2b6b058e6db07b BACKPORT: UPSTREAM: f2fs: trace elapsed time for io_rwsem lo)
+	/* max elapsed time threshold in critical region that lock covered */
+	unsigned long long max_lock_elapsed_time;
+
+=======
+	/* max elapsed time threshold in critical region that lock covered */
+	unsigned long long max_lock_elapsed_time;
+
+	/* enable/disable to adjust task priority in critical region covered by lock */
+	unsigned int adjust_lock_priority;
+
+	/* adjust priority for task which is in critical region covered by lock */
+	unsigned int lock_duration_priority;
+
+>>>>>>> CHANGE (cea96a0c7d224e603c4de8c45cd5ff691c6dab8c BACKPORT: UPSTREAM: f2fs: fix lock priority inversion issue)
 #ifdef CONFIG_F2FS_FS_COMPRESSION
 	struct kmem_cache *page_array_slab;	/* page array entry */
 	unsigned int page_array_slab_size;	/* default page array slab size */
