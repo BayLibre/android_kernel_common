@@ -5577,6 +5577,12 @@ cfg80211_get_iftype_ext_capa(struct wiphy *wiphy, enum nl80211_iftype type);
  * @ftm.support_rsta: supports operating as RSTA in PMSR FTM request
  * @ftm.support_edca_responder: supports operating as FTM responder in PMSR FTM
  *	request for EDCA-based ranging
+ * @ftm.pd_edca_bandwidths: bitmap of bandwidths supported
+ *	(&enum nl80211_chan_width) in case of PD request with EDCA based
+ *	initiator or responder role. ignored if @pd_support is not set.
+ * @ftm.pd_ntb_bandwidths: bitmap of bandwidths supported
+ *	(&enum nl80211_chan_width) in case of PD request with NTB based
+ *	initiator or responder role. ignored if @pd_support is not set.
  */
 struct cfg80211_pmsr_capabilities {
 	unsigned int max_peers;
@@ -5612,6 +5618,8 @@ struct cfg80211_pmsr_capabilities {
 		u32 min_allowed_ranging_interval_ntb;
 		u8 support_rsta:1,
 		   support_edca_responder:1;
+		u32 pd_edca_bandwidths;
+		u32 pd_ntb_bandwidths;
 	} ftm;
 };
 
