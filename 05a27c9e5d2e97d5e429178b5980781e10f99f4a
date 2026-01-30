@@ -70,6 +70,24 @@
       "parentUuid": "8fc94f66_3f070353",
       "revId": "05a27c9e5d2e97d5e429178b5980781e10f99f4a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5855378_000e5cfd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2026-01-30T02:32:35Z",
+      "side": 1,
+      "message": "I checked the 6.18 GKI kconfigs:\n\n```\nINTEL_MEI\u003dy\nINTEL_MEI_ME\u003dy\nINTEL_MEI_*\u003dn (includes all ME client drivers)\n```\n\nThe first two configs build the ME PCI and client bus driver into the GKI kernel.\n\nThe disabled configs (which we enable alongside i915/Xe) are clients registered to that bus.\n\nI don\u0027t know if there\u0027s utility to providing the core in GKI without one or more client drivers, so I lean toward disabling the core in GKI builds.\n\nBut let me check with our Intel contacts to get their recommendation before proceeding.",
+      "parentUuid": "295cc34b_c1ee6cfd",
+      "revId": "05a27c9e5d2e97d5e429178b5980781e10f99f4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
