@@ -531,11 +531,21 @@ int gunyah_vm_binding_cma_alloc(struct gunyah_vm *ghvm,
 				 gunyah_gpa_to_gfn(binding->guest_phys_addr + cma_map->size - 1),
 				 binding, GFP_KERNEL);
 
-	if (ret != 0)
-		kfree(binding);
-
 	up_write(&ghvm->bindings_lock);
 
+	if (ret != 0) {
+		kfree(binding);
+		goto out;
+	}
+
+	ret = gunyah_gfn_to_page_mapping_create(binding);
+
+	if (ret) {
+		mtree_erase(&ghvm->bindings, gunyah_gpa_to_gfn(binding->guest_phys_addr));
+		kfree(binding);
+	}
+
+out:
 	return ret;
 }
 
