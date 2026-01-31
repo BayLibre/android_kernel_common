@@ -168,6 +168,9 @@ bool overlaps_iommu_mmio(unsigned long phys, unsigned long size);
 bool is_dev_in_satc(u16 bdf);
 bool pkvm_iommu_paging_structure_coherency(void);
 
+struct cache_tag *pkvm_alloc_cache_tag(void);
+void pkvm_free_cache_tag(struct cache_tag *cache_tag);
+
 int pkvm_intel_iommu_init(void);
 
 int pkvm_iommu_mmio_read(u64 phys, int len, u64 *val);
