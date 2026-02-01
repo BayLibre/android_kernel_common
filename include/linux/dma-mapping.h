@@ -185,6 +185,10 @@ void *dma_vmap_noncontiguous(struct device *dev, size_t size,
 void dma_vunmap_noncontiguous(struct device *dev, void *vaddr);
 int dma_mmap_noncontiguous(struct device *dev, struct vm_area_struct *vma,
 		size_t size, struct sg_table *sgt);
+void dma_sync_phys_for_device(struct device *dev, phys_addr_t paddr, size_t size,
+			      enum dma_data_direction dir);
+void dma_sync_phys_for_cpu(struct device *dev, phys_addr_t paddr, size_t size,
+			   enum dma_data_direction dir);
 #else /* CONFIG_HAS_DMA */
 static inline dma_addr_t dma_map_page_attrs(struct device *dev,
 		struct page *page, size_t offset, size_t size,
@@ -323,6 +327,14 @@ static inline int dma_mmap_noncontiguous(struct device *dev,
 		struct vm_area_struct *vma, size_t size, struct sg_table *sgt)
 {
 	return -EINVAL;
+}
+void dma_sync_phys_for_device(struct device *dev, phys_addr_t paddr, size_t size,
+			      enum dma_data_direction dir)
+{
+}
+void dma_sync_phys_for_cpu(struct device *dev, phys_addr_t paddr, size_t size,
+			   enum dma_data_direction dir)
+{
 }
 #endif /* CONFIG_HAS_DMA */
 

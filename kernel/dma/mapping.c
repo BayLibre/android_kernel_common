@@ -492,6 +492,42 @@ static void dma_setup_need_sync(struct device *dev)
 static inline void dma_setup_need_sync(struct device *dev) { }
 #endif /* !CONFIG_DMA_NEED_SYNC */
 
+/**
+ * dma_sync_phys_for_device - Sync a physical address range for device access
+ * @dev:    Device to sync for
+ * @paddr:  Physical address start
+ * @size:   Size in bytes
+ * @dir:    DMA direction
+ *
+ * This performs cache maintenance on a physical address range. It is designed
+ * for subsystems (like VFIO/IOMMUFD) that manage their own I/O page tables and
+ * bypass the standard dma_map_* API.
+ */
+void dma_sync_phys_for_device(struct device *dev, phys_addr_t paddr, size_t size,
+			      enum dma_data_direction dir)
+{
+	dma_addr_t bus_addr = phys_to_dma(dev, paddr);
+
+	dma_direct_sync_single_for_device(dev, bus_addr, size, dir);
+}
+EXPORT_SYMBOL_GPL(dma_sync_phys_for_device);
+
+/**
+ * dma_sync_phys_for_cpu - Sync a physical address range for CPU access
+ * @dev:    Device to sync for
+ * @paddr:  Physical address start
+ * @size:   Size in bytes
+ * @dir:    DMA direction
+ */
+void dma_sync_phys_for_cpu(struct device *dev, phys_addr_t paddr, size_t size,
+			   enum dma_data_direction dir)
+{
+	dma_addr_t bus_addr = phys_to_dma(dev, paddr);
+
+	dma_direct_sync_single_for_cpu(dev, bus_addr, size, dir);
+}
+EXPORT_SYMBOL_GPL(dma_sync_phys_for_cpu);
+
 /*
  * The whole dma_get_sgtable() idea is fundamentally unsafe - it seems
  * that the intention is to allow exporting memory allocated via the
