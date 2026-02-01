@@ -1187,6 +1187,11 @@ void iommu_detach_device_pasid(struct iommu_domain *domain,
 			       struct device *dev, ioasid_t pasid);
 ioasid_t iommu_alloc_global_pasid(struct device *dev);
 void iommu_free_global_pasid(ioasid_t pasid);
+
+/* Non-coherent DMA helpers*/
+void iommu_sync_pfn_for_device(struct device *dev, unsigned long pfn, size_t size);
+void iommu_sync_pfn_for_cpu(struct device *dev, unsigned long pfn, size_t size);
+
 #else /* CONFIG_IOMMU_API */
 
 struct iommu_ops {};
@@ -1510,6 +1515,16 @@ static inline ioasid_t iommu_alloc_global_pasid(struct device *dev)
 }
 
 static inline void iommu_free_global_pasid(ioasid_t pasid) {}
+
+static inline void iommu_sync_pfn_for_device(struct device *dev,
+					     unsigned long pfn, size_t size)
+{
+}
+
+static inline void iommu_sync_pfn_for_cpu(struct device *dev,
+					  unsigned long pfn, size_t size)
+{
+}
 #endif /* CONFIG_IOMMU_API */
 
 #ifdef CONFIG_IRQ_MSI_IOMMU

@@ -3873,3 +3873,96 @@ int iommu_dma_prepare_msi(struct msi_desc *desc, phys_addr_t msi_addr)
 	return ret;
 }
 #endif /* CONFIG_IRQ_MSI_IOMMU */
+
+/**
+ * iommu_sync_pfn_for_device() - Sync CPU caches for pinned DMA memory
+ * @dev: The device that will access the memory
+ * @pfn: The physical page frame number
+ * @size: size of the range in bytes
+ *
+ * Helper to perform cache maintenance on memory that is pinned for
+ * DMA by userspace-controlled IOMMU subsystems (e.g. VFIO, IOMMUFD).
+ * It is required for non-coherent devices to ensure that data written
+ * by the CPU (e.g. zeroing pages) is visible to the device.
+ *
+ * Callers must ensure that the device's IOMMU group has a claimed DMA
+ * owner indicating user-space control.
+ */
+void iommu_sync_pfn_for_device(struct device *dev, unsigned long pfn, size_t size)
+{
+	size_t offset = 0;
+
+	/*
+	 * This API is strictly for IOMMU userspace drivers (VFIO/IOMMUFD).
+	 * We check authorization first to prevent standard drivers from abusing
+	 * this helper.
+	 */
+	if (WARN_ON_ONCE(!dev->iommu_group ||
+			 !iommu_group_dma_owner_claimed(dev->iommu_group)))
+		return;
+
+	/*
+	 * We can only flush System RAM. MMIO PFNs are uncacheable and lack
+	 * struct page, flushing them is unnecessary and unsafe.
+	 *
+	 * TODO: Improve by batching them together
+	 */
+	while (offset < size) {
+		unsigned long curr_pfn = pfn + (offset >> PAGE_SHIFT);
+		size_t curr_size = min_t(size_t, size - offset, PAGE_SIZE);
+
+		/* Skip MMIO or invalid memory */
+		if (pfn_valid(curr_pfn)) {
+			phys_addr_t paddr = curr_pfn << PAGE_SHIFT;
+			dma_sync_phys_for_device(dev, paddr, curr_size, DMA_TO_DEVICE);
+		}
+
+		offset += curr_size;
+	}
+}
+EXPORT_SYMBOL_GPL(iommu_sync_pfn_for_device);
+
+/**
+ * iommu_sync_pfn_for_cpu() - Sync CPU caches to reclaim ownership
+ * @dev: The device that was accessing the memory
+ * @pfn: The physical page frame number
+ * @size: size of the range in bytes
+ *
+ * Helper to perform cache maintenance on memory that is pinned for
+ * DMA by userspace-controlled IOMMU subsystems (e.g. VFIO, IOMMUFD).
+ * It is required for non-coherent devices to ensure that data written
+ * by the device is visible to the CPU.
+ *
+ * Callers must ensure that the device's IOMMU group has a claimed DMA
+ * owner indicating user-space control.
+ */
+void iommu_sync_pfn_for_cpu(struct device *dev, unsigned long pfn, size_t size)
+{
+	size_t offset = 0;
+
+	/*
+	 * This API is strictly for IOMMU userspace drivers (VFIO/IOMMUFD).
+	 * We check authorization first to prevent standard drivers from abusing
+	 * this helper.
+	 */
+	if (WARN_ON_ONCE(!dev->iommu_group ||
+			 !iommu_group_dma_owner_claimed(dev->iommu_group)))
+		return;
+
+	/*
+	 * We can only flush System RAM. MMIO PFNs are uncacheable and lack
+	 * struct page, flushing them is unnecessary and unsafe.
+	 */
+	while (offset < size) {
+		unsigned long curr_pfn = pfn + (offset >> PAGE_SHIFT);
+		size_t curr_size = min_t(size_t, size - offset, PAGE_SIZE);
+
+		if (pfn_valid(curr_pfn)) {
+			phys_addr_t paddr = curr_pfn << PAGE_SHIFT;
+			dma_sync_phys_for_cpu(dev, paddr, curr_size, DMA_FROM_DEVICE);
+		}
+
+		offset += curr_size;
+	}
+}
+EXPORT_SYMBOL_GPL(iommu_sync_pfn_for_cpu);
