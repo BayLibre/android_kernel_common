@@ -39,6 +39,7 @@
 #include <linux/notifier.h>
 #include <linux/mm_inline.h>
 #include <linux/overflow.h>
+#include <linux/dma-map-ops.h>
 #include "vfio.h"
 
 #define DRIVER_VERSION  "0.2"
@@ -69,6 +70,7 @@ struct vfio_iommu {
 	struct rb_root		dma_list;
 	struct list_head	device_list;
 	struct mutex		device_list_lock;
+	unsigned int		noncoherent_dev_count;
 	unsigned int		dma_avail;
 	unsigned int		vaddr_invalid_count;
 	uint64_t		pgsize_bitmap;
@@ -3117,6 +3119,8 @@ static void vfio_iommu_type1_register_device(void *iommu_data,
 	mutex_lock(&iommu->lock);
 	mutex_lock(&iommu->device_list_lock);
 	list_add(&vdev->iommu_entry, &iommu->device_list);
+	if (!dev_is_dma_coherent(vdev->dev))
+		iommu->noncoherent_dev_count++;
 	mutex_unlock(&iommu->device_list_lock);
 	mutex_unlock(&iommu->lock);
 }
@@ -3132,6 +3136,8 @@ static void vfio_iommu_type1_unregister_device(void *iommu_data,
 	mutex_lock(&iommu->lock);
 	mutex_lock(&iommu->device_list_lock);
 	list_del(&vdev->iommu_entry);
+	if (!dev_is_dma_coherent(vdev->dev))
+		iommu->noncoherent_dev_count--;
 	mutex_unlock(&iommu->device_list_lock);
 	mutex_unlock(&iommu->lock);
 }
