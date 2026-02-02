@@ -2374,6 +2374,21 @@
   crypto_ahash_finup
   crypto_dequeue_request
   crypto_enqueue_request
+  crypto_engine_alloc_init
+  crypto_engine_register_aead
+  crypto_engine_register_ahash
+  crypto_finalize_aead_request
+  crypto_finalize_skcipher_request
+  crypto_finalize_hash_request
+  crypto_engine_unregister_aead
+  crypto_engine_unregister_ahash
+  crypto_engine_unregister_skcipher
+  crypto_transfer_aead_request_to_engine
+  crypto_transfer_skcipher_request_to_engine
+  crypto_transfer_hash_request_to_engine
+  crypto_engine_register_skcipher
+  crypto_engine_exit
+  crypto_engine_start
   crypto_init_queue
   crypto_register_ahash
   crypto_register_akcipher
