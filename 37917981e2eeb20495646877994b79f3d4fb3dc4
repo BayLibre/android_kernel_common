@@ -16,6 +16,24 @@
       "message": "This driver is not part of the GKI build (CONFIG_ARM_NI is no enabled). These patches should be submitted to the downstream branch where the vendor modules are built.",
       "revId": "37917981e2eeb20495646877994b79f3d4fb3dc4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e43e0bb4_72f679b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3218532
+      },
+      "writtenOn": "2026-02-02T22:09:19Z",
+      "side": 1,
+      "message": "A similar CL (aosp/3906023) was approved for `android16-6.12` branch. `CONFIG_ARM_NI` is not in `gki_defconfig` but we enabled it for P26 devices, and we plan to enable it for P27 devices too.",
+      "parentUuid": "859a3e3a_a5f98c4d",
+      "revId": "37917981e2eeb20495646877994b79f3d4fb3dc4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
