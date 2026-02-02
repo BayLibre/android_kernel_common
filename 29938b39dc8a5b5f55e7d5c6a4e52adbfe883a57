@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a63ceca_4507440a",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 857,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-02T14:29:58Z",
+      "side": 1,
+      "message": "So `KVM_HYP_REQ_TYPE_MEM` is only used now for the vcpu memcache? Maybe add a comment to clarify that, even better for each macro",
+      "range": {
+        "startLine": 857,
+        "startChar": 8,
+        "endLine": 857,
+        "endChar": 28
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8daed0be_0a29af91",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-02T14:29:58Z",
+      "side": 1,
+      "message": "IOMMU needs also `sz_alloc` which is the size of contiguous memory, as it might need high order pages.",
+      "range": {
+        "startLine": 865,
+        "startChar": 7,
+        "endLine": 865,
+        "endChar": 15
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ee586fe_bbd2e82a",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 869,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-02T14:29:58Z",
+      "side": 1,
+      "message": "That won\u0027t work, Most of IOMMU infrastructure and IOMMU drivers are abstracted from the host/guest, so they create requests with `REQ_MEM_DEST_HYP_IOMMU` for both host and guest.\n\nSo the allocation of the request will differ but the content is the same. I suggest we keep one IOMMU type and based on the location (smccc ret or vcpu-\u003ereq) the kernel devices how to top up the IOMMU pool.\n\nI see already vcpu can be NULL in `handle_hyp_req()`",
+      "range": {
+        "startLine": 869,
+        "startChar": 8,
+        "endLine": 869,
+        "endChar": 30
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef3d3695_a97188b7",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-02T14:29:58Z",
+      "side": 1,
+      "message": "Not sure about that :/ I\u0027d be worried as this aliases other error codes which can be generated from drivers.\nNot sure about the best way to handle this, but an improvement is to define the req type to be large to avoid aliasing and use some stricter checks in the handle function",
+      "range": {
+        "startLine": 1023,
+        "startChar": 1,
+        "endLine": 1023,
+        "endChar": 31
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fec32a2_e791e28e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-02T14:29:58Z",
+      "side": 1,
+      "message": "That won\u0027t work for device assignment as mentioned above.",
+      "range": {
+        "startLine": 262,
+        "startChar": 1,
+        "endLine": 262,
+        "endChar": 40
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}

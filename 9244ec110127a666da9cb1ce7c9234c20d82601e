@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d406b38d_f52245ed",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1775,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-02T14:29:58Z",
+      "side": 0,
+      "message": "This is still needed as it\u0027s arg zero, map has a special case as it can override the smccc return as it uses reg1 for the number of bytes mapped.",
+      "range": {
+        "startLine": 1775,
+        "startChar": 1,
+        "endLine": 1775,
+        "endChar": 29
+      },
+      "revId": "9244ec110127a666da9cb1ce7c9234c20d82601e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
