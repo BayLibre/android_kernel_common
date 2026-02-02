@@ -97,6 +97,7 @@ struct vfio_dma {
 	bool			lock_cap;	/* capable(CAP_IPC_LOCK) */
 	bool			vaddr_invalid;
 	bool			has_rsvd;	/* has 1 or more rsvd pfns */
+	bool			cache_flush_required; /* For noncoherent domain */
 	struct task_struct	*task;
 	struct rb_root		pfn_list;	/* Ex-user pinned pfn list */
 	unsigned long		*bitmap;
@@ -325,6 +326,26 @@ static void vfio_dma_bitmap_free_all(struct vfio_iommu *iommu)
 
 		vfio_dma_bitmap_free(dma);
 	}
+}
+
+static struct device *vfio_iommu_get_noncoherent_dev(struct vfio_iommu *iommu)
+{
+	struct vfio_device *vdev;
+	struct device *dev = NULL;
+
+	if (!iommu->noncoherent_dev_count)
+		return NULL;
+
+	mutex_lock(&iommu->device_list_lock);
+	list_for_each_entry(vdev, &iommu->device_list, iommu_entry) {
+		if (!dev_is_dma_coherent(vdev->dev)) {
+			dev = vdev->dev;
+			break;
+		}
+	}
+	mutex_unlock(&iommu->device_list_lock);
+
+	return dev;
 }
 
 /*
@@ -1153,6 +1174,7 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
 	struct vfio_domain *domain, *d;
 	LIST_HEAD(unmapped_region_list);
 	struct iommu_iotlb_gather iotlb_gather;
+	struct device *flush_dev = NULL;
 	int unmapped_region_cnt = 0;
 	long unlocked = 0;
 	size_t pos = 0;
@@ -1162,6 +1184,9 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
 
 	if (list_empty(&iommu->domain_list))
 		return 0;
+
+	if (dma->cache_flush_required)
+		flush_dev = vfio_iommu_get_noncoherent_dev(iommu);
 
 	/*
 	 * We use the IOMMU to track the physical addresses, otherwise we'd
@@ -1201,6 +1226,9 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
 				break;
 		}
 
+		if (flush_dev)
+			iommu_sync_pfn_for_cpu(flush_dev, phys >> PAGE_SHIFT, len);
+
 		/*
 		 * First, try to use fast unmap/unpin. In case of failure,
 		 * switch to slow unmap/unpin path.
@@ -1225,6 +1253,8 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
 		unlocked += vfio_sync_unpin(dma, domain, &unmapped_region_list,
 					    &iotlb_gather);
 	}
+
+	dma->cache_flush_required = false;
 
 	if (do_accounting) {
 		vfio_lock_acct(dma, -unlocked, true);
@@ -1604,6 +1634,15 @@ static int vfio_pin_map_dma(struct vfio_iommu *iommu, struct vfio_dma *dma,
 			break;
 		}
 
+		if (iommu->noncoherent_dev_count) {
+			struct device *flush_dev = vfio_iommu_get_noncoherent_dev(iommu);
+
+			if (flush_dev)
+				iommu_sync_pfn_for_device(flush_dev, pfn,
+							  npage << PAGE_SHIFT);
+			dma->cache_flush_required = true;
+		}
+
 		/* Map it! */
 		ret = vfio_iommu_map(iommu, iova + dma->size, pfn, npage,
 				     dma->prot);
@@ -1810,12 +1849,16 @@ static int vfio_iommu_replay(struct vfio_iommu *iommu,
 	struct vfio_domain *d = NULL;
 	struct rb_node *n;
 	unsigned long limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
+	struct device *flush_dev = NULL;
 	int ret;
 
 	/* Arbitrarily pick the first domain in the list for lookups */
 	if (!list_empty(&iommu->domain_list))
 		d = list_first_entry(&iommu->domain_list,
 				     struct vfio_domain, next);
+
+	if (!domain->enforce_cache_coherency)
+		flush_dev = vfio_iommu_get_noncoherent_dev(iommu);
 
 	vfio_batch_init(&batch);
 
@@ -1875,6 +1918,13 @@ static int vfio_iommu_replay(struct vfio_iommu *iommu,
 
 				phys = pfn << PAGE_SHIFT;
 				size = npage << PAGE_SHIFT;
+			}
+
+			if (flush_dev) {
+				iommu_sync_pfn_for_device(flush_dev,
+							  phys >> PAGE_SHIFT,
+							  size);
+				dma->cache_flush_required = true;
 			}
 
 			ret = iommu_map(domain->domain, iova, phys, size,
