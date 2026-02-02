@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "225b8241_139eec0d",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 857,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-02T15:29:45Z",
+      "side": 1,
+      "message": "The DEST_HYP_IOMMU still exists to top-up the iommu vcpu memcache, while the TYPE_MEM_IOMMU tops-up the vcpu iommu_mc.",
+      "parentUuid": "2a63ceca_4507440a",
+      "range": {
+        "startLine": 857,
+        "startChar": 8,
+        "endLine": 857,
+        "endChar": 28
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8daed0be_0a29af91",
         "filename": "arch/arm64/include/asm/kvm_host.h",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-02T14:29:58Z",
       "side": 1,
       "message": "IOMMU needs also `sz_alloc` which is the size of contiguous memory, as it might need high order pages.",
+      "range": {
+        "startLine": 865,
+        "startChar": 7,
+        "endLine": 865,
+        "endChar": 15
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10590765_741a8bd5",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-02T15:29:45Z",
+      "side": 1,
+      "message": "Yes, I am using as a sz_alloc argument. See __pkvm_topup_hyp_iommu() in handle_hyp_req. AFAICT, we never topup more than one page, that\u0027s why I have repurpose it.",
+      "parentUuid": "8daed0be_0a29af91",
       "range": {
         "startLine": 865,
         "startChar": 7,
@@ -95,6 +143,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d5a7a71_b7eb8952",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-02T15:29:45Z",
+      "side": 1,
+      "message": "What do you mean? This is only host HVCs here for a specific set of HVCs The idea is actually to use a range that is unusual to avoid any conflict.\n\nI need to compress as much as possible: handle___pkvm_hyp_alloc_mgt_refill() e.g. is already using res.a3.",
+      "parentUuid": "ef3d3695_a97188b7",
+      "range": {
+        "startLine": 1023,
+        "startChar": 1,
+        "endLine": 1023,
+        "endChar": 31
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0fec32a2_e791e28e",
         "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
         "patchSetId": 5
@@ -106,6 +178,30 @@
       "writtenOn": "2026-02-02T14:29:58Z",
       "side": 1,
       "message": "That won\u0027t work for device assignment as mentioned above.",
+      "range": {
+        "startLine": 262,
+        "startChar": 1,
+        "endLine": 262,
+        "endChar": 40
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c657f4f9_01c1ec8d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-02T15:29:45Z",
+      "side": 1,
+      "message": "Ha you\u0027re right, it should be\n\n```\nif {\n    req \u003d pkvm_hyp_req_reserve(hyp_vcpu, KVM_HYP_REQ_TYPE_MEM);\n    if (WARN_ON(!req))\n        return NULL;\n        \n    req-\u003ememcache.dest \u003d REQ_MEM_DEST_HYP_IOMMU;\n    req-\u003ememcache.nr_pages \u003d 1;\n    req-\u003ememcache.sz_alloc \u003d size;\n\n} else {\n    req-\u003etype \u003d KVM_HYP_REQ_TYPE_MEM_IOMMU\n    req-\u003emem.nr_pages \u003d 1 \u003c\u003c order;\n}\n```\n\nAnd in the hyp_vcpu block I should of course also set the type to KVM_HYP_REQ_TYPE_MEM_IOMMU.",
+      "parentUuid": "0fec32a2_e791e28e",
       "range": {
         "startLine": 262,
         "startChar": 1,

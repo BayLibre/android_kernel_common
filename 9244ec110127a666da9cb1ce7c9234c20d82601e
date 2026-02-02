@@ -22,6 +22,30 @@
       },
       "revId": "9244ec110127a666da9cb1ce7c9234c20d82601e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20eb3a95_4ff1b15e",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1775,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-02T15:29:45Z",
+      "side": 0,
+      "message": "In kvm_iommu_map_pages() I don\u0027t see res.a0 used anywhere or did I miss something? \n\nBut anyway, I have just realized I need to let the functions in kvm/iommu.c to use the proper macro to topup MGT_IOMMU_ID.",
+      "parentUuid": "d406b38d_f52245ed",
+      "range": {
+        "startLine": 1775,
+        "startChar": 1,
+        "endLine": 1775,
+        "endChar": 29
+      },
+      "revId": "9244ec110127a666da9cb1ce7c9234c20d82601e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
