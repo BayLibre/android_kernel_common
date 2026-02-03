@@ -45,6 +45,9 @@ struct kvm_pviommu {
 
 static void kvm_vfio_file_set_kvm(struct file *file, struct kvm *kvm)
 {
+#if IS_BUILTIN(CONFIG_VFIO)
+	vfio_file_set_kvm(file, kvm);
+#else
 	void (*fn)(struct file *file, struct kvm *kvm);
 
 	fn = symbol_get(vfio_file_set_kvm);
@@ -54,6 +57,7 @@ static void kvm_vfio_file_set_kvm(struct file *file, struct kvm *kvm)
 	fn(file, kvm);
 
 	symbol_put(vfio_file_set_kvm);
+#endif
 }
 
 static bool kvm_vfio_file_enforced_coherent(struct file *file)
@@ -77,6 +81,9 @@ static bool kvm_vfio_file_is_valid(struct file *file)
 	bool (*fn)(struct file *file);
 	bool ret;
 
+#if IS_BUILTIN(CONFIG_VFIO)
+	return vfio_file_is_valid(file);
+#endif
 	fn = symbol_get(vfio_file_is_valid);
 	if (!fn)
 		return false;
@@ -92,6 +99,10 @@ static struct device *kvm_vfio_file_get_device(struct file *file)
 {
 	struct device *(*fn)(struct file *file);
 	struct device *dev;
+
+#if IS_BUILTIN(CONFIG_VFIO)
+	return vfio_file_get_device(file);
+#endif
 
 	fn = symbol_get(vfio_file_get_device);
 	if (!fn)
@@ -109,6 +120,9 @@ static struct iommu_group *kvm_vfio_file_iommu_group(struct file *file)
 	struct iommu_group *(*fn)(struct file *file);
 	struct iommu_group *ret;
 
+#if IS_BUILTIN(CONFIG_VFIO)
+	return vfio_file_iommu_group(file);
+#endif
 	fn = symbol_get(vfio_file_iommu_group);
 	if (!fn)
 		return NULL;
