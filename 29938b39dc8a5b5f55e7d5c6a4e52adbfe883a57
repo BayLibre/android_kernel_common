@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8824e0b1_c29991ce",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 857,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-03T11:12:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "225b8241_139eec0d",
+      "range": {
+        "startLine": 857,
+        "startChar": 8,
+        "endLine": 857,
+        "endChar": 28
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8daed0be_0a29af91",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Yes, I am using as a sz_alloc argument. See __pkvm_topup_hyp_iommu() in handle_hyp_req. AFAICT, we never topup more than one page, that\u0027s why I have repurpose it.",
       "parentUuid": "8daed0be_0a29af91",
+      "range": {
+        "startLine": 865,
+        "startChar": 7,
+        "endLine": 865,
+        "endChar": 15
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b63e7883_5769914f",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-03T11:12:42Z",
+      "side": 1,
+      "message": "I see so nr_pages is always contiguous, I think that is fine for now, I added the `nr_pages` initially as possible optimization for page table allocation (for example if failed allocating level-0 it\u0027s likely we fail the rest so we can request 4 pages that are not contiguous) but that was never implemented.",
+      "parentUuid": "10590765_741a8bd5",
       "range": {
         "startLine": 865,
         "startChar": 7,
@@ -155,6 +203,30 @@
       "side": 1,
       "message": "What do you mean? This is only host HVCs here for a specific set of HVCs The idea is actually to use a range that is unusual to avoid any conflict.\n\nI need to compress as much as possible: handle___pkvm_hyp_alloc_mgt_refill() e.g. is already using res.a3.",
       "parentUuid": "ef3d3695_a97188b7",
+      "range": {
+        "startLine": 1023,
+        "startChar": 1,
+        "endLine": 1023,
+        "endChar": 31
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1b90537_d529c66f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-03T11:12:42Z",
+      "side": 1,
+      "message": "I am worried that drivers can return any of those code and we can\u0027t check that which may endup mistakenly as a request. can we use a bit field for this I reckon type will need all the 8 bits?",
+      "parentUuid": "0d5a7a71_b7eb8952",
       "range": {
         "startLine": 1023,
         "startChar": 1,
