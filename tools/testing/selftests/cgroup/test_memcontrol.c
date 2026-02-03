@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <sys/inotify.h>
 #include <sys/socket.h>
 #include <sys/wait.h>
 #include <arpa/inet.h>
@@ -1625,6 +1626,74 @@ cleanup:
 	return ret;
 }
 
+static int test_memcg_inotify_delete(const char *root)
+{
+	int ret = KSFT_FAIL;
+	char *memcg, *child_memcg;
+	int fd, wd;
+	struct inotify_event *event;
+	char buffer[sizeof(*event) * 10];
+	ssize_t len = 0;
+
+	memcg = cg_name(root, "memcg_test_0");
+
+	if (!memcg)
+		goto cleanup;
+
+	if (cg_create(memcg))
+		goto cleanup;
+
+	if (cg_write(memcg, "cgroup.subtree_control", "+memory"))
+		goto cleanup;
+
+	child_memcg = cg_name(memcg, "child");
+	if (!child_memcg)
+		goto cleanup;
+
+	if (cg_create(child_memcg))
+		goto cleanup;
+
+	fd = inotify_init1(0);
+	if (fd == -1)
+		goto cleanup;
+
+	wd = inotify_add_watch(fd, cg_control(child_memcg, "memory.events"), IN_DELETE_SELF);
+	if (wd == -1)
+		goto cleanup;
+
+	if (cg_write(memcg, "cgroup.subtree_control", "-memory"))
+		goto cleanup;
+
+	len = read(fd, buffer, sizeof(buffer));
+	if (len < (ssize_t)sizeof(struct inotify_event)) {
+		fprintf(stderr, "failed to read inotify event len: %zd err: %s\n", len, strerror(errno));
+		goto cleanup;
+	}
+
+	event = (struct inotify_event *)buffer;
+	if (event->mask != IN_DELETE_SELF || event->wd != wd) {
+		fprintf(stderr,
+			"event does not match expected values: "
+			"mask %d (expected %d) wd %d (expected %d)\n",
+			event->mask, IN_DELETE_SELF, event->wd, wd);
+		goto cleanup;
+	}
+
+	ret = KSFT_PASS;
+
+cleanup:
+	if (fd >= 0)
+		close(fd);
+	if (child_memcg)
+		cg_destroy(child_memcg);
+	free(child_memcg);
+	if (memcg)
+		cg_destroy(memcg);
+	free(memcg);
+
+	return ret;
+}
+
 #define T(x) { x, #x }
 struct memcg_test {
 	int (*fn)(const char *root);
@@ -1644,6 +1713,7 @@ struct memcg_test {
 	T(test_memcg_oom_group_leaf_events),
 	T(test_memcg_oom_group_parent_events),
 	T(test_memcg_oom_group_score_events),
+	T(test_memcg_inotify_delete),
 };
 #undef T
 
