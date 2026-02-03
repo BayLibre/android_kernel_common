@@ -14,7 +14,7 @@
 #include "../pasid.h"
 #include "iommu_domain.h"
 
-int pkvm_iommu_qi_submit(u64 phys, u64 desc_gpa, u32 count, u32 options)
+int pkvm_iommu_iec_flush(u64 phys, u64 index, u64 mask, bool global)
 {
 	struct intel_iommu *iommu = iommu_from_phys(phys);
 
@@ -23,14 +23,12 @@ int pkvm_iommu_qi_submit(u64 phys, u64 desc_gpa, u32 count, u32 options)
 
 	BUG_ON(!iommu->qi);
 
-	/*
-	* Note: We do not need to host_share_hyp desc_gpa memory before
-	* doing qi_submit_sync. This hypercall is temporary and will be
-	* removed in future patches. It will be replaced by dedicated
-	* hypercall specifically for submitting QI_IEC_TYPE.
-	*/
-	return qi_submit_sync(iommu, pkvm_host_gpa_to_virt(desc_gpa),
-			      count, options);
+	if (global) {
+		qi_global_iec(iommu);
+		return 0;
+	}
+
+	return qi_flush_iec(iommu, index, mask);
 }
 
 int pkvm_iommu_clear_ce(struct clear_ce_data *data)
