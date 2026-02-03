@@ -33,6 +33,23 @@
       "message": "Please separate into to patches: 1) the code and config changes, 2) the symbol list and ABI changes",
       "revId": "21689c578183e774a8060f586f3b6ff582186f3e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5a09fb2_f9a6b0e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-02-03T17:40:49Z",
+      "side": 1,
+      "message": "The field additions need a little more work since it currently causes offset changes to existing fields:\n```\ntype \u0027struct pci_dev\u0027 changed\n  member \u0027unsigned int ptm_root:1\u0027 was added\n  member \u0027unsigned int ptm_enabled:1\u0027 was added\n  member \u0027u16 ptm_cap\u0027 was added\n  member \u0027u8 ptm_granularity\u0027 was added\n  2 members (\u0027atomic_t enable_cnt\u0027 .. \u0027u32 saved_config_space[16]\u0027) changed\n    offset changed by 32\n```",
+      "revId": "21689c578183e774a8060f586f3b6ff582186f3e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
