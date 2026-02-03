@@ -16,6 +16,24 @@
       "message": "Which crypto driver needs these symbols, and what is your use case for that crypto driver?",
       "revId": "fe29a495268023b62762e072b69097496a0e63d6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "238e7b7f_bfd11f71",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1294047
+      },
+      "writtenOn": "2026-02-03T09:54:48Z",
+      "side": 1,
+      "message": "Hi Eric, thanks for your reply.\n\nThe symbols in question are core interfaces of the Kernel crypto framework. They are required by the crypto accelerator driver for Rockchip platforms—specifically, the driver relies on these interfaces to register Rockchip\u0027s hardware cryptographic algorithms with the kernel crypto framework.\n\nBy integrating hardware crypto algorithms into the standard kernel crypto framework via these symbols, upper-layer applications and system components can access Rockchip\u0027s hardware-accelerated encryption/decryption capabilities through the crypto framework\u0027s standard APIs. This implementation not only ensures compliance with the kernel\u0027s crypto subsystem specifications, but also effectively offloads cryptographic operations from the CPU to dedicated hardware, significantly improving the performance and efficiency of crypto-related workloads on Rockchip-based devices.",
+      "parentUuid": "bc26ebb1_06f42b30",
+      "revId": "fe29a495268023b62762e072b69097496a0e63d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
