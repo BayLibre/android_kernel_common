@@ -503,5 +503,12 @@ int pkvm_intel_iommu_init(void)
 		if (ret)
 			return ret;
 	}
+	init_pt_domain();
 	return 0;
+}
+
+void pkvm_iommu_pt_flush(unsigned long vaddr, unsigned long size)
+{
+	if (pt_domain.qi_batch)
+		cache_tag_flush_range(&pt_domain, vaddr, vaddr + size - 1, 0);
 }
