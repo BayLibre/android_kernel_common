@@ -34,6 +34,24 @@
       "parentUuid": "bc26ebb1_06f42b30",
       "revId": "fe29a495268023b62762e072b69097496a0e63d6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2519e49_0f2ac8b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2026-02-03T18:20:29Z",
+      "side": 1,
+      "message": "Which specific features will you be using this with (e.g. TLS, storage encryption, ...), and what specific performance improvements are you seeing versus the alternatives?  Does the SoC also support ARMv8 CE, and does it have an inline crypto engine?\n\nI\u0027m asking partly because legacy-style hardware offload drivers like this usually significantly reduce performance -- not increase it.  So I want to help you make a technically sound choice.",
+      "parentUuid": "238e7b7f_bfd11f71",
+      "revId": "fe29a495268023b62762e072b69097496a0e63d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
