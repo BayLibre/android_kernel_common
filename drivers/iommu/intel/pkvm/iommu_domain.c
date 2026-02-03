@@ -17,6 +17,14 @@ static DEFINE_HASHTABLE(iommu_domain_hasht, 8);
 static DECLARE_BITMAP(iommu_domains_bitmap, MAX_IOMMU_DOMAIN_NUM);
 static struct dmar_domain iommu_domains[MAX_IOMMU_DOMAIN_NUM];
 static pkvm_spinlock_t iommu_domain_lock = __PKVM_SPINLOCK_UNLOCKED;
+struct dmar_domain pt_domain;
+
+void init_pt_domain(void)
+{
+	INIT_LIST_HEAD(&pt_domain.cache_tags);
+	pkvm_spin_lock_init(&pt_domain.cache_lock);
+	pt_domain.qi_batch = &pt_domain._qi_batch;
+}
 
 static inline struct dmar_domain *__pkvm_get_iommu_domain_locked(void *pgd, bool inc_ref)
 {
@@ -74,8 +82,10 @@ int pkvm_acquire_domain_cache_tag_assign(void *pgd, int did, u32 pasid,
 	struct dmar_domain *domain;
 	int ret;
 
-	if (did == FLPT_DEFAULT_DID)
+	if (did == FLPT_DEFAULT_DID) {
+		cache_tag_assign_domain(&pt_domain, did, &dev, pasid);
 		return 0;
+	}
 
 	domain = pkvm_get_iommu_domain(pgd);
 	if (!domain) {
@@ -98,8 +108,10 @@ void pkvm_release_domain_cache_tag_unassign(void *pgd, int did, u32 pasid,
 	struct pkvm_device dev = { .info = info };
 	struct dmar_domain *domain;
 
-	if (did == FLPT_DEFAULT_DID)
+	if (did == FLPT_DEFAULT_DID) {
+		cache_tag_unassign_domain(&pt_domain, did, &dev, pasid);
 		return;
+	}
 
 	domain = pkvm_get_iommu_domain_noref(pgd);
 	BUG_ON(!domain);
