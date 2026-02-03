@@ -2192,6 +2192,7 @@
   pci_alloc_irq_vectors_affinity
   pci_assign_resource
   pci_bus_type
+  pci_clear_and_set_config_dword
   pci_clear_master
   pci_dev_get
   pci_device_group
@@ -2208,6 +2209,13 @@
   pcie_link_speed
   pci_enable_device
   pci_find_ext_capability
+<<<<<<< HEAD   (f8aa98c56fed7dab94b8480e9a84c5b9c41c6d40 ANDROID: GKI: update symbol list for xiaomi)
+||||||| BASE   (bc5480cedd80e3a363dc5c363a306df96ae42d2c FROMGIT: Input: cros_ec_keyb - add function key support)
+  pci_flags
+=======
+  pci_find_vsec_capability
+  pci_flags
+>>>>>>> CHANGE (a31b7239a022da6b7e1e9f1073a9ec6908c5a7fc ANDROID: qcom: Add PCIe related symbols for DesignWare PCIe )
   pci_free_irq_vectors
   pci_generic_config_read
   pci_generic_config_write

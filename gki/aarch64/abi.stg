@@ -311477,6 +311477,13 @@ function {
   parameter_id: 0x9565759f
 }
 function {
+  id: 0x070e76e8
+  return_type_id: 0x914dbfdc
+  parameter_id: 0x11e6864c
+  parameter_id: 0x914dbfdc
+  parameter_id: 0x6720d32f
+}
+function {
   id: 0x071b4d09
   return_type_id: 0x27fc8652
   parameter_id: 0x0490bb4a
@@ -324282,6 +324289,48 @@ function {
   parameter_id: 0x3df8f8c1
 }
 function {
+<<<<<<< HEAD   (f8aa98c56fed7dab94b8480e9a84c5b9c41c6d40 ANDROID: GKI: update symbol list for xiaomi)
+||||||| BASE   (bc5480cedd80e3a363dc5c363a306df96ae42d2c FROMGIT: Input: cros_ec_keyb - add function key support)
+  id: 0x1fe70d5c
+  return_type_id: 0x48b5725f
+  parameter_id: 0x3d8951f4
+  parameter_id: 0x0130219f
+  parameter_id: 0x6720d32f
+}
+function {
+  id: 0x1fe91863
+  return_type_id: 0x48b5725f
+  parameter_id: 0x3e10b518
+  parameter_id: 0x3e10b518
+  parameter_id: 0x324e7f0f
+  parameter_id: 0x6d7f5ff6
+}
+function {
+=======
+  id: 0x1fe70d5c
+  return_type_id: 0x48b5725f
+  parameter_id: 0x3d8951f4
+  parameter_id: 0x0130219f
+  parameter_id: 0x6720d32f
+}
+function {
+  id: 0x1fe7cfb8
+  return_type_id: 0x48b5725f
+  parameter_id: 0x3b49ed35
+  parameter_id: 0x6720d32f
+  parameter_id: 0xc9082b19
+  parameter_id: 0xc9082b19
+}
+function {
+  id: 0x1fe91863
+  return_type_id: 0x48b5725f
+  parameter_id: 0x3e10b518
+  parameter_id: 0x3e10b518
+  parameter_id: 0x324e7f0f
+  parameter_id: 0x6d7f5ff6
+}
+function {
+>>>>>>> CHANGE (a31b7239a022da6b7e1e9f1073a9ec6908c5a7fc ANDROID: qcom: Add PCIe related symbols for DesignWare PCIe )
   id: 0x1feaaebf
   return_type_id: 0x48b5725f
   parameter_id: 0x315b7e01
@@ -411863,6 +411912,15 @@ elf_symbol {
   full_name: "pci_choose_state"
 }
 elf_symbol {
+  id: 0xf9b2fae5
+  name: "pci_clear_and_set_config_dword"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x41ff51be
+  type_id: 0x1fe7cfb8
+  full_name: "pci_clear_and_set_config_dword"
+}
+elf_symbol {
   id: 0xe99b6d83
   name: "pci_clear_master"
   is_defined: true
@@ -412097,6 +412155,91 @@ elf_symbol {
   full_name: "pci_find_ext_capability"
 }
 elf_symbol {
+<<<<<<< HEAD   (f8aa98c56fed7dab94b8480e9a84c5b9c41c6d40 ANDROID: GKI: update symbol list for xiaomi)
+||||||| BASE   (bc5480cedd80e3a363dc5c363a306df96ae42d2c FROMGIT: Input: cros_ec_keyb - add function key support)
+  id: 0x780d1110
+  name: "pci_find_host_bridge"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x77734f6b
+  type_id: 0x636e6c75
+  full_name: "pci_find_host_bridge"
+}
+elf_symbol {
+  id: 0xbbb674cc
+  name: "pci_find_next_bus"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x6e64e5a4
+  type_id: 0xcd25ce80
+  full_name: "pci_find_next_bus"
+}
+elf_symbol {
+  id: 0xdea420f5
+  name: "pci_find_next_capability"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1e4f182b
+  type_id: 0x578fa618
+  full_name: "pci_find_next_capability"
+}
+elf_symbol {
+  id: 0xbbf8a63b
+  name: "pci_flags"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xf296206e
+  type_id: 0x4585663f
+  full_name: "pci_flags"
+}
+elf_symbol {
+=======
+  id: 0x780d1110
+  name: "pci_find_host_bridge"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x77734f6b
+  type_id: 0x636e6c75
+  full_name: "pci_find_host_bridge"
+}
+elf_symbol {
+  id: 0xbbb674cc
+  name: "pci_find_next_bus"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x6e64e5a4
+  type_id: 0xcd25ce80
+  full_name: "pci_find_next_bus"
+}
+elf_symbol {
+  id: 0xdea420f5
+  name: "pci_find_next_capability"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x1e4f182b
+  type_id: 0x578fa618
+  full_name: "pci_find_next_capability"
+}
+elf_symbol {
+  id: 0x969e210d
+  name: "pci_find_vsec_capability"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x0b687f36
+  type_id: 0x070e76e8
+  full_name: "pci_find_vsec_capability"
+}
+elf_symbol {
+  id: 0xbbf8a63b
+  name: "pci_flags"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xf296206e
+  type_id: 0x4585663f
+  full_name: "pci_flags"
+}
+elf_symbol {
+>>>>>>> CHANGE (a31b7239a022da6b7e1e9f1073a9ec6908c5a7fc ANDROID: qcom: Add PCIe related symbols for DesignWare PCIe )
   id: 0x08190210
   name: "pci_free_irq"
   is_defined: true
@@ -441729,6 +441872,7 @@ interface {
   symbol_id: 0xb10958e7
   symbol_id: 0x1540c319
   symbol_id: 0x06548b7e
+  symbol_id: 0xf9b2fae5
   symbol_id: 0xe99b6d83
   symbol_id: 0x04525af5
   symbol_id: 0x9252d1d7
@@ -441755,6 +441899,19 @@ interface {
   symbol_id: 0x3852868c
   symbol_id: 0x27f20808
   symbol_id: 0x63876663
+<<<<<<< HEAD   (f8aa98c56fed7dab94b8480e9a84c5b9c41c6d40 ANDROID: GKI: update symbol list for xiaomi)
+||||||| BASE   (bc5480cedd80e3a363dc5c363a306df96ae42d2c FROMGIT: Input: cros_ec_keyb - add function key support)
+  symbol_id: 0x780d1110
+  symbol_id: 0xbbb674cc
+  symbol_id: 0xdea420f5
+  symbol_id: 0xbbf8a63b
+=======
+  symbol_id: 0x780d1110
+  symbol_id: 0xbbb674cc
+  symbol_id: 0xdea420f5
+  symbol_id: 0x969e210d
+  symbol_id: 0xbbf8a63b
+>>>>>>> CHANGE (a31b7239a022da6b7e1e9f1073a9ec6908c5a7fc ANDROID: qcom: Add PCIe related symbols for DesignWare PCIe )
   symbol_id: 0x08190210
   symbol_id: 0x8ffabaa9
   symbol_id: 0x50bce06e
