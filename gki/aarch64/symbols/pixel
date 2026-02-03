@@ -1524,6 +1524,7 @@
   kvfree
   kvfree_call_rcu
   __kvmalloc_node_noprof
+  kvm_get_kvm_safe
   kvm_iommu_alloc_domain
   kvm_iommu_attach_dev
   kvm_iommu_attach_dev_nested
@@ -1540,6 +1541,7 @@
   kvm_iommu_share_hyp_sg
   kvm_iommu_unmap_pages
   kvm_iommu_unshare_hyp_sg
+  kvm_put_kvm
   kvrealloc_noprof
   led_classdev_register_ext
   led_classdev_unregister
@@ -3179,6 +3181,10 @@
   vb2_wait_for_all_buffers
   vendor_data_pad
   verify_pkcs7_signature
+  vfio_file_get_device
+  vfio_file_iommu_group
+  vfio_file_is_valid
+  vfio_file_set_kvm
   vfree
   video_devdata
   video_device_alloc
