@@ -2192,6 +2192,7 @@
   pci_alloc_irq_vectors_affinity
   pci_assign_resource
   pci_bus_type
+  pci_clear_and_set_config_dword
   pci_clear_master
   pci_dev_get
   pci_device_group
@@ -2208,6 +2209,8 @@
   pcie_link_speed
   pci_enable_device
   pci_find_ext_capability
+  pci_find_vsec_capability
+  pci_flags
   pci_free_irq_vectors
   pci_generic_config_read
   pci_generic_config_write
