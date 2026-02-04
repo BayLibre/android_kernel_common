@@ -118,7 +118,7 @@ impl<T> ArrayRangeAllocator<T> {
         size: usize,
         is_oneway: bool,
         pid: Pid,
-    ) -> Result<usize> {
+    ) -> Result<(usize, bool)> {
         // Compute new value of free_oneway_space, which is set only on success.
         let new_oneway_space = if is_oneway {
             match self.free_oneway_space.checked_sub(size) {
@@ -128,6 +128,9 @@ impl<T> ArrayRangeAllocator<T> {
         } else {
             self.free_oneway_space
         };
+
+        let oneway_spam_detected =
+            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid, size);
 
         let FindEmptyRes {
             insert_at_idx,
@@ -146,7 +149,19 @@ impl<T> ArrayRangeAllocator<T> {
             .ok()
             .unwrap();
 
-        Ok(insert_at_offset)
+        Ok((insert_at_offset, oneway_spam_detected))
+    }
+
+    fn low_oneway_space(&self, calling_pid: Pid, current_size: usize) -> bool {
+        let mut total_alloc_size = current_size;
+        let mut num_buffers = 1;
+        for range in &self.ranges {
+            if range.state.is_oneway() && range.state.pid() == calling_pid {
+                total_alloc_size += range.size;
+                num_buffers += 1;
+            }
+        }
+        num_buffers > 50 || total_alloc_size > self.size / 4
     }
 
     pub(crate) fn reservation_abort(&mut self, offset: usize) -> Result<FreedRange> {
