@@ -2516,3 +2516,67 @@ ssize_t fuse_bpf_simple_request(struct fuse_mount *fm, struct fuse_bpf_args *bpf
 		};
 	return res;
 }
+
+int fuse_lookup_revalidate_initialize(struct fuse_bpf_args *fa, struct fuse_lookup_io *fli,
+	       struct inode *dir, struct dentry *entry, unsigned int flags)
+{
+	*fa = (struct fuse_bpf_args) {
+		.nodeid = get_fuse_inode(dir)->nodeid,
+		.opcode = FUSE_LOOKUP,
+		.in_numargs = 1,
+		.out_numargs = 2,
+		.flags = FUSE_BPF_OUT_ARGVAR,
+		.in_args[0] = (struct fuse_bpf_in_arg) {
+			.size = entry->d_name.len + 1,
+			.value = entry->d_name.name,
+		},
+		.out_args[0] = (struct fuse_bpf_arg) {
+			.size = sizeof(fli->feo),
+			.value = &fli->feo,
+		},
+		.out_args[1] = (struct fuse_bpf_arg) {
+			.size = sizeof(fli->feb.out),
+			.value = &fli->feb.out,
+		},
+	};
+
+	return 0;
+}
+
+int fuse_lookup_revalidate_backing(struct fuse_bpf_args *fa, struct inode *dir,
+			  struct dentry *entry, unsigned int flags)
+{
+	struct fuse_dentry *fuse_entry = get_fuse_dentry(entry);
+	struct dentry *backing_entry = fuse_entry->backing_path.dentry;
+	struct fuse_entry_out *feo = (void *)fa->out_args[0].value;
+	struct kstat stat;
+	int err;
+
+	if (d_is_negative(backing_entry)) {
+		fa->error_in = -ENOENT;
+		return 0;
+	}
+
+	err = vfs_getattr(&fuse_entry->backing_path, &stat,
+				  STATX_BASIC_STATS, 0);
+	if (err)
+		goto err_out;
+
+	fuse_stat_to_attr(get_fuse_conn(dir),
+			  backing_entry->d_inode, &stat, &feo->attr);
+	return 0;
+
+err_out:
+	return err;
+}
+
+void *fuse_lookup_revalidate_finalize(struct fuse_bpf_args *fa, struct inode *dir,
+			   struct dentry *entry, unsigned int flags)
+{
+	struct fuse_entry_bpf_out *febo = fa->out_args[1].value;
+	struct fuse_entry_bpf *feb = container_of(febo, struct fuse_entry_bpf,
+						  out);
+	if (feb->backing_file)
+		fput(feb->backing_file);
+	return NULL;
+}

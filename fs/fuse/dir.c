@@ -278,12 +278,20 @@ static int fuse_dentry_revalidate(struct dentry *entry, unsigned int flags)
 		parent = dget_parent(entry);
 
 #ifdef CONFIG_FUSE_BPF
-		/* TODO: Once we're handling timeouts for backing inodes, do a
-		 * bpf based lookup_revalidate here.
-		 */
 		if (get_fuse_inode(parent->d_inode)->backing_inode) {
+			struct inode *dir = parent->d_inode;
+			struct fuse_err_ret fer;
+
+			fer = fuse_bpf_backing(dir, struct fuse_lookup_io,
+						fuse_lookup_revalidate_initialize,
+						fuse_lookup_revalidate_backing,
+						fuse_lookup_revalidate_finalize,
+						dir, entry, flags);
 			dput(parent);
-			ret = 1;
+			if (fer.ret && PTR_ERR(fer.result))
+				ret = PTR_ERR(fer.result);
+			else
+				ret = 1;
 			goto out;
 		}
 #endif

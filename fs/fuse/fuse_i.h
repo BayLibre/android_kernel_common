@@ -1804,6 +1804,13 @@ int fuse_access_initialize(struct fuse_bpf_args *fa, struct fuse_access_in *fai,
 int fuse_access_backing(struct fuse_bpf_args *fa, struct inode *inode, int mask);
 void *fuse_access_finalize(struct fuse_bpf_args *fa, struct inode *inode, int mask);
 
+int fuse_lookup_revalidate_initialize(struct fuse_bpf_args *fa, struct fuse_lookup_io *feo,
+	       struct inode *dir, struct dentry *entry, unsigned int flags);
+int fuse_lookup_revalidate_backing(struct fuse_bpf_args *fa, struct inode *dir,
+			  struct dentry *entry, unsigned int flags);
+void *fuse_lookup_revalidate_finalize(struct fuse_bpf_args *fa, struct inode *dir,
+				struct dentry *entry, unsigned int flags);
+
 /*
  * FUSE caches dentries and attributes with separate timeout.  The
  * time in jiffies until the dentry/attributes are valid is stored in
