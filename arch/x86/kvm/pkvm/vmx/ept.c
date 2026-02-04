@@ -157,9 +157,30 @@ static int ept_pte_count(int level)
 	return SPTE_ENT_PER_PAGE;
 }
 
-static void ept_pte_set(void *ptep, u64 spte)
+static inline void ept_pte_set(void *ptep, u64 spte)
 {
 	WRITE_ONCE(*(u64 *)ptep, spte);
+}
+
+static void host_ept_pte_set(void *ptep, u64 spte)
+{
+	ept_pte_set(ptep, spte);
+
+	/*
+	 * TODO: We need to flush the cpu caches only if both the
+	 * following conditions are true:
+	 * - There are one or more IOMMUs that doesn't have
+	 *   page walk coherency support, and
+	 * - There are one or more devices configured for
+	 *   passthrough mode.
+	 */
+	if (!pkvm_iommu_paging_structure_coherency())
+		clflush_cache_range(ptep, sizeof(u64));
+}
+
+static void guest_ept_pte_set(void *ptep, u64 spte)
+{
+	ept_pte_set(ptep, spte);
 }
 
 static u64 ept_pte_get(void *ptep)
@@ -243,7 +264,7 @@ static const struct pkvm_pgtable_ops host_ept_pgt_ops = {
 	.pte_is_leaf = ept_pte_is_leaf,
 	.pte_size = ept_pte_size,
 	.pte_count = ept_pte_count,
-	.pte_set = ept_pte_set,
+	.pte_set = host_ept_pte_set,
 	.pte_get = ept_pte_get,
 	.flush_tlb = host_ept_flush_tlb,
 	.pte_mk_pgstate = ept_pte_mk_pgstate,
@@ -268,7 +289,7 @@ static const struct pkvm_pgtable_ops guest_ept_pgt_ops = {
 	.pte_is_leaf = ept_pte_is_leaf,
 	.pte_size = ept_pte_size,
 	.pte_count = ept_pte_count,
-	.pte_set = ept_pte_set,
+	.pte_set = guest_ept_pte_set,
 	.pte_get = ept_pte_get,
 	.flush_tlb = guest_ept_flush_tlb,
 	.pte_mk_pgstate = ept_pte_mk_pgstate,
