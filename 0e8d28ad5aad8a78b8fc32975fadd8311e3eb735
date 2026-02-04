@@ -16,6 +16,24 @@
       "message": "Shouldn\u0027t this be decided at runtime rather than hard-coded? I worry that changing it to zero will lead to shattered of THPs on the host.",
       "revId": "0e8d28ad5aad8a78b8fc32975fadd8311e3eb735",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "421a5214_4ac1d92e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4270143
+      },
+      "writtenOn": "2026-02-04T09:12:17Z",
+      "side": 1,
+      "message": "That\u0027s right. Since multiple vendors use the virtio-balloon driver and the VM memory size might vary, this patch set aims at starting a discussion on we can agree on modifying the virtio-balloon prdev order.\n\nSome approaches that I have in my mind for run-time order changing:\n1) Make virtio-balloon order a function of memory size.\n\n2) The order can start off at MAX_PAGE_ORDER and can be reduced if free-page-reporting driver is not able to find any order sized pages in all zones\u0027 free area list. Order can be reset to MAX_PAGE_ORDER when these big chunks are available again.\n\n3) Add a CONFIG_VIRTIO_BALLOON_4K_ORDER (or some better sounding name) to statically control the order when THPs are not a concern.\n\nPlease let me know what you think of these approaches. From what I understand from FPR and balloon, they were designed keeping THP and fairly sized guests and on smaller guests (in our case Qualcomm\u0027s Trusted VM), virtio-balloon stays quiet.",
+      "parentUuid": "e0ba5ad4_0d781dd4",
+      "revId": "0e8d28ad5aad8a78b8fc32975fadd8311e3eb735",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
