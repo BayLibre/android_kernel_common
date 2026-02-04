@@ -35,6 +35,42 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f924484f_f41ff916",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4270831
+      },
+      "writtenOn": "2026-02-04T20:24:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1237234b_84a89ef3",
+      "revId": "21689c578183e774a8060f586f3b6ff582186f3e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f817496_3a034116",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4270831
+      },
+      "writtenOn": "2026-02-04T20:24:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16867b86_c05fd896",
+      "revId": "21689c578183e774a8060f586f3b6ff582186f3e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0e31bba_026be95c",
@@ -65,6 +101,42 @@
       "writtenOn": "2026-02-03T17:40:49Z",
       "side": 1,
       "message": "The field additions need a little more work since it currently causes offset changes to existing fields:\n```\ntype \u0027struct pci_dev\u0027 changed\n  member \u0027unsigned int ptm_root:1\u0027 was added\n  member \u0027unsigned int ptm_enabled:1\u0027 was added\n  member \u0027u16 ptm_cap\u0027 was added\n  member \u0027u8 ptm_granularity\u0027 was added\n  2 members (\u0027atomic_t enable_cnt\u0027 .. \u0027u32 saved_config_space[16]\u0027) changed\n    offset changed by 32\n```",
+      "revId": "21689c578183e774a8060f586f3b6ff582186f3e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78edde7e_83b24a12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4270831
+      },
+      "writtenOn": "2026-02-04T20:24:11Z",
+      "side": 1,
+      "message": "Done split into 2 now",
+      "parentUuid": "d0e31bba_026be95c",
+      "revId": "21689c578183e774a8060f586f3b6ff582186f3e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df7bda19_fcc4981b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4270831
+      },
+      "writtenOn": "2026-02-04T20:24:11Z",
+      "side": 1,
+      "message": "Done\n\nwith my local testing i can see the ofsets and size remain same after enabling config\n\n\n\n\n/ # dmesg | grep -i \"PCI Structure Size Test\" -A 20\n[    6.768856] \u003d\u003d\u003d PCI Structure Size Test \u003d\u003d\u003d\n[    6.768861] sizeof(struct pci_dev) \u003d 3920 bytes\n[    6.768865] sizeof(pci_dev_flags_t) \u003d 2 bytes\n[    6.768869] sizeof(atomic_t) \u003d 4 bytes\n[    6.768873] CONFIG_PCIE_PTM is enabled\n[    6.768876] offsetof(struct pci_dev, ptm_cap) \u003d 3888\n[    6.768880] offsetof(struct pci_dev, ptm_granularity) \u003d 3890\n[    6.768884] Key field offsets for verification:\n[    6.768887] offsetof(struct pci_dev, rom_attr_enabled) \u003d 3288\n[    6.768891] offsetof(struct pci_dev, dev_flags) \u003d 3206\n[    6.768894] offsetof(struct pci_dev, enable_cnt) \u003d 3208\n[    6.768898] offsetof(struct pci_dev, saved_config_space) \u003d 3212\n[    6.768901] offsetof(struct pci_dev, msix_base) \u003d 3568\n[    6.768904] \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d",
+      "parentUuid": "e5a09fb2_f9a6b0e0",
       "revId": "21689c578183e774a8060f586f3b6ff582186f3e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
