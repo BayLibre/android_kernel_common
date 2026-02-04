@@ -30,7 +30,7 @@ use crate::{
     process::{GetWorkOrRegister, Process},
     ptr_align,
     stats::GLOBAL_STATS,
-    transaction::Transaction,
+    transaction::{report_netlink_early, Transaction},
     BinderReturnWriter, DArc, DLArc, DTRWrap, DeliverCode, DeliverToRead,
 };
 
@@ -1191,14 +1191,68 @@ impl Thread {
     fn transaction_inner(self: &Arc<Self>, tr: &BinderTransactionDataSg) -> BinderResult {
         // SAFETY: Handle's type has no invalid bit patterns.
         let handle = unsafe { tr.transaction_data.target.handle };
-        let node_ref = self.process.get_transaction_node(handle)?;
-        security::binder_transaction(&self.process.cred, &node_ref.node.owner.cred)?;
+
+        // TODO(cmllamas): colapse this with a TransactionInfo object
+        let node_ref = self.process.get_transaction_node(handle).map_err(|e| {
+            report_netlink_early(
+                self,
+                None,
+                e.reply,
+                false,
+                tr.transaction_data.flags,
+                tr.transaction_data.code,
+                tr.transaction_data.data_size as u32,
+            );
+            e
+        })?;
+
+        // TODO(cmllamas): colapse this with a TransactionInfo object
+        let target_proc = node_ref.node.owner.clone();
+        security::binder_transaction(&self.process.cred, &target_proc.cred).map_err(|e| {
+            report_netlink_early(
+                self,
+                Some(&target_proc),
+                BR_FAILED_REPLY,
+                false,
+                tr.transaction_data.flags,
+                tr.transaction_data.code,
+                tr.transaction_data.data_size as u32,
+            );
+            e
+        })?;
+
         // TODO: We need to ensure that there isn't a pending transaction in the work queue. How
         // could this happen?
-        let top = self.top_of_transaction_stack()?;
+        // TODO(cmllamas): colapse this with a TransactionInfo object
+        let top = self.top_of_transaction_stack().map_err(|e| {
+            let err = BinderError::from(e);
+            report_netlink_early(
+                self,
+                Some(&target_proc),
+                err.reply,
+                false,
+                tr.transaction_data.flags,
+                tr.transaction_data.code,
+                tr.transaction_data.data_size as u32,
+            );
+            err
+        })?;
         let list_completion = DTRWrap::arc_try_new(DeliverCode::new(BR_TRANSACTION_COMPLETE))?;
         let completion = list_completion.clone_arc();
-        let transaction = Transaction::new(node_ref, top, self, tr)?;
+
+        // TODO(cmllamas): colapse this with a TransactionInfo object
+        let transaction = Transaction::new(node_ref, top, self, tr).map_err(|e| {
+            report_netlink_early(
+                self,
+                Some(&target_proc),
+                e.reply,
+                false,
+                tr.transaction_data.flags,
+                tr.transaction_data.code,
+                tr.transaction_data.data_size as u32,
+            );
+            e
+        })?;
 
         // Check that the transaction stack hasn't changed while the lock was released, then update
         // it with the new transaction.
@@ -1255,6 +1309,17 @@ impl Thread {
             );
             let reply = Err(BR_FAILED_REPLY);
             orig.from.deliver_reply(reply, &orig);
+
+            // TODO(cmllamas): colapse this with a TransactionInfo object
+            report_netlink_early(
+                self,
+                Some(&orig.from.process),
+                BR_FAILED_REPLY,
+                true,
+                tr.transaction_data.flags,
+                tr.transaction_data.code,
+                tr.transaction_data.data_size as u32,
+            );
             err.reply = BR_TRANSACTION_COMPLETE;
             err
         });
@@ -1266,9 +1331,49 @@ impl Thread {
         // SAFETY: The `handle` field is valid for all possible byte values, so reading from the
         // union is okay.
         let handle = unsafe { tr.transaction_data.target.handle };
-        let node_ref = self.process.get_transaction_node(handle)?;
-        security::binder_transaction(&self.process.cred, &node_ref.node.owner.cred)?;
-        let transaction = Transaction::new(node_ref, None, self, tr)?;
+
+        // TODO(cmllamas): colapse this with a TransactionInfo object
+        let node_ref = self.process.get_transaction_node(handle).map_err(|e| {
+            report_netlink_early(
+                self,
+                None,
+                e.reply,
+                false,
+                tr.transaction_data.flags,
+                tr.transaction_data.code,
+                tr.transaction_data.data_size as u32,
+            );
+            e
+        })?;
+        let target_proc = node_ref.node.owner.clone();
+
+        // TODO(cmllamas): colapse this with a TransactionInfo object
+        security::binder_transaction(&self.process.cred, &target_proc.cred).map_err(|e| {
+            report_netlink_early(
+                self,
+                Some(&target_proc),
+                BR_FAILED_REPLY,
+                false,
+                tr.transaction_data.flags,
+                tr.transaction_data.code,
+                tr.transaction_data.data_size as u32,
+            );
+            e
+        })?;
+
+        // TODO(cmllamas): colapse this with a TransactionInfo object
+        let transaction = Transaction::new(node_ref, None, self, tr).map_err(|e| {
+            report_netlink_early(
+                self,
+                Some(&target_proc),
+                e.reply,
+                false,
+                tr.transaction_data.flags,
+                tr.transaction_data.code,
+                tr.transaction_data.data_size as u32,
+            );
+            e
+        })?;
         let code = if self.process.is_oneway_spam_detection_enabled()
             && transaction.oneway_spam_detected
         {
