@@ -402,6 +402,10 @@ struct pci_dev {
 	unsigned int	eetlp_prefix_path:1;	/* End-to-End TLP Prefix */
 
 	pci_channel_state_t error_state;	/* Current connectivity state */
+#ifdef CONFIG_PCIE_PTM
+	u16     ptm_cap;
+#endif
+
 	struct device	dev;			/* Generic device interface */
 
 	int		cfg_size;		/* Size of config space */
@@ -465,6 +469,10 @@ struct pci_dev {
 	unsigned int	no_vf_scan:1;		/* Don't scan for VFs after IOV enablement */
 	unsigned int	no_command_memory:1;	/* No PCI_COMMAND_MEMORY */
 	unsigned int	rom_bar_overlap:1;	/* ROM BAR disable broken */
+#ifdef CONFIG_PCIE_PTM
+	unsigned int	ptm_root:1;
+	unsigned int	ptm_enabled:1;
+#endif
 	pci_dev_flags_t dev_flags;
 	atomic_t	enable_cnt;	/* pci_enable_device has been called */
 
@@ -476,12 +484,6 @@ struct pci_dev {
 
 #ifdef CONFIG_HOTPLUG_PCI_PCIE
 	unsigned int	broken_cmd_compl:1;	/* No compl for some cmds */
-#endif
-#ifdef CONFIG_PCIE_PTM
-	u16		ptm_cap;		/* PTM Capability */
-	unsigned int	ptm_root:1;
-	unsigned int	ptm_enabled:1;
-	u8		ptm_granularity;
 #endif
 #ifdef CONFIG_PCI_MSI
 	void __iomem	*msix_base;
@@ -527,6 +529,9 @@ struct pci_dev {
 	/* These methods index pci_reset_fn_methods[] */
 	u8 reset_methods[PCI_NUM_RESET_METHODS]; /* In priority order */
 
+#ifdef CONFIG_PCIE_PTM
+	u8	ptm_granularity;
+#endif
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
 	ANDROID_KABI_RESERVE(3);
