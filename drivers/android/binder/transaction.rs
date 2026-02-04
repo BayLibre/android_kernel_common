@@ -4,6 +4,7 @@
 
 use core::sync::atomic::{AtomicBool, Ordering};
 use kernel::{
+    bindings,
     prelude::*,
     seq_file::SeqFile,
     seq_print,
@@ -17,6 +18,7 @@ use crate::{
     allocation::{Allocation, TranslatedFds},
     defs::*,
     error::{BinderError, BinderResult},
+    netlink::Report,
     node::{Node, NodeRef},
     process::{Process, ProcessInner},
     ptr_align,
@@ -211,6 +213,35 @@ impl Transaction {
             it = &transaction.from_parent;
         }
         None
+    }
+
+    pub(crate) fn is_reply(&self) -> bool {
+        self.target_node.is_none()
+    }
+
+    pub(crate) fn report_netlink(&self, error: u32) {
+        if !Report::has_listeners() {
+            return;
+        }
+        let mut report = match Report::new(bindings::GENLMSG_DEFAULT_SIZE, 0, 0, GFP_KERNEL) {
+            Ok(r) => r,
+            Err(_) => return,
+        };
+
+        let _ = report.error(error);
+        let _ = report.context(&self.from.process.ctx.name);
+        let _ = report.from_pid(self.from.process.pid_in_current_ns() as u32);
+        let _ = report.from_tid(self.from.id as u32);
+        let _ = report.to_pid(self.to.pid_in_current_ns() as u32);
+
+        if self.is_reply() {
+            let _ = report.is_reply();
+        }
+        let _ = report.flags(self.flags);
+        let _ = report.code(self.code);
+        let _ = report.data_size(self.data_size as u32);
+
+        let _ = report.multicast(0, GFP_KERNEL);
     }
 
     pub(crate) fn set_outstanding(&self, to_process: &mut ProcessInner) {
