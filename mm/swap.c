@@ -1020,7 +1020,7 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
 		}
 
 		trace_android_vh_folios_put_refs_direct_free(folio, nr_refs,
-							&lruvec, &direct_free);
+							&lruvec, flags, &direct_free);
 		if (direct_free)
 			goto try_to_free;
 

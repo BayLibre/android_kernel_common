@@ -214,8 +214,8 @@ DECLARE_HOOK(android_vh_free_unref_page_bypass,
 	TP_ARGS(page, order, migratetype, bypass));
 DECLARE_HOOK(android_vh_folios_put_refs_direct_free,
 	TP_PROTO(struct folio *folio, unsigned int nr_refs,
-		 struct lruvec **lruvec, bool *direct_free),
-	TP_ARGS(folio, nr_refs, lruvec, direct_free));
+		 struct lruvec **lruvec, unsigned long flags, bool *direct_free),
+	TP_ARGS(folio, nr_refs, lruvec, flags, direct_free));
 DECLARE_HOOK(android_vh_free_pages_and_swap_cache,
 	TP_PROTO(struct folio *folio),
 	TP_ARGS(folio));
