@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad9d1b56_1b8d8052",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1744,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2026-02-04T18:14:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "801ffaed_a67314d5",
+      "range": {
+        "startLine": 1744,
+        "startChar": 1,
+        "endLine": 1744,
+        "endChar": 22
+      },
+      "revId": "33fb015c8738d69657f409e05868a0c515824b53",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a67a307_18c62251",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-02-04T14:45:15Z",
       "side": 1,
       "message": "No need for this, the nested interface is not exposed to VMs, we can just call pkvm_devices_get_context() with NULL directly.",
+      "range": {
+        "startLine": 499,
+        "startChar": 1,
+        "endLine": 499,
+        "endChar": 47
+      },
+      "revId": "33fb015c8738d69657f409e05868a0c515824b53",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f1ea8ec_3317b327",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2026-02-04T18:14:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a67a307_18c62251",
       "range": {
         "startLine": 499,
         "startChar": 1,
