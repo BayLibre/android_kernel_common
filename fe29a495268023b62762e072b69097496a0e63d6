@@ -52,6 +52,24 @@
       "parentUuid": "238e7b7f_bfd11f71",
       "revId": "fe29a495268023b62762e072b69097496a0e63d6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97dac9ee_aa5d7910",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1294047
+      },
+      "writtenOn": "2026-02-04T01:17:22Z",
+      "side": 1,
+      "message": "We leverage the CIPHER, HASH, HMAC, RSA, and ECC capabilities of the hardware CRYPTO module in our Rockchip-based embedded systems. In scenarios where the single-operation data size exceeds 512 KByte, this hardware offload delivers two key benefits: faster algorithm execution speed and lower CPU resource utilization compared to pure software implementations.\nRegarding ARMv8 Cryptography Extensions (CE), it is important to note that support for this feature varies across Rockchip SoCs—not all models are equipped with ARMv8 CE. Moreover, even on Rockchip SoCs that do support ARMv8 CE, the extension does not cover the full range of cryptographic algorithms we require—for example, SM2 and certain ECC variants are not supported by ARMv8 CE natively.\nThe performance advantage of hardware CRYPTO is even more pronounced in two specific scenarios:\nOn Rockchip SoCs that do not support ARMv8 CE.\nOn platforms equipped with low-clock-speed CPUs.",
+      "parentUuid": "b2519e49_0f2ac8b7",
+      "revId": "fe29a495268023b62762e072b69097496a0e63d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
