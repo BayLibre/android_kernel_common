@@ -121,15 +121,16 @@ impl GenlMsg {
         let me = ManuallyDrop::new(self);
         // SAFETY: The `skb` and `family` pointers are valid. We pass ownership of the `skb` to
         // `genlmsg_multicast` by not dropping `self`.
-        to_result(unsafe {
-            bindings::genlmsg_multicast(
+        unsafe {
+            bindings::genlmsg_end(me.skb.skb.as_ptr(), me.hdr.as_ptr());
+            to_result(bindings::genlmsg_multicast(
                 family.as_raw(),
                 me.skb.skb.as_ptr(),
                 portid,
                 group,
                 flags.as_raw(),
-            )
-        })
+            ))
+        }
     }
 }
 impl Drop for GenlMsg {
