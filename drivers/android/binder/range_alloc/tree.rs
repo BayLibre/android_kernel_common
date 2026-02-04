@@ -171,7 +171,7 @@ impl<T> TreeRangeAllocator<T> {
         // (This will short-circut, so `low_oneway_space` is
         // only called when necessary.)
         let oneway_spam_detected =
-            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
+            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid, size);
 
         let (found_size, found_off, tree_node, free_tree_node) = match self.find_best_match(size) {
             None => {
@@ -377,9 +377,9 @@ impl<T> TreeRangeAllocator<T> {
     /// for the low async space is likely to try to send another async transaction,
     /// and at some point we'll catch them in the act.  This is more efficient
     /// than keeping a map per pid.
-    fn low_oneway_space(&self, calling_pid: Pid) -> bool {
-        let mut total_alloc_size = 0;
-        let mut num_buffers = 0;
+    fn low_oneway_space(&self, calling_pid: Pid, current_size: usize) -> bool {
+        let mut total_alloc_size = current_size;
+        let mut num_buffers = 1;
         for (_, desc) in self.tree.iter() {
             if let Some((state, _)) = &desc.state {
                 if state.is_oneway() && state.pid() == calling_pid {
