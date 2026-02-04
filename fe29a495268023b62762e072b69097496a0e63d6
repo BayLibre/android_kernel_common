@@ -70,6 +70,24 @@
       "parentUuid": "b2519e49_0f2ac8b7",
       "revId": "fe29a495268023b62762e072b69097496a0e63d6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17c78a5e_eba39943",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1137063
+      },
+      "writtenOn": "2026-02-04T02:32:04Z",
+      "side": 1,
+      "message": "None of that corresponds to the actual uses of in-kernel cryptography in Android, though.  The actual uses mainly include storage encryption (AES-XTS or Adiantum with 4096-byte messages, and AES-CBC-CTS or Adiantum with 16-255 byte messages) and storage authentication (SHA-256 or BLAKE2b with 4096-byte messages).  Asymmetric algorithms are never used in the Android kernel, nor are single crypto operations with sizes even close to 512 KiB, as far as I know.\n\nAlgorithms for CPUs without AES acceleration  (Adiantum and BLAKE2b) are also already supported by these features.  However, we\u0027ve found that even the software AES and SHA-256 code is faster than legacy-style hardware offload drivers for the message sizes used in practice.\n\nSo, I\u0027d like to repeat my question.  Is there a specific case where this driver will actually be used and be helpful on an Android device in practice?  Or is this more of a check-box thing?",
+      "parentUuid": "97dac9ee_aa5d7910",
+      "revId": "fe29a495268023b62762e072b69097496a0e63d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
