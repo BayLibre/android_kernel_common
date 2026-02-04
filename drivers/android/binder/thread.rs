@@ -26,7 +26,7 @@ use kernel::{
 use crate::{
     allocation::{Allocation, AllocationView, BinderObject, BinderObjectRef, NewAllocation},
     defs::*,
-    error::BinderResult,
+    error::{BinderError, BinderResult},
     process::{GetWorkOrRegister, Process},
     ptr_align,
     stats::GLOBAL_STATS,
@@ -1206,7 +1206,9 @@ impl Thread {
             let mut inner = self.inner.lock();
             if !transaction.is_stacked_on(&inner.current_transaction) {
                 pr_warn!("Transaction stack changed during transaction!");
-                return Err(EINVAL.into());
+                let e = BinderError::from(EINVAL);
+                transaction.report_netlink(e.reply);
+                return Err(e);
             }
             inner.current_transaction = Some(transaction.clone_arc());
             // We push the completion as a deferred work so that we wait for the reply before
@@ -1221,6 +1223,7 @@ impl Thread {
             let mut inner = self.inner.lock();
             transaction = inner.current_transaction.take().unwrap();
             inner.current_transaction = transaction.clone_next();
+            transaction.report_netlink(e.reply);
             Err(e)
         } else {
             Ok(())
@@ -1269,6 +1272,7 @@ impl Thread {
         let code = if self.process.is_oneway_spam_detection_enabled()
             && transaction.oneway_spam_detected
         {
+            transaction.report_netlink(BR_ONEWAY_SPAM_SUSPECT);
             BR_ONEWAY_SPAM_SUSPECT
         } else {
             BR_TRANSACTION_COMPLETE
@@ -1276,10 +1280,13 @@ impl Thread {
         let list_completion = DTRWrap::arc_try_new(DeliverCode::new(code))?;
         let completion = list_completion.clone_arc();
         self.inner.lock().push_work(list_completion);
+
+        let report_transaction = transaction.clone_arc();
         match transaction.submit() {
             Ok(()) => Ok(()),
             Err(err) => {
                 completion.skip();
+                report_transaction.report_netlink(err.reply);
                 Err(err)
             }
         }
