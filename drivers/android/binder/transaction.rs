@@ -220,28 +220,15 @@ impl Transaction {
     }
 
     pub(crate) fn report_netlink(&self, error: u32) {
-        if !Report::has_listeners() {
-            return;
-        }
-        let mut report = match Report::new(bindings::GENLMSG_DEFAULT_SIZE, 0, 0, GFP_KERNEL) {
-            Ok(r) => r,
-            Err(_) => return,
-        };
-
-        let _ = report.error(error);
-        let _ = report.context(&self.from.process.ctx.name);
-        let _ = report.from_pid(self.from.process.pid_in_current_ns() as u32);
-        let _ = report.from_tid(self.from.id as u32);
-        let _ = report.to_pid(self.to.pid_in_current_ns() as u32);
-
-        if self.is_reply() {
-            let _ = report.is_reply();
-        }
-        let _ = report.flags(self.flags);
-        let _ = report.code(self.code);
-        let _ = report.data_size(self.data_size as u32);
-
-        let _ = report.multicast(0, GFP_KERNEL);
+        report_netlink_early(
+            &self.from,
+            Some(&self.to),
+            error,
+            self.is_reply(),
+            self.flags,
+            self.code,
+            self.data_size as u32,
+        );
     }
 
     pub(crate) fn set_outstanding(&self, to_process: &mut ProcessInner) {
@@ -477,6 +464,41 @@ impl DeliverToRead for Transaction {
         self.debug_print_inner(m, tprefix);
         Ok(())
     }
+}
+
+pub(crate) fn report_netlink_early(
+    from: &Thread,
+    to: Option<&Process>,
+    error: u32,
+    is_reply: bool,
+    flags: u32,
+    code: u32,
+    data_size: u32,
+) {
+    if !Report::has_listeners() {
+        return;
+    }
+    let mut report = match Report::new(bindings::GENLMSG_DEFAULT_SIZE, 0, 0, GFP_KERNEL) {
+        Ok(r) => r,
+        Err(_) => return,
+    };
+
+    let _ = report.error(error);
+    let _ = report.context(&from.process.ctx.name);
+    let _ = report.from_pid(from.process.pid_in_current_ns() as u32);
+    let _ = report.from_tid(from.id as u32);
+    if let Some(to) = to {
+        let _ = report.to_pid(to.pid_in_current_ns() as u32);
+    }
+
+    if is_reply {
+        let _ = report.is_reply();
+    }
+    let _ = report.flags(flags);
+    let _ = report.code(code);
+    let _ = report.data_size(data_size);
+
+    let _ = report.multicast(0, GFP_KERNEL);
 }
 
 #[pinned_drop]
