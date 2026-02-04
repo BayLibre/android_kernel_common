@@ -6354,12 +6354,18 @@ static void ufshcd_err_handler(struct work_struct *work)
 		up(&hba->host_sem);
 		return;
 	}
-	ufshcd_set_eh_in_progress(hba);
 	spin_unlock_irqrestore(hba->host->host_lock, flags);
+
 	ufshcd_err_handling_prepare(hba);
+<<<<<<< HEAD   (186f761c519d0518baa78bf57788195e11c7e34c Merge 816b2eac151a ("Revert "iommu/amd: Skip enabling comman)
 	/* Complete requests that have door-bell cleared by h/w */
 	ufshcd_complete_requests(hba);
+||||||| BASE   (816b2eac151a9bcce4eff7119207e088ad45236f Revert "iommu/amd: Skip enabling command/event buffers for k)
+=======
+
+>>>>>>> BRANCH (f210ea4e7a790c9f5e613e5302175abd539fe9d5 scsi: core: ufs: Fix a hang in the error handler)
 	spin_lock_irqsave(hba->host->host_lock, flags);
+<<<<<<< HEAD   (186f761c519d0518baa78bf57788195e11c7e34c Merge 816b2eac151a ("Revert "iommu/amd: Skip enabling comman)
 again:
 	needs_restore = false;
 	needs_reset = false;
@@ -6368,6 +6374,12 @@ again:
 
 	if (hba->ufshcd_state != UFSHCD_STATE_ERROR)
 		hba->ufshcd_state = UFSHCD_STATE_RESET;
+||||||| BASE   (816b2eac151a9bcce4eff7119207e088ad45236f Revert "iommu/amd: Skip enabling command/event buffers for k)
+	ufshcd_scsi_block_requests(hba);
+=======
+	ufshcd_set_eh_in_progress(hba);
+	ufshcd_scsi_block_requests(hba);
+>>>>>>> BRANCH (f210ea4e7a790c9f5e613e5302175abd539fe9d5 scsi: core: ufs: Fix a hang in the error handler)
 	/*
 	 * A full reset and restore might have happened after preparation
 	 * is finished, double check whether we should stop.
