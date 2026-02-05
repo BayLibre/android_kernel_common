@@ -109,7 +109,7 @@ static atomic_t *get_decrement_counter(struct recovery_journal *journal,
  * @journal: The recovery journal.
  * @lock_number: The lock to check.
  *
- * Return: True if the journal zone is locked.
+ * Return: true if the journal zone is locked.
  */
 static bool is_journal_zone_locked(struct recovery_journal *journal,
 				   block_count_t lock_number)
@@ -217,7 +217,7 @@ static struct recovery_journal_block * __must_check pop_free_list(struct recover
  * Indicates it has any uncommitted entries, which includes both entries not written and entries
  * written but not yet acknowledged.
  *
- * Return: True if the block has any uncommitted entries.
+ * Return: true if the block has any uncommitted entries.
  */
 static inline bool __must_check is_block_dirty(const struct recovery_journal_block *block)
 {
@@ -228,7 +228,7 @@ static inline bool __must_check is_block_dirty(const struct recovery_journal_blo
  * is_block_empty() - Check whether a journal block is empty.
  * @block: The block to check.
  *
- * Return: True if the block has no entries.
+ * Return: true if the block has no entries.
  */
 static inline bool __must_check is_block_empty(const struct recovery_journal_block *block)
 {
@@ -239,7 +239,7 @@ static inline bool __must_check is_block_empty(const struct recovery_journal_blo
  * is_block_full() - Check whether a journal block is full.
  * @block: The block to check.
  *
- * Return: True if the block is full.
+ * Return: true if the block is full.
  */
 static inline bool __must_check is_block_full(const struct recovery_journal_block *block)
 {
@@ -260,8 +260,6 @@ static void assert_on_journal_thread(struct recovery_journal *journal,
 
 /**
  * continue_waiter() - Release a data_vio from the journal.
- * @waiter: The data_vio waiting on journal activity.
- * @context: The result of the journal operation.
  *
  * Invoked whenever a data_vio is to be released from the journal, either because its entry was
  * committed to disk, or because there was an error. Implements waiter_callback_fn.
@@ -275,7 +273,7 @@ static void continue_waiter(struct vdo_waiter *waiter, void *context)
  * has_block_waiters() - Check whether the journal has any waiters on any blocks.
  * @journal: The journal in question.
  *
- * Return: True if any block has a waiter.
+ * Return: true if any block has a waiter.
  */
 static inline bool has_block_waiters(struct recovery_journal *journal)
 {
@@ -298,7 +296,7 @@ static void notify_commit_waiters(struct recovery_journal *journal);
  * suspend_lock_counter() - Prevent the lock counter from notifying.
  * @counter: The counter.
  *
- * Return: True if the lock counter was not notifying and hence the suspend was efficacious.
+ * Return: true if the lock counter was not notifying and hence the suspend was efficacious.
  */
 static bool suspend_lock_counter(struct lock_counter *counter)
 {
@@ -418,7 +416,7 @@ sequence_number_t vdo_get_recovery_journal_current_sequence_number(struct recove
  *
  * The head is the lowest sequence number of the block map head and the slab journal head.
  *
- * Return: The head of the journal.
+ * Return: the head of the journal.
  */
 static inline sequence_number_t get_recovery_journal_head(const struct recovery_journal *journal)
 {
@@ -537,7 +535,7 @@ static void initialize_journal_state(struct recovery_journal *journal)
  * vdo_get_recovery_journal_length() - Get the number of usable recovery journal blocks.
  * @journal_size: The size of the recovery journal in blocks.
  *
- * Return: The number of recovery journal blocks usable for entries.
+ * Return: the number of recovery journal blocks usable for entries.
  */
 block_count_t vdo_get_recovery_journal_length(block_count_t journal_size)
 {
@@ -1080,8 +1078,6 @@ static void update_usages(struct recovery_journal *journal, struct data_vio *dat
 
 /**
  * assign_entry() - Assign an entry waiter to the active block.
- * @waiter: The data_vio.
- * @context: The recovery journal block.
  *
  * Implements waiter_callback_fn.
  */
@@ -1169,8 +1165,6 @@ static void recycle_journal_block(struct recovery_journal_block *block)
 /**
  * continue_committed_waiter() - invoked whenever a VIO is to be released from the journal because
  *                               its entry was committed to disk.
- * @waiter: The data_vio waiting on a journal write.
- * @context: A pointer to the recovery journal.
  *
  * Implements waiter_callback_fn.
  */
@@ -1368,8 +1362,6 @@ static void add_queued_recovery_entries(struct recovery_journal_block *block)
 
 /**
  * write_block() - Issue a block for writing.
- * @waiter: The recovery journal block to write.
- * @context: Not used.
  *
  * Implements waiter_callback_fn.
  */
@@ -1619,7 +1611,11 @@ void vdo_release_journal_entry_lock(struct recovery_journal *journal,
 	smp_mb__after_atomic();
 }
 
-/** Implements vdo_admin_initiator_fn. */
+/**
+ * initiate_drain() - Initiate a drain.
+ *
+ * Implements vdo_admin_initiator_fn.
+ */
 static void initiate_drain(struct admin_state *state)
 {
 	check_for_drain_complete(container_of(state, struct recovery_journal, state));
