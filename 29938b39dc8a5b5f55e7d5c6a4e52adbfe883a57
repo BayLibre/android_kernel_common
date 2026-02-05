@@ -376,6 +376,30 @@
       },
       "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64d25cfb_a4fed325",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1807,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-05T13:54:09Z",
+      "side": 1,
+      "message": "Do you mena a BUILD_BUG? \n\nSo as long as hyp_req.args isn\u0027t modified we are safe, but sure I can add a static assert for it.",
+      "parentUuid": "a3244413_fbe65647",
+      "range": {
+        "startLine": 1807,
+        "startChar": 19,
+        "endLine": 1807,
+        "endChar": 47
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
