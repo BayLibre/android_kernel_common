@@ -572,6 +572,34 @@ static int restore_za_context(struct user_ctxs *user)
 	if (user->za_size < ZA_SIG_CONTEXT_SIZE(vq))
 		return -EINVAL;
 
+<<<<<<< HEAD   (635df8efd8d34b811bf8b472730ece9247f2a879 Merge 99129d80a5d4 ("wifi: rsi: Fix memory corruption due to)
+||||||| BASE   (99129d80a5d4989ef8566f434f3589f60f28042b wifi: rsi: Fix memory corruption due to not set vif driver d)
+	/*
+	 * Careful: we are about __copy_from_user() directly into
+	 * thread.sme_state with preemption enabled, so protection is
+	 * needed to prevent a racing context switch from writing stale
+	 * registers back over the new data.
+	 */
+
+	fpsimd_flush_task_state(current);
+	/* From now, fpsimd_thread_switch() won't touch thread.sve_state */
+
+=======
+	/*
+	 * Careful: we are about __copy_from_user() directly into
+	 * thread.sme_state with preemption enabled, so protection is
+	 * needed to prevent a racing context switch from writing stale
+	 * registers back over the new data.
+	 */
+
+	fpsimd_flush_task_state(current);
+	/* From now, fpsimd_thread_switch() won't touch thread.sve_state */
+
+	sve_alloc(current, false);
+	if (!current->thread.sve_state)
+		return -ENOMEM;
+
+>>>>>>> BRANCH (0af233d66eff90fb8f3e0fc09f2316bba0b72bb9 arm64/fpsimd: signal: Allocate SSVE storage when restoring Z)
 	sme_alloc(current, true);
 	if (!current->thread.sme_state) {
 		current->thread.svcr &= ~SVCR_ZA_MASK;
