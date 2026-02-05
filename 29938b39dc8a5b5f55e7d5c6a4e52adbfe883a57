@@ -168,6 +168,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d5c918e2_690cf030",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-02-05T07:59:12Z",
+      "side": 1,
+      "message": "MAYBE: Passing the regs from the context structure should be enough",
+      "range": {
+        "startLine": 1015,
+        "startChar": 37,
+        "endLine": 1015,
+        "endChar": 70
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ef3d3695_a97188b7",
         "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
         "patchSetId": 5
@@ -279,6 +302,29 @@
         "startChar": 1,
         "endLine": 262,
         "endChar": 40
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3244413_fbe65647",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1807,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-02-05T07:59:12Z",
+      "side": 1,
+      "message": "MAYBE: Use a static assertion to make sure we don\u0027t accidentaly change the req.args size to differ from : `sizeof(struct arm_smccc_res) - offsetof(struct arm_smccc_res, a2)`.",
+      "range": {
+        "startLine": 1807,
+        "startChar": 19,
+        "endLine": 1807,
+        "endChar": 47
       },
       "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
