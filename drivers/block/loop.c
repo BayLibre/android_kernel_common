@@ -362,10 +362,11 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
 	struct file *file = lo->lo_backing_file;
 	struct bio_vec tmp;
 	unsigned int offset;
-	unsigned int nr_bvec;
+	int nr_bvec = 0;
 	int ret;
 
-	nr_bvec = blk_rq_nr_bvec(rq);
+	rq_for_each_bvec(tmp, rq, rq_iter)
+		nr_bvec++;
 
 	if (rq->bio != rq->biotail) {
 
