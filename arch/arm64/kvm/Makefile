@@ -28,6 +28,7 @@ kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o
 
 # Work around a false positive Clang 22 -Wuninitialized-const-pointer warning
 CFLAGS_sys_regs.o := $(call cc-disable-warning, uninitialized-const-pointer)
+<<<<<<< HEAD   (706ae950ce3c7c3520fb9db99874cb647b59191d Merge 75f91534f9ac ("NFSD: NFSv4 file creation neglects sett)
 
 always-y := hyp_constants.h hyp-constants.s
 
@@ -44,3 +45,6 @@ $(obj)/hyp_constants.h: $(obj)/hyp-constants.s FORCE
 
 obj-kvm := $(addprefix $(obj)/, $(kvm-y))
 $(obj-kvm): $(obj)/hyp_constants.h
+||||||| BASE   (75f91534f9acdfef77f8fa094313b7806f801725 NFSD: NFSv4 file creation neglects setting ACL)
+=======
+>>>>>>> BRANCH (393525dee5c39acff8d6705275d7fcaabcfb7f0a arp: do not assume dev_hard_header() does not change skb->he)
