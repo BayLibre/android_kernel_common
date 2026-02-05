@@ -371,14 +371,13 @@ alternative_endif
  * [start, end) with dcache line size explicitly provided.
  *
  * 	op:		operation passed to dc instruction
- * 	domain:		domain used in dsb instruciton
  * 	start:          starting virtual address of the region
  * 	end:            end virtual address of the region
  *	linesz:		dcache line size
  * 	fixup:		optional label to branch to on user fault
  * 	Corrupts:       start, end, tmp
  */
-	.macro dcache_by_myline_op op, domain, start, end, linesz, tmp, fixup
+	.macro raw_dcache_by_myline_op op, start, end, linesz, tmp, fixup
 	sub	\tmp, \linesz, #1
 	bic	\start, \start, \tmp
 alternative_if ARM64_WORKAROUND_4311569
@@ -419,7 +418,7 @@ alternative_else_nop_endif
 
 /*
  * Macro to perform a data cache maintenance for the interval
- * [start, end)
+ * [start, end) and wait for completion
  *
  * 	op:		operation passed to dc instruction
  * 	domain:		domain used in dsb instruciton
@@ -430,7 +429,23 @@ alternative_else_nop_endif
  */
 	.macro dcache_by_line_op op, domain, start, end, tmp1, tmp2, fixup
 	dcache_line_size \tmp1, \tmp2
-	dcache_by_myline_op \op, \domain, \start, \end, \tmp1, \tmp2, \fixup
+	raw_dcache_by_myline_op \op, \start, \end, \tmp1, \tmp2, \fixup
+	dsb \domain
+	.endm
+
+/*
+* Macro to perform a data cache maintenance for the interval
+* [start, end) without waiting for completion
+*
+* 	op:		operation passed to dc instruction
+* 	start:          starting virtual address of the region
+* 	end:            end virtual address of the region
+* 	fixup:		optional label to branch to on user fault
+* 	Corrupts:       start, end, tmp1, tmp2
+*/
+	.macro dcache_by_line_op_nosync op, start, end, tmp1, tmp2, fixup
+	dcache_line_size \tmp1, \tmp2
+	raw_dcache_by_myline_op \op, \start, \end, \tmp1, \tmp2, \fixup
 	.endm
 
 /*
