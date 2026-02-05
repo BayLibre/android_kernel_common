@@ -106,11 +106,7 @@ EXPORT_SYMBOL(vm_map_base);
 
 static void cpu_probe_addrbits(struct cpuinfo_loongarch *c)
 {
-#ifdef CONFIG_32BIT
-	c->pabits = cpu_pabits;
-	c->vabits = cpu_vabits;
-	vm_map_base = KVRANGE;
-#else
+#ifdef __NEED_ADDRBITS_PROBE
 	c->pabits = (read_cpucfg(LOONGARCH_CPUCFG1) & CPUCFG1_PABITS) >> 4;
 	c->vabits = (read_cpucfg(LOONGARCH_CPUCFG1) & CPUCFG1_VABITS) >> 12;
 	vm_map_base = 0UL - (1UL << c->vabits);
@@ -302,15 +298,8 @@ static inline void cpu_probe_loongson(struct cpuinfo_loongarch *c, unsigned int 
 		return;
 	}
 
-#ifdef CONFIG_64BIT
 	*vendor = iocsr_read64(LOONGARCH_IOCSR_VENDOR);
 	*cpuname = iocsr_read64(LOONGARCH_IOCSR_CPUNAME);
-#else
-	*vendor = iocsr_read32(LOONGARCH_IOCSR_VENDOR) |
-		(u64)iocsr_read32(LOONGARCH_IOCSR_VENDOR + 4) << 32;
-	*cpuname = iocsr_read32(LOONGARCH_IOCSR_CPUNAME) |
-		(u64)iocsr_read32(LOONGARCH_IOCSR_CPUNAME + 4) << 32;
-#endif
 
 	if (!__cpu_full_name[cpu]) {
 		if (((char *)vendor)[0] == 0)

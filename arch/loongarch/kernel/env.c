@@ -72,12 +72,9 @@ static int __init fdt_cpu_clk_init(void)
 
 	clk = of_clk_get(np, 0);
 	of_node_put(np);
-	cpu_clock_freq = 200 * 1000 * 1000;
 
-	if (IS_ERR(clk)) {
-		pr_warn("No valid CPU clock freq, assume 200MHz.\n");
+	if (IS_ERR(clk))
 		return -ENODEV;
-	}
 
 	cpu_clock_freq = clk_get_rate(clk);
 	clk_put(clk);

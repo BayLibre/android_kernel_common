@@ -398,9 +398,8 @@ void free_vio_pool(struct vio_pool *pool)
 
 /**
  * is_vio_pool_busy() - Check whether an vio pool has outstanding entries.
- * @pool: The vio pool.
  *
- * Return: True if the pool is busy.
+ * Return: true if the pool is busy.
  */
 bool is_vio_pool_busy(struct vio_pool *pool)
 {
