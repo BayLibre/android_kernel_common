@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77eaf7a7_8d236db5",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1743,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-05T09:22:35Z",
+      "side": 1,
+      "message": "We need to propagate the return, in reg1 `kvm_iommu_iotlb_inv_nested_domain()` kernel wrapper already returns it.",
+      "range": {
+        "startLine": 1743,
+        "startChar": 0,
+        "endLine": 1743,
+        "endChar": 70
+      },
+      "revId": "1fb6fd9e1f25a506cee39c820344477f36a367c1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
