@@ -4,14 +4,11 @@
 
 #include <linux/stringify.h>
 
-#ifdef CONFIG_BUG
-
 #ifndef CONFIG_DEBUG_BUGVERBOSE
 #define _BUGVERBOSE_LOCATION(file, line)
 #else
 #define __BUGVERBOSE_LOCATION(file, line)			\
 		.pushsection .rodata.str, "aMS", @progbits, 1;	\
-		.align 2;					\
 	10002:	.ascii file "\0";				\
 		.popsection;					\
 								\
@@ -54,8 +51,6 @@ do {								\
 } while (0)
 
 #define HAVE_ARCH_BUG
-
-#endif /* CONFIG_BUG */
 
 #include <asm-generic/bug.h>
 
