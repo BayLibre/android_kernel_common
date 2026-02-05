@@ -15,7 +15,6 @@ properties:
     oneOf:
       - enum:
           - qcom,msm8226-cci
-          - qcom,msm8953-cci
           - qcom,msm8974-cci
           - qcom,msm8996-cci
 
@@ -26,7 +25,6 @@ properties:
 
       - items:
           - enum:
-              - qcom,kaanapali-cci
               - qcom,qcm2290-cci
               - qcom,sa8775p-cci
               - qcom,sc7280-cci
@@ -130,7 +128,6 @@ allOf:
         compatible:
           contains:
             enum:
-              - qcom,kaanapali-cci
               - qcom,qcm2290-cci
     then:
       properties:
@@ -149,7 +146,6 @@ allOf:
             - contains:
                 enum:
                   - qcom,msm8916-cci
-                  - qcom,msm8953-cci
 
             - const: qcom,msm8996-cci
     then:
