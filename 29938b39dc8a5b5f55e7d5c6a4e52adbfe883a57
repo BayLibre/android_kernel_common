@@ -191,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "716faf33_85dc95b6",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-05T13:48:34Z",
+      "side": 1,
+      "message": "But then all the callers (and there are quite few below) would have to pass the regs, while this factors it out simply.\n\n```\ncpu_reg(host_ctxt, 1) \u003d hyp_req_to_smccc(ret, host_ctxt-\u003eregs.regs);\n```\n\nas opposed to simply now\n\n```\ncpu_reg(host_ctxt, 1) \u003d hyp_req_to_smccc(ret, host_ctxt);\n\n```",
+      "parentUuid": "d5c918e2_690cf030",
+      "range": {
+        "startLine": 1015,
+        "startChar": 37,
+        "endLine": 1015,
+        "endChar": 70
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ef3d3695_a97188b7",
         "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
         "patchSetId": 5
@@ -250,6 +274,30 @@
       "side": 1,
       "message": "I am worried that drivers can return any of those code and we can\u0027t check that which may endup mistakenly as a request. can we use a bit field for this I reckon type will need all the 8 bits?",
       "parentUuid": "0d5a7a71_b7eb8952",
+      "range": {
+        "startLine": 1023,
+        "startChar": 1,
+        "endLine": 1023,
+        "endChar": 31
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47a539f4_cc5edb52",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-05T13:48:34Z",
+      "side": 1,
+      "message": "I can stash that even higher sure.",
+      "parentUuid": "c1b90537_d529c66f",
       "range": {
         "startLine": 1023,
         "startChar": 1,
