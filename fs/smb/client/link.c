@@ -160,8 +160,7 @@ create_mf_symlink(const unsigned int xid, struct cifs_tcon *tcon,
 		goto out;
 
 	if (bytes_written != CIFS_MF_SYMLINK_FILE_SIZE)
-		rc = smb_EIO2(smb_eio_trace_symlink_file_size,
-			      bytes_written, CIFS_MF_SYMLINK_FILE_SIZE);
+		rc = -EIO;
 out:
 	kfree(buf);
 	return rc;
@@ -425,8 +424,7 @@ smb3_create_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
 
 	/* Make sure we wrote all of the symlink data */
 	if ((rc == 0) && (*pbytes_written != CIFS_MF_SYMLINK_FILE_SIZE))
-		rc = smb_EIO2(smb_eio_trace_short_symlink_write,
-			      *pbytes_written, CIFS_MF_SYMLINK_FILE_SIZE);
+		rc = -EIO;
 
 	SMB2_close(xid, tcon, fid.persistent_fid, fid.volatile_fid);
 
@@ -453,7 +451,7 @@ cifs_hardlink(struct dentry *old_file, struct inode *inode,
 	struct cifsInodeInfo *cifsInode;
 
 	if (unlikely(cifs_forced_shutdown(cifs_sb)))
-		return smb_EIO(smb_eio_trace_forced_shutdown);
+		return -EIO;
 
 	tlink = cifs_sb_tlink(cifs_sb);
 	if (IS_ERR(tlink))
@@ -555,7 +553,7 @@ cifs_symlink(struct mnt_idmap *idmap, struct inode *inode,
 	struct inode *newinode = NULL;
 
 	if (unlikely(cifs_forced_shutdown(cifs_sb)))
-		return smb_EIO(smb_eio_trace_forced_shutdown);
+		return -EIO;
 
 	page = alloc_dentry_path();
 	if (!page)
