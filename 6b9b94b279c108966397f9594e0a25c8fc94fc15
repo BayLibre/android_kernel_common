@@ -63,6 +63,30 @@
       },
       "revId": "6b9b94b279c108966397f9594e0a25c8fc94fc15",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f39cba5c_194f0e4c",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2019,
+      "author": {
+        "id": 1874171
+      },
+      "writtenOn": "2026-02-05T16:55:43Z",
+      "side": 1,
+      "message": "The goal is to allow IOMMU fault handlers on DMA domains. The hook will set set_fh \u003d true and save the handler and token into the ANDROID_VENDOR_DATA_ARRAY fields. Then we skip the WARN_ON() check and prevent the cookie type from being changed e.g. keep IOMMU_COOKIE_DMA_IOVA, as currently IOMMU_COOKIE_DMA_IOVA and IOMMU_COOKIE_FAULT_HANDLER as mutually exclusive. The arm-smmu driver is also updated accordingly.",
+      "parentUuid": "b1435d13_da8a2d40",
+      "range": {
+        "startLine": 2016,
+        "startChar": 0,
+        "endLine": 2019,
+        "endChar": 9
+      },
+      "revId": "6b9b94b279c108966397f9594e0a25c8fc94fc15",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
