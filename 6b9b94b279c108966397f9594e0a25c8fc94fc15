@@ -87,6 +87,30 @@
       },
       "revId": "6b9b94b279c108966397f9594e0a25c8fc94fc15",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86531b63_4f1c110f",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2019,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2026-02-05T19:53:55Z",
+      "side": 1,
+      "message": "Isn\u0027t that just entirely bypassing this function? `report_iommu_fault()` wouldn\u0027t do anything since it doesn\u0027t reference the vendor data fields where you\u0027re storing the handler.\n\nI don\u0027t see why this necessitates a vendor hook; why not just implement this in your IOMMU driver?",
+      "parentUuid": "f39cba5c_194f0e4c",
+      "range": {
+        "startLine": 2016,
+        "startChar": 0,
+        "endLine": 2019,
+        "endChar": 9
+      },
+      "revId": "6b9b94b279c108966397f9594e0a25c8fc94fc15",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
