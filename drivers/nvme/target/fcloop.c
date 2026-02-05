@@ -254,6 +254,7 @@ struct fcloop_nport {
 struct fcloop_lsreq {
 	struct nvmefc_ls_req		*lsreq;
 	struct nvmefc_ls_rsp		ls_rsp;
+	int				lsdir;	/* H2T or T2H */
 	int				status;
 	struct list_head		ls_list; /* fcloop_rport->ls_list */
 };
@@ -1110,10 +1111,8 @@ fcloop_remoteport_delete(struct nvme_fc_remote_port *remoteport)
 	rport->nport->rport = NULL;
 	spin_unlock_irqrestore(&fcloop_lock, flags);
 
-	if (put_port) {
-		WARN_ON(!list_empty(&rport->ls_list));
+	if (put_port)
 		fcloop_nport_put(rport->nport);
-	}
 }
 
 static void
@@ -1131,10 +1130,8 @@ fcloop_targetport_delete(struct nvmet_fc_target_port *targetport)
 	tport->nport->tport = NULL;
 	spin_unlock_irqrestore(&fcloop_lock, flags);
 
-	if (put_port) {
-		WARN_ON(!list_empty(&tport->ls_list));
+	if (put_port)
 		fcloop_nport_put(tport->nport);
-	}
 }
 
 #define	FCLOOP_HW_QUEUES		4
