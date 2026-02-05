@@ -139,18 +139,16 @@ char *sync_file_get_name(struct sync_file *sync_file, char *buf, int len)
 	} else {
 		struct dma_fence *fence = sync_file->fence;
 
-		if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags))
-			snprintf(buf, len, "%s-%s%llu-%lld",
-				 sync_fence_signaled_driver_name,
-				 sync_fence_signaled_obj_name,
-				 fence->context,
-				 fence->seqno);
-		else
-			snprintf(buf, len, "%s-%s%llu-%lld",
-				 fence->ops->get_driver_name(fence),
-				 fence->ops->get_timeline_name(fence),
-				 fence->context,
-				 fence->seqno);
+		snprintf(buf, len, "%s-%s%llu-%lld",
+			 fence->ops->get_driver_name(fence),
+			 fence->ops->get_timeline_name(fence),
+			 fence->context,
+			 fence->seqno);
+		snprintf(buf, len, "%s-%s%llu-%lld",
+			 dma_fence_driver_name(fence),
+			 dma_fence_timeline_name(fence),
+			 fence->context,
+			 fence->seqno);
 	}
 
 	return buf;
@@ -272,18 +270,9 @@ err_put_fd:
 static int sync_fill_fence_info(struct dma_fence *fence,
 				 struct sync_fence_info *info)
 {
-	if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags)) {
-		info->status = fence->error ?: 1;
-		info->timestamp_ns = ktime_to_ns(dma_fence_timestamp(fence));
-		strscpy(info->obj_name, sync_fence_signaled_obj_name);
-		strscpy(info->driver_name, sync_fence_signaled_driver_name);
-
-		return info->status;
-	}
-
-	strscpy(info->obj_name, fence->ops->get_timeline_name(fence),
+	strscpy(info->obj_name, dma_fence_timeline_name(fence),
 		sizeof(info->obj_name));
-	strscpy(info->driver_name, fence->ops->get_driver_name(fence),
+	strscpy(info->driver_name, dma_fence_driver_name(fence),
 		sizeof(info->driver_name));
 
 	info->status = dma_fence_get_status(fence);
