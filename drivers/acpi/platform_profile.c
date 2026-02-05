@@ -37,7 +37,6 @@ static const char * const profile_names[] = {
 	[PLATFORM_PROFILE_BALANCED] = "balanced",
 	[PLATFORM_PROFILE_BALANCED_PERFORMANCE] = "balanced-performance",
 	[PLATFORM_PROFILE_PERFORMANCE] = "performance",
-	[PLATFORM_PROFILE_MAX_POWER] = "max-power",
 	[PLATFORM_PROFILE_CUSTOM] = "custom",
 };
 static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
@@ -507,8 +506,7 @@ int platform_profile_cycle(void)
 		if (err)
 			return err;
 
-		if (profile == PLATFORM_PROFILE_MAX_POWER ||
-		    profile == PLATFORM_PROFILE_CUSTOM ||
+		if (profile == PLATFORM_PROFILE_CUSTOM ||
 		    profile == PLATFORM_PROFILE_LAST)
 			return -EINVAL;
 
@@ -517,8 +515,7 @@ int platform_profile_cycle(void)
 		if (err)
 			return err;
 
-		/* never iterate into a custom or max power if all drivers supported it */
-		clear_bit(PLATFORM_PROFILE_MAX_POWER, data.aggregate);
+		/* never iterate into a custom if all drivers supported it */
 		clear_bit(PLATFORM_PROFILE_CUSTOM, data.aggregate);
 
 		next = find_next_bit_wrap(data.aggregate,
