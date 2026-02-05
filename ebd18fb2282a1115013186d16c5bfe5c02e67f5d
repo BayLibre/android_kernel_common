@@ -16,6 +16,29 @@
       "message": "Just checking on `sysfs_file_change_owner`.",
       "revId": "ebd18fb2282a1115013186d16c5bfe5c02e67f5d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47e16e14_0688315e",
+        "filename": "gki/aarch64/symbols/qcom",
+        "patchSetId": 6
+      },
+      "lineNbr": 3146,
+      "author": {
+        "id": 1125653
+      },
+      "writtenOn": "2026-02-05T13:03:54Z",
+      "side": 1,
+      "message": "no one should be using this function, it will be removed from upstream in a few minutes, as there is no in-kernel module users.  Please do not use it.",
+      "range": {
+        "startLine": 3146,
+        "startChar": 0,
+        "endLine": 3146,
+        "endChar": 25
+      },
+      "revId": "ebd18fb2282a1115013186d16c5bfe5c02e67f5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
