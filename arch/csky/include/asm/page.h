@@ -26,7 +26,7 @@
 
 #define PHYS_OFFSET_OFFSET (CONFIG_DRAM_BASE & (SSEG_SIZE - 1))
 
-#ifndef __ASSEMBLER__
+#ifndef __ASSEMBLY__
 
 #include <linux/pfn.h>
 
@@ -84,5 +84,5 @@ static inline unsigned long virt_to_pfn(const void *kaddr)
 #include <asm-generic/memory_model.h>
 #include <asm-generic/getorder.h>
 
-#endif /* !__ASSEMBLER__ */
+#endif /* !__ASSEMBLY__ */
 #endif /* __ASM_CSKY_PAGE_H */
