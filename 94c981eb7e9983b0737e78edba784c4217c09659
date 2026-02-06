@@ -69,6 +69,64 @@
       "parentUuid": "53d4ec32_c195221b",
       "revId": "94c981eb7e9983b0737e78edba784c4217c09659",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0551aae2_5de463f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2026-02-06T00:31:40Z",
+      "side": 1,
+      "message": "I\u0027m confused why we are seeing this _now_, when the patch landed in `android16-6.12` back in December.\n\nWas the automerger behind for several weeks?",
+      "revId": "94c981eb7e9983b0737e78edba784c4217c09659",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c5975ad_e988546f",
+        "filename": "drivers/dma-buf/sync_file.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2026-02-06T00:31:40Z",
+      "side": 1,
+      "message": "This \"base\" section needs to be removed.",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 18
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a8a1a9ca_f4d5999e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/dma-buf/sync_file.c",
+              "range": {
+                "startLine": 142,
+                "startChar": 0,
+                "endLine": 147,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "94c981eb7e9983b0737e78edba784c4217c09659",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
