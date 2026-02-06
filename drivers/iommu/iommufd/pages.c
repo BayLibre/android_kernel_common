@@ -530,6 +530,21 @@ static int batch_to_domain(struct pfn_batch *batch, struct iommu_domain *domain,
 		next_iova = min(last_iova + 1,
 				next_iova + batch->npfns[cur] * PAGE_SIZE -
 					page_offset);
+
+		if (domain->cookie_type == IOMMU_COOKIE_IOMMUFD) {
+			struct iommufd_hw_pagetable *hwpt = domain->iommufd_hwpt;
+			struct iommufd_hwpt_paging *hwpt_paging = find_hwpt_paging(hwpt);
+
+			if (hwpt_paging && !hwpt_paging->enforce_cache_coherency) {
+				struct device *flush_dev = iommufd_hwpt_get_noncoherent_dev(hwpt);
+
+				if (flush_dev)
+					iommu_sync_pfn_for_device(flush_dev, batch->pfns[cur],
+								  (size_t)batch->npfns[cur] << PAGE_SHIFT);
+				area->pages->cache_flush_required = true;
+			}
+		}
+
 		if (disable_large_pages)
 			rc = batch_iommu_map_small(
 				domain, iova,
@@ -694,9 +709,43 @@ out:
 	return rc;
 }
 
+static struct device *iopt_pages_get_noncoherent_dev(struct iopt_pages *pages)
+{
+	struct interval_tree_node *node;
+	struct iopt_area *area;
+
+	lockdep_assert_held(&pages->mutex);
+
+	if (!pages->cache_flush_required)
+		return NULL;
+
+	node = interval_tree_iter_first(&pages->domains_itree, 0, ULONG_MAX);
+	while (node) {
+		struct iommufd_hw_pagetable *hwpt;
+		unsigned long d_idx;
+
+		area = container_of(node, struct iopt_area, pages_node);
+		xa_for_each(&area->iopt->domains, d_idx, hwpt) {
+			struct iommufd_hwpt_paging *hwpt_paging =
+				find_hwpt_paging(hwpt);
+
+			if (hwpt_paging && !hwpt_paging->enforce_cache_coherency) {
+				struct device *dev =
+					iommufd_hwpt_get_noncoherent_dev(hwpt);
+
+				if (dev)
+					return dev;
+			}
+		}
+		node = interval_tree_iter_next(node, 0, ULONG_MAX);
+	}
+	return NULL;
+}
+
 static void batch_unpin(struct pfn_batch *batch, struct iopt_pages *pages,
 			unsigned int first_page_off, size_t npages)
 {
+	struct device *flush_dev = iopt_pages_get_noncoherent_dev(pages);
 	unsigned int cur = 0;
 
 	while (first_page_off) {
@@ -709,6 +758,11 @@ static void batch_unpin(struct pfn_batch *batch, struct iopt_pages *pages,
 	while (npages) {
 		size_t to_unpin = min_t(size_t, npages,
 					batch->npfns[cur] - first_page_off);
+
+		if (flush_dev)
+			iommu_sync_pfn_for_cpu(flush_dev,
+					      batch->pfns[cur] + first_page_off,
+					      (size_t)to_unpin << PAGE_SHIFT);
 
 		unpin_user_page_range_dirty_lock(
 			pfn_to_page(batch->pfns[cur] + first_page_off),

@@ -523,8 +523,10 @@ static int iommufd_hwpt_attach_device(struct iommufd_hw_pagetable *hwpt,
 	if (rc)
 		goto out_free_handle;
 
-	if (!idev->enforce_cache_coherency && !dev_is_dma_coherent(idev->dev))
+	if (!idev->enforce_cache_coherency && !dev_is_dma_coherent(idev->dev)) {
 		list_add(&idev->noncoherent_item, &hwpt->noncoherent_devs);
+		hwpt->noncoherent_dev_cnt++;
+	}
 
 	return 0;
 
@@ -552,8 +554,10 @@ static void iommufd_hwpt_detach_device(struct iommufd_hw_pagetable *hwpt,
 {
 	struct iommufd_attach_handle *handle;
 
-	if (!idev->enforce_cache_coherency && !dev_is_dma_coherent(idev->dev))
+	if (!idev->enforce_cache_coherency && !dev_is_dma_coherent(idev->dev)) {
 		list_del(&idev->noncoherent_item);
+		hwpt->noncoherent_dev_cnt--;
+	}
 
 	handle = iommufd_device_get_attach_handle(idev, pasid);
 	if (pasid == IOMMU_NO_PASID)

@@ -225,6 +225,8 @@ struct iopt_pages {
 	size_t npages;
 	size_t npinned;
 	size_t last_npinned;
+	unsigned int noncoherent_domain_cnt;
+	bool cache_flush_required;
 	struct task_struct *source_task;
 	struct mm_struct *source_mm;
 	struct user_struct *source_user;

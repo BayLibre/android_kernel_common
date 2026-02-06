@@ -366,6 +366,7 @@ struct iommufd_hw_pagetable {
 	struct iommu_domain *domain;
 	struct iommufd_fault *fault;
 	struct list_head noncoherent_devs;
+	unsigned int noncoherent_dev_cnt;
 	bool pasid_compat : 1;
 };
 
