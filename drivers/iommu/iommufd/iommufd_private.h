@@ -365,6 +365,7 @@ struct iommufd_hw_pagetable {
 	struct iommufd_object obj;
 	struct iommu_domain *domain;
 	struct iommufd_fault *fault;
+	struct list_head noncoherent_devs;
 	bool pasid_compat : 1;
 };
 
@@ -447,6 +448,8 @@ void iommufd_hwpt_paging_destroy(struct iommufd_object *obj);
 void iommufd_hwpt_paging_abort(struct iommufd_object *obj);
 void iommufd_hwpt_nested_destroy(struct iommufd_object *obj);
 void iommufd_hwpt_nested_abort(struct iommufd_object *obj);
+struct device *
+iommufd_hwpt_get_noncoherent_dev(struct iommufd_hw_pagetable *hwpt);
 int iommufd_hwpt_alloc(struct iommufd_ucmd *ucmd);
 int iommufd_hwpt_invalidate(struct iommufd_ucmd *ucmd);
 
@@ -487,6 +490,7 @@ struct iommufd_device {
 	struct iommufd_ctx *ictx;
 	struct iommufd_group *igroup;
 	struct list_head group_item;
+	struct list_head noncoherent_item;
 	/* always the physical device */
 	struct device *dev;
 	bool enforce_cache_coherency;

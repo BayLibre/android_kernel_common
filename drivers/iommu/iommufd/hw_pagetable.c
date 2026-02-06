@@ -63,6 +63,19 @@ void iommufd_hwpt_nested_destroy(struct iommufd_object *obj)
 		refcount_dec(&hwpt_nested->parent->common.obj.users);
 }
 
+struct device *
+iommufd_hwpt_get_noncoherent_dev(struct iommufd_hw_pagetable *hwpt)
+{
+	struct iommufd_device *idev;
+
+	if (list_empty(&hwpt->noncoherent_devs))
+		return NULL;
+
+	idev = list_first_entry(&hwpt->noncoherent_devs, struct iommufd_device,
+				noncoherent_item);
+	return idev->dev;
+}
+
 void iommufd_hwpt_nested_abort(struct iommufd_object *obj)
 {
 	iommufd_hwpt_nested_destroy(obj);
@@ -138,6 +151,7 @@ iommufd_hwpt_paging_alloc(struct iommufd_ctx *ictx, struct iommufd_ioas *ioas,
 		return ERR_CAST(hwpt_paging);
 	hwpt = &hwpt_paging->common;
 	hwpt->pasid_compat = flags & IOMMU_HWPT_ALLOC_PASID;
+	INIT_LIST_HEAD(&hwpt->noncoherent_devs);
 
 	INIT_LIST_HEAD(&hwpt_paging->hwpt_item);
 	/* Pairs with iommufd_hw_pagetable_destroy() */
@@ -247,6 +261,7 @@ iommufd_hwpt_nested_alloc(struct iommufd_ctx *ictx,
 		return ERR_CAST(hwpt_nested);
 	hwpt = &hwpt_nested->common;
 	hwpt->pasid_compat = flags & IOMMU_HWPT_ALLOC_PASID;
+	INIT_LIST_HEAD(&hwpt->noncoherent_devs);
 
 	refcount_inc(&parent->common.obj.users);
 	hwpt_nested->parent = parent;

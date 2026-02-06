@@ -5,6 +5,7 @@
 #include <linux/iommufd.h>
 #include <linux/pci-ats.h>
 #include <linux/slab.h>
+#include <linux/dma-map-ops.h>
 #include <uapi/linux/iommufd.h>
 
 #include "../iommu-priv.h"
@@ -522,6 +523,9 @@ static int iommufd_hwpt_attach_device(struct iommufd_hw_pagetable *hwpt,
 	if (rc)
 		goto out_free_handle;
 
+	if (!idev->enforce_cache_coherency && !dev_is_dma_coherent(idev->dev))
+		list_add(&idev->noncoherent_item, &hwpt->noncoherent_devs);
+
 	return 0;
 
 out_free_handle:
@@ -547,6 +551,9 @@ static void iommufd_hwpt_detach_device(struct iommufd_hw_pagetable *hwpt,
 				       ioasid_t pasid)
 {
 	struct iommufd_attach_handle *handle;
+
+	if (!idev->enforce_cache_coherency && !dev_is_dma_coherent(idev->dev))
+		list_del(&idev->noncoherent_item);
 
 	handle = iommufd_device_get_attach_handle(idev, pasid);
 	if (pasid == IOMMU_NO_PASID)
