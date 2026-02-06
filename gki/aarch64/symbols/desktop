@@ -322,6 +322,7 @@
   dput
   driver_register
   driver_unregister
+  drm_fdinfo_print_size
   drop_nlink
   d_splice_alias
   dummy_irq_chip
@@ -830,6 +831,8 @@
   platform_get_resource_byname
   __platform_register_drivers
   platform_unregister_drivers
+  pm_genpd_add_subdomain
+  pm_genpd_init
   __pm_runtime_disable
   pm_runtime_enable
   pm_runtime_forbid
