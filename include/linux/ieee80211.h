@@ -21,6 +21,7 @@
 #include <linux/bitfield.h>
 #include <asm/byteorder.h>
 #include <linux/unaligned.h>
+#include <algo.h>
 
 /*
  * DS bit usage
