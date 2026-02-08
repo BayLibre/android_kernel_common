@@ -360,7 +360,7 @@ static unsigned int adjust_por_ra_blocks(struct f2fs_sb_info *sbi,
 }
 
 static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
-				bool check_only)
+				bool check_only, bool *new_inode)
 {
 	struct curseg_info *curseg;
 	struct page *page = NULL;
@@ -418,6 +418,8 @@ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
 			if (IS_ERR(entry)) {
 				err = PTR_ERR(entry);
 				if (err == -ENOENT) {
+					if (check_only)
+						*new_inode = true;
 					err = 0;
 					goto next;
 				}
@@ -836,6 +838,17 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
 	unsigned long s_flags = sbi->sb->s_flags;
 	bool need_writecp = false;
 	bool fix_curseg_write_pointer = false;
+<<<<<<< HEAD   (37103a8f61ce646f563e841bcb361d33f13804b3 Merge 0e8bddb3e081 ("xfs: fix a memory leak in xfs_buf_item_)
+||||||| BASE   (0e8bddb3e081dbe9ce271da0227bb96045c3920a xfs: fix a memory leak in xfs_buf_item_init())
+#ifdef CONFIG_QUOTA
+	int quota_enabled;
+#endif
+=======
+	bool new_inode = false;
+#ifdef CONFIG_QUOTA
+	int quota_enabled;
+#endif
+>>>>>>> BRANCH (f30ea4a9e793a525e093a21254f9a0bb82e236fa f2fs: fix to detect recoverable inode during dryrun of find_)
 
 	if (is_sbi_flag_set(sbi, SBI_IS_WRITABLE))
 		f2fs_info(sbi, "recover fsync data on readonly fs");
@@ -848,8 +861,8 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
 	f2fs_down_write(&sbi->cp_global_sem);
 
 	/* step #1: find fsynced inode numbers */
-	err = find_fsync_dnodes(sbi, &inode_list, check_only);
-	if (err || list_empty(&inode_list))
+	err = find_fsync_dnodes(sbi, &inode_list, check_only, &new_inode);
+	if (err < 0 || (list_empty(&inode_list) && (!check_only || !new_inode)))
 		goto skip;
 
 	if (check_only) {
