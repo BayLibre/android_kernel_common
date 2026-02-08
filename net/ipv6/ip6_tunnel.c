@@ -840,6 +840,30 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
 	}
 
 	skb_reset_network_header(skb);
+<<<<<<< HEAD   (b5b90d209864d35a1bdd13d4a73892c9076b1295 Merge 5.15.198 into android13-5.15-lts)
+||||||| BASE   (9eec9a14ee10820a0c00dd3e02ac1e0ab27ad142 Linux 5.15.198)
+
+	if (!pskb_inet_may_pull(skb)) {
+		DEV_STATS_INC(tunnel->dev, rx_length_errors);
+		DEV_STATS_INC(tunnel->dev, rx_errors);
+		goto drop;
+	}
+
+	/* Get the outer header. */
+	ipv6h = (struct ipv6hdr *)(skb->head + nh);
+
+=======
+
+	if (skb_vlan_inet_prepare(skb, true)) {
+		DEV_STATS_INC(tunnel->dev, rx_length_errors);
+		DEV_STATS_INC(tunnel->dev, rx_errors);
+		goto drop;
+	}
+
+	/* Get the outer header. */
+	ipv6h = (struct ipv6hdr *)(skb->head + nh);
+
+>>>>>>> BRANCH (7b232985052fcf6a78bf0f965aa4241c0678c2ba Linux 5.15.199)
 	memset(skb->cb, 0, sizeof(struct inet6_skb_parm));
 
 	__skb_tunnel_rx(skb, tunnel->dev, tunnel->net);
