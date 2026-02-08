@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39f9a41f_24a52500",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-08T10:59:08Z",
+      "side": 1,
+      "message": "In the next patches, this will be called from HVC requests, it would be helpful to mention that this can be triggered by guests here.",
+      "range": {
+        "startLine": 216,
+        "startChar": 4,
+        "endLine": 216,
+        "endChar": 30
+      },
+      "revId": "5e06f64ca5970b20148bdbb105b5ec36935af62b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03bfeee0_47e1d979",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-08T10:59:08Z",
+      "side": 1,
+      "message": "We make the module pass the same cookie twice in reset and power_lock regeneration, which seems uncommon to me.\nI think we can some semantics to make only possible if reset_handler was already registered and then re-use the cookie passed there. wdyt?",
+      "range": {
+        "startLine": 301,
+        "startChar": 51,
+        "endLine": 301,
+        "endChar": 57
+      },
+      "revId": "5e06f64ca5970b20148bdbb105b5ec36935af62b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
