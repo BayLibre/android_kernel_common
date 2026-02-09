@@ -64,6 +64,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15a19e3e_066756bf",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-02-09T22:32:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6ab8a90_a69fdb65",
+      "revId": "99f1e23625d9e868244087a7dd766645faa82cb9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3252c82f_1fb85011",
@@ -95,6 +113,24 @@
       "side": 1,
       "message": "`file` is passed as a parameter to both wrapfd_get() and wrapfd_put(), so I think the caller should ensure that the object is stable. Otherwise how would the caller use the same object for wrapfd_put() if it becomes unstable after wrapfd_get()?\n\nSee how https://android-review.git.corp.google.com/c/kernel/common/+/3941159/2/drivers/android/wrapfd_test.c#141 uses these APIs. We can add additional refcounting here but I don\u0027t think that\u0027s required. WDYT?",
       "parentUuid": "3252c82f_1fb85011",
+      "revId": "99f1e23625d9e868244087a7dd766645faa82cb9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81253be6_925578d5",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-02-09T22:32:32Z",
+      "side": 1,
+      "message": "I added a comment in the API header that the caller should ensure file stability.",
+      "parentUuid": "7c966798_39f7618f",
       "revId": "99f1e23625d9e868244087a7dd766645faa82cb9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -148,6 +184,24 @@
       "side": 1,
       "message": "I can add a u64 for each command but I think if we decide to extend this UAPI we can just add more commands with required parameters.",
       "parentUuid": "ec9b8a41_066b7e17",
+      "revId": "99f1e23625d9e868244087a7dd766645faa82cb9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0049f1ad_ec405fa4",
+        "filename": "include/uapi/linux/wrapfd.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-02-09T22:32:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfae3bf1_776ff3ef",
       "revId": "99f1e23625d9e868244087a7dd766645faa82cb9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
