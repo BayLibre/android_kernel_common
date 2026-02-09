@@ -713,3 +713,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_bio_add_page_merge_bypass);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resched_curr_lazy);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_restore_curr_resched);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clear_curr_lazy);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_get_zone_mark);
