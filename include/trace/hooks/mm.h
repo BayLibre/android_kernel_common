@@ -678,6 +678,14 @@ DECLARE_HOOK(android_vh_free_page_bypass,
 DECLARE_HOOK(android_vh_free_folio_bypass,
 	TP_PROTO(struct folio *folio, unsigned int order, bool *skip_free_folio),
 	TP_ARGS(folio, order, skip_free_folio));
+DECLARE_HOOK(android_vh_folio_add_file_rmap,
+	TP_PROTO(struct folio *folio, struct page *page, int nr_pages,
+		 int level),
+	TP_ARGS(folio, page, nr_pages, level));
+DECLARE_HOOK(android_vh_folio_remove_rmap,
+	TP_PROTO(struct folio *folio, struct page *page, int nr_pages,
+		 int level),
+	TP_ARGS(folio, page, nr_pages, level));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
