@@ -1733,6 +1733,7 @@ struct f2fs_sb_info {
 
 	struct workqueue_struct *post_read_wq;	/* post read workqueue */
 
+<<<<<<< HEAD   (d6f390d77e9ae4b5d5bc1a3226d7d166e7b6a8f8 Merge f30ea4a9e793 ("f2fs: fix to detect recoverable inode d)
 	unsigned char errors[MAX_F2FS_ERRORS];	/* error flags */
 	spinlock_t error_lock;			/* protect errors array */
 	bool error_dirty;			/* errors of sb is dirty */
@@ -1740,6 +1741,12 @@ struct f2fs_sb_info {
 	struct kmem_cache *inline_xattr_slab;	/* inline xattr entry */
 	unsigned int inline_xattr_slab_size;	/* default inline xattr slab size */
 
+||||||| BASE   (f30ea4a9e793a525e093a21254f9a0bb82e236fa f2fs: fix to detect recoverable inode during dryrun of find_)
+	struct kmem_cache *inline_xattr_slab;	/* inline xattr entry */
+	unsigned int inline_xattr_slab_size;	/* default inline xattr slab size */
+
+=======
+>>>>>>> BRANCH (474cc3ed37436ddfd63cac8dbffe3b1e219e9100 f2fs: use global inline_xattr_slab instead of per-sb slab ca)
 	/* For reclaimed segs statistics per each GC mode */
 	unsigned int gc_segment_mode;		/* GC state for reclaimed segments */
 	unsigned int gc_reclaimed_segs[MAX_GC_MODE];	/* Reclaimed segs for each mode */
