@@ -16,6 +16,23 @@
       "message": "@smostafa@google.com Didn\u0027t you write something like this?",
       "revId": "1ecfe3b82394dc048d261b0a0118a1b9dda38eb1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d076a6e_3741bf66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-09T11:22:53Z",
+      "side": 1,
+      "message": "I believe Mostafa already pointed you to trace_hyp_printk() for debugging, that:\n  * Parse the strings in the kernel (safer and doesn\u0027t block at EL2)\n  * Is based on tracing that is being upstreamed so definitely a longer term solution.\n  * Doesn\u0027t have any concurrency issue with the host like UART does.\n  * Is per-cpu and very fast.\n  * Can be redirected to printk.",
+      "revId": "1ecfe3b82394dc048d261b0a0118a1b9dda38eb1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
