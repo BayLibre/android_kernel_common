@@ -45,6 +45,30 @@
       },
       "revId": "5e06f64ca5970b20148bdbb105b5ec36935af62b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32239f07_bf25c3d1",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-09T10:59:38Z",
+      "side": 1,
+      "message": "That\u0027s more or less what I do, but in both ways: the first one that sets the cookie \"wins\" unless this is NULL. \n\nThis way it can be called in any order and one can be used without the other. That just works in all situation. The only unsupported case is to use two different cookies.\n\nI believe this is just more robust and versatile.",
+      "parentUuid": "03bfeee0_47e1d979",
+      "range": {
+        "startLine": 301,
+        "startChar": 51,
+        "endLine": 301,
+        "endChar": 57
+      },
+      "revId": "5e06f64ca5970b20148bdbb105b5ec36935af62b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
