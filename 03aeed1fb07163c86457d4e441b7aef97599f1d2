@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97315fff_f88bce94",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2026-02-09T19:12:12Z",
+      "side": 1,
+      "message": "Could you expand this a bit just to clarify why this is necessary and for what purpose it is being used? While I suspect I can guess how it is being used from the context, exposing the mechanisms of locking internals (despite this being the safer reader side here) is usually not a good pattern.\n\nSpecifically, could you clarify if it needs to be delta between sched_clock and specifically the arch-timer counter, or would a similar delta with a generic clockid be sufficient?\n\nThere are other existing use patterns for correlating two counters/time-bases, so it might be better to properly add such an interface upstream.",
+      "revId": "03aeed1fb07163c86457d4e441b7aef97599f1d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
