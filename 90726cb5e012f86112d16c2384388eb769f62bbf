@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c01c455f_bd7246b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2026-02-09T19:14:28Z",
+      "side": 1,
+      "message": "Looks like just the traceiter and not the tracepoint symbols were added here?",
+      "revId": "90726cb5e012f86112d16c2384388eb769f62bbf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dde9b663_1f0bdc1b",
+        "filename": "gki/aarch64/symbols/oplus",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2026-02-09T19:14:28Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by Kernel Symbol Tracker (aarch64): Missing tracepoint symbols for the following traceiter symbols:\n  __traceiter_an...\n\nMissing tracepoint symbols for the following traceiter symbols:\n  __traceiter_android_vh_mutex_lock_released\n  __traceiter_android_vh_rwsem_lock_acquired\n  __traceiter_android_vh_pcpu_rwsem_lock_acquired\n  __traceiter_android_vh_pcpu_rwsem_lock_released\n  __traceiter_android_vh_rtmutex_lock_acquired\n  __traceiter_android_vh_mutex_lock_acquired\n  __traceiter_android_vh_rwsem_lock_released\n  __traceiter_android_vh_rtmutex_lock_released",
+      "revId": "90726cb5e012f86112d16c2384388eb769f62bbf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
