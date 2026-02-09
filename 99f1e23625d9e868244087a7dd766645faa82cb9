@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aff94b2f_f6632363",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2026-02-09T04:53:04Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this check be before L303? This might attempt to read past the end of the source file.",
+      "fixSuggestions": [
+        {
+          "fixId": "b114c725_8779e3c7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/android/wrapfd.c",
+              "range": {
+                "startLine": 302,
+                "startChar": 0,
+                "endLine": 302,
+                "endChar": 0
+              },
+              "replacement": "\n\t/* Align the size to the page boundary */\n\twrapfd_load.len \u003d PAGE_ALIGN(wrapfd_load.len);\n"
+            },
+            {
+              "path": "drivers/android/wrapfd.c",
+              "range": {
+                "startLine": 308,
+                "startChar": 0,
+                "endLine": 311,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "99f1e23625d9e868244087a7dd766645faa82cb9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3252c82f_1fb85011",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2026-02-09T04:53:04Z",
+      "side": 1,
+      "message": "Don\u0027t we need fget()/fput() in this function and in wrapfd_put() as well ?",
+      "revId": "99f1e23625d9e868244087a7dd766645faa82cb9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec9b8a41_066b7e17",
+        "filename": "include/uapi/linux/wrapfd.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1724998
+      },
+      "writtenOn": "2026-02-09T04:53:04Z",
+      "side": 1,
+      "message": "I am wondering if its worth adding any padding here just for future extension / usage ? Although i can\u0027t think of any immediate usage but given this is a UAPI",
+      "fixSuggestions": [
+        {
+          "fixId": "c94b6dbe_78c173fb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/uapi/linux/wrapfd.h",
+              "range": {
+                "startLine": 16,
+                "startChar": 0,
+                "endLine": 16,
+                "endChar": 0
+              },
+              "replacement": "\t__u64 padding[2];\t/* [in] for future extension */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "99f1e23625d9e868244087a7dd766645faa82cb9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
