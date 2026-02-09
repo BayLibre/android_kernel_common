@@ -34,6 +34,24 @@
       "parentUuid": "e0ba5ad4_0d781dd4",
       "revId": "0e8d28ad5aad8a78b8fc32975fadd8311e3eb735",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe38a9a2_1faf5d61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2026-02-09T12:51:22Z",
+      "side": 1,
+      "message": "The order is already dynamically configurable at the kernel command line using the page_reporting_order module option defined in mm/page_reporting.c. The patch presented here will actually have no effect, as a requested order of 0 is ignored in page_reporting_register().",
+      "parentUuid": "421a5214_4ac1d92e",
+      "revId": "0e8d28ad5aad8a78b8fc32975fadd8311e3eb735",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
