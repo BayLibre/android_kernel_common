@@ -8,3 +8,14 @@ type 'struct usb_device' changed
   member 'union { unsigned int offload_at_suspend:1; struct { u64 __kabi_reserved1; }; union { }; }' was added
   member 'union { int offload_usage; struct { u64 __kabi_reserved2; }; union { }; }' was added
 
+function symbol 'void __vma_start_write(struct vm_area_struct*, unsigned int)' changed
+  CRC changed from 0x23e843f3 to 0xb466a1d7
+
+function symbol 'int apply_to_page_range(struct mm_struct*, unsigned long, unsigned long, pte_fn_t, void*)' changed
+  CRC changed from 0x629b2fd2 to 0x45146ed9
+
+function symbol 'int remap_pfn_range(struct vm_area_struct*, unsigned long, unsigned long, unsigned long, pgprot_t)' changed
+  CRC changed from 0xe1399511 to 0xd7ccf227
+
+... 3 omitted; 6 symbols have only CRC changes
+
