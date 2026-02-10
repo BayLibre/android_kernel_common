@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "54885fcb_991385b0",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2026-02-10T22:20:52Z",
+      "side": 1,
+      "message": "Since faults on the same vma may be triggered by different threads of the same process, swapping out these fields non-atomically leads to type confusion.\n\nFor instance, if thread A executes only the line changing `vma-\u003evm_private_data`, and then thread B triggers another page fault, then thread B reads `vmf-\u003evma-\u003evm_private_data`. It expects a `wrap_ctx_mapping*`, but it gets the `dmabuf` private data instead (set by Thread A).",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 33
+      },
+      "revId": "780777f21fb7cac4a28f1dffe5581a50c3c6cb32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d1089721_15585b2d",
         "filename": "drivers/android/wrapfd.c",
         "patchSetId": 5
