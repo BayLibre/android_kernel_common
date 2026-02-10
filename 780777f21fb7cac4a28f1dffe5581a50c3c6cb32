@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0a3753cf_2952e16f",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-02-10T21:15:53Z",
+      "side": 1,
+      "message": "Ah, right. can_access() checks task-\u003emm not the task itself. Ok, I\u0027ll need to implement proper locking here.",
+      "parentUuid": "d1089721_15585b2d",
+      "range": {
+        "startLine": 357,
+        "startChar": 0,
+        "endLine": 364,
+        "endChar": 25
+      },
+      "revId": "780777f21fb7cac4a28f1dffe5581a50c3c6cb32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "55e6138f_e38cc0ae",
         "filename": "drivers/android/wrapfd.c",
         "patchSetId": 5
@@ -37,6 +61,24 @@
       "writtenOn": "2026-02-10T20:53:19Z",
       "side": 1,
       "message": "Nit: The instant you call `misc_register()`, ioctls can be called. You should probably call `dma_coerce_mask_and_coherent()` before `misc_register()`.",
+      "revId": "780777f21fb7cac4a28f1dffe5581a50c3c6cb32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63f561dc_113743d8",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-02-10T21:15:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "55e6138f_e38cc0ae",
       "revId": "780777f21fb7cac4a28f1dffe5581a50c3c6cb32",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
