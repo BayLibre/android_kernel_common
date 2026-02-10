@@ -3868,6 +3868,11 @@ static int intel_iommu_map(struct iommu_domain *domain,
 	/* Round up size to next multiple of PAGE_SIZE, if it and
 	   the low bits of hpa would take us onto the next page */
 	size = aligned_nrpages(hpa, size);
+
+	if (pkvm_enabled())
+		return pkvm_domain_mapping(dmar_domain, iova >> VTD_PAGE_SHIFT,
+					   hpa >> VTD_PAGE_SHIFT, size, prot, gfp);
+
 	return domain_map(dmar_domain, iova >> VTD_PAGE_SHIFT,
 				hpa >> VTD_PAGE_SHIFT, size, prot, gfp);
 }
@@ -3913,6 +3918,15 @@ static size_t intel_iommu_unmap(struct iommu_domain *domain,
 
 	start_pfn = iova >> VTD_PAGE_SHIFT;
 	last_pfn = (iova + size - 1) >> VTD_PAGE_SHIFT;
+
+	if (pkvm_enabled()) {
+		int ret = pkvm_domain_unmapping(dmar_domain, start_pfn, last_pfn);
+
+		if (ret)
+			pr_err("%s: domain unmap IOVA[start: %lx, end: %lx] failed (err=%d)\n",
+			       __func__, start_pfn, last_pfn, ret);
+		return size;
+	}
 
 	domain_unmap(dmar_domain, start_pfn, last_pfn, &gather->freelist);
 
