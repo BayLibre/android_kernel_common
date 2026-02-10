@@ -204,7 +204,7 @@ int pkvm_iommu_pasid_setup_fl(struct pasid_setup_fl_data *in, struct pasid_setup
 int pkvm_iommu_pasid_setup_sl(struct pasid_setup_sl_data *in, struct pasid_setup_sl_data *out);
 int pkvm_iommu_pasid_teardown(struct pasid_teardown_data *data);
 int pkvm_iommu_alloc_domain(struct alloc_domain_data *data);
-int pkvm_iommu_free_domain(u64 pgd_gpa);
+int pkvm_iommu_free_domain(u64 pgd_gpa, struct pkvm_memcache *mc);
 #endif /* !__PKVM_HYP__ */
 #else /* !CONFIG_PKVM_INTEL */
 static inline int pkvm_qi_submit_sync(struct intel_iommu *iommu,
