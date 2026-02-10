@@ -317,11 +317,27 @@ static int restore_sve_fpsimd_context(struct user_ctxs *user)
 	fpsimd_flush_task_state(current);
 	/* From now, fpsimd_thread_switch() won't touch thread.sve_state */
 
+	if (sve.flags & SVE_SIG_FLAG_SM) {
+		sme_alloc(current, false);
+		if (!current->thread.za_state)
+			return -ENOMEM;
+	}
+
 	sve_alloc(current, true);
 	if (!current->thread.sve_state) {
 		clear_thread_flag(TIF_SVE);
 		return -ENOMEM;
 	}
+
+	if (sve.flags & SVE_SIG_FLAG_SM) {
+		current->thread.svcr |= SVCR_SM_MASK;
+		set_thread_flag(TIF_SME);
+	} else {
+		current->thread.svcr &= ~SVCR_SM_MASK;
+		set_thread_flag(TIF_SVE);
+	}
+
+	current->thread.fp_type = FP_STATE_SVE;
 
 	err = __copy_from_user(current->thread.sve_state,
 			       (char __user const *)user->sve +
@@ -330,11 +346,21 @@ static int restore_sve_fpsimd_context(struct user_ctxs *user)
 	if (err)
 		return -EFAULT;
 
+<<<<<<< HEAD   (d1980123fc390d7f17e10aa4c927cbad29c1fa23 Merge 48fadd8f057e ("mei: trace: treat reg parameter as stri)
 	if (sve.flags & SVE_SIG_FLAG_SM)
 		current->thread.svcr |= SVCR_SM_MASK;
 	else
 		set_thread_flag(TIF_SVE);
 
+||||||| BASE   (48fadd8f057e485164a580d548c52c7ae93d9f05 mei: trace: treat reg parameter as string)
+	if (sve.flags & SVE_SIG_FLAG_SM)
+		current->thread.svcr |= SVCR_SM_MASK;
+	else
+		set_thread_flag(TIF_SVE);
+	current->thread.fp_type = FP_STATE_SVE;
+
+=======
+>>>>>>> BRANCH (9bc3adba8c35119be80ab20217027720446742f2 arm64/fpsimd: signal: Fix restoration of SVE context)
 fpsimd_only:
 	/* copy the FP and status/control registers */
 	/* restore_sigframe() already checked that user->fpsimd != NULL. */
