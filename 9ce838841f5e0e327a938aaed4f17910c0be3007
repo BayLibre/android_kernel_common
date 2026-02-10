@@ -1,0 +1,206 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fac9390f_4d8d1d3f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-02-10T10:01:29Z",
+      "side": 1,
+      "message": "%s/Add a pKVM vendor module which handles the logic for trap \u0026 emulate the register access from the host.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 30
+      },
+      "revId": "9ce838841f5e0e327a938aaed4f17910c0be3007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c905f9a_326be92a",
+        "filename": "drivers/irqchip/gic-v3-its-pkvm/hyp/emulate.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-02-10T10:01:29Z",
+      "side": 1,
+      "message": "I think these worth checking before calling `hyp_add_emulate`. (eg. when we add the region of the ITS, we already use `create_private_mapping` which expects page alignment)",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 17
+      },
+      "revId": "9ce838841f5e0e327a938aaed4f17910c0be3007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bb2fda5_8f243772",
+        "filename": "drivers/irqchip/gic-v3-its-pkvm/hyp/emulate.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-02-10T10:01:29Z",
+      "side": 1,
+      "message": "BUG: Add it to the list only when we have a success error code returned",
+      "range": {
+        "startLine": 21,
+        "startChar": 1,
+        "endLine": 21,
+        "endChar": 49
+      },
+      "revId": "9ce838841f5e0e327a938aaed4f17910c0be3007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbf2b4b6_968bb4a8",
+        "filename": "drivers/irqchip/gic-v3-its-pkvm/hyp/emulate.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-02-10T10:01:29Z",
+      "side": 1,
+      "message": "I think we should permit 64 bit accesses as well",
+      "range": {
+        "startLine": 36,
+        "startChar": 1,
+        "endLine": 36,
+        "endChar": 24
+      },
+      "revId": "9ce838841f5e0e327a938aaed4f17910c0be3007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a40093ae_2a549f6c",
+        "filename": "drivers/irqchip/gic-v3-its-pkvm/hyp/emulate.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-02-10T10:01:29Z",
+      "side": 1,
+      "message": "While unlikely, if reg \u003d 0x1F which is the masked value from `ESR_ELx_SRT_MASK` with the OOB you can leak the sp which is adjacent:\n```\nstruct user_pt_regs {\n\t__u64\t\tregs[31];    /// \n\t__u64\t\tsp;           \n\t...\n```",
+      "range": {
+        "startLine": 42,
+        "startChar": 21,
+        "endLine": 42,
+        "endChar": 36
+      },
+      "revId": "9ce838841f5e0e327a938aaed4f17910c0be3007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9738f748_6e8a3ddc",
+        "filename": "drivers/irqchip/gic-v3-its-pkvm/hyp/emulate.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-02-10T10:01:29Z",
+      "side": 1,
+      "message": "NIT: Lint is unhappy about the format of the license. Can you fix this ?",
+      "range": {
+        "startLine": 1,
+        "startChar": 2,
+        "endLine": 1,
+        "endChar": 40
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "101adc93_ec717448",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/irqchip/gic-v3-its-pkvm/hyp/emulate.h",
+              "range": {
+                "startLine": 2,
+                "startChar": 0,
+                "endLine": 2,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9ce838841f5e0e327a938aaed4f17910c0be3007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af451e8b_0856f2ef",
+        "filename": "drivers/irqchip/gic-v3-its-pkvm/hyp/its.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-02-10T10:01:29Z",
+      "side": 1,
+      "message": "NIT: Should we make it a configurable option from Kconfig and set it 1 by default ? On phones it is unlikely that we will have more than 1.",
+      "range": {
+        "startLine": 16,
+        "startChar": 38,
+        "endLine": 16,
+        "endChar": 39
+      },
+      "revId": "9ce838841f5e0e327a938aaed4f17910c0be3007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "827edeb7_b0fd2589",
+        "filename": "drivers/irqchip/gic-v3-its-pkvm/hyp/its.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-02-10T10:01:29Z",
+      "side": 1,
+      "message": "BUG: Check if we still have space before dereferencing it",
+      "range": {
+        "startLine": 38,
+        "startChar": 17,
+        "endLine": 38,
+        "endChar": 30
+      },
+      "revId": "9ce838841f5e0e327a938aaed4f17910c0be3007",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
