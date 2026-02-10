@@ -2432,16 +2432,28 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h,
 	struct fbcon_ops *ops = info->fbcon_par;
 	struct fbcon_display *p = &fb_display[vc->vc_num];
 	int resize, ret, old_userfont, old_width, old_height, old_charcount;
+<<<<<<< HEAD   (220b83623acd533055e3c280d0da18686d53d52e Merge 5a341810a22e ("fbdev: fbcon: release buffer when fbcon)
 	int cnt;
 	char *old_data = NULL;
+||||||| BASE   (5a341810a22e51c3a7a108f7896b5fd58d44d127 fbdev: fbcon: release buffer when fbcon_do_set_font() failed)
+	char *old_data = NULL;
+=======
+	u8 *old_data = vc->vc_font.data;
+>>>>>>> BRANCH (ae68f57df3335679653868fafccd8c88ef84ae98 fbcon: always restore the old font data in fbcon_do_set_font)
 
 	resize = (w != vc->vc_font.width) || (h != vc->vc_font.height);
+<<<<<<< HEAD   (220b83623acd533055e3c280d0da18686d53d52e Merge 5a341810a22e ("fbdev: fbcon: release buffer when fbcon)
 	if (p->userfont)
 		old_data = vc->vc_font.data;
 	if (userfont)
 		cnt = FNTCHARCNT(data);
 	else
 		cnt = 256;
+||||||| BASE   (5a341810a22e51c3a7a108f7896b5fd58d44d127 fbdev: fbcon: release buffer when fbcon_do_set_font() failed)
+	if (p->userfont)
+		old_data = vc->vc_font.data;
+=======
+>>>>>>> BRANCH (ae68f57df3335679653868fafccd8c88ef84ae98 fbcon: always restore the old font data in fbcon_do_set_font)
 	vc->vc_font.data = (void *)(p->fontdata = data);
 	old_userfont = p->userfont;
 	if ((p->userfont = userfont))
@@ -2474,13 +2486,13 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h,
 		update_screen(vc);
 	}
 
-	if (old_data && (--REFCOUNT(old_data) == 0))
+	if (old_userfont && (--REFCOUNT(old_data) == 0))
 		kfree(old_data - FONT_EXTRA_WORDS * sizeof(int));
 	return 0;
 
 err_out:
 	p->fontdata = old_data;
-	vc->vc_font.data = (void *)old_data;
+	vc->vc_font.data = old_data;
 
 	if (userfont) {
 		p->userfont = old_userfont;
