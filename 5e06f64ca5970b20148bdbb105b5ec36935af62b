@@ -117,6 +117,30 @@
       },
       "revId": "5e06f64ca5970b20148bdbb105b5ec36935af62b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f922bcac_4135df26",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-10T09:47:50Z",
+      "side": 1,
+      "message": "That feel more strange, the cookie should be tied to a callback I guess, maybe register all callbacks with one call, have something as `pkvm_power_ops` struct that the module can register along with the cookie?",
+      "parentUuid": "5e66e8f8_d68adf5a",
+      "range": {
+        "startLine": 301,
+        "startChar": 51,
+        "endLine": 301,
+        "endChar": 57
+      },
+      "revId": "5e06f64ca5970b20148bdbb105b5ec36935af62b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
