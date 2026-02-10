@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1089721_15585b2d",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2026-02-10T20:53:19Z",
+      "side": 1,
+      "message": "I don\u0027t buy this. Other processes may not be able to change it, but other threads of the same process can. So by calling this in parallel with `WRAPFD_DEV_IOC_EMPTY` I think the below call triggers UAF.",
+      "range": {
+        "startLine": 357,
+        "startChar": 0,
+        "endLine": 364,
+        "endChar": 25
+      },
+      "revId": "780777f21fb7cac4a28f1dffe5581a50c3c6cb32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55e6138f_e38cc0ae",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2026-02-10T20:53:19Z",
+      "side": 1,
+      "message": "Nit: The instant you call `misc_register()`, ioctls can be called. You should probably call `dma_coerce_mask_and_coherent()` before `misc_register()`.",
+      "revId": "780777f21fb7cac4a28f1dffe5581a50c3c6cb32",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
