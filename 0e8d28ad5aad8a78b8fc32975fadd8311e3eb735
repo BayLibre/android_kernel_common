@@ -52,6 +52,24 @@
       "parentUuid": "421a5214_4ac1d92e",
       "revId": "0e8d28ad5aad8a78b8fc32975fadd8311e3eb735",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "000ad3bd_9c2873a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4270143
+      },
+      "writtenOn": "2026-02-10T06:19:19Z",
+      "side": 1,
+      "message": "Thanks for pointing this out! @keirf@google.com.\nYes, this patch alone wont have any affect as order 0 is ignored.\nChange made in [1] should allow us to pass order \u003d 0.\n\nBTW, is there a specific reason why page_reporting_register() starts from order 1 instead of 0?\n\n[1] https://android-review.googlesource.com/c/kernel/common/+/3938594?usp\u003dsubmitted-together",
+      "parentUuid": "fe38a9a2_1faf5d61",
+      "revId": "0e8d28ad5aad8a78b8fc32975fadd8311e3eb735",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
