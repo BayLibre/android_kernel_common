@@ -488,7 +488,7 @@ int pkvm_iommu_alloc_domain(struct alloc_domain_data *data)
 	return 0;
 }
 
-int pkvm_iommu_free_domain(u64 pgd_gpa)
+int pkvm_iommu_free_domain(u64 pgd_gpa, struct pkvm_memcache *mc)
 {
 	struct dmar_domain *domain;
 	void *pgd = pkvm_host_gpa_to_virt(pgd_gpa);
@@ -499,15 +499,14 @@ int pkvm_iommu_free_domain(u64 pgd_gpa)
 		pkvm_err("%s: no domain exist for pgd: %p\n", __func__, pgd);
 		return -EINVAL;
 	}
-	ret = pkvm_free_iommu_domain(domain);
+
+	memset(mc, 0, sizeof(*mc));
+	ret = pkvm_free_iommu_domain(domain, mc);
 	if (ret) {
 		pkvm_err("%s: failed to free the domain[pgd:%p] (err=%d)\n",
 			 __func__, pgd, ret);
 		return ret;
 	}
-
-	pkvm_dbg("%s: remove write protect pgd: %p\n", __func__, pgd);
-	pkvm_hyp_donate_host(pgd_gpa, VTD_PAGE_SIZE, false);
 
 	return ret;
 }
