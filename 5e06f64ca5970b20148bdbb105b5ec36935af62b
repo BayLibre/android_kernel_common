@@ -69,6 +69,30 @@
       },
       "revId": "5e06f64ca5970b20148bdbb105b5ec36935af62b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f25f960_8135e311",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-10T09:42:30Z",
+      "side": 1,
+      "message": "I\u0027d be worried about the indeterminism of this, as they may be implemented by 2 different modules. Anyway, no strong opinion, we can keep like this and see how it goes.",
+      "parentUuid": "32239f07_bf25c3d1",
+      "range": {
+        "startLine": 301,
+        "startChar": 51,
+        "endLine": 301,
+        "endChar": 57
+      },
+      "revId": "5e06f64ca5970b20148bdbb105b5ec36935af62b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
