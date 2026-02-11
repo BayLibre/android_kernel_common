@@ -16,6 +16,24 @@
       "message": "Could you expand this a bit just to clarify why this is necessary and for what purpose it is being used? While I suspect I can guess how it is being used from the context, exposing the mechanisms of locking internals (despite this being the safer reader side here) is usually not a good pattern.\n\nSpecifically, could you clarify if it needs to be delta between sched_clock and specifically the arch-timer counter, or would a similar delta with a generic clockid be sufficient?\n\nThere are other existing use patterns for correlating two counters/time-bases, so it might be better to properly add such an interface upstream.",
       "revId": "03aeed1fb07163c86457d4e441b7aef97599f1d2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "391220fa_e57a199c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1902115
+      },
+      "writtenOn": "2026-02-11T08:55:26Z",
+      "side": 1,
+      "message": "Here is some information, hope this can answer your question. These interfaces can help to export cycle, time, freq at the same time. It can be used in vendor kernel module to get these information to know the offset between start of sched clock time and start of arch timer counter. Say that other subsystem also use arch timer counter as the clock source, the offset can be use to align timestamp between kernel and other subsystems.",
+      "parentUuid": "97315fff_f88bce94",
+      "revId": "03aeed1fb07163c86457d4e441b7aef97599f1d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
