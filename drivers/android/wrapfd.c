@@ -135,17 +135,16 @@ static int dmabuf_content_load(struct wrap_content *content, struct file *file,
 
 	sgtbl = dma_buf_map_attachment(attachment, DMA_FROM_DEVICE);
 	if (IS_ERR(sgtbl)) {
-		dma_buf_detach(dmabuf_content->dmabuf, attachment);
-		return PTR_ERR(sgtbl);
+		ret = PTR_ERR(sgtbl);
+		goto err_detach;
 	}
 
 	dma_buf_mangle_sg_table(sgtbl);
 
 	bvec = kvcalloc(sgtbl->nents, sizeof(*bvec), GFP_KERNEL);
 	if (!bvec) {
-		dma_buf_unmap_attachment(attachment, sgtbl, DMA_FROM_DEVICE);
-		dma_buf_detach(dmabuf_content->dmabuf, attachment);
-		return -ENOMEM;
+		ret = -ENOMEM;
+		goto err_unmap;
 	}
 
 	bvec_size = init_bio_data(sgtbl, buf_offs, len, bvec);
@@ -154,14 +153,22 @@ static int dmabuf_content_load(struct wrap_content *content, struct file *file,
 	kiocb.ki_pos = file_offs;
 	kiocb.ki_flags |= IOCB_DIRECT;
 
+	ret = dma_buf_begin_cpu_access(dmabuf_content->dmabuf,
+				       DMA_FROM_DEVICE);
+	if (ret)
+		goto err_free;
+
 	while (kiocb.ki_pos < file_offs + len) {
 		ret = vfs_iocb_iter_read(file, &kiocb, &iter);
 		if (ret <= 0)
 			break;
 	}
-
+	dma_buf_end_cpu_access(dmabuf_content->dmabuf, DMA_FROM_DEVICE);
+err_free:
 	kvfree(bvec);
+err_unmap:
 	dma_buf_unmap_attachment(attachment, sgtbl, DMA_FROM_DEVICE);
+err_detach:
 	dma_buf_detach(dmabuf_content->dmabuf, attachment);
 
 	return ret < 0 ? ret : 0;
