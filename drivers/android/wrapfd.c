@@ -336,6 +336,11 @@ struct wrap_ctx {
 	struct wrap_owner owner;
 	bool allow_guests;
 	int map_count;
+	/*
+	 * protects content modifications when lock is not held due to
+	 * possiblity of sleep during the operation.
+	 */
+	bool mod_blocked;
 };
 
 static struct wrap_ctx *create_wrap_ctx(void)
@@ -393,6 +398,35 @@ static int can_access(struct wrap_ctx *ctx, struct task_struct *task,
 		return -ENOENT;
 
 	return 0;
+}
+
+static int block_modifications(struct wrap_ctx *ctx)
+{
+	int ret = can_access(ctx, current, true);
+
+	if (ret)
+		return ret;
+
+	/*
+	 * The task is the owner, the content can't be modified by other
+	 * processes but racing threads of the owner process can still
+	 * modify it. Use mod_blocked flag to prevent that.
+	 */
+	if (ctx->mod_blocked)
+		return -EAGAIN;
+
+	ctx->mod_blocked = true;
+
+	return 0;
+}
+
+static void unblock_modifications(struct wrap_ctx *ctx)
+{
+	assert_spin_locked(&ctx->lock);
+	if (WARN_ON(!ctx->mod_blocked))
+		return;
+
+	ctx->mod_blocked = false;
 }
 
 static void wrap_vm_open(struct vm_area_struct *vma)
@@ -619,19 +653,19 @@ static int wrap_file_load(struct wrap_ctx *ctx,
 	}
 
 	spin_lock(&ctx->lock);
-	ret = can_access(ctx, current, true);
-	/*
-	 * Even though we drop the ctx->lock, the task is the owner,
-	 * if ret==0, so the content can't be erased or changed from
-	 * under us.
-	 */
+	ret = block_modifications(ctx);
 	spin_unlock(&ctx->lock);
 
-	if (!ret)
-		ret = ctx->content->ops->load(ctx->content, file,
-					      wrapfd_load.file_offs,
-					      wrapfd_load.buf_offs,
-					      wrapfd_load.len);
+	if (ret)
+		goto put_file;
+
+	ret = ctx->content->ops->load(ctx->content, file,
+				      wrapfd_load.file_offs,
+				      wrapfd_load.buf_offs,
+				      wrapfd_load.len);
+	spin_lock(&ctx->lock);
+	unblock_modifications(ctx);
+	spin_unlock(&ctx->lock);
 put_file:
 	fput(file);
 
@@ -655,7 +689,7 @@ static int wrap_file_rewrap(struct wrap_ctx *ctx,
 		return -EINVAL;
 
 	spin_lock(&ctx->lock);
-	ret = can_access(ctx, current, true);
+	ret = block_modifications(ctx);
 	if (!ret) {
 		content = ctx->content;
 		ctx->content = NULL;
@@ -685,6 +719,10 @@ static int wrap_file_rewrap(struct wrap_ctx *ctx,
 	if (new_content != content)
 		content->ops->free(content);
 
+	spin_lock(&ctx->lock);
+	unblock_modifications(ctx);
+	spin_unlock(&ctx->lock);
+
 	return ret;
 
 free_new_ctx:
@@ -699,6 +737,7 @@ restore_content:
 	 */
 	spin_lock(&ctx->lock);
 	ctx->content = content;
+	unblock_modifications(ctx);
 	spin_unlock(&ctx->lock);
 out:
 	return ret;
@@ -711,12 +750,13 @@ static int wrap_file_empty(struct wrap_ctx *ctx)
 
 	spin_lock(&ctx->lock);
 
-	ret = can_access(ctx, current, true);
+	ret = block_modifications(ctx);
 	if (ret)
 		goto unlock;
 
 	content = ctx->content;
 	ctx->content = NULL;
+	unblock_modifications(ctx);
 unlock:
 	spin_unlock(&ctx->lock);
 
