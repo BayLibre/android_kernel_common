@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6a36bd4_8bf325ed",
+        "filename": "sound/soc/soc-ops.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-02-12T17:48:17Z",
+      "side": 1,
+      "message": "This is redundant. Checked at line 336.\n\nHow about changing this to:\n```\ntrace_android_vh_put_volsw(mc-\u003eplatform_max, min, val, \u0026err);\nif (err)\n    return err;\n```\nThen there is no need to put the existing code into the conditional.",
+      "revId": "2d3bcd0c0be275bcbaa8c6df2b5c344d7e0127ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21f1877b_45560204",
+        "filename": "sound/soc/soc-ops.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-02-12T17:48:17Z",
+      "side": 1,
+      "message": "redundant. Same suggestion as above.",
+      "revId": "2d3bcd0c0be275bcbaa8c6df2b5c344d7e0127ba",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
