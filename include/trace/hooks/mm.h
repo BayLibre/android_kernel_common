@@ -437,6 +437,21 @@ DECLARE_HOOK(android_vh_folios_put_refs_direct_free_extent,
 DECLARE_HOOK(android_vh_free_pages_and_swap_cache,
 	TP_PROTO(struct folio *folio),
 	TP_ARGS(folio));
+<<<<<<< PATCH SET (714850fbe5042a9be1e902f49d7483545b53e19e ANDROID: vendor_hook: add vendor hooks for swapin and swap_w)
+DECLARE_HOOK(android_vh_swapin_start,
+	TP_PROTO(unsigned long *swapin_start),
+	TP_ARGS(swapin_start));
+DECLARE_HOOK(android_vh_swapin_end,
+	TP_PROTO(struct folio *folio, unsigned long swapin_start),
+	TP_ARGS(folio, swapin_start));
+DECLARE_HOOK(android_vh_swap_writepage_start,
+	TP_PROTO(unsigned long *swap_writepage_start),
+	TP_ARGS(swap_writepage_start));
+DECLARE_HOOK(android_vh_swap_writepage_end,
+	TP_PROTO(struct page *page, unsigned long swap_writepage_start),
+	TP_ARGS(page, swap_writepage_start));
+||||||| BASE      (570445596c41c9971e27a2e828cc89add47f6604 Revert "ANDROID: dma-buf: Expose is_dma_buf_file()")
+=======
 DECLARE_HOOK(android_vh_do_anonymous_page,
 	TP_PROTO(struct vm_area_struct *vma, struct folio *folio),
 	TP_ARGS(vma, folio));
@@ -453,6 +468,7 @@ DECLARE_HOOK(android_vh_shmem_swapin_folio,
 DECLARE_HOOK(android_vh_uprobes_uprobe_write,
 	TP_PROTO(struct folio *new_folio, struct folio *old_folio),
 	TP_ARGS(new_folio, old_folio));
+>>>>>>> BASE      (420974cf8d3b7ef91dede06e1d6b4c4bff83b986 ANDROID: vendor_hooks: add hooks to modify pageflags)
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
