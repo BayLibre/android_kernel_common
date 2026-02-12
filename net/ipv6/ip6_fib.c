@@ -1127,6 +1127,23 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
 					fib6_clean_expires(iter);
 				else
 					fib6_set_expires(iter, rt->expires);
+<<<<<<< HEAD   (f8cc24a5eb44c15ea7d14c77129a69a2b5f7b874 Revert "xsk: Fix race condition in AF_XDP generic RX path")
+||||||| BASE   (c56aaf1a85ae918dd521fb2869028cf533d2755a Linux 6.6.123)
+					fib6_add_gc_list(iter);
+				}
+				if (!(rt->fib6_flags & (RTF_ADDRCONF | RTF_PREFIX_RT))) {
+					iter->fib6_flags &= ~RTF_ADDRCONF;
+					iter->fib6_flags &= ~RTF_PREFIX_RT;
+				}
+=======
+					fib6_add_gc_list(iter);
+				}
+				if (!(rt->fib6_flags & (RTF_ADDRCONF | RTF_PREFIX_RT)) &&
+				    !iter->fib6_nh->fib_nh_gw_family) {
+					iter->fib6_flags &= ~RTF_ADDRCONF;
+					iter->fib6_flags &= ~RTF_PREFIX_RT;
+				}
+>>>>>>> BRANCH (1b4ef5214f17e671cc13f2da4a678574ce91d151 Linux 6.6.124)
 
 				if (rt->fib6_pmtu)
 					fib6_metric_set(iter, RTAX_MTU,
