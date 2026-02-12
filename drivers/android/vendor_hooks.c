@@ -703,6 +703,14 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_skip_cma);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_resched_curr_lazy);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_restore_curr_resched);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_clear_curr_lazy);
+<<<<<<< HEAD   (73ec59b5cf2573293ee87a7be9fed6a2d0497ffd ANDROID: GKI: update symbol list file for xiaomi)
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_delay_schedule);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_task_fork);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_task_exit);
+||||||| BASE   (11db3ae9dfabecc425872da2430009dc86702c86 ANDROID: blk-mq: Relax dispatch serialization)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swapin_start);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swapin_end);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swap_writepage_start);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_swap_writepage_end);
+>>>>>>> CHANGE (759748a8b40786b1d590c169e97bb35da568d995 ANDROID: vendor_hook: add vendor hooks for swapin and swap_w)
