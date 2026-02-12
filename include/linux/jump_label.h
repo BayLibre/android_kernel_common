@@ -109,6 +109,16 @@ struct static_key {
 
 #endif /* __ASSEMBLY__ */
 
+/*
+ * Since the fips140 module doesn't support code patching, it uses the
+ * CONFIG_JUMP_LABEL=n implementation of static keys.
+ *
+ * However, to allow the fips140 module to use static keys that are exported by
+ * the core kernel, it uses the CONFIG_JUMP_LABEL=y definition of the struct.
+ *
+ * Care should be taken not to export any static keys from the fips140 module.
+ * That would not work as expected, due to the mismatched implementations.
+ */
 #if defined(CONFIG_JUMP_LABEL) && !defined(BUILD_FIPS140_KO)
 #include <asm/jump_label.h>
 
@@ -196,30 +206,7 @@ enum jump_label_type {
 
 struct module;
 
-#ifdef BUILD_FIPS140_KO
-
-#include <linux/atomic.h>
-
-static inline int static_key_count(struct static_key *key)
-{
-	return raw_atomic_read(&key->enabled);
-}
-
-static __always_inline bool static_key_false(struct static_key *key)
-{
-	if (unlikely(static_key_count(key) > 0))
-		return true;
-	return false;
-}
-
-static __always_inline bool static_key_true(struct static_key *key)
-{
-	if (likely(static_key_count(key) > 0))
-		return true;
-	return false;
-}
-
-#elif defined(CONFIG_JUMP_LABEL)
+#if defined(CONFIG_JUMP_LABEL) && !defined(BUILD_FIPS140_KO)
 
 #define JUMP_TYPE_FALSE		0UL
 #define JUMP_TYPE_TRUE		1UL
