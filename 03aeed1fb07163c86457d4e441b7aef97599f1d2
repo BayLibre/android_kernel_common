@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "adc1c886_64826587",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2026-02-14T04:00:33Z",
+      "side": 1,
+      "message": "So, I suspect there is something akin to the get_device_system_crosststamp() that could be used to create a proper interface to align sched_clock with other clockids (accessing the arch timer counter should be akin to CLOCK_MONOTONIC_RAW).\n\nThat said, I\u0027m a bit swamped at the moment, so I\u0027m not sure I have bandwidth to propose and work through an alternative solution with you.\n\nFor future kernels, I think we will be hesitant to export this sort of internal accessor logic, so please do plan to develop an alternative solution.",
+      "parentUuid": "391220fa_e57a199c",
+      "revId": "03aeed1fb07163c86457d4e441b7aef97599f1d2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e2b63511_6ee02732",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
