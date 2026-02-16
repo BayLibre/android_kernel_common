@@ -430541,6 +430541,11 @@ function {
   parameter_id: 0xc9082b19
 }
 function {
+  id: 0xfc99743d
+  return_type_id: 0x4585663f
+  parameter_id: 0xc9082b19
+}
+function {
   id: 0xfc9ebae8
   return_type_id: 0xa047635b
   parameter_id: 0x340dec91
@@ -478669,6 +478674,15 @@ elf_symbol {
   full_name: "interval_tree_remove"
 }
 elf_symbol {
+  id: 0x09639ee8
+  name: "intlog10"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x67a6a32f
+  type_id: 0xfc99743d
+  full_name: "intlog10"
+}
+elf_symbol {
   id: 0x22167fe7
   name: "invalidate_bdev"
   is_defined: true
@@ -525687,6 +525701,7 @@ interface {
   symbol_id: 0x0d19106d
   symbol_id: 0xfe94820e
   symbol_id: 0xe7fc8dce
+  symbol_id: 0x09639ee8
   symbol_id: 0x22167fe7
   symbol_id: 0x312d0c48
   symbol_id: 0xae43d3d4
