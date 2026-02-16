@@ -454247,6 +454247,15 @@ elf_symbol {
   full_name: "clk_gate_ops"
 }
 elf_symbol {
+  id: 0xbe9716aa
+  name: "clk_gate_restore_context"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x6af12aee
+  type_id: 0x12217922
+  full_name: "clk_gate_restore_context"
+}
+elf_symbol {
   id: 0x48318742
   name: "clk_get"
   is_defined: true
@@ -521377,6 +521386,7 @@ interface {
   symbol_id: 0x8a96e88d
   symbol_id: 0xbd2ef94c
   symbol_id: 0x580bab0e
+  symbol_id: 0xbe9716aa
   symbol_id: 0x48318742
   symbol_id: 0xa11919c2
   symbol_id: 0x04880ada
