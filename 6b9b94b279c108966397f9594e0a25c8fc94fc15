@@ -111,6 +111,30 @@
       },
       "revId": "6b9b94b279c108966397f9594e0a25c8fc94fc15",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e509a472_72ce0cc6",
+        "filename": "drivers/iommu/iommu.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2019,
+      "author": {
+        "id": 1874171
+      },
+      "writtenOn": "2026-02-16T22:49:13Z",
+      "side": 1,
+      "message": "I checked the users and the vendor hook can be dropped indeed, only the vendor data fields are needed. All users are purely downstream and they can be updated accordingly. Thanks!",
+      "parentUuid": "86531b63_4f1c110f",
+      "range": {
+        "startLine": 2016,
+        "startChar": 0,
+        "endLine": 2019,
+        "endChar": 9
+      },
+      "revId": "6b9b94b279c108966397f9594e0a25c8fc94fc15",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
