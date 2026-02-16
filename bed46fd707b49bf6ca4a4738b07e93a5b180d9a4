@@ -16,6 +16,24 @@
       "message": "Do you really need that for android16? It is very intrusive and I wouldn\u0027t want to merge it before android17.",
       "revId": "bed46fd707b49bf6ca4a4738b07e93a5b180d9a4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12e1c03d_c9857afb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1876090
+      },
+      "writtenOn": "2026-02-16T05:33:24Z",
+      "side": 1,
+      "message": "Hi Vincent, android16-6.12 is used in ALOS program. if this is not pushed, all SMC calls made before pKVM vendor modules are not filtered in EL2. This adds additional hacks in EL3 / S-EL1. Can this be tested in automation  and allow to merge?",
+      "parentUuid": "ac490f91_3ad3c63a",
+      "revId": "bed46fd707b49bf6ca4a4738b07e93a5b180d9a4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
