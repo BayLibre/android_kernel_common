@@ -3576,10 +3576,21 @@ intel_dp_init_source_oui(struct intel_dp *intel_dp)
 	if (drm_dp_dpcd_read(&intel_dp->aux, DP_SOURCE_OUI, buf, sizeof(buf)) < 0)
 		drm_dbg_kms(display->drm, "Failed to read source OUI\n");
 
+<<<<<<< HEAD   (6c4e31f33336fcb5d4dd2153dbaf29a16368176e Revert "BACKPORT: UPSTREAM: dm: optimize REQ_PREFLUSH with d)
 	if (memcmp(oui, buf, sizeof(oui)) == 0) {
 		/* Assume the OUI was written now. */
 		intel_dp->last_oui_write = jiffies;
 		return;
+||||||| BASE   (2f0f4b0a9a6860859d4600b34014f6f95c453c6e Revert "BACKPORT: UPSTREAM: dm: optimize REQ_PREFLUSH with d)
+		if (memcmp(oui, buf, sizeof(oui)) == 0)
+			return;
+=======
+		if (memcmp(oui, buf, sizeof(oui)) == 0) {
+			/* Assume the OUI was written now. */
+			intel_dp->last_oui_write = jiffies;
+			return;
+		}
+>>>>>>> BRANCH (83c6be0e1efeae09e04fb24fcfc221c5af65b1f4 Merge tag 'android16-6.12.63_r00' into android16-6.12)
 	}
 
 	if (drm_dp_dpcd_write(&intel_dp->aux, DP_SOURCE_OUI, oui, sizeof(oui)) < 0) {
