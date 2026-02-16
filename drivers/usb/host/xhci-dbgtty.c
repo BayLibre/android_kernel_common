@@ -554,7 +554,12 @@ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
 	 * Hang up the TTY. This wakes up any blocked
 	 * writers and causes subsequent writes to fail.
 	 */
+<<<<<<< HEAD   (6c4e31f33336fcb5d4dd2153dbaf29a16368176e Revert "BACKPORT: UPSTREAM: dm: optimize REQ_PREFLUSH with d)
 	tty_vhangup(port->port.tty);
+||||||| BASE   (2f0f4b0a9a6860859d4600b34014f6f95c453c6e Revert "BACKPORT: UPSTREAM: dm: optimize REQ_PREFLUSH with d)
+=======
+	tty_port_tty_vhangup(&port->port);
+>>>>>>> BRANCH (83c6be0e1efeae09e04fb24fcfc221c5af65b1f4 Merge tag 'android16-6.12.63_r00' into android16-6.12)
 
 	tty_unregister_device(dbc_tty_driver, port->minor);
 	xhci_dbc_tty_exit_port(port);

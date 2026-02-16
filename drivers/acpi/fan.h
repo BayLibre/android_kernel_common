@@ -11,7 +11,12 @@
 #define _ACPI_FAN_H_
 
 #include <linux/kconfig.h>
+<<<<<<< HEAD   (6c4e31f33336fcb5d4dd2153dbaf29a16368176e Revert "BACKPORT: UPSTREAM: dm: optimize REQ_PREFLUSH with d)
 #include "int340x_thermal.h"
+||||||| BASE   (2f0f4b0a9a6860859d4600b34014f6f95c453c6e Revert "BACKPORT: UPSTREAM: dm: optimize REQ_PREFLUSH with d)
+=======
+#include <linux/limits.h>
+>>>>>>> BRANCH (83c6be0e1efeae09e04fb24fcfc221c5af65b1f4 Merge tag 'android16-6.12.63_r00' into android16-6.12)
 
 #define ACPI_FAN_DEVICE_IDS	\
 	ACPI_INT3404_DEVICE_IDS, \
@@ -53,6 +58,38 @@ struct acpi_fan {
 	struct device_attribute fst_speed;
 	struct device_attribute fine_grain_control;
 };
+
+/**
+ * acpi_fan_speed_valid - Check if fan speed value is valid
+ * @speeed: Speed value returned by the ACPI firmware
+ *
+ * Check if the fan speed value returned by the ACPI firmware is valid. This function is
+ * necessary as ACPI firmware implementations can return 0xFFFFFFFF to signal that the
+ * ACPI fan does not support speed reporting. Additionally, some buggy ACPI firmware
+ * implementations return a value larger than the 32-bit integer value defined by
+ * the ACPI specification when using placeholder values. Such invalid values are also
+ * detected by this function.
+ *
+ * Returns: True if the fan speed value is valid, false otherwise.
+ */
+static inline bool acpi_fan_speed_valid(u64 speed)
+{
+	return speed < U32_MAX;
+}
+
+/**
+ * acpi_fan_power_valid - Check if fan power value is valid
+ * @power: Power value returned by the ACPI firmware
+ *
+ * Check if the fan power value returned by the ACPI firmware is valid.
+ * See acpi_fan_speed_valid() for details.
+ *
+ * Returns: True if the fan power value is valid, false otherwise.
+ */
+static inline bool acpi_fan_power_valid(u64 power)
+{
+	return power < U32_MAX;
+}
 
 int acpi_fan_get_fst(acpi_handle handle, struct acpi_fan_fst *fst);
 int acpi_fan_create_attributes(struct acpi_device *device);
