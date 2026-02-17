@@ -131,7 +131,7 @@ static bool mem_relinquish_available;
 
 static bool pkvm_page_relinquish_disallowed(void)
 {
-	return mem_relinquish_available && (pkvm_granule > PAGE_SIZE);
+	return !mem_relinquish_available || WARN_ON(pkvm_granule > PAGE_SIZE);
 }
 
 static void pkvm_page_relinquish(struct page *page, unsigned int nr)
@@ -139,7 +139,7 @@ static void pkvm_page_relinquish(struct page *page, unsigned int nr)
 	phys_addr_t phys, end;
 	u32 func_id = ARM_SMCCC_VENDOR_HYP_KVM_MEM_RELINQUISH_FUNC_ID;
 
-	if (!mem_relinquish_available)
+	if (WARN_ON_ONCE(!mem_relinquish_available))
 		return;
 
 	phys = page_to_phys(page);
