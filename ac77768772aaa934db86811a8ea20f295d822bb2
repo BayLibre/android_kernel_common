@@ -142,6 +142,30 @@
       },
       "revId": "ac77768772aaa934db86811a8ea20f295d822bb2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "326ed903_65ce5f7c",
+        "filename": "drivers/iommu/intel/iommu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1560,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2026-02-18T15:28:12Z",
+      "side": 1,
+      "message": "Ok, so lets leave it as. Even if they will change we will get merge conflict and will need to update them anyway. I was just thinking the less we modify the generic intel/iommu code the better and thought that indeed LTO will optimize it anyway (but seems it is not enabled on gki, at least when I use gki_defconfig I see CONFIG_LTO_NONE in .config)",
+      "parentUuid": "077472d1_8aa990f8",
+      "range": {
+        "startLine": 1542,
+        "startChar": 0,
+        "endLine": 1560,
+        "endChar": 0
+      },
+      "revId": "ac77768772aaa934db86811a8ea20f295d822bb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
