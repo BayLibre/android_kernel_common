@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ed2595a_d8d2d0f8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-18T17:25:55Z",
+      "side": 1,
+      "message": "nit: just noticed that this description seems a bit confusing. \"theoretically, IOMMU registers could also be accessed during\npKVM initialization\" seems not so important here. We do need this helper function even though irq remap initialization happens long before pKVM initialization, just because irq remap initialization uses the same MMIO accessors. (And moreover, we don\u0027t really safely support this theoretical case of accessing IOMMU registers during pKVM initialization.)\n\nSo maybe this 2nd paragraph could be e.g. just:\n\n\"With pKVM, IOMMU initialization is delayed until after deprivilege and\npKVM initialization, so in almost all cases the IOMMU driver needs to\nuse hypercalls to pKVM for accessing IOMMU registers. But irq remap\nfunctionality is enabled much before (during x2apic initialization) and\nit uses IOMMU QI for flushing IRTE cache. So since pKVM is not\ninitialized yet at that time, irq remap initialization needs to access\nIOMMU registers directly, not through hypercalls. So this wrapper\nfunction will be used, in particular, by the IOMMU MMIO accessors for\nchecking if pKVM is already initialized or not, and thus, which of the\ntwo methods of accessing the IOMMU MMIO should be used.\"\n\n?\n\nAnd if we want, we may also add one more paragraph like e.g.:\n\n\"Note that we assume that IOMMU registers may only be used either before or\nafter pKVM initialization, not during it (since e.g. the IOMMU driver\u0027s\nirq handler is only enabled after pKVM initialization), so there are no\nraces with pKVM initialization.\"\n\n?",
+      "revId": "9faa71c715f15d6347e0ca885f1440a6b5376df9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
