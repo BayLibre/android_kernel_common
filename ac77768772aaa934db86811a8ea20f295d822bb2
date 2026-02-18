@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ec4d5a4_2afb29f7",
+        "filename": "drivers/iommu/intel/iommu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1560,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2026-02-18T13:20:29Z",
+      "side": 1,
+      "message": "Why not keep those functions in drivers/iommu/intel/iommu.c and just change them from static to global and provide only declaration here in drivers/iommu/intel/iommu.h. That way the diff will be smaller and potential conflict surface for LTS merges smaller. WDYT?",
+      "range": {
+        "startLine": 1542,
+        "startChar": 0,
+        "endLine": 1560,
+        "endChar": 0
+      },
+      "revId": "ac77768772aaa934db86811a8ea20f295d822bb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
