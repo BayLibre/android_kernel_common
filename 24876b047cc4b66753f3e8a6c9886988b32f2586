@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85ed0dc8_b0a77b2f",
+        "filename": "drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2026-02-18T09:25:40Z",
+      "side": 1,
+      "message": "This predicate was correct as it was. !mem_relinquish_available simply means that reliniquish hypercall is not advertised for this VM and is not needed -- that is, the balloon is allowed to initialise and operate without using the hypercall.\n\nFor your purpose, placing the WARN_ON() around the entire original predicate would be fine.",
+      "revId": "24876b047cc4b66753f3e8a6c9886988b32f2586",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee4e1f40_092ace1f",
+        "filename": "drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2026-02-18T09:25:40Z",
+      "side": 1,
+      "message": "By above reasoning, no WARN_ON here.",
+      "revId": "24876b047cc4b66753f3e8a6c9886988b32f2586",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
