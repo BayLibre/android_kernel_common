@@ -46,6 +46,30 @@
       },
       "revId": "ac77768772aaa934db86811a8ea20f295d822bb2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab940821_53a34866",
+        "filename": "drivers/iommu/intel/iommu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1560,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-18T14:17:33Z",
+      "side": 1,
+      "message": "My thoughts on this: I suppose in practice there should be no overhead if we make them non-inlined: the compiler will still inline those \"instances\" of these functions that it considers worth inlining (even without LTO).\n\nOTOH, it seems just more \"idiomatic\" to keep such simple helper functions as inline functions in headers. (OTOH I\u0027m not sure if that\u0027s a strong enough reason in our case.)\n\nIf these functions indeed rarely change in upstream, I\u0027m probably fine either way.",
+      "parentUuid": "3461673f_2ff3f04e",
+      "range": {
+        "startLine": 1542,
+        "startChar": 0,
+        "endLine": 1560,
+        "endChar": 0
+      },
+      "revId": "ac77768772aaa934db86811a8ea20f295d822bb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
