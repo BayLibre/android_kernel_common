@@ -70,6 +70,30 @@
       },
       "revId": "ac77768772aaa934db86811a8ea20f295d822bb2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c228ee2_92f317aa",
+        "filename": "drivers/iommu/intel/iommu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1560,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-02-18T14:34:30Z",
+      "side": 1,
+      "message": "\u003e I suppose in practice there should be no overhead if we make them non-inlined: the compiler will still inline those \"instances\" of these functions that it considers worth inlining (even without LTO).\n\nMy understanding on this: I think if the function is in the same file, then compiler makes a judgement about inlining or not. if the function is in another file, the compiler cannot see the implementation(I think C compiler takes one file at a time for processing and does not cross reference) and hence generates code to make a function call and leaves it to linker. This is just my understanding based on some reading, but not verified in practice.",
+      "parentUuid": "ab940821_53a34866",
+      "range": {
+        "startLine": 1542,
+        "startChar": 0,
+        "endLine": 1560,
+        "endChar": 0
+      },
+      "revId": "ac77768772aaa934db86811a8ea20f295d822bb2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
