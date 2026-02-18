@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee958a7b_247dcbe8",
+        "filename": "drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2026-02-18T12:17:49Z",
+      "side": 1,
+      "message": "Older versions of GKI required npVMs also to use the relinquish hypercall, but that requirement was removed around 15-6.6 iirc. So a npVM may or may not need to use the hypercall, depending on what host kernel version is running.\n\nAnd yes, I do mean just move the printing of the warning, but leave the existing predicate logic as is.",
+      "parentUuid": "12153c45_26420c19",
+      "revId": "24876b047cc4b66753f3e8a6c9886988b32f2586",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ee4e1f40_092ace1f",
         "filename": "drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c",
         "patchSetId": 1
