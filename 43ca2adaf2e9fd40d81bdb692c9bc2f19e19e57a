@@ -16,6 +16,24 @@
       "message": "just wondering if this can stall infinitely? Would it makes sense to have a limit on retry and bail out?",
       "revId": "43ca2adaf2e9fd40d81bdb692c9bc2f19e19e57a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73d4667e_6d13e79a",
+        "filename": "arch/x86/coco/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-18T18:14:13Z",
+      "side": 1,
+      "message": "It can, but it shouldn\u0027t really happen if the host behaves correctly. Although the host is untrusted, but in this case it\u0027s just a DoS (and it would be DoS either way).\n\nIf we add a retry limit, we need to decide what limit, and which error to return, etc. Might be better to keep the code simpler?\n\nBTW actually currently pKVM never returns this -EAGAIN (as I mentioned in the commit message, this logic is added here proactively). Currently pKVM, instead, transparently lets the guest execute the same instruction to retry the hypercall (i.e. the guest isn\u0027t even aware of that). But as we recently discussed with Greg and Chuanxiao, that current behavior has some drawbacks (e.g. the host is not able to properly return -ENOMEM to the guest under memory pressure), so we might change pKVM to use -EAGAIN in the future. So this is is a proactive preparation for that (so that we won\u0027t need to update our 6.18 guest kernels later).",
+      "parentUuid": "483a73d7_9121d4f5",
+      "revId": "43ca2adaf2e9fd40d81bdb692c9bc2f19e19e57a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
