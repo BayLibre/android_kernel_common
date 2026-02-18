@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e825648b_a407b3ca",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-18T23:13:47Z",
+      "side": 1,
+      "message": "nit: maybe worth adding a comment like \"Returns true if all IOMMUs have paging structure coherency\"? (I think I already posted this comment, let me post it again.)",
+      "revId": "5ea045f75e4905ad3a45ff536ed2c7accee15ee5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a598f9c_51ed3e47",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-18T23:13:47Z",
+      "side": 1,
+      "message": "nit: maybe just `iommu_paging_structure_coherent \u0026\u003d iommu_paging_structure_coherency(iommu)`? (I think I already posted this comment, let me post it again.)",
+      "revId": "5ea045f75e4905ad3a45ff536ed2c7accee15ee5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
