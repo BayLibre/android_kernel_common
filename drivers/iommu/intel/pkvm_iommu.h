@@ -176,7 +176,9 @@ static inline bool is_iommu_mmio(unsigned long phys)
 
 bool overlaps_iommu_mmio(unsigned long phys, unsigned long size);
 bool is_dev_in_satc(u16 bdf);
-bool pkvm_iommu_paging_structure_coherency(void);
+void host_ept_flush_needed_inc(void);
+void host_ept_flush_needed_dec(void);
+bool host_ept_flush_needed(void);
 
 void pkvm_put_iommu_domain(struct dmar_domain *domain);
 int pkvm_free_iommu_domain(struct dmar_domain *domain);
