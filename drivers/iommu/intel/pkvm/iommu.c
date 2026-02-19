@@ -33,6 +33,8 @@ int nr_satc_devs;
 #define PKVM_MAX_IOMMU_NUM	16
 static struct intel_iommu iommus[PKVM_MAX_IOMMU_NUM];
 static int nr_iommus;
+static int nr_activated_iommus;
+static bool iommus_activated;
 
 /*
  * Flag denoting if all IOMMUs in the system have page walk coherency support.
@@ -45,9 +47,38 @@ static int nr_iommus;
  */
 static bool iommu_paging_structure_coherent = true;
 
-bool pkvm_iommu_paging_structure_coherency(void)
+/*
+ * Count of devices that require cpu cache flushes on host ept updates.
+ * This is because the devices are configured as passthrough in the host
+ * and attached to an IOMMU which doesn't have page walk coherency support.
+ * Hence we need to flush cpu caches on host ept update if there is atleast
+ * one such device.
+ */
+static atomic_t host_ept_flush_needed_devs;
+
+void host_ept_flush_needed_inc(void)
 {
-	return iommu_paging_structure_coherent;
+	/* Pairs with atomic_read_acquire in host_ept_flush_needed() */
+	atomic_inc_return_release(&host_ept_flush_needed_devs);
+}
+
+void host_ept_flush_needed_dec(void)
+{
+	/* Pairs with atomic_read_acquire in host_ept_flush_needed() */
+	atomic_dec_return_release(&host_ept_flush_needed_devs);
+}
+
+bool host_ept_flush_needed(void)
+{
+	if (likely(iommus_activated)) {
+		/*
+		 * Pairs with atomic_{inc,dec}_return_release in
+		 * host_ept_flush_needed_{inc,dec}
+		 */
+		return atomic_read_acquire(&host_ept_flush_needed_devs) > 0;
+	}
+
+	return !iommu_paging_structure_coherent;
 }
 
 bool is_dev_in_satc(u16 bdf)
@@ -285,6 +316,9 @@ static int handle_gcmd_te(struct intel_iommu *iommu, bool enable)
 
 		handle_gcmd_direct(iommu, DMA_GCMD_TE, true);
 		pkvm_dbg("iommu%d: Translation enabled!\n", iommu->seq_id);
+		nr_activated_iommus++;
+		if (nr_activated_iommus == nr_iommus)
+			iommus_activated = true;
 	} else {
 		/*
 		 * Translation is not really disabled as it would
