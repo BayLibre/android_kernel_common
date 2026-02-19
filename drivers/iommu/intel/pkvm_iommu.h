@@ -161,6 +161,9 @@ static inline bool iommu_supports_5levels(void)
 	return iommu_pglvl_mask & IOMMU_PGT_5LEVEL;
 }
 
+extern struct dmar_domain pt_domain;
+void init_pt_domain(void);
+
 struct dmar_domain *pkvm_alloc_iommu_domain(struct alloc_domain_data *data);
 struct dmar_domain *pkvm_get_iommu_domain(void *pgd);
 struct dmar_domain *pkvm_get_iommu_domain_noref(void *pgd);
@@ -179,6 +182,7 @@ bool pkvm_iommu_paging_structure_coherency(void);
 
 struct cache_tag *pkvm_alloc_cache_tag(void);
 void pkvm_free_cache_tag(struct cache_tag *cache_tag);
+void pkvm_iommu_pt_flush(unsigned long vaddr, unsigned long size);
 
 int pkvm_get_domain_cache_tag_assign(void *pgd, int did, u32 pasid,
 					 struct device_domain_info *info);
