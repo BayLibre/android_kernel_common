@@ -169,6 +169,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d5d86e2_5b83a548",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-19T10:59:44Z",
+      "side": 1,
+      "message": "I see, I think in that case we should, as there is asymmetry in the handling of host and guests in `__kvm_iommu_donate_pages`",
+      "parentUuid": "c5641b1a_10c1b38f",
+      "range": {
+        "startLine": 865,
+        "startChar": 7,
+        "endLine": 865,
+        "endChar": 15
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2ee586fe_bbd2e82a",
         "filename": "arch/arm64/include/asm/kvm_host.h",
         "patchSetId": 5
@@ -204,6 +228,30 @@
       "side": 1,
       "message": "I really need to keep it ultra compressed to fit the HVCs arguments!\n\nI have fixed though __kvm_iommu_donate_pages() so the right HVC is generated depending if HVC or hyp_vcpu.",
       "parentUuid": "2ee586fe_bbd2e82a",
+      "range": {
+        "startLine": 869,
+        "startChar": 8,
+        "endLine": 869,
+        "endChar": 30
+      },
+      "revId": "29938b39dc8a5b5f55e7d5c6a4e52adbfe883a57",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70731f35_83e06825",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 869,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-19T10:59:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "03fbd2d9_99494a05",
       "range": {
         "startLine": 869,
         "startChar": 8,

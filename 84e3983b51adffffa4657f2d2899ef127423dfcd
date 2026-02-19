@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fff25c73_6772ca3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-19T10:59:44Z",
+      "side": 1,
+      "message": "o",
+      "revId": "84e3983b51adffffa4657f2d2899ef127423dfcd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d61d0af6_aa1fa673",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-19T10:59:44Z",
+      "side": 1,
+      "message": "IMHO, we should make this 16 bytes including the type, to avoid compressing it with the smccc return (see my comment below) we can rely on bit-fields in that case.\nFor example max arm64 IPA is 52 bits",
+      "range": {
+        "startLine": 865,
+        "startChar": 0,
+        "endLine": 865,
+        "endChar": 20
+      },
+      "revId": "84e3983b51adffffa4657f2d2899ef127423dfcd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c563a75_d58c9a32",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-19T10:59:44Z",
+      "side": 1,
+      "message": "Is there a reason for doing this?",
+      "range": {
+        "startLine": 905,
+        "startChar": 1,
+        "endLine": 905,
+        "endChar": 30
+      },
+      "revId": "84e3983b51adffffa4657f2d2899ef127423dfcd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc07edb4_9128cd93",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-19T10:59:44Z",
+      "side": 1,
+      "message": "Does that mean the hypervisor can\u0027t create a request with negative error code?",
+      "range": {
+        "startLine": 913,
+        "startChar": 0,
+        "endLine": 916,
+        "endChar": 2
+      },
+      "revId": "84e3983b51adffffa4657f2d2899ef127423dfcd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a365063_c7bd73ea",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1701,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-19T10:59:44Z",
+      "side": 1,
+      "message": "This might not be needed with aosp/3957211",
+      "range": {
+        "startLine": 1701,
+        "startChar": 12,
+        "endLine": 1701,
+        "endChar": 39
+      },
+      "revId": "84e3983b51adffffa4657f2d2899ef127423dfcd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
