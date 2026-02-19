@@ -135,6 +135,7 @@ struct zram {
 	unsigned long *bitmap;
 	unsigned long nr_pages;
 	atomic_t prefetch_in_progress;
+	struct xarray prefetch_cache;
 #endif
 #ifdef CONFIG_ZRAM_MEMORY_TRACKING
 	struct dentry *debugfs_dir;

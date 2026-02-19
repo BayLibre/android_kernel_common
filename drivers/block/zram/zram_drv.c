@@ -34,6 +34,7 @@
 #include <linux/cpuhotplug.h>
 #include <linux/part_stat.h>
 #include <linux/kernel_read_file.h>
+#include <linux/xarray.h>
 
 #include "zram_drv.h"
 #include "zram_ioctl.h"
@@ -677,6 +678,10 @@ static void reset_bdev(struct zram *zram)
 	zram->backing_dev = NULL;
 	zram->bdev = NULL;
 	zram->disk->fops = &zram_devops;
+
+	xa_destroy(&zram->prefetch_cache);
+	xa_init(&zram->prefetch_cache);
+
 	kvfree(zram->bitmap);
 	zram->bitmap = NULL;
 }
@@ -1044,10 +1049,11 @@ static struct zram_wb_req *zram_select_idle_req(struct zram_wb_ctl *wb_ctl)
 static int restore_bdev_page(struct zram *zram, struct page *page, u32 index)
 {
 	unsigned long handle;
-	void *src;
+	void *src, *old_val;
 	int prio = 0;
 	u32 size = PAGE_SIZE;
 	bool huge = true;
+	unsigned long blk_idx;
 
 	zram_slot_lock(zram, index);
 	/*
@@ -1065,6 +1071,8 @@ static int restore_bdev_page(struct zram *zram, struct page *page, u32 index)
 		size = huge ? PAGE_SIZE : zram_get_obj_size(zram, index);
 		prio = zram_get_priority(zram, index);
 	}
+
+	blk_idx = zram_get_handle(zram, index);
 
 	handle = zs_malloc(zram->mem_pool, size,
 			   GFP_NOIO | __GFP_NOWARN |
@@ -1085,9 +1093,20 @@ static int restore_bdev_page(struct zram *zram, struct page *page, u32 index)
 	kunmap_local(src);
 
 	/*
-	 * zram_free_page will clear the ZRAM_WB flags, and also release bdev
-	 * block.
+	 * zram_free_page clears ZRAM_WB flags but does not release the
+	 * underlying bdev block. We retain blk_idx here and defer its release
+	 * until swap_slot_free_notify is triggered.
+	 * Warn if we are unexpectedly overwriting an existing cache entry.
 	 */
+	old_val = xa_store(&zram->prefetch_cache, index, xa_mk_value(blk_idx),
+			   GFP_NOIO);
+	if (xa_err(old_val)) {
+		zram_slot_unlock(zram, index);
+		zs_free(zram->mem_pool, handle);
+		return -ENOMEM;
+	}
+	WARN_ON(xa_is_value(old_val));
+
 	zram_free_page(zram, index);
 #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
 	/* zram_free_page sets ac_time to zero, reset to current boot time. */
@@ -1224,6 +1243,36 @@ next:
 	return ret;
 }
 
+/*
+ * The slot was prefetched and going to writeback again. We can reuse the
+ * blk_idx in prefetch_cache to reduce the extra write operations.
+ */
+static void zram_rebind_bdev_block(struct zram *zram, u32 index,
+				   unsigned long blk_idx)
+{
+	u32 size;
+	int prio;
+	bool huge;
+
+	if (zram->wb_compressed) {
+		size = zram_get_obj_size(zram, index);
+		prio = zram_get_priority(zram, index);
+		huge = zram_test_flag(zram, index, ZRAM_HUGE);
+	}
+
+	zram_free_page(zram, index);
+	zram_set_flag(zram, index, ZRAM_WB);
+	zram_set_handle(zram, index, blk_idx);
+
+	if (zram->wb_compressed) {
+		if (huge)
+			zram_set_flag(zram, index, ZRAM_HUGE);
+		zram_set_obj_size(zram, index, size);
+		zram_set_priority(zram, index, prio);
+	}
+	atomic64_inc(&zram->stats.pages_stored);
+}
+
 int zram_writeback_slots(struct zram *zram,
 			 struct zram_pp_ctl *ctl,
 			 struct zram_wb_ctl *wb_ctl)
@@ -1233,6 +1282,7 @@ int zram_writeback_slots(struct zram *zram,
 	struct zram_pp_slot *pps;
 	int ret = 0, err = 0;
 	u32 index = 0;
+	void *val;
 
 	while ((pps = select_pp_slot(ctl))) {
 		if (atomic_read(&zram->prefetch_in_progress)) {
@@ -1284,6 +1334,14 @@ int zram_writeback_slots(struct zram *zram,
 		 */
 		if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
 			goto next;
+
+		/* Reuse the blk_idx if it is found in the prefetch cache. */
+		val = xa_erase(&zram->prefetch_cache, index);
+		if (xa_is_value(val)) {
+			zram_rebind_bdev_block(zram, index, xa_to_value(val));
+			goto next;
+		}
+
 		if (zram->wb_compressed)
 			err = read_from_zspool_raw(zram, req->page, index);
 		else
@@ -1589,13 +1647,17 @@ static int decompress_bdev_page(struct zram *zram, struct page *page, u32 index)
 	void *src;
 
 	zram_slot_lock(zram, index);
-	/* Since slot was unlocked we need to make sure it's still ZRAM_WB */
-	if (!zram_test_flag(zram, index, ZRAM_WB)) {
-		zram_slot_unlock(zram, index);
-		/* We read some stale data, zero it out */
-		memset_page(page, 0, 0, PAGE_SIZE);
-		return -EIO;
-	}
+	/*
+	 * ZRAM_WB may have been cleared while the slot was unlocked, but
+	 * decompression remains safe. The upper swap layer guarantees that
+	 * swap_slot_free_notify will not free the slot during an active
+	 * page fault. Therefore, if ZRAM_WB was cleared, it must have been
+	 * by the prefetch path. Since prefetch uses prefetch_cache to keep
+	 * blk_idx valid until the slot is explicitly freed, blk_idx still
+	 * points to valid data for this fault.
+	 */
+	BUG_ON(!zram_test_flag(zram, index, ZRAM_WB) &&
+	       !xa_load(&zram->prefetch_cache, index));
 
 	if (zram_test_flag(zram, index, ZRAM_HUGE)) {
 		zram_slot_unlock(zram, index);
@@ -2286,7 +2348,11 @@ static void zram_free_page(struct zram *zram, size_t index)
 
 	if (zram_test_flag(zram, index, ZRAM_WB)) {
 		zram_clear_flag(zram, index, ZRAM_WB);
-		zram_release_bdev_block(zram, zram_get_handle(zram, index));
+#if defined CONFIG_ZRAM_WRITEBACK
+		if (!xa_load(&zram->prefetch_cache, index))
+#endif
+			zram_release_bdev_block(zram,
+						zram_get_handle(zram, index));
 		goto out;
 	}
 
@@ -2941,6 +3007,16 @@ static ssize_t recompress_store(struct device *dev,
 		if (!zram_test_flag(zram, pps->index, ZRAM_PP_SLOT))
 			goto next;
 
+#if defined CONFIG_ZRAM_WRITEBACK
+		/*
+		 * Recompression of a prefetched slot could result in a page
+		 * fault by using the wrong decompression algorithm. So we skip
+		 * such slots during recompression.
+		 */
+		if (xa_load(&zram->prefetch_cache, pps->index))
+			goto next;
+#endif
+
 		err = recompress_slot(zram, pps->index, page,
 				      &num_recomp_pages, threshold,
 				      prio, prio_max);
@@ -3093,6 +3169,9 @@ static void zram_slot_free_notify(struct block_device *bdev,
 				unsigned long index)
 {
 	struct zram *zram;
+#if defined CONFIG_ZRAM_WRITEBACK
+	void *val;
+#endif
 
 	zram = bdev->bd_disk->private_data;
 
@@ -3103,6 +3182,11 @@ static void zram_slot_free_notify(struct block_device *bdev,
 	}
 
 	zram_free_page(zram, index);
+#if defined CONFIG_ZRAM_WRITEBACK
+	val = xa_erase(&zram->prefetch_cache, index);
+	if (xa_is_value(val))
+		zram_release_bdev_block(zram, xa_to_value(val));
+#endif
 	zram_slot_unlock(zram, index);
 }
 
@@ -3382,6 +3466,7 @@ static int zram_add(void)
 	zram->wb_batch_size = 32;
 	zram->wb_compressed = false;
 	atomic_set(&zram->prefetch_in_progress, 0);
+	xa_init(&zram->prefetch_cache);
 #endif
 
 	/* gendisk structure */
@@ -3419,6 +3504,9 @@ out_cleanup_disk:
 	put_disk(zram->disk);
 out_free_idr:
 	idr_remove(&zram_index_idr, device_id);
+#if defined CONFIG_ZRAM_WRITEBACK
+	xa_destroy(&zram->prefetch_cache);
+#endif
 out_free_dev:
 	kfree(zram);
 	return ret;
@@ -3466,6 +3554,10 @@ static int zram_remove(struct zram *zram)
 	 * anything allocated with disksize_store()
 	 */
 	zram_reset_device(zram);
+
+#if defined CONFIG_ZRAM_WRITEBACK
+	xa_destroy(&zram->prefetch_cache);
+#endif
 
 	put_disk(zram->disk);
 	kfree(zram);
