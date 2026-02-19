@@ -46,9 +46,38 @@ static int nr_iommus;
  */
 static bool iommu_paging_structure_coherent = true;
 
-bool pkvm_iommu_paging_structure_coherency(void)
+/*
+ * Count of devices that require cpu cache flushes on host ept updates.
+ * This is because the devices are configured as passthrough in the host
+ * and attached to an IOMMU which doesn't have page walk coherency support.
+ * Hence we need to flush cpu caches on host ept update if there is atleast
+ * one such device.
+ */
+static atomic_t host_ept_flush_needed_devs;
+
+void host_ept_flush_needed_inc(void)
 {
-	return iommu_paging_structure_coherent;
+	/* Pairs with atomic_read_acquire in host_ept_flush_needed() */
+	atomic_inc_return_release(&host_ept_flush_needed_devs);
+}
+
+void host_ept_flush_needed_dec(void)
+{
+	/* Pairs with atomic_read_acquire in host_ept_flush_needed() */
+	atomic_dec_return_release(&host_ept_flush_needed_devs);
+}
+
+bool host_ept_flush_needed(void)
+{
+	if (pt_domain_enabled()) {
+		/*
+		 * Pairs with atomic_{inc,dec}_return_release in
+		 * host_ept_flush_needed_{inc,dec}
+		 */
+		return atomic_read_acquire(&host_ept_flush_needed_devs) > 0;
+	}
+
+	return !iommu_paging_structure_coherent;
 }
 
 bool is_dev_in_satc(u16 bdf)
