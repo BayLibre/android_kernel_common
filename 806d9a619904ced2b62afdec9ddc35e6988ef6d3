@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b8e5050_bbea3e24",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-19T18:35:06Z",
+      "side": 1,
+      "message": "So we are allowing the host to pass an arbitrary `pasid_dir_gpa` address, and then we pass it down to intel_pasid_setup_first_level() and corrupt arbitrary memory?\n\nShouldn\u0027t we just return an error to the host instead?\n\nOr rather, do we even need the host to pass `pasid_dir_gpa`, if we know better which address we should use?",
+      "revId": "806d9a619904ced2b62afdec9ddc35e6988ef6d3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
