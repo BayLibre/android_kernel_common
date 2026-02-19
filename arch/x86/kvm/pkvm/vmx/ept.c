@@ -166,12 +166,7 @@ static void host_ept_pte_set(void *ptep, u64 spte)
 {
 	ept_pte_set(ptep, spte);
 
-	/*
-	 * TODO: no need to flush cache if none of the
-	 * devices behind non-coherent IOMMUs are configured
-	 * for passthrough mode.
-	 */
-	if (!pkvm_iommu_paging_structure_coherency())
+	if (host_ept_flush_needed())
 		clflush_cache_range(ptep, sizeof(u64));
 }
 
