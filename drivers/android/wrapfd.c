@@ -141,6 +141,7 @@ static int dmabuf_content_load(struct wrap_content *content, struct file *file,
 		return PTR_ERR(sgtbl);
 	}
 
+	/* dma_buf_map_attachment returns a mangled sg table, so unmangle it for use. */
 	dma_buf_mangle_sg_table(sgtbl);
 
 	bvec = kvcalloc(sgtbl->nents, sizeof(*bvec), GFP_KERNEL);
@@ -163,6 +164,8 @@ static int dmabuf_content_load(struct wrap_content *content, struct file *file,
 	}
 
 	kvfree(bvec);
+	/* dma_buf_unmap_attachment() expects a mangled sg table, so re-mangle it. */
+	dma_buf_mangle_sg_table(sgtbl);
 	dma_buf_unmap_attachment(attachment, sgtbl, DMA_FROM_DEVICE);
 	dma_buf_detach(dmabuf_content->dmabuf, attachment);
 
