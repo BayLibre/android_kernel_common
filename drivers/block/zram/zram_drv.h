@@ -18,6 +18,10 @@
 #include <linux/rwsem.h>
 #include <linux/zsmalloc.h>
 
+#if IS_ENABLED(CONFIG_ZRAM_ANDROID_IOCTL)
+#include <linux/xarray.h>
+#endif
+
 #include "zcomp.h"
 
 #define SECTORS_PER_PAGE_SHIFT	(PAGE_SHIFT - SECTOR_SHIFT)
@@ -134,6 +138,9 @@ struct zram {
 	struct block_device *bdev;
 	unsigned long *bitmap;
 	unsigned long nr_pages;
+#endif
+#if IS_ENABLED(CONFIG_ZRAM_ANDROID_IOCTL)
+	struct xarray prefetch_cache;
 #endif
 #ifdef CONFIG_ZRAM_MEMORY_TRACKING
 	struct dentry *debugfs_dir;
