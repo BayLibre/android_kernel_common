@@ -83,6 +83,8 @@ int pkvm_get_domain_cache_tag_assign(void *pgd, int did, u32 pasid,
 	int ret;
 
 	if (did == FLPT_DEFAULT_DID) {
+		if (!iommu_paging_structure_coherency(info->iommu))
+			host_ept_flush_needed_inc();
 		cache_tag_assign_domain(&pt_domain, did, &dev, pasid);
 		return 0;
 	}
@@ -110,6 +112,8 @@ void pkvm_put_domain_cache_tag_unassign(void *pgd, int did, u32 pasid,
 
 	if (did == FLPT_DEFAULT_DID) {
 		cache_tag_unassign_domain(&pt_domain, did, &dev, pasid);
+		if (!iommu_paging_structure_coherency(info->iommu))
+			host_ept_flush_needed_dec();
 		return;
 	}
 
