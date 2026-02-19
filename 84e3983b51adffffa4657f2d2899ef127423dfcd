@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "18c0250b_81e9516a",
+        "filename": "arch/arm64/include/asm/kvm_host.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-19T11:16:09Z",
+      "side": 1,
+      "message": "But then it means we need to pack differently according to the type of request or __packed the whole thing and reduce and make the size args 32-bits.\n\nAlternatively, we could just say hyp_req_to_smccc() only works with types using the .mem argument.\n\nAnd I agree this would be less headache than trying to encode the type into a1.",
+      "parentUuid": "d61d0af6_aa1fa673",
+      "range": {
+        "startLine": 865,
+        "startChar": 0,
+        "endLine": 865,
+        "endChar": 20
+      },
+      "revId": "84e3983b51adffffa4657f2d2899ef127423dfcd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c563a75_d58c9a32",
         "filename": "arch/arm64/include/asm/kvm_host.h",
         "patchSetId": 7
