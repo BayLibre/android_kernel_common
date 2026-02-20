@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e75407f_dd3eb99f",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-20T23:25:50Z",
+      "side": 1,
+      "message": "nit: adjust indentation (throughout this patch)?",
+      "revId": "c5fcb114d6350e4b9a05794a1575ab506a92532b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed8e03af_233d37b9",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 1040,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-20T23:25:50Z",
+      "side": 1,
+      "message": "nit: s/sentitve/sensitive/\n\nAnd another nit: this explanation seems a bit too narrowed: those pages may be also donated to the hypervisor, not just to a pVM, and those stale entries may also allow the host, for example, to modify the hypervisor\u0027s code (which is obviously just as bad, or even worse, than reading pVM\u0027s sensitive data).\n\npKVM must always protect pVM-owned and hypervisor-owned pages from access by the host, that\u0027s pKVM\u0027s job, we don\u0027t need to explain why pKVM needs to do that. :) \n\nSo we could reword this a bit e.g. like: \"...Unmapped pages may be donated to a pVM or to the hypervisor. Until a flush happens, stale entries in cache could enable a device to access those pages, breaking pKVM security guarantees. So perform flush immediately.\"",
+      "revId": "c5fcb114d6350e4b9a05794a1575ab506a92532b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7dc0821_36da13bd",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 1716,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-20T23:25:50Z",
+      "side": 1,
+      "message": "Just a note: this is yet another case where we could _slightly_ reduce changes to upstream code, by avoiding renaming __domain_mapping(). But in this case I agree that would look rather a bit too weird, so I\u0027m ok with renaming it.",
+      "revId": "c5fcb114d6350e4b9a05794a1575ab506a92532b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9578ff87_84453beb",
+        "filename": "drivers/iommu/intel/iommu.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 1102,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-20T23:25:50Z",
+      "side": 1,
+      "message": "nit: again, any reason why put these declarations specifically here, at a random place between static inline definitions? It seems better to add them for example, next to domain_context_clear_one() and domain_context_mapping_one() declarations instead (so that such \"private otherwise but made public by pKVM\" declarations are kept together)?",
+      "revId": "c5fcb114d6350e4b9a05794a1575ab506a92532b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}

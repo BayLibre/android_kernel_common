@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc612133_2d420bb3",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 912,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-20T23:25:50Z",
+      "side": 0,
+      "message": "Any reason why not just #ifndef it?\n\nThis upstream code here might be pointless, but that\u0027s not our problem? :) (BTW in the newest upstream kernel all this is removed anyway.)",
+      "revId": "115bfbaad20aa003a88cee6bfa10299e6d352b23",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
