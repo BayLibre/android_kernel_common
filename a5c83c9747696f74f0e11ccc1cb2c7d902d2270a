@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5901bd2_02153427",
+        "filename": "drivers/iommu/intel/pkvm/iommu_domain.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-20T01:25:36Z",
+      "side": 1,
+      "message": "nit: `inline` is, again, not very useful?",
+      "revId": "a5c83c9747696f74f0e11ccc1cb2c7d902d2270a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93a46f54_f89388f8",
+        "filename": "drivers/iommu/intel/pkvm/iommu_domain.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-20T01:25:36Z",
+      "side": 1,
+      "message": "atomic_dec_and_test() seems not the best choice: if we are already in a buggy condition when refcount is zero, it will be decremented nevertheless, so next time it will be non-zero?\n\nSeems better to use atomic_dec_if_positive(), like we do in pkvm_put_vm() and pkvm_put_vcpu() in arch/x86/kvm/pkvm/pkvm.c ?",
+      "revId": "a5c83c9747696f74f0e11ccc1cb2c7d902d2270a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
