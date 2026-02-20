@@ -7325,6 +7325,19 @@ static int selinux_uring_cmd(struct io_uring_cmd *ioucmd)
 
 void selinux_set_vsock_sid(u32 cid, u32 sid);
 
+static int selinux_vhost_vsock_set_guest_cid(u64 guest_cid)
+{
+	u32 sid = current_sid();
+
+
+	if (guest_cid > U32_MAX)
+		return -EINVAL;
+
+	selinux_set_vsock_sid((u32)guest_cid, sid);
+	sel_netnode_flush();
+
+	return 0;
+}
 
 static const struct lsm_id selinux_lsmid = {
 	.name = "selinux",
@@ -7571,6 +7584,7 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
 	LSM_HOOK_INIT(perf_event_read, selinux_perf_event_read),
 	LSM_HOOK_INIT(perf_event_write, selinux_perf_event_write),
 #endif
+	LSM_HOOK_INIT(vhost_vsock_set_guest_cid, selinux_vhost_vsock_set_guest_cid),
 
 #ifdef CONFIG_IO_URING
 	LSM_HOOK_INIT(uring_override_creds, selinux_uring_override_creds),

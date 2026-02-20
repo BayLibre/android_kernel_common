@@ -72,8 +72,35 @@
 
 #include <trace/hooks/selinux.h>
 
+struct vsock_sid_entry {
+	struct list_head list;
+	u32 cid;
+	u32 sid;
+};
+
+static LIST_HEAD(vsock_sid_list);
+static DEFINE_SPINLOCK(vsock_sid_lock);
+
+void selinux_set_vsock_sid(u32 cid, u32 sid)
+{
+	struct vsock_sid_entry *entry, *new_entry;
 
 
+	new_entry = kmalloc(sizeof(*new_entry), GFP_ATOMIC);
+	if (!new_entry)
+		return;
+
+	new_entry->cid = cid;
+	new_entry->sid = sid;
+
+	spin_lock(&vsock_sid_lock);
+	list_for_each_entry(entry, &vsock_sid_list, list) {
+		if (entry->cid == cid) {
+			entry->sid = sid;
+			spin_unlock(&vsock_sid_lock);
+			kfree(new_entry);
+			return;
+		}
 	}
 	list_add(&new_entry->list, &vsock_sid_list);
 	spin_unlock(&vsock_sid_lock);
@@ -2752,6 +2779,11 @@ retry:
 
 		addr = *((const u32 *)addrp);
 
+		spin_lock(&vsock_sid_lock);
+		list_for_each_entry(entry, &vsock_sid_list, list) {
+			if (entry->cid == addr) {
+				*out_sid = entry->sid;
+				spin_unlock(&vsock_sid_lock);
 				rc = 0;
 				goto out;
 			}

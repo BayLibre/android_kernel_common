@@ -5999,6 +5999,20 @@ int security_bdev_setintegrity(struct block_device *bdev,
 }
 EXPORT_SYMBOL(security_bdev_setintegrity);
 
+/**
+ * security_vhost_vsock_set_guest_cid() - Associate a VSOCK CID with the creator
+ * @guest_cid: the CID being assigned to a guest VM
+ *
+ * This hook is called when a VMM assigns a CID to a guest VM.
+ *
+ * Return: Returns 0 on success, negative values on failure.
+ */
+int security_vhost_vsock_set_guest_cid(u64 guest_cid)
+{
+	return call_int_hook(vhost_vsock_set_guest_cid, guest_cid);
+}
+EXPORT_SYMBOL(security_vhost_vsock_set_guest_cid);
+
 #ifdef CONFIG_PERF_EVENTS
 /**
  * security_perf_event_open() - Check if a perf event open is allowed

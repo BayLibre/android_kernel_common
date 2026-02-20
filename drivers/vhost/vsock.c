@@ -14,6 +14,7 @@
 #include <net/sock.h>
 #include <linux/virtio_vsock.h>
 #include <linux/vhost.h>
+#include <linux/security.h>
 #include <linux/hashtable.h>
 
 #include <net/af_vsock.h>
@@ -792,7 +793,7 @@ static int vhost_vsock_set_cid(struct vhost_vsock *vsock, u64 guest_cid)
 	hash_add_rcu(vhost_vsock_hash, &vsock->hash, vsock->guest_cid);
 	mutex_unlock(&vhost_vsock_mutex);
 
-	return 0;
+	return security_vhost_vsock_set_guest_cid(guest_cid);
 }
 
 static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)

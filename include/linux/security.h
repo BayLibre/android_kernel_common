@@ -583,6 +583,7 @@ void security_bdev_free(struct block_device *bdev);
 int security_bdev_setintegrity(struct block_device *bdev,
 			       enum lsm_integrity_type type, const void *value,
 			       size_t size);
+int security_vhost_vsock_set_guest_cid(u64 guest_cid);
 #else /* CONFIG_SECURITY */
 
 /**
@@ -1609,6 +1610,11 @@ static inline void security_bdev_free(struct block_device *bdev)
 static inline int security_bdev_setintegrity(struct block_device *bdev,
 					     enum lsm_integrity_type type,
 					     const void *value, size_t size)
+{
+	return 0;
+}
+
+static inline int security_vhost_vsock_set_guest_cid(u64 guest_cid)
 {
 	return 0;
 }
