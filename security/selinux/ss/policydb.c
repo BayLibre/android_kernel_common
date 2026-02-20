@@ -63,105 +63,110 @@ static const struct policydb_compat_info policydb_compat[] = {
 	{
 		.version = POLICYDB_VERSION_BASE,
 		.sym_num = SYM_NUM - 3,
-		.ocon_num = OCON_NUM - 3,
+		.ocon_num = OCON_NUM - 4,
 	},
 	{
 		.version = POLICYDB_VERSION_BOOL,
 		.sym_num = SYM_NUM - 2,
-		.ocon_num = OCON_NUM - 3,
+		.ocon_num = OCON_NUM - 4,
 	},
 	{
 		.version = POLICYDB_VERSION_IPV6,
 		.sym_num = SYM_NUM - 2,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_NLCLASS,
 		.sym_num = SYM_NUM - 2,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_MLS,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_AVTAB,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_RANGETRANS,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_POLCAP,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_PERMISSIVE,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_BOUNDARY,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_FILENAME_TRANS,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_ROLETRANS,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_NEW_OBJECT_DEFAULTS,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_DEFAULT_TYPE,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_CONSTRAINT_NAMES,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_XPERMS_IOCTL,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM - 2,
+		.ocon_num = OCON_NUM - 3,
 	},
 	{
 		.version = POLICYDB_VERSION_INFINIBAND,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM,
+		.ocon_num = OCON_NUM - 1,
 	},
 	{
 		.version = POLICYDB_VERSION_GLBLUB,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM,
+		.ocon_num = OCON_NUM - 1,
 	},
 	{
 		.version = POLICYDB_VERSION_COMP_FTRANS,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM,
+		.ocon_num = OCON_NUM - 1,
 	},
 	{
 		.version = POLICYDB_VERSION_COND_XPERMS,
 		.sym_num = SYM_NUM,
-		.ocon_num = OCON_NUM,
+		.ocon_num = OCON_NUM - 1,
 	},
 	{
 		.version = POLICYDB_VERSION_NEVERAUDIT,
+		.sym_num = SYM_NUM,
+		.ocon_num = OCON_NUM - 1,
+	},
+	{
+		.version = POLICYDB_VERSION_VSOCK,
 		.sym_num = SYM_NUM,
 		.ocon_num = OCON_NUM,
 	},
@@ -2324,6 +2329,7 @@ static int ocontext_read(struct policydb *p,
 					goto out;
 				break;
 			case OCON_NODE:
+			case OCON_NODE_VSOCK:
 				rc = next_entry(nodebuf, fp, sizeof(u32) * 2);
 				if (rc)
 					goto out;
@@ -3364,6 +3370,7 @@ static int ocontext_write(struct policydb *p,
 					return rc;
 				break;
 			case OCON_NODE:
+			case OCON_NODE_VSOCK:
 				nodebuf[0] = c->u.node.addr; /* network order */
 				nodebuf[1] = c->u.node.mask; /* network order */
 				rc = put_entry(nodebuf, sizeof(u32), 2, fp);

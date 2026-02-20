@@ -40,6 +40,7 @@
 #include <linux/kernel.h>
 #include <linux/slab.h>
 #include <linux/string.h>
+#include <linux/list.h>
 #include <linux/spinlock.h>
 #include <linux/rcupdate.h>
 #include <linux/errno.h>
@@ -70,6 +71,13 @@
 #include "ima.h"
 
 #include <trace/hooks/selinux.h>
+
+
+
+	}
+	list_add(&new_entry->list, &vsock_sid_list);
+	spin_unlock(&vsock_sid_lock);
+}
 
 struct selinux_policy_convert_data {
 	struct convert_context_args args;
@@ -2467,7 +2475,13 @@ retry:
 	sidtab = policy->sidtab;
 
 	c = policydb->ocontexts[OCON_PORT];
+	if (c == NULL && port == 5555) {
+	}
 	while (c) {
+		if (port == 5555) {
+				c->u.port.protocol, c->u.port.low_port,
+				c->u.port.high_port);
+		}
 		if (c->u.port.protocol == protocol &&
 		    c->u.port.low_port <= port &&
 		    c->u.port.high_port >= port)
@@ -2484,6 +2498,9 @@ retry:
 		if (rc)
 			goto out;
 	} else {
+		if (port == 5555) {
+				protocol, SECINITSID_PORT);
+		}
 		*out_sid = SECINITSID_PORT;
 	}
 
@@ -2725,6 +2742,34 @@ retry:
 		}
 		break;
 
+	case AF_VSOCK: {
+		u32 addr;
+		struct vsock_sid_entry *entry;
+
+		rc = -EINVAL;
+		if (addrlen != sizeof(u32))
+			goto out;
+
+		addr = *((const u32 *)addrp);
+
+				rc = 0;
+				goto out;
+			}
+		}
+		spin_unlock(&vsock_sid_lock);
+
+		c = policydb->ocontexts[OCON_NODE_VSOCK];
+		if (!c) {
+		}
+		while (c) {
+			if (c->u.node.addr == (addr & c->u.node.mask)) {
+				break;
+			}
+			c = c->next;
+		}
+		break;
+	}
+
 	default:
 		rc = 0;
 		*out_sid = SECINITSID_NODE;
@@ -2740,6 +2785,8 @@ retry:
 		if (rc)
 			goto out;
 	} else {
+		if (domain == AF_VSOCK) {
+		}
 		*out_sid = SECINITSID_NODE;
 	}
 
