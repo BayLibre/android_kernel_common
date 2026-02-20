@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35e39fa2_a4a7fee1",
+        "filename": "rust/kernel/page_size_compat.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2026-02-20T02:11:02Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by RustFormatter: Please reformat the following line(s) to:\n\n    pub fn __page_shift() -\u003e usize {\n...\n\nPlease reformat the following line(s) to:\n\n    pub fn __page_shift() -\u003e usize {\n        // SAFETY: Accessing C static key\n        let emulated \u003d unsafe {\n            bindings::static_key_count(\u0026raw mut bindings::page_shift_compat_enabled.key) !\u003d 0\n        };\n\n        if emulated {",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 0
+      },
+      "revId": "8b7792d5284c0357a3cb426ea9a1dfb564cb70d6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
