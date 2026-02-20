@@ -85,6 +85,7 @@ void selinux_set_vsock_sid(u32 cid, u32 sid)
 {
 	struct vsock_sid_entry *entry, *new_entry;
 
+	pr_info("mtgvsock: setting cid %u to sid %u\n", cid, sid);
 
 	new_entry = kmalloc(sizeof(*new_entry), GFP_ATOMIC);
 	if (!new_entry)
@@ -2503,9 +2504,11 @@ retry:
 
 	c = policydb->ocontexts[OCON_PORT];
 	if (c == NULL && port == 5555) {
+		pr_warn("mtgvsock: no contexts found");
 	}
 	while (c) {
 		if (port == 5555) {
+			pr_warn("mtgvsock: checking policydb - found context for protocol %d and port range %d:%d",
 				c->u.port.protocol, c->u.port.low_port,
 				c->u.port.high_port);
 		}
@@ -2526,6 +2529,7 @@ retry:
 			goto out;
 	} else {
 		if (port == 5555) {
+			pr_warn("mtgvsock: no contexts found for protocol %d and port 5555. Assigning sid %d.",
 				protocol, SECINITSID_PORT);
 		}
 		*out_sid = SECINITSID_PORT;
@@ -2784,6 +2788,7 @@ retry:
 			if (entry->cid == addr) {
 				*out_sid = entry->sid;
 				spin_unlock(&vsock_sid_lock);
+				pr_info("mtgvsock: dynamic MATCH found for cid %u -> sid %u\n", addr, *out_sid);
 				rc = 0;
 				goto out;
 			}
@@ -2792,9 +2797,12 @@ retry:
 
 		c = policydb->ocontexts[OCON_NODE_VSOCK];
 		if (!c) {
+			pr_warn("mtgvsock: security_node_sid: OCON_NODE_VSOCK list is EMPTY for cid %u\n", addr);
 		}
 		while (c) {
+			pr_warn("mtgvsock: node lookup. target cid: %u, rule addr: %u, mask: %u\n", addr, c->u.node.addr, c->u.node.mask);
 			if (c->u.node.addr == (addr & c->u.node.mask)) {
+				pr_warn("mtgvsock: MATCH found!\n");
 				break;
 			}
 			c = c->next;
@@ -2818,6 +2826,7 @@ retry:
 			goto out;
 	} else {
 		if (domain == AF_VSOCK) {
+			pr_warn("mtgvsock: no match found for cid %u, assigning default node sid\n", *((const u32 *)addrp));
 		}
 		*out_sid = SECINITSID_NODE;
 	}

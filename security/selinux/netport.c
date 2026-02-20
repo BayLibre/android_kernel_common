@@ -184,8 +184,15 @@ int sel_netport_sid(u8 protocol, u16 pnum, u32 *sid)
 
 	rcu_read_lock();
 	port = sel_netport_find(protocol, pnum);
+	if (pnum == 5555 && port != NULL) {
+		pr_warn("mtgvsock: sel_netport_find NOT null");
+	}
 	if (likely(port != NULL)) {
 		*sid = port->psec.sid;
+		if (pnum == 5555) {
+			pr_warn("mtgvsock: found sid for port 5555. protocol: %d, sid: %d",
+				protocol, *sid);
+		}
 		rcu_read_unlock();
 		return 0;
 	}

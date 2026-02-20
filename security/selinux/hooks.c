@@ -4870,6 +4870,7 @@ static int selinux_socket_socketpair(struct socket *socka,
 
 static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, int addrlen)
 {
+	pr_warn("mtgvsock: selinux_socket_bind");
 	struct sock *sk = sock->sk;
 	struct sk_security_struct *sksec = selinux_sock(sk);
 	u16 family;
@@ -4993,6 +4994,7 @@ static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, in
 	}
 
 	if (family == PF_VSOCK) {
+		// pr_warn("mtgvsock: PF_VSOCK");
 		struct sockaddr_vm *addr_vm;
 		u32 sid;
 
@@ -5001,6 +5003,7 @@ static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, in
 
 		addr_vm = (struct sockaddr_vm *)address;
 		if (addr_vm->svm_port != VMADDR_PORT_ANY) {
+			// pr_warn("mtgvsock: port != VMADDR_PORT_ANY: %d, cid: %d", addr_vm->svm_port, addr_vm->svm_cid);
 			err = sel_netport_sid(sk->sk_protocol,
 					      addr_vm->svm_port, &sid);
 			if (err)
@@ -5124,6 +5127,7 @@ static int selinux_socket_connect_helper(struct socket *sock,
 		ad.u.net->dport = htons(snum);
 		ad.u.net->family = address->sa_family;
 		// if (perm == VSOCK_SOCKET__NAME_CONNECT && snum == 5555) {
+		// 	pr_warn("mtgvsock: about to call connect avc_has_perm for vsock: port: %d, sid: %d", snum, sid);Z
 		// }
 		err = avc_has_perm(sksec->sid, sid, sksec->sclass, perm, &ad);
 		if (err)
@@ -7329,6 +7333,7 @@ static int selinux_vhost_vsock_set_guest_cid(u64 guest_cid)
 {
 	u32 sid = current_sid();
 
+	pr_warn("mtgvsock: vhost_vsock_set_guest_cid hook triggered for cid %llu (sid %u)\n", guest_cid, sid);
 
 	if (guest_cid > U32_MAX)
 		return -EINVAL;

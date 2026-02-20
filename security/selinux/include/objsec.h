@@ -118,6 +118,7 @@ struct netnode_security_struct {
 	union {
 		__be32 ipv4; /* IPv4 node address */
 		struct in6_addr ipv6; /* IPv6 node address */
+		u32 vsock; /* VSOCK node address (CID) */
 	} addr;
 	u32 sid; /* SID for this node */
 	u16 family; /* address family */
