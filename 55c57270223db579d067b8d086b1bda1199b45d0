@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36f2fec8_aa160472",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2026-02-20T12:04:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0250ada_c6c010a0",
+      "revId": "55c57270223db579d067b8d086b1bda1199b45d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b5f5f6f_8c60df09",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-02-19T21:19:45Z",
       "side": 1,
       "message": "nit: we could do it the following way (to reduce the diff):\n```\ndiff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h\nindex 25c5e22096d4..8853493aab40 100644\n--- a/drivers/iommu/intel/iommu.h\n+++ b/drivers/iommu/intel/iommu.h\n@@ -1207,6 +1207,7 @@ struct cache_tag {\n \tstruct list_head node;\n \tenum cache_tag_type type;\n \tstruct intel_iommu *iommu;\n+#ifndef __PKVM_HYP__\n \t/*\n \t * The @dev field represents the location of the cache. For IOTLB, it\n \t * resides on the IOMMU hardware. @dev stores the device pointer to\n@@ -1214,6 +1215,13 @@ struct cache_tag {\n \t * @dev stores the device pointer to that endpoint.\n \t */\n \tstruct device *dev;\n+#else\n+\tu8 bus;\n+\tu8 devfn;\n+\tu16 pfsid;\n+\tu8 ats_qdep;\n+\tunsigned int index;\n+#endif\n \tu16 domain_id;\n \tioasid_t pasid;\n \tunsigned int users;\n```\n\n?",
+      "revId": "55c57270223db579d067b8d086b1bda1199b45d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdbc0730_1c76b666",
+        "filename": "drivers/iommu/intel/iommu.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 1461,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2026-02-20T12:04:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b5f5f6f_8c60df09",
       "revId": "55c57270223db579d067b8d086b1bda1199b45d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
