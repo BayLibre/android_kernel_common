@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fba3a33e_5a137dec",
+        "filename": "drivers/iommu/intel/pkvm/iommu_domain.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-20T13:37:41Z",
+      "side": 1,
+      "message": "Rather `\u003c\u003d 0`?",
+      "revId": "2d646c498ae68591c082da1fb30fac8a87096e39",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f43770b5_a80d0c81",
+        "filename": "drivers/iommu/intel/pkvm_iommu.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-20T13:37:41Z",
+      "side": 1,
+      "message": "nit: any reason why add these declarations here, not together with other non-static functions below (for example, between pkvm_iommu_paging_structure_coherency() and pkvm_alloc_cache_tag())?",
+      "revId": "2d646c498ae68591c082da1fb30fac8a87096e39",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
