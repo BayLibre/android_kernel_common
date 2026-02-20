@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07bcb4d1_3139a65f",
+        "filename": "drivers/iommu/intel/pkvm/iommu_domain.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2026-02-20T13:28:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5901bd2_02153427",
+      "revId": "a5c83c9747696f74f0e11ccc1cb2c7d902d2270a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93a46f54_f89388f8",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-02-20T01:25:36Z",
       "side": 1,
       "message": "atomic_dec_and_test() seems not the best choice: if we are already in a buggy condition when refcount is zero, it will be decremented nevertheless, so next time it will be non-zero?\n\nSeems better to use atomic_dec_if_positive(), like we do in pkvm_put_vm() and pkvm_put_vcpu() in arch/x86/kvm/pkvm/pkvm.c ?",
+      "revId": "a5c83c9747696f74f0e11ccc1cb2c7d902d2270a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55fa8084_3c53e520",
+        "filename": "drivers/iommu/intel/pkvm/iommu_domain.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3494485
+      },
+      "writtenOn": "2026-02-20T13:28:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93a46f54_f89388f8",
       "revId": "a5c83c9747696f74f0e11ccc1cb2c7d902d2270a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
