@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0f0ec99_0b86d3fe",
+        "filename": "kernel/locking/rwsem.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1166,
+      "author": {
+        "id": 1765846
+      },
+      "writtenOn": "2026-02-20T03:37:14Z",
+      "side": 1,
+      "message": "The previous version of the patch had a call to __clear_task_blocked_on() here, because I saw cases where PROXY_WAKING was set, causing a warning. But I don\u0027t now if that\u0027s still possible.",
+      "revId": "8cda58cbab7bdef2023e5651a37d5a9a4ab59036",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
