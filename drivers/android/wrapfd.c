@@ -185,21 +185,6 @@ err_detach:
 	return 0;
 }
 
-static int dmabuf_content_mmap_prepare(struct wrap_content *content,
-				       struct vm_area_struct *vma)
-{
-	struct wrap_content_dmabuf *dmabuf_content;
-
-	dmabuf_content = container_of(content, struct wrap_content_dmabuf,
-				      content);
-	if (vma->vm_flags & VM_MAYWRITE) {
-		if (!dmabuf_content->writable)
-			return -EINVAL;
-	}
-
-	return 0;
-}
-
 static int dmabuf_content_mmap(struct wrap_content *content,
 			       struct vm_area_struct *vma)
 {
@@ -235,7 +220,6 @@ dmabuf_content_make_writable(struct wrap_content *content, bool writable)
 	dmabuf_content = container_of(content, struct wrap_content_dmabuf,
 				      content);
 	dmabuf_content->writable = writable;
-
 	return content;
 }
 
@@ -300,7 +284,6 @@ static int dmabuf_content_ioctl(struct wrap_content *content,
 static struct wrap_content_operations dmabuf_content_ops = {
 	.create_wrap		= dmabuf_content_create_wrap,
 	.load			= dmabuf_content_load,
-	.mmap_prepare		= dmabuf_content_mmap_prepare,
 	.mmap			= dmabuf_content_mmap,
 	.make_writable		= dmabuf_content_make_writable,
 	.is_writable		= dmabuf_content_is_writable,
@@ -492,15 +475,26 @@ static int wrap_mmap(struct file *file, struct vm_area_struct *vma)
 		goto unlock;
 	}
 
-	ret = content->ops->mmap_prepare(content, vma);
-	if (!ret) {
-		/*
-		 * Increased map_count prevents changes in the ownership,
-		 * rewrapping or emptying the content. Therefore content
-		 * is stable.
-		 */
-		ctx->map_count++;
+	if ((vma->vm_flags & VM_WRITE) && content->ops->is_writable) {
+		if (!content->ops->is_writable(content)) {
+			ret = -EACCES;
+			goto unlock;
+		}
 	}
+
+	if (content->ops->mmap_prepare) {
+		ret = content->ops->mmap_prepare(content, vma);
+		if (ret) {
+			ret = -EINVAL;
+			goto unlock;
+		}
+	}
+	/*
+	 * Increased map_count prevents changes in the
+	 * ownership, rewrapping or emptying the content.
+	 * Therefore content is stable.
+	 */
+	ctx->map_count++;
 unlock:
 	spin_unlock(&ctx->lock);
 
