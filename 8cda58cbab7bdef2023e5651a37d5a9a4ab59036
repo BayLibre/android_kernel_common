@@ -16,6 +16,24 @@
       "message": "The previous version of the patch had a call to __clear_task_blocked_on() here, because I saw cases where PROXY_WAKING was set, causing a warning. But I don\u0027t now if that\u0027s still possible.",
       "revId": "8cda58cbab7bdef2023e5651a37d5a9a4ab59036",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "217018c7_0f75e991",
+        "filename": "kernel/locking/rwsem.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1166,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2026-02-20T23:06:07Z",
+      "side": 1,
+      "message": "Yeah. I don\u0027t think it is. We don\u0027t set PROXY_WAKING except on tasks that are already blocked_on. And here we\u0027re setting and clearing current-\u003eblocked_on just around the schedule() call, so I don\u0027t think it can happen.",
+      "parentUuid": "f0f0ec99_0b86d3fe",
+      "revId": "8cda58cbab7bdef2023e5651a37d5a9a4ab59036",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
