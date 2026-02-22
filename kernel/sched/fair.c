@@ -5534,6 +5534,7 @@ static void put_prev_entity(struct cfs_rq *cfs_rq, struct sched_entity *prev)
 static void
 entity_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr, int queued)
 {
+	bool skip_preempt = false;
 	/*
 	 * Update run-time statistics of the 'current'.
 	 */
@@ -5551,8 +5552,6 @@ entity_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr, int queued)
 	 * validating it and just reschedule.
 	 */
 	if (queued) {
-		bool skip_preempt = false;
-
 		trace_android_vh_resched_curr_lazy(rq_of(cfs_rq), &skip_preempt);
 
 		if (skip_preempt)
