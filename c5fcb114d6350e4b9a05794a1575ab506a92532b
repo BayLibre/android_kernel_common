@@ -54,6 +54,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "82548887_85bbeae1",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 22
+      },
+      "lineNbr": 1793,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-22T17:57:02Z",
+      "side": 1,
+      "message": "This debug_dma_dump_mappings() causes build failure with CONFIG_DMA_API_DEBUG\u003dy, since it is not available in the hypervisor. We should #ifndef it in this patch?\n\nAnd BTW even without CONFIG_DMA_API_DEBUG, when I\u0027m compiling my Debian kernel with this pvIOMMU series, it is causing another interesting build failure for me: multiple `WARN: multiple IDs found for ...` errors (like those mentioned in https://github.com/maluka-dmytro/pKVM-IA/commit/69aeb1bd1f2973b62e4766aa972eb3a2c3f9f538). I haven\u0027t fully investigated the root cause (and I still don\u0027t know why it doesn\u0027t happen, for instance, with the Android kernel which does have CONFIG_DEBUG_INFO_BTF\u003dy and CONFIG_WERROR\u003dy too) but I see it is related to the fact that debug_dma_dump_mappings() has `struct device *` in its signature. When I replaced it with `void *` just for test, it \"fixed\" the problem for me.\n\nIt took me a while to narrow down that this debug_dma_dump_mappings() is guilty.",
+      "revId": "c5fcb114d6350e4b9a05794a1575ab506a92532b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9578ff87_84453beb",
         "filename": "drivers/iommu/intel/iommu.h",
         "patchSetId": 22
