@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77bb6e47_1e9ea286",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 24
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-22T00:09:28Z",
+      "side": 1,
+      "message": "nit: s/pkvm_use_dma/pkvm_host_use_dma/ ?",
+      "revId": "281aaa29f096325033d406682ecffaca86708a4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3d6eff9_c9337aad",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 24
+      },
+      "lineNbr": 1841,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-22T00:09:28Z",
+      "side": 1,
+      "message": "nit: like in a couple of other places in this series, maybe let\u0027s use `#endif` + empty line + `#ifdef __PKVM_HYP__` instead of `#else` here, since pkvm_host_use_dma() here is not exactly related to the above domain-\u003enested_parent check?",
+      "revId": "281aaa29f096325033d406682ecffaca86708a4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd0cfea5_a3806beb",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 24
+      },
+      "lineNbr": 1943,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-02-22T00:09:28Z",
+      "side": 1,
+      "message": "Any reason why need to check `ret` here? We can just check `nr_pages`?\n\nIf this is just for documentation purpose (to emphasize that this is not a normal condition), maybe it\u0027s better to add a short comment explicitly explaining it, e.g.: \"If some pages left unmapped, unpin them.\" ?",
+      "revId": "281aaa29f096325033d406682ecffaca86708a4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
