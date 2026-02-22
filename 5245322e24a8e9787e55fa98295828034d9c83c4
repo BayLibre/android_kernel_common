@@ -16,6 +16,24 @@
       "message": "Could we create a function to check if a VM has device based on hyp_vm-\u003epviommus?  So we don\u0027t have to change that prototype.\n\nThe function could be in pviommu-host.c?",
       "revId": "5245322e24a8e9787e55fa98295828034d9c83c4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92eb02cd_82771287",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-22T19:58:51Z",
+      "side": 1,
+      "message": "Doing that by construction seemed better than making mem_protect call device code directly, but I can change it.",
+      "parentUuid": "1da6ab76_3e133300",
+      "revId": "5245322e24a8e9787e55fa98295828034d9c83c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
