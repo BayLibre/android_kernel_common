@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e3f966e_52a7012f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 24
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-02-23T10:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77bb6e47_1e9ea286",
+      "revId": "281aaa29f096325033d406682ecffaca86708a4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3d6eff9_c9337aad",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "039f5880_5000929c",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 24
+      },
+      "lineNbr": 1841,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-02-23T10:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3d6eff9_c9337aad",
+      "revId": "281aaa29f096325033d406682ecffaca86708a4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd0cfea5_a3806beb",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-02-22T00:09:28Z",
       "side": 1,
       "message": "Any reason why need to check `ret` here? We can just check `nr_pages`?\n\nIf this is just for documentation purpose (to emphasize that this is not a normal condition), maybe it\u0027s better to add a short comment explicitly explaining it, e.g.: \"If some pages left unmapped, unpin them.\" ?",
+      "revId": "281aaa29f096325033d406682ecffaca86708a4a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bca0ca3_c0b0d838",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 24
+      },
+      "lineNbr": 1943,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-02-23T10:25:49Z",
+      "side": 1,
+      "message": "you\u0027re right, ret is not needed. Added the comment as you suggested",
+      "parentUuid": "dd0cfea5_a3806beb",
       "revId": "281aaa29f096325033d406682ecffaca86708a4a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
