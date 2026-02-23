@@ -52,6 +52,24 @@
       "parentUuid": "92eb02cd_82771287",
       "revId": "5245322e24a8e9787e55fa98295828034d9c83c4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3323fc3_7a9f9172",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-23T11:18:04Z",
+      "side": 1,
+      "message": "It is just \"has_devices\" sounds very specific and I wouldn\u0027t want to reproduce the memory donation nightware where we have bool all over the place to say \"is_memory\" \"update_mmio\", \"check_refcount\" ... That makes the calls unreadable and we have the need to \"transport\" this information that could be found somewhere else.\n\nAlthough you are completely right that it forces a dependency between pviommu and guest_prepare... You could also just INIT_LIST() in pkvm_pviommu_finalise() and then pkvm_vm_has_devices() can just WARN_ON(hyp_vm.next);\n\nAlternatively, how about kvm_guest_prepare_stage2() takes the stage-2 flags as an argument? And then the caller can set the right one depending on if devices where found or not? And then a pkvm_vm_has_devices() would even be safe as we know it is called after pviommu_finalise?",
+      "parentUuid": "98e9a6b0_86c28669",
+      "revId": "5245322e24a8e9787e55fa98295828034d9c83c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
