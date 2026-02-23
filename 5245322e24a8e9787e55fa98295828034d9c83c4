@@ -88,6 +88,24 @@
       "parentUuid": "e3323fc3_7a9f9172",
       "revId": "5245322e24a8e9787e55fa98295828034d9c83c4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48e9b2b0_ffdb5d21",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-23T12:18:33Z",
+      "side": 1,
+      "message": "I don\u0027t like having `WARN_ON` when not necessarily, that also proved to be painful in the IOMMU code.\nPassing flags would be better, adding that in pkvm.c doesn\u0027t sound 2 bad.\n\nMy idea behind `has_devices` is that the VM might have some special handling for VMs with devices in the future beyond FWB, but that can always change as it is not an ABI.",
+      "parentUuid": "69610040_b8eda241",
+      "revId": "5245322e24a8e9787e55fa98295828034d9c83c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
