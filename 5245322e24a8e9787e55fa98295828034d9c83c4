@@ -106,6 +106,24 @@
       "parentUuid": "69610040_b8eda241",
       "revId": "5245322e24a8e9787e55fa98295828034d9c83c4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f06350e_961b178b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-23T12:38:08Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t like having WARN_ON when not necessarily, that also proved to be painful in the IOMMU code.\n\nIn that case it would be very easy to debug as this is init. It would be just a gotcha to someone changing the code. That is quite common. Not mentioning it makes sense you can\u0027t really use the functions from a \"module\" here pviommu.c while it hasn\u0027t been init already. \n\nAnyway, I\u0027m also in favour of passing flags.",
+      "parentUuid": "48e9b2b0_ffdb5d21",
+      "revId": "5245322e24a8e9787e55fa98295828034d9c83c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
