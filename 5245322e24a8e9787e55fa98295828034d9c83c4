@@ -34,6 +34,24 @@
       "parentUuid": "1da6ab76_3e133300",
       "revId": "5245322e24a8e9787e55fa98295828034d9c83c4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98e9a6b0_86c28669",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-02-23T11:04:32Z",
+      "side": 1,
+      "message": "Looking again, I believe the current design is better, it enforces the ordering between `pkvm_pviommu_finalise` and `kvm_guest_prepare_stage2`.",
+      "parentUuid": "92eb02cd_82771287",
+      "revId": "5245322e24a8e9787e55fa98295828034d9c83c4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
