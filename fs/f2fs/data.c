@@ -218,7 +218,7 @@ static void f2fs_verify_bio(struct work_struct *work)
 			struct folio *folio = fi.folio;
 
 			if (!f2fs_is_compressed_page(folio) &&
-			    !fsverity_verify_page(&folio->page)) {
+			    !fsverity_verify_folio(folio)) {
 				bio->bi_status = BLK_STS_IOERR;
 				break;
 			}
@@ -2526,10 +2526,10 @@ got_it:
 				goto err_out;
 			}
 		} else {
-			folio_zero_range(folio, offset << PAGE_SHIFT, PAGE_SIZE);
+			size_t page_offset = offset << PAGE_SHIFT;
+			folio_zero_range(folio, page_offset, PAGE_SIZE);
 			if (f2fs_need_verity(inode, index) &&
-			    !fsverity_verify_page(folio_file_page(folio,
-								index))) {
+			    !fsverity_verify_blocks(folio, PAGE_SIZE, page_offset)) {
 				ret = -EIO;
 				goto err_out;
 			}
