@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abfb206f_5a5f8429",
+        "filename": "kernel/sched/core.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3956,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2026-02-24T04:41:36Z",
+      "side": 1,
+      "message": "Looks good, though I think we also need nr_iowait adjustment as well to match the __block_task() implementation called from proxy_enqueue_on_owner().  I\u0027ve got an update to this patch I\u0027m testing and will submit it soon.",
+      "revId": "d01aaa6373592a3a495e2d7e8460bfa4d8b312eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
