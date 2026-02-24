@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c5865ea7_2a78a881",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1765846
+      },
+      "writtenOn": "2026-02-24T05:53:35Z",
+      "side": 1,
+      "message": "Apparently, negative nr_uninterruptible on individual CPUs isn\u0027t unexpected. I also see it on my workstation. But the sum has to be non-negative, which is what I\u0027m seeing on my device:\n\n $ adb shell grep uninte /sys/kernel/debug/sched/debug | awk \u0027{ s +\u003d $3 } END { print s }\u0027 \n-1507",
+      "parentUuid": "9d611c73_8f693a35",
+      "revId": "d01aaa6373592a3a495e2d7e8460bfa4d8b312eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "abfb206f_5a5f8429",
         "filename": "kernel/sched/core.c",
         "patchSetId": 1
