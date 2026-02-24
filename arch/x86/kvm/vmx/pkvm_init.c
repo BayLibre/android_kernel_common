@@ -1386,10 +1386,7 @@ out:
 	/*
 	 * Try enabling iommu on initialization failure to let the
 	 * system boot normally without pKVM. Try iommu init even if
-	 * we tried it while deprivileged and failed there. Host driver
-	 * uninitializes iommu on any failure, so retrying with cpus
-	 * reprivileged should be okay and may succeed if the previous
-	 * failure was due to pKVM.
+	 * we tried initializing and failed while deprivileged.
 	 */
 	pkvm_host_init_iommu();
 

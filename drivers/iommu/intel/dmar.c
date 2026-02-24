@@ -382,7 +382,7 @@ static int dmar_pci_bus_notifier(struct notifier_block *nb,
 	return NOTIFY_OK;
 }
 
-static struct notifier_block dmar_pci_bus_nb = {
+struct notifier_block dmar_pci_bus_nb = {
 	.notifier_call = dmar_pci_bus_notifier,
 	.priority = 1,
 };
