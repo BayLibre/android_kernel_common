@@ -3424,9 +3424,13 @@ int __init intel_iommu_init(void)
 	/*
 	 * Intel IOMMU is required for a TXT/tboot launch or platform
 	 * opt in, so enforce that.
+	 * When initializing under pKVM, ignore force_on as initialization
+	 * failure could be pKVM specific and initialization will be retried
+	 * after disabling pKVM.
 	 */
-	force_on = (!intel_iommu_tboot_noforce && tboot_force_iommu()) ||
-		    platform_optin_force_iommu();
+	if (!pkvm_enabled())
+		force_on = (!intel_iommu_tboot_noforce && tboot_force_iommu()) ||
+			    platform_optin_force_iommu();
 
 	down_write(&dmar_global_lock);
 	if (dmar_table_init()) {

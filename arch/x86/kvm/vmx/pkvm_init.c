@@ -1383,7 +1383,12 @@ out:
 	 */
 	pkvm_firmware_rmem_clear();
 
-	/* TODO: Try re-initialize IOMMU */
+	/*
+	 * Try enabling iommu on initialization failure to let the
+	 * system boot normally without pKVM. Try iommu init even if
+	 * we tried initializing and failed while deprivileged.
+	 */
+	pkvm_host_init_iommu();
 
 	/*
 	 * As the reserved memory at the pkvm_mem_base will not be

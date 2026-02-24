@@ -555,6 +555,8 @@ struct q_inval {
 #ifndef __PKVM_HYP__
 struct dmar_pci_notify_info;
 
+extern struct notifier_block dmar_pci_bus_nb;
+
 #ifdef CONFIG_IRQ_REMAP
 #define INTR_REMAP_TABLE_REG_SIZE	0xf
 #define INTR_REMAP_TABLE_REG_SIZE_MASK  0xf
