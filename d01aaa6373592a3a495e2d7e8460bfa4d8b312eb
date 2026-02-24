@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d611c73_8f693a35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1765846
+      },
+      "writtenOn": "2026-02-24T05:49:16Z",
+      "side": 1,
+      "message": "I realized that I was running on 6.12 (proxy exec on). I\u0027m having issues building 6.18 again, for unrelated reasons.\nI\u0027m just booting to the OOBE screen and running \"adb shell uptime\" to print out the load averages. I tried adding a bunch of \"yes \u003e /dev/null\" tasks to add load, but it stays at 0.\n\"grep uninte /sys/kernel/debug/sched/debug\" shows CPUs with negative nr_uninterruptible.",
+      "parentUuid": "6b16d90b_e3f03a71",
+      "revId": "d01aaa6373592a3a495e2d7e8460bfa4d8b312eb",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "abfb206f_5a5f8429",
         "filename": "kernel/sched/core.c",
         "patchSetId": 1
