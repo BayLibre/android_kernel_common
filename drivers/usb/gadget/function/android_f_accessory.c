@@ -43,12 +43,12 @@
 
 /* number of tx and rx requests to allocate */
 #define TX_REQ_MAX 4
-#define RX_REQ_MAX 2
+#define RX_REQ_MAX 32
 
 /* Safe upper bound for a HID report descriptor*/
 #define MAX_HID_DESC_SIZE 4096
 
-/* Maximum number of concurrent AOA‑HID devices*/
+/* Maximum number of concurrent AOA?HID devices*/
 #define MAX_HID_DEVICES 32
 
 struct acc_hid_dev {
@@ -78,13 +78,13 @@ struct acc_dev {
 	 * online indicates state of function_set_alt & function_unbind
 	 * set to true when we connect
 	 */
-	bool online;
+	volatile bool online;
 
 	/*
 	 * disconnected indicates state of open & release
 	 * Set to true when we disconnect.
 	 */
-	bool disconnected;
+	volatile bool disconnected;
 
 	/* strings sent by the host */
 	char manufacturer[ACC_STRING_SIZE];
@@ -103,11 +103,22 @@ struct acc_dev {
 	int audio_mode;
 
 	struct list_head tx_idle;
+	/* idle rx request list */
+	struct list_head rx_idle;
+	/* completed rx request list */
+	struct list_head rx_done_list;
 
 	wait_queue_head_t read_wq;
+	/* wait queue for read done */
+	wait_queue_head_t read_done_wq;
 	wait_queue_head_t write_wq;
-	struct usb_request *rx_req[RX_REQ_MAX];
-	int rx_done;
+	int rx_req_count;
+	struct usb_request **rx_req;
+	volatile int rx_done;
+	/* read done flag */
+	volatile int read_done;
+	/* Current number of in-flight RX requests */
+	atomic_t rx_in_flight;
 
 	/* delayed work for handling ACCESSORY_START */
 	struct delayed_work start_work;
@@ -376,17 +387,37 @@ static struct usb_request *req_get(struct acc_dev *dev, struct list_head *head)
 	return req;
 }
 
-static void acc_free_all_requests(struct acc_dev *dev)
+static void acc_free_rx_reqs(struct acc_dev *dev)
 {
-	struct usb_request *req;
 	int i;
 
-	while ((req = req_get(dev, &dev->tx_idle)))
-		acc_request_free(req, dev->ep_in);
-	for (i = 0; i < RX_REQ_MAX; i++) {
+	if (!dev->rx_req)
+		return;
+
+	for (i = 0; i < dev->rx_req_count; i++) {
 		acc_request_free(dev->rx_req[i], dev->ep_out);
 		dev->rx_req[i] = NULL;
 	}
+	kfree(dev->rx_req);
+	dev->rx_req = NULL;
+}
+
+static void acc_free_all_requests(struct acc_dev *dev)
+{
+	struct usb_request *req;
+	unsigned long flags;
+
+	while ((req = req_get(dev, &dev->tx_idle)))
+		acc_request_free(req, dev->ep_in);
+
+	/* reset the rx lists */
+	spin_lock_irqsave(&dev->lock, flags);
+	INIT_LIST_HEAD(&dev->rx_idle);
+	INIT_LIST_HEAD(&dev->rx_done_list);
+	dev->rx_done = 0;
+	spin_unlock_irqrestore(&dev->lock, flags);
+
+	acc_free_rx_reqs(dev);
 }
 
 static void acc_complete_in(struct usb_ep *ep, struct usb_request *req)
@@ -410,18 +441,58 @@ static void acc_complete_in(struct usb_ep *ep, struct usb_request *req)
 static void acc_complete_out(struct usb_ep *ep, struct usb_request *req)
 {
 	struct acc_dev *dev = get_acc_dev();
+	unsigned long flags;
 
 	if (!dev)
 		return;
 
-	dev->rx_done = 1;
+	/* Decrement the count when an in-flight request has completed */
+	atomic_dec(&dev->rx_in_flight);
+
 	if (req->status == -ESHUTDOWN) {
+		/* If disconnected, put req back into rx_idle queue */
 		pr_debug("set disconnected\n");
 		dev->disconnected = true;
+		spin_lock_irqsave(&dev->lock, flags);
+		list_add_tail(&req->list, &dev->rx_idle);
+		spin_unlock_irqrestore(&dev->lock, flags);
+	} else {
+		/* Put req into rx_done_list and mark rx_done as 1 to indicate data is available */
+		spin_lock_irqsave(&dev->lock, flags);
+		list_add_tail(&req->list, &dev->rx_done_list);
+		dev->rx_done = 1;
+		spin_unlock_irqrestore(&dev->lock, flags);
 	}
 
 	wake_up(&dev->read_wq);
 	put_acc_dev(dev);
+}
+
+static int acc_alloc_rx_reqs(struct acc_dev *dev)
+{
+	int i;
+	struct usb_request *req;
+
+	dev->rx_req = kcalloc(dev->rx_req_count, sizeof(struct usb_request *), GFP_KERNEL);
+	if (!dev->rx_req)
+		return -ENOMEM;
+
+	for (i = 0; i < dev->rx_req_count; i++) {
+		req = acc_request_new(dev->ep_out, BULK_BUFFER_SIZE);
+		if (!req)
+			goto fail;
+		req->complete = acc_complete_out;
+		dev->rx_req[i] = req;
+		INIT_LIST_HEAD(&req->list);
+		list_add_tail(&req->list, &dev->rx_idle);
+	}
+	return 0;
+
+fail:
+	pr_err("could not allocate rx requests\n");
+	INIT_LIST_HEAD(&dev->rx_idle);
+	acc_free_rx_reqs(dev);
+	return -ENOMEM;
 }
 
 static void acc_complete_set_string(struct usb_ep *ep, struct usb_request *req)
@@ -660,7 +731,7 @@ static int create_bulk_endpoints(struct acc_dev *dev,
 	struct usb_composite_dev *cdev = dev->cdev;
 	struct usb_request *req;
 	struct usb_ep *ep;
-	int i;
+	int i, ret;
 
 	DBG(cdev, "dev: %p\n", dev);
 
@@ -690,13 +761,9 @@ static int create_bulk_endpoints(struct acc_dev *dev,
 		req->complete = acc_complete_in;
 		req_put(dev, &dev->tx_idle, req);
 	}
-	for (i = 0; i < RX_REQ_MAX; i++) {
-		req = acc_request_new(dev->ep_out, BULK_BUFFER_SIZE);
-		if (!req)
-			goto fail;
-		req->complete = acc_complete_out;
-		dev->rx_req[i] = req;
-	}
+	ret = acc_alloc_rx_reqs(dev);
+	if (ret)
+		goto fail;
 
 	return 0;
 
@@ -707,14 +774,48 @@ fail:
 	return -1;
 }
 
+static void acc_queue_all_rx(struct acc_dev *dev, ssize_t data_length)
+{
+	struct usb_request *req;
+	unsigned long flags;
+	int ret;
+
+	/* Queue all requests in the rx_idle list */
+	for (;;) {
+		spin_lock_irqsave(&dev->lock, flags);
+		if (list_empty(&dev->rx_idle) || dev->disconnected || !dev->online) {
+			spin_unlock_irqrestore(&dev->lock, flags);
+			break;
+		}
+		req = list_first_entry(&dev->rx_idle, struct usb_request, list);
+		list_del(&req->list);
+		spin_unlock_irqrestore(&dev->lock, flags);
+
+		req->length = data_length;
+		ret = usb_ep_queue(dev->ep_out, req, GFP_KERNEL);
+		if (ret < 0) {
+			/* If queuing fails, re-add the request to the rx_idle list */
+			spin_lock_irqsave(&dev->lock, flags);
+			if (dev->online && !dev->disconnected)
+				list_add_tail(&req->list, &dev->rx_idle);
+			spin_unlock_irqrestore(&dev->lock, flags);
+			break;
+		}
+
+		/* Increment the in-flight count after successfully queuing */
+		atomic_inc(&dev->rx_in_flight);
+	}
+}
+
 static ssize_t acc_read(struct file *fp, char __user *buf,
 	size_t count, loff_t *pos)
 {
 	struct acc_dev *dev = fp->private_data;
 	struct usb_request *req;
-	ssize_t r = count;
+	ssize_t r = 0;
 	ssize_t data_length;
-	unsigned int xfer;
+	unsigned long flags;
+	size_t copied = 0;
 	int ret = 0;
 
 	if (dev->disconnected) {
@@ -722,81 +823,132 @@ static ssize_t acc_read(struct file *fp, char __user *buf,
 		return -ENODEV;
 	}
 
-	if (count > BULK_BUFFER_SIZE)
-		count = BULK_BUFFER_SIZE;
+	if (!count)
+		return 0;
 
 	/* we will block until we're online */
 	pr_debug("waiting for online\n");
-	ret = wait_event_interruptible(dev->read_wq, dev->online);
+	ret = wait_event_interruptible(dev->read_wq, dev->online || dev->disconnected);
 	if (ret < 0) {
-		r = ret;
-		goto done;
+		return ret;
+	}
+	if (!dev->online || dev->disconnected) {
+		return -ENODEV;
 	}
 
-	if (!dev->rx_req[0]) {
-		pr_debug("USB request already handled/freed\n");
-		r = -EINVAL;
-		goto done;
-	}
+	dev->read_done = 0;
 
 	/*
 	 * Calculate the data length by considering termination character.
 	 * Then compansite the difference of rounding up to
 	 * integer multiple of maxpacket size.
 	 */
-	data_length = count;
+	data_length = BULK_BUFFER_SIZE;
 	data_length += dev->ep_out->maxpacket - 1;
 	data_length -= data_length % dev->ep_out->maxpacket;
 
-	if (dev->rx_done) {
-		// last req cancelled. try to get it.
-		req = dev->rx_req[0];
-		goto copy_data;
-	}
+	/* Ensure all idle requests are queued */
+	acc_queue_all_rx(dev, data_length);
 
-requeue_req:
-	/* queue a request */
-	req = dev->rx_req[0];
-	req->length = data_length;
-	dev->rx_done = 0;
-	ret = usb_ep_queue(dev->ep_out, req, GFP_KERNEL);
-	if (ret < 0) {
-		r = -EIO;
-		goto done;
-	} else {
-		pr_debug("rx %p queue\n", req);
-	}
-
-	/* wait for a request to complete */
-	ret = wait_event_interruptible(dev->read_wq, dev->rx_done);
-	if (ret < 0) {
-		r = ret;
-		ret = usb_ep_dequeue(dev->ep_out, req);
-		if (ret != 0) {
-			// cancel failed. There can be a data already received.
-			// it will be retrieved in the next read.
-			pr_debug("cancelling failed %d\n", ret);
+	for (;;) {
+		/* Wait for a completed request, disconnection, or offline state */
+		ret = wait_event_interruptible(dev->read_wq,
+			dev->rx_done || dev->disconnected || !dev->online);
+		if (ret < 0) {
+			r = ret;
+			goto done;
 		}
-		goto done;
+		if (dev->disconnected || !dev->online) {
+			r = -ENODEV;
+			goto done;
+		}
+
+		/* drain rx_done_list in batch */
+		for (;;) {
+			size_t remaining = count - copied;
+
+			if (remaining == 0) {
+				r = copied;
+				goto refill_done;
+			}
+
+			spin_lock_irqsave(&dev->lock, flags);
+			if (!list_empty(&dev->rx_done_list)) {
+				req = list_first_entry(&dev->rx_done_list,
+					struct usb_request, list);
+				list_del_init(&req->list);
+				if (list_empty(&dev->rx_done_list))
+					dev->rx_done = 0;
+				spin_unlock_irqrestore(&dev->lock, flags);
+			} else {
+				spin_unlock_irqrestore(&dev->lock, flags);
+				/* no more completed reqs */
+				if (copied > 0) {
+					r = copied;
+					goto refill_done;
+				}
+				/* nothing copied yet, go back to wait */
+				break;
+			}
+
+			if (!req) {
+				r = -EIO;
+				goto done;
+			}
+
+			/* 0-len: re-add and continue */
+			if (req->actual == 0) {
+				spin_lock_irqsave(&dev->lock, flags);
+				if (dev->online && !dev->disconnected)
+					list_add_tail(&req->list, &dev->rx_idle);
+				spin_unlock_irqrestore(&dev->lock, flags);
+				req = NULL;
+				acc_queue_all_rx(dev, data_length);
+				continue;
+			}
+
+			/* not enough space for this req: put back and return */
+			if (req->actual > remaining) {
+				spin_lock_irqsave(&dev->lock, flags);
+				list_add(&req->list, &dev->rx_done_list);
+				dev->rx_done = 1;
+				spin_unlock_irqrestore(&dev->lock, flags);
+				req = NULL;
+				r = copied;
+				goto refill_done;
+			}
+
+			/* copy full req */
+			if (copy_to_user(buf + copied, req->buf, req->actual)) {
+				r = -EFAULT;
+				/* put back to idle to avoid leak */
+				spin_lock_irqsave(&dev->lock, flags);
+				if (dev->online && !dev->disconnected)
+					list_add_tail(&req->list, &dev->rx_idle);
+				spin_unlock_irqrestore(&dev->lock, flags);
+				req = NULL;
+				goto done;
+			}
+
+			copied += req->actual;
+
+			/* recycle req */
+			spin_lock_irqsave(&dev->lock, flags);
+			if (dev->online && !dev->disconnected)
+				list_add_tail(&req->list, &dev->rx_idle);
+			spin_unlock_irqrestore(&dev->lock, flags);
+			req = NULL;
+		}
 	}
 
-copy_data:
-	dev->rx_done = 0;
-	if (dev->online) {
-		/* If we got a 0-len packet, throw it back and try again. */
-		if (req->actual == 0)
-			goto requeue_req;
-
-		pr_debug("rx %p %u\n", req, req->actual);
-		xfer = (req->actual < count) ? req->actual : count;
-		r = xfer;
-		if (copy_to_user(buf, req->buf, xfer))
-			r = -EFAULT;
-	} else
-		r = -EIO;
-
+refill_done:
+	acc_queue_all_rx(dev, data_length);
 done:
-	pr_debug("returning %zd\n", r);
+	if (r == 0 && copied > 0)
+		r = copied;
+	pr_debug("acc_read returning %zd\n", r);
+	dev->read_done = 1;
+	wake_up(&dev->read_done_wq);
 	return r;
 }
 
@@ -873,8 +1025,34 @@ static long acc_ioctl(struct file *fp, unsigned int code, unsigned long value)
 	struct acc_dev *dev = fp->private_data;
 	char *src = NULL;
 	int ret;
+	int val;
+	unsigned long flags;
 
 	switch (code) {
+	case ACCESSORY_SET_RX_REQ_MAX:
+		if (copy_from_user(&val, (void __user *)value, sizeof(val)))
+			return -EFAULT;
+		if (val < 1 || val > 128)
+			return -EINVAL;
+		if (dev->online || atomic_read(&dev->rx_in_flight) != 0)
+			return -EBUSY;
+		spin_lock_irqsave(&dev->lock, flags);
+		INIT_LIST_HEAD(&dev->rx_idle);
+		INIT_LIST_HEAD(&dev->rx_done_list);
+		dev->rx_done = 0;
+		spin_unlock_irqrestore(&dev->lock, flags);
+		acc_free_rx_reqs(dev);
+		dev->rx_req_count = val;
+		if (dev->ep_out) {
+			ret = acc_alloc_rx_reqs(dev);
+			if (ret)
+				return ret;
+		}
+		return 0;
+
+	case ACCESSORY_GET_RX_REQ_MAX:
+		return put_user(dev->rx_req_count, (int __user *)value);
+
 	case ACCESSORY_GET_STRING_MANUFACTURER:
 		src = dev->manufacturer;
 		break;
@@ -1086,9 +1264,18 @@ static void acc_function_unbind(struct usb_configuration *c,
 {
 	struct acc_dev *dev = func_to_dev(f);
 
+	dev->disconnected = true;
 	dev->online = false;		/* clear online flag */
 	wake_up(&dev->read_wq);		/* unblock reads on closure */
 	wake_up(&dev->write_wq);	/* likewise for writes */
+	wait_event_interruptible(dev->read_done_wq, dev->read_done);
+
+	/* Disable the endpoints */
+	usb_ep_disable(dev->ep_in);
+	usb_ep_disable(dev->ep_out);
+
+	/* Wait until the number of in-flight requests is 0 */
+	wait_event_interruptible(dev->read_wq, atomic_read(&dev->rx_in_flight) == 0);
 
 	acc_free_all_requests(dev);
 
@@ -1214,7 +1401,10 @@ static int acc_function_set_alt(struct usb_function *f,
 {
 	struct acc_dev *dev = func_to_dev(f);
 	struct usb_composite_dev *cdev = f->config->cdev;
+	struct usb_request *req;
+	unsigned long flags;
 	int ret;
+	int i;
 
 	DBG(cdev, "intf: %d alt: %d\n", intf, alt);
 
@@ -1236,11 +1426,40 @@ static int acc_function_set_alt(struct usb_function *f,
 		return ret;
 	}
 
+	spin_lock_irqsave(&dev->lock, flags);
+	/* clear any pending requests in the rx_done_list */
+	while (!list_empty(&dev->rx_done_list)) {
+		req = list_first_entry(&dev->rx_done_list, struct usb_request, list);
+		list_del(&req->list);
+		INIT_LIST_HEAD(&req->list);
+		list_add_tail(&req->list, &dev->rx_idle);
+	}
+	/* clear any pending requests in the rx_req array */
+	if (dev->rx_req) {
+		for (i = 0; i < dev->rx_req_count; i++) {
+			if (dev->rx_req[i] && list_empty(&dev->rx_req[i]->list)) {
+				INIT_LIST_HEAD(&dev->rx_req[i]->list);
+				list_add_tail(&dev->rx_req[i]->list, &dev->rx_idle);
+			}
+		}
+	}
 	dev->online = true;
 	dev->disconnected = false; /* if online then not disconnected */
+	dev->rx_done = 0;
+	/* reset the in-flight count */
+	atomic_set(&dev->rx_in_flight, 0);
+	spin_unlock_irqrestore(&dev->lock, flags);
 
 	/* readers may be blocked waiting for us to go online */
 	wake_up(&dev->read_wq);
+
+	/* queue all requests in the rx_idle list */
+	{
+		ssize_t data_length = BULK_BUFFER_SIZE;
+		data_length += dev->ep_out->maxpacket - 1;
+		data_length -= data_length % dev->ep_out->maxpacket;
+		acc_queue_all_rx(dev, data_length);
+	}
 	return 0;
 }
 
@@ -1248,9 +1467,12 @@ static void acc_function_disable(struct usb_function *f)
 {
 	struct acc_dev *dev = func_to_dev(f);
 	struct usb_composite_dev *cdev = dev->cdev;
-
+	unsigned long flags;
+	
+	spin_lock_irqsave(&dev->lock, flags);
 	dev->disconnected = true;
 	dev->online = false; /* so now need to clear online flag here too */
+	spin_unlock_irqrestore(&dev->lock, flags);
 	usb_ep_disable(dev->ep_in);
 	usb_ep_disable(dev->ep_out);
 
@@ -1280,7 +1502,14 @@ static int acc_init(void)
 	spin_lock_init(&dev->lock);
 	init_waitqueue_head(&dev->read_wq);
 	init_waitqueue_head(&dev->write_wq);
+	init_waitqueue_head(&dev->read_done_wq);
+	dev->read_done = 1;
+	atomic_set(&dev->rx_in_flight, 0);
+	dev->rx_req_count = RX_REQ_MAX;
+	dev->rx_req = NULL;
 	INIT_LIST_HEAD(&dev->tx_idle);
+	INIT_LIST_HEAD(&dev->rx_idle);
+	INIT_LIST_HEAD(&dev->rx_done_list);
 	INIT_LIST_HEAD(&dev->hid_list);
 	INIT_LIST_HEAD(&dev->new_hid_list);
 	INIT_LIST_HEAD(&dev->dead_hid_list);

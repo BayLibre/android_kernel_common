@@ -136,5 +136,7 @@
 #define ACCESSORY_IS_START_REQUESTED        _IO('M', 7)
 /* returns audio mode (set via the ACCESSORY_SET_AUDIO_MODE control request) */
 #define ACCESSORY_GET_AUDIO_MODE            _IO('M', 8)
-
+/* set/get RX request count */
+#define ACCESSORY_SET_RX_REQ_MAX            _IOW('M', 9, int)
+#define ACCESSORY_GET_RX_REQ_MAX            _IOR('M', 10, int)
 #endif /* _UAPI_ANDROID__ACCESSORY_H */
