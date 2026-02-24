@@ -6,6 +6,8 @@
 #ifndef _PKVM_INTEL_IOMMU_H_
 #define _PKVM_INTEL_IOMMU_H_
 
+#include <asm/kvm_host.h>
+
 #ifndef __PKVM_HYP__
 int __init pkvm_host_prepare_iommu(void);
 int __init pkvm_host_init_iommu(void);
