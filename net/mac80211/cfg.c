@@ -1657,9 +1657,10 @@ static int sta_apply_parameters(struct ieee80211_local *local,
 					 sband, params->link_sta_params.supported_rates,
 					 params->link_sta_params.supported_rates_len,
 					 &sta->sta.supp_rates[sband->band]);
+                return -EINVAL;
 	}
 
-	if (params->link_sta_params.ht_capa)
+        if (params->link_sta_params.ht_capa)
 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
 						  params->link_sta_params.ht_capa, sta);
 
