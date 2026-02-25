@@ -39,6 +39,24 @@
       "message": "Why is this needed now, and in this branch?  boot config values are under control by the platform, it is not a problem for devices because they \"trust\" the boot config fully.  So while this is a \"nice\" hardening fix, it should not be needed for any real device.",
       "revId": "7887be49847f8018fd770bddc0a9a319eca23434",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a9831d1_6cd02e27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3647974
+      },
+      "writtenOn": "2026-02-25T00:14:46Z",
+      "side": 1,
+      "message": "To clarify: we (L\u0026T) don\u0027t need this in any specific branch, we fixed our bootloader code to avoid generating these examples already. I don\u0027t know what the general Android rules/process for backporting kernel fixes are.\n\nI would however suggest that you assess this as a potential security vulnerability (whatever that means for your process), since in some scenarios bootloaders need to generate bootconfig strings at runtime from potentially attacker-controlled sources. In such a case you may have a situation where this has always worked fine in practice because the source value is never empty, but an attacker could potentially cause it to be empty and thus cause the bootloader to generate a bootconfig that hits this (which would in turn make the kernel ignore the following bootconfig key, which could have security implications depending on what that key is). The bootloader might have been written to do everything right according to the bootconfig documentation (e.g. check that the inserted string does not contain special characters), so this is not really a bootloader vulnerability because the documentation previously said that empty values are legal (but the kernel didn\u0027t implement that behavior correctly).",
+      "parentUuid": "cbe4ef6d_7c783ceb",
+      "revId": "7887be49847f8018fd770bddc0a9a319eca23434",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
