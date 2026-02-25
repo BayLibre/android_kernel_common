@@ -78,7 +78,6 @@ int gunyah_vm_parcel_to_paged(struct gunyah_vm *ghvm,
 			folio = folio_next(folio);
 		}
 	}
-	BUG_ON(off != nr);
 	vm_parcel->start = 0;
 	b->vm_parcel = NULL;
 
@@ -204,8 +203,8 @@ int gunyah_vm_provide_folio(struct gunyah_vm *ghvm, struct folio *folio,
 							 guest_extent->capid,
 							 pa, size);
 	if (gunyah_error != GUNYAH_ERROR_OK) {
-		pr_err("Failed to donate memory for guest address 0x%016llx: %d\n",
-		       gpa, gunyah_error);
+		pr_err("Failed to donate memory for guest address 0x%016llx: %d pa:0x%016llx h:%16llx g:%16llx\n",
+		       gpa, gunyah_error, pa, host_extent->capid, guest_extent->capid);
 		ret = gunyah_error_remap(gunyah_error);
 		goto platform_release;
 	}
@@ -356,6 +355,7 @@ int gunyah_vm_reclaim_range(struct gunyah_vm *ghvm, u64 gfn, u64 nr)
 	unsigned long next = gfn, g;
 	struct folio *folio;
 	int ret, ret2 = 0;
+	int count = 0;
 	void *entry;
 	bool sync;
 
@@ -367,8 +367,10 @@ int gunyah_vm_reclaim_range(struct gunyah_vm *ghvm, u64 gfn, u64 nr)
 		g = next - folio_nr_pages(folio);
 		folio_get(folio);
 		folio_lock(folio);
-		if (mtree_load(&ghvm->mm, g) == entry)
+		if (mtree_load(&ghvm->mm, g) == entry) {
 			ret = __gunyah_vm_reclaim_folio_locked(ghvm, entry, g, sync);
+			count ++;
+		}
 		else
 			ret = -EAGAIN;
 		folio_unlock(folio);
@@ -376,6 +378,10 @@ int gunyah_vm_reclaim_range(struct gunyah_vm *ghvm, u64 gfn, u64 nr)
 		if (ret && ret2 != -EAGAIN)
 			ret2 = ret;
 	}
+
+	if (count)
+		pr_err("%s:%d reclaim %016llx %d\n", __func__, __LINE__, gfn, count);
+
 
 	return ret2;
 }
@@ -882,11 +888,15 @@ int gunyah_setup_demand_paging(struct gunyah_vm *ghvm, u64 start_gfn,
 			continue;
 		entries[i].phys_addr = cpu_to_le64(b->guest_phys_addr);
 		entries[i].size = cpu_to_le64(b->size);
+		pr_err("Entry no %u\n", i);
+
 		if (++i == count)
 			break;
 	}
-
+	pr_err("Demand paged entries %u and ret %d count %d\n", i, ret, count);
 	ret = gunyah_rm_vm_set_demand_paging(ghvm->rm, ghvm->vmid, i, entries);
+	pr_err("Demand paged entries %u and ret %d count %d\n", i, ret, count);
+
 	kfree(entries);
 out:
 	up_read(&ghvm->bindings_lock);
