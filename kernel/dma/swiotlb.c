@@ -20,6 +20,8 @@
 
 #define pr_fmt(fmt) "software IO TLB: " fmt
 
+#include <asm/hypervisor.h>
+
 #include <linux/cache.h>
 #include <linux/cc_platform.h>
 #include <linux/ctype.h>
@@ -1792,7 +1794,7 @@ bool swiotlb_free(struct device *dev, struct page *page, size_t size)
 
 static inline bool is_swiotlb_pool_decrypted(struct device *dev)
 {
-	return true;
+	return !pkvm_is_guest_device(dev);
 }
 
 static int rmem_swiotlb_device_init(struct reserved_mem *rmem,

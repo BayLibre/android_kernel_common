@@ -9,6 +9,8 @@
 
 #include <linux/arm-smccc.h>
 #include <linux/array_size.h>
+#include <linux/iommu.h>
+#include <linux/iommu-dma.h>
 #include <linux/io.h>
 #include <linux/mem_encrypt.h>
 #include <linux/memblock.h>
@@ -186,6 +188,11 @@ contiguous:
 	}
 
 	return IS_ALIGNED(region->base + region->size, pkvm_granule);
+}
+
+bool pkvm_is_guest_device(struct device *dev)
+{
+	return pkvm_granule && use_dma_iommu(dev);
 }
 
 void pkvm_init_hyp_services(void)
