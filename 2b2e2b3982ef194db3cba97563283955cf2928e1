@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f075022d_09fbe2c6",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1108,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-02-25T20:05:19Z",
+      "side": 1,
+      "message": "Please use pr_warn() and handle the error gracefully if possible.",
+      "range": {
+        "startLine": 1108,
+        "startChar": 1,
+        "endLine": 1108,
+        "endChar": 8
+      },
+      "revId": "2b2e2b3982ef194db3cba97563283955cf2928e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b3682d7_ef3b1056",
         "filename": "drivers/block/zram/zram_drv.c",
         "patchSetId": 2
@@ -32,6 +55,24 @@
       "side": 1,
       "message": "Good point, I think we might need to use WARN_ON instead.",
       "parentUuid": "8b3682d7_ef3b1056",
+      "revId": "2b2e2b3982ef194db3cba97563283955cf2928e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "238a6690_343f0135",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1659,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-02-25T20:05:19Z",
+      "side": 1,
+      "message": "Don\u0027t use WARN_ON either because some vendors configure warnings to cause a panic. Please use pr_warn() and handle the error gracefully if possible.",
+      "parentUuid": "f945ccd0_727368fd",
       "revId": "2b2e2b3982ef194db3cba97563283955cf2928e1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
