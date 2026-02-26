@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09f11a8a_e6794db4",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2026-02-26T12:29:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e45bc2bc_2ee25bd9",
+      "range": {
+        "startLine": 308,
+        "startChar": 0,
+        "endLine": 323,
+        "endChar": 1
+      },
+      "revId": "856d6551c01b47dd5e521c60cb9fef63475b49be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c5103e5_aa235918",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Mostly that it does not try to reclaim a page from the pool range if the pool is not reclaimable. If it does, it would expose the coalescing to accessing unmapped pages.",
       "parentUuid": "8c5103e5_aa235918",
+      "range": {
+        "startLine": 325,
+        "startChar": 12,
+        "endLine": 325,
+        "endChar": 32
+      },
+      "revId": "856d6551c01b47dd5e521c60cb9fef63475b49be",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "965d1f81_9c11300f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2026-02-26T12:29:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ebd0de40_cca1502b",
       "range": {
         "startLine": 325,
         "startChar": 12,
