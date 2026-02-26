@@ -22,6 +22,30 @@
       },
       "revId": "02916a4a715aa0a4307318ec0ffd164d989e6c5a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88a3c45c_684e5a26",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-26T13:19:52Z",
+      "side": 1,
+      "message": "Hum, I need to look closer, but I remember thinking about that and giving up because this function was called before the vmemmap is initialized. In that case all the pages will appear PKVM_NO_PAGE.",
+      "parentUuid": "5848a0b7_affe716a",
+      "range": {
+        "startLine": 398,
+        "startChar": 5,
+        "endLine": 398,
+        "endChar": 19
+      },
+      "revId": "02916a4a715aa0a4307318ec0ffd164d989e6c5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
