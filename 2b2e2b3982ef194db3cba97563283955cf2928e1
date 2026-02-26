@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "823cfaf8_8a627932",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1108,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-02-26T11:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f075022d_09fbe2c6",
+      "range": {
+        "startLine": 1108,
+        "startChar": 1,
+        "endLine": 1108,
+        "endChar": 8
+      },
+      "revId": "2b2e2b3982ef194db3cba97563283955cf2928e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b3682d7_ef3b1056",
@@ -73,6 +97,24 @@
       "side": 1,
       "message": "Don\u0027t use WARN_ON either because some vendors configure warnings to cause a panic. Please use pr_warn() and handle the error gracefully if possible.",
       "parentUuid": "f945ccd0_727368fd",
+      "revId": "2b2e2b3982ef194db3cba97563283955cf2928e1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "276b4f3a_9f2931ea",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1659,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-02-26T11:43:31Z",
+      "side": 1,
+      "message": "Done. Thanks for the notice!",
+      "parentUuid": "238a6690_343f0135",
       "revId": "2b2e2b3982ef194db3cba97563283955cf2928e1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
