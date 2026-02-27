@@ -26,11 +26,10 @@ static void erofs_fileio_ki_complete(struct kiocb *iocb, long ret)
 	struct folio_iter fi;
 
 	if (ret > 0) {
-		if (ret != rq->bio.bi_iter.bi_size) {
-			bio_advance(&rq->bio, ret);
-			zero_fill_bio(&rq->bio);
-		}
-		ret = 0;
+		if (ret != rq->bio.bi_iter.bi_size)
+			ret = -EIO;
+		else
+			ret = 0;
 	}
 	if (rq->bio.bi_end_io) {
 		if (ret < 0 && !rq->bio.bi_status)
