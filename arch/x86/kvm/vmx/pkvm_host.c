@@ -822,22 +822,6 @@ static void pkvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
 	vcpu->arch.cr4_guest_owned_bits = ~0;
 
 	kvm_set_cr8(vcpu, 0);
-
-	if (pkvm_is_protected_vcpu(vcpu)) {
-		/*
-		 * Emulating xapic mode will require the host to decode MMIO
-		 * instruction which is not supported if the guest is a pVM as
-		 * the pVM's CPU and memory state will be isolated. To avoid
-		 * using xapic mode for a pVM, enable x2apic mode by default so
-		 * that pVM will use MSR instructions to access lapic, which
-		 * doesn't require decoding.
-		 */
-		u64 data = APIC_DEFAULT_PHYS_BASE | LAPIC_MODE_X2APIC |
-			   (kvm_vcpu_is_reset_bsp(vcpu) ? MSR_IA32_APICBASE_BSP : 0);
-
-		guest_cpu_cap_set(vcpu, X86_FEATURE_X2APIC);
-		kvm_apic_set_base(vcpu, data, true);
-	}
 }
 
 static void pkvm_prepare_switch_to_guest(struct kvm_vcpu *vcpu) {}
@@ -1680,10 +1664,26 @@ static void pkvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
 
 	memcpy(entries, (void *)e2, size);
 
-	if (KVM_BUG_ON(pkvm_hypercall_out(vcpu_after_set_cpuid, &out, __pa(entries)), vcpu->kvm))
+	if (KVM_BUG_ON(pkvm_hypercall_out(vcpu_after_set_cpuid, &out, __pa(entries)), vcpu->kvm)) {
 		free_pages_exact(entries, size);
-	else
-		kvm_free_pkvm_memcache(&out.vcpu_after_set_cpuid.memcache);
+		return;
+	}
+
+	kvm_free_pkvm_memcache(&out.vcpu_after_set_cpuid.memcache);
+
+	if (pkvm_is_protected_vcpu(vcpu)) {
+		/*
+		 * The virtual apic mode is configured by the pKVM in x2apic
+		 * mode if vcpu_after_set_cpuid hypercall succeeds. Align the
+		 * apic_base in the host side to be x2apic mode as well to make
+		 * sure the APIC ID (which will be emulated by the host for the
+		 * protected apic) can be initialized properly.
+		 */
+		u64 data = APIC_DEFAULT_PHYS_BASE | LAPIC_MODE_X2APIC |
+			   (kvm_vcpu_is_reset_bsp(vcpu) ? MSR_IA32_APICBASE_BSP : 0);
+
+		KVM_BUG_ON(kvm_apic_set_base(vcpu, data, true), vcpu->kvm);
+	}
 }
 
 static bool pkvm_has_vmx_wbinvd_exit(void)
