@@ -21,9 +21,9 @@
 #include <linux/spinlock.h>
 #include <linux/uaccess.h>
 #include <linux/uio.h>
+#include <linux/wrapfd.h>
 #include <uapi/linux/wrapfd.h>
 
-#include "wrapfd.h"
 
 #define FDINFO_BUF_SIZE	100
 
@@ -282,6 +282,7 @@ struct wrap_ctx_mapping {
 
 struct wrap_ctx {
 	struct wrap_content *content;
+	int wrapfd;
 	spinlock_t lock; /* protects all fields below */
 	struct wrap_owner owner;
 	bool allow_guests;
@@ -329,8 +330,14 @@ static inline bool is_owner_dev(struct wrap_ctx *ctx,
 static inline int publish_wrap(struct wrap_ctx *ctx,
 			       struct wrap_content *content)
 {
+	int wrapfd;
+
 	ctx->content = content;
-	return content->ops->create_wrap(content, ctx);
+	wrapfd = content->ops->create_wrap(content, ctx);
+	if (wrapfd >= 0)
+		ctx->wrapfd = wrapfd;
+
+	return wrapfd;
 }
 
 static int can_access(struct wrap_ctx *ctx, struct task_struct *task,
@@ -821,6 +828,20 @@ static void wrap_show_fdinfo(struct seq_file *m, struct file *file)
 	spin_unlock(&ctx->lock);
 }
 #endif
+
+struct file *get_wrapfd_file(struct vm_area_struct *vma)
+{
+	struct wrap_ctx_mapping *mapping;
+	struct file *file;
+
+	if (!vma || (vma->vm_ops->open != wrap_vm_open))
+		return NULL;
+
+	mapping = container_of(vma->vm_ops, struct wrap_ctx_mapping, vm_ops);
+	file = fget(mapping->ctx->wrapfd);
+
+	return file;
+}
 
 int wrapfd_get(struct file *file, struct device *dev,
 	       union wrapfd_mappable *mappable)
