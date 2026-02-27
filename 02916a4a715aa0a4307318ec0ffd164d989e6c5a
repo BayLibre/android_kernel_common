@@ -46,6 +46,30 @@
       },
       "revId": "02916a4a715aa0a4307318ec0ffd164d989e6c5a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "368dffa0_50fc8628",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-02-27T14:16:10Z",
+      "side": 1,
+      "message": "Yeah confirmed. prepopulate_host_stage2() would trigger hyp_pool_owned(), before fix_host_ownership().",
+      "parentUuid": "88a3c45c_684e5a26",
+      "range": {
+        "startLine": 398,
+        "startChar": 5,
+        "endLine": 398,
+        "endChar": 19
+      },
+      "revId": "02916a4a715aa0a4307318ec0ffd164d989e6c5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
