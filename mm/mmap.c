@@ -49,6 +49,7 @@
 #include <linux/sched/mm.h>
 #include <linux/ksm.h>
 #include <linux/memfd.h>
+#include <linux/wrapfd.h>
 
 #include <linux/uaccess.h>
 #include <asm/cacheflush.h>
@@ -1690,6 +1691,7 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
 	struct vm_area_struct *vma;
 	unsigned long populate = 0;
 	unsigned long ret = -EINVAL;
+	struct file *vm_file;
 	struct file *file;
 	vm_flags_t vm_flags;
 
@@ -1789,8 +1791,15 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
 			goto out;
 	}
 
-	ret = do_mmap(vma->vm_file, start, size,
+	/* If vma is mapping a wrapfd file then use it instead of the vm_file */
+	vm_file = get_wrapfd_file(vma);
+	if (!vm_file)
+		vm_file = vma->vm_file;
+
+	ret = do_mmap(vm_file, start, size,
 			prot, flags, 0, pgoff, &populate, NULL);
+	if (vm_file != vma->vm_file)
+		fput(vm_file);
 out:
 	mmap_write_unlock(mm);
 	fput(file);
