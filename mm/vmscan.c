@@ -2991,6 +2991,17 @@ static struct lru_gen_mm_state *get_mm_state(struct lruvec *lruvec)
 	return &lruvec->mm_state;
 }
 
+/*
+ * mm is removed from the lru_gen list at the beginning of exit_mm(), hence
+ * this check can be used to detect mm of an exiting process.
+ * Note: the check is racy as we are not holding mm_list->lock but occasional
+ * false negatives are not critical, just suboptimal.
+ */
+static inline bool lru_gen_has_mm(struct mm_struct *mm)
+{
+	return !list_empty(&mm->lru_gen.list);
+}
+
 static struct mm_struct *get_next_mm(struct lru_gen_mm_walk *walk)
 {
 	int key;
@@ -3002,6 +3013,10 @@ static struct mm_struct *get_next_mm(struct lru_gen_mm_walk *walk)
 	key = pgdat->node_id % BITS_PER_TYPE(mm->lru_gen.bitmap);
 
 	if (!walk->force_scan && !test_bit(key, &mm->lru_gen.bitmap))
+		return NULL;
+
+	/* skip mm if its process is exiting */
+	if (unlikely(!lru_gen_has_mm(mm)))
 		return NULL;
 
 	clear_bit(key, &mm->lru_gen.bitmap);
@@ -3908,6 +3923,10 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
 
 	do {
 		DEFINE_MAX_SEQ(lruvec);
+
+		/* skip mm if its process is exiting */
+		if (unlikely(!lru_gen_has_mm(mm)))
+			break;
 
 		err = -EBUSY;
 
