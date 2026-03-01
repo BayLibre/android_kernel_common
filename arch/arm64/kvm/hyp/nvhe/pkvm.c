@@ -187,7 +187,18 @@ static int pkvm_vcpu_init_traps(struct pkvm_hyp_vcpu *hyp_vcpu)
 	pkvm_vcpu_reset_hcr(vcpu);
 	vcpu_set_hcrx(vcpu);
 
-	if ((!pkvm_hyp_vcpu_is_protected(hyp_vcpu))) {
+	if (pkvm_hyp_vcpu_is_protected(hyp_vcpu) && cpus_have_final_cap(ARM64_HAS_FGT)) {
+		if (kvm_has_s1pie(vcpu->kvm)) {
+			*vcpu_fgt(vcpu, HFGRTR_EL2) |= (HFGRTR_EL2_nPIR_EL1 | HFGRTR_EL2_nPIRE0_EL1);
+			*vcpu_fgt(vcpu, HFGWTR_EL2) |= (HFGWTR_EL2_nPIR_EL1 | HFGWTR_EL2_nPIRE0_EL1);
+		}
+		if (kvm_has_s1poe(vcpu->kvm)) {
+			*vcpu_fgt(vcpu, HFGRTR_EL2) |= (HFGRTR_EL2_nPOR_EL1 | HFGRTR_EL2_nPOR_EL0);
+			*vcpu_fgt(vcpu, HFGWTR_EL2) |= (HFGWTR_EL2_nPOR_EL1 | HFGWTR_EL2_nPOR_EL0);
+		}
+	}
+
+	if (!pkvm_hyp_vcpu_is_protected(hyp_vcpu)) {
 		struct kvm_vcpu *host_vcpu = hyp_vcpu->host_vcpu;
 
 		memcpy(vcpu->arch.fgt, host_vcpu->arch.fgt, sizeof(vcpu->arch.fgt));
