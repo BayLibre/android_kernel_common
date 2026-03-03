@@ -3882,6 +3882,7 @@
   usb_gadget_unmap_request
   usb_gadget_vbus_connect
   usb_gadget_vbus_disconnect
+  usb_get_descriptor
   usb_get_dev
   usb_get_dr_mode
   usb_get_from_anchor
@@ -3890,6 +3891,7 @@
   usb_get_intf
   usb_get_maximum_speed
   usb_get_role_switch_default_mode
+  usb_get_status
   usb_get_urb
   usb_gstrings_attach
   usb_hc_died
@@ -3952,6 +3954,7 @@
   usb_root_hub_lost_power
   usb_scuttle_anchored_urbs
   usb_set_interface
+  usb_sg_cancel
   usb_sg_init
   usb_sg_wait
   usb_show_dynids
