@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ca51d27_c884848f",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1060234
+      },
+      "writtenOn": "2026-03-03T16:28:01Z",
+      "side": 1,
+      "message": "nit: This name sounds like a boolean flag to enable a limit, not the actual numerical limit itself. How about `nr_to_process`?",
+      "range": {
+        "startLine": 28,
+        "startChar": 5,
+        "endLine": 28,
+        "endChar": 16
+      },
+      "revId": "556b79c909bae0ce3e41ecb5c13301e95ca0f226",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c66e9f1_3f9581ec",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1060234
+      },
+      "writtenOn": "2026-03-03T16:28:01Z",
+      "side": 1,
+      "message": "last_addr isn\u0027t managed consistently. Of the four places which set it:\n\n - line 73: sets it to an addr which we know won\u0027t be processed\n - lines 76 and 160: sets it to an addr which may or may not be successfully processed\n - line 188: sets it to an addr which we know has finished being processed",
+      "range": {
+        "startLine": 160,
+        "startChar": 2,
+        "endLine": 160,
+        "endChar": 26
+      },
+      "revId": "556b79c909bae0ce3e41ecb5c13301e95ca0f226",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87690b2f_f73186a4",
+        "filename": "include/uapi/linux/zram_ioctl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1060234
+      },
+      "writtenOn": "2026-03-03T16:28:01Z",
+      "side": 1,
+      "message": "Is this inclusive or exclusive? Also, it looks like when the scan is done, this gets set to 0, which should be documented.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 17
+      },
+      "revId": "556b79c909bae0ce3e41ecb5c13301e95ca0f226",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
