@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d67e627_893871da",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 682,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-03T21:46:26Z",
+      "side": 1,
+      "message": "Moving xa_init into disk_size store part where most zram initialization code stay?",
+      "range": {
+        "startLine": 682,
+        "startChar": 1,
+        "endLine": 682,
+        "endChar": 8
+      },
+      "revId": "e0f42c350b2fe37af7b0fd641855ea766cb9c539",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85c60f71_7d135851",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1108,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-03T21:46:26Z",
+      "side": 1,
+      "message": "Let\u0027s factor it out via utility function.\ne.g., zram_prefetch_cache_store()",
+      "range": {
+        "startLine": 1100,
+        "startChar": 0,
+        "endLine": 1108,
+        "endChar": 2
+      },
+      "revId": "e0f42c350b2fe37af7b0fd641855ea766cb9c539",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "116fb28f_9be88c65",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1338,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-03T21:46:26Z",
+      "side": 1,
+      "message": "\"rebind\" sounds little awkward to me. \n\nHow about this? (Feel free to suggest better names)\n\nval \u003d zram_prefetch_cache_load(zram, index);\nif (xa_is_value(val)) {\n        zram_[populate_or_setup]_block(zram, index);\n}",
+      "revId": "e0f42c350b2fe37af7b0fd641855ea766cb9c539",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7dc0164_ebb65667",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2341,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-03T21:46:26Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we use CONFIG_ZRAM_ANDROID_IOCTL since prefetch will be used for only zram_ioctl?",
+      "range": {
+        "startLine": 2341,
+        "startChar": 12,
+        "endLine": 2341,
+        "endChar": 33
+      },
+      "revId": "e0f42c350b2fe37af7b0fd641855ea766cb9c539",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39471718_c85d2c8e",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3453,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-03T21:46:26Z",
+      "side": 1,
+      "message": "Hmm, why do we this init in zram_add?\n\nNow I also see zram_writeback related logic is also done by here.\n\nActually, zram_add has done initialization related to block device general stuff and defer all the other init to disksize_store.\n\nUnless there is strong reason, I want to keep the convention.",
+      "range": {
+        "startLine": 3453,
+        "startChar": 1,
+        "endLine": 3453,
+        "endChar": 32
+      },
+      "revId": "e0f42c350b2fe37af7b0fd641855ea766cb9c539",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
