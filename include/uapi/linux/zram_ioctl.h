@@ -7,7 +7,15 @@
 #include <linux/ioctl.h>
 
 struct zram_android_ioc_data_process_writeback {
+	/* The pidfd of the process to scan for writeback candidates */
 	__aligned_u64	pidfd;
+	/* The starting virtual address for the scan */
+	__u64		start_addr;
+	/* The address where the scan stopped, to be used for next call */
+	__u64		end_addr;
+	/* Maximum number of bytes to scan for writeback */
+	__u64		request_bytes;
+	/* Total number of bytes successfully written back */
 	__u64		written_bytes;
 };
 

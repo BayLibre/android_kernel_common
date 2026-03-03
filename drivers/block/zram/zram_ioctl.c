@@ -25,6 +25,9 @@
 struct zram_process_walk_private {
 	struct zram *zram;
 	struct zram_pp_ctl *pp_ctl;
+	u64 limit_pages;
+	u64 pages_found;
+	unsigned long last_addr;
 };
 
 static inline bool can_do_file_pageout(struct vm_area_struct *vma)
@@ -64,6 +67,14 @@ static int zram_process_walker(pmd_t *pmd, unsigned long start,
 	u64 nr_pages = zram->disksize >> PAGE_SHIFT;
 
 	for (addr = start; addr < end; addr += PAGE_SIZE) {
+		if (private->limit_pages &&
+		    private->pages_found >= private->limit_pages) {
+			private->last_addr = addr;
+			return 1;
+		}
+
+		private->last_addr = addr;
+
 		ptep = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
 		if (!ptep)
 			break;
@@ -115,6 +126,7 @@ static int zram_process_walker(pmd_t *pmd, unsigned long start,
 
 		/* Use PAGE_WRITEBACK for single index */
 		scan_slots_for_writeback(zram, 0, index, index+1, pp_ctl);
+		private->pages_found++;
 
 unlock_swap_device:
 		put_swap_device(sis);
@@ -136,12 +148,16 @@ static int zram_ioctl_process_writeback_scan(struct zram *zram,
 	struct mm_struct *mm;
 	struct vm_area_struct *vma;
 	struct task_struct *task;
+	unsigned long start_addr = (unsigned long)ioc_data_pwb->start_addr;
 	unsigned int f_flags;
 	int ret = 0;
 
 	struct zram_process_walk_private private = {
 		.zram = zram,
-		.pp_ctl = ctl
+		.pp_ctl = ctl,
+		.limit_pages = ioc_data_pwb->request_bytes >> PAGE_SHIFT,
+		.pages_found = 0,
+		.last_addr = start_addr,
 	};
 
 	task = pidfd_get_task(ioc_data_pwb->pidfd, &f_flags);
@@ -154,22 +170,33 @@ static int zram_ioctl_process_writeback_scan(struct zram *zram,
 		goto release_task;
 	}
 
-	VMA_ITERATOR(vmi, mm, 0);
+	VMA_ITERATOR(vmi, mm, start_addr);
 	/* Iterates through all the VMAs of the process */
 	mmap_read_lock(mm);
 	for_each_vma(vmi, vma) {
+		unsigned long start = max(vma->vm_start, start_addr);
+
 		if (!vma_is_anonymous(vma) && (!can_do_file_pageout(vma) &&
 					       (vma->vm_flags & VM_MAYSHARE)))
 			continue;
 
-		ret = walk_page_range(mm, vma->vm_start, vma->vm_end,
+		ret = walk_page_range(mm, start, vma->vm_end,
 				      &zram_walk_ops, &private);
 		if (ret)
 			break;
+
+		private.last_addr = vma->vm_end;
 	}
 	mmap_read_unlock(mm);
-
 	mmput(mm);
+
+	if (ret > 0) {
+		ioc_data_pwb->end_addr = private.last_addr;
+		ret = 0;
+	} else {
+		ioc_data_pwb->end_addr = 0;
+	}
+
 release_task:
 	put_task_struct(task);
 
