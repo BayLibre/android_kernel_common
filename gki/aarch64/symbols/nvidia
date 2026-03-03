@@ -233,8 +233,10 @@
   __rcu_read_lock
   __rcu_read_unlock
   __refrigerator
+  __register_binfmt
   __register_blkdev
   __register_chrdev
+  __register_nls
   __register_virtio_driver
   __regmap_init
   __release_region
@@ -380,6 +382,7 @@
   _snd_pcm_stream_lock_irqsave
   _totalram_pages
   _trace_android_vh_record_pcpu_rwsem_starttime
+  abort_creds
   add_device_randomness
   add_swap_extent
   add_taint
@@ -526,6 +529,7 @@
   bpf_trace_run8
   bpf_trace_run9
   bpf_warn_invalid_xdp_action
+  bprm_change_interp
   br_dev_queue_push_xmit
   br_forward_finish
   br_handle_frame_finish
@@ -628,6 +632,7 @@
   copy_page_from_iter_atomic
   copy_page_to_iter
   copy_splice_read
+  copy_string_kernel
   cpu_all_bits
   cpu_bit_bitmap
   cpu_have_feature
@@ -714,6 +719,7 @@
   current_umask
   current_work
   d_add
+  d_alloc
   d_alloc_parallel
   d_delete
   d_drop
@@ -1098,6 +1104,7 @@
   dmam_free_coherent
   dmam_pool_create
   do_trace_netlink_extack
+  done_path_create
   down
   down_interruptible
   down_read
@@ -1343,6 +1350,16 @@
   dw_pcie_wait_for_link
   dw_pcie_write_dbi
   efi
+  efi_status_to_err
+  efivar_get_next_variable
+  efivar_get_variable
+  efivar_is_available
+  efivar_lock
+  efivar_ops_nh
+  efivar_query_variable_info
+  efivar_set_variable_locked
+  efivar_supports_writes
+  efivar_unlock
   empty_zero_page
   enable_irq
   enable_percpu_irq
@@ -1477,6 +1494,7 @@
   folio_wait_private_2_killable
   folio_wait_writeback
   folio_wait_writeback_killable
+  follow_down
   follow_pfnmap_end
   follow_pfnmap_start
   fput
@@ -1509,6 +1527,21 @@
   fs_param_is_u64
   fs_param_is_uid
   fsnotify
+  fuse_abort_conn
+  fuse_conn_get
+  fuse_conn_init
+  fuse_conn_put
+  fuse_dev_alloc_install
+  fuse_dev_fiq_ops
+  fuse_dev_free
+  fuse_dev_operations
+  fuse_dev_release
+  fuse_direct_io
+  fuse_do_ioctl
+  fuse_do_open
+  fuse_file_poll
+  fuse_simple_background
+  fuse_sync_release
   fwnode_device_is_available
   fwnode_find_reference
   fwnode_get_named_child_node
@@ -1579,6 +1612,7 @@
   get_device_system_crosststamp
   get_free_pages_noprof
   get_inode_acl
+  get_max_files
   get_net_ns_by_fd
   get_net_ns_by_pid
   get_next_ino
@@ -1590,6 +1624,8 @@
   get_swap_device
   get_task_mm
   get_task_pid
+  get_tree_keyed
+  get_tree_single
   get_unused_fd_flags
   get_user_ifreq
   get_zeroed_page_noprof
@@ -1609,6 +1645,7 @@
   gether_set_ifname
   gether_set_qmult
   gether_setup_name_default
+  getname_kernel
   glob_match
   gnet_stats_add_basic
   gnet_stats_add_queue
@@ -1648,6 +1685,9 @@
   gro_cells_destroy
   gro_cells_init
   gro_cells_receive
+  groups_alloc
+  groups_free
+  groups_sort
   gspca_coarse_grained_expo_autogain
   gspca_debug
   gspca_dev_probe
@@ -1659,6 +1699,7 @@
   gspca_suspend
   guid_gen
   guid_null
+  guid_parse
   handle_bad_irq
   handle_edge_irq
   handle_nested_irq
@@ -1796,6 +1837,7 @@
   inet_frags_init
   inet_pton_with_scope
   inet_select_addr
+  init_binfmt_misc
   init_iova_domain
   init_net
   init_on_alloc
@@ -1825,6 +1867,7 @@
   inode_set_bytes
   inode_set_ctime_current
   inode_set_flags
+  inode_to_bdi
   input_alloc_absinfo
   input_allocate_device
   input_close_device
@@ -1979,9 +2022,11 @@
   kasan_flag_enabled
   kasprintf
   kern_path
+  kern_path_create
   kernel_accept
   kernel_bind
   kernel_connect
+  kernel_getpeername
   kernel_kobj
   kernel_listen
   kernel_neon_begin
@@ -2108,9 +2153,14 @@
   llist_add_batch
   load_nls
   load_nls_default
+  lock_rename_child
   lock_sock_nested
   lock_two_nondirectories
   lockref_get
+  locks_alloc_lock
+  locks_delete_block
+  locks_free_lock
+  locks_init_lock
   locks_lock_inode_wait
   log_post_read_mmio
   log_post_write_mmio
@@ -2121,6 +2171,7 @@
   lookup_bdev
   lookup_one
   lookup_one_len
+  lookup_one_qstr_excl
   lookup_positive_unlocked
   lookup_user_key
   lzo1x_1_compress
@@ -2135,6 +2186,7 @@
   match_strdup
   match_string
   match_token
+  match_wildcard
   mbox_chan_received_data
   mbox_controller_unregister
   mbox_free_channel
@@ -2519,6 +2571,7 @@
   of_usb_host_tpl_support
   of_usb_update_otg_caps
   on_each_cpu_cond_mask
+  open_exec
   out_of_line_wait_on_bit
   out_of_line_wait_on_bit_lock
   out_of_line_wait_on_bit_timeout
@@ -2840,6 +2893,7 @@
   pm_suspend_default_s2idle
   pm_system_wakeup
   pm_wakeup_dev_event
+  posix_acl_alloc
   posix_acl_chmod
   posix_acl_create
   posix_clock_register
@@ -2893,6 +2947,7 @@
   put_pid
   put_unused_fd
   put_user_ifreq
+  putname
   pwm_apply_might_sleep
   pwmchip_remove
   qdisc_create_dflt
@@ -2992,6 +3047,7 @@
   release_resource
   release_sock
   remap_pfn_range
+  remove_arg_zero
   remove_proc_entry
   remove_proc_subtree
   remove_wait_queue
@@ -3171,9 +3227,11 @@
   set_cpus_allowed_ptr
   set_disk_ro
   set_freezable
+  set_groups
   set_nlink
   set_normalized_timespec64
   set_page_dirty
+  set_posix_acl
   set_user_nice
   setattr_copy
   setattr_prepare
@@ -3207,7 +3265,9 @@
   simple_attr_open
   simple_attr_release
   simple_dir_operations
+  simple_fill_super
   simple_inode_init_ts
+  simple_lookup
   simple_open
   simple_read_from_buffer
   simple_rename_timestamp
@@ -3215,6 +3275,7 @@
   simple_strtol
   simple_strtoul
   simple_strtoull
+  simple_unlink
   simple_write_to_buffer
   single_open
   single_open_size
@@ -3237,6 +3298,7 @@
   sk_msg_return_zero
   sk_msg_trim
   sk_msg_zerocopy_from_iter
+  sk_net_refcnt_upgrade
   sk_psock_drop
   sk_psock_msg_verdict
   sk_psock_tls_strp_read
@@ -3430,6 +3492,7 @@
   sock_common_getsockopt
   sock_common_recvmsg
   sock_common_setsockopt
+  sock_create
   sock_create_kern
   sock_diag_register
   sock_diag_save_cookie
@@ -3462,6 +3525,8 @@
   sock_release
   sock_rfree
   sock_sendmsg
+  sock_set_reuseaddr
+  sock_set_sndtimeo
   sock_setsockopt
   sock_unregister
   sock_wake_async
@@ -3511,6 +3576,7 @@
   stream_open
   strim
   string_get_size
+  string_unescape
   strlcat
   strlen
   strncasecmp
@@ -3781,6 +3847,10 @@
   typec_unregister_plug
   typec_unregister_port
   uart_read_port_properties
+  ucs2_as_utf8
+  ucs2_strnlen
+  ucs2_strsize
+  ucs2_utf8size
   udp6_set_csum
   udp_set_csum
   udp_sock_create4
@@ -3799,6 +3869,7 @@
   unpin_user_page
   unpin_user_pages
   unpin_user_pages_dirty_lock
+  unregister_binfmt
   unregister_blkdev
   unregister_chrdev_region
   unregister_filesystem
@@ -3813,6 +3884,7 @@
   unregister_netdevice_notifier
   unregister_netdevice_queue
   unregister_netevent_notifier
+  unregister_nls
   unregister_oom_notifier
   unregister_pernet_device
   unregister_pernet_subsys
@@ -4002,9 +4074,14 @@
   usleep_range_state
   utf16s_to_utf8s
   utf32_to_utf8
+  utf8_casefold
+  utf8_load
+  utf8_strncasecmp
   utf8_to_utf32
+  utf8_unload
   utf8s_to_utf16s
   uuid_gen
+  uuid_is_valid
   uuid_null
   uuid_parse
   v4l2_async_unregister_subdev
@@ -4086,9 +4163,11 @@
   vfs_link
   vfs_listxattr
   vfs_llseek
+  vfs_lock_file
   vfs_mkdir
   vfs_parse_fs_string
   vfs_path_lookup
+  vfs_path_parent_lookup
   vfs_remove_acl
   vfs_removexattr
   vfs_rename
@@ -4096,6 +4175,7 @@
   vfs_setpos
   vfs_setxattr
   vfs_statfs
+  vfs_truncate
   vfs_unlink
   video_devdata
   video_device_release_empty
