@@ -21,10 +21,14 @@
 #include "zram_drv.h"
 #include "zram_ioctl.h"
 
+#define NR_PAGES_UNLIMITED U64_MAX
+
 /* Private data for the page table walker. */
 struct zram_process_walk_private {
 	struct zram *zram;
 	struct zram_pp_ctl *pp_ctl;
+	u64 nr_remaining_pages;
+	unsigned long next_addr;
 };
 
 static inline bool can_do_file_pageout(struct vm_area_struct *vma)
@@ -64,6 +68,11 @@ static int zram_process_walker(pmd_t *pmd, unsigned long start,
 	u64 nr_pages = zram->disksize >> PAGE_SHIFT;
 
 	for (addr = start; addr < end; addr += PAGE_SIZE) {
+		if (private->nr_remaining_pages == 0) {
+			private->next_addr = addr;
+			return 1;
+		}
+
 		ptep = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
 		if (!ptep)
 			break;
@@ -115,6 +124,8 @@ static int zram_process_walker(pmd_t *pmd, unsigned long start,
 
 		/* Use PAGE_WRITEBACK for single index */
 		scan_slots_for_writeback(zram, 0, index, index+1, pp_ctl);
+		if (private->nr_remaining_pages != NR_PAGES_UNLIMITED)
+			private->nr_remaining_pages--;
 
 unlock_swap_device:
 		put_swap_device(sis);
@@ -136,13 +147,19 @@ static int zram_ioctl_process_writeback_scan(struct zram *zram,
 	struct mm_struct *mm;
 	struct vm_area_struct *vma;
 	struct task_struct *task;
+	unsigned long start_addr = (unsigned long)ioc_data_pwb->start_addr;
 	unsigned int f_flags;
 	int ret = 0;
 
 	struct zram_process_walk_private private = {
 		.zram = zram,
-		.pp_ctl = ctl
+		.pp_ctl = ctl,
+		.nr_remaining_pages = DIV_ROUND_UP_ULL(ioc_data_pwb->size,
+						       PAGE_SIZE),
 	};
+
+	if (!private.nr_remaining_pages)
+		private.nr_remaining_pages = NR_PAGES_UNLIMITED;
 
 	task = pidfd_get_task(ioc_data_pwb->pidfd, &f_flags);
 	if (IS_ERR(task))
@@ -154,21 +171,38 @@ static int zram_ioctl_process_writeback_scan(struct zram *zram,
 		goto release_task;
 	}
 
-	VMA_ITERATOR(vmi, mm, 0);
+	if (start_addr >= mm->task_size) {
+		ret = -EINVAL;
+		goto release_mm;
+	}
+
+	start_addr = PAGE_ALIGN(start_addr);
+
+	VMA_ITERATOR(vmi, mm, start_addr);
 	/* Iterates through all the VMAs of the process */
 	mmap_read_lock(mm);
 	for_each_vma(vmi, vma) {
+		unsigned long start = max(vma->vm_start, start_addr);
+
 		if (!vma_is_anonymous(vma) && (!can_do_file_pageout(vma) &&
 					       (vma->vm_flags & VM_MAYSHARE)))
 			continue;
 
-		ret = walk_page_range(mm, vma->vm_start, vma->vm_end,
+		ret = walk_page_range(mm, start, vma->vm_end,
 				      &zram_walk_ops, &private);
 		if (ret)
 			break;
 	}
-	mmap_read_unlock(mm);
 
+	if (ret > 0) {
+		ioc_data_pwb->next_addr = private.next_addr;
+		ret = 0;
+	} else {
+		ioc_data_pwb->next_addr = 0;
+	}
+
+	mmap_read_unlock(mm);
+release_mm:
 	mmput(mm);
 release_task:
 	put_task_struct(task);
@@ -248,12 +282,17 @@ int zram_ioctl(struct block_device *bdev, blk_mode_t mode,
 		if (ioc_data.version != ZRAM_ANDROID_IOC_VERSION)
 			return -EINVAL;
 	} else if (cmd == ZRAM_ANDROID_IOC_PROCESS_WRITEBACK_V0) {
-		/* Legacy V0: arg is just the data union */
+		/* Legacy V0: arg is just the ioc data v0 region */
+		struct zram_android_ioc_data_process_writeback_v0 ioc_data_v0;
+
 		memset(&ioc_data, 0, sizeof(ioc_data));
-		if (copy_from_user(&ioc_data.data, argp,
-				   sizeof(ioc_data.data)))
+		if (copy_from_user(&ioc_data_v0, argp, sizeof(ioc_data_v0)))
 			return -EFAULT;
+
 		ioc_data.version = 0;
+		ioc_data.data.process_writeback.pidfd = ioc_data_v0.pidfd;
+		ioc_data.data.process_writeback.start_addr = 0;
+		ioc_data.data.process_writeback.size = 0;
 	} else {
 		return -EINVAL;
 	}
@@ -265,7 +304,14 @@ int zram_ioctl(struct block_device *bdev, blk_mode_t mode,
 		if (copy_to_user(argp, &ioc_data, sizeof(ioc_data)))
 			ret = -EFAULT;
 	} else if (cmd == ZRAM_ANDROID_IOC_PROCESS_WRITEBACK_V0) {
-		if (copy_to_user(argp, &ioc_data.data, sizeof(ioc_data.data)))
+		struct zram_android_ioc_data_process_writeback_v0 ioc_data_v0;
+
+		memset(&ioc_data_v0, 0, sizeof(ioc_data_v0));
+		ioc_data_v0.pidfd = ioc_data.data.process_writeback.pidfd;
+		ioc_data_v0.written_bytes =
+			ioc_data.data.process_writeback.written_bytes;
+
+		if (copy_to_user(argp, &ioc_data_v0, sizeof(ioc_data_v0)))
 			ret = -EFAULT;
 	}
 	return ret;
