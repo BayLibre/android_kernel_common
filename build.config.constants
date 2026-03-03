@@ -1,1 +1,8 @@
-bazel/constants.scl
+echo 'WARNING: Do not source build.config.constants.
+    This is sourced automatically by kernel_build() with
+    the --incompatible_autoload_build_config_constants=always flag (which is set
+    by default). Simply delete the line.
+
+    If you need to set --incompatible_autoload_build_config_constants=if_unset,
+    please file a bug.
+' >&2
