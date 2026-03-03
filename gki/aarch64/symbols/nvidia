@@ -1744,7 +1744,9 @@
   hid_is_usb
   hid_open_report
   hid_parse_report
+  hid_register_report
   hid_report_raw_event
+  hid_set_field
   hid_unregister_driver
   hid_validate_values
   housekeeping_cpumask
@@ -1886,9 +1888,11 @@
   input_allocate_device
   input_close_device
   input_device_enabled
+  input_enable_softrepeat
   input_event
   input_ff_create_memless
   input_free_device
+  input_inject_event
   input_mt_assign_slots
   input_mt_init_slots
   input_mt_report_pointer_emulation
@@ -3835,6 +3839,7 @@
   tty_ldisc_flush
   tty_ldisc_ref
   tty_mode_ioctl
+  tty_name
   tty_port_close
   tty_port_destroy
   tty_port_hangup
@@ -4082,6 +4087,7 @@
   usb_root_hub_lost_power
   usb_scuttle_anchored_urbs
   usb_set_interface
+  usb_set_wireless_status
   usb_sg_cancel
   usb_sg_init
   usb_sg_wait
