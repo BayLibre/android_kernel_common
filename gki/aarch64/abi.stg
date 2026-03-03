@@ -456059,6 +456059,15 @@ elf_symbol {
   full_name: "bus_register_notifier"
 }
 elf_symbol {
+  id: 0x90f0c621
+  name: "bus_rescan_devices"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xadcc50ae
+  type_id: 0x9270174a
+  full_name: "bus_rescan_devices"
+}
+elf_symbol {
   id: 0xea38ad01
   name: "bus_unregister"
   is_defined: true
@@ -525424,6 +525433,7 @@ interface {
   symbol_id: 0xe08dc8af
   symbol_id: 0xfc46d423
   symbol_id: 0xbeb0dfc5
+  symbol_id: 0x90f0c621
   symbol_id: 0xea38ad01
   symbol_id: 0x21a2a1f8
   symbol_id: 0x35fe6c72
