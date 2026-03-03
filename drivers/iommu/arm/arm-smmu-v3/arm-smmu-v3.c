@@ -3088,14 +3088,20 @@ static int arm_smmu_set_dirty_tracking(struct iommu_domain *domain,
 
 static int arm_smmu_def_domain_type(struct device *dev)
 {
+	struct device *of_dev = dev;
+
 	if (dev_is_pci(dev)) {
 		struct pci_dev *pdev = to_pci_dev(dev);
+		struct device *bridge = arm_smmu_pci_get_host_bridge_device(to_pci_dev(dev));
 
 		if (IS_HISI_PTT_DEVICE(pdev))
 			return IOMMU_DOMAIN_IDENTITY;
+
+		if (bridge->parent)
+			of_dev = bridge->parent;
 	}
 
-	if (device_property_read_bool(dev, "iommu-idmapped")) {
+	if (device_property_read_bool(of_dev, "iommu-idmapped")) {
 		dev_info(dev, "IOMMU bypass\n");
 		return IOMMU_DOMAIN_IDENTITY;
 	}
