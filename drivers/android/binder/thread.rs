@@ -428,6 +428,10 @@ pub(crate) const THREAD_LAYOUT: rb_thread_layout = rb_thread_layout {
     arc_offset: Arc::<Thread>::DATA_OFFSET,
     process: offset_of!(Thread, process),
     id: offset_of!(Thread, id),
+    __kabi_reserved0: 0,
+    __kabi_reserved1: 0,
+    __kabi_reserved2: 0,
+    __kabi_reserved3: 0,
 };
 
 /// This represents a thread that's used with binder.
