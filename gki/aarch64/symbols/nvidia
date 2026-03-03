@@ -370,6 +370,7 @@
   _raw_write_unlock_bh
   _raw_write_unlock_irq
   _raw_write_unlock_irqrestore
+  _snd_ctl_add_follower
   _snd_pcm_stream_lock_irqsave
   _totalram_pages
   _trace_android_vh_record_pcpu_rwsem_starttime
@@ -2478,6 +2479,7 @@
   panic
   param_array_ops
   param_get_int
+  param_ops_bint
   param_ops_bool
   param_ops_byte
   param_ops_charp
@@ -3231,12 +3233,20 @@
   snd_card_new
   snd_card_register
   snd_card_rw_proc_new
+  snd_component_add
   snd_ctl_add
+  snd_ctl_add_vmaster_hook
+  snd_ctl_apply_vmaster_followers
   snd_ctl_boolean_mono_info
   snd_ctl_enum_info
   snd_ctl_find_id
+  snd_ctl_make_virtual_master
   snd_ctl_new1
   snd_ctl_notify
+  snd_ctl_remove
+  snd_ctl_rename_id
+  snd_ctl_sync_vmaster
+  snd_device_disconnect
   snd_device_free
   snd_device_new
   snd_dma_alloc_dir_pages
@@ -3246,7 +3256,9 @@
   snd_dmaengine_pcm_open
   snd_dmaengine_pcm_pointer
   snd_dmaengine_pcm_prepare_slave_config
+  snd_dmaengine_pcm_register
   snd_dmaengine_pcm_trigger
+  snd_dmaengine_pcm_unregister
   snd_hwparams_to_dma_slave_config
   snd_info_create_card_entry
   snd_info_free_entry
@@ -3254,6 +3266,7 @@
   snd_jack_new
   snd_jack_report
   snd_jack_set_key
+  snd_pci_quirk_lookup
   snd_pcm_add_chmap_ctls
   snd_pcm_alt_chmaps
   snd_pcm_create_iec958_consumer_default
@@ -3265,13 +3278,17 @@
   snd_pcm_hw_constraint_list
   snd_pcm_hw_constraint_minmax
   snd_pcm_hw_constraint_step
+  snd_pcm_hw_limit_rates
+  snd_pcm_hw_params_bits
   snd_pcm_new
   snd_pcm_period_elapsed
   snd_pcm_set_managed_buffer_all
   snd_pcm_set_ops
+  snd_pcm_std_chmaps
   snd_pcm_stream_unlock_irqrestore
   snd_pcm_suspend_all
   snd_sgbuf_get_addr
+  snd_sgbuf_get_chunk_size
   snd_soc_add_component_controls
   snd_soc_card_jack_new
   snd_soc_card_jack_new_pins
@@ -3308,6 +3325,7 @@
   snd_soc_dapm_sync_unlocked
   snd_soc_dlc_use_cpu_as_platform
   snd_soc_dummy_dlc
+  snd_soc_find_dai_with_mutex
   snd_soc_get_dai_id
   snd_soc_get_dai_via_args
   snd_soc_get_dlc
