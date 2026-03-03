@@ -755,6 +755,7 @@
   debugfs_remove
   debugfs_rename
   dec_zone_page_state
+  decode_rs8
   default_llseek
   default_qdisc_ops
   default_wake_function
@@ -1345,6 +1346,7 @@
   empty_zero_page
   enable_irq
   enable_percpu_irq
+  encode_rs8
   errseq_check
   errseq_set
   eth_commit_mac_addr_change
@@ -1490,6 +1492,7 @@
   free_pages_exact
   free_percpu
   free_percpu_irq
+  free_rs
   freezer_active
   freezing_slow_path
   from_vfsgid
@@ -1798,6 +1801,7 @@
   init_on_alloc
   init_on_free
   init_pseudo
+  init_rs_gfp
   init_special_inode
   init_srcu_struct
   init_task
@@ -2016,6 +2020,7 @@
   kmemdup_array
   kmemdup_noprof
   kmemdup_nul
+  kmsg_dump_reason_str
   kobj_sysfs_ops
   kobject_add
   kobject_create_and_add
@@ -2874,7 +2879,9 @@
   pskb_expand_head
   pskb_put
   pskb_trim_rcsum_slow
+  pstore_name_to_type
   pstore_register
+  pstore_type_to_name
   pstore_unregister
   ptp_classify_raw
   ptp_parse_header
@@ -2996,6 +3003,7 @@
   request_key_tag
   request_resource
   request_threaded_irq
+  reserve_mem_find_by_name
   reset_control_acquire
   reset_control_assert
   reset_control_bulk_acquire
