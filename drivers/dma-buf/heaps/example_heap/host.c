@@ -60,6 +60,13 @@ static int host_init(void)
 	if (IS_ERR(ex_heap))
 		return PTR_ERR(ex_heap);
 
+	/*TODO from DT */
+	kvm_nvhe_sym(ex_heap_config) = (struct example_heap_config) {
+		.token_paddr = 0x7ffff000,
+		.nr_ranges = 1,
+		.ranges = { { 0x40000000, 0x3FFFF000 } },
+	};
+
 	ret = pkvm_load_el2_module(__kvm_nvhe_hyp_init);
 	if (ret)
 		return ret;
