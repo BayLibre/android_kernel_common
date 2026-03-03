@@ -16,6 +16,11 @@
 #include "rust_binder_hooks.h"
 
 /*
+ * Used by vendor hooks to access Rust Binder data structures.
+ */
+EXPORT_SYMBOL_GPL(RUST_BINDER_LAYOUT);
+
+/*
  * Export tracepoints that act as a bare tracehook (ie: have no trace event
  * associated with them) to allow external modules to probe them.
  */
