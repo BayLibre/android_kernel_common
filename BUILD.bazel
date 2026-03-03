@@ -240,6 +240,7 @@ common_kernel(
     build_gki_artifacts = True,
     ddk_headers_archive = ":kernel_aarch64_ddk_headers_archive",
     ddk_module_headers = [":all_headers_aarch64"],
+    pre_defconfig_fragments = ["arch/arm64/configs/trusty.fragment"],
     defconfig = "arch/arm64/configs/gki_defconfig",
     extra_dist = [
         ":test_mappings_zip",
@@ -254,11 +255,11 @@ common_kernel(
     kmi_symbol_list_strict_mode = True,
     make_goals = _GKI_AARCH64_MAKE_GOALS,
     makefile = ":Makefile",
-    module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64"),
+    module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64") + ["drivers/dma-buf/heaps/example_heap/example_heap.ko",],
     modules_superset = get_gki_modules_superset("arm64") + get_kunit_modules_superset("arm64"),
     protected_module_names_list = ":gki_aarch64_protected_module_names",
     system_dlkm_extra_archive_files = [":generate_gki_module_info_arm64"],
-    trim_nonlisted_kmi = True,
+    trim_nonlisted_kmi = False,
     visibility = ["//visibility:public"],
 )
 

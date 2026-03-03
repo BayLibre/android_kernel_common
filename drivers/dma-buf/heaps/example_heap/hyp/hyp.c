@@ -29,7 +29,7 @@ static enum pkvm_smc_handler_ret smc_handler(struct arm_smccc_1_2_regs *regs,
 	u64 ipa, nr_pages;
 	int ret;
 
-	ops->memcpy(res, regs, sizeof(*res));
+	(ops->memcpy)(res, regs, sizeof(*res));
 
 	if (regs->a0 != SMC_ACCEPT_SECURE_BUF)
 		return GUEST_SMC_NOT_HANDLED;
