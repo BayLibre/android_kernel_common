@@ -7581,6 +7581,16 @@ void vmx_hwapic_isr_update(struct kvm_vcpu *vcpu, int max_isr)
 		return;
 	}
 
+#ifdef __PKVM_HYP__
+	/*
+	 * SDM Vol 3 Guest Non-Register State:
+	 * GUEST_INTR_STATUS is supported only on processors that support the
+	 * 1-setting of the “virtual-interrupt delivery” VM-execution control
+	 */
+	if (!cpu_has_vmx_virtual_intr_delivery())
+		return;
+#endif
+
 	if (max_isr == -1)
 		max_isr = 0;
 
