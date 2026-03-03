@@ -803,6 +803,7 @@
   dev_pm_opp_find_freq_floor
   dev_pm_opp_free_cpufreq_table
   dev_pm_opp_get_opp_count
+  dev_pm_opp_get_required_pstate
   dev_pm_opp_init_cpufreq_table
   dev_pm_opp_of_add_table_indexed
   dev_pm_opp_of_cpumask_remove_table
@@ -1174,6 +1175,7 @@
   drm_crtc_wait_one_vblank
   drm_debugfs_add_files
   drm_debugfs_create_files
+  drm_debugfs_remove_files
   drm_default_rgb_quant_range
   drm_dev_alloc
   drm_dev_printk
@@ -1292,6 +1294,7 @@
   drm_syncobj_find_fence
   drm_syncobj_free
   drm_syncobj_replace_fence
+  drm_timeout_abs_to_jiffies
   drm_universal_plane_init
   drm_vblank_init
   drmm_connector_hdmi_init
