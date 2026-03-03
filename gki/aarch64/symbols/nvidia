@@ -53,6 +53,7 @@
   __d_drop
   __d_lookup_unhash_wake
   __dev_change_net_namespace
+  __dev_forward_skb
   __dev_fwnode
   __dev_fwnode_const
   __dev_get_by_index
@@ -138,6 +139,7 @@
   __iowrite64_copy_full
   __ip_dev_find
   __ip_select_ident
+  __iptunnel_pull_header
   __ipv6_addr_type
   __irq_apply_affinity_hint
   __irq_domain_alloc_fwnode
@@ -190,6 +192,8 @@
   __netif_schedule
   __netlink_dump_start
   __netlink_kernel_create
+  __nf_ct_ext_find
+  __nf_ip6_route
   __nla_parse
   __nla_validate
   __nlmsg_put
@@ -326,6 +330,7 @@
   __xa_insert
   __xa_store
   __xdp_rxq_info_reg
+  __xfrm_policy_check
   __xfrm_state_destroy
   _atomic_dec_and_lock
   _copy_from_iter
@@ -521,6 +526,9 @@
   bpf_trace_run8
   bpf_trace_run9
   bpf_warn_invalid_xdp_action
+  br_dev_queue_push_xmit
+  br_forward_finish
+  br_handle_frame_finish
   bsearch
   bsg_job_done
   bsg_remove_queue
@@ -775,6 +783,7 @@
   dev_get_by_index_rcu
   dev_get_by_name
   dev_get_flags
+  dev_get_mac_address
   dev_get_regmap
   dev_get_stats
   dev_get_tstats64
@@ -819,10 +828,12 @@
   dev_pm_opp_set_rate
   dev_pm_opp_set_sharing_cpus
   dev_pm_set_wake_irq
+  dev_pre_changeaddr_notify
   dev_printk_emit
   dev_remove_pack
   dev_set_allmulti
   dev_set_mac_address
+  dev_set_mac_address_user
   dev_set_mtu
   dev_set_name
   dev_set_promiscuity
@@ -1309,6 +1320,7 @@
   drop_reasons_unregister_subsys
   dst_cache_destroy
   dst_cache_get
+  dst_cache_get_ip4
   dst_cache_init
   dst_cache_set_ip4
   dst_cache_set_ip6
@@ -1415,6 +1427,7 @@
   finish_wait
   firmware_request_nowarn
   fixed_phy_register
+  fixed_phy_unregister
   fixed_size_llseek
   flow_block_cb_alloc
   flow_block_cb_free
@@ -1531,6 +1544,7 @@
   generic_fillattr
   generic_handle_domain_irq
   generic_handle_irq
+  generic_handle_irq_safe
   generic_hwtstamp_get_lower
   generic_hwtstamp_set_lower
   generic_key_instantiate
@@ -1722,6 +1736,7 @@
   i2c_unregister_device
   i2c_verify_client
   icc_set_bw
+  icmpv6_ndo_send
   ida_alloc_range
   ida_destroy
   ida_free
@@ -1767,6 +1782,7 @@
   inc_zone_page_state
   inet6_csk_xmit
   inet_csk_get_port
+  inet_dev_addr_type
   inet_frag_destroy
   inet_frag_find
   inet_frag_kill
@@ -1886,8 +1902,12 @@
   iova_cache_get
   iova_cache_put
   ip6_dst_hoplimit
+  ip6_err_gen_icmpv6_unreach
   ip6_local_out
+  ip6_route_input_lookup
   ip6_route_output_flags
+  ip_check_defrag
+  ip_do_fragment
   ip_icmp_error
   ip_local_out
   ip_mc_join_group
@@ -1896,14 +1916,29 @@
   ip_route_me_harder
   ip_route_output_flow
   ip_send_check
+  ip_tunnel_encap_setup
+  ip_tunnel_get_iflink
+  ip_tunnel_get_link_net
+  ip_tunnel_header_ops
+  ip_tunnel_netlink_encap_parms
+  ip_tunnel_netlink_parms
+  ip_tunnel_rcv
+  ip_tunnel_siocdevprivate
+  ip_tunnel_xmit
+  iptun_encaps
   iptunnel_handle_offloads
+  iptunnel_xmit
   iput
+  ipv4_redirect
   ipv4_update_pmtu
   ipv6_chk_addr
+  ipv6_chk_custom_prefix
+  ipv6_chk_prefix
   ipv6_dev_find
   ipv6_ext_hdr
   ipv6_find_hdr
   ipv6_icmp_error
+  ipv6_mod_enabled
   ipv6_skip_exthdr
   ipv6_stub
   irq_check_status_bit
@@ -2307,14 +2342,32 @@
   netlink_unregister_notifier
   new_inode
   next_arg
+  nf_br_ops
   nf_conntrack_destroy
+  nf_ct_hook
   nf_ct_netns_get
   nf_ct_netns_put
   nf_hook_slow
   nf_hooks_needed
+  nf_ip6_check_hbh_len
+  nf_ipv6_ops
+  nf_log_buf_add
+  nf_log_buf_close
+  nf_log_buf_open
+  nf_log_packet
+  nf_log_register
+  nf_log_set
+  nf_log_unregister
+  nf_log_unset
+  nf_logger_find_get
+  nf_logger_put
   nf_register_net_hooks
   nf_skb_duplicated
   nf_unregister_net_hooks
+  nfnetlink_broadcast
+  nfnetlink_subsys_register
+  nfnetlink_subsys_unregister
+  nfnetlink_unicast
   nla_find
   nla_memcpy
   nla_put
@@ -2633,6 +2686,7 @@
   phy_connect_direct
   phy_create
   phy_destroy
+  phy_device_free
   phy_disconnect
   phy_do_ioctl
   phy_do_ioctl_running
@@ -2663,6 +2717,7 @@
   phy_power_on
   phy_print_status
   phy_read_mmd
+  phy_register_fixup_for_uid
   phy_remove_link_mode
   phy_resolve_aneg_pause
   phy_restore_page
@@ -2679,6 +2734,7 @@
   phy_support_eee
   phy_suspend
   phy_trigger_machine
+  phy_unregister_fixup_for_uid
   phy_write_mmd
   phylink_connect_phy
   phylink_create
@@ -2888,7 +2944,9 @@
   register_chrdev_region
   register_filesystem
   register_inet6addr_notifier
+  register_inet6addr_validator_notifier
   register_inetaddr_notifier
+  register_inetaddr_validator_notifier
   register_key_type
   register_net_sysctl_sz
   register_netdev
@@ -3198,6 +3256,7 @@
   skb_dequeue
   skb_ensure_writable
   skb_ensure_writable_head_tail
+  skb_ext_add
   skb_flow_dissect_ct
   skb_flow_dissect_hash
   skb_flow_dissect_meta
@@ -3372,6 +3431,7 @@
   sock_i_ino
   sock_i_uid
   sock_init_data
+  sock_init_data_uid
   sock_kfree_s
   sock_kmalloc
   sock_kzfree_s
@@ -3471,6 +3531,8 @@
   syscon_regmap_lookup_by_compatible
   syscon_regmap_lookup_by_phandle
   syscon_regmap_lookup_by_phandle_args
+  sysctl_fb_tunnels_only_for_init_net
+  sysctl_nf_log_all_netns
   sysctl_vals
   sysfs_add_file_to_group
   sysfs_create_bin_file
@@ -3733,7 +3795,9 @@
   unregister_chrdev_region
   unregister_filesystem
   unregister_inet6addr_notifier
+  unregister_inet6addr_validator_notifier
   unregister_inetaddr_notifier
+  unregister_inetaddr_validator_notifier
   unregister_key_type
   unregister_net_sysctl_table
   unregister_netdev
@@ -4173,6 +4237,8 @@
   xdp_rxq_info_unreg
   xdp_rxq_info_unreg_mem_model
   xdp_warn
+  xfrm4_tunnel_deregister
+  xfrm4_tunnel_register
   xhci_gen_setup
   xhci_hub_control
   xhci_init_driver
@@ -4196,15 +4262,20 @@
   xsk_tx_peek_release_desc_batch
   xsk_tx_release
   xsk_uses_need_wakeup
+  xt_check_proc_name
   xt_register_match
   xt_register_matches
+  xt_register_target
   xt_register_targets
+  xt_tee_enabled
   xt_unregister_match
   xt_unregister_matches
+  xt_unregister_target
   xt_unregister_targets
   yield
   zap_vma_ptes
   zero_fill_bio_iter
+  zerocopy_sg_from_iter
   zlib_deflate
   zlib_deflateEnd
   zlib_deflateInit2
