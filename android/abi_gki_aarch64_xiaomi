@@ -470,6 +470,20 @@
   bio_init
   __bio_add_page
   blkdev_get_by_dev
+<<<<<<< HEAD   (350f378eb496c856c82d81aace74f992c9e2041e BACKPORT: UPSTREAM: f2fs: sysfs: introduce critical_task_pri)
+||||||| BASE   (e21f359e72acec6aa6e661a8f29a25460331f870 ANDROID: mm: add vendor hook to trace swap bio charge)
+  __traceiter_android_vh_handle_folio_writeback
+  __tracepoint_android_vh_handle_folio_writeback
+  __traceiter_android_vh_reclaim_before_kswapd
+  __tracepoint_android_vh_reclaim_before_kswapd
+=======
+  __traceiter_android_vh_handle_folio_writeback
+  __tracepoint_android_vh_handle_folio_writeback
+  __traceiter_android_vh_reclaim_before_kswapd
+  __tracepoint_android_vh_reclaim_before_kswapd
+  __traceiter_android_rvh_swap_bio_charge
+  __tracepoint_android_rvh_swap_bio_charge
+>>>>>>> CHANGE (4604201b8d0a2f3093f9d232c2afaf93607190d7 ANDROID: GKI: update symbol list for xiaomi)
 
 #required by mem_reclaim_ctl.ko
 __traceiter_android_vh_page_should_be_protected
