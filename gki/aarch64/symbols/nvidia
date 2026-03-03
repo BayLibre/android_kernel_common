@@ -462,6 +462,7 @@
   blk_check_plugged
   blk_execute_rq
   blk_finish_plug
+  blk_mq_alloc_disk_for_queue
   blk_mq_alloc_queue
   blk_mq_alloc_request
   blk_mq_alloc_sq_tag_set
@@ -927,6 +928,7 @@
   devm_clk_get_enabled
   devm_clk_get_optional
   devm_clk_get_optional_enabled
+  devm_clk_get_prepared
   devm_clk_hw_register
   devm_clk_put
   devm_clk_register
@@ -1021,6 +1023,7 @@
   disable_percpu_irq
   disable_work_sync
   discard_new_inode
+  disk_check_media_change
   dma_alloc_attrs
   dma_alloc_noncontiguous
   dma_alloc_pages
@@ -1308,8 +1311,10 @@
   dummy_irq_chip
   dump_page
   dump_stack
+  dw_pcie_ep_cleanup
   dw_pcie_ep_init
   dw_pcie_ep_init_registers
+  dw_pcie_ep_linkup
   dw_pcie_find_capability
   dw_pcie_find_ext_capability
   dw_pcie_host_deinit
@@ -2372,6 +2377,7 @@
   of_device_is_big_endian
   of_device_is_compatible
   of_device_modalias
+  of_device_uevent
   of_device_uevent_modalias
   of_dma_configure_id
   of_dma_controller_free
@@ -2426,6 +2432,7 @@
   of_phy_is_fixed_link
   of_phy_register_fixed_link
   of_phy_simple_xlate
+  of_platform_default_populate
   of_platform_depopulate
   of_platform_device_create
   of_platform_populate
@@ -2510,6 +2517,7 @@
   pci_enable_msix_range
   pci_enable_sriov
   pci_enable_wake
+  pci_epc_deinit_notify
   pci_epc_init_notify
   pci_find_capability
   pci_find_ext_capability
@@ -2738,10 +2746,14 @@
   platform_get_resource_byname
   platform_irq_count
   platform_unregister_drivers
+  pm_generic_freeze
+  pm_generic_poweroff
+  pm_generic_restore
   pm_generic_resume
   pm_generic_runtime_resume
   pm_generic_runtime_suspend
   pm_generic_suspend
+  pm_generic_thaw
   pm_genpd_init
   pm_genpd_remove
   pm_relax
@@ -2823,6 +2835,7 @@
   qdisc_watchdog_schedule_range_ns
   queue_delayed_work_on
   queue_limits_commit_update_frozen
+  queue_limits_set
   queue_work_on
   radix_tree_delete
   radix_tree_delete_item

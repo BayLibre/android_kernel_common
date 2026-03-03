@@ -395833,6 +395833,12 @@ function {
   parameter_id: 0xf435685e
 }
 function {
+  id: 0x1fa5b588
+  return_type_id: 0x48b5725f
+  parameter_id: 0x3fa672fd
+  parameter_id: 0x351e2925
+}
+function {
   id: 0x1fa773f3
   return_type_id: 0x48b5725f
   parameter_id: 0x3cfc8982
@@ -399229,6 +399235,12 @@ function {
   id: 0x4e221f3c
   return_type_id: 0x2560a232
   parameter_id: 0x4585663f
+}
+function {
+  id: 0x4e3779d4
+  return_type_id: 0x2131312a
+  parameter_id: 0x09427c40
+  parameter_id: 0x1b44744f
 }
 function {
   id: 0x4e440d75
@@ -405665,6 +405677,13 @@ function {
   id: 0x9073f9c5
   return_type_id: 0x6720d32f
   parameter_id: 0x37cc6bab
+}
+function {
+  id: 0x907748a2
+  return_type_id: 0x6720d32f
+  parameter_id: 0x347303b4
+  parameter_id: 0x3aff5796
+  parameter_id: 0x0258f96e
 }
 function {
   id: 0x9077fd27
@@ -462913,6 +462932,15 @@ elf_symbol {
   full_name: "blk_mark_disk_dead"
 }
 elf_symbol {
+  id: 0xc65939f0
+  name: "blk_mq_alloc_disk_for_queue"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x512c1ad8
+  type_id: 0x4e3779d4
+  full_name: "blk_mq_alloc_disk_for_queue"
+}
+elf_symbol {
   id: 0x23e83656
   name: "blk_mq_alloc_queue"
   is_defined: true
@@ -471927,6 +471955,15 @@ elf_symbol {
   full_name: "devm_clk_get_optional_enabled"
 }
 elf_symbol {
+  id: 0xa11e105e
+  name: "devm_clk_get_prepared"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x8d1f66d8
+  type_id: 0x3511a755
+  full_name: "devm_clk_get_prepared"
+}
+elf_symbol {
   id: 0xcd6f8e13
   name: "devm_clk_hw_get_clk"
   is_defined: true
@@ -480241,6 +480278,15 @@ elf_symbol {
   full_name: "dw_handle_msi_irq"
 }
 elf_symbol {
+  id: 0xf312d3e7
+  name: "dw_pcie_ep_cleanup"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x2e8c9576
+  type_id: 0x1f694ce0
+  full_name: "dw_pcie_ep_cleanup"
+}
+elf_symbol {
   id: 0x1356aa3d
   name: "dw_pcie_ep_deinit"
   is_defined: true
@@ -480266,6 +480312,15 @@ elf_symbol {
   crc: 0x2559e013
   type_id: 0x9271fe5c
   full_name: "dw_pcie_ep_init_registers"
+}
+elf_symbol {
+  id: 0xb6197d17
+  name: "dw_pcie_ep_linkup"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x2e8c9576
+  type_id: 0x1f694ce0
+  full_name: "dw_pcie_ep_linkup"
 }
 elf_symbol {
   id: 0x612124c2
@@ -500063,6 +500118,15 @@ elf_symbol {
   full_name: "of_device_modalias"
 }
 elf_symbol {
+  id: 0x0206a0af
+  name: "of_device_uevent"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x3a521267
+  type_id: 0x1fa5b588
+  full_name: "of_device_uevent"
+}
+elf_symbol {
   id: 0x34456de2
   name: "of_device_uevent_modalias"
   is_defined: true
@@ -500979,6 +501043,15 @@ elf_symbol {
   crc: 0x28fa027a
   type_id: 0xe2abbe2e
   full_name: "of_pinctrl_get"
+}
+elf_symbol {
+  id: 0x9c2bfa6b
+  name: "of_platform_default_populate"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x30441fea
+  type_id: 0x907748a2
+  full_name: "of_platform_default_populate"
 }
 elf_symbol {
   id: 0x840bde05
@@ -502353,6 +502426,15 @@ elf_symbol {
   crc: 0x7ddbf8a9
   type_id: 0x999ac92f
   full_name: "pci_enable_wake"
+}
+elf_symbol {
+  id: 0x6182efe9
+  name: "pci_epc_deinit_notify"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x6427c7cf
+  type_id: 0x15708e94
+  full_name: "pci_epc_deinit_notify"
 }
 elf_symbol {
   id: 0x9df0dd4c
@@ -505991,6 +506073,33 @@ elf_symbol {
   full_name: "pm_clk_suspend"
 }
 elf_symbol {
+  id: 0xfa3ae6ff
+  name: "pm_generic_freeze"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf9576491
+  type_id: 0x9d16dd74
+  full_name: "pm_generic_freeze"
+}
+elf_symbol {
+  id: 0xd43b4f66
+  name: "pm_generic_poweroff"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf9576491
+  type_id: 0x9d16dd74
+  full_name: "pm_generic_poweroff"
+}
+elf_symbol {
+  id: 0xfb61e52a
+  name: "pm_generic_restore"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf9576491
+  type_id: 0x9d16dd74
+  full_name: "pm_generic_restore"
+}
+elf_symbol {
   id: 0xe243fac9
   name: "pm_generic_resume"
   is_defined: true
@@ -506025,6 +506134,15 @@ elf_symbol {
   crc: 0xf9576491
   type_id: 0x9d16dd74
   full_name: "pm_generic_suspend"
+}
+elf_symbol {
+  id: 0xcae30dd3
+  name: "pm_generic_thaw"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xf9576491
+  type_id: 0x9d16dd74
+  full_name: "pm_generic_thaw"
 }
 elf_symbol {
   id: 0x92ae3cd2
@@ -507859,6 +507977,15 @@ elf_symbol {
   crc: 0x0493f0df
   type_id: 0x9f3f27d7
   full_name: "queue_limits_commit_update_frozen"
+}
+elf_symbol {
+  id: 0x8e69add5
+  name: "queue_limits_set"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x0493f0df
+  type_id: 0x9f3f27d7
+  full_name: "queue_limits_set"
 }
 elf_symbol {
   id: 0xf60ed3ec
@@ -535539,6 +535666,7 @@ interface {
   symbol_id: 0x0057f771
   symbol_id: 0x230262f2
   symbol_id: 0xdfa8144b
+  symbol_id: 0xc65939f0
   symbol_id: 0x23e83656
   symbol_id: 0xaea1564a
   symbol_id: 0x62c35f4e
@@ -536541,6 +536669,7 @@ interface {
   symbol_id: 0x4cc1057f
   symbol_id: 0xf569682d
   symbol_id: 0x8837a38c
+  symbol_id: 0xa11e105e
   symbol_id: 0xcd6f8e13
   symbol_id: 0x0d9ec99a
   symbol_id: 0x159517e6
@@ -537462,9 +537591,11 @@ interface {
   symbol_id: 0x652fbf96
   symbol_id: 0xe5d449a3
   symbol_id: 0xda364c85
+  symbol_id: 0xf312d3e7
   symbol_id: 0x1356aa3d
   symbol_id: 0x68e0756b
   symbol_id: 0xd40fcc66
+  symbol_id: 0xb6197d17
   symbol_id: 0x612124c2
   symbol_id: 0x42636e32
   symbol_id: 0x9bb960df
@@ -539663,6 +539794,7 @@ interface {
   symbol_id: 0x4f555551
   symbol_id: 0x490e6dfe
   symbol_id: 0xa4bda7eb
+  symbol_id: 0x0206a0af
   symbol_id: 0x34456de2
   symbol_id: 0x9b9bd086
   symbol_id: 0xb784add6
@@ -539765,6 +539897,7 @@ interface {
   symbol_id: 0xeb2dab5b
   symbol_id: 0x5516ad40
   symbol_id: 0xb27a823c
+  symbol_id: 0x9c2bfa6b
   symbol_id: 0x840bde05
   symbol_id: 0x923f5818
   symbol_id: 0x41ba71c8
@@ -539917,6 +540050,7 @@ interface {
   symbol_id: 0x433f7035
   symbol_id: 0xc80fa4a7
   symbol_id: 0x39db373c
+  symbol_id: 0x6182efe9
   symbol_id: 0x9df0dd4c
   symbol_id: 0xb862467e
   symbol_id: 0xffb38889
@@ -540321,10 +540455,14 @@ interface {
   symbol_id: 0xa2a45fe2
   symbol_id: 0xe8ce7aa9
   symbol_id: 0xe1b4680c
+  symbol_id: 0xfa3ae6ff
+  symbol_id: 0xd43b4f66
+  symbol_id: 0xfb61e52a
   symbol_id: 0xe243fac9
   symbol_id: 0xf140b7ff
   symbol_id: 0x2e17e257
   symbol_id: 0xb89cc5d0
+  symbol_id: 0xcae30dd3
   symbol_id: 0x92ae3cd2
   symbol_id: 0x8dbf40f1
   symbol_id: 0x80c5af01
@@ -540528,6 +540666,7 @@ interface {
   symbol_id: 0x2721b297
   symbol_id: 0x8f6b3754
   symbol_id: 0xcb92cfbf
+  symbol_id: 0x8e69add5
   symbol_id: 0xf60ed3ec
   symbol_id: 0x1f556538
   symbol_id: 0xb51f872d
