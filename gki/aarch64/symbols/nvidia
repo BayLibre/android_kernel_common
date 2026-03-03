@@ -197,6 +197,7 @@
   __nvme_check_ready
   __of_mdiobus_register
   __of_parse_phandle_with_args
+  __of_phy_provider_register
   __of_reset_control_get
   __page_frag_alloc_align
   __page_frag_cache_drain
@@ -1580,6 +1581,7 @@
   gether_disconnect
   gether_get_dev_addr
   gether_get_host_addr
+  gether_get_host_addr_cdc
   gether_get_host_addr_u8
   gether_get_ifname
   gether_get_qmult
@@ -2434,6 +2436,7 @@
   of_phy_deregister_fixed_link
   of_phy_find_device
   of_phy_is_fixed_link
+  of_phy_provider_unregister
   of_phy_register_fixed_link
   of_phy_simple_xlate
   of_platform_default_populate
@@ -3675,22 +3678,37 @@
   tty_unthrottle
   tty_vhangup
   tty_wakeup
+  typec_altmode2port
+  typec_altmode_get_partner
+  typec_altmode_set_ops
   typec_altmode_update_active
   typec_altmode_vdm
+  typec_cable_set_identity
   typec_get_drvdata
+  typec_get_negotiated_svdm_version
   typec_partner_register_altmode
   typec_partner_set_identity
+  typec_partner_set_num_altmodes
   typec_partner_set_pd_revision
   typec_partner_set_svdm_version
+  typec_partner_set_usb_power_delivery
+  typec_partner_usb_power_delivery_register
+  typec_plug_register_altmode
+  typec_plug_set_num_altmodes
   typec_port_register_altmode
+  typec_port_set_usb_power_delivery
+  typec_register_cable
   typec_register_partner
+  typec_register_plug
   typec_register_port
   typec_set_data_role
   typec_set_mode
   typec_set_pwr_opmode
   typec_set_pwr_role
   typec_unregister_altmode
+  typec_unregister_cable
   typec_unregister_partner
+  typec_unregister_plug
   typec_unregister_port
   uart_read_port_properties
   udp6_set_csum
@@ -3757,6 +3775,7 @@
   usb_check_bulk_endpoints
   usb_check_int_endpoints
   usb_clear_halt
+  usb_composite_overwrite_options
   usb_composite_probe
   usb_composite_unregister
   usb_control_msg
@@ -3834,9 +3853,15 @@
   usb_mon_deregister
   usb_mon_register
   usb_os_desc_prepare_interf_dir
+  usb_otg_descriptor_alloc
+  usb_otg_descriptor_init
   usb_phy_set_charger_current
   usb_phy_set_event
   usb_poison_urb
+  usb_power_delivery_register
+  usb_power_delivery_register_capabilities
+  usb_power_delivery_unregister
+  usb_power_delivery_unregister_capabilities
   usb_put_dev
   usb_put_function
   usb_put_function_instance
@@ -3857,6 +3882,7 @@
   usb_role_switch_get_role
   usb_role_switch_put
   usb_role_switch_register
+  usb_role_switch_set_drvdata
   usb_role_switch_set_role
   usb_role_switch_unregister
   usb_root_hub_lost_power
@@ -3888,6 +3914,7 @@
   usb_stor_transparent_scsi_command
   usb_store_new_id
   usb_string
+  usb_string_ids_tab
   usb_submit_urb
   usb_unanchor_urb
   usb_unlink_urb
@@ -4147,8 +4174,10 @@
   xdp_rxq_info_unreg_mem_model
   xdp_warn
   xhci_gen_setup
+  xhci_hub_control
   xhci_init_driver
   xhci_resume
+  xhci_shutdown
   xhci_suspend
   xp_alloc
   xp_alloc_batch
