@@ -34,6 +34,10 @@ pub(crate) const TRANSACTION_LAYOUT: rb_transaction_layout = rb_transaction_layo
     from_thread: offset_of!(Transaction, from),
     to_proc: offset_of!(Transaction, to),
     target_node: offset_of!(Transaction, target_node),
+    __kabi_reserved0: 0,
+    __kabi_reserved1: 0,
+    __kabi_reserved2: 0,
+    __kabi_reserved3: 0,
 };
 
 #[pin_data(PinnedDrop)]
