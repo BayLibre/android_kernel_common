@@ -395,8 +395,10 @@
   addrconf_add_linklocal
   addrconf_prefix_rcv_add_addr
   adjust_managed_page_count
+  aes_decrypt
   aes_encrypt
   aes_expandkey
+  alg_test
   all_vm_events
   alloc_anon_inode
   alloc_chrdev_region
@@ -658,6 +660,8 @@
   crypto_aead_encrypt
   crypto_aead_setauthsize
   crypto_aead_setkey
+  crypto_aes_inv_sbox
+  crypto_aes_sbox
   crypto_ahash_digest
   crypto_ahash_final
   crypto_ahash_init
@@ -671,6 +675,7 @@
   crypto_alloc_shash
   crypto_alloc_skcipher
   crypto_alloc_sync_skcipher
+  crypto_authenc_extractkeys
   crypto_cipher_encrypt_one
   crypto_cipher_setkey
   crypto_default_rng
@@ -686,6 +691,7 @@
   crypto_register_ahash
   crypto_register_alg
   crypto_register_algs
+  crypto_register_lskcipher
   crypto_register_rngs
   crypto_register_shash
   crypto_register_shashes
@@ -695,6 +701,9 @@
   crypto_rng_reset
   crypto_sha1_finup
   crypto_sha1_update
+  crypto_sha3_final
+  crypto_sha3_init
+  crypto_sha3_update
   crypto_shash_digest
   crypto_shash_final
   crypto_shash_finup
@@ -708,6 +717,8 @@
   crypto_unregister_aeads
   crypto_unregister_ahash
   crypto_unregister_alg
+  crypto_unregister_algs
+  crypto_unregister_lskcipher
   crypto_unregister_rngs
   crypto_unregister_shash
   crypto_unregister_shashes
@@ -1648,6 +1659,7 @@
   gether_set_qmult
   gether_setup_name_default
   getname_kernel
+  gf128mul_lle
   glob_match
   gnet_stats_add_basic
   gnet_stats_add_queue
@@ -3271,6 +3283,7 @@
   sg_alloc_table
   sg_alloc_table_chained
   sg_alloc_table_from_pages_segment
+  sg_copy_buffer
   sg_copy_from_buffer
   sg_copy_to_buffer
   sg_free_table
@@ -3284,6 +3297,7 @@
   sg_nents_for_len
   sg_next
   sg_pcopy_to_buffer
+  sg_zero_buffer
   sget
   sget_dev
   sget_fc
@@ -4398,6 +4412,10 @@
   xt_unregister_matches
   xt_unregister_target
   xt_unregister_targets
+  xxh64
+  xxh64_digest
+  xxh64_reset
+  xxh64_update
   yield
   zap_vma_ptes
   zero_fill_bio_iter
