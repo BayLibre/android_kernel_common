@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a63b87ab_4d4425cb",
+        "filename": "arch/arm64/include/asm/kvm_pkvm_module.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-04T12:35:22Z",
+      "side": 1,
+      "message": "We might need to increase this in the future this struct is not instantiated often and possibly will need some extra callbacks, but that can be added close to the KMI freeze.",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 25
+      },
+      "revId": "9fec2c44acf8f4e77a43e516eeeb1465ce412e97",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
