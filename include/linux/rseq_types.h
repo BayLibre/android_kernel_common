@@ -121,7 +121,8 @@ struct mm_cid_pcpu {
 /**
  * struct mm_mm_cid - Storage for per MM CID data
  * @pcpu:		Per CPU storage for CIDs associated to a CPU
- * @mode:		Indicates per CPU and transition mode
+ * @percpu:		Set, when CIDs are in per CPU mode
+ * @transit:		Set to MM_CID_TRANSIT during a mode change transition phase
  * @max_cids:		The exclusive maximum CID value for allocation and convergence
  * @irq_work:		irq_work to handle the affinity mode change case
  * @work:		Regular work to handle the affinity mode change case
@@ -138,7 +139,8 @@ struct mm_cid_pcpu {
 struct mm_mm_cid {
 	/* Hotpath read mostly members */
 	struct mm_cid_pcpu	__percpu *pcpu;
-	unsigned int		mode;
+	unsigned int		percpu;
+	unsigned int		transit;
 	unsigned int		max_cids;
 
 	/* Rarely used. Moves @lock and @mutex into the second cacheline */
