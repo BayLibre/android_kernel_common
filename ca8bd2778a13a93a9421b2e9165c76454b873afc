@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdf01d85_59cbeae7",
+        "filename": "mm/cma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2026-03-04T17:57:47Z",
+      "side": 1,
+      "message": "Why do need this reset of count? It seems it was not present in 6.12",
+      "range": {
+        "startLine": 173,
+        "startChar": 2,
+        "endLine": 175,
+        "endChar": 3
+      },
+      "revId": "ca8bd2778a13a93a9421b2e9165c76454b873afc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bc4f360_f92fbf1f",
+        "filename": "mm/cma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2026-03-04T17:57:47Z",
+      "side": 1,
+      "message": "`gcma ? \"gcma%d\\n\" : \"cma%d\\n\", cma_area_count);` from 6.12? Do we still want that?",
+      "range": {
+        "startLine": 256,
+        "startChar": 2,
+        "endLine": 256,
+        "endChar": 64
+      },
+      "revId": "ca8bd2778a13a93a9421b2e9165c76454b873afc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
