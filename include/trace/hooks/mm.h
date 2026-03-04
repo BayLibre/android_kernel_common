@@ -437,6 +437,23 @@ DECLARE_HOOK(android_vh_folios_put_refs_direct_free_extent,
 DECLARE_HOOK(android_vh_free_pages_and_swap_cache,
 	TP_PROTO(struct folio *folio),
 	TP_ARGS(folio));
+DECLARE_HOOK(android_vh_compaction_exit,
+	TP_PROTO(int node_id, int order, const int highest_zoneidx),
+	TP_ARGS(node_id, order, highest_zoneidx));
+enum compact_result;
+DECLARE_HOOK(android_vh_compaction_try_to_compact_exit,
+        TP_PROTO(enum compact_result *compact_result),
+        TP_ARGS(compact_result));
+DECLARE_HOOK(android_vh_mm_direct_reclaim_enter,
+	TP_PROTO(unsigned int order),
+	TP_ARGS(order));
+DECLARE_HOOK(android_vh_mm_direct_reclaim_exit,
+	TP_PROTO(unsigned long did_some_progress, int retry_times),
+	TP_ARGS(did_some_progress, retry_times));
+struct oom_control;
+DECLARE_HOOK(android_vh_mm_may_oom_exit,
+	TP_PROTO(struct oom_control *oc, unsigned long did_some_progress),
+	TP_ARGS(oc, did_some_progress));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
