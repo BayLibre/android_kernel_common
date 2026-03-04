@@ -1199,6 +1199,30 @@ static int pkvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu,
 	if (ret)
 		goto undonate;
 
+	if (pkvm_is_protected_vcpu(vcpu)) {
+		/*
+		 * Enable x2apic mode by default for pVMs to let the pVM use MSR
+		 * instructions to access lapic, as emulating xapic mode will
+		 * require the host to decode MMIO instruction which is not
+		 * supported if the guest is a pVM as the pVM's CPU and memory
+		 * state will be isolated.
+		 *
+		 * Doing this after setting the CPUID entries for the pVM so
+		 * that enabling x2apic mode matches with the x2apic features
+		 * in the guest CPUID. So if the guest CPUID doesn't have the
+		 * x2apic feature, the x2apic enabling will be failed.
+		 */
+		u64 apic_base = APIC_DEFAULT_PHYS_BASE | LAPIC_MODE_X2APIC |
+				(kvm_vcpu_is_reset_bsp(vcpu) ? MSR_IA32_APICBASE_BSP : 0);
+
+		if (kvm_apic_set_base(vcpu, apic_base, true)) {
+			vcpu->arch.cpuid_entries = old;
+			vcpu->arch.cpuid_nent = old_nent;
+			ret = -EINVAL;
+			goto undonate;
+		}
+	}
+
 	memset(mc, 0, sizeof(*mc));
 	/*
 	 * New cpuid entries memory is consumed. Tear down the old cpuid
