@@ -7,6 +7,8 @@
 #include <linux/module.h>
 #include <linux/delay.h>
 #include <linux/scatterlist.h>
+#include <linux/crash_reserve.h>
+#include <linux/crash_core.h>
 
 #include "page_reporting.h"
 #include "internal.h"
@@ -304,6 +306,61 @@ page_reporting_process_zone(struct page_reporting_dev_info *prdev,
 	return err;
 }
 
+static void
+page_reporting_process_crashk_res(struct page_reporting_dev_info *prdev,
+				  struct scatterlist *sgl)
+{
+	static bool crashk_res_reported = false;
+	unsigned long pfn_start, pfn_end, pfn;
+	unsigned int max_pages_per_chunk;
+	int err = 0;
+
+	if (!kexec_crash_loaded()) {
+		return;
+	}
+
+	if (crashk_res.end <= crashk_res.start || crashk_res_reported) {
+		return;
+	}
+
+	pfn_start = PHYS_PFN(crashk_res.start);
+	pfn_end = PHYS_PFN(crashk_res.end);
+	pfn = pfn_start;
+	max_pages_per_chunk = 1 << page_reporting_order;
+
+	// Crash kernel pages are only needed when guest kernel crashes.
+	// No need to keep crash kernel in memory all the time. Report
+	// these pages as "free" to host, so that host can page them out
+	// to save memory.
+
+	while (pfn <= pfn_end) {
+		unsigned int nents = 0;
+		sg_init_table(sgl, PAGE_REPORTING_CAPACITY);
+
+		while (nents < PAGE_REPORTING_CAPACITY && pfn <= pfn_end) {
+			unsigned long pages_to_report =
+				min((unsigned long)max_pages_per_chunk,
+				    pfn_end - pfn + 1);
+			sg_set_page(&sgl[nents], pfn_to_page(pfn),
+				    pages_to_report << PAGE_SHIFT, 0);
+			nents++;
+			pfn += pages_to_report;
+		}
+
+		if (nents > 0) {
+			err = prdev->report(prdev, sgl, nents);
+			if (err) {
+				pr_warn("Failed to report crashkernel pages chunk %d\n",
+					err);
+				break;
+			}
+		}
+	}
+
+	if (!err)
+		crashk_res_reported = true;
+}
+
 static void page_reporting_process(struct work_struct *work)
 {
 	struct delayed_work *d_work = to_delayed_work(work);
@@ -325,6 +382,8 @@ static void page_reporting_process(struct work_struct *work)
 	sgl = kmalloc_array(PAGE_REPORTING_CAPACITY, sizeof(*sgl), GFP_KERNEL);
 	if (!sgl)
 		goto err_out;
+
+	page_reporting_process_crashk_res(prdev, sgl);
 
 	sg_init_table(sgl, PAGE_REPORTING_CAPACITY);
 
