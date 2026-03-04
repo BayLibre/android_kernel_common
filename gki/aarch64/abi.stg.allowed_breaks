@@ -1,1 +1,12 @@
 # See http://go/approve-abi-break
+
+function symbol 'int __pkvm_load_el2_module(struct module*)' changed
+  CRC changed from 0xae5a8a52 to 0x322035d6
+
+function symbol 'int kvm_iommu_register_driver(struct kvm_iommu_driver*, size_t)' changed
+  CRC changed from 0x8f0cdd7f to 0xa6c4a2ac
+
+type 'struct pkvm_module_ops' changed
+  member 'int(* device_register_reset)(u64, void*, int(*)(void*, bool))' was removed
+  member 'int(* device_register_ops)(u64, struct pkvm_device_ops*, void*)' was added
+
