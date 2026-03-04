@@ -1618,7 +1618,7 @@ int xe_guc_start(struct xe_guc *guc)
 	return xe_guc_submit_start(guc);
 }
 
-int xe_guc_print_info(struct xe_guc *guc, struct drm_printer *p)
+void xe_guc_print_info(struct xe_guc *guc, struct drm_printer *p)
 {
 	struct xe_gt *gt = guc_to_gt(guc);
 	unsigned int fw_ref;
@@ -1630,7 +1630,7 @@ int xe_guc_print_info(struct xe_guc *guc, struct drm_printer *p)
 	if (!IS_SRIOV_VF(gt_to_xe(gt))) {
 		fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
 		if (!fw_ref)
-			return -EIO;
+			return;
 
 		status = xe_mmio_read32(&gt->mmio, GUC_STATUS);
 
@@ -1658,8 +1658,6 @@ int xe_guc_print_info(struct xe_guc *guc, struct drm_printer *p)
 
 	drm_puts(p, "\n");
 	xe_guc_submit_print(guc, p);
-
-	return 0;
 }
 
 /**

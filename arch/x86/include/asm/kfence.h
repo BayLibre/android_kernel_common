@@ -42,7 +42,7 @@ static inline bool kfence_protect_page(unsigned long addr, bool protect)
 {
 	unsigned int level;
 	pte_t *pte = lookup_address(addr, &level);
-	pteval_t val, new;
+	pteval_t val;
 
 	if (WARN_ON(!pte || level != PG_LEVEL_4K))
 		return false;
@@ -57,12 +57,11 @@ static inline bool kfence_protect_page(unsigned long addr, bool protect)
 		return true;
 
 	/*
-	 * Otherwise, flip the Present bit, taking care to avoid writing an
+	 * Otherwise, invert the entire PTE.  This avoids writing out an
 	 * L1TF-vulnerable PTE (not present, without the high address bits
 	 * set).
 	 */
-	new = val ^ _PAGE_PRESENT;
-	set_pte(pte, __pte(flip_protnone_guard(val, new, PTE_PFN_MASK)));
+	set_pte(pte, __pte(~val));
 
 	/*
 	 * If the page was protected (non-present) and we're making it
