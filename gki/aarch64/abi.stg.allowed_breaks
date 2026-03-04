@@ -1,1 +1,17 @@
 # See http://go/approve-abi-break
+
+function symbol 'struct page* __cma_alloc(struct cma*, unsigned long, unsigned int, gfp_t)' changed
+  CRC changed from 0x797bf3c5 to 0xf098d2dc
+
+function symbol 'struct page* cma_alloc(struct cma*, unsigned long, unsigned int, bool)' changed
+  CRC changed from 0xf95d7858 to 0x5f36460f
+
+function symbol 'int cma_for_each_area(int(*)(struct cma*, void*), void*)' changed
+  CRC changed from 0x71529345 to 0xe5342bf3
+
+... 2 omitted; 5 symbols have only CRC changes
+
+type 'struct cma' changed
+  byte size changed from 520 to 528
+  member 'u64 android_oem_data1' was added
+
