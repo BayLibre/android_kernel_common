@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2da57bab_abfd3c5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2026-03-04T19:23:54Z",
+      "side": 1,
+      "message": "This looks like you are bypassing a lot of the upstream usb stack. Android has an upstream first approach per https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md#how-do-i-submit-patches-to-android-common-kernels\n\nInstead of forking a driver to implement custom workarounds, have changes been sent upstream? It looks like you may be using legacy gadgets, is that the case?\n\nThis adds a lot of symbols to the kmi which will can make it difficult to maintain long term as bugfixes are implemented in the upstream drivers, and limits the possibility for backporting new features.\n\nWhat is the path forward to upstream and deprecate the use of these proposed symbols?",
+      "revId": "e1c4212b765d2895075923e7f2ad12d5ee26d612",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d3b2b45_e6dbdc22",
+        "filename": "gki/aarch64/symbols/nvidia",
+        "patchSetId": 1
+      },
+      "lineNbr": 1584,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2026-03-04T19:23:54Z",
+      "side": 1,
+      "message": "Are you not using the upstream tethering functions? Why not?",
+      "revId": "e1c4212b765d2895075923e7f2ad12d5ee26d612",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4244c0f4_819692c3",
+        "filename": "gki/aarch64/symbols/nvidia",
+        "patchSetId": 1
+      },
+      "lineNbr": 3778,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2026-03-04T19:23:54Z",
+      "side": 1,
+      "message": "Why do you need access to this? It appears to be only called in the legacy gadget path upstream?",
+      "revId": "e1c4212b765d2895075923e7f2ad12d5ee26d612",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
