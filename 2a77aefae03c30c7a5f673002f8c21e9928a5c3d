@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1fb7234_3f881d46",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-04T12:45:20Z",
+      "side": 1,
+      "message": "It\u0027s sad we have some duplication with `pkvm_get_device_by_addr`\n\nIt must be guaranteed that there is no aliasing in the devices physical address space, can\u0027t we remove this function and replace it with `pkvm_get_device_by_addr` + inline the check `if (dev-\u003ectxt !\u003d hyp_vm)`?\n\nOr keep this function as I see it re-used in the next patches, and make its implementation call `pkvm_get_device_by_addr` with the check of the ctxt?",
+      "range": {
+        "startLine": 287,
+        "startChar": 27,
+        "endLine": 287,
+        "endChar": 53
+      },
+      "revId": "2a77aefae03c30c7a5f673002f8c21e9928a5c3d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
