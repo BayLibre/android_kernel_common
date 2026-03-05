@@ -16,6 +16,24 @@
       "message": "The hook looks fine to me but I\u0027m not sure about `struct bio` becoming part of ABI. Adding FS folks to decide on that.",
       "revId": "5eddb001968d68e83a89c97d1240ba31709d5a03",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f8519b8_c6430fee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1954115
+      },
+      "writtenOn": "2026-03-05T20:39:40Z",
+      "side": 1,
+      "message": "Like mentioned in other review please see this CL for more information on how to use existing static tracepoints which already tracks the bio: https://r.android.com/1909904\n\nWe prefer not to add struct bio as it hinders our ability to pull in other changes.",
+      "parentUuid": "e1a7773e_440880d3",
+      "revId": "5eddb001968d68e83a89c97d1240ba31709d5a03",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
