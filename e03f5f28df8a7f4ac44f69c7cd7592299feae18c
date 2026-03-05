@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8289c35_6288de2e",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1060234
+      },
+      "writtenOn": "2026-03-05T17:24:52Z",
+      "side": 1,
+      "message": "nit: `next_addr`",
+      "range": {
+        "startLine": 29,
+        "startChar": 15,
+        "endLine": 29,
+        "endChar": 24
+      },
+      "revId": "e03f5f28df8a7f4ac44f69c7cd7592299feae18c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ee5de40_5cdafb48",
+        "filename": "include/uapi/linux/zram_ioctl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1060234
+      },
+      "writtenOn": "2026-03-05T17:24:52Z",
+      "side": 1,
+      "message": "nit: I would define this before `next_addr`, so that input params and output params are grouped together.",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 13
+      },
+      "revId": "e03f5f28df8a7f4ac44f69c7cd7592299feae18c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
