@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8e399f6_480821eb",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/pviommu-host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-05T16:13:53Z",
+      "side": 1,
+      "message": "nit: Cleaner to return the number of pviommus added to the list, rather than taking an extra boolean by reference?",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 3
+      },
+      "revId": "89e7bb0ae4f992cedd9af893940290e07b637f2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98c14646_2e930f3d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-05T16:13:53Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this only be set if the guest has devices capable of generating non-coherent transactions? (e.g. because it\u0027s not coherent and/or the IOMMU doesn\u0027t have FWB)",
+      "range": {
+        "startLine": 985,
+        "startChar": 0,
+        "endLine": 985,
+        "endChar": 31
+      },
+      "revId": "89e7bb0ae4f992cedd9af893940290e07b637f2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2302b5ae_0b37fbc9",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1095,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-05T16:13:53Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this also check the pgt flags, or do you not support non-coherent assignment to non-protected VMs?",
+      "range": {
+        "startLine": 1095,
+        "startChar": 0,
+        "endLine": 1095,
+        "endChar": 47
+      },
+      "revId": "89e7bb0ae4f992cedd9af893940290e07b637f2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
