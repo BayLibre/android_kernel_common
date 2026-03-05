@@ -208,6 +208,30 @@
       },
       "revId": "556b79c909bae0ce3e41ecb5c13301e95ca0f226",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "861ab64e_b8da10eb",
+        "filename": "include/uapi/linux/zram_ioctl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2026-03-05T03:28:36Z",
+      "side": 1,
+      "message": "Well, my concern is that zram works with PAGE_SIZE units, and usually it\u0027s that conversion from bytes to num-pages etc. where we can have unexpected results (or even bugs).\n\nBut... considering writeback limit, which is in 4K units (unfortunately), I wonder if we have to align interfaces and use that same 4K granularity, just for consistency.",
+      "parentUuid": "cc3a013e_427c146b",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 22
+      },
+      "revId": "556b79c909bae0ce3e41ecb5c13301e95ca0f226",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
