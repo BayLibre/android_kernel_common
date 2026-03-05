@@ -77,6 +77,16 @@
   prep_new_page
   folio_isolate_lru
 
+# required by mi_kernel_monitor.ko
+  __tracepoint_android_vh_swapin_start
+  __traceiter_android_vh_swapin_start
+  __tracepoint_android_vh_swapin_end
+  __traceiter_android_vh_swapin_end
+  __tracepoint_android_vh_swap_writepage_start
+  __traceiter_android_vh_swap_writepage_start
+  __tracepoint_android_vh_swap_writepage_end
+  __traceiter_android_vh_swap_writepage_end
+
 # required by kmem_protect.ko
   __traceiter_android_vh_free_mod_mem
   __traceiter_android_vh_set_mod_perm_after_init
