@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa4af7da_d0037a10",
+        "filename": "mm/cma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-05T02:13:45Z",
+      "side": 1,
+      "message": "This part is different in 6.12 which didn\u0027t have early reservation support. `count` here represents the memory that was reserved during early reservation [cmr-\u003ebase_pfn, early_pfn] and the area we need to initialize is [early_pfn, cmr-\u003ebase_pfn + cmr-\u003ecount]. So, the size of the area that needs to be initialized is (cmr-\u003ecount - count). That\u0027s why I set it to 0 if early_pfn[r] \u003d\u003d cmr-\u003ebase_pfn, IOW if there was no early reservation and we need to initialize the whole area. Later on `count` is used in register_gcma_area() call.",
+      "parentUuid": "fdf01d85_59cbeae7",
+      "range": {
+        "startLine": 173,
+        "startChar": 2,
+        "endLine": 175,
+        "endChar": 3
+      },
+      "revId": "ca8bd2778a13a93a9421b2e9165c76454b873afc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8bc4f360_f92fbf1f",
         "filename": "mm/cma.c",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-04T17:57:47Z",
       "side": 1,
       "message": "`gcma ? \"gcma%d\\n\" : \"cma%d\\n\", cma_area_count);` from 6.12? Do we still want that?",
+      "range": {
+        "startLine": 256,
+        "startChar": 2,
+        "endLine": 256,
+        "endChar": 64
+      },
+      "revId": "ca8bd2778a13a93a9421b2e9165c76454b873afc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06b0c537_a102b2c6",
+        "filename": "mm/cma.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-05T02:13:45Z",
+      "side": 1,
+      "message": "I missed this. Let me add it.",
+      "parentUuid": "8bc4f360_f92fbf1f",
       "range": {
         "startLine": 256,
         "startChar": 2,
