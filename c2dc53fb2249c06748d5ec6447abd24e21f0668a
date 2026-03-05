@@ -16,6 +16,24 @@
       "message": "Interesting, Pixel 6 boots fine but now it is arm64 CF with the boot issue.",
       "revId": "c2dc53fb2249c06748d5ec6447abd24e21f0668a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdcb2198_421fcc9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2026-03-05T01:03:17Z",
+      "side": 1,
+      "message": "Yeap, CF has the same issue:\n```\n[   29.049692][    T0] CFI failure at perf_event_output_forward+0xf4/0x218 (target: __static_call_return0+0x0/0x10; expected type: 0xdbe45beb)\n[   29.050035][    T0] Internal error: Oops - CFI: 00000000f2008228 [#1]  SMP\n[...]\n[   29.051437][    T0] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G           OE       6.19.0-mainline-gc2dc53fb2249-abP117750168-4k #1 PREEMPT  9479c4b3e6d1ece8f776fdd5cd4c8e17fa4a5e8d\n[   29.051689][    T0] Tainted: [O]\u003dOOT_MODULE, [E]\u003dUNSIGNED_MODULE\n[   29.051780][    T0] Hardware name: linux,dummy-virt (DT)\n[   29.051864][    T0] pstate: 204000c5 (nzCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE\u003d--)\n[   29.051990][    T0] pc : perf_event_output_forward+0xf4/0x218\n[   29.052098][    T0] lr : perf_event_output_forward+0xb0/0x218\n[   29.052205][    T0] sp : ffffffe143253940\n[   29.052269][    T0] x29: ffffffe143253990 x28: ffffffe143289e90 x27: ffffffe143253aa0\n[   29.052398][    T0] x26: 0000000000000100 x25: ffffffe143253ac8 x24: ffffffe14333e000\n[   29.052526][    T0] x23: 0000000000000008 x22: 0000000000000008 x21: ffffff81fee33c48\n[   29.052654][    T0] x20: ffffffe143253ac0 x19: ffffff81529ef700 x18: ffffffe1432886e0\n[   29.052781][    T0] x17: 00000000dbe45beb x16: 00000000e6401cbd x15: 000000000000020d\n[   29.052909][    T0] x14: 0000000000000001 x13: 0000000000000020 x12: 000000000000000f\n[   29.053036][    T0] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000\n[   29.053163][    T0] x8 : ffffffe140db7ecc x7 : 0000000000000000 x6 : ffffffe140dc5e54\n[   29.053291][    T0] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000002\n[   29.053417][    T0] x2 : ffffff81fee33c48 x1 : ffffff81529ef700 x0 : ffffffe143253ac0\n[   29.053544][    T0] Call trace:\n[   29.053609][    T0]  perf_event_output_forward+0xf4/0x218 (P)\n[   29.053718][    T0]  __perf_event_overflow+0x3a8/0x4fc\n[   29.053807][    T0]  perf_swevent_event+0x9c/0x1b0\n[   29.053895][    T0]  perf_tp_event+0x18c/0x67c\n[   29.053984][    T0]  perf_trace_run_bpf_submit+0x90/0xcc\n[   29.054073][    T0]  perf_trace_sched_switch+0x150/0x190\n[   29.054163][    T0]  __schedule+0xd48/0xe5c\n[   29.054231][    T0]  schedule_idle+0x30/0x54\n[   29.054319][    T0]  do_idle+0x2c8/0x30c\n[   29.054386][    T0]  cpu_startup_entry+0x40/0x48\n[   29.054471][    T0]  rest_init+0x1bc/0x1c0\n[   29.054537][    T0]  start_kernel+0x378/0x498\n[   29.054626][    T0]  __primary_switched+0x90/0x9c\n[   29.054716][    T0] Code: 728b7d71 72bb7c91 6b11021f 54000040 (d4304500) \n[   29.054831][    T0] ---[ end trace 0000000000000000 ]---\n```",
+      "parentUuid": "d55318ff_e9d5c8ff",
+      "revId": "c2dc53fb2249c06748d5ec6447abd24e21f0668a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
