@@ -16,6 +16,24 @@
       "message": "Don\u0027t we need to handle the large folio read path?",
       "revId": "fd540480412d918bceb54259d2d6634d1b3e8785",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f969b0a_901e8582",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-05T01:18:50Z",
+      "side": 1,
+      "message": "This is a straight cherry-pick from 6.12, so if we need to handle large folios that can be added as an incremental patch. I don\u0027t think that should break ABI, so can be done later. I want to get the ABI-breaking parts before 6.18 ABI freeze.",
+      "parentUuid": "de88f1ba_32ffbd52",
+      "revId": "fd540480412d918bceb54259d2d6634d1b3e8785",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
