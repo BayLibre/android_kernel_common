@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f0fc884_59285aae",
+        "filename": "kernel/dma/swiotlb.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1797,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-05T16:33:28Z",
+      "side": 1,
+      "message": "This is a pretty big layering violation 😊\n\nYou probably need to switch things around so that the coco driver registers a callback with the swiotlb code, *however* I think we might also be looking at this the wrong way. Whether or not a restricted dma pool is encrypted or decrypted is a property of the pool itself. A pool can have multiple devices attached to it, so driving this based off the device feels wrong to me. We could have a compatability check instead if we wanted to spot mismatches between the pool and the devices.",
+      "range": {
+        "startLine": 1797,
+        "startChar": 9,
+        "endLine": 1797,
+        "endChar": 29
+      },
+      "revId": "adf6abce79940122b9fe0537ee207e97bc51970d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
