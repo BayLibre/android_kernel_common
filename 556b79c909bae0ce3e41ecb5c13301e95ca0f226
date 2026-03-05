@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39246bfc_6939255e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-05T15:04:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "34f552fe_2a656fd3",
+      "range": {
+        "startLine": 14,
+        "startChar": 23,
+        "endLine": 14,
+        "endChar": 34
+      },
+      "revId": "556b79c909bae0ce3e41ecb5c13301e95ca0f226",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ca51d27_c884848f",
@@ -71,6 +95,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "157c77fb_81757238",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-05T15:04:54Z",
+      "side": 1,
+      "message": "Rewrite to nr_remaining_pages.",
+      "parentUuid": "b545645d_9dc1e1fb",
+      "range": {
+        "startLine": 28,
+        "startChar": 5,
+        "endLine": 28,
+        "endChar": 16
+      },
+      "revId": "556b79c909bae0ce3e41ecb5c13301e95ca0f226",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f41e1892_aa55b5b8",
@@ -84,6 +132,30 @@
       "writtenOn": "2026-03-03T18:45:27Z",
       "side": 1,
       "message": "Do we need this one if we use nr_remaining_pages and decrease it whenever we found candidate pages?",
+      "range": {
+        "startLine": 29,
+        "startChar": 5,
+        "endLine": 29,
+        "endChar": 16
+      },
+      "revId": "556b79c909bae0ce3e41ecb5c13301e95ca0f226",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77367467_b02933f0",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-05T15:04:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f41e1892_aa55b5b8",
       "range": {
         "startLine": 29,
         "startChar": 5,
@@ -119,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dad51208_dc506bc5",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-05T15:04:54Z",
+      "side": 1,
+      "message": "Refine the logic. Please help take a look. Thanks.",
+      "parentUuid": "1c66e9f1_3f9581ec",
+      "range": {
+        "startLine": 160,
+        "startChar": 2,
+        "endLine": 160,
+        "endChar": 26
+      },
+      "revId": "556b79c909bae0ce3e41ecb5c13301e95ca0f226",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "87690b2f_f73186a4",
         "filename": "include/uapi/linux/zram_ioctl.h",
         "patchSetId": 1
@@ -130,6 +226,30 @@
       "writtenOn": "2026-03-03T16:28:01Z",
       "side": 1,
       "message": "Is this inclusive or exclusive? Also, it looks like when the scan is done, this gets set to 0, which should be documented.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 17
+      },
+      "revId": "556b79c909bae0ce3e41ecb5c13301e95ca0f226",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bea5b26_63925bd9",
+        "filename": "include/uapi/linux/zram_ioctl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-05T15:04:54Z",
+      "side": 1,
+      "message": "Refine the naming and comments.",
+      "parentUuid": "87690b2f_f73186a4",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -153,6 +273,30 @@
       "writtenOn": "2026-03-03T18:45:27Z",
       "side": 1,
       "message": "Also need to be documented how this scan works.\n\nLet\u0027s assume:\n\nVMA: 0x100000 - 0x300000 but pages are mapped only 0x200000 - 0x300000\n\nIn this context, if user pass start_addr 0x200000 and request_bytes 0x100000, then end_addr will be 0x200000 or 0x300000?\n\nI think we should do latter 0x300000 because what we want to do is not queuing too much IO for writeback to preempt it with prefetch and here, the page table scanning is pretty cheap compared to the IO.\n\n\nFor the naming, how about just saying \"size\" likewise other syscalls?",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 16,
+        "endChar": 49
+      },
+      "revId": "556b79c909bae0ce3e41ecb5c13301e95ca0f226",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b479e85_eb0cb5fe",
+        "filename": "include/uapi/linux/zram_ioctl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-05T15:04:54Z",
+      "side": 1,
+      "message": "Rename request_bytes to size.\nRename end_addr to next_addr, which indicates the next address to be called.\nRefine comments",
+      "parentUuid": "cd3f2e3b_e6ee2018",
       "range": {
         "startLine": 16,
         "startChar": 4,
@@ -224,6 +368,30 @@
       "side": 1,
       "message": "Well, my concern is that zram works with PAGE_SIZE units, and usually it\u0027s that conversion from bytes to num-pages etc. where we can have unexpected results (or even bugs).\n\nBut... considering writeback limit, which is in 4K units (unfortunately), I wonder if we have to align interfaces and use that same 4K granularity, just for consistency.",
       "parentUuid": "cc3a013e_427c146b",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 22
+      },
+      "revId": "556b79c909bae0ce3e41ecb5c13301e95ca0f226",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b88a76cc_37d336cd",
+        "filename": "include/uapi/linux/zram_ioctl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-05T15:04:54Z",
+      "side": 1,
+      "message": "IMO, I prefered bytes for userspace, more easy to understand than 4K units.",
+      "parentUuid": "861ab64e_b8da10eb",
       "range": {
         "startLine": 17,
         "startChar": 0,
