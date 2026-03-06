@@ -1586,11 +1586,15 @@ enum node_type {
 	NODE_TYPE_NON_INODE,
 };
 
+<<<<<<< HEAD   (a4edd82b2a86fb89d804f152d49d3fa0fbe6ac82 Merge cd2fec912a0f ("f2fs: fix to do sanity check on node fo)
 /* a threshold of maximum elapsed time in critical region to print tracepoint */
 #define MAX_LOCK_ELAPSED_TIME		500
 
 #define F2FS_DEFAULT_TASK_PRIORITY		(DEFAULT_PRIO)
 #define F2FS_CRITICAL_TASK_PRIORITY		NICE_TO_PRIO(0)
+||||||| BASE   (cd2fec912a0f04390d446ed692f73f2da842855f f2fs: fix to do sanity check on node footer in __write_node_)
+=======
+>>>>>>> BRANCH (855c54f1803e3ebc613677b4f389c7f92656a1fc f2fs: fix to do sanity check on node footer in {read,write}_)
 
 static inline int f2fs_test_bit(unsigned int nr, char *addr);
 static inline void f2fs_set_bit(unsigned int nr, char *addr);

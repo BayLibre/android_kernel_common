@@ -165,6 +165,7 @@ static void f2fs_finish_read_bio(struct bio *bio, bool in_task)
 			continue;
 		}
 
+<<<<<<< HEAD   (a4edd82b2a86fb89d804f152d49d3fa0fbe6ac82 Merge cd2fec912a0f ("f2fs: fix to do sanity check on node fo)
 		if (folio_test_large(folio)) {
 			struct f2fs_folio_state *ffs = folio->private;
 
@@ -184,6 +185,19 @@ static void f2fs_finish_read_bio(struct bio *bio, bool in_task)
 
 		if (finished)
 			folio_end_read(folio, bio->bi_status == BLK_STS_OK);
+||||||| BASE   (cd2fec912a0f04390d446ed692f73f2da842855f f2fs: fix to do sanity check on node footer in __write_node_)
+		dec_page_count(F2FS_F_SB(folio), __read_io_type(folio));
+		folio_end_read(folio, bio->bi_status == BLK_STS_OK);
+=======
+		dec_page_count(F2FS_F_SB(folio), __read_io_type(folio));
+
+		if (F2FS_F_SB(folio)->node_inode && is_node_folio(folio) &&
+			f2fs_sanity_check_node_footer(F2FS_F_SB(folio),
+				folio, folio->index, NODE_TYPE_REGULAR, true))
+			bio->bi_status = BLK_STS_IOERR;
+
+		folio_end_read(folio, bio->bi_status == BLK_STS_OK);
+>>>>>>> BRANCH (855c54f1803e3ebc613677b4f389c7f92656a1fc f2fs: fix to do sanity check on node footer in {read,write}_)
 	}
 
 	if (ctx)
