@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97be2a07_b1d40497",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-06T15:36:54Z",
+      "side": 1,
+      "message": "Change to GFP_KERNEL.",
+      "parentUuid": "78e53482_b5558255",
+      "range": {
+        "startLine": 1073,
+        "startChar": 6,
+        "endLine": 1073,
+        "endChar": 14
+      },
+      "revId": "09ee0f2ad1b31db820c87d2763f4a583f33ba27e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eaac675a_a4276576",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-05T22:38:29Z",
       "side": 1,
       "message": "My suggestion with postfix _block is bad.\n\nHow about \"zram_populate_from_prefetch_cache\"?",
+      "range": {
+        "startLine": 1377,
+        "startChar": 3,
+        "endLine": 1377,
+        "endChar": 27
+      },
+      "revId": "09ee0f2ad1b31db820c87d2763f4a583f33ba27e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e51e6f4_4307634f",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1377,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-06T15:36:54Z",
+      "side": 1,
+      "message": "I refactored this whole logic to zram_prefetch_cache_repurpose.",
+      "parentUuid": "eaac675a_a4276576",
       "range": {
         "startLine": 1377,
         "startChar": 3,
@@ -70,6 +118,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45dbd665_39a7aff3",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3215,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-06T15:36:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "476771b6_d5dc4dc9",
+      "range": {
+        "startLine": 3213,
+        "startChar": 0,
+        "endLine": 3215,
+        "endChar": 6
+      },
+      "revId": "09ee0f2ad1b31db820c87d2763f4a583f33ba27e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "143f28b0_f584c409",
@@ -87,6 +159,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68a476d8_0b5537f1",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3228,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-06T15:36:54Z",
+      "side": 1,
+      "message": "Refactor to zram_prefetch_cache_drop.",
+      "parentUuid": "143f28b0_f584c409",
+      "revId": "09ee0f2ad1b31db820c87d2763f4a583f33ba27e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e23750b_58f10645",
@@ -100,6 +190,30 @@
       "writtenOn": "2026-03-05T22:38:29Z",
       "side": 1,
       "message": "Why do we need xa_destory here?",
+      "range": {
+        "startLine": 3314,
+        "startChar": 1,
+        "endLine": 3314,
+        "endChar": 35
+      },
+      "revId": "09ee0f2ad1b31db820c87d2763f4a583f33ba27e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7dedfae_355e6d02",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3314,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-06T15:36:54Z",
+      "side": 1,
+      "message": "Good catch. Remove it.",
+      "parentUuid": "2e23750b_58f10645",
       "range": {
         "startLine": 3314,
         "startChar": 1,
