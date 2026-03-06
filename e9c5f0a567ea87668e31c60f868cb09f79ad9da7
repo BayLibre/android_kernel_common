@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e93b892d_cb1df841",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-06T17:57:05Z",
+      "side": 1,
+      "message": "a small nit: other than that, looks good to me.",
+      "revId": "e9c5f0a567ea87668e31c60f868cb09f79ad9da7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5b9b6e8_03617317",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1392,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-06T17:57:05Z",
+      "side": 1,
+      "message": "I suggest zram_prefetch_cache_reuse since the \"reuse\" is common term in MM.",
+      "range": {
+        "startLine": 1392,
+        "startChar": 8,
+        "endLine": 1392,
+        "endChar": 37
+      },
+      "revId": "e9c5f0a567ea87668e31c60f868cb09f79ad9da7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
