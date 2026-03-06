@@ -2854,6 +2854,8 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
 				break;
 			}
 		}
+		trace_android_vh_filemap_read_end(inode, fbatch.folios,
+				folio_batch_count(&fbatch));
 put_folios:
 		for (i = 0; i < folio_batch_count(&fbatch); i++)
 			folio_put(fbatch.folios[i]);
@@ -3380,7 +3382,7 @@ page_not_uptodate:
 	if (!error || error == AOP_TRUNCATED_PAGE)
 		goto retry_find;
 	filemap_invalidate_unlock_shared(mapping);
-
+    trace_android_vh_filemap_fault_folio_locked(inode, folio, index);
 	return VM_FAULT_SIGBUS;
 
 out_retry:
