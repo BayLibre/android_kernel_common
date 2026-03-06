@@ -477,9 +477,15 @@ struct regulator_dev {
 	unsigned int is_switch:1;
 
 	/* time when this regulator was disabled last time */
+<<<<<<< HEAD   (dbe4147c278e7f94844ca2b39dce37674f5222c0 Merge android12-5.10 into android12-5.10-lts)
 	unsigned long last_off_jiffy;
 
 	ANDROID_KABI_RESERVE(1);
+||||||| BASE   (3e2558088a1a3dc941eec8edafd002758ae97d77 Linux 5.10.251)
+	unsigned long last_off_jiffy;
+=======
+	ktime_t last_off;
+>>>>>>> BRANCH (aed2302be3fdbe13287165481352b4797484b253 platform/chrome: cros_ec_lightbar: Fix response size initial)
 };
 
 struct regulator_dev *
