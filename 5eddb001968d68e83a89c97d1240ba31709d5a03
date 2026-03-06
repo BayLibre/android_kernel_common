@@ -71,6 +71,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ee6d153_64940b94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1954115
+      },
+      "writtenOn": "2026-03-06T18:16:43Z",
+      "side": 1,
+      "message": "Yes, this is ok.",
+      "parentUuid": "faddf1b6_4fa02426",
+      "revId": "5eddb001968d68e83a89c97d1240ba31709d5a03",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0bfe427_dd74b8b1",
@@ -84,6 +102,24 @@
       "writtenOn": "2026-03-05T22:16:14Z",
       "side": 1,
       "message": "instead of passing the whole `struct bio`, can you pass just the fields that your handler requires?",
+      "revId": "5eddb001968d68e83a89c97d1240ba31709d5a03",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "830cc6e6_bd82d3bc",
+        "filename": "mm/page_io.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 1954115
+      },
+      "writtenOn": "2026-03-06T18:16:43Z",
+      "side": 1,
+      "message": "Todd pointed out that bio is already part of the ABI. Marking this as resolved.",
+      "parentUuid": "e0bfe427_dd74b8b1",
       "revId": "5eddb001968d68e83a89c97d1240ba31709d5a03",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
