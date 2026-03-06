@@ -955,6 +955,7 @@ out:
 		return count;
 	}
 
+<<<<<<< HEAD   (b669d6b410ba6d45c5289ac7ba3bf656c6e1f57f Merge bd66b4c487d5 ("f2fs: fix IS_CHECKPOINTED flag inconsis)
 	if (!strcmp(a->attr.name, "adjust_lock_priority")) {
 		if (t >= BIT(LOCK_NAME_MAX - 1))
 			return -EINVAL;
@@ -984,6 +985,9 @@ out:
 		return count;
 	}
 
+||||||| BASE   (bd66b4c487d5091d2a65d6089e0de36f0c26a4c7 f2fs: fix IS_CHECKPOINTED flag inconsistency issue caused by)
+=======
+>>>>>>> BRANCH (d4a594dd952df123cbdcdee9b9640d9d55e4a954 f2fs: fix out-of-bounds access in sysfs attribute read/write)
 	__sbi_store_value(a, sbi, ptr + a->offset, t);
 
 	return count;
