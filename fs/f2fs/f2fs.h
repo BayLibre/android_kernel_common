@@ -1840,6 +1840,15 @@ struct f2fs_sb_info {
 	unsigned int nat_journal_entries;	/* nat journal entry count in the journal */
 	unsigned int sit_journal_entries;	/* sit journal entry count in the journal */
 
+	/* variable summary block units */
+	unsigned int sum_blocksize;		/* sum block size */
+	unsigned int sums_per_block;		/* sum block count per block */
+	unsigned int entries_in_sum;		/* entry count in sum block */
+	unsigned int sum_entry_size;		/* total entry size in sum block */
+	unsigned int sum_journal_size;		/* journal size in sum block */
+	unsigned int nat_journal_entries;	/* nat journal entry count in the journal */
+	unsigned int sit_journal_entries;	/* sit journal entry count in the journal */
+
 	block_t user_block_count;		/* # of user blocks */
 	block_t total_valid_block_count;	/* # of valid blocks */
 	block_t discard_blks;			/* discard command candidats */
@@ -2898,7 +2907,12 @@ static inline block_t __start_sum_addr(struct f2fs_sb_info *sbi)
 }
 
 static inline bool __has_cursum_space(struct f2fs_sb_info *sbi,
+<<<<<<< HEAD   (ef18ae6d5231bccd739363276a4d021094891615 Merge 995030be4ce6 ("f2fs: fix to avoid UAF in f2fs_write_en)
 		struct f2fs_journal *journal, unsigned int size, int type)
+||||||| BASE   (995030be4ce6338c6ff814583c14166446a64008 f2fs: fix to avoid UAF in f2fs_write_end_io())
+=======
+			struct f2fs_journal *journal, int size, int type)
+>>>>>>> BRANCH (97e4f479939e5ac6272e2e2473297942c6549ed3 f2fs: support non-4KB block size without packed_ssa feature)
 {
 	if (type == NAT_JOURNAL)
 		return size <= MAX_NAT_JENTRIES(sbi, journal);

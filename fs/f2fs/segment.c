@@ -2674,12 +2674,24 @@ int f2fs_npages_for_summary_flush(struct f2fs_sb_info *sbi, bool for_ra)
 			valid_sum_count += f2fs_curseg_valid_blocks(sbi, i);
 	}
 
+<<<<<<< HEAD   (ef18ae6d5231bccd739363276a4d021094891615 Merge 995030be4ce6 ("f2fs: fix to avoid UAF in f2fs_write_en)
 	sum_in_page = (sbi->blocksize - 2 * sbi->sum_journal_size -
+||||||| BASE   (995030be4ce6338c6ff814583c14166446a64008 f2fs: fix to avoid UAF in f2fs_write_end_io())
+	sum_in_page = (PAGE_SIZE - 2 * SUM_JOURNAL_SIZE -
+=======
+	sum_in_page = (sbi->sum_blocksize - 2 * sbi->sum_journal_size -
+>>>>>>> BRANCH (97e4f479939e5ac6272e2e2473297942c6549ed3 f2fs: support non-4KB block size without packed_ssa feature)
 			SUM_FOOTER_SIZE) / SUMMARY_SIZE;
 	if (valid_sum_count <= sum_in_page)
 		return 1;
 	else if ((valid_sum_count - sum_in_page) <=
+<<<<<<< HEAD   (ef18ae6d5231bccd739363276a4d021094891615 Merge 995030be4ce6 ("f2fs: fix to avoid UAF in f2fs_write_en)
 		(sbi->blocksize - SUM_FOOTER_SIZE) / SUMMARY_SIZE)
+||||||| BASE   (995030be4ce6338c6ff814583c14166446a64008 f2fs: fix to avoid UAF in f2fs_write_end_io())
+		(PAGE_SIZE - SUM_FOOTER_SIZE) / SUMMARY_SIZE)
+=======
+		(sbi->sum_blocksize - SUM_FOOTER_SIZE) / SUMMARY_SIZE)
+>>>>>>> BRANCH (97e4f479939e5ac6272e2e2473297942c6549ed3 f2fs: support non-4KB block size without packed_ssa feature)
 		return 2;
 	return 3;
 }
@@ -4324,7 +4336,13 @@ static int read_compacted_summaries(struct f2fs_sb_info *sbi)
 			s = (struct f2fs_summary *)(kaddr + offset);
 			sum_entries(seg_i->sum_blk)[j] = *s;
 			offset += SUMMARY_SIZE;
+<<<<<<< HEAD   (ef18ae6d5231bccd739363276a4d021094891615 Merge 995030be4ce6 ("f2fs: fix to avoid UAF in f2fs_write_en)
 			if (offset + SUMMARY_SIZE <= sbi->blocksize -
+||||||| BASE   (995030be4ce6338c6ff814583c14166446a64008 f2fs: fix to avoid UAF in f2fs_write_end_io())
+			if (offset + SUMMARY_SIZE <= PAGE_SIZE -
+=======
+			if (offset + SUMMARY_SIZE <= sbi->sum_blocksize -
+>>>>>>> BRANCH (97e4f479939e5ac6272e2e2473297942c6549ed3 f2fs: support non-4KB block size without packed_ssa feature)
 						SUM_FOOTER_SIZE)
 				continue;
 
