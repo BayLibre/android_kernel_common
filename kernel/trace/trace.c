@@ -8721,7 +8721,13 @@ tracing_init_tracefs_percpu(struct trace_array *tr, long cpu)
 	trace_create_cpu_file("stats", 0444, d_cpu,
 				tr, cpu, &tracing_stats_fops);
 
+<<<<<<< HEAD   (4fc7ded323e3bc616766e183b844ed9c0b63d99d Merge 5.15.201 into android13-5.15-lts)
 	trace_create_cpu_file("buffer_size_kb", 0444, d_cpu,
+||||||| BASE   (3330a8d33e086f76608bb4e80a3dc569d04a8814 Linux 5.15.201)
+	trace_create_cpu_file("buffer_size_kb", TRACE_MODE_READ, d_cpu,
+=======
+	trace_create_cpu_file("buffer_size_kb", TRACE_MODE_WRITE, d_cpu,
+>>>>>>> BRANCH (91d48252ad4b17577cf8cc8d3e1353402e4da8f1 Linux 5.15.202)
 				tr, cpu, &tracing_entries_fops);
 
 #ifdef CONFIG_TRACER_SNAPSHOT
