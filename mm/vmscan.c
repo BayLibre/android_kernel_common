@@ -8181,6 +8181,7 @@ void wakeup_kswapd(struct zone *zone, gfp_t gfp_flags, int order,
 				      gfp_flags);
 	wake_up_interruptible(&pgdat->kswapd_wait);
 }
+EXPORT_SYMBOL_GPL(wakeup_kswapd);
 
 #ifdef CONFIG_HIBERNATION
 /*
