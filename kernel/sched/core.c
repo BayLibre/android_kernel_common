@@ -123,6 +123,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_util_est_cfs_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_util_est_se_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_update_nr_running_tp);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_compute_energy_tp);
+<<<<<<< HEAD   (db15f4990be1b8865ae651c9d748d43c91bb9d13 Merge 6.18.13 into android17-6.18)
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_switch);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_waking);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_wakeup);
@@ -132,6 +133,12 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_wait);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_blocked);
 EXPORT_TRACEPOINT_SYMBOL_GPL(sched_stat_iowait);
 #endif
+||||||| BASE   (25e0b1c206e3def1bd3bf9dcba980c5138c637a9 Linux 6.18.13)
+=======
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_entry_tp);
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_exit_tp);
+EXPORT_TRACEPOINT_SYMBOL_GPL(sched_set_need_resched_tp);
+>>>>>>> BRANCH (9029e8db69fb30f7d19b5d0917547c7872389520 sched: Fix build for modules using set_tsk_need_resched())
 
 DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
 EXPORT_SYMBOL_GPL(runqueues);
@@ -1235,6 +1242,7 @@ void __trace_set_need_resched(struct task_struct *curr, int tif)
 {
 	trace_sched_set_need_resched_tp(curr, smp_processor_id(), tif);
 }
+EXPORT_SYMBOL_GPL(__trace_set_need_resched);
 
 void resched_curr(struct rq *rq)
 {
