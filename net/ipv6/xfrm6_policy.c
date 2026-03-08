@@ -58,6 +58,7 @@ static int xfrm6_get_saddr(struct net *net, int oif,
 	struct dst_entry *dst;
 	struct net_device *dev;
 	struct inet6_dev *idev;
+	int err;
 
 	dst = xfrm6_dst_lookup(net, 0, oif, NULL, daddr, mark);
 	if (IS_ERR(dst))
@@ -69,8 +70,18 @@ static int xfrm6_get_saddr(struct net *net, int oif,
 		return -EHOSTUNREACH;
 	}
 	dev = idev->dev;
+<<<<<<< HEAD   (d9c945ec61c000fd4f63cc3c2c5c030ff355f233 Merge 598c11dd4f4a ("arm64: Add support for TSV110 Spectre-B)
 	ipv6_dev_get_saddr(dev_net(dev), dev, &daddr->in6, 0, &saddr->in6);
+||||||| BASE   (598c11dd4f4a9de31d854fcb9702f54c1c70f0d0 arm64: Add support for TSV110 Spectre-BHB mitigation)
+	ipv6_dev_get_saddr(dev_net(dev), dev, &params->daddr->in6, 0,
+			   &saddr->in6);
+=======
+	err = ipv6_dev_get_saddr(dev_net(dev), dev, &params->daddr->in6, 0,
+				 &saddr->in6);
+>>>>>>> BRANCH (aed5c3b77cd53ba74f66767b03bfb9177662af4b Linux 5.10.252)
 	dst_release(dst);
+	if (err)
+		return -EHOSTUNREACH;
 	return 0;
 }
 
