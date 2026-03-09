@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61e67ddb_e555cba6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2026-03-09T22:12:19Z",
+      "side": 1,
+      "message": "I have also squashed this one into 3a14e68c0f61 (\"ANDROID: Don\u0027t use current pointer for per-process dmabuf accounting\")",
+      "revId": "ddfda6a0c8b02e740f08052b7dd5597d39361a74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21be9ec5_9b8d92ab",
@@ -14,6 +31,30 @@
       "writtenOn": "2026-03-09T19:30:13Z",
       "side": 1,
       "message": "Please fix this ERROR reported by KernelCheckPatch: ERROR:OPEN_BRACE: open brace \u0027{\u0027 following function definitions go on the next l...\n\nERROR:OPEN_BRACE: open brace \u0027{\u0027 following function definitions go on the next line",
+      "range": {
+        "startLine": 642,
+        "startChar": 0,
+        "endLine": 643,
+        "endChar": 0
+      },
+      "revId": "ddfda6a0c8b02e740f08052b7dd5597d39361a74",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80349ddd_0e7516bb",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2026-03-09T22:12:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21be9ec5_9b8d92ab",
       "range": {
         "startLine": 642,
         "startChar": 0,
