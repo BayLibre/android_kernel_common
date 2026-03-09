@@ -70,6 +70,30 @@
       },
       "revId": "02916a4a715aa0a4307318ec0ffd164d989e6c5a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00a693b6_a504680a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1569742
+      },
+      "writtenOn": "2026-03-09T09:15:32Z",
+      "side": 1,
+      "message": "Hmm let me think how we could fix that, but hyp_page::tag being in a union where it\u0027s only defined for hyp-owned pages, I feel kinda bad not checking the state ...",
+      "parentUuid": "368dffa0_50fc8628",
+      "range": {
+        "startLine": 398,
+        "startChar": 5,
+        "endLine": 398,
+        "endChar": 19
+      },
+      "revId": "02916a4a715aa0a4307318ec0ffd164d989e6c5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
