@@ -94,6 +94,30 @@
       },
       "revId": "02916a4a715aa0a4307318ec0ffd164d989e6c5a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c967b356_745690c7",
+        "filename": "arch/arm64/kvm/hyp/nvhe/page_alloc.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-09T09:22:15Z",
+      "side": 1,
+      "message": "For the exact same reason, p-\u003etag is only set after the fixmap is ready. So I could check for PKVM_PAGE_OWNED only when p-\u003etag is set? WDYS?",
+      "parentUuid": "00a693b6_a504680a",
+      "range": {
+        "startLine": 398,
+        "startChar": 5,
+        "endLine": 398,
+        "endChar": 19
+      },
+      "revId": "02916a4a715aa0a4307318ec0ffd164d989e6c5a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
