@@ -725,7 +725,16 @@ static void __host_update_page_state(phys_addr_t addr, u64 size, enum pkvm_page_
 enum host_set_page_state_flags {
 	HOST_SET_IS_MMIO		= BIT(0),
 	HOST_SET_NO_IOMMU_UPDATE	= BIT(1),
+	HOST_SET_NO_COMPLETE		= BIT(2), /* Skip __host_stage2_set_owner_complete() */
 };
+
+static void __host_stage2_set_owner_complete(u8 owner_id, enum host_set_page_state_flags flags)
+{
+	hyp_assert_lock_held(&host_mmu.lock);
+
+	if (!(flags & HOST_SET_NO_IOMMU_UPDATE))
+		kvm_iommu_host_stage2_idmap_complete(owner_id == PKVM_ID_HOST);
+}
 
 static int __host_stage2_set_owner_locked(phys_addr_t addr, u64 size, u8 owner_id,
 					  enum pkvm_page_state nopage_state,
@@ -753,8 +762,10 @@ static int __host_stage2_set_owner_locked(phys_addr_t addr, u64 size, u8 owner_i
 	if (!(flags & HOST_SET_NO_IOMMU_UPDATE)) {
 		prot = owner_id == PKVM_ID_HOST ? PKVM_HOST_MEM_PROT : 0;
 		kvm_iommu_host_stage2_idmap(addr, addr + size, prot);
-		kvm_iommu_host_stage2_idmap_complete(!!prot);
 	}
+
+	if (!(flags & HOST_SET_NO_COMPLETE))
+		__host_stage2_set_owner_complete(owner_id, flags);
 
 	if (flags & HOST_SET_IS_MMIO)
 		return 0;
@@ -2391,6 +2402,9 @@ int __pkvm_host_donate_sglist_guest(struct pkvm_hyp_vcpu *vcpu)
 	 * Update the IOMMU outside of __host_set_owner_guest() so that
 	 * we can batch up the operations with a single call to
 	 * kvm_iommu_host_stage2_idmap_complete().
+	 *
+	 * Also, __host_set_owner_guest() might install pvmfw so we want to be
+	 * sure the memory is first inaccessible from DMA engines.
 	 */
 	for_each_hyp_ppage(ppage) {
 		size_t size = PAGE_SIZE << ppage->order;
@@ -2469,7 +2483,7 @@ int __pkvm_host_donate_sglist_hyp(struct pkvm_sglist_page *sglist, size_t nr_pag
 		if (ret) {
 			WARN_ON(ret != -ENOMEM);
 
-			kvm_iommu_host_stage2_idmap_complete(false);
+			__host_stage2_set_owner_complete(PKVM_ID_HYP, 0);
 
 			/* Rollback */
 			for (; p >= 0; p--) {
@@ -2483,15 +2497,14 @@ int __pkvm_host_donate_sglist_hyp(struct pkvm_sglist_page *sglist, size_t nr_pag
 			}
 			kvm_iommu_host_stage2_idmap_complete(true);
 
-			break;
+			goto unlock;
 		}
 
 		WARN_ON(__host_stage2_set_owner_locked(phys, size, PKVM_ID_HYP, 0,
-						       HOST_SET_NO_IOMMU_UPDATE));
-		kvm_iommu_host_stage2_idmap(phys, phys + size, 0);
+						       HOST_SET_NO_COMPLETE));
 	}
 
-	kvm_iommu_host_stage2_idmap_complete(false);
+	__host_stage2_set_owner_complete(PKVM_ID_HYP, 0);
 
 unlock:
 	hyp_unlock_component();
