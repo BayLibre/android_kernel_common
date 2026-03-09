@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edfdcfbd_4be7e6d9",
+        "filename": "arch/x86/kvm/vmx/vmx.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 7590,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-03-09T15:43:25Z",
+      "side": 1,
+      "message": "IIUC the original KVM code doesn\u0027t have this issue, since kvm_x86_call(hwapic_isr_update)() is only called if apic-\u003eapicv_active is true, which guarantees that cpu_has_vmx_virtual_intr_delivery() is also true?\n\nSo can\u0027t we do the same, i.e. check apic-\u003eapicv_active in pkvm_hwapic_isr_update() before calling kvm_x86_call(hwapic_isr_update)(), instead of adding this check here?",
+      "revId": "fa11f99e3c5957273d6d53ede60a7606b2fba63e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
