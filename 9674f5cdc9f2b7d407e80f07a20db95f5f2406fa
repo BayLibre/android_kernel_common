@@ -3,6 +3,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "35ff12b9_a63bf234",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1186,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-09T18:30:13Z",
+      "side": 1,
+      "message": "Can we hide this ifdef machinery under zram_prefetch_cache_store likewise other place?\n\n#ifdef XX_IOCTL\nzram_prefetch_cache_store()\n#else\nzram_prefetch_cache_store() {\n   return 0;\n}",
+      "range": {
+        "startLine": 1186,
+        "startChar": 0,
+        "endLine": 1186,
+        "endChar": 41
+      },
+      "revId": "9674f5cdc9f2b7d407e80f07a20db95f5f2406fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "198e86b1_35a9b0e7",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1692,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-09T18:30:13Z",
+      "side": 1,
+      "message": "We can also hide this ifdef machinery under zram_xxx_validation.",
+      "range": {
+        "startLine": 1692,
+        "startChar": 0,
+        "endLine": 1692,
+        "endChar": 41
+      },
+      "revId": "9674f5cdc9f2b7d407e80f07a20db95f5f2406fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01b6ae01_151112e6",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 2407,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-09T18:30:13Z",
+      "side": 1,
+      "message": "Also let\u0027s hide this under zram_prefetch_cache_exist.",
+      "range": {
+        "startLine": 2407,
+        "startChar": 0,
+        "endLine": 2407,
+        "endChar": 41
+      },
+      "revId": "9674f5cdc9f2b7d407e80f07a20db95f5f2406fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbbca801_59882926",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 3066,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-09T18:30:13Z",
+      "side": 1,
+      "message": "Ditto.",
+      "range": {
+        "startLine": 3066,
+        "startChar": 0,
+        "endLine": 3066,
+        "endChar": 41
+      },
+      "revId": "9674f5cdc9f2b7d407e80f07a20db95f5f2406fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2face7f9_e6fedac8",
         "filename": "drivers/block/zram/zram_drv.h",
         "patchSetId": 10
