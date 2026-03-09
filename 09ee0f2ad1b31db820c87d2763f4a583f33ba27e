@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a58311fe_dc17062b",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-09T08:45:45Z",
+      "side": 1,
+      "message": "It seems we still need GFP_NOIO from [this comment](https://android-review.git.corp.google.com/c/kernel/common/+/3963071/comment/b53da156_b51016de/).\n\nzram_prefetch_cache_store() will be called in zram_populate_table() and under a slot lock.",
+      "parentUuid": "97be2a07_b1d40497",
+      "range": {
+        "startLine": 1073,
+        "startChar": 6,
+        "endLine": 1073,
+        "endChar": 14
+      },
+      "revId": "09ee0f2ad1b31db820c87d2763f4a583f33ba27e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eaac675a_a4276576",
         "filename": "drivers/block/zram/zram_drv.c",
         "patchSetId": 7
