@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "18a1d202_362df125",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2026-03-09T09:32:32Z",
+      "side": 1,
+      "message": "Right...\n\nGFP_KERNEL should not deadlock us, as far as I can tell, but lockdep doesn\u0027t distinguish slot locks, all of them belong to the same lock class (in a similar fashion how all inode locks belong to the same lock class), and because of that lockdep will see reclaim under slot lock as a possible ABBA scenario. As far as I understand it. lockdep definitely triggers.",
+      "parentUuid": "78e53482_b5558255",
+      "range": {
+        "startLine": 1073,
+        "startChar": 6,
+        "endLine": 1073,
+        "endChar": 14
+      },
+      "revId": "09ee0f2ad1b31db820c87d2763f4a583f33ba27e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eaac675a_a4276576",
         "filename": "drivers/block/zram/zram_drv.c",
         "patchSetId": 7
