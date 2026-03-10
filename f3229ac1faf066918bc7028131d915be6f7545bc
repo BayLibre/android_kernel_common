@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ace2c01d_c7ce4fe6",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 2044797
+      },
+      "writtenOn": "2026-03-10T14:10:00Z",
+      "side": 1,
+      "message": "If we\u0027re converting bytes to pages internally, we should probably have some kind of enforcement that ioc_data_pwd-\u003esize is a PAGE_SIZE multiple? Eg. if they do 3096 bytes they will have no limit as it\u0027ll round down to 0.",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 57
+      },
+      "revId": "f3229ac1faf066918bc7028131d915be6f7545bc",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
