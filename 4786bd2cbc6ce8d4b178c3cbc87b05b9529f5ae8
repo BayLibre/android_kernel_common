@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcc72f5f_2233c0e2",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 1192,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-10T16:17:21Z",
+      "side": 1,
+      "message": "with return 0 for non ANDROID_IOCTL config, we don\u0027t need this additional logic.",
+      "range": {
+        "startLine": 1192,
+        "startChar": 12,
+        "endLine": 1192,
+        "endChar": 30
+      },
+      "revId": "4786bd2cbc6ce8d4b178c3cbc87b05b9529f5ae8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b913a74_868ae9e5",
+        "filename": "drivers/block/zram/zram_drv.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1275554
+      },
+      "writtenOn": "2026-03-10T16:17:21Z",
+      "side": 1,
+      "message": "we can return 0.",
+      "range": {
+        "startLine": 210,
+        "startChar": 8,
+        "endLine": 210,
+        "endChar": 20
+      },
+      "revId": "4786bd2cbc6ce8d4b178c3cbc87b05b9529f5ae8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
