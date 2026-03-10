@@ -1515,9 +1515,6 @@ enqueue_task_rt(struct rq *rq, struct task_struct *p, int flags)
 
 	enqueue_rt_entity(rt_se, flags);
 
-	if (should_honor_rt_sync(rq, p, sync))
-		return;
-
 	if (task_is_blocked(p))
 		return;
 
