@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70b5be40_1fb44fc8",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/pviommu-host.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-10T19:17:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8e399f6_480821eb",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 3
+      },
+      "revId": "89e7bb0ae4f992cedd9af893940290e07b637f2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98c14646_2e930f3d",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "051447db_a920da46",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-10T19:17:24Z",
+      "side": 1,
+      "message": "Ideally yes, but there is no way to know that, the upstream driver relies on enforcing this through `IOMMU_CAP_ENFORCE_CACHE_COHERENCY` which is ACPI/PCI specific.\nAn alternative is to only disable FWB for devices that are not `of_dma_is_coherent()`",
+      "parentUuid": "98c14646_2e930f3d",
+      "range": {
+        "startLine": 985,
+        "startChar": 0,
+        "endLine": 985,
+        "endChar": 31
+      },
+      "revId": "89e7bb0ae4f992cedd9af893940290e07b637f2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2302b5ae_0b37fbc9",
         "filename": "arch/arm64/kvm/pkvm.c",
         "patchSetId": 5
@@ -60,6 +108,30 @@
       "writtenOn": "2026-03-05T16:13:53Z",
       "side": 1,
       "message": "Shouldn\u0027t this also check the pgt flags, or do you not support non-coherent assignment to non-protected VMs?",
+      "range": {
+        "startLine": 1095,
+        "startChar": 0,
+        "endLine": 1095,
+        "endChar": 47
+      },
+      "revId": "89e7bb0ae4f992cedd9af893940290e07b637f2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e7aba93_1d23c654",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1095,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-10T19:17:24Z",
+      "side": 1,
+      "message": "We don\u0027t support device assignment for non-protected VMs, but I did it to avoid missing it in the future.",
+      "parentUuid": "2302b5ae_0b37fbc9",
       "range": {
         "startLine": 1095,
         "startChar": 0,
