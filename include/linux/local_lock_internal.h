@@ -15,11 +15,10 @@ typedef struct {
 #endif
 } local_lock_t;
 
-/* local_trylock() and local_trylock_irqsave() only work with local_trylock_t */
 typedef struct {
 	local_lock_t	llock;
-	u8		acquired;
-} local_trylock_t;
+	unsigned int	acquired;
+} localtry_lock_t;
 
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
 # define LOCAL_LOCK_DEBUG_INIT(lockname)		\
@@ -29,9 +28,6 @@ typedef struct {
 		.lock_type = LD_LOCK_PERCPU,		\
 	},						\
 	.owner = NULL,
-
-# define LOCAL_TRYLOCK_DEBUG_INIT(lockname)		\
-	.llock = { LOCAL_LOCK_DEBUG_INIT((lockname).llock) },
 
 static inline void local_lock_acquire(local_lock_t *l)
 {
@@ -60,7 +56,6 @@ static inline void local_lock_debug_init(local_lock_t *l)
 }
 #else /* CONFIG_DEBUG_LOCK_ALLOC */
 # define LOCAL_LOCK_DEBUG_INIT(lockname)
-# define LOCAL_TRYLOCK_DEBUG_INIT(lockname)
 static inline void local_lock_acquire(local_lock_t *l) { }
 static inline void local_trylock_acquire(local_lock_t *l) { }
 static inline void local_lock_release(local_lock_t *l) { }
@@ -68,7 +63,7 @@ static inline void local_lock_debug_init(local_lock_t *l) { }
 #endif /* !CONFIG_DEBUG_LOCK_ALLOC */
 
 #define INIT_LOCAL_LOCK(lockname)	{ LOCAL_LOCK_DEBUG_INIT(lockname) }
-#define INIT_LOCAL_TRYLOCK(lockname)	{ LOCAL_TRYLOCK_DEBUG_INIT(lockname) }
+#define INIT_LOCALTRY_LOCK(lockname)	{ .llock = { LOCAL_LOCK_DEBUG_INIT(lockname.llock) }}
 
 #define __local_lock_init(lock)					\
 do {								\
@@ -81,8 +76,6 @@ do {								\
 	local_lock_debug_init(lock);				\
 } while (0)
 
-#define __local_trylock_init(lock) __local_lock_init(lock.llock)
-
 #define __spinlock_nested_bh_init(lock)				\
 do {								\
 	static struct lock_class_key __key;			\
@@ -94,105 +87,39 @@ do {								\
 	local_lock_debug_init(lock);				\
 } while (0)
 
-#define __local_lock_acquire(lock)					\
-	do {								\
-		local_trylock_t *tl;					\
-		local_lock_t *l;					\
-									\
-		l = (local_lock_t *)this_cpu_ptr(lock);			\
-		tl = (local_trylock_t *)l;				\
-		_Generic((lock),					\
-			local_trylock_t *: ({				\
-				lockdep_assert(tl->acquired == 0);	\
-				WRITE_ONCE(tl->acquired, 1);		\
-			}),						\
-			default:(void)0);				\
-		local_lock_acquire(l);					\
-	} while (0)
-
 #define __local_lock(lock)					\
 	do {							\
 		preempt_disable();				\
-		__local_lock_acquire(lock);			\
+		local_lock_acquire(this_cpu_ptr(lock));		\
 	} while (0)
 
 #define __local_lock_irq(lock)					\
 	do {							\
 		local_irq_disable();				\
-		__local_lock_acquire(lock);			\
+		local_lock_acquire(this_cpu_ptr(lock));		\
 	} while (0)
 
 #define __local_lock_irqsave(lock, flags)			\
 	do {							\
 		local_irq_save(flags);				\
-		__local_lock_acquire(lock);			\
-	} while (0)
-
-#define __local_trylock(lock)					\
-	({							\
-		local_trylock_t *tl;				\
-								\
-		preempt_disable();				\
-		tl = this_cpu_ptr(lock);			\
-		if (READ_ONCE(tl->acquired)) {			\
-			preempt_enable();			\
-			tl = NULL;				\
-		} else {					\
-			WRITE_ONCE(tl->acquired, 1);		\
-			local_trylock_acquire(			\
-				(local_lock_t *)tl);		\
-		}						\
-		!!tl;						\
-	})
-
-#define __local_trylock_irqsave(lock, flags)			\
-	({							\
-		local_trylock_t *tl;				\
-								\
-		local_irq_save(flags);				\
-		tl = this_cpu_ptr(lock);			\
-		if (READ_ONCE(tl->acquired)) {			\
-			local_irq_restore(flags);		\
-			tl = NULL;				\
-		} else {					\
-			WRITE_ONCE(tl->acquired, 1);		\
-			local_trylock_acquire(			\
-				(local_lock_t *)tl);		\
-		}						\
-		!!tl;						\
-	})
-
-#define __local_lock_release(lock)					\
-	do {								\
-		local_trylock_t *tl;					\
-		local_lock_t *l;					\
-									\
-		l = (local_lock_t *)this_cpu_ptr(lock);			\
-		tl = (local_trylock_t *)l;				\
-		local_lock_release(l);					\
-		_Generic((lock),					\
-			local_trylock_t *: ({				\
-				lockdep_assert(tl->acquired == 1);	\
-				WRITE_ONCE(tl->acquired, 0);		\
-			}),						\
-			default:(void)0);				\
+		local_lock_acquire(this_cpu_ptr(lock));		\
 	} while (0)
 
 #define __local_unlock(lock)					\
 	do {							\
-		__local_lock_release(lock);			\
+		local_lock_release(this_cpu_ptr(lock));		\
 		preempt_enable();				\
 	} while (0)
 
 #define __local_unlock_irq(lock)				\
 	do {							\
-		__local_lock_release(lock);			\
+		local_lock_release(this_cpu_ptr(lock));		\
 		local_irq_enable();				\
 	} while (0)
 
 #define __local_unlock_irqrestore(lock, flags)			\
 	do {							\
-		__local_lock_release(lock);			\
+		local_lock_release(this_cpu_ptr(lock));		\
 		local_irq_restore(flags);			\
 	} while (0)
 
@@ -205,6 +132,104 @@ do {								\
 #define __local_unlock_nested_bh(lock)				\
 	local_lock_release(this_cpu_ptr(lock))
 
+/* localtry_lock_t variants */
+
+#define __localtry_lock_init(lock)				\
+do {								\
+	__local_lock_init(&(lock)->llock);			\
+	WRITE_ONCE((lock)->acquired, 0);			\
+} while (0)
+
+#define __localtry_lock(lock)					\
+	do {							\
+		localtry_lock_t *lt;				\
+		preempt_disable();				\
+		lt = this_cpu_ptr(lock);			\
+		local_lock_acquire(&lt->llock);			\
+		WRITE_ONCE(lt->acquired, 1);			\
+	} while (0)
+
+#define __localtry_lock_irq(lock)				\
+	do {							\
+		localtry_lock_t *lt;				\
+		local_irq_disable();				\
+		lt = this_cpu_ptr(lock);			\
+		local_lock_acquire(&lt->llock);			\
+		WRITE_ONCE(lt->acquired, 1);			\
+	} while (0)
+
+#define __localtry_lock_irqsave(lock, flags)			\
+	do {							\
+		localtry_lock_t *lt;				\
+		local_irq_save(flags);				\
+		lt = this_cpu_ptr(lock);			\
+		local_lock_acquire(&lt->llock);			\
+		WRITE_ONCE(lt->acquired, 1);			\
+	} while (0)
+
+#define __localtry_trylock(lock)				\
+	({							\
+		localtry_lock_t *lt;				\
+		bool _ret;					\
+								\
+		preempt_disable();				\
+		lt = this_cpu_ptr(lock);			\
+		if (!READ_ONCE(lt->acquired)) {			\
+			WRITE_ONCE(lt->acquired, 1);		\
+			local_trylock_acquire(&lt->llock);	\
+			_ret = true;				\
+		} else {					\
+			_ret = false;				\
+			preempt_enable();			\
+		}						\
+		_ret;						\
+	})
+
+#define __localtry_trylock_irqsave(lock, flags)			\
+	({							\
+		localtry_lock_t *lt;				\
+		bool _ret;					\
+								\
+		local_irq_save(flags);				\
+		lt = this_cpu_ptr(lock);			\
+		if (!READ_ONCE(lt->acquired)) {			\
+			WRITE_ONCE(lt->acquired, 1);		\
+			local_trylock_acquire(&lt->llock);	\
+			_ret = true;				\
+		} else {					\
+			_ret = false;				\
+			local_irq_restore(flags);		\
+		}						\
+		_ret;						\
+	})
+
+#define __localtry_unlock(lock)					\
+	do {							\
+		localtry_lock_t *lt;				\
+		lt = this_cpu_ptr(lock);			\
+		WRITE_ONCE(lt->acquired, 0);			\
+		local_lock_release(&lt->llock);			\
+		preempt_enable();				\
+	} while (0)
+
+#define __localtry_unlock_irq(lock)				\
+	do {							\
+		localtry_lock_t *lt;				\
+		lt = this_cpu_ptr(lock);			\
+		WRITE_ONCE(lt->acquired, 0);			\
+		local_lock_release(&lt->llock);			\
+		local_irq_enable();				\
+	} while (0)
+
+#define __localtry_unlock_irqrestore(lock, flags)		\
+	do {							\
+		localtry_lock_t *lt;				\
+		lt = this_cpu_ptr(lock);			\
+		WRITE_ONCE(lt->acquired, 0);			\
+		local_lock_release(&lt->llock);			\
+		local_irq_restore(flags);			\
+	} while (0)
+
 #else /* !CONFIG_PREEMPT_RT */
 
 /*
@@ -212,17 +237,15 @@ do {								\
  * critical section while staying preemptible.
  */
 typedef spinlock_t local_lock_t;
-typedef spinlock_t local_trylock_t;
+typedef spinlock_t localtry_lock_t;
 
 #define INIT_LOCAL_LOCK(lockname) __LOCAL_SPIN_LOCK_UNLOCKED((lockname))
-#define INIT_LOCAL_TRYLOCK(lockname) __LOCAL_SPIN_LOCK_UNLOCKED((lockname))
+#define INIT_LOCALTRY_LOCK(lockname) INIT_LOCAL_LOCK(lockname)
 
 #define __local_lock_init(l)					\
 	do {							\
 		local_spin_lock_init((l));			\
 	} while (0)
-
-#define __local_trylock_init(l)			__local_lock_init(l)
 
 #define __local_lock(__lock)					\
 	do {							\
@@ -260,7 +283,17 @@ do {								\
 	spin_unlock(this_cpu_ptr((lock)));			\
 } while (0)
 
-#define __local_trylock(lock)					\
+/* localtry_lock_t variants */
+
+#define __localtry_lock_init(lock)			__local_lock_init(lock)
+#define __localtry_lock(lock)				__local_lock(lock)
+#define __localtry_lock_irq(lock)			__local_lock(lock)
+#define __localtry_lock_irqsave(lock, flags)		__local_lock_irqsave(lock, flags)
+#define __localtry_unlock(lock)				__local_unlock(lock)
+#define __localtry_unlock_irq(lock)			__local_unlock(lock)
+#define __localtry_unlock_irqrestore(lock, flags)	__local_unlock_irqrestore(lock, flags)
+
+#define __localtry_trylock(lock)				\
 	({							\
 		int __locked;					\
 								\
@@ -275,11 +308,11 @@ do {								\
 		__locked;					\
 	})
 
-#define __local_trylock_irqsave(lock, flags)			\
+#define __localtry_trylock_irqsave(lock, flags)			\
 	({							\
 		typecheck(unsigned long, flags);		\
 		flags = 0;					\
-		__local_trylock(lock);				\
+		__localtry_trylock(lock);			\
 	})
 
 #endif /* CONFIG_PREEMPT_RT */
