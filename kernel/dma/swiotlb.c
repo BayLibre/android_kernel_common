@@ -63,6 +63,8 @@
 
 #define INVALID_PHYS_ADDR (~(phys_addr_t)0)
 
+#define DMA_POOL_FLAGS_ENCRYPTED	((void *)-1)
+
 /**
  * struct io_tlb_slot - IO TLB slot descriptor
  * @orig_addr:	The original address corresponding to a mapped entry.
@@ -1794,10 +1796,16 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
 				    struct device *dev)
 {
 	struct io_tlb_mem *mem = rmem->priv;
+	bool pool_encrypted = false;
 	unsigned long nslabs = rmem->size >> IO_TLB_SHIFT;
 
 	/* Set Per-device io tlb area to one */
 	unsigned int nareas = 1;
+
+	if (mem == DMA_POOL_FLAGS_ENCRYPTED) {
+		mem = NULL;
+		pool_encrypted = true;
+	}
 
 	if (PageHighMem(pfn_to_page(PHYS_PFN(rmem->base)))) {
 		dev_err(dev, "Restricted DMA pool must be accessible within the linear mapping.");
@@ -1816,7 +1824,6 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
 		if (!mem)
 			return -ENOMEM;
 		pool = &mem->defpool;
-
 		pool->slots = kcalloc(nslabs, sizeof(*pool->slots), GFP_KERNEL);
 		if (!pool->slots) {
 			kfree(mem);
@@ -1831,8 +1838,10 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
 			return -ENOMEM;
 		}
 
-		set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
-				     rmem->size >> PAGE_SHIFT);
+		if (!pool_encrypted)
+			set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
+					     rmem->size >> PAGE_SHIFT);
+
 		swiotlb_init_io_tlb_pool(pool, rmem->base, nslabs,
 					 false, nareas);
 		mem->force_bounce = true;
@@ -1847,6 +1856,9 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
 
 		swiotlb_create_debugfs_files(mem, rmem->name);
 	}
+
+	if (pool_encrypted)
+		dev_info(dev, "is using encrypted restricted DMA pool %s\n", rmem->name);
 
 	dev->dma_io_tlb_mem = mem;
 
@@ -1873,6 +1885,10 @@ static int __init rmem_swiotlb_setup(struct reserved_mem *rmem)
 	    of_get_flat_dt_prop(node, "linux,dma-default", NULL) ||
 	    of_get_flat_dt_prop(node, "no-map", NULL))
 		return -EINVAL;
+
+	/* It's too early to allocate memory, so signal this in the priv pointer. */
+	rmem->priv = (void *)(of_get_flat_dt_prop(node, "encrypted", NULL) ?
+			      DMA_POOL_FLAGS_ENCRYPTED : 0);
 
 	rmem->ops = &rmem_swiotlb_ops;
 	pr_info("Reserved memory: created restricted DMA pool at %pa, size %ld MiB\n",
