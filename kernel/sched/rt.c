@@ -1505,7 +1505,6 @@ static void
 enqueue_task_rt(struct rq *rq, struct task_struct *p, int flags)
 {
 	struct sched_rt_entity *rt_se = &p->rt;
-	bool sync = !!(flags & ENQUEUE_WAKEUP_SYNC);
 
 	if (flags & ENQUEUE_WAKEUP)
 		rt_se->timeout = 0;
@@ -1514,9 +1513,6 @@ enqueue_task_rt(struct rq *rq, struct task_struct *p, int flags)
 	update_stats_wait_start_rt(rt_rq_of_se(rt_se), rt_se);
 
 	enqueue_rt_entity(rt_se, flags);
-
-	if (should_honor_rt_sync(rq, p, sync))
-		return;
 
 	if (task_is_blocked(p))
 		return;
