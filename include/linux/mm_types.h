@@ -1075,7 +1075,8 @@ struct mm_struct {
 		} lru_gen;
 #endif /* CONFIG_LRU_GEN_WALKS_MMU */
 
-		ANDROID_KABI_USE(1, struct task_dma_buf_info *dmabuf_info);
+		struct task_dma_buf_info *dmabuf_info;
+		ANDROID_KABI_RESERVE(1);
 	} __randomize_layout;
 
 	/*
