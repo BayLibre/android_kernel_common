@@ -16,6 +16,11 @@ hyp-obj-$(CONFIG_LIST_HARDENED) += list_debug.o
 hyp-obj-$(CONFIG_TRACING) += clock.o events.o trace.o
 hyp-obj-$(CONFIG_PKVM_FTRACE) += ftrace.o
 hyp-obj-$(CONFIG_MODULES) += modules.o
+
+ifeq ($(CONFIG_KASAN_GENERIC),y)
+hyp-obj-$(CONFIG_KASAN_OUTLINE) += kasan.o
+endif
+
 hyp-obj-y += $(lib-objs)
 
 KBUILD_CFLAGS += -D __NO_FORTIFY
@@ -59,3 +64,8 @@ UBSAN_SANITIZE := y
 # Always use brk and not hooks
 ccflags-y += $(CFLAGS_UBSAN_TRAP)
 endif
+
+KASAN_SANITIZE_kasan.nvhe.o := n
+KASAN_SANITIZE_setup.nvhe.o := n
+KASAN_SANITIZE_stacktrace.nvhe.o := n
+KASAN_SANITIZE_alloc.nvhe.o := n
