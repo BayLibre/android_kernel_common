@@ -233,16 +233,40 @@ int zram_ioctl(struct block_device *bdev, blk_mode_t mode,
 	struct zram_android_ioc_data ioc_data;
 	int ret;
 
-	if (cmd != ZRAM_ANDROID_IOC_PROCESS_WRITEBACK)
-		return -EINVAL;
+	if (cmd == ZRAM_ANDROID_IOC_GET_VERSION) {
+		u32 version = ZRAM_ANDROID_IOC_VERSION;
 
-	if (copy_from_user(&ioc_data, argp, sizeof(ioc_data)))
-		return -EFAULT;
+		if (copy_to_user(argp, &version, sizeof(version)))
+			return -EFAULT;
+		return 0;
+	}
+
+	if (cmd == ZRAM_ANDROID_IOC_PROCESS_WRITEBACK) {
+		/* Versioned V1+ */
+		if (copy_from_user(&ioc_data, argp, sizeof(ioc_data)))
+			return -EFAULT;
+		if (ioc_data.version != ZRAM_ANDROID_IOC_VERSION)
+			return -EINVAL;
+	} else if (cmd == ZRAM_ANDROID_IOC_PROCESS_WRITEBACK_V0) {
+		/* Legacy V0: arg is just the data union */
+		memset(&ioc_data, 0, sizeof(ioc_data));
+		if (copy_from_user(&ioc_data.data, argp,
+				   sizeof(ioc_data.data)))
+			return -EFAULT;
+		ioc_data.version = 0;
+	} else {
+		return -EINVAL;
+	}
 
 	ret = zram_ioctl_process_writeback(zram,
 					   &ioc_data.data.process_writeback);
 
-	if (copy_to_user(argp, &ioc_data, sizeof(ioc_data)))
-		ret = -EFAULT;
+	if (cmd == ZRAM_ANDROID_IOC_PROCESS_WRITEBACK) {
+		if (copy_to_user(argp, &ioc_data, sizeof(ioc_data)))
+			ret = -EFAULT;
+	} else if (cmd == ZRAM_ANDROID_IOC_PROCESS_WRITEBACK_V0) {
+		if (copy_to_user(argp, &ioc_data.data, sizeof(ioc_data.data)))
+			ret = -EFAULT;
+	}
 	return ret;
 }
