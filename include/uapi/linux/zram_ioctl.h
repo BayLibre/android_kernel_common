@@ -6,19 +6,32 @@
 #include <linux/types.h>
 #include <linux/ioctl.h>
 
+#define ZRAM_ANDROID_IOC_VERSION 1
+
 struct zram_android_ioc_data_process_writeback {
 	__aligned_u64	pidfd;
 	__u64		written_bytes;
 };
 
 struct zram_android_ioc_data {
+	__u32 version;
 	union {
 		struct zram_android_ioc_data_process_writeback process_writeback;
 	} data;
 };
 
 #define ZRAM_ANDROID_IOC_MAGIC 0xBB
-#define ZRAM_ANDROID_IOC_PROCESS_WRITEBACK _IOWR(ZRAM_ANDROID_IOC_MAGIC, 1, struct zram_android_ioc_data)
+
+/* Legacy V0 */
+#define ZRAM_ANDROID_IOC_PROCESS_WRITEBACK_V0 \
+	_IOWR(ZRAM_ANDROID_IOC_MAGIC, 1, \
+	      struct zram_android_ioc_data_process_writeback)
+
+#define ZRAM_ANDROID_IOC_GET_VERSION \
+	_IOR(ZRAM_ANDROID_IOC_MAGIC, 0, __u32)
+
+#define ZRAM_ANDROID_IOC_PROCESS_WRITEBACK \
+	_IOWR(ZRAM_ANDROID_IOC_MAGIC, 1, struct zram_android_ioc_data)
 
 #endif /* _UAPI_LINUX_ZRAM_IOCTL_H */
 
