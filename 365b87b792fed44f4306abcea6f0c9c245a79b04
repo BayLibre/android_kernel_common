@@ -34,6 +34,24 @@
       "parentUuid": "ae51b521_a931765c",
       "revId": "365b87b792fed44f4306abcea6f0c9c245a79b04",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b53dea82_c11402bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1279898
+      },
+      "writtenOn": "2026-03-11T16:37:04Z",
+      "side": 1,
+      "message": "I believe I can\u0027t do it in this case, because this branch has the same history that the android-mainline does and re-using the Change-Id will reject. Importantly, I\u0027m specifically *not* cherry-picking that commit (it is already merged in this branch by AutoMerger), I am porting the equivalent RISC-V change that commit does.",
+      "parentUuid": "4bda64e6_d50cce7d",
+      "revId": "365b87b792fed44f4306abcea6f0c9c245a79b04",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
