@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b85a82d3_fccb52d6",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 2044797
+      },
+      "writtenOn": "2026-03-11T14:00:24Z",
+      "side": 1,
+      "message": "Typically you would just query the version and then from there you know what features are available, you\u0027re also versioning the ioctls ie. ZRAM_ANDROID_IOC_PROCESS_WRITEBACK_V0.\n\nUserfaultfd(2) does something similar:\n\nhttps://man7.org/linux/man-pages/man2/userfaultfd.2.html\n\n```\n              Programs that *do* should call UFFDIO_API twice: once with\n              `features \u003d 0` to detect features supported by this kernel, and\n              again with the subset of features the program actually wants to\n              enable.  */\n           uffdio_api.api \u003d UFFD_API;\n           uffdio_api.features \u003d 0;\n           if (ioctl(uffd, UFFDIO_API, \u0026uffdio_api) \u003d\u003d -1)\n               err(EXIT_FAILURE, \"ioctl-UFFDIO_API\");\n```\n\nIn our case we would just query for a version or \"features\" and from there know what userspace is able to do.",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 249,
+        "endChar": 18
+      },
+      "revId": "c4617ad63f05120d8780b2e3a46872484082b7a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da1d1855_083d189d",
         "filename": "include/uapi/linux/zram_ioctl.h",
         "patchSetId": 1
