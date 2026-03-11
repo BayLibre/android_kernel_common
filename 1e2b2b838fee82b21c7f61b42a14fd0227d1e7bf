@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cc91f1c_18690bca",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1280,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2026-03-11T16:19:07Z",
+      "side": 1,
+      "message": "Is adding the following enough to make sure this is just for host tools?\n\n```\ntarget_compatible_with \u003d [\n    \"@platforms//os:linux\",\n    \"@platforms//cpu:x86_64\",\n],\n```",
+      "range": {
+        "startLine": 1280,
+        "startChar": 0,
+        "endLine": 1280,
+        "endChar": 10
+      },
+      "revId": "1e2b2b838fee82b21c7f61b42a14fd0227d1e7bf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
