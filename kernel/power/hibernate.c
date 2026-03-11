@@ -32,6 +32,7 @@
 #include <linux/security.h>
 #include <linux/secretmem.h>
 #include <trace/events/power.h>
+#include <trace/hooks/power.h>
 #include <trace/hooks/bl_hib.h>
 
 #include "power.h"
@@ -848,6 +849,7 @@ int hibernate(void)
 	/* Don't bother checking whether freezer_test_done is true */
 	freezer_test_done = false;
  Exit:
+	trace_android_vh_hibernate_state(error);
 	pm_notifier_call_chain(PM_POST_HIBERNATION);
  Restore:
 	pm_restore_console();
