@@ -22,6 +22,30 @@
       },
       "revId": "1e2b2b838fee82b21c7f61b42a14fd0227d1e7bf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a040bceb_4e334479",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1280,
+      "author": {
+        "id": 1953271
+      },
+      "writtenOn": "2026-03-11T18:19:42Z",
+      "side": 1,
+      "message": "The underlying \u0027//prebuilts/kernel-build-tools:imported_libs\u0027 dependency has this already. So, IIUC, it should not be possible to use this rule for building for any other platform.",
+      "parentUuid": "1cc91f1c_18690bca",
+      "range": {
+        "startLine": 1280,
+        "startChar": 0,
+        "endLine": 1280,
+        "endChar": 10
+      },
+      "revId": "1e2b2b838fee82b21c7f61b42a14fd0227d1e7bf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
