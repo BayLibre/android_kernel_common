@@ -184,6 +184,8 @@ extern int static_call_text_reserved(void *start, void *end);
 
 extern long __static_call_return0(void);
 
+#define STATIC_CALL_STUB_RET0(...)	((void *)&__static_call_return0)
+
 #define DEFINE_STATIC_CALL(name, _func)					\
 	DECLARE_STATIC_CALL(name, _func);				\
 	struct static_call_key STATIC_CALL_KEY(name) = {		\
@@ -270,6 +272,8 @@ static inline int static_call_text_reserved(void *start, void *end)
 
 extern long __static_call_return0(void);
 
+#define STATIC_CALL_STUB_RET0(...)	((void *)&__static_call_return0)
+
 #define EXPORT_STATIC_CALL(name)					\
 	EXPORT_SYMBOL(STATIC_CALL_KEY(name));				\
 	EXPORT_SYMBOL(STATIC_CALL_TRAMP(name))
@@ -285,6 +289,8 @@ extern long __static_call_return0(void);
 
 #else /* Generic implementation */
 
+#include <asm/static_call.h>
+
 #define static_call_initialized 0
 
 static inline int static_call_init(void) { return 0; }
@@ -293,6 +299,16 @@ static inline long __static_call_return0(void)
 {
 	return 0;
 }
+
+/* Use typed stubs if needed. Otherwise, fall back to __static_call_return0 */
+#ifdef ARCH_DEFINE_TYPED_STUB_RET0
+#define STATIC_CALL_STUB_RET0(name)	__static_call_##name
+#define DEFINE_STATIC_CALL_STUB_RET0(name, _func)			\
+	ARCH_DEFINE_TYPED_STUB_RET0(STATIC_CALL_STUB_RET0(name), _func)
+#else
+#define STATIC_CALL_STUB_RET0(...)	((void *)&__static_call_return0)
+#define DEFINE_STATIC_CALL_STUB_RET0(...)
+#endif
 
 #define __DEFINE_STATIC_CALL(name, _func, _func_init)			\
 	DECLARE_STATIC_CALL(name, _func);				\
@@ -307,7 +323,8 @@ static inline long __static_call_return0(void)
 	__DEFINE_STATIC_CALL(name, _func, NULL)
 
 #define DEFINE_STATIC_CALL_RET0(name, _func)				\
-	__DEFINE_STATIC_CALL(name, _func, __static_call_return0)
+	DEFINE_STATIC_CALL_STUB_RET0(name, _func)			\
+	__DEFINE_STATIC_CALL(name, _func, STATIC_CALL_STUB_RET0(name))
 
 static inline void __static_call_nop(void) { }
 
