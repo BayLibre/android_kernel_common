@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a653653c_d24585f6",
+        "filename": "mm/page_io.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-11T16:58:05Z",
+      "side": 1,
+      "message": "__swap_writepage() can fail (in places like bdev_write_page()) and that will likely affect your measurements. You probably should add `ret` into your trace_android_vh_swap_writepage_end() hook to be able to distinguish between successful and failure cases.",
+      "range": {
+        "startLine": 211,
+        "startChar": 1,
+        "endLine": 211,
+        "endChar": 43
+      },
+      "revId": "671423f72ecd60f8c5feac6d6bb6a42994c65ac3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2649c237_719bb056",
+        "filename": "mm/page_io.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-11T16:58:05Z",
+      "side": 1,
+      "message": "Why?",
+      "range": {
+        "startLine": 377,
+        "startChar": 0,
+        "endLine": 381,
+        "endChar": 0
+      },
+      "revId": "671423f72ecd60f8c5feac6d6bb6a42994c65ac3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d3066ec_e02399c9",
+        "filename": "mm/page_io.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-11T16:58:05Z",
+      "side": 1,
+      "message": "Here too you probably want to include `ret` in the hook.",
+      "range": {
+        "startLine": 536,
+        "startChar": 1,
+        "endLine": 536,
+        "endChar": 28
+      },
+      "revId": "671423f72ecd60f8c5feac6d6bb6a42994c65ac3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
