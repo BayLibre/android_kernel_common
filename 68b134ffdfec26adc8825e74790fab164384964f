@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0b4d4b8b_e5d516e9",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1060234
+      },
+      "writtenOn": "2026-03-12T18:16:30Z",
+      "side": 1,
+      "message": "Use DIV_ROUND_UP_POW2 to avoid overflow if someone passes UINT64_MAX",
+      "range": {
+        "startLine": 134,
+        "startChar": 24,
+        "endLine": 134,
+        "endChar": 40
+      },
+      "revId": "68b134ffdfec26adc8825e74790fab164384964f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e667eebc_f511085d",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1060234
+      },
+      "writtenOn": "2026-03-12T18:16:30Z",
+      "side": 1,
+      "message": "nit: Can you document this in the uapi?",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 33
+      },
+      "revId": "68b134ffdfec26adc8825e74790fab164384964f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12691225_d8e71caa",
         "filename": "drivers/block/zram/zram_ioctl.c",
         "patchSetId": 2
