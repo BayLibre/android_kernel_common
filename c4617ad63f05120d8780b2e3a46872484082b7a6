@@ -48,6 +48,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd52104b_0d12eb47",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-12T09:03:41Z",
+      "side": 1,
+      "message": "Please help review the current implementation.",
+      "parentUuid": "f1eb4e15_f50f2c1c",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 249,
+        "endChar": 18
+      },
+      "revId": "c4617ad63f05120d8780b2e3a46872484082b7a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da1d1855_083d189d",
@@ -61,6 +85,30 @@
       "writtenOn": "2026-03-11T13:53:37Z",
       "side": 1,
       "message": "Why isn\u0027t this inside the union?",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 15
+      },
+      "revId": "c4617ad63f05120d8780b2e3a46872484082b7a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdf01935_e665063d",
+        "filename": "include/uapi/linux/zram_ioctl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-12T09:03:41Z",
+      "side": 1,
+      "message": "Both writeback and prefetch need the version field.",
+      "parentUuid": "da1d1855_083d189d",
       "range": {
         "startLine": 17,
         "startChar": 0,
