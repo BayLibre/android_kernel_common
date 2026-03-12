@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1afde51b_b7694b49",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 1398,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-12T23:16:47Z",
+      "side": 1,
+      "message": "Just to make sure we are not changing `err` when !CONFIG_ZRAM_ANDROID_IOCTL, can you avoid using it, like this?:\n\n```\n\tif (!zram_prefetch_cache_reuse(zram, index))\n\t\tgoto next;\n```\n\nYou don\u0027t use `err` later, so I think that should work fine.",
+      "range": {
+        "startLine": 1396,
+        "startChar": 2,
+        "endLine": 1398,
+        "endChar": 13
+      },
+      "revId": "b92024c006d8ee214feff975502839c5f1d47fe3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
