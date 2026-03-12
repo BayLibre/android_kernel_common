@@ -39,7 +39,7 @@
 #include "../../kselftest_harness.h"
 
 /* ioctl wrappers */
-static inline int wrapfd_wrap(int dev_fd, int fd, unsigned int prot)
+static inline int wrapfd_wrap(int dev_fd, int fd, int prot)
 {
 	struct wrapfd_wrap wrap = {
 		.fd = fd,
@@ -84,7 +84,7 @@ static inline int wrapfd_load(int wrapfd, int fd, unsigned long file_offs,
 	return ioctl(wrapfd, WRAPFD_DEV_IOC_LOAD, &load);
 }
 
-static inline int wrapfd_rewrap(int wrapfd, unsigned int prot)
+static inline int wrapfd_rewrap(int wrapfd, int prot)
 {
 	struct wrapfd_rewrap rewrap = {
 		.prot = prot,
