@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8533d0d5_f74c5b17",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-12T22:59:29Z",
+      "side": 1,
+      "message": "Wait, are you returning 0 (success) if the command is something unknown? This is wrong, you should return -ENOIOCTLCMD (it\u0027s an alias for -ENOTTY) if the command is unknown.\nSo, if userspace issues ioctl(ZRAM_ANDROID_IOC_GET_VERSION) before this change it should return -1 with errno\u003d\u003dENOTTY.",
+      "range": {
+        "startLine": 342,
+        "startChar": 1,
+        "endLine": 342,
+        "endChar": 13
+      },
+      "revId": "f9a7d8c82300c9f36b80e9f17a954b6799032bb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07339f83_d8bd3082",
         "filename": "drivers/block/zram/zram_ioctl.c",
         "patchSetId": 3
