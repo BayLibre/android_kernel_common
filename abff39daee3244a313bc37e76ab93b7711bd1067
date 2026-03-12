@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fe65508_1be5c3bc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-03-12T19:51:07Z",
+      "side": 1,
+      "message": "I guess this makes it slower? Reading any APIC register except TPR/PPR/ISR/IRR now requires vmexit, and even worse, switching from pKVM to the host and back?\n\nMaybe we could instead sync those host-emulated register values from the host\u0027s apic page to the pKVM\u0027s one in the vCPU run loop, so that the guest can still read them without vmexit?\n\nOr perhaps none of those registers are _read_ (not just written) by guests in any hot paths in practice? But looks like, for instance, in Linux guests at least APIC_TMR is read in ioapic_ack_level(), i.e. as a part of handling any level-triggered interrupt?",
+      "revId": "abff39daee3244a313bc37e76ab93b7711bd1067",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80fc544f_511817cc",
+        "filename": "arch/x86/kvm/vmx/vmx.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4431,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-03-12T19:51:07Z",
+      "side": 1,
+      "message": "nit: WDYT about the following (to reduce/simplify changes in the code):\n\n```\n\t\tmsr_bitmap[read_idx] \u003d ~kvm_lapic_readable_reg_mask(vcpu-\u003earch.apic);\n\n#ifdef __PKVM_HYP__\t\t\t\t\n\t\tif (vcpu-\u003earch.apic-\u003eguest_apic_protected) {\n\t\t\t/*\n\t\t\t * The protected apic still has some registers emulated by the\n\t\t\t * host. Such registers should be intercepted to make sure the\n\t\t\t * guest always gets up-to-date values from the host via\n\t\t\t * the emulation, instead of reading stale values from the apic\n\t\t\t * page directly.\n\t\t\t */\n\t\t\tmsr_bitmap[read_idx] \u003d\n\t\t\t\t~pkvm_protected_lapic_readable_reg_mask(vcpu-\u003earch.apic);\n\t\t}\n#endif\n```\n\n?",
+      "revId": "abff39daee3244a313bc37e76ab93b7711bd1067",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
