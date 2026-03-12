@@ -46,6 +46,30 @@
       },
       "revId": "1e2b2b838fee82b21c7f61b42a14fd0227d1e7bf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f29869b2_8e9caedb",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1280,
+      "author": {
+        "id": 1961395
+      },
+      "writtenOn": "2026-03-12T12:22:07Z",
+      "side": 1,
+      "message": "Done; Confirmed that using e.g. `--config\u003dandroid_64` fails with:\n\n```\n//prebuilts/kernel-build-tools:imported_libs (6e26ac)   \u003c-- target platform (//build/kernel/kleaf/impl:android_arm64) didn\u0027t satisfy constraints [@@platforms//cpu:x86_64, @@platforms//os:linux]\n```",
+      "parentUuid": "a040bceb_4e334479",
+      "range": {
+        "startLine": 1280,
+        "startChar": 0,
+        "endLine": 1280,
+        "endChar": 10
+      },
+      "revId": "1e2b2b838fee82b21c7f61b42a14fd0227d1e7bf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
