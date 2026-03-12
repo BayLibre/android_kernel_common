@@ -65,6 +65,7 @@
 #include <trace/hooks/sysrqcrash.h>
 #include <trace/hooks/timer.h>
 #include <trace/hooks/topology.h>
+#include <trace/hooks/thermal.h>
 #include <trace/hooks/traps.h>
 #include <trace/hooks/ufshcd.h>
 #include <trace/hooks/vmscan.h>
@@ -588,3 +589,4 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_wq_lockup_pool);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_zs_shrinker_adjust);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_zs_shrinker_bypass);
 /* keep-sorted end */
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_enable_thermal_genl_check);
