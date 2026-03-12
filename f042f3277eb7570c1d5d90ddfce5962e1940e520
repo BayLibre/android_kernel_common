@@ -46,6 +46,30 @@
       },
       "revId": "f042f3277eb7570c1d5d90ddfce5962e1940e520",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "301aec80_9ebc02e7",
+        "filename": "gki/aarch64/abi.stg.allowed_breaks",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-03-12T17:50:17Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure the CRC issue would be fixed by adding `ANDROID_KABI_DECLONLY(trace_eval_map);` after the inclusion of trace/hooks/typec.h in tcpm.c. Give it a try and regenerate the STG. Drop the allowed_breaks change.",
+      "parentUuid": "d0037c4a_4b4f261a",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 43
+      },
+      "revId": "f042f3277eb7570c1d5d90ddfce5962e1940e520",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
