@@ -86,6 +86,10 @@ DECLARE_HOOK(android_vh_f2fs_file_open,
 	TP_PROTO(struct inode *inode, struct file *filp),
 	TP_ARGS(inode, filp));
 
+DECLARE_HOOK(android_vh_f2fs_fault_report,
+	TP_PROTO(unsigned int err_code, const char *func, unsigned int data),
+	TP_ARGS(err_code, func, data));
+
 #endif /* _TRACE_HOOK_FS_H */
 
 /* This part must be outside protection */
