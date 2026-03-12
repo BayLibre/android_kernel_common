@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07339f83_d8bd3082",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-12T22:51:04Z",
+      "side": 1,
+      "message": "So, no backward compatibility whatsoever?",
+      "range": {
+        "startLine": 359,
+        "startChar": 22,
+        "endLine": 359,
+        "endChar": 24
+      },
+      "revId": "f9a7d8c82300c9f36b80e9f17a954b6799032bb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "716ba47e_e605003d",
+        "filename": "include/uapi/linux/zram_ioctl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-12T22:51:04Z",
+      "side": 1,
+      "message": "Ok, so there will be padding after this member, right?\nI\u0027ve seen quite often an explicit padding being added in iocts, so in this case:\n```\nstruct zram_android_ioc_data {\n\t__u32 version;\n\t__u32 pad;\n...\n}\n```",
+      "range": {
+        "startLine": 38,
+        "startChar": 1,
+        "endLine": 38,
+        "endChar": 15
+      },
+      "revId": "f9a7d8c82300c9f36b80e9f17a954b6799032bb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d36f3b62_6758fa36",
+        "filename": "include/uapi/linux/zram_ioctl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-12T22:51:04Z",
+      "side": 1,
+      "message": "Since you just return a number, you could use the ioctl return value:\n\n```\n#define ZRAM_ANDROID_IOC_GET_VERSION\t_IO(ZRAM_ANDROID_IOC_MAGIC, 0)\n```\n\nAnd in zram_ioctl() just return the version number without any copy_to_user():\n\n```\nif (cmd \u003d\u003d ZRAM_ANDROID_IOC_GET_VERSION)\n\treturn ZRAM_ANDROID_IOC_VERSION;\n```",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 39
+      },
+      "revId": "f9a7d8c82300c9f36b80e9f17a954b6799032bb3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
