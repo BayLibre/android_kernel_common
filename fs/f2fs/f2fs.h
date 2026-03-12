@@ -97,6 +97,17 @@ extern const char *f2fs_fault_name[FAULT_MAX];
 #define DEFAULT_FAILURE_RETRY_COUNT		1
 #endif
 
+enum {
+	REPORT_FAULT_BUG_ON,
+	REPORT_FAULT_NEED_FSCK,
+	REPORT_FAULT_PAGE_EIO,
+	REPORT_FAULT_STOP_CP,
+	REPORT_FAULT_OTHER,
+	REPORT_FAULT_MAX,
+};
+
+void f2fs_fault_report(unsigned int err_code, const char *func, unsigned int data);
+
 /*
  * For mount options
  */
@@ -2278,6 +2289,8 @@ static inline bool is_sbi_flag_set(struct f2fs_sb_info *sbi, unsigned int type)
 static inline void set_sbi_flag(struct f2fs_sb_info *sbi, unsigned int type)
 {
 	set_bit(type, &sbi->s_flag);
+	if ((type) == SBI_NEED_FSCK)
+		f2fs_fault_report(REPORT_FAULT_NEED_FSCK, __func__, __LINE__);
 }
 
 static inline void clear_sbi_flag(struct f2fs_sb_info *sbi, unsigned int type)
@@ -5070,6 +5083,8 @@ static inline void f2fs_handle_page_eio(struct f2fs_sb_info *sbi,
 
 	if (unlikely(f2fs_cp_error(sbi)))
 		return;
+
+	f2fs_fault_report(REPORT_FAULT_PAGE_EIO, __func__, type);
 
 	if (ofs == sbi->page_eio_ofs[type]) {
 		if (sbi->page_eio_cnt[type]++ == MAX_RETRY_PAGE_EIO)

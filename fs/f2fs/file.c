@@ -38,6 +38,12 @@
 #undef CREATE_TRACE_POINTS
 #include <trace/hooks/fs.h>
 
+void f2fs_fault_report(unsigned int err_code, const char *func,
+		unsigned int data)
+{
+	trace_android_vh_f2fs_fault_report(err_code, func, data);
+}
+
 static void f2fs_zero_post_eof_page(struct inode *inode,
 					loff_t new_size, bool lock)
 {
