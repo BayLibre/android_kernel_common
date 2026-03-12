@@ -35,6 +35,8 @@ static bool iommu_pools_ready;
 
 phys_addr_t cma_base;
 size_t cma_size;
+static struct hyp_pool iommu_cma_pool;
+static const u8 pmd_order = PMD_SHIFT - PAGE_SHIFT;
 
 /*
  * We support multiple drivers for the host kernel, but only one for the guest,
@@ -64,12 +66,59 @@ static void kvm_iommu_drv_unlock(void)
 	hyp_read_unlock(&kvm_iommu_reg_lock);
 }
 
+static bool kvm_iommu_donate_from_cma(phys_addr_t phys, unsigned long order)
+{
+	phys_addr_t end = phys + PAGE_SIZE * (1 << order);
+
+	if (!cma_size)
+		return false;
+
+	if (end <= phys)
+		return false;
+
+	if (order != pmd_order)
+		return false;
+
+	if (!IS_ALIGNED(phys, PMD_SIZE))
+		return false;
+
+	if (phys < cma_base || end > cma_base + cma_size)
+		return false;
+
+	return true;
+}
+
 static int kvm_iommu_refill(struct kvm_hyp_memcache *host_mc)
 {
+	struct kvm_hyp_memcache tmp_mc = *host_mc;
+
 	if (!iommu_pools_ready)
 		return -EINVAL;
 
-	return refill_hyp_pool(&iommu_host_pool, host_mc);
+	while (tmp_mc.nr_pages) {
+		unsigned long order = FIELD_GET(~PAGE_MASK, tmp_mc.head);
+		phys_addr_t phys = tmp_mc.head & PAGE_MASK;
+		struct hyp_pool *pool = &iommu_host_pool;
+		u64 nr_pages;
+		void *addr;
+
+		if (check_shl_overflow(1UL, order, &nr_pages) ||
+		    !IS_ALIGNED(phys, PAGE_SIZE << order))
+			return -EINVAL;
+
+		addr = admit_host_page(&tmp_mc, order);
+		if (IS_ERR_OR_NULL(addr))
+			return addr ? PTR_ERR(addr) : -EINVAL;
+
+		*host_mc = tmp_mc;
+
+		if (kvm_iommu_donate_from_cma(phys, order))
+			pool = &iommu_cma_pool;
+
+		WARN_ON(hyp_pool_admit(pool, hyp_virt_to_page(addr), order));
+	}
+
+	return 0;
 }
 
 static void kvm_iommu_reclaim(struct kvm_hyp_memcache *host_mc, int target)
@@ -175,6 +224,38 @@ static int kvm_iommu_snapshot_host_stage2(struct kvm_iommu_ops *ops)
 	return ret;
 }
 
+static int kvm_iommu_init_cma_pool(void)
+{
+	phys_addr_t cma_pfn = hyp_phys_to_pfn(cma_base);
+	size_t cma_nr_pages = cma_size >> PAGE_SHIFT;
+	int ret, i;
+
+	if (!cma_size)
+		return 0;
+
+	if (!IS_ALIGNED(cma_size, PMD_SIZE))
+		return -EINVAL;
+
+	/*
+	 * Mark all pages as reserved as they are currently part of the CMA pool,
+	 * then reclaim the whole pool as the buddy allocator will set the refcount
+	 * for reserved pages.
+	 */
+	ret = hyp_pool_init(&iommu_cma_pool, cma_pfn, cma_nr_pages, cma_nr_pages);
+	if (ret)
+		return ret;
+
+	__hyp_pool_set_range_reclaimable(&iommu_cma_pool);
+
+	for (i = 0 ; i < cma_nr_pages ; i += 1 << pmd_order) {
+		struct hyp_page *p = hyp_phys_to_page(cma_base + i * PAGE_SIZE);
+
+		hyp_pool_reclaim(&iommu_cma_pool, p, pmd_order, true);
+	}
+
+	return ret;
+}
+
 int kvm_iommu_init(void *pool_base, size_t nr_pages)
 {
 	int ret;
@@ -187,6 +268,10 @@ int kvm_iommu_init(void *pool_base, size_t nr_pages)
 	}
 
 	ret = hyp_pool_init_empty(&iommu_host_pool, 64);
+	if (ret)
+		return ret;
+
+	ret = kvm_iommu_init_cma_pool();
 	if (ret)
 		return ret;
 
@@ -304,12 +389,17 @@ static void __kvm_iommu_reclaim_pages(struct hyp_pool *pool, void *p, u8 order)
 void *kvm_iommu_donate_pages(u8 order, int flags)
 {
 	struct pkvm_hyp_vcpu *hyp_vcpu = __get_vcpu();
-	struct hyp_pool *pool;
+	struct hyp_pool *pool = &iommu_host_pool;
 
-	if (hyp_vcpu)
+	if (hyp_vcpu) {
 		pool = &pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu)->iommu_pool;
-	else
-		pool = &iommu_host_pool;
+	} else if (cma_size) {
+		void *p;
+
+		p = __kvm_iommu_donate_pages(&iommu_cma_pool, order, flags);
+		if (p)
+			return p;
+	}
 
 	return __kvm_iommu_donate_pages(pool, order, flags);
 }
@@ -317,9 +407,12 @@ void *kvm_iommu_donate_pages(u8 order, int flags)
 void kvm_iommu_reclaim_pages(void *p, u8 order)
 {
 	struct pkvm_hyp_vcpu *hyp_vcpu = __get_vcpu();
+	phys_addr_t phys = hyp_virt_to_phys(p);
 	struct hyp_pool *pool;
 
-	if (hyp_vcpu)
+	if ((phys >= cma_base) && (phys < cma_base + cma_size))
+		pool = &iommu_cma_pool;
+	else if (hyp_vcpu)
 		pool = &pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu)->iommu_pool;
 	else
 		pool = &iommu_host_pool;
