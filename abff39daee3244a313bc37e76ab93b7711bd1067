@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ce36ae64_6c6d1ac2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-03-13T11:17:19Z",
+      "side": 1,
+      "message": "This will cause vmexit, but as I traced the kvm_apic reading vmexit,it there are not too much, so seems these registers are not on the hot path.\n\nDo we have any performance sensitive virtual devices on ioapic? Suppose those performance sensitive virtual devices are virtio devices. Actually I didn\u0027t observe APIC_TMR reading with my crosvm command line",
+      "parentUuid": "1fe65508_1be5c3bc",
+      "revId": "abff39daee3244a313bc37e76ab93b7711bd1067",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80fc544f_511817cc",
         "filename": "arch/x86/kvm/vmx/vmx.c",
         "patchSetId": 4
@@ -31,6 +49,24 @@
       "writtenOn": "2026-03-12T19:51:07Z",
       "side": 1,
       "message": "nit: WDYT about the following (to reduce/simplify changes in the code):\n\n```\n\t\tmsr_bitmap[read_idx] \u003d ~kvm_lapic_readable_reg_mask(vcpu-\u003earch.apic);\n\n#ifdef __PKVM_HYP__\t\t\t\t\n\t\tif (vcpu-\u003earch.apic-\u003eguest_apic_protected) {\n\t\t\t/*\n\t\t\t * The protected apic still has some registers emulated by the\n\t\t\t * host. Such registers should be intercepted to make sure the\n\t\t\t * guest always gets up-to-date values from the host via\n\t\t\t * the emulation, instead of reading stale values from the apic\n\t\t\t * page directly.\n\t\t\t */\n\t\t\tmsr_bitmap[read_idx] \u003d\n\t\t\t\t~pkvm_protected_lapic_readable_reg_mask(vcpu-\u003earch.apic);\n\t\t}\n#endif\n```\n\n?",
+      "revId": "abff39daee3244a313bc37e76ab93b7711bd1067",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "419718b4_befd4b8d",
+        "filename": "arch/x86/kvm/vmx/vmx.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4431,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-03-13T11:17:19Z",
+      "side": 1,
+      "message": "sounds good to me",
+      "parentUuid": "80fc544f_511817cc",
       "revId": "abff39daee3244a313bc37e76ab93b7711bd1067",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
