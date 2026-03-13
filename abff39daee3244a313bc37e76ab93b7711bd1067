@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a43dd5e4_7e256e86",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-03-13T12:58:04Z",
+      "side": 1,
+      "message": "Good point, I think for any performance-sensitive virtual devices (i.e. virtio devices) we typically use MSIs instead.\n\nUnless for whatever reason we disable using MSI and use legacy INTX  interrupts instead. In such case they would be level-triggered IOAPIC interrupts.\n\nStill, even if we have no use cases for that, maybe it would be still a bit cleaner (less intrusive) to sync those regs before running vCPU instead? E.g. maybe we could iterate over all the set bits in the mask returned by kvm_lapic_readable_reg_mask() to sync each of those regs? WDYT?\n\nOTOH, that would add a bit more CPU cycles to handing of the vcpu_run hypercall, which is already not very fast...\n\n\u003e Actually I didn\u0027t observe APIC_TMR reading with my crosvm command line\n\nThat\u0027s probably because no level-triggered interrupts are generated at all. E.g. in my test Ubuntu VM, I see there are only these two level-triggered interrupts:\n\n```\nubuntu@ubuntu:~$ grep fasteoi /proc/interrupts \n  5:          0          0          0          0          0          0          0          0   IO-APIC   5-fasteoi   acpi\n 12:          0          0          0          0          0          0          0          0   IO-APIC  12-fasteoi   xhci-hcd:usb1\n```\n\nand all their counters are zero.\n\nWhile if I add `pci\u003dnomsi` to the guest kernel cmdline, then:\n```\nubuntu@ubuntu:~$ grep fasteoi /proc/interrupts \n  5:          0          0          0          0          0          0          0          0   IO-APIC   5-fasteoi   acpi\n  9:          0          0       4619          0          0          0          0          0   IO-APIC   9-fasteoi   virtio0\n 11:          0          0          0          0          0          0          0          0   IO-APIC  11-fasteoi   virtio2\n 12:          0          0          0          0          0          0          0          0   IO-APIC  12-fasteoi   xhci-hcd:usb1\n```",
+      "parentUuid": "ce36ae64_6c6d1ac2",
+      "revId": "abff39daee3244a313bc37e76ab93b7711bd1067",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80fc544f_511817cc",
         "filename": "arch/x86/kvm/vmx/vmx.c",
         "patchSetId": 4
