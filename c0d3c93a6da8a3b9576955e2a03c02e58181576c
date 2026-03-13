@@ -46,6 +46,30 @@
       },
       "revId": "c0d3c93a6da8a3b9576955e2a03c02e58181576c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f214412b_a2b98b21",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1093,
+      "author": {
+        "id": 2044797
+      },
+      "writtenOn": "2026-03-13T16:21:27Z",
+      "side": 1,
+      "message": "Just for posterity here, my issue is that we\u0027re using zram_free_page here to just reset some properties on the slot to set them back, we\u0027re not freeing a page we\u0027re freeing a bdev_block and updating some properties, perhaps zram_free_page is the wrong thing to be using here.",
+      "parentUuid": "7bb45fd8_427de01f",
+      "range": {
+        "startLine": 1091,
+        "startChar": 0,
+        "endLine": 1093,
+        "endChar": 0
+      },
+      "revId": "c0d3c93a6da8a3b9576955e2a03c02e58181576c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
