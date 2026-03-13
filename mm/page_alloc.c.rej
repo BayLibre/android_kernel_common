@@ -1,0 +1,11 @@
+--- mm/page_alloc.c
++++ mm/page_alloc.c
+@@ -1610,7 +1615,7 @@ static void __free_pages_ok(struct page *page, unsigned int order,
+ 	unsigned long pfn = page_to_pfn(page);
+ 	struct zone *zone = page_zone(page);
+ 
+-	if (free_pages_prepare(page, order))
++	if (__free_pages_prepare(page, order, fpi_flags))
+ 		free_one_page(zone, page, pfn, order, fpi_flags);
+ }
+ 
