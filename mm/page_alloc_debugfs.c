@@ -17,76 +17,118 @@
 
 struct dentry *mmdir;
 
-static inline void create_migrate_type_subdirs(struct dentry *orderdir)
+static inline int create_migrate_type_subdirs(struct dentry *orderdir,
+					      int nodeid, int zoneid, int order)
 {
 	struct dentry *migratedir;
 	char dirname[24];
 
 	for (int mtype = 0; mtype < MIGRATE_TYPES; mtype++) {
-		snprintf(dirname, sizeof(dirname), "migrate-%s", migratetype_names[mtype]);
+		snprintf(dirname, sizeof(dirname), "migrate-%s",
+			 migratetype_names[mtype]);
 		migratedir = debugfs_create_dir(dirname, orderdir);
+		if (IS_ERR(migratedir))
+			return PTR_ERR(migratedir);
 	}
+
+	return 0;
 }
 
-static inline void create_page_orders_subdirs(struct zone *zone, struct dentry *zonedir)
+static inline int create_page_orders_subdirs(struct dentry *zonedir, int nodeid,
+					     int zoneid, struct zone *zone)
 {
 	struct dentry *orderdir;
 	struct free_area *free_area;
 	char dirname[12];
+	int ret;
 
 	for (int order = 0; order < NR_PAGE_ORDERS; order++) {
 		free_area = &(zone->free_area[order]);
 		snprintf(dirname, sizeof(dirname), "order-%d", order);
 		orderdir = debugfs_create_dir(dirname, zonedir);
-		create_migrate_type_subdirs(orderdir);
+		if (IS_ERR(orderdir))
+			return PTR_ERR(orderdir);
+
+		ret = create_migrate_type_subdirs(orderdir, nodeid, zoneid,
+						  order);
+		if (ret)
+			return ret;
 	}
+
+	return 0;
 }
 
-static inline void create_zones_subdirs(struct pglist_data *pgdata, struct dentry *nodedir)
+static inline int create_zones_subdirs(struct dentry *nodedir, int nodeid,
+				       struct pglist_data *pgdata)
 {
 	struct dentry *zonedir;
 	struct zone *zone;
 	struct zone *node_zones = pgdata->node_zones;
-	unsigned long flags;
+	int zoneid;
 	char dirname[24];
+	int ret;
 
-	for (zone = node_zones; zone - node_zones < MAX_NR_ZONES; ++zone) {
+	for (zone = node_zones, zoneid = 0; zone - node_zones < MAX_NR_ZONES;
+	     ++zone, ++zoneid) {
 		if (!populated_zone(zone))
 			continue;
 
 		snprintf(dirname, sizeof(dirname), "zone-%s", zone->name);
-		spin_lock_irqsave(&zone->lock, flags);
 		zonedir = debugfs_create_dir(dirname, nodedir);
-		create_page_orders_subdirs(zone, zonedir);
-		spin_unlock_irqrestore(&zone->lock, flags);
+		if (IS_ERR(zonedir))
+			return PTR_ERR(zonedir);
+
+		ret = create_page_orders_subdirs(zonedir, nodeid, zoneid, zone);
+		if (ret)
+			return ret;
 	}
+
+	return 0;
 }
 
-static inline void create_nodes_subdirs(struct dentry *mmdir)
+static inline int create_nodes_subdirs(struct dentry *mmdir)
 {
 	struct dentry *nodedir;
 	int nodeid;
 	char dirname[12];
+	int ret;
 
 	for_each_online_node(nodeid) {
 		struct pglist_data *pgdata = NODE_DATA(nodeid);
 
 		snprintf(dirname, sizeof(dirname), "node-%d", nodeid);
 		nodedir = debugfs_create_dir(dirname, mmdir);
-		create_zones_subdirs(pgdata, nodedir);
+		if (IS_ERR(nodedir))
+			return PTR_ERR(nodedir);
+
+		ret = create_zones_subdirs(nodedir, nodeid, pgdata);
+		if (ret)
+			return ret;
 	}
-}
-
-static int __init page_alloc_debugfs_init(void)
-{
-	pr_info("Starting");
-	mmdir = debugfs_create_dir("mm", NULL);
-	if (IS_ERR(mmdir))
-		return PTR_ERR(mmdir);
-
-	create_nodes_subdirs(mmdir);
 
 	return 0;
+}
+static int __init page_alloc_debugfs_init(void)
+{
+	int ret;
+
+	pr_info("Starting");
+	mmdir = debugfs_create_dir("mm", NULL);
+	if (IS_ERR(mmdir)) {
+		pr_err("Unable to create mm directory");
+		return PTR_ERR(mmdir);
+	}
+
+	ret = create_nodes_subdirs(mmdir);
+	if (ret)
+		goto clean_dir;
+
+	return 0;
+
+clean_dir:
+	debugfs_remove_recursive(mmdir);
+
+	return ret;
 }
 
 static void __exit page_alloc_debugfs_exit(void)
