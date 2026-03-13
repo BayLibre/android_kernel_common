@@ -1379,8 +1379,8 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
 
 #endif /* CONFIG_MEM_ALLOC_PROFILING */
 
-__always_inline bool free_pages_prepare(struct page *page,
-			unsigned int order)
+__always_inline bool __free_pages_prepare(struct page *page,
+					  unsigned int order, fpi_t fpi_flags)
 {
 	int bad = 0;
 	bool skip_kasan_poison = should_skip_kasan_poison(page);
@@ -1473,7 +1473,7 @@ __always_inline bool free_pages_prepare(struct page *page,
 	page_table_check_free(page, order);
 	pgalloc_tag_sub(page, 1 << order);
 
-	if (!PageHighMem(page)) {
+	if (!PageHighMem(page) && !(fpi_flags & FPI_TRYLOCK)) {
 		debug_check_no_locks_freed(page_address(page),
 					   PAGE_SIZE << order);
 		debug_check_no_obj_freed(page_address(page),
@@ -1510,6 +1510,11 @@ __always_inline bool free_pages_prepare(struct page *page,
 	debug_pagealloc_unmap_pages(page, 1 << order);
 
 	return true;
+}
+
+bool free_pages_prepare(struct page *page, unsigned int order)
+{
+	return __free_pages_prepare(page, order, FPI_NONE);
 }
 
 /*
@@ -1649,6 +1654,7 @@ static void __free_pages_ok(struct page *page, unsigned int order,
 	bool skip_free_pages_ok = false;
 	bool skip_free_unref_page = false;
 
+<<<<<<< HEAD   (445eb4d79b4a1e97b5c4610276afc8b1bb9ffe77 Merge 5eac1322a7b1 ("mm/hugetlb: restore failed global reser)
 	trace_android_vh_free_pages_prepare_bypass(page, order,
 			fpi_flags, &skip_free_pages_prepare);
 	if (skip_free_pages_prepare)
@@ -1674,6 +1680,13 @@ skip_prepare:
 		return;
 
 	free_one_page(zone, page, pfn, order, fpi_flags);
+||||||| BASE   (5eac1322a7b14b8cd05ec896618278b90fba7f39 mm/hugetlb: restore failed global reservations to subpool)
+	if (free_pages_prepare(page, order))
+		free_one_page(zone, page, pfn, order, fpi_flags);
+=======
+	if (__free_pages_prepare(page, order, fpi_flags))
+		free_one_page(zone, page, pfn, order, fpi_flags);
+>>>>>>> BRANCH (f64491066c662fd3cd8b5ebcd296879ea33dfb62 mm/page_alloc: skip debug_check_no_{obj,locks}_freed with FP)
 }
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
@@ -3022,7 +3035,7 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
 		return;
 	}
 
-	if (!free_pages_prepare(page, order))
+	if (!__free_pages_prepare(page, order, fpi_flags))
 		return;
 
 	trace_android_vh_free_page_bypass(page, order, &skip_free_page);
@@ -3087,7 +3100,7 @@ void free_unref_folios(struct folio_batch *folios)
 		unsigned int order = folio_order(folio);
 		bool skip_free_folio = false;
 
-		if (!free_pages_prepare(&folio->page, order))
+		if (!__free_pages_prepare(&folio->page, order, FPI_NONE))
 			continue;
 
 		trace_android_vh_free_folio_bypass(folio, order,
