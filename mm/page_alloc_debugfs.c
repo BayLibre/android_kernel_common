@@ -5,6 +5,7 @@
  * This interface allows to make page allocations per node, zone, migrate type
  * and order using the DebugFS filesystem.
  */
+
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/debugfs.h>
@@ -13,10 +14,22 @@
 #include <linux/module.h>
 #include <linux/nodemask.h>
 #include <linux/printk.h>
+#include <linux/slab.h>
 #include <linux/spinlock.h>
 
 struct dentry *mmdir;
 
+struct alloc_type {
+	int nodeid;
+	int zoneid;
+	int order;
+	int migrate_type;
+	struct dentry *migratedir;
+};
+
+#define ALLOC_TYPE_SIZE sizeof(struct alloc_type)
+
+struct kmem_cache *alloc_types_cache;
 static inline int create_migrate_type_subdirs(struct dentry *orderdir,
 					      int nodeid, int zoneid, int order)
 {
@@ -102,6 +115,7 @@ static inline int create_nodes_subdirs(struct dentry *mmdir)
 			return PTR_ERR(nodedir);
 
 		ret = create_zones_subdirs(nodedir, nodeid, pgdata);
+
 		if (ret)
 			return ret;
 	}
@@ -113,10 +127,19 @@ static int __init page_alloc_debugfs_init(void)
 	int ret;
 
 	pr_info("Starting");
+	alloc_types_cache = kmem_cache_create("alloc_types_cache",
+					      ALLOC_TYPE_SIZE, 0,
+					      SLAB_HWCACHE_ALIGN, NULL);
+	if (!alloc_types_cache) {
+		pr_err("The alloc_types_cache couldn't be created");
+		return -ENOMEM;
+	}
+
 	mmdir = debugfs_create_dir("mm", NULL);
 	if (IS_ERR(mmdir)) {
 		pr_err("Unable to create mm directory");
-		return PTR_ERR(mmdir);
+		ret = PTR_ERR(mmdir);
+		goto clean_cache;
 	}
 
 	ret = create_nodes_subdirs(mmdir);
@@ -128,12 +151,16 @@ static int __init page_alloc_debugfs_init(void)
 clean_dir:
 	debugfs_remove_recursive(mmdir);
 
+clean_cache:
+	kmem_cache_destroy(alloc_types_cache);
+
 	return ret;
 }
 
 static void __exit page_alloc_debugfs_exit(void)
 {
 	debugfs_remove_recursive(mmdir);
+	kmem_cache_destroy(alloc_types_cache);
 }
 
 module_init(page_alloc_debugfs_init);
