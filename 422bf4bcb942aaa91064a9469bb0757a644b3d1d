@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e802cf5_1f095a9e",
+        "filename": "include/uapi/linux/zram_ioctl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1060234
+      },
+      "writtenOn": "2026-03-13T15:19:16Z",
+      "side": 1,
+      "message": "The struct size is embedded in the ioctl number, so modifying `struct zram_android_ioc_data` changes this uapi.",
+      "range": {
+        "startLine": 48,
+        "startChar": 34,
+        "endLine": 48,
+        "endChar": 62
+      },
+      "revId": "422bf4bcb942aaa91064a9469bb0757a644b3d1d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
