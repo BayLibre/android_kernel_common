@@ -30,11 +30,34 @@ struct alloc_type {
 #define ALLOC_TYPE_SIZE sizeof(struct alloc_type)
 
 struct kmem_cache *alloc_types_cache;
+
+
+static inline int create_page_alloc_files(struct dentry *migratedir, int nodeid,
+					  int zoneid, int order, int mtype)
+{
+	struct alloc_type *alloc;
+
+	alloc = kmem_cache_alloc(alloc_types_cache, GFP_ATOMIC);
+	if (!alloc) {
+		pr_err("Failed to create alloc_type");
+		return -ENOMEM;
+	}
+
+	alloc->nodeid = nodeid;
+	alloc->zoneid = zoneid;
+	alloc->order = order;
+	alloc->migrate_type = mtype;
+	alloc->migratedir = migratedir;
+
+	return 0;
+}
+
 static inline int create_migrate_type_subdirs(struct dentry *orderdir,
 					      int nodeid, int zoneid, int order)
 {
 	struct dentry *migratedir;
 	char dirname[24];
+	int ret;
 
 	for (int mtype = 0; mtype < MIGRATE_TYPES; mtype++) {
 		snprintf(dirname, sizeof(dirname), "migrate-%s",
@@ -42,6 +65,11 @@ static inline int create_migrate_type_subdirs(struct dentry *orderdir,
 		migratedir = debugfs_create_dir(dirname, orderdir);
 		if (IS_ERR(migratedir))
 			return PTR_ERR(migratedir);
+
+		ret = create_page_alloc_files(migratedir, nodeid, zoneid, order,
+					      mtype);
+		if (ret)
+			return ret;
 	}
 
 	return 0;
