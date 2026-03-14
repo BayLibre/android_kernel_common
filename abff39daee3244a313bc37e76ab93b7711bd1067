@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66a06726_16d0d1f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-03-14T13:51:34Z",
+      "side": 1,
+      "message": "\u003e We still need to filter out the registered protected by the pKVM, e.g., TPR/PPR/ISR/IRR, from the mask returned by kvm_lapic_readable_reg_mask() to sync.\n\nYeah, that was a mental shortcut, I meant essentially: iterate over all the set bits in `kvm_lapic_readable_reg_mask() \u0026 ~pkvm_protected_lapic_readable_reg_mask()`.\n\n...Anyway, yeah, agree that might be a bit overkill. Let\u0027s keep it as is.",
+      "parentUuid": "7d819eef_784489a4",
+      "revId": "abff39daee3244a313bc37e76ab93b7711bd1067",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80fc544f_511817cc",
         "filename": "arch/x86/kvm/vmx/vmx.c",
         "patchSetId": 4
