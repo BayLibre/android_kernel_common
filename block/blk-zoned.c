@@ -1068,14 +1068,13 @@ static bool blk_zone_wplug_handle_write(struct bio *bio, unsigned int nr_segs)
 	bio_set_flag(bio, BIO_ZONE_WRITE_PLUGGING);
 
 	/*
-	 * Add REQ_NOWAIT BIOs to the plug list to ensure that we will not see a
+	 * If the zone is already plugged, add the BIO to the plug BIO list.
+	 * Do the same for REQ_NOWAIT BIOs to ensure that we will not see a
 	 * BLK_STS_AGAIN failure if we let the BIO execute.
+	 * Otherwise, plug and let the BIO execute.
 	 */
-	if (bio->bi_opf & REQ_NOWAIT)
-		goto plug;
-
-	/* If the zone is already plugged, add the BIO to the plug BIO list. */
-	if (zwplug->flags & BLK_ZONE_WPLUG_PLUGGED)
+	if ((zwplug->flags & BLK_ZONE_WPLUG_PLUGGED) ||
+	    (bio->bi_opf & REQ_NOWAIT))
 		goto plug;
 
 	if (!blk_zone_wplug_prepare_bio(zwplug, bio)) {
@@ -1084,7 +1083,6 @@ static bool blk_zone_wplug_handle_write(struct bio *bio, unsigned int nr_segs)
 		return true;
 	}
 
-	/* Otherwise, plug and submit the BIO. */
 	zwplug->flags |= BLK_ZONE_WPLUG_PLUGGED;
 
 	spin_unlock_irqrestore(&zwplug->lock, flags);
