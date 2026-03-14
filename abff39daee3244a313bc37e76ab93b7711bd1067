@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7d819eef_784489a4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-03-14T03:49:59Z",
+      "side": 1,
+      "message": "\u003e Still, even if we have no use cases for that, maybe it would be still a bit cleaner (less intrusive) to sync those regs before running vCPU instead? E.g. maybe we could iterate over all the set bits in the mask returned by kvm_lapic_readable_reg_mask() to sync each of those regs? WDYT?\n\n\u003eOTOH, that would add a bit more CPU cycles to handing of the vcpu_run hypercall, which is already not very fast...\n\nWe still need to filter out the registered protected by the pKVM, e.g., TPR/PPR/ISR/IRR, from the mask returned by kvm_lapic_readable_reg_mask() to sync.\n\nActually I think the current way (intercept non-protected registers) also makes sense as the non-protected registers are emulated by the host, so going to the host to emulate read and write is reasonable. If we choose to sync all these non-protected registers, we probably need more code to do that, and also need to carefully make sure the protected registers won\u0027t be synced by any mistake. And the current vcpu_run hypercall sync many things for npVM only. For the pVM, it only sync few stuff according to vmexit reasons. So I feel syncing apic page on every vcpu_run hypercall for pVM is a bit overkill, and we didn\u0027t get much benefit in reality (which we actually uses MSI but not level-triggered interrupts). Or if we really hope to have a better performance for level-triggered interrupts, maybe we can just sync the TMR, which looks like good enough, but only sync TMR sounds like a specific optimization. WDYT?",
+      "parentUuid": "a43dd5e4_7e256e86",
+      "revId": "abff39daee3244a313bc37e76ab93b7711bd1067",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80fc544f_511817cc",
         "filename": "arch/x86/kvm/vmx/vmx.c",
         "patchSetId": 4
