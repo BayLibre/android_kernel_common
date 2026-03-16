@@ -70,6 +70,30 @@
       },
       "revId": "422bf4bcb942aaa91064a9469bb0757a644b3d1d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7d3c086_ce747562",
+        "filename": "include/uapi/linux/zram_ioctl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-16T09:13:32Z",
+      "side": 1,
+      "message": "After sync with Minchan, we decide to use the pure struct zram_android_ioc_process_range_writeback instead of an union to avoid breaking the KMI in the future.",
+      "parentUuid": "cfb2ec4f_21691210",
+      "range": {
+        "startLine": 48,
+        "startChar": 34,
+        "endLine": 48,
+        "endChar": 62
+      },
+      "revId": "422bf4bcb942aaa91064a9469bb0757a644b3d1d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

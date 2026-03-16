@@ -95,6 +95,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99ecb5f3_a9867015",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-16T09:13:32Z",
+      "side": 1,
+      "message": "We have discussion about the ROUND_DOWN or ROUND_UP behaviors. Since the madvise() api also takes the size rounded up to a multiple of page size. We should follow the same rules that using ROUND_UP.\n\nhttps://man7.org/linux/man-pages/man2/madvise.2.html",
+      "parentUuid": "d941c25c_e6d8436a",
+      "range": {
+        "startLine": 134,
+        "startChar": 24,
+        "endLine": 134,
+        "endChar": 40
+      },
+      "revId": "68b134ffdfec26adc8825e74790fab164384964f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e667eebc_f511085d",
