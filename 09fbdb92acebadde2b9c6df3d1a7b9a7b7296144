@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02eed020_c0742183",
+        "filename": "arch/arm64/kvm/hyp/nvhe/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-16T11:10:09Z",
+      "side": 1,
+      "message": "I understand why kasan and alloc. But why the others?\n\nAlso perhaps put it up in the ifeq so we understand the context better.",
+      "revId": "09fbdb92acebadde2b9c6df3d1a7b9a7b7296144",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b6873fc_be5c54a9",
+        "filename": "arch/arm64/kvm/hyp/nvhe/Makefile.nvhe",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-16T11:10:09Z",
+      "side": 1,
+      "message": "Why do we need to enable it explicitly?",
+      "revId": "09fbdb92acebadde2b9c6df3d1a7b9a7b7296144",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10ca97a4_68146de1",
+        "filename": "arch/arm64/kvm/hyp/nvhe/kasan.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-16T11:10:09Z",
+      "side": 1,
+      "message": "Instead of all those stuff, perhaps you can CFLAGS_kasan.nvhe.o +\u003d -Wno-implicit-function-declaration ?",
+      "revId": "09fbdb92acebadde2b9c6df3d1a7b9a7b7296144",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
