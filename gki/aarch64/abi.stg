@@ -51476,6 +51476,11 @@ member {
   offset: 1024
 }
 member {
+  id: 0x3efbeff0
+  type_id: 0x74c1e2f3
+  offset: 4160
+}
+member {
   id: 0x3f15565d
   type_id: 0x737b0daa
   offset: 3136
@@ -58133,12 +58138,6 @@ member {
   name: "__kabi_reserved5"
   type_id: 0x89d2d38c
   offset: 7040
-}
-member {
-  id: 0x4454f4eb
-  name: "__kabi_reserved5"
-  type_id: 0x92233392
-  offset: 4160
 }
 member {
   id: 0x4454f51c
@@ -98882,6 +98881,11 @@ member {
   name: "device_private_offset"
   type_id: 0x6720d32f
   offset: 2592
+}
+member {
+  id: 0x88cd5f7e
+  name: "device_register_power_lock"
+  type_id: 0x24c84e5a
 }
 member {
   id: 0x85355360
@@ -275175,6 +275179,16 @@ struct_union {
   }
 }
 struct_union {
+  id: 0x74c1e2f3
+  kind: UNION
+  definition {
+    bytesize: 8
+    member_id: 0x88cd5f7e
+    member_id: 0x2195c2c8
+    member_id: 0x36752b74
+  }
+}
+struct_union {
   id: 0x74c3ae4c
   kind: UNION
   definition {
@@ -328381,7 +328395,7 @@ struct_union {
     member_id: 0x361f840e
     member_id: 0x39de7de3
     member_id: 0x342a4a25
-    member_id: 0x4454f4eb
+    member_id: 0x3efbeff0
     member_id: 0x821bb8d6
     member_id: 0xc3d41219
     member_id: 0x35905373
@@ -456025,7 +456039,7 @@ elf_symbol {
   symbol_type: FUNCTION
   crc: 0x0bdc7772
   type_id: 0x7e9586be
-  full_name: "ashmem_rust::ashmem_area_name"
+  full_name: "ashmem::ashmem_area_name"
 }
 elf_symbol {
   id: 0x8e36b8ab
@@ -456034,7 +456048,7 @@ elf_symbol {
   symbol_type: FUNCTION
   crc: 0x823718bd
   type_id: 0x469873b1
-  full_name: "ashmem_rust::ashmem_area_size"
+  full_name: "ashmem::ashmem_area_size"
 }
 elf_symbol {
   id: 0x64c484a8
@@ -456043,7 +456057,7 @@ elf_symbol {
   symbol_type: FUNCTION
   crc: 0xbdb982a0
   type_id: 0xab633df4
-  full_name: "ashmem_rust::ashmem_area_vmfile"
+  full_name: "ashmem::ashmem_area_vmfile"
 }
 elf_symbol {
   id: 0xac417394
@@ -484659,7 +484673,7 @@ elf_symbol {
   symbol_type: FUNCTION
   crc: 0x0505a219
   type_id: 0xbbca391d
-  full_name: "ashmem_rust::is_ashmem_file"
+  full_name: "ashmem::is_ashmem_file"
 }
 elf_symbol {
   id: 0x65d49acf
