@@ -24,6 +24,10 @@
 #include "pci.h"
 #include "pcie/portdrv.h"
 
+#include <trace/hooks/pci.h>
+#include <linux/android_kabi.h>
+ANDROID_KABI_DECLONLY(trace_eval_map);
+
 struct pci_dynid {
 	struct list_head node;
 	struct pci_device_id id;
@@ -555,11 +559,38 @@ static void pci_pm_default_resume(struct pci_dev *pci_dev)
 	pci_enable_wake(pci_dev, PCI_D0, false);
 }
 
+<<<<<<< HEAD   (f8aa98c56fed7dab94b8480e9a84c5b9c41c6d40 ANDROID: GKI: update symbol list for xiaomi)
+||||||| BASE   (18ca40f8c454986a4e52dd4ffcc9c2c9582fd718 ANDROID: ABI: Update pixel symbol list)
+static void pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev)
+{
+	pci_power_up(pci_dev);
+	pci_update_current_state(pci_dev, PCI_D0);
+}
+
+=======
+static int pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev)
+{
+	int ret, state_ret = 0;
+
+	ret = pci_power_up(pci_dev);
+	pci_update_current_state(pci_dev, PCI_D0);
+
+	trace_android_vh_pci_pm_verify_state(&state_ret, &pci_dev->current_state);
+	if (ret && state_ret) {
+		dev_err(&pci_dev->dev, "Failed to power up device: %d\n", ret);
+		return ret;
+	}
+
+	return 0;
+}
+
+>>>>>>> CHANGE (fc86a6fc0647e6f534e7c2f2ea51e3f3960be4e6 ANDROID: PCI: Add vendor hook for power-up state verificatio)
 static void pci_pm_default_resume_early(struct pci_dev *pci_dev)
 {
-	pci_pm_power_up_and_verify_state(pci_dev);
-	pci_restore_state(pci_dev);
-	pci_pme_restore(pci_dev);
+	if (!pci_pm_power_up_and_verify_state(pci_dev)) {
+		pci_restore_state(pci_dev);
+		pci_pme_restore(pci_dev);
+	}
 }
 
 static void pci_pm_bridge_power_up_actions(struct pci_dev *pci_dev)
@@ -1105,8 +1136,8 @@ static int pci_pm_thaw_noirq(struct device *dev)
 	 * in case the driver's "freeze" callbacks put it into a low-power
 	 * state.
 	 */
-	pci_pm_power_up_and_verify_state(pci_dev);
-	pci_restore_state(pci_dev);
+	if (!pci_pm_power_up_and_verify_state(pci_dev))
+		pci_restore_state(pci_dev);
 
 	if (pci_has_legacy_pm_support(pci_dev))
 		return 0;
