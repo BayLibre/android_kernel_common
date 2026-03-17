@@ -40,7 +40,7 @@ static int host_s2_pool_refill(struct kvm_hyp_memcache *host_mc)
 
 static void host_s2_pool_reclaim(struct kvm_hyp_memcache *host_mc, int target)
 {
-	reclaim_hyp_pool(&host_s2_pool, host_mc, target, false);
+	reclaim_hyp_pool(&host_s2_pool, host_mc, target, 0, false);
 }
 
 static int host_s2_pool_reclaimable(void)
@@ -456,7 +456,7 @@ void destroy_hyp_vm_pgt(struct pkvm_hyp_vm *vm)
 
 void drain_hyp_pool(struct hyp_pool *pool, struct kvm_hyp_memcache *mc)
 {
-	WARN_ON(reclaim_hyp_pool(pool, mc, INT_MAX, true) != -ENOMEM);
+	WARN_ON(reclaim_hyp_pool(pool, mc, INT_MAX, 0, true) != -ENOMEM);
 }
 
 static int ___pkvm_guest_relinquish_to_module(struct pkvm_hyp_vcpu *vcpu, u64 ipa, u64 phys,
