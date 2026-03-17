@@ -121,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bb735580_34acdf0f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-17T13:46:16Z",
+      "side": 1,
+      "message": "That depends, they hypervisor discovers devices too early at boot, so only of_* functions are avaiable. Otherwise we can let the kernel pass the FWB flag in `__pkvm_init_vm`.\n\nAlso, I was under the impression that dma_coherent is not enough to decide if the device is actually capable of issuing non-coherent traffic or not\n\nhttps://lore.kernel.org/linux-iommu/20240820202138.GH3773488@nvidia.com/",
+      "parentUuid": "14fb914e_c728f702",
+      "range": {
+        "startLine": 985,
+        "startChar": 0,
+        "endLine": 985,
+        "endChar": 31
+      },
+      "revId": "89e7bb0ae4f992cedd9af893940290e07b637f2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2302b5ae_0b37fbc9",
         "filename": "arch/arm64/kvm/pkvm.c",
         "patchSetId": 5
