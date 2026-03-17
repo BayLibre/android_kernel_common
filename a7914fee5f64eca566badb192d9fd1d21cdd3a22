@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1077e5ff_98eb9624",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2026-03-17T16:49:56Z",
+      "side": 1,
+      "message": "Nothing seems to be accessing the sender\u0027s task from the target\u0027s context in this way. This would be new behavior and it seems like it can lead to issues. I don\u0027t have an exact example of this though.\n\nThe C binder acquires the t-\u003efrom safely a bit afterwards from the target\u0027s context and there is already a hook there:\n```\n5298                 t_from \u003d binder_get_txn_from(t);\n5299                 if (t_from) {\n5300                         struct task_struct *sender \u003d t_from-\u003eproc-\u003etsk;\n5301            \n5302                         trd-\u003esender_pid \u003d\n5303                                 task_tgid_nr_ns(sender,\n5304                                                 task_active_pid_ns(current));\n5305                         trace_android_vh_sync_txn_recvd(thread-\u003etask, t_from-\u003etask);\n5306                 }\n```\n\nMaybe that is the vendor hook to use instead?",
+      "parentUuid": "71cdf759_669e0db8",
+      "range": {
+        "startLine": 16,
+        "startChar": 17,
+        "endLine": 17,
+        "endChar": 26
+      },
+      "revId": "a7914fee5f64eca566badb192d9fd1d21cdd3a22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "45169714_d1a16cff",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
