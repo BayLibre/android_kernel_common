@@ -688,9 +688,8 @@ int refill_hyp_pool(struct hyp_pool *pool, struct kvm_hyp_memcache *host_mc)
  *   * @force is set
  */
 int reclaim_hyp_pool(struct hyp_pool *pool, struct kvm_hyp_memcache *host_mc, int nr_pages,
-		     bool force)
+		     u8 order, bool force)
 {
-	u8 order = 0;
 	void *p;
 	int ret;
 
