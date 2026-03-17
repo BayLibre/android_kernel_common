@@ -171,6 +171,20 @@ static __init int pkvm_setup_host_vmcs_config(void)
 		.vmentry_ctrl_opt = 0,
 	};
 
+	if (boot_cpu_has(X86_FEATURE_MPX)) {
+		/*
+		 * MPX is deprecated in the newer Intel CPU, e.g., PTL. In case
+		 * the pKVM hypervisor runs on some older Intel CPU which has
+		 * MPX, request the MPX vmexit/vmentry controls for the
+		 * MSR_IA32_BNDCFGS isolation. Statically set these two control
+		 * bits rather than dynamically toggle these bits according to
+		 * the MSR_IA32_BNDCFGS value to simplify the code as the pKVM
+		 * will be most likely run on the newer Intel CPU.
+		 */
+		setting.vmexit_ctrl_req |= VM_EXIT_CLEAR_BNDCFGS;
+		setting.vmentry_ctrl_req |= VM_ENTRY_LOAD_BNDCFGS;
+	}
+
 	if (setup_vmcs_config_common(vmcs_config, vmx_cap, &setting))
 		return -EINVAL;
 
@@ -768,6 +782,11 @@ static __init void init_guest_state_area_from_native(struct vcpu_vmx *vmx)
 		pmu->version = eax.split.version_id;
 		pmu->global_ctrl = msrq;
 		vmcs_write64(GUEST_IA32_PERF_GLOBAL_CTRL, msrq);
+	}
+
+	if (boot_cpu_has(X86_FEATURE_MPX)) {
+		rdmsrq(MSR_IA32_BNDCFGS, msrq);
+		vmcs_write64(GUEST_BNDCFGS, msrq);
 	}
 }
 
