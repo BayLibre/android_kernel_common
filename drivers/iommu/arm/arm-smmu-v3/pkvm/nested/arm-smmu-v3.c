@@ -941,7 +941,7 @@ static size_t smmu_pgsize_idmap(size_t size, u64 paddr, size_t pgsize_bitmap)
 	return BIT(__fls(pgsizes));
 }
 
-static void smmu_host_stage2_idmap(phys_addr_t start, phys_addr_t end, int prot)
+static int smmu_host_stage2_idmap(phys_addr_t start, phys_addr_t end, int prot)
 {
 	size_t size = end - start;
 	size_t pgsize, pgcount;
@@ -952,7 +952,7 @@ static void smmu_host_stage2_idmap(phys_addr_t start, phys_addr_t end, int prot)
 
 	end = min(end, BIT(pgtable->cfg.oas));
 	if (start >= end)
-		return;
+		return 0;
 
 	if (prot) {
 		if (!(prot & IOMMU_MMIO))
@@ -967,8 +967,10 @@ static void smmu_host_stage2_idmap(phys_addr_t start, phys_addr_t end, int prot)
 						     pgsize, pgcount, prot, 0, &mapped);
 			size -= mapped;
 			start += mapped;
-			if (!mapped || ret)
-				return;
+			if (ret)
+				return ret;
+			if (!mapped)
+				return -EINVAL;
 		}
 	} else {
 		while (size) {
@@ -982,8 +984,11 @@ static void smmu_host_stage2_idmap(phys_addr_t start, phys_addr_t end, int prot)
 				break;
 		}
 		/* Some memory were not unmapped. */
-		WARN_ON(size);
+		if (WARN_ON(size))
+			return -EINVAL;
 	}
+
+	return 0;
 }
 
 #ifdef MODULE
