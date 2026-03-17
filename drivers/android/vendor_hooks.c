@@ -338,6 +338,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mm_get_zone_mark);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mmap_region);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mpam_set);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_can_spin_on_owner);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_out_of_place);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_init);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_lock_acquired);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_mutex_lock_released);

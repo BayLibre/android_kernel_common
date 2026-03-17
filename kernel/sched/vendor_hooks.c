@@ -73,6 +73,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_cpus_allowed_by_task);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_cpus_allowed_comm);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_cpus_allowed_ptr);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_iowait);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_out_of_place);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_task_comm);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_task_cpu);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_rvh_set_user_nice);
