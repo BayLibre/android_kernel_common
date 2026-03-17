@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7653a75d_9fcd3784",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3445,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-03-17T19:48:20Z",
+      "side": 1,
+      "message": "`force_on` seems to do something different from what we want: it still doesn\u0027t prevent disabling IOMMU via `iommu\u003doff` or `intel_iommu\u003doff`, it only forces panic if IOMMU is enabled and we fail to initialize it? (While we BTW don\u0027t exactly require panic, we could just fail pKVM initialization and clear pvmfw memory instead?)\n\nSeems we should do something like this instead:\n\n```\n--- a/drivers/iommu/intel/iommu.c\n+++ b/drivers/iommu/intel/iommu.c\n@@ -3345,7 +3345,8 @@ static bool has_external_pci(void)\n \n static int __init platform_optin_force_iommu(void)\n {\n-       if (!dmar_platform_optin() || no_platform_optin || !has_external_pci())\n+       if ((!dmar_platform_optin() || no_platform_optin || !has_external_pci()) \u0026\u0026\n+           !pkvm_enabled())\n                return 0;\n \n        if (no_iommu || dmar_disabled)\n```\n\nsince platform_optin_force_iommu() forces `dmar_disabled` an `no_iommu` to 0?",
+      "revId": "a10e9599482821cccef315e9872bacd243daf389",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
