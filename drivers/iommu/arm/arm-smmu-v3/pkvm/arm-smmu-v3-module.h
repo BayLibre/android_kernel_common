@@ -17,10 +17,33 @@ extern const struct pkvm_module_ops		*mod_ops;
 /* Needs alternatives which is not supported at the moment. */
 #undef CONFIG_ARM64_LSE_ATOMICS
 
+<<<<<<< HEAD   (807d306970a6fcba5e9543be6e56d0d2d51421ae ANDROID: GKI: update symbol list file for desktop)
 #define kvm_iommu_donate_pages_atomic(x)		CALL_FROM_OPS(iommu_donate_pages_atomic, x)
 #define kvm_iommu_reclaim_pages_atomic(x)		CALL_FROM_OPS(iommu_reclaim_pages_atomic, x)
 #define memcpy(x, y, z)				CALL_FROM_OPS(memcpy, x, y, z)
 #define pkvm_time_get(x)			CALL_FROM_OPS(get_time, x)
+||||||| BASE   (d9e7ad6b2d4f6f2a2d7c50e291394e1ae648af3c ANDROID: GKI: update xiaomi symbol list)
+#define hyp_free(x)				CALL_FROM_OPS(hyp_free, x)
+#define hyp_alloc_errno()			CALL_FROM_OPS(hyp_alloc_errno)
+#define hyp_alloc(x)				CALL_FROM_OPS(hyp_alloc, x)
+#define kvm_iommu_donate_pages(x, y)		CALL_FROM_OPS(iommu_donate_pages, x, y)
+#define kvm_iommu_reclaim_pages(x, y)		CALL_FROM_OPS(iommu_reclaim_pages, x, y)
+#define hyp_virt_to_phys(x)			CALL_FROM_OPS(hyp_pa, x)
+#define hyp_phys_to_virt(x)			CALL_FROM_OPS(hyp_va, x)
+#define memcpy(x, y, z)				CALL_FROM_OPS(memcpy, x, y, z)
+#define kvm_iommu_init_device(x)		CALL_FROM_OPS(iommu_init_device, x)
+#define pkvm_udelay(x)				CALL_FROM_OPS(udelay, x)
+=======
+#define hyp_free(x)				CALL_FROM_OPS(hyp_free, x)
+#define hyp_alloc_errno()			CALL_FROM_OPS(hyp_alloc_errno)
+#define hyp_alloc(x)				CALL_FROM_OPS(hyp_alloc, x)
+#define kvm_iommu_donate_pages(x, y)		CALL_FROM_OPS(iommu_donate_pages, x, y)
+#define kvm_iommu_reclaim_pages(x, y)		CALL_FROM_OPS(iommu_reclaim_pages, x, y)
+#define hyp_virt_to_phys(x)			CALL_FROM_OPS(hyp_pa, x)
+#define hyp_phys_to_virt(x)			CALL_FROM_OPS(hyp_va, x)
+#define kvm_iommu_init_device(x)		CALL_FROM_OPS(iommu_init_device, x)
+#define pkvm_udelay(x)				CALL_FROM_OPS(udelay, x)
+>>>>>>> CHANGE (dceeebdee9dbc77abc077f42d0c721b66245a6f8 ANDROID: iommu/arm-smmu-v3-kvm: Provide memcpy symbol for EL)
 #define kvm_flush_dcache_to_poc(x, y)		CALL_FROM_OPS(flush_dcache_to_poc, x, y)
 #define ___pkvm_host_donate_hyp_prot(x, y, z, w) CALL_FROM_OPS(host_donate_hyp_prot, x, y, z, w)
 /* Only used for MMIO. */
