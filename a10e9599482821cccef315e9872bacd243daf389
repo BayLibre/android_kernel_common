@@ -34,6 +34,24 @@
       "parentUuid": "7653a75d_9fcd3784",
       "revId": "a10e9599482821cccef315e9872bacd243daf389",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75ee7b0b_d17092ec",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3445,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-03-17T20:04:47Z",
+      "side": 1,
+      "message": "Actually, for no_iommu \u003d 1 or dmar_disabled \u003d 1, we return -ENODEV and since `intel_iommu_init` is called through pKVM, pKVM will fail the initialization and clear the pvmfw memory. So I think this patch is not necessary. What do you think?",
+      "parentUuid": "7653a75d_9fcd3784",
+      "revId": "a10e9599482821cccef315e9872bacd243daf389",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
