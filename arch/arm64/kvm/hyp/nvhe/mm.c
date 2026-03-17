@@ -699,6 +699,8 @@ int reclaim_hyp_pool(struct hyp_pool *pool, struct kvm_hyp_memcache *host_mc, in
 		if (!p)
 			return -ENOMEM;
 
+		nr_pages -= (1 << hyp_virt_to_page(p)->order);
+
 		ret = hyp_pool_reclaim(pool, hyp_virt_to_page(p), order, force);
 		if (ret) {
 			hyp_put_page(pool, p);
