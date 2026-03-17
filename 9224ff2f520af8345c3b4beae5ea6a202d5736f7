@@ -34,6 +34,24 @@
       "parentUuid": "4b5935c7_19c5d9c1",
       "revId": "9224ff2f520af8345c3b4beae5ea6a202d5736f7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a55bfd8_924abab8",
+        "filename": "android/abi_gki_protected_exports_aarch64",
+        "patchSetId": 5
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2026-03-17T16:15:38Z",
+      "side": 0,
+      "message": "`android15-6.6-2025-10` is missing\n\n```\na5059df18988 Bluetooth: 6lowpan: Don\u0027t hold spin lock over sleeping functions\n039073ca9a42 UPSTREAM: Bluetooth: L2CAP: export l2cap_chan_hold for modules\n```\n\nwhich came with later LTS merges.\n\nIt unfortunately has this cherry-pick\n\n```\n857c8a288da1 ANDROID: ABI: Update pixel symbol list\n```\n\nwhich coincidentally fixed the export list following the above two changes. The update should have been in a separate change. @qyousef@google.com\n\nIt\u0027s actually harmless to have the one extra symbol be export protected. Please drop the update that removes `l2cap_chan_hold`. You can even do this in Gerrit by editing the change and selecting to revert the file `\nandroid/abi_gki_protected_exports_aarch64`.",
+      "parentUuid": "3510e8e4_69786dad",
+      "revId": "9224ff2f520af8345c3b4beae5ea6a202d5736f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
