@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63dd989d_64fe6743",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2026-03-17T20:59:52Z",
+      "side": 1,
+      "message": "The vendor hook obtains the `struct binder_thread` using more or less same logic as `binder_get_txn_from`, so it seems fine to me?",
+      "parentUuid": "1077e5ff_98eb9624",
+      "range": {
+        "startLine": 16,
+        "startChar": 17,
+        "endLine": 17,
+        "endChar": 26
+      },
+      "revId": "a7914fee5f64eca566badb192d9fd1d21cdd3a22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "45169714_d1a16cff",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -85,6 +109,24 @@
       "writtenOn": "2026-03-17T16:16:49Z",
       "side": 1,
       "message": "This needs to be done in a way that doesn\u0027t cause a KMI break to be reported. For C code, the ANDROID_BACKPORT_USE() macros takes care of this.",
+      "revId": "a7914fee5f64eca566badb192d9fd1d21cdd3a22",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56da0b74_2c214270",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2026-03-17T20:59:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45169714_d1a16cff",
       "revId": "a7914fee5f64eca566badb192d9fd1d21cdd3a22",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
