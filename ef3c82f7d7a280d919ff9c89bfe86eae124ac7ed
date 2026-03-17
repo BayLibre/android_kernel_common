@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d52820a0_5dc51342",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-17T17:43:32Z",
+      "side": 1,
+      "message": "I need to refactor to lock-unlock-lock to prevent the issue.\n\n```\nzram_slot_lock\nsize \u003d zram_get_obj_size\nzram_slot_unlock\n\nzs_malloc(size)\n\nzram_slot_lock\n...\n\n```",
+      "parentUuid": "fb9b7e67_209bfb32",
+      "range": {
+        "startLine": 1045,
+        "startChar": 10,
+        "endLine": 1045,
+        "endChar": 19
+      },
+      "revId": "ef3c82f7d7a280d919ff9c89bfe86eae124ac7ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f141d4f2_eaeb2191",
         "filename": "drivers/block/zram/zram_drv.c",
         "patchSetId": 8
