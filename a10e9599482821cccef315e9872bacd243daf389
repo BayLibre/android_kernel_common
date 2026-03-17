@@ -52,6 +52,24 @@
       "parentUuid": "7653a75d_9fcd3784",
       "revId": "a10e9599482821cccef315e9872bacd243daf389",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eac9ab4c_e5340208",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3445,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-03-17T20:05:48Z",
+      "side": 1,
+      "message": "\u003e OTOH, it might still make sense to force panic (via the change in platform_optin_force_iommu() I suggested above), since, as you noted in the commit message, \"currently the system doesn\u0027t boot to a healthy state if IOMMU initialization fails while pKVM is enabled\".\n\nYeah makes sense. Will update the code.",
+      "parentUuid": "75ee7b0b_d17092ec",
+      "revId": "a10e9599482821cccef315e9872bacd243daf389",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
