@@ -16,6 +16,24 @@
       "message": "This wasn\u0027t part of the change that was merged in `android15-6.6`. Can you please explain why this is needed? If not, please don\u0027t remove it.",
       "revId": "9224ff2f520af8345c3b4beae5ea6a202d5736f7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3510e8e4_69786dad",
+        "filename": "android/abi_gki_protected_exports_aarch64",
+        "patchSetId": 5
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 4638683
+      },
+      "writtenOn": "2026-03-17T01:26:56Z",
+      "side": 0,
+      "message": "Hi. I deleted the modifications to android/abi_gki_aarch64.stg, and then re-ran \"tools/bazel run //common:kernel_aarch64_abi_dist\", \"tools/bazel run //common:kernel_aarch64_abi_update_protected_exports\", and \"tools/bazel run //common:kernel_aarch64_abi_update_symbol_list \u0026\u0026 tools/bazel run //common:kernel_aarch64_abi_update\". I found that android/abi_gki_protected_exports_aarch64 had also been modified.",
+      "parentUuid": "4b5935c7_19c5d9c1",
+      "revId": "9224ff2f520af8345c3b4beae5ea6a202d5736f7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
