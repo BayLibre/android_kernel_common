@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8669f6fb_93706e77",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2026-03-18T02:15:47Z",
+      "side": 1,
+      "message": "Disregard my previous comment. \natomic is defined as `__GFP_KSWAPD_RECLAIM`.",
+      "parentUuid": "84232a21_acb85339",
+      "range": {
+        "startLine": 1045,
+        "startChar": 10,
+        "endLine": 1045,
+        "endChar": 19
+      },
+      "revId": "ef3c82f7d7a280d919ff9c89bfe86eae124ac7ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f141d4f2_eaeb2191",
         "filename": "drivers/block/zram/zram_drv.c",
         "patchSetId": 8
