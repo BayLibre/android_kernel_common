@@ -8,6 +8,7 @@ enum {
 	/* Recycle NFSv3 error codes */
 	ENOMEMHYPALLOC = EBADHANDLE,
 	ENOMEMHOSTS2,
+	ENOMEMIOMMU,
 };
 
 #endif /* __KVM_HYP_ERRNO_H */
