@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84232a21_acb85339",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2026-03-18T02:12:55Z",
+      "side": 1,
+      "message": "oh... 6.12... sorry I should have thought about it.\n\nCan we try `__GFP_KSWAPD_RECLAIM` instead of `GFP_ATOMIC`?  It should have lower chances of failure compared to atomic allocations.",
+      "parentUuid": "d52820a0_5dc51342",
+      "range": {
+        "startLine": 1045,
+        "startChar": 10,
+        "endLine": 1045,
+        "endChar": 19
+      },
+      "revId": "ef3c82f7d7a280d919ff9c89bfe86eae124ac7ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f141d4f2_eaeb2191",
         "filename": "drivers/block/zram/zram_drv.c",
         "patchSetId": 8
