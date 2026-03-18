@@ -16,6 +16,24 @@
       "message": "This issue may cause livelock, but it could also optimize allocation.\n\nWe could bypass skip_cma using a vendor hook. Could google team provide us with any recommendations?",
       "revId": "426ada0dbee77466a3d7bb76fe17dbdd42578539",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec521d97_48b577b6",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1803,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-18T17:34:11Z",
+      "side": 0,
+      "message": "Have you experienced an actual livelock situation before reverting this patch?\n\nIn general this is an upstream revert, so if it is causing issues we can revert the patch. Vendor hook is an acceptable alternative but how would you decide when to skip and when not to skip? If such logic can be implemented then it\u0027s better be upstreamed.",
+      "parentUuid": "c50fe284_01d49282",
+      "revId": "426ada0dbee77466a3d7bb76fe17dbdd42578539",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
