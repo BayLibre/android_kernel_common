@@ -277,6 +277,7 @@ enum host_set_page_state_flags {
 	HOST_SET_NO_IOMMU_UPDATE        = BIT(1),
 	HOST_SET_NO_COMPLETE            = BIT(2), /* Skip __host_stage2_set_owner_complete() */
 	HOST_SET_PSCI_MEM_PROTECT	= BIT(3),
+	HOST_SET_NO_ROLLBACK		= BIT(4),
 };
 
 static int __host_stage2_set_owner_locked(phys_addr_t addr, u64 size, u8 owner_id,
@@ -798,6 +799,28 @@ int host_stage2_idmap_locked(phys_addr_t addr, u64 size,
 	return ret;
 }
 
+static int host_stage2_idmap_iommu(phys_addr_t addr, u64 size, enum kvm_pgtable_prot prot,
+				   bool is_memory, bool can_rollback)
+{
+	int ret = kvm_iommu_host_stage2_idmap(addr, addr + size, prot);
+
+	if (ret) {
+		WARN_ON(ret != -ENOMEM);
+		ret = -ENOMEMIOMMU;
+		return ret;
+	}
+
+	kvm_iommu_host_stage2_idmap_complete(true);
+
+	ret = host_stage2_idmap_locked(addr, size, prot, is_memory);
+	if (ret && can_rollback) {
+		WARN_ON(kvm_iommu_host_stage2_idmap(addr, addr + size, 0));
+		kvm_iommu_host_stage2_idmap_complete(false);
+	}
+
+	return ret;
+}
+
 static void __host_update_page_state(phys_addr_t addr, u64 size, enum pkvm_page_state state)
 {
 	for_each_hyp_page(page, addr, size)
@@ -821,6 +844,22 @@ static void __host_stage2_set_owner_complete(u8 owner_id, enum host_set_page_sta
 	kvm_iommu_host_stage2_idmap_complete(owner_id == PKVM_ID_HOST);
 }
 
+static void __host_stage2_set_owner_rollback(phys_addr_t addr, u64 size, u8 owner_id,
+					     enum host_set_page_state_flags flags)
+{
+	enum kvm_pgtable_prot prot;
+
+	if (flags & HOST_SET_NO_ROLLBACK)
+		return;
+
+	if (flags & HOST_SET_NO_IOMMU_UPDATE)
+		return;
+
+	prot = owner_id == PKVM_ID_HOST ? 0 : PKVM_HOST_MEM_PROT;
+	WARN_ON(kvm_iommu_host_stage2_idmap(addr, addr + size, prot));
+	kvm_iommu_host_stage2_idmap_complete(!!prot);
+}
+
 static int __host_stage2_set_owner_locked(phys_addr_t addr, u64 size, u8 owner_id,
 					  enum pkvm_page_state nopage_state,
 					  enum host_set_page_state_flags flags)
@@ -830,9 +869,20 @@ static int __host_stage2_set_owner_locked(phys_addr_t addr, u64 size, u8 owner_i
 	enum kvm_pgtable_prot prot;
 	int ret;
 
-	if (owner_id > KVM_MAX_OWNER_ID)
+	if (WARN_ON(owner_id > KVM_MAX_OWNER_ID))
 		return -EINVAL;
 
+	if (flags & HOST_SET_NO_IOMMU_UPDATE)
+		goto host_stage2;
+
+	prot = owner_id == PKVM_ID_HOST ? PKVM_HOST_MEM_PROT : 0;
+	ret = kvm_iommu_host_stage2_idmap(addr, addr + size, prot);
+	if (ret) {
+		WARN_ON(ret != -ENOMEM);
+		return -ENOMEMIOMMU;
+	}
+
+host_stage2:
 	if (owner_id == PKVM_ID_HOST) {
 		prot = default_host_prot(is_memory);
 		ret = host_stage2_idmap_locked(addr, size, prot, is_memory);
@@ -847,16 +897,10 @@ static int __host_stage2_set_owner_locked(phys_addr_t addr, u64 size, u8 owner_i
 
 	if (ret) {
 		WARN_ON(ret != -ENOMEMHOSTS2);
+		__host_stage2_set_owner_rollback(addr, size, owner_id, flags);
 		return ret;
 	}
 
-	if (flags & HOST_SET_NO_IOMMU_UPDATE)
-		goto psci_mem_protect;
-
-	prot = owner_id == PKVM_ID_HOST ? PKVM_HOST_MEM_PROT : 0;
-	WARN_ON(kvm_iommu_host_stage2_idmap(addr, addr + size, prot));
-
-psci_mem_protect:
 	if (flags & HOST_SET_PSCI_MEM_PROTECT) {
 		if (owner_id == PKVM_ID_HOST)
 			psci_mem_protect_dec(size >> PAGE_SHIFT);
@@ -1175,13 +1219,10 @@ static int __host_set_page_state_range(u64 addr, u64 size,
 				       enum pkvm_page_state state)
 {
 	if (get_host_state(hyp_phys_to_page(addr)) == PKVM_NOPAGE) {
-		int ret = host_stage2_idmap_locked(addr, size, PKVM_HOST_MEM_PROT, true);
+		int ret = host_stage2_idmap_iommu(addr, size, PKVM_HOST_MEM_PROT, true, true);
 
 		if (ret)
 			return ret;
-
-		WARN_ON(kvm_iommu_host_stage2_idmap(addr, addr + size, PKVM_HOST_MEM_PROT));
-		kvm_iommu_host_stage2_idmap_complete(true);
 	}
 
 	__host_update_page_state(addr, size, state);
@@ -1879,6 +1920,7 @@ int module_change_host_page_prot(u64 pfn, enum kvm_pgtable_prot prot,
 	struct hyp_page *page = NULL;
 	struct kvm_mem_range range;
 	struct memblock_region *reg;
+	bool module_owned = false;
 	int ret;
 
 	if ((prot & MODULE_PROT_ALLOWLIST) != prot)
@@ -1917,6 +1959,7 @@ int module_change_host_page_prot(u64 pfn, enum kvm_pgtable_prot prot,
 			if (!(get_host_state(&page[i]) & PKVM_MODULE_OWNED_PAGE))
 				goto unlock;
 		}
+		module_owned = true;
 	} else {
 		/* The entire range must be pristine. */
 		ret = ___host_check_page_state_range(addr, nr_pages << PAGE_SHIFT,
@@ -1933,17 +1976,17 @@ update:
 			flags |= HOST_SET_IS_MMIO;
 		if (!update_iommu)
 			flags |= HOST_SET_NO_IOMMU_UPDATE;
+		if (module_owned)
+			flags |= HOST_SET_NO_ROLLBACK;
 
 		ret = __host_stage2_set_owner_locked(addr, nr_pages << PAGE_SHIFT,
 						     PKVM_ID_PROTECTED,
 						     PKVM_MODULE_OWNED_PAGE, flags);
+	} else if (update_iommu) {
+		ret = host_stage2_idmap_iommu(addr, nr_pages << PAGE_SHIFT, prot, reg,
+					      module_owned);
 	} else {
-		ret = host_stage2_idmap_locked(
-				addr, nr_pages << PAGE_SHIFT, prot, reg);
-		if (update_iommu) {
-			WARN_ON(kvm_iommu_host_stage2_idmap(addr, end, prot));
-			kvm_iommu_host_stage2_idmap_complete(!!prot);
-		}
+		ret = host_stage2_idmap_locked(addr, nr_pages << PAGE_SHIFT, prot, reg);
 	}
 
 	if (ret || !page || !prot)
