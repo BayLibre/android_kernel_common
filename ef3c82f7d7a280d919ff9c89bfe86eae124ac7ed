@@ -139,6 +139,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b2190d2_d856820f",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2026-03-18T04:48:20Z",
+      "side": 1,
+      "message": "Maybe `__GFP_KSWAPD_RECLAIM` is actually a better choice here.  The thing is this is zs_pool allocation, which is a long-living allocation: we potentially take pages out of emergency pools for a long time. I assume most (if not all) `GFP_ATOMIC` allocations are short-lived, which makes sense. But zs_pool is a different story. Maybe we need to keep it out of `__GFP_HIGH` pools.",
+      "parentUuid": "a06e38c2_80c42c3a",
+      "range": {
+        "startLine": 1045,
+        "startChar": 10,
+        "endLine": 1045,
+        "endChar": 19
+      },
+      "revId": "ef3c82f7d7a280d919ff9c89bfe86eae124ac7ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f141d4f2_eaeb2191",
         "filename": "drivers/block/zram/zram_drv.c",
         "patchSetId": 8
