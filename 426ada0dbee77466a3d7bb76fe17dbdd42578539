@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c50fe284_01d49282",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1803,
+      "author": {
+        "id": 1868565
+      },
+      "writtenOn": "2026-03-18T09:43:04Z",
+      "side": 0,
+      "message": "This issue may cause livelock, but it could also optimize allocation.\n\nWe could bypass skip_cma using a vendor hook. Could google team provide us with any recommendations?",
+      "revId": "426ada0dbee77466a3d7bb76fe17dbdd42578539",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
