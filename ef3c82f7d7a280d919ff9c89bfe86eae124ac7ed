@@ -187,6 +187,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "287940e5_5d3067d9",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-18T06:56:38Z",
+      "side": 1,
+      "message": "How about GFP_NOWAIT? Might be clearer than __GFP_KSWAPD_RECLAIM itself, and prevent using emergency pools",
+      "parentUuid": "16b66bba_1f83ff64",
+      "range": {
+        "startLine": 1045,
+        "startChar": 10,
+        "endLine": 1045,
+        "endChar": 19
+      },
+      "revId": "ef3c82f7d7a280d919ff9c89bfe86eae124ac7ed",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f141d4f2_eaeb2191",
         "filename": "drivers/block/zram/zram_drv.c",
         "patchSetId": 8
