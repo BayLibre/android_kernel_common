@@ -1723,6 +1723,7 @@ static bool pkvm_memshare_call(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 
 		goto out_host;
 	case -ENOMEMHOSTS2:
+	case -ENOMEMIOMMU:
 		if (pkvm_request_host_s2(hyp_vcpu, exit_code))
 			goto out_guest_err;
 
@@ -1763,6 +1764,7 @@ static bool pkvm_memunshare_call(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 
 		return true;
 	case -ENOMEMHOSTS2:
+	case -ENOMEMIOMMU:
 		if (pkvm_request_host_s2(hyp_vcpu, exit_code))
 			goto out_guest_err;
 
@@ -1878,6 +1880,7 @@ static bool pkvm_memrelinquish_call(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_co
 
 		return false;
 	case -ENOMEMHOSTS2:
+	case -ENOMEMIOMMU:
 		if (pkvm_request_host_s2(hyp_vcpu, exit_code))
 			goto out_guest_err;
 

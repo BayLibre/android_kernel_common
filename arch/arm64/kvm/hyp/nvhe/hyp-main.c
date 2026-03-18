@@ -1043,6 +1043,7 @@ static void errno_to_smccc(int ret, struct kvm_cpu_context *host_ctxt)
 		req->mem.nr_pages = hyp_alloc_missing_donations();
 		break;
 	case -ENOMEMHOSTS2:
+	case -ENOMEMIOMMU:
 		req->type = KVM_HYP_REQ_TYPE_MEM_HOST_S2;
 		break;
 	}
