@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75ca6c64_74b397ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1935515
+      },
+      "writtenOn": "2026-03-18T13:05:55Z",
+      "side": 1,
+      "message": "First of all, this CL should have an associated bug ticket, and that should be referred to via a Bug: \u003cbug number\u003e line. Then we could have a discussion on that ticket, rather than here. Secondly, you need a subject prefix on the first line of the commit. Since this is not upstream it should probably be \"ANDROID:\"\n\nAnyway, I question whether this is useful and whether it actually works. Page reporting is destructive: Pages reported as free are *freed* by the host; Not swapped. And the only pages in the crashkernel region which I would expect to be resident are those which the crashkernel was actually loaded into, by microdroid manager. So I would expect this patch to simply discard the crashkernel.\n\nAm I wrong? :)",
+      "revId": "20be468c403beb8f567aeea8175c224e1be850de",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
