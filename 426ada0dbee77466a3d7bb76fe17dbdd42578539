@@ -34,6 +34,24 @@
       "parentUuid": "c50fe284_01d49282",
       "revId": "426ada0dbee77466a3d7bb76fe17dbdd42578539",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f28e76d_b8de071e",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1803,
+      "author": {
+        "id": 1868565
+      },
+      "writtenOn": "2026-03-19T09:30:32Z",
+      "side": 0,
+      "message": "\u003e Have you experienced an actual livelock situation before reverting this patch?\n\u003e \nYes, limiting the lmkd and simulating a dma-buf memory leak can lead to a livelock.\n\n\u003e In general this is an upstream revert, so if it is causing issues we can revert the patch. Vendor hook is an acceptable alternative but how would you decide when to skip and when not to skip? If such logic can be implemented then it\u0027s better be upstreamed.\n\nI actually post a fix on https://lore.kernel.org/all/20240408080539.14282-1-liuhailong@oppo.com/ but it\u0027s not merged. 😂\n\nWe\u0027ll post a vendor hook change here to bypass skip_cma() by using scan_control.",
+      "parentUuid": "ec521d97_48b577b6",
+      "revId": "426ada0dbee77466a3d7bb76fe17dbdd42578539",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
