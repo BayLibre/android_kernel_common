@@ -40,6 +40,7 @@ extern const struct pkvm_module_ops		*mod_ops;
 #define iommu_pkvm_unuse_dma(x, y)		CALL_FROM_OPS(pkvm_unuse_dma, x, y)
 #define kvm_iommu_register_pviommu_drv(x)	CALL_FROM_OPS(iommu_register_pviommu_drv, x)
 #define kvm_iommu_request_hyp_alloc()		CALL_FROM_OPS(request_hyp_alloc)
+#define __warn_printk(...)			CALL_FROM_OPS(warn_printk, __VA_ARGS__)
 #endif
 
 
