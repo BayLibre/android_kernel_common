@@ -33,8 +33,6 @@
 #include <uapi/linux/dma-buf.h>
 #include <uapi/linux/magic.h>
 
-#include <trace/events/kmem.h>
-
 #include "dma-buf-sysfs-stats.h"
 
 static DEFINE_MUTEX(dmabuf_list_mutex);
@@ -352,7 +350,6 @@ static void add_task_dmabuf_record(struct task_dma_buf_info *dmabuf_info,
 	dmabuf_info->rss += dmabuf->size;
 	if (dmabuf_info->rss > dmabuf_info->rss_hwm)
 		dmabuf_info->rss_hwm = dmabuf_info->rss;
-	trace_dmabuf_rss_stat(dmabuf_info->rss, dmabuf->size, dmabuf);
 }
 
 /**
@@ -420,7 +417,6 @@ void dma_buf_unaccount_task(struct dma_buf *dmabuf, struct task_struct *task)
 			list_del(&rec->node);
 			dmabuf_info->dmabuf_count--;
 			dmabuf_info->rss -= dmabuf->size;
-			trace_dmabuf_rss_stat(dmabuf_info->rss, -dmabuf->size, dmabuf);
 		} else {
 			rec = NULL;
 		}
