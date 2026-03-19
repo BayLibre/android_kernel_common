@@ -490,6 +490,13 @@ DECLARE_HOOK(android_vh_filemap_update_page,
 	TP_PROTO(struct address_space *mapping, struct folio *folio,
 		struct file *file),
 	TP_ARGS(mapping, folio, file));
+DECLARE_HOOK(android_vh_compaction_exit,
+	TP_PROTO(int node_id, int order, const int highest_zoneidx),
+	TP_ARGS(node_id, order, highest_zoneidx));
+enum compact_result;
+DECLARE_HOOK(android_vh_compaction_try_to_compact_exit,
+        TP_PROTO(enum compact_result *compact_result),
+        TP_ARGS(compact_result));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
