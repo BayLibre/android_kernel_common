@@ -7,10 +7,11 @@
 #include <linux/raid/pq.h>
 
 #ifdef __KERNEL__
-#include <asm/simd.h>
+#include <asm/neon.h>
 #include "neon.h"
 #else
-#define scoped_ksimd()
+#define kernel_neon_begin()
+#define kernel_neon_end()
 #define cpu_has_neon()		(1)
 #endif
 
@@ -54,8 +55,9 @@ static void raid6_2data_recov_neon(int disks, size_t bytes, int faila,
 	qmul  = raid6_vgfmul[raid6_gfinv[raid6_gfexp[faila] ^
 					 raid6_gfexp[failb]]];
 
-	scoped_ksimd()
-		__raid6_2data_recov_neon(bytes, p, q, dp, dq, pbmul, qmul);
+	kernel_neon_begin();
+	__raid6_2data_recov_neon(bytes, p, q, dp, dq, pbmul, qmul);
+	kernel_neon_end();
 }
 
 static void raid6_datap_recov_neon(int disks, size_t bytes, int faila,
@@ -84,8 +86,9 @@ static void raid6_datap_recov_neon(int disks, size_t bytes, int faila,
 	/* Now, pick the proper data tables */
 	qmul = raid6_vgfmul[raid6_gfinv[raid6_gfexp[faila]]];
 
-	scoped_ksimd()
-		__raid6_datap_recov_neon(bytes, p, q, dq, qmul);
+	kernel_neon_begin();
+	__raid6_datap_recov_neon(bytes, p, q, dq, qmul);
+	kernel_neon_end();
 }
 
 const struct raid6_recov_calls raid6_recov_neon = {
