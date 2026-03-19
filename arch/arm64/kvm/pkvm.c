@@ -64,15 +64,13 @@ phys_addr_t hyp_mem_size;
 extern struct pkvm_device *kvm_nvhe_sym(registered_devices);
 extern u32 kvm_nvhe_sym(registered_devices_nr);
 
-static enum {
-	PKVM_HOST_S2_CMA,
-	PKVM_HOST_S2_GCMA,
-	PKVM_HOST_S2_CARVEOUT,
 #ifdef CONFIG_CMA
-} host_s2_mode = PKVM_HOST_S2_CMA;
+#define DEFAULT_HOST_S2_MODE	PKVM_HOST_S2_CMA;
 #else
-} host_s2_mode = PKVM_HOST_S2_CARVEOUT;
+#define DEFAULT_HOST_S2_MODE	PKVM_HOST_S2_CARVEOUT;
 #endif
+
+enum pkvm_host_s2_mode __host_s2_mode = DEFAULT_HOST_S2_MODE;
 
 #ifdef CONFIG_CMA
 static struct cma *host_s2_cma;
@@ -83,15 +81,18 @@ static int __init early_kvm_arm_host_s2_cfg(char *arg)
 	if (!arg)
 		return -EINVAL;
 
-	if (strcmp(arg, "carveout") == 0)
-		host_s2_mode = PKVM_HOST_S2_CARVEOUT;
-	else if (strcmp(arg, "cma") == 0)
-		host_s2_mode = PKVM_HOST_S2_CMA;
-	else if (strcmp(arg, "gcma") == 0)
-		host_s2_mode = PKVM_HOST_S2_GCMA;
-	else
+	if (strcmp(arg, "carveout") == 0) {
+		__host_s2_mode = PKVM_HOST_S2_CARVEOUT;
+	} else if (strcmp(arg, "cma") == 0) {
+		__host_s2_mode = PKVM_HOST_S2_CMA;
+	} else if (strcmp(arg, "gcma") == 0) {
+		__host_s2_mode = PKVM_HOST_S2_GCMA;
+	} else {
+		kvm_nvhe_sym(__host_s2_mode) = __host_s2_mode = DEFAULT_HOST_S2_MODE;
 		return -EINVAL;
+	}
 
+	kvm_nvhe_sym(__host_s2_mode) = __host_s2_mode;
 	return 0;
 }
 early_param("kvm-arm.host_s2", early_kvm_arm_host_s2_cfg);
@@ -102,7 +103,7 @@ early_param("kvm-arm.host_s2", early_kvm_arm_host_s2_cfg);
  */
 int __init pkvm_host_stage2_reserve(void)
 {
-	if (!kvm_nvhe_sym(host_s2_cma_size))
+	if (!host_s2_is_cma())
 		return 0;
 
 	if (!cma_alloc(host_s2_cma, cma_get_size(host_s2_cma) >> PAGE_SHIFT, 0, true)) {
@@ -117,7 +118,7 @@ static void __init pkvm_host_stage2_drain(void)
 {
 	unsigned long reclaimed = 0;
 
-	if (kvm_nvhe_sym(host_s2_cma_size))
+	if (host_s2_is_cma())
 		reclaimed = __pkvm_reclaim_hyp_alloc_mgt_id(HYP_ALLOC_MGT_HOSTS2_ID, ULONG_MAX);
 
 	kvm_info("Shrunk Hyp Reserved memory by %lu MiB\n", reclaimed >> (20 - PAGE_SHIFT));
@@ -148,7 +149,7 @@ int pkvm_host_stage2_topup(gfp_t gfp)
 	if (gfp != GFP_KERNEL) {
 		if (gfp != GFP_ATOMIC)
 			return -EINVAL;
-		if (host_s2_mode != PKVM_HOST_S2_GCMA)
+		if (host_s2_mode() != PKVM_HOST_S2_GCMA)
 			return WARN_ON_ONCE(-EINVAL);
 	}
 
@@ -337,6 +338,8 @@ void __init kvm_hyp_reserve(void)
 	if (kvm_get_mode() != KVM_MODE_PROTECTED)
 		return;
 
+	kvm_nvhe_sym(__host_s2_mode) = __host_s2_mode;
+
 	ret = register_memblock_regions();
 	if (ret) {
 		*hyp_memblock_nr_ptr = 0;
@@ -386,7 +389,7 @@ again:
 	kvm_info("Reserved %lld MiB at 0x%llx\n", hyp_mem_size >> 20, hyp_mem_base);
 
 #ifdef CONFIG_CMA
-	if (host_s2_mode == PKVM_HOST_S2_CARVEOUT)
+	if (!host_s2_is_cma())
 		return;
 
 	/*
@@ -394,9 +397,10 @@ again:
 	 * carveout with a CMA region as it has the same alignment requirements.
 	 */
 	ret = cma_init_reserved_mem(hyp_mem_base, hyp_mem_size, 0, "pkvm,host_s2_cma",
-				    &host_s2_cma, host_s2_mode == PKVM_HOST_S2_GCMA);
+				    &host_s2_cma, host_s2_mode() == PKVM_HOST_S2_GCMA);
 	if (ret) {
 		kvm_err("Failed to init CMA region for host stage-2 (%d)\n", ret);
+		kvm_nvhe_sym(__host_s2_mode) = __host_s2_mode = PKVM_HOST_S2_CARVEOUT;
 		return;
 	}
 
