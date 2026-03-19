@@ -74,6 +74,24 @@
       "parentUuid": "1ccc4d3c_c28fcc83",
       "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fc390d1_2883478a",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2026-03-19T18:34:54Z",
+      "side": 1,
+      "message": "To help reduce risk, I think it would be better to leave this a 10 here and set the value to 9 with a command line argument in the Brya makefile. Kernel prebuilt updates are slow and if this does end up introducing a regression we\u0027ll end up reverting and losing the tunable behavior also.",
+      "parentUuid": "52dd9a87_a6bb7365",
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
