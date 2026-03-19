@@ -123,10 +123,12 @@ static void __init pkvm_host_stage2_drain(void)
 	kvm_info("Shrunk Hyp Reserved memory by %lu MiB\n", reclaimed >> (20 - PAGE_SHIFT));
 }
 
-static void *__host_stage2_alloc(void *mc, unsigned long order)
+static void *__host_stage2_alloc(void *arg, unsigned long order)
 {
-	struct page *p = cma_alloc(host_s2_cma, 1, 0, true);
+	gfp_t gfp = (gfp_t)(uintptr_t)arg;
+	struct page *p;
 
+	p = __cma_alloc(host_s2_cma, 1, 0, gfp);
 	if (!p)
 		return NULL;
 
@@ -138,21 +140,34 @@ static void __host_stage2_free(void *virt, void *arg, unsigned long order)
 	WARN_ON(!cma_release(host_s2_cma, virt_to_page(virt), 1));
 }
 
-int pkvm_host_stage2_topup(void)
+int pkvm_host_stage2_topup(gfp_t gfp)
 {
 	struct kvm_hyp_memcache mc;
 	int ret;
 
-	guard(mutex)(&host_s2_cma_lock);
+	if (gfp != GFP_KERNEL) {
+		if (gfp != GFP_ATOMIC)
+			return -EINVAL;
+		if (host_s2_mode != PKVM_HOST_S2_GCMA)
+			return WARN_ON_ONCE(-EINVAL);
+	}
+
+	if (gfp == GFP_KERNEL)
+		mutex_lock(&host_s2_cma_lock);
 
 	init_hyp_memcache(&mc);
-	ret = __topup_hyp_memcache(&mc, 3, __host_stage2_alloc, kvm_host_pa, NULL, 0);
+	ret = __topup_hyp_memcache(&mc, 3, __host_stage2_alloc, kvm_host_pa,
+				   (void *)(uintptr_t)(gfp | __GFP_NOWARN), 0);
 	if (ret && !mc.nr_pages)
-		return ret;
+		goto err;
 
 	ret = __pkvm_topup_hyp_alloc_mgt_mc(HYP_ALLOC_MGT_HOSTS2_ID, &mc);
 	if (ret)
 		__free_hyp_memcache(&mc, __host_stage2_free, kvm_host_va, NULL);
+
+err:
+	if (gfp == GFP_KERNEL)
+		mutex_unlock(&host_s2_cma_lock);
 
 	return WARN_ON_ONCE(ret);
 }
