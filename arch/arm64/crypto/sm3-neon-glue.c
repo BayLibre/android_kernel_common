@@ -5,7 +5,7 @@
  * Copyright (C) 2022 Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
  */
 
-#include <asm/simd.h>
+#include <asm/neon.h>
 #include <crypto/internal/hash.h>
 #include <crypto/sm3.h>
 #include <crypto/sm3_base.h>
@@ -20,16 +20,20 @@ asmlinkage void sm3_neon_transform(struct sm3_state *sst, u8 const *src,
 static int sm3_neon_update(struct shash_desc *desc, const u8 *data,
 			   unsigned int len)
 {
-	scoped_ksimd()
-		return sm3_base_do_update_blocks(desc, data, len,
-						 sm3_neon_transform);
+	int remain;
+
+	kernel_neon_begin();
+	remain = sm3_base_do_update_blocks(desc, data, len, sm3_neon_transform);
+	kernel_neon_end();
+	return remain;
 }
 
 static int sm3_neon_finup(struct shash_desc *desc, const u8 *data,
 			  unsigned int len, u8 *out)
 {
-	scoped_ksimd()
-		sm3_base_do_finup(desc, data, len, sm3_neon_transform);
+	kernel_neon_begin();
+	sm3_base_do_finup(desc, data, len, sm3_neon_transform);
+	kernel_neon_end();
 	return sm3_base_finish(desc, out);
 }
 
