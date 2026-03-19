@@ -50,6 +50,23 @@
       "message": "Friendly ping.",
       "revId": "cd07c99241326b9430ce9017c4e1f151ebc69195",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "016c15ba_8cd3e996",
+        "filename": "bazel/test/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2026-03-19T17:57:46Z",
+      "side": 1,
+      "message": "nit: just call this `test`. Then one can do `bazel test //common/bazel/test` instead of `bazel test //common/bazel/test:kleaf_test`",
+      "revId": "cd07c99241326b9430ce9017c4e1f151ebc69195",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
