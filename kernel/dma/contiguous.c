@@ -477,7 +477,6 @@ static int __init rmem_cma_setup(struct reserved_mem *rmem)
 	unsigned long node = rmem->fdt_node;
 	bool default_cma = of_get_flat_dt_prop(node, "linux,cma-default", NULL);
 	struct cma *cma;
-	bool gcma;
 	int err;
 
 	if (!of_get_flat_dt_prop(node, "reusable", NULL) ||
@@ -489,15 +488,7 @@ static int __init rmem_cma_setup(struct reserved_mem *rmem)
 		return -EINVAL;
 	}
 
-	gcma = !!of_get_flat_dt_prop(node, "guarantee", NULL);
-#ifndef CONFIG_GCMA
-	if (gcma) {
-		pr_err("Reserved memory: unable to setup GCMA region, GCMA is not enabled\n");
-		return -EINVAL;
-	}
-#endif
-	err = cma_init_reserved_mem(rmem->base, rmem->size, 0, rmem->name,
-				    &cma, gcma);
+	err = cma_init_reserved_mem(rmem->base, rmem->size, 0, rmem->name, &cma);
 	if (err) {
 		pr_err("Reserved memory: unable to setup CMA region\n");
 		return err;
