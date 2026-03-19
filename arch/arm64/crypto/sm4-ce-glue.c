@@ -8,7 +8,7 @@
  * Copyright (C) 2022 Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
  */
 
-#include <asm/simd.h>
+#include <asm/neon.h>
 #include <crypto/b128ops.h>
 #include <crypto/internal/hash.h>
 #include <crypto/internal/skcipher.h>
@@ -74,9 +74,10 @@ static int sm4_setkey(struct crypto_skcipher *tfm, const u8 *key,
 	if (key_len != SM4_KEY_SIZE)
 		return -EINVAL;
 
-	scoped_ksimd()
-		sm4_ce_expand_key(key, ctx->rkey_enc, ctx->rkey_dec,
-				  crypto_sm4_fk, crypto_sm4_ck);
+	kernel_neon_begin();
+	sm4_ce_expand_key(key, ctx->rkey_enc, ctx->rkey_dec,
+			  crypto_sm4_fk, crypto_sm4_ck);
+	kernel_neon_end();
 	return 0;
 }
 
@@ -93,12 +94,12 @@ static int sm4_xts_setkey(struct crypto_skcipher *tfm, const u8 *key,
 	if (ret)
 		return ret;
 
-	scoped_ksimd() {
-		sm4_ce_expand_key(key, ctx->key1.rkey_enc,
-				ctx->key1.rkey_dec, crypto_sm4_fk, crypto_sm4_ck);
-		sm4_ce_expand_key(&key[SM4_KEY_SIZE], ctx->key2.rkey_enc,
-				ctx->key2.rkey_dec, crypto_sm4_fk, crypto_sm4_ck);
-	}
+	kernel_neon_begin();
+	sm4_ce_expand_key(key, ctx->key1.rkey_enc,
+			  ctx->key1.rkey_dec, crypto_sm4_fk, crypto_sm4_ck);
+	sm4_ce_expand_key(&key[SM4_KEY_SIZE], ctx->key2.rkey_enc,
+			  ctx->key2.rkey_dec, crypto_sm4_fk, crypto_sm4_ck);
+	kernel_neon_end();
 
 	return 0;
 }
@@ -116,13 +117,15 @@ static int sm4_ecb_do_crypt(struct skcipher_request *req, const u32 *rkey)
 		u8 *dst = walk.dst.virt.addr;
 		unsigned int nblks;
 
-		scoped_ksimd() {
-			nblks = BYTES2BLKS(nbytes);
-			if (nblks) {
-				sm4_ce_crypt(rkey, dst, src, nblks);
-				nbytes -= nblks * SM4_BLOCK_SIZE;
-			}
+		kernel_neon_begin();
+
+		nblks = BYTES2BLKS(nbytes);
+		if (nblks) {
+			sm4_ce_crypt(rkey, dst, src, nblks);
+			nbytes -= nblks * SM4_BLOCK_SIZE;
 		}
+
+		kernel_neon_end();
 
 		err = skcipher_walk_done(&walk, nbytes);
 	}
@@ -164,14 +167,16 @@ static int sm4_cbc_crypt(struct skcipher_request *req,
 
 		nblocks = nbytes / SM4_BLOCK_SIZE;
 		if (nblocks) {
-			scoped_ksimd() {
-				if (encrypt)
-					sm4_ce_cbc_enc(ctx->rkey_enc, dst, src,
-						       walk.iv, nblocks);
-				else
-					sm4_ce_cbc_dec(ctx->rkey_dec, dst, src,
-						       walk.iv, nblocks);
-			}
+			kernel_neon_begin();
+
+			if (encrypt)
+				sm4_ce_cbc_enc(ctx->rkey_enc, dst, src,
+					       walk.iv, nblocks);
+			else
+				sm4_ce_cbc_dec(ctx->rkey_dec, dst, src,
+					       walk.iv, nblocks);
+
+			kernel_neon_end();
 		}
 
 		err = skcipher_walk_done(&walk, nbytes % SM4_BLOCK_SIZE);
@@ -244,14 +249,16 @@ static int sm4_cbc_cts_crypt(struct skcipher_request *req, bool encrypt)
 	if (err)
 		return err;
 
-	scoped_ksimd() {
-		if (encrypt)
-			sm4_ce_cbc_cts_enc(ctx->rkey_enc, walk.dst.virt.addr,
-					   walk.src.virt.addr, walk.iv, walk.nbytes);
-		else
-			sm4_ce_cbc_cts_dec(ctx->rkey_dec, walk.dst.virt.addr,
-					   walk.src.virt.addr, walk.iv, walk.nbytes);
-	}
+	kernel_neon_begin();
+
+	if (encrypt)
+		sm4_ce_cbc_cts_enc(ctx->rkey_enc, walk.dst.virt.addr,
+				   walk.src.virt.addr, walk.iv, walk.nbytes);
+	else
+		sm4_ce_cbc_cts_dec(ctx->rkey_dec, walk.dst.virt.addr,
+				   walk.src.virt.addr, walk.iv, walk.nbytes);
+
+	kernel_neon_end();
 
 	return skcipher_walk_done(&walk, 0);
 }
@@ -281,25 +288,27 @@ static int sm4_ctr_crypt(struct skcipher_request *req)
 		u8 *dst = walk.dst.virt.addr;
 		unsigned int nblks;
 
-		scoped_ksimd() {
-			nblks = BYTES2BLKS(nbytes);
-			if (nblks) {
-				sm4_ce_ctr_enc(ctx->rkey_enc, dst, src, walk.iv, nblks);
-				dst += nblks * SM4_BLOCK_SIZE;
-				src += nblks * SM4_BLOCK_SIZE;
-				nbytes -= nblks * SM4_BLOCK_SIZE;
-			}
+		kernel_neon_begin();
 
-			/* tail */
-			if (walk.nbytes == walk.total && nbytes > 0) {
-				u8 keystream[SM4_BLOCK_SIZE];
-
-				sm4_ce_crypt_block(ctx->rkey_enc, keystream, walk.iv);
-				crypto_inc(walk.iv, SM4_BLOCK_SIZE);
-				crypto_xor_cpy(dst, src, keystream, nbytes);
-				nbytes = 0;
-			}
+		nblks = BYTES2BLKS(nbytes);
+		if (nblks) {
+			sm4_ce_ctr_enc(ctx->rkey_enc, dst, src, walk.iv, nblks);
+			dst += nblks * SM4_BLOCK_SIZE;
+			src += nblks * SM4_BLOCK_SIZE;
+			nbytes -= nblks * SM4_BLOCK_SIZE;
 		}
+
+		/* tail */
+		if (walk.nbytes == walk.total && nbytes > 0) {
+			u8 keystream[SM4_BLOCK_SIZE];
+
+			sm4_ce_crypt_block(ctx->rkey_enc, keystream, walk.iv);
+			crypto_inc(walk.iv, SM4_BLOCK_SIZE);
+			crypto_xor_cpy(dst, src, keystream, nbytes);
+			nbytes = 0;
+		}
+
+		kernel_neon_end();
 
 		err = skcipher_walk_done(&walk, nbytes);
 	}
@@ -350,16 +359,18 @@ static int sm4_xts_crypt(struct skcipher_request *req, bool encrypt)
 		if (nbytes < walk.total)
 			nbytes &= ~(SM4_BLOCK_SIZE - 1);
 
-		scoped_ksimd() {
-			if (encrypt)
-				sm4_ce_xts_enc(ctx->key1.rkey_enc, walk.dst.virt.addr,
-						walk.src.virt.addr, walk.iv, nbytes,
-						rkey2_enc);
-			else
-				sm4_ce_xts_dec(ctx->key1.rkey_dec, walk.dst.virt.addr,
-						walk.src.virt.addr, walk.iv, nbytes,
-						rkey2_enc);
-		}
+		kernel_neon_begin();
+
+		if (encrypt)
+			sm4_ce_xts_enc(ctx->key1.rkey_enc, walk.dst.virt.addr,
+				       walk.src.virt.addr, walk.iv, nbytes,
+				       rkey2_enc);
+		else
+			sm4_ce_xts_dec(ctx->key1.rkey_dec, walk.dst.virt.addr,
+				       walk.src.virt.addr, walk.iv, nbytes,
+				       rkey2_enc);
+
+		kernel_neon_end();
 
 		rkey2_enc = NULL;
 
@@ -384,16 +395,18 @@ static int sm4_xts_crypt(struct skcipher_request *req, bool encrypt)
 	if (err)
 		return err;
 
-	scoped_ksimd() {
-		if (encrypt)
-			sm4_ce_xts_enc(ctx->key1.rkey_enc, walk.dst.virt.addr,
-					walk.src.virt.addr, walk.iv, walk.nbytes,
-					rkey2_enc);
-		else
-			sm4_ce_xts_dec(ctx->key1.rkey_dec, walk.dst.virt.addr,
-					walk.src.virt.addr, walk.iv, walk.nbytes,
-					rkey2_enc);
-	}
+	kernel_neon_begin();
+
+	if (encrypt)
+		sm4_ce_xts_enc(ctx->key1.rkey_enc, walk.dst.virt.addr,
+			       walk.src.virt.addr, walk.iv, walk.nbytes,
+			       rkey2_enc);
+	else
+		sm4_ce_xts_dec(ctx->key1.rkey_dec, walk.dst.virt.addr,
+			       walk.src.virt.addr, walk.iv, walk.nbytes,
+			       rkey2_enc);
+
+	kernel_neon_end();
 
 	return skcipher_walk_done(&walk, 0);
 }
@@ -497,9 +510,11 @@ static int sm4_cbcmac_setkey(struct crypto_shash *tfm, const u8 *key,
 	if (key_len != SM4_KEY_SIZE)
 		return -EINVAL;
 
-	scoped_ksimd()
-		sm4_ce_expand_key(key, ctx->key.rkey_enc, ctx->key.rkey_dec,
-				crypto_sm4_fk, crypto_sm4_ck);
+	kernel_neon_begin();
+	sm4_ce_expand_key(key, ctx->key.rkey_enc, ctx->key.rkey_dec,
+			  crypto_sm4_fk, crypto_sm4_ck);
+	kernel_neon_end();
+
 	return 0;
 }
 
@@ -515,13 +530,15 @@ static int sm4_cmac_setkey(struct crypto_shash *tfm, const u8 *key,
 
 	memset(consts, 0, SM4_BLOCK_SIZE);
 
-	scoped_ksimd() {
-		sm4_ce_expand_key(key, ctx->key.rkey_enc, ctx->key.rkey_dec,
-				crypto_sm4_fk, crypto_sm4_ck);
+	kernel_neon_begin();
 
-		/* encrypt the zero block */
-		sm4_ce_crypt_block(ctx->key.rkey_enc, (u8 *)consts, (const u8 *)consts);
-	}
+	sm4_ce_expand_key(key, ctx->key.rkey_enc, ctx->key.rkey_dec,
+			  crypto_sm4_fk, crypto_sm4_ck);
+
+	/* encrypt the zero block */
+	sm4_ce_crypt_block(ctx->key.rkey_enc, (u8 *)consts, (const u8 *)consts);
+
+	kernel_neon_end();
 
 	/* gf(2^128) multiply zero-ciphertext with u and u^2 */
 	a = be64_to_cpu(consts[0].a);
@@ -551,16 +568,18 @@ static int sm4_xcbc_setkey(struct crypto_shash *tfm, const u8 *key,
 	if (key_len != SM4_KEY_SIZE)
 		return -EINVAL;
 
-	scoped_ksimd() {
-		sm4_ce_expand_key(key, ctx->key.rkey_enc, ctx->key.rkey_dec,
-				crypto_sm4_fk, crypto_sm4_ck);
+	kernel_neon_begin();
 
-		sm4_ce_crypt_block(ctx->key.rkey_enc, key2, ks[0]);
-		sm4_ce_crypt(ctx->key.rkey_enc, ctx->consts, ks[1], 2);
+	sm4_ce_expand_key(key, ctx->key.rkey_enc, ctx->key.rkey_dec,
+			  crypto_sm4_fk, crypto_sm4_ck);
 
-		sm4_ce_expand_key(key2, ctx->key.rkey_enc, ctx->key.rkey_dec,
-				crypto_sm4_fk, crypto_sm4_ck);
-	}
+	sm4_ce_crypt_block(ctx->key.rkey_enc, key2, ks[0]);
+	sm4_ce_crypt(ctx->key.rkey_enc, ctx->consts, ks[1], 2);
+
+	sm4_ce_expand_key(key2, ctx->key.rkey_enc, ctx->key.rkey_dec,
+			  crypto_sm4_fk, crypto_sm4_ck);
+
+	kernel_neon_end();
 
 	return 0;
 }
@@ -581,9 +600,10 @@ static int sm4_mac_update(struct shash_desc *desc, const u8 *p,
 	unsigned int nblocks = len / SM4_BLOCK_SIZE;
 
 	len %= SM4_BLOCK_SIZE;
-	scoped_ksimd()
-		sm4_ce_mac_update(tctx->key.rkey_enc, ctx->digest, p,
-				nblocks, false, true);
+	kernel_neon_begin();
+	sm4_ce_mac_update(tctx->key.rkey_enc, ctx->digest, p,
+			  nblocks, false, true);
+	kernel_neon_end();
 	return len;
 }
 
@@ -599,9 +619,10 @@ static int sm4_cmac_finup(struct shash_desc *desc, const u8 *src,
 		ctx->digest[len] ^= 0x80;
 		consts += SM4_BLOCK_SIZE;
 	}
-	scoped_ksimd()
-		sm4_ce_mac_update(tctx->key.rkey_enc, ctx->digest, consts, 1,
-				  false, true);
+	kernel_neon_begin();
+	sm4_ce_mac_update(tctx->key.rkey_enc, ctx->digest, consts, 1,
+			  false, true);
+	kernel_neon_end();
 	memcpy(out, ctx->digest, SM4_BLOCK_SIZE);
 	return 0;
 }
@@ -614,9 +635,10 @@ static int sm4_cbcmac_finup(struct shash_desc *desc, const u8 *src,
 
 	if (len) {
 		crypto_xor(ctx->digest, src, len);
-		scoped_ksimd()
-			sm4_ce_crypt_block(tctx->key.rkey_enc, ctx->digest,
-					   ctx->digest);
+		kernel_neon_begin();
+		sm4_ce_crypt_block(tctx->key.rkey_enc, ctx->digest,
+				   ctx->digest);
+		kernel_neon_end();
 	}
 	memcpy(out, ctx->digest, SM4_BLOCK_SIZE);
 	return 0;
