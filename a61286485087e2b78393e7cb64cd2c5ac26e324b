@@ -16,6 +16,24 @@
       "message": "So I think we should not call free_page() here. (I\u0027m working on a counterpart upstream patch now).\n\nIf I\u0027m not mistaken, all we need is:\n\n```\nclear_slot_flag(zram, index, ZRAM_WB);\nzram_release_bdev_block(zram, get_slot_handle(zram, index));\nzram_set_handle(zram, index, handle);\n```\n\nIn exchange we can remove quite a lot of code from this function - all the flags/attrs restore, double atomic inc, ac-time thing, etc.\n\nBut more importantly, we don\u0027t restore all of the flags.  For instance, slot could have been INCOMPRESSIBLE and we lose that flag.  So after writeback/prefetch this slot will become recompression target again (but we might have already tried that and figured it was worthless).\n\nAm I missing something?",
       "revId": "a61286485087e2b78393e7cb64cd2c5ac26e324b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c656ef1_8b064d63",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1069,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2026-03-19T03:55:46Z",
+      "side": 1,
+      "message": "upstream patch for reference:\n\nhttps://lore.kernel.org/linux-block/20260319034912.1894770-1-senozhatsky@chromium.org",
+      "parentUuid": "687e9322_549266ee",
+      "revId": "a61286485087e2b78393e7cb64cd2c5ac26e324b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
