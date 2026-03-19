@@ -228,6 +228,10 @@ common_kernel(
     modules_superset = get_gki_modules_superset("arm64") + get_kunit_modules_superset("arm64"),
     system_dlkm_extra_archive_files = [":generate_gki_module_info_arm64"],
     visibility = ["//visibility:public"],
+    pahole = select({
+        "//build/kernel/kleaf:pahole_from_sources_is_true": "//common:pahole",
+        "//conditions:default": None,
+    }),
 
     # Symbol lists and module lists
     # kmi_symbol_list = None,
