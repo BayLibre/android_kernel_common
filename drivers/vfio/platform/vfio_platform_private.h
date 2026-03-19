@@ -53,7 +53,6 @@ struct vfio_platform_device {
 	const char			*acpihid;
 	struct module			*reset_module;
 	struct device			*device;
-	bool				low_power;
 
 	/*
 	 * These fields should be filled by the bus specific binder
@@ -86,8 +85,6 @@ int vfio_platform_open_device(struct vfio_device *core_vdev);
 void vfio_platform_close_device(struct vfio_device *core_vdev);
 long vfio_platform_ioctl(struct vfio_device *core_vdev,
 			 unsigned int cmd, unsigned long arg);
-int vfio_platform_ioctl_feature(struct vfio_device *core_vdev, u32 flags, void __user *arg,
-				size_t argsz);
 ssize_t vfio_platform_read(struct vfio_device *core_vdev,
 			   char __user *buf, size_t count,
 			   loff_t *ppos);
