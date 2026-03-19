@@ -160,10 +160,10 @@ static int pkvm_device_reset(struct pkvm_device *dev, bool host_to_guest)
 	hyp_assert_lock_held(&device_spinlock);
 
 	/* Reset is mandatory. */
-	if (!dev->ops || !dev->ops->reset)
+	if (!dev->reset_handler)
 		return -ENODEV;
 
-	ret = dev->ops->reset(dev->cookie, host_to_guest);
+	ret = dev->reset_handler(dev->cookie, host_to_guest);
 	if (ret)
 		return ret;
 
@@ -187,12 +187,6 @@ static int __pkvm_device_assign(struct pkvm_device *dev, struct pkvm_hyp_vm *vm)
 	for (i = 0 ; i < dev->nr_resources; ++i) {
 		res = &dev->resources[i];
 		ret = hyp_check_range_owned(res->base, res->size);
-		if (ret)
-			return ret;
-	}
-
-	if (dev->ops && dev->ops->power_lock) {
-		ret = dev->ops->power_lock(dev->cookie, true);
 		if (ret)
 			return ret;
 	}
@@ -353,7 +347,6 @@ void pkvm_devices_teardown(struct pkvm_hyp_vm *vm)
 		if (dev->ctxt != vm)
 			continue;
 		WARN_ON(pkvm_device_reset(dev, false));
-		WARN_ON(dev->ops->power_lock && dev->ops->power_lock(dev->cookie, false));
 		dev->ctxt = NULL;
 		pkvm_devices_reclaim_device(dev);
 	}
@@ -407,7 +400,8 @@ void pkvm_devices_put_context(u64 iommu_id, u32 endpoint_id)
 	hyp_spin_unlock(&device_spinlock);
 }
 
-int pkvm_device_register_ops(u64 phys, struct pkvm_device_ops *ops, void *cookie)
+int pkvm_device_register_reset(u64 phys, void *cookie,
+			       int (*cb)(void *cookie, bool host_to_guest))
 {
 	struct pkvm_device *dev;
 	int ret = 0;
@@ -417,11 +411,11 @@ int pkvm_device_register_ops(u64 phys, struct pkvm_device_ops *ops, void *cookie
 		return -ENODEV;
 
 	hyp_spin_lock(&device_spinlock);
-	if (dev->ops) {
-		ret = -EBUSY;
-	} else {
-		dev->ops = ops;
+	if (!dev->reset_handler) {
+		dev->reset_handler = cb;
 		dev->cookie = cookie;
+	} else {
+		ret = -EBUSY;
 	}
 	hyp_spin_unlock(&device_spinlock);
 
