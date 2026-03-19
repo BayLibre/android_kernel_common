@@ -56,6 +56,24 @@
       "message": "arsp/751458 is using the same magic `9`:\n\n```\nstatic unsigned int align_shift \u003d 9;\n```\n\nHow closely tied are these values and can/should they use the same definition?",
       "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52dd9a87_a6bb7365",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2026-03-19T17:30:30Z",
+      "side": 1,
+      "message": "9 means \"try to allocate 2MB worth of pages, contiguously laid out in physical memory\". \n\nIt is generally referred to as an order-9 \"high-order\" page allocation. It is more specifically referred to as a 2MB \"Huge-Page\" on platforms (like x86) that natively support 2MB page table entries (support that is available for both CPU and GPU translation tables).\n\nThe referenced CL and this one both choose \"9\" for similar reasons, but they are not explicitly related, and one could diverge from the other for various reasons (such as us choosing a smaller default here based on observations of performance vs latency trade-offs).\n\nChoosing 10 here would result in no change to the 6.12 TTM allocation behavior. Choosing 9 in this CL slightly changes the behavior (while the rest of the changes in this CL are strictly exposing tunable knobs without automatically changing anything).\n\nI have selected 9 in this CL because in b/470470103#comment14 states that is alleviates allocation latency while having no expected impact on performance (as there would be no change in programming of GPU PTEs for 2MB vs 4MB high-order allocations).\n\nI consider changing 10 to 9 as extremely low-risk, while tuning the rest of the parameters this CL exposes carries higher risk of changing perf characteristics.",
+      "parentUuid": "1ccc4d3c_c28fcc83",
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
