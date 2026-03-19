@@ -59,33 +59,13 @@ static inline bool kvm_pkvm_ext_allowed(struct kvm *kvm, long ext)
 	}
 }
 
-static inline bool __ioctl_is_smccc_filter(unsigned int ioctl, void __user *argp)
-{
-	struct kvm_device_attr attr;
-
-	switch (ioctl) {
-	case KVM_SET_DEVICE_ATTR:
-	case KVM_GET_DEVICE_ATTR:
-	case KVM_HAS_DEVICE_ATTR:
-		break;
-	default:
-		return false;
-	}
-
-	if (copy_from_user(&attr, argp, sizeof(attr)))
-		return false;
-
-	return attr.group == KVM_ARM_VM_SMCCC_CTRL &&
-	       attr.attr == KVM_ARM_VM_SMCCC_FILTER;
-}
-
 /*
  * Check whether the KVM VM IOCTL is allowed in pKVM.
  *
  * Certain features are allowed only for non-protected VMs in pKVM, which is why
  * this takes the VM (kvm) as a parameter.
  */
-static inline bool kvm_pkvm_ioctl_allowed(struct kvm *kvm, unsigned int ioctl, void __user *argp)
+static inline bool kvm_pkvm_ioctl_allowed(struct kvm *kvm, unsigned int ioctl)
 {
 	long ext;
 	int r;
@@ -95,10 +75,7 @@ static inline bool kvm_pkvm_ioctl_allowed(struct kvm *kvm, unsigned int ioctl, v
 	if (WARN_ON_ONCE(r < 0))
 		return false;
 
-	if (kvm_pkvm_ext_allowed(kvm, ext))
-		return true;
-
-	return __ioctl_is_smccc_filter(ioctl, argp);
+	return kvm_pkvm_ext_allowed(kvm, ext);
 }
 
 static inline unsigned long pvm_supported_vcpu_features(struct kvm *kvm)
