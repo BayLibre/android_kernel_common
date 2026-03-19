@@ -89,7 +89,7 @@ struct copy_arg {
 static int __copy_guest_vm_trace(struct pkvm_vm *vm, void *param)
 {
 	struct copy_arg *arg = param;
-	int i;
+	int i, ret = 0;
 
 	if (arg->vm_handle != PKVM_HOST_VM_HANDLE &&
 	    arg->vm_handle != vm->kvm.arch.pkvm.handle)
@@ -100,24 +100,30 @@ static int __copy_guest_vm_trace(struct pkvm_vm *vm, void *param)
 		if (!vm->vcpus[i])
 			continue;
 
-		if (arg->size < sizeof(struct perf_data))
-			return -ENOSPC;
+		if (arg->size < sizeof(struct perf_data)) {
+			ret = -ENOSPC;
+			goto unlock;
+		}
 
 		copy_vmexit_perf_data(arg->dst, &vm->vcpus[i]->perf);
 		arg->dst += sizeof(struct perf_data);
 		arg->size -= sizeof(struct perf_data);
 	}
-	pkvm_spin_unlock(&vm->lock);
 
 	/*
 	 * If vm_handle != PKVM_HOST_VM_HANDLE, it means the host wants to get
 	 * the trace for a specific guest VM, and the pKVM can stop dumping the
 	 * other guest VM's trace. Otherwise, the pKVM will continue.
 	 */
-	return arg->vm_handle != PKVM_HOST_VM_HANDLE;
+	ret = arg->vm_handle != PKVM_HOST_VM_HANDLE;
+
+unlock:
+	pkvm_spin_unlock(&vm->lock);
+
+	return ret;
 }
 
-static void copy_guest_vm_trace(int vm_handle, void *dst, unsigned long size)
+static int copy_guest_vm_trace(int vm_handle, void *dst, unsigned long size)
 {
 	struct copy_arg arg = {
 		.vm_handle = vm_handle,
@@ -125,7 +131,7 @@ static void copy_guest_vm_trace(int vm_handle, void *dst, unsigned long size)
 		.size = size,
 	};
 
-	pkvm_walk_each_vm(__copy_guest_vm_trace, &arg);
+	return pkvm_walk_each_vm(__copy_guest_vm_trace, &arg);
 }
 
 void pkvm_trace_vmexit_start(struct kvm_vcpu *vcpu)
@@ -219,9 +225,9 @@ int pkvm_dump_vmexit_trace(phys_addr_t phys, unsigned long size, int vm_handle)
 	if (vm_handle == PKVM_HOST_VM_HANDLE)
 		copy_host_vm_trace(&dst, &dst_size);
 
-	copy_guest_vm_trace(vm_handle, dst, dst_size);
+	ret = copy_guest_vm_trace(vm_handle, dst, dst_size);
 
 	pkvm_host_unshare_hyp(phys, size);
 
-	return 0;
+	return ret;
 }
