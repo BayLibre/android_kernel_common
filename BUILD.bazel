@@ -32,6 +32,7 @@ load(
     "modinfo_summary_report",
 )
 load(":bazel/abi.bzl", "cc_binary_with_abi")
+load("@dwarves//:defs.bzl", "define_pahole")
 load(
     ":bazel/modules_private.bzl",
     "get_gki_kunit_modules",
@@ -1297,6 +1298,11 @@ cc_library(
     strip_include_prefix = "tools/lib",
     visibility = ["//visibility:public"],
     deps = ["//prebuilts/kernel-build-tools:imported_libs"],
+)
+
+define_pahole(
+    name = "pahole",
+    libbpf_dep = ":bpf_x86",
 )
 
 # KUnit test targets
