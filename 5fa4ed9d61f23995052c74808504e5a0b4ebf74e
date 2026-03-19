@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1810eb1_5c0732b2",
+        "filename": "include/uapi/linux/wrapfd.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2026-03-19T14:46:06Z",
+      "side": 1,
+      "message": "The ioctl handler for `WRAPFD_DEV_IOC_WRAP` in `drivers/android/wrapfd.c` should validate that this `reserved` field is 0. It appears this check is missing from the driver.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 0
+      },
+      "revId": "5fa4ed9d61f23995052c74808504e5a0b4ebf74e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
