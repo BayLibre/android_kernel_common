@@ -65,10 +65,7 @@ enum migratetype {
 	MIGRATE_UNMOVABLE,
 	MIGRATE_MOVABLE,
 	MIGRATE_RECLAIMABLE,
-	/* the number of types that have fallbacks */
-	MIGRATE_FALLBACKS,
-	/* the number of types on the pcp lists */
-	MIGRATE_PCPTYPES = MIGRATE_FALLBACKS,
+	MIGRATE_PCPTYPES,	/* the number of types on the pcp lists */
 	MIGRATE_HIGHATOMIC = MIGRATE_PCPTYPES,
 #ifdef CONFIG_CMA
 	/*
@@ -123,7 +120,7 @@ static inline bool is_migrate_movable(int mt)
  */
 static inline bool migratetype_is_mergeable(int mt)
 {
-	return mt < MIGRATE_FALLBACKS;
+	return mt < MIGRATE_PCPTYPES;
 }
 
 #define for_each_migratetype_order(order, type) \
