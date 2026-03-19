@@ -13,8 +13,6 @@
 #include <kvm/arm_hypercalls.h>
 #include <kvm/device.h>
 
-#include <asm/kvm_hypevents.h>
-
 struct pkvm_device *registered_devices;
 unsigned long registered_devices_nr;
 
@@ -163,7 +161,7 @@ out_unlock:
 	return ret;
 }
 
-static int pkvm_device_power_lock(struct pkvm_hyp_vm *vm, struct pkvm_device *dev, bool lock)
+static int pkvm_device_power_lock(struct pkvm_device *dev, bool lock)
 {
 	int ret = 0;
 
@@ -178,8 +176,6 @@ static int pkvm_device_power_lock(struct pkvm_hyp_vm *vm, struct pkvm_device *de
 	ret = dev->ops->power_lock(dev->cookie, lock);
 	if (!ret)
 		dev->power_locked = lock;
-
-	trace_power_lock(vm->host_kvm->userspace_pid, dev->resources[0].base, lock, ret);
 
 	return ret;
 }
@@ -225,7 +221,7 @@ static int __pkvm_device_assign(struct pkvm_device *dev, struct pkvm_hyp_vm *vm)
 	}
 
 	if (dev->ops && dev->ops->power_lock) {
-		ret = pkvm_device_power_lock(vm, dev, true);
+		ret = pkvm_device_power_lock(dev, true);
 		if (ret)
 			return ret;
 	}
@@ -394,7 +390,7 @@ void pkvm_devices_teardown(struct pkvm_hyp_vm *vm)
 			continue;
 		WARN_ON(pkvm_device_reset(dev, false));
 		if (dev->ops && dev->ops->power_lock)
-			WARN_ON(pkvm_device_power_lock(vm, dev, false));
+			WARN_ON(pkvm_device_power_lock(dev, false));
 		dev->ctxt = NULL;
 		pkvm_devices_reclaim_device(dev);
 	}
@@ -543,7 +539,7 @@ __pkvm_device_request_power(struct pkvm_hyp_vcpu *hyp_vcpu, u64 ipa, bool on, bo
 	if (dryrun)
 		ret = (!dev || !dev->ops || !dev->ops->power_lock) ? -EOPNOTSUPP : 0;
 	else
-		ret = pkvm_device_power_lock(hyp_vm, dev, on);
+		ret = pkvm_device_power_lock(dev, on);
 	hyp_spin_unlock(&device_spinlock);
 
 	return ret;
