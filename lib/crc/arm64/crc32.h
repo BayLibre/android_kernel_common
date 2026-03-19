@@ -2,6 +2,7 @@
 
 #include <asm/alternative.h>
 #include <asm/cpufeature.h>
+#include <asm/neon.h>
 #include <asm/simd.h>
 
 // The minimum input length to consider the 4-way interleaved code path
@@ -22,8 +23,9 @@ static inline u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
 
 	if (len >= min_len && cpu_have_named_feature(PMULL) &&
 	    likely(may_use_simd())) {
-		scoped_ksimd()
-			crc = crc32_le_arm64_4way(crc, p, len);
+		kernel_neon_begin();
+		crc = crc32_le_arm64_4way(crc, p, len);
+		kernel_neon_end();
 
 		p += round_down(len, 64);
 		len %= 64;
@@ -42,8 +44,9 @@ static inline u32 crc32c_arch(u32 crc, const u8 *p, size_t len)
 
 	if (len >= min_len && cpu_have_named_feature(PMULL) &&
 	    likely(may_use_simd())) {
-		scoped_ksimd()
-			crc = crc32c_le_arm64_4way(crc, p, len);
+		kernel_neon_begin();
+		crc = crc32c_le_arm64_4way(crc, p, len);
+		kernel_neon_end();
 
 		p += round_down(len, 64);
 		len %= 64;
@@ -62,8 +65,9 @@ static inline u32 crc32_be_arch(u32 crc, const u8 *p, size_t len)
 
 	if (len >= min_len && cpu_have_named_feature(PMULL) &&
 	    likely(may_use_simd())) {
-		scoped_ksimd()
-			crc = crc32_be_arm64_4way(crc, p, len);
+		kernel_neon_begin();
+		crc = crc32_be_arm64_4way(crc, p, len);
+		kernel_neon_end();
 
 		p += round_down(len, 64);
 		len %= 64;
