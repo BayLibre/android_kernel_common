@@ -4,6 +4,7 @@
  *
  * Copyright 2025 Google LLC
  */
+#include <asm/neon.h>
 #include <asm/simd.h>
 
 static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_neon);
@@ -21,12 +22,12 @@ static void sha1_blocks(struct sha1_block_state *state,
 {
 	if (IS_ENABLED(CONFIG_KERNEL_MODE_NEON) &&
 	    static_branch_likely(&have_neon) && likely(may_use_simd())) {
-		scoped_ksimd() {
-			if (static_branch_likely(&have_ce))
-				sha1_ce_transform(state, data, nblocks);
-			else
-				sha1_transform_neon(state, data, nblocks);
-		}
+		kernel_neon_begin();
+		if (static_branch_likely(&have_ce))
+			sha1_ce_transform(state, data, nblocks);
+		else
+			sha1_transform_neon(state, data, nblocks);
+		kernel_neon_end();
 	} else {
 		sha1_block_data_order(state, data, nblocks);
 	}
