@@ -886,7 +886,7 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
 		spin_unlock_irq(&cma->lock);
 
 		if (cma->gcma) {
-			gcma_alloc_range(pfn, pfn + count - 1);
+			gcma_alloc_range(pfn, pfn + count - 1, gfp);
 			ret = 0;
 		} else {
 			mutex_lock(&cma->alloc_mutex);
@@ -916,11 +916,13 @@ struct page *__cma_alloc(struct cma *cma, unsigned long count,
 {
 	struct page *page = NULL;
 	int ret = -ENOMEM, r;
+	gfp_t gfp_allowed;
 	unsigned long i;
 	const char *name = cma ? cma->name : NULL;
 
-	if (WARN_ON_ONCE((gfp & GFP_KERNEL) == 0 ||
-		(gfp & ~(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY)) != 0))
+	gfp_allowed = GFP_KERNEL | (cma->gcma ? GFP_ATOMIC : 0);
+	if (WARN_ON_ONCE((gfp & gfp_allowed) == 0 ||
+		(gfp & ~(gfp_allowed | __GFP_NOWARN | __GFP_NORETRY)) != 0))
 		return page;
 
 	if (!cma || !cma->count)
