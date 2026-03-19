@@ -16,6 +16,24 @@
       "message": "They can. For example symbol \"alloc_can_skb\" exported from slcan.ko",
       "revId": "02d55c59c6958fff4b970af3f2065bd0107bded6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19149eaf_5fff96ba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2026-03-19T23:22:12Z",
+      "side": 1,
+      "message": "Okay, well, I spent a long time trying and the pixel kernel checkout kept failing to build with unknown symbol errors. If it\u0027s possible, then I don\u0027t know what I did wrong.\n\nRegardless, even if the module could export it, I don\u0027t think it\u0027s the right solution. Rust Binder is loaded in a kind of weird location in the boot process to make sure it happens before first use of binder, so it may not be loaded before the DDK module.",
+      "parentUuid": "209dfa12_9c4bcb3e",
+      "revId": "02d55c59c6958fff4b970af3f2065bd0107bded6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
