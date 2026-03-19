@@ -66164,6 +66164,12 @@ member {
   offset: 6912
 }
 member {
+  id: 0xd76eb6b0
+  name: "data_delta"
+  type_id: 0xfc0e1dbd
+  offset: 832
+}
+member {
   id: 0xd402fc07
   name: "data_early"
   type_id: 0x4585663f
@@ -104569,12 +104575,6 @@ member {
   name: "kallsyms"
   type_id: 0x37fdbcb1
   offset: 8128
-}
-member {
-  id: 0xb0b00eb1
-  name: "kaslr_addr"
-  type_id: 0x33756485
-  offset: 768
 }
 member {
   id: 0x5638ee2c
@@ -176111,10 +176111,10 @@ member {
   type_id: 0x9611bf2f
 }
 member {
-  id: 0x8814713a
+  id: 0x88147a2e
   name: "text_delta"
   type_id: 0xfc0e1dbd
-  offset: 832
+  offset: 768
 }
 member {
   id: 0xb58dc65f
@@ -243118,8 +243118,8 @@ struct_union {
     member_id: 0x30fe7fc8
     member_id: 0x01ae4919
     member_id: 0x3cc39d2f
-    member_id: 0xb0b00eb1
-    member_id: 0x8814713a
+    member_id: 0x88147a2e
+    member_id: 0xd76eb6b0
     member_id: 0x9df6a371
     member_id: 0xc0b3a51f
     member_id: 0xb855a6a7
@@ -302393,7 +302393,7 @@ elf_symbol {
   name: "__trace_trigger_soft_disabled"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x55054fc0
+  crc: 0xb8fb0c07
   type_id: 0xfe730297
   full_name: "__trace_trigger_soft_disabled"
 }
@@ -305066,7 +305066,7 @@ elf_symbol {
   name: "bpf_trace_run1"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x77c1877f
+  crc: 0xc7778bd7
   type_id: 0x15176b31
   full_name: "bpf_trace_run1"
 }
@@ -305075,7 +305075,7 @@ elf_symbol {
   name: "bpf_trace_run11"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2f6de1f0
+  crc: 0xa54790a4
   type_id: 0x15318d97
   full_name: "bpf_trace_run11"
 }
@@ -305084,7 +305084,7 @@ elf_symbol {
   name: "bpf_trace_run2"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xebe3824b
+  crc: 0x7475f085
   type_id: 0x1533e3fd
   full_name: "bpf_trace_run2"
 }
@@ -305093,7 +305093,7 @@ elf_symbol {
   name: "bpf_trace_run3"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x92766c10
+  crc: 0xfe9e0507
   type_id: 0x1531ab71
   full_name: "bpf_trace_run3"
 }
@@ -305102,7 +305102,7 @@ elf_symbol {
   name: "bpf_trace_run4"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x412b99cd
+  crc: 0xd877f015
   type_id: 0x15318ff9
   full_name: "bpf_trace_run4"
 }
@@ -305111,7 +305111,7 @@ elf_symbol {
   name: "bpf_trace_run5"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xd6fd2b5e
+  crc: 0xcbbb9165
   type_id: 0x15318db1
   full_name: "bpf_trace_run5"
 }
@@ -305120,7 +305120,7 @@ elf_symbol {
   name: "bpf_trace_run6"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x8c59a806
+  crc: 0x4fdb08c6
   type_id: 0x15318d95
   full_name: "bpf_trace_run6"
 }
@@ -305129,7 +305129,7 @@ elf_symbol {
   name: "bpf_trace_run7"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xe6add171
+  crc: 0xa2f90848
   type_id: 0x15318d98
   full_name: "bpf_trace_run7"
 }
@@ -305138,7 +305138,7 @@ elf_symbol {
   name: "bpf_trace_run8"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x3384a8f4
+  crc: 0xc57361b5
   type_id: 0x15318d99
   full_name: "bpf_trace_run8"
 }
@@ -330722,7 +330722,7 @@ elf_symbol {
   name: "trace_event_buffer_commit"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x2cb65f89
+  crc: 0x4f112761
   type_id: 0x1a405f2d
   full_name: "trace_event_buffer_commit"
 }
@@ -330731,7 +330731,7 @@ elf_symbol {
   name: "trace_event_buffer_reserve"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0xb4996696
+  crc: 0x31ec0341
   type_id: 0x5c4f178f
   full_name: "trace_event_buffer_reserve"
 }
@@ -330740,7 +330740,7 @@ elf_symbol {
   name: "trace_event_printf"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x40c80b85
+  crc: 0x1c52bbd2
   type_id: 0x1417fb73
   full_name: "trace_event_printf"
 }
@@ -330749,7 +330749,7 @@ elf_symbol {
   name: "trace_event_raw_init"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1811e526
+  crc: 0xed3688ee
   type_id: 0x9427c0bf
   full_name: "trace_event_raw_init"
 }
@@ -330758,7 +330758,7 @@ elf_symbol {
   name: "trace_event_reg"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x481f72b2
+  crc: 0x2f0c227e
   type_id: 0x959717f8
   full_name: "trace_event_reg"
 }
@@ -330776,7 +330776,7 @@ elf_symbol {
   name: "trace_output_call"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x1587d2f8
+  crc: 0xd635d9aa
   type_id: 0x99cffa53
   full_name: "trace_output_call"
 }
@@ -330812,7 +330812,7 @@ elf_symbol {
   name: "trace_raw_output_prep"
   is_defined: true
   symbol_type: FUNCTION
-  crc: 0x9bf9bab3
+  crc: 0x439cc396
   type_id: 0x99666596
   full_name: "trace_raw_output_prep"
 }
