@@ -15,12 +15,12 @@ static inline void kernel_fpu_begin(void)
 {
 	BUG_ON(!in_task());
 	preempt_disable();
-	kernel_neon_begin(NULL);
+	kernel_neon_begin();
 }
 
 static inline void kernel_fpu_end(void)
 {
-	kernel_neon_end(NULL);
+	kernel_neon_end();
 	preempt_enable();
 }
 
