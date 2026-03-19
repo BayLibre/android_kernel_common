@@ -581,7 +581,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
 
 	__filemap_fixup(addr, prot, file_backed_len, len);
 
-	return addr;
+	return ptshare_install_vma(mm, addr);
 }
 
 unsigned long ksys_mmap_pgoff(unsigned long addr, unsigned long len,
