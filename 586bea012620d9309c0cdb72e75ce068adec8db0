@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "215c4c71_911f1472",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2026-03-19T17:20:26Z",
+      "side": 1,
+      "message": "I\u0027m not understanding this block.\n\nWhy do we force this to true if it\u0027s set to false? How is this handled if the value is set to false as a kernel command line argument?\n\nShould this just be initialized to true when it\u0027s declared to remove any ambiguity?\n\n```\nstatic bool may_direct_reclaim \u003d true;\n```",
+      "range": {
+        "startLine": 811,
+        "startChar": 0,
+        "endLine": 812,
+        "endChar": 28
+      },
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d90d1383_51bcb6df",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2026-03-19T17:20:26Z",
+      "side": 1,
+      "message": "This and `max_order_direct_reclaim` should have similar parameter validation as in arsp/751458:\n\n```\n\tif (align_shift \u003e\u003d BITS_PER_LONG) {\n\t\tpr_err(\"invalid align_shift\u003d%u (must be \u003c %u)\\n\",\n\t\t       align_shift, BITS_PER_LONG);\n\t\treturn -EINVAL;\n\t}\n```",
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ccc4d3c_c28fcc83",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2026-03-19T17:20:26Z",
+      "side": 1,
+      "message": "arsp/751458 is using the same magic `9`:\n\n```\nstatic unsigned int align_shift \u003d 9;\n```\n\nHow closely tied are these values and can/should they use the same definition?",
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
