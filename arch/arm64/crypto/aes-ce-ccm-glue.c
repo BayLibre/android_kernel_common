@@ -114,8 +114,11 @@ static u32 ce_aes_ccm_auth_data(u8 mac[], u8 const in[], u32 abytes,
 			in += adv;
 			abytes -= adv;
 
-			if (unlikely(rem))
+			if (unlikely(rem)) {
+				kernel_neon_end();
+				kernel_neon_begin();
 				macp = 0;
+			}
 		} else {
 			u32 l = min(AES_BLOCK_SIZE - macp, abytes);
 
