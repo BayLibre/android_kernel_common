@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c61ac5d_b7a4752e",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 919,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2026-03-20T01:32:49Z",
+      "side": 1,
+      "message": "just a side note: this is not strictly needed. Deferred decompression (async read-back) checks `-\u003ecompressed_wb` and bails out if we have uncompressed writeback, so it never looks at these slot flags in that case.",
+      "range": {
+        "startLine": 919,
+        "startChar": 0,
+        "endLine": 919,
+        "endChar": 28
+      },
+      "revId": "9bb484aeabb42a2f3b809a10eeed893fb4854df2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b66432e_8b519d91",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1041,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2026-03-20T01:32:49Z",
+      "side": 1,
+      "message": "just a question: does writeback completion already clean this flag?",
+      "range": {
+        "startLine": 1041,
+        "startChar": 0,
+        "endLine": 1041,
+        "endChar": 41
+      },
+      "revId": "9bb484aeabb42a2f3b809a10eeed893fb4854df2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
