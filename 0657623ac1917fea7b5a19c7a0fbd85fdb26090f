@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a69f7905_14165822",
+        "filename": "arch/arm64/kvm/hyp/include/nvhe/kasan.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-20T09:43:09Z",
+      "side": 1,
+      "message": "As no one else is using those includes, how about we make this \"private\" directly into hyp/nvhe/kasan.h, just like mm/kasan/kasan.h.\n\nThe hyp_alloc_check_range() belongs to include/nvhe/alloc.h after all it is with a hyp_alloc_ prefix and is provided by alloc.c, so it should go into the hyp_alloc interface include.",
+      "revId": "0657623ac1917fea7b5a19c7a0fbd85fdb26090f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
