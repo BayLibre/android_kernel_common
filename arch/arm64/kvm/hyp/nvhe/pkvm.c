@@ -426,9 +426,13 @@ static int pkvm_init_features_from_host(struct pkvm_hyp_vm *hyp_vm, const struct
 	if (!kvm_vm_is_protected(kvm)) {
 		hyp_vm->kvm.arch.flags = host_arch_flags;
 		hyp_vm->kvm.arch.flags &= ~BIT_ULL(KVM_ARCH_FLAG_ID_REGS_INITIALIZED);
+<<<<<<< HEAD   (8c3d3f5b7cf426b155964290cfb4e394bda0c36f Merge 6.18.16 into android17-6.18)
 
 		if (!test_bit(KVM_ARCH_FLAG_FGU_INITIALIZED, &host_arch_flags))
 			return -EINVAL;
+||||||| BASE   (6258e292d7463f96d0f06dff2a39093a54c9d16f Linux 6.18.16)
+=======
+>>>>>>> BRANCH (bce3847f7c51b86332bf2e554c9e80ca3820f16c KVM: arm64: Fix ID register initialization for non-protected)
 
 		bitmap_copy(kvm->arch.vcpu_features,
 			    host_kvm->arch.vcpu_features,
@@ -658,6 +662,35 @@ static int pkvm_vcpu_init_sysregs(struct pkvm_hyp_vcpu *hyp_vcpu)
 	} else {
 		ret = vm_copy_id_regs(hyp_vcpu);
 	}
+
+	return ret;
+}
+
+static int vm_copy_id_regs(struct pkvm_hyp_vcpu *hyp_vcpu)
+{
+	struct pkvm_hyp_vm *hyp_vm = pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu);
+	const struct kvm *host_kvm = hyp_vm->host_kvm;
+	struct kvm *kvm = &hyp_vm->kvm;
+
+	if (!test_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &host_kvm->arch.flags))
+		return -EINVAL;
+
+	if (test_and_set_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &kvm->arch.flags))
+		return 0;
+
+	memcpy(kvm->arch.id_regs, host_kvm->arch.id_regs, sizeof(kvm->arch.id_regs));
+
+	return 0;
+}
+
+static int pkvm_vcpu_init_sysregs(struct pkvm_hyp_vcpu *hyp_vcpu)
+{
+	int ret = 0;
+
+	if (pkvm_hyp_vcpu_is_protected(hyp_vcpu))
+		kvm_init_pvm_id_regs(&hyp_vcpu->vcpu);
+	else
+		ret = vm_copy_id_regs(hyp_vcpu);
 
 	return ret;
 }
