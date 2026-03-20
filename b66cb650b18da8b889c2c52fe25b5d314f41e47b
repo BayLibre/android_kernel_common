@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d04e9d44_f0a67164",
+        "filename": "arch/arm64/kvm/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-20T11:41:19Z",
+      "side": 1,
+      "message": "IOM, that should be \"pkvm,iommu-domains-cma\":\n\n* we already have pkvm,XXXX (pkvm,device-assignment - pkvm,protected-region - pkvm,host_s2_cma) so we should stick to that \"pkvm,\"\n\n* iommu-domains as opposed to iommu-idmap... but I\u0027m sure you are better placed to find an alternative name.",
+      "revId": "b66cb650b18da8b889c2c52fe25b5d314f41e47b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
