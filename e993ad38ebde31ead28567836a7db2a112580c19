@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "785dcdac_ba97ba87",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-20T14:10:22Z",
+      "side": 1,
+      "message": "Are you sure about that? I believe the reservedmem is set-up during unflatten_device_tree() which is happening quite early.\n\nI wonder if this isn\u0027t a bit risky and if isn\u0027t possible for the kernel to allocate MOVEABLE memory which could be into this region.\n\nDo you really need to host_donate_hyp() if you pass to hyp_pool_init() cma_nr_pages as reserved_pages?",
+      "revId": "e993ad38ebde31ead28567836a7db2a112580c19",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be89bba1_ec057a06",
         "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
         "patchSetId": 2
