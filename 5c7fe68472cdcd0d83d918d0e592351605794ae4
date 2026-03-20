@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ccad2e2_558d21bc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-03-20T02:37:38Z",
+      "side": 1,
+      "message": "Sizing the host buffer is not done in this patch, it is only done in the next patch? (And it doesn\u0027t fix the lockup, it fixes a different problem?)",
+      "revId": "5c7fe68472cdcd0d83d918d0e592351605794ae4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45a6ae88_212ad02e",
+        "filename": "arch/x86/kvm/pkvm/trace.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-03-20T02:37:38Z",
+      "side": 1,
+      "message": "nit: in this case we could just call `pkvm_spin_unlock(\u0026vm-\u003elock)` before `return -ENOSPC` instead? That would allow to keep the code shorter, and keep the diff much shorter too. WDYT?",
+      "revId": "5c7fe68472cdcd0d83d918d0e592351605794ae4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abdd3104_2d9c0d38",
+        "filename": "arch/x86/kvm/pkvm/trace.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-03-20T02:37:38Z",
+      "side": 1,
+      "message": "This (i.e. propagating error to the host) also fixes a different problem, not the lockup, so it also should be in a different patch?\n\n(If this problem needs to be fixed at all - see my comment in the next patch.)",
+      "revId": "5c7fe68472cdcd0d83d918d0e592351605794ae4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
