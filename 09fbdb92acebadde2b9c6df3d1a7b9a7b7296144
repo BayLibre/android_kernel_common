@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1d053704_7313722c",
+        "filename": "arch/arm64/kvm/hyp/nvhe/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-20T09:26:53Z",
+      "side": 1,
+      "message": "I\u0027m not sure what we gain with filtering out stuff that aren\u0027t using hyp_alloc. That\u0027s quite cumbersome and if later we add hyp_alloc() in there we won\u0027t see it.\n\nAlso, host is an assembly file, I\u0027m not sure the instrumentation applies there. Is it really worth it?\n\nFair enough for stacktrace and setup. And actually I have removed them from FTRACE as well, but that\u0027s really disputable. I think I didn\u0027t want to take the risk of messing-up with stacktrace.\n\nSerial though I would really just keep it out. Otherwise we create precedent of handling a list of files that are debug option. Ftrace is one of them and you haven\u0027t added to the list.\n\nOverall I am still not convinced \"host\" and \"serial\" make sense.",
+      "parentUuid": "2e0e1686_064eb3b3",
+      "revId": "09fbdb92acebadde2b9c6df3d1a7b9a7b7296144",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b6873fc_be5c54a9",
         "filename": "arch/arm64/kvm/hyp/nvhe/Makefile.nvhe",
         "patchSetId": 2
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Because KASAN is disabled by default for hypervisor code, check:\nhttps://lore.kernel.org/all/20240506133544.2861555-2-masahiroy@kernel.org/",
       "parentUuid": "8b6873fc_be5c54a9",
+      "revId": "09fbdb92acebadde2b9c6df3d1a7b9a7b7296144",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32eb2bda_213c7cdc",
+        "filename": "arch/arm64/kvm/hyp/nvhe/Makefile.nvhe",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-20T09:26:53Z",
+      "side": 1,
+      "message": "Ha this is because we link against kvm.nvhe.o and not directly against vmlinux?\n\nProbably my own ignorance, but perhaps this needs a comment as per why we need to explicitly add this comment? FTR, I have added one here https://lore.kernel.org/all/20260316092845.3367411-1-vdonnefort@google.com/ \"undefsyms_base.o does not automatically get KASAN flags\"",
+      "parentUuid": "302a5054_93a838df",
       "revId": "09fbdb92acebadde2b9c6df3d1a7b9a7b7296144",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
