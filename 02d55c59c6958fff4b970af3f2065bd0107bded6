@@ -34,6 +34,24 @@
       "parentUuid": "209dfa12_9c4bcb3e",
       "revId": "02d55c59c6958fff4b970af3f2065bd0107bded6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "226bb8c4_f4204b40",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-03-20T17:13:18Z",
+      "side": 1,
+      "message": "I think we need to solve this for the general case of exporting symbols from rust drivers, but we can go forward with this for binder. Once solved, we can remove this workaround if it becomes safe to do so (ultimately it will be a built-in in which case we can remove the workaround then)",
+      "parentUuid": "19149eaf_5fff96ba",
+      "revId": "02d55c59c6958fff4b970af3f2065bd0107bded6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
