@@ -70,6 +70,30 @@
       },
       "revId": "1327da43ac32a037e544201e649c3c0d5792c0f0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d28b3c89_fa38a0ab",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-20T16:09:43Z",
+      "side": 1,
+      "message": "Ok, I think to fix this race condition we need to use anon_inode_create_getfile() then i_size_write() and then publish the fd using fd_install(). Will fix.",
+      "parentUuid": "e47eabc7_1c8d0a50",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 13
+      },
+      "revId": "1327da43ac32a037e544201e649c3c0d5792c0f0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
