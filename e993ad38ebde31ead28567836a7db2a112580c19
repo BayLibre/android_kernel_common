@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fd325da_a369939f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-20T13:56:32Z",
+      "side": 1,
+      "message": "perhaps we can return earlier if cma_size is zero.",
+      "revId": "e993ad38ebde31ead28567836a7db2a112580c19",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be89bba1_ec057a06",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-20T13:56:32Z",
+      "side": 1,
+      "message": "cma_size is PMD_SIZE aligned, so you can use pmd_order here to go faster.",
+      "revId": "e993ad38ebde31ead28567836a7db2a112580c19",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
