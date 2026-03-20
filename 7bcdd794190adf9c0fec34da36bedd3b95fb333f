@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f82b6387_d4881b37",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2026-03-20T21:50:25Z",
+      "side": 1,
+      "message": "Drop the `//common` here and use the relative label `:pahole`. This is because this repo could be checked out elsewhere.",
+      "range": {
+        "startLine": 232,
+        "startChar": 61,
+        "endLine": 232,
+        "endChar": 69
+      },
+      "revId": "7bcdd794190adf9c0fec34da36bedd3b95fb333f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccd92783_95e954af",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2026-03-20T21:50:25Z",
+      "side": 1,
+      "message": "The other targets should have pahole set too.\n\nBTW, are you going to cp this to android17-6.18? If so, perhaps common_kernel() doesn\u0027t need a pahole attribute at all if both android-mainline and android17-6.18 is going to have a \":pahole\" target. Just let common_kernel() assume that \":pahole\" exist and pass it to the internal kernel_build() target.",
+      "revId": "7bcdd794190adf9c0fec34da36bedd3b95fb333f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
