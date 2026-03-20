@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b1141c5_0eabd66f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-03-20T11:09:48Z",
+      "side": 1,
+      "message": "Removed the comment",
+      "parentUuid": "2ccad2e2_558d21bc",
+      "revId": "5c7fe68472cdcd0d83d918d0e592351605794ae4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45a6ae88_212ad02e",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef9b333c_c608c853",
+        "filename": "arch/x86/kvm/pkvm/trace.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-03-20T11:09:48Z",
+      "side": 1,
+      "message": "Makes sense, done",
+      "parentUuid": "45a6ae88_212ad02e",
+      "revId": "5c7fe68472cdcd0d83d918d0e592351605794ae4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "abdd3104_2d9c0d38",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-03-20T02:37:38Z",
       "side": 1,
       "message": "This (i.e. propagating error to the host) also fixes a different problem, not the lockup, so it also should be in a different patch?\n\n(If this problem needs to be fixed at all - see my comment in the next patch.)",
+      "revId": "5c7fe68472cdcd0d83d918d0e592351605794ae4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02bef1f6_364ebfbf",
+        "filename": "arch/x86/kvm/pkvm/trace.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-03-20T11:09:48Z",
+      "side": 1,
+      "message": "yeah, doesn\u0027t need to propagate the error. Removed",
+      "parentUuid": "abdd3104_2d9c0d38",
       "revId": "5c7fe68472cdcd0d83d918d0e592351605794ae4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
