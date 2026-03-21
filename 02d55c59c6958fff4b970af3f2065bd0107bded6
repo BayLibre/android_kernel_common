@@ -52,6 +52,24 @@
       "parentUuid": "19149eaf_5fff96ba",
       "revId": "02d55c59c6958fff4b970af3f2065bd0107bded6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aecdc903_86ce3af6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2026-03-21T09:29:25Z",
+      "side": 1,
+      "message": "I don\u0027t think this has anything to do with Rust. The relevant `EXPORT_SYMBOL_GPL` invocation is in the `rust_binder_hooks.c` file after all, not Rust code.\n\nBut yeah, this goes away when Rust Binder becomes built-in.",
+      "parentUuid": "226bb8c4_f4204b40",
+      "revId": "02d55c59c6958fff4b970af3f2065bd0107bded6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
