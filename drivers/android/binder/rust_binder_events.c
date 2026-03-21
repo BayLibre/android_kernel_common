@@ -57,3 +57,18 @@ const char * const binder_return_strings[] = {
 #define CREATE_TRACE_POINTS
 #define CREATE_RUST_TRACE_POINTS
 #include "rust_binder_events.h"
+
+/*
+ * Some C Binder symbols that are on the KMI.
+ */
+EXPORT_TRACEPOINT_SYMBOL_GPL(binder_transaction_received);
+
+int binder_alloc_copy_from_buffer(struct binder_alloc *alloc,
+				  void *dest,
+				  struct binder_buffer *buffer,
+				  __u64 buffer_offset,
+				  size_t bytes)
+{
+	BUG();
+}
+EXPORT_SYMBOL_GPL(binder_alloc_copy_from_buffer);

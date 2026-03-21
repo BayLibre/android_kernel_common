@@ -309,29 +309,6 @@ impl kernel::Module for BinderModule {
         // currently safe to write.
         unsafe { bindings::RUST_BINDER_LAYOUT = RUST_BINDER_LAYOUT };
 
-        // SAFETY: This just accesses global booleans.
-        #[cfg(CONFIG_ANDROID_BINDER_IPC)]
-        unsafe {
-            #[allow(improper_ctypes)]
-            extern "C" {
-                static mut binder_use_rust: i32;
-                fn unload_binder() -> i32;
-                fn binder_remove_trace_events(m: *mut bindings::module);
-            }
-
-            if binder_use_rust == 0 {
-                #[cfg(CONFIG_EVENT_TRACING)]
-                binder_remove_trace_events(_module.as_ptr());
-                return Ok(Self {});
-            }
-            if unload_binder() != 0 {
-                pr_err!("Failed to unload C Binder.");
-                #[cfg(CONFIG_EVENT_TRACING)]
-                binder_remove_trace_events(_module.as_ptr());
-                return Ok(Self {});
-            }
-        }
-
         pr_warn!("Loaded Rust Binder.");
 
         BINDER_SHRINKER.register(kernel::c_str!("android-binder"))?;

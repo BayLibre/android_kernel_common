@@ -379,6 +379,15 @@ TRACE_EVENT(binder_return,
 			  "unknown")
 );
 
+struct binder_alloc;
+struct binder_buffer;
+
+int binder_alloc_copy_from_buffer(struct binder_alloc *alloc,
+				  void *dest,
+				  struct binder_buffer *buffer,
+				  __u64 buffer_offset,
+				  size_t bytes);
+
 #endif /* _RUST_BINDER_TRACE_H */
 
 /* This part must be outside protection */
