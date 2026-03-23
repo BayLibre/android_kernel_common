@@ -22,6 +22,30 @@
       },
       "revId": "a05ae0b8deb6662d72654d4dd4a0363b556c980b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "478d3900_1f1bf2a7",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1945845
+      },
+      "writtenOn": "2026-03-23T21:19:06Z",
+      "side": 1,
+      "message": "Maybe I\u0027m missing what your suggesting, but I\u0027m not sure that addresses the issue, as the error is about the function being unused, which is caused by the *usage* point getting ifdefed out.  \n\nThis function could be moved down closer to where it used, but I figured I\u0027d try to minimally avoid the build issue. \n\nI wouldn\u0027t object to other cleanups, but this patch is fixing build breakage in the current tree, so I\u0027d probably let the patch owners handle any rework/cleanup separately.",
+      "parentUuid": "97a3b091_a7df9f38",
+      "range": {
+        "startLine": 282,
+        "startChar": 15,
+        "endLine": 282,
+        "endChar": 40
+      },
+      "revId": "a05ae0b8deb6662d72654d4dd4a0363b556c980b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
