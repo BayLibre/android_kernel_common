@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "647a3fee_01b68af8",
+        "filename": "drivers/media/usb/uvc/uvcvideo.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 746,
+      "author": {
+        "id": 1981633
+      },
+      "writtenOn": "2026-03-23T16:46:44Z",
+      "side": 1,
+      "message": "Why not just get the type from queue-\u003equeue.type instead of adding an additional parameter?\n\n```\nif (queue-\u003equeue.type \u003d\u003d V4L2_BUF_TYPE_META_CAPTURE)\n\treturn container_of(queue, struct uvc_streaming, meta.queue);\n```",
+      "range": {
+        "startLine": 745,
+        "startChar": 0,
+        "endLine": 746,
+        "endChar": 63
+      },
+      "revId": "97ae0c04bd4e105a8db5dfc6b560ec7e25718417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
