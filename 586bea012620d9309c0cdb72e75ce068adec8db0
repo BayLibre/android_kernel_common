@@ -92,6 +92,29 @@
       "parentUuid": "52dd9a87_a6bb7365",
       "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7ff8a96_ea85738d",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 2044797
+      },
+      "writtenOn": "2026-03-23T22:33:30Z",
+      "side": 1,
+      "message": "While I think this will be helpful to start. Personally I think 9 is a reasonable default. I\u0027d still love for us to work with intel to see if we can make vmalloc() non-physicall contiguous allocations work. This would properly solve the problem IMO",
+      "range": {
+        "startLine": 818,
+        "startChar": 0,
+        "endLine": 818,
+        "endChar": 57
+      },
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
