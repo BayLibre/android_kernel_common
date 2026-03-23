@@ -22,6 +22,30 @@
       },
       "revId": "97ae0c04bd4e105a8db5dfc6b560ec7e25718417",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "598e2028_fd9d8316",
+        "filename": "drivers/media/usb/uvc/uvcvideo.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 746,
+      "author": {
+        "id": 1886585
+      },
+      "writtenOn": "2026-03-23T17:32:30Z",
+      "side": 1,
+      "message": "There is a queued patch to use a backpointer instead, per suggestion of Laurent: https://lore.kernel.org/linux-media/20260318202352.1374443-1-ribalda@chromium.org/\n\nIt will be merged on top of the current patch. It has not been reviewed yet.",
+      "parentUuid": "647a3fee_01b68af8",
+      "range": {
+        "startLine": 745,
+        "startChar": 0,
+        "endLine": 746,
+        "endChar": 63
+      },
+      "revId": "97ae0c04bd4e105a8db5dfc6b560ec7e25718417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
