@@ -205,6 +205,30 @@
       },
       "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "316a8ba7_fab1b202",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 1060234
+      },
+      "writtenOn": "2026-03-23T23:48:55Z",
+      "side": 1,
+      "message": "At the very least, `struct xe_ggtt_pt_ops` [1] appears to only operate on PTEs not PMDs. Are there any other page table structures that actually use higher order allocations?\n\n[1] https://android.googlesource.com/kernel/common/+/6355550c251f2498dbaa876c13f44d99fff86935/drivers/gpu/drm/xe/xe_ggtt_types.h#72",
+      "parentUuid": "3431de02_27ce3d5b",
+      "range": {
+        "startLine": 818,
+        "startChar": 0,
+        "endLine": 818,
+        "endChar": 57
+      },
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
