@@ -33,6 +33,24 @@
       "message": "Could you elaborate where and how exactly we enforce IA32_DEBUGCTL MSRs?",
       "revId": "5cf8ac0797a0662a1bba3627e0de7044e31e0be1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fe70a31_07f5b1bf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-03-23T22:14:53Z",
+      "side": 1,
+      "message": "Ok, I guess clearing IA32_DEBUGCTL on vmexit is enforced unconditionally by VMX hardware (from SDM: \"The IA32_DEBUGCTL MSR is cleared to 00000000_00000000H.\" - looks like that is done regardless of any vmexit/vmentry control bits?), and restoring it on vmentry is ensured by setting VM_EXIT_SAVE_DEBUG_CONTROLS and VM_ENTRY_LOAD_DEBUG_CONTROLS. Correct?",
+      "parentUuid": "11dedda1_e2103191",
+      "revId": "5cf8ac0797a0662a1bba3627e0de7044e31e0be1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
