@@ -115,6 +115,48 @@
       },
       "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a8c0d04_10dcb29d",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2026-03-23T22:53:23Z",
+      "side": 1,
+      "message": "That\u0027s a good idea, and aligns with my plans for the other two tunables too.\n\nI\u0027ll make the change and resolve this once uploaded.",
+      "parentUuid": "4fc390d1_2883478a",
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "915afc7b_7a6c4983",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2026-03-23T22:53:23Z",
+      "side": 1,
+      "message": "TTM is already allocating \"chunks\" individually. It first tries to make the chunks as large as possible (order-10), which _would_ be a massive physically-contiguous region, but decays (with direct-reclaim adding latency on allocation) to smaller and smaller chunks (by decrementing the order with each failed attempt).\n\nIf we tune this CL\u0027s `max_page_order` to 0, then we are already functionally breaking the full allocation into disparate 4K page chunks scattered throughout the physical memory space, thus the full buffer is no longer physically contiguous.\n\nWe can use the other tunables here to trade off this extreme with the existing behavior by either disabling direct-reclaim for all Xe/TTM allocations or first attempting the 2M physically contiguous alloc without direct-reclaim, but then re-enabling direct-reclaim for smaller chunks (though this might not really have any benefit).\n\nfor TTM, Direct-reclaim is always enabled for order-0 allocations, if we end up decaying all the way to that, or if we set the tuning to enforce it.",
+      "parentUuid": "f7ff8a96_ea85738d",
+      "range": {
+        "startLine": 818,
+        "startChar": 0,
+        "endLine": 818,
+        "endChar": 57
+      },
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
