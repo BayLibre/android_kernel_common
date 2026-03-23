@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eafba590_f89db686",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-23T11:02:27Z",
+      "side": 1,
+      "message": "typo: host",
+      "range": {
+        "startLine": 606,
+        "startChar": 64,
+        "endLine": 606,
+        "endChar": 68
+      },
+      "revId": "2e2880192f7fb2103a60e2d9ee02b2d7fc10fe9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9350491b_f9e8d348",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-23T11:02:27Z",
+      "side": 1,
+      "message": "Don\u0027t you want a \u0027default:\u0027 case to reject unknown requests (so that we can allocate them in future)?",
+      "range": {
+        "startLine": 613,
+        "startChar": 1,
+        "endLine": 613,
+        "endChar": 2
+      },
+      "revId": "2e2880192f7fb2103a60e2d9ee02b2d7fc10fe9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3b6a14e_6af9ac0f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-23T11:02:27Z",
+      "side": 1,
+      "message": "nit: probably needs to be `READ_ONCE()` to avoid potential  ToCToU if the compiler reloads the variable...",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 45
+      },
+      "revId": "2e2880192f7fb2103a60e2d9ee02b2d7fc10fe9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77092d0c_5e12865b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-23T11:02:27Z",
+      "side": 1,
+      "message": "nit: this allows the host to propagate undocumented error codes",
+      "range": {
+        "startLine": 212,
+        "startChar": 35,
+        "endLine": 212,
+        "endChar": 38
+      },
+      "revId": "2e2880192f7fb2103a60e2d9ee02b2d7fc10fe9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
