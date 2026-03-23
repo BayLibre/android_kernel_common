@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00c45c8f_f1c80a59",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-23T12:30:51Z",
+      "side": 1,
+      "message": "I believe we should set `IOMMU_NOEXEC` in that case.\nBut the IOMMU driver should be able to handle that (or ignore if appropriate)",
+      "range": {
+        "startLine": 119,
+        "startChar": 39,
+        "endLine": 119,
+        "endChar": 58
+      },
+      "revId": "355ed5bd55aaf4ed5d06aa10297479db1acd6af4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
