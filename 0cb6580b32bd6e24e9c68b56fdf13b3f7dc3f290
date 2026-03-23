@@ -123,6 +123,24 @@
       "parentUuid": "9895f809_f2a8e052",
       "revId": "0cb6580b32bd6e24e9c68b56fdf13b3f7dc3f290",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c23e32a_1202564b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-23T16:27:33Z",
+      "side": 1,
+      "message": "Could you add just a comment? Just to say that external pages are not split on allocation.\n\nAlso hyp_pool_reclaim() erase the vmemmap order, but we are fine with that because then the \"order\" info will live into the memcache, right?",
+      "parentUuid": "32a824ea_4ee644d9",
+      "revId": "0cb6580b32bd6e24e9c68b56fdf13b3f7dc3f290",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
