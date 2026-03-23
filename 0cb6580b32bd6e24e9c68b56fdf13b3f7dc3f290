@@ -87,6 +87,24 @@
       "parentUuid": "aecafa2c_9f5d74fc",
       "revId": "0cb6580b32bd6e24e9c68b56fdf13b3f7dc3f290",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9895f809_f2a8e052",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-23T16:21:38Z",
+      "side": 1,
+      "message": "Hum, this is very weird tbh, but I guess that\u0027s because we can\u0027t make the page merging work for external pages.",
+      "parentUuid": "831baea5_8953a38c",
+      "revId": "0cb6580b32bd6e24e9c68b56fdf13b3f7dc3f290",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
