@@ -39,6 +39,10 @@ struct __packed pkvm_boot_parameters_dtr64 {
 
 #define PKVM_BOOT_GDT_ENTRY_COUNT 4
 
+#define PKVM_BOOT_GDT_LONG_CS 1
+#define PKVM_BOOT_GDT_DATA32  2
+#define PKVM_BOOT_GDT_CODE32  3
+
 /*
  * Per-vCPU boot parameters consumed after AP SIPI enters the pKVM boot stub.
  */
@@ -70,5 +74,10 @@ struct pkvm_boot_parameters {
 	uint32_t nr_vcpus;
 	struct pkvm_per_vcpu_parameters per_vcpu[];
 };
+
+void pkvm_boot(void);
+void pkvm_boot_code_end(void);
+
+#define PKVM_BOOT_CODE_SIZE (pkvm_boot_code_end - pkvm_boot)
 
 #endif /* SELFTEST_PKVM_BOOT_H */
