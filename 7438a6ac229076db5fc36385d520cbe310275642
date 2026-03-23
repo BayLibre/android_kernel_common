@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62f8f6ca_ecc1b0bd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-23T19:58:42Z",
+      "side": 1,
+      "message": "Please explain _why_ you are doing this not _what_ you are doing (the latter one we can figure out by looking at the code).",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 54
+      },
+      "revId": "7438a6ac229076db5fc36385d520cbe310275642",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70282060_2d25fb64",
+        "filename": "mm/swap_state.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-23T19:58:42Z",
+      "side": 1,
+      "message": "missing space:\n`if (skip)`",
+      "range": {
+        "startLine": 492,
+        "startChar": 2,
+        "endLine": 492,
+        "endChar": 10
+      },
+      "revId": "7438a6ac229076db5fc36385d520cbe310275642",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d4c5a5c_efc44ec2",
+        "filename": "mm/swap_state.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-23T19:58:42Z",
+      "side": 1,
+      "message": "I think it would be safer to reset `skip` before continuing. Otherwise you rely on the vendor hook to always reset it to `false`.",
+      "range": {
+        "startLine": 493,
+        "startChar": 3,
+        "endLine": 493,
+        "endChar": 12
+      },
+      "revId": "7438a6ac229076db5fc36385d520cbe310275642",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
