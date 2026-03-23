@@ -719,6 +719,9 @@ DECLARE_HOOK(android_vh_mm_free,
 DECLARE_HOOK(android_vh_mm_init,
 	TP_PROTO(struct mm_struct *mm),
 	TP_ARGS(mm));
+DECLARE_HOOK(android_vh_read_swap_cache_async_wait,
+	TP_PROTO(bool *skip),
+	TP_ARGS(skip));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */

@@ -429,6 +429,7 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 	struct folio *folio;
 	struct page *page;
 	void *shadow = NULL;
+	bool skip = false;
 
 	*new_page_allocated = false;
 	si = get_swap_device(entry);
@@ -487,6 +488,10 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 		 * __read_swap_cache_async(), which has set SWAP_HAS_CACHE
 		 * in swap_map, but not yet added its page to swap cache.
 		 */
+		trace_android_vh_read_swap_cache_async_wait(&skip);
+		if(skip)
+			continue;
+
 		schedule_timeout_uninterruptible(1);
 	}
 
