@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a378a19_4175032a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/device/device.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-23T11:12:34Z",
+      "side": 1,
+      "message": "Any other func, should return SMCCC_RET_INVALID_PARAMETER to guest already. Or did you mean something else?",
+      "parentUuid": "9350491b_f9e8d348",
+      "range": {
+        "startLine": 613,
+        "startChar": 1,
+        "endLine": 613,
+        "endChar": 2
+      },
+      "revId": "2e2880192f7fb2103a60e2d9ee02b2d7fc10fe9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3b6a14e_6af9ac0f",
         "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
         "patchSetId": 10
@@ -72,6 +96,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "55446d80_1af55f61",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-23T11:12:34Z",
+      "side": 1,
+      "message": "That\u0027s the hyp_vcpu. So no one should have changed it?",
+      "parentUuid": "f3b6a14e_6af9ac0f",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 45
+      },
+      "revId": "2e2880192f7fb2103a60e2d9ee02b2d7fc10fe9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "77092d0c_5e12865b",
         "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
         "patchSetId": 10
@@ -83,6 +131,30 @@
       "writtenOn": "2026-03-23T11:02:27Z",
       "side": 1,
       "message": "nit: this allows the host to propagate undocumented error codes",
+      "range": {
+        "startLine": 212,
+        "startChar": 35,
+        "endLine": 212,
+        "endChar": 38
+      },
+      "revId": "2e2880192f7fb2103a60e2d9ee02b2d7fc10fe9f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbde5f73_40579511",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-23T11:12:34Z",
+      "side": 1,
+      "message": "Hum. Good point. Should probably enforce SMCCC_RET_INVALID_PARAMETER if ret !\u003d SMCCC_RET_SUCCESS.",
+      "parentUuid": "77092d0c_5e12865b",
       "range": {
         "startLine": 212,
         "startChar": 35,
