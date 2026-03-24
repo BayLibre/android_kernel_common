@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59143e30_e73fb9d5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-24T22:16:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58eaf952_0d374d91",
+      "revId": "09fbdb92acebadde2b9c6df3d1a7b9a7b7296144",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02eed020_c0742183",
@@ -71,6 +89,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ba60515_3b4e7aef",
+        "filename": "arch/arm64/kvm/hyp/nvhe/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-24T22:16:09Z",
+      "side": 1,
+      "message": "Makes sense, I removed them.",
+      "parentUuid": "1d053704_7313722c",
+      "revId": "09fbdb92acebadde2b9c6df3d1a7b9a7b7296144",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b6873fc_be5c54a9",
@@ -120,6 +156,24 @@
       "side": 1,
       "message": "Ha this is because we link against kvm.nvhe.o and not directly against vmlinux?\n\nProbably my own ignorance, but perhaps this needs a comment as per why we need to explicitly add this comment? FTR, I have added one here https://lore.kernel.org/all/20260316092845.3367411-1-vdonnefort@google.com/ \"undefsyms_base.o does not automatically get KASAN flags\"",
       "parentUuid": "302a5054_93a838df",
+      "revId": "09fbdb92acebadde2b9c6df3d1a7b9a7b7296144",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d7f5f28_2db90a72",
+        "filename": "arch/arm64/kvm/hyp/nvhe/Makefile.nvhe",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-24T22:16:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32eb2bda_213c7cdc",
       "revId": "09fbdb92acebadde2b9c6df3d1a7b9a7b7296144",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
