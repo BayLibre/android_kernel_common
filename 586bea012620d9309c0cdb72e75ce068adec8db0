@@ -229,6 +229,30 @@
       },
       "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "657d7376_f415194e",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2026-03-24T00:57:30Z",
+      "side": 1,
+      "message": "Yes, [1] echoes what has been reported recently, thanks for linking.\n\n\u003e At the very least, struct xe_ggtt_pt_ops [1] appears to only operate on PTEs not PMDs. Are there any other page table structures that actually use higher order allocations?\n\nXe architecture should support address page table entries for 4K, 64K (for VRAM), 2M, and 1G. The Xe driver doesn\u0027t distinguish between these by name (meaning it always talks about the leaf-node of a page table walk as PTE). Instead it describes them by their page size or \"level\".\n\nI\u0027ll measure how often 2M actually gets used on ADL-P and how that is impacted by these tunables.\n\nBrian and I continued this in a side-channel discussion.\n\nSummary is that direct-reclaim is useful to _maximize the chances_ for 2MB allocations that use a single page table entry and reduce TLB thrash compared to 512 4k entries.\n\nEven-so, the benefit to TLB cache-hits during GPU workload execution may still be outweighed by the cost in allocation latency.\n\nThe plan is to merge these tunables without changing behavior in their defaults, then customize their values using boot-time parameters defined for each device.\n\n[1] https://android.googlesource.com/kernel/common/+/6355550c251f2498dbaa876c13f44d99fff86935/drivers/gpu/drm/xe/xe_ggtt_types.h#72",
+      "parentUuid": "91351d98_f9f0a427",
+      "range": {
+        "startLine": 818,
+        "startChar": 0,
+        "endLine": 818,
+        "endChar": 57
+      },
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
