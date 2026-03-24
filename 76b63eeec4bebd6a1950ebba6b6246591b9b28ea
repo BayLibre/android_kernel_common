@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63c87fae_e5c5990f",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1944400
+      },
+      "writtenOn": "2026-03-24T18:01:50Z",
+      "side": 1,
+      "message": "Does that mean a duplicate `gunyah_vm_add_resource_ticket` call becomes valid, but a duplicate `gunyah_vm_remove_resource_ticket` call continues to be invalid (segfaults?)?",
+      "parentUuid": "7d108a6c_71466a10",
+      "revId": "76b63eeec4bebd6a1950ebba6b6246591b9b28ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ced3526e_f915dd81",
         "filename": "drivers/virt/gunyah/vm_mgr.c",
         "patchSetId": 1
