@@ -211,6 +211,13 @@ int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
 	if (smmu->sid_bits <= STRTAB_SPLIT)
 		smmu->features &= ~ARM_SMMU_FEAT_2_LVL_STRTAB;
 
+	if (reg & IDR1_ATTR_PERMS_OVR) {
+		smmu->features |= ARM_SMMU_FEAT_PERMS_OVR;
+	} else if (smmu->options & ARM_SMMU_OPT_OVR_INSTCFG_DATA) {
+		dev_err(smmu->dev, "Inst/Data attribute override not supported\n");
+		return -ENXIO;
+	}
+
 	/* IDR3 */
 	reg = readl_relaxed(smmu->base + ARM_SMMU_IDR3);
 	smmu->features |= smmu_idr3_features(reg);
@@ -500,6 +507,7 @@ void arm_smmu_write_strtab(struct arm_smmu_device *smmu)
 static struct arm_smmu_option_prop arm_smmu_options[] = {
 	{ ARM_SMMU_OPT_SKIP_PREFETCH, "hisilicon,broken-prefetch-cmd" },
 	{ ARM_SMMU_OPT_PAGE0_REGS_ONLY, "cavium,cn9900-broken-page1-regspace"},
+	{ ARM_SMMU_OPT_OVR_INSTCFG_DATA, "arm,instdata-override"},
 	{ 0, NULL},
 };
 
