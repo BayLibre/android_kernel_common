@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ced3526e_f915dd81",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1882526
+      },
+      "writtenOn": "2026-03-24T14:44:24Z",
+      "side": 1,
+      "message": "I\u0027m obviously not familiar with the details here but wouldn\u0027t this introduce a risk of a conceptual \"use after free\" e.g.\n```\n/* ticket_a and ticket_b refer to the same underlying resource */\ngunyah_vm_add_resource_ticket(ghvm, ticket_a);\ngunyah_vm_add_resource_ticket(ghvm, ticket_b);\ngunyah_vm_remove_resource_ticket(ghvm, ticket_a);\n// ticket_b is now referring to an \"unpopulated\" resource...?\n```",
+      "range": {
+        "startLine": 412,
+        "startChar": 2,
+        "endLine": 412,
+        "endChar": 10
+      },
+      "revId": "76b63eeec4bebd6a1950ebba6b6246591b9b28ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
