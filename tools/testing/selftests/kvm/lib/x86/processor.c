@@ -695,6 +695,15 @@ void vcpu_arch_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code)
 	vcpu_regs_get(vcpu, &regs);
 	regs.rip = (unsigned long) guest_code;
 	vcpu_regs_set(vcpu, &regs);
+
+	if (is_pkvm_protected_vm(vcpu->vm) &&
+	    vcpu->id != vcpu->vm->arch.bsp_vcpu_id)
+		/*
+		 * The BSP entry point is still set by regs.rip.
+		 * AP entry point is set by writing the guest code address to a
+		 * predefined location in the guest memory
+		 */
+		vm_pkvm_set_vcpu_entry_point(vcpu, guest_code);
 }
 
 vm_vaddr_t kvm_allocate_vcpu_stack(struct kvm_vm *vm)

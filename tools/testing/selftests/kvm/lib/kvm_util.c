@@ -9,6 +9,7 @@
 #include "processor.h"
 #include "ucall_common.h"
 #include "pkvm/pkvm_util.h"
+#include "pkvm/pkvm_boot.h"
 
 #include <assert.h>
 #include <sched.h>
@@ -452,6 +453,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape, uint32_t nr_runnable_vcpus,
 	struct userspace_mem_region *slot0;
 	struct kvm_vm *vm;
 	int i, flags;
+	uint64_t guest_paddr = 0;
 
 	kvm_set_files_rlimit(nr_runnable_vcpus);
 
@@ -468,7 +470,10 @@ struct kvm_vm *__vm_create(struct vm_shape shape, uint32_t nr_runnable_vcpus,
 	if (is_guest_memfd_required(shape))
 		flags |= KVM_MEM_GUEST_MEMFD;
 
-	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
+	if (is_pkvm_protected_vm(vm) && nr_runnable_vcpus > 1)
+		guest_paddr = ONE_MEGABYTE_GPA;
+
+	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, guest_paddr, 0, nr_pages, flags);
 	for (i = 0; i < NR_MEM_REGIONS; i++)
 		vm->memslots[i] = 0;
 
