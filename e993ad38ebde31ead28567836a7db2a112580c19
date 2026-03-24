@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45818451_db19cfa1",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-24T10:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fd325da_a369939f",
+      "revId": "e993ad38ebde31ead28567836a7db2a112580c19",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "785dcdac_ba97ba87",
@@ -35,6 +53,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fa140c0_a82f406a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-24T10:44:48Z",
+      "side": 1,
+      "message": "Yes, the comment is wrong, I changed the logic to rely on reserved pages and not donations.",
+      "parentUuid": "785dcdac_ba97ba87",
+      "revId": "e993ad38ebde31ead28567836a7db2a112580c19",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be89bba1_ec057a06",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-03-20T13:56:32Z",
       "side": 1,
       "message": "cma_size is PMD_SIZE aligned, so you can use pmd_order here to go faster.",
+      "revId": "e993ad38ebde31ead28567836a7db2a112580c19",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3277087a_a18d46fd",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-24T10:44:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be89bba1_ec057a06",
       "revId": "e993ad38ebde31ead28567836a7db2a112580c19",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
