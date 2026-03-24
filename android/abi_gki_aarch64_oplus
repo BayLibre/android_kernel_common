@@ -590,3 +590,25 @@
   contpte_ptep_get
   contpte_ptep_set_access_flags
   __ptep_set_access_flags
+<<<<<<< HEAD   (7116e258bf03a56518418d7a09dfe3a686fc6504 ANDROID: ABI: Update Pixel symbol list)
+||||||| BASE   (6f8119b6bf03a5369573c59c7d9eddd85267044d ANDROID: sched: bounded deferral of CFS preemption for frame)
+  __traceiter_android_vh_resched_curr_lazy
+  __traceiter_android_vh_restore_curr_resched
+  __traceiter_android_vh_clear_curr_lazy
+  __tracepoint_android_vh_resched_curr_lazy
+  __tracepoint_android_vh_restore_curr_resched
+  __tracepoint_android_vh_clear_curr_lazy
+=======
+  __traceiter_android_vh_resched_curr_lazy
+  __traceiter_android_vh_restore_curr_resched
+  __traceiter_android_vh_clear_curr_lazy
+  __tracepoint_android_vh_resched_curr_lazy
+  __tracepoint_android_vh_restore_curr_resched
+  __tracepoint_android_vh_clear_curr_lazy
+  __traceiter_android_vh_lock_delay_schedule
+  __traceiter_android_vh_lock_task_fork
+  __traceiter_android_vh_lock_task_exit
+  __tracepoint_android_vh_lock_delay_schedule
+  __tracepoint_android_vh_lock_task_fork
+  __tracepoint_android_vh_lock_task_exit
+>>>>>>> CHANGE (2df5cda9392100c2db4380c1ae9ad623587dd462 ANDROID: GKI: Export symbols for lock-boost scheduler hooks )
