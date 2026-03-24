@@ -166,6 +166,30 @@
       },
       "revId": "a05ae0b8deb6662d72654d4dd4a0363b556c980b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e6aec75_a1b2aa9d",
+        "filename": "drivers/block/zram/zram_drv.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1894539
+      },
+      "writtenOn": "2026-03-24T05:05:31Z",
+      "side": 1,
+      "message": "I am testing pixel with aosp zram.\n\nCONFIG_ZRAM_ANDROID_IOCTL is disabled:\n  error: call to undeclared function \u0027zram_can_store_page\u0027\n\nCONFIG_ZRAM_WRITEBACK is disabled:\n  error: unused function \u0027zram_can_store_page",
+      "parentUuid": "6883be81_7b5557fd",
+      "range": {
+        "startLine": 282,
+        "startChar": 15,
+        "endLine": 282,
+        "endChar": 40
+      },
+      "revId": "a05ae0b8deb6662d72654d4dd4a0363b556c980b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
