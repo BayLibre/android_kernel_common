@@ -22,6 +22,30 @@
       },
       "revId": "76b63eeec4bebd6a1950ebba6b6246591b9b28ea",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4a40c5d_21ed993f",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1882526
+      },
+      "writtenOn": "2026-03-24T14:45:39Z",
+      "side": 1,
+      "message": "My point being: shouldn\u0027t there be a refcount on the resource and only \"unpopulate\" it once the refcount hits 0?",
+      "parentUuid": "ced3526e_f915dd81",
+      "range": {
+        "startLine": 412,
+        "startChar": 2,
+        "endLine": 412,
+        "endChar": 10
+      },
+      "revId": "76b63eeec4bebd6a1950ebba6b6246591b9b28ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
