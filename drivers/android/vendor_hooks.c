@@ -680,3 +680,6 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_migration_entry_wait_exit);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_migrate_pages_batch_break);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_migrate_batch_nr_pages);
 EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_skip_cma);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_delay_schedule);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_task_fork);
+EXPORT_TRACEPOINT_SYMBOL_GPL(android_vh_lock_task_exit);

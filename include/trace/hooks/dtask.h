@@ -154,6 +154,46 @@ DECLARE_RESTRICTED_HOOK(android_rvh_dpm_prepare,
 DECLARE_HOOK(android_vh_set_tsk_need_resched_lazy,
 	TP_PROTO(struct task_struct *p, struct rq *rq, int *need_lazy),
 	TP_ARGS(p, rq, need_lazy));
+<<<<<<< HEAD   (7db1e563d6f73706150a812a21f13e5fbc14efde ANDROID: GKI: update symbol list for allwinner)
+||||||| BASE   (47a1927cad2aef025862b6124c5062a16f60efdb BACKPORT: FROMGIT: media: uvcvideo: Allow userspace to incre)
+
+DECLARE_HOOK(android_vh_resched_curr_lazy,
+	TP_PROTO(struct rq *rq, bool *skip_preempt),
+	TP_ARGS(rq, skip_preempt));
+
+DECLARE_HOOK(android_vh_restore_curr_resched,
+	TP_PROTO(unsigned long *flags, int *lazy_flage),
+	TP_ARGS(flags, lazy_flage));
+
+DECLARE_HOOK(android_vh_clear_curr_lazy,
+	TP_PROTO(struct task_struct *tsk),
+	TP_ARGS(tsk));
+=======
+
+DECLARE_HOOK(android_vh_resched_curr_lazy,
+	TP_PROTO(struct rq *rq, bool *skip_preempt),
+	TP_ARGS(rq, skip_preempt));
+
+DECLARE_HOOK(android_vh_restore_curr_resched,
+	TP_PROTO(unsigned long *flags, int *lazy_flage),
+	TP_ARGS(flags, lazy_flage));
+
+DECLARE_HOOK(android_vh_clear_curr_lazy,
+	TP_PROTO(struct task_struct *tsk),
+	TP_ARGS(tsk));
+
+DECLARE_HOOK(android_vh_lock_delay_schedule,
+	TP_PROTO(struct task_struct *prev, int sched_mode, bool *ext_slice),
+	TP_ARGS(prev, sched_mode, ext_slice));
+
+DECLARE_HOOK(android_vh_lock_task_fork,
+	TP_PROTO(struct task_struct *p),
+	TP_ARGS(p));
+
+DECLARE_HOOK(android_vh_lock_task_exit,
+	TP_PROTO(struct task_struct *p),
+	TP_ARGS(p));
+>>>>>>> CHANGE (f2390659d177c46faf913c3805183452a72257ae ANDROID: sched: bounded deferral of CFS preemption for frame)
 #endif /* _TRACE_HOOK_DTASK_H */
 
 /* This part must be outside protection */
