@@ -39,6 +39,30 @@
       },
       "revId": "b291d564905bad43d53912e8617af192fdbcd993",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3bc5afc_ae07e72b",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2026-03-24T16:52:31Z",
+      "side": 1,
+      "message": "As presently written, it is equivalent to:\n```\nif ((order \u0026\u0026 !may_direct_reclaim) || (order \u0026\u0026 order \u003e max_order_direct_reclaim))\n```\n\nYou are right that the second term can be simplified (since unsigned) leaving us with:\n```\nif ((order \u0026\u0026 !may_direct_reclaim) || (order \u003e max_order_direct_reclaim))\n```\n\nBut the first term cannot be simplified, otherwise we\u0027d cease from ensuring direct-reclaim is always used for order-0 allocations (which we need to avoid failed allocs when system-wide mem pressure is high).\n\nI prefer the current writing because it makes the order-0 case clear. \nHow about you?",
+      "parentUuid": "28bffa51_927f036c",
+      "range": {
+        "startLine": 121,
+        "startChar": 5,
+        "endLine": 121,
+        "endChar": 13
+      },
+      "revId": "b291d564905bad43d53912e8617af192fdbcd993",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
