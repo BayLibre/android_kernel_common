@@ -38,6 +38,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c14cdbb4_083d4b34",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-24T12:52:56Z",
+      "side": 1,
+      "message": "Understood! \n\nAs this looks a bit weird, would you mind adding a small comment so we understand later what\u0027s happening?",
+      "parentUuid": "c86f4245_4e3737a9",
+      "revId": "60cfb07971f179526c805c48d31695cdbdcd5ada",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cff4dfd3_1951ca97",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-24T12:52:56Z",
+      "side": 1,
+      "message": "Is cma_size always an order 2?",
+      "revId": "60cfb07971f179526c805c48d31695cdbdcd5ada",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2a2fbf7c_eee956f4",
         "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
         "patchSetId": 6
@@ -102,6 +137,24 @@
       "side": 1,
       "message": "It\u0027s not necessary, IOMMU driver should call the reclaim with the same memory size allocated.",
       "parentUuid": "b7d89b72_8c426b4e",
+      "revId": "60cfb07971f179526c805c48d31695cdbdcd5ada",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "730598cd_c7c315bb",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-24T12:52:56Z",
+      "side": 1,
+      "message": "Do we want a WARN_ON() to make sure no one makes a mistake here?",
+      "parentUuid": "e369e09e_9fd33294",
       "revId": "60cfb07971f179526c805c48d31695cdbdcd5ada",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
