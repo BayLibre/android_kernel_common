@@ -7717,12 +7717,18 @@ static void __sched notrace __schedule(int sched_mode)
 	struct rq *rq;
 	bool prev_not_proxied;
 	int cpu;
+	bool ext_slice = false;
 
 	cpu = smp_processor_id();
 	rq = cpu_rq(cpu);
 	prev = rq->curr;
 
 	schedule_debug(prev, preempt);
+
+	trace_android_vh_lock_delay_schedule(prev, sched_mode, &ext_slice);
+
+	if (ext_slice)
+		return;
 
 	if (sched_feat(HRTICK) || sched_feat(HRTICK_DL))
 		hrtick_clear(rq);
