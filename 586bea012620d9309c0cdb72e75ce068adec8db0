@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e087e13_768fc410",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2026-03-24T02:01:41Z",
+      "side": 1,
+      "message": "TTM is a singleton that uses global vars.\n\nA driver (like Xe) will init the TTM framework during its `probe`, which occurs when Xe is loaded (or later when a GPU appears on the PCI bus).\n\nThe first time any driver inits TTM, these params are set to default values within `ttm_global_init() -\u003e ttm_pool_mgr_init()`.\n\nThe existing `page_pool_size` is set here from the caller\u0027s provided value, so I just co-located my defaults here.\n\nBut I\u0027ve moved the defaults to the static variable declarations to make it clearer.",
+      "parentUuid": "215c4c71_911f1472",
+      "range": {
+        "startLine": 811,
+        "startChar": 0,
+        "endLine": 812,
+        "endChar": 28
+      },
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d90d1383_51bcb6df",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-03-19T17:20:26Z",
       "side": 1,
       "message": "This and `max_order_direct_reclaim` should have similar parameter validation as in arsp/751458:\n\n```\n\tif (align_shift \u003e\u003d BITS_PER_LONG) {\n\t\tpr_err(\"invalid align_shift\u003d%u (must be \u003c %u)\\n\",\n\t\t       align_shift, BITS_PER_LONG);\n\t\treturn -EINVAL;\n\t}\n```",
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "245352b7_222e0ddb",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2026-03-24T02:01:41Z",
+      "side": 1,
+      "message": "Latest CL validates that both `max_page_order` and `max_order_direct_reclaim` may only be set between `0` and `MAX_PAGE_ORDER (10)`.\n\nFor `max_page_order`, zero means: force all pages to be 4K.\n\nFor `max_order_direct_reclaim`, zero means: only direct reclaim for 4K pages. \n\n`may_direct_reclaim \u003d false` still forces direct-reclaim for 4K (order-0) pages, since by the time we need that, we are probably already in a system-wide OOM situation, so direct-reclaim is not hurting anything (everything is already on fire).",
+      "parentUuid": "d90d1383_51bcb6df",
       "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -251,6 +293,48 @@
         "endLine": 818,
         "endChar": 57
       },
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63dc336b_e4eee243",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2026-03-24T02:01:41Z",
+      "side": 1,
+      "message": "Marked as resolved. We can continue behaviors in b/470470103. \n\nThis CL is just to expose some tunables.",
+      "parentUuid": "657d7376_f415194e",
+      "range": {
+        "startLine": 818,
+        "startChar": 0,
+        "endLine": 818,
+        "endChar": 57
+      },
+      "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33a7e046_2a1ce032",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 2046240
+      },
+      "writtenOn": "2026-03-24T02:01:41Z",
+      "side": 1,
+      "message": "Done. Default restored to MAX_PAGE_ORDER (10).",
+      "parentUuid": "8a8c0d04_10dcb29d",
       "revId": "586bea012620d9309c0cdb72e75ce068adec8db0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
