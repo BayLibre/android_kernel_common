@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c86f4245_4e3737a9",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-24T12:15:48Z",
+      "side": 1,
+      "message": "Because \"reserved_pages\" indicates that the page was pre-allcoated by the hypervisor and will set the refcount to 1.",
+      "parentUuid": "3663e3ad_63aad030",
+      "revId": "60cfb07971f179526c805c48d31695cdbdcd5ada",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2a2fbf7c_eee956f4",
         "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
         "patchSetId": 6
@@ -31,6 +49,24 @@
       "writtenOn": "2026-03-24T11:08:40Z",
       "side": 1,
       "message": "Not a big deal, but it is weird to set iommu_pools_ready if kvm_iommu_init() return s an error.\n\nI would if (ret) return ret here.",
+      "revId": "60cfb07971f179526c805c48d31695cdbdcd5ada",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6eda61e_b085a4be",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-24T12:15:48Z",
+      "side": 1,
+      "message": "iommu_pools_ready is about the other pool, but yes, if we return an error the IOMMU would fail to initialize any way.",
+      "parentUuid": "2a2fbf7c_eee956f4",
       "revId": "60cfb07971f179526c805c48d31695cdbdcd5ada",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2026-03-24T11:08:40Z",
       "side": 1,
       "message": "Shall we also test \"phys + (PAGE_SIZE \u003c\u003c order)\" ?",
+      "revId": "60cfb07971f179526c805c48d31695cdbdcd5ada",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e369e09e_9fd33294",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-24T12:15:48Z",
+      "side": 1,
+      "message": "It\u0027s not necessary, IOMMU driver should call the reclaim with the same memory size allocated.",
+      "parentUuid": "b7d89b72_8c426b4e",
       "revId": "60cfb07971f179526c805c48d31695cdbdcd5ada",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
