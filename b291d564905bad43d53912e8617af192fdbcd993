@@ -63,6 +63,30 @@
       },
       "revId": "b291d564905bad43d53912e8617af192fdbcd993",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25316cff_40c0acb8",
+        "filename": "drivers/gpu/drm/ttm/ttm_pool.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1368430
+      },
+      "writtenOn": "2026-03-24T17:36:06Z",
+      "side": 1,
+      "message": "I see, good catch.\n\n`common/mm/page_alloc.c`\n```\n\t\t/*\n\t\t * We most definitely don\u0027t want callers attempting to\n\t\t * allocate greater than order-1 page units with __GFP_NOFAIL.\n\t\t */\n\t\tWARN_ON_ONCE(order \u003e 1);\n\t\t/*\n\t\t * Also we don\u0027t support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,\n\t\t * otherwise, we may result in lockup.\n\t\t */\n\t\tWARN_ON_ONCE(!can_direct_reclaim);\n```\n\n\u003e I prefer the current writing because it makes the order-0 case clear.\n\nI agree, although with a small (nit) update to check `order \u003e 0` explicitly, similar to other checks in `page_alloc.c` (which, admittedly, also treats `order` as bool sometimes also):\n\n```\nif ((order \u003e 0 \u0026\u0026 !may_direct_reclaim) || (order \u003e max_order_direct_reclaim))\n```\n\nCan you also add a comment here about why `order \u003e 0` is necessary? Some combination of your description + the `page_alloc.c` comment would be good to help people in the future (or just me).\n\n\u003e otherwise we\u0027d cease from ensuring direct-reclaim is always used for order-0 allocations (which we need to avoid failed allocs when system-wide mem pressure is high).",
+      "parentUuid": "d3bc5afc_ae07e72b",
+      "range": {
+        "startLine": 121,
+        "startChar": 5,
+        "endLine": 121,
+        "endChar": 13
+      },
+      "revId": "b291d564905bad43d53912e8617af192fdbcd993",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
