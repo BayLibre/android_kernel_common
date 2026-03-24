@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5c6979a_5e26c263",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-03-24T02:26:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3725b03c_072a529b",
+      "revId": "5cf8ac0797a0662a1bba3627e0de7044e31e0be1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11dedda1_e2103191",
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "Ok, I guess clearing IA32_DEBUGCTL on vmexit is enforced unconditionally by VMX hardware (from SDM: \"The IA32_DEBUGCTL MSR is cleared to 00000000_00000000H.\" - looks like that is done regardless of any vmexit/vmentry control bits?), and restoring it on vmentry is ensured by setting VM_EXIT_SAVE_DEBUG_CONTROLS and VM_ENTRY_LOAD_DEBUG_CONTROLS. Correct?",
       "parentUuid": "11dedda1_e2103191",
+      "revId": "5cf8ac0797a0662a1bba3627e0de7044e31e0be1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5639dfdf_aa7a647a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-03-24T02:26:13Z",
+      "side": 1,
+      "message": "Yes, correct.",
+      "parentUuid": "4fe70a31_07f5b1bf",
       "revId": "5cf8ac0797a0662a1bba3627e0de7044e31e0be1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
