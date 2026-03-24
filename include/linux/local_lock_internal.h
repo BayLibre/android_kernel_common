@@ -17,10 +17,7 @@ typedef struct {
 
 /* local_trylock() and local_trylock_irqsave() only work with local_trylock_t */
 typedef struct {
-#ifdef CONFIG_DEBUG_LOCK_ALLOC
-	struct lockdep_map	dep_map;
-	struct task_struct	*owner;
-#endif
+	local_lock_t	llock;
 	u8		acquired;
 } local_trylock_t;
 
@@ -34,7 +31,7 @@ typedef struct {
 	.owner = NULL,
 
 # define LOCAL_TRYLOCK_DEBUG_INIT(lockname)		\
-	LOCAL_LOCK_DEBUG_INIT(lockname)
+	.llock = { LOCAL_LOCK_DEBUG_INIT((lockname).llock) },
 
 static inline void local_lock_acquire(local_lock_t *l)
 {
@@ -84,7 +81,7 @@ do {								\
 	local_lock_debug_init(lock);				\
 } while (0)
 
-#define __local_trylock_init(lock) __local_lock_init((local_lock_t *)lock)
+#define __local_trylock_init(lock) __local_lock_init(lock.llock)
 
 #define __spinlock_nested_bh_init(lock)				\
 do {								\
