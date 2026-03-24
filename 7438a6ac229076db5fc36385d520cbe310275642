@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df69331f_9f62ac93",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4245205
+      },
+      "writtenOn": "2026-03-24T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62f8f6ca_ecc1b0bd",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 54
+      },
+      "revId": "7438a6ac229076db5fc36385d520cbe310275642",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70282060_2d25fb64",
@@ -47,6 +71,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebd3e501_3dbef1a2",
+        "filename": "mm/swap_state.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 4245205
+      },
+      "writtenOn": "2026-03-24T08:26:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70282060_2d25fb64",
+      "range": {
+        "startLine": 492,
+        "startChar": 2,
+        "endLine": 492,
+        "endChar": 10
+      },
+      "revId": "7438a6ac229076db5fc36385d520cbe310275642",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d4c5a5c_efc44ec2",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-03-23T19:58:42Z",
       "side": 1,
       "message": "I think it would be safer to reset `skip` before continuing. Otherwise you rely on the vendor hook to always reset it to `false`.",
+      "range": {
+        "startLine": 493,
+        "startChar": 3,
+        "endLine": 493,
+        "endChar": 12
+      },
+      "revId": "7438a6ac229076db5fc36385d520cbe310275642",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a68d8a9_b508e21d",
+        "filename": "mm/swap_state.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 4245205
+      },
+      "writtenOn": "2026-03-24T08:26:56Z",
+      "side": 1,
+      "message": "Done, moved definition of `skip` into the current scope so it defaults to `false` each iteration.",
+      "parentUuid": "8d4c5a5c_efc44ec2",
       "range": {
         "startLine": 493,
         "startChar": 3,
