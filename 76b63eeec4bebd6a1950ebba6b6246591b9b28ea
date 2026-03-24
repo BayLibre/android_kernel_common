@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7d108a6c_71466a10",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 2007700
+      },
+      "writtenOn": "2026-03-24T17:46:37Z",
+      "side": 1,
+      "message": "This check will return false because of the INIT_LIST_HEAD that I added in line #367. If we exited before adding vm_list to resources list, then this vm_list won\u0027t need a list_del or module_put. Thats what this checks.",
+      "parentUuid": "447b0ae5_4d74f4a7",
+      "revId": "76b63eeec4bebd6a1950ebba6b6246591b9b28ea",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ced3526e_f915dd81",
         "filename": "drivers/virt/gunyah/vm_mgr.c",
         "patchSetId": 1
