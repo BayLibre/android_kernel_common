@@ -34,6 +34,29 @@
       "parentUuid": "9cf0afbf_f11d8544",
       "revId": "44deb1deb5660d1b2e7e178ec04de2dfd7b86ab9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a52074f_30a4c36a",
+        "filename": "drivers/android/binder/rust_binder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2026-03-25T17:26:45Z",
+      "side": 1,
+      "message": "This seems like valid feedback:\n\n```\nPlease fix this WARNING reported by KernelCheckPatch: WARNING:ONE_SEMICOLON: Statements terminations use 1 semicolon\n\nWARNING:ONE_SEMICOLON: Statements terminations use 1 semicolon\n```",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 0
+      },
+      "revId": "44deb1deb5660d1b2e7e178ec04de2dfd7b86ab9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
