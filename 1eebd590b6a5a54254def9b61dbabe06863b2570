@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34d36209_fa76ae11",
+        "filename": "arch/arm64/include/asm/kvm_asm.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-25T16:24:07Z",
+      "side": 1,
+      "message": "Would this be better off inside the host\u0027s per-cpu `kvm_host_data` structure? It seems a shame to waste a whole page for a handful of bytes.",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 74
+      },
+      "revId": "1eebd590b6a5a54254def9b61dbabe06863b2570",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
