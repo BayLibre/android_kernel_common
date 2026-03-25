@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "96bfe59d_7048992a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4621031
+      },
+      "writtenOn": "2026-03-25T12:37:19Z",
+      "side": 1,
+      "message": "thanks, will update.",
+      "parentUuid": "b23f5ffb_92f09792",
+      "revId": "31547ed5474920a05ec4345eadb59befc3b2add8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d905d148_961bb5f2",
         "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
         "patchSetId": 5
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bfe4a259_6f4ebb97",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 4621031
+      },
+      "writtenOn": "2026-03-25T12:37:19Z",
+      "side": 1,
+      "message": "（1）UXN/PXN selection depends on KVM_PTE_LEAF_ATTR_HI_S2_XN in the stage2 PTE，not KVM_PGTABLE_PROT_RW.\n(2)  Agree, if it is not X, we should set IOMMU_NOEXEC.",
+      "parentUuid": "d905d148_961bb5f2",
+      "revId": "31547ed5474920a05ec4345eadb59befc3b2add8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b4cea55f_f80d96ea",
         "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
         "patchSetId": 5
@@ -48,6 +84,24 @@
       "writtenOn": "2026-03-25T10:58:16Z",
       "side": 1,
       "message": "And of course here, without KVM_PGTABLE_PROT_XN, we should allow both HOST_MEM_PROT | HOST_MMIO_PROT.",
+      "revId": "31547ed5474920a05ec4345eadb59befc3b2add8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e83de1eb_a0cf4e88",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 4621031
+      },
+      "writtenOn": "2026-03-25T12:37:19Z",
+      "side": 1,
+      "message": "In the current kvm_pgtable.h, the following MACROs defined:\n#define KVM_PGTABLE_PROT_RW\t(KVM_PGTABLE_PROT_R | KVM_PGTABLE_PROT_W)\n#define KVM_PGTABLE_PROT_RWX\t(KVM_PGTABLE_PROT_RW | KVM_PGTABLE_PROT_X)\n\n#define PKVM_HOST_MEM_PROT\tKVM_PGTABLE_PROT_RWX\n#define PKVM_HOST_MMIO_PROT\tKVM_PGTABLE_PROT_RW\n\nSo, PKVM_HOST_MEM_PROT(R | W | X) includes PKVM_HOST_MMIO_PROT(R | W). But they don\u0027t include \"KVM_PGTABLE_PROT_PXN | KVM_PGTABLE_PROT_UXN\".\n\nenum kvm_pgtable_prot {\n\tKVM_PGTABLE_PROT_X\t\t\t\u003d BIT(0),\n\tKVM_PGTABLE_PROT_W\t\t\t\u003d BIT(1),\n\tKVM_PGTABLE_PROT_R\t\t\t\u003d BIT(2),\n\n\tKVM_PGTABLE_PROT_DEVICE\t\t\t\u003d BIT(3),\n\tKVM_PGTABLE_PROT_NORMAL_NC\t\t\u003d BIT(4),\n\tKVM_PGTABLE_PROT_PXN\t\t\t\u003d BIT(5),\n\tKVM_PGTABLE_PROT_UXN\t\t\t\u003d BIT(6),\n\n\tKVM_PGTABLE_PROT_SW0\t\t\t\u003d BIT(55),\n\tKVM_PGTABLE_PROT_SW1\t\t\t\u003d BIT(56),\n\tKVM_PGTABLE_PROT_SW2\t\t\t\u003d BIT(57),\n\tKVM_PGTABLE_PROT_SW3\t\t\t\u003d BIT(58),\n};",
+      "parentUuid": "b4cea55f_f80d96ea",
       "revId": "31547ed5474920a05ec4345eadb59befc3b2add8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
