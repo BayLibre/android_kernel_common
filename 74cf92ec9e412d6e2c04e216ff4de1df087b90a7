@@ -16,6 +16,24 @@
       "message": "Could we use something like __pkvm_host_reclaim_page_guest? It seems a shame and fragile to have to open-code the reference counting in another place, when the increment is implicit in one of the earlier-called functions.",
       "revId": "74cf92ec9e412d6e2c04e216ff4de1df087b90a7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41cfdb83_676ec21a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2507,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-25T11:31:14Z",
+      "side": 1,
+      "message": "aosp/3999378",
+      "parentUuid": "7d690704_a6963e23",
+      "revId": "74cf92ec9e412d6e2c04e216ff4de1df087b90a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
