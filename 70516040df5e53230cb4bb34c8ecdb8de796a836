@@ -22,6 +22,30 @@
       },
       "revId": "70516040df5e53230cb4bb34c8ecdb8de796a836",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17caef14_59615a82",
+        "filename": "arch/arm64/kvm/hyp/nvhe/debug-sr.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2026-03-25T19:17:26Z",
+      "side": 1,
+      "message": "You are completely right to be confused. After looking closer at `EL1_TRACING_CONFIGURED`, this patch is redundant! You already fixed it!\n\nIn pKVM, `EL1_TRACING_CONFIGURED` is forced to true, which guarantees `__trace_needs_switch()` returns true. Furthermore, `trfcr_while_in_guest` is guaranteed to be 0, and `__trace_drain_and_disable()` already correctly checks `HAS_TRBE`.\n\nI\u0027m dropping this patch.",
+      "parentUuid": "6535d552_65d8b715",
+      "range": {
+        "startLine": 85,
+        "startChar": 6,
+        "endLine": 85,
+        "endChar": 23
+      },
+      "revId": "70516040df5e53230cb4bb34c8ecdb8de796a836",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
