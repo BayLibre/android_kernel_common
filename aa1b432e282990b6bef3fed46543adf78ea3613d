@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "238fb4ff_445f1a75",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 831,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-25T15:44:01Z",
+      "side": 1,
+      "message": "Wouldn\u0027t it be simpler to sample the flags in the `__pkvm_init` hypercall by inspecting the `kvm_host_data` directly? In fact, my reading of the `host_data_ptr()` macro suggests that the host might already do the right thing here (by updating the hypervisor structure with the correct flags during pKVM init). In which case, there doesn\u0027t appear to be a bug... (!)",
+      "range": {
+        "startLine": 831,
+        "startChar": 2,
+        "endLine": 831,
+        "endChar": 29
+      },
+      "revId": "aa1b432e282990b6bef3fed46543adf78ea3613d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
