@@ -145,6 +145,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b3497c42_d9d9dbc3",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-25T15:55:25Z",
+      "side": 1,
+      "message": "urgh, yeah, the SMMU architecture has historically done a bad job with things like NoSnoop. Please add a comment here, then, which says that we can\u0027t trust the host not to reconfigure coherent devices to emit non-coherent transactions.",
+      "parentUuid": "bb735580_34acdf0f",
+      "range": {
+        "startLine": 985,
+        "startChar": 0,
+        "endLine": 985,
+        "endChar": 31
+      },
+      "revId": "89e7bb0ae4f992cedd9af893940290e07b637f2e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2302b5ae_0b37fbc9",
         "filename": "arch/arm64/kvm/pkvm.c",
         "patchSetId": 5
