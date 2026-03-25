@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6535d552_65d8b715",
+        "filename": "arch/arm64/kvm/hyp/nvhe/debug-sr.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-25T14:56:12Z",
+      "side": 1,
+      "message": "Hmm. `__trace_drain_and_disable()` is only called from `__trace_switch_to_guest()` and *that* is only called when `__trace_needs_switch()` returns true. Given that both of these now check `__is_trbe_enabled()`, there\u0027s a funny discrepancy with what `EL1_TRACING_CONFIGURED` is actually doing...\n\nLooking back at upstream commit `a665e3bc88081 (\"KVM: arm64: coresight: Give TRBE enabled state to KVM\")`, I think the part that confuses me is the  `is_protected_kvm_enabled()` check in `__trace_needs_drain()` given that this is only called from `__trace_switch_to_guest()` after checking `__trace_needs_switch()`.\n\nSo something smells wrong here :/",
+      "range": {
+        "startLine": 85,
+        "startChar": 6,
+        "endLine": 85,
+        "endChar": 23
+      },
+      "revId": "70516040df5e53230cb4bb34c8ecdb8de796a836",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
