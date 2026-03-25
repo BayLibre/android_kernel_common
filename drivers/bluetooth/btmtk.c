@@ -1359,6 +1359,49 @@ int btmtk_usb_setup(struct hci_dev *hdev)
 		hci_set_msft_opcode(hdev, 0xFD30);
 		hci_set_aosp_capable(hdev);
 
+		// TODO(b/494324772): Remove after implementing the long-term solution
+		// for setting SAR values
+		if (dev_id == 0x7925) {
+			// Adjust the BT SAR power to 8 dBm.
+			const u8 MT7925_BT_SAR_POWER = 0x08;
+			u8 sar_power_cmd[] = { 0x03,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       0x00,
+					       0x00,
+					       0x00,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       MT7925_BT_SAR_POWER,
+					       0x00 };
+
+			skb = __hci_cmd_sync(hdev, 0xfc2d,
+					     sizeof(sar_power_cmd),
+					     sar_power_cmd, HCI_INIT_TIMEOUT);
+			if (IS_ERR(skb)) {
+				err = PTR_ERR(skb);
+				bt_dev_err(
+					hdev,
+					"Failed to apply SAR power setting (%d)",
+					err);
+				return err;
+			}
+			kfree_skb(skb);
+		}
+
 		/* Set up ISO interface after protocol enabled */
 		if (test_bit(BTMTK_ISOPKT_OVER_INTR, &btmtk_data->flags)) {
 			if (!btmtk_usb_isointf_init(hdev))
