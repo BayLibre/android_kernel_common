@@ -46,6 +46,30 @@
       },
       "revId": "aa1b432e282990b6bef3fed46543adf78ea3613d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9072621_6ea14a39",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 831,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-25T15:49:56Z",
+      "side": 1,
+      "message": "... but it would still be nice to move this off the flush path, as the ID register isn\u0027t going to change at runtime.\n\nHow about we set the vCPU flag when we create/init the hyp vcpu instead?",
+      "parentUuid": "769eab12_ffe3e917",
+      "range": {
+        "startLine": 831,
+        "startChar": 2,
+        "endLine": 831,
+        "endChar": 29
+      },
+      "revId": "aa1b432e282990b6bef3fed46543adf78ea3613d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
