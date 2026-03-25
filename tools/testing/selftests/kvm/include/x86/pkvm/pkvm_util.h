@@ -11,6 +11,14 @@ static inline bool is_pkvm_protected_vm(struct kvm_vm *vm)
 }
 
 /*
+ * Verify that PKVM is supported by KVM.
+ */
+static inline bool is_pkvm_enabled(void)
+{
+	return !!(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_PKVM_PROTECTED_VM));
+}
+
+/*
  * Convert private guest memory to shared memory for host-visible communication.
  * Touch each page first so the conversion doesn't fault on first access.
  */
