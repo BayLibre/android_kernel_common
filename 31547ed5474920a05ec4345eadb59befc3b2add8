@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d905d148_961bb5f2",
+        "filename": "arch/arm64/kvm/hyp/nvhe/iommu/iommu.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-25T09:43:08Z",
+      "side": 1,
+      "message": "Not sure declaring PROT_XN makes sense, we already have KVM_PGTABLE_PROT_RW which should select UXN/PXN.\n\nWouldn\u0027t the following be better?\n\n```\nif (!(prot \u0026 PKVM_PGTABLE_PROT_X) iommu_prot |\u003d IOMMU_NOEXEC;\n```",
+      "revId": "31547ed5474920a05ec4345eadb59befc3b2add8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
