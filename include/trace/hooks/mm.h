@@ -536,6 +536,12 @@ DECLARE_HOOK(android_vh_filemap_update_page,
 DECLARE_HOOK(android_vh_folio_end_writeback,
 	TP_PROTO(struct folio *folio),
 	TP_ARGS(folio));
+DECLARE_HOOK(android_vh_adjust_iocb_flags,
+	TP_PROTO(struct file *file, loff_t pos, size_t count, int *flags),
+	TP_ARGS(file, pos, count, flags));
+DECLARE_HOOK(android_vh_filemap_end_dropbehind_bypass,
+	TP_PROTO(struct folio *folio, bool *bypass),
+	TP_ARGS(folio, bypass));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
