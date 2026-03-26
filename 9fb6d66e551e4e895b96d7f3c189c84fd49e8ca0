@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78780e15_b49f0f04",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2026-03-26T07:55:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "035b3f5d_9d957321",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 8
+      },
+      "revId": "9fb6d66e551e4e895b96d7f3c189c84fd49e8ca0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae9d23a6_60b9033c",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-03-25T15:33:34Z",
       "side": 1,
       "message": "I think it would probably be better for the backport if the SPE and the TRBE functions were consistent here. So either make them both take `void` (and pull the registers out of `host_debug_state`) or pass everything in as arguments.",
+      "range": {
+        "startLine": 17,
+        "startChar": 29,
+        "endLine": 17,
+        "endChar": 33
+      },
+      "revId": "9fb6d66e551e4e895b96d7f3c189c84fd49e8ca0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c8f256b_4fcbcb4f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/debug-sr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2026-03-26T07:55:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae9d23a6_60b9033c",
       "range": {
         "startLine": 17,
         "startChar": 29,
