@@ -5961,6 +5961,14 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
 	if (nr_reclaimed >= nr_to_reclaim)
 		goto out;
 
+	trace_android_rvh_shrink_spec_lru(lruvec, sc, &nr_reclaimed,
+					 nr_to_reclaim, proportional_reclaim,
+					 nr, &bypass);
+	if (bypass) {
+		bypass = false;
+		goto out;
+	}
+
 	while (nr[LRU_INACTIVE_ANON] || nr[LRU_ACTIVE_FILE] ||
 					nr[LRU_INACTIVE_FILE]) {
 		unsigned long nr_anon, nr_file, percentage;
