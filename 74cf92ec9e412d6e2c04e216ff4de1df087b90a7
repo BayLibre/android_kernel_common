@@ -34,6 +34,24 @@
       "parentUuid": "7d690704_a6963e23",
       "revId": "74cf92ec9e412d6e2c04e216ff4de1df087b90a7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92dae8c1_3728145a",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2507,
+      "author": {
+        "id": 1951687
+      },
+      "writtenOn": "2026-03-26T11:06:30Z",
+      "side": 1,
+      "message": "FTR, I have tried a different approach https://paste.googleplex.com/5379622771490816?raw\n\nThat is to have a set of function __host_do_donate_guest / __host_do_reclaim_guest... similar to what you have suggested... but the problem is now __pkvm_host_donate_sglist_guest() doesn\u0027t update the host stage-2 and the VM together which means it needs a special case... \n\nSo overall I am not convinced open coding psci_mem_protect isn\u0027t just a better way.",
+      "parentUuid": "41cfdb83_676ec21a",
+      "revId": "74cf92ec9e412d6e2c04e216ff4de1df087b90a7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ],
   "submitRequirementResults": [
