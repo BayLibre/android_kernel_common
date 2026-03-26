@@ -61,6 +61,7 @@
   __traceiter_android_rvh_udpv6_recvmsg
   __traceiter_android_rvh_udpv6_sendmsg
   __traceiter_android_rvh_percpu_rwsem_wait_complete
+  __traceiter_android_rvh_shrink_spec_lru
   __traceiter_android_vh_alter_mutex_list_add
   __traceiter_android_vh_alter_rwsem_list_add
   __traceiter_android_vh_bd_link_disk_holder
@@ -82,6 +83,9 @@
   __traceiter_android_vh_f2fs_file_open
   __traceiter_android_vh_f2fs_ra_op_flags
   __traceiter_android_vh_filemap_update_page
+  __traceiter_android_vh_page_cache_ra_mark
+  __traceiter_android_vh_spec_promote_pages
+  __traceiter_android_vh_workingset_active
   __traceiter_android_vh_free_task
   __traceiter_android_vh_free_unref_folios_to_pcp_bypass
   __traceiter_android_vh_inode_lru_isolate
@@ -135,6 +139,7 @@
   __tracepoint_android_rvh_inet_sock_release
   __tracepoint_android_rvh_replace_next_task_fair
   __tracepoint_android_rvh_set_user_nice
+  __tracepoint_android_rvh_shrink_spec_lru
   __tracepoint_android_rvh_tcp_rcv_spurious_retrans
   __tracepoint_android_rvh_tcp_recvmsg
   __tracepoint_android_rvh_tcp_select_window
@@ -166,6 +171,9 @@
   __tracepoint_android_vh_f2fs_file_open
   __tracepoint_android_vh_f2fs_ra_op_flags
   __tracepoint_android_vh_filemap_update_page
+  __tracepoint_android_vh_page_cache_ra_mark
+  __tracepoint_android_vh_spec_promote_pages
+  __tracepoint_android_vh_workingset_active
   __tracepoint_android_vh_free_task
   __tracepoint_android_vh_inode_lru_isolate
   __tracepoint_android_vh_invalidate_mapping_pagevec
