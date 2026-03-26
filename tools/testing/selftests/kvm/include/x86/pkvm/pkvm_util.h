@@ -4,6 +4,11 @@
 
 #include "kvm_util.h"
 
+static inline bool is_pkvm_protected_vm(struct kvm_vm *vm)
+{
+	return vm->type == KVM_X86_PKVM_PROTECTED_VM;
+}
+
 void vm_pkvm_setup_boot_code_region(struct kvm_vm *vm);
 void vm_pkvm_setup_boot_parameters_region(struct kvm_vm *vm,
 					  uint32_t nr_runnable_vcpus);
