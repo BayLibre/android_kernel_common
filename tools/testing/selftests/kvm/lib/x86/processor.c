@@ -9,6 +9,7 @@
 #include "pmu.h"
 #include "processor.h"
 #include "sev.h"
+#include "pkvm/pkvm_util.h"
 
 #ifndef NUM_INTERRUPTS
 #define NUM_INTERRUPTS 256
@@ -678,6 +679,9 @@ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
 		vm_sev_ioctl(vm, KVM_SEV_INIT2, &init);
 	}
 
+	if (is_pkvm_protected_vm(vm) && nr_vcpus > 1)
+		vm_pkvm_load_common_boot_parameters(vm, nr_vcpus);
+
 	r = __vm_ioctl(vm, KVM_GET_TSC_KHZ, NULL);
 	TEST_ASSERT(r > 0, "KVM_GET_TSC_KHZ did not provide a valid TSC frequency.");
 	guest_tsc_khz = r;
@@ -735,6 +739,10 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, uint32_t vcpu_id)
 	regs.rflags = regs.rflags | 0x2;
 	regs.rsp = kvm_allocate_vcpu_stack(vm);
 	vcpu_regs_set(vcpu, &regs);
+
+	if (is_pkvm_protected_vm(vm) &&
+	    vcpu->id != vm->arch.bsp_vcpu_id)
+		vm_pkvm_load_vcpu_boot_parameters(vm, vcpu);
 
 	/* Setup the MP state */
 	mp_state.mp_state = 0;

@@ -14,6 +14,7 @@ struct kvm_vm_arch {
 	vm_vaddr_t gdt;
 	vm_vaddr_t tss;
 	vm_vaddr_t idt;
+	uint32_t bsp_vcpu_id;
 
 	uint64_t c_bit;
 	uint64_t s_bit;
