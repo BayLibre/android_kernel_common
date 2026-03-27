@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f282aae_b61c2d33",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-27T14:17:56Z",
+      "side": 1,
+      "message": "hmm, I wonder if we need to treat non-protected guests the same way here? If the host doesn\u0027t set the flag for an NP guest, we still want to avoid corrupting hypervisor state...",
+      "range": {
+        "startLine": 718,
+        "startChar": 6,
+        "endLine": 718,
+        "endChar": 32
+      },
+      "revId": "39cdd1149319c6250c50deda50839f00950bcb46",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
