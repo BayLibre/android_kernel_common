@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "837e3a40_842e08fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-03-27T18:08:26Z",
+      "side": 1,
+      "message": "Still breaks KMI:\n```\ntype \u0027struct pci_dev\u0027 changed\n  byte size changed from 3376 to 3400\n  member \u0027u16 ptm_cap\u0027 was added\n  45 members (\u0027struct device dev\u0027 .. \u0027unsigned int rom_attr_enabled:1\u0027) changed\n    offset changed by 64\n  member \u0027unsigned int ptm_root:1\u0027 was added\n  member \u0027unsigned int ptm_enabled:1\u0027 was added\n  member \u0027pci_dev_flags_t dev_flags\u0027 changed\n    offset changed by 80\n  3 members (\u0027atomic_t enable_cnt\u0027 .. \u0027u32 saved_config_space[16]\u0027) changed\n    offset changed by 96\n  17 members (\u0027struct hlist_head saved_cap_space\u0027 .. \u0027u8 reset_methods[8]\u0027) changed\n    offset changed by 128\n  member \u0027u8 ptm_granularity\u0027 was added\n  4 members (\u0027u64 __kabi_reserved1\u0027 .. \u0027u64 __kabi_reserved4\u0027) changed\n    offset changed by 192\n```",
+      "revId": "087034a427da99e8a224a4af88f990b9032c16e7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
