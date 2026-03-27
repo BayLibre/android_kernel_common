@@ -41,9 +41,11 @@ size_t copy_to_user_iter_nofault(void __user *iter_to, size_t progress,
 	return res < 0 ? len : res;
 }
 
+typedef unsigned long (*from_user_copy_t)(void *, const void __user *, unsigned long);
+
 static __always_inline
-size_t copy_from_user_iter(void __user *iter_from, size_t progress,
-			   size_t len, void *to, void *priv2)
+size_t copy_from_user_iter_boilerplate(void __user *iter_from, size_t progress,
+			   size_t len, void *to, from_user_copy_t actor)
 {
 	size_t res = len;
 
@@ -64,10 +66,17 @@ size_t copy_from_user_iter(void __user *iter_from, size_t progress,
 	}
 	to += progress;
 	instrument_copy_from_user_before(to, iter_from, len);
-	res = raw_copy_from_user(to, iter_from, len);
+	res = actor(to, iter_from, len);
 	instrument_copy_from_user_after(to, iter_from, len, res);
 
 	return res;
+}
+
+static __always_inline
+size_t copy_from_user_iter(void __user *iter_from, size_t progress,
+			   size_t len, void *to, void *priv2)
+{
+	return copy_from_user_iter_boilerplate(iter_from, progress, len, to, raw_copy_from_user);
 }
 
 static __always_inline
@@ -277,7 +286,7 @@ static __always_inline
 size_t copy_from_user_iter_nocache(void __user *iter_from, size_t progress,
 				   size_t len, void *to, void *priv2)
 {
-	return __copy_from_user_inatomic_nocache(to + progress, iter_from, len);
+	return copy_from_user_iter_boilerplate(iter_from, progress, len, to, __copy_from_user_inatomic_nocache);
 }
 
 size_t _copy_from_iter_nocache(void *addr, size_t bytes, struct iov_iter *i)
@@ -296,7 +305,7 @@ static __always_inline
 size_t copy_from_user_iter_flushcache(void __user *iter_from, size_t progress,
 				      size_t len, void *to, void *priv2)
 {
-	return __copy_from_user_flushcache(to + progress, iter_from, len);
+	return copy_from_user_iter_boilerplate(iter_from, progress, len, to, __copy_from_user_flushcache);
 }
 
 static __always_inline

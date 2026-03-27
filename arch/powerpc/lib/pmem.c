@@ -66,8 +66,8 @@ EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
 /*
  * CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE symbols
  */
-long __copy_from_user_flushcache(void *dest, const void __user *src,
-		unsigned size)
+unsigned long __copy_from_user_flushcache(void *dest, const void __user *src,
+		unsigned long size)
 {
 	unsigned long copied, start = (unsigned long) dest;
 
