@@ -43,7 +43,7 @@ void arch_wb_cache_pmem(void *addr, size_t size)
 }
 EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
 
-long __copy_user_flushcache(void *dst, const void __user *src, unsigned size)
+unsigned long __copy_user_flushcache(void *dst, const void __user *src, unsigned long size)
 {
 	unsigned long flushed, dest = (unsigned long) dst;
 	long rc;

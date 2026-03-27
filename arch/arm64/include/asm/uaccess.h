@@ -390,26 +390,24 @@ do {									\
 } while(0)
 
 extern unsigned long __must_check __arch_copy_from_user(void *to, const void __user *from, unsigned long n);
-#define raw_copy_from_user(to, from, n)					\
-({									\
-	unsigned long __acfu_ret;					\
-	uaccess_ttbr0_enable();						\
-	__acfu_ret = __arch_copy_from_user((to),			\
-				      __uaccess_mask_ptr(from), (n));	\
-	uaccess_ttbr0_disable();					\
-	__acfu_ret;							\
-})
+static __must_check __always_inline unsigned long raw_copy_from_user(void *to, const void __user *from, unsigned long n)
+{
+	unsigned long ret;
+	uaccess_ttbr0_enable();
+	ret = __arch_copy_from_user(to, __uaccess_mask_ptr(from), n);
+	uaccess_ttbr0_disable();
+	return ret;
+}
 
 extern unsigned long __must_check __arch_copy_to_user(void __user *to, const void *from, unsigned long n);
-#define raw_copy_to_user(to, from, n)					\
-({									\
-	unsigned long __actu_ret;					\
-	uaccess_ttbr0_enable();						\
-	__actu_ret = __arch_copy_to_user(__uaccess_mask_ptr(to),	\
-				    (from), (n));			\
-	uaccess_ttbr0_disable();					\
-	__actu_ret;							\
-})
+static __must_check __always_inline unsigned long raw_copy_to_user(void __user *to, const void *from, unsigned long n)
+{
+	unsigned long ret;
+	uaccess_ttbr0_enable();
+	ret = __arch_copy_to_user(__uaccess_mask_ptr(to), from, n);
+	uaccess_ttbr0_disable();
+	return ret;
+}
 
 static __must_check __always_inline bool user_access_begin(const void __user *ptr, size_t len)
 {
@@ -478,7 +476,7 @@ extern __must_check long strnlen_user(const char __user *str, long n);
 #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
 extern unsigned long __must_check __copy_user_flushcache(void *to, const void __user *from, unsigned long n);
 
-static inline int __copy_from_user_flushcache(void *dst, const void __user *src, unsigned size)
+static inline unsigned long __copy_from_user_flushcache(void *dst, const void __user *src, unsigned long size)
 {
 	kasan_check_write(dst, size);
 	return __copy_user_flushcache(dst, __uaccess_mask_ptr(src), size);
