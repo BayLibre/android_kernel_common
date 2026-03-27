@@ -22,6 +22,30 @@
       },
       "revId": "1eebd590b6a5a54254def9b61dbabe06863b2570",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82326e5d_0b749e6a",
+        "filename": "arch/arm64/include/asm/kvm_asm.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-03-27T14:43:52Z",
+      "side": 1,
+      "message": "The problem with `kvm_host_data` is that the hypervisor copy is not accessible by the kernel and the kernel copy is\u0027t accessible with the hypervisor.\n\nOne change that can make this simpler is to update it to make the data explicitly shared instead of RO.",
+      "parentUuid": "34d36209_fa76ae11",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 74
+      },
+      "revId": "1eebd590b6a5a54254def9b61dbabe06863b2570",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
