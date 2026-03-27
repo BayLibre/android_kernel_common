@@ -16,6 +16,24 @@
       "message": "How many options changed from module to built-in? Can we explicitly force them to be modules? Or does the QCOM option have direct dependencies? How were they modules before?",
       "revId": "573fefdb9a7034cb306749dbff88038f89fb58d0",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b0dbcc7_30418941",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2026-03-27T20:11:27Z",
+      "side": 1,
+      "message": "`PCIE_QCOM` can only be built-in, and this option selects tristate `PCI_PWRCTRL_SLOT` because of dependencies. So we\u0027ve had these two built-in for a while. No change there.\n\nThe difference in v7.0 is that commit https://git.kernel.org/torvalds/c/9cb64f61ec7a now adds select from `PCI_PWRCTRL_SLOT` to `POWER_SEQUENCING`. This forces the module `pwrseq-core.ko` to be built-in instead. Only that.\n\nThis is an upstream dependency. If we want to support modular dependency and switch the `select` to `imply` I think QCOM would need to work on managing the dependency at runtime (if possible). It should be doable. I\u0027ll open a conversation with them.",
+      "parentUuid": "da39060f_9691390c",
+      "revId": "573fefdb9a7034cb306749dbff88038f89fb58d0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
