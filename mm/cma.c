@@ -471,10 +471,16 @@ struct page *__cma_alloc(struct cma *cma, unsigned long count,
 	int ret = -ENOMEM;
 	int num_attempts = 0;
 	int max_retries = 5;
+	bool bypass = false;
 
 	if (WARN_ON_ONCE((gfp_mask & GFP_KERNEL) == 0 ||
 		(gfp_mask & ~(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY)) != 0))
 		goto out;
+
+	trace_android_vh_cma_alloc_bypass(cma, count, align, gfp_mask,
+				&page, &bypass);
+	if (bypass)
+		return page;
 
 	if (!cma || !cma->count || !cma->bitmap)
 		goto out;
