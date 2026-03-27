@@ -46,6 +46,30 @@
       },
       "revId": "39cdd1149319c6250c50deda50839f00950bcb46",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50d35927_0fff7ce1",
+        "filename": "arch/arm64/kvm/hyp/nvhe/pkvm.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2026-03-27T14:31:45Z",
+      "side": 1,
+      "message": "Never mind, we cannot trust the host for these two bits, since, as you said, it can corrupt the hypervisor. The solution needs to be a bit more precise though. Since we trust it for _some_ of the iflags...\n\nLet me think about it and come up with something better.",
+      "parentUuid": "84f952ed_6efb6b70",
+      "range": {
+        "startLine": 718,
+        "startChar": 6,
+        "endLine": 718,
+        "endChar": 32
+      },
+      "revId": "39cdd1149319c6250c50deda50839f00950bcb46",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
