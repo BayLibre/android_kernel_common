@@ -535,6 +535,13 @@ DECLARE_HOOK(android_vh_filemap_fault_end,
 DECLARE_HOOK(android_vh_cma_alloc_set_max_retries,
 	TP_PROTO(int *max_retries),
 	TP_ARGS(max_retries));
+<<<<<<< PATCH SET (ccc4fcf2faa2e93984f33eaf2918d6f594d95342 ANDROID: vendor_hooks: add vendor hook in cma_alloc())
+DECLARE_HOOK(android_vh_cma_alloc_bypass,
+	TP_PROTO(struct cma *cma, unsigned long count, unsigned int align,
+		gfp_t gfp_mask, struct page **page, bool *bypass),
+	TP_ARGS(cma, count, align, gfp_mask, page, bypass));
+||||||| BASE      (62da97766d8a6deb76d5640cb16c7658ed566ce8 ANDROID: ABI: Update pixel symbol list)
+=======
 DECLARE_HOOK(android_vh_cma_release_bypass,
 	TP_PROTO(struct cma *cma, const struct page *pages, unsigned long count,
 		bool *bypass),
@@ -543,6 +550,7 @@ DECLARE_HOOK(android_vh_cma_alloc_end,
 	TP_PROTO(struct cma *cma, unsigned long pfn, const struct page *pages,
 		unsigned long count, unsigned int align, int ret),
 	TP_ARGS(cma, pfn, pages, count, align, ret));
+>>>>>>> BASE      (ae8ce644a97528593686d73c3df6eeb2061d4f3b ANDROID: GKI: add vendor hooks for memory compaction and cma)
 DECLARE_HOOK(android_vh_compact_finished,
 	TP_PROTO(bool *abort_compact),
 	TP_ARGS(abort_compact));
