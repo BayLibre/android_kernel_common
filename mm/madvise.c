@@ -14,6 +14,7 @@
 #include <linux/page-isolation.h>
 #include <linux/pgsize_migration.h>
 #include <linux/page_idle.h>
+#include <linux/ptshare.h>
 #include <linux/userfaultfd_k.h>
 #include <linux/hugetlb.h>
 #include <linux/falloc.h>
@@ -1086,6 +1087,14 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
 static bool is_valid_guard_vma(struct vm_area_struct *vma, bool allow_locked)
 {
 	vm_flags_t disallowed = VM_SPECIAL | VM_HUGETLB;
+
+	/*
+	 * Shared Page Table VMAs are not allowed to have guard pages,
+	 * as zapping PTEs/installing markers in one process would
+	 * incorrectly affect all other sharing processes.
+	 */
+	if (vma_shares_pagetables(vma))
+		return false;
 
 	/*
 	 * A user could lock after setting a guard range but that's fine, as
