@@ -19,8 +19,8 @@ void memcpy_flushcache(void *dst, const void *src, size_t cnt)
 }
 EXPORT_SYMBOL_GPL(memcpy_flushcache);
 
-unsigned long __copy_user_flushcache(void *to, const void __user *from,
-				     unsigned long n)
+unsigned long raw_copy_from_user_flushcache(void *to, const void __user *from,
+					    unsigned long n)
 {
 	unsigned long rc;
 

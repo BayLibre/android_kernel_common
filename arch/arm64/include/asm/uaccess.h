@@ -474,13 +474,7 @@ extern long strncpy_from_user(char *dest, const char __user *src, long count);
 extern __must_check long strnlen_user(const char __user *str, long n);
 
 #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
-extern unsigned long __must_check __copy_user_flushcache(void *to, const void __user *from, unsigned long n);
-
-static inline unsigned long __copy_from_user_flushcache(void *dst, const void __user *src, unsigned long size)
-{
-	kasan_check_write(dst, size);
-	return __copy_user_flushcache(dst, __uaccess_mask_ptr(src), size);
-}
+extern unsigned long __must_check raw_copy_from_user_flushcache(void *to, const void __user *from, unsigned long n);
 #endif
 
 #ifdef CONFIG_ARCH_HAS_SUBPAGE_FAULTS
