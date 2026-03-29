@@ -305,7 +305,7 @@ static __always_inline
 size_t copy_from_user_iter_flushcache(void __user *iter_from, size_t progress,
 				      size_t len, void *to, void *priv2)
 {
-	return copy_from_user_iter_boilerplate(iter_from, progress, len, to, __copy_from_user_flushcache);
+	return copy_from_user_iter_boilerplate(iter_from, progress, len, to, raw_copy_from_user_flushcache);
 }
 
 static __always_inline
