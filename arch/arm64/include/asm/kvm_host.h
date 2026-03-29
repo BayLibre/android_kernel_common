@@ -1070,6 +1070,15 @@ struct kvm_vcpu_arch {
 /* pKVM host vcpu state is dirty, needs resync (nVHE-only) */
 #define PKVM_HOST_STATE_DIRTY	__vcpu_single_flag(iflags, BIT(7))
 
+/*
+ * Mask of iflags that the host is permitted to update for non-protected VMs.
+ * Crucially excludes DEBUG_STATE_SAVE_SPE and DEBUG_STATE_SAVE_TRBE to
+ * ensure EL2 remains in control of debug hardware state saving.
+ */
+#define PKVM_ALLOWED_HOST_IFLAGS                                           \
+	(unpack_vcpu_flag(PC_UPDATE_REQ) | unpack_vcpu_flag(DEBUG_DIRTY) | \
+	 unpack_vcpu_flag(PKVM_HOST_STATE_DIRTY))
+
 /* Physical CPU not in supported_cpus */
 #define ON_UNSUPPORTED_CPU	__vcpu_single_flag(sflags, BIT(2))
 /* WFIT instruction trapped */

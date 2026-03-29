@@ -803,10 +803,14 @@ static void flush_hyp_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu)
 	 * vcpu.
 	 */
 	if (!pkvm_hyp_vcpu_is_protected(hyp_vcpu)) {
-		if (vcpu_get_flag(host_vcpu, PKVM_HOST_STATE_DIRTY))
+		u8 host_iflags = READ_ONCE(host_vcpu->arch.iflags);
+
+		if (host_iflags & unpack_vcpu_flag(PKVM_HOST_STATE_DIRTY))
 			__flush_hyp_vcpu(hyp_vcpu);
 
-		hyp_vcpu->vcpu.arch.iflags = READ_ONCE(host_vcpu->arch.iflags);
+		hyp_vcpu->vcpu.arch.iflags = (host_iflags & PKVM_ALLOWED_HOST_IFLAGS) |
+			(hyp_vcpu->vcpu.arch.iflags & ~PKVM_ALLOWED_HOST_IFLAGS);
+
 		flush_debug_state(hyp_vcpu);
 
 		hyp_vcpu->vcpu.arch.hcr_el2 &= ~(HCR_TWI | HCR_TWE);
@@ -893,10 +897,15 @@ static void sync_hyp_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *exit_code)
 		BUG();
 	}
 
-	if (pkvm_hyp_vcpu_is_protected(hyp_vcpu))
+	if (pkvm_hyp_vcpu_is_protected(hyp_vcpu)) {
 		vcpu_clear_flag(host_vcpu, PC_UPDATE_REQ);
-	else
-		host_vcpu->arch.iflags = hyp_vcpu->vcpu.arch.iflags;
+	} else {
+		u8 host_iflags = READ_ONCE(host_vcpu->arch.iflags);
+
+		host_iflags = (hyp_vcpu->vcpu.arch.iflags & PKVM_ALLOWED_HOST_IFLAGS) |
+			      (host_iflags & ~PKVM_ALLOWED_HOST_IFLAGS);
+		WRITE_ONCE(host_vcpu->arch.iflags, host_iflags);
+	}
 
 	hyp_vcpu->exit_code = *exit_code;
 }
