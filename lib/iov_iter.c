@@ -282,11 +282,13 @@ size_t _copy_from_iter(void *addr, size_t bytes, struct iov_iter *i)
 }
 EXPORT_SYMBOL(_copy_from_iter);
 
+#ifdef ARCH_HAS_NOCACHE_UACCESS
+
 static __always_inline
 size_t copy_from_user_iter_nocache(void __user *iter_from, size_t progress,
 				   size_t len, void *to, void *priv2)
 {
-	return copy_from_user_iter_boilerplate(iter_from, progress, len, to, __copy_from_user_inatomic_nocache);
+	return copy_from_user_iter_boilerplate(iter_from, progress, len, to, raw_copy_from_user_nocache);
 }
 
 size_t _copy_from_iter_nocache(void *addr, size_t bytes, struct iov_iter *i)
@@ -299,6 +301,8 @@ size_t _copy_from_iter_nocache(void *addr, size_t bytes, struct iov_iter *i)
 				   memcpy_from_iter);
 }
 EXPORT_SYMBOL(_copy_from_iter_nocache);
+
+#endif
 
 #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
 static __always_inline

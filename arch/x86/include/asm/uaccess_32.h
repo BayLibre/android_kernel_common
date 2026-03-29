@@ -27,11 +27,13 @@ raw_copy_from_user(void *to, const void __user *from, unsigned long n)
 }
 
 static __always_inline unsigned long
-__copy_from_user_inatomic_nocache(void *to, const void __user *from,
+raw_copy_from_user_nocache(void *to, const void __user *from,
 				  unsigned long n)
 {
        return __copy_from_user_ll_nocache_nozero(to, from, n);
 }
+
+#define __copy_from_user_inatomic_nocache raw_copy_from_user_nocache
 
 unsigned long __must_check clear_user(void __user *mem, unsigned long len);
 unsigned long __must_check __clear_user(void __user *mem, unsigned long len);

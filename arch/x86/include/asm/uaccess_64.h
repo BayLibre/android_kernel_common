@@ -151,14 +151,20 @@ extern unsigned long __copy_user_nocache(void *dst, const void __user *src, unsi
 extern unsigned long raw_copy_from_user_flushcache(void *dst, const void __user *src, unsigned long size);
 
 static inline unsigned long
-__copy_from_user_inatomic_nocache(void *dst, const void __user *src, unsigned long size)
+raw_copy_from_user_nocache(void *dst, const void __user *src, unsigned long size)
 {
 	long ret;
-	kasan_check_write(dst, size);
 	stac();
 	ret = __copy_user_nocache(dst, src, size);
 	clac();
 	return ret;
+}
+
+static inline unsigned long
+__copy_from_user_inatomic_nocache(void *dst, const void __user *src, unsigned long size)
+{
+	kasan_check_write(dst, size);
+	return raw_copy_from_user_nocache(dst, src, size);
 }
 
 /*
