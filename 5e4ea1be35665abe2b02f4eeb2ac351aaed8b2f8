@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50d90228_b6ea266e",
+        "filename": "kernel/dma/direct.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-03-30T10:18:50Z",
+      "side": 1,
+      "message": "This doesn\u0027t make sense to me. If you\u0027re flushing here, what is the point of `need_sync`? It\u0027s always false.",
+      "range": {
+        "startLine": 519,
+        "startChar": 40,
+        "endLine": 519,
+        "endChar": 44
+      },
+      "revId": "5e4ea1be35665abe2b02f4eeb2ac351aaed8b2f8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
