@@ -16,6 +16,24 @@
       "message": "But can\u0027t we just call pkvm_host_vmx_fixup() from inside C\u0027s pkvm_host_vmexit_main() and leave asm code intact as suggested in https://android-review.git.corp.google.com/c/kernel/common/+/3997280/comment/d8a7b2a2_3c0b6d4b/ ?",
       "revId": "b0aeea51d207dd91949800e012c86cb3269a5951",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6771f967_305905b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-03-30T13:36:36Z",
+      "side": 1,
+      "message": "Putting in asm code is to optimize the overhead a bit. The fixup function is most likely only called once. So use the asm code to make sure the overhead of calling the fixup function is minimal. Anther intension of writing asm code like this is to emphasize the fixup is most likely not called.\n\nCall it from pkvm_host_vmexit_main() as following:\n```\ndiff --git a/arch/x86/kvm/pkvm/vmx/host_vmx.c b/arch/x86/kvm/pkvm/vmx/host_vmx.c\nindex 80ec82007534..bf9c2f82be1d 100644\n--- a/arch/x86/kvm/pkvm/vmx/host_vmx.c\n+++ b/arch/x86/kvm/pkvm/vmx/host_vmx.c\n@@ -399,6 +399,9 @@ void pkvm_host_vmexit_main(struct vcpu_vmx *vmx)\n                native_write_cr2(vcpu-\u003earch.cr2);\n\n        pkvm_trace_vmexit_end(vcpu, vt-\u003eexit_reason.basic);\n+\n+       if (unlikely(this_cpu_read(host_vcpu_fixup)))\n+               pkvm_host_vmx_fixup(vmx);\n }\n\n void pkvm_host_vmx_fixup(struct vcpu_vmx *vmx)\n```\nwill get following assembly code by clang:\n```\n        if (unlikely(this_cpu_read(host_vcpu_fixup)))\n 5ce:   65 8a 05 00 00 00 00    mov    %gs:0x0(%rip),%al        # 5d5 \u003cpkvm_host_vmexit_main+0x5c5\u003e\n 5d5:   84 c0                   test   %al,%al\n 5d7:   0f 85 9b 00 00 00       jne    678 \u003cpkvm_host_vmexit_main+0x668\u003e\n```\nwhich has one more instruction.\n\nOf cause, I don\u0027t think this will have difference for the performance. So I don\u0027t insist to call it in asm code. :)",
+      "parentUuid": "7bdc9fbe_3dfce051",
+      "revId": "b0aeea51d207dd91949800e012c86cb3269a5951",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
