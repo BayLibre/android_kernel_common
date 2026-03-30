@@ -22,6 +22,30 @@
       },
       "revId": "62ef00fdf94daf3970826c331ae317b5f832fed6",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81e8d90b_1895da8d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/hyp-main.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2026-03-30T10:46:48Z",
+      "side": 0,
+      "message": "yes, while i don\u0027t think it\u0027s serious, we should fix it in A17, and we\u0027ll backport it to A15 anyway. I\u0027m not sure it\u0027s worth going to A14.",
+      "parentUuid": "334099c7_27a7d714",
+      "range": {
+        "startLine": 806,
+        "startChar": 0,
+        "endLine": 809,
+        "endChar": 65
+      },
+      "revId": "62ef00fdf94daf3970826c331ae317b5f832fed6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
