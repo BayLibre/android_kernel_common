@@ -393,6 +393,18 @@ do {											\
 	__TEST_ASSERT_VM_VCPU_IOCTL(!ret, #cmd, ret, vm);		\
 })
 
+static inline void vm_set_boot_cpu_id(struct kvm_vm *vm, uint32_t bsp_vcpu_id)
+{
+	int ret = __vm_ioctl(vm, KVM_SET_BOOT_CPU_ID,
+			    (void *)(unsigned long)bsp_vcpu_id);
+
+	TEST_ASSERT_VM_VCPU_IOCTL(!ret, KVM_SET_BOOT_CPU_ID, ret, vm);
+
+#ifdef __x86_64__
+	vm->arch.bsp_vcpu_id = bsp_vcpu_id;
+#endif
+}
+
 static __always_inline void static_assert_is_vcpu(struct kvm_vcpu *vcpu) { }
 
 #define __vcpu_ioctl(vcpu, cmd, arg)				\
