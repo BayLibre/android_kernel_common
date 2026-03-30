@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "765a2bba_d229633a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2026-03-30T21:45:52Z",
+      "side": 1,
+      "message": "Ok. My reasoning behind calling it from pkvm_host_vmexit_main was improving readability: for me it is always easier to analyze c code than asm especially when not looking on small commit logs but the entire file (especially if C version does pretty much the same with similar number of instruction :) )\n\nBut I am ok with calling it from asm if you prefer to do it that way.",
+      "parentUuid": "6771f967_305905b8",
+      "revId": "b0aeea51d207dd91949800e012c86cb3269a5951",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4ac35e5_2e98edd6",
