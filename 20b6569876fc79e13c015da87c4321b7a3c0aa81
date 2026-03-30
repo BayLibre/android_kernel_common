@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25f98af2_716eeffe",
+        "filename": "drivers/android/debug_kinfo.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-03-30T13:39:49Z",
+      "side": 1,
+      "message": "If this isn\u0027t supported anymore in the kernel, should this be \"reserved\"",
+      "fixSuggestions": [
+        {
+          "fixId": "c5a458ae_643d2f13",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/android/debug_kinfo.h",
+              "range": {
+                "startLine": 31,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": "\t__u64 _reserved;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "20b6569876fc79e13c015da87c4321b7a3c0aa81",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
