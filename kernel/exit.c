@@ -33,6 +33,7 @@
 #include <linux/profile.h>
 #include <linux/mount.h>
 #include <linux/proc_fs.h>
+#include <linux/ptshare.h>
 #include <linux/kthread.h>
 #include <linux/mempolicy.h>
 #include <linux/taskstats_kern.h>
@@ -582,6 +583,9 @@ static void exit_mm(void)
 	mmap_read_unlock(mm);
 	mm_update_next_owner(mm);
 	trace_android_vh_exit_mm(mm);
+#ifdef CONFIG_PTSHARE
+	ptshare_put_desc(mm->ptshare_desc);
+#endif
 	mmput(mm);
 	if (test_thread_flag(TIF_MEMDIE))
 		exit_oom_victim();
