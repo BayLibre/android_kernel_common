@@ -69,6 +69,24 @@
       "message": "This seems a bit too intricate: we jump to `.Lfixup` and then jump back to `.Lspec_ctrl` here. Can\u0027t we just jump to `.Lspec_ctrl` right here if `host_vcpu_fixup` is _not_ set (`jne .Lspec_ctrl`), and call `pkvm_host_vmx_fixup` otherwise?",
       "revId": "b0aeea51d207dd91949800e012c86cb3269a5951",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92f002d8_4f8cf234",
+        "filename": "arch/x86/kvm/pkvm/vmx/host_vmentry.S",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-03-31T02:14:00Z",
+      "side": 1,
+      "message": "My intension is to make the jump instruction not taken, to have a slightly smaller overhead as instruction fetch and decode proceed without interruption. At the most of the cases, we don\u0027t need to call `pkvm_host_vmx_fixup`. With `jne .Lspec_ctrl`, the jump instruction is taken for most of the cases, which may have a slightly higher overhead.\n\nThis is something like the C code by using `if (unlikely(this_cpu_read(host_vcpu_fixup)))`:\n\nFor example, when `if (this_cpu_read(host_vcpu_fixup))`, `je` will jump if `this_cpu_read(host_vcpu_fixup) \u003d\u003d false`, which is for the most cases. But actually this is unlikely to happen.\n```\n        if (this_cpu_read(host_vcpu_fixup))\n 5ce:   65 8a 05 00 00 00 00    mov    %gs:0x0(%rip),%al        # 5d5 \u003cpkvm_host_vmexit_main+0x5c5\u003e\n 5d5:   84 c0                   test   %al,%al\n 5d7:   74 50                   je     629 \u003cpkvm_host_vmexit_main+0x619\u003e\n 5d9:   48 0f ba 25 00 00 00    btq    $0x39,0x0(%rip)        # 5e2 \u003cpkvm_host_vmexit_main+0x5d2\u003e\n 5e0:   00 39\n                pkvm_host_vmx_fixup(vmx);\n\n```\n\nSo when use `if (unlikely(this_cpu_read(host_vcpu_fixup)))`, the `jne` will not jump if `this_cpu_read(host_vcpu_fixup) \u003d\u003d false`, which is for the most cases.\n```\n        if (unlikely(this_cpu_read(host_vcpu_fixup)))\n 5ce:   65 8a 05 00 00 00 00    mov    %gs:0x0(%rip),%al        # 5d5 \u003cpkvm_host_vmexit_main+0x5c5\u003e\n 5d5:   84 c0                   test   %al,%al\n 5d7:   0f 85 9b 00 00 00       jne    678 \u003cpkvm_host_vmexit_main+0x668\u003e\n```\n\nAnyway, the overhead saved here is minor. Greg also pointed out putting this code in C will have a better readability. With using `if (unlikely(this_cpu_read(host_vcpu_fixup)))`, although it has one more instruction, I don\u0027t think this will have actual performance difference. So it seems worth to move this to `pkvm_host_vmexit_main` for a better readability, than a slight optimization in asm code.",
+      "parentUuid": "e4ac35e5_2e98edd6",
+      "revId": "b0aeea51d207dd91949800e012c86cb3269a5951",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
