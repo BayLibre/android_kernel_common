@@ -87,6 +87,24 @@
       "parentUuid": "e4ac35e5_2e98edd6",
       "revId": "b0aeea51d207dd91949800e012c86cb3269a5951",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c25f7cf4_aae41d43",
+        "filename": "arch/x86/kvm/pkvm/vmx/host_vmentry.S",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-03-31T17:54:52Z",
+      "side": 1,
+      "message": "I see. Yeah, it might be better to leave such optimizations to the compiler, and just leverage unlikely().",
+      "parentUuid": "92f002d8_4f8cf234",
+      "revId": "b0aeea51d207dd91949800e012c86cb3269a5951",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
