@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d63b6b88_78c2d63b",
+        "filename": "mm/mmap.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-03-31T15:55:10Z",
+      "side": 1,
+      "message": "What exactly are you tracking here? Seems like you will be capturing the number of mapping requests and each of these requests might fail later. I suspect you would not want to count failed mapping requests, would you?",
+      "range": {
+        "startLine": 384,
+        "startChar": 1,
+        "endLine": 384,
+        "endChar": 35
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e476a29d_06d7e478",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/mmap.c",
+              "range": {
+                "startLine": 384,
+                "startChar": 0,
+                "endLine": 385,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "mm/mmap.c",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\tif (!IS_ERR_VALUE(addr))\n\t\ttrace_android_vh_do_mmap_map_count(file, addr, len, prot, flags);\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3c5b7f98c4b06cda1a615bc0b1add6a2d87763cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
