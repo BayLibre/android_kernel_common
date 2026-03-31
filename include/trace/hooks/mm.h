@@ -553,6 +553,17 @@ DECLARE_RESTRICTED_HOOK(android_rvh_gup_longterm_locked,
 		unsigned long start, unsigned long nr_pages,
 		struct page **pages),
 	TP_ARGS(rc, nr_pinned_pages, start, nr_pages, pages), 5);
+DECLARE_HOOK(android_vh_vmalloc_node_range_start,
+	TP_PROTO(unsigned long size),
+	TP_ARGS(size));
+DECLARE_HOOK(android_vh_vmalloc_node_range_end,
+	TP_PROTO(unsigned long size, const void *addr),
+	TP_ARGS(size, addr));
+DECLARE_HOOK(android_vh_do_mmap_map_count,
+	TP_PROTO(struct file *file, unsigned long addr,
+			unsigned long len, unsigned long prot,
+			unsigned long flags),
+	TP_ARGS(file, addr, len, prot, flags));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
