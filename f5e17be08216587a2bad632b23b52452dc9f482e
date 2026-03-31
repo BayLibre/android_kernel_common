@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d108341_9549ce4d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-03-31T03:24:57Z",
+      "side": 1,
+      "message": "should be FROMLIST",
+      "revId": "f5e17be08216587a2bad632b23b52452dc9f482e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "010efe88_a342a466",
+        "filename": "drivers/input/keyboard/atkbd.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-03-31T03:24:57Z",
+      "side": 1,
+      "message": "Upstream comments are uncertain whether this is safe. Can we make this a vendor hook instead?",
+      "fixSuggestions": [
+        {
+          "fixId": "c2dc72ad_26936cee",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/input/keyboard/atkbd.c",
+              "range": {
+                "startLine": 975,
+                "startChar": 0,
+                "endLine": 976,
+                "endChar": 0
+              },
+              "replacement": "\tif (!device_may_wakeup(\u0026serio-\u003edev))\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f5e17be08216587a2bad632b23b52452dc9f482e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
