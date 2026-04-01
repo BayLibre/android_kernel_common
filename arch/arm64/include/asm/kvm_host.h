@@ -491,6 +491,8 @@ struct kvm_cpu_context {
 
 struct kvm_host_data {
 	struct kvm_cpu_context host_ctxt;
+	u64 pmblimitr_el1; /* Added outside the KMI boundary */
+	u64 trblimitr_el1;
 };
 
 struct kvm_host_psci_config {
