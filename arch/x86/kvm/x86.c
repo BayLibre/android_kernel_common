@@ -10717,7 +10717,11 @@ static int kvm_pkvm_hypercall(struct kvm_vcpu *vcpu)
 			goto invalid;
 
 		vcpu->mmio_is_write = 0;
-		/* Leverage sev_es MMIO read */
+		/*
+		 * Assume that the MMIO read hypercall always succeeds and
+		 * use the rax to store the read value.
+		 * Leverage sev_es MMIO read.
+		 */
 		ret = kvm_sev_es_mmio_read(vcpu, kvm_rbx_read(vcpu), size,
 					   &vcpu->arch.regs[VCPU_REGS_RAX]);
 		break;
@@ -10729,6 +10733,8 @@ static int kvm_pkvm_hypercall(struct kvm_vcpu *vcpu)
 		if (size > sizeof(val))
 			goto invalid;
 
+		/* Assume that the MMIO write hypercall always succeeds. */
+		kvm_rax_write(vcpu, 0);
 		vcpu->mmio_is_write = 1;
 		/* Leverage sev_es MMIO write */
 		ret = kvm_sev_es_mmio_write(vcpu, kvm_rbx_read(vcpu), size, &val);
