@@ -50,6 +50,30 @@
       ],
       "revId": "3c5b7f98c4b06cda1a615bc0b1add6a2d87763cf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "550a8ec4_f4c9bf95",
+        "filename": "mm/mmap.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 4676148
+      },
+      "writtenOn": "2026-04-01T01:50:27Z",
+      "side": 1,
+      "message": "we want to track the number of mmap calls per process to trigger a warning when the count exceeds a specific threshold.\nAdditionally, the hook is designed to detect other anomalies during the mapping process—for instance, if an invalid address is passed (as you mentioned) or other errors occur, the hook can capture these exceptions and alert the monitoring process immediately. This allows us to catch potential issues beyond just counting successful mappings.",
+      "parentUuid": "d63b6b88_78c2d63b",
+      "range": {
+        "startLine": 384,
+        "startChar": 1,
+        "endLine": 384,
+        "endChar": 35
+      },
+      "revId": "3c5b7f98c4b06cda1a615bc0b1add6a2d87763cf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
