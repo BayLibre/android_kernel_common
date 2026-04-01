@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e412c41_3332f65e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1869395
+      },
+      "writtenOn": "2026-04-01T04:12:35Z",
+      "side": 1,
+      "message": "Actually, the original commit has the correct order of `unregister_pm_notifier()` and `cancel_work_sync()`. It seems to me like the issue was introduced during a manual merge resolution. This one: https://r.android.com/3433971 no?",
+      "parentUuid": "bf8ad0dd_175e5621",
+      "range": {
+        "startLine": 50,
+        "startChar": 7,
+        "endLine": 50,
+        "endChar": 19
+      },
+      "revId": "b2113b0a4e255567449db5e328daca90cab3155b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "f6745ea6_13606784",
