@@ -39,6 +39,9 @@ int module_add_driver(struct module *mod, const struct device_driver *drv)
 	if (!drv)
 		return 0;
 
+	if (mod && drv->probe_type == PROBE_PREFER_ASYNCHRONOUS)
+		mod->async_probe_requested = true;
+
 	if (mod)
 		mk = &mod->mkobj;
 	else if (drv->mod_name) {
