@@ -1,0 +1,125 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33ead75a_62f8377b",
+        "filename": "arch/x86/kvm/pkvm/init.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-02T22:26:14Z",
+      "side": 1,
+      "message": "Since it is an iterator variable, it is rather implied that it will be evaluated multiple times (BTW in fact it is evaluated more than twice, inside the implementation of `for_each_possible_cpu`), so seems no need to mention that?",
+      "fixSuggestions": [
+        {
+          "fixId": "e6822e47_a2d34283",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/init.h",
+              "range": {
+                "startLine": 44,
+                "startChar": 0,
+                "endLine": 45,
+                "endChar": 0
+              },
+              "replacement": " * @cpu: cpu iterator variable\n"
+            }
+          ]
+        }
+      ],
+      "revId": "39840fc852a6c638680e44e91c12e588a949d6a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b92e6b47_68d27d9a",
+        "filename": "arch/x86/kvm/pkvm/init.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-02T22:26:14Z",
+      "side": 1,
+      "message": "nit: this sounds ambiguous: \"have been initialized via pkvm_cpu_initialized()\" sounds like it\u0027s pkvm_cpu_initialized()\" that initialized them. :) \n\nMaybe e.g. \"...that have been already initialized by pkvm_init().\" ?",
+      "revId": "39840fc852a6c638680e44e91c12e588a949d6a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6966386b_b8a127ce",
+        "filename": "arch/x86/kvm/pkvm/init.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-02T22:26:14Z",
+      "side": 1,
+      "message": "nit: extra parentheses seem unnecessary (in particular, `for_each_possible_cpu` itself internally adds the needed parentheses)?",
+      "fixSuggestions": [
+        {
+          "fixId": "65e5715f_7fc8ad8d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/init.h",
+              "range": {
+                "startLine": 50,
+                "startChar": 0,
+                "endLine": 52,
+                "endChar": 0
+              },
+              "replacement": "\tfor_each_possible_cpu(cpu)\t\t\t\\\n\t\tif (!pkvm_cpu_initialized(cpu))\t\\\n"
+            }
+          ]
+        }
+      ],
+      "revId": "39840fc852a6c638680e44e91c12e588a949d6a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e29285e_093b8a73",
+        "filename": "arch/x86/kvm/pkvm/vmx/ept.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-02T22:26:14Z",
+      "side": 1,
+      "message": "Maybe instead of doing these changes (i.e. introducing `for_each_initialized_cpu` and adjusting existing code to use it) in the same patch as the main thing done by this patch (i.e. waiting for host vCPUs to be kicked out), it would be better to do that in a separate patch, similarly to the patch aosp/4018594 which introduces `for_each_pkvm_guest_vcpu`?\n\nThen, this patch would become very small (just 2 lines of changes below), like aosp/4018595 already is, so we could combine this patch and aosp/4018595 into one patch? In fact, we could also squash them both into aosp/4018592, i.e. introduce `pkvm_wait_vcpu_kicked_out()` and use it in the same patch (that patch would be still simple and easy to review)?",
+      "revId": "39840fc852a6c638680e44e91c12e588a949d6a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e23d3801_d66b3659",
+        "filename": "arch/x86/kvm/pkvm/vmx/ept.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-02T22:26:14Z",
+      "side": 1,
+      "message": "In both current uses of `for_each_initialized_cpu` we need to take the `vcpu` value (and if we have more uses of it in the future, we will likely need to do the same). So it would be nice to provide these `vcpu` values by `for_each_initialized_cpu` itself (similarly to `for_each_pkvm_guest_vcpu`)?",
+      "revId": "39840fc852a6c638680e44e91c12e588a949d6a6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
