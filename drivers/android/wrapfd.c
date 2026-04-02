@@ -712,7 +712,8 @@ static int wrap_file_load(struct wrap_ctx *ctx,
 		goto put_file;
 	}
 
-	if (end > i_size_read(file_inode(file))) {
+	/* We can read past file size as long as it's within the last page */
+	if (end > PAGE_ALIGN(i_size_read(file_inode(file)))) {
 		ret = -EINVAL;
 		goto put_file;
 	}
