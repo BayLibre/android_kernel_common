@@ -16,6 +16,24 @@
       "message": "tiny nit: since this is a static function now, we might remove the `pkvm_` prefix, i.e. `host_vmx_fixup()` or maybe e.g. `fixup_host_vmx()`?",
       "revId": "505e53a24b6ee7d45dbc23debc3f42fe3189a642",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42896af3_d896de8f",
+        "filename": "arch/x86/kvm/pkvm/vmx/host_vmx.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-02T00:24:51Z",
+      "side": 1,
+      "message": "Make sense. Updated with `fixup_host_vmx`",
+      "parentUuid": "af1bb0ed_2bc807f1",
+      "revId": "505e53a24b6ee7d45dbc23debc3f42fe3189a642",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
