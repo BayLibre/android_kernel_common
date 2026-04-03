@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "06322f2a_e89869ff",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2120,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-03T01:34:09Z",
+      "side": 1,
+      "message": "Regular rdtsc() also works as we don\u0027t count the accurate time here. We can change to that if concern the performance here.",
+      "parentUuid": "9bc39acd_ea6a20d8",
+      "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "74b23216_55881ed6",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 1
@@ -53,6 +71,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31276a8b_d9cbdeea",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2124,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-03T01:34:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "74b23216_55881ed6",
+      "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae358245_71e4d9b8",
@@ -66,6 +102,24 @@
       "writtenOn": "2026-04-02T19:19:19Z",
       "side": 1,
       "message": "Just thinking: maybe WARN_ON or WARN_ON_ONCE would be more appropriate for this?\n\nAlthough, currently in non-debug mode WARN_ON just does nothing, so maybe BUG_ON is better. Although BUG_ON in non-debug mode currently doesn\u0027t provide any useful diagnostics either, it just hangs in HLT, but we may change that  ( @jaszczyk@google.com  is currently looking into how we could improve that). And hanging in HLT it still better than this infinite spin-waiting at least in terms of power consumption. :)",
+      "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d530986d_a6625856",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2131,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-03T01:34:09Z",
+      "side": 1,
+      "message": "OK, let me try to understand this. If we plan to improve the WARN/BUG behavior, I guess they will be similar to the linux kernel\u0027s usage? Then, WARN_ON/WARN_ON_ONCE will just print a warning log in the debug mode and then continue by skipping the warn instruction, so we are still in the infinite spin loop for the debug node. And for non-debug mode, WARN_ON/WARN_ON_ONCE will still do nothing? If so, it means we prefer to just print some warning log and continue the spin loop rather than hang the system, right?",
+      "parentUuid": "ae358245_71e4d9b8",
       "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
