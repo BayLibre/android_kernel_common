@@ -9,6 +9,7 @@
 #include <linux/tracepoint.h>
 #include <trace/events/mmflags.h>
 #include <linux/dma-buf.h>
+#include <linux/ptshare.h>
 
 TRACE_EVENT(kmem_cache_alloc,
 
@@ -449,7 +450,7 @@ TRACE_EVENT(rss_stat,
 		 */
 		__entry->curr = current->mm == mm && !(current->flags & PF_KTHREAD);
 		__entry->member = member;
-		__entry->size = (percpu_counter_sum_positive(&mm->rss_stat[member])
+		__entry->size = (ptshare_get_mm_counter_sum(mm, member)
 							    << PAGE_SHIFT);
 	),
 
