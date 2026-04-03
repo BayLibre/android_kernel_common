@@ -99,6 +99,24 @@
       "parentUuid": "e090917d_70c27e1e",
       "revId": "7bcdd794190adf9c0fec34da36bedd3b95fb333f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0507b51_bbf529fb",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2026-04-03T01:54:18Z",
+      "side": 1,
+      "message": "but of course, if you aren\u0027t going to cherry-pick CL:4000695 to android17-6.18, then simply skip cherry-picking this patch to android17-6.18 as well. Though in that case, on android17-6.18, we should have this instead:\n\n```\npahole \u003d select({\n    \"pahole_from_sources_is_true\": \":some_fail_rule\",\n    \"//conditions:default\": None,\n})\n```",
+      "parentUuid": "f55f8bd9_33bbff92",
+      "revId": "7bcdd794190adf9c0fec34da36bedd3b95fb333f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
