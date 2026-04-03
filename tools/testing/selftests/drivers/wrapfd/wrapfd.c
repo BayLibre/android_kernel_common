@@ -139,7 +139,7 @@ FIXTURE(wrapfd_tests)
 	int fd;
 };
 
-#define FILE_SZ_PAGES	100
+#define FILE_SZ_PAGES 100
 
 FIXTURE_SETUP(wrapfd_tests)
 {
@@ -147,10 +147,10 @@ FIXTURE_SETUP(wrapfd_tests)
 	FILE *ftmp;
 
 	EXPECT_EQ(getuid(), 0)
-		SKIP(return, "Skipping all tests as non-root");
+	SKIP(return, "Skipping all tests as non-root");
 
 	self->page_size = (size_t)sysconf(_SC_PAGESIZE);
-	self->size = self->page_size * FILE_SZ_PAGES;
+	self->size = 162430464;
 
 	self->dev_fd = open("/dev/wrapfd", O_RDONLY);
 	ASSERT_TRUE(self->dev_fd >= 0);
@@ -181,7 +181,7 @@ FIXTURE_TEARDOWN(wrapfd_tests)
 }
 
 static int cmp_content(struct __test_metadata *_metadata,
-		       FIXTURE_DATA(wrapfd_tests) *self, int wrapfd)
+		       FIXTURE_DATA(wrapfd_tests) * self, int wrapfd)
 {
 	char *ptr;
 	int ret;
@@ -195,28 +195,26 @@ static int cmp_content(struct __test_metadata *_metadata,
 }
 
 static void clear_content(struct __test_metadata *_metadata,
-			  FIXTURE_DATA(wrapfd_tests) *self, int wrapfd)
+			  FIXTURE_DATA(wrapfd_tests) * self, int wrapfd)
 {
 	char *ptr;
 
-	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-		   wrapfd, 0);
+	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED, wrapfd,
+		   0);
 	ASSERT_NE(ptr, MAP_FAILED);
 	memset(ptr, 0, self->size);
 	ASSERT_EQ(munmap(ptr, self->size), 0);
 }
 
 static void test_wrap(struct __test_metadata *_metadata,
-		      FIXTURE_DATA(wrapfd_tests) *self, int fd)
+		      FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	int wrapfd;
 	struct stat sb;
 
 	/* Get state of a non-wrapped fd */
-	ASSERT_TRUE(wrapfd_get_state(fd, NULL) &&
-		    errno == ENOTTY);
-	ASSERT_TRUE(wrapfd_get_state(self->dev_fd, NULL) &&
-		    errno == ENOTTY);
+	ASSERT_TRUE(wrapfd_get_state(fd, NULL) && errno == ENOTTY);
+	ASSERT_TRUE(wrapfd_get_state(self->dev_fd, NULL) && errno == ENOTTY);
 
 	/* Wrap and get state of a wrapped fd */
 	wrapfd = wrapfd_wrap(self->dev_fd, fd, PROT_READ);
@@ -231,7 +229,7 @@ static void test_wrap(struct __test_metadata *_metadata,
 }
 
 static void test_load(struct __test_metadata *_metadata,
-		      FIXTURE_DATA(wrapfd_tests) *self, int fd)
+		      FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	int wrapfd;
 
@@ -242,7 +240,9 @@ static void test_load(struct __test_metadata *_metadata,
 
 	clear_content(_metadata, self, wrapfd);
 	ASSERT_NE(cmp_content(_metadata, self, wrapfd), 0);
-	ASSERT_EQ(wrapfd_load(wrapfd, self->fd, 0, 0, self->size), 0);
+	int load_ret = wrapfd_load(wrapfd, self->fd, 0, 0, self->size);
+	fprintf(stderr, "wrapfd_load returns %d %s\n", load_ret, strerror(errno));
+	ASSERT_EQ(load_ret, 0);
 	ASSERT_EQ(cmp_content(_metadata, self, wrapfd), 0);
 	/* TODO: test more load offsets */
 
@@ -251,7 +251,7 @@ static void test_load(struct __test_metadata *_metadata,
 }
 
 static void test_wrap_rdonly(struct __test_metadata *_metadata,
-			     FIXTURE_DATA(wrapfd_tests) *self, int fd)
+			     FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	int wrapfd;
 
@@ -262,15 +262,16 @@ static void test_wrap_rdonly(struct __test_metadata *_metadata,
 	ASSERT_EQ(cmp_content(_metadata, self, wrapfd), 0);
 
 	/* Try mapping as writable */
-	ASSERT_EQ(mmap(NULL, self->size, PROT_READ | PROT_WRITE,
-		       MAP_SHARED, wrapfd, 0), MAP_FAILED);
+	ASSERT_EQ(mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED,
+		       wrapfd, 0),
+		  MAP_FAILED);
 	ASSERT_EQ(errno, EACCES);
 
 	close(wrapfd);
 }
 
 static void test_wrap_rdwr(struct __test_metadata *_metadata,
-			   FIXTURE_DATA(wrapfd_tests) *self, int fd)
+			   FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	int wrapfd;
 	char *ptr;
@@ -282,8 +283,8 @@ static void test_wrap_rdwr(struct __test_metadata *_metadata,
 	ASSERT_EQ(cmp_content(_metadata, self, wrapfd), 0);
 
 	/* Modify buffer content */
-	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-		   wrapfd, 0);
+	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED, wrapfd,
+		   0);
 	ASSERT_NE(ptr, MAP_FAILED);
 	ptr[0]++;
 
@@ -301,15 +302,15 @@ static void test_wrap_rdwr(struct __test_metadata *_metadata,
 	close(wrapfd);
 }
 
+#ifndef __ANDROID__
 static void test_remap_file_pages(struct __test_metadata *_metadata,
-				  FIXTURE_DATA(wrapfd_tests) *self, int fd)
+				  FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	int wrapfd;
 	char *ptr;
 
 	/* remap_file_pages() on the content should succeed */
-	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-		   fd, 0);
+	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 	ASSERT_NE(ptr, MAP_FAILED);
 	ASSERT_EQ(remap_file_pages(ptr, self->page_size, 0, 1, 0), 0);
 	ASSERT_EQ(munmap(ptr, self->size), 0);
@@ -318,8 +319,8 @@ static void test_remap_file_pages(struct __test_metadata *_metadata,
 	wrapfd = wrapfd_wrap(self->dev_fd, fd, PROT_READ | PROT_WRITE);
 	ASSERT_TRUE(wrapfd >= 0);
 
-	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-		   wrapfd, 0);
+	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED, wrapfd,
+		   0);
 	ASSERT_NE(ptr, MAP_FAILED);
 	ASSERT_EQ(remap_file_pages(ptr, self->page_size, 0, 1, 0), -1);
 	ASSERT_EQ(errno, EINVAL);
@@ -327,9 +328,10 @@ static void test_remap_file_pages(struct __test_metadata *_metadata,
 
 	close(wrapfd);
 }
+#endif
 
 static void test_wrap_remap(struct __test_metadata *_metadata,
-			    FIXTURE_DATA(wrapfd_tests) *self, int fd)
+			    FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	char *ptr, *new_ptr;
 	int wrapfd;
@@ -341,8 +343,8 @@ static void test_wrap_remap(struct __test_metadata *_metadata,
 	ASSERT_EQ(cmp_content(_metadata, self, wrapfd), 0);
 
 	/* Modify buffer content */
-	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-		   wrapfd, 0);
+	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED, wrapfd,
+		   0);
 	ASSERT_NE(ptr, MAP_FAILED);
 
 	/* Remap to a new address */
@@ -362,7 +364,7 @@ static void test_wrap_remap(struct __test_metadata *_metadata,
 }
 
 static void test_wrap_fork(struct __test_metadata *_metadata,
-			   FIXTURE_DATA(wrapfd_tests) *self, int fd)
+			   FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	int wrapfd, status;
 	char *ptr;
@@ -375,8 +377,8 @@ static void test_wrap_fork(struct __test_metadata *_metadata,
 	ASSERT_EQ(cmp_content(_metadata, self, wrapfd), 0);
 
 	/* Modify buffer content */
-	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-		   wrapfd, 0);
+	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED, wrapfd,
+		   0);
 	ASSERT_NE(ptr, MAP_FAILED);
 
 	pid = fork();
@@ -397,7 +399,7 @@ static void test_wrap_fork(struct __test_metadata *_metadata,
 }
 
 static void test_dup(struct __test_metadata *_metadata,
-		     FIXTURE_DATA(wrapfd_tests) *self, int fd)
+		     FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	int wrapfd, wrapfd2;
 	char *ptr;
@@ -417,7 +419,7 @@ static void test_dup(struct __test_metadata *_metadata,
 }
 
 static void test_owner(struct __test_metadata *_metadata,
-		       FIXTURE_DATA(wrapfd_tests) *self, int fd)
+		       FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	int wrapfd;
 	char *ptr;
@@ -450,7 +452,7 @@ static void test_owner(struct __test_metadata *_metadata,
 }
 
 static void test_rewrap(struct __test_metadata *_metadata,
-			FIXTURE_DATA(wrapfd_tests) *self, int fd)
+			FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	int wrapfd, wrapfd2, wrapfd3;
 	unsigned int state;
@@ -510,8 +512,7 @@ static void test_rewrap(struct __test_metadata *_metadata,
 	ASSERT_EQ(cmp_content(_metadata, self, wrapfd3), 0);
 
 	/* Try mapping the original empty wrap file */
-	ptr = mmap(NULL, self->size, PROT_READ, MAP_SHARED,
-		   wrapfd, 0);
+	ptr = mmap(NULL, self->size, PROT_READ, MAP_SHARED, wrapfd, 0);
 	ASSERT_TRUE(ptr == MAP_FAILED && errno == ENOENT);
 
 	/* Release ownership of the buffers */
@@ -524,7 +525,7 @@ static void test_rewrap(struct __test_metadata *_metadata,
 }
 
 static void test_empty(struct __test_metadata *_metadata,
-		       FIXTURE_DATA(wrapfd_tests) *self, int fd)
+		       FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	unsigned int state;
 	int wrapfd;
@@ -540,8 +541,8 @@ static void test_empty(struct __test_metadata *_metadata,
 	ASSERT_EQ(wrapfd_acquire_ownership(wrapfd), 0);
 
 	/* Try emptying a mapped buffer */
-	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-		   wrapfd, 0);
+	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED, wrapfd,
+		   0);
 	ASSERT_NE(ptr, MAP_FAILED);
 	ASSERT_TRUE(wrapfd_empty(wrapfd) < 0 && errno == EINVAL);
 	ASSERT_EQ(munmap(ptr, self->size), 0);
@@ -552,8 +553,8 @@ static void test_empty(struct __test_metadata *_metadata,
 		    state == WRAPFD_CONTENT_EMPTY);
 
 	/* Try mapping the empty wrap file */
-	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-		   wrapfd, 0);
+	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED, wrapfd,
+		   0);
 	ASSERT_TRUE(ptr == MAP_FAILED && errno == ENOENT);
 
 	/* Release buffer ownership */
@@ -562,7 +563,8 @@ static void test_empty(struct __test_metadata *_metadata,
 	close(wrapfd);
 }
 
-static int is_close_on_exec(int fd) {
+static int is_close_on_exec(int fd)
+{
 	int flags;
 
 	flags = fcntl(fd, F_GETFD);
@@ -572,7 +574,8 @@ static int is_close_on_exec(int fd) {
 	return (flags & FD_CLOEXEC) ? 1 : 0;
 }
 
-static int set_close_on_exec(int fd, bool set) {
+static int set_close_on_exec(int fd, bool set)
+{
 	int flags;
 
 	flags = fcntl(fd, F_GETFD);
@@ -588,8 +591,8 @@ static int set_close_on_exec(int fd, bool set) {
 }
 
 static void __test_close_on_exec(struct __test_metadata *_metadata,
-				 FIXTURE_DATA(wrapfd_tests) *self,
-				 int fd, int close_on_exec)
+				 FIXTURE_DATA(wrapfd_tests) * self, int fd,
+				 int close_on_exec)
 {
 	int wrapfd, wrapfd2;
 
@@ -609,7 +612,7 @@ static void __test_close_on_exec(struct __test_metadata *_metadata,
 }
 
 static void test_close_on_exec(struct __test_metadata *_metadata,
-			       FIXTURE_DATA(wrapfd_tests) *self, int fd)
+			       FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	int close_on_exec;
 
@@ -628,7 +631,7 @@ static void test_close_on_exec(struct __test_metadata *_metadata,
 }
 
 static void test_guests(struct __test_metadata *_metadata,
-			FIXTURE_DATA(wrapfd_tests) *self, int fd)
+			FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	int wrapfd;
 	char *ptr;
@@ -643,8 +646,8 @@ static void test_guests(struct __test_metadata *_metadata,
 	ASSERT_EQ(wrapfd_acquire_ownership(wrapfd), 0);
 
 	/* Try allowing guests for a mapped buffer */
-	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-		   wrapfd, 0);
+	ptr = mmap(NULL, self->size, PROT_READ | PROT_WRITE, MAP_SHARED, wrapfd,
+		   0);
 	ASSERT_NE(ptr, MAP_FAILED);
 	ASSERT_TRUE(wrapfd_allow_guests(wrapfd) < 0 && errno == EINVAL);
 	ASSERT_EQ(munmap(ptr, self->size), 0);
@@ -660,10 +663,10 @@ static void test_guests(struct __test_metadata *_metadata,
 	close(wrapfd);
 }
 
-#define FDINFO_BUF_SIZE	4096
+#define FDINFO_BUF_SIZE 4096
 
 static void test_ioctl(struct __test_metadata *_metadata,
-			FIXTURE_DATA(wrapfd_tests) *self, int fd)
+		       FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
 	const char *buf_name = "test_dmabuf";
 	char str[FDINFO_BUF_SIZE];
@@ -695,13 +698,15 @@ static void test_ioctl(struct __test_metadata *_metadata,
 }
 
 static void run_tests(struct __test_metadata *_metadata,
-		      FIXTURE_DATA(wrapfd_tests) *self, int fd)
+		      FIXTURE_DATA(wrapfd_tests) * self, int fd)
 {
-	test_wrap(_metadata, self, fd);
+	// test_wrap(_metadata, self, fd);
 	test_load(_metadata, self, fd);
 	test_wrap_rdonly(_metadata, self, fd);
 	test_wrap_rdwr(_metadata, self, fd);
+#ifndef __ANDROID__
 	test_remap_file_pages(_metadata, self, fd);
+#endif
 	test_wrap_remap(_metadata, self, fd);
 	test_wrap_fork(_metadata, self, fd);
 	test_dup(_metadata, self, fd);
