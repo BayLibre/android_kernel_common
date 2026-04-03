@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ec96d58_270ec08d",
+        "filename": "mm/oom_kill.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2026-04-03T05:36:27Z",
+      "side": 1,
+      "message": "Hi Suren,\n\nI think we don\u0027t need an external lock\n\nIf we need to manage the locking externally we can use `xa_[un]lock(mm_stash)` with the `__xa_*()` apis.",
+      "range": {
+        "startLine": 1262,
+        "startChar": 0,
+        "endLine": 1262,
+        "endChar": 38
+      },
+      "revId": "7ec296d89188d518532d0f1660493c4b4da814e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
