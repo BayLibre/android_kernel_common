@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1690ffcc_75e3c326",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2120,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-03T13:54:43Z",
+      "side": 1,
+      "message": "IMHO this is rather self-obvious and is not worth adding a comment. If we have such long comments about any such small thing, it will distract attention from more important and less obvious comments.",
+      "parentUuid": "7e434183_dc9b3c87",
+      "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "74b23216_55881ed6",
         "filename": "arch/x86/kvm/pkvm/pkvm.c",
         "patchSetId": 1
@@ -121,6 +139,23 @@
       "side": 1,
       "message": "Acknowledged",
       "parentUuid": "74b23216_55881ed6",
+      "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ec22803_cb96f8a9",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2129,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-03T13:54:43Z",
+      "side": 1,
+      "message": "And while we\u0027re at it, maybe also let\u0027s make this comment focused on the intent rather than on implementation details (which are already clear from the code), e.g.: \"Bug the system if waiting for the remote CPU to ack the kick is taking longer than 1s. It may take microseconds, sometimes up to milliseconds (if the CPU needs to wake from a deeper low-power state) but should not take as long as a second.\" ?",
       "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -264,6 +299,24 @@
       "side": 1,
       "message": "I see. Thanks for the details.",
       "parentUuid": "efc2bca2_222ddee4",
+      "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99bdee2e_240ba325",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2131,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-03T13:54:43Z",
+      "side": 1,
+      "message": "I also agree the ramoops approach seems much better (although it is not obvious to me how to implement it without substantial changes in the implementation of ramoops itself, to make it aware that a part of the ramoops buffer is the hypervisor buffer and so on).\n\nAs for resetting the system from the hypervisor, hopefully that\u0027s easy: the hypervisor could just write the ACPI reset register (whose address it could get from the FADT table before deprivileging)?\n\n...So I\u0027m probably fine with either BUG_ON or WARN_ON_ONCE here, whatever you guys think is better.",
+      "parentUuid": "19f2b0e3_6e34c2d7",
       "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
