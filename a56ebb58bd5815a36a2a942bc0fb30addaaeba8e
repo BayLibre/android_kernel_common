@@ -230,6 +230,24 @@
       "parentUuid": "efb52b5d_2bd119e4",
       "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efc2bca2_222ddee4",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2131,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2026-04-03T09:06:36Z",
+      "side": 1,
+      "message": "In general I think that 2) approach is a way to go mainly because it prevents to returning to untrusted Host VM, during such fatal errors and allow host to react on bugs in hyp which isn\u0027t safe I think.\n\nBut regarding above comment for above 1) NMI like solution, I think it could be done in a way that hyp will not continue after BUG_ON since BUG_ON results with u2d and triggers default_exception_handler(). In this handler hyp after preparing everything for the host needed for logging this wrong behavior in my WIP patches I\u0027ve used GUEST_INTR_STATE_NMI, followed by NMI injection and vmresume which AFAIU should force host VM to take over and handle nmi and panic (but since host is untrusted it could start inspecting and use maliciously this nondeterministic state instead of logging and panicing).\n\nBut again I think that 2) approach with logging errors directly from hyp to ramoops is a better (with 1) e.g. malicious host could overwrite its nmi handler to try to \u0027inspect\u0027 the buggy hypervisor which is not possible with 2)).",
+      "parentUuid": "7288d089_e3b98ec1",
+      "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
