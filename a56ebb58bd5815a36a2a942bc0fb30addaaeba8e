@@ -158,6 +158,24 @@
       "parentUuid": "d530986d_a6625856",
       "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f83f2437_264e4c02",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2131,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-03T05:13:17Z",
+      "side": 1,
+      "message": "\u003e For non-debug mode (as that is the mode used in production) we\u0027d like to print at least some diagnostics (instead of just silently hanging) when the hypervisor crashes or BUGs. For example, in pKVM-ARM in non-debug mode, currently, when the hypervisor crashes or BUGs, it injects some exception into the host so that the host kernel panics with a call trace which doesn\u0027t really contain the hypervisor stack, but at least contains an indication that it is the pKVM hypervisor that crashed. (Greg might tell more details.)\n\nSo for WARN, the pKVM will inject some exception to the host to print some warning messages, meanwhile not hung and continue to run. And the host will also not hung itself during handling this exception, right?\n\nAnd for BUG, the pKVM will also inject some exception to the host to print some bug message, meanwhile the pKVM will hung itself on this CPU via hlt?\n\n\u003e If we just print a warning and if it means we only do that in debug mode, it means in production builds we just continue spinning without printing anything (and if we continue spinning, most likely we will spin forever, i.e. the system is already hung)... So I\u0027m not really sure which option is more preferable.\n\nIf so, the only difference of using WARN and BUG is whether the CPU will be hlt or continue spin. From the function point of view, either case will stop this CPU. But WARN will give the CPU a 2nd chance to break the spin, BUG will save more power but if this CPU is stopped, I think I will not care about the power consumption in this scenario and want to reboot immediately...\n\nSo maybe a warn_on_once is better?\n\n\u003e BTW actually I\u0027d probably be fine if we just had a simple while (READ_ONCE(vcpu-\u003emode) \u003d\u003d EXITING_GUEST_MODE) cpu_relax(); loop here, without counting iterations and TSC cycles (i.e. without trying to provide any diagnostics in this hypothetical situation). Maybe I\u0027d even prefer that (for code simplicity).\n\nIf we will have some improved BUG/WARN for the debug mode to show something, maybe it is worth to have this tsc check so that we will know if this infinite spin loop causes any issue or not?",
+      "parentUuid": "48a57d42_8ae7ecea",
+      "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
