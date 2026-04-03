@@ -194,6 +194,24 @@
       "parentUuid": "48a57d42_8ae7ecea",
       "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efb52b5d_2bd119e4",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2131,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2026-04-03T08:00:53Z",
+      "side": 1,
+      "message": "Just FYI, Yes I am working and experimenting with improving BUG and WARN handling for both production (without DEBUG mode) and non-production (with DEBUG) modes. I already have some WIP patches and will share this improved BUG and WARN handling soon, probably next week.\n\nAnd to give more context: I\u0027ve started with mimic what pKVM-ARM is doing which is delegating printing warring/bug messages to host via injecting nmi and registering panic handler, which handles logging, on the host side and have it already working.\n\nNevertheless I\u0027ve also started experimenting with a different approach especially for BUG (and other fatal errors in hyp such as null pointer dereference) in prod mode and actually do not delegate anything to host since hyp is in undefined state already during such handling so I think it is safer to just halt all other cpus and write diagnostic to ramoops directly from the hyp and reset (no return to host). For WARN_ON it is different and we can continue execution and delegate printing to host.\n\nI have both approach: 1) delegating printing to host via nmi and 2) logging errors directly from hyp to ramoops (without delegating to host) WIP implemented and working - will share them soon.\n\n\u003e If we will have some improved BUG/WARN for the debug mode to show something, maybe it is worth to have this tsc check so that we will know if this infinite spin loop causes any issue or not?\n\nI agree I think having BUG/WARNING here will be better option - if we use BUG it will log error and reset the system, if WARN - it will log error and continue running (in production mode with new improvements for WARN/BUG handling). 1s is a lot so I think it is rather BUG(), right?",
+      "parentUuid": "f83f2437_264e4c02",
+      "revId": "a56ebb58bd5815a36a2a942bc0fb30addaaeba8e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
