@@ -81,6 +81,24 @@
       "parentUuid": "ccd92783_95e954af",
       "revId": "7bcdd794190adf9c0fec34da36bedd3b95fb333f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f55f8bd9_33bbff92",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1121838
+      },
+      "writtenOn": "2026-04-03T01:20:34Z",
+      "side": 1,
+      "message": "I think all common_kernel() should have pahole\u003dselect({}) set, in this change.\n\nThen, please cherry-pick this change to android17-6.18; this will allow --pahole_from_sources be used in android17-6.18 if someone wants to.\n\nThen we wait until we fork away main-kernel-2026 (i.e. we cut the automerger), which likely happens during KMI freeze (soon).\n\nThen, we flip the flag on main-kernel. Because main-kernel-2026 no longer receives changes from main-kernel, android17-6.18 will have --pahole_from_sources\u003dfalse, which is the old behavior, right?",
+      "parentUuid": "e090917d_70c27e1e",
+      "revId": "7bcdd794190adf9c0fec34da36bedd3b95fb333f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
