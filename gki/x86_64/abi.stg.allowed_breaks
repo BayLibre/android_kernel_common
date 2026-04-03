@@ -1,1 +1,16 @@
 # See http://go/approve-abi-break
+
+variable symbol 'struct static_call_key __SCK__tp_func_dma_fence_emit' changed
+  CRC changed from 0x6f1233f8 to 0x2a0a7206
+
+variable symbol 'struct static_call_key __SCK__tp_func_gpu_mem_total' changed
+  CRC changed from 0x6f1233f8 to 0x2a0a7206
+
+variable symbol 'struct static_call_key __SCK__tp_func_xdp_exception' changed
+  CRC changed from 0xd10dd1f9 to 0x2966e145
+
+... 1521 omitted; 1524 symbols have only CRC changes
+
+type 'struct pglist_data' changed
+  member 'u64 android_oem_data1' was added
+
