@@ -2234,6 +2234,24 @@ cc_binary_with_abi(
     ],
 )
 
+cc_binary_with_abi(
+    name = "kselftest_wrapfd",
+    srcs = [
+        "tools/testing/selftests/drivers/wrapfd/wrapfd.c",
+        "include/uapi/linux/wrapfd.h",
+    ],
+    copts = _KSELFTEST_COPTS,
+    linkopts = ["-static"],
+    includes = ["include/uapi"],
+    defines = ["__ANDROID__"],
+    path_prefix = _KSELFTEST_DIR,
+    target_compatible_with = ["@platforms//os:android"],
+    visibility = ["//visibility:private"],
+    deps = [
+        ":kselftest_headers_lib",
+    ],
+)
+
 copy_file(
     name = "kselftest_gen_config",
     src = select({

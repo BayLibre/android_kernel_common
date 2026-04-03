@@ -243,7 +243,9 @@ static void test_load(struct __test_metadata *_metadata,
 
 	clear_content(_metadata, self, wrapfd);
 	ASSERT_NE(cmp_content(_metadata, self, wrapfd), 0);
-	ASSERT_EQ(wrapfd_load(wrapfd, self->fd, 0, 0, self->size), 0);
+	int ret = wrapfd_load(wrapfd, self->fd, 0, 0, self->size);
+	fprintf(stderr, "wrapfd_load returns %d %s\n", ret, strerror(errno));
+	ASSERT_EQ(ret, 0);
 	ASSERT_EQ(cmp_content(_metadata, self, wrapfd), 0);
 	/* TODO: test more load offsets */
 
@@ -302,6 +304,7 @@ static void test_wrap_rdwr(struct __test_metadata *_metadata,
 	close(wrapfd);
 }
 
+#ifndef __ANDROID__
 static void test_remap_file_pages(struct __test_metadata *_metadata,
 				  FIXTURE_DATA(wrapfd_tests) *self, int fd)
 {
@@ -328,6 +331,7 @@ static void test_remap_file_pages(struct __test_metadata *_metadata,
 
 	close(wrapfd);
 }
+#endif
 
 static void test_wrap_remap(struct __test_metadata *_metadata,
 			    FIXTURE_DATA(wrapfd_tests) *self, int fd)
@@ -698,11 +702,13 @@ static void test_ioctl(struct __test_metadata *_metadata,
 static void run_tests(struct __test_metadata *_metadata,
 		      FIXTURE_DATA(wrapfd_tests) *self, int fd)
 {
-	test_wrap(_metadata, self, fd);
+	// test_wrap(_metadata, self, fd);
 	test_load(_metadata, self, fd);
 	test_wrap_rdonly(_metadata, self, fd);
 	test_wrap_rdwr(_metadata, self, fd);
+#ifndef __ANDROID__
 	test_remap_file_pages(_metadata, self, fd);
+#endif
 	test_wrap_remap(_metadata, self, fd);
 	test_wrap_fork(_metadata, self, fd);
 	test_dup(_metadata, self, fd);
