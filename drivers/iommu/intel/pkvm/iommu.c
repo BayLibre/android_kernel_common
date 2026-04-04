@@ -560,6 +560,32 @@ int pkvm_iommu_mmio_write(u64 phys, int len, u64 val)
 			 iommu->seq_id, offset);
 		ret = -EPERM;
 		break;
+	case DMAR_PMEN_REG:
+		/*
+		 * pKVM disables PMRs during iommu init. Allow the host to write
+		 * PMEN with EPM clear (the safe state) but drop the writes
+		 * Block any attempt to re-enable PMRs (EPM bit set) as that
+		 * could disrupt guest DMA.
+		 */
+		if (val & DMA_PMEN_EPM) {
+			pkvm_err("iommu%d: attempt to enable PMRs blocked\n",
+				 iommu->seq_id);
+			ret = -EPERM;
+		}
+		break;
+	case DMAR_PLMBASE_REG:
+	case DMAR_PLMLIMIT_REG:
+	case DMAR_PHMBASE_REG:
+	case DMAR_PHMLIMIT_REG:
+		/*
+		 * Block writes to PMR address range registers. These define the
+		 * physical address ranges that the IOMMU blocks from DMA. The
+		 * host has no legitimate reason to reconfigure these post-boot.
+		 */
+		pkvm_err("iommu%d: PMR range register write blocked at offset 0x%lx\n",
+			 iommu->seq_id, offset);
+		ret = -EPERM;
+		break;
 	case DMAR_FEADDR_REG:
 		/*
 		 * FEADDR holds the MSI destination address for fault events.
@@ -767,6 +793,22 @@ static int iommu_init(struct intel_iommu *iommu)
 	 * virtual GSTS for the host.
 	 */
 	iommu->vgsts = readl(iommu->reg + DMAR_GSTS_REG);
+
+	/*
+	 * Protected Memory Regions (PMRs) are a legacy DMA protection mechanism
+	 * used by firmware before DMA remapping is active. Host driver disables
+	 * PMRs once DMA remapping is set up. Disable them explicitly to be on
+	 * the safer side in case host driver doesn't get to do it.
+	 */
+	if ((cap_plmr(iommu->cap) || cap_phmr(iommu->cap)) &&
+	    (readl(iommu->reg + DMAR_PMEN_REG) & DMA_PMEN_EPM)) {
+		u32 pmen;
+
+		pkvm_dbg("iommu%d: disabling PMRs\n", iommu->seq_id);
+		pmen = readl(iommu->reg + DMAR_PMEN_REG);
+		pmen &= ~DMA_PMEN_EPM;
+		writel(pmen, iommu->reg + DMAR_PMEN_REG);
+	}
 
 	/*
 	 * IR setup (IRTA write + GCMD SIRTP) happens during x2apic enable,
