@@ -671,6 +671,20 @@ int pkvm_iommu_mmio_write(u64 phys, int len, u64 val)
 		}
 		break;
 	default:
+		/*
+		 * Block writes to IOMMU MTRR registers which is used to derive
+		 * the effective memory types during DMA. Host driver never writes
+		 * these and should be safe to block these from host.
+		 */
+		if ((offset >= DMAR_MTRRCAP_REG &&
+		     offset <= DMAR_MTRR_FIX4K_F8000_REG) ||
+		    (offset >= DMAR_MTRR_PHYSBASE0_REG &&
+		     offset <= DMAR_MTRR_PHYSMASK9_REG)) {
+			pkvm_err("iommu%d: MTRR register write blocked at offset 0x%lx\n",
+				 iommu->seq_id, offset);
+			ret = -EPERM;
+			break;
+		}
 		/* Not emulated MMIO can directly go to hardware */
 		ret = iommu_direct_mmio_write(iommu, phys, len, val);
 	}
