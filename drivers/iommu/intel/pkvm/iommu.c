@@ -536,6 +536,30 @@ int pkvm_iommu_mmio_write(u64 phys, int len, u64 val)
 			iommu->virta = val;
 		}
 		break;
+	case DMAR_PQH_REG:
+	case DMAR_PQT_REG:
+	case DMAR_PQA_REG:
+	case DMAR_PRS_REG:
+	case DMAR_PECTL_REG:
+	case DMAR_PEDATA_REG:
+	case DMAR_PEADDR_REG:
+	case DMAR_PEUADDR_REG:
+		/*
+		 * SVA/PRS (Shared Virtual Addressing / Page Request Service)
+		 * registers. pKVM does not support SVA/PRS; block all writes to
+		 * prevent the host from setting up a page request queue (PQA)
+		 * that could corrupt protected memory via IOMMU descriptor writes,
+		 * or programming PEADDR with a non-MSI address to corrupt protected
+		 * memory via page request event MSI writes.
+		 *
+		 * TODO: Revisit when pKVM adds SVA/PRS support. At that point,
+		 * PQA must point to hypervisor-owned memory and PEADDR/PEUADDR
+		 * must be validated against the MSI address range.
+		 */
+		pkvm_err("iommu%d: SVA/PRS register write blocked at offset 0x%lx\n",
+			 iommu->seq_id, offset);
+		ret = -EPERM;
+		break;
 	case DMAR_FEADDR_REG:
 		/*
 		 * FEADDR holds the MSI destination address for fault events.
