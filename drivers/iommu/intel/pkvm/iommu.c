@@ -18,6 +18,30 @@
 unsigned int iommu_pgsz_mask = 1 << PG_LEVEL_4K | 1 << PG_LEVEL_2M | 1 << PG_LEVEL_1G;
 unsigned int iommu_pglvl_mask = IOMMU_PGT_4LEVEL | IOMMU_PGT_5LEVEL;
 
+/*
+ * x86 MSI address base: all legitimate MSI interrupts target this range
+ * (Local APIC delivery). FEADDR must have this prefix.
+ */
+#define X86_MSI_ADDR_BASE	0xfee00000U
+#define X86_MSI_ADDR_MASK	0xfff00000U
+
+/*
+ * Check whether the 64-bit MSI address formed by combining the upper (uaddr)
+ * and lower (addr) 32-bit halves falls within system memory.
+ *
+ * In xAPIC mode uaddr is zero, giving the standard 0xFEExxxxx range which
+ * is never backed by DRAM.  In x2APIC mode uaddr carries an APIC cluster ID
+ * (e.g. 0x100), producing an address such as 0x100_FEE00000 (~1 TiB) that
+ * CAN reside in DRAM on machines with sufficient RAM.  Reject such values to
+ * prevent the IOMMU from corrupting protected memory on interrupt delivery.
+ */
+static bool msi_addr_targets_memory(u32 addr, u32 uaddr)
+{
+	u64 msi_addr = ((u64)uaddr << 32) | addr;
+
+	return is_memory_range(msi_addr, sizeof(u32));
+}
+
 /* GCMD bits that handle enabling/disabling of IOMMU features */
 #define DMAR_GSTS_EN_BITS	(DMA_GCMD_TE | DMA_GCMD_QIE | DMA_GCMD_IRE | DMA_GCMD_CFI)
 /* GCMD oneshot bits where unsetting the bit doesn't have an effect */
@@ -512,6 +536,65 @@ int pkvm_iommu_mmio_write(u64 phys, int len, u64 val)
 			iommu->virta = val;
 		}
 		break;
+	case DMAR_FEADDR_REG:
+		/*
+		 * FEADDR holds the MSI destination address for fault events.
+		 * The IOMMU writes to this address when a fault occurs, bypassing
+		 * DMA remapping. Ensure it targets only the x86 MSI address range
+		 * (0xFEE00000) to prevent writes to protected memory.
+		 *
+		 * In x2APIC mode FEUADDR provides the upper 32 bits; check the
+		 * combined 64-bit address against the system memory map to catch
+		 * addresses like 0x100_FEE00000 (~1 TiB) that could target DRAM.
+		 */
+		if ((val & X86_MSI_ADDR_MASK) != X86_MSI_ADDR_BASE) {
+			pkvm_err("iommu%d: FEADDR 0x%llx not in MSI address range\n",
+				 iommu->seq_id, val);
+			ret = -EPERM;
+		} else {
+			u32 feuaddr = readl(iommu->reg + DMAR_FEUADDR_REG);
+
+			if (msi_addr_targets_memory((u32)val, feuaddr)) {
+				pkvm_err("iommu%d: FEADDR/FEUADDR 0x%llx targets system memory\n",
+					 iommu->seq_id, ((u64)feuaddr << 32) | (u32)val);
+				ret = -EPERM;
+			} else {
+				ret = iommu_direct_mmio_write(iommu, phys, len, val);
+			}
+		}
+		break;
+	case DMAR_FEUADDR_REG:
+		/*
+		 * FEUADDR holds the upper 32 bits of the MSI address.
+		 *
+		 * In xAPIC mode all MSI addresses fit in 32 bits (0xFEE00000),
+		 * so FEUADDR is zero.
+		 *
+		 * In x2APIC mode (VT-d spec §5.1.6.2, Figure 5-6), the IOMMU
+		 * places APIC ID bits [31:8] in FEUADDR bits [31:8]; bits [7:0]
+		 * are reserved and must be zero.  Reject writes that set the
+		 * reserved low byte, but allow any value in bits [31:8] — those
+		 * are a legitimate x2APIC destination ID.
+		 *
+		 * Also check that the combined 64-bit address with the current
+		 * FEADDR does not fall in system memory.
+		 */
+		if (val & 0xFF) {
+			pkvm_err("iommu%d: FEUADDR 0x%llx has reserved bits set\n",
+				 iommu->seq_id, val);
+			ret = -EPERM;
+		} else {
+			u32 feaddr = readl(iommu->reg + DMAR_FEADDR_REG);
+
+			if (msi_addr_targets_memory(feaddr, (u32)val)) {
+				pkvm_err("iommu%d: FEUADDR/FEADDR 0x%llx targets system memory\n",
+					 iommu->seq_id, (val << 32) | feaddr);
+				ret = -EPERM;
+			} else {
+				ret = iommu_direct_mmio_write(iommu, phys, len, val);
+			}
+		}
+		break;
 	default:
 		/* Not emulated MMIO can directly go to hardware */
 		ret = iommu_direct_mmio_write(iommu, phys, len, val);
@@ -539,6 +622,28 @@ int __init prepare_iommu(struct intel_iommu_info *info)
 
 	iommu_paging_structure_coherent &= iommu_paging_structure_coherency(iommu);
 
+	return 0;
+}
+
+/*
+ * Validate that the MSI address programmed into a pair of 32-bit address
+ * registers (lower @addr_reg, upper @uaddr_reg) does not target system
+ * memory.  Called at deprivilege time to catch firmware/BIOS values that
+ * were set before pKVM took control.
+ */
+static int iommu_validate_msi_addr(struct intel_iommu *iommu,
+				   u32 addr_reg, u32 uaddr_reg,
+				   const char *name)
+{
+	u32 addr  = readl(iommu->reg + addr_reg);
+	u32 uaddr = readl(iommu->reg + uaddr_reg);
+
+	if (msi_addr_targets_memory(addr, uaddr)) {
+		pkvm_err("iommu%d: %s address 0x%llx targets system memory\n",
+			 iommu->seq_id, name,
+			 ((u64)uaddr << 32) | addr);
+		return -EPERM;
+	}
 	return 0;
 }
 
@@ -585,6 +690,18 @@ static int iommu_init(struct intel_iommu *iommu)
 		if (ret)
 			return ret;
 	}
+
+	/*
+	 * Validate that FEADDR/FEUADDR do not target system memory.  Firmware
+	 * programs these before deprivilege; a buggy or malicious firmware
+	 * could have pointed them at protected memory.  The check is possible
+	 * here because pKVM's MMU (and thus the full memory map) is
+	 * initialized before iommu_init().
+	 */
+	ret = iommu_validate_msi_addr(iommu, DMAR_FEADDR_REG, DMAR_FEUADDR_REG,
+				      "fault event");
+	if (ret)
+		return ret;
 
 	return 0;
 }
