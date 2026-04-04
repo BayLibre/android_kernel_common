@@ -595,6 +595,57 @@ int pkvm_iommu_mmio_write(u64 phys, int len, u64 val)
 			}
 		}
 		break;
+	case DMAR_PERFINTRADDR_REG:
+		/*
+		 * PERFINTRADDR holds the MSI destination address for performance
+		 * monitoring interrupts. Same threat as FEADDR: the IOMMU writes
+		 * to this address when a perf event fires, bypassing DMA remapping.
+		 * Validate it targets only the x86 MSI address range (0xFEE00000)
+		 * and that the combined 64-bit address with PERFINTRUADDR does not
+		 * fall in system memory.
+		 */
+		if ((val & X86_MSI_ADDR_MASK) != X86_MSI_ADDR_BASE) {
+			pkvm_err("iommu%d: PERFINTRADDR 0x%llx not in MSI address range\n",
+				 iommu->seq_id, val);
+			ret = -EPERM;
+		} else {
+			u32 perfintruaddr = readl(iommu->reg + DMAR_PERFINTRUADDR_REG);
+
+			if (msi_addr_targets_memory((u32)val, perfintruaddr)) {
+				pkvm_err("iommu%d: PERFINTRADDR/PERFINTRUADDR 0x%llx targets system memory\n",
+					 iommu->seq_id,
+					 ((u64)perfintruaddr << 32) | (u32)val);
+				ret = -EPERM;
+			} else {
+				ret = iommu_direct_mmio_write(iommu, phys, len, val);
+			}
+		}
+		break;
+	case DMAR_PERFINTRUADDR_REG:
+		/*
+		 * PERFINTRUADDR holds the upper 32 bits of the perf event MSI
+		 * address.  Same x2APIC layout as FEUADDR (§5.1.6.2): bits
+		 * [31:8] carry APIC ID[31:8]; bits [7:0] are reserved.
+		 *
+		 * Also check that the combined 64-bit address with the current
+		 * PERFINTRADDR does not fall in system memory.
+		 */
+		if (val & 0xFF) {
+			pkvm_err("iommu%d: PERFINTRUADDR 0x%llx has reserved bits set\n",
+				 iommu->seq_id, val);
+			ret = -EPERM;
+		} else {
+			u32 perfintraddr = readl(iommu->reg + DMAR_PERFINTRADDR_REG);
+
+			if (msi_addr_targets_memory(perfintraddr, (u32)val)) {
+				pkvm_err("iommu%d: PERFINTRUADDR/PERFINTRADDR 0x%llx targets system memory\n",
+					 iommu->seq_id, (val << 32) | perfintraddr);
+				ret = -EPERM;
+			} else {
+				ret = iommu_direct_mmio_write(iommu, phys, len, val);
+			}
+		}
+		break;
 	default:
 		/* Not emulated MMIO can directly go to hardware */
 		ret = iommu_direct_mmio_write(iommu, phys, len, val);
@@ -702,6 +753,18 @@ static int iommu_init(struct intel_iommu *iommu)
 				      "fault event");
 	if (ret)
 		return ret;
+
+	/*
+	 * Same check for PERFINTRADDR/PERFINTRUADDR if performance monitoring
+	 * is supported.
+	 */
+	if (ecap_pms(iommu->ecap)) {
+		ret = iommu_validate_msi_addr(iommu, DMAR_PERFINTRADDR_REG,
+					      DMAR_PERFINTRUADDR_REG,
+					      "perf monitoring");
+		if (ret)
+			return ret;
+	}
 
 	return 0;
 }
