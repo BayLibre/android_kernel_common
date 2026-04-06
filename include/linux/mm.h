@@ -3546,7 +3546,8 @@ extern int do_munmap(struct mm_struct *, unsigned long, size_t,
 		     struct list_head *uf);
 extern int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int behavior);
 int madvise_free_single_vma(struct vm_area_struct *vma,
-			    unsigned long start_addr, unsigned long end_addr);
+			    unsigned long start_addr, unsigned long end_addr,
+			    bool stack_area);
 
 
 #ifdef CONFIG_MMU

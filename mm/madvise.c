@@ -677,12 +677,18 @@ static long madvise_pageout(struct vm_area_struct *vma,
 	return 0;
 }
 
+struct madvise_free_private {
+	struct mmu_gather *tlb;
+	bool stack_area;
+};
+
 static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
 				unsigned long end, struct mm_walk *walk)
 
 {
 	const cydp_t cydp_flags = CYDP_CLEAR_YOUNG | CYDP_CLEAR_DIRTY;
-	struct mmu_gather *tlb = walk->private;
+	struct madvise_free_private *priv = walk->private;
+	struct mmu_gather *tlb = priv->tlb;
 	struct mm_struct *mm = tlb->mm;
 	struct vm_area_struct *vma = walk->vma;
 	spinlock_t *ptl;
@@ -806,6 +812,10 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
 			clear_young_dirty_ptes(vma, addr, pte, nr, cydp_flags);
 			tlb_remove_tlb_entries(tlb, pte, nr, addr);
 		}
+		if (priv->stack_area) {
+			set_bit(PG_stack_reclaim, &folio->flags);
+			count_vm_events(PGLAZYMARKED_STACK, folio_nr_pages(folio));
+		}
 		folio_mark_lazyfree(folio);
 	}
 
@@ -826,11 +836,13 @@ static const struct mm_walk_ops madvise_free_walk_ops = {
 };
 
 int madvise_free_single_vma(struct vm_area_struct *vma,
-			    unsigned long start_addr, unsigned long end_addr)
+			    unsigned long start_addr, unsigned long end_addr,
+			    bool stack_area)
 {
 	struct mm_struct *mm = vma->vm_mm;
 	struct mmu_notifier_range range;
 	struct mmu_gather tlb;
+	struct madvise_free_private priv = { &tlb, stack_area };
 
 	/* MADV_FREE works for only anon vma at the moment */
 	if (!vma_is_anonymous(vma))
@@ -852,7 +864,7 @@ int madvise_free_single_vma(struct vm_area_struct *vma,
 	mmu_notifier_invalidate_range_start(&range);
 	tlb_start_vma(&tlb, vma);
 	walk_page_range(vma->vm_mm, range.start, range.end,
-			&madvise_free_walk_ops, &tlb);
+			&madvise_free_walk_ops, &priv);
 	tlb_end_vma(&tlb, vma);
 	mmu_notifier_invalidate_range_end(&range);
 	tlb_finish_mmu(&tlb);
@@ -977,7 +989,7 @@ static long madvise_dontneed_free(struct vm_area_struct *vma,
 	if (behavior == MADV_DONTNEED || behavior == MADV_DONTNEED_LOCKED)
 		return madvise_dontneed_single_vma(vma, start, end);
 	else if (behavior == MADV_FREE)
-		return madvise_free_single_vma(vma, start, end);
+		return madvise_free_single_vma(vma, start, end, false);
 	else
 		return -EINVAL;
 }

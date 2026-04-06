@@ -1563,6 +1563,8 @@ retry:
 			 */
 			count_vm_events(PGLAZYFREED, nr_pages);
 			count_memcg_folio_events(folio, PGLAZYFREED, nr_pages);
+			if (test_and_clear_bit(PG_stack_reclaim, &folio->flags))
+				count_vm_events(PGLAZYFREED_STACK, nr_pages);
 		} else if (!mapping || !__remove_mapping(mapping, folio, true,
 							 sc->target_mem_cgroup))
 			goto keep_locked;

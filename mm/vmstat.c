@@ -1299,6 +1299,9 @@ const char * const vmstat_text[] = {
 	"pgfault",
 	"pgmajfault",
 	"pglazyfreed",
+	"pglazymarked_stack",
+	"pglazyfreed_stack",
+	"pglazyfreemissed_stack",
 
 	"pgrefill",
 	"pgreuse",

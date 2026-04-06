@@ -2897,6 +2897,7 @@ EXPORT_SYMBOL(folio_redirty_for_writepage);
 bool folio_mark_dirty(struct folio *folio)
 {
 	struct address_space *mapping = folio_mapping(folio);
+	bool ret;
 
 	if (likely(mapping)) {
 		/*
@@ -2912,10 +2913,15 @@ bool folio_mark_dirty(struct folio *folio)
 		 */
 		if (folio_test_reclaim(folio))
 			folio_clear_reclaim(folio);
-		return mapping->a_ops->dirty_folio(mapping, folio);
+		ret = mapping->a_ops->dirty_folio(mapping, folio);
+	} else {
+		ret = noop_dirty_folio(mapping, folio);
 	}
+	if (test_and_clear_bit(PG_stack_reclaim, &folio->flags))
+		count_vm_events(PGLAZYFREEMISSED_STACK, folio_nr_pages(folio));
 
-	return noop_dirty_folio(mapping, folio);
+	return ret;
+
 }
 EXPORT_SYMBOL(folio_mark_dirty);
 
