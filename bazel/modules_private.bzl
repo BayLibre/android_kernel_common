@@ -42,6 +42,7 @@ _COMMON_GKI_MODULES_LIST = [
     "drivers/net/usb/rtl8150.ko",
     "drivers/net/usb/usbnet.ko",
     "drivers/net/wwan/wwan.ko",
+    "drivers/power/sequencing/pwrseq-core.ko",
     "drivers/pps/pps_core.ko",
     "drivers/ptp/ptp.ko",
     "drivers/thunderbolt/thunderbolt.ko",
@@ -106,13 +107,11 @@ _ARM64_GKI_MODULES_LIST = [
 
 _X86_GKI_MODULES_LIST = [
     # keep sorted
-    "drivers/power/sequencing/pwrseq-core.ko",
     "drivers/ptp/ptp_kvm.ko",
 ]
 
 _X86_64_GKI_MODULES_LIST = [
     # keep sorted
-    "drivers/power/sequencing/pwrseq-core.ko",
     "drivers/ptp/ptp_kvm.ko",
 ]
 
