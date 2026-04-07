@@ -52,6 +52,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdb55437_317edecc",
+        "filename": "mm/pgsize_migration.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2026-04-07T18:36:47Z",
+      "side": 1,
+      "message": "Added the error log.",
+      "parentUuid": "4340f458_1694e2cf",
+      "range": {
+        "startLine": 235,
+        "startChar": 2,
+        "endLine": 236,
+        "endChar": 12
+      },
+      "revId": "1d2c3cabfbbd30535e1b9c9cf22c8d3084b39a5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d7fc31f_2e7fcf4a",
@@ -117,6 +141,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b020ca02_6e41b65c",
+        "filename": "mm/pgsize_migration.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2026-04-07T18:36:47Z",
+      "side": 1,
+      "message": "Added the log here instead, thanks.",
+      "parentUuid": "d039506a_d880edd3",
+      "range": {
+        "startLine": 294,
+        "startChar": 33,
+        "endLine": 294,
+        "endChar": 54
+      },
+      "revId": "1d2c3cabfbbd30535e1b9c9cf22c8d3084b39a5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ace5c89_c62156fa",
@@ -154,6 +202,30 @@
           ]
         }
       ],
+      "revId": "1d2c3cabfbbd30535e1b9c9cf22c8d3084b39a5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3078c14_f72a38d1",
+        "filename": "mm/vma.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1933,
+      "author": {
+        "id": 1499410
+      },
+      "writtenOn": "2026-04-07T18:36:47Z",
+      "side": 1,
+      "message": "We only need to handle this `copy_vma()` case for `mremap()` `vm_area_dup()` is valid to persist the because we do want such padding to persist for e.g. vma\u0027s inherited by a child via `fork()`.",
+      "parentUuid": "9ace5c89_c62156fa",
+      "range": {
+        "startLine": 1932,
+        "startChar": 2,
+        "endLine": 1933,
+        "endChar": 39
+      },
       "revId": "1d2c3cabfbbd30535e1b9c9cf22c8d3084b39a5d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
