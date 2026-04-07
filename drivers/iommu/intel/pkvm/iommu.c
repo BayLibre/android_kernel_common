@@ -510,6 +510,24 @@ int pkvm_iommu_mmio_write(u64 phys, int len, u64 val)
 			iommu->virta = val;
 		}
 		break;
+	case DMAR_FSTS_REG:
+	case DMAR_FECTL_REG:
+	case DMAR_FEDATA_REG:
+	case DMAR_PERFINTRSTS_REG:
+	case DMAR_PERFINTRCTL_REG:
+	case DMAR_PERFINTRDATA_REG:
+		/*
+		 * Interrupt control registers that carry no memory-targeting
+		 * risk; pass through directly:
+		 *   FSTS/PERFINTRSTS   - RW1C status, driver clears fault bits
+		 *   FECTL/PERFINTRCTL  - interrupt mask/unmask
+		 *   FEDATA/PERFINTRDATA - MSI data payload
+		 * The corresponding address registers (FEADDR/FEUADDR and
+		 * PERFINTRADDR/PERFINTRUADDR) are handled separately with MSI
+		 * address range and memory map validation.
+		 */
+		ret = iommu_direct_mmio_write(iommu, phys, len, val);
+		break;
 	case DMAR_ECMD_REG: {
 		/*
 		 * Extended Command Interface. Only allow performance monitoring
@@ -652,8 +670,15 @@ int pkvm_iommu_mmio_write(u64 phys, int len, u64 val)
 		}
 		break;
 	default:
-		/* Not emulated MMIO can directly go to hardware */
-		ret = iommu_direct_mmio_write(iommu, phys, len, val);
+		/*
+		 * Deny-by-default: block all registers not explicitly handled
+		 * above.  Any register the host driver legitimately needs must
+		 * be added as an explicit case; unknown or unreviewed registers
+		 * must not reach hardware.
+		 */
+		pkvm_err("iommu%d: unrecognized register write blocked at offset 0x%lx val 0x%llx\n",
+			 iommu->seq_id, offset, val);
+		ret = -EPERM;
 	}
 
 	pkvm_spin_unlock(&iommu->lock);
