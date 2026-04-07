@@ -117,6 +117,24 @@
       "parentUuid": "f55f8bd9_33bbff92",
       "revId": "7bcdd794190adf9c0fec34da36bedd3b95fb333f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba7bbc78_36bc5678",
+        "filename": "BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1953271
+      },
+      "writtenOn": "2026-04-07T17:53:27Z",
+      "side": 1,
+      "message": "We have checked that source-built pahole is working as expected in android-mainline and have decided to also include it in android17-6.18.\n\nHence I will abandon this change in favour of CL:4024618, where I add a similar select in the common_kernel() macro itself.",
+      "parentUuid": "e0507b51_bbf529fb",
+      "revId": "7bcdd794190adf9c0fec34da36bedd3b95fb333f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
