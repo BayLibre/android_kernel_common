@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39a0ea21_96c851ce",
+        "filename": "kernel/cgroup/freezer.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1104430
+      },
+      "writtenOn": "2026-04-07T13:53:42Z",
+      "side": 1,
+      "message": "find_vma() is \"find the VMA at this address or, if no such VMA exists, the next one\". Maybe use vma_lookup() instead to make this a bit stricter?",
+      "range": {
+        "startLine": 121,
+        "startChar": 7,
+        "endLine": 121,
+        "endChar": 15
+      },
+      "revId": "3157adb833379670a7250f8ca47068980cb17f05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a9dae29_ac22b1d0",
+        "filename": "kernel/cgroup/freezer.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1104430
+      },
+      "writtenOn": "2026-04-07T13:53:42Z",
+      "side": 1,
+      "message": "The `VM_GROWSDOWN` flag is only set on the main stack; pthread stacks don\u0027t have this flag. You can see that when looking at /proc/$pid/smaps and searching for entries with VmFlags containing \"gd\". So that doesn\u0027t give an indication of which way the stack grows.\n\nI think `CONFIG_STACK_GROWSUP` signals which way the stack grows on the current architecture (and that flag is only set on the parisc architecture). (I think Itanium was a weird exception with stacks growing _both_ directions and two stack pointers, or something like that, but that\u0027s gone from the upstream kernel now.)",
+      "range": {
+        "startLine": 125,
+        "startChar": 5,
+        "endLine": 125,
+        "endChar": 33
+      },
+      "revId": "3157adb833379670a7250f8ca47068980cb17f05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e13e99b_6fbb11cf",
+        "filename": "kernel/cgroup/freezer.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1104430
+      },
+      "writtenOn": "2026-04-07T13:53:42Z",
+      "side": 1,
+      "message": "This is arch-specific; in particular, on x86-64, we\u0027d have to subtract 128 from the stack pointer to account for the redzone.",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 37
+      },
+      "revId": "3157adb833379670a7250f8ca47068980cb17f05",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
