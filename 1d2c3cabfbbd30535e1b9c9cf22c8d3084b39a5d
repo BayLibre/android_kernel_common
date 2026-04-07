@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4340f458_1694e2cf",
+        "filename": "mm/pgsize_migration.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2026-04-07T16:51:32Z",
+      "side": 1,
+      "message": "should we log the error?",
+      "range": {
+        "startLine": 235,
+        "startChar": 2,
+        "endLine": 236,
+        "endChar": 12
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "77365b0f_4359c5b5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/pgsize_migration.c",
+              "range": {
+                "startLine": 235,
+                "startChar": 0,
+                "endLine": 236,
+                "endChar": 0
+              },
+              "replacement": "\t\tif (IS_ERR(path)) {\n\t\t\tpr_err(\"pgsize_migration: failed to get d_path: %ld\\n\", PTR_ERR(path));\n"
+            },
+            {
+              "path": "mm/pgsize_migration.c",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\t\t}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1d2c3cabfbbd30535e1b9c9cf22c8d3084b39a5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d7fc31f_2e7fcf4a",
+        "filename": "mm/pgsize_migration.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2026-04-07T16:51:32Z",
+      "side": 1,
+      "message": "should we add a WARN_ON or BUG_ON when the MAP_PRIVATE is not set?",
+      "range": {
+        "startLine": 294,
+        "startChar": 33,
+        "endLine": 294,
+        "endChar": 54
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f6c45297_0079f7b0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/pgsize_migration.c",
+              "range": {
+                "startLine": 296,
+                "startChar": 0,
+                "endLine": 297,
+                "endChar": 0
+              },
+              "replacement": "\tif (WARN_ON_ONCE(vma-\u003evm_flags \u0026 VM_SHARED))\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1d2c3cabfbbd30535e1b9c9cf22c8d3084b39a5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
