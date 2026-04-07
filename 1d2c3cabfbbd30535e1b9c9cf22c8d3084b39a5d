@@ -115,6 +115,47 @@
       },
       "revId": "1d2c3cabfbbd30535e1b9c9cf22c8d3084b39a5d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ace5c89_c62156fa",
+        "filename": "mm/vma.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1933,
+      "author": {
+        "id": 1889140
+      },
+      "writtenOn": "2026-04-07T17:30:08Z",
+      "side": 1,
+      "message": "should we move this code to vm_area_dup() instead?\n\nhttp://cs/h/partner-android/kernel-pixel/superproject/+/android17-gs-pixel-6.18:common/ack/mm/vma_init.c?l\u003d121",
+      "range": {
+        "startLine": 1932,
+        "startChar": 2,
+        "endLine": 1933,
+        "endChar": 39
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b5a05fe8_31ca2ac7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/vma.c",
+              "range": {
+                "startLine": 1932,
+                "startChar": 0,
+                "endLine": 1933,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "1d2c3cabfbbd30535e1b9c9cf22c8d3084b39a5d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
