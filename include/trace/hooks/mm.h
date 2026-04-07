@@ -565,6 +565,12 @@ DECLARE_HOOK(android_vh_adjust_iocb_flags,
 DECLARE_HOOK(android_vh_filemap_end_dropbehind_bypass,
 	TP_PROTO(struct folio *folio, bool *bypass),
 	TP_ARGS(folio, bypass));
+DECLARE_HOOK(android_vh_mm_direct_reclaim_enter,
+	TP_PROTO(unsigned int order),
+	TP_ARGS(order));
+DECLARE_HOOK(android_vh_mm_direct_reclaim_exit,
+	TP_PROTO(unsigned long did_some_progress, int retry_times),
+	TP_ARGS(did_some_progress, retry_times));
 #endif /* _TRACE_HOOK_MM_H */
 
 /* This part must be outside protection */
