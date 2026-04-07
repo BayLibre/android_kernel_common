@@ -4,6 +4,7 @@
  *
  */
 #include <asm/kvm_pkvm.h>
+#include <linux/dmar.h>
 #include <linux/pci.h>
 #include "pkvm/mmu.h"
 #include "pkvm/vmx/ept.h"
@@ -505,4 +506,76 @@ int pkvm_iommu_free_domain(u64 pgd_gpa, struct pkvm_memcache *mc)
 	}
 
 	return ret;
+}
+
+/*
+ * Verify that the physical address used as a Posted Interrupt Descriptor
+ * target is host-owned memory.  pKVM's security guarantee is that protected
+ * memory (hypervisor and protected guest) must not be writable by the IOMMU.
+ * Any page that is not host-owned (e.g. donated to the hypervisor or a
+ * protected guest) must be rejected.
+ */
+static bool pkvm_is_host_owned_mem(unsigned long pa)
+{
+	struct pkvm_page *page;
+
+	if (!is_memory_range(pa, sizeof(struct pi_desc)))
+		return false;
+
+	page = pkvm_phys_to_page(pa);
+	return page->owner == PKVM_ID_HOST &&
+	       page->host_state == PKVM_PAGE_OWNED;
+}
+
+int pkvm_iommu_modify_irte(struct modify_irte_data *data)
+{
+	struct intel_iommu *iommu = iommu_from_phys(data->phys);
+	struct irte modified = { .low = data->irte_lo, .high = data->irte_hi };
+	struct irte *irte;
+
+	if (!iommu)
+		return -EINVAL;
+
+	if (!iommu->ir_table) {
+		pkvm_err("iommu%d: modify_irte: IR table not set up\n", iommu->seq_id);
+		return -EINVAL;
+	}
+
+	if (data->index >= SZ_1M / sizeof(struct irte)) {
+		pkvm_err("iommu%d: modify_irte: index %u out of range\n",
+			 iommu->seq_id, data->index);
+		return -EINVAL;
+	}
+
+	/*
+	 * For posted-mode IRTEs, validate that the PDA does not point into
+	 * protected memory.  The IOMMU writes to the PI descriptor on interrupt
+	 * delivery; if the host could set pda_l/pda_h to a hypervisor or
+	 * protected guest address, device interrupts would corrupt it.
+	 */
+	if (modified.pst == 1) {
+		unsigned long pda_pa = ((u64)modified.pda_h << 32) |
+				       ((u64)modified.pda_l << 6);
+
+		if (!pkvm_is_host_owned_mem(pda_pa)) {
+			pkvm_err("iommu%d: modify_irte: PDA 0x%lx not host-owned at index %u\n",
+				 iommu->seq_id, pda_pa, data->index);
+			return -EPERM;
+		}
+	}
+
+	irte = &iommu->ir_table[data->index];
+
+	if ((irte->pst == 1) || (modified.pst == 1)) {
+		u128 old = irte->irte;
+
+		WARN_ON(!arch_try_cmpxchg128(&irte->irte, &old, modified.irte));
+	} else {
+		WRITE_ONCE(irte->low, modified.low);
+		WRITE_ONCE(irte->high, modified.high);
+	}
+
+	__iommu_flush_cache(iommu, irte, sizeof(*irte));
+
+	return qi_flush_iec(iommu, data->index, 0);
 }
