@@ -23,7 +23,7 @@ unsigned int iommu_pglvl_mask = IOMMU_PGT_4LEVEL | IOMMU_PGT_5LEVEL;
 /* GCMD oneshot bits where unsetting the bit doesn't have an effect */
 #define DMAR_GCMD_ONESHOT	(DMA_GCMD_SRTP | DMA_GCMD_SIRTP)
 /* Mask of bits the host is allowed to access directly (passed through to hardware) */
-#define DMAR_GCMD_DIRECT	(DMA_GCMD_IRE | DMA_GCMD_CFI | DMA_GCMD_SIRTP)
+#define DMAR_GCMD_DIRECT	(DMA_GCMD_IRE | DMA_GCMD_CFI)
 /* Mask of bits supported by pKVM */
 #define DMAR_GCMD_SUPPORTED_BITS	(DMAR_GSTS_EN_BITS | DMA_GCMD_SRTP | DMA_GCMD_SIRTP)
 
@@ -274,6 +274,63 @@ static int handle_gcmd_srtp(struct intel_iommu *iommu)
 	return 0;
 }
 
+/*
+ * Donate the IR table to the hypervisor as read-only and record its virtual
+ * address in iommu->ir_table.  Called both from iommu_init() (table already
+ * live before deprivilege) and from handle_gcmd_sirtp() (host sets a new
+ * table after deprivilege).
+ */
+static int iommu_protect_ir_table(struct intel_iommu *iommu)
+{
+	u64 ir_table_pa;
+	int ret;
+
+	if (!iommu->virta) {
+		pkvm_err("iommu%d: IR table protection requested before IRTA set\n",
+			 iommu->seq_id);
+		return -EINVAL;
+	}
+
+	ir_table_pa = pkvm_host_gpa_to_phys(iommu->virta & VTD_PAGE_MASK);
+	ret = pkvm_host_donate_hyp_share_ro(ir_table_pa, SZ_1M, false);
+	if (ret) {
+		pkvm_err("iommu%d: failed to write protect IR table[%llx] (err=%d)\n",
+			 iommu->seq_id, ir_table_pa, ret);
+		return ret;
+	}
+
+	iommu->ir_table = __pkvm_va(ir_table_pa);
+	__iommu_flush_cache(iommu, iommu->ir_table, SZ_1M);
+
+	return 0;
+}
+
+static int handle_gcmd_sirtp(struct intel_iommu *iommu)
+{
+	int ret;
+
+	if (iommu->ir_table) {
+		pkvm_err("iommu%d: SIRTP allowed only once\n", iommu->seq_id);
+		return -EBUSY;
+	}
+
+	ret = iommu_protect_ir_table(iommu);
+	if (ret)
+		return ret;
+
+	writeq(iommu->virta, iommu->reg + DMAR_IRTA_REG);
+	handle_gcmd_direct(iommu, DMA_GCMD_SIRTP, true);
+
+	/*
+	 * Flush the interrupt entry cache globally if the hardware doesn't
+	 * support Enhanced SIRTP.
+	 */
+	if (iommu->qi && !cap_esirtps(iommu->cap))
+		qi_global_iec(iommu);
+
+	return 0;
+}
+
 static int handle_gcmd_te(struct intel_iommu *iommu, bool enable)
 {
 	if (enable) {
@@ -327,6 +384,9 @@ static int handle_global_cmd(struct intel_iommu *iommu, u32 val)
 	if (changed & DMA_GCMD_SRTP)
 		return handle_gcmd_srtp(iommu);
 
+	if (changed & DMA_GCMD_SIRTP)
+		return handle_gcmd_sirtp(iommu);
+
 	if (changed & DMA_GCMD_TE)
 		return handle_gcmd_te(iommu, !!(val & changed));
 
@@ -370,6 +430,9 @@ int pkvm_iommu_mmio_read(u64 phys, int len, u64 *val)
 		break;
 	case DMAR_RTADDR_REG:
 		*val = iommu->vrta;
+		break;
+	case DMAR_IRTA_REG:
+		*val = iommu->virta;
 		break;
 	case DMAR_GSTS_REG:
 		*val = iommu->vgsts;
@@ -437,6 +500,18 @@ int pkvm_iommu_mmio_write(u64 phys, int len, u64 val)
 			iommu->vrta = val;
 		}
 		break;
+	case DMAR_IRTA_REG:
+		if (iommu->ir_table) {
+			pkvm_err("iommu%d: IRTA already set\n", iommu->seq_id);
+			ret = -EBUSY;
+		} else if (iommu->vgsts & DMA_GSTS_IRES) {
+			pkvm_err("iommu%d: Setting IRTA after IRE enabled!\n",
+				 iommu->seq_id);
+			ret = -EBUSY;
+		} else {
+			iommu->virta = val;
+		}
+		break;
 	default:
 		/* Not emulated MMIO can directly go to hardware */
 		ret = iommu_direct_mmio_write(iommu, phys, len, val);
@@ -498,6 +573,18 @@ static int iommu_init(struct intel_iommu *iommu)
 	 * virtual GSTS for the host.
 	 */
 	iommu->vgsts = readl(iommu->reg + DMAR_GSTS_REG);
+
+	/*
+	 * IR setup (IRTA write + GCMD SIRTP) happens during x2apic enable,
+	 * before pKVM deprivilege.  If the IR table pointer is already active,
+	 * read the existing IRTA value and protect the table now.
+	 */
+	if (iommu->vgsts & DMA_GSTS_IRTPS) {
+		iommu->virta = readq(iommu->reg + DMAR_IRTA_REG);
+		ret = iommu_protect_ir_table(iommu);
+		if (ret)
+			return ret;
+	}
 
 	return 0;
 }
