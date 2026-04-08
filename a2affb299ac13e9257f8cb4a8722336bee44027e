@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5f75cdc_6da3d306",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-08T08:19:22Z",
+      "side": 1,
+      "message": "Just not so clear about the reason of moving the IOMMU cache flush call to donation apis. I think the host ept tlb flush is only involved when removing permissions from the host. Thus it seems there should be no difference between calling it in donation api and calling it in host ept flushing? Or maybe I missed something?\n\nAnother note, unsharing npVM\u0027s page with host will also need to flush the host ept as this api also removes permissions for the host. But seems currently the such pages are not mapped in the IOMMU page table, so we don\u0027t need to flush IOMMU cache for this case.",
+      "revId": "a2affb299ac13e9257f8cb4a8722336bee44027e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c82b41e_31889000",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1494,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-08T08:19:22Z",
+      "side": 1,
+      "message": "The `iommu_tlb_flush` is called after the donated page mapped in the guest mmu. This seems can open a small window that, the other guest vcpus can access this donated memory pages while the device can also access via stale IOMMU tlb. To close this window, we can call it before map to the guest?",
+      "revId": "a2affb299ac13e9257f8cb4a8722336bee44027e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
