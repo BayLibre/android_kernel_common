@@ -71,14 +71,12 @@ static int __init pkvm_iommu_cma_setup(struct reserved_mem *rmem)
 }
 RESERVEDMEM_OF_DECLARE(pkvm_cma, "pkvm,iommu-cma", pkvm_iommu_cma_setup);
 
-static const u8 pmd_order = PMD_SHIFT - PAGE_SHIFT;
-
 struct page *kvm_iommu_cma_alloc(void)
 {
 	if (!kvm_iommu_cma)
 		return NULL;
 
-	return cma_alloc(kvm_iommu_cma, (1 << pmd_order), pmd_order, true);
+	return cma_alloc(kvm_iommu_cma, 1, 0, true);
 }
 EXPORT_SYMBOL(kvm_iommu_cma_alloc);
 
@@ -87,7 +85,7 @@ bool kvm_iommu_cma_release(struct page *p)
 	if (!kvm_iommu_cma || !p)
 		return false;
 
-	return cma_release(kvm_iommu_cma, p, 1 << pmd_order);
+	return cma_release(kvm_iommu_cma, p, 1);
 }
 EXPORT_SYMBOL(kvm_iommu_cma_release);
 
@@ -210,15 +208,14 @@ static int __kvm_iommu_topup_memcache_from_cma(size_t size, gfp_t gfp, size_t *a
 			return -ENOMEM;
 
 		init_hyp_memcache(&mc);
-		push_hyp_memcache(&mc, page_to_virt(p), __topup_virt_to_phys,
-				  PMD_SHIFT - PAGE_SHIFT);
+		push_hyp_memcache(&mc, page_to_virt(p), __topup_virt_to_phys, 0);
 
 		if (__pkvm_topup_hyp_alloc_mgt_mc(HYP_ALLOC_MGT_IOMMU_ID, &mc)) {
 			kvm_iommu_cma_release(p);
 			return -EINVAL;
 		}
 
-		*allocated += PMD_SIZE;
+		*allocated += PAGE_SIZE;
 	}
 
 	return 0;
@@ -238,7 +235,7 @@ int __pkvm_topup_hyp_iommu(unsigned long nr_pages, unsigned long sz_alloc, gfp_t
 	if (order > PAGE_SHIFT)
 		return -E2BIG;
 
-	if (sz_alloc <= PMD_SIZE) {
+	if (sz_alloc == PAGE_SIZE) {
 		ret = __kvm_iommu_topup_memcache_from_cma(size, gfp, &from_cma);
 		if (!ret)
 			return 0;

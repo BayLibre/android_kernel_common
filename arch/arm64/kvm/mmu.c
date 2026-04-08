@@ -1125,15 +1125,13 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
 static void hyp_mc_free_fn(void *addr, void *mc, unsigned long order)
 {
 	struct kvm_hyp_memcache *memcache = mc;
-	static const u8 pmd_order = PMD_SHIFT - PAGE_SHIFT;
 
 
 	if (memcache->flags & HYP_MEMCACHE_ACCOUNT_STAGE2)
 		kvm_account_pgtable_pages(addr, -1);
 
 	/* The iommu pool supports top-up from dma_contiguous_default_area */
-	if (order == pmd_order &&
-	    kvm_iommu_cma_release(virt_to_page(addr)))
+	if (kvm_iommu_cma_release(virt_to_page(addr)))
 		return;
 
 	free_pages((unsigned long)addr, order);

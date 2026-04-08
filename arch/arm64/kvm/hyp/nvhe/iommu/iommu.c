@@ -36,7 +36,6 @@ static bool iommu_pools_ready;
 phys_addr_t cma_base;
 size_t cma_size;
 static struct hyp_pool iommu_cma_pool;
-static const u8 pmd_order = PMD_SHIFT - PAGE_SHIFT;
 
 /*
  * We support multiple drivers for the host kernel, but only one for the guest,
@@ -74,12 +73,6 @@ static bool kvm_iommu_donate_from_cma(phys_addr_t phys, unsigned long order)
 		return false;
 
 	if (end <= phys)
-		return false;
-
-	if (order != pmd_order)
-		return false;
-
-	if (!IS_ALIGNED(phys, PMD_SIZE))
 		return false;
 
 	if (phys < cma_base || end > cma_base + cma_size)
@@ -139,7 +132,7 @@ static void kvm_iommu_reclaim(struct kvm_hyp_memcache *host_mc, int target)
 		return;
 
 	reclaim_hyp_pool(&iommu_cma_pool, host_mc,
-			 target, pmd_order, false);
+			 target, 0, false);
 }
 
 static int kvm_iommu_reclaimable(void)
@@ -154,7 +147,7 @@ static int kvm_iommu_reclaimable(void)
 	if (!cma_size)
 		return reclaimable;
 
-	reclaimable += hyp_pool_reclaimable(&iommu_cma_pool, pmd_order) * PMD_SIZE;
+	reclaimable += hyp_pool_free_pages(&iommu_cma_pool);
 	return reclaimable;
 }
 
@@ -268,10 +261,10 @@ static int kvm_iommu_init_cma_pool(void)
 
 	__hyp_pool_set_range_reclaimable(&iommu_cma_pool);
 
-	for (i = 0 ; i < cma_nr_pages ; i += 1 << pmd_order) {
+	for (i = 0 ; i < cma_nr_pages ; i++) {
 		struct hyp_page *p = hyp_phys_to_page(cma_base + i * PAGE_SIZE);
 
-		hyp_pool_reclaim(&iommu_cma_pool, p, pmd_order, true);
+		hyp_pool_reclaim(&iommu_cma_pool, p, 0, true);
 	}
 
 	return ret;
