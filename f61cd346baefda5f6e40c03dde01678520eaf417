@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8d480db_45642ebb",
+        "filename": "drivers/iommu/intel/pkvm/domain.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-08T08:21:17Z",
+      "side": 1,
+      "message": "So this is to make sure the lazy flushing request is performed for all the domains? If so, shall we check if if the domain has `flush_pending` or not? It seems the `domain_flush` will call `cache_tag_flush_range` even `domain-\u003eflush_pending` is false.",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
