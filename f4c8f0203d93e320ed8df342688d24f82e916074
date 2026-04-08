@@ -1,0 +1,59 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b19b0bc9_086b8901",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2132,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-08T11:35:30Z",
+      "side": 1,
+      "message": "nit: since we won\u0027t reach here anyway, we may slightly simplify the code:\n```\n--- a/arch/x86/kvm/pkvm/pkvm.c\n+++ b/arch/x86/kvm/pkvm/pkvm.c\n@@ -2106,11 +2106,9 @@ void pkvm_kick_vcpu(struct kvm_vcpu *vcpu)\n        pkvm_lapic_send_init(READ_ONCE(vcpu-\u003ecpu));\n }\n \n-#define RELAX_ITERATIONS       1000\n-\n void pkvm_wait_vcpu_kicked_out(struct kvm_vcpu *vcpu)\n {\n-       int relax_iters \u003d RELAX_ITERATIONS;\n+       int relax_iters \u003d 1000;\n        u64 start;\n \n        if (READ_ONCE(vcpu-\u003emode) !\u003d EXITING_GUEST_MODE)\n@@ -2128,7 +2126,6 @@ void pkvm_wait_vcpu_kicked_out(struct kvm_vcpu *vcpu)\n                         * should not take as long as a second.\n                         */\n                        BUG_ON(tsc_khz \u0026\u0026 (((rdtsc() - start) / tsc_khz) \u003e 1000));\n-                       relax_iters \u003d RELAX_ITERATIONS;\n                }\n        } while (READ_ONCE(vcpu-\u003emode) \u003d\u003d EXITING_GUEST_MODE);\n }\n```",
+      "fixSuggestions": [
+        {
+          "fixId": "2772cac4_5cfac74e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 2110,
+                "startChar": 0,
+                "endLine": 2112,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 2114,
+                "startChar": 0,
+                "endLine": 2115,
+                "endChar": 0
+              },
+              "replacement": "\tint relax_iters \u003d 1000;\n"
+            },
+            {
+              "path": "arch/x86/kvm/pkvm/pkvm.c",
+              "range": {
+                "startLine": 2132,
+                "startChar": 0,
+                "endLine": 2133,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "f4c8f0203d93e320ed8df342688d24f82e916074",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
