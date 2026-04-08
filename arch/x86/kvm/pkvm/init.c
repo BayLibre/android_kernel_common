@@ -171,6 +171,19 @@ static int create_hyp_mmu(const struct pkvm_mem_info infos[], int nr_infos)
 			return ret;
 	}
 
+	/*
+	 * Check only the size. During ACPI discovery, we explicitly
+	 * validate that the physical address is not 0 (which is reserved for
+	 * legacy BIOS on x86) before setting the size.
+	 */
+	if (pkvm_ramoops_console_size) {
+		ret = pkvm_hyp_mmu_map((unsigned long)__pkvm_va(pkvm_ramoops_console_pa),
+				       pkvm_ramoops_console_pa, pkvm_ramoops_console_size,
+				       (u64)pgprot_val(PAGE_KERNEL));
+		if (ret)
+			return ret;
+	}
+
 	/* Load pKVM hypervisor's MMU to use pKVM vmemmap */
 	pkvm_hyp_mmu_load();
 
