@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d23c92b5_290e98c5",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-08T15:52:59Z",
+      "side": 1,
+      "message": "This is not quite enough? We need to make sure it stays host-owned all the time (for the lifetime of the IRTE), not just at the moment of setting the IRTE?\n\nI was imagining we could increase the page\u0027s refcount, similarly to how we make sure that DMA-mapped pages stay host-owned. It _seems_ we could even just reuse pkvm_host_use_dma() as is...\n\n(BTW I\u0027m not even mentioning that pkvm_is_host_owned_mem() doesn\u0027t take host_mmu_lock, so it is racy even just because of that.)",
+      "revId": "88c80a04a3e55f40d4a990141e7c038450ade98e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b38642ae_856b570b",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-08T15:52:59Z",
+      "side": 1,
+      "message": "Any reason why not try_cmpxchg128() like in the host driver?",
+      "fixSuggestions": [
+        {
+          "fixId": "e078d21e_97d41cbc",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/pkvm/iommu_hc.c",
+              "range": {
+                "startLine": 572,
+                "startChar": 0,
+                "endLine": 573,
+                "endChar": 0
+              },
+              "replacement": "\t\tWARN_ON(!try_cmpxchg128(\u0026irte-\u003eirte, \u0026old, modified.irte));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "88c80a04a3e55f40d4a990141e7c038450ade98e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f15850b_70e25dac",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-08T15:52:59Z",
+      "side": 1,
+      "message": "Looks like we are not using any lock to protect against the host doing all this concurrently on multiple CPUs for the same IOMMU?",
+      "revId": "88c80a04a3e55f40d4a990141e7c038450ade98e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
