@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #define pr_fmt(fmt) "pkvm: " fmt
 
+#include <linux/acpi.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/extable.h>
@@ -1404,6 +1405,121 @@ static int __init pkvm_firmware_rmem_clear(void)
 	return 0;
 }
 
+struct pkvm_ramoops_console_info {
+	phys_addr_t start;
+	size_t size;
+};
+
+/*
+ * Console offset needs to be calculated manually since ACPI only provides the
+ * overall region boundaries. Offset of the Console is effectively the size of
+ * Dmesg area.
+ *
+ * Below definitions based on drivers/platform/chrome/chromeos_pstore.c:
+ */
+#define GOOG9999_RAMOOPS_PMSG_SIZE    0x20000
+#define GOOG9999_RAMOOPS_FTRACE_SIZE  0x20000
+#define GOOG9999_RAMOOPS_CONSOLE_SIZE 0x20000
+
+#define GOOG9999_RAMOOPS_NON_DMESG_SIZE \
+	(GOOG9999_RAMOOPS_PMSG_SIZE + \
+	 GOOG9999_RAMOOPS_FTRACE_SIZE + \
+	 GOOG9999_RAMOOPS_CONSOLE_SIZE)
+
+/* The combined size of the fixed partitions at the end of the region */
+#define GOOG9999_RAMOOPS_DMESG_SIZE(total_size) \
+	((total_size) - GOOG9999_RAMOOPS_NON_DMESG_SIZE)
+
+static void update_ramoops_console_info(struct pkvm_ramoops_console_info *info,
+					struct resource_entry *rentry)
+{
+	size_t console_offset;
+	size_t ramoops_size = resource_size(rentry->res);
+
+	/*
+	 * Note: The ChromeOS ramoops layout (for GOOG9999) partitions the
+	 * memory region as:
+	 * [Dmesg Area] [Console (128KB)] [Pmsg (128KB)] [Ftrace (128KB)]
+	 *
+	 * Since ramoops must recover logs across hardware resets and different
+	 * kernel versions, this layout should be stable and has remained
+	 * invariant for over a decade (chromeos_pstore.c's
+	 * chromeos_ramoops_data hasn't changed for a decade).
+	 *
+	 * The console buffer is located 3 slots (384KB) before the end of the
+	 * total region.
+	 */
+	if (ramoops_size >= GOOG9999_RAMOOPS_NON_DMESG_SIZE) {
+		console_offset = GOOG9999_RAMOOPS_DMESG_SIZE(ramoops_size);
+		info->start = rentry->res->start + console_offset;
+		info->size = GOOG9999_RAMOOPS_CONSOLE_SIZE;
+	}
+}
+
+static void pkvm_find_ramoops(struct pkvm_ramoops_console_info *info)
+{
+	struct acpi_device *adev;
+	LIST_HEAD(resource_list);
+	struct resource_entry *rentry;
+
+	info->start = 0;
+	info->size = 0;
+
+	/*
+	 * TODO: currently supporting only ACPI GOOG9999 chromeos_pstore but it can
+	 * be extended to other pstores like ramoops cmdline options.
+	 */
+	adev = acpi_dev_get_first_match_dev("GOOG9999", NULL, -1);
+	if (!adev)
+		return;
+
+	if (acpi_dev_get_resources(adev, &resource_list, NULL, NULL) < 0)
+		goto out;
+
+	list_for_each_entry(rentry, &resource_list, node) {
+		if (resource_type(rentry->res) == IORESOURCE_MEM) {
+			update_ramoops_console_info(info, rentry);
+			break;
+		}
+	}
+	acpi_dev_free_resource_list(&resource_list);
+
+out:
+	acpi_dev_put(adev);
+}
+
+static void __init pkvm_ramoops_init(void)
+{
+	struct pkvm_ramoops_console_info r_info;
+
+	pkvm_find_ramoops(&r_info);
+	if (r_info.start && r_info.size) {
+		phys_addr_t end = r_info.start + r_info.size - 1;
+		phys_addr_t pvmfw_end = pvmfw_base + pvmfw_size - 1;
+
+		if (pvmfw_present && (r_info.start <= pvmfw_end) && (pvmfw_base <= end)) {
+			pr_err("ramoops [0x%llx-0x%llx] overlaps with pvmfw region\n",
+			       r_info.start, end);
+			return;
+		}
+
+		if (!e820__mapped_all(r_info.start, end, E820_TYPE_RESERVED)) {
+			pr_err("ramoops [0x%llx-0x%llx] is not reserved in e820\n",
+			       r_info.start, end);
+			return;
+		}
+
+		if (!PAGE_ALIGNED(r_info.start) || !PAGE_ALIGNED(r_info.size)) {
+			pr_err("ramoops [0x%llx-0x%llx] is not page-aligned\n",
+			       r_info.start, end);
+			return;
+		}
+
+		pkvm_sym(pkvm_ramoops_console_pa) = r_info.start;
+		pkvm_sym(pkvm_ramoops_console_size) = r_info.size;
+	}
+}
+
 int __init vmx_pkvm_init(void)
 {
 	struct pkvm_hyp *pkvm;
@@ -1485,6 +1601,8 @@ int __init vmx_pkvm_init(void)
 		goto out;
 
 	pkvm_sym(init_ops) = pkvm_sym(pkvm_vmx_init_ops);
+
+	pkvm_ramoops_init();
 
 	ret = pkvm_host_deprivilege_cpus(pkvm);
 	if (ret)
