@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #define pr_fmt(fmt) "pkvm: " fmt
 
+#include <linux/acpi.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/extable.h>
@@ -24,6 +25,89 @@ static int __init early_pkvm_relax_cpu_bugs_parse_cmdline(char *buf)
 	return kstrtobool(buf, &relax_cpu_bugs);
 }
 early_param("kvm-intel.pkvm_relax_cpu_bugs", early_pkvm_relax_cpu_bugs_parse_cmdline);
+
+struct pkvm_ramoops_console_info {
+	phys_addr_t start;
+	size_t size;
+};
+
+/*
+ * Console offset needs to be calculated manually since ACPI only provides the
+ * overall region boundaries. Offset of the Console is effectively the size of
+ * Dmesg area.
+ *
+ * Below definitions based on drivers/platform/chrome/chromeos_pstore.c:
+ */
+#define GOOG9999_RAMOOPS_PMSG_SIZE    0x20000
+#define GOOG9999_RAMOOPS_FTRACE_SIZE  0x20000
+#define GOOG9999_RAMOOPS_CONSOLE_SIZE 0x20000
+
+#define GOOG9999_RAMOOPS_DMESG_SIZE(total_size) \
+	((total_size) - GOOG9999_RAMOOPS_PMSG_SIZE - \
+	 GOOG9999_RAMOOPS_FTRACE_SIZE - GOOG9999_RAMOOPS_CONSOLE_SIZE)
+
+static void pkvm_console_info_update(struct pkvm_ramoops_console_info *info,
+				     struct resource_entry *rentry)
+{
+	size_t console_offset;
+	size_t ramoops_size = resource_size(rentry->res);
+
+	/*
+	 * Note: The ChromeOS ramoops layout (for GOOG9999) partitions the
+	 * memory region as:
+	 * [Dmesg Area] [Console (128KB)] [Pmsg (128KB)] [Ftrace (128KB)]
+	 *
+	 * Since ramoops must recover logs across hardware resets and different
+	 * kernel versions, this layout should be stable and has remained
+	 * invariant for over a decade (chromeos_pstore.c's
+	 * chromeos_ramoops_data hasn't changed for a decade).
+	 *
+	 * The console buffer is located 3 slots (384KB) before the end of the
+	 * total region.
+	 */
+	if (ramoops_size > (GOOG9999_RAMOOPS_PMSG_SIZE + 
+			    GOOG9999_RAMOOPS_FTRACE_SIZE + 
+			    GOOG9999_RAMOOPS_CONSOLE_SIZE)) {
+		console_offset = GOOG9999_RAMOOPS_DMESG_SIZE(ramoops_size);
+		info->start = rentry->res->start + console_offset;
+		info->size = GOOG9999_RAMOOPS_CONSOLE_SIZE;
+	}
+}
+
+static void pkvm_find_ramoops(struct pkvm_ramoops_console_info *info)
+{
+	struct acpi_device *adev;
+	struct list_head resource_list;
+	struct resource_entry *rentry;
+	int ret;
+
+	info->start = 0;
+	info->size = 0;
+
+	/*
+	 * TODO: currently supporting only ACPI GOOG9999 chromeos_pstore but it can
+	 * be extended to other pstores like ramoops cmdline options.
+	 */
+	adev = acpi_dev_get_first_match_dev("GOOG9999", NULL, -1);
+	if (!adev)
+		return;
+
+	INIT_LIST_HEAD(&resource_list);
+	ret = acpi_dev_get_resources(adev, &resource_list, NULL, NULL);
+	if (ret < 0)
+		goto out;
+
+	list_for_each_entry(rentry, &resource_list, node) {
+		if (resource_type(rentry->res) == IORESOURCE_MEM) {
+			pkvm_console_info_update(info, rentry);
+			break;
+		}
+	}
+	acpi_dev_free_resource_list(&resource_list);
+
+out:
+	acpi_dev_put(adev);
+}
 
 static int __init early_pvmfw_parse_cmdline(char *buf)
 {
@@ -1416,7 +1500,14 @@ static int __init pkvm_firmware_rmem_clear(void)
 int __init vmx_pkvm_init(void)
 {
 	struct pkvm_hyp *pkvm;
+	struct pkvm_ramoops_console_info r_info;
 	int ret, cpu;
+
+	pkvm_find_ramoops(&r_info);
+	if (r_info.start && r_info.size) {
+		pkvm_sym(pkvm_ramoops_console_pa) = r_info.start;
+		pkvm_sym(pkvm_ramoops_console_size) = r_info.size;
+	}
 
 	pkvm_firmware_rmem_init();
 

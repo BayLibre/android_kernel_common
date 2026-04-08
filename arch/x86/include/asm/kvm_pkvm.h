@@ -627,6 +627,8 @@ static inline void pkvm_hc_set_output(struct kvm_vcpu *vcpu, enum pkvm_hc hc,
 extern unsigned long pkvm_sym(page_offset_base);
 extern unsigned long pkvm_sym(phys_base);
 extern struct pkvm_hyp *pkvm_sym(pkvm_hyp);
+extern phys_addr_t pkvm_sym(pkvm_ramoops_console_pa);
+extern size_t pkvm_sym(pkvm_ramoops_console_size);
 extern struct memblock_region pkvm_sym(pkvm_memory)[];
 extern unsigned int pkvm_sym(pkvm_memblock_nr);
 extern struct cpuinfo_x86 pkvm_sym(boot_cpu_data);
