@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6129eb9f_558a5ad7",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-08T18:31:21Z",
+      "side": 1,
+      "message": "Ahh yes, you are right, will need to fix that.\n\nIts a bit tricky though. pi_desc is only a 64 bytes. We have two classes of PI descriptors:\n1. Global per-cpu pi_desc defined at build time, I think it should not be hard to verify if the Descriptor is one of these per-cpu defined ones in modify_irte as they are build time defined. \n2. For guest VM vcpus, the desc is in `vcpu_vmx-\u003evcpu_pt-\u003epi_desc`. We could probably go through all vcpus and verify if this address is one of those. Will go through the path again and see how it could be done effectively.",
+      "parentUuid": "d23c92b5_290e98c5",
+      "revId": "88c80a04a3e55f40d4a990141e7c038450ade98e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b38642ae_856b570b",
         "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
         "patchSetId": 4
@@ -55,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "824df445_4cb59ac3",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-08T18:31:21Z",
+      "side": 1,
+      "message": "I thought of avoiding extra cruft that comes with it like instrumentation and kcsan etc. I shall revert it to regular kernel api `try_cmpxchg128`",
+      "parentUuid": "b38642ae_856b570b",
+      "revId": "88c80a04a3e55f40d4a990141e7c038450ade98e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f15850b_70e25dac",
         "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
         "patchSetId": 4
@@ -66,6 +102,24 @@
       "writtenOn": "2026-04-08T15:52:59Z",
       "side": 1,
       "message": "Looks like we are not using any lock to protect against the host doing all this concurrently on multiple CPUs for the same IOMMU?",
+      "revId": "88c80a04a3e55f40d4a990141e7c038450ade98e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c076742_5a2def19",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-08T18:31:21Z",
+      "side": 1,
+      "message": "Yeah right, need to take iommu lock to prevent malicious host interference(Normal host behavior should be okay as we take lock in host). Will fix.",
+      "parentUuid": "1f15850b_70e25dac",
       "revId": "88c80a04a3e55f40d4a990141e7c038450ade98e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
