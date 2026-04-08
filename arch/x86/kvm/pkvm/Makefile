@@ -62,13 +62,21 @@ AFLAGS_vmx/host_vmentry.pkvm.o	+= -iquote $(srctree)/arch/x86/kvm/vmx
 AFLAGS_vmx/host_vmentry.pkvm.o	+= -iquote $(obj)/
 $(obj)/vmx/host_vmentry.pkvm.o:	$(obj)/kvm-asm-offsets.h
 
+$(obj)/pkvm-constants.s: $(src)/pkvm_constants.c FORCE
+	$(call if_changed_dep,cc_s_c)
+$(obj)/pkvm_constants.h: $(obj)/pkvm-constants.s FORCE
+	$(call filechk,offsets,__PKVM_CONSTANTS_H__)
+
+$(obj)/vmx/host_vmx.pkvm.o: $(obj)/pkvm_constants.h
+$(obj)/panic.pkvm.o: $(obj)/pkvm_constants.h
+
 $(obj)/kvm-asm-offsets.s: $(obj)/$(kvm)/kvm-asm-offsets.c FORCE
 	$(call if_changed_dep,cc_s_c)
 $(obj)/kvm-asm-offsets.h: $(obj)/kvm-asm-offsets.s FORCE
 	$(call filechk,offsets,__KVM_ASM_OFFSETS_H__)
 
-targets += $(pkvm-obj) pkvm.tmp.o pkvm.lds retpoline.pkvm.S kvm-asm-offsets.s
-clean-files += retpoline.pkvm.S kvm-asm-offsets.h
+targets += $(pkvm-obj) pkvm.tmp.o pkvm.lds retpoline.pkvm.S kvm-asm-offsets.s pkvm-constants.s
+clean-files += retpoline.pkvm.S kvm-asm-offsets.h pkvm_constants.h
 
 # When compiling with the $(objtool-enabled) is true, a single build-in object
 # will be processed by the objtool after all of these objects are linked as a
