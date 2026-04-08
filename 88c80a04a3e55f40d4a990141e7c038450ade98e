@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "02bf3039_5dcdb3c7",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-08T19:08:11Z",
+      "side": 1,
+      "message": "I believe we are already heavily relying on being able to use such APIs as is, otherwise we would have to change e.g. `smp_mb()` to `__smb_mb()` etc throughout KVM code reused by pKVM, and so on.\n\nI recall that since upstream commit 9c2d1328f88a (mentioned also in aosp/3469029) we make sure that the pKVM hypervisor code is excluded from the coverage of KASAN, KCSAN etc.\n\nOTOH, I\u0027m not sure we really make sure that kcsan_mb(), kasan_check_write() etc are no-ops in the pKVM hypervisor (so maybe they are still doing some harmless but redundant stuff)... @chuanxiao.dong@intel.corp-partner.google.com WDYT about that?",
+      "parentUuid": "824df445_4cb59ac3",
+      "revId": "88c80a04a3e55f40d4a990141e7c038450ade98e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f15850b_70e25dac",
         "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
         "patchSetId": 4
