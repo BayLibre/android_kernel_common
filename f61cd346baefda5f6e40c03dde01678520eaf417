@@ -110,6 +110,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d3729c5_df4ea48c",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T23:04:21Z",
+      "side": 1,
+      "message": "Yes, obviously that\u0027s what it does, the question is _why_ it was implemented that way. :) i.e. why it doesn\u0027t try to take advantage of page-selective flushes.\n\nWell, that might be not hard to speculate: there may be an arbitrarily high number of those pending unmapped-but-not-flushed ranges accumulated, so remembering them all and then submitting an arbitrarily high number of flush descriptors to flush them all seems quite dubious; and using this min-max trick doesn\u0027t seem unequivocally advantageous either, since those ranges are arbitrarily sparse.",
+      "parentUuid": "2da1551e_c9560485",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7627125_fe94f000",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
