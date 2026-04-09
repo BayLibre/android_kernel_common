@@ -54,6 +54,24 @@
       ],
       "revId": "f4c8f0203d93e320ed8df342688d24f82e916074",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e52e3099_89770e9b",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2132,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-09T01:39:38Z",
+      "side": 1,
+      "message": "In this case, when `relax_iters` reaches to 0 (it is possible at least in the QEMU VM environment), but the 1s timeout is not triggered, we will continue this while loop with `if (!--relax_iters)` which makes `relax_iters` negative and won\u0027t enter the if condition. This seems not what we want, right?",
+      "parentUuid": "b19b0bc9_086b8901",
+      "revId": "f4c8f0203d93e320ed8df342688d24f82e916074",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
