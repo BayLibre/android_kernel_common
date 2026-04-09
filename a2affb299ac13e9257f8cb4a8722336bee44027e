@@ -128,6 +128,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ba5df205_140f7609",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T21:48:44Z",
+      "side": 1,
+      "message": "BTW just a note before I forget: pkvm_host_donate_hyp_share_ro() surely also flushes host EPT TLB, and we call pkvm_host_donate_hyp_share_ro() in a bunch of places in the pKVM IOMMU code, sometimes with iommu-\u003elock held, sometimes with domain-\u003elock held...",
+      "parentUuid": "7bfa3bef_b8046e4c",
+      "revId": "a2affb299ac13e9257f8cb4a8722336bee44027e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c82b41e_31889000",
         "filename": "arch/x86/kvm/pkvm/mmu.c",
         "patchSetId": 2
