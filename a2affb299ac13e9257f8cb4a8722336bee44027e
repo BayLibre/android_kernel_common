@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ff13cc74_bfcbbf48",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T12:47:21Z",
+      "side": 1,
+      "message": "\u003e \u003e I could see regular ept flushes due to guest_share/guest_unshare after the page has been donated to host and wanted to avoid this. [...]\n\u003e guest_share should not trigger TLB flushing as it adds permissions. guest_unshare will trigger TLB flushing, but seems this will not be called by the pVM as the pVM shares SWIOTLB buffer with the host, and such buffer will not be unshared after it is shared.\n\n+1. @vineethrp@google.com did you really observe host EPT flushes triggered by guest_share/guest_unshare?\n\nI\u0027ve even just double-checked on my side that when starting a pVM, host EPT flush is only triggered by host_donate_guest and host_donate_hyp, not by guest_share_host:\n\n```\n...\n[  116.424491] ++ pkvm_host_donate_guest(gpa\u003d3600000 hpa\u003d146c00000 size\u003d200000)\n[  116.430580] host_ept_flush_tlb(vaddr\u003d146c00000 size\u003d200000)\n[  116.433474] -- pkvm_host_donate_guest(gpa\u003d3600000 hpa\u003d146c00000 size\u003d200000)\n[  116.440211] ++ pkvm_host_donate_guest(gpa\u003d3200000 hpa\u003d15da00000 size\u003d200000)\n[  116.443543] host_ept_flush_tlb(vaddr\u003d15da00000 size\u003d200000)\n[  116.446469] -- pkvm_host_donate_guest(gpa\u003d3200000 hpa\u003d15da00000 size\u003d200000)\n[  116.525288] ++ pkvm_guest_share_host(gpa\u003d34e6000 size\u003d2000)\n[  116.527566] -- pkvm_guest_share_host(gpa\u003d34e6000 size\u003d2000)\n[  116.536951] ++ pkvm_guest_share_host(gpa\u003d35c8000 size\u003d2000)\n[  116.539052] -- pkvm_guest_share_host(gpa\u003d35c8000 size\u003d2000)\n[  116.548740] ++ pkvm_guest_share_host(gpa\u003d35ca000 size\u003d2000)\n[  116.550847] -- pkvm_guest_share_host(gpa\u003d35ca000 size\u003d2000)\n[  116.560371] ++ pkvm_guest_share_host(gpa\u003d35cc000 size\u003d2000)\n[  116.562510] -- pkvm_guest_share_host(gpa\u003d35cc000 size\u003d2000)\n...\n```\n\nand guest_unshare_host is never called.\n\n\u003e Secondly, another reason I forgot to mention in the commit message is - I wanted to take the flush outside of the mmu_lock to avoid some deadlock issues I was theorizing.\n\nSome more background on this: in the early pKVM-IA implementation (with shadow IOMMU), we were doing the IOMMU TLB flush inside the host_ept_flush_tlb callback (like we are doing it now in v6.18), but then I found out it was causing a deadlock (since flushing IOMMU TLB required locking iommu-\u003elock), so I changed it to do it in the donation APIs after unlocking the host EPT lock (like in this patch): aosp/3485391\n\nSo, some time ago when you were working on pvIOMMU for v6.18 and were considering moving that back to the host_ept_flush_tlb callback (which is what you finally did), I noted offline that it  may bring back the deadlock. But you noted that in the new IOMMU implementation we don\u0027t take iommu-\u003elock when flushing IOMMU TLB, we only take domain-\u003ecache_lock for that, so the deadlock shouldn\u0027t happen. And that indeed seems true. (And we never observed such a deadlock in our stress tests on v6.18.)\n\nSo, since we luckily/hopefully can do this inside host_ept_flush_tlb without deadlocks, that seems more elegant than doing it in the donation APIs? In particular, it automatically addresses the potential guest_unshare use case mentioned by Chuanxiao.\n\nSo AIU the only potential advantage of moving it to the donation APIs is to reduce the time of holding host_mmu_lock, thus _possibly_ reducing lock contention when doing donations on multiple CPUs in parallel during a pVM boot (when IOMMU passthrough mode is used), thus potentially improving pVM boot time?\n\nSo it _might_ be a good idea to do that, but first it would be good to confirm if we actually see an improvement? I.e. whether it is actually reducing average time of handing vm_mmu_map hypercall and/or total pVM boot time?",
+      "parentUuid": "ed893a4d_9c9e2393",
+      "revId": "a2affb299ac13e9257f8cb4a8722336bee44027e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c82b41e_31889000",
         "filename": "arch/x86/kvm/pkvm/mmu.c",
         "patchSetId": 2
