@@ -72,6 +72,24 @@
       "parentUuid": "b19b0bc9_086b8901",
       "revId": "f4c8f0203d93e320ed8df342688d24f82e916074",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08a3d2f3_494dbe9e",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2132,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T10:18:11Z",
+      "side": 1,
+      "message": "Ah indeed, I forgot that BUG_ON is conditional. :) \n\nThen what about this:\n\n```\n--- a/arch/x86/kvm/pkvm/pkvm.c\n+++ b/arch/x86/kvm/pkvm/pkvm.c\n@@ -2106,11 +2106,9 @@ void pkvm_kick_vcpu(struct kvm_vcpu *vcpu)\n        pkvm_lapic_send_init(READ_ONCE(vcpu-\u003ecpu));\n }\n \n-#define RELAX_ITERATIONS       1000\n-\n void pkvm_wait_vcpu_kicked_out(struct kvm_vcpu *vcpu)\n {\n-       int relax_iters \u003d RELAX_ITERATIONS;\n+       int relax_iters \u003d 0;\n        u64 start;\n \n        if (READ_ONCE(vcpu-\u003emode) !\u003d EXITING_GUEST_MODE)\n@@ -2119,7 +2117,7 @@ void pkvm_wait_vcpu_kicked_out(struct kvm_vcpu *vcpu)\n        start \u003d rdtsc();\n        do {\n                cpu_relax();\n-               if (!--relax_iters) {\n+               if (++relax_iters \u003d\u003d 1000) {\n                        /*\n                         * Bug the system if waiting for the remote CPU to ack\n                         * the kick is taking longer than 1s. It may take\n@@ -2128,7 +2126,7 @@ void pkvm_wait_vcpu_kicked_out(struct kvm_vcpu *vcpu)\n                         * should not take as long as a second.\n                         */\n                        BUG_ON(tsc_khz \u0026\u0026 (((rdtsc() - start) / tsc_khz) \u003e 1000));\n-                       relax_iters \u003d RELAX_ITERATIONS;\n+                       relax_iters \u003d 0;\n                }\n        } while (READ_ONCE(vcpu-\u003emode) \u003d\u003d EXITING_GUEST_MODE);\n }\n```\n\nMy intention is just to avoid this RELAX_ITERATIONS define, thus make the code a bit more compact and readable. This is very minor, so I\u0027m fine either way.",
+      "parentUuid": "e52e3099_89770e9b",
+      "revId": "f4c8f0203d93e320ed8df342688d24f82e916074",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
