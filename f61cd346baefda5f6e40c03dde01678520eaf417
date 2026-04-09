@@ -20,6 +20,51 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f7627125_fe94f000",
+        "filename": "drivers/iommu/intel/pkvm/domain.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T16:46:57Z",
+      "side": 1,
+      "message": "Why need this variable, if it is still used in just one place?",
+      "fixSuggestions": [
+        {
+          "fixId": "cb51e8ad_40b6257a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/pkvm/domain.c",
+              "range": {
+                "startLine": 343,
+                "startChar": 0,
+                "endLine": 344,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "drivers/iommu/intel/pkvm/domain.c",
+              "range": {
+                "startLine": 356,
+                "startChar": 0,
+                "endLine": 357,
+                "endChar": 0
+              },
+              "replacement": "\t\tcache_tag_flush_range(\u0026pt_domain, paddr, paddr + size - 1, 0);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "67d54a21_9b635d8a",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
