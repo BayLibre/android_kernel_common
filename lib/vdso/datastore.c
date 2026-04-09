@@ -6,6 +6,7 @@
 #include <linux/time_namespace.h>
 #include <linux/types.h>
 #include <linux/vdso_datastore.h>
+#include <linux/page_size_compat_defs.h>
 #include <vdso/datapage.h>
 
 /*
@@ -78,7 +79,7 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
 			return VM_FAULT_SIGBUS;
 		pfn = __phys_to_pfn(__pa_symbol(vdso_k_rng_data));
 		break;
-	case VDSO_ARCH_PAGES_START ... VDSO_ARCH_PAGES_END:
+	case (VDSO_ARCH_PAGES_START) ... VDSO_ARCH_PAGES_END:
 		if (!IS_ENABLED(CONFIG_ARCH_HAS_VDSO_ARCH_DATA))
 			return VM_FAULT_SIGBUS;
 		pfn = __phys_to_pfn(__pa_symbol(vdso_k_arch_data)) +
@@ -98,7 +99,8 @@ const struct vm_special_mapping vdso_vvar_mapping = {
 
 struct vm_area_struct *vdso_install_vvar_mapping(struct mm_struct *mm, unsigned long addr)
 {
-	return _install_special_mapping(mm, addr, VDSO_NR_PAGES * PAGE_SIZE,
+	return _install_special_mapping(mm, addr,
+					VDSO_NR_PAGES * PAGE_SIZE,
 					VM_READ | VM_MAYREAD | VM_IO | VM_DONTDUMP |
 					VM_PFNMAP | VM_SEALED_SYSMAP,
 					&vdso_vvar_mapping);
