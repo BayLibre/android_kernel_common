@@ -110,6 +110,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7bfa3bef_b8046e4c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T16:40:39Z",
+      "side": 1,
+      "message": "\u003e ```\n\u003e unmap:\n\u003e  takes flush lock\n\u003e   takes host mmu lock for host_unuse_dma\n\u003e ```\n\nCould you clarify where exactly you call host_unuse_dma while holding flush_lock?",
+      "parentUuid": "c065347b_509bffc0",
+      "revId": "a2affb299ac13e9257f8cb4a8722336bee44027e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c82b41e_31889000",
         "filename": "arch/x86/kvm/pkvm/mmu.c",
         "patchSetId": 2
