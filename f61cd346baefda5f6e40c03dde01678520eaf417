@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d00bb6e_6d73244b",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T22:23:52Z",
+      "side": 1,
+      "message": "I\u0027m wondering what are the actual typical sizes of these min..max ranges. I imagine that, since DMA allocations can be arbitrarily sparse, these ranges may be so huge that there may be virtually no benefit compared to global flushes (or perhaps it may be even slower than global flushes?)\n\n\u003e probably do not have the mechanism to do selective flushing from the generic driver side.\n\nSurely it does have a mechanism for that, it uses it e.g. normally during DMA unmap in strict mode? `iommu_iotlb_sync()`?",
+      "parentUuid": "9b915631_3fcfe24d",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7627125_fe94f000",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
@@ -202,6 +220,24 @@
       "side": 1,
       "message": "Sorry if I was not clear. Let me try to explain my thought process:\n\npkvm_free_iommu_domain is called with out the iommu_domain_lock and it does the following:\n 1. atomically decrements the refcount and continues if it becomes 0\n 2. unmaps any remaining mappings\n 3. frees up memcache to return pages to host and takes care of undonation\n 4. Takes the spinlock, clears domain structure and releases it to arry\n \nSteps 1 to 3 does not cause any issues with our flush path as we do not use any of the data in those steps. But step 4 waits on `iommu_domain_lock`. This is what I was referring to. So in the event of a flush happening during a domain free, the free path will block until our flushing is done and this code also will not cause a failure in the domain free path. If we take a reference, the free path may error out and domain might not be released. Please let me know if this makes sense.",
       "parentUuid": "683570f1_809bb307",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a5d988f_a83c69fb",
+        "filename": "drivers/iommu/intel/pkvm/domain.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T22:23:52Z",
+      "side": 1,
+      "message": "Ok, I missed that pkvm_free_iommu_domain() actually takes the iommu_domain_lock at the end.\n\nSeems correct, although a bit tricky. At least seems not quite obvious, so may be worth adding a comment, e.g. something like: \"Do not bump the domain\u0027s refcount, so that pkvm_free_iommu_domain() can successfully proceed in case it runs simultaneously with the flush (which may legitimately happen, since flushes are done during various memory donations at any time, independently of domain operations requested by the IOMMU driver). Since the iommu_domain_lock is held, it prevents race with the actual removal of the domain in pkvm_free_iommu_domain().\" ?\n\n\u003e Steps 1 to 3 does not cause any issues with our flush path as we do not use any of the data in those steps.\n\nWell, looking closer, those steps include domain_unmap(), and domain_unmap() itself does something with this flush stuff, so it is not obvious to me whether we really don\u0027t use any of that data...",
+      "parentUuid": "e310e238_dea07083",
       "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
