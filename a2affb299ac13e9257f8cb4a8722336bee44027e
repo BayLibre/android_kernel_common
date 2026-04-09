@@ -105,6 +105,24 @@
       "parentUuid": "4c82b41e_31889000",
       "revId": "a2affb299ac13e9257f8cb4a8722336bee44027e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54149c52_abeb4681",
+        "filename": "arch/x86/kvm/pkvm/mmu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1494,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T13:04:25Z",
+      "side": 1,
+      "message": "\u003e Will fix this\n\nWhich will require moving it before host_mmu_unlock, and thus will defeat any advantages of this entire change?",
+      "parentUuid": "30e3d959_2dcfa532",
+      "revId": "a2affb299ac13e9257f8cb4a8722336bee44027e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
