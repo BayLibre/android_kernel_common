@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c065347b_509bffc0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T14:43:31Z",
+      "side": 1,
+      "message": "\u003e Yes I\u0027ve seen this. Its not during a pVM start up, but I regularly see ept flushes(probably every 10sec or so with trusty running). The pattern I see is guest_share followed by guest_unshare which invokes tlb_flush. I tried just now and one example is: [...]\n\nNow that\u0027s interesting. It appears that Trusty does use unshare, rather than a bounce buffer that is shared all the time. Good for it. @jaszczyk@google.com FYI.\n\npKVM itself behaves as expected here: it flushes host EPT TLB after unshare, not after share.\n\nSo it appears we _already_ have an actual use case for unshare.",
+      "parentUuid": "dbd91d91_aa451b60",
+      "revId": "a2affb299ac13e9257f8cb4a8722336bee44027e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c82b41e_31889000",
         "filename": "arch/x86/kvm/pkvm/mmu.c",
         "patchSetId": 2
