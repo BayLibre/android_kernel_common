@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6511cbe2_e1fadeb4",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T16:45:28Z",
+      "side": 1,
+      "message": "Can we reuse the host\u0027s iommu_iotlb_gather API (for instance, the above `freelist` passed to `dma_pte_clear_level()`) instead of adding all this ad-hoc logic?",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67d54a21_9b635d8a",
+        "filename": "drivers/iommu/intel/pkvm/domain.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T16:45:28Z",
+      "side": 1,
+      "message": "We should increment the domain\u0027s refcount before using it? Otherwise, it may be dropped down to 0 by pkvm_put_iommu_domain() and then freed by pkvm_free_iommu_domain() in the meantime on another CPU?",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a8d480db_45642ebb",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
