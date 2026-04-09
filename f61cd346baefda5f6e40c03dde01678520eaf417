@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2da1551e_c9560485",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-09T22:29:57Z",
+      "side": 1,
+      "message": "\u003e Surely it does have a mechanism for that, it uses it e.g. normally during DMA unmap in strict mode? iommu_iotlb_sync()?\n\nI meant the generic code  do not use the iommu_tlb_sync() callback on deferred mode. If I understand correctly, when the flush queue is full or after time out, it calls the flush_all callback, It uses `iommu_iotlb_sync()` callback only with strict mode I think.",
+      "parentUuid": "9d00bb6e_6d73244b",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7627125_fe94f000",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
@@ -238,6 +256,24 @@
       "side": 1,
       "message": "Ok, I missed that pkvm_free_iommu_domain() actually takes the iommu_domain_lock at the end.\n\nSeems correct, although a bit tricky. At least seems not quite obvious, so may be worth adding a comment, e.g. something like: \"Do not bump the domain\u0027s refcount, so that pkvm_free_iommu_domain() can successfully proceed in case it runs simultaneously with the flush (which may legitimately happen, since flushes are done during various memory donations at any time, independently of domain operations requested by the IOMMU driver). Since the iommu_domain_lock is held, it prevents race with the actual removal of the domain in pkvm_free_iommu_domain().\" ?\n\n\u003e Steps 1 to 3 does not cause any issues with our flush path as we do not use any of the data in those steps.\n\nWell, looking closer, those steps include domain_unmap(), and domain_unmap() itself does something with this flush stuff, so it is not obvious to me whether we really don\u0027t use any of that data...",
       "parentUuid": "e310e238_dea07083",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c4cb863_c081e54e",
+        "filename": "drivers/iommu/intel/pkvm/domain.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-09T22:29:57Z",
+      "side": 1,
+      "message": "\u003e Well, looking closer, those steps include domain_unmap(), and domain_unmap() itself does something with this flush stuff, so it is not obvious to me whether we really don\u0027t use any of that data...\n\nyeah domain_unmap does flushing, but that is under the cache lock, so we are safe there as well. And its valid to have one cpu calling domain_unmap, while the other doing a tlb_flush because of the locking in place.\n\nSorry that I missed commenting these details. I shall add detailed comments in the code and commit message in the next iteration.",
+      "parentUuid": "8a5d988f_a83c69fb",
       "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
