@@ -16,6 +16,24 @@
       "message": "Please fix this build error:\n```\n...(debug;lto_none;notrim) //common:kernel_aarch64 failed: (Exit 2): bash failed: error executing KernelBuild command (from target //common:kernel_aarch64) /bin/bash -c ... (remaining 1 argument skipped)\n\nUse --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\n...el/output_user_root/4cfd4b4d530262c9404da8567df5caec/sandbox/linux-sandbox/413/execroot/_main/common/drivers/tty/serial/qcom_geni_serial.c:157:58: error: use of undeclared identifier \u0027GENI_UART_PORTS\u0027\n  157 | static struct qcom_geni_serial_port qcom_geni_uart_ports[GENI_UART_PORTS] \u003d {\n      |                                                          ^\n1 error generated.\n```",
       "revId": "5c4c87f9ef6a184299e830640882a38c2f7f9304",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2759af9e_ce08ccc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2026-04-09T10:14:43Z",
+      "side": 1,
+      "message": "Additional cherry-picks by uploader. I\u0027ve documented them in the bug.",
+      "parentUuid": "99b557de_5ec73eca",
+      "revId": "5c4c87f9ef6a184299e830640882a38c2f7f9304",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
