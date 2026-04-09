@@ -56,6 +56,13 @@ static unsigned int dm_verity_use_bh_bytes[4] = {
 
 module_param_array_named(use_bh_bytes, dm_verity_use_bh_bytes, uint, NULL, 0644);
 
+static bool dm_verity_bypass_hash_tree;
+module_param_named(bypass_hash_tree, dm_verity_bypass_hash_tree, bool, 0644);
+
+static bool dm_verity_bypass_hash_calc;
+module_param_named(bypass_hash_calc, dm_verity_bypass_hash_calc, bool, 0644);
+
+
 static DEFINE_STATIC_KEY_FALSE(use_tasklet_enabled);
 
 /* Is at least one dm-verity instance using ahash_tfm instead of shash_tfm? */
@@ -554,6 +561,16 @@ static int verity_verify_pending_blocks(struct dm_verity *v,
 	int i;
 	int r;
 
+	if (unlikely(READ_ONCE(dm_verity_bypass_hash_calc))) {
+		for (i = 0; i < io->num_pending; i++) {
+			struct pending_block *block = &io->pending_blocks[i];
+			if (v->validated_blocks)
+				set_bit(block->blkno, v->validated_blocks);
+		}
+		verity_clear_pending_blocks(io);
+		return 0;
+	}
+
 	for (i = 0; i < io->num_pending; i++) {
 		data[i] = io->pending_blocks[i].data;
 		real_digests[i] = io->pending_blocks[i].real_digest;
@@ -722,6 +739,11 @@ static void verity_end_io(struct bio *bio)
 	    (!verity_fec_is_enabled(io->v) ||
 	     verity_is_system_shutting_down() ||
 	     (bio->bi_opf & REQ_RAHEAD))) {
+		verity_finish_io(io, bio->bi_status);
+		return;
+	}
+
+	if (READ_ONCE(dm_verity_bypass_hash_tree)) {
 		verity_finish_io(io, bio->bi_status);
 		return;
 	}
