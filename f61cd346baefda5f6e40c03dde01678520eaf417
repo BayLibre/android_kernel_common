@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3219b3f4_8acb2ffc",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-09T18:17:54Z",
+      "side": 1,
+      "message": "From my understanding, the iommu_iotlb_gather API doesn\u0027t do much. the freelist is to free the pages after the unmap and holds on to the pages until caches are invalidated. For deferred flushing, intel iommu doesn\u0027t keep track of the ranges rather does a flush all with `intel_flush_iotlb_all`. I was kind of optimizing it a bit. I did not systematically gather numbers to measure performance, but doing a flush all seemed a bit big hammer to me and hence did an easy optimization.",
+      "parentUuid": "6511cbe2_e1fadeb4",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7627125_fe94f000",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
@@ -65,6 +83,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c5636216_0b5e3036",
+        "filename": "drivers/iommu/intel/pkvm/domain.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-09T18:17:54Z",
+      "side": 1,
+      "message": "Sorry aleft over. will remove",
+      "parentUuid": "f7627125_fe94f000",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "67d54a21_9b635d8a",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
@@ -76,6 +112,24 @@
       "writtenOn": "2026-04-09T16:45:28Z",
       "side": 1,
       "message": "We should increment the domain\u0027s refcount before using it? Otherwise, it may be dropped down to 0 by pkvm_put_iommu_domain() and then freed by pkvm_free_iommu_domain() in the meantime on another CPU?",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8836e48e_d2546ddd",
+        "filename": "drivers/iommu/intel/pkvm/domain.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-09T18:17:54Z",
+      "side": 1,
+      "message": "Since we have the iommu_domain_lock lock held, we are protected from domain released under us. I thought of doing it this way so that the domain free succeeds but will wait for this flush to complete before returning domain to the free list in case of a race during domain free.",
+      "parentUuid": "67d54a21_9b635d8a",
       "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
