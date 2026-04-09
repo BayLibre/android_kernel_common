@@ -134,9 +134,12 @@ void update_suspend_time(struct work_struct *work)
 	}
 
 	inject_time = ns_to_timespec64(suspend_time_delta);
-
 	timekeeping_inject_sleeptime64(&inject_time);
-        on_each_cpu(rescue_lapic_timers, NULL, 1);
+        on_each_cpu(rescue_lapic_timers, NULL, 0);
+
+        // We don't want watchdogs to fire because we just injected a massive
+        // time jump.
+        touch_all_softlockup_watchdogs();
 
 	dev_info(&vp->vdev->dev, "injected sleeptime: %llu ns\n",
 		 suspend_time_delta);
