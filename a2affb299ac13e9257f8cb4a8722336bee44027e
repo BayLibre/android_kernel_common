@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ed893a4d_9c9e2393",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-09T02:37:24Z",
+      "side": 1,
+      "message": "\u003e I could see regular ept flushes due to guest_share/guest_unshare after the page has been donated to host and wanted to avoid this. Since the page is donated, host will not be able to use this page for DMA(We currently do not allow DMA with shared pages) and hence I feel iommu flush is not necessary here. What do you think?\n\nguest_share should not trigger TLB flushing as it adds permissions. guest_unshare will trigger TLB flushing, but seems this will not be called by the pVM as the pVM shares SWIOTLB buffer with the host, and such buffer will not be unshared after it is shared. So I think moving IOMMU tlb flushing to donate api has no difference with keeping it as it was.\n\nBTW, you may already know that, there was an issue reported from the github https://github.com/intel-staging/pKVM-IA/issues/92. It complains that the host cannot do DMA for the pVM\u0027s shared memory. In the future if we support that, then we also need to add IOMMU tlb flushing to the guest_unshare api (although the pVM may still not to unshare its SWIOTLB buffer). If we keep it as it was, then we don\u0027t need to do anything.\n\n\u003e Secondly, another reason I forgot to mention in the commit message is - I wanted to take the flush outside of the mmu_lock to avoid some deadlock issues I was theorizing.\n\nI see. If the IOMMU tlb flushing will require to hold mmu_lock, then that is a good reason to move it out.\n\n\u003eI see. I thought pkvm_guest_unshare_host was only for pVMs as the comment says so. Do we have a separate path for npVM unshare\n\nNo, that is a typo, it should be only for pVMs. Thanks for pointing it out.",
+      "parentUuid": "6f40318b_d35b03eb",
+      "revId": "a2affb299ac13e9257f8cb4a8722336bee44027e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c82b41e_31889000",
         "filename": "arch/x86/kvm/pkvm/mmu.c",
         "patchSetId": 2
