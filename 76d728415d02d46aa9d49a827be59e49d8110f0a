@@ -16,6 +16,41 @@
       "message": "nit: makes sense to add another Fixes: for 32d517b17df2 (\"ANDROID: pKVM: x86: Add host vcpu instance\") as well?",
       "revId": "76d728415d02d46aa9d49a827be59e49d8110f0a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0c7f266_83ec5297",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-09T01:23:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "661cd6e0_62f454fb",
+      "revId": "76d728415d02d46aa9d49a827be59e49d8110f0a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c655a7c0_220a1613",
+        "filename": "arch/x86/kvm/pkvm/cpu.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-09T01:23:53Z",
+      "side": 1,
+      "message": "Although the host VA \u003d\u003d pKVM VA, it is still better to pass physical address rather than virtual address. I will change these to physical addresses.",
+      "revId": "76d728415d02d46aa9d49a827be59e49d8110f0a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
