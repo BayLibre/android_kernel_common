@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dbd91d91_aa451b60",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-09T13:43:35Z",
+      "side": 1,
+      "message": "\u003e did you really observe host EPT flushes triggered by guest_share/guest_unshare?\n\nYes I\u0027ve seen this. Its not during a pVM start up, but I regularly see ept flushes(probably every 10sec or so with trusty running). The pattern I see is guest_share followed by guest_unshare which invokes tlb_flush. I tried just now and one example is:\n\n```\npkvm [CPU0]: __guest_share_host: hpa: 19cfec000, size: 1000\npkvm [CPU0]: __guest_unshare_host: hpa: 19cfeb000, size: 1000\npkvm [CPU0]: host_ept_flush_tlb: vaddr: 19cfeb000, size: 1000\npkvm [CPU0]: __guest_unshare_host: hpa: 19cfec000, size: 1000\npkvm [CPU0]: host_ept_flush_tlb: vaddr: 19cfec000, size: 1000\npkvm [CPU0]: __guest_unshare_host: hpa: 129e3d000, size: 1000\npkvm [CPU0]: host_ept_flush_tlb: vaddr: 129e3d000, size: 1000\n```\n\nNot sure if I am reading this right, but looks like __guest_unshare_host is indeed calling flush_tlb and in my testing this happens couple of time every 10 seconds or so with trusty. I haven\u0027t run it long enough to see whether it persists.\n\n\u003e So, since we luckily/hopefully can do this inside host_ept_flush_tlb without deadlocks, that seems more elegant than doing it in the donation APIs? In particular, it automatically addresses the potential guest_unshare use case mentioned by Chuanxiao.\n\nWith this lazy mode implementation I think I have brought back the deadlock scenario because I need to go through every domain to flush caches when ever ept is flushed. Initially I was using domain lock and there was a deadlock clearly(between map, unmap and tlb flush). But then I moved to a flush specific lock, and I think there is still a chance for deadlock between unmap and tlb_flush\n```\nunmap:\n takes flush lock\n  takes host mmu lock for host_unuse_dma\n\ntlb flush:\n take host mmu lock\n    take flush lock for flushing\n```\n\n\u003e So it might be a good idea to do that, but first it would be good to confirm if we actually see an improvement? I.e. whether it is actually reducing average time of handing vm_mmu_map hypercall and/or total pVM boot time?\n\nYeah makes sense. I did not take any real numbers, but during initial development I felt some perf lags. But I shall take some numbers and verify. To avoid the deadlock scenario mentioned above, this might be needed though.",
+      "parentUuid": "ff13cc74_bfcbbf48",
+      "revId": "a2affb299ac13e9257f8cb4a8722336bee44027e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c82b41e_31889000",
         "filename": "arch/x86/kvm/pkvm/mmu.c",
         "patchSetId": 2
