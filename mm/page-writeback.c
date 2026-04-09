@@ -3079,6 +3079,8 @@ void __folio_start_writeback(struct folio *folio, bool keep_write)
 	 * accessible, it is too late to recover here.
 	 */
 	VM_BUG_ON_FOLIO(access_ret != 0, folio);
+
+	trace_android_vh_folio_start_writeback(folio);
 }
 EXPORT_SYMBOL(__folio_start_writeback);
 
