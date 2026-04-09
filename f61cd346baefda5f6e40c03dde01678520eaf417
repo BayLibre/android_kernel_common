@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b915631_3fcfe24d",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-09T19:35:47Z",
+      "side": 1,
+      "message": "The reason I chose to do this was, we might be flushing more often than host driver because we flush on tlb_flush as well. Interleaving unmap with donation will cause these flushes in a deferred flush scenario. \n\nI guess page selective was not chosen because generic IOMMU driver always calls a flush_all and probably do not have the mechanism to do selective flushing from the generic driver side. But I do not have concrete evidence and will look at the git log to verify.\n\nIf I remove the min and max and do global flushing based on flush_pending flag, it will be same as host driver. I can change to that if that feels better to you. I feel this optimization is not hurting and I can take more numbers with and without this fix to verify if it does give some boost",
+      "parentUuid": "a0b6b957_7f4adbdf",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7627125_fe94f000",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
@@ -166,6 +184,24 @@
       "side": 1,
       "message": "\u003e Since we have the iommu_domain_lock lock held, we are protected from domain released under us.\n\nAre we? Domain is freed without holding the iommu_domain_lock.",
       "parentUuid": "8836e48e_d2546ddd",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e310e238_dea07083",
+        "filename": "drivers/iommu/intel/pkvm/domain.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-09T19:35:47Z",
+      "side": 1,
+      "message": "Sorry if I was not clear. Let me try to explain my thought process:\n\npkvm_free_iommu_domain is called with out the iommu_domain_lock and it does the following:\n 1. atomically decrements the refcount and continues if it becomes 0\n 2. unmaps any remaining mappings\n 3. frees up memcache to return pages to host and takes care of undonation\n 4. Takes the spinlock, clears domain structure and releases it to arry\n \nSteps 1 to 3 does not cause any issues with our flush path as we do not use any of the data in those steps. But step 4 waits on `iommu_domain_lock`. This is what I was referring to. So in the event of a flush happening during a domain free, the free path will block until our flushing is done and this code also will not cause a failure in the domain free path. If we take a reference, the free path may error out and domain might not be released. Please let me know if this makes sense.",
+      "parentUuid": "683570f1_809bb307",
       "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
