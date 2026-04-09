@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a0b6b957_7f4adbdf",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T18:51:45Z",
+      "side": 1,
+      "message": "\u003e For deferred flushing, intel iommu doesn\u0027t keep track of the ranges rather does a flush all with intel_flush_iotlb_all.\n\nAh indeed, now I recall that.\n\nSo, we are trying to be smarter than the upstream IOMMU driver and are deliberately making our code more complicated without even measuring if it\u0027s worth it? Whereas maybe there were good reasons why the upstream driver chose not to use page-selective flushes in this case (not even this single min..max one)?",
+      "parentUuid": "3219b3f4_8acb2ffc",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7627125_fe94f000",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
@@ -130,6 +148,24 @@
       "side": 1,
       "message": "Since we have the iommu_domain_lock lock held, we are protected from domain released under us. I thought of doing it this way so that the domain free succeeds but will wait for this flush to complete before returning domain to the free list in case of a race during domain free.",
       "parentUuid": "67d54a21_9b635d8a",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "683570f1_809bb307",
+        "filename": "drivers/iommu/intel/pkvm/domain.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-09T18:51:45Z",
+      "side": 1,
+      "message": "\u003e Since we have the iommu_domain_lock lock held, we are protected from domain released under us.\n\nAre we? Domain is freed without holding the iommu_domain_lock.",
+      "parentUuid": "8836e48e_d2546ddd",
       "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
