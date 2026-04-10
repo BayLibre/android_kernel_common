@@ -2134,6 +2134,30 @@ void pkvm_wait_vcpu_kicked_out(struct kvm_vcpu *vcpu)
 	} while (READ_ONCE(vcpu->mode) == EXITING_GUEST_MODE);
 }
 
+void pkvm_udelay(unsigned int usecs)
+{
+	u64 start, delta;
+
+	if (WARN_ON_ONCE(!tsc_khz)) {
+		/*
+		 * Fallback: If TSC calibration failed, we have no accurate time source.
+		 * Perform a naive (arbitrary and uncalibrated) spin-wait just
+		 * to ensure we don't return immediately.
+		 */
+		unsigned int i;
+
+		for (i = 0; i < (usecs * 1000); i++)
+			cpu_relax();
+		return;
+	}
+
+	start = rdtsc_ordered();
+	delta = (u64)usecs * tsc_khz / 1000;
+
+	while (rdtsc_ordered() - start < delta)
+		cpu_relax();
+}
+
 int pkvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
 {
 	int r;
