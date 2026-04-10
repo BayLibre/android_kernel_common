@@ -306,7 +306,7 @@ struct wrap_ctx_mapping {
 };
 
 #define OP_BLOCKED_MODIFICATION	BIT(0)
-#define OP_BLOCKED_MAPPING	BIT(1)
+#define OP_BLOCKED_USAGE	BIT(1)
 
 struct wrap_ctx {
 	struct wrap_content *content;
@@ -368,7 +368,7 @@ static inline int publish_wrap(struct wrap_ctx *ctx,
 	return ret;
 }
 
-static int can_access(struct wrap_ctx *ctx, struct task_struct *task,
+static int can_modify(struct wrap_ctx *ctx, struct task_struct *task,
 		      bool check_content)
 {
 	assert_spin_locked(&ctx->lock);
@@ -384,10 +384,10 @@ static int can_access(struct wrap_ctx *ctx, struct task_struct *task,
 	return 0;
 }
 
-static bool can_map(struct wrap_ctx *ctx)
+static bool can_use(struct wrap_ctx *ctx)
 {
 	assert_spin_locked(&ctx->lock);
-	return (ctx->block_mask & OP_BLOCKED_MAPPING) == 0;
+	return (ctx->block_mask & OP_BLOCKED_USAGE) == 0;
 }
 
 static int block_operations(struct wrap_ctx *ctx, unsigned int mask)
@@ -399,7 +399,7 @@ static int block_operations(struct wrap_ctx *ctx, unsigned int mask)
 	if (WARN_ON((mask & OP_BLOCKED_MODIFICATION) == 0))
 		return -EINVAL;
 
-	ret = can_access(ctx, current, true);
+	ret = can_modify(ctx, current, true);
 	if (ret)
 		return ret;
 
@@ -478,10 +478,10 @@ static int wrap_mmap(struct file *file, struct vm_area_struct *vma)
 	}
 
 	/*
-	 * If mappings are blocked the content is being rewrapped or emptied.
+	 * If usage is blocked, the content is being rewrapped or emptied.
 	 * Treat this as if the wrap is already empty.
 	 */
-	if (!can_map(ctx)) {
+	if (!can_use(ctx)) {
 		ret = -ENOENT;
 		goto unlock;
 	}
@@ -512,7 +512,7 @@ static int wrap_mmap(struct file *file, struct vm_area_struct *vma)
 	/*
 	 * Increased map_count prevents changes in the
 	 * ownership, rewrapping or emptying the content.
-	 * Therefore content is stable.
+	 * Content is stable.
 	 */
 	ctx->map_count++;
 unlock:
@@ -601,10 +601,10 @@ static int get_wrap_state(struct wrap_ctx *ctx,
 
 	spin_lock(&ctx->lock);
 	/*
-	 * If mappings are blocked the content is being rewrapped or emptied.
+	 * If usage is blocked, the content is being rewrapped or emptied.
 	 * Treat this as if the wrap is already empty.
 	 */
-	if (ctx->content && can_map(ctx)) {
+	if (ctx->content && can_use(ctx)) {
 		if (ctx->content->ops->is_writable(ctx->content))
 			wrapfd_get_state.state = WRAPFD_CONTENT_RDWR;
 		else
@@ -658,7 +658,7 @@ static int wrap_file_release_ownership(struct wrap_ctx *ctx)
 
 	spin_lock(&ctx->lock);
 
-	ret = can_access(ctx, current, false);
+	ret = can_modify(ctx, current, false);
 	if (ret)
 		goto unlock;
 
@@ -774,7 +774,7 @@ static int wrap_file_rewrap(struct wrap_ctx *ctx,
 
 	spin_lock(&ctx->lock);
 	ret = block_operations(ctx,
-			       OP_BLOCKED_MODIFICATION | OP_BLOCKED_MAPPING);
+			       OP_BLOCKED_MODIFICATION | OP_BLOCKED_USAGE);
 	if (!ret) {
 		content = ctx->content;
 		ctx->content = NULL;
@@ -837,7 +837,7 @@ static int wrap_file_empty(struct wrap_ctx *ctx)
 	spin_lock(&ctx->lock);
 
 	ret = block_operations(ctx,
-			       OP_BLOCKED_MODIFICATION | OP_BLOCKED_MAPPING);
+			       OP_BLOCKED_MODIFICATION | OP_BLOCKED_USAGE);
 	if (ret)
 		goto unlock;
 
@@ -859,7 +859,7 @@ static int wrap_file_allow_guests(struct wrap_ctx *ctx, bool allow)
 
 	spin_lock(&ctx->lock);
 
-	ret = can_access(ctx, current, true);
+	ret = can_modify(ctx, current, true);
 	if (ret)
 		goto unlock;
 
