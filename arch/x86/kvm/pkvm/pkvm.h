@@ -162,4 +162,7 @@ int pkvm_emulate_hypercall(struct kvm_vcpu *vcpu);
 typedef int (*pkvm_vm_func_t)(struct pkvm_vm *vm, void *arg);
 int pkvm_walk_each_vm(pkvm_vm_func_t func, void *arg);
 
+int pkvm_vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
+int pkvm_scnprintf(char *buf, size_t size, const char *fmt, ...);
+
 #endif /* __PKVM_X86_PKVM_H */
