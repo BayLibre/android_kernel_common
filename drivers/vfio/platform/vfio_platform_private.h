@@ -10,6 +10,7 @@
 #include <linux/types.h>
 #include <linux/interrupt.h>
 #include <linux/vfio.h>
+#include <linux/irqbypass.h>
 
 #define VFIO_PLATFORM_OFFSET_SHIFT   40
 #define VFIO_PLATFORM_OFFSET_MASK (((u64)(1) << VFIO_PLATFORM_OFFSET_SHIFT) - 1)
@@ -24,6 +25,9 @@ struct vfio_platform_irq_ctx {
 	int			hwirq;
 	struct eventfd_ctx	*trigger;
 	char			*name;
+	struct irq_bypass_producer producer;
+	struct work_struct	bypass_work;
+	bool			bypass_registered;
 };
 
 struct vfio_platform_irq {
