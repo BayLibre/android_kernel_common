@@ -4,6 +4,7 @@
 #include <asm/kvm_pkvm.h>
 #include <asm/page.h>
 #include <asm/percpu.h>
+#include <asm/msr.h>
 #include <asm/processor.h>
 #include <asm/sections.h>
 #include "memory.h"
@@ -95,4 +96,13 @@ void set_x86_spec_ctrl(u64 spec_ctrl)
 
 	for_each_possible_cpu(cpu)
 		per_cpu(x86_spec_ctrl_current, cpu) |= spec_ctrl;
+}
+
+void pkvm_udelay(unsigned int usecs)
+{
+	u64 start = rdtsc();
+	u64 delta = (u64)usecs * pkvm_sym(tsc_khz) / 1000;
+
+	while (rdtsc() - start < delta)
+		cpu_relax();
 }

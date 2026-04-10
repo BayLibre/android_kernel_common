@@ -165,4 +165,6 @@ int pkvm_walk_each_vm(pkvm_vm_func_t func, void *arg);
 int pkvm_vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
 int pkvm_scnprintf(char *buf, size_t size, const char *fmt, ...);
 
+void pkvm_udelay(unsigned int usecs);
+
 #endif /* __PKVM_X86_PKVM_H */
