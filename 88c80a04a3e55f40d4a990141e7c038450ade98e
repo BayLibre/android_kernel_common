@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "29184b87_311697af",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-10T14:08:10Z",
+      "side": 1,
+      "message": "Implemented using pkvm_host_use_dma() API to increment the refcount as per our discussion offline.",
+      "parentUuid": "6129eb9f_558a5ad7",
+      "revId": "88c80a04a3e55f40d4a990141e7c038450ade98e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b38642ae_856b570b",
         "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
         "patchSetId": 4
@@ -125,6 +143,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f3385c1_f574bf7d",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-10T14:08:10Z",
+      "side": 1,
+      "message": "Thanks for all the details. replaced with try_cmpxchg128",
+      "parentUuid": "ad668889_c03e2f83",
+      "revId": "88c80a04a3e55f40d4a990141e7c038450ade98e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f15850b_70e25dac",
@@ -156,6 +192,24 @@
       "side": 1,
       "message": "Yeah right, need to take iommu lock to prevent malicious host interference(Normal host behavior should be okay as we take lock in host). Will fix.",
       "parentUuid": "1f15850b_70e25dac",
+      "revId": "88c80a04a3e55f40d4a990141e7c038450ade98e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64da1185_7ea40ac4",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-10T14:08:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c076742_5a2def19",
       "revId": "88c80a04a3e55f40d4a990141e7c038450ade98e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
