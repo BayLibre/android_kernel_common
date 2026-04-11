@@ -167,4 +167,7 @@ int pkvm_scnprintf(char *buf, size_t size, const char *fmt, ...);
 
 void pkvm_udelay(unsigned int usecs);
 
+struct pt_regs;
+void __noreturn pkvm_hyp_panic(struct pt_regs *regs, const char *file, unsigned int line);
+
 #endif /* __PKVM_X86_PKVM_H */

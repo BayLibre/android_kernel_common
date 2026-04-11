@@ -320,6 +320,11 @@ static void fixup_host_vmx(struct vcpu_vmx *vmx)
 
 void pkvm_host_vmexit_main(struct vcpu_vmx *vmx)
 {
+	if (unlikely(atomic_read(&pkvm_sym(pkvm_panic_in_progress)))) {
+		while (1)
+			asm volatile("cli; hlt");
+	}
+
 	struct kvm_vcpu *vcpu = &vmx->vcpu;
 	bool req_immediate_exit = false;
 	struct vcpu_vt *vt = &vmx->vt;
