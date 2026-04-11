@@ -2196,7 +2196,8 @@ int iommu_dma_prepare_msi(struct msi_desc *desc, phys_addr_t msi_addr)
 	struct iommu_dma_msi_page *msi_page;
 	static DEFINE_MUTEX(msi_prepare_lock); /* see below */
 
-	if (!domain || !domain->iova_cookie) {
+	/* TODO(b/475615186): Workaround skipping mapping the ITS doorbell register (0x40010040). */
+	if (!domain || !domain->iova_cookie || msi_addr == 0x40010040) {
 		msi_desc_set_iommu_msi_iova(desc, 0, 0);
 		return 0;
 	}
