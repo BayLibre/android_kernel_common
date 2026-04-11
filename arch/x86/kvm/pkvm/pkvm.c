@@ -2135,6 +2135,14 @@ void pkvm_wait_vcpu_kicked_out(struct kvm_vcpu *vcpu)
 	} while (READ_ONCE(vcpu->mode) == EXITING_GUEST_MODE);
 }
 
+void pkvm_handle_init_signal(void)
+{
+	if (unlikely(atomic_read(&pkvm_panic_in_progress))) {
+		while (1)
+			asm volatile("cli; hlt");
+	}
+}
+
 void pkvm_udelay(unsigned int usecs)
 {
 	u64 start = rdtsc_ordered();

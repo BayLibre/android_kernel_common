@@ -327,6 +327,7 @@ void pkvm_host_vmexit_main(struct vcpu_vmx *vmx)
 
 	switch (vt->exit_reason.full) {
 	case EXIT_REASON_INIT_SIGNAL:
+		pkvm_handle_init_signal();
 		/*
 		 * INIT is used as kick when making a request.
 		 * So just break the vmexits and go to pending
