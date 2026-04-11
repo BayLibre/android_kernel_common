@@ -654,6 +654,7 @@ extern bool pkvm_sym(pvmfw_present);
 extern phys_addr_t pkvm_sym(pvmfw_base);
 extern phys_addr_t pkvm_sym(pvmfw_size);
 
+extern atomic_t pkvm_sym(pkvm_panic_in_progress);
 extern phys_addr_t pkvm_sym(pkvm_ramoops_console_pa);
 extern size_t pkvm_sym(pkvm_ramoops_console_size);
 
@@ -842,7 +843,6 @@ static inline size_t pkvm_guest_initial_fpstate_size(struct kvm *kvm)
 #undef WARN
 #undef WARN_ON_ONCE
 #undef WARN_ONCE
-#undef _BUG_FLAGS
 
 #define WARN_ON(condition) ({						\
 	int __ret_warn_on = !!(condition);				\
@@ -858,9 +858,23 @@ static inline size_t pkvm_guest_initial_fpstate_size(struct kvm *kvm)
 #define WARN_ON_ONCE(condition) WARN_ON(condition)
 #define WARN_ONCE(condition, format...) WARN(condition, format)
 
-#define _BUG_FLAGS(ins, flags, extra)  asm volatile(ins)
-
 #endif /* CONFIG_PKVM_X86_DEBUG */
+
+void __noreturn pkvm_bug_panic(const char *file, unsigned int line);
+
+/*
+ * Directly call the panic handler with file/line info. This avoids the use
+ * of 'ud2' instructions and associated 'bug_table' metadata parsing, which
+ * would unnecessarily increase the TCB and complexity of the hypervisor's
+ * emergency recovery path. This is also critical for production (non-debug)
+ * environments where hypervisor doesn't have its own kallsyms or access to
+ * the host's metadata.
+ */
+#undef BUG
+#define BUG() do { pkvm_bug_panic(__FILE__, __LINE__); __builtin_unreachable(); } while (0)
+
+#undef BUG_ON
+#define BUG_ON(condition) do { if (unlikely(condition)) BUG(); } while (0)
 
 #undef KVM_BUG_ON
 #define KVM_BUG_ON(cond, kvm)						\

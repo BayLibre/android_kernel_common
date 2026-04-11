@@ -213,4 +213,6 @@ int pkvm_emulate_hypercall(struct kvm_vcpu *vcpu);
 typedef int (*pkvm_vm_func_t)(struct pkvm_vm *vm, void *arg);
 int pkvm_walk_each_vm(pkvm_vm_func_t func, void *arg);
 
+void __noreturn pkvm_panic(const char *panic_msg);
+
 #endif /* __PKVM_X86_PKVM_H */

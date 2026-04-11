@@ -327,6 +327,10 @@ void pkvm_host_vmexit_main(struct vcpu_vmx *vmx)
 
 	switch (vt->exit_reason.full) {
 	case EXIT_REASON_INIT_SIGNAL:
+		if (unlikely(atomic_read(&pkvm_sym(pkvm_panic_in_progress)))) {
+			while (1)
+				asm volatile("cli; hlt");
+		}
 		/*
 		 * INIT is used as kick when making a request.
 		 * So just break the vmexits and go to pending
