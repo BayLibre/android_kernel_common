@@ -658,6 +658,8 @@ extern atomic_t pkvm_sym(pkvm_panic_in_progress);
 extern phys_addr_t pkvm_sym(pkvm_ramoops_console_pa);
 extern size_t pkvm_sym(pkvm_ramoops_console_size);
 
+extern unsigned long pkvm_sym(kaslr_offset_val);
+
 extern bool __read_mostly pkvm_sym(enable_apicv);
 extern bool __read_mostly pkvm_sym(enable_ipiv);
 extern bool __read_mostly pkvm_sym(enable_vpid);
@@ -861,7 +863,6 @@ static inline size_t pkvm_guest_initial_fpstate_size(struct kvm *kvm)
 #endif /* CONFIG_PKVM_X86_DEBUG */
 
 void __noreturn pkvm_bug_panic(const char *file, unsigned int line);
-
 /*
  * Directly call the panic handler with file/line info. This avoids the use
  * of 'ud2' instructions and associated 'bug_table' metadata parsing, which
