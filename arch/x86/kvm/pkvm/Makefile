@@ -5,6 +5,8 @@ ccflags-y += -I $(srctree)/arch/x86/kvm/pkvm
 # TODO: make the stack protector work with the pKVM hypervisor code
 ccflags-y += -fno-stack-protector
 ccflags-y += -D__PKVM_HYP__
+ccflags-y += -D__NO_FORTIFY
+CFLAGS_REMOVE_../../../../lib/string.pkvm.o := -D__NO_FORTIFY
 ccflags-y += -include $(srctree)/arch/x86/kvm/pkvm/undef.h
 
 asflags-y += -D__PKVM_HYP__
