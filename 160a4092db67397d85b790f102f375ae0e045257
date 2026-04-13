@@ -64,6 +64,30 @@
       },
       "revId": "160a4092db67397d85b790f102f375ae0e045257",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebabf973_37a296ee",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 3489357
+      },
+      "writtenOn": "2026-04-13T11:54:35Z",
+      "side": 1,
+      "message": "This should be just `u64`, alignment for function parameters doesn\u0027t sound like a legit C to me.",
+      "parentUuid": "8c7fec0d_a05dc867",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 21
+      },
+      "revId": "160a4092db67397d85b790f102f375ae0e045257",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
