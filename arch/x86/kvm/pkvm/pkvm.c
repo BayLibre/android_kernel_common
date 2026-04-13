@@ -1253,7 +1253,7 @@ static int pkvm_hwapic_isr_update(struct kvm_vcpu *vcpu, int max_isr)
 	 * for the same security reason with the PV interface __pkvm__inject_irq.
 	 * See comments in the function pkvm_inject_irq.
 	 */
-	if ((max_isr != -1) && (vcpu->arch.apic->guest_apic_protected ||
+	if ((max_isr != -1) && ((max_isr & ~0xff) || vcpu->arch.apic->guest_apic_protected ||
 				(pkvm_is_protected_vcpu(vcpu) && max_isr < 32)))
 		return -EPERM;
 
