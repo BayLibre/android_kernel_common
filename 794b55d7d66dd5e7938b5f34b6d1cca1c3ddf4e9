@@ -16,6 +16,24 @@
       "message": "can this be changed upstream?",
       "revId": "794b55d7d66dd5e7938b5f34b6d1cca1c3ddf4e9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58107294_0ce1c2d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2026-04-13T20:42:18Z",
+      "side": 1,
+      "message": "Our Linux upstream folks are against upstreaming this change as they mention that if this device is required, the respective 194 tegra arch config should be enabled.\nIn Linux it\u0027s no problem since the defconfig isn\u0027t quite as selective, so this problem arises more as an Android specific problem where we can\u0027t enable the older arch configs in the GKI kernel, but still need the compatible string to be exposed, resulting in this change.",
+      "parentUuid": "78a4d5ec_1b0b8479",
+      "revId": "794b55d7d66dd5e7938b5f34b6d1cca1c3ddf4e9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
