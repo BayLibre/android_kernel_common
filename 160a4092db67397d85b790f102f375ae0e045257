@@ -88,6 +88,30 @@
       },
       "revId": "160a4092db67397d85b790f102f375ae0e045257",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2496e5fa_240f2f4d",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2026-04-13T12:09:20Z",
+      "side": 1,
+      "message": "I think this might be something specific to x86-32 where ancient ABI weirdness means normal u64s (ie. long / unsigned long) are only 4-byte aligned when located within structs (but 8-byte aligned when standalone, yeah it\u0027s crazy).\n\nWeirdly though I was building x86-64... but maybe this is annotated even on x86-64 for compat reasons or something...??\n\nAnyway I did replace this with \u0027u64\u0027 locally and the problem went away.",
+      "parentUuid": "ebabf973_37a296ee",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 21
+      },
+      "revId": "160a4092db67397d85b790f102f375ae0e045257",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
