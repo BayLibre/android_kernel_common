@@ -1,5 +1,29 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8bb4545_c5c8ca51",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2026-04-13T07:45:36Z",
+      "side": 1,
+      "message": "Because of this you don\u0027t actually allow page-unaligned load size. If e.g. `len \u003d\u003d 100`, then `sz \u003d\u003d 4096` and the `len -\u003d sz` operation results in `len` becoming negative, failing this check.",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 54
+      },
+      "revId": "113c5d9ef7ecfcc4728b6ccef0a5ee38d0e84866",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
