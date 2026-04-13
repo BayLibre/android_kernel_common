@@ -34,6 +34,24 @@
       "parentUuid": "a280128d_0f702162",
       "revId": "251e92258f0ceb6fb36a6a193db3c78973920759",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "602013a8_6c4e5039",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1967151
+      },
+      "writtenOn": "2026-04-13T18:06:51Z",
+      "side": 1,
+      "message": "The other callsites either seem to use the same task for both params or they explicitly perform a null check. It didn\u0027t seem right to just take the null check out, but maybe there\u0027s a third option!",
+      "parentUuid": "a280128d_0f702162",
+      "revId": "251e92258f0ceb6fb36a6a193db3c78973920759",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
