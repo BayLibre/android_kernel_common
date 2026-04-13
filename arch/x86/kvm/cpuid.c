@@ -32,6 +32,11 @@
 
 #ifdef __PKVM_HYP__
 #include "pkvm/mmu.h"
+
+static bool cpuid_entry_is_empty(struct kvm_cpuid_entry2 *e2)
+{
+	return !e2->function && !e2->eax;
+}
 #endif
 
 /*
@@ -110,6 +115,23 @@ struct kvm_cpuid_entry2 *kvm_find_cpuid_entry2(
 		if (e->function != function)
 			continue;
 
+#ifdef __PKVM_HYP__
+		/*
+		 * There may be empty entries due to enforcement for the pVM. So
+		 * needs to skip the empty entries for the pVM. As there is no
+		 * vCPU pointer in this function to identify if the CPUID
+		 * entries are for a npVM or a pVM, always check for the empty
+		 * entry to simplify. The impact is that, if the host sets
+		 * CPUID.00H:EAX = 0 for a npVM, this function will return NULL
+		 * if the caller is trying to find out CPUID.00H. The good thing
+		 * is that, the host VMM (i.e., Crosvm) doesn't create such kind
+		 * of CPUID for a npVM. And the pKVM hypervisor itself also
+		 * doesn't look for the CPUID.00H via this function but only use
+		 * it when emulating CPUID vmexit.
+		 */
+		if (cpuid_entry_is_empty(e))
+			continue;
+#endif
 		/*
 		 * If the index isn't significant, use the first entry with a
 		 * matching function.  It's userspace's responsibility to not
@@ -2324,11 +2346,6 @@ static void pkvm_enforce_cpuid_entry(struct kvm_cpuid_entry2 *entry,
 	}
 
 	*entry = tmp;
-}
-
-static bool cpuid_entry_is_empty(struct kvm_cpuid_entry2 *e2)
-{
-	return !e2->function && !e2->eax;
 }
 
 static struct kvm_cpuid_entry2 *find_cpuid_entry(struct kvm_cpuid_entry2 *buf,
