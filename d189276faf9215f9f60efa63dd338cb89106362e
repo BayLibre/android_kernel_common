@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b8090da_b68ab125",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-13T14:16:35Z",
+      "side": 1,
+      "message": "Just curious: does it also somehow help with implementing pKVM fatal error reporting (so you included it in the same patch series), or is it just a separate improvement?",
+      "revId": "d189276faf9215f9f60efa63dd338cb89106362e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5475a1b_7d793bfa",
+        "filename": "arch/x86/kvm/pkvm/init.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-13T14:16:35Z",
+      "side": 1,
+      "message": "We can just directly specify `SZ_64K` instead of `16 * PAGE_SIZE`?\n\nAnd then the comment can be adjusted accordingly, e.g.: \"Map the vmemmap region at virtual address 64KB. Keep the lower pages unmapped, to catch NULL dereference bugs in the hypervisor code.\n\n64KB guard hole is chosen as it mimics [...]\"\n\n?",
+      "revId": "d189276faf9215f9f60efa63dd338cb89106362e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
