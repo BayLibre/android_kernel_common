@@ -1271,7 +1271,7 @@ static int pkvm_hwapic_isr_update(struct kvm_vcpu *vcpu, int max_isr)
 	 * See comments in the function pkvm_inject_irq.
 	 */
 	if ((max_isr != -1) && (vcpu->arch.apic->guest_apic_protected ||
-				(pkvm_is_protected_vcpu(vcpu) && max_isr < 32)))
+				(pkvm_is_protected_vcpu(vcpu) && ((max_isr & 0xff) < 32))))
 		return -EPERM;
 
 	kvm_x86_call(hwapic_isr_update)(vcpu, max_isr);
