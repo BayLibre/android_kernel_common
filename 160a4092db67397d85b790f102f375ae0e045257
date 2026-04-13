@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "356558af_76304582",
+        "filename": "drivers/block/zram/zram_ioctl.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1003247
+      },
+      "writtenOn": "2026-04-13T02:06:25Z",
+      "side": 1,
+      "message": "this fails to build\n\ndrivers/block/zram/zram_ioctl.c:128:23: error: alignment may not be specified for ‘pidfd’\n  128 |         __aligned_u64 pidfd,",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 21
+      },
+      "revId": "160a4092db67397d85b790f102f375ae0e045257",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
