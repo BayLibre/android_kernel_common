@@ -1628,8 +1628,19 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag)
 	end = pgofs + maxblocks;
 
 next_dnode:
+<<<<<<< HEAD   (306246f71c52b07cdfe442cbc3349eba04d6e377 Revert "Bluetooth: hci_core: Fix use-after-free in vhci_flus)
 	if (map->m_may_create)
 		f2fs_map_lock(sbi, flag);
+||||||| BASE   (c56b177efce8b62798e4d96bdb9867106cb7c4a0 Bluetooth: hci_core: Fix use-after-free in vhci_flush())
+	if (map->m_may_create)
+		f2fs_do_map_lock(sbi, flag, true);
+=======
+	if (map->m_may_create) {
+		if (f2fs_lfs_mode(sbi))
+			f2fs_balance_fs(sbi, true);
+		f2fs_do_map_lock(sbi, flag, true);
+	}
+>>>>>>> BRANCH (1989cd3d56e257c783ac75200496a2341b50599c Linux 6.1.167)
 
 	/* When reading holes, we need its node page */
 	set_new_dnode(&dn, inode, NULL, NULL, 0);
