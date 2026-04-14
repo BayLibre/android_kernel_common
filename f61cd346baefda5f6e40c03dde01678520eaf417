@@ -128,6 +128,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "86d30bab_5e602891",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-14T15:59:43Z",
+      "side": 1,
+      "message": "I have done couple of fio tests with this coalesced flush and the global flush approach that host driver does:\n```\ndiff --git a/drivers/iommu/intel/pkvm/domain.c b/drivers/iommu/intel/pkvm/domain.c\nindex 4d0224e7f1fc..8157dc863326 100644\n--- a/drivers/iommu/intel/pkvm/domain.c\n+++ b/drivers/iommu/intel/pkvm/domain.c\n@@ -341,7 +341,7 @@ static void domain_flush(struct dmar_domain *domain, int ih)\n        if (!domain-\u003eflush_pending)\n                return;\n \n-       cache_tag_flush_range(domain, domain-\u003eflush_start, domain-\u003eflush_last, ih);\n+       cache_tag_flush_range(domain, 0, ULONG_MAX, ih);\n        domain-\u003eflush_start \u003d domain-\u003eflush_last \u003d 0;\n        domain-\u003eflush_pending \u003d false;\n }\n```\n\nThe test results are here:\nhttps://docs.google.com/spreadsheets/d/11BFgW2WAeS_KGdlFfPKHmYdb1GoDEHnIA-L-NWMYVhw/edit?usp\u003dsharing\n\nI had done 2 different setup: One with pvms being launched/destroyed in a loop to trigger donations while fio is running and one without any pvm. The tests generally show slight improvement for coalesced flushing, but is not definitively conclusive I guess.\n\nPlease have a look and see how you feel about the results.",
+      "parentUuid": "6d3729c5_df4ea48c",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7627125_fe94f000",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
