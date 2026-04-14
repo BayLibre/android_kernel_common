@@ -34,6 +34,24 @@
       "parentUuid": "aca3fabc_7781c0f6",
       "revId": "bc1442c6fa12200fc157ea252081aa5492db688d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11957a54_d8b0ea16",
+        "filename": "arch/x86/include/asm/kvm_pkvm.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-14T18:33:16Z",
+      "side": 1,
+      "message": "Ok. _Maybe_ it would still feel a bit safer to let the host explicitly specify the needed fields and let pKVM explicitly set them all at the needed bits (even if for almost all of them pKVM would just set whatever values the host asks, without validation), just to be a bit more sure that we didn\u0027t forget any actually needed validation. But OTOH _maybe_ in this case that would mean making the code a bit more complicated and bug-prone. So maybe let\u0027s keep it as is.",
+      "parentUuid": "2e1c1d01_ad97e8db",
+      "revId": "bc1442c6fa12200fc157ea252081aa5492db688d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
