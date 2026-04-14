@@ -164,6 +164,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "809e587f_85758f72",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-14T16:33:58Z",
+      "side": 1,
+      "message": "The reason I measured bandwidth is to make sure that the global flush do not hurt the IO. Having the cache cleared fully will make the DMA traverse the page table again and may hurt performance right? Just doing partial flushes may endup in cache hits for part of the page table translations. WDYT?\n\nYoure right about measuring pvm boot times , I need to test that as well",
+      "parentUuid": "80e2afc9_5ca27e20",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7627125_fe94f000",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
