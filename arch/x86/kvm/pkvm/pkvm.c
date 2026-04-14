@@ -2073,6 +2073,12 @@ void pkvm_handle_host_hypercall(struct kvm_vcpu *vcpu)
 	case __pkvm__vm_mmu_age:
 		ret = pkvm_vm_mmu_age(pkvm_hc_input1(vcpu), pkvm_hc_input2(vcpu),
 				      pkvm_hc_input3(vcpu), pkvm_hc_input4(vcpu));
+		/*
+		 * Convert negative values to 0 which represents false to the
+		 * host KVM.
+		 */
+		if (ret < 0)
+			ret = 0;
 		break;
 #ifdef CONFIG_PKVM_INTEL
 	case __pkvm__iommu_mmio_read:
