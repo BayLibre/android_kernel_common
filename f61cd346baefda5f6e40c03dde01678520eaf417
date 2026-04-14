@@ -146,6 +146,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "80e2afc9_5ca27e20",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-14T16:28:17Z",
+      "side": 1,
+      "message": "I\u0027m not sure why you are measuring fio bandwidth, not pVM boot time. In lazy mode, I/O bandwidth is not expected to be affected by the way how we do IOTLB flushes, since those flushes are _asynchronous_ in relation to the I/O? Whereas the IOTLB flushes during donations are synchronous in relation to those donations, and thus to the overall pVM boot (and we already know that IOTLB flushes per se are often a bottleneck in pVM boot, e.g. we know that in passthrough mode pVM boot is slower than in strict mode), so pVM boot time at least in theory may be affected by the way how we do those flushes?",
+      "parentUuid": "86d30bab_5e602891",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7627125_fe94f000",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
