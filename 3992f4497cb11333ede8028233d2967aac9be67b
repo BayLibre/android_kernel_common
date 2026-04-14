@@ -16,6 +16,24 @@
       "message": "It would be helpful to provide some justification for this downstream approach over backporting the upstream mechanism from `38131c02a53f (\"KVM: arm64: Track presence of SPE/TRBE in kvm_host_data instead of vCPU\")`",
       "revId": "3992f4497cb11333ede8028233d2967aac9be67b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeb68ff5_34d7c761",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1782620
+      },
+      "writtenOn": "2026-04-14T15:26:29Z",
+      "side": 1,
+      "message": "I looked into it, and I don\u0027t think it\u0027s feasible. This relies on 2417218f2f23 (\"KVM: arm64: Get rid of __kvm_get_mdcr_el2() and related warts\"), which completely changes how kvm_host_data is initialized. It introduces a new centralized boot-time function called kvm_init_host_debug_data() to cache PMU counters and debug states. 38131c02a53f simply hooks into this new infrastructure to cache the HAS_SPE and HAS_TRBE flags.\n\nBackporting 2417218f2f23 would require us to drag in even more unrelated structural refactoring patches (modifying PMU and MDCR_EL2 handling).\n\nI updated the commit message to reflect that. What do you think?",
+      "parentUuid": "17ca9003_aaece6de",
+      "revId": "3992f4497cb11333ede8028233d2967aac9be67b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
