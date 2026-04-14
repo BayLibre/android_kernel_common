@@ -337,6 +337,16 @@ struct pkvm_hyp_vcpu *pkvm_load_hyp_vcpu(pkvm_handle_t handle,
 	if (!hyp_vcpu)
 		goto unlock;
 
+	if (pkvm_hyp_vcpu_is_protected(hyp_vcpu)) {
+		int power_state = READ_ONCE(hyp_vcpu->power_state);
+
+		if (power_state != PSCI_0_2_AFFINITY_LEVEL_ON &&
+		    power_state != PSCI_0_2_AFFINITY_LEVEL_ON_PENDING) {
+			hyp_vcpu = NULL;
+			goto unlock;
+		}
+	}
+
 	/* Ensure vcpu isn't loaded on more than one cpu simultaneously. */
 	if (unlikely(cmpxchg_relaxed(&hyp_vcpu->loaded_hyp_vcpu, NULL,
 				     this_cpu_ptr(&loaded_hyp_vcpu)))) {
