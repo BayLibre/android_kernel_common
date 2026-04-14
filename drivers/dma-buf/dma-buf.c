@@ -670,6 +670,13 @@ int copy_dmabuf_info(u64 clone_flags, struct task_struct *task)
 	return 0;
 }
 
+void get_dmabuf_info(struct task_dma_buf_info *dmabuf_info)
+{
+	if (dmabuf_info)
+		refcount_inc(&dmabuf_info->refcnt);
+}
+
+
 void put_dmabuf_info(struct task_dma_buf_info *dmabuf_info)
 {
 	if (!dmabuf_info)
@@ -701,7 +708,7 @@ void put_dmabuf_info(struct task_dma_buf_info *dmabuf_info)
 int dma_buf_begin_new_exec(struct files_struct *old_files)
 {
 	struct task_dma_buf_info *new_dmabuf_info;
-	struct task_dma_buf_info *old_dmabuf_info = current->dmabuf_info;
+	struct task_dma_buf_info *old_dmabuf_info;
 	struct files_struct *my_files = current->files;
 
 	if (!static_key_enabled(&dmabuf_accounting_key))
@@ -783,7 +790,10 @@ retry:
 		task_dmabuf_records_preload_end();
 	}
 
+	task_lock(current);
+	old_dmabuf_info = current->dmabuf_info;
 	current->dmabuf_info = new_dmabuf_info; // refcount from alloc_task_dma_buf_info
+	task_unlock(current);
 	put_dmabuf_info(old_dmabuf_info);
 
 	return 0;
