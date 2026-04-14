@@ -44,6 +44,24 @@
       ],
       "revId": "964fc3382f62e75576fd6e8ace3eb2c3b679afd9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cffd60c_1a92ea7f",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-14T18:17:36Z",
+      "side": 1,
+      "message": "My bad, it was such a silly mistake. Initially I had explicit !\u003d0 check and while removing, I somehow got it messed up and did\u0027t notice. Boot test also went through for some reason. Caught it while making another change and was about to push the changes and you noticed as well. Sorry again",
+      "parentUuid": "6678c709_e9ff5599",
+      "revId": "964fc3382f62e75576fd6e8ace3eb2c3b679afd9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
