@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e4116e6_2bacfeff",
+        "filename": "arch/x86/kvm/pkvm/memory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-14T12:50:23Z",
+      "side": 1,
+      "message": "Wondering if this is correct? If I understand correctly, this function still uses exclusive end for the binary search logic and hence `range-\u003eend \u003d reg-\u003ebase` is correct for the binary search. We only need the final range to be modified with inclusive end(line 75) before returning it right?",
+      "revId": "06afddaafc7f29b9d9db46c42dac172c04afc2f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
