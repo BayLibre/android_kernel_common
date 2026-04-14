@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60327c46_e63b313f",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-04-14T22:54:50Z",
+      "side": 1,
+      "message": "where was the ticket-\u003evm_list being initialized before? If it is moved here, should\u0027t this patch also contain the removal of the old INIT_LIST_HEAD()?",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f2af3fe_4755d30b",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-04-14T22:54:50Z",
+      "side": 1,
+      "message": "why is this OK? Is there a legitimate case for why duplicate resource tickets are allocated? This seems to be covering up a logic error or race in the caller.",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30b0c0ab_04e0ce34",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-04-14T22:54:50Z",
+      "side": 1,
+      "message": "why would the caller be removing a resource ticket for something that is not on the list? This seems like it is covering up double-remove that shouldn\u0027t happen.",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
