@@ -34,6 +34,24 @@
       "parentUuid": "1e4116e6_2bacfeff",
       "revId": "06afddaafc7f29b9d9db46c42dac172c04afc2f9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4928a706_18f683ae",
+        "filename": "arch/x86/kvm/pkvm/memory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-14T13:27:37Z",
+      "side": 1,
+      "message": "\u003e In the binary search, we are using reg-\u003ebase (line 67) and end (line 70), so not the range-\u003eend, right?\n\nAhh yes, range-\u003eend is not used in the binary search logic. Looks correct, although changing the logic to use inclusive end from the start would avoid a bit of confusion. But I am fine as is.. Resolving",
+      "parentUuid": "665848a5_a3dd06b9",
+      "revId": "06afddaafc7f29b9d9db46c42dac172c04afc2f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
