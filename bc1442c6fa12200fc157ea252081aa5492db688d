@@ -16,6 +16,24 @@
       "message": "Wondering: maybe instead of allowing the host to set IRTE to an _arbitrary_ value (via these opaque irte_lo \u0026 irte_hi fields) and just validating the PDA bits, we should do it similarly to how we do it in the hypercalls for setting context and PASID entries, i.e. require the host to explicitly specify the values of the needed fields?\n\nSo that pKVM can make sure that the rest of the fields are set to sane default values (e.g. at least that the Reserved bits are set to 0, as the VT-d spec requires), plus possibly do extra validation of other fields if needed.",
       "revId": "bc1442c6fa12200fc157ea252081aa5492db688d",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e1c1d01_ad97e8db",
+        "filename": "arch/x86/include/asm/kvm_pkvm.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-14T13:55:15Z",
+      "side": 1,
+      "message": "I was thinking it might not be necessary as we let the host manage the interrupts  and we validate the Posted Descriptor address just to make sure that protected memory is not tampered with. For context and pasid entries we were basically validating fields to make sure the host is not able to configure DMA such that device get to access protected memory.\n\nValidating RsvdZ seems a good idea. I added validation for reserved fields.",
+      "parentUuid": "aca3fabc_7781c0f6",
+      "revId": "bc1442c6fa12200fc157ea252081aa5492db688d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
