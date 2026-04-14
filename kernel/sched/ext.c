@@ -5213,19 +5213,29 @@ static int validate_ops(const struct sched_ext_ops *ops)
 	return 0;
 }
 
-static int scx_ops_enable(struct sched_ext_ops *ops, struct bpf_link *link)
+/*
+ * scx_ops_enable() is offloaded to a dedicated system-wide RT kthread to avoid
+ * starvation. During the READY -> ENABLED task switching loop, the calling
+ * thread's sched_class gets switched from fair to ext. As fair has higher
+ * priority than ext, the calling thread can be indefinitely starved under
+ * fair-class saturation, leading to a system hang.
+ */
+struct scx_enable_cmd {
+	struct kthread_work	work;
+	struct sched_ext_ops	*ops;
+	int			ret;
+};
+
+static void scx_ops_enable_workfn(struct kthread_work *work)
 {
+	struct scx_enable_cmd *cmd =
+		container_of(work, struct scx_enable_cmd, work);
+	struct sched_ext_ops *ops = cmd->ops;
 	struct scx_task_iter sti;
 	struct task_struct *p;
 	unsigned long timeout;
 	int i, cpu, node, ret;
 	int repeat = 0;
-
-	if (!cpumask_equal(housekeeping_cpumask(HK_TYPE_DOMAIN),
-			   cpu_possible_mask)) {
-		pr_err("sched_ext: Not compatible with \"isolcpus=\" domain isolation\n");
-		return -EINVAL;
-	}
 
 	mutex_lock(&scx_ops_enable_mutex);
 
@@ -5507,8 +5517,15 @@ repeat_iter:
 
 	atomic_long_inc(&scx_enable_seq);
 
+<<<<<<< HEAD   (ef96179867ad9c26332da83a0eaf0d2e10dc1920 Merge 41423912f7ac ("sched_ext: Disable preemption between s)
 	add_taint(TAINT_AUX, LOCKDEP_STILL_OK);
 	return 0;
+||||||| BASE   (41423912f7ac7494ccd6eef411227b4efce740e0 sched_ext: Disable preemption between scx_claim_exit() and k)
+	return 0;
+=======
+	cmd->ret = 0;
+	return;
+>>>>>>> BRANCH (e0b14bf06393be137d3efb6a3b7cd5b4b9810a6b sched_ext: Fix starvation of scx_enable() under fair-class s)
 
 err_del:
 	kobject_del(scx_root_kobj);
@@ -5521,7 +5538,8 @@ err:
 	}
 err_unlock:
 	mutex_unlock(&scx_ops_enable_mutex);
-	return ret;
+	cmd->ret = ret;
+	return;
 
 err_disable_unlock_all:
 	scx_cgroup_unlock();
@@ -5540,7 +5558,39 @@ err_disable:
 	 */
 	scx_ops_error("scx_ops_enable() failed (%d)", ret);
 	kthread_flush_work(&scx_ops_disable_work);
-	return 0;
+	cmd->ret = 0;
+}
+
+static int scx_ops_enable(struct sched_ext_ops *ops, struct bpf_link *link)
+{
+	static struct kthread_worker *helper;
+	static DEFINE_MUTEX(helper_mutex);
+	struct scx_enable_cmd cmd;
+
+	if (!cpumask_equal(housekeeping_cpumask(HK_TYPE_DOMAIN),
+			   cpu_possible_mask)) {
+		pr_err("sched_ext: Not compatible with \"isolcpus=\" domain isolation\n");
+		return -EINVAL;
+	}
+
+	if (!READ_ONCE(helper)) {
+		mutex_lock(&helper_mutex);
+		if (!helper) {
+			helper = scx_create_rt_helper("scx_ops_enable_helper");
+			if (!helper) {
+				mutex_unlock(&helper_mutex);
+				return -ENOMEM;
+			}
+		}
+		mutex_unlock(&helper_mutex);
+	}
+
+	kthread_init_work(&cmd.work, scx_ops_enable_workfn);
+	cmd.ops = ops;
+
+	kthread_queue_work(READ_ONCE(helper), &cmd.work);
+	kthread_flush_work(&cmd.work);
+	return cmd.ret;
 }
 
 
