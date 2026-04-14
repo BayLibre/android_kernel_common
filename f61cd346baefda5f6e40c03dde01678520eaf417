@@ -182,6 +182,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d1cf2e62_db9c1441",
+        "filename": "drivers/iommu/intel/iommu.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-14T17:00:18Z",
+      "side": 1,
+      "message": "\u003e Having the cache cleared fully will make the DMA traverse the page table again and may hurt performance right?\n\nAh yeah, I forgot about that.\n\nIt _seems_ that it is still unlikely to significantly impact fio performance, since we are talking about _short-living_ DMA mappings anyway. And even if it has significant impact on fio performance specifically in the scenario when fio is done in parallel with pVM boot, that doesn\u0027t seem a very important scenario to care about, since pVM boot per se is a rare event?\n\n...Anyway, looking at your numbers, with pVM coalesced flush appears \"mostly better\" than global flush in term of performance but \"mostly worse\" in terms of power, and without pVM it appears \"mostly worse\" in terms of both perf and power? So it doesn\u0027t seem convincing that it is a good idea?",
+      "parentUuid": "809e587f_85758f72",
+      "revId": "f61cd346baefda5f6e40c03dde01678520eaf417",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7627125_fe94f000",
         "filename": "drivers/iommu/intel/pkvm/domain.c",
         "patchSetId": 2
