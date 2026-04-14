@@ -46,6 +46,30 @@
       },
       "revId": "cea755b9cd8a171c51187083fa330b06411dc9fa",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "374a25d5_cc6b1b66",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1132,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2026-04-14T07:33:59Z",
+      "side": 1,
+      "message": "I don\u0027t think that helps. If you swap them, then you can perform the reverse fd swap. Before the syscall, the fd refers to the dma_buf, but while it runs you swap it for some other unrelated file that is writable.",
+      "parentUuid": "5fe934d0_18ce101c",
+      "range": {
+        "startLine": 1121,
+        "startChar": 0,
+        "endLine": 1132,
+        "endChar": 26
+      },
+      "revId": "cea755b9cd8a171c51187083fa330b06411dc9fa",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
