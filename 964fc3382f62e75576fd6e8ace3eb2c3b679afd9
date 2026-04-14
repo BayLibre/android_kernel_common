@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6678c709_e9ff5599",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-14T17:50:55Z",
+      "side": 1,
+      "message": "I\u0027m a bit confused: they all should be zero, while you are checking if they all are non-zero?",
+      "fixSuggestions": [
+        {
+          "fixId": "249793bb_68a72565",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/pkvm/iommu_hc.c",
+              "range": {
+                "startLine": 530,
+                "startChar": 0,
+                "endLine": 532,
+                "endChar": 0
+              },
+              "replacement": "\t\tif (modified.p_res0 || modified.p_res1 ||\n\t\t    modified.p_res2 || modified.p_res3)\n"
+            },
+            {
+              "path": "drivers/iommu/intel/pkvm/iommu_hc.c",
+              "range": {
+                "startLine": 535,
+                "startChar": 0,
+                "endLine": 537,
+                "endChar": 0
+              },
+              "replacement": "\t\tif (modified.__res1 || modified.r_res1 ||\n\t\t    modified.__res3)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "964fc3382f62e75576fd6e8ace3eb2c3b679afd9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
