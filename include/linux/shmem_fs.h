@@ -50,6 +50,8 @@ struct shmem_inode_info {
 	(FS_IMMUTABLE_FL | FS_APPEND_FL | FS_NODUMP_FL | FS_NOATIME_FL)
 #define SHMEM_FL_INHERITED		(FS_NODUMP_FL | FS_NOATIME_FL)
 
+#define SHMEM_FL_MEMFD			0x01000000 /* Inode backs a memfd */
+
 struct shmem_quota_limits {
 	qsize_t usrquota_bhardlimit; /* Default user quota block hard limit */
 	qsize_t usrquota_ihardlimit; /* Default user quota inode hard limit */
