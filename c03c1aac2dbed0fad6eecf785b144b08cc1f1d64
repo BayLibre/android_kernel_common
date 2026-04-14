@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "13c377f1_b597fca0",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 2007700
+      },
+      "writtenOn": "2026-04-14T23:01:45Z",
+      "side": 1,
+      "message": "This is added here so that we can identify a duplicate resource. Its checked during removal of the resource.",
+      "parentUuid": "60327c46_e63b313f",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2f2af3fe_4755d30b",
         "filename": "drivers/virt/gunyah/vm_mgr.c",
         "patchSetId": 2
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ee77c91_7702a2d7",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 2007700
+      },
+      "writtenOn": "2026-04-14T23:01:45Z",
+      "side": 1,
+      "message": "VMM can send duplicate resources which needn\u0027t cause a VM bootup failure.",
+      "parentUuid": "2f2af3fe_4755d30b",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30b0c0ab_04e0ce34",
         "filename": "drivers/virt/gunyah/vm_mgr.c",
         "patchSetId": 2
@@ -48,6 +84,24 @@
       "writtenOn": "2026-04-14T22:54:50Z",
       "side": 1,
       "message": "why would the caller be removing a resource ticket for something that is not on the list? This seems like it is covering up double-remove that shouldn\u0027t happen.",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f28aef6b_b7a468da",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 2007700
+      },
+      "writtenOn": "2026-04-14T23:01:45Z",
+      "side": 1,
+      "message": "This is the case which doesn\u0027t have any duplicate resource. INIT_LIST_HEAD in the above comment would have created an \"empty\" list which won\u0027t let us enter this if loop if at all it was a duplicate resource.",
+      "parentUuid": "30b0c0ab_04e0ce34",
       "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
