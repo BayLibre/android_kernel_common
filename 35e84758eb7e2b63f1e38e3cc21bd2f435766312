@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdee47f7_4756b467",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1123,
+      "author": {
+        "id": 1892347
+      },
+      "writtenOn": "2026-04-14T20:58:22Z",
+      "side": 1,
+      "message": "This makes the unrelated behavior change of returning `EINVAL` on all `dma_buf_get()` failures, whereas the previous code forwarded the error code returned by `dma_buf_get()`. Returning `EINVAL` instead of `EBADF` seems wrong here.",
+      "range": {
+        "startLine": 1122,
+        "startChar": 0,
+        "endLine": 1123,
+        "endChar": 26
+      },
+      "revId": "35e84758eb7e2b63f1e38e3cc21bd2f435766312",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
