@@ -16,6 +16,24 @@
       "message": "Wondering if this is correct? If I understand correctly, this function still uses exclusive end for the binary search logic and hence `range-\u003eend \u003d reg-\u003ebase` is correct for the binary search. We only need the final range to be modified with inclusive end(line 75) before returning it right?",
       "revId": "06afddaafc7f29b9d9db46c42dac172c04afc2f9",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "665848a5_a3dd06b9",
+        "filename": "arch/x86/kvm/pkvm/memory.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-14T13:11:28Z",
+      "side": 1,
+      "message": "In the binary search, we are using `reg-\u003ebase` (line 67) and `end` (line 70), so not the `range-\u003eend`, right? And the `end` is `reg-\u003ebase + reg-\u003esize`, which is inclusive? And it is possible that we just break this while after setting `range-\u003eend \u003d reg-\u003ebase - 1` and return false. In this case, range is inclusive. But if `range-\u003eend \u003d reg-\u003ebase`, in this case, range is exclusive.",
+      "parentUuid": "1e4116e6_2bacfeff",
+      "revId": "06afddaafc7f29b9d9db46c42dac172c04afc2f9",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
