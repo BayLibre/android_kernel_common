@@ -10,8 +10,8 @@
 
 #define UCALL_PIO_PORT ((uint16_t)0x1000)
 
+/* Guest-side globals; each VM gets its own copy via sync_global_to_guest(). */
 static uint8_t vm_type;
-static vm_paddr_t host_ucall_mmio_gpa;
 static vm_paddr_t ucall_mmio_gpa;
 
 void ucall_arch_init(struct kvm_vm *vm, vm_paddr_t mmio_gpa)
@@ -19,8 +19,10 @@ void ucall_arch_init(struct kvm_vm *vm, vm_paddr_t mmio_gpa)
 	vm_type = vm->type;
 	sync_global_to_guest(vm, vm_type);
 
-	if (is_pkvm_protected_vm(vm))
-		host_ucall_mmio_gpa = ucall_mmio_gpa = mmio_gpa;
+	if (is_pkvm_protected_vm(vm)) {
+		ucall_mmio_gpa = mmio_gpa;
+		vm->ucall_mmio_addr = mmio_gpa;
+	}
 
 	sync_global_to_guest(vm, ucall_mmio_gpa);
 }
@@ -68,10 +70,10 @@ void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
 {
 	struct kvm_run *run = vcpu->run;
 
-	switch (vm_type) {
+	switch (vcpu->vm->type) {
 	case KVM_X86_PKVM_PROTECTED_VM:
 		if (vcpu->run->exit_reason == KVM_EXIT_MMIO &&
-			vcpu->run->mmio.phys_addr == host_ucall_mmio_gpa &&
+			vcpu->run->mmio.phys_addr == vcpu->vm->ucall_mmio_addr &&
 			vcpu->run->mmio.len == 8 && vcpu->run->mmio.is_write) {
 			uint64_t data = *(uint64_t *)vcpu->run->mmio.data;
 
