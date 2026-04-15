@@ -1639,8 +1639,11 @@ static int pkvm_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit,
 		}
 	}
 
-	if (unlikely(!kvm_vcpu_has_run(vcpu)))
-		pkvm_load_mmu_pgd(vcpu);
+	if (unlikely(!kvm_vcpu_has_run(vcpu))) {
+		ret = pkvm_load_mmu_pgd(vcpu);
+		if (ret)
+			return ret;
+	}
 
 	/*
 	 * Flush predictor when switching from host VM to pVM to prevent host VM
