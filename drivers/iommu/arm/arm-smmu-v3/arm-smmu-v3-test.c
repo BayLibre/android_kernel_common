@@ -567,6 +567,50 @@ static void arm_smmu_v3_write_cd_test_sva_release(struct kunit *test)
 						      NUM_EXPECTED_SYNCS(2));
 }
 
+static void arm_smmu_v3_sva_reason_test_supported(struct kunit *test)
+{
+	struct arm_smmu_device test_smmu = {
+		.features = ARM_SMMU_FEAT_COHERENCY | ARM_SMMU_FEAT_VAX,
+		.pgsize_bitmap = PAGE_SIZE | SZ_2M,
+		.oas = 52,
+		.asid_bits = 16,
+	};
+
+	KUNIT_EXPECT_EQ(test, 0UL,
+		arm_smmu_sva_reject_reasons_for_caps(&test_smmu, true, 48, 16));
+}
+
+static void arm_smmu_v3_sva_reason_test_rejects_missing_requirements(struct kunit *test)
+{
+	struct arm_smmu_device test_smmu = {
+		.features = 0,
+		.pgsize_bitmap = SZ_64K,
+		.oas = 40,
+		.asid_bits = 8,
+	};
+
+	KUNIT_EXPECT_EQ(test,
+		ARM_SMMU_SVA_REJECT_NO_COHERENCY |
+		ARM_SMMU_SVA_REJECT_NO_VAX |
+		ARM_SMMU_SVA_REJECT_NO_BASE_PAGE |
+		ARM_SMMU_SVA_REJECT_OAS_TOO_SMALL |
+		ARM_SMMU_SVA_REJECT_ASID_TOO_SMALL,
+		arm_smmu_sva_reject_reasons_for_caps(&test_smmu, true, 48, 16));
+}
+
+static void arm_smmu_v3_sva_reason_test_vax_not_required(struct kunit *test)
+{
+	struct arm_smmu_device test_smmu = {
+		.features = ARM_SMMU_FEAT_COHERENCY,
+		.pgsize_bitmap = PAGE_SIZE,
+		.oas = 48,
+		.asid_bits = 16,
+	};
+
+	KUNIT_EXPECT_EQ(test, 0UL,
+		arm_smmu_sva_reject_reasons_for_caps(&test_smmu, false, 48, 16));
+}
+
 static struct kunit_case arm_smmu_v3_test_cases[] = {
 	KUNIT_CASE(arm_smmu_v3_write_ste_test_bypass_to_abort),
 	KUNIT_CASE(arm_smmu_v3_write_ste_test_abort_to_bypass),
@@ -590,6 +634,9 @@ static struct kunit_case arm_smmu_v3_test_cases[] = {
 	KUNIT_CASE(arm_smmu_v3_write_ste_test_s2_to_s1_stall),
 	KUNIT_CASE(arm_smmu_v3_write_cd_test_sva_clear),
 	KUNIT_CASE(arm_smmu_v3_write_cd_test_sva_release),
+	KUNIT_CASE(arm_smmu_v3_sva_reason_test_supported),
+	KUNIT_CASE(arm_smmu_v3_sva_reason_test_rejects_missing_requirements),
+	KUNIT_CASE(arm_smmu_v3_sva_reason_test_vax_not_required),
 	{},
 };
 

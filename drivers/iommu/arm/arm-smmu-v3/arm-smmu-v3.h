@@ -362,7 +362,22 @@ int arm_smmu_init_one_queue(struct arm_smmu_device *smmu,
 int arm_smmu_cmdq_init(struct arm_smmu_device *smmu,
 		       struct arm_smmu_cmdq *cmdq);
 
+enum arm_smmu_sva_reject_reason {
+	ARM_SMMU_SVA_REJECT_NONE = 0,
+	ARM_SMMU_SVA_REJECT_NO_COHERENCY = BIT(0),
+	ARM_SMMU_SVA_REJECT_NO_VAX = BIT(1),
+	ARM_SMMU_SVA_REJECT_NO_BASE_PAGE = BIT(2),
+	ARM_SMMU_SVA_REJECT_OAS_TOO_SMALL = BIT(3),
+	ARM_SMMU_SVA_REJECT_ASID_TOO_SMALL = BIT(4),
+};
+
 #ifdef CONFIG_ARM_SMMU_V3_SVA
+unsigned long arm_smmu_sva_reject_reasons(struct arm_smmu_device *smmu);
+unsigned long arm_smmu_sva_reject_reasons_for_caps(struct arm_smmu_device *smmu,
+						   bool needs_vax,
+						   unsigned int min_oas,
+						   unsigned int min_asid_bits);
+const char *arm_smmu_sva_reject_reason_name(unsigned long reason);
 bool arm_smmu_sva_supported(struct arm_smmu_device *smmu);
 bool arm_smmu_master_sva_supported(struct arm_smmu_master *master);
 bool arm_smmu_master_sva_enabled(struct arm_smmu_master *master);
@@ -373,6 +388,27 @@ void arm_smmu_sva_notifier_synchronize(void);
 struct iommu_domain *arm_smmu_sva_domain_alloc(struct device *dev,
 					       struct mm_struct *mm);
 #else /* CONFIG_ARM_SMMU_V3_SVA */
+static inline unsigned long
+arm_smmu_sva_reject_reasons(struct arm_smmu_device *smmu)
+{
+	return ULONG_MAX;
+}
+
+static inline unsigned long
+arm_smmu_sva_reject_reasons_for_caps(struct arm_smmu_device *smmu,
+				     bool needs_vax,
+				     unsigned int min_oas,
+				     unsigned int min_asid_bits)
+{
+	return ULONG_MAX;
+}
+
+static inline const char *
+arm_smmu_sva_reject_reason_name(unsigned long reason)
+{
+	return "unsupported";
+}
+
 static inline bool arm_smmu_sva_supported(struct arm_smmu_device *smmu)
 {
 	return false;
