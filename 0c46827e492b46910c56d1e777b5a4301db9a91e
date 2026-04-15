@@ -1,0 +1,65 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "942248ae_ac1ace98",
+        "filename": "mm/mmap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3536,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-04-15T16:31:16Z",
+      "side": 1,
+      "message": "If this fails (say low on memory) and then vma_link() fails we will be unaccounting something that we failed to account. How about just introducing a bool that tells us we successfully accounted the dma-buf and then use it to check if we need unaccounting?",
+      "range": {
+        "startLine": 3536,
+        "startChar": 8,
+        "endLine": 3536,
+        "endChar": 16
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "1d0c2576_a1548f55",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/mmap.c",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\tbool dma_buf_accounted \u003d false;\n"
+            },
+            {
+              "path": "mm/mmap.c",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\t\t\t\telse\n\t\t\t\t\tdma_buf_accounted \u003d true;\n"
+            },
+            {
+              "path": "mm/mmap.c",
+              "range": {
+                "startLine": 3552,
+                "startChar": 0,
+                "endLine": 3553,
+                "endChar": 0
+              },
+              "replacement": "\t\tif (dma_buf_accounted)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0c46827e492b46910c56d1e777b5a4301db9a91e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
