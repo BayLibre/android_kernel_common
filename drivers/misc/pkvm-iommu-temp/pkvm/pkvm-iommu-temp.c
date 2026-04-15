@@ -31,8 +31,7 @@ static bool iommu_temp_dabt_handler(struct user_pt_regs *regs, u64 esr, u64 addr
 	return false;
 }
 
-static int iommu_temp_set_identity(pkvm_handle_t iommu, pkvm_handle_t sid,
-				   bool on, unsigned long flags)
+static int iommu_temp_set_identity(pkvm_handle_t iommu, pkvm_handle_t sid, bool on)
 {
 	/* Set a device in either identity or blocking state. */
 	return -ENODEV;
