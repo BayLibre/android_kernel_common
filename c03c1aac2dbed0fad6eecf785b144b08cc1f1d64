@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2a8ee5ba_9e17f2ba",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 2007700
+      },
+      "writtenOn": "2026-04-15T01:15:40Z",
+      "side": 1,
+      "message": "Yes it is CrosVM. I haven\u0027t spent time to find out why there is a need for CrosVM to request duplicate resources. No, its not the case where 2 processes are starting the same VM. It is for injecting an irq to the VM from CrosVM in the context of virtio devices. At least for Gunyah, the duplicate resource won\u0027t really get a new irq, it will be mapped to the same one which was requested first.\n\nI retained this dev_warn to catch the case where there could be a functionality failure in the VM because of a genuine mistake in the VMM.",
+      "parentUuid": "79002436_c073b1c8",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30b0c0ab_04e0ce34",
         "filename": "drivers/virt/gunyah/vm_mgr.c",
         "patchSetId": 2
