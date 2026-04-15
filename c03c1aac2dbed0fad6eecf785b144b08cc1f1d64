@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a42fe6d_6d95be47",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-04-15T00:46:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13c377f1_b597fca0",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f2af3fe_4755d30b",
@@ -73,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "79002436_c073b1c8",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-04-15T00:46:09Z",
+      "side": 1,
+      "message": "What is VMM in this case? crossvm? Can you give an example of a legitimate case of duplicate resource tickets? Is this something like two separate processes starting the same VM? \n\nIf this is a regular expected case, do we need the new dev_warn()? Is anyone going to notice or care that this warning is being printed?",
+      "parentUuid": "7ee77c91_7702a2d7",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30b0c0ab_04e0ce34",
         "filename": "drivers/virt/gunyah/vm_mgr.c",
         "patchSetId": 2
@@ -102,6 +138,24 @@
       "side": 1,
       "message": "This is the case which doesn\u0027t have any duplicate resource. INIT_LIST_HEAD in the above comment would have created an \"empty\" list which won\u0027t let us enter this if loop if at all it was a duplicate resource.",
       "parentUuid": "30b0c0ab_04e0ce34",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af977699_bbc0b61f",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-04-15T00:46:09Z",
+      "side": 1,
+      "message": "Please explain how we get these duplicates and why they are expected and normal. It should be explained in the commit message of this patch.",
+      "parentUuid": "f28aef6b_b7a468da",
       "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
