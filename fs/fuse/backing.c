@@ -302,6 +302,8 @@ int fuse_release_initialize(struct fuse_bpf_args *fa, struct fuse_release_in *fr
 	/* Always put backing file whatever bpf/userspace says */
 	if (ff->backing_file) {
 	    fput(ff->backing_file);
+		/* Clear pointer to prevent use-after-free */
+		ff->backing_file = NULL;
 	}
 
 	*fri = (struct fuse_release_in) {
@@ -358,7 +360,7 @@ int fuse_flush_backing(struct fuse_bpf_args *fa, struct file *file, fl_owner_t i
 	struct fuse_file *fuse_file = file->private_data;
 	struct file *backing_file = fuse_file->backing_file;
 
-	if (backing_file->f_op->flush)
+	if (backing_file && backing_file->f_op->flush)
 		return backing_file->f_op->flush(backing_file, id);
 	return 0;
 }
