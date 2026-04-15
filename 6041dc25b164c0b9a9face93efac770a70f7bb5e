@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35619bc1_c0426388",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1081,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-15T17:42:52Z",
+      "side": 1,
+      "message": "I find this a bit odd: 1. the function is named pkvm_supported_segment() but actually it simply checks if this is a valid segment register, not just if it is supported specifically by pKVM. 2. we manually list all possible segment registers.\n\nI\u0027m thinking of something like:\n\n```\n--- a/arch/x86/include/asm/kvm_host.h\n+++ b/arch/x86/include/asm/kvm_host.h\n@@ -213,6 +213,7 @@ enum {\n \tVCPU_SREG_GS,\n \tVCPU_SREG_TR,\n \tVCPU_SREG_LDTR,\n+\tNR_VCPU_SREGS,\n };\n \n enum exit_fastpath_completion {\ndiff --git a/arch/x86/kvm/pkvm/pkvm.c b/arch/x86/kvm/pkvm/pkvm.c\nindex d34af3e8d98d..6a23f9d7ed64 100644\n--- a/arch/x86/kvm/pkvm/pkvm.c\n+++ b/arch/x86/kvm/pkvm/pkvm.c\n@@ -1067,26 +1067,9 @@ static void pkvm_set_dr7(struct kvm_vcpu *vcpu, unsigned long val)\n \t\tvcpu-\u003earch.switch_db_regs |\u003d KVM_DEBUGREG_BP_ENABLED;\n }\n \n-static bool pkvm_supported_segment(int seg)\n-{\n-\tswitch (seg) {\n-\tcase VCPU_SREG_ES:\n-\tcase VCPU_SREG_CS:\n-\tcase VCPU_SREG_SS:\n-\tcase VCPU_SREG_DS:\n-\tcase VCPU_SREG_FS:\n-\tcase VCPU_SREG_GS:\n-\tcase VCPU_SREG_TR:\n-\tcase VCPU_SREG_LDTR:\n-\t\treturn true;\n-\tdefault:\n-\t\treturn false;\n-\t}\n-}\n-\n static int pkvm_set_segment(struct kvm_vcpu *vcpu, struct kvm_segment *var, int seg)\n {\n-\tif (!pkvm_supported_segment(seg))\n+\tif (seg \u003e\u003d NR_VCPU_SREGS)\n \t\treturn -EINVAL;\n \n \tkvm_x86_call(set_segment)(vcpu, var, seg);\n@@ -1095,7 +1078,7 @@ static int pkvm_set_segment(struct kvm_vcpu *vcpu, struct kvm_segment *var, int\n \n static int pkvm_get_segment(struct kvm_vcpu *vcpu, struct kvm_segment *var, int seg)\n {\n-\tif (!pkvm_supported_segment(seg))\n+\tif (seg \u003e\u003d NR_VCPU_SREGS)\n \t\treturn -EINVAL;\n \n \tkvm_x86_call(get_segment)(vcpu, var, seg);\n@@ -1104,7 +1087,7 @@ static int pkvm_get_segment(struct kvm_vcpu *vcpu, struct kvm_segment *var, int\n \n static int pkvm_get_segment_base(struct kvm_vcpu *vcpu, int seg, u64 *data)\n {\n-\tif (!pkvm_supported_segment(seg))\n+\tif (seg \u003e\u003d NR_VCPU_SREGS)\n \t\treturn -EINVAL;\n \n \t*data \u003d kvm_x86_call(get_segment_base)(vcpu, seg);\n```\n\nThis NR_VCPU_SREGS would be, in particular, in line with the existing NR_VCPU_REGS.\n\nOr, I\u0027ve just noticed that `vmx-\u003esegment_cache-\u003eseg[]` and `vmx-\u003ermode.segs[]` simply hardcode their length to 8, so we might do the same for now, i.e. instead of introducing NR_VCPU_SREGS, just hardcode `if (seg \u003e\u003d 8)` checks.\n\nWDYT?",
+      "revId": "6041dc25b164c0b9a9face93efac770a70f7bb5e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
