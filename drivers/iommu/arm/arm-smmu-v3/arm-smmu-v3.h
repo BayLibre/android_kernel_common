@@ -15,6 +15,7 @@
 #include <linux/sizes.h>
 
 struct arm_smmu_device;
+struct dentry;
 
 #include <asm/arm-smmu-v3-common.h>
 
@@ -197,6 +198,9 @@ struct arm_smmu_device {
 
 	struct rb_root			streams;
 	struct mutex			streams_mutex;
+#ifdef CONFIG_IOMMU_DEBUGFS
+	struct dentry			*sva_debugfs_root;
+#endif
 };
 
 struct arm_smmu_stream {

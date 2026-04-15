@@ -12,6 +12,7 @@
 #include <linux/acpi_iort.h>
 #include <linux/bitops.h>
 #include <linux/crash_dump.h>
+#include <linux/debugfs.h>
 #include <linux/err.h>
 #include <linux/interrupt.h>
 #include <linux/io-pgtable.h>
@@ -19,6 +20,7 @@
 #include <linux/msi.h>
 #include <linux/pci-ats.h>
 #include <linux/platform_device.h>
+#include <linux/seq_file.h>
 #include <kunit/visibility.h>
 #include <uapi/linux/iommufd.h>
 
@@ -3590,6 +3592,119 @@ static void arm_smmu_impl_remove(void *data)
 		smmu->impl_ops->device_remove(smmu);
 }
 
+static void arm_smmu_log_sva_status(struct arm_smmu_device *smmu)
+{
+	unsigned long reasons = arm_smmu_sva_reject_reasons(smmu);
+
+	if (!reasons) {
+		dev_info(smmu->dev,
+			 "SVA/PASID: class=supported_but_no_client_proof asid_bits=%u ssid_bits=%u max_pasids=%u\n",
+			 smmu->asid_bits, smmu->ssid_bits, smmu->iommu.max_pasids);
+		return;
+	}
+
+	dev_info(smmu->dev,
+		 "SVA/PASID: class=unsupported asid_bits=%u ssid_bits=%u max_pasids=%u\n",
+		 smmu->asid_bits, smmu->ssid_bits, smmu->iommu.max_pasids);
+	dev_info(smmu->dev, "SVA/PASID reject_reasons=0x%lx\n", reasons);
+}
+
+#ifdef CONFIG_IOMMU_DEBUGFS
+static struct dentry *arm_smmu_v3_debugfs_dir;
+
+static void arm_smmu_sva_debugfs_remove(void *data)
+{
+	struct arm_smmu_device *smmu = data;
+
+	debugfs_remove_recursive(smmu->sva_debugfs_root);
+	smmu->sva_debugfs_root = NULL;
+}
+
+static void arm_smmu_sva_status_show_reasons(struct seq_file *s,
+					     unsigned long reasons)
+{
+	unsigned long reason;
+
+	if (!reasons) {
+		seq_puts(s, "reasons: none\n");
+		return;
+	}
+
+	seq_puts(s, "reasons:\n");
+	for_each_set_bit(reason, &reasons, BITS_PER_LONG)
+		seq_printf(s, " - %s\n",
+			   arm_smmu_sva_reject_reason_name(BIT(reason)));
+}
+
+static int arm_smmu_sva_status_show(struct seq_file *s, void *unused)
+{
+	struct arm_smmu_device *smmu = s->private;
+	struct rb_node *node;
+	unsigned long reasons = arm_smmu_sva_reject_reasons(smmu);
+	bool any_sva_enabled = false;
+
+	seq_printf(s, "device=%s\n", dev_name(smmu->dev));
+	seq_printf(s, "driver=arm_smmu_v3\n");
+	seq_printf(s, "node=%pOF\n", smmu->dev->of_node);
+	seq_printf(s, "features=0x%08x\n", smmu->features);
+	seq_printf(s, "ias=%lu\n", smmu->ias);
+	seq_printf(s, "oas=%lu\n", smmu->oas);
+	seq_printf(s, "asid_bits=%u\n", smmu->asid_bits);
+	seq_printf(s, "ssid_bits=%u\n", smmu->ssid_bits);
+	seq_printf(s, "max_pasids=%u\n", smmu->iommu.max_pasids);
+	seq_printf(s, "classification=%s\n",
+		   reasons ? "unsupported" : "supported_but_no_client_proof");
+	arm_smmu_sva_status_show_reasons(s, reasons);
+
+	mutex_lock(&smmu->streams_mutex);
+	for (node = rb_first(&smmu->streams); node; node = rb_next(node)) {
+		struct arm_smmu_stream *stream = rb_entry(node,
+							 struct arm_smmu_stream,
+							 node);
+		struct arm_smmu_master *master = stream->master;
+
+		any_sva_enabled |= arm_smmu_master_sva_enabled(master);
+		seq_printf(s,
+			   "master stream=0x%x dev=%s num_streams=%u stall=%u ssid_bits=%u iopf=%u sva_supported=%u sva_enabled=%u\n",
+			   stream->id, dev_name(master->dev), master->num_streams,
+			   master->stall_enabled, master->ssid_bits,
+			   master->iopf_enabled,
+			   arm_smmu_master_sva_supported(master),
+			   arm_smmu_master_sva_enabled(master));
+	}
+	mutex_unlock(&smmu->streams_mutex);
+
+	if (!reasons && any_sva_enabled)
+		seq_puts(s, "effective_classification=supported\n");
+	else if (!reasons)
+		seq_puts(s, "effective_classification=supported_but_no_client_proof\n");
+
+	return 0;
+}
+DEFINE_SHOW_ATTRIBUTE(arm_smmu_sva_status);
+
+static int arm_smmu_sva_debugfs_register(struct arm_smmu_device *smmu)
+{
+	if (!iommu_debugfs_dir)
+		return -ENODEV;
+	if (!arm_smmu_v3_debugfs_dir)
+		arm_smmu_v3_debugfs_dir = debugfs_create_dir("arm_smmu_v3",
+							     iommu_debugfs_dir);
+	if (!arm_smmu_v3_debugfs_dir)
+		return -ENOMEM;
+
+	smmu->sva_debugfs_root = debugfs_create_dir(dev_name(smmu->dev),
+						    arm_smmu_v3_debugfs_dir);
+	if (!smmu->sva_debugfs_root)
+		return -ENOMEM;
+
+	debugfs_create_file("sva_pasid_status", 0444, smmu->sva_debugfs_root,
+			    smmu, &arm_smmu_sva_status_fops);
+	return devm_add_action_or_reset(smmu->dev, arm_smmu_sva_debugfs_remove,
+					smmu);
+}
+#endif
+
 /*
  * Probe all the compiled in implementations. Each one checks to see if it
  * matches this HW and if so returns a devm_krealloc'd arm_smmu_device which
@@ -3672,6 +3787,14 @@ static int arm_smmu_device_probe(struct platform_device *pdev)
 
 	if (arm_smmu_sva_supported(smmu))
 		smmu->features |= ARM_SMMU_FEAT_SVA;
+
+	arm_smmu_log_sva_status(smmu);
+#ifdef CONFIG_IOMMU_DEBUGFS
+	ret = arm_smmu_sva_debugfs_register(smmu);
+	if (ret)
+		dev_warn(dev, "failed to register sva_pasid_status debugfs: %d\n",
+			 ret);
+#endif
 
 	if (disable_msipolling)
 		smmu->options &= ~ARM_SMMU_OPT_MSIPOLL;
