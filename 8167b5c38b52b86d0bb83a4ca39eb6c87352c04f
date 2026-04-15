@@ -22,6 +22,30 @@
       },
       "revId": "8167b5c38b52b86d0bb83a4ca39eb6c87352c04f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d8081d5_656a607a",
+        "filename": "include/linux/pm.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-04-15T17:42:59Z",
+      "side": 1,
+      "message": "There are a few bits left, so can\u0027t this be added (at the end) without changing the order of the other bits? I don\u0027t think we need to consume a KABI reserved field.",
+      "parentUuid": "5c7f2ff4_7f934f07",
+      "range": {
+        "startLine": 611,
+        "startChar": 0,
+        "endLine": 611,
+        "endChar": 55
+      },
+      "revId": "8167b5c38b52b86d0bb83a4ca39eb6c87352c04f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
