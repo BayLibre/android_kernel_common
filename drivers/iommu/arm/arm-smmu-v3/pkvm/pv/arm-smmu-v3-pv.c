@@ -770,8 +770,7 @@ out_unlock:
 	return ret;
 }
 
-static int smmu_set_identity(pkvm_handle_t iommu, pkvm_handle_t sid,
-			     bool on, unsigned long flags)
+static int smmu_set_identity(pkvm_handle_t iommu, pkvm_handle_t sid, bool on)
 {
 	struct hyp_arm_smmu_v3_device_pv *smmu = smmu_id_to_ptr(iommu);
 	struct arm_smmu_ste *dst;
