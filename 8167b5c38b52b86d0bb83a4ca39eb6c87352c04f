@@ -46,6 +46,30 @@
       },
       "revId": "8167b5c38b52b86d0bb83a4ca39eb6c87352c04f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7bdb1f6_3fd20481",
+        "filename": "include/linux/pm.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2026-04-15T23:15:53Z",
+      "side": 1,
+      "message": "This at least created a bunch of CRC differences and struct changes. Maybe @gprocida@google.com can help figure out how to resolve this without using a KABI reserved field.",
+      "parentUuid": "1d8081d5_656a607a",
+      "range": {
+        "startLine": 611,
+        "startChar": 0,
+        "endLine": 611,
+        "endChar": 55
+      },
+      "revId": "8167b5c38b52b86d0bb83a4ca39eb6c87352c04f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
