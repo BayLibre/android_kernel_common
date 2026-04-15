@@ -127,6 +127,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "acf35d67_8e6d10ce",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1944400
+      },
+      "writtenOn": "2026-04-15T01:29:26Z",
+      "side": 1,
+      "message": "Is it registering an irqfds for the same irq multiple times? If so, you might see that only in ferrochrome because they use uboot (last I checked). uboot will activate some virtio devices before handing off to linux (so that, e.g., it can write to the console) and then Linux will activate them again, potentially with a different configuration, although maybe the irqs are fixed in aarch64 crosvm (I didn\u0027t check).",
+      "parentUuid": "2a8ee5ba_9e17f2ba",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30b0c0ab_04e0ce34",
         "filename": "drivers/virt/gunyah/vm_mgr.c",
         "patchSetId": 2
