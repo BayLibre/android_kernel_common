@@ -440,6 +440,11 @@ static inline bool is_kmalloc_cache(struct kmem_cache *s)
 	return (s->flags & SLAB_KMALLOC);
 }
 
+static inline void __slab_clear_pfmemalloc(struct slab *slab)
+{
+        __clear_bit(SL_pfmemalloc, &slab->flags.f);
+}
+
 static inline bool is_kmalloc_normal(struct kmem_cache *s)
 {
 	if (!is_kmalloc_cache(s))
