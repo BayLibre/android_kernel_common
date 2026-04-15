@@ -2883,4 +2883,23 @@ void virtqueue_disable_dma_api_for_buffers(struct virtqueue *vq)
 }
 EXPORT_SYMBOL_GPL(virtqueue_disable_dma_api_for_buffers);
 
+/**
+ * virtqueue_reinit_vring - reinitialize vring state without reallocation
+ * @_vq: the virtqueue
+ *
+ * Reset the avail/used indices and descriptor state of an existing
+ * virtqueue so it can be reused after a device reset.  No memory is
+ * allocated or freed, making this safe for use in noirq context.
+ */
+void virtqueue_reinit_vring(struct virtqueue *_vq)
+{
+	struct vring_virtqueue *vq = to_vvq(_vq);
+
+	if (vq->packed_ring)
+		virtqueue_reinit_packed(vq);
+	else
+		virtqueue_reinit_split(vq);
+}
+EXPORT_SYMBOL_GPL(virtqueue_reinit_vring);
+
 MODULE_LICENSE("GPL");
