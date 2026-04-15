@@ -364,6 +364,19 @@
   __xa_cmpxchg
   lookup_user_key
 
+<<<<<<< PATCH SET (82a35ccd61a8afbb7be0563cd65bcac585706ba6 ANDROID: GKI: Update xiaomi symbol list)
+  __traceiter_android_vh_filemap_fault_folio_locked
+  __tracepoint_android_vh_filemap_fault_folio_locked
+  __traceiter_android_vh_filemap_read_end
+  __tracepoint_android_vh_filemap_read_end
+  __traceiter_android_vh_lruvec_add_folio
+  __tracepoint_android_vh_lruvec_add_folio
+  __traceiter_android_vh_lruvec_del_folio
+  __tracepoint_android_vh_lruvec_del_folio
+  __traceiter_android_vh_mm_free_page
+  __tracepoint_android_vh_mm_free_page
+||||||| BASE      (3416ba8f00e3efcecb1380d736413c1b4d59d585 ANDROID: GKI: Update transsion symbol list)
+=======
 # required by mi_ext_lru.ko
   mem_cgroup_iter
   __traceiter_android_vh_readahead_add_folio
@@ -374,6 +387,7 @@
   __tracepoint_android_vh_folio_trylock_clear_bypass
   __traceiter_android_vh_filemap_adjust_folio_flags
   __tracepoint_android_vh_filemap_adjust_folio_flags
+>>>>>>> BASE      (53c3cde28f661437e2d795511a5e3500a42dd11f ANDROID: mm: differentiate folio origins to improve reclaim )
 
 #required by mi_asap.ko
   __traceiter_android_vh_read_pages
