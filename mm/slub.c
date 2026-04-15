@@ -721,11 +721,6 @@ static inline void slab_set_pfmemalloc(struct slab *slab)
 	set_bit(SL_pfmemalloc, &slab->flags.f);
 }
 
-static inline void __slab_clear_pfmemalloc(struct slab *slab)
-{
-	__clear_bit(SL_pfmemalloc, &slab->flags.f);
-}
-
 /*
  * Per slab locking using the pagelock
  */
