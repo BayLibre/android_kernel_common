@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8b0b615_4883629b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-04-16T17:10:34Z",
+      "side": 1,
+      "message": "Why is this needed? Can you explain the problem caused by this function.\n\nIt looks like there are no current users of this in 6.18, so a better implementation would be remove this function and the hook it calls. (Can\u0027t revert the patch since there are other hooks that are in use)",
+      "revId": "c675eb84409df2c688842276cb567b05c3d07f27",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
