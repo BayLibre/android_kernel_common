@@ -235,6 +235,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "17f66f84_a51aa5f6",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1944400
+      },
+      "writtenOn": "2026-04-16T22:31:35Z",
+      "side": 1,
+      "message": "is it coming from https://chromium.googlesource.com/crosvm/crosvm/+/513b08b62ac613d734f228a39f1dba60e66de3b0/arch/src/lib.rs#1149 ?\n\ni only skimmed, but it seems to allocate multiple irqfd objects that point to the same interrupt line. we\u0027d need each of them to work, otherwise some device is going to have broken interrupts",
+      "parentUuid": "a20523ab_b8055d2c",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30b0c0ab_04e0ce34",
         "filename": "drivers/virt/gunyah/vm_mgr.c",
         "patchSetId": 2
