@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "685b8430_98e16c1e",
+        "filename": "arch/arm64/kvm/arm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2345,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-04-16T15:50:15Z",
+      "side": 1,
+      "message": "Stale comment. Perhaps update it to say why this is ok (along the lines of what you have in the commit message)?",
+      "range": {
+        "startLine": 2343,
+        "startChar": 0,
+        "endLine": 2345,
+        "endChar": 57
+      },
+      "revId": "e78425bc733f24fc7af771bbcaa870825f070dc8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "999af142_d3761b60",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-04-16T15:50:15Z",
+      "side": 1,
+      "message": "Can we set the vector properly at EL2 once they come online?",
+      "range": {
+        "startLine": 584,
+        "startChar": 0,
+        "endLine": 584,
+        "endChar": 56
+      },
+      "revId": "e78425bc733f24fc7af771bbcaa870825f070dc8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2effd41f_b7c9814f",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-04-16T15:50:15Z",
+      "side": 1,
+      "message": "nit: In reviewing your patch, I spotted that this probably shouldn\u0027t be called on each CPU. Should it move into your new hypercall instead?",
+      "range": {
+        "startLine": 611,
+        "startChar": 1,
+        "endLine": 611,
+        "endChar": 33
+      },
+      "revId": "e78425bc733f24fc7af771bbcaa870825f070dc8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bbbf5c2_22e02321",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-04-16T15:50:15Z",
+      "side": 1,
+      "message": "Doesn\u0027t this break the initialisation normally carried out by `cpu_hyp_init()` for late onlining CPUs?",
+      "range": {
+        "startLine": 766,
+        "startChar": 0,
+        "endLine": 766,
+        "endChar": 38
+      },
+      "revId": "e78425bc733f24fc7af771bbcaa870825f070dc8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
