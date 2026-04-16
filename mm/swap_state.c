@@ -21,6 +21,9 @@
 #include <linux/swap_slots.h>
 #include <linux/huge_mm.h>
 #include <linux/shmem_fs.h>
+#include <linux/sched.h>
+#include <linux/tracepoint.h>
+#include "linux/delay.h"
 #include "internal.h"
 #include "swap.h"
 
@@ -430,7 +433,10 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 	struct page *page;
 	void *shadow = NULL;
 	size_t count = 0;
+	bool predicate = false;
+	static volatile bool cond;
 
+	trace_android_vh_swap_state_event(1,&predicate);
 	*new_page_allocated = false;
 	si = get_swap_device(entry);
 	if (!si)
@@ -482,6 +488,7 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 		if (err != -EEXIST)
 			goto fail_put_swap;
 
+		trace_android_vh_swap_state_event(2,&predicate);
 		/*
 		 * We might race against __delete_from_swap_cache(), and
 		 * stumble across a swap_map entry whose SWAP_HAS_CACHE
@@ -490,15 +497,30 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 		 * in swap_map, but not yet added its page to swap cache.
 		 */
 		trace_android_rvh_read_swap_cache_async_timeout(&count, &skip);
-		if (skip)
-			continue;
+		if (skip) {
+			if (predicate)
+				goto skip_timeout;
+			else {
+				trace_android_vh_swap_state_event(0,&predicate);
+				continue;
+			}
+		}
 
 		schedule_timeout_uninterruptible(1);
+skip_timeout:
+		if (predicate)
+			cond = true;
+		trace_android_vh_swap_state_event(0,&predicate);
 	}
 
 	/*
 	 * The swap entry is ours to swap in. Prepare the new page.
 	 */
+	trace_android_vh_swap_state_event(3,&predicate);
+
+	if (predicate)
+		while (!cond)
+			udelay(1);
 
 	__folio_set_locked(folio);
 	__folio_set_swapbacked(folio);
@@ -519,16 +541,21 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 	folio_add_lru(folio);
 	*new_page_allocated = true;
 	page = &folio->page;
+
+	trace_android_vh_swap_state_event(0,&predicate);
 got_page:
 	put_swap_device(si);
+	trace_android_vh_swap_state_event(0,&predicate);
 	return page;
 
 fail_unlock:
 	put_swap_folio(folio, entry);
 	folio_unlock(folio);
 	folio_put(folio);
+	trace_android_vh_swap_state_event(0,&predicate);
 fail_put_swap:
 	put_swap_device(si);
+	trace_android_vh_swap_state_event(0,&predicate);
 	return NULL;
 }
 
