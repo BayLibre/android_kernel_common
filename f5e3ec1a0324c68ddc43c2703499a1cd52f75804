@@ -51,6 +51,24 @@
       "parentUuid": "3dd378b6_b34dfbe2",
       "revId": "f5e3ec1a0324c68ddc43c2703499a1cd52f75804",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd5d2e8_f333fa26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4294487
+      },
+      "writtenOn": "2026-04-16T02:37:39Z",
+      "side": 1,
+      "message": "Hello!\nThe symbol cgroup_get_from_path has already been exported in the upstream Linux kernel. Please refer to commit 16af439645455 (https://cos.googlesource.com/third_party/kernel/+/16af439645455fbf36984ca5e72f31073ee19ab7^!/?pli\u003d1#). Therefore, there is no need to export it again.\n\nAdditionally, oplus_bsp_sched_assist.ko(oplus scheduling-related ko module) requires this symbol to query tasks in the cgroups mounted under the default hierarchy and perform custom processing.\nThanks.",
+      "parentUuid": "43b611e1_3611c106",
+      "revId": "f5e3ec1a0324c68ddc43c2703499a1cd52f75804",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
