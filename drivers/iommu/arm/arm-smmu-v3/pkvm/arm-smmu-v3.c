@@ -983,7 +983,9 @@ static void smmu_iotlb_sync(struct kvm_hyp_iommu_domain *domain,
 	 * Now decrement the refcount of unmapped pages thanks to
 	 * IO_PGTABLE_QUIRK_UNMAP_INVAL
 	 */
+	hyp_spin_lock(&smmu_domain->pgt_lock);
 	pgtable->ops.pgtable_walk(&pgtable->ops, gather->start, size, &walk_data);
+	hyp_spin_unlock(&smmu_domain->pgt_lock);
 }
 
 static int smmu_domain_config_s2(struct kvm_hyp_iommu_domain *domain,
