@@ -199,6 +199,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d8d64bf_90cd5087",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1944400
+      },
+      "writtenOn": "2026-04-16T21:44:21Z",
+      "side": 1,
+      "message": "If it is what I was guessing at above, no, it would be the same virtio device registering an irqfd (because the bootloader activated it), unregistering the irqfd (because the bootloader or linux reset the PCI device), and then registering an irqfd again (because linux activated it).",
+      "parentUuid": "83010d27_055137e4",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30b0c0ab_04e0ce34",
         "filename": "drivers/virt/gunyah/vm_mgr.c",
         "patchSetId": 2
