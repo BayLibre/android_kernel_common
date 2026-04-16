@@ -162,7 +162,7 @@ static bool pkvm_guest_iommu_alloc_domain(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *e
 	/* MBZ */
 	if (smccc_get_arg2(vcpu) || smccc_get_arg3(vcpu) || smccc_get_arg4(vcpu) ||
 	    smccc_get_arg5(vcpu) || smccc_get_arg6(vcpu))
-		goto out_inval;
+		goto out_inval_ret;
 
 	hyp_spin_lock(&pviommu_guest_domain_lock);
 	domain_id = pkvm_guest_iommu_alloc_id();
@@ -189,6 +189,7 @@ static bool pkvm_guest_iommu_alloc_domain(struct pkvm_hyp_vcpu *hyp_vcpu, u64 *e
 
 out_inval:
 	hyp_spin_unlock(&pviommu_guest_domain_lock);
+out_inval_ret:
 	hyp_free(guest_domain);
 	smccc_set_retval(vcpu, SMCCC_RET_INVALID_PARAMETER, 0, 0, 0);
 	return true;
