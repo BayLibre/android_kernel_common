@@ -510,8 +510,9 @@ static int __vcpu_create(struct kvm *kvm, struct kvm_vcpu *vcpu, struct fpstate 
 		kvm->arch.notify_window = pkvm_vm->shared_kvm->arch.notify_window;
 		kvm->arch.notify_vmexit_flags = pkvm_vm->shared_kvm->arch.notify_vmexit_flags;
 	}
-	if (pkvm_vm->shared_kvm->arch.apic_bus_cycle_ns)
-		kvm->arch.apic_bus_cycle_ns = pkvm_vm->shared_kvm->arch.apic_bus_cycle_ns;
+	kvm->arch.apic_bus_cycle_ns = READ_ONCE(pkvm_vm->shared_kvm->arch.apic_bus_cycle_ns);
+	if (!kvm->arch.apic_bus_cycle_ns)
+		kvm->arch.apic_bus_cycle_ns = APIC_BUS_CYCLE_NS_DEFAULT;
 	if (!pkvm_is_protected_vm(kvm))
 		kvm->arch.disabled_exits = pkvm_vm->shared_kvm->arch.disabled_exits;
 
