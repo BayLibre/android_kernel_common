@@ -94,6 +94,30 @@
       },
       "revId": "8167b5c38b52b86d0bb83a4ca39eb6c87352c04f",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "884efa71_7c82a9e6",
+        "filename": "include/linux/pm.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 2021533
+      },
+      "writtenOn": "2026-04-16T04:41:40Z",
+      "side": 1,
+      "message": "\u003e The new struct member occupies only 1 bit, so we can consider placing it in a hole within the struct and using the `__GENKSYMS__` magic to avoid CRC changes. This will not affect the offsets of other members.\n\u003e \n\u003e ```diff\n\u003e diff --git a/include/linux/pm.h b/include/linux/pm.h\n\u003e index ec21509b9839..edcbbd370d98 100644\n\u003e --- a/include/linux/pm.h\n\u003e +++ b/include/linux/pm.h\n\u003e @@ -607,10 +607,12 @@ struct dev_pm_info {\n\u003e         struct wakeup_source    *wakeup;\n\u003e         bool                    wakeup_path:1;\n\u003e         bool                    syscore:1;\n\u003e -       bool                    no_pm_callbacks:1;      /* Owned by the PM core */\n\u003e         bool                    async_in_progress:1;    /* Owned by the PM core */\n\u003e         unsigned int            must_resume:1;  /* Owned by the PM core */\n\u003e         unsigned int            may_skip_resume:1;      /* Set by subsystems */\n\u003e +#ifndef __GENKSYMS__\n\u003e +       bool                    no_pm_callbacks:1;      /* Owned by the PM core */\n\u003e +#endif\n\u003e  #else\n\u003e         unsigned int            should_wakeup:1;\n\u003e  #endif\n\u003e  ```\n\nI made a mistake, this is the correct patch.\n\n```diff\ndiff --git a/include/linux/pm.h b/include/linux/pm.h\nindex ec21509b9839..6e946992a3ff 100644\n--- a/include/linux/pm.h\n+++ b/include/linux/pm.h\n@@ -608,9 +608,11 @@ struct dev_pm_info {\n        bool                    wakeup_path:1;\n        bool                    syscore:1;\n        bool                    no_pm_callbacks:1;      /* Owned by the PM core */\n-       bool                    async_in_progress:1;    /* Owned by the PM core */\n        unsigned int            must_resume:1;  /* Owned by the PM core */\n        unsigned int            may_skip_resume:1;      /* Set by subsystems */\n+#ifndef __GENKSYMS__\n+       bool                    async_in_progress:1;    /* Owned by the PM core */\n+#endif\n #else\n        unsigned int            should_wakeup:1;\n #endif\n```",
+      "parentUuid": "4095c2ba_9d695c06",
+      "range": {
+        "startLine": 611,
+        "startChar": 0,
+        "endLine": 611,
+        "endChar": 55
+      },
+      "revId": "8167b5c38b52b86d0bb83a4ca39eb6c87352c04f",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
