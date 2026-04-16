@@ -16,6 +16,24 @@
       "message": "Every patch needs an explanation why it is needed.",
       "revId": "6b99efb12be1f0b4e9f7f2bd0c5ff2deb2e75c01",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8ae470b_5b203265",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 4532726
+      },
+      "writtenOn": "2026-04-16T15:00:56Z",
+      "side": 1,
+      "message": "ANDROID: mm: __slab_clear_pfmemalloc moved into the header file\n\nThe vendor\u0027s .ko file calls the function `__slab_clear_pfmemalloc(slab)` to release the slab. Referring to the 6.12 kernel, this function is also located in the header file.",
+      "parentUuid": "8d4bf695_7eebef2a",
+      "revId": "6b99efb12be1f0b4e9f7f2bd0c5ff2deb2e75c01",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
