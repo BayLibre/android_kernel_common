@@ -253,6 +253,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7f817020_2c28bbda",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 2007700
+      },
+      "writtenOn": "2026-04-16T23:38:46Z",
+      "side": 1,
+      "message": "I don\u0027t understand pci devices well enough. But it could be that some devices on pci bus could be sharing the IRQs. That is still internal to the VMM and AFAIU, they all will still point to the same virq which gunyah will take care of as it is mentioned in the DT.",
+      "parentUuid": "17f66f84_a51aa5f6",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30b0c0ab_04e0ce34",
         "filename": "drivers/virt/gunyah/vm_mgr.c",
         "patchSetId": 2
