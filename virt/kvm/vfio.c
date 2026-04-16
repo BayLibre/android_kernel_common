@@ -480,11 +480,12 @@ static int kvm_vfio_pviommu_attach(struct kvm_device *dev)
 
 	pviommu->fd = fdno;
 	fd_install(fdno, filep);
-	return pviommu->fd;
+	return fdno;
 out_err:
 	put_unused_fd(fdno);
 out_fput:
 	fput(filep);
+	return ret;
 out_free:
 	kfree(pviommu);
 	return ret;
