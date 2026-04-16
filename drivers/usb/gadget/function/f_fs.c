@@ -197,6 +197,7 @@ struct ffs_epfile {
 	unsigned char			isoc;	/* P: ffs->eps_lock */
 
 	unsigned char			_pad;
+	bool				zlp_enabled;
 };
 
 struct ffs_buffer {
@@ -1075,6 +1076,8 @@ static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
 			req->buf = data;
 			req->num_sgs = 0;
 		}
+
+		req->zero = epfile->zlp_enabled;
 		req->length = data_len;
 
 		io_data->buf = data;
@@ -1126,6 +1129,8 @@ static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
 			req->buf = data;
 			req->num_sgs = 0;
 		}
+
+		req->zero = epfile->zlp_enabled;
 		req->length = data_len;
 
 		io_data->buf = data;
@@ -1368,6 +1373,18 @@ static long ffs_epfile_ioctl(struct file *file, unsigned code,
 		if (ret)
 			ret = -EFAULT;
 		return ret;
+	}
+	case FUNCTIONFS_ENDPOINT_ENABLE_ZLP:
+	{
+		bool enable_zlp = !!value;
+
+		if (enable_zlp && !epfile->in) {
+			ret = -EINVAL;
+			break;
+		}
+		epfile->zlp_enabled = enable_zlp;
+		ret = 0;
+		break;
 	}
 	default:
 		ret = -ENOTTY;
