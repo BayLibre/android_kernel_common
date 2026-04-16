@@ -181,6 +181,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "83010d27_055137e4",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 2007700
+      },
+      "writtenOn": "2026-04-16T21:32:02Z",
+      "side": 1,
+      "message": "\u003eIs it registering an irqfds for the same irq multiple times? \n\nYes, this is what I see. I inspected the DT and I didn\u0027t see any duplicate resource, so I concluded its not a bug as such.\n\nAre there 2 different processes in CrosVM registering irqfd for the same use-case?",
+      "parentUuid": "913e5e51_d8a7f19c",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30b0c0ab_04e0ce34",
         "filename": "drivers/virt/gunyah/vm_mgr.c",
         "patchSetId": 2
