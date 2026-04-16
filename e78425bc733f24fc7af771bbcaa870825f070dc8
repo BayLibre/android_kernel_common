@@ -187,6 +187,30 @@
       },
       "revId": "e78425bc733f24fc7af771bbcaa870825f070dc8",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "473ebf6a_f781a6ee",
+        "filename": "arch/arm64/kvm/pkvm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-04-16T17:20:26Z",
+      "side": 1,
+      "message": "But then how do we run things like `kvm_init_host_cpu_context()` and `kvm_init_host_debug_data()` for late-onlining CPUs? I really don\u0027t think we can just skip those.",
+      "parentUuid": "69b09c5f_74543d14",
+      "range": {
+        "startLine": 766,
+        "startChar": 0,
+        "endLine": 766,
+        "endChar": 38
+      },
+      "revId": "e78425bc733f24fc7af771bbcaa870825f070dc8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
