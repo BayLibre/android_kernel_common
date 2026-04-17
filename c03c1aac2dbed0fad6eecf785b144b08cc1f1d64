@@ -271,6 +271,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a12b983d_ce73795d",
+        "filename": "drivers/virt/gunyah/vm_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1944400
+      },
+      "writtenOn": "2026-04-17T18:23:37Z",
+      "side": 1,
+      "message": "I agree, it is the VMM, not the guest. For KVM, having multiple irqfds point to the same IRQ line is supported. Is that OK in gunyah? If it is OK, then it shouldn\u0027t result in a kernel warning log. If it isn\u0027t a OK, then it seems like we ought to either (1) change crosvm or (2) change gunyah to support it",
+      "parentUuid": "7f817020_2c28bbda",
+      "revId": "c03c1aac2dbed0fad6eecf785b144b08cc1f1d64",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30b0c0ab_04e0ce34",
         "filename": "drivers/virt/gunyah/vm_mgr.c",
         "patchSetId": 2
