@@ -22,6 +22,30 @@
       },
       "revId": "d391311bc8c054cd6956da5fa9fe569a70782b09",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f91a5f53_07972738",
+        "filename": "mm/mmap.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3531,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2026-04-17T17:12:39Z",
+      "side": 1,
+      "message": "If the VMA gets closed before the account (after `vma_link`) for any reason (like an exit), then the unaccount call in `remove_vma` will fail and print an error. I don\u0027t see anything that would actually break, but I think we should avoid publishing the VMA before it is accounted in general.",
+      "parentUuid": "de3c0e55_6e6f5c0f",
+      "range": {
+        "startLine": 3531,
+        "startChar": 2,
+        "endLine": 3531,
+        "endChar": 25
+      },
+      "revId": "d391311bc8c054cd6956da5fa9fe569a70782b09",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
