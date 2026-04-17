@@ -183,6 +183,11 @@ request_any_context_irq(unsigned int irq, irq_handler_t handler,
 extern int __must_check
 __request_percpu_irq(unsigned int irq, irq_handler_t handler,
 		     unsigned long flags, const char *devname,
+		     void __percpu *percpu_dev_id);
+
+extern int __must_check
+__request_percpu_irq_NEW(unsigned int irq, irq_handler_t handler,
+		     unsigned long flags, const char *devname,
 		     const cpumask_t *affinity, void __percpu *percpu_dev_id);
 
 extern int __must_check
@@ -193,7 +198,7 @@ static inline int __must_check
 request_percpu_irq(unsigned int irq, irq_handler_t handler,
 		   const char *devname, void __percpu *percpu_dev_id)
 {
-	return __request_percpu_irq(irq, handler, 0,
+	return __request_percpu_irq_NEW(irq, handler, 0,
 				    devname, NULL, percpu_dev_id);
 }
 
@@ -202,7 +207,7 @@ request_percpu_irq_affinity(unsigned int irq, irq_handler_t handler,
 			    const char *devname, const cpumask_t *affinity,
 			    void __percpu *percpu_dev_id)
 {
-	return __request_percpu_irq(irq, handler, 0,
+	return __request_percpu_irq_NEW(irq, handler, 0,
 				    devname, affinity, percpu_dev_id);
 }
 
