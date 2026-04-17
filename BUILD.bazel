@@ -1268,6 +1268,7 @@ kernel_build(
 cc_library(
     name = "tools_includes",
     includes = [
+        "tools/include",
         "tools/include/uapi",
     ],
 )
@@ -1282,9 +1283,6 @@ cc_library(
     hdrs = glob([
         "tools/lib/bpf/*.h",
     ]),
-    copts = [
-        "-I{}/tools/include".format(package_name()),
-    ],
     implementation_deps = [":tools_includes"],
     strip_include_prefix = "tools/lib",
     visibility = ["//visibility:public"],
