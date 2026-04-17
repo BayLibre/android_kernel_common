@@ -54,6 +54,24 @@
       ],
       "revId": "a654b94740fbeffcb5166cf1a5227f1d2efa1709",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "670b4471_1a53c632",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1071,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-17T13:23:44Z",
+      "side": 1,
+      "message": "\u003e Any particular reason why use u32, not int?\n\nFound that, we still need to make sure `seg \u003e 0` if it is int otherwise a negative seg can still cause out-of-bound access.\n\nTo simplify the check, change to `u32` rather than `int`.\n\nFor pKVM, these functions are dealing with the untrusted inputs from the host, seems `u32` is safer than `int`?",
+      "parentUuid": "7b27bb46_7d9bc179",
+      "revId": "a654b94740fbeffcb5166cf1a5227f1d2efa1709",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
