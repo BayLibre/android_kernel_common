@@ -72,6 +72,24 @@
       "parentUuid": "7b27bb46_7d9bc179",
       "revId": "a654b94740fbeffcb5166cf1a5227f1d2efa1709",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50849540_7183b79b",
+        "filename": "arch/x86/kvm/pkvm/pkvm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1071,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-17T13:47:31Z",
+      "side": 1,
+      "message": "Ah, yeah indeed.\n\nI\u0027d probably still prefer explicitly checking `if (seg \u003c 0 || seg \u003e\u003d NR_VCPU_SEGMENTS)`, since otherwise it is just not so obvious why we are casting int to u32 and then back to int, whether we are doing that intentionally or by mistake...",
+      "parentUuid": "670b4471_1a53c632",
+      "revId": "a654b94740fbeffcb5166cf1a5227f1d2efa1709",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
