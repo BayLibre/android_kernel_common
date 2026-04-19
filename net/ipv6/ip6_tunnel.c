@@ -840,6 +840,30 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
 	}
 
 	skb_reset_network_header(skb);
+<<<<<<< HEAD   (7fad219d720dba31f39997ba2ceae0a542aa75fe Merge android13-5.15 into android13-5.15-lts)
+||||||| BASE   (91d48252ad4b17577cf8cc8d3e1353402e4da8f1 Linux 5.15.202)
+
+	if (skb_vlan_inet_prepare(skb, true)) {
+		DEV_STATS_INC(tunnel->dev, rx_length_errors);
+		DEV_STATS_INC(tunnel->dev, rx_errors);
+		goto drop;
+	}
+
+	/* Get the outer header. */
+	ipv6h = (struct ipv6hdr *)(skb->head + nh);
+
+=======
+
+	if (!skb_vlan_inet_prepare(skb, true)) {
+		DEV_STATS_INC(tunnel->dev, rx_length_errors);
+		DEV_STATS_INC(tunnel->dev, rx_errors);
+		goto drop;
+	}
+
+	/* Get the outer header. */
+	ipv6h = (struct ipv6hdr *)(skb->head + nh);
+
+>>>>>>> BRANCH (fc404390a386404cf9822d4091ccae1f61efcbcd wifi: wlcore: Fix a locking bug)
 	memset(skb->cb, 0, sizeof(struct inet6_skb_parm));
 
 	__skb_tunnel_rx(skb, tunnel->dev, tunnel->net);
