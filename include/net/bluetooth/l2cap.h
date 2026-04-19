@@ -665,7 +665,12 @@ struct l2cap_conn {
 	struct sk_buff		*rx_skb;
 	__u32			rx_len;
 	struct ida		tx_ida;
+<<<<<<< HEAD   (32c25833e9fc7c7ec6ebe6c5f3a522526daaef81 Merge 66696648af47 ("Bluetooth: btintel: serialize btintel_h)
 	__u8			tx_ident;
+||||||| BASE   (66696648af477dc87859e5e4b607112f5f29d010 Bluetooth: btintel: serialize btintel_hw_error() with hci_re)
+	struct mutex		ident_lock;
+=======
+>>>>>>> BRANCH (ea6cf86167b3972caa68972d2a1ad43ecbbb8331 Bluetooth: L2CAP: Fix not tracking outstanding TX ident)
 
 	struct sk_buff_head	pending_rx;
 	struct work_struct	pending_rx_work;

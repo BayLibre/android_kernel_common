@@ -926,8 +926,16 @@ int l2cap_chan_check_security(struct l2cap_chan *chan, bool initiator)
 
 static int l2cap_get_ident(struct l2cap_conn *conn)
 {
+<<<<<<< HEAD   (32c25833e9fc7c7ec6ebe6c5f3a522526daaef81 Merge 66696648af47 ("Bluetooth: btintel: serialize btintel_h)
 	u8 max;
 	int ident;
+||||||| BASE   (66696648af477dc87859e5e4b607112f5f29d010 Bluetooth: btintel: serialize btintel_hw_error() with hci_re)
+	u8 id;
+=======
+	/* LE link does not support tools like l2ping so use the full range */
+	if (conn->hcon->type == LE_LINK)
+		return ida_alloc_range(&conn->tx_ida, 1, 255, GFP_ATOMIC);
+>>>>>>> BRANCH (ea6cf86167b3972caa68972d2a1ad43ecbbb8331 Bluetooth: L2CAP: Fix not tracking outstanding TX ident)
 
 	/* LE link does not support tools like l2ping so use the full range */
 	if (conn->hcon->type == LE_LINK)
@@ -937,6 +945,7 @@ static int l2cap_get_ident(struct l2cap_conn *conn)
 	 *  129 - 199 are reserved.
 	 *  200 - 254 are used by utilities like l2ping, etc.
 	 */
+<<<<<<< HEAD   (32c25833e9fc7c7ec6ebe6c5f3a522526daaef81 Merge 66696648af47 ("Bluetooth: btintel: serialize btintel_h)
 	else
 		max = 128;
 
@@ -959,6 +968,21 @@ static int l2cap_get_ident(struct l2cap_conn *conn)
 	WRITE_ONCE(conn->tx_ident, ident);
 
 	return ident;
+||||||| BASE   (66696648af477dc87859e5e4b607112f5f29d010 Bluetooth: btintel: serialize btintel_hw_error() with hci_re)
+
+	mutex_lock(&conn->ident_lock);
+
+	if (++conn->tx_ident > 128)
+		conn->tx_ident = 1;
+
+	id = conn->tx_ident;
+
+	mutex_unlock(&conn->ident_lock);
+
+	return id;
+=======
+	return ida_alloc_range(&conn->tx_ida, 1, 128, GFP_ATOMIC);
+>>>>>>> BRANCH (ea6cf86167b3972caa68972d2a1ad43ecbbb8331 Bluetooth: L2CAP: Fix not tracking outstanding TX ident)
 }
 
 static void l2cap_send_acl(struct l2cap_conn *conn, struct sk_buff *skb,
@@ -1788,6 +1812,12 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
 		cancel_work_sync(&conn->pending_rx_work);
 
 	ida_destroy(&conn->tx_ida);
+<<<<<<< HEAD   (32c25833e9fc7c7ec6ebe6c5f3a522526daaef81 Merge 66696648af47 ("Bluetooth: btintel: serialize btintel_h)
+||||||| BASE   (66696648af477dc87859e5e4b607112f5f29d010 Bluetooth: btintel: serialize btintel_hw_error() with hci_re)
+=======
+
+	cancel_delayed_work_sync(&conn->id_addr_timer);
+>>>>>>> BRANCH (ea6cf86167b3972caa68972d2a1ad43ecbbb8331 Bluetooth: L2CAP: Fix not tracking outstanding TX ident)
 
 	l2cap_unregister_all_users(conn);
 
