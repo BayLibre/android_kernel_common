@@ -601,7 +601,7 @@ int copy_dmabuf_info(u64 clone_flags, struct task_struct *task)
 	 * the parent, so they can both share the same dmabuf_info.
 	 */
 	if (share_vm && share_fs) {
-		refcount_inc(&parent_dmabuf_info->refcnt);
+		get_dmabuf_info(parent_dmabuf_info);
 		task->dmabuf_info = parent_dmabuf_info;
 
 		if (task->mm) {
@@ -627,15 +627,20 @@ int copy_dmabuf_info(u64 clone_flags, struct task_struct *task)
 	task->dmabuf_info = child_dmabuf_info;
 
 	if (task->mm) {
-		refcount_inc(&child_dmabuf_info->refcnt);
+		get_dmabuf_info(child_dmabuf_info);
 		task->mm->dmabuf_info = child_dmabuf_info;
 	}
 	if (task->files) {
-		refcount_inc(&child_dmabuf_info->refcnt);
+		get_dmabuf_info(child_dmabuf_info);
 		task->files->dmabuf_info = child_dmabuf_info;
 	}
 
 	return 0;
+}
+
+void get_dmabuf_info(struct task_dma_buf_info *dmabuf_info)
+{
+	refcount_inc(&dmabuf_info->refcnt);
 }
 
 void put_dmabuf_info(struct task_dma_buf_info *dmabuf_info)
@@ -708,7 +713,7 @@ int dma_buf_begin_new_exec(struct files_struct *old_files)
 		if (my_files == old_files)
 			put_dmabuf_info(my_files->dmabuf_info);
 
-		refcount_inc(&new_dmabuf_info->refcnt);
+		get_dmabuf_info(new_dmabuf_info);
 		my_files->dmabuf_info = new_dmabuf_info;
 		spin_unlock(&my_files->file_lock);
 	}
