@@ -1,0 +1,115 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50e2a4ad_d6f9fd10",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2026-04-20T16:50:12Z",
+      "side": 1,
+      "message": "In case of an error when this function is invoked, we always return `-ENOENT` instead of the return value from the function--except in one scenario. Perhaps we should make it return a bool indicating success/failure and returnm `-ENOENT` on failure? It also makes the invocations easier to read, since right now, on success we see:  `if (!context_use()) { /* success logic */ }` which is a little awkward.",
+      "range": {
+        "startLine": 386,
+        "startChar": 7,
+        "endLine": 386,
+        "endChar": 10
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "9ea253f0_700adb0c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/android/wrapfd.c",
+              "range": {
+                "startLine": 386,
+                "startChar": 0,
+                "endLine": 387,
+                "endChar": 0
+              },
+              "replacement": "static bool context_use(struct wrap_ctx *ctx)\n"
+            },
+            {
+              "path": "drivers/android/wrapfd.c",
+              "range": {
+                "startLine": 390,
+                "startChar": 0,
+                "endLine": 391,
+                "endChar": 0
+              },
+              "replacement": "\t\treturn false;\n"
+            },
+            {
+              "path": "drivers/android/wrapfd.c",
+              "range": {
+                "startLine": 392,
+                "startChar": 0,
+                "endLine": 393,
+                "endChar": 0
+              },
+              "replacement": "\treturn true;\n"
+            },
+            {
+              "path": "drivers/android/wrapfd.c",
+              "range": {
+                "startLine": 509,
+                "startChar": 0,
+                "endLine": 510,
+                "endChar": 0
+              },
+              "replacement": "\tif (!context_use(ctx)) {\n"
+            },
+            {
+              "path": "drivers/android/wrapfd.c",
+              "range": {
+                "startLine": 634,
+                "startChar": 0,
+                "endLine": 635,
+                "endChar": 0
+              },
+              "replacement": "\tif (ctx-\u003econtent \u0026\u0026 context_use(ctx)) {\n"
+            },
+            {
+              "path": "drivers/android/wrapfd.c",
+              "range": {
+                "startLine": 767,
+                "startChar": 0,
+                "endLine": 771,
+                "endChar": 0
+              },
+              "replacement": "\tif (!context_use(ctx)) {\n\t\tret \u003d -ENOENT;\n\t\tspin_unlock(\u0026ctx-\u003elock);\n"
+            },
+            {
+              "path": "drivers/android/wrapfd.c",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\t}\n\tspin_unlock(\u0026ctx-\u003elock);\n"
+            },
+            {
+              "path": "drivers/android/wrapfd.c",
+              "range": {
+                "startLine": 915,
+                "startChar": 0,
+                "endLine": 916,
+                "endChar": 0
+              },
+              "replacement": "\tif (!context_use(ctx)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "713ea72f2ce9d8a34e7513dcae3f539b19740dd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
