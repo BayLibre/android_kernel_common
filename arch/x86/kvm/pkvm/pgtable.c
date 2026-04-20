@@ -605,6 +605,13 @@ static int _pgtable_walk(struct pgt_walk_data *data, void *ptep, int level)
 	return 0;
 }
 
+/* start is inclusive and end is exclusive. */
+static bool pgtable_walk_range_valid(struct pkvm_pgtable *pgt, unsigned long start,
+				     unsigned long end)
+{
+	return (end >= start) && (end - start <= pkvm_pgtable_max_size(pgt));
+}
+
 /**
  * pkvm_pgtable_init() - Initialize a pKVM page table.
  * @pgt:	The page table to be initialized.
@@ -670,11 +677,8 @@ int pkvm_pgtable_walk(struct pkvm_pgtable *pgt, unsigned long vaddr,
 	};
 	int ret;
 
-	if (!pgt->root_pa)
+	if (!pgt->root_pa || !pgtable_walk_range_valid(pgt, data.start, data.end))
 		return -EINVAL;
-
-	if (data.start == data.end)
-		return 0;
 
 	ret = _pgtable_walk(&data, __pkvm_va(pgt->root_pa), pgt->cap.level);
 
