@@ -16,6 +16,24 @@
       "message": "are there updated numbers for syscall_mmap?",
       "revId": "4840288585a981ed8a4ecf74ab3b52df96ab860e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5979ba2c_eb807405",
+        "filename": "gki/aarch64/afdo/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1056364
+      },
+      "writtenOn": "2026-04-20T23:36:36Z",
+      "side": 0,
+      "message": "Not yet. Currently bionic benchmarks isn\u0027t supported on Pixel 8 in the lab, as shown in https://android-review.git.corp.google.com/c/kernel/common/+/3963410. I have several plans to add them back. But due to the current instability for binder benchmarks for 6.18 on Pixel devices, I guess the bionic benchmarks would also be very noisy. So I think no need to wait for the bionic benchmarks.",
+      "parentUuid": "97d21de4_a43d3f7c",
+      "revId": "4840288585a981ed8a4ecf74ab3b52df96ab860e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
