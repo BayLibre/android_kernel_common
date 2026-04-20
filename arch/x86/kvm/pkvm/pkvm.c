@@ -295,17 +295,15 @@ static struct pkvm_vcpu *detach_pkvm_vcpu_from_vm(struct pkvm_vm *pkvm_vm, int v
 	return pkvm_vcpu;
 }
 
-static int setup_vcpu_lapic(struct kvm_vcpu *vcpu)
+static int setup_vcpu_lapic(struct kvm_vcpu *vcpu, struct kvm_lapic *apic)
 {
-	struct kvm_lapic *apic = vcpu->arch.apic, *shared_apic;
 	struct pkvm_vcpu *pkvm_vcpu = to_pkvm_vcpu(vcpu);
 	size_t apic_size = sizeof(struct kvm_lapic);
 	void *shared_lapic_regs = NULL;
+	struct kvm_lapic *shared_apic;
 	int ret;
 
-	if (!apic)
-		return 0;
-
+	vcpu->arch.apic = apic;
 	shared_apic = kern_pkvm_va(pkvm_vcpu->shared_vcpu->arch.apic);
 	/*
 	 * Temporary sharing host's apic structure to access its elements for
@@ -477,7 +475,8 @@ static void pkvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
 	}
 }
 
-static int __vcpu_create(struct kvm *kvm, struct kvm_vcpu *vcpu, struct fpstate *fps)
+static int __vcpu_create(struct kvm *kvm, struct kvm_vcpu *vcpu, struct fpstate *fps,
+			 bool has_lapic)
 {
 	struct pkvm_vcpu *pkvm_vcpu = to_pkvm_vcpu(vcpu);
 	int ret = kvm_x86_call(vcpu_precreate)(kvm);
@@ -546,12 +545,11 @@ static int __vcpu_create(struct kvm *kvm, struct kvm_vcpu *vcpu, struct fpstate 
 	}
 	vcpu->arch.mcg_cap = KVM_MAX_MCE_BANKS;
 
-	if (lapic_in_kernel(pkvm_vcpu->shared_vcpu))
-		vcpu->arch.apic = unused;
-
-	ret = setup_vcpu_lapic(vcpu);
-	if (ret)
-		goto unshare_mce;
+	if (has_lapic) {
+		ret = setup_vcpu_lapic(vcpu, (struct kvm_lapic *)unused);
+		if (ret)
+			goto unshare_mce;
+	}
 
 	vcpu->arch.guest_fpu.fpstate = fps;
 	pkvm_init_guest_fpu(&vcpu->arch.guest_fpu);
@@ -622,7 +620,8 @@ static int __vcpu_create(struct kvm *kvm, struct kvm_vcpu *vcpu, struct fpstate 
 	return 0;
 
 unsetup_lapic:
-	unsetup_vcpu_lapic(vcpu);
+	if (has_lapic)
+		unsetup_vcpu_lapic(vcpu);
 unshare_mce:
 	unshare_vcpu_mce_banks(vcpu);
 	return ret;
@@ -643,6 +642,7 @@ static int pkvm_vcpu_create(int vm_handle, phys_addr_t host_vcpu_pa,
 	struct pkvm_vcpu *pkvm_vcpu;
 	size_t vcpu_size, fps_size;
 	struct pkvm_vm *pkvm_vm;
+	bool has_lapic = false;
 	struct fpstate *fps;
 	int ret;
 
@@ -659,6 +659,7 @@ static int pkvm_vcpu_create(int vm_handle, phys_addr_t host_vcpu_pa,
 	if (pkvm_is_protected_vm(&pkvm_vm->kvm))
 		vcpu_size += KVM_MCE_SIZE + KVM_MCI_CTL2_SIZE;
 	if (lapic_in_kernel(shared_vcpu)) {
+		has_lapic = true;
 		vcpu_size += sizeof(struct kvm_lapic);
 		if (pkvm_is_protected_vm(&pkvm_vm->kvm) && enable_apicv)
 			vcpu_size += PAGE_SIZE;
@@ -681,7 +682,7 @@ static int pkvm_vcpu_create(int vm_handle, phys_addr_t host_vcpu_pa,
 	fps = __pkvm_va(fpu_pa);
 	fps->size = fps_size;
 
-	ret = __vcpu_create(&pkvm_vm->kvm, &pkvm_vcpu->vcpu, fps);
+	ret = __vcpu_create(&pkvm_vm->kvm, &pkvm_vcpu->vcpu, fps, has_lapic);
 	if (ret)
 		goto undonate_fps;
 
