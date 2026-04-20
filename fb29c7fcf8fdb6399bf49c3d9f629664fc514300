@@ -1,0 +1,148 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "483b4940_52e55088",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-04-20T20:37:43Z",
+      "side": 1,
+      "message": "so, before this change you would do `task-\u003edmabuf_info \u003d NULL`. Isn\u0027t that needed anymore?",
+      "range": {
+        "startLine": 637,
+        "startChar": 2,
+        "endLine": 637,
+        "endChar": 10
+      },
+      "revId": "fb29c7fcf8fdb6399bf49c3d9f629664fc514300",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d631ac1f_6830c8c8",
+        "filename": "fs/proc/base.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3318,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-04-20T20:37:43Z",
+      "side": 1,
+      "message": "This sequence repeats in all the show functions below. You can refactor it into:\n\n```\nstruct task_dma_buf_info *get_task_dmabuf_info(struct task_struct *task)\n{\n\tstruct task_dma_buf_info *dmabuf_info \u003d NULL;\n\n\ttask_lock(task);\n\tdmabuf_info \u003d task-\u003edmabuf_info;\n\tif (dmabuf_info)\n\t\tget_dmabuf_info(dmabuf_info);\n\ttask_unlock(task);\n\t\n\treturn dmabuf_info;\n}\n```",
+      "range": {
+        "startLine": 3314,
+        "startChar": 1,
+        "endLine": 3318,
+        "endChar": 19
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "cf9575a5_291eb924",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3309,
+                "startChar": 0,
+                "endLine": 3311,
+                "endChar": 0
+              },
+              "replacement": "static struct task_dma_buf_info *get_task_dmabuf_info(struct task_struct *task)\n"
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3312,
+                "startChar": 0,
+                "endLine": 3314,
+                "endChar": 0
+              },
+              "replacement": "\tstruct task_dma_buf_info *dmabuf_info \u003d NULL;\n"
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\n\treturn dmabuf_info;\n}\n\nstatic int proc_dmabuf_rss_show(struct seq_file *m, struct pid_namespace *ns,\n\t\t     struct pid *pid, struct task_struct *task)\n{\n\tstruct task_dma_buf_info *dmabuf_info \u003d get_task_dmabuf_info(task);\n"
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3337,
+                "startChar": 0,
+                "endLine": 3338,
+                "endChar": 0
+              },
+              "replacement": "\tstruct task_dma_buf_info *dmabuf_info \u003d NULL;\n"
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3344,
+                "startChar": 0,
+                "endLine": 3349,
+                "endChar": 0
+              },
+              "replacement": "\tdmabuf_info \u003d get_task_dmabuf_info(task);\n"
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3376,
+                "startChar": 0,
+                "endLine": 3377,
+                "endChar": 0
+              },
+              "replacement": "\tstruct task_dma_buf_info *dmabuf_info \u003d NULL;\n"
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3391,
+                "startChar": 0,
+                "endLine": 3396,
+                "endChar": 0
+              },
+              "replacement": "\tdmabuf_info \u003d get_task_dmabuf_info(task);\n"
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3422,
+                "startChar": 0,
+                "endLine": 3423,
+                "endChar": 0
+              },
+              "replacement": "\tstruct task_dma_buf_info *dmabuf_info \u003d get_task_dmabuf_info(task);\n"
+            },
+            {
+              "path": "fs/proc/base.c",
+              "range": {
+                "startLine": 3424,
+                "startChar": 0,
+                "endLine": 3430,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "fb29c7fcf8fdb6399bf49c3d9f629664fc514300",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
