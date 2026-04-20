@@ -16,6 +16,24 @@
       "message": "What about the reference taken by `kvm_ioctl_create_device()`?",
       "revId": "4acea2855190f715114a006c447812a877508d24",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "588ce2a1_707febd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-04-20T16:08:24Z",
+      "side": 1,
+      "message": "The pviommufd is dependent from the vfio-kvm device. so the `vfio-kvm` can be closed and the `pviommufd` is still opened by userspace.",
+      "parentUuid": "172df039_96887bbb",
+      "revId": "4acea2855190f715114a006c447812a877508d24",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
