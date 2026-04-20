@@ -67,6 +67,29 @@
       ],
       "revId": "a2cff4bfae1e8a780f16fd57da1263d6811f3ca3",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1da5e263_c27ac3ba",
+        "filename": "include/linux/pci.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2026-04-20T16:26:07Z",
+      "side": 1,
+      "message": "This will break the KMI. It needs to be handled properly either by using a hole in this struct or using one of the reserve fields",
+      "range": {
+        "startLine": 604,
+        "startChar": 0,
+        "endLine": 604,
+        "endChar": 77
+      },
+      "revId": "a2cff4bfae1e8a780f16fd57da1263d6811f3ca3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
