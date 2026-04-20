@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e36a2aa_77438306",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2026-04-20T19:04:23Z",
+      "side": 1,
+      "message": "I\u0027ve found it when implementing this fatal error reporting, since during testing I\u0027ve by accident pick huge struct to trigger null pointer deference and was surprised that there is no fatal error triggered and started debuggin and ended up wiht this fix.",
+      "parentUuid": "9b8090da_b68ab125",
+      "revId": "d189276faf9215f9f60efa63dd338cb89106362e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5475a1b_7d793bfa",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-04-13T14:16:35Z",
       "side": 1,
       "message": "We can just directly specify `SZ_64K` instead of `16 * PAGE_SIZE`?\n\nAnd then the comment can be adjusted accordingly, e.g.: \"Map the vmemmap region at virtual address 64KB. Keep the lower pages unmapped, to catch NULL dereference bugs in the hypervisor code.\n\n64KB guard hole is chosen as it mimics [...]\"\n\n?",
+      "revId": "d189276faf9215f9f60efa63dd338cb89106362e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6edf3cf_ce7688b9",
+        "filename": "arch/x86/kvm/pkvm/init.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2026-04-20T19:04:23Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f5475a1b_7d793bfa",
       "revId": "d189276faf9215f9f60efa63dd338cb89106362e",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
