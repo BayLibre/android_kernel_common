@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0978f83d_ffc138c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2026-04-20T16:24:54Z",
+      "side": 1,
+      "message": "Why aren\u0027t you also pulling in patch 2 of the series -- https://lore.kernel.org/lkml/20260310-pci-port-reset-v7-2-9dd00ccc25ab@oss.qualcomm.com/?",
+      "revId": "a2cff4bfae1e8a780f16fd57da1263d6811f3ca3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d03a3ef4_48900933",
+        "filename": "drivers/pci/pci.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5029,
+      "author": {
+        "id": 1557540
+      },
+      "writtenOn": "2026-04-20T16:24:54Z",
+      "side": 1,
+      "message": "There is a discussion on LKML about how this function call should be removed. It sounds like Mani will respin the series to drop it.",
+      "range": {
+        "startLine": 5029,
+        "startChar": 0,
+        "endLine": 5029,
+        "endChar": 22
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ddfe6bb0_2e71e40e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/pci/pci.c",
+              "range": {
+                "startLine": 5024,
+                "startChar": 0,
+                "endLine": 5030,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "drivers/pci/pci.c",
+              "range": {
+                "startLine": 5033,
+                "startChar": 0,
+                "endLine": 5036,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "a2cff4bfae1e8a780f16fd57da1263d6811f3ca3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
