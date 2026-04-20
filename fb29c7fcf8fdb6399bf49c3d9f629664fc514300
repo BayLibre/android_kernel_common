@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e7d6089_c0486a2a",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2026-04-20T23:15:11Z",
+      "side": 1,
+      "message": "Technically not needed because it\u0027s set to `NULL` in `dup_task_struct`, but I think we should probably do it again here just to be explicit about it.",
+      "parentUuid": "483b4940_52e55088",
+      "range": {
+        "startLine": 637,
+        "startChar": 2,
+        "endLine": 637,
+        "endChar": 10
+      },
+      "revId": "fb29c7fcf8fdb6399bf49c3d9f629664fc514300",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d631ac1f_6830c8c8",
@@ -141,6 +165,30 @@
           ]
         }
       ],
+      "revId": "fb29c7fcf8fdb6399bf49c3d9f629664fc514300",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46e5706e_7df56b97",
+        "filename": "fs/proc/base.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3318,
+      "author": {
+        "id": 1930620
+      },
+      "writtenOn": "2026-04-20T23:15:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d631ac1f_6830c8c8",
+      "range": {
+        "startLine": 3314,
+        "startChar": 1,
+        "endLine": 3318,
+        "endChar": 19
+      },
       "revId": "fb29c7fcf8fdb6399bf49c3d9f629664fc514300",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
