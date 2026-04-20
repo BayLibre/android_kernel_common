@@ -8,6 +8,8 @@
 #define _TRACE_HOOK_VMSCAN_H
 
 #include <trace/hooks/vendor_hooks.h>
+struct lruvec;
+struct scan_control;
 
 DECLARE_RESTRICTED_HOOK(android_rvh_set_balance_anon_file_reclaim,
 			TP_PROTO(bool *balance_anon_file_reclaim),
@@ -38,6 +40,13 @@ DECLARE_HOOK(android_vh_vmscan_kswapd_done,
 	TP_PROTO(int node_id, unsigned int highest_zoneidx, unsigned int alloc_order,
 	        unsigned int reclaim_order),
 	TP_ARGS(node_id, highest_zoneidx, alloc_order, reclaim_order));
+DECLARE_RESTRICTED_HOOK(android_rvh_shrink_spec_lru,
+	TP_PROTO(struct lruvec *lruvec, struct scan_control *sc,
+		 unsigned long *nr_reclaimed, unsigned long nr_to_reclaim,
+		 bool proportional_reclaim, const unsigned long *nr,
+		 bool *skip),
+	TP_ARGS(lruvec, sc, nr_reclaimed, nr_to_reclaim,
+		proportional_reclaim, nr, skip), 1);
 DECLARE_RESTRICTED_HOOK(android_rvh_vmscan_kswapd_wake,
 	TP_PROTO(int node_id, unsigned int highest_zoneidx, unsigned int alloc_order),
 	TP_ARGS(node_id, highest_zoneidx, alloc_order), 1);
