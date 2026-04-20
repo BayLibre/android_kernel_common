@@ -2306,7 +2306,7 @@ static void btintel_pcie_reset(struct hci_dev *hdev)
 	if (test_and_set_bit(BTINTEL_PCIE_RECOVERY_IN_PROGRESS, &data->flags))
 		return;
 
-	removal = kzalloc(sizeof(*removal), GFP_ATOMIC);
+	removal = kzalloc_obj(*removal, GFP_ATOMIC);
 	if (!removal)
 		return;
 
