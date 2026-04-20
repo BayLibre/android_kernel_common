@@ -52,6 +52,24 @@
       "parentUuid": "ce3d1f07_5deee6fc",
       "revId": "83f3b63f5fce6dda5cf9faa928ebe85aa9da82a2",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc3bfc8c_4fe9e138",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2026-04-20T17:48:01Z",
+      "side": 1,
+      "message": "Hey Todd, I checked again in Linus\u0027s tree but I believe this patch is actually present there?\n\n```\n~/linux$ git remote -v\norigin\thttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git (fetch)\norigin\thttps://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git (push)\n\n~/linux$ git show --no-patch --oneline 42157639ddc7\n42157639ddc7 serial: amba-pl011: Introduce skip_ibrd_fbrd vendor flag\n\n~/linux$ git branch -r --contains 42157639ddc7\n  origin/HEAD -\u003e origin/master\n  origin/master\n```\nAnd same with the other patches in the series\n```\n~/linux$ git log --oneline | grep \"serial: amba-pl011\"\nd925538446d3 serial: amba-pl011: Respect DMA controller\u0027s copy_align requirement\na2abd18e316e serial: amba-pl011: Add Tegra264 UART support\n87df45b4a83f serial: amba-pl011: Introduce set_uartclk_rate vendor flag\n42157639ddc7 serial: amba-pl011: Introduce skip_ibrd_fbrd vendor flag\n```\n\nNot sure if I\u0027m missing something",
+      "parentUuid": "d8aac899_d184e24a",
+      "revId": "83f3b63f5fce6dda5cf9faa928ebe85aa9da82a2",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
