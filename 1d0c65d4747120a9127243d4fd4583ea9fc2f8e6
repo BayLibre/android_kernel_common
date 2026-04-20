@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "404e98f1_a476986e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-20T17:04:22Z",
+      "side": 1,
+      "message": "This is not the first time we use memcpy in the hypervisor code. For example, we use it in multiple places in arch/x86/kvm/pkvm/pkvm.c. So why do we need __NO_FORTIFY here if we don\u0027t need it there?",
+      "revId": "1d0c65d4747120a9127243d4fd4583ea9fc2f8e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df49cc1e_4769fc16",
+        "filename": "arch/x86/kvm/pkvm/panic.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-20T17:04:22Z",
+      "side": 1,
+      "message": "nit: prefer reverse xmas tree style for variable declarations?",
+      "revId": "1d0c65d4747120a9127243d4fd4583ea9fc2f8e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8284606e_2179a5e3",
+        "filename": "arch/x86/kvm/pkvm/panic.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-20T17:04:22Z",
+      "side": 1,
+      "message": "If we let pKVM directly use the `struct persistent_ram_buffer` definition (as I suggested in aosp/4032088), we could do all this simply via `atomic_read(\u0026buffer-\u003estart)`, `READ_ONCE(buffer-\u003esig)` etc, thus make the code shorter and more readable?",
+      "revId": "1d0c65d4747120a9127243d4fd4583ea9fc2f8e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24f8f3a2_703d1b04",
+        "filename": "arch/x86/kvm/pkvm/panic.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-20T17:04:22Z",
+      "side": 1,
+      "message": "Since we ensure that only one CPU will write to this buffer, maybe worth making it static, to avoid wasting stack? WDYT?",
+      "fixSuggestions": [
+        {
+          "fixId": "69aa313f_25c8ac25",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "arch/x86/kvm/pkvm/panic.c",
+              "range": {
+                "startLine": 118,
+                "startChar": 0,
+                "endLine": 119,
+                "endChar": 0
+              },
+              "replacement": "\tstatic char panic_msg[1024];\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1d0c65d4747120a9127243d4fd4583ea9fc2f8e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
