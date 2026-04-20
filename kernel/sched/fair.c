@@ -7169,6 +7169,7 @@ enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
 	int rq_h_nr_queued = rq->cfs.h_nr_queued;
 	u64 slice = 0;
 	int should_iowait_boost;
+	bool force_on = false, def_off = false;
 
 	if (task_is_throttled(p) && enqueue_throttled_task(p))
 		return;
@@ -7251,7 +7252,8 @@ enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
 			h_nr_idle = 1;
 	}
 
-	if (!rq_h_nr_queued && rq->cfs.h_nr_queued)
+	trace_android_rvh_fair_dl_server_start(rq, &force_on, &def_off);
+	if ((!rq_h_nr_queued && rq->cfs.h_nr_queued && !def_off) || force_on)
 		dl_server_start(&rq->fair_server);
 
 	/* At this point se is NULL and we are at root level*/
