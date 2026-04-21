@@ -46,6 +46,30 @@
       },
       "revId": "6d4e2c53315bdb01cc9a0c66179f11dfb7ed9e08",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "916779fa_f7f3f474",
+        "filename": "virt/kvm/vfio.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1965911
+      },
+      "writtenOn": "2026-04-21T10:27:41Z",
+      "side": 1,
+      "message": "Because, `fput` call in the error path will call the release function which puts the kvm reference.\n\nSo for simplicity we take the reference early to guarantee that it is always needed in the release ops. And that\u0027s why the rest of the error paths doesn\u0027t need to explicitly put the reference.",
+      "parentUuid": "c730592c_08e7cc78",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 465,
+        "endChar": 23
+      },
+      "revId": "6d4e2c53315bdb01cc9a0c66179f11dfb7ed9e08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
