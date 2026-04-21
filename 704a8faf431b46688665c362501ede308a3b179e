@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56cdfd71_aa62dd38",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-04-21T22:02:02Z",
+      "side": 1,
+      "message": "When you are backporting patches you should not change the title, just prepend it with BACKPORT. This should have been:\n\n`BACKPORT: mm: add swappiness\u003dmax arg to memory.reclaim for only anon reclaim`\n\nAt the end of the original changelog you are notes about what you changed while backporting and then add your Signed-off-by.\nSee https://android-review.googlesource.com/c/kernel/common/+/4019707 for example.\n\nThis comment applies to all the followup patches as well.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 56
+      },
+      "revId": "704a8faf431b46688665c362501ede308a3b179e",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
