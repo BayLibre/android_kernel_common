@@ -44,6 +44,13 @@ DECLARE_RESTRICTED_HOOK(android_rvh_mm_customize_alloc_anon_thp,
 			TP_PROTO(gfp_t *gfp_mask, unsigned long *orders,
 				 int *order, struct folio **folio),
 			TP_ARGS(gfp_mask, orders, order, folio), 1);
+DECLARE_RESTRICTED_HOOK(android_rvh_mm_folio_split_bypass,
+			TP_PROTO(struct folio *folio, unsigned int new_order,
+				 struct list_head *list, bool uniform_split,
+				 struct xa_state *xas, pgoff_t end,
+				 int *ret, bool *bypass),
+			TP_ARGS(folio, new_order, list, uniform_split, xas,
+				end, ret, bypass), 1);
 DECLARE_RESTRICTED_HOOK(android_rvh_try_alloc_pages_gfp,
 			TP_PROTO(struct page **page, unsigned int order,
 				gfp_t gfp, enum zone_type highest_zoneidx),
@@ -226,6 +233,10 @@ DECLARE_HOOK(android_vh_mm_compaction_begin,
 DECLARE_HOOK(android_vh_mm_compaction_end,
 	TP_PROTO(struct compact_control *cc, long vendor_ret),
 	TP_ARGS(cc, vendor_ret));
+DECLARE_HOOK(android_vh_mm_folio_split_supported,
+	TP_PROTO(struct folio *folio, unsigned int new_order,
+		 bool uniform_split, bool *supported),
+	TP_ARGS(folio, new_order, uniform_split, supported));
 DECLARE_HOOK(android_vh_mm_free_page,
 	TP_PROTO(struct page *page),
 	TP_ARGS(page));
