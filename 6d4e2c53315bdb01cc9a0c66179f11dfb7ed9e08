@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c730592c_08e7cc78",
+        "filename": "virt/kvm/vfio.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-04-21T10:04:30Z",
+      "side": 1,
+      "message": "Presumably we already hold a reference, otherwise this wouldn\u0027t be safe. But in that case, why do we have to do it so early? Can\u0027t we move it later (i.e. just before installing the fd) so that we don\u0027t have to worry about the cleanup path?\n\nIn fact, I don\u0027t get why you don\u0027t release the reference on the error paths here.",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 465,
+        "endChar": 23
+      },
+      "revId": "6d4e2c53315bdb01cc9a0c66179f11dfb7ed9e08",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
