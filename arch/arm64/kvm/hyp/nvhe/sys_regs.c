@@ -571,6 +571,14 @@ static void reset_mpidr(struct kvm_vcpu *vcpu, const struct sys_reg_desc_reset *
 	__vcpu_assign_sys_reg(vcpu, r->reg, calculate_mpidr(vcpu));
 }
 
+static void reset_sctlr_el1(struct kvm_vcpu *vcpu, const struct sys_reg_desc_reset *r)
+{
+	u64 val = read_sysreg(sctlr_el1) &
+		  ~(SCTLR_ELx_M | SCTLR_ELx_C | SCTLR_ELx_I);
+
+	__vcpu_assign_sys_reg(vcpu, r->reg, val);
+}
+
 static void reset_value(struct kvm_vcpu *vcpu, const struct sys_reg_desc_reset *r)
 {
 	__vcpu_assign_sys_reg(vcpu, r->reg, r->value);
@@ -603,7 +611,7 @@ static const struct sys_reg_desc_reset pvm_sys_reg_reset_vals[] = {
 	RESET_ZERO(PMUSERENR_EL0),
 	RESET_ZERO(CPACR_EL1),
 	RESET_VAL(CONTEXTIDR_EL1, 0x00000000dbadc0deULL),
-	RESET_VAL(SCTLR_EL1, 0x00C50078ULL),
+	RESET_FUNC(SCTLR_EL1, reset_sctlr_el1),
 	RESET_FUNC(ACTLR_EL1, reset_actlr),
 	RESET_ZERO(TCR_EL1),
 	RESET_UNKNOWN(AFSR0_EL1),
