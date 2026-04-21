@@ -330,10 +330,10 @@ struct pkvm_hyp_vcpu *pkvm_load_hyp_vcpu(pkvm_handle_t handle,
 		goto unlock;
 
 	/*
-	 * Synchronise with concurrent vCPU initialisation by relying on
-	 * dependency ordering from the vCPU pointer.
+	 * Pairs with the smp_store_release() in __pkvm_init_vcpu() to
+	 * ensure the hyp_vcpu is fully initialised before it is observed.
 	 */
-	hyp_vcpu = READ_ONCE(hyp_vm->vcpus[vcpu_idx]);
+	hyp_vcpu = smp_load_acquire(&hyp_vm->vcpus[vcpu_idx]);
 	if (!hyp_vcpu)
 		goto unlock;
 
