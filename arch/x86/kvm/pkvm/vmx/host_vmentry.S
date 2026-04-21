@@ -47,6 +47,30 @@ SYM_FUNC_START(pkvm_host_vmexit_entry)
 	mov %r15, VCPU_R15(%_ASM_BX)
 	pop VCPU_RBX(%_ASM_BX)
 
+	/*
+	 * Clear all general purpose registers except RSP and RBX to prevent
+	 * speculative use of the guest's values, even those that are reloaded
+	 * via the stack. In theory, an L1 cache miss when restoring registers
+	 * could lead to speculative execution with the guest's values. Zeroing
+	 * XORs are dirt cheap, i.e. the extra paranoia is essentially free. RSP
+	 * and RBX are exempt as RSP is restored by hardware during VM-Exit and
+	 * RBX is loaded with vcpu->arch.regs after VM-Exit.
+	 */
+	xor %eax, %eax
+	xor %ecx, %ecx
+	xor %edx, %edx
+	xor %ebp, %ebp
+	xor %esi, %esi
+	xor %edi, %edi
+	xor %r8d,  %r8d
+	xor %r9d,  %r9d
+	xor %r10d, %r10d
+	xor %r11d, %r11d
+	xor %r12d, %r12d
+	xor %r13d, %r13d
+	xor %r14d, %r14d
+	xor %r15d, %r15d
+
 	/* RDI: point to vcpu_vmx */
 	mov WORD_SIZE*1(%_ASM_SP), %_ASM_DI
 	mov $VMX_RUN_SAVE_SPEC_CTRL, %_ASM_SI
