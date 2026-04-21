@@ -1160,6 +1160,7 @@ retry:
 		bool bypass = false;
 		bool activate = false;
 		bool keep = false;
+		bool try_release = false;
 
 		cond_resched();
 
@@ -1409,6 +1410,10 @@ retry:
 			}
 		}
 
+		trace_android_vh_shrink_try_release_folio(folio, &try_release);
+		if (try_release)
+			goto release_folio;
+
 		/*
 		 * If the folio was split above, the tail pages will make
 		 * their own pass through this function and be accounted
@@ -1578,6 +1583,7 @@ retry:
 			if (!filemap_release_folio(folio, sc->gfp_mask))
 				goto activate_locked;
 			if (!mapping && folio_ref_count(folio) == 1) {
+release_folio:
 				trace_android_vh_shrink_folio_lock_owner_clear(folio);
 				folio_unlock(folio);
 				if (folio_put_testzero(folio))
