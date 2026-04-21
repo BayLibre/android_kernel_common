@@ -136,7 +136,6 @@ static void handle_pvm_entry_wfx(struct pkvm_hyp_vcpu *hyp_vcpu)
 static void handle_pvm_entry_psci(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
 	u32 psci_fn = smccc_get_function(&hyp_vcpu->vcpu);
-	u64 ret = READ_ONCE(hyp_vcpu->host_vcpu->arch.ctxt.regs.regs[0]);
 
 	switch (psci_fn) {
 	case PSCI_0_2_FN_CPU_ON:
@@ -148,7 +147,7 @@ static void handle_pvm_entry_psci(struct pkvm_hyp_vcpu *hyp_vcpu)
 		 * vcpu while the other one is in the process of turning itself
 		 * off.
 		 */
-		if (ret != PSCI_RET_SUCCESS) {
+		if (vcpu_get_reg(&hyp_vcpu->vcpu, 0) != PSCI_RET_SUCCESS) {
 			unsigned long cpu_id = smccc_get_arg1(&hyp_vcpu->vcpu);
 			struct pkvm_hyp_vcpu *target_vcpu;
 			struct pkvm_hyp_vm *hyp_vm;
@@ -156,24 +155,25 @@ static void handle_pvm_entry_psci(struct pkvm_hyp_vcpu *hyp_vcpu)
 			hyp_vm = pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu);
 			target_vcpu = pkvm_mpidr_to_hyp_vcpu(hyp_vm, cpu_id);
 
-			if (target_vcpu && READ_ONCE(target_vcpu->power_state) == PSCI_0_2_AFFINITY_LEVEL_ON_PENDING)
-				WRITE_ONCE(target_vcpu->power_state, PSCI_0_2_AFFINITY_LEVEL_OFF);
+			if (target_vcpu)
+				cmpxchg(&target_vcpu->power_state,
+					PSCI_0_2_AFFINITY_LEVEL_ON_PENDING,
+					PSCI_0_2_AFFINITY_LEVEL_OFF);
 
-			ret = PSCI_RET_INTERNAL_FAILURE;
+			vcpu_set_reg(&hyp_vcpu->vcpu, 0, PSCI_RET_INTERNAL_FAILURE);
 		}
 
 		break;
 	default:
 		break;
 	}
-
-	vcpu_set_reg(&hyp_vcpu->vcpu, 0, ret);
 }
 
 static void handle_pvm_entry_hvc64(struct pkvm_hyp_vcpu *hyp_vcpu)
 {
 	u32 fn = smccc_get_function(&hyp_vcpu->vcpu);
 	u64 ret;
+	int i;
 
 	switch (fn) {
 	case ARM_SMCCC_VENDOR_HYP_KVM_MEM_SHARE_FUNC_ID:
@@ -192,6 +192,11 @@ static void handle_pvm_entry_hvc64(struct pkvm_hyp_vcpu *hyp_vcpu)
 		vcpu_set_reg(&hyp_vcpu->vcpu, 0, ret);
 		break;
 	default:
+		for (i = 0; i < 4; i++) {
+			u64 reg = READ_ONCE(hyp_vcpu->host_vcpu->arch.ctxt.regs.regs[i]);
+
+			vcpu_set_reg(&hyp_vcpu->vcpu, i, reg);
+		}
 		handle_pvm_entry_psci(hyp_vcpu);
 		break;
 	}
@@ -365,11 +370,11 @@ static void handle_pvm_exit_hvc64(struct pkvm_hyp_vcpu *hyp_vcpu)
 		break;
 
 	/*
-	 * The rest are either blocked or handled by HYP, so we should
-	 * really never be here.
+	 * All other HVCs from protected guests are either handled at EL2 or
+	 * blocked with NOT_SUPPORTED. This path must never be reached.
 	 */
 	default:
-		BUG();
+		hyp_panic();
 	}
 
 	WRITE_ONCE(host_vcpu->arch.fault.esr_el2,
