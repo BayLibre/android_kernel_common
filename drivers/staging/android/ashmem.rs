@@ -255,7 +255,15 @@ impl MiscDevice for Ashmem {
     }
 
     fn ioctl(me: Pin<&Ashmem>, _file: &File, cmd: u32, arg: usize) -> Result<isize> {
+        #[cfg(CONFIG_COMPAT)]
+        let cmd = match cmd {
+            bindings::COMPAT_ASHMEM_SET_SIZE => bindings::ASHMEM_SET_SIZE,
+            bindings::COMPAT_ASHMEM_SET_PROT_MASK => bindings::ASHMEM_SET_PROT_MASK,
+            _ => cmd,
+        };
+
         let size = _IOC_SIZE(cmd);
+
         match cmd {
             bindings::ASHMEM_SET_NAME => me.set_name(UserSlice::new(arg, size).reader()),
             bindings::ASHMEM_GET_NAME => me.get_name(UserSlice::new(arg, size).writer()),
@@ -264,22 +272,16 @@ impl MiscDevice for Ashmem {
             bindings::ASHMEM_SET_PROT_MASK => me.set_prot_mask(arg),
             bindings::ASHMEM_GET_PROT_MASK => me.get_prot_mask(),
             bindings::ASHMEM_GET_FILE_ID => me.get_file_id(UserSlice::new(arg, size).writer()),
+            #[cfg(CONFIG_COMPAT)]
+            bindings::COMPAT_ASHMEM_GET_FILE_ID => {
+                me.compat_get_file_id(UserSlice::new(arg, size).writer())
+            }
             ASHMEM_PIN | ASHMEM_UNPIN | ASHMEM_GET_PIN_STATUS => {
                 me.pin_unpin(cmd, UserSlice::new(arg, size).reader())
             }
             bindings::ASHMEM_PURGE_ALL_CACHES => me.purge_all_caches(),
             _ => Err(ENOTTY),
         }
-    }
-
-    #[cfg(CONFIG_COMPAT)]
-    fn compat_ioctl(me: Pin<&Ashmem>, file: &File, compat_cmd: u32, arg: usize) -> Result<isize> {
-        let cmd = match compat_cmd {
-            bindings::COMPAT_ASHMEM_SET_SIZE => bindings::ASHMEM_SET_SIZE,
-            bindings::COMPAT_ASHMEM_SET_PROT_MASK => bindings::ASHMEM_SET_PROT_MASK,
-            _ => compat_cmd,
-        };
-        Self::ioctl(me, file, cmd, arg)
     }
 
     fn show_fdinfo(me: Pin<&Ashmem>, m: &SeqFile, _file: &File) {
@@ -374,15 +376,24 @@ impl Ashmem {
         Ok(self.inner.lock().prot_mask as isize)
     }
 
-    fn get_file_id(&self, mut writer: UserSliceWriter) -> Result<isize> {
-        let ino = {
-            let asma = self.inner.lock();
-            let Some(file) = asma.file.as_ref() else {
-                return Err(EINVAL);
-            };
-            file.inode_ino()
+    fn __get_file_id(&self) -> Result<usize> {
+        let asma = self.inner.lock();
+        let Some(file) = asma.file.as_ref() else {
+            return Err(EINVAL);
         };
+        Ok(file.inode_ino())
+    }
+
+    fn get_file_id(&self, mut writer: UserSliceWriter) -> Result<isize> {
+        let ino = self.__get_file_id()?;
         writer.write(&ino)?;
+        Ok(0)
+    }
+
+    #[cfg(CONFIG_COMPAT)]
+    fn compat_get_file_id(&self, mut writer: UserSliceWriter) -> Result<isize> {
+        let ino = self.__get_file_id()?;
+        writer.write(&(ino as u32))?;
         Ok(0)
     }
 
@@ -614,6 +625,15 @@ fn ashmem_memfd_ioctl_inner(file: &File, cmd: u32, arg: usize) -> Result<isize> 
             writer.write(&ino)?;
             Ok(0)
         }
+        #[cfg(CONFIG_COMPAT)]
+        bindings::COMPAT_ASHMEM_GET_FILE_ID => {
+            // SAFETY: Accessing the ino is always okay.
+            let ino = unsafe { (*(*file.as_ptr()).f_inode).i_ino as usize };
+
+            let mut writer = UserSlice::new(arg, size).writer();
+            writer.write(&(ino as u32))?;
+            Ok(0)
+        }
         // Just ignore unpin requests.
         ASHMEM_PIN => Ok(bindings::ASHMEM_NOT_PURGED as isize),
         ASHMEM_UNPIN => Ok(0),
@@ -635,7 +655,7 @@ fn ashmem_memfd_ioctl_inner(file: &File, cmd: u32, arg: usize) -> Result<isize> 
         // memfd is used, so we should never end up here.
         bindings::ASHMEM_SET_NAME => Err(EINVAL),
         bindings::ASHMEM_SET_SIZE => Err(EINVAL),
-        _ => Err(EINVAL),
+        _ => Err(ENOTTY),
     }
 }
 

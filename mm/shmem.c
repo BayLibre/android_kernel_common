@@ -4913,7 +4913,7 @@ static const struct file_operations shmem_file_operations = {
 #ifdef CONFIG_ASHMEM
 	.unlocked_ioctl	= shmem_ashmem_ioctl,
 #ifdef CONFIG_COMPAT
-	.compat_ioctl	= shmem_ashmem_ioctl,
+	.compat_ioctl	= compat_ptr_ioctl,
 #endif
 #endif
 };
