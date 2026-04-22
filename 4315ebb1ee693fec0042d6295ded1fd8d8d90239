@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9a9e66f_11a29265",
+        "filename": "drivers/iommu/intel/pkvm/iommu_hc.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-22T14:55:34Z",
+      "side": 1,
+      "message": "This assumes that the PDA page will never be at physical address 0? Maybe use e.g. `-1UL` instead, to avoid this assumption?",
+      "fixSuggestions": [
+        {
+          "fixId": "ef83f4b6_fea1bdcb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/pkvm/iommu_hc.c",
+              "range": {
+                "startLine": 515,
+                "startChar": 0,
+                "endLine": 516,
+                "endChar": 0
+              },
+              "replacement": "\tunsigned long pda_pa \u003d -1UL, unpin_pda_pa \u003d -1UL;\n"
+            },
+            {
+              "path": "drivers/iommu/intel/pkvm/iommu_hc.c",
+              "range": {
+                "startLine": 596,
+                "startChar": 0,
+                "endLine": 597,
+                "endChar": 0
+              },
+              "replacement": "\tif (unpin_pda_pa !\u003d -1UL)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4315ebb1ee693fec0042d6295ded1fd8d8d90239",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
