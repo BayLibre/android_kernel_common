@@ -1087,13 +1087,43 @@ static int migrate_to_node(struct mm_struct *mm, int source, int dest,
 	 * space range and MPOL_MF_DISCONTIG_OK, this call can not fail.
 	 */
 	vma = find_vma(mm, 0);
+<<<<<<< HEAD   (90a8f32c3778ef960dba8dde788e8f76bf8e1d0b Merge 54322d95309d ("arm64: mm: Don't remap pgtables for all)
 	VM_BUG_ON(!(flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)));
 	if (unlikely(!vma)) {
 		mmap_read_unlock(mm);
+||||||| BASE   (54322d95309d9aa4cb77b34ee4b6c8b541f3e21f arm64: mm: Don't remap pgtables for allocate vs populate)
+	if (unlikely(!vma)) {
+		mmap_read_unlock(mm);
+=======
+	if (unlikely(!vma))
+>>>>>>> BRANCH (4ada013fd7dab61405f5ee9f4c0250998650855d mmc: sdhci: fix timing selection for 1-bit bus width)
 		return 0;
+<<<<<<< HEAD   (90a8f32c3778ef960dba8dde788e8f76bf8e1d0b Merge 54322d95309d ("arm64: mm: Don't remap pgtables for all)
 	}
 	queue_pages_range(mm, vma->vm_start, mm->task_size, &nmask,
 			flags | MPOL_MF_DISCONTIG_OK, &pagelist, false);
+||||||| BASE   (54322d95309d9aa4cb77b34ee4b6c8b541f3e21f arm64: mm: Don't remap pgtables for allocate vs populate)
+	}
+
+	/*
+	 * This does not migrate the range, but isolates all pages that
+	 * need migration.  Between passing in the full user address
+	 * space range and MPOL_MF_DISCONTIG_OK, this call cannot fail,
+	 * but passes back the count of pages which could not be isolated.
+	 */
+	nr_failed = queue_pages_range(mm, vma->vm_start, mm->task_size, &nmask,
+				      flags | MPOL_MF_DISCONTIG_OK, &pagelist);
+=======
+
+	/*
+	 * This does not migrate the range, but isolates all pages that
+	 * need migration.  Between passing in the full user address
+	 * space range and MPOL_MF_DISCONTIG_OK, this call cannot fail,
+	 * but passes back the count of pages which could not be isolated.
+	 */
+	nr_failed = queue_pages_range(mm, vma->vm_start, mm->task_size, &nmask,
+				      flags | MPOL_MF_DISCONTIG_OK, &pagelist);
+>>>>>>> BRANCH (4ada013fd7dab61405f5ee9f4c0250998650855d mmc: sdhci: fix timing selection for 1-bit bus width)
 
 	if (!list_empty(&pagelist)) {
 		err = migrate_pages(&pagelist, alloc_migration_target, NULL,
