@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66381a98_e37a44bd",
+        "filename": "drivers/dma-buf/dma-buf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2026-04-22T18:29:03Z",
+      "side": 1,
+      "message": "Since this can be invoked by anyone, shouldn\u0027t we be checking for `NULL`?",
+      "fixSuggestions": [
+        {
+          "fixId": "8f8e1955_d137885d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/dma-buf/dma-buf.c",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\tif (!dmabuf_info)\n\t\treturn;\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5d6f3fa4980475c4c30995cb670dfea894848e6a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
