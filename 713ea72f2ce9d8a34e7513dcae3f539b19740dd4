@@ -110,6 +110,29 @@
       ],
       "revId": "713ea72f2ce9d8a34e7513dcae3f539b19740dd4",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d58b3d11_f54cad8a",
+        "filename": "drivers/android/wrapfd.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1934715
+      },
+      "writtenOn": "2026-04-22T00:16:52Z",
+      "side": 1,
+      "message": "This actually fixes a bug where we can\u0027t load into a mapped buffer, which should be allowed, so you might want to add a `Fixes` tag as well as a test case?",
+      "range": {
+        "startLine": 767,
+        "startChar": 0,
+        "endLine": 767,
+        "endChar": 24
+      },
+      "revId": "713ea72f2ce9d8a34e7513dcae3f539b19740dd4",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
