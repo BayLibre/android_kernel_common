@@ -3,6 +3,58 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5fa0c071_dd96c1a7",
+        "filename": "drivers/iommu/intel/iommu.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 878,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-22T16:05:59Z",
+      "side": 1,
+      "message": "very nit: I\u0027m not sure we need this \"(set by host before SIRTP)\". We don\u0027t have \"(set by host before SRTP)\" for `vrta`?",
+      "fixSuggestions": [
+        {
+          "fixId": "9c3e8608_58dfe384",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/iommu.h",
+              "range": {
+                "startLine": 878,
+                "startChar": 0,
+                "endLine": 879,
+                "endChar": 0
+              },
+              "replacement": "\tu64\t\tvirta; /* Virtual IRTA register */\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8dba6e53d5383a340a1e5e14649cf60dafcbfecf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7966d585_38759911",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-22T16:05:59Z",
+      "side": 1,
+      "message": "nit: I suppose the host also sets up IRTEs in this table (not just zero-allocates and enables it) before deprivileging? If so, \"don\u0027t bother\" doesn\u0027t seem a suitable wording: it\u0027s not just that we don\u0027t _need_ to clear the table, it\u0027s that we _can\u0027t_ clear it, since that would destroy the entries set by the host?",
+      "revId": "8dba6e53d5383a340a1e5e14649cf60dafcbfecf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "682e2d14_662d2a65",
         "filename": "drivers/iommu/intel/pkvm/iommu.c",
         "patchSetId": 8
@@ -14,6 +66,30 @@
       "writtenOn": "2026-04-15T10:39:48Z",
       "side": 1,
       "message": "This doesn\u0027t happen in practice as we enable remapping before deprivilege and would not be able to trap it. Not sure if we should support this?",
+      "range": {
+        "startLine": 310,
+        "startChar": 11,
+        "endLine": 310,
+        "endChar": 28
+      },
+      "revId": "8dba6e53d5383a340a1e5e14649cf60dafcbfecf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c754d7d9_88474d85",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-22T16:05:59Z",
+      "side": 1,
+      "message": "Well, maybe indeed no need to support this (especially since you are not allowing SIRTP or IRTA more than once anyway, so this would not be useful even if the host needed to re-configure it after deprivileging)...",
+      "parentUuid": "682e2d14_662d2a65",
       "range": {
         "startLine": 310,
         "startChar": 11,
