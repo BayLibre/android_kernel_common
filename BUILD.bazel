@@ -274,7 +274,11 @@ common_kernel(
     kmi_symbol_list_strict_mode = True,
     make_goals = _GKI_AARCH64_MAKE_GOALS,
     makefile = ":Makefile",
-    module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64"),
+    module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64") + [
+        # Built as a side-effect of USB_NET_SMSC95XX's "select SMSC_PHY" but
+        # owned by amlogic as a vendor module; listed here to satisfy GKI build.
+        "drivers/net/phy/smsc.ko",
+    ],
     protected_module_names_list = ":gki_aarch64_protected_module_names",
     system_dlkm_extra_archive_files = [":generate_gki_module_info_arm64"],
     trim_nonlisted_kmi = True,
@@ -303,7 +307,9 @@ common_kernel(
     kmi_symbol_list_strict_mode = True,
     make_goals = _GKI_AARCH64_MAKE_GOALS,
     makefile = ":Makefile",
-    module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64"),
+    module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64") + [
+        "drivers/net/phy/smsc.ko",
+    ],
     page_size = "16k",
     protected_module_names_list = ":gki_aarch64_protected_module_names",
     system_dlkm_extra_archive_files = [":generate_gki_module_info_arm64"],
@@ -332,6 +338,7 @@ common_kernel(
     make_goals = _GKI_AARCH64_MAKE_GOALS,
     makefile = ":Makefile",
     module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64") + [
+        "drivers/net/phy/smsc.ko",
         "fs/xfs/xfs.ko",
     ],
     pre_defconfig_fragments = ["arch/arm64/configs/tv_gki.fragment"],
@@ -372,7 +379,9 @@ common_kernel(
     kmi_symbol_list_strict_mode = True,
     make_goals = _GKI_AARCH64_MAKE_GOALS,
     makefile = ":Makefile",
-    module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64"),
+    module_implicit_outs = get_gki_modules_list("arm64") + get_kunit_modules_list("arm64") + [
+        "drivers/net/phy/smsc.ko",
+    ],
     protected_module_names_list = ":gki_aarch64_protected_module_names",
     system_dlkm_extra_archive_files = [":generate_gki_module_info_arm64"],
     trim_nonlisted_kmi = True,
