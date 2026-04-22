@@ -50,6 +50,9 @@ void arch_mm_preinit(void);
 void mm_core_init(void);
 void init_mm_internals(void);
 
+struct scan_control;
+bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc);
+
 extern atomic_long_t _totalram_pages;
 static inline unsigned long totalram_pages(void)
 {
