@@ -5,7 +5,10 @@
 #if !defined(_TRACE_F2FS_H) || defined(TRACE_HEADER_MULTI_READ)
 #define _TRACE_F2FS_H
 
+#include <linux/hash.h>
 #include <linux/tracepoint.h>
+#include <linux/uidgid.h>
+#include <linux/user_namespace.h>
 #include <uapi/linux/f2fs.h>
 
 #define show_dev(dev)		MAJOR(dev), MINOR(dev)
@@ -2308,6 +2311,231 @@ TRACE_EVENT(f2fs_fiemap,
 		__entry->len,
 		__entry->flags,
 		__entry->ret)
+);
+
+TRACE_EVENT(f2fs_file_open_ex,
+
+	TP_PROTO(struct file *filp, struct inode *inode, char *pathname),
+
+	TP_ARGS(filp, inode, pathname),
+
+	TP_STRUCT__entry(
+		__field(u64, file_cookie)
+		__field(dev_t, dev)
+		__field(ino_t, ino)
+		__field(loff_t, i_size)
+		__field(pid_t, tgid)
+		__field(pid_t, tid)
+		__field(uid_t, uid)
+		__field(unsigned int, f_flags)
+		__field(unsigned int, f_mode)
+		__string(pathbuf, pathname)
+		__string(comm, current->comm)
+	),
+
+	TP_fast_assign(
+		__entry->file_cookie = (u64)hash_ptr(filp, 64);
+		__entry->dev = inode->i_sb->s_dev;
+		__entry->ino = inode->i_ino;
+		__entry->i_size = i_size_read(inode);
+		__entry->tgid = current->tgid;
+		__entry->tid = current->pid;
+		__entry->uid = from_kuid_munged(&init_user_ns, current_uid());
+		__entry->f_flags = filp->f_flags;
+		__entry->f_mode = filp->f_mode;
+		__assign_str(pathbuf);
+		__assign_str(comm);
+	),
+
+	TP_printk("file_cookie=%llu, path=%s, tgid=%d, tid=%d, uid=%u, "
+		"dev=%d:%d, ino=%lu, i_size=%llu, f_flags=0x%x, "
+		"f_mode=0x%x, comm=%s",
+		(unsigned long long)__entry->file_cookie,
+		__get_str(pathbuf), __entry->tgid, __entry->tid, __entry->uid,
+		show_dev_ino(__entry), (unsigned long long)__entry->i_size,
+		__entry->f_flags, __entry->f_mode, __get_str(comm))
+);
+
+TRACE_EVENT(f2fs_dataread_start_ex,
+
+	TP_PROTO(struct file *filp, struct inode *inode, loff_t pos_before,
+		 size_t requested_bytes, int ki_flags, bool is_direct),
+
+	TP_ARGS(filp, inode, pos_before, requested_bytes, ki_flags, is_direct),
+
+	TP_STRUCT__entry(
+		__field(u64, file_cookie)
+		__field(dev_t, dev)
+		__field(ino_t, ino)
+		__field(loff_t, i_size)
+		__field(pid_t, tgid)
+		__field(pid_t, tid)
+		__field(uid_t, uid)
+		__field(loff_t, pos_before)
+		__field(size_t, requested_bytes)
+		__field(int, ki_flags)
+		__field(unsigned int, f_flags)
+		__field(u8, is_direct)
+		__string(comm, current->comm)
+	),
+
+	TP_fast_assign(
+		__entry->file_cookie = (u64)hash_ptr(filp, 64);
+		__entry->dev = inode->i_sb->s_dev;
+		__entry->ino = inode->i_ino;
+		__entry->i_size = i_size_read(inode);
+		__entry->tgid = current->tgid;
+		__entry->tid = current->pid;
+		__entry->uid = from_kuid_munged(&init_user_ns, current_uid());
+		__entry->pos_before = pos_before;
+		__entry->requested_bytes = requested_bytes;
+		__entry->ki_flags = ki_flags;
+		__entry->f_flags = filp->f_flags;
+		__entry->is_direct = is_direct;
+		__assign_str(comm);
+	),
+
+	TP_printk("file_cookie=%llu, tgid=%d, tid=%d, uid=%u, dev=%d:%d, "
+		"ino=%lu, i_size=%llu, pos_before=%llu, requested_bytes=%zu, "
+		"ki_flags=0x%x, f_flags=0x%x, is_direct=%u, comm=%s",
+		(unsigned long long)__entry->file_cookie,
+		__entry->tgid, __entry->tid, __entry->uid,
+		show_dev_ino(__entry), (unsigned long long)__entry->i_size,
+		(unsigned long long)__entry->pos_before,
+		__entry->requested_bytes, __entry->ki_flags,
+		__entry->f_flags, __entry->is_direct, __get_str(comm))
+);
+
+TRACE_EVENT(f2fs_dataread_end_ex,
+
+	TP_PROTO(struct file *filp, struct inode *inode, loff_t pos_before,
+		 ssize_t ret, loff_t pos_after),
+
+	TP_ARGS(filp, inode, pos_before, ret, pos_after),
+
+	TP_STRUCT__entry(
+		__field(u64, file_cookie)
+		__field(dev_t, dev)
+		__field(ino_t, ino)
+		__field(loff_t, i_size)
+		__field(pid_t, tgid)
+		__field(pid_t, tid)
+		__field(uid_t, uid)
+		__field(loff_t, pos_before)
+		__field(ssize_t, ret)
+		__field(loff_t, pos_after)
+		__field(int, err)
+		__string(comm, current->comm)
+	),
+
+	TP_fast_assign(
+		__entry->file_cookie = (u64)hash_ptr(filp, 64);
+		__entry->dev = inode->i_sb->s_dev;
+		__entry->ino = inode->i_ino;
+		__entry->i_size = i_size_read(inode);
+		__entry->tgid = current->tgid;
+		__entry->tid = current->pid;
+		__entry->uid = from_kuid_munged(&init_user_ns, current_uid());
+		__entry->pos_before = pos_before;
+		__entry->ret = ret;
+		__entry->pos_after = pos_after;
+		__entry->err = ret < 0 ? ret : 0;
+		__assign_str(comm);
+	),
+
+	TP_printk("file_cookie=%llu, tgid=%d, tid=%d, uid=%u, dev=%d:%d, "
+		"ino=%lu, i_size=%llu, pos_before=%llu, ret=%zd, "
+		"pos_after=%llu, err=%d, comm=%s",
+		(unsigned long long)__entry->file_cookie,
+		__entry->tgid, __entry->tid, __entry->uid,
+		show_dev_ino(__entry), (unsigned long long)__entry->i_size,
+		(unsigned long long)__entry->pos_before, __entry->ret,
+		(unsigned long long)__entry->pos_after, __entry->err,
+		__get_str(comm))
+);
+
+TRACE_EVENT(f2fs_file_llseek_ex,
+
+	TP_PROTO(struct file *filp, struct inode *inode, loff_t old_pos,
+		 loff_t offset_arg, int whence, loff_t new_pos, int err),
+
+	TP_ARGS(filp, inode, old_pos, offset_arg, whence, new_pos, err),
+
+	TP_STRUCT__entry(
+		__field(u64, file_cookie)
+		__field(dev_t, dev)
+		__field(ino_t, ino)
+		__field(pid_t, tgid)
+		__field(pid_t, tid)
+		__field(uid_t, uid)
+		__field(loff_t, old_pos)
+		__field(loff_t, offset_arg)
+		__field(int, whence)
+		__field(loff_t, new_pos)
+		__field(int, err)
+		__string(comm, current->comm)
+	),
+
+	TP_fast_assign(
+		__entry->file_cookie = (u64)hash_ptr(filp, 64);
+		__entry->dev = inode->i_sb->s_dev;
+		__entry->ino = inode->i_ino;
+		__entry->tgid = current->tgid;
+		__entry->tid = current->pid;
+		__entry->uid = from_kuid_munged(&init_user_ns, current_uid());
+		__entry->old_pos = old_pos;
+		__entry->offset_arg = offset_arg;
+		__entry->whence = whence;
+		__entry->new_pos = new_pos;
+		__entry->err = err;
+		__assign_str(comm);
+	),
+
+	TP_printk("file_cookie=%llu, tgid=%d, tid=%d, uid=%u, dev=%d:%d, "
+		"ino=%lu, old_pos=%llu, offset_arg=%llu, whence=%d, "
+		"new_pos=%llu, err=%d, comm=%s",
+		(unsigned long long)__entry->file_cookie,
+		__entry->tgid, __entry->tid, __entry->uid,
+		show_dev_ino(__entry), (unsigned long long)__entry->old_pos,
+		(unsigned long long)__entry->offset_arg, __entry->whence,
+		(unsigned long long)__entry->new_pos, __entry->err,
+		__get_str(comm))
+);
+
+TRACE_EVENT(f2fs_file_close_ex,
+
+	TP_PROTO(struct file *filp, struct inode *inode, loff_t final_pos),
+
+	TP_ARGS(filp, inode, final_pos),
+
+	TP_STRUCT__entry(
+		__field(u64, file_cookie)
+		__field(dev_t, dev)
+		__field(ino_t, ino)
+		__field(pid_t, tgid)
+		__field(pid_t, tid)
+		__field(uid_t, uid)
+		__field(loff_t, final_pos)
+		__string(comm, current->comm)
+	),
+
+	TP_fast_assign(
+		__entry->file_cookie = (u64)hash_ptr(filp, 64);
+		__entry->dev = inode->i_sb->s_dev;
+		__entry->ino = inode->i_ino;
+		__entry->tgid = current->tgid;
+		__entry->tid = current->pid;
+		__entry->uid = from_kuid_munged(&init_user_ns, current_uid());
+		__entry->final_pos = final_pos;
+		__assign_str(comm);
+	),
+
+	TP_printk("file_cookie=%llu, tgid=%d, tid=%d, uid=%u, final_pos=%llu, "
+		"dev=%d:%d, ino=%lu, comm=%s",
+		(unsigned long long)__entry->file_cookie,
+		__entry->tgid, __entry->tid, __entry->uid,
+		(unsigned long long)__entry->final_pos,
+		show_dev_ino(__entry), __get_str(comm))
 );
 
 DECLARE_EVENT_CLASS(f2fs__rw_start,

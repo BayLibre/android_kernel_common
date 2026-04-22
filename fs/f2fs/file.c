@@ -23,6 +23,7 @@
 #include <linux/sched/signal.h>
 #include <linux/fileattr.h>
 #include <linux/fadvise.h>
+#include <linux/hash.h>
 #include <linux/iomap.h>
 
 #include "f2fs.h"
@@ -174,6 +175,8 @@ static const struct vm_operations_struct f2fs_file_vm_ops = {
 	.map_pages	= filemap_map_pages,
 	.page_mkwrite	= f2fs_vm_page_mkwrite,
 };
+
+static void f2fs_trace_open_file_path(struct file *file);
 
 static int get_parent_ino(struct inode *inode, nid_t *pino)
 {
@@ -518,21 +521,34 @@ static loff_t f2fs_llseek(struct file *file, loff_t offset, int whence)
 {
 	struct inode *inode = file->f_mapping->host;
 	loff_t maxbytes = F2FS_BLK_TO_BYTES(max_file_blocks(inode));
+	loff_t old_pos = file->f_pos;
+	loff_t ret;
 
 	switch (whence) {
 	case SEEK_SET:
 	case SEEK_CUR:
 	case SEEK_END:
-		return generic_file_llseek_size(file, offset, whence,
-						maxbytes, i_size_read(inode));
+		ret = generic_file_llseek_size(file, offset, whence,
+					       maxbytes, i_size_read(inode));
+		break;
 	case SEEK_DATA:
 	case SEEK_HOLE:
 		if (offset < 0)
-			return -ENXIO;
-		return f2fs_seek_block(file, offset, whence);
+			ret = -ENXIO;
+		else
+			ret = f2fs_seek_block(file, offset, whence);
+		break;
+	default:
+		ret = -EINVAL;
+		break;
 	}
 
-	return -EINVAL;
+	if (trace_f2fs_file_llseek_ex_enabled())
+		trace_f2fs_file_llseek_ex(file, inode, old_pos, offset, whence,
+					  ret >= 0 ? ret : old_pos,
+					  ret < 0 ? (int)ret : 0);
+
+	return ret;
 }
 
 static int f2fs_file_mmap(struct file *file, struct vm_area_struct *vma)
@@ -614,7 +630,14 @@ static int f2fs_file_open(struct inode *inode, struct file *filp)
 	if (err)
 		return err;
 
-	return finish_preallocate_blocks(inode);
+	err = finish_preallocate_blocks(inode);
+	if (err)
+		return err;
+
+	if (trace_f2fs_file_open_ex_enabled())
+		f2fs_trace_open_file_path(filp);
+
+	return 0;
 }
 
 void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count)
@@ -1994,6 +2017,9 @@ out:
 
 static int f2fs_release_file(struct inode *inode, struct file *filp)
 {
+	if (trace_f2fs_file_close_ex_enabled())
+		trace_f2fs_file_close_ex(filp, inode, filp->f_pos);
+
 	/*
 	 * f2fs_release_file is called at every close calls. So we should
 	 * not drop any inmemory pages by close called by other process.
@@ -4758,6 +4784,31 @@ out:
 	return ret;
 }
 
+static inline u64 f2fs_trace_file_cookie(struct file *filp)
+{
+	return (u64)hash_ptr(filp, 64);
+}
+
+static void f2fs_trace_open_file_path(struct file *file)
+{
+	struct inode *inode = file_inode(file);
+	char *buf, *path;
+
+	/*
+	 * Keep cookie derivation colocated with hook-side tracing even though
+	 * the v1 `_ex` tracepoints still derive the same cookie internally.
+	 */
+	(void)f2fs_trace_file_cookie(file);
+
+	buf = f2fs_getname(F2FS_I_SB(inode));
+	if (!buf)
+		return;
+	path = dentry_path_raw(file_dentry(file), buf, PATH_MAX);
+	if (!IS_ERR(path))
+		trace_f2fs_file_open_ex(file, inode, path);
+	f2fs_putname(buf);
+}
+
 static void f2fs_trace_rw_file_path(struct file *file, loff_t pos, size_t count,
 				    int rw)
 {
@@ -4782,16 +4833,22 @@ free_buf:
 
 static ssize_t f2fs_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
 {
-	struct inode *inode = file_inode(iocb->ki_filp);
-	const loff_t pos = iocb->ki_pos;
+	struct file *filp = iocb->ki_filp;
+	struct inode *inode = file_inode(filp);
+	const loff_t pos_before = iocb->ki_pos;
+	const size_t requested = iov_iter_count(to);
+	const bool is_direct = !!(filp->f_flags & O_DIRECT);
 	ssize_t ret;
 
 	if (!f2fs_is_compress_backend_ready(inode))
 		return -EOPNOTSUPP;
 
 	if (trace_f2fs_dataread_start_enabled())
-		f2fs_trace_rw_file_path(iocb->ki_filp, iocb->ki_pos,
-					iov_iter_count(to), READ);
+		f2fs_trace_rw_file_path(filp, pos_before, requested, READ);
+
+	if (trace_f2fs_dataread_start_ex_enabled())
+		trace_f2fs_dataread_start_ex(filp, inode, pos_before, requested,
+					     iocb->ki_flags, is_direct);
 
 	/* In LFS mode, if there is inflight dio, wait for its completion */
 	if (f2fs_lfs_mode(F2FS_I_SB(inode)) &&
@@ -4807,7 +4864,10 @@ static ssize_t f2fs_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
 						APP_BUFFERED_READ_IO, ret);
 	}
 	if (trace_f2fs_dataread_end_enabled())
-		trace_f2fs_dataread_end(inode, pos, ret);
+		trace_f2fs_dataread_end(inode, pos_before, ret);
+	if (trace_f2fs_dataread_end_ex_enabled())
+		trace_f2fs_dataread_end_ex(filp, inode, pos_before, ret,
+					   iocb->ki_pos);
 	return ret;
 }
 
