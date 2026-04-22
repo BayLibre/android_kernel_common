@@ -35,6 +35,7 @@
 #include "xattr.h"
 #include "acl.h"
 #include "truncate.h"
+#include <trace/events/ext4.h>
 
 /*
  * Returns %true if the given DIO request should be attempted with DIO, or
@@ -127,6 +128,25 @@ static ssize_t ext4_dax_read_iter(struct kiocb *iocb, struct iov_iter *to)
 }
 #endif
 
+static void ext4_trace_rw_file_path(struct file *file, loff_t pos, size_t count)
+{
+	struct inode *inode = file_inode(file);
+	char *buf, *path;
+	kuid_t kuid = current_uid();
+
+	buf = __getname();
+	if (!buf)
+		return;
+	path = dentry_path_raw(file_dentry(file), buf, PATH_MAX);
+	if (IS_ERR(path))
+		goto free_buf;
+
+	trace_ext4_dataread_start(inode, pos, count,
+			current->pid, kuid.val, path, current->comm);
+free_buf:
+	__putname(buf);
+}
+
 static ssize_t ext4_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
 {
 	struct inode *inode = file_inode(iocb->ki_filp);
@@ -136,6 +156,10 @@ static ssize_t ext4_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
 
 	if (!iov_iter_count(to))
 		return 0; /* skip atime */
+
+	if (trace_ext4_dataread_start_enabled())
+		ext4_trace_rw_file_path(iocb->ki_filp, iocb->ki_pos,
+					iov_iter_count(to));
 
 #ifdef CONFIG_FS_DAX
 	if (IS_DAX(inode))
@@ -855,12 +879,34 @@ out:
 	return err;
 }
 
+static void ext4_trace_file_open_path(struct file *file, int flags)
+{
+	struct inode *inode = file_inode(file);
+	char *buf, *path;
+	kuid_t kuid = current_uid();
+
+	if (!trace_ext4_file_open_enabled())
+		return;
+	buf = __getname();
+	if (!buf)
+		return;
+	path = dentry_path_raw(file_dentry(file), buf, PATH_MAX);
+	if (IS_ERR(path))
+		goto out_putname;
+	trace_ext4_file_open(inode, flags, current->pid, kuid.val, path, current->comm);
+out_putname:
+	__putname(buf);
+}
+
 static int ext4_file_open(struct inode *inode, struct file *filp)
 {
 	int ret;
 
 	if (unlikely(ext4_forced_shutdown(inode->i_sb)))
 		return -EIO;
+
+	if (trace_ext4_file_open_enabled())
+		ext4_trace_file_open_path(filp, filp->f_flags);
 
 	ret = ext4_sample_last_mounted(inode->i_sb, filp->f_path.mnt);
 	if (ret)

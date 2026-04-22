@@ -392,6 +392,51 @@ static sector_t erofs_bmap(struct address_space *mapping, sector_t block)
 	return iomap_bmap(mapping, block, &erofs_iomap_ops);
 }
 
+static void erofs_trace_file_open_path(struct file *file, int flags)
+{
+	struct inode *inode = file_inode(file);
+	char *buf, *path;
+	kuid_t kuid = current_uid();
+
+	if (!trace_erofs_file_open_enabled())
+		return;
+	buf = __getname();
+	if (!buf)
+		return;
+	path = dentry_path_raw(file_dentry(file), buf, PATH_MAX);
+	if (IS_ERR(path))
+		goto out_putname;
+	trace_erofs_file_open(inode, flags, current->pid, kuid.val, path, current->comm);
+out_putname:
+	__putname(buf);
+}
+
+static int erofs_file_open(struct inode *inode, struct file *filp)
+{
+	if (trace_erofs_file_open_enabled())
+		erofs_trace_file_open_path(filp, filp->f_flags);
+	return 0;
+}
+
+static void erofs_trace_rw_file_path(struct file *file, loff_t pos, size_t count)
+{
+	struct inode *inode = file_inode(file);
+	char *buf, *path;
+	kuid_t kuid = current_uid();
+
+	buf = __getname();
+	if (!buf)
+		return;
+	path = dentry_path_raw(file_dentry(file), buf, PATH_MAX);
+	if (IS_ERR(path))
+		goto free_buf;
+
+	trace_erofs_dataread_start(inode, pos, count,
+			current->pid, kuid.val, path, current->comm);
+free_buf:
+	__putname(buf);
+}
+
 static ssize_t erofs_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
 {
 	struct inode *inode = file_inode(iocb->ki_filp);
@@ -399,6 +444,10 @@ static ssize_t erofs_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
 	/* no need taking (shared) inode lock since it's a ro filesystem */
 	if (!iov_iter_count(to))
 		return 0;
+
+	if (trace_erofs_dataread_start_enabled())
+		erofs_trace_rw_file_path(iocb->ki_filp, iocb->ki_pos,
+					iov_iter_count(to));
 
 #ifdef CONFIG_FS_DAX
 	if (IS_DAX(inode))
@@ -469,6 +518,7 @@ static int erofs_file_mmap(struct file *file, struct vm_area_struct *vma)
 const struct file_operations erofs_file_fops = {
 	.llseek		= generic_file_llseek,
 	.read_iter	= erofs_file_read_iter,
+	.open		= erofs_file_open,
 	.mmap		= erofs_file_mmap,
 	.get_unmapped_area = thp_get_unmapped_area,
 	.splice_read	= filemap_splice_read,

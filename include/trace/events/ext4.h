@@ -7,6 +7,7 @@
 
 #include <linux/writeback.h>
 #include <linux/tracepoint.h>
+#include <linux/fs.h>
 
 struct ext4_allocation_context;
 struct ext4_allocation_request;
@@ -1612,6 +1613,108 @@ TRACE_EVENT(ext4_ext_convert_to_initialized_fastpath,
 		  __entry->m_lblk, __entry->m_len,
 		  __entry->u_lblk, __entry->u_len, __entry->u_pblk,
 		  __entry->i_lblk, __entry->i_len, __entry->i_pblk)
+);
+
+TRACE_EVENT(ext4_file_open,
+
+	TP_PROTO(struct inode *inode, int flags, pid_t pid, uid_t uid,
+		 char *pathname, char *command),
+
+	TP_ARGS(inode, flags, pid, uid, pathname, command),
+
+	TP_STRUCT__entry(
+		__string(pathbuf, pathname)
+		__field(int, flags)
+		__string(cmdline, command)
+		__field(pid_t, pid)
+		__field(uid_t, uid)
+		__field(loff_t, i_size)
+		__field(ino_t, ino)
+		__field(long long, i_atime_sec)
+		__field(long long, i_mtime_sec)
+		__field(long long, i_ctime_sec)
+		__field(u32, i_atime_nsec)
+		__field(u32, i_mtime_nsec)
+		__field(u32, i_ctime_nsec)
+	),
+
+	TP_fast_assign(
+		__assign_str(pathbuf);
+		(void)strreplace(__get_str(pathbuf), ' ', '_');
+		__entry->flags = flags;
+		__assign_str(cmdline);
+		(void)strreplace(__get_str(cmdline), ' ', '_');
+		__entry->pid = pid;
+		__entry->uid = uid;
+		__entry->i_size = i_size_read(inode);
+		__entry->ino = inode->i_ino;
+		__entry->i_atime_sec = (long long)inode->i_atime_sec;
+		__entry->i_mtime_sec = (long long)inode->i_mtime_sec;
+		__entry->i_ctime_sec = (long long)inode->i_ctime_sec;
+		__entry->i_atime_nsec = inode->i_atime_nsec;
+		__entry->i_mtime_nsec = inode->i_mtime_nsec;
+		__entry->i_ctime_nsec = inode->i_ctime_nsec;
+	),
+
+	TP_printk("path=%s, flags=0x%x, cmd=%s, pid=%d, uid=%d, i_size=%llu, ino=%lu, atime=%lld.%09u, mtime=%lld.%09u, ctime=%lld.%09u",
+		  __get_str(pathbuf), __entry->flags,
+		  __get_str(cmdline), __entry->pid, __entry->uid,
+		  __entry->i_size, (unsigned long)__entry->ino,
+		  __entry->i_atime_sec, __entry->i_atime_nsec,
+		  __entry->i_mtime_sec, __entry->i_mtime_nsec,
+		  __entry->i_ctime_sec, __entry->i_ctime_nsec
+		)
+);
+
+DECLARE_EVENT_CLASS(ext4__rw_start,
+
+	TP_PROTO(struct inode *inode, loff_t offset, int bytes,
+			pid_t pid, uid_t uid, char *pathname, char *command),
+
+	TP_ARGS(inode, offset, bytes, pid, uid, pathname, command),
+
+	TP_STRUCT__entry(
+		__string(pathbuf, pathname)
+		__field(loff_t, offset)
+		__field(int, bytes)
+		__field(loff_t, i_size)
+		__string(cmdline, command)
+		__field(pid_t, pid)
+		__field(uid_t, uid)
+		__field(ino_t, ino)
+	),
+
+	TP_fast_assign(
+		/*
+		 * Replace the spaces in filenames and cmdlines
+		 * because this screws up the tooling that parses
+		 * the traces.
+		 */
+		__assign_str(pathbuf);
+		(void)strreplace(__get_str(pathbuf), ' ', '_');
+		__entry->offset = offset;
+		__entry->bytes = bytes;
+		__entry->i_size = i_size_read(inode);
+		__assign_str(cmdline);
+		(void)strreplace(__get_str(cmdline), ' ', '_');
+		__entry->pid = pid;
+		__entry->uid = uid;
+		__entry->ino = inode->i_ino;
+	),
+
+	TP_printk("entry_name %s, offset %llu, bytes %d, cmdline %s,"
+		" pid %d, uid=%d, i_size %llu, ino %lu",
+		__get_str(pathbuf), __entry->offset, __entry->bytes,
+		__get_str(cmdline), __entry->pid, __entry->uid, __entry->i_size,
+		(unsigned long) __entry->ino)
+);
+
+DEFINE_EVENT(ext4__rw_start, ext4_dataread_start,
+
+	TP_PROTO(struct inode *inode, loff_t offset, int bytes,
+		pid_t pid, uid_t uid, char *pathname, char *command),
+
+	TP_ARGS(inode, offset, bytes, pid, uid, pathname, command)
 );
 
 DECLARE_EVENT_CLASS(ext4__map_blocks_enter,

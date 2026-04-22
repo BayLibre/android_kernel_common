@@ -591,6 +591,25 @@ static int finish_preallocate_blocks(struct inode *inode)
 	return 0;
 }
 
+static void f2fs_trace_file_open_path(struct file *file, int flags)
+{
+	struct inode *inode = file_inode(file);
+	char *buf, *path;
+	kuid_t kuid = current_uid();
+
+	if (!trace_f2fs_file_open_enabled())
+		return;
+	buf = f2fs_getname(F2FS_I_SB(inode));
+	if (!buf)
+		return;
+	path = dentry_path_raw(file_dentry(file), buf, PATH_MAX);
+	if (IS_ERR(path))
+		goto out_putname;
+	trace_f2fs_file_open(inode, flags, current->pid, kuid.val, path, current->comm);
+out_putname:
+	f2fs_putname(buf);
+}
+
 static int f2fs_file_open(struct inode *inode, struct file *filp)
 {
 	int err = fscrypt_file_open(inode, filp);
@@ -607,6 +626,9 @@ static int f2fs_file_open(struct inode *inode, struct file *filp)
 
 	filp->f_mode |= FMODE_NOWAIT;
 	filp->f_mode |= FMODE_CAN_ODIRECT;
+
+	if (trace_f2fs_file_open_enabled())
+		f2fs_trace_file_open_path(filp, filp->f_flags);
 
 	trace_android_vh_f2fs_file_open(inode, filp);
 
@@ -4763,6 +4785,7 @@ static void f2fs_trace_rw_file_path(struct file *file, loff_t pos, size_t count,
 {
 	struct inode *inode = file_inode(file);
 	char *buf, *path;
+	kuid_t kuid = current_uid();
 
 	buf = f2fs_getname(F2FS_I_SB(inode));
 	if (!buf)
@@ -4772,10 +4795,10 @@ static void f2fs_trace_rw_file_path(struct file *file, loff_t pos, size_t count,
 		goto free_buf;
 	if (rw == WRITE)
 		trace_f2fs_datawrite_start(inode, pos, count,
-				current->pid, path, current->comm);
+				current->pid, kuid.val, path, current->comm);
 	else
 		trace_f2fs_dataread_start(inode, pos, count,
-				current->pid, path, current->comm);
+				current->pid, kuid.val, path, current->comm);
 free_buf:
 	f2fs_putname(buf);
 }
