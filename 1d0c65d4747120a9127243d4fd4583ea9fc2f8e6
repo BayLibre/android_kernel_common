@@ -54,6 +54,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c873da67_b75530c4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-23T18:53:25Z",
+      "side": 1,
+      "message": "Indeed, just tried with GCC and got the same failures..\n\n\u003e this is probably due to GCC optimization and memcpy on the other places are probably simple enough to verify on compile time: in those other hyp code I see it is mostly used with ARRAY_SIZE and sizeof which is known at compile time.\n\nMakes sense. BTW now I vaguely recall I had very similar observations in the past, although don\u0027t remember in what context exactly (possibly it was precisely with fortify-string.h too), and had the same thoughts on what could be the cause of such difference.",
+      "parentUuid": "a9b1c421_8c39390f",
+      "revId": "1d0c65d4747120a9127243d4fd4583ea9fc2f8e6",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df49cc1e_4769fc16",
