@@ -185,6 +185,7 @@ out_putfolio:
 out:
 	return false;
 }
+EXPORT_SYMBOL_GPL(isolate_movable_ops_page);
 
 /**
  * putback_movable_ops_page - putback an isolated movable_ops page
