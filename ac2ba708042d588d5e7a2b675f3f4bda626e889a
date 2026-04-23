@@ -52,6 +52,24 @@
       "parentUuid": "85bc7f95_50d3ea66",
       "revId": "ac2ba708042d588d5e7a2b675f3f4bda626e889a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09bf3eb3_4636c9ea",
+        "filename": "arch/x86/kvm/pkvm/panic.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-23T21:52:57Z",
+      "side": 1,
+      "message": "\u003e I actually thought about reusing it but came to the conclusion that we shouldn\u0027t since we are in the middle of fatal error handling. It seems to me that continuing and even ending up with malformed error logging is better than getting stuck with e.g. pkvm_wait_vcpu_kicked_out due to some bug (again we are in the middle of fatal error hyp handling). [...]\n\nYeah, I agree with that.\n\n\u003e What I think may help here is to actually use pkvm_udelay(100000) once more after native_x2apic_icr_write(APIC_DEST_ALLBUT | APIC_INT_ASSERT | APIC_DM_INIT, 0); in pkvm_panic().\n\nYeah, seems like a good idea.\n\nBut 100ms seems to much? (Among other things, it is a non-negligible delay from the user perspective, so it seems better to avoid such a long delay, if we can?)\n\nIt seems 10ms or even 1ms should be plenty enough? \n\nIn my recent observations, the time taken by pkvm_wait_vcpu_kicked_out() was reaching hundreds of microseconds in the worst cases, and it was due to a CPU sleeping in HLT/MWAIT in a C-state deeper than C1, so most of that time was taken by waking it up from this C-state. I guess theoretically this time may reach even a few milliseconds (e.g. on ARL on my thinkpad according to  `/sys/devices/system/cpu/cpu*/cpuidle/state3/latency` the exit latency of the deepest C-state is 1048us). But, ironically, in this precise case (i.e. when the CPU is sleeping, not executing instructions), we don\u0027t even need to immediately kick it out of VMX non-root, precisely because it is not executing instructions. [*]\n\nWhile in the case when the CPU is running, not sleeping (i.e. in the case when we actually need to immediately kick it), propagating INIT to the CPU\u0027s LAPIC over the system bus and flushing the CPU\u0027s instruction pipeline etc before the vmexit should all be much faster than a millisecond, I suppose?\n\n[*] Side note: also, even more ironically, in this case we don\u0027t even need to flush this CPU\u0027s TLB in host_ept_flush_tlb() or guest_ept_flush_tlb(), since hardware automatically flushes TLB when waking from those deep C-states. But unfortunately pKVM doesn\u0027t know in which C-state the target CPU is, so it needs to waste those hundreds of microseconds waiting for the CPU to wake up just to make an extra redundant TLB flush.",
+      "parentUuid": "0e5ffe85_d951874a",
+      "revId": "ac2ba708042d588d5e7a2b675f3f4bda626e889a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
