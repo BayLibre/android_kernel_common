@@ -512,6 +512,7 @@ void folio_mark_accessed(struct folio *folio)
 			__lru_cache_activate_folio(folio);
 		folio_clear_referenced(folio);
 		workingset_activation(folio);
+		trace_android_vh_spec_promote_folio(folio);
 	}
 	if (folio_test_idle(folio))
 		folio_clear_idle(folio);
@@ -533,10 +534,16 @@ void folio_add_lru(struct folio *folio)
 			folio_test_unevictable(folio), folio);
 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
 
+	trace_android_vh_folio_add_lru(folio);
 	/* see the comment in lru_gen_folio_seq() */
 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
-	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
-		folio_set_active(folio);
+	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
+		bool bypass = false;
+
+		trace_android_vh_folio_add_lru_folio_activate(folio, &bypass);
+		if (!bypass)
+			folio_set_active(folio);
+	}
 
 	folio_batch_add_and_move(folio, lru_add);
 }
@@ -996,6 +1003,7 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
 	for (i = 0, j = 0; i < folios->nr; i++) {
 		struct folio *folio = folios->folios[i];
 		unsigned int nr_refs = refs ? refs[i] : 1;
+		bool direct_free = false;
 
 		if (is_huge_zero_folio(folio))
 			continue;
@@ -1012,9 +1020,20 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
 			continue;
 		}
 
+		trace_android_vh_folios_put_refs_direct_free(folio, nr_refs,
+							&lruvec, &direct_free);
+		if (direct_free)
+			goto try_to_free;
+
+		trace_android_vh_folios_put_refs_direct_free_extent(folio, nr_refs,
+						&lruvec, flags, &direct_free);
+		if (direct_free)
+			goto try_to_free;
+
 		if (!folio_ref_sub_and_test(folio, nr_refs))
 			continue;
 
+try_to_free:
 		/* hugetlb has its own memcg */
 		if (folio_test_hugetlb(folio)) {
 			if (lruvec) {

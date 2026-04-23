@@ -23,6 +23,7 @@
 	__res.a1;							\
 })
 
+#ifdef CONFIG_CMA
 static phys_addr_t __topup_virt_to_phys(void *virt)
 {
 	return __pa(virt);
@@ -81,6 +82,12 @@ static int __kvm_iommu_topup_memcache_from_cma(size_t size, gfp_t gfp, size_t *a
 
 	return 0;
 }
+#else
+static int __kvm_iommu_topup_memcache_from_cma(size_t size, gfp_t gfp, size_t *allocated)
+{
+	return -ENOMEM;
+}
+#endif /* CONFIG_CMA */
 
 static int kvm_iommu_topup_memcache(struct arm_smccc_res *res, gfp_t gfp)
 {
@@ -130,9 +137,11 @@ static int kvm_iommu_topup_memcache(struct arm_smccc_res *res, gfp_t gfp)
 struct kvm_iommu_driver *iommu_driver;
 extern struct kvm_iommu_ops *kvm_nvhe_sym(kvm_iommu_ops);
 
+#ifdef CONFIG_CMA
 static struct cma *kvm_iommu_cma;
 extern phys_addr_t kvm_nvhe_sym(cma_base);
 extern size_t kvm_nvhe_sym(cma_size);
+#endif /* CONFIG_CMA */
 
 int kvm_iommu_register_driver(struct kvm_iommu_driver *kern_ops)
 {
@@ -159,6 +168,7 @@ int kvm_iommu_init_hyp(struct kvm_iommu_ops *hyp_ops,
 }
 EXPORT_SYMBOL(kvm_iommu_init_hyp);
 
+#ifdef CONFIG_CMA
 static int __init pkvm_iommu_cma_setup(struct reserved_mem *rmem)
 {
 	int err;
@@ -200,6 +210,19 @@ bool kvm_iommu_cma_release(struct page *p)
 	return cma_release(kvm_iommu_cma, p, 1 << pmd_order);
 }
 EXPORT_SYMBOL(kvm_iommu_cma_release);
+#else
+struct page *kvm_iommu_cma_alloc(void)
+{
+	return NULL;
+}
+EXPORT_SYMBOL(kvm_iommu_cma_alloc);
+
+bool kvm_iommu_cma_release(struct page *p)
+{
+	return false;
+}
+EXPORT_SYMBOL(kvm_iommu_cma_release);
+#endif /* CONFIG_CMA */
 
 int kvm_iommu_init_driver(void)
 {
@@ -337,6 +360,15 @@ int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 }
 EXPORT_SYMBOL(kvm_iommu_attach_dev);
 
+int kvm_iommu_attach_dev_nested(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
+				unsigned int endpoint, unsigned int pasid,
+				unsigned long flags, void *s1_desc_hva, size_t s1_desc_size)
+{
+	return kvm_call_hyp_nvhe_mc(__pkvm_host_iommu_attach_dev_nested, iommu_id, domain_id,
+				    endpoint, pasid, flags, s1_desc_hva, s1_desc_size);
+}
+EXPORT_SYMBOL(kvm_iommu_attach_dev_nested);
+
 int kvm_iommu_detach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 			 unsigned int endpoint, unsigned int pasid)
 {
@@ -344,6 +376,29 @@ int kvm_iommu_detach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 				endpoint, pasid);
 }
 EXPORT_SYMBOL(kvm_iommu_detach_dev);
+
+int kvm_iommu_detach_dev_nested(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
+			 unsigned int endpoint, unsigned int pasid)
+{
+	return kvm_call_hyp_nvhe(__pkvm_host_iommu_detach_dev_nested, iommu_id, domain_id,
+				endpoint, pasid);
+}
+EXPORT_SYMBOL(kvm_iommu_detach_dev_nested);
+
+int kvm_iommu_iotlb_inv_nested_domain(pkvm_handle_t domain_id, unsigned long iova,
+				      size_t size, size_t granule, bool leaf)
+{
+	return kvm_call_hyp_nvhe(__pkvm_host_iommu_iotlb_inv_nested_domain, domain_id, iova, size,
+				 granule, leaf);
+}
+EXPORT_SYMBOL(kvm_iommu_iotlb_inv_nested_domain);
+
+int kvm_iommu_nested_cfg_sync(pkvm_handle_t iommu_id, void *cmd_desc_hva, size_t cmd_desc_size)
+{
+	return kvm_call_hyp_nvhe(__pkvm_host_iommu_nested_cfg_sync, iommu_id, cmd_desc_hva,
+				 cmd_desc_size);
+}
+EXPORT_SYMBOL(kvm_iommu_nested_cfg_sync);
 
 int kvm_iommu_alloc_domain(pkvm_handle_t domain_id, int type)
 {
@@ -452,8 +507,7 @@ size_t kvm_iommu_map_sg(pkvm_handle_t domain_id, struct kvm_iommu_sg *sg,
 			}
 		}
 
-		kvm_iommu_topup_memcache(&res, gfp);
-	} while (nent);
+	} while (nent && !kvm_iommu_topup_memcache(&res, gfp));
 
 	return total_mapped;
 }

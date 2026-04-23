@@ -10,6 +10,7 @@
 #include <linux/ptrace.h>
 #include <linux/slab.h>
 #include <linux/pagemap.h>
+#include <linux/page_size_compat.h>
 #include <linux/pgsize_migration.h>
 #include <linux/mempolicy.h>
 #include <linux/rmap.h>
@@ -86,6 +87,7 @@ void task_mem(struct seq_file *m, struct mm_struct *mm)
 	SEQ_PUT_DEC(" kB\nVmSwap:\t", swap);
 	seq_puts(m, " kB\n");
 	hugetlb_report_usage(m, mm);
+	trace_android_vh_task_mem(m, mm);
 }
 #undef SEQ_PUT_DEC
 
@@ -98,13 +100,14 @@ unsigned long task_statm(struct mm_struct *mm,
 			 unsigned long *shared, unsigned long *text,
 			 unsigned long *data, unsigned long *resident)
 {
-	*shared = get_mm_counter_sum(mm, MM_FILEPAGES) +
-			get_mm_counter_sum(mm, MM_SHMEMPAGES);
-	*text = (PAGE_ALIGN(mm->end_code) - (mm->start_code & PAGE_MASK))
-								>> PAGE_SHIFT;
-	*data = mm->data_vm + mm->stack_vm;
-	*resident = *shared + get_mm_counter_sum(mm, MM_ANONPAGES);
-	return mm->total_vm;
+	*shared = __page_size_count(get_mm_counter_sum(mm, MM_FILEPAGES) +
+			get_mm_counter_sum(mm, MM_SHMEMPAGES));
+	*text = (__PAGE_ALIGN(mm->end_code) - (mm->start_code & __PAGE_MASK))
+								>> __PAGE_SHIFT;
+	*data = __page_size_count(mm->data_vm + mm->stack_vm);
+	*resident = __page_size_count(*shared + get_mm_counter_sum(mm, MM_ANONPAGES));
+
+	return __page_size_count(mm->total_vm);
 }
 
 #ifdef CONFIG_NUMA
@@ -474,6 +477,25 @@ show_map_vma(struct seq_file *m, struct vm_area_struct *vma)
 	start = vma->vm_start;
 	end = VMA_PAD_START(vma);
 
+	/*
+	 * The seq_file iterator for /proc/pid/maps can be interrupted and
+	 * restarted. The restart logic uses the vm_end of the last VMA as
+	 * the new position (see get_vma_at_pos()).
+	 *
+	 * In page size compatibility mode, this can cause the scan to restart
+	 * exactly at an anonymous "fixup" VMA (__VM_NO_COMPAT). However, the
+	 * logic in __fold_filemap_fixup_entry() depends on processing the
+	 * main file-backed VMA first to correctly fold the subsequent fixup
+	 * VMA into it.
+	 *
+	 * If we start on a fixup VMA, the folding is missed, and it gets
+	 * printed as a separate, overlapping map. To prevent this, simply
+	 * skip printing these entries. They are only meant to be merged with
+	 * their preceding VMA, not displayed directly.
+	 */
+	if (flags & __VM_NO_COMPAT)
+		return;
+
 	__fold_filemap_fixup_entry(&((struct proc_maps_private *)m->private)->iter, &end);
 
 	show_vma_header_prefix(m, start, end, flags, pgoff, dev, ino);
@@ -496,7 +518,7 @@ static int show_map(struct seq_file *m, void *v)
 {
 	struct vm_area_struct *vma = v;
 
-	if (vma_pages(vma))
+	if (vma_data_pages(vma))
 		show_map_vma(m, vma);
 
 	show_map_pad_vma(vma, m, show_map_vma, false);
@@ -596,6 +618,7 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
 	struct procmap_query karg;
 	struct vm_area_struct *vma;
 	struct mm_struct *mm;
+	struct file *vm_file = NULL;
 	const char *name = NULL;
 	char build_id_buf[BUILD_ID_SIZE_MAX], *name_buf = NULL;
 	__u64 usize;
@@ -668,21 +691,6 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
 		karg.inode = 0;
 	}
 
-	if (karg.build_id_size) {
-		__u32 build_id_sz;
-
-		err = build_id_parse(vma, build_id_buf, &build_id_sz);
-		if (err) {
-			karg.build_id_size = 0;
-		} else {
-			if (karg.build_id_size < build_id_sz) {
-				err = -ENAMETOOLONG;
-				goto out;
-			}
-			karg.build_id_size = build_id_sz;
-		}
-	}
-
 	if (karg.vma_name_size) {
 		size_t name_buf_sz = min_t(size_t, PATH_MAX, karg.vma_name_size);
 		const struct path *path;
@@ -716,9 +724,33 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
 		karg.vma_name_size = name_sz;
 	}
 
+	if (karg.build_id_size && vma->vm_file)
+		vm_file = get_file(vma->vm_file);
+
 	/* unlock vma or mmap_lock, and put mm_struct before copying data to user */
 	query_vma_teardown(mm, vma);
 	mmput(mm);
+
+	if (karg.build_id_size) {
+		__u32 build_id_sz;
+
+		if (vm_file)
+			err = build_id_parse_file(vm_file, build_id_buf, &build_id_sz);
+		else
+			err = -ENOENT;
+		if (err) {
+			karg.build_id_size = 0;
+		} else {
+			if (karg.build_id_size < build_id_sz) {
+				err = -ENAMETOOLONG;
+				goto out;
+			}
+			karg.build_id_size = build_id_sz;
+		}
+	}
+
+	if (vm_file)
+		fput(vm_file);
 
 	if (karg.vma_name_size && copy_to_user(u64_to_user_ptr(karg.vma_name_addr),
 					       name, karg.vma_name_size)) {
@@ -739,6 +771,8 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
 out:
 	query_vma_teardown(mm, vma);
 	mmput(mm);
+	if (vm_file)
+		fput(vm_file);
 	kfree(name_buf);
 	return err;
 }
@@ -1308,7 +1342,7 @@ static int show_smap(struct seq_file *m, void *v)
 	struct vm_area_struct *vma = v;
 	struct mem_size_stats mss = {};
 
-	if (!vma_pages(vma))
+	if (!vma_data_pages(vma))
 		goto show_pad;
 
 	smap_gather_stats(vma, &mss, 0);
@@ -1344,6 +1378,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
 	struct vm_area_struct *vma;
 	unsigned long vma_start = 0, last_vma_end = 0;
 	int ret = 0;
+	int nr_contended = 0;
 	VMA_ITERATOR(vmi, mm, 0);
 
 	priv->task = get_proc_task(priv->inode);
@@ -1377,6 +1412,13 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
 		if (mmap_lock_is_contended(mm)) {
 			vma_iter_invalidate(&vmi);
 			mmap_read_unlock(mm);
+			nr_contended++;
+			trace_android_vh_smaps_rollup_contended(mm->map_count,
+					nr_contended, &ret);
+			if (ret) {
+				release_task_mempolicy(priv);
+				goto out_put_mm;
+			}
 			ret = mmap_read_lock_killable(mm);
 			if (ret) {
 				release_task_mempolicy(priv);
@@ -1486,8 +1528,8 @@ static int smaps_rollup_open(struct inode *inode, struct file *file)
 
 	priv->inode = inode;
 	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
-	if (IS_ERR(priv->mm)) {
-		ret = PTR_ERR(priv->mm);
+	if (IS_ERR_OR_NULL(priv->mm)) {
+		ret = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
 
 		single_release(inode, file);
 		goto out_free;
@@ -2278,8 +2320,8 @@ static int pagemap_open(struct inode *inode, struct file *file)
 	struct mm_struct *mm;
 
 	mm = proc_mem_open(inode, PTRACE_MODE_READ);
-	if (IS_ERR(mm))
-		return PTR_ERR(mm);
+	if (IS_ERR_OR_NULL(mm))
+		return mm ? PTR_ERR(mm) : -ESRCH;
 	file->private_data = mm;
 	return 0;
 }

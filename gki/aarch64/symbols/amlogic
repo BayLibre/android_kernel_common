@@ -140,6 +140,7 @@
   clk_enable
   clk_fixed_factor_ops
   clk_gate_ops
+  clk_gate_restore_context
   clk_get
   __clk_get_hw
   __clk_get_name
@@ -193,6 +194,8 @@
   component_master_del
   component_match_add_release
   component_unbind_all
+  config_group_find_item
+  config_item_init_type_name
   console_printk
   __const_udelay
   consume_skb
@@ -709,6 +712,8 @@
   drm_encoder_cleanup
   drm_encoder_init
   __drm_err
+  drm_event_cancel_free
+  drm_event_reserve_init
   drm_format_info
   drm_format_info_block_height
   drm_format_info_block_width
@@ -1154,12 +1159,18 @@
   inode_nohighmem
   inode_set_bytes
   input_allocate_device
+  input_close_device
   input_event
   input_free_device
+  input_open_device
   input_register_device
+  input_register_handle
+  input_register_handler
   input_set_abs_params
   input_set_capability
   input_unregister_device
+  input_unregister_handle
+  input_unregister_handler
   insert_inode_locked
   invalidate_bdev
   invalidate_inode_buffers
@@ -1536,6 +1547,7 @@
   noop_backing_dev_info
   noop_direct_IO
   noop_llseek
+  nop_mnt_idmap
   nr_cpu_ids
   ns_capable
   ns_to_timespec64
@@ -1833,6 +1845,7 @@
   __pm_runtime_use_autosuspend
   __pm_stay_awake
   pm_stay_awake
+  pm_suspend
   pm_wakeup_dev_event
   pm_wakeup_ws_event
   pm_wq
@@ -1962,6 +1975,7 @@
   regmap_multi_reg_write
   regmap_raw_write
   regmap_read
+  regmap_test_bits
   regmap_update_bits_base
   regmap_write
   regulator_bulk_disable
@@ -2018,6 +2032,7 @@
   round_jiffies_up
   rps_needed
   rtc_add_group
+  rtc_read_alarm
   rtc_time64_to_tm
   rtc_tm_to_time64
   rtc_update_irq
@@ -2381,6 +2396,7 @@
   system_highpri_wq
   system_long_wq
   system_power_efficient_wq
+  system_state
   system_unbound_wq
   system_wq
   sys_tz
@@ -2409,6 +2425,7 @@
   _totalram_pages
   touch_softlockup_watchdog
   trace_clock_local
+  trace_dump_stack
   trace_event_buffer_commit
   trace_event_buffer_reserve
   trace_event_ignore_this_pid
@@ -2439,11 +2456,14 @@
   __traceiter_android_vh_kmalloc_large_node_bypass
   __traceiter_android_vh_ksize
   __traceiter_android_vh_look_around_migrate_folio
+  __traceiter_android_vh_may_unmap_folio
   __traceiter_android_vh_poison_kmalloc_large_redzone
   __traceiter_android_vh_printk_caller
   __traceiter_android_vh_printk_caller_id
   __traceiter_android_vh_printk_save_irq
   __traceiter_android_vh_sched_show_task
+  __traceiter_android_vh_watchdog_timer_softlockup
+  __traceiter_android_vh_wq_lockup_pool
   __traceiter_gpu_mem_total
   __traceiter_irq_handler_entry
   __traceiter_irq_handler_exit
@@ -2452,6 +2472,7 @@
   __traceiter_mmap_lock_start_locking
   __traceiter_mm_page_alloc
   __traceiter_mm_page_free
+  __traceiter_rcu_stall_warning
   __traceiter_rwmmio_post_read
   __traceiter_rwmmio_post_write
   __traceiter_rwmmio_read
@@ -2482,11 +2503,14 @@
   __tracepoint_android_vh_kmalloc_large_node_bypass
   __tracepoint_android_vh_ksize
   __tracepoint_android_vh_look_around_migrate_folio
+  __tracepoint_android_vh_may_unmap_folio
   __tracepoint_android_vh_poison_kmalloc_large_redzone
   __tracepoint_android_vh_printk_caller
   __tracepoint_android_vh_printk_caller_id
   __tracepoint_android_vh_printk_save_irq
   __tracepoint_android_vh_sched_show_task
+  __tracepoint_android_vh_watchdog_timer_softlockup
+  __tracepoint_android_vh_wq_lockup_pool
   __tracepoint_gpu_mem_total
   __tracepoint_irq_handler_entry
   __tracepoint_irq_handler_exit
@@ -2497,6 +2521,7 @@
   __tracepoint_mm_page_free
   tracepoint_probe_register
   tracepoint_probe_unregister
+  __tracepoint_rcu_stall_warning
   __tracepoint_rwmmio_post_read
   __tracepoint_rwmmio_post_write
   __tracepoint_rwmmio_read
@@ -2523,6 +2548,7 @@
   tty_flip_buffer_push
   tty_get_char_size
   tty_hangup
+  __tty_insert_flip_string_flags
   tty_kref_put
   tty_ldisc_deref
   tty_ldisc_ref
@@ -2533,6 +2559,7 @@
   tty_port_open
   tty_port_register_device
   tty_port_tty_get
+  tty_port_tty_hangup
   tty_port_tty_wakeup
   tty_put_char
   tty_register_driver
@@ -2604,7 +2631,10 @@
   usb_anchor_empty
   usb_anchor_urb
   usb_autopm_get_interface
+  usb_autopm_get_interface_async
+  usb_autopm_get_interface_no_resume
   usb_autopm_put_interface
+  usb_autopm_put_interface_async
   usb_bulk_msg
   usb_clear_halt
   usb_control_msg
@@ -2626,6 +2656,9 @@
   usb_find_interface
   usb_free_coherent
   usb_free_urb
+  usb_function_activate
+  usb_function_deactivate
+  usb_gadget_frame_number
   usb_gadget_giveback_request
   usb_gadget_map_request_by_dev
   usb_gadget_register_driver_owner
@@ -2663,6 +2696,8 @@
   usb_lock_device_for_reset
   usb_match_id
   usb_match_one_id
+  usbnet_cdc_zte_rx_fixup
+  usbnet_generic_cdc_bind
   usb_phy_set_charger_current
   usb_poison_urb
   usb_put_dev
@@ -2687,6 +2722,8 @@
   usb_serial_generic_tiocmiwait
   usb_serial_generic_unthrottle
   usb_serial_handle_dcd_change
+  usb_serial_port_softint
+  __usb_serial_register_drivers
   usb_set_interface
   usb_sg_init
   usb_sg_wait
@@ -2704,6 +2741,7 @@
   utf8_data_table
   utf8_to_utf32
   uuid_null
+  uvc_format_by_guid
   v4l2_async_unregister_subdev
   v4l2_ctrl_add_handler
   v4l2_ctrl_find
@@ -2730,6 +2768,7 @@
   v4l2_fh_exit
   v4l2_fh_init
   v4l2_fh_open
+  v4l2_fill_pixfmt
   __v4l2_find_nearest_size
   v4l2_fwnode_endpoint_alloc_parse
   v4l2_fwnode_endpoint_free
@@ -2754,6 +2793,7 @@
   v4l2_m2m_qbuf
   v4l2_m2m_release
   v4l2_m2m_try_schedule
+  v4l2_simplify_fraction
   v4l2_src_change_event_subscribe
   v4l2_subdev_link_validate
   __v4l2_subdev_state_get_format
@@ -2790,6 +2830,7 @@
   video_ioctl2
   __video_register_device
   video_unregister_device
+  __vmalloc_array_noprof
   vmalloc_noprof
   vmalloc_nr_pages
   vmalloc_to_page

@@ -44,6 +44,7 @@ _COMMON_GKI_MODULES_LIST = [
     "drivers/pps/pps_core.ko",
     "drivers/ptp/ptp.ko",
     "drivers/usb/class/cdc-acm.ko",
+    "drivers/usb/host/xhci-pci-renesas.ko",
     "drivers/usb/mon/usbmon.ko",
     "drivers/usb/serial/ftdi_sio.ko",
     "drivers/usb/serial/usbserial.ko",
@@ -83,7 +84,6 @@ _COMMON_GKI_MODULES_LIST = [
     "net/rfkill/rfkill.ko",
     "net/tipc/tipc.ko",
     "net/tipc/tipc_diag.ko",
-    "net/tls/tls.ko",
     "net/vmw_vsock/vmw_vsock_virtio_transport.ko",
 ]
 
@@ -102,6 +102,7 @@ _ARM64_GKI_MODULES_LIST = [
     "drivers/char/hw_random/cctrng.ko",
     "drivers/misc/open-dice.ko",
     "drivers/ptp/ptp_kvm.ko",
+    "drivers/virt/halla/exynos-hvm.ko",
 ]
 
 _X86_GKI_MODULES_LIST = [

@@ -328,56 +328,6 @@ err_free_reqs:
 	return ret;
 }
 
-/*
- * Handle split huge pages which have not been reported to the kvm_pinned_page tree.
- */
-static int pkvm_call_hyp_nvhe_ppage(struct kvm_pinned_page *ppage,
-				    int (*call_hyp_nvhe)(u64 pfn, u64 gfn, u8 order, void *args),
-				    void *args)
-{
-	size_t page_size, size = PAGE_SIZE << ppage->order;
-	u64 pfn = page_to_pfn(ppage->page);
-	u8 order = ppage->order;
-	u64 gfn = ppage->ipa >> PAGE_SHIFT;
-
-	while (size) {
-		int err = call_hyp_nvhe(pfn, gfn, order, args);
-
-		switch (err) {
-		case -E2BIG:
-			if (order)
-				order = 0;
-			else
-				/* Something is really wrong ... */
-				return -EINVAL;
-			break;
-		case 0:
-			page_size = PAGE_SIZE << order;
-			gfn += 1 << order;
-			pfn += 1 << order;
-
-			if (page_size > size)
-				return -EINVAL;
-
-			size -= page_size;
-			break;
-		default:
-			return err;
-		}
-	}
-
-	return 0;
-}
-
-static int __reclaim_dying_guest_page_call(u64 pfn, u64 gfn, u8 order, void *args)
-{
-	struct kvm *host_kvm = args;
-
-	return kvm_call_hyp_nvhe(__pkvm_reclaim_dying_guest_page,
-				 host_kvm->arch.pkvm.handle,
-				 pfn, gfn, order);
-}
-
 /* __pkvm_notify_guest_vm_avail_retry - notify secure of the VM state change
  * @host_kvm: the kvm structure
  * @availability_msg: the VM state that will be notified
@@ -446,8 +396,9 @@ retry:
 	while (ppage) {
 		struct kvm_pinned_page *next;
 
-		ret = pkvm_call_hyp_nvhe_ppage(ppage, __reclaim_dying_guest_page_call,
-					       host_kvm);
+		ret = kvm_call_hyp_nvhe(__pkvm_reclaim_dying_guest_page, host_kvm->arch.pkvm.handle,
+					page_to_pfn(ppage->page), ppage->ipa >> PAGE_SHIFT,
+					ppage->order);
 		cond_resched();
 		if (ret == -EBUSY) {
 			nr_busy++;
@@ -1173,27 +1124,6 @@ static struct module *pkvm_el2_mod_to_module(struct pkvm_el2_module *hyp_mod)
 	return container_of(arch, struct module, arch);
 }
 
-#ifdef CONFIG_PKVM_STACKTRACE
-unsigned long pkvm_el2_mod_kern_va(unsigned long addr)
-{
-	struct pkvm_el2_module *mod;
-
-	list_for_each_entry(mod, &pkvm_modules, node) {
-		unsigned long hyp_va = (unsigned long)mod->hyp_va;
-		size_t len = (unsigned long)mod->sections.end -
-			     (unsigned long)mod->sections.start;
-
-		if (addr >= hyp_va && addr < (hyp_va + len))
-			return (unsigned long)mod->sections.start +
-				(addr - hyp_va);
-	}
-
-	return 0;
-}
-#else
-unsigned long pkvm_el2_mod_kern_va(unsigned long addr) { return 0; }
-#endif
-
 static struct pkvm_el2_module *pkvm_el2_mod_lookup_symbol(const char *name,
 							  unsigned long *addr)
 {
@@ -1222,38 +1152,51 @@ static bool within_pkvm_module_section(struct pkvm_module_section *section,
 }
 
 static int pkvm_reloc_imported_symbol(struct pkvm_el2_module *importer,
+				      struct pkvm_el2_module *exporter,
 				      struct pkvm_el2_sym *sym,
-				      unsigned long hyp_dst)
+				      unsigned long sym_addr)
 {
-	s64 val, val_max = (s64)(~(BIT(25) - 1)) << 2;
 	u32 insn = le32_to_cpu(*sym->rela_pos);
-	unsigned long hyp_src;
-	u64 imm;
+	unsigned long hyp_orig, hyp_dst;
+	u64 imm, offset;
 
 	if (!within_pkvm_module_section(&importer->text,
-					(unsigned long)sym->rela_pos))
+					(unsigned long)sym->rela_pos)) {
+		pr_warn("pKVM symbol %s not part of %s .text section\n",
+			sym->name,
+			pkvm_el2_mod_to_module(importer)->name);
 		return -EINVAL;
+	}
 
-	hyp_src = (unsigned long)importer->hyp_va +
-		((void *)sym->rela_pos - importer->text.start);
+	if (!within_pkvm_module_section(&exporter->text, sym_addr)) {
+		pr_warn("pKVM symbol %s not part of %s .text section\n",
+			sym->name,
+			pkvm_el2_mod_to_module(exporter)->name);
+		return -EINVAL;
+	}
+
+	hyp_dst = __pkvm_el2_mod_va(exporter, (void *)sym_addr);
+	hyp_orig = __pkvm_el2_mod_va(importer, (void *)sym->rela_pos);
 
 	/*
-	 * Module hyp VAs are allocated going upward. Source MUST have a
-	 * lower address than the destination
+	 * Module hyp VAs are allocated going upward. The exporter being loaded
+	 * before the importer, the destination address MUST be lower than the
+	 * origin.
 	 */
-	if (WARN_ON(hyp_src < hyp_dst))
+	if (WARN_ON(hyp_dst > hyp_orig))
 		return -EINVAL;
 
-	val = hyp_dst - hyp_src;
-	if (val < val_max) {
+	offset = hyp_orig - hyp_dst;
+
+	/* imm26 is 2's complement and equals to offset / 4 */
+	offset >>= 2;
+	if (offset > BIT(25)) {
 		pr_warn("Exported symbol %s is too far for the relocation in module %s\n",
 			sym->name, pkvm_el2_mod_to_module(importer)->name);
 		return -ERANGE;
 	}
 
-	/* offset encoded as imm26 * 4 */
-	imm = (val >> 2) & (BIT(26) - 1);
-
+	imm = -offset;
 	insn = aarch64_insn_encode_immediate(AARCH64_INSN_IMM_26, insn, imm);
 
 	return aarch64_insn_patch_text_nosync((void *)sym->rela_pos, insn);
@@ -1261,30 +1204,22 @@ static int pkvm_reloc_imported_symbol(struct pkvm_el2_module *importer,
 
 static int pkvm_reloc_imported_symbols(struct pkvm_el2_module *importer)
 {
-	unsigned long addr, offset, hyp_addr;
-	struct pkvm_el2_module *exporter;
 	struct pkvm_el2_sym *sym;
 
 	list_for_each_entry(sym, &importer->ext_symbols, node) {
+		struct pkvm_el2_module *exporter;
+		unsigned long addr;
+		int ret;
+
 		exporter = pkvm_el2_mod_lookup_symbol(sym->name, &addr);
 		if (!exporter) {
-			pr_warn("pKVM symbol %s not exported by any module\n",
-				sym->name);
+			pr_warn("pKVM symbol %s not exported by any module\n", sym->name);
 			return -EINVAL;
 		}
 
-		if (!within_pkvm_module_section(&exporter->text, addr)) {
-			pr_warn("pKVM symbol %s not part of %s .text section\n",
-				sym->name,
-				pkvm_el2_mod_to_module(exporter)->name);
-			return -EINVAL;
-		}
-
-		/* hyp addr in the exporter */
-		offset = addr - (unsigned long)exporter->text.start;
-		hyp_addr = (unsigned long)exporter->hyp_va + offset;
-
-		pkvm_reloc_imported_symbol(importer, sym, hyp_addr);
+		ret = pkvm_reloc_imported_symbol(importer, exporter, sym, addr);
+		if (ret)
+			return ret;
 	}
 
 	return 0;
@@ -1424,6 +1359,78 @@ static void pkvm_module_kmemleak(struct module *this,
 	kmemleak_scan_area(start, end - start, GFP_KERNEL);
 }
 
+#define PKVM_EL2_MOD_DIRECT_RANGE	SZ_128M
+
+static unsigned long mod_direct_kern_base;
+static unsigned long mod_direct_hyp_base;
+
+unsigned long pkvm_el2_mod_kern_va(unsigned long addr)
+{
+#ifdef CONFIG_PKVM_STACKTRACE
+	struct pkvm_el2_module *mod;
+
+	/* Fast lookup into the direct range */
+	if (mod_direct_hyp_base &&
+	    addr >= mod_direct_hyp_base &&
+	    addr < mod_direct_hyp_base + PKVM_EL2_MOD_DIRECT_RANGE)
+		return mod_direct_kern_base + (addr - mod_direct_hyp_base);
+
+	list_for_each_entry(mod, &pkvm_modules, node) {
+		unsigned long hyp_va = (unsigned long)mod->hyp_va;
+		size_t len = (unsigned long)mod->sections.end -
+			     (unsigned long)mod->sections.start;
+
+		if (addr >= hyp_va && addr < (hyp_va + len))
+			return (unsigned long)mod->sections.start +
+				(addr - hyp_va);
+	}
+#endif
+	return 0;
+}
+
+static void *pkvm_el2_mod_alloc_hyp_va(size_t size)
+{
+	struct arm_smccc_res res;
+
+	arm_smccc_1_1_hvc(KVM_HOST_SMCCC_FUNC(__pkvm_alloc_module_va), size >> PAGE_SHIFT, &res);
+	if (res.a0 != SMCCC_RET_SUCCESS || !res.a1)
+		return NULL;
+
+	return (void *)res.a1;
+}
+
+static __ref void *pkvm_el2_mod_alloc_mod_direct(unsigned long start, unsigned long end)
+{
+	if (mod_direct_hyp_base)
+		goto alloc;
+
+	mod_direct_kern_base = module_direct_base ?: module_plt_base;
+	if (WARN_ON(!mod_direct_kern_base))
+		return NULL;
+
+	mod_direct_hyp_base = (unsigned long)pkvm_el2_mod_alloc_hyp_va(PKVM_EL2_MOD_DIRECT_RANGE);
+	if (!mod_direct_hyp_base) {
+		mod_direct_kern_base = 0;
+		return NULL;
+	}
+
+alloc:
+	if (start < mod_direct_kern_base ||
+	    end > mod_direct_kern_base + PKVM_EL2_MOD_DIRECT_RANGE)
+		return NULL;
+
+	return (void *)(mod_direct_hyp_base + (start - mod_direct_kern_base));
+}
+
+static void *pkvm_el2_mod_alloc_va(unsigned long start, unsigned long end)
+{
+	void *hyp_va;
+
+	hyp_va = pkvm_el2_mod_alloc_mod_direct(start, end);
+
+	return hyp_va ?: pkvm_el2_mod_alloc_hyp_va(end - start);
+}
+
 int __pkvm_load_el2_module(struct module *this, unsigned long *token)
 {
 	struct pkvm_el2_module *mod = &this->arch.hyp;
@@ -1436,7 +1443,6 @@ int __pkvm_load_el2_module(struct module *this, unsigned long *token)
 		{ &mod->data, KVM_PGTABLE_PROT_R | KVM_PGTABLE_PROT_W },
 	};
 	void *start, *end, *hyp_va, *mod_remap;
-	struct arm_smccc_res res;
 	kvm_nvhe_reloc_t *endrel;
 	int ret, i, secs_first;
 	size_t size;
@@ -1470,14 +1476,12 @@ int __pkvm_load_el2_module(struct module *this, unsigned long *token)
 	mod->sections.start = start;
 	mod->sections.end = end;
 
-	arm_smccc_1_1_hvc(KVM_HOST_SMCCC_FUNC(__pkvm_alloc_module_va),
-			  size >> PAGE_SHIFT, &res);
-	if (res.a0 != SMCCC_RET_SUCCESS || !res.a1) {
+	hyp_va = pkvm_el2_mod_alloc_va((unsigned long)start, (unsigned long)end);
+	if (!hyp_va) {
 		kvm_err("Failed to allocate hypervisor VA space for EL2 module\n");
 		module_put(this);
-		return res.a0 == SMCCC_RET_SUCCESS ? -ENOMEM : -EPERM;
+		return -ENOMEM;
 	}
-	hyp_va = (void *)res.a1;
 	mod->hyp_va = hyp_va;
 
 	/*
@@ -1488,15 +1492,13 @@ int __pkvm_load_el2_module(struct module *this, unsigned long *token)
 	if (token)
 		*token = (unsigned long)hyp_va;
 
-	mod->sections.start = start;
-	mod->sections.end = end;
-
-	endrel = (void *)mod->relocs + mod->nr_relocs * sizeof(*endrel);
-	kvm_apply_hyp_module_relocations(mod, mod->relocs, endrel);
-
+	/* Relies on kvm_apply_hyp_module_relocations() sync_icache_aliases */
 	ret = pkvm_reloc_imported_symbols(mod);
 	if (ret)
 		return ret;
+
+	endrel = (void *)mod->relocs + mod->nr_relocs * sizeof(*endrel);
+	kvm_apply_hyp_module_relocations(mod, mod->relocs, endrel);
 
 	pkvm_module_kmemleak(this, secs_map, ARRAY_SIZE(secs_map));
 
@@ -1526,7 +1528,8 @@ int __pkvm_load_el2_module(struct module *this, unsigned long *token)
 	if (ret) {
 		kvm_err("Failed to init EL2 module: %d\n", ret);
 		list_del(&mod->node);
-		pkvm_unmap_module_sections(secs_map, hyp_va, ARRAY_SIZE(secs_map));
+		pkvm_unmap_module_sections(secs_map + secs_first, hyp_va,
+					   ARRAY_SIZE(secs_map) - secs_first);
 		module_put(this);
 		return ret;
 	}

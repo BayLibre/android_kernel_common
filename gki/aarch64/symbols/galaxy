@@ -7,7 +7,9 @@
   compact_node_async
   delete_from_swap_cache
   dma_heap_try_get_pool_size_kb
+  dummy_irq_chip
   file_bdev
+  filemap_fdatawrite_range_kick
   file_ra_state_init
   file_write_and_wait_range
   fixed_size_llseek
@@ -24,9 +26,13 @@
   mas_walk
   mas_prev
   mas_next
+  mii_check_media
+  mii_ethtool_gset
   mm_access
   param_set_uint
+  phy_mii_ioctl
   pidfd_get_pid
+  platform_get_ethdev_address
   prep_compound_page
   prep_new_hpage
   proc_set_size
@@ -53,6 +59,8 @@
   __traceiter_android_rvh_report_bug
   __traceiter_android_rvh_try_alloc_pages_gfp
   __traceiter_android_vh_adjust_nr_reclaimed
+  __traceiter_android_vh_exit_oom_victim
+  __traceiter_android_vh_oom_killer_disable
   __traceiter_android_vh_alloc_contig_range_not_isolated
   __traceiter_android_vh_alloc_pages_slowpath_start
   __traceiter_android_vh_alloc_pages_slowpath_end
@@ -83,6 +91,8 @@
   __traceiter_android_vh_madvise_pageout_return_error
   __traceiter_android_vh_meminfo_proc_show
   __traceiter_android_vh_migration_target_bypass
+  __traceiter_android_vh_mm_free
+  __traceiter_android_vh_mm_init
   __traceiter_android_vh_mutex_wait_finish
   __traceiter_android_vh_mutex_wait_start
   __traceiter_android_vh_page_cache_readahead_start
@@ -101,9 +111,11 @@
   __traceiter_android_vh_shmem_mod_swapped
   __traceiter_android_vh_show_smap
   __traceiter_android_vh_smaps_pte_entry
+  __traceiter_android_vh_smaps_rollup_contended
   __traceiter_android_vh_split_large_folio_bypass
   __traceiter_android_vh_sync_irq_wait_finish
   __traceiter_android_vh_sync_irq_wait_start
+  __traceiter_android_vh_task_mem
   __traceiter_android_vh_try_to_freeze_todo
   __traceiter_android_vh_try_to_freeze_todo_unfrozen
   __traceiter_android_vh_tune_scan_control
@@ -116,13 +128,16 @@
   __traceiter_android_vh_zs_shrinker_bypass
   __traceiter_console
   __traceiter_error_report_end
+  __traceiter_rss_stat
   __traceiter_vm_unmapped_area
+  __traceiter_mark_victim
   __traceiter_android_vh_handle_add_skipped_blks
   __traceiter_android_vh_handle_data_error
   __traceiter_android_vh_handle_metadata_error
   __traceiter_android_vh_handle_add_blks_map
   __traceiter_android_vh_handle_add_fec_mismatch_blks
   __traceiter_android_vh_handle_get_b_info
+  __traceiter_android_vh_reasm_timer_adjust
   __tracepoint_android_rvh_arm64_serror_panic
   __tracepoint_android_rvh_die_kernel_fault
   __tracepoint_android_rvh_do_el1_bti
@@ -136,6 +151,8 @@
   __tracepoint_android_rvh_report_bug
   __tracepoint_android_rvh_try_alloc_pages_gfp
   __tracepoint_android_vh_adjust_nr_reclaimed
+  __tracepoint_android_vh_exit_oom_victim
+  __tracepoint_android_vh_oom_killer_disable
   __tracepoint_android_vh_alloc_contig_range_not_isolated
   __tracepoint_android_vh_alloc_pages_slowpath_start
   __tracepoint_android_vh_alloc_pages_slowpath_end
@@ -166,6 +183,8 @@
   __tracepoint_android_vh_madvise_pageout_return_error
   __tracepoint_android_vh_meminfo_proc_show
   __tracepoint_android_vh_migration_target_bypass
+  __tracepoint_android_vh_mm_free
+  __tracepoint_android_vh_mm_init
   __tracepoint_android_vh_mutex_wait_finish
   __tracepoint_android_vh_mutex_wait_start
   __tracepoint_android_vh_page_cache_readahead_start
@@ -184,9 +203,11 @@
   __tracepoint_android_vh_shmem_mod_swapped
   __tracepoint_android_vh_show_smap
   __tracepoint_android_vh_smaps_pte_entry
+  __tracepoint_android_vh_smaps_rollup_contended
   __tracepoint_android_vh_split_large_folio_bypass
   __tracepoint_android_vh_sync_irq_wait_finish
   __tracepoint_android_vh_sync_irq_wait_start
+  __tracepoint_android_vh_task_mem
   __tracepoint_android_vh_tune_scan_control
   __tracepoint_android_vh_try_to_freeze_todo
   __tracepoint_android_vh_try_to_freeze_todo_unfrozen
@@ -199,11 +220,34 @@
   __tracepoint_android_vh_zs_shrinker_bypass
   __tracepoint_console
   __tracepoint_error_report_end
+  __tracepoint_rss_stat
   __tracepoint_vm_unmapped_area
+  __tracepoint_mark_victim
   __tracepoint_android_vh_handle_add_fec_mismatch_blks
   __tracepoint_android_vh_handle_data_error
   __tracepoint_android_vh_handle_metadata_error
   __tracepoint_android_vh_handle_add_skipped_blks
   __tracepoint_android_vh_handle_add_blks_map
   __tracepoint_android_vh_handle_get_b_info
+  __tracepoint_android_vh_reasm_timer_adjust
+  usb_alloc_dev
+  usb_set_device_state
+  usbnet_change_mtu
+  usbnet_defer_kevent
+  usbnet_get_drvinfo
+  usbnet_get_endpoints
+  usbnet_get_link
+  usbnet_get_link_ksettings_mii
+  usbnet_get_msglevel
+  usbnet_nway_reset
+  usbnet_read_cmd
+  usbnet_read_cmd_nopm
+  usbnet_set_link_ksettings_mii
+  usbnet_set_msglevel
+  usbnet_write_cmd
+  usbnet_write_cmd_async
+  usbnet_write_cmd_nopm
   yield
+  blkcg_root
+  blkcg_activate_policy
+  blkcg_deactivate_policy

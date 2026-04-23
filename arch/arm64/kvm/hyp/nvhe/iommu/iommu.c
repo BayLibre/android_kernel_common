@@ -12,6 +12,7 @@
 #include <kvm/iommu.h>
 #include <kvm/device.h>
 
+#include <nvhe/alloc.h>
 #include <nvhe/iommu.h>
 #include <nvhe/mem_protect.h>
 #include <nvhe/mm.h>
@@ -548,7 +549,7 @@ int kvm_iommu_free_domain(pkvm_handle_t domain_id)
 	if (hyp_vcpu)
 		vm = pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu);
 
-	if (WARN_ON(atomic_cmpxchg_acquire(&domain->refs, 1, 0) != 1) || domain->vm != vm) {
+	if (domain->vm != vm || WARN_ON(atomic_cmpxchg_acquire(&domain->refs, 1, 0) != 1)) {
 		ret = -EINVAL;
 		goto out_unlock;
 	}
@@ -578,6 +579,143 @@ int kvm_iommu_force_free_domain(pkvm_handle_t domain_id, struct pkvm_hyp_vm *vm)
 	cur_context = NULL;
 
 	return 0;
+}
+
+int kvm_iommu_attach_dev_nested(pkvm_handle_t iommu_id, pkvm_handle_t domain_id, u32 endpoint_id,
+				u32 pasid, unsigned long flags, void *s1_desc_hva,
+				size_t s1_desc_size)
+{
+	int ret;
+	struct kvm_hyp_iommu *iommu;
+	struct kvm_hyp_iommu_domain *domain;
+	/* For now, we only support nested domains that use identity mapped stage-2 contexts. */
+	struct kvm_hyp_iommu_domain *idmap_domain;
+	void *s1_desc_hyp_va = kern_hyp_va(s1_desc_hva);
+	void *s1_desc_hyp_va_end = s1_desc_hyp_va + s1_desc_size;
+
+	if (!kvm_iommu_ops || !kvm_iommu_ops->attach_dev_nested)
+		return -ENODEV;
+
+	ret = pkvm_devices_get_context(iommu_id, endpoint_id, NULL);
+	if (ret)
+		return ret;
+
+	ret = hyp_pin_shared_mem(s1_desc_hyp_va, s1_desc_hyp_va_end);
+	if (ret)
+		goto out_put_context;
+
+	iommu = kvm_iommu_ops->get_iommu_by_id(iommu_id);
+	if (!iommu) {
+		ret = -EINVAL;
+		goto out_unpin;
+	}
+
+	idmap_domain = handle_to_domain(KVM_IOMMU_DOMAIN_IDMAP_ID);
+	if (!idmap_domain || domain_get(idmap_domain)) {
+		ret = -EINVAL;
+		goto out_unpin;
+	}
+
+	domain = handle_to_domain(domain_id);
+	if (!domain || domain_get(domain)) {
+		ret = -EINVAL;
+		goto out_idmap_dom_put;
+	}
+
+	ret = kvm_iommu_ops->attach_dev_nested(iommu, domain, idmap_domain, endpoint_id, pasid,
+					       flags, s1_desc_hyp_va, s1_desc_size);
+	if (ret)
+		domain_put(domain);
+out_idmap_dom_put:
+	if (ret)
+		domain_put(idmap_domain);
+out_unpin:
+	hyp_unpin_shared_mem(s1_desc_hyp_va, s1_desc_hyp_va_end);
+out_put_context:
+	pkvm_devices_put_context(iommu_id, endpoint_id);
+	return ret;
+}
+
+int kvm_iommu_detach_dev_nested(pkvm_handle_t iommu_id, pkvm_handle_t domain_id, u32 endpoint_id,
+				u32 pasid)
+{
+	int ret;
+	struct kvm_hyp_iommu *iommu;
+	struct kvm_hyp_iommu_domain *domain;
+	/* For now, we only support nested domains that use identity mapped stage-2 contexts. */
+	struct kvm_hyp_iommu_domain *idmap_domain;
+
+	if (!kvm_iommu_ops || !kvm_iommu_ops->detach_dev_nested)
+		return -ENODEV;
+
+	ret = pkvm_devices_get_context(iommu_id, endpoint_id, NULL);
+	if (ret)
+		return ret;
+
+	iommu = kvm_iommu_ops->get_iommu_by_id(iommu_id);
+	if (!iommu) {
+		ret = -EINVAL;
+		goto out_put_context;
+	}
+
+	domain = handle_to_domain(domain_id);
+	if (!domain || atomic_read(&domain->refs) <= 1) {
+		ret = -EINVAL;
+		goto out_put_context;
+	}
+
+	idmap_domain = handle_to_domain(KVM_IOMMU_DOMAIN_IDMAP_ID);
+	if (!idmap_domain || atomic_read(&idmap_domain->refs) <= 1) {
+		ret = -EINVAL;
+		goto out_put_context;
+	}
+
+	ret = kvm_iommu_ops->detach_dev_nested(iommu, domain, idmap_domain, endpoint_id, pasid);
+	if (ret)
+		goto out_put_context;
+
+	domain_put(idmap_domain);
+	domain_put(domain);
+out_put_context:
+	pkvm_devices_put_context(iommu_id, endpoint_id);
+	return ret;
+}
+
+int kvm_iommu_iotlb_inv_nested_domain(pkvm_handle_t domain_id, unsigned long iova,
+				      size_t size, size_t granule, bool leaf)
+{
+	struct kvm_hyp_iommu_domain *domain;
+
+	domain = handle_to_domain(domain_id);
+	if (!domain || domain_get(domain))
+		return -EINVAL;
+
+	kvm_iommu_ops->iotlb_inv_nested_domain(domain, iova, size, granule, leaf);
+	domain_put(domain);
+	return 0;
+}
+
+int kvm_iommu_nested_cfg_sync(pkvm_handle_t iommu_id, void *cmd_desc_hva, size_t cmd_desc_size)
+{
+	struct kvm_hyp_iommu *iommu;
+	void *cmd_desc_hyp_va = kern_hyp_va(cmd_desc_hva);
+	void *cmd_desc_hyp_va_end = cmd_desc_hyp_va + cmd_desc_size;
+	int ret = hyp_pin_shared_mem(cmd_desc_hyp_va, cmd_desc_hyp_va_end);
+
+	if (ret)
+		return ret;
+
+	iommu = kvm_iommu_ops->get_iommu_by_id(iommu_id);
+	if (!iommu) {
+		ret = -EINVAL;
+		goto out_unpin;
+	}
+
+	ret = kvm_iommu_ops->nested_cfg_sync(iommu, cmd_desc_hyp_va, cmd_desc_size);
+
+out_unpin:
+	hyp_unpin_shared_mem(cmd_desc_hyp_va, cmd_desc_hyp_va_end);
+	return ret;
 }
 
 int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
@@ -1035,4 +1173,28 @@ int kvm_iommu_iotlb_sync_map(pkvm_handle_t domain_id,
 	ret = kvm_iommu_ops->iotlb_sync_map(domain, iova, size);
 	domain_put(domain);
 	return ret;
+}
+
+int kvm_iommu_request_hyp_alloc(void)
+{
+	struct kvm_hyp_req *req;
+	struct pkvm_hyp_vcpu *hyp_vcpu = __get_vcpu();
+	size_t nr_pages = hyp_alloc_missing_donations();
+
+	if (!nr_pages)
+		return -ENOENT;
+
+	if (hyp_vcpu)
+		req = pkvm_hyp_req_reserve(hyp_vcpu, KVM_HYP_LAST_REQ);
+	else
+		req = this_cpu_ptr(&host_hyp_reqs);
+
+	if (!req || (req->type != KVM_HYP_LAST_REQ))
+		return -EBUSY;
+
+	req->type = KVM_HYP_REQ_TYPE_MEM;
+	req->mem.dest = REQ_MEM_DEST_HYP_ALLOC;
+	req->mem.nr_pages = nr_pages;
+	req->mem.sz_alloc = PAGE_SIZE;
+	return 0;
 }

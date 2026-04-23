@@ -687,8 +687,10 @@ struct kvm_host_data {
 		struct kvm_guest_debug_arch regs;
 		/* Statistical profiling extension */
 		u64 pmscr_el1;
+		u64 pmblimitr_el1;
 		/* Self-hosted trace */
 		u64 trfcr_el1;
+		u64 trblimitr_el1;
 		/* Values of trap registers for the host before guest entry. */
 		u64 mdcr_el2;
 	} host_debug_state;
@@ -1774,8 +1776,14 @@ static inline void kvm_iommu_sg_free(struct kvm_iommu_sg *sg, unsigned int nents
 int kvm_iommu_attach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 			 unsigned int endpoint, unsigned int pasid,
 			 unsigned int ssid_bits, unsigned long flags);
+int kvm_iommu_attach_dev_nested(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
+				unsigned int endpoint, unsigned int pasid,
+				unsigned long flags, void *s1_desc_hva,
+				size_t s1_desc_size);
 int kvm_iommu_detach_dev(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
 			 unsigned int endpoint, unsigned int pasid);
+int kvm_iommu_detach_dev_nested(pkvm_handle_t iommu_id, pkvm_handle_t domain_id,
+				unsigned int endpoint, unsigned int pasid);
 int kvm_iommu_alloc_domain(pkvm_handle_t domain_id, int type);
 int kvm_iommu_free_domain(pkvm_handle_t domain_id);
 int kvm_iommu_map_pages(pkvm_handle_t domain_id, unsigned long iova,
@@ -1788,6 +1796,9 @@ int kvm_iommu_iotlb_sync_map(pkvm_handle_t domain_id, unsigned long iova, size_t
 size_t kvm_iommu_map_sg(pkvm_handle_t domain_id, struct kvm_iommu_sg *sg,
 			unsigned long iova, unsigned int nent,
 			unsigned int prot, gfp_t gfp);
+int kvm_iommu_iotlb_inv_nested_domain(pkvm_handle_t domain_id, unsigned long iova, size_t size,
+				      size_t granule, bool leaf);
+int kvm_iommu_nested_cfg_sync(pkvm_handle_t iommu_id, void *cmd_desc_hva, size_t cmd_desc_size);
 #endif
 
 int kvm_iommu_share_hyp_sg(struct kvm_iommu_sg *sg, unsigned int nents);

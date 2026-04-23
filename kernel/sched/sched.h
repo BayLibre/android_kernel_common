@@ -77,6 +77,8 @@
 #include <trace/events/power.h>
 #include <trace/events/sched.h>
 
+#include <trace/hooks/sched.h>
+
 #include "../workqueue_internal.h"
 
 struct rq;
@@ -2260,6 +2262,9 @@ static inline struct task_group *task_group(struct task_struct *p)
 
 static inline void __set_task_cpu(struct task_struct *p, unsigned int cpu)
 {
+	if (task_cpu(p) != cpu)
+		trace_android_rvh___set_task_cpu(p, cpu);
+
 	set_task_rq(p, cpu);
 #ifdef CONFIG_SMP
 	/*
@@ -3899,11 +3904,9 @@ end:
 static inline int mm_cid_get(struct rq *rq, struct mm_struct *mm)
 {
 	struct mm_cid __percpu *pcpu_cid = mm->pcpu_cid;
-	struct cpumask *cpumask;
 	int cid;
 
 	lockdep_assert_rq_held(rq);
-	cpumask = mm_cidmask(mm);
 	cid = __this_cpu_read(pcpu_cid->cid);
 	if (mm_cid_is_valid(cid)) {
 		mm_cid_snapshot_time(rq, mm);

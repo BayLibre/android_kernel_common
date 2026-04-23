@@ -202,18 +202,6 @@ impl Task {
         self.0.get()
     }
 
-    /// Returns the group leader of the given task.
-    pub fn group_leader(&self) -> &Task {
-        // SAFETY: The group leader of a task never changes after initialization, so reading this
-        // field is not a data race.
-        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
-
-        // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
-        // and given that a task has a reference to its group leader, we know it must be valid for
-        // the lifetime of the returned task reference.
-        unsafe { &*ptr.cast() }
-    }
-
     /// Returns the PID of the given task.
     pub fn pid(&self) -> Pid {
         // SAFETY: The pid of a task never changes after initialization, so reading this field is
@@ -311,9 +299,13 @@ impl Task {
     pub fn rlimit_nice(&self) -> i32 {
         // SAFETY: By the type invariant, we know that `self.0.get()` is valid, and RLIMIT_NICE
         // is a valid limit type.
-        let prio = unsafe { bindings::task_rlimit(self.0.get(), bindings::RLIMIT_NICE) as i32 };
+        let prio = unsafe { bindings::task_rlimit(self.0.get(), bindings::RLIMIT_NICE) };
+
+        // Clamp out-of-range values (e.g. RLIM_INFINITY)
+        let rlimit = usize::min(prio, 40) as i32;
+
         // Convert rlimit style value [1,40] to nice value [-20, 19].
-        bindings::MAX_NICE as i32 - prio + 1
+        bindings::MAX_NICE as i32 - rlimit + 1
     }
 
     /// Set the scheduling properties for this task without checking whether the task is allowed to
@@ -400,6 +392,18 @@ impl CurrentTask {
         // escape the scope in which the current pointer was obtained, e.g. it cannot live past a
         // `release_task()` call.
         Some(unsafe { PidNamespace::from_ptr(active_ns) })
+    }
+
+    /// Returns the group leader of the current task.
+    pub fn group_leader(&self) -> &Task {
+        // SAFETY: The group leader of a task never changes while the task is running, and `self`
+        // is the current task, which is guaranteed running.
+        let ptr = unsafe { (*self.as_ptr()).group_leader };
+
+        // SAFETY: `current->group_leader` stays valid for at least the duration in which `current`
+        // is running, and the signature of this function ensures that the returned `&Task` can
+        // only be used while `current` is still valid, thus still running.
+        unsafe { &*ptr.cast() }
     }
 }
 
