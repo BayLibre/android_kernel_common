@@ -2575,6 +2575,17 @@ unlock_mapping:
 	return error;
 }
 
+/*
+ * trace_android_vh_filemap_alloc_folio is called in include/linux/pagemap.h
+ * by including include/trace/hooks/mm.h, which will result to build-err.
+ * So we create func: _trace_android_vh_filemap_alloc_folio.
+ */
+void _trace_android_vh_filemap_alloc_folio(gfp_t gfp, unsigned int order,
+					   bool *alloc_fail)
+{
+	trace_android_vh_filemap_alloc_folio(gfp, order, alloc_fail);
+}
+
 static int filemap_create_folio(struct kiocb *iocb, struct folio_batch *fbatch)
 {
 	struct address_space *mapping = iocb->ki_filp->f_mapping;
@@ -3400,6 +3411,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
 	ractl._index = ra->start;
 	trace_android_vh_page_cache_readahead_start(file, vmf->pgoff,
 			ra->size, true);
+	trace_android_vh_customize_ractl(&ractl, ra, vmf->vma, false);
 	page_cache_ra_order(&ractl, ra);
 	trace_android_vh_page_cache_readahead_end(file, vmf->pgoff);
 	return fpin;
