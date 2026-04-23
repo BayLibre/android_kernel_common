@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "238ae6b7_b515bea1",
+        "filename": "arch/x86/kvm/pkvm/panic.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 4085392
+      },
+      "writtenOn": "2026-04-23T05:48:40Z",
+      "side": 1,
+      "message": "Actually we are not sure whether the other CPUs already exit from VMX non-root mode or not, as we are not waiting for them to be kicked out after sending the INIT to all. There will be a very small window between sending INIT and vmeixt to root mode. If we don\u0027t wait for other CPUs out of non-root mode, in theory the write pointer can be still changing by another CPU when we are reading it on this CPU.\n\nMaybe this is not important as not waiting seems doesn\u0027t introduce any security issue, and the only impact is may corrupt pKVM panic characters? If so, better to update comment to align?",
+      "revId": "ac2ba708042d588d5e7a2b675f3f4bda626e889a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
