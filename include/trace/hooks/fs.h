@@ -10,6 +10,8 @@
 
 #include <trace/hooks/vendor_hooks.h>
 struct f2fs_sb_info;
+struct f2fs_summary;
+struct gc_inode_list;
 struct va_format;
 
 DECLARE_HOOK(android_vh_ep_create_wakeup_source,
@@ -69,6 +71,36 @@ DECLARE_HOOK(android_vh_vfs_fsync_range,
 DECLARE_RESTRICTED_HOOK(android_rvh_do_fcntl,
 	TP_PROTO(struct file *filp, unsigned int cmd, unsigned long arg, long *err),
 	TP_ARGS(filp, cmd, arg, err), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_f2fs_buffer_write,
+	TP_PROTO(struct kiocb *iocb, struct iov_iter *from,
+		 ssize_t *ret, bool *write_done),
+	TP_ARGS(iocb, from, ret, write_done), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_f2fs_gc_data_segment,
+	TP_PROTO(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
+		 struct gc_inode_list *gc_list, unsigned int segno, int gc_type,
+		 bool force_migrate, int *submitted, bool *gc_done),
+	TP_ARGS(sbi, sum, gc_list, segno, gc_type, force_migrate,
+		submitted, gc_done), 1);
+
+DECLARE_RESTRICTED_HOOK(android_rvh_f2fs_write_cache_pages,
+	TP_PROTO(struct address_space *mapping, struct writeback_control *wbc,
+		 int *ret, bool *wb_done),
+	TP_ARGS(mapping, wbc, ret, wb_done), 1);
+
+DECLARE_HOOK(android_vh_f2fs_customized_ioctl,
+	TP_PROTO(struct file *filp, unsigned int cmd, unsigned long arg,
+		 long *ret, bool *ioctl_done),
+	TP_ARGS(filp, cmd, arg, ret, ioctl_done));
+
+DECLARE_HOOK(android_vh_f2fs_dnode_set_blkaddr,
+	TP_PROTO(struct inode *inode, u32 blkaddr),
+	TP_ARGS(inode, blkaddr));
+
+DECLARE_HOOK(android_vh_f2fs_inode_may_compress,
+	TP_PROTO(struct inode *inode, int *err),
+	TP_ARGS(inode, err));
 
 DECLARE_HOOK(android_vh_f2fs_improve_priority,
 	TP_PROTO(struct task_struct *p, int *saved_prio, bool *skip),
