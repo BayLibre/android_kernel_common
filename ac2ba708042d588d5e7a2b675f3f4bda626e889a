@@ -34,6 +34,24 @@
       "parentUuid": "238ae6b7_b515bea1",
       "revId": "ac2ba708042d588d5e7a2b675f3f4bda626e889a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e5ffe85_d951874a",
+        "filename": "arch/x86/kvm/pkvm/panic.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2026-04-23T20:48:25Z",
+      "side": 1,
+      "message": "I actually thought about reusing it but came to the conclusion that we shouldn\u0027t since we are in the middle of fatal error handling. It seems to me that continuing and even ending up with malformed error logging is better than getting stuck with e.g. `pkvm_wait_vcpu_kicked_out` due to some bug (again we are in the middle of fatal error hyp handling). BTW `pkvm_wait_vcpu_kicked_out` can also `BUG_ON` (fatal error recurency), see `BUG_ON(((rdtsc() - start) / tsc_khz) \u003e 1000);`\n\n\u003e I\u0027m still wondering if there are any advantages of broadcast INIT here (I asked about that in https://android-review.googlesource.com/c/kernel/common/+/4032091/comment/58194db0_f6b36d5f/).\n\nsorry I forget to respond on that: yeah the reason is that I think it is more reliable:\n1) because as you noted \" vCPU if its vcpu-\u003emode is IN_GUEST_MODE, while in our case here (i.e. before panic) pKVM is in some buggy undefined state, so theoretically vcpu-\u003emode may have an incorrect value.\"\n2) because we are during fatal exception handling some bad things could already happen and e.g.:\na) vcpu-\u003ecpu is null\nb) `pkvm_kick_vcpu` uses `pkvm_lapic_send_init`, so `\u0026pkvm_lapic` might be null or contain garbage, and so on.\n\nWhat I think may help here is to actually use `pkvm_udelay(100000)` once more after `native_x2apic_icr_write(APIC_DEST_ALLBUT | APIC_INT_ASSERT | APIC_DM_INIT, 0);` in `pkvm_panic()`. This gives us a bit more confidence, that especially Host VM is plugged out (which could malform the error log) but not rely on various states and assumptions. WDYT?",
+      "parentUuid": "85bc7f95_50d3ea66",
+      "revId": "ac2ba708042d588d5e7a2b675f3f4bda626e889a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
