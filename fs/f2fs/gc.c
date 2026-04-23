@@ -22,6 +22,7 @@
 #include "gc.h"
 #include "iostat.h"
 #include <trace/events/f2fs.h>
+#include <trace/hooks/fs.h>
 
 static struct kmem_cache *victim_entry_slab;
 
@@ -1556,6 +1557,12 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
 	int phase = 0;
 	int submitted = 0;
 	unsigned int usable_blks_in_seg = f2fs_usable_blks_in_seg(sbi, segno);
+	bool gc_done = false;
+
+	trace_android_rvh_f2fs_gc_data_segment(sbi, sum, gc_list, segno, gc_type,
+					force_migrate, &submitted, &gc_done);
+	if (gc_done)
+		return submitted;
 
 	start_addr = START_BLOCK(sbi, segno);
 
