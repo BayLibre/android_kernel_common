@@ -1,0 +1,65 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84fda381_178e86d5",
+        "filename": "mm/vmscan.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5650,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-04-23T21:58:17Z",
+      "side": 1,
+      "message": "With this goto jump you are bypassing this check too, which is wrong and might have side-effects. It would be much better to pass `delta` to your hook and then jump to the lime 5648 which would add the `delta` to `scanned` and would run all the checks.",
+      "range": {
+        "startLine": 5650,
+        "startChar": 6,
+        "endLine": 5650,
+        "endChar": 27
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ad11de42_6cc42202",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/vmscan.c",
+              "range": {
+                "startLine": 5640,
+                "startChar": 0,
+                "endLine": 5645,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "mm/vmscan.c",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\t\ttrace_android_rvh_mglru_shrink_spec_lru(lruvec, sc, swappiness,\n\t\t\t\t\t\t        nr_to_scan, delta, \u0026bypass);\n\n"
+            },
+            {
+              "path": "mm/vmscan.c",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\t\tif (bypass)\n\t\t\tgoto check_abort;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "77a7e55630e604dead35654124e73150d944967c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
