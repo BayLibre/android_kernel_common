@@ -16,6 +16,24 @@
       "message": "Actually we are not sure whether the other CPUs already exit from VMX non-root mode or not, as we are not waiting for them to be kicked out after sending the INIT to all. There will be a very small window between sending INIT and vmeixt to root mode. If we don\u0027t wait for other CPUs out of non-root mode, in theory the write pointer can be still changing by another CPU when we are reading it on this CPU.\n\nMaybe this is not important as not waiting seems doesn\u0027t introduce any security issue, and the only impact is may corrupt pKVM panic characters? If so, better to update comment to align?",
       "revId": "ac2ba708042d588d5e7a2b675f3f4bda626e889a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85bc7f95_50d3ea66",
+        "filename": "arch/x86/kvm/pkvm/panic.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-23T19:30:47Z",
+      "side": 1,
+      "message": "Good point. Actually perhaps this race is not extremely unlikely to occur in practice, since the host may be logging to dmesg quite frequently, thus also writing to ramoops quite frequency?\n\nSo we might still want to address this, to avoid ramoops corruption in such case, even if it is not a security issue?\n\nSo, we might still want to use pkvm_kick_vcpu() + pkvm_wait_vcpu_kicked_out() for all CPUs instead of broadcast INIT? I\u0027m still wondering if there are any advantages of broadcast INIT here (I asked about that in https://android-review.googlesource.com/c/kernel/common/+/4032091/comment/58194db0_f6b36d5f/).\n\nWell, maybe the advantage is: broadcast INIT is simpler and possibly more reliable, in particular, `pkvm_kick_vcpu()` only kicks the vCPU if its vcpu-\u003emode is IN_GUEST_MODE, while in our case here (i.e. before panic) pKVM is in some buggy undefined state, so _theoretically_ vcpu-\u003emode may have an incorrect value...\n\nIf that is a concern, we might do broadcast INIT + pkvm_wait_vcpu_kicked_out() instead?",
+      "parentUuid": "238ae6b7_b515bea1",
+      "revId": "ac2ba708042d588d5e7a2b675f3f4bda626e889a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
