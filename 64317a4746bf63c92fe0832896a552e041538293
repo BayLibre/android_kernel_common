@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "38cc3b88_925964fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-04-24T23:53:02Z",
+      "side": 1,
+      "message": "Please fix this ERROR reported by KernelCommit: Please **add an open respin request bug** to the commit message. Do not remove e...\n\nPlease **add an open respin request bug** to the commit message. Do not remove existing bug references.\nRefer to the following link for more information:\nhttps://source.android.com/docs/core/architecture/kernel/gki-releases#respin\n\nPlease refer to the contribution guidelines for details:\nhttps://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/README.md",
+      "revId": "64317a4746bf63c92fe0832896a552e041538293",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6e5384e2_301fd3a0",
@@ -31,6 +48,24 @@
       "writtenOn": "2026-04-24T09:32:16Z",
       "side": 1,
       "message": "Update GKI symbol patch link: https://android-review.googlesource.com/c/kernel/common/+/4047573",
+      "revId": "64317a4746bf63c92fe0832896a552e041538293",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f22e547f_e1ca142b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-04-24T23:53:02Z",
+      "side": 1,
+      "message": "That patch needs to be rebased on top of this one. The symbol change cannot pass presubmit testing without this patch",
+      "parentUuid": "6a64ef11_08a30252",
       "revId": "64317a4746bf63c92fe0832896a552e041538293",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
