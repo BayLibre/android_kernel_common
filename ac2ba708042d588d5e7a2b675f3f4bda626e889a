@@ -88,6 +88,24 @@
       "parentUuid": "09bf3eb3_4636c9ea",
       "revId": "ac2ba708042d588d5e7a2b675f3f4bda626e889a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20d4c554_d9c8df3e",
+        "filename": "arch/x86/kvm/pkvm/panic.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2026-04-24T14:59:50Z",
+      "side": 1,
+      "message": "yeah, thx for the details and digressions - they are interesting and I agree that we do not need to rely on waking-up sleeping CPU which could take a bit longer. For all other cases, it seems like 10ms should be enough.\n\n\u003e But 100ms seems to much? (Among other things, it is a non-negligible delay from the user perspective, so it seems better to avoid such a long delay, if we can?)\n\u003e \n\u003e It seems 10ms or even 1ms should be plenty enough?\n\nAgreed. I used 10ms because it\u0027s an emergency reset anyway so the user will experience a system reboot and 10ms shouldn\u0027t be noticeable. It rather ensures that everything propagated as expected.",
+      "parentUuid": "0039d43f_2bab4980",
+      "revId": "ac2ba708042d588d5e7a2b675f3f4bda626e889a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }

@@ -18,6 +18,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35406a16_a40537b3",
+        "filename": "arch/x86/kvm/pkvm/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2026-04-24T14:59:50Z",
+      "side": 1,
+      "message": "Ok.",
+      "parentUuid": "761bc560_c36f9208",
+      "revId": "0eb05ebc80d0ef173d871cc79c092cbfa4dadfdd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6efbc070_9e4a3132",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-04-23T18:53:25Z",
       "side": 1,
       "message": "This would look better?\n\n```\n--- a/arch/x86/kvm/pkvm/Makefile\n+++ b/arch/x86/kvm/pkvm/Makefile\n@@ -6,7 +6,6 @@ ccflags-y +\u003d -I $(srctree)/arch/x86/kvm/pkvm\n ccflags-y +\u003d -fno-stack-protector\n ccflags-y +\u003d -D__PKVM_HYP__\n ccflags-y +\u003d -D__NO_FORTIFY\n-CFLAGS_REMOVE_../../../../lib/string.pkvm.o :\u003d -D__NO_FORTIFY\n ccflags-y +\u003d -include $(srctree)/arch/x86/kvm/pkvm/undef.h\n \n asflags-y +\u003d -D__PKVM_HYP__\n@@ -39,6 +38,8 @@ pkvm-hyp-y                    +\u003d $(kernel-lib)/sort.o $(kernel-lib)/bsearch.o \\\n                                   $(kernel-lib)/string.o $(kernel-lib)/ctype.o\n pkvm-hyp-$(CONFIG_LIST_HARDENED) +\u003d $(kernel-lib)/list_debug.o\n \n+CFLAGS_REMOVE_$(kernel-lib)/string.pkvm.o :\u003d -D__NO_FORTIFY\n+\n kvm                            :\u003d ..\n pkvm-hyp-y                     +\u003d $(kvm)/x86.o $(kvm)/cpuid.o $(kvm)/mtrr.o \\\n                                   $(kvm)/lapic.o\n```",
+      "revId": "0eb05ebc80d0ef173d871cc79c092cbfa4dadfdd",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c370202c_14ad6798",
+        "filename": "arch/x86/kvm/pkvm/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3484945
+      },
+      "writtenOn": "2026-04-24T14:59:50Z",
+      "side": 1,
+      "message": "Yeah - looks better, thx.",
+      "parentUuid": "6efbc070_9e4a3132",
       "revId": "0eb05ebc80d0ef173d871cc79c092cbfa4dadfdd",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
