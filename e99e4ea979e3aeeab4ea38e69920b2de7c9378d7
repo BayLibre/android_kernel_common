@@ -34,6 +34,24 @@
       "parentUuid": "39b2e9bb_26f17478",
       "revId": "e99e4ea979e3aeeab4ea38e69920b2de7c9378d7",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db6331a0_ae539437",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1964618
+      },
+      "writtenOn": "2026-04-24T12:00:35Z",
+      "side": 1,
+      "message": "Thanks. Actually, in the 6.6 kernel, there is no ABI related to vendor_data_pad. This change only adds the relevant symbol. Regarding CONFIG_GKI_TASK_STRUCT_VENDOR_SIZE_MAX, it is already included in a previously merged change (4018728). So, is it sufficient for me to just propose the new addition?",
+      "parentUuid": "07afe646_7901dde2",
+      "revId": "e99e4ea979e3aeeab4ea38e69920b2de7c9378d7",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
