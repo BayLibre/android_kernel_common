@@ -6,6 +6,7 @@
 #include <linux/extable.h>
 #include <asm/e820/api.h>
 #include <asm/pkvm_image.h>
+#include <asm/set_memory.h>
 #include "pkvm_constants.h"
 #include "vmx.h"
 #include "pkvm_iommu.h"
@@ -1500,6 +1501,15 @@ int __init vmx_pkvm_init(void)
 		static_branch_disable(&pkvm_enabled_key);
 		goto repriv_cpus;
 	}
+
+	/*
+	 * After host deprivileging succeed, un-present the kernel direct
+	 * mappings for the memory pages which are reserved for the pKVM as they
+	 * are not accessible to the host kernel until the platform is power
+	 * cycled.
+	 */
+	WARN_ON(set_memory_np((unsigned long)__va(pkvm_mem_base),
+			      pkvm_mem_size >> PAGE_SHIFT));
 
 	pkvm_hypercall(init_finalize);
 
