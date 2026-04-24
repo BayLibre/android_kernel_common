@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "778d07b5_36ca6b87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-24T01:48:26Z",
+      "side": 1,
+      "message": "Yeah I feel it would be worth to have it upstream - might be really useful for devs when they work on this highly sensitive code in the intersection of sched, wq, rcu, and locking. Will need to cleanup a bit though. As you pointed in the other comment, the default values of all the tunables need to be reworked so that kernel commandline is minimal.",
+      "parentUuid": "389f5654_39101f47",
+      "revId": "5f51b3f9aac3f83f5620cda98388c71b464ae17a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4efbd147_aa97d234",
         "filename": "lib/test_wq_race.c",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2026-04-23T23:59:36Z",
       "side": 1,
       "message": "Curious how many of these module params were useful to tweak vs what the AI just added? My only grumble with running this was how many parameters I needed to set on the boot arg.",
+      "revId": "5f51b3f9aac3f83f5620cda98388c71b464ae17a",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "101dc3d1_c0d02f4a",
+        "filename": "lib/test_wq_race.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-24T01:48:26Z",
+      "side": 1,
+      "message": "Sorry about so many parameters, actually we wouldn\u0027t need any parameters and have the values in the run_qemu.sh as default values coded in the source. The reason I added these many are historical ;-). I was testing this on vanilla kernel in my VM and it was not getting triggered. So I theorized all possible places to induce the deadlock and ended up in creating these many tunables. And did not get to cleanup the code much before sharing.\n\nFor triggering this, We just need about 8 workers, and 50us delay for IPI delay, mutex hold delay and wq sleepr delay(all these can be hard coded or set default in the code that we need not set it in commandline).",
+      "parentUuid": "4efbd147_aa97d234",
       "revId": "5f51b3f9aac3f83f5620cda98388c71b464ae17a",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
