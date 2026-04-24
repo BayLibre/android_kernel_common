@@ -656,3 +656,30 @@ __traceiter_android_vh_mmap_lock_init
 __tracepoint_android_vh_mmap_lock_init
 __traceiter_android_vh_mmap_lock_free
 __tracepoint_android_vh_mmap_lock_free
+<<<<<<< HEAD   (53e6e091166efc1ea0348a6aee2b12cc133ad102 ANDROID: GKI: Add vendor hook folios_put_direct_free symbols)
+||||||| BASE   (5076a018b13cfc75cb2a033a8f548c1b1691fb7b ANDROID: 16K: Allow VMAs with all padding pages.)
+
+# low lat mem
+__tracepoint_android_vh_compact_bypass
+__traceiter_android_vh_compact_bypass
+__tracepoint_android_vh_cma_release_bypass
+__traceiter_android_vh_cma_release_bypass
+__tracepoint_android_vh_cma_alloc_end
+__traceiter_android_vh_cma_alloc_end
+__tracepoint_android_vh_cma_alloc_bypass
+__traceiter_android_vh_cma_alloc_bypass
+
+=======
+vendor_data_pad
+
+# low lat mem
+__tracepoint_android_vh_compact_bypass
+__traceiter_android_vh_compact_bypass
+__tracepoint_android_vh_cma_release_bypass
+__traceiter_android_vh_cma_release_bypass
+__tracepoint_android_vh_cma_alloc_end
+__traceiter_android_vh_cma_alloc_end
+__tracepoint_android_vh_cma_alloc_bypass
+__traceiter_android_vh_cma_alloc_bypass
+
+>>>>>>> CHANGE (aa9da6bc9cd182b01758519354b8fa6ffba754af ANDROID: GKI: add vendor_data_pad to symbol list file for xi)
