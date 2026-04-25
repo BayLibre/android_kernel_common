@@ -146,6 +146,7 @@ extern unsigned int kvm_nvhe_sym(pkvm_moveable_regs_nr);
 
 extern phys_addr_t kvm_nvhe_sym(host_s2_cma_base);
 extern phys_addr_t kvm_nvhe_sym(host_s2_cma_size);
+extern unsigned long kvm_nvhe_sym(host_s2_extra_pages);
 
 extern struct memblock_region kvm_nvhe_sym(hyp_memory)[];
 extern unsigned int kvm_nvhe_sym(hyp_memblock_nr);
@@ -231,10 +232,11 @@ static inline unsigned long hyp_s1_pgtable_pages(void)
 static inline unsigned long host_s2_pgtable_pages(void)
 {
 	/*
-	 * Include an extra 16 pages to safely upper-bound the worst case of
-	 * concatenated pgds.
+	 * Include extra pages for concatenated pgds, module protection
+	 * block mapping splits, and other dynamic S2 page table allocations.
+	 * Default 2048, configurable via kvm-arm.host_s2_extra_pages= cmdline.
 	 */
-	return __hyp_pgtable_moveable_regs_pages() + 16;
+	return __hyp_pgtable_moveable_regs_pages() + kvm_nvhe_sym(host_s2_extra_pages);
 }
 
 static inline unsigned long host_s2_mmio_pgtable_pages(void)

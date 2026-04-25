@@ -111,11 +111,15 @@ int __init pkvm_host_stage2_reserve(void)
 static void __init pkvm_host_stage2_drain(void)
 {
 	unsigned long reclaimed = 0;
+	unsigned long cma_pages = kvm_nvhe_sym(host_s2_cma_size) >> PAGE_SHIFT;
+	unsigned long preserve = kvm_nvhe_sym(host_s2_extra_pages);
 
-	if (kvm_nvhe_sym(host_s2_cma_size))
-		reclaimed = __pkvm_reclaim_hyp_alloc_mgt_id(HYP_ALLOC_MGT_HOSTS2_ID, ULONG_MAX);
+	if (cma_pages && cma_pages > preserve)
+		reclaimed = __pkvm_reclaim_hyp_alloc_mgt_id(HYP_ALLOC_MGT_HOSTS2_ID,
+							   cma_pages - preserve);
 
-	kvm_info("Shrunk Hyp Reserved memory by %lu MiB\n", reclaimed >> (20 - PAGE_SHIFT));
+	kvm_info("Shrunk Hyp Reserved memory by %lu MiB (preserve %lu pages)\n",
+		 reclaimed >> (20 - PAGE_SHIFT), preserve);
 }
 
 static void *__host_stage2_alloc(void *arg, unsigned long order)
@@ -307,6 +311,14 @@ static int __init early_hyp_lm_size_mb_cfg(char *arg)
 	return kstrtoull(arg, 10, &kvm_nvhe_sym(hyp_lm_size_mb));
 }
 early_param("kvm-arm.hyp_lm_size_mb", early_hyp_lm_size_mb_cfg);
+
+static int __init early_host_s2_extra_pages_cfg(char *arg)
+{
+	if (!arg)
+		return -EINVAL;
+	return kstrtoul(arg, 10, &kvm_nvhe_sym(host_s2_extra_pages));
+}
+early_param("kvm-arm.host_s2_extra_pages", early_host_s2_extra_pages_cfg);
 
 DEFINE_STATIC_KEY_FALSE(kvm_ffa_unmap_on_lend);
 

@@ -37,6 +37,7 @@ static DEFINE_PER_CPU(struct hyp_fixmap_slot, fixmap_slots);
 
 phys_addr_t host_s2_cma_base;
 phys_addr_t host_s2_cma_size;
+unsigned long host_s2_extra_pages = 2048;
 
 static int __pkvm_create_mappings(unsigned long start, unsigned long size,
 				  unsigned long phys, enum kvm_pgtable_prot prot)
