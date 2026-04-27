@@ -16,6 +16,114 @@
       "message": "Do we need this flush? We haven\u0027t written anything to this memory?",
       "revId": "c9e2bc822f4c67dc0751adfb7fc6c72482068df1",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d591b73a_2d75cd83",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-27T15:24:16Z",
+      "side": 1,
+      "message": "Ahh yes, After we removed SIRTP implementation(which cleared the IR table), we don\u0027t need this any more. Missed removing this. Will remove",
+      "parentUuid": "c634540a_e32ceab5",
+      "revId": "c9e2bc822f4c67dc0751adfb7fc6c72482068df1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d6b15c0_12fc4ff6",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-27T15:24:16Z",
+      "side": 1,
+      "message": "Since we do not support this(IRTA after deprivilege), I think I shall unconditionally return -EPERM here",
+      "fixSuggestions": [
+        {
+          "fixId": "901305c5_a43c6549",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/pkvm/iommu.c",
+              "range": {
+                "startLine": 478,
+                "startChar": 0,
+                "endLine": 489,
+                "endChar": 0
+              },
+              "replacement": "\t\t/* IRTA is expected to be set up before pKVM deprivileges */\n\t\tpkvm_err(\"iommu%d: write to IRTA not allowed!\\n\", iommu-\u003eseq_id);\n\t\treturn -EPERM;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c9e2bc822f4c67dc0751adfb7fc6c72482068df1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d07f210_c710dd2c",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-27T15:24:16Z",
+      "side": 1,
+      "message": "We can probably fail the initialization if this condition is false. pKVM needs X2APIC and X2APIC requires IR and host is supposed to setup X2APIC and IR before we reach here.",
+      "fixSuggestions": [
+        {
+          "fixId": "752ae09b_f19d9679",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/iommu/intel/pkvm/iommu.c",
+              "range": {
+                "startLine": 554,
+                "startChar": 0,
+                "endLine": 555,
+                "endChar": 0
+              },
+              "replacement": "\t * read the existing IRTA value and protect the table now. pKVM requires\n\t * X2APIC and X2APIC requires IR, so fail if not set up.\n"
+            },
+            {
+              "path": "drivers/iommu/intel/pkvm/iommu.c",
+              "range": {
+                "startLine": 556,
+                "startChar": 0,
+                "endLine": 561,
+                "endChar": 0
+              },
+              "replacement": "\tif (!(iommu-\u003evgsts \u0026 DMA_GSTS_IRTPS)) {\n\t\tpkvm_err(\"iommu%d: IR table not set up before deprivilege!\\n\",\n\t\t\t iommu-\u003eseq_id);\n\t\treturn -EINVAL;\n"
+            },
+            {
+              "path": "drivers/iommu/intel/pkvm/iommu.c",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\tiommu-\u003evirta \u003d readq(iommu-\u003ereg + DMAR_IRTA_REG);\n\tret \u003d iommu_protect_ir_table(iommu);\n\tif (ret)\n\t\treturn ret;\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c9e2bc822f4c67dc0751adfb7fc6c72482068df1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
