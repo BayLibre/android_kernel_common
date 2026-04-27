@@ -2496,6 +2496,8 @@ struct zap_details {
 #define  ZAP_FLAG_DROP_MARKER        ((__force zap_flags_t) BIT(0))
 /* Set in unmap_vmas() to indicate a final unmap call.  Only used by hugetlb */
 #define  ZAP_FLAG_UNMAP              ((__force zap_flags_t) BIT(1))
+/* Need reclaim page tables? */
+#define  ZAP_FLAG_RECLAIM_PT         ((__force zap_flags_t) BIT(2))
 
 #ifdef CONFIG_SCHED_MM_CID
 void sched_mm_cid_before_execve(struct task_struct *t);
