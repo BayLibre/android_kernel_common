@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a29dfc2b_9b2863ca",
+        "filename": "include/trace/hooks/mm.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1069543
+      },
+      "writtenOn": "2026-04-27T20:30:30Z",
+      "side": 1,
+      "message": "you need to change the name too \"_vh_\" -\u003e \"_rvh_\" and change the deck in vendor_hooks.c and the callsite. You also need to update symbol lists that reference the old name.",
+      "fixSuggestions": [
+        {
+          "fixId": "18697291_fb775666",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/trace/hooks/mm.h",
+              "range": {
+                "startLine": 76,
+                "startChar": 0,
+                "endLine": 77,
+                "endChar": 0
+              },
+              "replacement": "DECLARE_RESTRICTED_HOOK(android_rvh_mem_cgroup_id_remove,\n"
+            }
+          ]
+        }
+      ],
+      "revId": "00633bb4487e065731220592f7b17663eb4a0ab0",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
