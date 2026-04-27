@@ -2365,6 +2365,8 @@ struct kvm_hyp_pinned_page *hyp_ppages;
 static int __copy_hyp_ppages(struct pkvm_hyp_vcpu *vcpu)
 {
 	struct kvm_hyp_pinned_page *ppage, *hyp_ppage;
+	struct kvm_hyp_pinned_page tmp;
+	int count, i, j;
 
 	WARN_ON(!hyp_ppages);
 
@@ -2379,6 +2381,19 @@ static int __copy_hyp_ppages(struct pkvm_hyp_vcpu *vcpu)
 		ppage = next_kvm_hyp_pinned_page(vcpu->vcpu.arch.hyp_reqs, ppage, true);
 		hyp_ppage++; /* No risk to overflow hyp_ppages */
 	} while (ppage);
+
+	count = hyp_ppage - hyp_ppages;
+	for (i = 1; i < count; i++) {
+		tmp = hyp_ppages[i];
+		for (j = i - 1; j >= 0 && hyp_ppages[j].pfn > tmp.pfn; j--)
+			hyp_ppages[j + 1] = hyp_ppages[j];
+		hyp_ppages[j + 1] = tmp;
+	}
+
+	for (i = 1; i < count; i++) {
+		if (hyp_ppages[i].pfn == hyp_ppages[i - 1].pfn)
+			return -EINVAL;
+	}
 
 	hyp_ppage->order = 0xFF;
 
@@ -2420,13 +2435,8 @@ int __pkvm_host_donate_sglist_guest(struct pkvm_hyp_vcpu *vcpu)
 		ret = __guest_check_page_state_range(vcpu, ipa, size, PKVM_NOPAGE);
 		if (ret)
 			goto unlock;
-	}
 
-	for_each_hyp_ppage(ppage) {
-		size_t size = PAGE_SIZE << ppage->order;
-		u64 phys = hyp_pfn_to_phys(ppage->pfn);
-		u64 ipa = hyp_pfn_to_phys(ppage->gfn);
-
+		size = PAGE_SIZE << ppage->order;
 		__host_set_owner_guest(vcpu, phys, ipa, size, HOST_SET_NO_COMPLETE);
 	}
 	__host_stage2_set_owner_complete(PKVM_ID_GUEST, 0);
