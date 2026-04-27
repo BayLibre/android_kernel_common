@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "353355d7_17d36c57",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-27T20:16:33Z",
+      "side": 1,
+      "message": "I see the following comment in `__irq_msi_compose_msg()` in arch/x86/kernel/apic/apic.c:\n\n```\n\t/*\n\t * Only the IOMMU itself can use the trick of putting destination\n\t * APIC ID into the high bits of the address. Anything else would\n\t * just be writing to memory if it tried that, [...]\n\t */\n```\n\nSo it sounds like when the IOMMU generates an MSI with an address 0x100_FEE00000, it does not actually write at address 0x100_FEE00000, it writes at 0xFEE00000? And the address 0x100_FEE00000 itself is _not_ an APIC MMIO address, it is just an unrelated memory address which is not really involved here?\n\nSo this validation is unneeded, and moreover, it will make non-zero FEUADDR non-workable on machines with enough RAM (where 0x100_FEE00000 is an actual RAM address), i.e. pKVM will always refuse to set APIC IDs \u003e255 on those machines?",
+      "revId": "acf672b261ba2b17d2fb843adec54ea9e8279cb8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1f0fe03_049b6522",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 2022314
+      },
+      "writtenOn": "2026-04-27T20:16:33Z",
+      "side": 1,
+      "message": "We should validate reserved bits in FEADDR, FEDATA, FECTL, ... as well?",
+      "revId": "acf672b261ba2b17d2fb843adec54ea9e8279cb8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
