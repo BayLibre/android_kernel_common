@@ -36,6 +36,24 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bca8840_2f7101fc",
+        "filename": "drivers/iommu/intel/iommu.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 878,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-27T13:35:02Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "5fa0c071_dd96c1a7",
+      "revId": "8dba6e53d5383a340a1e5e14649cf60dafcbfecf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7966d585_38759911",
@@ -49,6 +67,24 @@
       "writtenOn": "2026-04-22T16:05:59Z",
       "side": 1,
       "message": "nit: I suppose the host also sets up IRTEs in this table (not just zero-allocates and enables it) before deprivileging? If so, \"don\u0027t bother\" doesn\u0027t seem a suitable wording: it\u0027s not just that we don\u0027t _need_ to clear the table, it\u0027s that we _can\u0027t_ clear it, since that would destroy the entries set by the host?",
+      "revId": "8dba6e53d5383a340a1e5e14649cf60dafcbfecf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cba0645_3d23865e",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-27T13:35:02Z",
+      "side": 1,
+      "message": "Yeah, reworded the comment",
+      "parentUuid": "7966d585_38759911",
       "revId": "8dba6e53d5383a340a1e5e14649cf60dafcbfecf",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
@@ -90,6 +126,30 @@
       "side": 1,
       "message": "Well, maybe indeed no need to support this (especially since you are not allowing SIRTP or IRTA more than once anyway, so this would not be useful even if the host needed to re-configure it after deprivileging)...",
       "parentUuid": "682e2d14_662d2a65",
+      "range": {
+        "startLine": 310,
+        "startChar": 11,
+        "endLine": 310,
+        "endChar": 28
+      },
+      "revId": "8dba6e53d5383a340a1e5e14649cf60dafcbfecf",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54038fc7_e6f534f5",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-27T13:35:02Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "c754d7d9_88474d85",
       "range": {
         "startLine": 310,
         "startChar": 11,
