@@ -976,6 +976,8 @@ to_smmu_nested_domain(struct iommu_domain *dom)
 extern struct xarray arm_smmu_asid_xa;
 extern struct mutex arm_smmu_asid_lock;
 
+struct device *arm_smmu_pci_get_host_bridge_device(struct pci_dev *dev);
+void arm_smmu_pci_put_host_bridge_device(struct device *dev);
 struct arm_smmu_domain *arm_smmu_domain_alloc(void);
 
 void arm_smmu_clear_cd(struct arm_smmu_master *master, ioasid_t ssid);

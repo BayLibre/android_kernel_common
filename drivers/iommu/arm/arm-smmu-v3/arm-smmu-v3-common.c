@@ -133,6 +133,28 @@ static void arm_smmu_dt_adjust_sid_bits(struct arm_smmu_device *smmu)
 			smmu->sid_bits, max_sid_bits);
 		smmu->sid_bits = max_sid_bits;
 	}
+
+static struct pci_bus *arm_smmu_find_pci_root_bus(struct pci_bus *bus)
+{
+	while (bus->parent)
+		bus = bus->parent;
+
+	return bus;
+}
+
+struct device *arm_smmu_pci_get_host_bridge_device(struct pci_dev *dev)
+{
+	struct pci_bus *root_bus = arm_smmu_find_pci_root_bus(dev->bus);
+	struct device *bridge = root_bus->bridge;
+
+	kobject_get(&bridge->kobj);
+	return bridge;
+}
+
+void arm_smmu_pci_put_host_bridge_device(struct device *dev)
+{
+	kobject_put(&dev->kobj);
+>>>>>>> 783a7dcbf6e6 (drivers/arm-smmu-v3: Support PCIe Device IOMMU DT property)
 }
 
 int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
