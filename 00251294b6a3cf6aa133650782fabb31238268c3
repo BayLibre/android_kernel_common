@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "636d2845_bae51865",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-04-28T15:10:11Z",
+      "side": 1,
+      "message": "Please also do a fix for `android17-6.18` -- it\u0027s not a straight port, as we have to take `___pkvm_module_share_guest_sglist()` into account.",
+      "revId": "00251294b6a3cf6aa133650782fabb31238268c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2467a78e_0e552d13",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2391,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-04-28T15:10:11Z",
+      "side": 1,
+      "message": "Do we need to fix `__pkvm_host_donate_sglist_hyp()` too?",
+      "range": {
+        "startLine": 2391,
+        "startChar": 4,
+        "endLine": 2391,
+        "endChar": 35
+      },
+      "revId": "00251294b6a3cf6aa133650782fabb31238268c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f3b7d56_d0cca459",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2425,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-04-28T15:10:11Z",
+      "side": 1,
+      "message": "Didn\u0027t we already calculate `size` when we called `check_shl_overflow()`?",
+      "range": {
+        "startLine": 2425,
+        "startChar": 0,
+        "endLine": 2425,
+        "endChar": 35
+      },
+      "revId": "00251294b6a3cf6aa133650782fabb31238268c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "389d8368_24704f30",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2457,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-04-28T15:10:11Z",
+      "side": 1,
+      "message": "nit: I think you can rewrite this more cleanly as:\n\n```\nif (ppage \u003d\u003d hyp_ppages)\n\tgoto unlock;\n\n__host_stage2_set_owner_complete(PKVM_ID_GUEST, 0);\ndo {\n\tphys \u003d hyp_pfn_to_phys(ppage-\u003epfn);\n\tsize \u003d PAGE_SIZE \u003c\u003c ppage-\u003eorder;\n\t\n\t...\n} while (--ppage !\u003d hyp_ppages);\n__host_stage2_set_owner_complete(PKVM_ID_HOST, 0);\n```",
+      "range": {
+        "startLine": 2450,
+        "startChar": 0,
+        "endLine": 2457,
+        "endChar": 42
+      },
+      "revId": "00251294b6a3cf6aa133650782fabb31238268c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d00d5f7e_cd66ba1b",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2460,
+      "author": {
+        "id": 1572468
+      },
+      "writtenOn": "2026-04-28T15:10:11Z",
+      "side": 1,
+      "message": "nit: wrap this in a `__guest_set_owner_host()` helper so that we can avoid open-coding the PSCI part and have symmetry with `__host_set_owner_guest()`?",
+      "range": {
+        "startLine": 2459,
+        "startChar": 0,
+        "endLine": 2460,
+        "endChar": 49
+      },
+      "revId": "00251294b6a3cf6aa133650782fabb31238268c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
