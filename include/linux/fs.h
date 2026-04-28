@@ -320,6 +320,7 @@ struct readahead_control;
 #define IOCB_NOWAIT		(__force int) RWF_NOWAIT
 #define IOCB_APPEND		(__force int) RWF_APPEND
 #define IOCB_ATOMIC		(__force int) RWF_ATOMIC
+#define IOCB_DONTCACHE		(__force int) RWF_DONTCACHE
 
 /* non-RWF related bits - start at 16 */
 #define IOCB_EVENTFD		(1 << 16)
@@ -355,6 +356,7 @@ struct readahead_control;
 	{ IOCB_NOWAIT,		"NOWAIT" }, \
 	{ IOCB_APPEND,		"APPEND" }, \
 	{ IOCB_ATOMIC,		"ATOMIC"}, \
+	{ IOCB_DONTCACHE,	"DONTCACHE" }, \
 	{ IOCB_EVENTFD,		"EVENTFD"}, \
 	{ IOCB_DIRECT,		"DIRECT" }, \
 	{ IOCB_WRITE,		"WRITE" }, \
@@ -1039,6 +1041,11 @@ struct file {
 	struct inode			*f_inode;
 	unsigned int			f_flags;
 	unsigned int			f_iocb_flags;
+	u32				f_dropbehind_state;
+	u32				f_dropbehind_keep_tail;
+	u32				f_dropbehind_batch_bytes;
+	loff_t				f_dropbehind_dropped_upto;
+	loff_t				f_dropbehind_max_seen_pos;
 	const struct cred		*f_cred;
 	/* --- cacheline 1 boundary (64 bytes) --- */
 	struct path			f_path;
@@ -2132,6 +2139,11 @@ struct file_operations {
 #define FOP_HUGE_PAGES		((__force fop_flags_t)(1 << 4))
 /* Treat loff_t as unsigned (e.g., /dev/mem) */
 #define FOP_UNSIGNED_OFFSET	((__force fop_flags_t)(1 << 5))
+/* File system supports buffered read drop-behind hints */
+#define FOP_DONTCACHE		((__force fop_flags_t)(1 << 7))
+
+#define FILE_DROPBEHIND_ENABLED			(1U << 0)
+#define FILE_DROPBEHIND_DISABLED_BY_BACKWARD	(1U << 1)
 
 /* Wrap a directory iterator that needs exclusive inode access */
 int wrap_directory_iterator(struct file *, struct dir_context *,
@@ -3548,6 +3560,12 @@ static inline int kiocb_set_rw_flags(struct kiocb *ki, rwf_t flags,
 		if (rw_type != WRITE)
 			return -EOPNOTSUPP;
 		if (!(ki->ki_filp->f_mode & FMODE_CAN_ATOMIC_WRITE))
+			return -EOPNOTSUPP;
+	}
+	if (flags & RWF_DONTCACHE) {
+		if (!(ki->ki_filp->f_op->fop_flags & FOP_DONTCACHE))
+			return -EOPNOTSUPP;
+		if (IS_DAX(ki->ki_filp->f_mapping->host))
 			return -EOPNOTSUPP;
 	}
 	kiocb_flags |= (__force int) (flags & RWF_SUPPORTED);

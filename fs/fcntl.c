@@ -27,16 +27,76 @@
 #include <linux/memfd.h>
 #include <linux/compat.h>
 #include <linux/mount.h>
+#include <linux/pagemap.h>
 #include <linux/rw_hint.h>
 
 #include <linux/poll.h>
 #include <asm/siginfo.h>
 #include <linux/uaccess.h>
 #include <trace/hooks/fs.h>
+#include <trace/hooks/mm.h>
 
 #include "internal.h"
 
 #define SETFL_MASK (O_APPEND | O_NONBLOCK | O_NDELAY | O_DIRECT | O_NOATIME)
+
+static long fcntl_dropbehind_enable(struct file *filp, unsigned long arg)
+{
+	struct inode *inode = file_inode(filp);
+
+	if (!S_ISREG(inode->i_mode))
+		return -EINVAL;
+	if (!(filp->f_op->fop_flags & FOP_DONTCACHE))
+		return -EOPNOTSUPP;
+	if (IS_DAX(inode))
+		return -EOPNOTSUPP;
+
+	spin_lock(&filp->f_lock);
+	filp->f_iocb_flags |= IOCB_DONTCACHE;
+	filp->f_dropbehind_state |= FILE_DROPBEHIND_ENABLED;
+	filp->f_dropbehind_state &= ~FILE_DROPBEHIND_DISABLED_BY_BACKWARD;
+	filp->f_dropbehind_keep_tail = 128 * 1024;
+	filp->f_dropbehind_batch_bytes = 256 * 1024;
+	filp->f_dropbehind_dropped_upto = 0;
+	filp->f_dropbehind_max_seen_pos = 0;
+	spin_unlock(&filp->f_lock);
+	trace_android_vh_dropbehind_enable(filp, 0);
+	return 0;
+}
+
+static long fcntl_dropbehind_disable(struct file *filp, unsigned long arg)
+{
+	spin_lock(&filp->f_lock);
+	filp->f_iocb_flags &= ~IOCB_DONTCACHE;
+	filp->f_dropbehind_state &= ~FILE_DROPBEHIND_ENABLED;
+	spin_unlock(&filp->f_lock);
+	trace_android_vh_dropbehind_disable(filp, 0);
+	return 0;
+}
+
+static long fcntl_dropbehind_retrodrop(struct file *filp, unsigned long arg)
+{
+	struct android_dropbehind_ctrl ctrl;
+	struct inode *inode = file_inode(filp);
+	loff_t end;
+
+	if (!S_ISREG(inode->i_mode))
+		return -EINVAL;
+	if (!(filp->f_op->fop_flags & FOP_DONTCACHE))
+		return -EOPNOTSUPP;
+	if (copy_from_user(&ctrl, (void __user *)arg, sizeof(ctrl)))
+		return -EFAULT;
+	if (!ctrl.retro_end)
+		return 0;
+
+	end = min_t(loff_t, ctrl.retro_end, i_size_read(inode));
+	if (end <= 0)
+		return 0;
+
+	trace_android_vh_dropbehind_retrodrop(filp, end);
+	return invalidate_inode_pages2_range(filp->f_mapping, 0,
+					     (end - 1) >> PAGE_SHIFT);
+}
 
 static int setfl(int fd, struct file * filp, unsigned int arg)
 {
@@ -550,6 +610,15 @@ static long do_fcntl(int fd, unsigned int cmd, unsigned long arg,
 		break;
 	case F_SET_RW_HINT:
 		err = fcntl_set_rw_hint(filp, cmd, arg);
+		break;
+	case F_ANDROID_DROPBEHIND_ENABLE:
+		err = fcntl_dropbehind_enable(filp, arg);
+		break;
+	case F_ANDROID_DROPBEHIND_DISABLE:
+		err = fcntl_dropbehind_disable(filp, arg);
+		break;
+	case F_ANDROID_DROPBEHIND_RETRODROP:
+		err = fcntl_dropbehind_retrodrop(filp, arg);
 		break;
 	default:
 		trace_android_rvh_do_fcntl(filp, cmd, arg, &err);

@@ -38,6 +38,7 @@
 #include <linux/memcontrol.h>
 #include <linux/cleancache.h>
 #include <linux/shmem_fs.h>
+#include <trace/hooks/mm.h>
 #include <linux/rmap.h>
 #include <linux/delayacct.h>
 #include <linux/psi.h>
@@ -2636,6 +2637,91 @@ static inline bool pos_same_folio(loff_t pos1, loff_t pos2, struct folio *folio)
 	return (pos1 >> shift == pos2 >> shift);
 }
 
+static bool file_dropbehind_enabled(struct file *file)
+{
+	return (READ_ONCE(file->f_iocb_flags) & IOCB_DONTCACHE) &&
+	       (READ_ONCE(file->f_dropbehind_state) & FILE_DROPBEHIND_ENABLED);
+}
+
+static void file_dropbehind_disable_locked(struct file *file, u32 reason)
+{
+	file->f_iocb_flags &= ~IOCB_DONTCACHE;
+	file->f_dropbehind_state &= ~FILE_DROPBEHIND_ENABLED;
+	file->f_dropbehind_state |= reason;
+}
+
+static void filemap_dropbehind_range(struct file *file,
+				     struct address_space *mapping,
+				     loff_t start, loff_t end)
+{
+	loff_t aligned_start, aligned_end;
+
+	if (end <= start)
+		return;
+
+	aligned_start = ALIGN(start, PAGE_SIZE);
+	aligned_end = round_down(end, PAGE_SIZE);
+	if (aligned_end <= aligned_start)
+		return;
+
+	trace_android_vh_dropbehind_invalidate(file, aligned_start, aligned_end);
+	invalidate_inode_pages2_range(mapping, aligned_start >> PAGE_SHIFT,
+				      (aligned_end - 1) >> PAGE_SHIFT);
+}
+
+static void filemap_dropbehind_after_read(struct kiocb *iocb,
+					  loff_t read_start,
+					  loff_t read_end)
+{
+	struct file *file = iocb->ki_filp;
+	struct address_space *mapping = file->f_mapping;
+	loff_t safe_drop_end, drop_start, drop_end;
+	u32 keep_tail, batch_bytes;
+
+	if (!file_dropbehind_enabled(file))
+		return;
+
+	spin_lock(&file->f_lock);
+	if (!(file->f_dropbehind_state & FILE_DROPBEHIND_ENABLED)) {
+		spin_unlock(&file->f_lock);
+		return;
+	}
+
+	if (read_start + PAGE_SIZE < file->f_dropbehind_max_seen_pos) {
+		file_dropbehind_disable_locked(file,
+				FILE_DROPBEHIND_DISABLED_BY_BACKWARD);
+		spin_unlock(&file->f_lock);
+		return;
+	}
+
+	if (read_end > file->f_dropbehind_max_seen_pos)
+		file->f_dropbehind_max_seen_pos = read_end;
+
+	keep_tail = file->f_dropbehind_keep_tail;
+	batch_bytes = file->f_dropbehind_batch_bytes;
+	if (read_end <= keep_tail) {
+		spin_unlock(&file->f_lock);
+		return;
+	}
+
+	safe_drop_end = read_end - keep_tail;
+	if (safe_drop_end <= file->f_dropbehind_dropped_upto) {
+		spin_unlock(&file->f_lock);
+		return;
+	}
+	if (safe_drop_end - file->f_dropbehind_dropped_upto < batch_bytes) {
+		spin_unlock(&file->f_lock);
+		return;
+	}
+
+	drop_start = file->f_dropbehind_dropped_upto;
+	drop_end = safe_drop_end;
+	file->f_dropbehind_dropped_upto = safe_drop_end;
+	spin_unlock(&file->f_lock);
+
+	filemap_dropbehind_range(file, mapping, drop_start, drop_end);
+}
+
 /**
  * filemap_read - Read data from the page cache.
  * @iocb: The iocb to read.
@@ -2717,36 +2803,40 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
 			folio_mark_accessed(fbatch.folios[0]);
 
 		for (i = 0; i < folio_batch_count(&fbatch); i++) {
-			struct folio *folio = fbatch.folios[i];
-			size_t fsize = folio_size(folio);
-			size_t offset = iocb->ki_pos & (fsize - 1);
-			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
-					     fsize - offset);
-			size_t copied;
+				struct folio *folio = fbatch.folios[i];
+				size_t fsize = folio_size(folio);
+				size_t offset = iocb->ki_pos & (fsize - 1);
+				size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
+						     fsize - offset);
+				size_t copied;
+				loff_t read_start = iocb->ki_pos;
 
-			if (end_offset < folio_pos(folio))
-				break;
-			if (i > 0)
-				folio_mark_accessed(folio);
-			/*
-			 * If users can be writing to this folio using arbitrary
-			 * virtual addresses, take care of potential aliasing
-			 * before reading the folio on the kernel side.
-			 */
-			if (writably_mapped)
-				flush_dcache_folio(folio);
+				if (end_offset < folio_pos(folio))
+					break;
+				if (i > 0)
+					folio_mark_accessed(folio);
+				/*
+				 * If users can be writing to this folio using arbitrary
+				 * virtual addresses, take care of potential aliasing
+				 * before reading the folio on the kernel side.
+				 */
+				if (writably_mapped)
+					flush_dcache_folio(folio);
 
-			copied = copy_folio_to_iter(folio, offset, bytes, iter);
+				copied = copy_folio_to_iter(folio, offset, bytes, iter);
 
-			already_read += copied;
-			iocb->ki_pos += copied;
-			last_pos = iocb->ki_pos;
+				already_read += copied;
+				iocb->ki_pos += copied;
+				last_pos = iocb->ki_pos;
+				if (copied)
+					filemap_dropbehind_after_read(iocb, read_start,
+								      iocb->ki_pos);
 
-			if (copied < bytes) {
-				error = -EFAULT;
-				break;
+				if (copied < bytes) {
+					error = -EFAULT;
+					break;
+				}
 			}
-		}
 put_folios:
 		for (i = 0; i < folio_batch_count(&fbatch); i++)
 			folio_put(fbatch.folios[i]);

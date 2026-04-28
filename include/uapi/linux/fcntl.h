@@ -61,6 +61,16 @@
 #define F_GET_FILE_RW_HINT	(F_LINUX_SPECIFIC_BASE + 13)
 #define F_SET_FILE_RW_HINT	(F_LINUX_SPECIFIC_BASE + 14)
 
+#define F_ANDROID_DROPBEHIND_ENABLE	(F_LINUX_SPECIFIC_BASE + 15)
+#define F_ANDROID_DROPBEHIND_DISABLE	(F_LINUX_SPECIFIC_BASE + 16)
+#define F_ANDROID_DROPBEHIND_RETRODROP	(F_LINUX_SPECIFIC_BASE + 17)
+
+struct android_dropbehind_ctrl {
+	__u32 flags;
+	__u32 reserved;
+	__u64 retro_end;
+};
+
 /*
  * Valid hint values for F_{GET,SET}_RW_HINT. 0 is "not set", or can be
  * used to clear any hints previously set.

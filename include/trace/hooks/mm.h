@@ -381,6 +381,18 @@ DECLARE_HOOK(android_vh_do_read_fault,
 DECLARE_HOOK(android_vh_filemap_read,
 	TP_PROTO(struct file *file, loff_t pos, size_t size),
 	TP_ARGS(file, pos, size));
+DECLARE_HOOK(android_vh_dropbehind_enable,
+	TP_PROTO(struct file *file, loff_t pos),
+	TP_ARGS(file, pos));
+DECLARE_HOOK(android_vh_dropbehind_disable,
+	TP_PROTO(struct file *file, u32 reason),
+	TP_ARGS(file, reason));
+DECLARE_HOOK(android_vh_dropbehind_invalidate,
+	TP_PROTO(struct file *file, loff_t start, loff_t end),
+	TP_ARGS(file, start, end));
+DECLARE_HOOK(android_vh_dropbehind_retrodrop,
+	TP_PROTO(struct file *file, loff_t end),
+	TP_ARGS(file, end));
 DECLARE_HOOK(android_vh_filemap_map_pages,
 	TP_PROTO(struct file *file, pgoff_t orig_start_pgoff, pgoff_t first_pgoff,
 		pgoff_t last_pgoff, vm_fault_t ret),
