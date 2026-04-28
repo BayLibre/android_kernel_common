@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "99a12993_d4ce0255",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-28T16:39:24Z",
+      "side": 1,
+      "message": "\u003e I\u0027m not sure what you mean. Where does this range [0x0, 0xFFF0] come from? The FEUADDR holds the higher 24 bits of the APIC ID (in the FEUADDR\u0027s higher 24 bits), so any FEUADDR value in the range [0x100, 0xFFFFFF00] is valid, right?\n\nMy bad, yeah this is not correct. Any value for 24 MSB are always valid for APIC IDs and we might not be able to verify the validity based on the contents of FEUADDR other than checking first 8 bits. Sorry about this",
+      "parentUuid": "83ee2222_0c32a154",
+      "revId": "acf672b261ba2b17d2fb843adec54ea9e8279cb8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e1f0fe03_049b6522",
         "filename": "drivers/iommu/intel/pkvm/iommu.c",
         "patchSetId": 11
