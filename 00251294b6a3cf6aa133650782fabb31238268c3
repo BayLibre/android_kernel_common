@@ -24,6 +24,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3a5dcfc_6ed54dee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-04-28T16:06:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "614dcfe9_7da0df90",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 54
+      },
+      "revId": "00251294b6a3cf6aa133650782fabb31238268c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "636d2845_bae51865",
@@ -87,6 +111,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9e3d603_f4ae73a2",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2425,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-04-28T16:06:31Z",
+      "side": 1,
+      "message": "Right, let me drop it",
+      "parentUuid": "9f3b7d56_d0cca459",
+      "range": {
+        "startLine": 2425,
+        "startChar": 0,
+        "endLine": 2425,
+        "endChar": 35
+      },
+      "revId": "00251294b6a3cf6aa133650782fabb31238268c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "389d8368_24704f30",
@@ -110,6 +158,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4828daaf_f3569205",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2457,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-04-28T16:06:31Z",
+      "side": 1,
+      "message": "I think it should be:\n```\nwhile (--ppage !\u003d hyp_ppages) {\n\n}\n```\n\nsince the last `ppage` doesn\u0027t end up donated to a guest",
+      "parentUuid": "389d8368_24704f30",
+      "range": {
+        "startLine": 2450,
+        "startChar": 0,
+        "endLine": 2457,
+        "endChar": 42
+      },
+      "revId": "00251294b6a3cf6aa133650782fabb31238268c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d00d5f7e_cd66ba1b",
@@ -123,6 +195,30 @@
       "writtenOn": "2026-04-28T15:10:11Z",
       "side": 1,
       "message": "nit: wrap this in a `__guest_set_owner_host()` helper so that we can avoid open-coding the PSCI part and have symmetry with `__host_set_owner_guest()`?",
+      "range": {
+        "startLine": 2459,
+        "startChar": 0,
+        "endLine": 2460,
+        "endChar": 49
+      },
+      "revId": "00251294b6a3cf6aa133650782fabb31238268c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab816317_1b15053d",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2460,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-04-28T16:06:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d00d5f7e_cd66ba1b",
       "range": {
         "startLine": 2459,
         "startChar": 0,
