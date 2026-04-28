@@ -88,6 +88,30 @@
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54730b2d_661f3074",
+        "filename": "arch/arm64/kvm/hyp/nvhe/mem_protect.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2391,
+      "author": {
+        "id": 1942270
+      },
+      "writtenOn": "2026-04-28T16:56:29Z",
+      "side": 1,
+      "message": "Yes, this should also be fixed even though the caller of it is an EL2 vendor module that has to assemble the sglist.",
+      "parentUuid": "2467a78e_0e552d13",
+      "range": {
+        "startLine": 2391,
+        "startChar": 4,
+        "endLine": 2391,
+        "endChar": 35
+      },
+      "revId": "00251294b6a3cf6aa133650782fabb31238268c3",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f3b7d56_d0cca459",
