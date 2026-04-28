@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c2ce7ed4_92a18019",
+        "filename": "drivers/iommu/intel/pkvm/iommu.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3702829
+      },
+      "writtenOn": "2026-04-28T16:53:27Z",
+      "side": 1,
+      "message": "\u003e If it indeed points to APIC address space, \"anything else\" would not \"just be writing to memory\" (as that comment in __irq_msi_compose_msg() says), it would be writing to that APIC address space?\n\nWhat I meant is, based on the allowable APIC IDs of a system, the whole range can be a mix of APIC address space and system memory. For example if the system has 512 cpus, FEUADDR 0x100 is a valid APIC range(and could be reserved in BIOS), but rest could be system memory and programming FEUADDR:FEADDR with a value in another range might write to system memory. \n\nBut this is just a theory based on my understanding. As you mentioned, checking a server system with enough memory and cpus or clarification from Intel would really help.",
+      "parentUuid": "99a12993_d4ce0255",
+      "revId": "acf672b261ba2b17d2fb843adec54ea9e8279cb8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e1f0fe03_049b6522",
         "filename": "drivers/iommu/intel/pkvm/iommu.c",
         "patchSetId": 11
