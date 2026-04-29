@@ -16,6 +16,24 @@
       "message": "Breaks KMI:\n```\ntype \u0027struct i2c_client\u0027 changed\n  byte size changed from 976 to 984\n  member \u0027i2c_slave_cb_t slave_cb\u0027 was added\n  member \u0027void* devres_group_id\u0027 changed\n    offset changed by 64\n\ntype \u0027struct i2c_algorithm\u0027 changed\n  byte size changed from 40 to 56\n  member \u0027union { int(* reg_target)(struct i2c_client*); int(* reg_slave)(struct i2c_client*); }\u0027 was added\n  member \u0027union { int(* unreg_target)(struct i2c_client*); int(* unreg_slave)(struct i2c_client*); }\u0027 was added\n```\nNeed to refactor the series to avoid these changes or wait for the upcoming KMI thaw (opens June 1)",
       "revId": "4bd5aa8cb6d4cffc65a2dd8b18498a17e8e712d5",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00ceb783_4721d98c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3386406
+      },
+      "writtenOn": "2026-04-29T18:21:56Z",
+      "side": 1,
+      "message": "With this patch update it should be resolved to no longer break the KMI",
+      "parentUuid": "0ba766ce_53b6eb9e",
+      "revId": "4bd5aa8cb6d4cffc65a2dd8b18498a17e8e712d5",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
