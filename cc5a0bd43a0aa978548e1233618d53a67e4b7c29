@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76bd915e_a24e1b19",
+        "filename": "drivers/dma-buf/dma-heap.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-04-29T19:30:26Z",
+      "side": 1,
+      "message": "You should probably also pass dma_buf to detect if the allocation was successful or not. Unsuccessful allocations can be very fast. Also, are you planning to use `current` to disambiguate cases when multiple threads are allocating concurrently?",
+      "range": {
+        "startLine": 105,
+        "startChar": 1,
+        "endLine": 105,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "07285c08_aa07c310",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "drivers/dma-buf/dma-heap.c",
+              "range": {
+                "startLine": 104,
+                "startChar": 0,
+                "endLine": 106,
+                "endChar": 0
+              },
+              "replacement": "\ttrace_android_vh_dma_heap_buffer_alloc_end(heap-\u003ename, len, dma_buf);\n\ttrace_android_vh_dma_heap_buffer_alloc_lat_end(stime, len, dma_buf);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "cc5a0bd43a0aa978548e1233618d53a67e4b7c29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4194bf6_6ef03fb8",
+        "filename": "mm/cma.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-04-29T19:30:26Z",
+      "side": 1,
+      "message": "There are several early return cases which will cause your `trace_android_vh_cma_alloc_lat_start` to have no matching `trace_android_vh_cma_alloc_lat_end`. You should probably move `trace_android_vh_cma_alloc_lat_start` after this line to eliminate these early return possibilities.",
+      "range": {
+        "startLine": 480,
+        "startChar": 2,
+        "endLine": 480,
+        "endChar": 8
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "2cbfd7e1_70398261",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "mm/cma.c",
+              "range": {
+                "startLine": 458,
+                "startChar": 0,
+                "endLine": 459,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "mm/cma.c",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\ttrace_android_vh_cma_alloc_lat_start(\u0026stime);\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "cc5a0bd43a0aa978548e1233618d53a67e4b7c29",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
