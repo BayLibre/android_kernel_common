@@ -46,6 +46,8 @@ struct wrap_content_operations {
 			    union wrapfd_mappable *mappable);
 	int (*ioctl)(struct wrap_content *content,
 		     unsigned int cmd, unsigned long arg);
+	int (*compat_ioctl)(struct wrap_content *content,
+			    unsigned int cmd, unsigned long arg);
 
 };
 
@@ -249,8 +251,8 @@ dmabuf_content_get_mappable(struct wrap_content *content, struct device *dev,
 	return 0;
 }
 
-static int dmabuf_content_ioctl(struct wrap_content *content,
-				unsigned int cmd, unsigned long arg)
+static int __dmabuf_content_ioctl(struct wrap_content *content,
+				  unsigned int cmd, unsigned long arg, bool compat)
 {
 	struct wrap_content_dmabuf *dmabuf_content;
 	struct file *file;
@@ -259,7 +261,23 @@ static int dmabuf_content_ioctl(struct wrap_content *content,
 				      content);
 	file = dmabuf_content->dmabuf->file;
 
+	if (compat)
+		return file->f_op->compat_ioctl(file, cmd, arg);
+
 	return file->f_op->unlocked_ioctl(file, cmd, arg);
+
+}
+
+static int dmabuf_content_ioctl(struct wrap_content *content,
+				unsigned int cmd, unsigned long arg)
+{
+	return __dmabuf_content_ioctl(content, cmd, arg, false);
+}
+
+static int dmabuf_content_compat_ioctl(struct wrap_content *content,
+				       unsigned int cmd, unsigned long arg)
+{
+	return __dmabuf_content_ioctl(content, cmd, arg, true);
 }
 
 static struct wrap_content_operations dmabuf_content_ops = {
@@ -272,6 +290,7 @@ static struct wrap_content_operations dmabuf_content_ops = {
 	.show_fdinfo		= dmabuf_content_show_fdinfo,
 	.get_mappable		= dmabuf_content_get_mappable,
 	.ioctl			= dmabuf_content_ioctl,
+	.compat_ioctl		= dmabuf_content_compat_ioctl,
 };
 
 static struct wrap_content *alloc_dmabuf_content(struct dma_buf *dmabuf,
@@ -897,8 +916,9 @@ unlock:
 }
 
 static int wrap_file_ioctl(struct wrap_ctx *ctx,
-			   unsigned int cmd, unsigned long arg)
+			   unsigned int cmd, unsigned long arg, bool compat)
 {
+	int (*content_ioctl)(struct wrap_content *, unsigned int, unsigned long);
 	int ret = 0;
 
 	spin_lock(&ctx->lock);
@@ -923,7 +943,11 @@ static int wrap_file_ioctl(struct wrap_ctx *ctx,
 		goto unlock;
 	}
 
-	if (!ctx->content->ops->ioctl) {
+	if (compat && ctx->content->ops->compat_ioctl) {
+		content_ioctl = ctx->content->ops->compat_ioctl;
+	} else if (!compat && ctx->content->ops->ioctl) {
+		content_ioctl = ctx->content->ops->ioctl;
+	} else {
 		context_unuse(ctx);
 		ret = -ENOIOCTLCMD;
 		goto unlock;
@@ -934,7 +958,7 @@ unlock:
 	if (ret)
 		return ret;
 
-	ret = ctx->content->ops->ioctl(ctx->content, cmd, arg);
+	ret = content_ioctl(ctx->content, cmd, arg);
 
 	spin_lock(&ctx->lock);
 	context_unuse(ctx);
@@ -943,7 +967,7 @@ unlock:
 	return ret;
 }
 
-static long wrap_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+static long __wrap_ioctl(struct file *file, unsigned int cmd, unsigned long arg, bool compat)
 {
 	struct wrap_ctx *ctx = file->private_data;
 	long ret;
@@ -976,11 +1000,30 @@ static long wrap_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		ret = wrap_file_allow_guests(ctx, false);
 		break;
 	default:
-		ret = wrap_file_ioctl(ctx, cmd, arg);
+		ret = wrap_file_ioctl(ctx, cmd, arg, compat);
 		break;
 	}
 
 	return ret;
+}
+
+static long wrap_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+{
+	return __wrap_ioctl(file, cmd, arg, false);
+}
+
+static long wrap_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+{
+	/* These commands are associated with pointers as arguments, so use compat_ptr() on them. */
+	switch(cmd) {
+	case WRAPFD_DEV_IOC_GET_STATE:
+	case WRAPFD_DEV_IOC_LOAD:
+	case WRAPFD_DEV_IOC_REWRAP:
+		arg = (unsigned long)compat_ptr(arg);
+		break;
+	}
+
+	return __wrap_ioctl(file, cmd, arg, true);
 }
 
 #ifdef CONFIG_PROC_FS
@@ -1107,7 +1150,7 @@ static const struct file_operations wrap_fops = {
 	.mmap		= wrap_mmap,
 	.release	= wrap_release,
 	.unlocked_ioctl	= wrap_ioctl,
-	.compat_ioctl	= wrap_ioctl,
+	.compat_ioctl	= wrap_compat_ioctl,
 #ifdef CONFIG_PROC_FS
 	.show_fdinfo	= wrap_show_fdinfo,
 #endif
@@ -1194,7 +1237,7 @@ static long wrapfd_dev_ioctl(struct file *file, unsigned int cmd,
 static const struct file_operations wrapfd_dev_fops = {
 	.owner = THIS_MODULE,
 	.unlocked_ioctl = wrapfd_dev_ioctl,
-	.compat_ioctl = wrapfd_dev_ioctl,
+	.compat_ioctl = compat_ptr_ioctl,
 	.llseek = noop_llseek,
 };
 
