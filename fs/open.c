@@ -35,6 +35,7 @@
 #include <linux/filelock.h>
 
 #include "internal.h"
+#include <trace/events/dropbehind.h>
 #include <trace/hooks/syscall_check.h>
 
 int do_truncate(struct mnt_idmap *idmap, struct dentry *dentry,
@@ -1419,6 +1420,25 @@ struct file *file_open_root(const struct path *root,
 }
 EXPORT_SYMBOL(file_open_root);
 
+static void android_dropbehind_trace_open_observe(struct file *file,
+						  unsigned int fd)
+{
+	char *buf, *path;
+
+	if (!trace_android_dropbehind_open_observe_enabled())
+		return;
+
+	buf = __getname();
+	if (!buf)
+		return;
+
+	path = file_path(file, buf, PATH_MAX);
+	if (!IS_ERR(path))
+		trace_android_dropbehind_open_observe(file, fd, path);
+
+	__putname(buf);
+}
+
 static long do_sys_openat2(int dfd, const char __user *filename,
 			   struct open_how *how)
 {
@@ -1440,6 +1460,7 @@ static long do_sys_openat2(int dfd, const char __user *filename,
 			put_unused_fd(fd);
 			fd = PTR_ERR(f);
 		} else {
+			android_dropbehind_trace_open_observe(f, fd);
 			fd_install(fd, f);
 		}
 	}
@@ -1582,6 +1603,7 @@ SYSCALL_DEFINE1(close, unsigned int, fd)
 		return -EBADF;
 
 	retval = filp_flush(file, current->files);
+	trace_android_dropbehind_close_observe(file, fd, file->f_pos, retval);
 
 	/*
 	 * We're returning to user space. Don't bother

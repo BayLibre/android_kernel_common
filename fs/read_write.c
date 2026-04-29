@@ -22,6 +22,7 @@
 #include <linux/mount.h>
 #include <linux/fs.h>
 #include "internal.h"
+#include <trace/events/dropbehind.h>
 
 #include <linux/uaccess.h>
 #include <asm/unistd.h>
@@ -387,17 +388,24 @@ EXPORT_SYMBOL(vfs_llseek);
 static off_t ksys_lseek(unsigned int fd, off_t offset, unsigned int whence)
 {
 	off_t retval;
+	loff_t old_pos, new_pos, res;
 	struct fd f = fdget_pos(fd);
 	if (!fd_file(f))
 		return -EBADF;
 
+	old_pos = fd_file(f)->f_pos;
+	new_pos = old_pos;
 	retval = -EINVAL;
 	if (whence <= SEEK_MAX) {
-		loff_t res = vfs_llseek(fd_file(f), offset, whence);
+		res = vfs_llseek(fd_file(f), offset, whence);
+		if (res >= 0)
+			new_pos = res;
 		retval = res;
 		if (res != (loff_t)retval)
 			retval = -EOVERFLOW;	/* LFS: should only happen on 32 bit platforms */
 	}
+	trace_android_dropbehind_llseek_observe(fd_file(f), fd, old_pos, offset,
+						whence, retval, new_pos);
 	fdput_pos(f);
 	return retval;
 }
@@ -423,16 +431,21 @@ SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high,
 	int retval;
 	struct fd f = fdget_pos(fd);
 	loff_t offset;
+	loff_t old_pos, new_pos;
 
 	if (!fd_file(f))
 		return -EBADF;
 
+	old_pos = fd_file(f)->f_pos;
+	new_pos = old_pos;
 	retval = -EINVAL;
 	if (whence > SEEK_MAX)
 		goto out_putf;
 
 	offset = vfs_llseek(fd_file(f), ((loff_t) offset_high << 32) | offset_low,
 			whence);
+	if (offset >= 0)
+		new_pos = offset;
 
 	retval = (int)offset;
 	if (offset >= 0) {
@@ -441,6 +454,9 @@ SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high,
 			retval = 0;
 	}
 out_putf:
+	trace_android_dropbehind_llseek_observe(fd_file(f), fd, old_pos,
+			((loff_t) offset_high << 32) | offset_low, whence,
+			retval, new_pos);
 	fdput_pos(f);
 	return retval;
 }
@@ -706,11 +722,21 @@ ssize_t ksys_read(unsigned int fd, char __user *buf, size_t count)
 
 	if (fd_file(f)) {
 		loff_t pos, *ppos = file_ppos(fd_file(f));
+		loff_t pos_before = 0;
+		unsigned int observe_flags = ANDROID_DROPBEHIND_OBS_READ;
+
+		if (fd_file(f)->f_flags & O_DIRECT)
+			observe_flags |= ANDROID_DROPBEHIND_OBS_DIRECT;
 		if (ppos) {
 			pos = *ppos;
+			pos_before = pos;
 			ppos = &pos;
+		} else {
+			observe_flags |= ANDROID_DROPBEHIND_OBS_NO_POS;
 		}
 		ret = vfs_read(fd_file(f), buf, count, ppos);
+		trace_android_dropbehind_read_observe(fd_file(f), fd,
+				pos_before, count, ret, observe_flags, 0);
 		if (ret >= 0 && ppos)
 			fd_file(f)->f_pos = pos;
 		fdput_pos(f);
@@ -760,6 +786,12 @@ ssize_t ksys_pread64(unsigned int fd, char __user *buf, size_t count,
 
 	f = fdget(fd);
 	if (fd_file(f)) {
+		loff_t pos_before;
+		unsigned int observe_flags = ANDROID_DROPBEHIND_OBS_PREAD;
+
+		if (fd_file(f)->f_flags & O_DIRECT)
+			observe_flags |= ANDROID_DROPBEHIND_OBS_DIRECT;
+
 		ret = -ESPIPE;
 
 		/*
@@ -772,8 +804,11 @@ ssize_t ksys_pread64(unsigned int fd, char __user *buf, size_t count,
 		if (__is_emulated_pagemap_file(fd_file(f)))
 			pos *= __PAGE_SIZE / PAGE_SIZE;
 
+		pos_before = pos;
 		if (fd_file(f)->f_mode & FMODE_PREAD)
 			ret = vfs_read(fd_file(f), buf, count, &pos);
+		trace_android_dropbehind_read_observe(fd_file(f), fd,
+				pos_before, count, ret, observe_flags, 0);
 		fdput(f);
 	}
 
@@ -1092,11 +1127,21 @@ static ssize_t do_readv(unsigned long fd, const struct iovec __user *vec,
 
 	if (fd_file(f)) {
 		loff_t pos, *ppos = file_ppos(fd_file(f));
+		loff_t pos_before = 0;
+		unsigned int observe_flags = ANDROID_DROPBEHIND_OBS_READV;
+
+		if (fd_file(f)->f_flags & O_DIRECT)
+			observe_flags |= ANDROID_DROPBEHIND_OBS_DIRECT;
 		if (ppos) {
 			pos = *ppos;
+			pos_before = pos;
 			ppos = &pos;
+		} else {
+			observe_flags |= ANDROID_DROPBEHIND_OBS_NO_POS;
 		}
 		ret = vfs_readv(fd_file(f), vec, vlen, ppos, flags);
+		trace_android_dropbehind_read_observe(fd_file(f), fd,
+				pos_before, 0, ret, observe_flags, flags);
 		if (ret >= 0 && ppos)
 			fd_file(f)->f_pos = pos;
 		fdput_pos(f);
@@ -1149,9 +1194,17 @@ static ssize_t do_preadv(unsigned long fd, const struct iovec __user *vec,
 
 	f = fdget(fd);
 	if (fd_file(f)) {
+		loff_t pos_before = pos;
+		unsigned int observe_flags = ANDROID_DROPBEHIND_OBS_PREADV;
+
+		if (fd_file(f)->f_flags & O_DIRECT)
+			observe_flags |= ANDROID_DROPBEHIND_OBS_DIRECT;
+
 		ret = -ESPIPE;
 		if (fd_file(f)->f_mode & FMODE_PREAD)
 			ret = vfs_readv(fd_file(f), vec, vlen, &pos, flags);
+		trace_android_dropbehind_read_observe(fd_file(f), fd,
+				pos_before, 0, ret, observe_flags, flags);
 		fdput(f);
 	}
 
