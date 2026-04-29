@@ -473,12 +473,11 @@ static int erofs_file_mmap_prepare(struct vm_area_desc *desc)
 	if (!IS_DAX(file_inode(desc->file)))
 		return generic_file_readonly_mmap_prepare(desc);
 
-	if (vma_desc_test_flags(desc, VMA_SHARED_BIT) &&
-	    vma_desc_test_flags(desc, VMA_MAYWRITE_BIT))
+	if ((desc->vm_flags & VM_SHARED) && (desc->vm_flags & VM_MAYWRITE))
 		return -EINVAL;
 
 	desc->vm_ops = &erofs_dax_vm_ops;
-	vma_desc_set_flags(desc, VMA_HUGEPAGE_BIT);
+	desc->vm_flags |= VM_HUGEPAGE;
 	return 0;
 }
 #else

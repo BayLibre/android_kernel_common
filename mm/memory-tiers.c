@@ -320,17 +320,16 @@ void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
 /**
  * next_demotion_node() - Get the next node in the demotion path
  * @node: The starting node to lookup the next node
- * @allowed_mask: The pointer to allowed node mask
  *
  * Return: node id for next memory node in the demotion path hierarchy
  * from @node; NUMA_NO_NODE if @node is terminal.  This does not keep
  * @node online or guarantee that it *continues* to be the next demotion
  * target.
  */
-int next_demotion_node(int node, const nodemask_t *allowed_mask)
+int next_demotion_node(int node)
 {
 	struct demotion_nodes *nd;
-	nodemask_t mask;
+	int target;
 
 	if (!node_demotion)
 		return NUMA_NO_NODE;
@@ -345,10 +344,6 @@ int next_demotion_node(int node, const nodemask_t *allowed_mask)
 	 * node_demotion[] reads need to be consistent.
 	 */
 	rcu_read_lock();
-	/* Filter out nodes that are not in allowed_mask. */
-	nodes_and(mask, nd->preferred, *allowed_mask);
-	rcu_read_unlock();
-
 	/*
 	 * If there are multiple target nodes, just select one
 	 * target node randomly.
@@ -361,16 +356,10 @@ int next_demotion_node(int node, const nodemask_t *allowed_mask)
 	 * caching issue, which seems more complicated. So selecting
 	 * target node randomly seems better until now.
 	 */
-	if (!nodes_empty(mask))
-		return node_random(&mask);
+	target = node_random(&nd->preferred);
+	rcu_read_unlock();
 
-	/*
-	 * Preferred nodes are not in allowed_mask. Flip bits in
-	 * allowed_mask as used node mask. Then, use it to get the
-	 * closest demotion target.
-	 */
-	nodes_complement(mask, *allowed_mask);
-	return find_next_best_node(node, &mask);
+	return target;
 }
 
 static void disable_all_demotion_targets(void)

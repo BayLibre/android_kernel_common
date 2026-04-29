@@ -333,8 +333,7 @@ static int zonefs_file_mmap_prepare(struct vm_area_desc *desc)
 	 * ordering between msync() and page cache writeback.
 	 */
 	if (zonefs_inode_is_seq(file_inode(file)) &&
-	    vma_desc_test_flags(desc, VMA_SHARED_BIT) &&
-	    vma_desc_test_flags(desc, VMA_MAYWRITE_BIT))
+	    (desc->vm_flags & VM_SHARED) && (desc->vm_flags & VM_MAYWRITE))
 		return -EINVAL;
 
 	file_accessed(file);

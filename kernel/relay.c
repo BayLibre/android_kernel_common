@@ -91,7 +91,7 @@ static int relay_mmap_prepare_buf(struct rchan_buf *buf,
 		return -EINVAL;
 
 	desc->vm_ops = &relay_file_mmap_ops;
-	vma_desc_set_flags(desc, VMA_DONTEXPAND_BIT);
+	desc->vm_flags |= VM_DONTEXPAND;
 	desc->private_data = buf;
 
 	return 0;
