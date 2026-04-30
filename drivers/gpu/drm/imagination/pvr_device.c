@@ -97,9 +97,12 @@ pvr_device_reg_init(struct pvr_device *pvr_dev)
 static int pvr_device_clk_init(struct pvr_device *pvr_dev)
 {
 	struct drm_device *drm_dev = from_pvr_device(pvr_dev);
+	struct device *dev = drm_dev->dev;
+	u32 core_clk_rate = PVR_CORE_CLK_RATE_HZ;
 	struct clk *core_clk;
 	struct clk *sys_clk;
 	struct clk *mem_clk;
+	int err;
 
 	core_clk = devm_clk_get(drm_dev->dev, "core");
 	if (IS_ERR(core_clk))
@@ -115,6 +118,29 @@ static int pvr_device_clk_init(struct pvr_device *pvr_dev)
 	if (IS_ERR(mem_clk))
 		return dev_err_probe(drm_dev->dev, PTR_ERR(mem_clk),
 				     "failed to get mem clock\n");
+
+	/*
+	 * SpacemiT K1 init sequence (from vendor BSP):
+	 *   1. Enable clock
+	 *   2. Set clock rate
+	 *   3. Assert reset (GPU starts in reset, firmware boot later deasserts it)
+	 * The clock stays enabled permanently — only reset is toggled.
+	 */
+	of_property_read_u32(dev->of_node, "img,core-clock-rate-hz", &core_clk_rate);
+
+	err = clk_prepare_enable(core_clk);
+	if (err)
+		return dev_err_probe(dev, err, "failed to enable core clock\n");
+
+	if (core_clk_rate > 0) {
+		err = clk_set_rate(core_clk, core_clk_rate);
+		if (err) {
+			clk_disable_unprepare(core_clk);
+			return dev_err_probe(dev, err,
+					     "failed to set core clock rate (%u Hz)\n",
+					     core_clk_rate);
+		}
+	}
 
 	pvr_dev->core_clk = core_clk;
 	pvr_dev->sys_clk = sys_clk;
