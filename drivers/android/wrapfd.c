@@ -96,21 +96,32 @@ static int dmabuf_content_create_wrap(struct wrap_content *content,
 	return fd;
 }
 
-static int dmabuf_content_load(struct wrap_content *content, struct file *file,
-			       loff_t file_offs, loff_t buf_offs, loff_t len)
-{
-	struct wrap_content_dmabuf *dmabuf_content;
-	void *bounce_page = NULL;
+struct dmabuf_load_param {
+	struct dma_buf *dmabuf;
+	void *start_bounce_page;
+	void *end_bounce_page;
 	struct iosys_map map;
-	struct iov_iter iter;
+	loff_t file_offs;
+	loff_t buf_offs;
+	loff_t len;
+	size_t bytes_read;
+	unsigned int nr_segs;
 	struct kiocb kiocb;
-	size_t bounce_len;
-	struct kvec iov[2];
-	loff_t end, aligned_end;
-	int ret, nr_segs = 1;
+	struct iov_iter iter;
+	struct kvec iov[3];
+};
 
-	dmabuf_content = container_of(content, struct wrap_content_dmabuf,
-				      content);
+static int dmabuf_content_load_prepare(struct dma_buf *dmabuf, loff_t file_offs, loff_t buf_offs,
+				       loff_t len, struct dmabuf_load_param *param)
+{
+	void *start_bounce_page = NULL;
+	void *end_bounce_page = NULL;
+	unsigned int cur_segs = 0;
+	loff_t aligned_len;
+	struct iosys_map map;
+	loff_t end;
+	loff_t aligned_end;
+	int ret;
 
 	if (check_add_overflow(buf_offs, PAGE_ALIGN(len), &aligned_end))
 		return -EINVAL;
@@ -118,26 +129,48 @@ static int dmabuf_content_load(struct wrap_content *content, struct file *file,
 	if (aligned_end > dmabuf_content->dmabuf->size)
 		return -EINVAL;
 
+	aligned_len = PAGE_ALIGN(file_offs + len) - PAGE_ALIGN(file_offs);
+
 	/*
-	 * If the end is not page-aligned, then the read into the last page of the range will
-	 * overwrite any data past the range. Allocate a bounce page for the last page, and handle
-	 * that separately.
+	 * Determine if the first page needs to be bounced:
+	 *
+	 * If the offset into the buffer is not page aligned, doing an entire page sized DMA
+	 * transfer would overwrite the data preceding the offset, so a bounce page is required.
+	 *
+	 * If the file's offset is not page aligned, the buffer's offset is aligned, and the end
+	 * of the read is within the same page as the start, then a bounce page is required to not
+	 * overwrite the data after the range being read into.
 	 */
-	end = buf_offs + len;
-	if (!IS_ALIGNED(end, PAGE_SIZE)) {
-		bounce_page = (void *)__get_free_page(GFP_KERNEL);
-		if (!bounce_page)
+	if (!IS_ALIGNED(buf_offs, PAGE_SIZE) || (!IS_ALIGNED(file_offs, PAGE_SIZE) &&
+						 len < PAGE_SIZE)) {
+		start_bounce_page = (void *)__get_free_page(GFP_KERNEL);
+		if (!start_bounce_page)
 			return -ENOMEM;
-		bounce_len = offset_in_page(end);
-		nr_segs++;
+		aligned_len -= PAGE_SIZE;
 	}
 
-	ret = dma_buf_begin_cpu_access(dmabuf_content->dmabuf,
-				       DMA_BIDIRECTIONAL);
-	if (ret)
-		goto err_free_page;
+	/*
+	 * Determine if the last page needs to be bounced:
+	 *
+	 * If the first page was bounced, and the extent of the read is beyond a page, and the end
+	 * is not page-aligned, then the read into the last page of the range will overwrite any
+	 * data past the range. Allocate a bounce page for the last page.
+	 */
+	end = buf_offs + len;
+	if (aligned_len && !IS_ALIGNED(end, PAGE_SIZE)) {
+		end_bounce_page = (void *)__get_free_page(GFP_KERNEL);
+		if (!end_bounce_page) {
+			ret = -ENOMEM;
+			goto err_free_start_page;
+		}
+		aligned_len -= PAGE_SIZE;
+	}
 
-	ret = dma_buf_vmap(dmabuf_content->dmabuf, &map);
+	ret = dma_buf_begin_cpu_access(dmabuf, DMA_BIDIRECTIONAL);
+	if (ret)
+		goto err_free_end_page;
+
+	ret = dma_buf_vmap(dmabuf, &map);
 	if (ret)
 		goto err_end_access;
 
@@ -146,58 +179,144 @@ static int dmabuf_content_load(struct wrap_content *content, struct file *file,
 		goto err_unmap;
 	}
 
-	iov[0].iov_base = (u8 *)map.vaddr + buf_offs;
-	iov[0].iov_len = PAGE_ALIGN(len);
-	/*
-	 * Read the last page of the extent from the file into the bounce page so we can copy just
-	 * what we need later.
-	 */
-	if (nr_segs == 2) {
-		iov[0].iov_len -= PAGE_SIZE;
-		iov[1].iov_base = bounce_page;
-		iov[1].iov_len = PAGE_SIZE;
+	memset(param, sizeof(*param), 0);
+
+	param->dmabuf = dmabuf;
+	param->start_bounce_page = start_bounce_page;
+	param->end_bounce_page = end_bounce_page;
+	param->map = map;
+	param->file_offs = file_offs;
+	param->buf_offs = buf_offs;
+	param->len = len;
+
+	if (start_bounce_page) {
+		param->iov[cur_seg].iov_base = start_bounce_page;
+		param->iov[cur_seg].iov_len = PAGE_SIZE;
+		cur_seg++;
 	}
 
-	init_sync_kiocb(&kiocb, file);
-	kiocb.ki_pos = file_offs;
-	kiocb.ki_flags |= IOCB_DIRECT;
-	iov_iter_kvec(&iter, ITER_DEST, iov, nr_segs, PAGE_ALIGN(len));
+	/* Is there anything to load directly into the dmabuf? */
+	if (aligned_len) {
+		param->iov[cur_seg].iov_base = map.vaddr;
+		param->iov[cur_seg].iov_len = aligned_len;
+		/* Start at the next page of the dmabuf if the fist page is bounced. */
+		if (start_bounce_page)
+			param->iov[cur_seg].iov_base += PAGE_SIZE;
+		cur_seg++;
+	}
 
-	while (len > 0) {
+	if (end_bounce_page) {
+		param->iov[cur_seg].iov_base = end_bounce_page;
+		param->iov[cur_seg].iov_len = PAGE_SIZE;
+		cur_seg++;
+	}
+
+	param->nr_segs = cur_seg;
+	init_sync_kiocb(&param->kiocb, file);
+	param->kiocb.ki_pos = PAGE_ALIGN(file_offs);
+	param->kiocb.ki_flags |= IOCB_DIRECT;
+	iov_iter_kvec(&param->iter, ITER_DEST, param->iov, param->nr_segs, PAGE_ALIGN(len));
+	return 0;
+
+err_unmap:
+	dma_buf_vunmap(dmabuf, &map);
+err_end_access:
+	dma_buf_end_cpu_access(dmabuf, DMA_BIDIRECTIONAL);
+err_free_end_page:
+	free_page((unsigned long)end_bounce_page);
+err_free_start_page:
+	free_page((unsigned long)start_bounce_page);
+	return ret;
+}
+
+static void dmabuf_content_load_complete(struct dmabuf_load_param *param)
+{
+	void *dst, *src;
+	size_t len;
+	size_t aligned_len = PAGE_ALIGN(param->len);
+
+	if (param->bytes_read < param->len)
+		goto out;
+
+	if (param->start_bounce_page) {
+		dst = param->map.vaddr + param->buf_offset;
+		/* The first page was bounced here, so only consider the offset within the page. */
+		src = param->start_bounce_page + offset_in_page(param->file_offs);
+		/*
+		 * Either the first bounce page has all the content or the read is entirely
+		 * contained within the bounce page.
+		 */
+		len = min_t(size_t, param->len, PAGE_SIZE - offset_in_page(param->file_offs));
+		memcpy(dst, src, len);
+		aligned_len -= PAGE_SIZE;
+	}
+
+	/* Start at the end of the last page in the buffer and only copy what we need. */
+	if (param->end_bounce_page) {
+		dst = PTR_ALIGN_DOWN(param->map.vaddr + param->buf_offs + param->len, PAGE_SIZE);
+		src = param->end_bounce_page;
+		len = offset_in_page(param->buf_offs + param->len);
+		memcpy(dst, src, len);
+		aligned_len -= PAGE_SIZE;
+	}
+
+	/*
+	 * If there's anything that was copied directly into the dmabuf, and the file and buffer
+	 * offsets were not equal modulo the page size, then the data is sitting at the start of the
+	 * page next to the page it is supposed to be in, and needs to be moved back.
+	 */
+	if (aligned_len && (offset_in_page(param->buf_offs) != offset_in_page(param->file_offs))) {
+		dst = param->map.vaddr + param->buf_offset +
+		      (PAGE_SIZE - offset_in_page(param->file_offs));
+		src = PTR_ALIGN(param->map.vaddr + param->buf_offset, PAGE_SIZE);
+		len = aligned_len;
+		memmove(dst, src, len);
+	}
+
+out:
+	dma_buf_vunmap(param->dmabuf, &param->map);
+	dma_buf_end_cpu_access(param->dmabuf, DMA_BIDIRECTIONAL);
+	free_page((unsigned long)param->end_bounce_page);
+	free_page((unsigned long)param->start_bounce_page);
+}
+
+static int dmabuf_content_load(struct wrap_content *content, struct file *file,
+			       loff_t file_offs, loff_t buf_offs, loff_t len)
+{
+	struct wrap_content_dmabuf *dmabuf_content;
+	struct dmabuf_load_param param;
+	int ret;
+
+	dmabuf_content = container_of(content, struct wrap_content_dmabuf,
+				      content);
+	ret = dmabuf_content_load_prepare(dmabuf_content->dmabuf, file_offs, buf_offs, len, &param);
+	if (ret)
+		return ret;
+
+	while (param.bytes_read < param.len) {
 		loff_t count = min_t(loff_t, MAX_RW_COUNT, PAGE_ALIGN(len));
 
-		iter.count = count;
-		while (len > 0 && iov_iter_count(&iter)) {
-			ssize_t sz = vfs_iocb_iter_read(file, &kiocb, &iter);
+		param.iter.count = count;
+		while ((param.bytes_read < param.len) && iov_iter_count(&param.iter)) {
+			ssize_t sz = vfs_iocb_iter_read(file, &param.kiocb, &param.iter);
 
 			if (sz <= 0) {
 				ret = sz;
-				goto err_unmap;
+				goto err;
 			}
-			len -= sz;
-			iov_iter_advance(&iter, sz);
+			param.bytes_read += sz;
+			iov_iter_advance(&param.iter, sz);
 		}
 	}
 
-	/* Copy just what we need from the bounce buffer. */
-	if (nr_segs == 2)
-		memcpy(PTR_ALIGN_DOWN(map.vaddr + end, PAGE_SIZE), bounce_page, bounce_len);
-
-err_unmap:
-	dma_buf_vunmap(dmabuf_content->dmabuf, &map);
-err_end_access:
-	dma_buf_end_cpu_access(dmabuf_content->dmabuf, DMA_BIDIRECTIONAL);
-err_free_page:
-	free_page((unsigned long)bounce_page);
-
-	if (ret < 0)
-		return ret;
+out:
+	dmabuf_content_load_complete(&param);
 
 	/*
 	 * File was too short / early EOF. Test explicitly for a positive value, as len can be
 	 * negative in cases where the page-aligned size of the final read is larger than len.
 	 */
-	if (len > 0)
+	if (param.bytes_read < len)
 		return -EINVAL;
 
 	return 0;
@@ -772,12 +891,6 @@ static int wrap_file_load(struct wrap_ctx *ctx,
 	len = wrapfd_load.len;
 
 	if (file_offs < 0 || buf_offs < 0 || len < 0)
-		return -EINVAL;
-
-	if (!PAGE_ALIGNED(file_offs))
-		return -EINVAL;
-
-	if (!PAGE_ALIGNED(buf_offs))
 		return -EINVAL;
 
 	if (wrapfd_load.reserved || wrapfd_load.pad)
