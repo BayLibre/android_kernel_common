@@ -427,14 +427,14 @@ static int spacemit_i2s_probe(struct platform_device *pdev)
 	if (IS_ERR(i2s->bclk))
 		return dev_err_probe(i2s->dev, PTR_ERR(i2s->bclk), "failed to enable bit clock\n");
 
-	clk = devm_clk_get_enabled(i2s->dev, "sspa_bus");
+	clk = devm_clk_get_enabled(i2s->dev, "bus");
 	if (IS_ERR(clk))
-		return dev_err_probe(i2s->dev, PTR_ERR(clk), "failed to enable sspa_bus clock\n");
+		return dev_err_probe(i2s->dev, PTR_ERR(clk), "failed to enable bus clock\n");
 
-	i2s->sspa_clk = devm_clk_get_enabled(i2s->dev, "sspa");
+	i2s->sspa_clk = devm_clk_get_enabled(i2s->dev, "func");
 	if (IS_ERR(i2s->sspa_clk))
 		return dev_err_probe(i2s->dev, PTR_ERR(i2s->sspa_clk),
-				     "failed to enable sspa clock\n");
+				     "failed to enable func clock\n");
 
 	i2s->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
 	if (IS_ERR(i2s->base))
