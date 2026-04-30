@@ -160,4 +160,23 @@ config USB_ULPI_VIEWPORT
 	  Provides read/write operations to the ULPI phy register set for
 	  controllers with a viewport register (e.g. Chipidea/ARC controllers).
 
+config USB_PHY_K1X_CI_USB2
+	tristate "Spacemit K1-X USB2 PHY Driver"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	select USB_PHY
+	help
+	  Enable this to support the USB2 PHY on Spacemit K1-X series SoCs.
+	  This driver provides USB2 transceiver support for the CI-based
+	  USB controller.
+
+config USB_PHY_K1X_CI_OTG
+	tristate "Spacemit K1-X USB OTG PHY Driver"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on USB_GADGET || !USB_GADGET
+	select USB_PHY
+	help
+	  Enable this to support the USB OTG transceiver on Spacemit K1-X
+	  series SoCs. This driver handles OTG role switching and VBUS
+	  detection.
+
 endmenu
