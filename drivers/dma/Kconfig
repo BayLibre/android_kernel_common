@@ -432,6 +432,13 @@ config MMP_PDMA
 	help
 	  Support the MMP PDMA engine for PXA and MMP platform.
 
+config SPACEMIT_PDMA
+	tristate "Spacemit K1-X PDMA support"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	select DMA_ENGINE
+	help
+	  Support the Spacemit K1-X PDMA (Peripheral DMA) engine.
+
 config MMP_TDMA
 	tristate "MMP Two-Channel DMA support"
 	depends on ARCH_MMP || COMPILE_TEST
