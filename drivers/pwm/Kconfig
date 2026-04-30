@@ -866,4 +866,15 @@ config PWM_XILINX
 	  counting) and provide safe interfaces to the underlying C core,
 	  allowing driver logic to be written in safe Rust.
 
+config PWM_K1
+	tristate "Spacemit K1 PWM support"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on HAS_IOMEM && OF
+	help
+	  Generic PWM framework driver for DesignWare PWM controller
+	  on Spacemit K1 SoC.
+
+	  To compile this driver as a module, choose M here: the module
+	  will be called pwm-dwc-k1pro.
+
 endif
