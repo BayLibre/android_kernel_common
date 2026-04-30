@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+config SPACEMIT_PM_DOMAINS
+	tristate "SpacemiT K1 Power Domain driver"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on PM
+	select PM_GENERIC_DOMAINS
+	help
+	  Support for SpacemiT K1 SoC power domains. This driver manages
+	  the power domains for peripherals such as HDMI, LCD, and USB.
