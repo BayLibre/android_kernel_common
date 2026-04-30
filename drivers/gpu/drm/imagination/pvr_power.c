@@ -273,17 +273,21 @@ static int pvr_power_on_sequence_manual(struct pvr_device *pvr_dev)
 {
 	int err;
 
-	err = clk_prepare_enable(pvr_dev->core_clk);
-	if (err)
-		return err;
+	if (!pvr_dev->clocks_enabled) {
+		err = clk_prepare_enable(pvr_dev->core_clk);
+		if (err)
+			return err;
 
-	err = clk_prepare_enable(pvr_dev->sys_clk);
-	if (err)
-		goto err_core_clk_disable;
+		err = clk_prepare_enable(pvr_dev->sys_clk);
+		if (err)
+			goto err_core_clk_disable;
 
-	err = clk_prepare_enable(pvr_dev->mem_clk);
-	if (err)
-		goto err_sys_clk_disable;
+		err = clk_prepare_enable(pvr_dev->mem_clk);
+		if (err)
+			goto err_sys_clk_disable;
+
+		pvr_dev->clocks_enabled = true;
+	}
 
 	/*
 	 * According to the hardware manual, a delay of at least 32 clock
@@ -296,7 +300,7 @@ static int pvr_power_on_sequence_manual(struct pvr_device *pvr_dev)
 	udelay(1);
 
 	err = reset_control_deassert(pvr_dev->reset);
-	if (err)
+	if (err && !pvr_dev->clocks_enabled)
 		goto err_mem_clk_disable;
 
 	return 0;
@@ -315,15 +319,8 @@ err_core_clk_disable:
 
 static int pvr_power_off_sequence_manual(struct pvr_device *pvr_dev)
 {
-	int err;
-
-	err = reset_control_assert(pvr_dev->reset);
-
-	clk_disable_unprepare(pvr_dev->mem_clk);
-	clk_disable_unprepare(pvr_dev->sys_clk);
-	clk_disable_unprepare(pvr_dev->core_clk);
-
-	return err;
+	/* Only assert reset, keep clocks running (SpacemiT K1 requirement) */
+	return reset_control_assert(pvr_dev->reset);
 }
 
 const struct pvr_power_sequence_ops pvr_power_sequence_ops_manual = {

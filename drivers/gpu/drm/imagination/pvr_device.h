@@ -158,6 +158,9 @@ struct pvr_device {
 	 */
 	struct clk *mem_clk;
 
+	/** @clocks_enabled: Whether GPU clocks have been enabled (kept always-on). */
+	bool clocks_enabled;
+
 	/**
 	 * @power: Optional power domain devices.
 	 *
