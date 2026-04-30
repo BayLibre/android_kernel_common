@@ -234,4 +234,14 @@ config USB_DWC3_GOOGLE
 	  To compile this driver as a module, choose M here: the
 	  module will be called dwc3-google.ko.
 
+config USB_DWC3_SPACEMIT
+	tristate "Spacemit K1 Platforms"
+	depends on (ARCH_SPACEMIT || COMPILE_TEST) && OF
+	default USB_DWC3
+	help
+	  Support Spacemit K1 series SoCs with DesignWare Core USB3 IP.
+	  This driver provides better power management and wakeup
+	  support compared to the generic platform driver.
+	  Say 'Y' or 'M' if you have one such device.
+
 endif
