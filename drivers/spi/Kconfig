@@ -1373,6 +1373,29 @@ config SPI_TLE62X0
 # Add new SPI protocol masters in alphabetical order above this line
 #
 
+config SPI_K1X
+	tristate "Spacemit K1-X SPI controller"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on HAS_IOMEM
+	help
+	  SPI master controller driver for Spacemit K1-X SoC.
+	  This driver supports DMA transfers and various SPI modes.
+
+	  To compile this driver as a module, choose M here: the module
+	  will be called spi-k1x.
+
+config SPI_K1X_QSPI
+	tristate "Spacemit K1-X QSPI controller"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on HAS_IOMEM && SPI_MEM
+	help
+	  Quad SPI (QSPI) master controller driver for Spacemit K1-X SoC.
+	  This driver supports memory-mapped read and IP command modes
+	  for SPI NOR flash devices.
+
+	  To compile this driver as a module, choose M here: the module
+	  will be called spi-k1x-qspi.
+
 endif # SPI_MASTER
 
 #
