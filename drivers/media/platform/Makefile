@@ -27,6 +27,7 @@ obj-y += raspberrypi/
 obj-y += renesas/
 obj-y += rockchip/
 obj-y += samsung/
+obj-y += spacemit/
 obj-y += st/
 obj-y += sunxi/
 obj-y += synopsys/
