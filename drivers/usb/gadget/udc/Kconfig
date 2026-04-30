@@ -421,6 +421,18 @@ source "drivers/usb/gadget/udc/aspeed-vhub/Kconfig"
 
 source "drivers/usb/gadget/udc/cdns2/Kconfig"
 
+config USB_K1X_UDC
+	tristate "Spacemit K1-X USB Device Controller"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on HAS_DMA
+	help
+	  USB Device Controller driver for Spacemit K1-X series SoCs.
+	  This driver provides USB gadget functionality using the
+	  ChipIdea-based USB device controller.
+
+	  Say "y" to link the driver statically, or "m" to build a
+	  dynamically linked module called "k1x_udc_core".
+
 #
 # LAST -- dummy/emulated controller
 #
