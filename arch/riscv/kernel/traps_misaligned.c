@@ -191,27 +191,179 @@ union reg_data {
 int unaligned_enabled __read_mostly = 1;	/* Enabled by default */
 
 #ifdef CONFIG_RISCV_VECTOR_MISALIGNED
-static int handle_vector_misaligned_load(struct pt_regs *regs)
+
+/*
+ * Emulate misaligned vector unit-stride loads/stores (vle/vse 8/16/32/64).
+ *
+ * When a vector load/store traps due to misalignment, we:
+ *  1. Save the user's vector state (kernel_vector_begin)
+ *  2. Read vl/vtype from saved CSRs to know element count & width
+ *  3. Copy data byte-by-byte between userspace memory and the saved vector
+ *     register file
+ *  4. Restore vector state (kernel_vector_end) — the modified datap is
+ *     automatically written back to the vector registers
+ *  5. Advance the PC past the faulting instruction
+ *
+ * Only unit-stride (lumop/sumop = 0) whole-register and normal stores are
+ * handled.  Strided / indexed / fault-only-first are NOT emulated (rare in
+ * auto-vectorised code).
+ */
+
+/* Extract vs3/vd register number (bits [11:7]) */
+#define RVV_VD(insn)		(((insn) >> 7) & 0x1f)
+
+/* Extract rs1 field (bits [19:15]) — base address register */
+#define RVV_RS1(insn)		(((insn) >> 15) & 0x1f)
+
+/* Extract mop (bits [27:26]) — 00 = unit-stride */
+#define RVV_MOP(insn)		(((insn) >> 26) & 0x3)
+
+/* Extract lumop/sumop (bits [24:20]) — 0 = normal unit-stride */
+#define RVV_LUMOP(insn)		(((insn) >> 20) & 0x1f)
+
+/* Width field to element size in bytes */
+static int rvv_width_to_esize(unsigned int width)
+{
+	switch (width) {
+	case RVV_VL_VS_WIDTH_8:  return 1;
+	case RVV_VL_VS_WIDTH_16: return 2;
+	case RVV_VL_VS_WIDTH_32: return 4;
+	case RVV_VL_VS_WIDTH_64: return 8;
+	default: return 0;
+	}
+}
+
+/*
+ * Get the byte offset of vector register `vreg` inside the saved vector
+ * register file (datap).  vlenb = size in bytes of one vector register.
+ */
+static inline unsigned long vreg_offset(unsigned int vreg, unsigned long vlenb)
+{
+	return (unsigned long)vreg * vlenb;
+}
+
+static int emulate_vector_misaligned(struct pt_regs *regs, bool is_store)
 {
 	unsigned long epc = regs->epc;
 	unsigned long insn;
+	unsigned int width, vreg, mop, lumop, esize;
+	unsigned long addr, vl, vtype, vlenb, total_bytes;
+	struct __riscv_v_ext_state *vstate;
+	u8 *datap;
+	int ret = 0;
 
 	if (get_insn(regs, epc, &insn))
 		return -1;
 
-	/* Only return 0 when in check_vector_unaligned_access_emulated */
-	if (*this_cpu_ptr(&vector_misaligned_access) == RISCV_HWPROBE_MISALIGNED_VECTOR_UNKNOWN) {
-		*this_cpu_ptr(&vector_misaligned_access) = RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED;
+	/* Probing path — let the probe succeed */
+	if (*this_cpu_ptr(&vector_misaligned_access) ==
+	    RISCV_HWPROBE_MISALIGNED_VECTOR_UNKNOWN) {
+		*this_cpu_ptr(&vector_misaligned_access) =
+			RISCV_HWPROBE_MISALIGNED_VECTOR_UNSUPPORTED;
 		regs->epc = epc + INSN_LEN(insn);
 		return 0;
 	}
 
-	/* If vector instruction we don't emulate it yet */
-	regs->epc = epc;
-	return -1;
+	if (!unaligned_enabled)
+		return -1;
+
+	if (user_mode(regs) && (current->thread.align_ctl & PR_UNALIGN_SIGBUS))
+		return -1;
+
+	/* Only handle unit-stride (mop=0, lumop/sumop=0) */
+	mop = RVV_MOP(insn);
+	lumop = RVV_LUMOP(insn);
+	if (mop != 0 || lumop != 0)
+		return -1;
+
+	width = RVV_EXTRACT_VL_VS_WIDTH(insn);
+	esize = rvv_width_to_esize(width);
+	if (!esize)
+		return -1;
+
+	vreg = RVV_VD(insn);
+	addr = regs->badaddr;
+
+	/* Save user vector state so we can access the register file */
+	kernel_vector_begin();
+
+	vstate = &current->thread.vstate;
+	vl = vstate->vl;
+	vtype = vstate->vtype;
+	vlenb = riscv_v_vsize / 32; /* vsize = 32 regs * vlenb */
+	datap = (u8 *)vstate->datap;
+
+	/*
+	 * For vtype, vsew might differ from the instruction's width.
+	 * But vl was set by the last vsetvli for the current SEW.
+	 * The actual number of elements transferred = vl (set by user code).
+	 * The element size for the transfer is determined by the instruction
+	 * encoding (width field), NOT by vsew.
+	 */
+	total_bytes = vl * esize;
+	if (!total_bytes || vreg >= 32) {
+		kernel_vector_end();
+		regs->epc = epc + INSN_LEN(insn);
+		return 0;
+	}
+
+	/* Bounds check: data must fit in the register file from vreg onwards */
+	if (vreg_offset(vreg, vlenb) + total_bytes > riscv_v_vsize) {
+		kernel_vector_end();
+		return -1;
+	}
+
+	if (is_store) {
+		/* Vector store: copy from saved vector regs to user memory */
+		if (user_mode(regs)) {
+			if (copy_to_user((void __user *)addr,
+					 datap + vreg_offset(vreg, vlenb),
+					 total_bytes))
+				ret = -1;
+		} else {
+			memcpy((void *)addr,
+			       datap + vreg_offset(vreg, vlenb),
+			       total_bytes);
+		}
+	} else {
+		/* Vector load: copy from user memory to saved vector regs */
+		if (user_mode(regs)) {
+			if (copy_from_user(datap + vreg_offset(vreg, vlenb),
+					   (const void __user *)addr,
+					   total_bytes))
+				ret = -1;
+		} else {
+			memcpy(datap + vreg_offset(vreg, vlenb),
+			       (const void *)addr,
+			       total_bytes);
+		}
+	}
+
+	kernel_vector_end();
+
+	if (ret)
+		return -1;
+
+	regs->epc = epc + INSN_LEN(insn);
+	return 0;
 }
+
+static int handle_vector_misaligned_load(struct pt_regs *regs)
+{
+	return emulate_vector_misaligned(regs, false);
+}
+
+static int handle_vector_misaligned_store(struct pt_regs *regs)
+{
+	return emulate_vector_misaligned(regs, true);
+}
+
 #else
 static int handle_vector_misaligned_load(struct pt_regs *regs)
+{
+	return -1;
+}
+static int handle_vector_misaligned_store(struct pt_regs *regs)
 {
 	return -1;
 }
@@ -445,6 +597,14 @@ int handle_misaligned_load(struct pt_regs *regs)
 
 int handle_misaligned_store(struct pt_regs *regs)
 {
+	if (IS_ENABLED(CONFIG_RISCV_VECTOR_MISALIGNED)) {
+		unsigned long epc = regs->epc;
+		unsigned long insn;
+
+		if (!get_insn(regs, epc, &insn) && insn_is_vector(insn))
+			return handle_vector_misaligned_store(regs);
+	}
+
 	if (IS_ENABLED(CONFIG_RISCV_SCALAR_MISALIGNED))
 		return handle_scalar_misaligned_store(regs);
 
