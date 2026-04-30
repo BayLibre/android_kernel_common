@@ -145,6 +145,7 @@ static int pvr_device_clk_init(struct pvr_device *pvr_dev)
 	pvr_dev->core_clk = core_clk;
 	pvr_dev->sys_clk = sys_clk;
 	pvr_dev->mem_clk = mem_clk;
+	pvr_dev->clocks_enabled = true;
 
 	return 0;
 }
