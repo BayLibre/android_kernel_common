@@ -808,6 +808,18 @@ config I2C_K1
 	  This driver can also be built as a module.  If so, the
 	  module will be called `i2c-k1`.
 
+config I2C_K1X
+	tristate "Spacemit K1-X I2C adapter"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on OF
+	help
+	  This option enables support for the I2C interface on the Spacemit K1-X
+	  SoC platform. This is a more feature-rich driver supporting DMA
+	  transfers and extended functionality.
+
+	  This driver can also be built as a module. If so, the module will be
+	  called `i2c-k1x`.
+
 config I2C_KEBA
 	tristate "KEBA I2C controller support"
 	depends on HAS_IOMEM
