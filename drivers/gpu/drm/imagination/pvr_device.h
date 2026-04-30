@@ -70,6 +70,16 @@ struct pvr_device_data {
 	const struct pvr_power_sequence_ops *pwr_ops;
 };
 
+/*
+ * Default core clock rate (Hz) used when no device tree property is provided.
+ *
+ * Set to 0 to leave the rate unchanged. Platforms may override this macro at
+ * build time.
+ */
+#ifndef PVR_CORE_CLK_RATE_HZ
+#define PVR_CORE_CLK_RATE_HZ (819000000U)
+#endif
+
 /**
  * struct pvr_device - powervr-specific wrapper for &struct drm_device
  */
