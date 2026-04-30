@@ -527,4 +527,13 @@ config LOONGSON2_THERMAL
 	  is higher than the high temperature threshold or lower than the low
 	  temperature threshold, the interrupt will occur.
 
+config K1X_THERMAL
+	tristate "Spacemit K1-X thermal driver"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on OF
+	help
+	  Support for thermal driver on Spacemit K1-X SoC platforms.
+	  This driver provides temperature monitoring for multiple thermal
+	  zones including CPU clusters, GPU, and other on-chip sensors.
+
 endif
