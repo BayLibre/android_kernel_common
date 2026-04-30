@@ -380,6 +380,16 @@ config ACPI_CPPC_CPUFREQ_FIE
 
 	  If in doubt, say N.
 
+config SPACEMIT_K1X_CPUFREQ
+	tristate "Spacemit K1-X CPUFreq driver"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	select PM_OPP
+	help
+	  This adds a CPUFreq driver for Spacemit K1-X SoC platforms.
+	  It provides CPU frequency scaling support.
+
+	  If in doubt, say N.
+
 endif # CPU_FREQ
 
 endmenu
