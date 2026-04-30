@@ -3,6 +3,7 @@
 #define _ASM_RISCV_PROTOTYPES_H
 
 #include <linux/ftrace.h>
+#include <linux/cpufreq.h>
 #include <asm-generic/asm-prototypes.h>
 
 long long __lshrti3(long long a, int b);
