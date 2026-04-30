@@ -342,6 +342,17 @@ config USB_EHCI_HCD_PLATFORM
 
 	  If unsure, say N.
 
+config USB_EHCI_K1X_CI
+	tristate "Spacemit K1-X CI EHCI support"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	select USB_EHCI_ROOT_HUB_TT
+	help
+	  Enable support for the EHCI controller on Spacemit K1-X series
+	  SoCs. This driver provides USB 2.0 host support through the
+	  ChipIdea-based EHCI controller.
+
+	  Say 'Y' or 'M' if you have a Spacemit K1-X device.
+
 config USB_OCTEON_EHCI
 	bool "Octeon on-chip EHCI support (DEPRECATED)"
 	depends on CAVIUM_OCTEON_SOC
