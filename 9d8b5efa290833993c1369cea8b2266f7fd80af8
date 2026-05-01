@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0726e2e_29f0e507",
+        "filename": "include/linux/pagemap.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1157738
+      },
+      "writtenOn": "2026-05-01T04:35:05Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to do this anymore. You can include `trace/hooks/mm.h` like this:\n\n```\n#undef CREATE_TRACE_POINTS\n#include \u003ctrace/hooks/mm.h\u003e\n```\n\nand call the hook from the header. Here is an example where it\u0027s already done:\n\nhttps://android-review.googlesource.com/c/kernel/common/+/3931879/9/include/linux/mm_inline.h#266",
+      "range": {
+        "startLine": 660,
+        "startChar": 0,
+        "endLine": 662,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7a4dc0df_eb554553",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/linux/pagemap.h",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "#ifndef CREATE_TRACE_POINTS\n#include \u003ctrace/hooks/mm.h\u003e\n#endif\n\n"
+            },
+            {
+              "path": "include/linux/pagemap.h",
+              "range": {
+                "startLine": 660,
+                "startChar": 0,
+                "endLine": 663,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "9d8b5efa290833993c1369cea8b2266f7fd80af8",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
