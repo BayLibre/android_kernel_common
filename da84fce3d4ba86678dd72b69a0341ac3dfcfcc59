@@ -87,6 +87,24 @@
       "parentUuid": "e37bebea_1f8d03f9",
       "revId": "da84fce3d4ba86678dd72b69a0341ac3dfcfcc59",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee58e00d_931170e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1625880
+      },
+      "writtenOn": "2026-05-01T08:49:14Z",
+      "side": 1,
+      "message": "I think there is some confusion going on here. Firstly, `baswap` has been allowed for import by vendor modules in multiple kernels, for `aarch64`.\n\nI see no reason at all why it should not be permitted for `x86_64`.\n\nIf it is permitted for import, then it must also be exported by GKI (kernel or modules). It is exported by `net/bluetooth/bluetooth.ko`.\n\n---\n\nYou should add back `baswap` and update the `abi.stg` as per the offered fix.\n\nTo generate such a fix yourself, see go/where-is-the-button-2.\n\n---\n\nThe only thing you are not allowed to do is *export* `baswap` from a vendor module.",
+      "parentUuid": "71a278b5_9eb74c0e",
+      "revId": "da84fce3d4ba86678dd72b69a0341ac3dfcfcc59",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
