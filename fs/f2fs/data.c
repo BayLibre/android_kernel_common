@@ -527,9 +527,17 @@ static void f2fs_set_bio_crypt_ctx(struct bio *bio, const struct inode *inode,
 	 * read/write raw data without encryption.
 	 */
 	if (!fio || !fio->encrypted_page)
+<<<<<<< HEAD   (3c6a9fd19433143c323c147ae10f77d6421e01e2 Merge 81dc1e4d32b0 ("Merge tag 'v7.1-rc1-part1-smb3-client-f)
 		fscrypt_set_bio_crypt_ctx(bio, inode, first_idx, gfp_mask);
 	else if (fscrypt_inode_should_skip_dm_default_key(inode))
 		bio_set_skip_dm_default_key(bio);
+||||||| BASE   (81dc1e4d32b064ac47abc60b0acbf49b66a34d52 Merge tag 'v7.1-rc1-part1-smb3-client-fixes' of git://git.sa)
+		fscrypt_set_bio_crypt_ctx(bio, inode, first_idx, gfp_mask);
+=======
+		fscrypt_set_bio_crypt_ctx(bio, inode,
+				(loff_t)first_idx << inode->i_blkbits,
+				gfp_mask);
+>>>>>>> BRANCH (9932f00bf40d281151de5694bc0f097cb9b5616c Merge tag 'fscrypt-for-linus' of git://git.kernel.org/pub/sc)
 }
 
 static bool f2fs_crypt_mergeable_bio(struct bio *bio, const struct inode *inode,
@@ -545,7 +553,8 @@ static bool f2fs_crypt_mergeable_bio(struct bio *bio, const struct inode *inode,
 			(bio_should_skip_dm_default_key(bio) ==
 			 fscrypt_inode_should_skip_dm_default_key(inode));
 
-	return fscrypt_mergeable_bio(bio, inode, next_idx);
+	return fscrypt_mergeable_bio(bio, inode,
+			(loff_t)next_idx << inode->i_blkbits);
 }
 
 void f2fs_submit_read_bio(struct f2fs_sb_info *sbi, struct bio *bio,
