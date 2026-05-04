@@ -233,7 +233,7 @@ void cmdlist_atomic_commit(struct drm_crtc *crtc,
 			dpu_write_reg(hwdev, CMDLIST_REG, CMDLIST_BASE_ADDR, cmdlist_reg_14[i].cmdlist_ch_y, val);
 			val = ((priv->cmdlist_groups[i]->pa) & CMDLIST_ADDRL_ALIGN_MASK) >> CMDLIST_ADDRL_ALIGN_BITS;
 			dpu_write_reg(hwdev, CMDLIST_REG, CMDLIST_BASE_ADDR, cmdlist_reg_0[i].cmdlist_ch_start_addrl, val);
-#if defined (CONFIG_ARM64) || defined (CONFIG_ARM_LPAE)
+#if defined (CONFIG_ARM64) || defined (CONFIG_ARM_LPAE) || defined (CONFIG_ARCH_RV64I)
 			val = (priv->cmdlist_groups[i]->pa) >> 32;
 			dpu_write_reg(hwdev, CMDLIST_REG, CMDLIST_BASE_ADDR, cmdlist_reg_14[i].cmdlist_ch_start_addrh, val);
 #else

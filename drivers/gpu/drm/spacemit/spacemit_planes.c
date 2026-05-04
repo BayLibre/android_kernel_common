@@ -41,7 +41,7 @@ static int spacemit_plane_check_rdma(const struct spacemit_hw_rdma *rdma, u32 rd
 	u32 format = state->fb->format->format;
 	u16 hw_formats = rdma[rdma_id].formats;
 	u16 hw_rots = rdma[rdma_id].rots;
-	bool afbc = (state->fb->modifier > 0);
+	bool afbc = (state->fb->modifier && state->fb->modifier != DRM_FORMAT_MOD_INVALID);
 	const struct drm_format_info *info = drm_format_info(format);
 	struct spacemit_dpu *dpu = crtc_to_dpu(state->crtc);
 
@@ -170,7 +170,7 @@ static int spacemit_plane_atomic_check(struct drm_plane *plane,
 		return -EINVAL;
 	}
 
-	if (fb->format->num_planes > 1 && fb->modifier) {
+	if (fb->format->num_planes > 1 && fb->modifier && fb->modifier != DRM_FORMAT_MOD_INVALID) {
 		DRM_ERROR("%s, Unsupported afbc with plane_num:%d\n", __func__, fb->format->num_planes);
 		return -EINVAL;
 	}

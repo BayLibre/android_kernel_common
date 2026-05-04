@@ -184,7 +184,7 @@ struct spacemit_hw_device spacemit_dp_devices[DP_MAX_DEVICES] = {
 	[SATURN_HDMI] = {
 		.base = NULL,		/* Parsed by dts */
 		.phy_addr = 0x0,	/* Parsed by dts */
-		.plane_nums = 8,
+		.plane_nums = 4,
 		.rdma_nums = ARRAY_SIZE(saturn_le_rdmas),
 		.rdmas = saturn_le_rdmas,
 		.n_formats = ARRAY_SIZE(primary_fmts),
@@ -200,7 +200,7 @@ struct spacemit_hw_device spacemit_dp_devices[DP_MAX_DEVICES] = {
 	[SATURN_LE] = {
 		.base = NULL,		/* Parsed by dts */
 		.phy_addr = 0x0,	/* Parsed by dts */
-		.plane_nums = 8,
+		.plane_nums = 4,
 		.rdma_nums = ARRAY_SIZE(saturn_le_rdmas),
 		.rdmas = saturn_le_rdmas,
 		.n_formats = ARRAY_SIZE(primary_fmts),
@@ -999,7 +999,7 @@ void spacemit_plane_update_hw_channel(struct drm_plane *plane)
 	u32 solid_a, solid_r, solid_g, solid_b;
 	struct spacemit_drm_private *priv = plane->dev->dev_private;
 	struct spacemit_hw_device *hwdev = priv->hwdev;
-	bool is_afbc = (fb->modifier > 0);
+	bool is_afbc = (fb->modifier && fb->modifier != DRM_FORMAT_MOD_INVALID);
 	u8 channel = crtc_to_dpu(state->crtc)->dev_id;
 
 	trace_spacemit_plane_update_hw_channel("rdma_id", rdma_id);
@@ -1074,7 +1074,7 @@ void spacemit_plane_update_hw_channel(struct drm_plane *plane)
 
 		write_to_cmdlist(priv, RDMA_PATH_X_REG, module_base, ROT_MODE, val << 7 | uv_swap << 6 | spacemit_plane_state->format);
 
-		if (fb->modifier) {
+		if (fb->modifier && fb->modifier != DRM_FORMAT_MOD_INVALID) {
 			spacemit_set_afbc_info(priv, fb->modifier, module_base);
 		}
 
@@ -1462,7 +1462,7 @@ static void saturn_init_regs(struct spacemit_dpu *dpu)
 	/* set bg color to black */
 	dpu_write_reg(hwdev, CMPS_X_REG, base, m_nbg_color_B, 0x0);
 	dpu_write_reg(hwdev, CMPS_X_REG, base, m_nbg_color_R, 0x0);
-	dpu_write_reg(hwdev, CMPS_X_REG, base, m_nbg_color_G, 0xFF);
+	dpu_write_reg(hwdev, CMPS_X_REG, base, m_nbg_color_G, 0x0);
 	dpu_write_reg(hwdev, CMPS_X_REG, base, m_nbg_color_A, 0xFF);
 	dpu_write_reg(hwdev, CMPS_X_REG, base, m_ncmps_en, 1);
 
@@ -1481,7 +1481,7 @@ static void saturn_init_regs(struct spacemit_dpu *dpu)
 	dpu_write_reg(hwdev, OUTCTRL_TOP_X_REG, base, frame_timing_en, 1);
 	dpu_write_reg(hwdev, OUTCTRL_TOP_X_REG, base, split_overlap, 0);
 	dpu_write_reg(hwdev, OUTCTRL_TOP_X_REG, base, hblank, 0);
-	dpu_write_reg(hwdev, OUTCTRL_TOP_X_REG, base, back_ground_r, 0xfff);
+	dpu_write_reg(hwdev, OUTCTRL_TOP_X_REG, base, back_ground_r, 0x0);
 	dpu_write_reg(hwdev, OUTCTRL_TOP_X_REG, base, back_ground_g, 0x0);
 	dpu_write_reg(hwdev, OUTCTRL_TOP_X_REG, base, back_ground_b, 0x0);
 	dpu_write_reg(hwdev, OUTCTRL_TOP_X_REG, base, sof_pre_ln_num, 0x0);
@@ -1514,6 +1514,7 @@ static void saturn_init_regs(struct spacemit_dpu *dpu)
 
 	dpu_write_reg(hwdev, DPU_CTL_REG, DPU_CTRL_BASE_ADDR, ctl2_video_mod, 0x1);
 	dpu_write_reg(hwdev, DPU_CTL_REG, DPU_CTRL_BASE_ADDR, ctl2_dbg_mod, 0x0);
+
 	/*
 	 * ctl2_timing_inter0 use default value
 	 * ctl2_timing_inter1 = 2 * ⌈fmclk / fdscclk⌉, set 0xf as max value

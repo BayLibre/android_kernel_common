@@ -118,6 +118,17 @@ int str_to_u8_array(const char *p, u32 base, u8 array[])
 }
 EXPORT_SYMBOL_GPL(str_to_u8_array);
 
+#if IS_ENABLED(CONFIG_GKI_FIX_WORKAROUND)
+static struct file *gki_filp_open(const char *filename, int flags, umode_t mode)
+{
+	return 0;
+}
+static ssize_t gki_vfs_write(struct file *file, const char __user *buf, size_t count, loff_t *pos)
+{
+	return 0;
+}
+#endif
+
 void *disp_ops_attach(const char *str, struct list_head *head)
 {
 	struct ops_list *list;

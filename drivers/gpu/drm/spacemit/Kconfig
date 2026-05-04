@@ -5,10 +5,13 @@ config DRM_SPACEMIT
 	depends on DRM && (ARCH_SPACEMIT || COMPILE_TEST)
 	select DRM_KMS_HELPER
 	select DRM_GEM_DMA_HELPER
+	select DRM_GEM_CMA_HELPER
+	select DRM_KMS_CMA_HELPER
 	select DRM_MIPI_DSI
 	select DRM_PANEL
 	select VIDEOMODE_HELPERS
 	select BACKLIGHT_CLASS_DEVICE
+	select GKI_FIX_WORKAROUND if DRM_SPACEMIT=m
 	default n
 	help
 	  Choose this option if you have a Spacemit soc chipsets.
