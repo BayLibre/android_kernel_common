@@ -283,6 +283,18 @@ config POWER_RESET_KEYSTONE
 	help
 	  Reboot support for the KEYSTONE SoCs.
 
+config POWER_RESET_SPACEMIT_K1X
+	tristate "SpacemiT K1-X SoC reboot mode driver"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on HAS_IOMEM
+	help
+	  Handles reboot-to-fastboot ("reboot fastboot") and reboot-to-uboot
+	  ("reboot uboot") on SpacemiT K1-X SoCs by writing magic values to
+	  the APMU reboot-mode register (0xd4282f90).
+
+	  This driver can also be built as a module. If so, the module
+	  will be called spacemit-k1x-reboot.
+
 config POWER_RESET_SPACEMIT_P1
 	tristate "SpacemiT P1 poweroff and reset driver"
 	depends on ARCH_SPACEMIT || COMPILE_TEST
