@@ -591,22 +591,31 @@ static void hdmi_init(struct spacemit_hdmi *hdmi, int pixel_clock, int bit_depth
 	hdmi_write_bits(hdmi, 0xe0, bias_current, 0x03, 29);
 	hdmi_write_bits(hdmi, 0xe0, bias_risistor, 0x0F, 18);
 	hdmi_write_bits(hdmi, 0xe0, good_phase, 0x03, 14);
-	// writel(0xEE40410F, hdmi->regs + 0xe0);
-	// value = readl_relaxed(hdmi->regs + 0xe0);
-	// DRM_DEBUG("%s() hdmi 0xe0 0x%x\n", __func__, value);
 
 	value = 0x0000000d | (color_depth << 4);
 	writel(value, hdmi->regs + 0x34);
 	DRM_DEBUG("%s() hdmi 0x34 0x%x\n", __func__, value);
 
 	pll_reg(hdmi, pixel_clock, bit_depth);
+	writel(0x0, hdmi->regs + 0xe4);
 	writel(0x03, hdmi->regs + 0xe4);
-	value = readl_relaxed(hdmi->regs + 0xe4);
-	DRM_DEBUG("%s() hdmi pll lock status 0x%x\n", __func__, value);
-	// while ( (value & 0x10000) != 0) {
-	// 	value = readl_relaxed(hdmi->regs + 0xe4);
-	// }
-	udelay(100);
+	/* Wait for PLL lock: bit 16 = 1 means not yet locked.
+	 * Match upstream linux-6.6 timing: mdelay(2) x 100 = 200ms total. */
+	{
+		int timeout = 100;
+		while (timeout) {
+			if ((readl(hdmi->regs + 0xe4) & BIT(16)) == 0)
+				break;
+			mdelay(2);
+			timeout--;
+		}
+		value = readl_relaxed(hdmi->regs + 0xe4);
+		if (timeout == 0)
+			DRM_WARN("%s() HDMI PLL lock timeout! status=0x%x\n", __func__, value);
+		else
+			DRM_INFO("%s() HDMI PLL locked after %d ms, status=0x%x\n",
+				 __func__, (100 - timeout) * 2, value);
+	}
 
 	// value = 0x3018C000 | bit_depth;
 	value = 0x1C208000 | bit_depth;
@@ -623,14 +632,6 @@ static int spacemit_hdmi_setup(struct spacemit_hdmi *hdmi,
 	u32 value;
 
 	DRM_DEBUG("%s() \n", __func__);
-
-	// Ensure previous_mode is initialized with a default mode
-	if (hdmi->previous_mode.clock == 0) {
-		hdmi->previous_mode.clock = 148500; // 1920x1080 @ 60Hz
-		hdmi->previous_mode.hdisplay = 1920;
-		hdmi->previous_mode.vdisplay = 1080;
-		DRM_INFO("%s() using default mode 1920x1080\n", __func__);
-	}
 
 	// ciu chip id
 	value = readl_relaxed(ciu);
