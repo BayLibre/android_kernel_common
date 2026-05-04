@@ -205,7 +205,7 @@ int saturn_cal_layer_fbcmem_size(struct drm_plane *plane, \
 	u8 rdma_work_mode = rdmas[pstate->rdma_id].mode;
 	u8 min_lines = 4; //TODO
 
-	if (modifier == 0) { //raw data layer
+	if (!modifier || modifier == DRM_FORMAT_MOD_INVALID) { //raw data layer
 		ret = get_raw_data_plane_rdma_mem_size(drm_4cc_fmt, rot_90_or_270, crop_w, &(pstate->fbcmem_size));
 	} else { //afbc data layer
 		ret = get_fbc_block_size_by_modifier(modifier, &fbc_block_size);

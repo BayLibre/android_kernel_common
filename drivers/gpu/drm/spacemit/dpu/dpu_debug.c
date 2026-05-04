@@ -223,7 +223,17 @@ static void dpu_debug_mode(struct spacemit_hw_device *hwdev, int pipeline_id, bo
 		break;
 	}
 }
-
+#if IS_ENABLED(CONFIG_GKI_FIX_WORKAROUND)
+static struct file *gki_filp_open(const char *filename, int flags, umode_t mode)
+{
+	return 0;
+}
+static ssize_t gki_kernel_write(struct file *file, const void *buf, size_t count,
+			    loff_t *pos)
+{
+	return 0;
+}
+#endif
 #define DPU_BUFFER_DUMP_FILE "/mnt/dpu_buffer_dump"
 int dpu_buffer_dump(struct drm_plane *plane) {
 	unsigned int buffer_size = 0;
@@ -242,7 +252,11 @@ int dpu_buffer_dump(struct drm_plane *plane) {
 	mmu_tbl_vaddr = spacemit_pstate->mmu_tbl.va;
 	buffer_size = plane->state->fb->obj[0]->size >> PAGE_SHIFT;
 
+#if IS_ENABLED(CONFIG_GKI_FIX_WORKAROUND)
+	filep = gki_filp_open(DPU_BUFFER_DUMP_FILE, O_RDWR | O_APPEND | O_CREAT, 0644);
+#else
 	filep = filp_open(DPU_BUFFER_DUMP_FILE, O_RDWR | O_APPEND | O_CREAT, 0644);
+#endif
 
 	if (IS_ERR(filep)) {
 		printk("Open file %s error\n", DPU_BUFFER_DUMP_FILE);
@@ -256,7 +270,11 @@ int dpu_buffer_dump(struct drm_plane *plane) {
 		}
 		dpu_buffer_vaddr = phys_to_virt((unsigned long)dpu_buffer_paddr);
 		mmu_tbl_vaddr += 4;
+#if IS_ENABLED(CONFIG_GKI_FIX_WORKAROUND)
+		gki_kernel_write(filep, (void *)dpu_buffer_vaddr, PAGE_SIZE, &pos);
+#else
 		kernel_write(filep, (void *)dpu_buffer_vaddr, PAGE_SIZE, &pos);
+#endif
 	}
 
 	filp_close(filep, NULL);

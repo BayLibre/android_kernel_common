@@ -9,6 +9,7 @@
 #include <linux/gfp.h>
 #include <linux/dma-mapping.h>
 #include <drm/drm_framebuffer.h>
+#include <drm/drm_fourcc.h>
 
 #include "spacemit_cmdlist.h"
 #include "spacemit_dmmu.h"
@@ -70,7 +71,7 @@ int spacemit_dmmu_map(struct drm_plane *plane, struct dpu_mmu_tbl *mmu_tbl, u8 t
 	}
 
 	plane_num = format->num_planes;
-	fbc_mode = (fb->modifier > 0);
+	fbc_mode = (fb->modifier && fb->modifier != DRM_FORMAT_MOD_INVALID);
 	total_size = roundup(fb->obj[0]->size, PAGE_SIZE);
 	offset1 = plane_num > 1 ? fb->offsets[1] : total_size;
 	offset2 = plane_num > 2 ? fb->offsets[2] : total_size;
