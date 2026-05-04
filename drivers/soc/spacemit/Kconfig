@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+config SPACEMIT_SOCINFO
+	tristate "Spacemit SoC information driver"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on NVMEM_SPACEMIT_EFUSE
+	select SOC_BUS
+	help
+	  Reads die_id, pack_id and chip serial from eFuse via nvmem and
+	  registers the SoC device via soc_device_register(). Exposes chip
+	  name (K1-6370, M1-8571, ...), silicon revision and serial number
+	  under /sys/bus/soc/devices/.
+
+	  This driver can also be built as a module. If so, the module
+	  will be called spacemit-socinfo.
+
+config SPACEMIT_K1X_DMA_RANGE
+	tristate "Spacemit dram range driver for k1x"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	help
+	  This driver is an empty shell, in order to make the dma-ranges
+	  function effective by registering the spacemit-dram-bus compatible
+	  so that of_platform instantiates child dram_range nodes.
+
+config SPACEMIT_DDR_BW
+	tristate "Spacemit K1x DDR AXI monitor / bandwidth driver"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on PM_DEVFREQ
+	help
+	  Spacemit K1x DDR AXI monitor driver. Reads DDR bandwidth from the
+	  DDR controller and uses devfreq to scale DDR frequency under load.
+	  Exposes a character device for userspace monitoring.
