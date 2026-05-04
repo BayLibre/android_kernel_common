@@ -23,3 +23,11 @@ config PHY_SPACEMIT_K1_USB2
 	help
 	  Enable this to support K1 USB 2.0 PHY driver. This driver takes care of
 	  enabling and clock setup and will be used by K1 udc/ehci/otg/xhci driver.
+
+config PHY_SPACEMIT_K1X_COMBPHY
+	tristate "Spacemit K1-x USB3&PCIE combo PHY driver"
+	depends on OF
+	select GENERIC_PHY
+	default SOC_SPACEMIT_K1X && USB_DWC3_SPACEMIT
+	help
+	  USB3 and PCIE Combo PHY Support for Spacemit k1-x Soc
