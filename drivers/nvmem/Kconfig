@@ -483,4 +483,17 @@ config NVMEM_QORIQ_EFUSE
 	  This driver can also be built as a module. If so, the module
 	  will be called nvmem_qoriq_efuse.
 
+config NVMEM_SPACEMIT_EFUSE
+	tristate "Spacemit K1 eFuse support"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on HAS_IOMEM
+	help
+	  This driver provides read support for the eFuse on Spacemit K1 SoCs.
+	  eFuse data (die_id, pack_id, chip serial) is loaded by U-Boot and
+	  read back from registers. Used by spacemit-socinfo for SoC
+	  identification.
+
+	  This driver can also be built as a module. If so, the module
+	  will be called spacemit-efuse.
+
 endif
