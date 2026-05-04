@@ -2248,6 +2248,11 @@ static int
 pvr_page_create(struct pvr_mmu_op_context *op_ctx, dma_addr_t dma_addr,
 		struct pvr_page_flags_raw flags)
 {
+	/* Defensive: match pvr_page_destroy NULL-check — a racing GPU
+	 * runtime-PM resume can briefly present a NULL l0_table. */
+	if (!op_ctx->curr_page.l0_table)
+		return -EFAULT;
+
 	/* Do not create a new page if one already exists. */
 	if (pvr_page_table_l0_entry_is_valid(op_ctx->curr_page.l0_table,
 					     op_ctx->curr_page.l0_idx)) {
@@ -2269,6 +2274,13 @@ pvr_page_create(struct pvr_mmu_op_context *op_ctx, dma_addr_t dma_addr,
 static void
 pvr_page_destroy(struct pvr_mmu_op_context *op_ctx)
 {
+	/* Defensive: the L0 table pointer can be NULL when pvr_page_destroy is
+	 * reached via an error path (e.g. partial vm_map failure racing with
+	 * GPU runtime PM resume). Dereferencing NULL here caused kernel panic
+	 * at pvr_page_destroy+0x1c on BPI-F3 / kernel 6.19. */
+	if (!op_ctx->curr_page.l0_table)
+		return;
+
 	/* Do nothing if the page does not exist. */
 	if (!pvr_page_table_l0_entry_is_valid(op_ctx->curr_page.l0_table,
 					      op_ctx->curr_page.l0_idx)) {
