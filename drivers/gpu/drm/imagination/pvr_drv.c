@@ -1427,7 +1427,18 @@ pvr_probe(struct platform_device *plat_dev)
 	devm_pm_runtime_enable(&plat_dev->dev);
 	pm_runtime_mark_last_busy(&plat_dev->dev);
 
-	pm_runtime_set_autosuspend_delay(&plat_dev->dev, 50);
+	/*
+	 * SpaceMit K1: the default 50ms autosuspend caused ~73ms
+	 * HwcPresentDisplay latency and 30x dma_fence_wait time due to
+	 * GPU wake-up cost on each frame. Vendor DDK (ti-img-rogue-driver
+	 * services/system/rogue/spacemit/) does not enable autosuspend at
+	 * all (bEnableActivePM=IMG_FALSE), but using a negative value here
+	 * triggers an immediate sync resume during probe (pvr_dev not yet
+	 * initialized -> NULL deref in pvr_power_device_resume). Use a
+	 * large positive delay instead to effectively disable autosuspend
+	 * for typical UI workloads.
+	 */
+	pm_runtime_set_autosuspend_delay(&plat_dev->dev, 5000);
 	pm_runtime_use_autosuspend(&plat_dev->dev);
 	pvr_watchdog_init(pvr_dev);
 
