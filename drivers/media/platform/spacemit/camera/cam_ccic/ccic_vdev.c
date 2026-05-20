@@ -395,14 +395,14 @@ static int spm_cvdev_queue_setup(struct vb2_queue *q,
 	return 0;
 }
 
-static void spm_cvdev_wait_prepare(struct vb2_queue *q)
+static void __maybe_unused spm_cvdev_wait_prepare(struct vb2_queue *q)
 {
 	//going to wait sleep, release all locks that may block any vb2 buf/stream functions
 	struct spm_ccic_vnode *ac_vnode = container_of(q, struct spm_ccic_vnode, buf_queue);
 	mutex_unlock(&ac_vnode->mlock);
 }
 
-static void spm_cvdev_wait_finish(struct vb2_queue *q)
+static void __maybe_unused spm_cvdev_wait_finish(struct vb2_queue *q)
 {
 	//wakeup from wait sleep, reacquire all locks
 	struct spm_ccic_vnode *ac_vnode = container_of(q, struct spm_ccic_vnode, buf_queue);
@@ -562,8 +562,6 @@ static void spm_cvdev_buf_queue(struct vb2_buffer *vb)
 
 static struct vb2_ops spm_ccic_vb2_ops = {
 	.queue_setup = spm_cvdev_queue_setup,
-	.wait_prepare = spm_cvdev_wait_prepare,
-	.wait_finish = spm_cvdev_wait_finish,
 	.buf_init = spm_cvdev_buf_init,
 	.buf_prepare = spm_cvdev_buf_prepare,
 	.buf_finish = spm_cvdev_buf_finish,

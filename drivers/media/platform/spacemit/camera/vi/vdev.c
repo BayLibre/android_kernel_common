@@ -1083,14 +1083,14 @@ static int spm_vdev_queue_setup(struct vb2_queue *q,
 	return 0;
 }
 
-static void spm_vdev_wait_prepare(struct vb2_queue *q)
+static void __maybe_unused spm_vdev_wait_prepare(struct vb2_queue *q)
 {
 	//going to wait sleep, release all locks that may block any vb2 buf/stream functions
 	struct spm_camera_vnode *sc_vnode = container_of(q, struct spm_camera_vnode, buf_queue);
 	mutex_unlock(&sc_vnode->mlock);
 }
 
-static void spm_vdev_wait_finish(struct vb2_queue *q)
+static void __maybe_unused spm_vdev_wait_finish(struct vb2_queue *q)
 {
 	//wakeup from wait sleep, reacquire all locks
 	struct spm_camera_vnode *sc_vnode = container_of(q, struct spm_camera_vnode, buf_queue);
@@ -1220,8 +1220,6 @@ static void spm_vdev_buf_queue(struct vb2_buffer *vb)
 
 static struct vb2_ops spm_camera_vb2_ops = {
 	.queue_setup = spm_vdev_queue_setup,
-	.wait_prepare = spm_vdev_wait_prepare,
-	.wait_finish = spm_vdev_wait_finish,
 	.buf_init = spm_vdev_buf_init,
 	.buf_prepare = spm_vdev_buf_prepare,
 	.buf_finish = spm_vdev_buf_finish,
