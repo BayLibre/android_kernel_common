@@ -64,6 +64,19 @@ _GKI_X86_64_MAKE_GOALS = [
     "modules",
 ]
 
+_GKI_RISCV64_MAKE_GOALS = [
+    "Image",
+    "Image.lz4",
+    "Image.gz",
+    "modules",
+]
+
+_GKI_RISCV64_BOOT_IMAGE_SIZES = {
+    "": "67108864",
+    "lz4": "53477376",
+    "gz": "47185920",
+}
+
 # Extra generated headers below $OUT_DIR for external modules.
 _GENERATED_HEADERS_FOR_MODULE = [
     "security/selinux/flask.h",
@@ -126,6 +139,23 @@ common_kernel_protected_module_names(
     out = "gki/x86_64/protected_module_names",
     exclude = get_gki_unprotected_modules_list("x86_64"),
     module_names = get_gki_modules_list("x86_64") + get_kunit_modules_list("x86_64"),
+)
+
+write_file(
+    name = "gki_system_dlkm_modules_riscv64",
+    out = "gki/riscv64/system_dlkm_modules",
+    content = get_gki_modules_list("riscv64") + [
+        # Ensure new line at the end.
+        "",
+    ],
+)
+
+# Not enforced in android-mainline.
+common_kernel_protected_module_names(
+    name = "gki_riscv64_protected_module_names",
+    out = "gki/riscv64/protected_module_names",
+    exclude = get_gki_unprotected_modules_list("riscv64"),
+    module_names = get_gki_modules_list("riscv64") + get_kunit_modules_list("riscv64"),
 )
 
 _SET_KERNEL_DIR_CMD = "KERNEL_DIR=\"{kernel_dir}\"".format(
@@ -192,6 +222,15 @@ write_file(
     name = "generate_gki_module_info_x86_64",
     out = "generate_gki_module_info_x86_64/README",
     content = _KUNIT_COMMON_GUIDE + get_kunit_modules_list("x86_64") + [
+        "",  # keep new line at the end
+    ],
+    visibility = ["//visibility:private"],
+)
+
+write_file(
+    name = "generate_gki_module_info_riscv64",
+    out = "generate_gki_module_info_riscv64/README",
+    content = _KUNIT_COMMON_GUIDE + get_kunit_modules_list("riscv64") + [
         "",  # keep new line at the end
     ],
     visibility = ["//visibility:private"],
@@ -270,6 +309,26 @@ fail_rule(
 Consider building @//common:kernel_x86_64 with:
     * --notrim to disable trimming, or
     * --debug to enable additional debug options.""",
+    visibility = ["//visibility:public"],
+)
+
+common_kernel(
+    name = "kernel_riscv64",
+    outs = DEFAULT_GKI_OUTS,
+    arch = "riscv64",
+    build_gki_artifacts = True,
+    ddk_module_headers = [":all_headers_riscv64"],
+    defconfig = "arch/riscv/configs/gki_defconfig",
+    extra_dist = [":test_mappings_zip"],
+    generated_headers_for_module = _GENERATED_HEADERS_FOR_MODULE,
+    gki_boot_img_sizes = _GKI_RISCV64_BOOT_IMAGE_SIZES,
+    gki_system_dlkm_modules = ":gki_system_dlkm_modules_riscv64",
+    kcflags = COMMON_KCFLAGS,
+    make_goals = _GKI_RISCV64_MAKE_GOALS,
+    makefile = ":Makefile",
+    module_implicit_outs = get_gki_modules_list("riscv64") + get_kunit_modules_list("riscv64"),
+    modules_superset = get_gki_modules_superset("riscv64") + get_kunit_modules_superset("riscv64"),
+    system_dlkm_extra_archive_files = [":generate_gki_module_info_riscv64"],
     visibility = ["//visibility:public"],
 )
 
@@ -1457,6 +1516,15 @@ ddk_headers(
     visibility = ["//visibility:public"],
 )
 
+ddk_headers(
+    name = "all_headers_riscv64",
+    hdrs = [":all_headers_allowlist_riscv64"] + select({
+        "//build/kernel/kleaf:allow_ddk_unsafe_headers_set": [":all_headers_unsafe"],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
+)
+
 # Implementation details for DDK headers. The targets below cannot be directly
 # depended on by DDK modules.
 
@@ -1564,6 +1632,24 @@ ddk_headers(
 )
 
 ddk_headers(
+    name = "all_headers_allowlist_riscv64",
+    hdrs = [
+        ":all_headers_allowlist_common_globs",
+        ":all_headers_allowlist_riscv64_globs",
+    ],
+    # The list of include directories where source files can #include headers
+    # from. In other words, these are the `-I` option to the C compiler.
+    # These are prepended to LINUXINCLUDE.
+    linux_includes = [
+        "arch/riscv/include",
+        "arch/riscv/include/uapi",
+        "include",
+        "include/uapi",
+    ],
+    visibility = ["//visibility:private"],
+)
+
+ddk_headers(
     name = "all_headers_allowlist_x86_64",
     hdrs = [
         ":all_headers_allowlist_common_globs",
@@ -1599,6 +1685,13 @@ filegroup(
 filegroup(
     name = "all_headers_allowlist_arm_globs",
     srcs = glob(["arch/arm/include/**/*.h"]),
+    visibility = ["//visibility:private"],
+)
+
+# globs() for riscv64 only
+filegroup(
+    name = "all_headers_allowlist_riscv64_globs",
+    srcs = glob(["arch/riscv/include/**/*.h"]),
     visibility = ["//visibility:private"],
 )
 
