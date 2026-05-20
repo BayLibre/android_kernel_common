@@ -120,6 +120,10 @@ _X86_64_GKI_MODULES_LIST = [
     "drivers/ptp/ptp_kvm.ko",
 ]
 
+_RISCV64_GKI_MODULES_LIST = [
+    # keep sorted
+]
+
 def _apply(map_each, lst):
     if not map_each:
         return lst
@@ -142,8 +146,8 @@ def _get_gki_modules_list_minus_select(arch, map_each):
     Returns:
         The list of GKI modules for the given |arch|.
     """
-    if not arch in ("arm64", "x86_64", "arm", "i386"):
-        fail("{}: arch {} not supported. Use one of [arm, arm64, i386, x86_64]".format(
+    if not arch in ("arm64", "x86_64", "arm", "i386", "riscv64"):
+        fail("{}: arch {} not supported. Use one of [arm, arm64, i386, x86_64, riscv64]".format(
             str(native.package_relative_label(":x")).removesuffix(":x"),
             arch,
         ))
@@ -159,6 +163,8 @@ def _get_gki_modules_list_minus_select(arch, map_each):
         gki_modules_list += _apply(map_each, _ARM64_GKI_MODULES_LIST)
     elif arch == "x86_64":
         gki_modules_list += _apply(map_each, _X86_64_GKI_MODULES_LIST)
+    elif arch == "riscv64":
+        gki_modules_list += _apply(map_each, _RISCV64_GKI_MODULES_LIST)
 
     return gki_modules_list
 
@@ -270,8 +276,8 @@ def _get_kunit_modules_list_minus_select(arch, map_each):
     Returns:
         The list of KUnit modules for the given |arch|.
     """
-    if not arch in ("arm64", "x86_64", "arm", "i386"):
-        fail("{}: arch {} not supported. Use one of [arm, arm64, i386, x86_64]".format(
+    if not arch in ("arm64", "x86_64", "arm", "i386", "riscv64"):
+        fail("{}: arch {} not supported. Use one of [arm, arm64, i386, x86_64, riscv64]".format(
             str(native.package_relative_label(":x")).removesuffix(":x"),
             arch,
         ))
@@ -285,6 +291,8 @@ def _get_kunit_modules_list_minus_select(arch, map_each):
         kunit_modules_list.append("drivers/clk/clk_kunit_helpers.ko")
     elif arch == "x86_64":
         kunit_modules_list.append("drivers/clk/clk_kunit_helpers.ko")
+    elif arch == "riscv64":
+        kunit_modules_list += _KUNIT_CLK_MODULES_LIST
 
     return _apply(map_each, kunit_modules_list)
 
@@ -351,8 +359,10 @@ def get_gki_kunit_modules(arch, page_size = None):
             return get_kunit_modules_list(arch, map_each = lambda e: ":kernel_aarch64/" + e)
     if arch == "x86_64":
         return get_kunit_modules_list(arch, map_each = lambda e: ":kernel_x86_64/" + e)
+    if arch == "riscv64":
+        return get_kunit_modules_list(arch, map_each = lambda e: ":kernel_riscv64/" + e)
 
-    fail("{}: arch {} (page_size {}) not supported. Use one of [arm64, x86_64]".format(
+    fail("{}: arch {} (page_size {}) not supported. Use one of [arm64, x86_64, riscv64]".format(
         str(native.package_relative_label(":x")).removesuffix(":x"),
         arch,
         page_size,
