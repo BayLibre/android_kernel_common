@@ -721,7 +721,7 @@ static void buf_finish(struct vb2_buffer *vb)
  *
  * This is unused for now and will be called from Vb2.
  */
-static void wait_prepare(struct vb2_queue *q)
+static void __maybe_unused wait_prepare(struct vb2_queue *q)
 {
 	struct mvx_v4l2_port *vport = vb2_get_drv_priv(q);
 	struct mvx_v4l2_session *vsession = vport->vsession;
@@ -740,7 +740,7 @@ static void wait_prepare(struct vb2_queue *q)
  *
  * This is unused for now and will be called from Vb2.
  */
-static void wait_finish(struct vb2_queue *q)
+static void __maybe_unused wait_finish(struct vb2_queue *q)
 {
 	struct mvx_v4l2_port *vport = vb2_get_drv_priv(q);
 	struct mvx_v4l2_session *vsession = vport->vsession;
@@ -769,8 +769,6 @@ const struct vb2_ops mvx_vb2_ops = {
 	.start_streaming = start_streaming,
 	.stop_streaming  = stop_streaming,
 	.buf_queue       = buf_queue,
-	.wait_prepare    = wait_prepare,
-	.wait_finish     = wait_finish
 };
 
 /**
