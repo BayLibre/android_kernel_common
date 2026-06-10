@@ -2084,3 +2084,6 @@ module_platform_driver(emac_driver);
 MODULE_DESCRIPTION("SpacemiT K1 Ethernet driver");
 MODULE_AUTHOR("Vivian Wang <wangruikang@iscas.ac.cn>");
 MODULE_LICENSE("GPL");
+/* RTL8211F PHY driver (realtek, =m) must register before this MAC scans MDIO,
+ * else the PHY binds genphy (no rgmii-id RX delay) and eth0 RX is dead. */
+MODULE_SOFTDEP("pre: realtek");
