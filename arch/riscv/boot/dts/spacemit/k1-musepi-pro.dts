@@ -9,6 +9,7 @@
 
 #include "k1.dtsi"
 #include "k1-pinctrl.dtsi"
+#include <dt-bindings/usb/spacemit-usb.h>
 
 / {
 	model = "SpacemiT MusePi Pro";
@@ -16,7 +17,10 @@
 
 	aliases {
 		ethernet0 = &eth0;
+		ethernet1 = &eth1;
 		serial0 = &uart0;
+		i2c2 = &i2c2;
+		i2c8 = &i2c8;
 	};
 
 	chosen {
@@ -32,6 +36,33 @@
 			linux,default-trigger = "heartbeat";
 			default-state = "on";
 		};
+	};
+
+	pcie_vcc_3v3: regulator-pcie-vcc3v3 {
+		compatible = "regulator-fixed";
+		regulator-name = "PCIE_VCC3V3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-always-on;
+	};
+
+	reg_dc_in: regulator-dc-in-12v {
+		compatible = "regulator-fixed";
+		regulator-name = "dc_in_12v";
+		regulator-min-microvolt = <12000000>;
+		regulator-max-microvolt = <12000000>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+
+	reg_vcc_4v: regulator-vcc-4v {
+		compatible = "regulator-fixed";
+		regulator-name = "vcc_4v";
+		regulator-min-microvolt = <4000000>;
+		regulator-max-microvolt = <4000000>;
+		regulator-boot-on;
+		regulator-always-on;
+		vin-supply = <&reg_dc_in>;
 	};
 
 	regulator-usb3-vbus-5v {
@@ -53,7 +84,7 @@
 		enable-active-high;
 	};
 
-	/* Restored from 6.19: DPU reserved region (HDMI framebuffers) + CMA pool */
+	/* Restored from 6.19: CMA pool (GPU/camera/VPU DMA) + DPU reserved region */
 	reserved-memory {
 		#address-cells = <2>;
 		#size-cells = <2>;
@@ -74,6 +105,25 @@
 			no-map;
 		};
 	};
+
+	sound {
+		compatible = "simple-audio-card";
+		simple-audio-card,name = "BananaPi-F3-Audio";
+		simple-audio-card,format = "i2s";
+		simple-audio-card,mclk-fs = <256>;
+
+		simple-audio-card,cpu {
+			sound-dai = <&sspa0>;
+		};
+
+		simple-audio-card,codec {
+			sound-dai = <&es8326>;
+		};
+	};
+};
+
+&combo_phy {
+	status = "okay";
 };
 
 &emmc {
@@ -89,8 +139,8 @@
 &eth0 {
 	phy-handle = <&rgmii0>;
 	phy-mode = "rgmii-id";
-	pinctrl-0 = <&gmac0_cfg>;
 	pinctrl-names = "default";
+	pinctrl-0 = <&gmac0_cfg>;
 	rx-internal-delay-ps = <0>;
 	tx-internal-delay-ps = <0>;
 	status = "okay";
@@ -109,17 +159,237 @@
 	};
 };
 
+&eth1 {
+	phy-handle = <&rgmii1>;
+	phy-mode = "rgmii-id";
+	pinctrl-names = "default";
+	pinctrl-0 = <&gmac1_cfg>;
+	rx-internal-delay-ps = <0>;
+	tx-internal-delay-ps = <250>;
+	status = "okay";
+
+	mdio-bus {
+		#address-cells = <0x1>;
+		#size-cells = <0x0>;
+
+		reset-gpios = <&gpio K1_GPIO(115) GPIO_ACTIVE_LOW>;
+		reset-delay-us = <10000>;
+		reset-post-delay-us = <100000>;
+
+		rgmii1: phy@1 {
+			reg = <0x1>;
+		};
+	};
+};
+
 &pdma {
 	status = "okay";
 };
 
-&uart0 {
-	pinctrl-0 = <&uart0_2_cfg>;
+&qspi {
 	pinctrl-names = "default";
+	pinctrl-0 = <&qspi_cfg>;
 	status = "okay";
 };
 
-&combo_phy {
+&i2c2 {
+	pinctrl-0 = <&i2c2_0_cfg>;
+	pinctrl-names = "default";
+	status = "okay";
+
+	es8326: es8326@19 {
+		compatible = "everest,es8326";
+		reg = <0x19>;
+		clocks = <&syscon_mpmu CLK_I2S_SYSCLK>;
+		clock-names = "mclk";
+		interrupt-parent = <&gpio>;
+		interrupts = <K1_GPIO(126) 1>;
+		#sound-dai-cells = <0>;
+	};
+
+	eeprom@50 {
+		compatible = "atmel,24c02";
+		reg = <0x50>;
+		vcc-supply = <&buck3_1v8>; /* EEPROM_VCC1V8 */
+		pagesize = <16>;
+		read-only;
+		size = <256>;
+
+		nvmem-layout {
+			compatible = "onie,tlv-layout";
+
+			mac-address {
+				#nvmem-cell-cells = <1>;
+			};
+
+			num-macs {
+			};
+
+			serial-number {
+			};
+		};
+	};
+};
+
+&i2c8 {
+	pinctrl-0 = <&i2c8_cfg>;
+	pinctrl-names = "default";
+	status = "okay";
+
+	pmic@41 {
+		compatible = "spacemit,p1";
+		reg = <0x41>;
+		interrupts = <64>;
+		vin1-supply = <&reg_vcc_4v>;
+		vin2-supply = <&reg_vcc_4v>;
+		vin3-supply = <&reg_vcc_4v>;
+		vin4-supply = <&reg_vcc_4v>;
+		vin5-supply = <&reg_vcc_4v>;
+		vin6-supply = <&reg_vcc_4v>;
+		aldoin-supply = <&reg_vcc_4v>;
+		dldoin1-supply = <&buck5>;
+		dldoin2-supply = <&buck5>;
+
+		regulators {
+			dcdc_cpu: buck1 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3450000>;
+				regulator-ramp-delay = <5000>;
+				regulator-always-on;
+			};
+
+			buck2 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3450000>;
+				regulator-ramp-delay = <5000>;
+				regulator-always-on;
+			};
+
+			buck3_1v8: buck3 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <1800000>;
+				regulator-ramp-delay = <5000>;
+				regulator-always-on;
+			};
+
+			buck4 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3300000>;
+				regulator-ramp-delay = <5000>;
+				regulator-always-on;
+			};
+
+			buck5: buck5 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3450000>;
+				regulator-ramp-delay = <5000>;
+				regulator-always-on;
+			};
+
+			buck6 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3450000>;
+				regulator-ramp-delay = <5000>;
+				regulator-always-on;
+			};
+
+			aldo1 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3400000>;
+				regulator-boot-on;
+			};
+
+			aldo2 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3400000>;
+			};
+
+			aldo3 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3400000>;
+			};
+
+			aldo4 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3400000>;
+			};
+
+			dldo1 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3400000>;
+				regulator-boot-on;
+			};
+
+			dldo2 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3400000>;
+			};
+
+			dldo3 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3400000>;
+			};
+
+			dldo4 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3400000>;
+				regulator-always-on;
+			};
+
+			dldo5 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3400000>;
+			};
+
+			dldo6 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3400000>;
+				regulator-always-on;
+			};
+
+			dldo7 {
+				regulator-min-microvolt = <500000>;
+				regulator-max-microvolt = <3400000>;
+			};
+		};
+	};
+};
+
+&pcie1_phy {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie1_3_cfg>;
+	status = "okay";
+};
+
+&pcie1_port {
+	phys = <&pcie1_phy>;
+	vpcie3v3-supply = <&pcie_vcc_3v3>;
+};
+
+&pcie1 {
+	vpcie3v3-supply = <&pcie_vcc_3v3>;
+	status = "okay";
+};
+
+&pcie2_phy {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie2_4_cfg>;
+	status = "okay";
+};
+
+&pcie2_port {
+	phys = <&pcie2_phy>;
+	vpcie3v3-supply = <&pcie_vcc_3v3>;
+};
+
+&pcie2 {
+	vpcie3v3-supply = <&pcie_vcc_3v3>;
+	status = "okay";
+};
+
+&uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart0_2_cfg>;
 	status = "okay";
 };
 
@@ -153,8 +423,23 @@
 	};
 };
 
-/* GPU (Imagination PowerVR Rogue) — restored from the 6.19 android DTS
- * (compatible img,img-rogue); the base node lives disabled in k1.dtsi.
+/* USB2 OTG controller (USB-C port) in peripheral mode = the adb gadget.
+ * The android-mainline migration kept the ChipIdea mv-udc driver but dropped
+ * its DT nodes; device/spacemit/k1/init.k1.usb.rc already expects c0900100.udc.
+ */
+&usbphy0 {
+	status = "okay";
+};
+
+&udc {
+	spacemit,udc-mode = <MV_USB_MODE_UDC>;
+	status = "okay";
+};
+
+/* GPU (Imagination PowerVR Rogue) — node dropped by the android-mainline DTS
+ * migration; the powervr.ko + rogue firmware are present but had no device to
+ * bind, so no /dev/dri and SurfaceFlinger failed (vkEnumeratePhysicalDevices).
+ * Restored from the working 6.19 android DTS (compatible img,img-rogue).
  */
 &gpu {
 	status = "okay";
@@ -173,4 +458,167 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&hdmi_0_cfg>;
 	status = "okay";
+};
+
+&sspa0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&sspa0_0_cfg>;
+	status = "okay";
+};
+
+&vpu {
+	status = "okay";
+};
+
+/* CPU DVFS (cpufreq) restored from the 6.19 DTS. cpufreq-dt-platdev creates the
+ * cpufreq device because cpu@0 carries operating-points-v2; spacemit-cpufreq
+ * augments it (needs the "clst" regulator + "cls0" clock). Without this the CPU
+ * is pinned at the boot frequency — the main "felt slower than 6.19" regression
+ * and a prerequisite for a valid perf A/B.
+ */
+&{/cpus} {
+	clst_core_opp_table0: opp-table-0 {
+		compatible = "operating-points-v2";
+		opp-shared;
+
+		opp-1800000000 {
+			opp-hz = /bits/ 64 <1800000000>;
+			opp-microvolt = <1100000>;
+			clock-latency-ns = <200000>;
+		};
+		opp-1600000000 {
+			opp-hz = /bits/ 64 <1600000000>;
+			opp-microvolt = <1050000>;
+			clock-latency-ns = <200000>;
+		};
+		opp-1228800000 {
+			opp-hz = /bits/ 64 <1228800000>;
+			opp-microvolt = <950000>;
+			clock-latency-ns = <200000>;
+		};
+		opp-1000000000 {
+			opp-hz = /bits/ 64 <1000000000>;
+			opp-microvolt = <950000>;
+			clock-latency-ns = <200000>;
+		};
+		opp-819000000 {
+			opp-hz = /bits/ 64 <819000000>;
+			opp-microvolt = <950000>;
+			clock-latency-ns = <200000>;
+		};
+		opp-614400000 {
+			opp-hz = /bits/ 64 <614400000>;
+			opp-microvolt = <950000>;
+			clock-latency-ns = <200000>;
+		};
+	};
+};
+
+&cpu_0 {
+	clst-supply = <&dcdc_cpu>;
+	clocks = <&syscon_apmu CLK_CPU_C0_CORE>;
+	clock-names = "cls0";
+	operating-points-v2 = <&clst_core_opp_table0>;
+	#cooling-cells = <2>;
+};
+
+&cpu_1 {
+	clst-supply = <&dcdc_cpu>;
+	clocks = <&syscon_apmu CLK_CPU_C0_CORE>;
+	clock-names = "cls0";
+	operating-points-v2 = <&clst_core_opp_table0>;
+};
+
+&cpu_2 {
+	clst-supply = <&dcdc_cpu>;
+	clocks = <&syscon_apmu CLK_CPU_C0_CORE>;
+	clock-names = "cls0";
+	operating-points-v2 = <&clst_core_opp_table0>;
+};
+
+&cpu_3 {
+	clst-supply = <&dcdc_cpu>;
+	clocks = <&syscon_apmu CLK_CPU_C0_CORE>;
+	clock-names = "cls0";
+	operating-points-v2 = <&clst_core_opp_table0>;
+};
+
+&cpu_4 {
+	clst-supply = <&dcdc_cpu>;
+	clocks = <&syscon_apmu CLK_CPU_C0_CORE>;
+	clock-names = "cls0";
+	operating-points-v2 = <&clst_core_opp_table0>;
+};
+
+&cpu_5 {
+	clst-supply = <&dcdc_cpu>;
+	clocks = <&syscon_apmu CLK_CPU_C0_CORE>;
+	clock-names = "cls0";
+	operating-points-v2 = <&clst_core_opp_table0>;
+};
+
+&cpu_6 {
+	clst-supply = <&dcdc_cpu>;
+	clocks = <&syscon_apmu CLK_CPU_C0_CORE>;
+	clock-names = "cls0";
+	operating-points-v2 = <&clst_core_opp_table0>;
+};
+
+&cpu_7 {
+	clst-supply = <&dcdc_cpu>;
+	clocks = <&syscon_apmu CLK_CPU_C0_CORE>;
+	clock-names = "cls0";
+	operating-points-v2 = <&clst_core_opp_table0>;
+};
+
+/* microSD slot (sdhci0) restored from 6.19 — base node in k1.dtsi was left
+ * disabled by the migration. */
+&sdhci0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc1_cfg>;
+	bus-width = <4>;
+	cd-gpios = <&gpio K1_GPIO(80) GPIO_ACTIVE_LOW>;
+	no-mmc;
+	no-sdio;
+	status = "okay";
+};
+
+/* Thermal zones restored from 6.19. The k1x-tsensor driver registers one zone
+ * per sensor in &thermal's sensor_range (<2 3>) IN ORDER, so gpu (sensor 2) =
+ * thermal_zone0 and cpu cluster0 (sensor 3) = thermal_zone1 — the numbering the
+ * profiling harness expects (lib/common.sh). No cooling-maps on purpose: active
+ * throttling would fight the fixed-frequency pin used during benchmarking; these
+ * zones only expose readable temps (for the harness inter-suite cooldown) plus a
+ * high critical safety trip.
+ */
+/ {
+	thermal-zones {
+		gpu-thermal {
+			polling-delay = <1000>;
+			polling-delay-passive = <500>;
+			thermal-sensors = <&thermal 2>;
+
+			trips {
+				gpu_crit: gpu-crit {
+					temperature = <110000>;
+					hysteresis = <2000>;
+					type = "critical";
+				};
+			};
+		};
+
+		cpu-thermal {
+			polling-delay = <1000>;
+			polling-delay-passive = <500>;
+			thermal-sensors = <&thermal 3>;
+
+			trips {
+				cpu_crit: cpu-crit {
+					temperature = <110000>;
+					hysteresis = <2000>;
+					type = "critical";
+				};
+			};
+		};
+	};
 };
