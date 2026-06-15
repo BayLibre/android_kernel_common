@@ -1,0 +1,346 @@
+// SPDX-License-Identifier: GPL-2.0 OR MIT
+/*
+ * Device nodes restored from the 6.19 android DTS (k1.dtsi + k1-x-peripherals.dtsi)
+ * that the 7.0.0 android-mainline migration dropped. Reconciled to the 7.0.0
+ * upstream providers (&syscon_apmu / &syscon_mpmu / &syscon_apbc, &plic).
+ * #included inside soc{} of k1.dtsi. Drivers for all of these are present in the
+ * tree (=m/=y); nodes are status="disabled" and enabled per-board.
+ */
+
+reboot_handler: handler@d4282f90 {
+	compatible = "spacemit,k1x-reboot";
+	reg = <0x0 0xd4282f90 0x0 0x4>;
+	status = "okay";
+};
+
+power: power-controller {
+	compatible = "spacemit,power-controller";
+	#power-domain-cells = <1>;
+	#address-cells = <1>;
+	#size-cells = <0>;
+	domains = <0x9>;
+
+	power-domain@0 {
+		reg = <0x0>;
+		pm_qos = <0x7>;
+		#power-domain-cells = <0>;
+	};
+
+	power-domain@2 {
+		reg = <0x2>;
+		pm_qos = <12>;
+		reg_pwr_ctrl = <0xd0>;
+		bit_sleep2 = <3>;
+		bit_sleep1 = <2>;
+		bit_isolation = <1>;
+		bit_pwr_stat = <0>;
+		#power-domain-cells = <0>;
+	};
+
+	power-domain@3 {
+		reg = <0x3>;
+		pm_qos = <12>;
+		reg_pwr_ctrl = <0x380>;
+		bit_hw_mode = <4>;
+		bit_sleep2 = <3>;
+		bit_sleep1 = <2>;
+		bit_isolation = <1>;
+		bit_auto_pwr_on = <0>;
+		bit_pwr_stat = <4>;
+		bit_hw_pwr_stat = <12>;
+		use_hw = <1>;
+		#power-domain-cells = <0>;
+	};
+
+	power-domain@7 {
+		reg = <0x7>;
+		pm_qos = <12>;
+		reg_pwr_ctrl = <0x3f4>;
+		bit_hw_mode = <4>;
+		bit_sleep2 = <3>;
+		bit_sleep1 = <2>;
+		bit_isolation = <1>;
+		bit_auto_pwr_on = <0>;
+		bit_pwr_stat = <7>;
+		bit_hw_pwr_stat = <15>;
+		use_hw = <1>;
+		#power-domain-cells = <0>;
+	};
+
+	power-domain@8 {
+		reg = <0x8>;
+		pm_qos = <0x7>;
+		#power-domain-cells = <0>;
+	};
+};
+
+sspa0: i2s@d4026000 {
+	compatible = "spacemit,k1-i2s";
+	reg = <0x0 0xd4026000 0x0 0x30>;
+	clocks = <&syscon_mpmu CLK_I2S_SYSCLK>,
+		 <&syscon_mpmu CLK_I2S_BCLK>,
+		 <&syscon_apbc CLK_SSPA0_BUS>,
+		 <&syscon_apbc CLK_SSPA0>;
+	clock-names = "sysclk", "bclk", "bus", "func";
+	dmas = <&pdma 21>, <&pdma 22>;
+	dma-names = "tx", "rx";
+	resets = <&syscon_apbc RESET_SSPA0>;
+	#sound-dai-cells = <0>;
+	status = "disabled";
+};
+
+sspa1: i2s@d4026800 {
+	compatible = "spacemit,k1-i2s";
+	reg = <0x0 0xd4026800 0x0 0x30>;
+	clocks = <&syscon_mpmu CLK_I2S_SYSCLK>,
+		 <&syscon_mpmu CLK_I2S_BCLK>,
+		 <&syscon_apbc CLK_SSPA1_BUS>,
+		 <&syscon_apbc CLK_SSPA1>;
+	clock-names = "sysclk", "bclk", "bus", "func";
+	dmas = <&pdma 23>, <&pdma 24>;
+	dma-names = "tx", "rx";
+	resets = <&syscon_apbc RESET_SSPA1>;
+	#sound-dai-cells = <0>;
+	status = "disabled";
+};
+
+plat_cam: plat-cam {
+	compatible = "spacemit,plat-cam", "simple-bus";
+	#address-cells = <2>;
+	#size-cells = <2>;
+	status = "disabled";
+};
+
+csiphy0: csiphy@d420a000 {
+	compatible = "spacemit,csi-dphy";
+	cell-index = <0>;
+	reg = <0x0 0xd420a000 0x0 0x13f>;
+	reg-names = "csiphy-regs";
+	clocks = <&syscon_apmu CLK_CCIC1PHY>;
+	clock-names = "csi_dphy";
+	resets = <&syscon_apmu RESET_CCIC1_PHY>;
+	reset-names = "cphy_reset";
+	status = "disabled";
+};
+
+csiphy1: csiphy@d420a800 {
+	compatible = "spacemit,csi-dphy";
+	cell-index = <1>;
+	reg = <0x0 0xd420a800 0x0 0x13f>;
+	reg-names = "csiphy-regs";
+	clocks = <&syscon_apmu CLK_CCIC2PHY>;
+	clock-names = "csi_dphy";
+	resets = <&syscon_apmu RESET_CCIC2PHY>;
+	reset-names = "cphy_reset";
+	status = "disabled";
+};
+
+csiphy2: csiphy@d4206000 {
+	compatible = "spacemit,csi-dphy";
+	cell-index = <2>;
+	reg = <0x0 0xd4206000 0x0 0x13f>;
+	reg-names = "csiphy-regs";
+	clocks = <&syscon_apmu CLK_CCIC3PHY>;
+	clock-names = "csi_dphy";
+	resets = <&syscon_apmu RESET_CCIC3PHY>;
+	reset-names = "cphy_reset";
+	status = "disabled";
+};
+
+ccic0: ccic@d420a000 {
+	compatible = "spacemit,k1xccic";
+	cell-index = <0>;
+	spacemit,csiphy = <&csiphy0>;
+	reg = <0x0 0xd420a000 0x0 0x3ff>;
+	reg-names = "ccic-regs";
+	interrupts = <81>;
+	interrupt-names = "ipe-irq";
+	clocks = <&syscon_apmu CLK_CSI>,
+		 <&syscon_apmu CLK_CCIC_4X>,
+		 <&syscon_apmu CLK_ISP_BUS>,
+		 <&syscon_apmu CLK_DPU_MCLK>;
+	clock-names = "csi_func", "ccic_func", "isp_axi", "dpu_mclk";
+	resets = <&syscon_apmu RESET_ISP_BUS>,
+		 <&syscon_apmu RESET_CSI>,
+		 <&syscon_apmu RESET_CCIC_4X>,
+		 <&syscon_apmu RESET_ISP_CI>,
+		 <&syscon_apmu RESET_DPU_MCLK>;
+	reset-names = "isp_ahb_reset", "csi_reset",
+		      "ccic_4x_reset", "isp_ci_reset", "mclk_reset";
+	status = "disabled";
+};
+
+ccic1: ccic@d420a800 {
+	compatible = "spacemit,k1xccic";
+	cell-index = <1>;
+	spacemit,csiphy = <&csiphy1>;
+	reg = <0x0 0xd420a800 0x0 0x3ff>;
+	reg-names = "ccic-regs";
+	interrupts = <82>;
+	interrupt-names = "ipe-irq";
+	clocks = <&syscon_apmu CLK_CSI>,
+		 <&syscon_apmu CLK_CCIC_4X>,
+		 <&syscon_apmu CLK_ISP_BUS>,
+		 <&syscon_apmu CLK_DPU_MCLK>;
+	clock-names = "csi_func", "ccic_func", "isp_axi", "dpu_mclk";
+	resets = <&syscon_apmu RESET_ISP_BUS>,
+		 <&syscon_apmu RESET_CSI>,
+		 <&syscon_apmu RESET_CCIC_4X>,
+		 <&syscon_apmu RESET_ISP_CI>,
+		 <&syscon_apmu RESET_DPU_MCLK>;
+	reset-names = "isp_ahb_reset", "csi_reset",
+		      "ccic_4x_reset", "isp_ci_reset", "mclk_reset";
+	status = "disabled";
+};
+
+ccic2: ccic@d4206000 {
+	compatible = "spacemit,k1xccic";
+	cell-index = <2>;
+	spacemit,csiphy = <&csiphy2>;
+	reg = <0x0 0xd4206000 0x0 0x3ff>;
+	reg-names = "ccic-regs";
+	interrupts = <83>;
+	interrupt-names = "ipe-irq";
+	clocks = <&syscon_apmu CLK_CSI>,
+		 <&syscon_apmu CLK_CCIC_4X>,
+		 <&syscon_apmu CLK_ISP_BUS>,
+		 <&syscon_apmu CLK_DPU_MCLK>;
+	clock-names = "csi_func", "ccic_func", "isp_axi", "dpu_mclk";
+	resets = <&syscon_apmu RESET_ISP_BUS>,
+		 <&syscon_apmu RESET_CSI>,
+		 <&syscon_apmu RESET_CCIC_4X>,
+		 <&syscon_apmu RESET_ISP_CI>,
+		 <&syscon_apmu RESET_DPU_MCLK>;
+	reset-names = "isp_ahb_reset", "csi_reset",
+		      "ccic_4x_reset", "isp_ci_reset", "mclk_reset";
+	status = "disabled";
+};
+
+isp: isp@c0230000 {
+	compatible = "spacemit,k1xisp";
+	reg = <0x0 0xc0230000 0x0 0x12700>;
+	reg-names = "isp";
+	interrupts = <79>, <85>;
+	interrupt-names = "feisp-irq", "feisp-dma-irq";
+	clocks = <&syscon_apmu CLK_ISP>,
+		 <&syscon_apmu CLK_ISP_BUS>,
+		 <&syscon_apmu CLK_DPU_MCLK>;
+	clock-names = "isp_func", "isp_axi", "dpu_mclk";
+	resets = <&syscon_apmu RESET_ISP_BUS>,
+		 <&syscon_apmu RESET_ISP>,
+		 <&syscon_apmu RESET_ISP_CI>,
+		 <&syscon_apmu RESET_DPU_MCLK>;
+	reset-names = "isp_ahb_reset", "isp_reset",
+		      "isp_ci_reset", "lcd_mclk_reset";
+	status = "disabled";
+};
+
+vi: vi@c0230000 {
+	compatible = "spacemit,k1xvi";
+	reg = <0x0 0xc0230000 0x0 0x14000>;
+	reg-names = "vi";
+	interrupts = <79>, <85>;
+	interrupt-names = "feisp-irq", "feisp-dma-irq";
+	clocks = <&syscon_apmu CLK_ISP>,
+		 <&syscon_apmu CLK_ISP_BUS>,
+		 <&syscon_apmu CLK_DPU_MCLK>;
+	clock-names = "isp_func", "isp_axi", "dpu_mclk";
+	resets = <&syscon_apmu RESET_ISP_BUS>,
+		 <&syscon_apmu RESET_ISP>,
+		 <&syscon_apmu RESET_ISP_CI>,
+		 <&syscon_apmu RESET_DPU_MCLK>;
+	reset-names = "isp_ahb_reset", "isp_reset",
+		      "isp_ci_reset", "lcd_mclk_reset";
+	status = "disabled";
+};
+
+cpp: cpp@c02f0000 {
+	compatible = "spacemit,k1xcpp";
+	reg = <0x0 0xc02f0000 0x0 0x7fff>;
+	reg-names = "cpp";
+	interrupts = <84>;
+	interrupt-names = "cpp";
+	clocks = <&syscon_apmu CLK_ISP_CPP>,
+		 <&syscon_apmu CLK_ISP_BUS>,
+		 <&syscon_apmu CLK_DPU_MCLK>;
+	clock-names = "cpp_func", "isp_axi", "dpu_mclk";
+	resets = <&syscon_apmu RESET_ISP_BUS>,
+		 <&syscon_apmu RESET_ISP_CPP>,
+		 <&syscon_apmu RESET_ISP_CI>,
+		 <&syscon_apmu RESET_DPU_MCLK>;
+	reset-names = "isp_ahb_reset", "isp_cpp_reset",
+		      "isp_ci_reset", "lcd_mclk_reset";
+	status = "disabled";
+};
+
+vpu: linlon-v5@c0500000 {
+	compatible = "arm china,linlon-v5";
+	reg = <0x0 0xc0500000 0x0 0x10000>;
+	interrupts = <74>;
+	clocks = <&syscon_apmu CLK_VPU>;
+	clock-names = "vpu_clk";
+	resets = <&syscon_apmu RESET_VPU>;
+	status = "disabled";
+};
+
+thermal: thermal@d4018000 {
+	compatible = "spacemit,k1x-tsensor";
+	reg = <0x0 0xd4018000 0x0 0x100>;
+	interrupts = <61>;
+	clocks = <&syscon_apbc CLK_TSEN>,
+		 <&syscon_apbc CLK_TSEN_BUS>;
+	clock-names = "thermal_core", "bus";
+	resets = <&syscon_apbc RESET_TSEN>;
+	reset-names = "tsen_reset";
+	sensor_range = <0x2 0x3>;
+	#thermal-sensor-cells = <1>;
+	status = "okay";
+};
+
+efuse: fuse@f0702800 {
+	compatible = "simple-mfd";
+	#address-cells = <1>;
+	#size-cells = <1>;
+	ranges = <0 0x0 0xf0702800 0x400>;
+
+	efuse_bank7: efuse_bank@7 {
+		compatible = "spacemit,k1-efuse";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		reg = <0x190 0x20>;
+		resets = <&syscon_apmu RESET_AES>;
+		reset-names = "aes_reset";
+		clocks = <&syscon_apmu CLK_AES>;
+		clock-names = "aes_core";
+
+		soc_die_id: bank7_die_id@11 {
+			reg = <0x11 3>;
+			bits = <3 16>;
+		};
+		soc_ver_id: bank7_ver_id@1f {
+			reg = <0x1F 1>;
+			bits = <6 2>;
+		};
+		soc_pack_id: bank7_pack_id@16 {
+			reg = <0x16 2>;
+			bits = <6 9>;
+		};
+		soc_svt_dro: bank7_svt_dro@15 {
+			reg = <0x15 2>;
+			bits = <5 9>;
+		};
+		soc_chip_id: bank7_chip_id@17 {
+			reg = <0x17 8>;
+			bits = <7 55>;
+		};
+	};
+};
+
+socinfo: socinfo {
+	compatible = "spacemit,socinfo-k1x";
+	nvmem-cells = <&soc_die_id>, <&soc_ver_id>, <&soc_pack_id>,
+		      <&soc_svt_dro>, <&soc_chip_id>;
+	nvmem-cell-names = "soc_die_id", "soc_ver_id", "soc_pack_id",
+			   "soc_svt_dro", "soc_chip_id";
+	status = "okay";
+};
