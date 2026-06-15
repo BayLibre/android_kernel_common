@@ -570,4 +570,45 @@
 			drive-strength = <32>;
 		};
 	};
+
+	sspa0_0_cfg: sspa0-0-cfg {
+		sspa0-0-pins {
+			pinmux = <K1_PADCONF(118, 3)>,	/* sspa0_clk */
+				 <K1_PADCONF(119, 3)>,	/* sspa0_frm */
+				 <K1_PADCONF(120, 3)>,	/* sspa0_txd */
+				 <K1_PADCONF(121, 3)>,	/* sspa0_rxd */
+				 <K1_PADCONF(122, 3)>;	/* sspa0_sysclk */
+			bias-pull-up = <0>;
+			drive-strength = <21>;
+		};
+	};
+
+	hdmi_0_cfg: hdmi-0-cfg {
+		hdmi-scl-sda-pins {
+			pinmux = <K1_PADCONF(86, 1)>,	/* hdmi_tx_hscl */
+				 <K1_PADCONF(87, 1)>;	/* hdmi_tx_hsda */
+			bias-pull-up = <0>;
+			drive-strength = <21>;
+		};
+
+		hdmi-cec-hpd-pins {
+			pinmux = <K1_PADCONF(88, 1)>,	/* hdmi_tx_hcec */
+				 <K1_PADCONF(89, 1)>;	/* hdmi_tx_pdp */
+			bias-pull-down;
+			drive-strength = <21>;
+		};
+	};
+
+	mmc1_cfg: mmc1-cfg {
+		mmc1-pins {
+			pinmux = <K1_PADCONF(53, 0)>,
+				 <K1_PADCONF(54, 0)>,
+				 <K1_PADCONF(55, 0)>,
+				 <K1_PADCONF(56, 0)>,
+				 <K1_PADCONF(57, 0)>,
+				 <K1_PADCONF(52, 0)>;
+			bias-pull-up = <0>;
+			drive-strength = <32>;
+		};
+	};
 };

@@ -5,6 +5,7 @@
 
 #include <dt-bindings/clock/spacemit,k1-syscon.h>
 #include <dt-bindings/phy/phy.h>
+#include <dt-bindings/power/spacemit-k1x-power.h>
 
 /dts-v1/;
 / {
@@ -775,6 +776,10 @@
 			#reset-cells = <1>;
 		};
 
+		/* Device nodes restored from the 6.19 android DTS (power-controller,
+		 * i2s, camera, VPU) — dropped by the 7.0.0 android-mainline migration. */
+		#include "k1-restored-peripherals.dtsi"
+
 		plic: interrupt-controller@e0000000 {
 			compatible = "spacemit,k1-plic", "sifive,plic-1.0.0";
 			reg = <0x0 0xe0000000 0x0 0x4000000>;
@@ -993,6 +998,82 @@
 			#size-cells = <2>;
 			dma-ranges = <0x0 0x00000000 0x0 0x00000000 0x0 0x80000000>,
 				     <0x0 0x80000000 0x1 0x00000000 0x3 0x80000000>;
+
+			gpu: gpu@cac00000 {
+				compatible = "img,img-rogue";
+				reg = <0x0 0xcac00000 0x0 0x80000>;
+				reg-names = "rgxregs";
+				interrupts = <75>;
+				interrupt-names = "rgxirq";
+				clocks = <&syscon_apmu CLK_GPU>;
+				clock-names = "core";
+				resets = <&syscon_apmu RESET_GPU>;
+				power-domains = <&power K1X_PMU_GPU_PWR_DOMAIN>;
+				img,core-clock-rate-hz = <819000000>;
+				#cooling-cells = <2>;
+				status = "disabled";
+			};
+
+			/*
+			 * HDMI display pipeline restored from the 6.19 android DTS
+			 * (k1-hdmi.dtsi). Placed in multimedia-bus so the DPU/HDMI
+			 * inherit the 14 GB dma-ranges via of_dma_configure — the
+			 * 6.19 "interconnects = <&dram_range1>" path is dropped: the
+			 * 7.0.0 spacemit DRM driver uses no interconnect framework.
+			 */
+			display_subsystem_hdmi: display-subsystem@c0440000 {
+				compatible = "spacemit,saturn-hdmi";
+				reg = <0x0 0xc0440000 0x0 0x0002a000>;
+				ports = <&dpu_online2_hdmi>;
+				status = "okay";
+			};
+
+			dpu_online2_hdmi: dpu-online2 {
+				compatible = "spacemit,dpu-online2";
+				interrupt-parent = <&plic>;
+				interrupts = <139>, <138>;
+				interrupt-names = "ONLINE_IRQ", "OFFLINE_IRQ";
+				clocks = <&syscon_apmu CLK_DPU_MCLK>,
+					 <&syscon_apmu CLK_DPU_HCLK>,
+					 <&syscon_apmu CLK_HDMI>;
+				clock-names = "mclk", "hclk", "hmclk";
+				resets = <&syscon_apmu RESET_HDMI>;
+				reset-names = "hdmi_reset";
+				power-domains = <&power K1X_PMU_HDMI_PWR_DOMAIN>;
+				pipeline-id = <2>;
+				ip = "spacemit-saturn";
+				spacemit-dpu-min-mclk = <40960000>;
+				type = <0>;	/* HDMI */
+				clk,pm-runtime,no-sleep;
+				status = "disabled";
+
+				dpu_online2_hdmi_out: endpoint {
+					remote-endpoint = <&hdmi_in>;
+				};
+			};
+
+			hdmi: hdmi@c0400500 {
+				compatible = "spacemit,hdmi";
+				reg = <0x0 0xc0400500 0x0 0x00000200>;
+				interrupt-parent = <&plic>;
+				interrupts = <136>;
+				clocks = <&syscon_apmu CLK_HDMI>;
+				clock-names = "hmclk";
+				resets = <&syscon_apmu RESET_HDMI>;
+				reset-names = "hdmi_reset";
+				power-domains = <&power K1X_PMU_HDMI_PWR_DOMAIN>;
+				clk,pm-runtime,no-sleep;
+				status = "disabled";
+
+				port {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					hdmi_in: endpoint@0 {
+						reg = <0>;
+						remote-endpoint = <&dpu_online2_hdmi_out>;
+					};
+				};
+			};
 		};
 
 		network-bus {
@@ -1199,6 +1280,25 @@
 				status = "disabled";
 			};
 
+			usbphy0: usbphy@c0940000 {
+				compatible = "spacemit,usb2-phy";
+				reg = <0x0 0xc0940000 0x0 0x200>;
+				clocks = <&syscon_apmu CLK_USB_AXI>;
+				status = "disabled";
+			};
+
+			udc: udc@c0900100 {
+				compatible = "spacemit,mv-udc";
+				reg = <0x0 0xc0900100 0x0 0x4000>;
+				interrupts = <105>;
+				clocks = <&syscon_apmu CLK_USB_AXI>;
+				resets = <&syscon_apmu RESET_USB_AXI>;
+				usb-phy = <&usbphy0>;
+				spacemit,udc-name = "mv-udc";
+				spacemit,otg-force-a-bus-req;
+				status = "disabled";
+			};
+
 			emmc: mmc@d4281000 {
 				compatible = "spacemit,k1-sdhci";
 				reg = <0x0 0xd4281000 0x0 0x200>;
@@ -1209,6 +1309,32 @@
 					 <&syscon_apmu RESET_SDH2>;
 				reset-names = "axi", "sdh";
 				interrupts = <101>;
+				status = "disabled";
+			};
+
+			sdhci0: mmc@d4280000 {
+				compatible = "spacemit,k1-sdhci";
+				reg = <0x0 0xd4280000 0x0 0x200>;
+				clocks = <&syscon_apmu CLK_SDH_AXI>,
+					 <&syscon_apmu CLK_SDH0>;
+				clock-names = "core", "io";
+				resets = <&syscon_apmu RESET_SDH_AXI>,
+					 <&syscon_apmu RESET_SDH0>;
+				reset-names = "axi", "sdh";
+				interrupts = <99>;
+				status = "disabled";
+			};
+
+			sdhci1: mmc@d4280800 {
+				compatible = "spacemit,k1-sdhci";
+				reg = <0x0 0xd4280800 0x0 0x200>;
+				clocks = <&syscon_apmu CLK_SDH_AXI>,
+					 <&syscon_apmu CLK_SDH1>;
+				clock-names = "core", "io";
+				resets = <&syscon_apmu RESET_SDH_AXI>,
+					 <&syscon_apmu RESET_SDH1>;
+				reset-names = "axi", "sdh";
+				interrupts = <100>;
 				status = "disabled";
 			};
 		};
