@@ -123,6 +123,7 @@ _X86_64_GKI_MODULES_LIST = [
 
 _RISCV64_GKI_MODULES_LIST = [
     # keep sorted
+    "drivers/power/sequencing/pwrseq-core.ko",
 ]
 
 def _apply(map_each, lst):
