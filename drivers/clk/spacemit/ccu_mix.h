@@ -104,6 +104,18 @@ static struct ccu_mix _name = {							\
 	}									\
 }
 
+#define CCU_DIV_FC_DEFINE(_name, _parent, _reg_ctrl, _mask_fc, _shift,		\
+			  _width, _flags)					\
+static struct ccu_mix _name = {							\
+	.div	= CCU_DIV_INIT(_shift, _width),					\
+	.common = {								\
+		.reg_ctrl	= _reg_ctrl,					\
+		.reg_fc		= _reg_ctrl,					\
+		.mask_fc	= _mask_fc,					\
+		CCU_MIX_INITHW(_name, _parent, spacemit_ccu_div_ops, _flags)	\
+	}									\
+}
+
 #define CCU_GATE_FLAGS_DEFINE(_name, _parent, _reg_ctrl, _mask_gate, _inverted, _flags)		\
 static struct ccu_mix _name = {							\
 	.gate	= CCU_GATE_FLAGS_INIT(_mask_gate, _inverted),			\

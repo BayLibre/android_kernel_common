@@ -868,6 +868,43 @@ static const struct clk_parent_data rcpu_clk_parents[] = {
 CCU_MUX_DIV_GATE_FC_DEFINE(rcpu_clk, rcpu_clk_parents, APMU_RCPU_CLK_RES_CTRL,
 			   4, 3, BIT(15), 7, 3, BIT(12), 0);
 
+/* RCPU bus clocks (parents for the RCPU I2SCTRL "bus" gates) */
+CCU_DIV_FC_DEFINE(rcpu_axi_clk, CCU_PARENT_HW(rcpu_clk), RCPU5_RCPU_BUS_CLK_CTRL,
+		  BIT(8), 3, 3, CLK_IGNORE_UNUSED);
+CCU_DIV_FC_DEFINE(rcpu_apb_clk, CCU_PARENT_HW(rcpu_axi_clk), RCPU5_RCPU_BUS_CLK_CTRL,
+		  BIT(8), 0, 3, CLK_IGNORE_UNUSED);
+
+/* RCPU I2SCTRL clocks (syscon_rcpu_i2sctrl@0xc0882000) */
+static const struct clk_parent_data ri2s_clk_parents[] = {
+	CCU_PARENT_HW(pll1_aud_24p5),
+	CCU_PARENT_HW(pll1_aud_245p7),
+};
+CCU_MUX_DIV_GATE_DEFINE(ri2s0_clk, ri2s_clk_parents, RCPU2_AUDIO_I2S0_TX_RX_CLK_CTRL,
+			4, 11, 16, 2, BIT(2), CLK_IGNORE_UNUSED);
+CCU_MUX_DIV_GATE_DEFINE(ri2s1_clk, ri2s_clk_parents, RCPU2_AUDIO_I2S1_TX_RX_CLK_CTRL,
+			4, 11, 16, 2, BIT(2), CLK_IGNORE_UNUSED);
+CCU_GATE_DEFINE(ri2s0_bus_clk, CCU_PARENT_HW(rcpu_apb_clk),
+		RCPU2_AUDIO_I2S0_TX_RX_CLK_CTRL, BIT(1), CLK_IGNORE_UNUSED);
+CCU_GATE_DEFINE(ri2s1_bus_clk, CCU_PARENT_HW(rcpu_apb_clk),
+		RCPU2_AUDIO_I2S1_TX_RX_CLK_CTRL, BIT(1), CLK_IGNORE_UNUSED);
+
+static const struct clk_parent_data ri2s23_sysclk_parents[] = {
+	CCU_PARENT_HW(pll1_aud_24p5),
+	CCU_PARENT_HW(pll1_aud_245p7),
+};
+CCU_MUX_DIV_GATE_DEFINE(ri2s2_sysclk, ri2s23_sysclk_parents, RCPU2_AUDIO_I2S2_SYS_CLK_CTRL,
+			4, 11, 16, 2, BIT(2), CLK_IGNORE_UNUSED);
+CCU_MUX_DIV_GATE_DEFINE(ri2s3_sysclk, ri2s23_sysclk_parents, RCPU2_AUDIO_I2S3_SYS_CLK_CTRL,
+			4, 11, 16, 2, BIT(2), CLK_IGNORE_UNUSED);
+CCU_DIV_GATE_DEFINE(ri2s2_clk, CCU_PARENT_HW(ri2s2_sysclk), RCPU2_AUDIO_I2S2_TX_RX_CLK_CTRL,
+		    4, 11, BIT(2), CLK_IGNORE_UNUSED);
+CCU_DIV_GATE_DEFINE(ri2s3_clk, CCU_PARENT_HW(ri2s3_sysclk), RCPU2_AUDIO_I2S3_TX_RX_CLK_CTRL,
+		    4, 11, BIT(2), CLK_IGNORE_UNUSED);
+CCU_GATE_DEFINE(ri2s2_bus_clk, CCU_PARENT_HW(rcpu_apb_clk), RCPU2_AUDIO_I2S2_TX_RX_CLK_CTRL,
+		BIT(1), CLK_IGNORE_UNUSED);
+CCU_GATE_DEFINE(ri2s3_bus_clk, CCU_PARENT_HW(rcpu_apb_clk), RCPU2_AUDIO_I2S3_TX_RX_CLK_CTRL,
+		BIT(1), CLK_IGNORE_UNUSED);
+
 static const struct clk_parent_data dsi4ln2_dsi_esc_parents[] = {
 	CCU_PARENT_HW(pll1_d48_51p2_ap),
 	CCU_PARENT_HW(pll1_d52_47p26),
@@ -935,6 +972,8 @@ static const struct clk_parent_data ufs_aclk_parents[] = {
 CCU_MUX_DIV_GATE_FC_DEFINE(ufs_aclk, ufs_aclk_parents, APMU_UFS_CLK_RES_CTRL, 5, 3, BIT(8),
 			   2, 3, BIT(1), 0);
 
+CCU_FACTOR_DEFINE(ufs_refclk, CCU_PARENT_HW(pll1_d64_38p4), 2, 1);
+
 static const struct clk_parent_data edp0_pclk_parents[] = {
 	CCU_PARENT_HW(lcd_pxclk),
 	CCU_PARENT_NAME(external_clk),
@@ -949,14 +988,19 @@ CCU_MUX_GATE_DEFINE(edp1_pxclk, edp1_pclk_parents, APMU_LCD_EDP_CTRL, 18, 1, BIT
 
 CCU_GATE_DEFINE(pciea_mstr_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_A, BIT(2), 0);
 CCU_GATE_DEFINE(pciea_slv_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_A, BIT(1), 0);
+CCU_GATE_DEFINE(pciea_bus_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_A, BIT(0), 0);
 CCU_GATE_DEFINE(pcieb_mstr_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_B, BIT(2), 0);
 CCU_GATE_DEFINE(pcieb_slv_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_B, BIT(1), 0);
+CCU_GATE_DEFINE(pcieb_bus_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_B, BIT(0), 0);
 CCU_GATE_DEFINE(pciec_mstr_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_C, BIT(2), 0);
 CCU_GATE_DEFINE(pciec_slv_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_C, BIT(1), 0);
+CCU_GATE_DEFINE(pciec_bus_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_C, BIT(0), 0);
 CCU_GATE_DEFINE(pcied_mstr_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_D, BIT(2), 0);
 CCU_GATE_DEFINE(pcied_slv_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_D, BIT(1), 0);
+CCU_GATE_DEFINE(pcied_bus_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_D, BIT(0), 0);
 CCU_GATE_DEFINE(pciee_mstr_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_E, BIT(2), 0);
 CCU_GATE_DEFINE(pciee_slv_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_E, BIT(1), 0);
+CCU_GATE_DEFINE(pciee_bus_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_E, BIT(0), 0);
 
 static const struct clk_parent_data emac_1588_parents[] = {
 	CCU_PARENT_NAME(vctcxo_24m),
@@ -1387,18 +1431,24 @@ static struct clk_hw *k3_ccu_apmu_hws[] = {
 	[CLK_APMU_DSI4LN2_DPU_ACLK]	= &dsi4ln2_dpu_aclk.common.hw,
 	[CLK_APMU_DPU_ACLK]		= &dpu_aclk.common.hw,
 	[CLK_APMU_UFS_ACLK]		= &ufs_aclk.common.hw,
+	[CLK_APMU_UFS_REFCLK]		= &ufs_refclk.common.hw,
 	[CLK_APMU_EDP0_PXCLK]		= &edp0_pxclk.common.hw,
 	[CLK_APMU_EDP1_PXCLK]		= &edp1_pxclk.common.hw,
 	[CLK_APMU_PCIE_PORTA_MSTE]	= &pciea_mstr_clk.common.hw,
 	[CLK_APMU_PCIE_PORTA_SLV]	= &pciea_slv_clk.common.hw,
+	[CLK_APMU_PCIE_PORTA_BUS]	= &pciea_bus_clk.common.hw,
 	[CLK_APMU_PCIE_PORTB_MSTE]	= &pcieb_mstr_clk.common.hw,
 	[CLK_APMU_PCIE_PORTB_SLV]	= &pcieb_slv_clk.common.hw,
+	[CLK_APMU_PCIE_PORTB_BUS]	= &pcieb_bus_clk.common.hw,
 	[CLK_APMU_PCIE_PORTC_MSTE]	= &pciec_mstr_clk.common.hw,
 	[CLK_APMU_PCIE_PORTC_SLV]	= &pciec_slv_clk.common.hw,
+	[CLK_APMU_PCIE_PORTC_BUS]	= &pciec_bus_clk.common.hw,
 	[CLK_APMU_PCIE_PORTD_MSTE]	= &pcied_mstr_clk.common.hw,
 	[CLK_APMU_PCIE_PORTD_SLV]	= &pcied_slv_clk.common.hw,
+	[CLK_APMU_PCIE_PORTD_BUS]	= &pcied_bus_clk.common.hw,
 	[CLK_APMU_PCIE_PORTE_MSTE]	= &pciee_mstr_clk.common.hw,
 	[CLK_APMU_PCIE_PORTE_SLV]	= &pciee_slv_clk.common.hw,
+	[CLK_APMU_PCIE_PORTE_BUS]	= &pciee_bus_clk.common.hw,
 	[CLK_APMU_EMAC0_BUS]		= &emac0_bus_clk.common.hw,
 	[CLK_APMU_EMAC0_REF]		= &emac0_ref_clk.common.hw,
 	[CLK_APMU_EMAC0_1588]		= &emac0_1588_clk.common.hw,
@@ -1443,6 +1493,25 @@ static const struct spacemit_ccu_data k3_ccu_dciu_data = {
 	.num		= ARRAY_SIZE(k3_ccu_dciu_hws),
 };
 
+static struct clk_hw *k3_ccu_rcpu_i2sctrl_hws[] = {
+	[CLK_RCPU_I2SCTRL_RI2S0]	= &ri2s0_clk.common.hw,
+	[CLK_RCPU_I2SCTRL_RI2S1]	= &ri2s1_clk.common.hw,
+	[CLK_RCPU_I2SCTRL_RI2S2]	= &ri2s2_clk.common.hw,
+	[CLK_RCPU_I2SCTRL_RI2S3]	= &ri2s3_clk.common.hw,
+	[CLK_RCPU_I2SCTRL_RI2S0_BUS]	= &ri2s0_bus_clk.common.hw,
+	[CLK_RCPU_I2SCTRL_RI2S1_BUS]	= &ri2s1_bus_clk.common.hw,
+	[CLK_RCPU_I2SCTRL_RI2S2_BUS]	= &ri2s2_bus_clk.common.hw,
+	[CLK_RCPU_I2SCTRL_RI2S3_BUS]	= &ri2s3_bus_clk.common.hw,
+	[CLK_RCPU_I2SCTRL_RI2S2_SYSCLK]	= &ri2s2_sysclk.common.hw,
+	[CLK_RCPU_I2SCTRL_RI2S3_SYSCLK]	= &ri2s3_sysclk.common.hw,
+};
+
+static const struct spacemit_ccu_data k3_ccu_rcpu_i2sctrl_data = {
+	.reset_name	= "k3-rcpu_i2sctrl-reset",
+	.hws		= k3_ccu_rcpu_i2sctrl_hws,
+	.num		= ARRAY_SIZE(k3_ccu_rcpu_i2sctrl_hws),
+};
+
 static const struct of_device_id of_k3_ccu_match[] = {
 	{
 		.compatible	= "spacemit,k3-pll",
@@ -1463,6 +1532,10 @@ static const struct of_device_id of_k3_ccu_match[] = {
 	{
 		.compatible	= "spacemit,k3-syscon-dciu",
 		.data		= &k3_ccu_dciu_data,
+	},
+	{
+		.compatible	= "spacemit,k3-syscon-rcpu-i2sctrl",
+		.data		= &k3_ccu_rcpu_i2sctrl_data,
 	},
 	{ /* sentinel */ }
 };
