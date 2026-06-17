@@ -218,6 +218,20 @@ static const struct ccu_reset_controller_data k3_dciu_reset_data = {
 	.count		= ARRAY_SIZE(k3_dciu_resets),
 };
 
+static const struct ccu_reset_data k3_rcpu_i2sctrl_resets[] = {
+	[RESET_RCPU_I2SCTRL_RI2S0]		= RESET_DATA(RCPU2_AUDIO_I2S0_TX_RX_CLK_CTRL,	0, BIT(0)),
+	[RESET_RCPU_I2SCTRL_RI2S1]		= RESET_DATA(RCPU2_AUDIO_I2S1_TX_RX_CLK_CTRL,	0, BIT(0)),
+	[RESET_RCPU_I2SCTRL_RI2S2]		= RESET_DATA(RCPU2_AUDIO_I2S2_TX_RX_CLK_CTRL,	0, BIT(0)),
+	[RESET_RCPU_I2SCTRL_RI2S3]		= RESET_DATA(RCPU2_AUDIO_I2S3_TX_RX_CLK_CTRL,	0, BIT(0)),
+	[RESET_RCPU_I2SCTRL_RI2S2_SYSCLK]	= RESET_DATA(RCPU2_AUDIO_I2S2_SYS_CLK_CTRL,	0, BIT(0)),
+	[RESET_RCPU_I2SCTRL_RI2S3_SYSCLK]	= RESET_DATA(RCPU2_AUDIO_I2S3_SYS_CLK_CTRL,	0, BIT(0)),
+};
+
+static const struct ccu_reset_controller_data k3_rcpu_i2sctrl_reset_data = {
+	.reset_data	= k3_rcpu_i2sctrl_resets,
+	.count		= ARRAY_SIZE(k3_rcpu_i2sctrl_resets),
+};
+
 #define K3_AUX_DEV_ID(_unit) \
 	{ \
 		.name = "spacemit_ccu.k3-" #_unit "-reset", \
@@ -229,6 +243,7 @@ static const struct auxiliary_device_id spacemit_k3_reset_ids[] = {
 	K3_AUX_DEV_ID(apbc),
 	K3_AUX_DEV_ID(apmu),
 	K3_AUX_DEV_ID(dciu),
+	K3_AUX_DEV_ID(rcpu_i2sctrl),
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(auxiliary, spacemit_k3_reset_ids);
