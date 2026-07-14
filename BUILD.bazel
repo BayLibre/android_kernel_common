@@ -1363,7 +1363,7 @@ cc_library(
 
 pahole(
     name = "pahole",
-    visibility = ["//visibility:private"],
+    visibility = ["//visibility:public"],
     deps = [":bpf_x86"],
 )
 
