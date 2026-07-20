@@ -559,12 +559,10 @@ pvr_gpu_support_level(const struct pvr_gpu_id *gpu_id)
 	switch (pvr_gpu_id_to_packed_bvnc(gpu_id)) {
 	case PVR_PACKED_BVNC(36, 29, 52, 182): /* SpacemiT K1 (BPI-F3) */
 	case PVR_PACKED_BVNC(33, 15, 11, 3):
+	case PVR_PACKED_BVNC(36, 52, 104, 182):
 	case PVR_PACKED_BVNC(36, 53, 104, 796):
 	case PVR_PACKED_BVNC(36, 56, 104, 183): /* SpacemiT K3 (Muse Pico-ITX, BXM-4-64) */
 		return PVR_GPU_SUPPORTED;
-
-	case PVR_PACKED_BVNC(36, 52, 104, 182):
-		return PVR_GPU_EXPERIMENTAL;
 
 	default:
 		return PVR_GPU_UNKNOWN;
