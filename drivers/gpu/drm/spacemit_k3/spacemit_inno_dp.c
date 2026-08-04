@@ -1568,6 +1568,111 @@ static void soc_dp_phy_config_rate(struct soc_dp_dev *dp, enum soc_dp_link_rate 
 	dp->link_rate = rate;
 }
 
+/*
+ * Analog TX drive settings, indexed by [link rate][voltage swing][pre-emphasis].
+ * Swing level 3 and pre-emphasis level 3 are not supported by this PHY, which is
+ * what SOC_DP_SWING_MAX / SOC_DP_PREEMP_MAX clamp to. Taken from the vendor
+ * U-Boot PHY driver (drivers/video/spacemit/dp/inno_dp_phy.c) -- the only place
+ * the table exists for this IP.
+ */
+static const struct soc_dp_phy_vol_setting {
+	uint8_t mainsel;	/* 5 bits */
+	uint8_t postsel;	/* 4 bits */
+	uint8_t presel;		/* 3 bits */
+	uint8_t isel;		/* 4 bits */
+} vol_cfg_table[4][4][4] = {
+	/* --- 1.62 Gbps --- */
+	{
+		{ {0x0a, 0x0, 0x0, 0x5}, {0x0e, 0x2, 0x0, 0x5}, {0x11, 0x4, 0x0, 0x5}, {0, 0, 0, 0} },
+		{ {0x0c, 0x0, 0x0, 0x5}, {0x0f, 0x2, 0x0, 0x5}, {0x13, 0x5, 0x0, 0x5}, {0, 0, 0, 0} },
+		{ {0x0f, 0x0, 0x0, 0x5}, {0x12, 0x3, 0x0, 0x5}, {0x18, 0x6, 0x0, 0x5}, {0, 0, 0, 0} },
+		{ {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0} },
+	},
+	/* --- 2.7 Gbps --- */
+	{
+		{ {0x07, 0x0, 0x0, 0x5}, {0x0a, 0x2, 0x0, 0x5}, {0x0f, 0x5, 0x0, 0x5}, {0, 0, 0, 0} },
+		{ {0x0d, 0x0, 0x0, 0x5}, {0x10, 0x2, 0x0, 0x5}, {0x14, 0x5, 0x0, 0x5}, {0, 0, 0, 0} },
+		{ {0x12, 0x0, 0x0, 0x5}, {0x16, 0x3, 0x0, 0x5}, {0x19, 0x6, 0x0, 0x5}, {0, 0, 0, 0} },
+		{ {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0} },
+	},
+	/* --- 5.4 Gbps --- */
+	{
+		{ {0x06, 0x0, 0x0, 0x5}, {0x09, 0x1, 0x0, 0x5}, {0x0d, 0x3, 0x0, 0x5}, {0, 0, 0, 0} },
+		{ {0x0b, 0x0, 0x0, 0x5}, {0x12, 0x3, 0x0, 0x5}, {0x17, 0x5, 0x0, 0x5}, {0, 0, 0, 0} },
+		{ {0x10, 0x0, 0x0, 0x5}, {0x1d, 0x4, 0x0, 0x5}, {0x1a, 0x6, 0x0, 0x5}, {0, 0, 0, 0} },
+		{ {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0} },
+	},
+	/* --- 8.1 Gbps --- */
+	{
+		{ {0x06, 0x0, 0x0, 0x5}, {0x09, 0x1, 0x0, 0x5}, {0x0d, 0x3, 0x0, 0x5}, {0, 0, 0, 0} },
+		{ {0x0b, 0x0, 0x0, 0x5}, {0x12, 0x3, 0x0, 0x5}, {0x17, 0x5, 0x0, 0x5}, {0, 0, 0, 0} },
+		{ {0x10, 0x0, 0x0, 0x5}, {0x1d, 0x4, 0x0, 0x5}, {0x1a, 0x6, 0x0, 0x5}, {0, 0, 0, 0} },
+		{ {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0} },
+	},
+};
+
+/*
+ * Apply the drive settings the sink asked for to the transmitter. Writing
+ * DP_TRAINING_LANE0_SET only tells the sink what the source claims to be
+ * doing; without this the analog levels stay at whatever probe programmed, the
+ * sink keeps repeating the same ADJUST_REQUEST and channel EQ never converges.
+ */
+static void soc_dp_phy_set_voltages(struct soc_dp_dev *dp, enum soc_dp_link_rate rate,
+				    const uint8_t *swing, const uint8_t *preemp, int lanes)
+{
+	int rate_idx, i;
+
+	switch (rate) {
+	case SOC_DP_LINK_RATE_1_62:
+		rate_idx = 0;
+		break;
+	case SOC_DP_LINK_RATE_2_70:
+		rate_idx = 1;
+		break;
+	case SOC_DP_LINK_RATE_5_40:
+		rate_idx = 2;
+		break;
+	case SOC_DP_LINK_RATE_8_10:
+		rate_idx = 3;
+		break;
+	default:
+		rate_idx = 0;
+		break;
+	}
+
+	for (i = 0; i < lanes; i++) {
+		const struct soc_dp_phy_vol_setting *cfg =
+			&vol_cfg_table[rate_idx][swing[i] & 0x3][preemp[i] & 0x3];
+
+		switch (i) {
+		case 0:
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_ISEL_DRV_D0, cfg->isel);
+			soc_dp_reg_write_range(dp, SOC_DPTX_DA_TX_MAINSEL_D0_4_0, cfg->mainsel);
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_POSTSEL_D0, cfg->postsel);
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_PRESEL_D0, cfg->presel);
+			break;
+		case 1:
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_ISEL_DRV_D1, cfg->isel);
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_MAINSEL_D1, cfg->mainsel);
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_POSTSEL_D1, cfg->postsel);
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_PRESEL_D1, cfg->presel);
+			break;
+		case 2:
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_ISEL_DRV_D2, cfg->isel);
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_MAINSEL_D2, cfg->mainsel);
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_POSTSEL_D2, cfg->postsel);
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_PRESEL_D2, cfg->presel);
+			break;
+		case 3:
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_ISEL_DRV_D3, cfg->isel);
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_MAINSEL_D3, cfg->mainsel);
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_POSTSEL_D3, cfg->postsel);
+			soc_dp_reg_write_range(dp, SOC_DPTX_ANA_TX_PRESEL_D3, cfg->presel);
+			break;
+		}
+	}
+}
+
 static int soc_dp_link_train_clock_recovery(struct soc_dp_dev *dp, enum soc_dp_link_rate rate, enum soc_dp_lane_count lanes)
 {
 	uint8_t link_status[DP_LINK_STATUS_SIZE];
@@ -1605,21 +1710,40 @@ static int soc_dp_link_train_clock_recovery(struct soc_dp_dev *dp, enum soc_dp_l
 			return 0;
 
 		/* Update settings based on Sink request */
-		for (i = 0; i < lanes; i++) {
-			uint8_t v = drm_dp_get_adjust_request_voltage(link_status, i);
-			uint8_t p = drm_dp_get_adjust_request_pre_emphasis(link_status, i);
+		{
+			uint8_t swing_lv[4] = {0}, preemp_lv[4] = {0};
 
-			if (v >= SOC_DP_SWING_MAX) {
-				v = SOC_DP_SWING_MAX;
-				v |= DP_TRAIN_MAX_SWING_REACHED;
+			for (i = 0; i < lanes; i++) {
+				/*
+				 * drm_dp_get_adjust_request_pre_emphasis() already
+				 * returns the level shifted into its LANEx_SET
+				 * position, so shift it back down before clamping --
+				 * otherwise every non-zero request compares above
+				 * SOC_DP_PREEMP_MAX and gets reported as level 2.
+				 */
+				uint8_t v = drm_dp_get_adjust_request_voltage(link_status, i);
+				uint8_t p = drm_dp_get_adjust_request_pre_emphasis(link_status, i) >>
+					    DP_TRAIN_PRE_EMPHASIS_SHIFT;
+				uint8_t set;
+
+				if (v >= SOC_DP_SWING_MAX)
+					v = SOC_DP_SWING_MAX;
+				if (p >= SOC_DP_PREEMP_MAX)
+					p = SOC_DP_PREEMP_MAX;
+
+				swing_lv[i] = v;
+				preemp_lv[i] = p;
+
+				set = v | (p << DP_TRAIN_PRE_EMPHASIS_SHIFT);
+				if (v == SOC_DP_SWING_MAX)
+					set |= DP_TRAIN_MAX_SWING_REACHED;
+				if (p == SOC_DP_PREEMP_MAX)
+					set |= DP_TRAIN_MAX_PRE_EMPHASIS_REACHED;
+
+				training_set[i] = set;
 			}
 
-			if (p >= SOC_DP_PREEMP_MAX) {
-				p = SOC_DP_PREEMP_MAX;
-				v |= DP_TRAIN_MAX_PRE_EMPHASIS_REACHED;
-			}
-
-			training_set[i] = v | (p << DP_TRAIN_PRE_EMPHASIS_SHIFT);
+			soc_dp_phy_set_voltages(dp, rate, swing_lv, preemp_lv, lanes);
 		}
 
 		ret = drm_dp_dpcd_write(&dp->aux, DP_TRAINING_LANE0_SET,
@@ -1677,21 +1801,40 @@ static int soc_dp_link_train_channel_eq(struct soc_dp_dev *dp, enum soc_dp_link_
 		}
 
 		/* Update settings based on Sink request */
-		for (i = 0; i < lanes; i++) {
-			uint8_t v = drm_dp_get_adjust_request_voltage(link_status, i);
-			uint8_t p = drm_dp_get_adjust_request_pre_emphasis(link_status, i);
+		{
+			uint8_t swing_lv[4] = {0}, preemp_lv[4] = {0};
 
-			if (v >= SOC_DP_SWING_MAX) {
-				v = SOC_DP_SWING_MAX;
-				v |= DP_TRAIN_MAX_SWING_REACHED;
+			for (i = 0; i < lanes; i++) {
+				/*
+				 * drm_dp_get_adjust_request_pre_emphasis() already
+				 * returns the level shifted into its LANEx_SET
+				 * position, so shift it back down before clamping --
+				 * otherwise every non-zero request compares above
+				 * SOC_DP_PREEMP_MAX and gets reported as level 2.
+				 */
+				uint8_t v = drm_dp_get_adjust_request_voltage(link_status, i);
+				uint8_t p = drm_dp_get_adjust_request_pre_emphasis(link_status, i) >>
+					    DP_TRAIN_PRE_EMPHASIS_SHIFT;
+				uint8_t set;
+
+				if (v >= SOC_DP_SWING_MAX)
+					v = SOC_DP_SWING_MAX;
+				if (p >= SOC_DP_PREEMP_MAX)
+					p = SOC_DP_PREEMP_MAX;
+
+				swing_lv[i] = v;
+				preemp_lv[i] = p;
+
+				set = v | (p << DP_TRAIN_PRE_EMPHASIS_SHIFT);
+				if (v == SOC_DP_SWING_MAX)
+					set |= DP_TRAIN_MAX_SWING_REACHED;
+				if (p == SOC_DP_PREEMP_MAX)
+					set |= DP_TRAIN_MAX_PRE_EMPHASIS_REACHED;
+
+				training_set[i] = set;
 			}
 
-			if (p >= SOC_DP_PREEMP_MAX) {
-				p = SOC_DP_PREEMP_MAX;
-				v |= DP_TRAIN_MAX_PRE_EMPHASIS_REACHED;
-			}
-
-			training_set[i] = v | (p << DP_TRAIN_PRE_EMPHASIS_SHIFT);
+			soc_dp_phy_set_voltages(dp, rate, swing_lv, preemp_lv, lanes);
 		}
 
 		ret = drm_dp_dpcd_write(&dp->aux, DP_TRAINING_LANE0_SET,
