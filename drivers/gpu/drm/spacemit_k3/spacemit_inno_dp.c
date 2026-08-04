@@ -2844,6 +2844,18 @@ static int soc_dp_bind(struct device *dev, struct device *master, void *data)
 		dp->edp_mode = false;
 
 	if (!IS_ERR_OR_NULL(dp->reset)) {
+		/*
+		 * Pulse the reset rather than only releasing it. After a warm
+		 * reboot the previous kernel left the block deasserted, so a
+		 * lone deassert is a no-op: the PHY keeps its stale state and
+		 * link training then fails channel EQ at every rate and lane
+		 * count. The control is shared, so walk the refcount through
+		 * zero to get a real pulse without tripping the framework's
+		 * assert-while-not-deasserted warning.
+		 */
+		reset_control_deassert(dp->reset);
+		reset_control_assert(dp->reset);
+		usleep_range(100, 200);
 		ret = reset_control_deassert(dp->reset);
 		if (ret < 0) {
 			DRM_INFO("Failed to deassert reset\n");
