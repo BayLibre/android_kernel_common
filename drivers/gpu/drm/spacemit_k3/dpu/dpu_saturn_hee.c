@@ -504,7 +504,7 @@ static void saturn_init_tmg(struct spacemit_crtc *a_crtc)
 	struct spacemit_hw_device *hwdev = priv->hwdev;
 	struct drm_crtc *crtc = &a_crtc->crtc;
 	struct drm_display_mode *mode = &crtc->mode;
-	u16 vfp, vbp, vsync, hfp, hbp, hsync;
+	u16 vfp, vbp, vsync, hfp, hbp, hsync, eof_dly;
 	void __iomem *tmg_addr;
 	u32 value;
 
@@ -527,8 +527,25 @@ static void saturn_init_tmg(struct spacemit_crtc *a_crtc)
 		dpu_write(hwdev, TMG_REG, base, background_r, 0);
 		dpu_write(hwdev, TMG_REG, base, background_g, 0x0);
 		dpu_write(hwdev, TMG_REG, base, background_b, 0xff);
-		dpu_write(hwdev, TMG_REG, base, eof_1st_ln_dly_num, vfp - 7);
-		dpu_write(hwdev, TMG_REG, base, eof_2nd_ln_dly_num, vfp - 6);
+		/*
+		 * Both delays are counted back from the end of the vertical front
+		 * porch and have to land inside it. vfp - 7 underflows the 16 bit
+		 * field on any short porch, and CEA timings are short: 1080p60 has
+		 * four lines, 1366x768 three. A delay past the porch is just as
+		 * bad as an underflowed one -- the composer waits for an end of
+		 * frame that never arrives, parks on the last active line without
+		 * fetching any layer data, and only the timing generator background
+		 * colour reaches the sink. Fall back to the last lines of the porch
+		 * when it cannot hold the seven line lead.
+		 */
+		if (vfp >= 7)
+			eof_dly = vfp - 7;
+		else if (vfp >= 2)
+			eof_dly = vfp - 2;
+		else
+			eof_dly = 0;
+		dpu_write(hwdev, TMG_REG, base, eof_1st_ln_dly_num, eof_dly);
+		dpu_write(hwdev, TMG_REG, base, eof_2nd_ln_dly_num, eof_dly + 1);
 		dpu_write(hwdev, TMG_REG, base, split_en, 0);
 		dpu_write(hwdev, TMG_REG, base, cmd_screen, 0);
 		dpu_write(hwdev, TMG_REG, base, cmd_wait_en, 0);
@@ -1175,9 +1192,18 @@ void saturn_hee_conf_dpuctrl(struct drm_crtc *crtc,
 		dpu_write(hwdev, DPU_CTL_REG, base, nml_outctl_en, 0x1);
 		dpu_write(hwdev, DPU_CTL_REG, base, nml_frm_timing_en, 2);
 		if (!a_crtc->is_edp) {
+			/* Same porch clamp as in the mode set path above. */
+			u32 eof_dly;
+
 			dpu_write(hwdev, TMG_REG, TMG_BASE_ADDR[a_crtc->dev_id], vfp, a_crtc->vrr_vfp);
-			dpu_write(hwdev, TMG_REG, TMG_BASE_ADDR[a_crtc->dev_id], eof_1st_ln_dly_num, a_crtc->vrr_vfp - 7);
-			dpu_write(hwdev, TMG_REG, TMG_BASE_ADDR[a_crtc->dev_id], eof_2nd_ln_dly_num, a_crtc->vrr_vfp - 6);
+			if (a_crtc->vrr_vfp >= 7)
+				eof_dly = a_crtc->vrr_vfp - 7;
+			else if (a_crtc->vrr_vfp >= 2)
+				eof_dly = a_crtc->vrr_vfp - 2;
+			else
+				eof_dly = 0;
+			dpu_write(hwdev, TMG_REG, TMG_BASE_ADDR[a_crtc->dev_id], eof_1st_ln_dly_num, eof_dly);
+			dpu_write(hwdev, TMG_REG, TMG_BASE_ADDR[a_crtc->dev_id], eof_2nd_ln_dly_num, eof_dly + 1);
 		}
 	} else {
 		dpu_write(hwdev, DPU_CTL_REG, base, nml_outctl_en, 0);
