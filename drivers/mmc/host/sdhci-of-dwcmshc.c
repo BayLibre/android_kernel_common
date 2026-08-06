@@ -529,6 +529,13 @@ static void th1520_sdhci_set_phy(struct sdhci_host *host)
 		     PHY_DLL_CNFG1_WAITCYCLE, PHY_DLL_CNFG1_R);
 }
 
+static void th1520_sdhci_set_power(struct sdhci_host *host, unsigned char mode,
+				    unsigned short vdd)
+{
+	th1520_sdhci_set_phy(host);
+	sdhci_set_power(host, mode, vdd);
+}
+
 static void dwcmshc_set_uhs_signaling(struct sdhci_host *host,
 				      unsigned int timing)
 {
@@ -2049,6 +2056,7 @@ static const struct sdhci_ops sdhci_dwcmshc_rk35xx_ops = {
 
 static const struct sdhci_ops sdhci_dwcmshc_th1520_ops = {
 	.set_clock		= sdhci_set_clock,
+	.set_power		= th1520_sdhci_set_power,
 	.set_bus_width		= sdhci_set_bus_width,
 	.set_uhs_signaling	= th1520_set_uhs_signaling,
 	.get_max_clock		= dwcmshc_get_max_clock,
@@ -2381,6 +2389,10 @@ static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
 	{
 		.compatible = "hpe,gsc-dwcmshc",
 		.data = &sdhci_dwcmshc_hpe_gsc_pdata,
+	},
+	{
+		.compatible = "zhihe,a210-dwcmshc",
+		.data = &sdhci_dwcmshc_th1520_pdata,
 	},
 	{},
 };
