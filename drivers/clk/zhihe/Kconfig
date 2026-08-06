@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: GPL-2.0
+
+config ZHIHE_CLK
+	tristate "Zhihe SoC clock core support"
+	depends on ARCH_ZHIHE
+	default n
+	help
+	    Common clock-provider helpers (divider/gate/PLL registration)
+	    shared by ZhiHe SoC clock drivers. Was a hidden def_bool always
+	    tracking ARCH_ZHIHE in zhihesdk's monolithic build; made a
+	    regular tristate here so it can be built as a loadable module
+	    (CONFIG_CLK_A210 depends on and links against symbols exported
+	    from this module).
+
+config CLK_A210
+	tristate "Zhihe A210 Clock Driver"
+	depends on ARCH_ZHIHE
+	select ZHIHE_CLK
+	default n
+	help
+	    Build the driver for zhihe A210 Clock Driver
