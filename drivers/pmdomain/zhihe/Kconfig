@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+config A210_POWER_DOMAIN
+	tristate "A210 Power Domain driver"
+	depends on ARCH_ZHIHE
+	depends on PM
+	select PM_GENERIC_DOMAINS
+	default n
+	help
+	  Build the driver for the power domain controller (PCU/PPU)
+	  on the ZhiHe A210 SoC. Converted from zhihesdk's
+	  builtin_platform_driver() to module_platform_driver() so it
+	  can be built as a loadable module, consistent with
+	  CLK_A210/RESET_A210.

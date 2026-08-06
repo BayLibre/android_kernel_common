@@ -114,6 +114,7 @@ config SOC_CANAAN_K210
 config ARCH_ZHIHE
 	bool "ZhiHe SoCs"
 	select ERRATA_THEAD
+	select PINCTRL
 	help
 	  This enables support for ZhiHe SoC platform hardware.
 
