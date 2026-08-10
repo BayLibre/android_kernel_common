@@ -117,4 +117,19 @@ config ARCH_ZHIHE
 	help
 	  This enables support for ZhiHe SoC platform hardware.
 
+config NR_HARTS_PER_DIE
+	int "number harts per DIE"
+	depends on ARCH_ZHIHE
+	default "8"
+
+config XUANTIE_SSTC
+	bool "xuantie SSTC"
+	depends on ARCH_ZHIHE
+	help
+	  This enables support for the XuanTie/T-Head "CLINT timer shadow
+	  register" mechanism used to arm the next S-mode timer interrupt
+	  directly via MMIO instead of the SBI TIME extension ecall
+	  (sbi_set_timer()). Needed on hardware/firmware where the SBI
+	  ecall-based path silently fails to ever deliver a timer interrupt.
+
 endmenu # "SoC selection"
