@@ -33,16 +33,53 @@
 		regulator-max-microvolt = <5000000>;
 		regulator-always-on;
 	};
+
+	pcie_vcc_3v3: regulator-pcie-vcc3v3 {
+		compatible = "regulator-fixed";
+		regulator-name = "PCIE_VCC3V3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-always-on;
+	};
+
+	/*
+	 * M.2 WiFi enable line (RTL8852BE on the PCIe x1 slot, port E / pcie4).
+	 * rfkill-gpio drives WLAN_EN so the card powers up before PCIe link
+	 * training; the radio itself enumerates as a PCI device on pcie4.
+	 */
+	rfkill-pcie-wlan {
+		compatible = "rfkill-gpio";
+		label = "rfkill-pcie-wlan";
+		pinctrl-names = "default";
+		pinctrl-0 = <&wlan_en_cfg>;
+		radio-type = "wlan";
+		shutdown-gpios = <&gpio 1 3 GPIO_ACTIVE_HIGH>;
+	};
+
+	/*
+	 * Bluetooth enable line (Realtek RTL8852B, BT side of the combo).
+	 * The controller enumerates over USB (btusb); rfkill-gpio drives
+	 * BT_EN so the radio powers up.  Per the vendor K3 Pico-ITX BSP.
+	 */
+	rfkill-usb-bt {
+		compatible = "rfkill-gpio";
+		label = "rfkill-usb-bt";
+		pinctrl-names = "default";
+		pinctrl-0 = <&bt_en_cfg>;
+		radio-type = "bluetooth";
+		shutdown-gpios = <&gpio 0 30 GPIO_ACTIVE_HIGH>;
+	};
 };
 
 &i2c8 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c8_cfg>;
-	status = "okay";
+	status = "disabled";
 
 	p1@41 {
 		compatible = "spacemit,p1";
 		reg = <0x41>;
+		status = "disabled";
 		interrupts = <64 IRQ_TYPE_LEVEL_HIGH>;
 		vin1-supply = <&reg_aux_vcc5v>;
 		vin2-supply = <&reg_aux_vcc5v>;
@@ -195,5 +232,236 @@
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_0_cfg>;
+	status = "okay";
+};
+
+/* No eMMC fitted on the Pico-ITX; UFS is the boot storage (see &ufshc). */
+&emmc {
+	status = "disabled";
+};
+
+/*
+ * UFS 2.2 controller (ufshc @ 0xc0e00000) — boot storage on the Muse
+ * Pico-ITX (no eMMC fitted on that variant).  The M-PHY is integrated in
+ * the controller IP (no separate PHY node/handle); ufs-spacemit.ko drives
+ * the M-PHY init through the controller's own MMIO.  The SoC node lives in
+ * k3.dtsi; clocks/reset come from syscon_apmu.
+ */
+&ufshc {
+	status = "okay";
+};
+
+/*
+ * CMA pool for contiguous DMA allocations (gralloc/minigbm framebuffers,
+ * V4L2, etc.).  512 MiB carved from DRAM, matching the vendor K3 BSP.
+ */
+&resmem {
+	cmamem: linux,cma {
+		compatible = "shared-dma-pool";
+		reusable;
+		size = <0x0 0x20000000>;
+		alloc-ranges = <0x1 0x0 0x1 0x0>;
+		linux,cma-default;
+	};
+};
+
+/*
+ * Display pipeline (ported from the vendor K3 BSP).  The SoC-level nodes
+ * live in k3.dtsi; here the board brings up both paths:
+ *   - eDP0  (dpu0_crtc0 -> edp0): internal-panel DisplayPort
+ *   - DP1   (dpu1_crtc0 -> dp1):  external DisplayPort routed to the
+ *     USB-C connector (the FUSB301 Type-C controller carries USB data
+ *     only; DP is driven straight from the inno-dp controller).
+ *
+ * The matching drivers are now in-tree, K3-gated and separate from the
+ * K1 spacemit-drm.ko (HDMI): spacemit-drm-k3.ko (dpu-saturn CRTC +
+ * saturn-hee/edp masters) + spacemit_inno_dp.ko (inno-edp0/inno-dp1
+ * output).  The vendor pinctrl/backlight references (dp0_1_cfg, dp1_1_cfg,
+ * backlight, ...) are still omitted; runtime scan-out and DP/eDP
+ * link-training need validation on the board.
+ *
+ * DP-audio (audio over the USB-C DisplayPort) is wired below via
+ * sound_card_dp1: spacemit_inno_dp registers an ASoC codec ("inno-dp-audio",
+ * playback-only) and dp@cac88000 carries #sound-dai-cells, so the DP is a
+ * valid codec sink.  The CPU DAI is the RCPU-domain I2S "ri2s3"
+ * (spacemit,k3-ri2s) fed by "adma3" (spacemit,k3-adma) and clocked by
+ * syscon_rcpu_i2sctrl — all now in-tree and K3-only.  adma3 uses direct
+ * hardware IRQs (no RT coprocessor / rpmsg).  Runtime audio still needs
+ * validation on the board.
+ */
+/* disabled until K3 genpd/pmdomain support lands - DPU MMIO stalls the fabric without the LCD power island */
+&dpu0_crtc0 {
+	memory-region = <&dpu_resv0>;
+	status = "disabled";
+};
+
+&edp0 {
+	status = "disabled";
+};
+
+&dpu1_crtc0 {
+	memory-region = <&dpu_resv1>;
+	status = "disabled";
+};
+
+&dp1 {
+	status = "disabled";
+};
+
+&display_subsystem_edp0 {
+	status = "disabled";
+};
+
+&display_subsystem_dp1 {
+	status = "disabled";
+};
+
+/*
+ * DP-audio: route audio over the USB-C DisplayPort (DP1).  The RCPU I2S
+ * "ri2s3" is the CPU DAI, fed by the "adma3" audio DMA; the codec sink is
+ * the inno-dp1 controller (ASoC codec "inno-dp-audio").  K3-only stack.
+ */
+/* disabled until K3 RCPU/genpd audio support lands - ri2s3 probe MMIO stalls the RCPU AXI island (bus clk CLK_APMU_RCPU not up before APMU CCU binds) */
+&adma3 {
+	status = "disabled";
+};
+
+&ri2s3 {
+	status = "disabled";
+};
+
+&sound_card_dp1 {
+	status = "disabled";
+};
+
+/*
+ * USB2 host port (dwc3 @ 0xc0a00000 + USB2 PHY @ 0xc0a20000).
+ * Host-only; powers downstream devices from the board 5V rail.
+ */
+&usb2_host_u2phy {
+	status = "okay";
+};
+
+&usb2_host {
+	vbus-supply = <&reg_aux_vcc5v>;
+	status = "okay";
+};
+
+/*
+ * USB3 port A (dwc3 @ 0xcad00000): dual-role, routed to the Type-C connector.
+ * Combo PHY (USB3 @ 0xcad30000/0xcad40000) also provides the Type-C
+ * orientation switch; USB2 PHY @ 0xcad20000.
+ */
+&usb3_porta_u2phy {
+	status = "okay";
+};
+
+&usb3_porta_u3phy {
+	status = "okay";
+};
+
+&usb3_porta {
+	dr_mode = "host";
+	vbus-supply = <&reg_aux_vcc5v>;
+	status = "okay";
+};
+
+&porta_role_switch {
+	remote-endpoint = <&fusb301_ep>;
+};
+
+/*
+ * USB3 port D (dwc3 @ 0x81a00000): host-only standard Type-A port.
+ * USB2 PHY @ 0x81b00000, USB3 PHY @ 0x82100000 (combo lane bit 0).
+ */
+&usb3_portd_u2phy {
+	status = "okay";
+};
+
+&usb3_portd_u3phy {
+	status = "okay";
+};
+
+&usb3_portd {
+	vbus-supply = <&reg_aux_vcc5v>;
+	status = "okay";
+};
+
+/*
+ * FUSB301 Type-C DRP port controller on i2c1 (USB-C connector).
+ * It manages USB data role + cable orientation only; the orientation switch
+ * lives in the USB3 port A combo PHY (spacemit,k3-typec-switch) and DisplayPort
+ * is driven directly by inno-dp (no DP mux through the FUSB301).
+ *
+ * The connector's data port is wired to the USB3 port A dwc3 role switch.
+ *
+ * The FUSB301 INT line is GPIO 2/21 (active-low), per the vendor K3 Pico-ITX
+ * BSP; without it the driver bails out with -ENODEV. Set "usb-role-switch" +
+ * change &usb3_porta to dr_mode = "otg" once role switching is validated on
+ * hardware.
+ */
+&i2c1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c1_3_cfg>;
+	status = "okay";
+
+	tcpc@25 {
+		compatible = "onsemi,fusb301";
+		reg = <0x25>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&fusb301_cfg>;
+		irq-gpios = <&gpio 2 21 GPIO_ACTIVE_LOW>;
+		suspend-vbus-off;
+		wakeup-source;
+		status = "okay";
+
+		connector {
+			compatible = "usb-c-connector";
+			label = "USB-C";
+			data-role = "dual";
+			power-role = "dual";
+			try-power-role = "sink";
+			typec-power-opmode = "default";
+			pd-disable;
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				port@0 {
+					reg = <0>;
+					fusb301_ep: endpoint {
+						remote-endpoint = <&porta_role_switch>;
+					};
+				};
+			};
+		};
+	};
+};
+
+&i2s1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&sspa1_1_cfg>;
+	status = "okay";
+};
+
+/*
+ * PCIe port E (pcie4, x1) -> M.2 WiFi slot (Realtek RTL8852BE).  The PHY,
+ * the root-port PHY/supply binding and the controller are all enabled here;
+ * the SoC nodes live in k3.dtsi.  Bringing up the link needs the real board.
+ */
+&pcie4_phy {
+	status = "okay";
+};
+
+&pcie4_port {
+	phys = <&pcie4_phy>;
+	vpcie3v3-supply = <&pcie_vcc_3v3>;
+};
+
+&pcie4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie4_0_cfg>;
+	vpcie3v3-supply = <&pcie_vcc_3v3>;
 	status = "okay";
 };

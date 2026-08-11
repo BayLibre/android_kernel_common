@@ -6,6 +6,7 @@
 
 #include <dt-bindings/clock/spacemit,k3-clocks.h>
 #include <dt-bindings/reset/spacemit,k3-resets.h>
+#include <dt-bindings/pmu/k3_pmu.h>
 #include <dt-bindings/interrupt-controller/irq.h>
 
 /dts-v1/;
@@ -33,7 +34,7 @@
 					       "sscounterenw", "ssnpm", "ssstateen", "sstc",
 					       "sstvala", "sstvecd", "ssu64xl", "svade",
 					       "svinval", "svnapot", "svpbmt", "za64rs",
-					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
+					       "zba", "zbb", "zbc", "zbs", "zca",
 					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
 					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
 					       "ziccamoa", "ziccif", "zicclsm", "zicntr",
@@ -54,6 +55,7 @@
 			d-cache-sets = <256>;
 			next-level-cache = <&l2_cache0>;
 			mmu-type = "riscv,sv39";
+			cpu-idle-states = <&CPU_NONRET>, <&CLUSTER_NONRET>;
 
 			cpu0_intc: interrupt-controller {
 				compatible = "riscv,cpu-intc";
@@ -74,7 +76,7 @@
 					       "sscounterenw", "ssnpm", "ssstateen", "sstc",
 					       "sstvala", "sstvecd", "ssu64xl", "svade",
 					       "svinval", "svnapot", "svpbmt", "za64rs",
-					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
+					       "zba", "zbb", "zbc", "zbs", "zca",
 					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
 					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
 					       "ziccamoa", "ziccif", "zicclsm", "zicntr",
@@ -95,6 +97,7 @@
 			d-cache-sets = <256>;
 			next-level-cache = <&l2_cache0>;
 			mmu-type = "riscv,sv39";
+			cpu-idle-states = <&CPU_NONRET>, <&CLUSTER_NONRET>;
 
 			cpu1_intc: interrupt-controller {
 				compatible = "riscv,cpu-intc";
@@ -115,7 +118,7 @@
 					       "sscounterenw", "ssnpm", "ssstateen", "sstc",
 					       "sstvala", "sstvecd", "ssu64xl", "svade",
 					       "svinval", "svnapot", "svpbmt", "za64rs",
-					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
+					       "zba", "zbb", "zbc", "zbs", "zca",
 					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
 					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
 					       "ziccamoa", "ziccif", "zicclsm", "zicntr",
@@ -136,6 +139,7 @@
 			d-cache-sets = <256>;
 			next-level-cache = <&l2_cache0>;
 			mmu-type = "riscv,sv39";
+			cpu-idle-states = <&CPU_NONRET>, <&CLUSTER_NONRET>;
 
 			cpu2_intc: interrupt-controller {
 				compatible = "riscv,cpu-intc";
@@ -156,7 +160,7 @@
 					       "sscounterenw", "ssnpm", "ssstateen", "sstc",
 					       "sstvala", "sstvecd", "ssu64xl", "svade",
 					       "svinval", "svnapot", "svpbmt", "za64rs",
-					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
+					       "zba", "zbb", "zbc", "zbs", "zca",
 					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
 					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
 					       "ziccamoa", "ziccif", "zicclsm", "zicntr",
@@ -177,6 +181,7 @@
 			d-cache-sets = <256>;
 			next-level-cache = <&l2_cache0>;
 			mmu-type = "riscv,sv39";
+			cpu-idle-states = <&CPU_NONRET>, <&CLUSTER_NONRET>;
 
 			cpu3_intc: interrupt-controller {
 				compatible = "riscv,cpu-intc";
@@ -197,7 +202,7 @@
 					       "sscounterenw", "ssnpm", "ssstateen", "sstc",
 					       "sstvala", "sstvecd", "ssu64xl", "svade",
 					       "svinval", "svnapot", "svpbmt", "za64rs",
-					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
+					       "zba", "zbb", "zbc", "zbs", "zca",
 					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
 					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
 					       "ziccamoa", "ziccif", "zicclsm", "zicntr",
@@ -218,6 +223,7 @@
 			d-cache-sets = <256>;
 			next-level-cache = <&l2_cache1>;
 			mmu-type = "riscv,sv39";
+			cpu-idle-states = <&CPU_NONRET>, <&CLUSTER_NONRET>;
 
 			cpu4_intc: interrupt-controller {
 				compatible = "riscv,cpu-intc";
@@ -238,7 +244,7 @@
 					       "sscounterenw", "ssnpm", "ssstateen", "sstc",
 					       "sstvala", "sstvecd", "ssu64xl", "svade",
 					       "svinval", "svnapot", "svpbmt", "za64rs",
-					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
+					       "zba", "zbb", "zbc", "zbs", "zca",
 					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
 					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
 					       "ziccamoa", "ziccif", "zicclsm", "zicntr",
@@ -259,6 +265,7 @@
 			d-cache-sets = <256>;
 			next-level-cache = <&l2_cache1>;
 			mmu-type = "riscv,sv39";
+			cpu-idle-states = <&CPU_NONRET>, <&CLUSTER_NONRET>;
 
 			cpu5_intc: interrupt-controller {
 				compatible = "riscv,cpu-intc";
@@ -279,7 +286,7 @@
 					       "sscounterenw", "ssnpm", "ssstateen", "sstc",
 					       "sstvala", "sstvecd", "ssu64xl", "svade",
 					       "svinval", "svnapot", "svpbmt", "za64rs",
-					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
+					       "zba", "zbb", "zbc", "zbs", "zca",
 					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
 					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
 					       "ziccamoa", "ziccif", "zicclsm", "zicntr",
@@ -300,6 +307,7 @@
 			d-cache-sets = <256>;
 			next-level-cache = <&l2_cache1>;
 			mmu-type = "riscv,sv39";
+			cpu-idle-states = <&CPU_NONRET>, <&CLUSTER_NONRET>;
 
 			cpu6_intc: interrupt-controller {
 				compatible = "riscv,cpu-intc";
@@ -320,7 +328,7 @@
 					       "sscounterenw", "ssnpm", "ssstateen", "sstc",
 					       "sstvala", "sstvecd", "ssu64xl", "svade",
 					       "svinval", "svnapot", "svpbmt", "za64rs",
-					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
+					       "zba", "zbb", "zbc", "zbs", "zca",
 					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
 					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
 					       "ziccamoa", "ziccif", "zicclsm", "zicntr",
@@ -341,6 +349,7 @@
 			d-cache-sets = <256>;
 			next-level-cache = <&l2_cache1>;
 			mmu-type = "riscv,sv39";
+			cpu-idle-states = <&CPU_NONRET>, <&CLUSTER_NONRET>;
 
 			cpu7_intc: interrupt-controller {
 				compatible = "riscv,cpu-intc";
@@ -365,6 +374,37 @@
 			cache-size = <4194304>;
 			cache-sets = <4096>;
 			cache-unified;
+		};
+
+		/*
+		 * SBI HSM non-retentive idle states (mirror of the vendor). A bare
+		 * WFI hart on this SoC is not woken by an incoming S-mode IMSIC IPI,
+		 * so cross-hart flush_tlb_all() deadlocks on a parked secondary.
+		 * Routing idle through cpuidle-riscv-sbi -> sbi_hsm_suspend lets
+		 * OpenSBI's K3 suspend/resume arm the PMU wakeup and restore the
+		 * IMSIC S-file, so the secondary wakes on the IPI.
+		 */
+		idle-states {
+			CPU_NONRET: cpu-nonret {
+				compatible = "riscv,idle-state";
+				idle-state-name = "riscv,cpu-nonret";
+				riscv,sbi-suspend-param = <0x90000000>;
+				local-timer-stop;
+				entry-latency-us = <200>;
+				exit-latency-us = <500>;
+				min-residency-us = <950>;
+			};
+
+			CLUSTER_NONRET: cluster-nonret {
+				compatible = "riscv,idle-state";
+				idle-state-name = "riscv,cluster-nonret";
+				riscv,sbi-suspend-param = <0x91000000>;
+				local-timer-stop;
+				entry-latency-us = <600>;
+				exit-latency-us = <1100>;
+				min-residency-us = <2700>;
+				wakeup-latency-us = <1500>;
+			};
 		};
 
 		cpu-map {
@@ -428,6 +468,137 @@
 			clock-output-names = "osc_32k";
 			#clock-cells = <0>;
 		};
+	};
+
+	resmem: reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		/* used for rcpu0 code & data & bss space */
+		rcpu0_pwr: rcpu0_pwr@100200000 {
+			reg = <0x1 0x200000 0x0 0x300000>;
+			no-map;
+		};
+
+		/* rcpu0's heap */
+		rcpu0_heap: rcpu0_heap@100500000 {
+			reg = <0x1 0x500000 0x0 0x200000>;
+			no-map;
+		};
+
+		/* vring0 */
+		rcpu0_vdev0vring0: vdev0vring0@c0876000 {
+			reg = <0x0 0xc0876000 0x0 0x3000>;
+			no-map;
+		};
+
+		/* vring1 */
+		rcpu0_vdev0vring1: vdev0vring1@c0879000 {
+			reg = <0x0 0xc0879000 0x0 0x3000>;
+			no-map;
+		};
+
+		/* vring2 */
+		rcpu0_vdev0vring2: vdev0vring2@c087c000 {
+			reg = <0x0 0xc087c000 0x0 0x1000>;
+			no-map;
+		};
+
+		/* the rcpu0's share memory buffer */
+		rcpu0_vdev0buffer: vdev0buffer@100700000 {
+			compatible = "shared-dma-pool";
+			reg = <0x1 0x700000 0x0 0xfc000>;
+			no-map;
+		};
+
+		/* the rcpu0's resource table */
+		rcpu0_rsc_table: rcpu0_rsc_table@1007fc000 {
+			reg = <0x1 0x7fc000 0x0 0x4000>;
+			no-map;
+		};
+
+		/* used for rcpu1 code & data & bss space */
+		rcpu1_runtime: rcpu1_runtime@100800000 {
+			reg = <0x1 0x800000 0x0 0x300000>;
+			no-map;
+		};
+
+		/* rcpu1's heap */
+		rcpu1_heap: rcpu1_heap@100b00000 {
+			reg = <0x1 0xb00000 0x0 0x200000>;
+			no-map;
+		};
+
+		/* vring0 */
+		rcpu1_vdev0vring0: vdev0vring0@c086c000 {
+			reg = <0x0 0xc086c000 0x0 0x3000>;
+			no-map;
+		};
+
+		/* vring1 */
+		rcpu1_vdev0vring1: vdev0vring1@c086f000 {
+			reg = <0x0 0xc086f000 0x0 0x3000>;
+			no-map;
+		};
+
+		/* the rcpu1's share memory buffer */
+		rcpu1_vdev0buffer: vdev0buffer@100d00000 {
+			compatible = "shared-dma-pool";
+			reg = <0x1 0xd00000 0x0 0xfc000>;
+			no-map;
+		};
+
+		/* the rcpu1's resource table */
+		rcpu1_rsc_table: rcpu1_rsc_table@100dfc000 {
+			reg = <0x1 0xdfc000 0x0 0x4000>;
+			no-map;
+		};
+
+		/* rpmi */
+		rpmi0: rpmi0@100e00000 {
+			reg = <0x1 0xe00000 0x0 0x4000>;
+			no-map;
+		};
+
+		/* reserve 3M for rcpu's dtb space */
+		rcpu_dtb_table: rcpu_dtb_table@100f00000 {
+			reg = <0x1 0xf00000 0x0 0x300000>;
+			no-map;
+		};
+
+		/*
+		 * DPU command-list / MMU page-table pools, one per display
+		 * pipeline (LCD0/eDP0 and LCD1/DP1).  Ported from the vendor
+		 * K3 BSP (k3.dtsi).  The DPU "saturn" driver references these
+		 * via memory-region on the dpu*_crtc0 nodes.
+		 */
+		dpu_resv0: dpu-reserved@101b00000 {
+			compatible = "shared-dma-pool";
+			reg = <0x1 0x01b00000 0x0 0x00280000>;
+			no-map;
+		};
+
+		dpu_resv1: dpu-reserved@101d80000 {
+			compatible = "shared-dma-pool";
+			reg = <0x1 0x01d80000 0x0 0x00280000>;
+			no-map;
+		};
+	};
+
+	/*
+	 * Do NOT set riscv,timer-cannot-wake-cpu here: it stamps
+	 * CLOCK_EVT_FEAT_C3STOP on every per-hart sstc clockevent, but this SoC
+	 * has no always-on broadcast clock device, so tick_is_oneshot_available()
+	 * becomes false and the tick framework has NO device left to wake an idle
+	 * hart -- idle CPUs stop ticking, the RCU GP kthread's schedule_timeout
+	 * never fires, and the board dies on an RCU stall ~13s into userspace
+	 * ("timer wakeup didn't happen on cpu0", "N-...!: 0 ticks this GP").
+	 * Without the property the kernel arms and trusts the local sstc timer,
+	 * which does wake a shallow-WFI idle hart on X100.
+	 */
+	riscv-timer {
+		compatible = "riscv,timer";
 	};
 
 	soc: soc {
@@ -555,6 +726,58 @@
 			};
 		};
 
+		sdcard: mmc@d4280000 {
+			compatible = "spacemit,k3-sdhci";
+			reg = <0x0 0xd4280000 0x0 0x200>;
+			clocks = <&syscon_apmu CLK_APMU_SDH_AXI>,
+				 <&syscon_apmu CLK_APMU_SDH0>;
+			clock-names = "core", "io";
+			interrupts = <99 IRQ_TYPE_LEVEL_HIGH>;
+			resets = <&syscon_apmu RESET_APMU_SDH_AXI>,
+				 <&syscon_apmu RESET_APMU_SDH0>;
+			reset-names = "axi", "sdh";
+			status = "disabled";
+		};
+
+		sdio: mmc@d4280800 {
+			compatible = "spacemit,k3-sdhci";
+			reg = <0x0 0xd4280800 0x0 0x200>;
+			clocks = <&syscon_apmu CLK_APMU_SDH_AXI>,
+				 <&syscon_apmu CLK_APMU_SDH1>;
+			clock-names = "core", "io";
+			interrupts = <100 IRQ_TYPE_LEVEL_HIGH>;
+			resets = <&syscon_apmu RESET_APMU_SDH_AXI>,
+				 <&syscon_apmu RESET_APMU_SDH1>;
+			reset-names = "axi", "sdh";
+			status = "disabled";
+		};
+
+		emmc: mmc@d4281000 {
+			compatible = "spacemit,k3-sdhci";
+			reg = <0x0 0xd4281000 0x0 0x200>;
+			clocks = <&syscon_apmu CLK_APMU_SDH_AXI>,
+				 <&syscon_apmu CLK_APMU_SDH2>;
+			clock-names = "core", "io";
+			interrupts = <101 IRQ_TYPE_LEVEL_HIGH>;
+			resets = <&syscon_apmu RESET_APMU_SDH_AXI>,
+				 <&syscon_apmu RESET_APMU_SDH2>;
+			reset-names = "axi", "sdh";
+			status = "disabled";
+		};
+
+		ufshc: ufshc@c0e00000 {
+			compatible = "spacemit,k3-ufshcd";
+			reg = <0x0 0xc0e00000 0x0 0x40000>;
+			interrupts = <135 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&syscon_apmu CLK_APMU_UFS_ACLK>,
+				 <&syscon_apmu CLK_APMU_UFS_REFCLK>;
+			clock-names = "ufs-aclk", "ref_clk";
+			resets = <&syscon_apmu RESET_APMU_UFS_ACLK>;
+			reset-names = "ufs-aclk-rst";
+			lanes-per-direction = <2>;
+			status = "disabled";
+		};
+
 		i2c0: i2c@d4010800 {
 			compatible = "spacemit,k3-i2c", "spacemit,k1-i2c";
 			reg = <0x0 0xd4010800 0x0 0x38>;
@@ -636,7 +859,6 @@
 
 		uart0: serial@d4017000 {
 			compatible = "spacemit,k3-uart", "intel,xscale-uart";
-			reg = <0x0 0xd4017000 0x0 0x100>;
 			reg-shift = <2>;
 			reg-io-width = <4>;
 			clocks = <&syscon_apbc CLK_APBC_UART0>,
@@ -803,6 +1025,7 @@
 			clocks = <&syscon_apbc CLK_APBC_AIB>,
 				 <&syscon_apbc CLK_APBC_AIB_BUS>;
 			clock-names = "func", "bus";
+			spacemit,apbc = <&syscon_apbc>;
 		};
 
 		uart10: serial@d401f000 {
@@ -815,6 +1038,37 @@
 			clock-names = "core", "bus";
 			resets = <&syscon_apbc RESET_APBC_UART10>;
 			interrupts = <281 IRQ_TYPE_LEVEL_HIGH>;
+			status = "disabled";
+		};
+
+		pdma: dma-controller@d4000000 {
+			compatible = "spacemit,k1-pdma";
+			reg = <0x0 0xd4000000 0x0 0x4000>;
+			interrupts = <72 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&syscon_apmu CLK_APMU_DMA>;
+			resets = <&syscon_apmu RESET_APMU_DMA>;
+			#dma-cells = <1>;
+			#dma-channels = <16>;
+			max-burst-size = <64>;
+		};
+
+		i2s1: i2s@d4026800 {
+			compatible = "spacemit,k1-i2s";
+			reg = <0x0 0xd4026800 0x0 0x30>;
+			clocks = <&syscon_mpmu CLK_MPMU_I2S1_SYSCLK>,
+				 <&syscon_mpmu CLK_MPMU_I2S_BCLK>,
+				 <&syscon_apbc CLK_APBC_I2S1_BUS>,
+				 <&syscon_apbc CLK_APBC_I2S1>;
+			clock-names = "sysclk", "bclk", "bus", "func";
+			dmas = <&pdma 23>, <&pdma 24>;
+			dma-names = "tx", "rx";
+			resets = <&syscon_apbc RESET_APBC_I2S1>;
+			#sound-dai-cells = <0>;
+			status = "disabled";
+		};
+
+		sound_card1: sound-card@1 {
+			compatible = "simple-audio-card";
 			status = "disabled";
 		};
 
@@ -853,6 +1107,328 @@
 			#reset-cells = <1>;
 		};
 
+		/*
+		 * RCPU audio I2S clock/reset controller. Provides the
+		 * CLK_RCPU_I2SCTRL_* gates + RESET_RCPU_I2SCTRL_* lines used
+		 * by the ri2s controllers (DP-audio path). K3-only.
+		 */
+		syscon_rcpu_i2sctrl: system-controller@c0882000 {
+			compatible = "spacemit,k3-syscon-rcpu-i2sctrl";
+			reg = <0x0 0xc0882000 0x0 0x1000>;
+			#clock-cells = <1>;
+			#reset-cells = <1>;
+		};
+
+		/*
+		 * Display pipeline (ported from the vendor K3 BSP linux-6.18).
+		 *
+		 * The K3 has two independent display paths, both driven by the
+		 * "saturn" DPU and output through Innosilicon DP/eDP controllers
+		 * (each with an integrated DP PHY — there is no MIPI DSI panel on
+		 * the Pico-ITX):
+		 *   - eDP0: dpu0_crtc0 -> edp0  (internal panel connector)
+		 *   - DP1:  dpu1_crtc0 -> dp1   (external DisplayPort; on the
+		 *     Pico-ITX the DP lanes are routed to the USB-C connector,
+		 *     while the FUSB301 Type-C controller handles only USB data
+		 *     role/orientation, not DP muxing)
+		 *
+		 * The matching drivers (spacemit-drm "saturn-hee/edp" + the
+		 * dpu-saturn CRTC + the Innosilicon DP "spacemit_inno_dp") are
+		 * NOT yet present in this tree — see the port plan.  The nodes
+		 * are described here (status = "disabled") so the hardware
+		 * topology and the clock/reset wiring land in the DTB now.
+		 *
+		 * NOTE: the vendor "power-domains = <&power K3_PMU_LCD{0,1}/GPU>"
+		 * references are intentionally dropped: there is no K3 power-
+		 * controller (genpd) provider in this kernel yet.  They must be
+		 * re-added once the K3 pmdomain provider lands.
+		 */
+		display_subsystem_edp0: display-subsystem@c0340000 {
+			compatible = "spacemit,saturn-hee";
+			reg = <0x0 0xc0340000 0x0 0x54000>;
+			hw_ver = <2>;
+			ports = <&dpu0_crtc0>;
+			status = "disabled";
+		};
+
+		dpu0_crtc0: dpu0-crtc0 {
+			compatible = "spacemit,dpu-saturn";
+			interrupt-parent = <&saplic>;
+			interrupts = <90 IRQ_TYPE_LEVEL_HIGH>,
+				     <89 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "ONLINE_IRQ", "OFFLINE_IRQ";
+			clocks = <&syscon_apmu CLK_APMU_LCD_PXCLK>,
+				 <&syscon_apmu CLK_APMU_LCD_MCLK>,
+				 <&syscon_apmu CLK_APMU_LCD_HCLK>,
+				 <&syscon_apmu CLK_APMU_DSI_ESC>,
+				 <&syscon_apmu CLK_APMU_DPU_ACLK>,
+				 <&syscon_apmu CLK_APMU_LCD_DSC>;
+			clock-names = "pxclk", "mclk", "hclk", "escclk", "aclk", "dscclk";
+			resets = <&syscon_apmu RESET_APMU_LCD_MCLK>,
+				 <&syscon_apmu RESET_APMU_LCD>,
+				 <&syscon_apmu RESET_APMU_DSI_ESC>,
+				 <&syscon_apmu RESET_APMU_DPU_ACLK>,
+				 <&syscon_apmu RESET_APMU_LCD_DSCCLK>;
+			reset-names = "mclk_reset", "lcd_reset", "esc_reset",
+				      "aclk_reset", "dsc_reset";
+			pipeline-id = <1>;
+			is_edp = <1>;
+			dpu-id = <0>;
+			ip = "spacemit-saturn";
+			spacemit-dpu-min-mclk = <40960000>;
+			status = "disabled";
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				port@0 {
+					reg = <0>;
+					dpu0_crtc0_out0: endpoint@0 {
+						remote-endpoint = <&edp0_in>;
+					};
+				};
+			};
+		};
+
+		edp0: edp@cac84000 {
+			compatible = "spacemit,inno-edp0";
+			reg = <0x0 0xcac84000 0x0 0x4000>;
+			spacemit,apmu = <&syscon_apmu>;
+			interrupt-parent = <&saplic>;
+			interrupts = <132 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&syscon_apmu CLK_APMU_EDP0_PXCLK>;
+			clock-names = "pxclk";
+			resets = <&syscon_apmu RESET_APMU_EDP0>;
+			reset-names = "reset";
+			edp-id = <0>;
+			status = "disabled";
+
+			port {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				edp0_in: endpoint@0 {
+					reg = <0>;
+					remote-endpoint = <&dpu0_crtc0_out0>;
+				};
+			};
+		};
+
+		display_subsystem_dp1: display-subsystem@c0440000 {
+			compatible = "spacemit,saturn-edp";
+			reg = <0x0 0xc0440000 0x0 0x54000>;
+			hw_ver = <2>;
+			ports = <&dpu1_crtc0>;
+			status = "disabled";
+		};
+
+		dpu1_crtc0: dpu1-crtc0 {
+			compatible = "spacemit,dpu-saturn";
+			interrupt-parent = <&saplic>;
+			interrupts = <139 IRQ_TYPE_LEVEL_HIGH>,
+				     <138 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "ONLINE_IRQ", "OFFLINE_IRQ";
+			clocks = <&syscon_apmu CLK_APMU_DSI4LN2_LCD_PXCLK>,
+				 <&syscon_apmu CLK_APMU_DSI4LN2_LCD_MCLK>,
+				 <&syscon_apmu CLK_APMU_DSI4LN2_DPU_ACLK>,
+				 <&syscon_apmu CLK_APMU_DSI4LN2_DSI_ESC>,
+				 <&syscon_apmu CLK_APMU_DSI4LN2_LCD_DSC>;
+			clock-names = "pxclk", "mclk", "aclk", "escclk", "dscclk";
+			resets = <&syscon_apmu RESET_APMU_DSI4LN2_LCD_MCLK>,
+				 <&syscon_apmu RESET_APMU_DSI4LN2_ESCCLK>,
+				 <&syscon_apmu RESET_APMU_DSI4LN2_LCD_SW>,
+				 <&syscon_apmu RESET_APMU_DSI4LN2_DPU_ACLK>,
+				 <&syscon_apmu RESET_APMU_DSI4LN2_LCD_DSCCLK>;
+			reset-names = "mclk_reset", "esc_reset", "lcd_reset",
+				      "aclk_reset", "dsc_reset";
+			pipeline-id = <1>;
+			is_edp = <1>;
+			dpu-id = <1>;
+			ip = "spacemit-saturn";
+			spacemit-dpu-min-mclk = <40960000>;
+			status = "disabled";
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				port@0 {
+					reg = <0>;
+					dpu1_crtc0_out0: endpoint@0 {
+						remote-endpoint = <&dp1_in>;
+					};
+				};
+			};
+		};
+
+		dp1: dp@cac88000 {
+			compatible = "spacemit,inno-dp1";
+			reg = <0x0 0xcac88000 0x0 0x4000>;
+			spacemit,apmu = <&syscon_apmu>;
+			interrupt-parent = <&saplic>;
+			interrupts = <140 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&syscon_apmu CLK_APMU_EDP1_PXCLK>;
+			clock-names = "pxclk";
+			resets = <&syscon_apmu RESET_APMU_EDP1>;
+			reset-names = "reset";
+			dp-id = <1>;
+			#sound-dai-cells = <0>;
+			status = "disabled";
+
+			port {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				dp1_in: endpoint@0 {
+					reg = <0>;
+					remote-endpoint = <&dpu1_crtc0_out0>;
+				};
+			};
+		};
+
+		/*
+		 * Imagination PowerVR Rogue GPU (BXM-4-64, BVNC 36.29.52.182).
+		 * Ported from the vendor K3 BSP.  Bound by the upstream
+		 * drm/imagination driver (CONFIG_DRM_POWERVR=m): the of_match
+		 * "img,img-rogue" (pvr_drv.c) replaces the vendor out-of-tree
+		 * "img,rgx", and this BVNC is in the driver's PVR_GPU_SUPPORTED
+		 * table.  Firmware (rogue_36.29.52.182_v1.fw) is staged AOSP-side.
+		 *
+		 * DMA: the node sits directly on the "soc" simple-bus
+		 * (dma-noncoherent, no dma-ranges) — identical to the working
+		 * vendor K3 BSP topology.  Unlike the K1 (which needed an explicit
+		 * multimedia-bus dma-ranges after a mis-placement regression), the
+		 * K3 BSP uses no dma-ranges for the GPU, so none is added here.
+		 *
+		 * power-domains: <&power K3_PMU_GPU_PWR_DOMAIN>, served by the K3
+		 * RPMI genpd (spacemit,k3-power-controller). clk,pm-runtime,no-sleep
+		 * lets the powervr driver own the GPU clock instead of pm_clk.
+		 */
+		imggpu: gpu@cac00000 {
+			compatible = "img,img-rogue";
+			reg = <0x0 0xcac00000 0x0 0x80000>;
+			reg-names = "rgxregs";
+			interrupt-parent = <&saplic>;
+			interrupts = <75 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "rgxirq";
+			clocks = <&syscon_apmu CLK_APMU_GPU>;
+			clock-names = "core";
+			img,core-clock-rate-hz = <1228000000>;
+			resets = <&syscon_apmu RESET_APMU_GPU>;
+			operating-points-v2 = <&imggpu_opp_table>;
+			#cooling-cells = <2>;
+			power-domains = <&power K3_PMU_GPU_PWR_DOMAIN>;
+			clk,pm-runtime,no-sleep;
+			status = "okay";
+
+			imggpu_opp_table: opp-table {
+				compatible = "operating-points-v2";
+
+				opp-409000000 {
+					opp-hz = /bits/ 64 <409000000>;
+					opp-microvolt = <800000>;
+					clock-latency-ns = <100000>;
+				};
+
+				opp-491000000 {
+					opp-hz = /bits/ 64 <491000000>;
+					opp-microvolt = <800000>;
+					clock-latency-ns = <100000>;
+				};
+
+				opp-614000000 {
+					opp-hz = /bits/ 64 <614000000>;
+					opp-microvolt = <900000>;
+					clock-latency-ns = <100000>;
+				};
+
+				opp-819000000 {
+					opp-hz = /bits/ 64 <819000000>;
+					opp-microvolt = <900000>;
+					clock-latency-ns = <100000>;
+				};
+
+				opp-1000000000 {
+					opp-hz = /bits/ 64 <1000000000>;
+					opp-microvolt = <950000>;
+					clock-latency-ns = <100000>;
+				};
+
+				opp-1228000000 {
+					opp-hz = /bits/ 64 <1228000000>;
+					opp-microvolt = <950000>;
+					clock-latency-ns = <100000>;
+				};
+			};
+		};
+
+		mpxy_mbox: mpxy_mbox {
+			compatible = "riscv,sbi-mpxy-mbox";
+			#mbox-cells = <2>;
+			status = "okay";
+		};
+
+		/*
+		 * K3 RPMI power-domain provider (RPMI device_power service
+		 * group, MPXY channel 0x9). Distinct compatible from the K1
+		 * syscon "spacemit,power-controller" so both coexist in one
+		 * image. Child order defines the domain index consumed as
+		 * <&power K3_PMU_*_PWR_DOMAIN>.
+		 */
+		power: power-controller {
+			compatible = "spacemit,k3-power-controller";
+			mboxes = <&mpxy_mbox 0x9 0x0>;
+			#power-domain-cells = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			vpu {
+				#power-domain-cells = <0>;
+			};
+
+			gpu {
+				#power-domain-cells = <0>;
+			};
+
+			audio {
+				#power-domain-cells = <0>;
+			};
+
+			lcd0 {
+				#power-domain-cells = <0>;
+			};
+
+			lcd1 {
+				#power-domain-cells = <0>;
+			};
+
+			dummy {
+				#power-domain-cells = <0>;
+			};
+		};
+
+		/*
+		 * S-mode IMSIC. The AIA driver ioremaps exactly reg-size bytes and
+		 * lays out one MSI file per hart at
+		 *   base + hart_index * 2^guest-index-bits * 4KiB
+		 * so the window must satisfy the invariant
+		 *   2^hart-index-bits * 2^guest-index-bits * 4KiB == reg size,
+		 * with 2^hart-index-bits >= number of enumerated harts.
+		 *
+		 * guest-index-bits = 6 is the physical per-hart stride (256 KiB =
+		 * 64 files: 1 S-level + 63 VS-level), fixed by the hardware. The
+		 * vendor enumerates all 16 harts (8 X100 + 8 A100) -> hart-index-bits
+		 * = 4 and a 4 MiB window. This port enumerates only the 8 X100 harts,
+		 * which physically occupy hart indices 0..7 (the low half), so a
+		 * consistent 8-hart geometry is valid: hart-index-bits = 3 and
+		 * reg = 8 * 256 KiB = 0x200000. hart-index-bits = 4 with only 8 harts
+		 * violates the invariant (declares a 4 MiB layout in a 2 MiB window);
+		 * an MSI to a hart index >= 2^hart-index-bits then lands at
+		 * base + reg-size, one page past the ioremap window -> store page
+		 * fault in imsic_ipi_send.
+		 */
 		simsic: interrupt-controller@e0400000 {
 			compatible = "spacemit,k3-imsics", "riscv,imsics";
 			reg = <0x0 0xe0400000 0x0 0x200000>;
@@ -865,7 +1441,7 @@
 					      <&cpu6_intc 9>, <&cpu7_intc 9>;
 			msi-controller;
 			riscv,guest-index-bits = <6>;
-			riscv,hart-index-bits = <4>;
+			riscv,hart-index-bits = <3>;
 			riscv,num-guest-ids = <511>;
 			riscv,num-ids = <511>;
 		};
@@ -922,6 +1498,244 @@
 			riscv,delegation = <&saplic 1 512>;
 			riscv,num-sources = <512>;
 			status = "reserved";
+		};
+
+		usb2_host_u2phy: phy@c0a20000 {
+			compatible = "spacemit,k3-usb2-phy";
+			reg = <0x0 0xc0a20000 0x0 0x200>;
+			#phy-cells = <0>;
+			status = "disabled";
+		};
+
+		usb2_host: usb2@c0a00000 {
+			compatible = "spacemit,k1-dwc3";
+			reg = <0x0 0xc0a00000 0x0 0x10000>;
+			interrupts = <105 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&syscon_apmu CLK_APMU_USB2_BUS>;
+			resets = <&syscon_apmu RESET_APMU_USB2_AHB>,
+				 <&syscon_apmu RESET_APMU_USB2_VCC>,
+				 <&syscon_apmu RESET_APMU_USB2_PHY>;
+			reset-names = "ahb", "vcc", "phy";
+			phys = <&usb2_host_u2phy>;
+			phy-names = "usb2-phy";
+			phy_type = "utmi";
+			snps,dis_enblslpm_quirk;
+			snps,dis_u2_susphy_quirk;
+			snps,dis-del-phy-power-chg-quirk;
+			snps,dis-tx-ipgap-linecheck-quirk;
+			dr_mode = "host";
+			maximum-speed = "high-speed";
+			status = "disabled";
+		};
+
+		usb3_porta_u2phy: phy@cad20000 {
+			compatible = "spacemit,k3-usb2-phy";
+			reg = <0x0 0xcad20000 0x0 0x200>;
+			#phy-cells = <0>;
+			status = "disabled";
+		};
+
+		usb3_porta_u3phy: phy@cad30000 {
+			compatible = "spacemit,k3-usb3-phy",
+				     "spacemit,k3-typec-switch";
+			reg = <0x0 0xcad30000 0x0 0x200>,
+			      <0x0 0xcad40000 0x0 0x200>;
+			clocks = <&syscon_apmu CLK_APMU_USB3_PORTA_BUS>;
+			spacemit,syscon-apmu = <&syscon_apmu>;
+			spacemit,syscon-apb-spare = <&pll>;
+			#phy-cells = <0>;
+			status = "disabled";
+		};
+
+		usb3_porta: usb3@cad00000 {
+			compatible = "spacemit,k1-dwc3";
+			reg = <0x0 0xcad00000 0x0 0x10000>;
+			interrupts = <118 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&syscon_apmu CLK_APMU_USB3_PORTA_BUS>;
+			resets = <&syscon_apmu RESET_APMU_USB3_A_AHB>,
+				 <&syscon_apmu RESET_APMU_USB3_A_VCC>,
+				 <&syscon_apmu RESET_APMU_USB3_A_PHY>;
+			reset-names = "ahb", "vcc", "phy";
+			phys = <&usb3_porta_u3phy>, <&usb3_porta_u2phy>;
+			phy-names = "usb3-phy", "usb2-phy";
+			phy_type = "utmi";
+			snps,dis_enblslpm_quirk;
+			snps,dis_u2_susphy_quirk;
+			snps,dis_u3_susphy_quirk;
+			snps,dis-del-phy-power-chg-quirk;
+			snps,dis-tx-ipgap-linecheck-quirk;
+			snps,parkmode-disable-ss-quirk;
+			status = "disabled";
+
+			port {
+				porta_role_switch: endpoint {
+				};
+			};
+		};
+
+		usb3_portd_u2phy: phy@81b00000 {
+			compatible = "spacemit,k3-usb2-phy";
+			reg = <0x0 0x81b00000 0x0 0x200>;
+			#phy-cells = <0>;
+			status = "disabled";
+		};
+
+		usb3_portd_u3phy: phy@82100000 {
+			compatible = "spacemit,k3-usb3-phy";
+			reg = <0x0 0x82100000 0x0 0x200>;
+			clocks = <&syscon_apmu CLK_APMU_USB3_PORTD_BUS>;
+			spacemit,syscon-apmu = <&syscon_apmu>;
+			spacemit,syscon-apb-spare = <&pll>;
+			combo-usb-bit = <0>;
+			#phy-cells = <0>;
+			status = "disabled";
+		};
+
+		usb3_portd: usb3@81a00000 {
+			compatible = "spacemit,k1-dwc3";
+			reg = <0x0 0x81a00000 0x0 0x10000>;
+			interrupts = <149 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&syscon_apmu CLK_APMU_USB3_PORTD_BUS>;
+			resets = <&syscon_apmu RESET_APMU_USB3_D_AHB>,
+				 <&syscon_apmu RESET_APMU_USB3_D_VCC>,
+				 <&syscon_apmu RESET_APMU_USB3_D_PHY>;
+			reset-names = "ahb", "vcc", "phy";
+			phys = <&usb3_portd_u2phy>, <&usb3_portd_u3phy>;
+			phy-names = "usb2-phy", "usb3-phy";
+			phy_type = "utmi";
+			snps,dis_enblslpm_quirk;
+			snps,dis_u2_susphy_quirk;
+			snps,dis_u3_susphy_quirk;
+			snps,dis-del-phy-power-chg-quirk;
+			snps,dis-tx-ipgap-linecheck-quirk;
+			snps,parkmode-disable-ss-quirk;
+			dr_mode = "host";
+			status = "disabled";
+		};
+
+		/*
+		 * PCIe (ported from the vendor K3 BSP linux-6.18).  The SoC has
+		 * five DesignWare PCIe root complexes (ports A-E) and six PCIe
+		 * PHY instances.  Only the controllers wired to a usable slot are
+		 * described here; ports/PHYs are added on demand.
+		 *
+		 * The controller binds the shared upstream spacemit,k1-pcie driver
+		 * (CONFIG_PCIE_SPACEMIT_K1, also used by K1).  That binding differs
+		 * from the BSP downstream shape: 4 reg regions (no dbi2), a single
+		 * "msi" interrupt served by the DWC built-in MSI controller (no
+		 * external msi-parent), and exactly ONE PHY referenced from the
+		 * child root-port node (pcie@0) via "phys", together with a
+		 * vpcie3v3-supply.  Clocks/resets keep the dbi/mstr/slv triplet.
+		 *
+		 * Port E (pcie4, domain 4, x1) drives the Pico-ITX M.2 WiFi slot
+		 * (Realtek RTL8852BE).  Its APMU control register is at offset
+		 * 0x1e8, matching CLK_APMU_PCIE_PORTE_* / RESET_APMU_PCIE_E_*.
+		 */
+		pcie4_phy: phy-pcie@82200000 {
+			compatible = "spacemit,k3-pcie-phy";
+			reg = <0x0 0x82200000 0x0 0x1000>;
+			spacemit,syscon-apb-spare = <&pll>;
+			num-lanes = <1>;
+			spacemit,phy-id = <5>;
+			#phy-cells = <0>;
+			status = "disabled";
+		};
+
+		pcie4: pcie@81000000 {
+			device_type = "pci";
+			compatible = "spacemit,k1-pcie";
+			reg = <0x0 0x81000000 0x0 0x00001000>,   /* dbi */
+			      <0x0 0x81300000 0x0 0x00003f20>,   /* atu */
+			      <0x12 0xc0000000 0x0 0x00010000>,  /* config */
+			      <0x0 0x82b00000 0x0 0x00001000>;   /* link */
+			reg-names = "dbi", "atu", "config", "link";
+			linux,pci-domain = <4>;
+			bus-range = <0x00 0xff>;
+			max-link-speed = <3>;
+			num-lanes = <1>;
+			#address-cells = <3>;
+			#size-cells = <2>;
+			ranges = <0x01000000 0x0 0x00000000 0x12 0xc0010000 0x0 0x00100000>,
+				 <0x02000000 0x0 0xc0110000 0x12 0xc0110000 0x0 0x3fef0000>,
+				 <0x43000000 0x13 0x00000000 0x13 0x00000000 0x1 0x00000000>;
+			interrupts = <146 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "msi";
+			clocks = <&syscon_apmu CLK_APMU_PCIE_PORTE_BUS>,
+				 <&syscon_apmu CLK_APMU_PCIE_PORTE_MSTE>,
+				 <&syscon_apmu CLK_APMU_PCIE_PORTE_SLV>;
+			clock-names = "dbi", "mstr", "slv";
+			resets = <&syscon_apmu RESET_APMU_PCIE_E_DBI>,
+				 <&syscon_apmu RESET_APMU_PCIE_E_MASTER>,
+				 <&syscon_apmu RESET_APMU_PCIE_E_SLAVE>;
+			reset-names = "dbi", "mstr", "slv";
+			spacemit,apmu = <&syscon_apmu 0x1e8>;
+			status = "disabled";
+
+			pcie4_port: pcie@0 {
+				device_type = "pci";
+				compatible = "pciclass,0604";
+				reg = <0x0 0x0 0x0 0x0 0x0>;
+				bus-range = <0x01 0xff>;
+				#address-cells = <3>;
+				#size-cells = <2>;
+				ranges;
+			};
+		};
+
+		/*
+		 * RCPU audio (DP-audio path). adma3 is the cyclic audio DMA
+		 * feeding ri2s3; both use direct hardware IRQs (no RT
+		 * coprocessor / rpmsg). K3-only.
+		 */
+		adma3: dma-controller@c0883c00 {
+			compatible = "spacemit,k3-adma";
+			reg = <0x0 0xc0883c00 0x0 0x100>,
+			      <0x0 0xc08d0300 0x0 0x100>;
+			reg-names = "adma_reg", "buf_addr";
+			interrupt-parent = <&saplic>;
+			interrupts = <266 IRQ_TYPE_LEVEL_HIGH>,
+				     <267 IRQ_TYPE_LEVEL_HIGH>;
+			#dma-cells = <1>;
+			#dma-channels = <2>;
+			status = "disabled";
+		};
+
+		ri2s3: i2s@c0883d00 {
+			compatible = "spacemit,k3-ri2s";
+			#sound-dai-cells = <0>;
+			reg = <0x0 0xc0883d00 0x0 0x300>,
+			      <0x0 0xc08dc400 0x0 0x4000>;
+			clocks = <&syscon_rcpu_i2sctrl CLK_RCPU_I2SCTRL_RI2S3>,
+				 <&syscon_rcpu_i2sctrl CLK_RCPU_I2SCTRL_RI2S3_BUS>,
+				 <&syscon_rcpu_i2sctrl CLK_RCPU_I2SCTRL_RI2S3_SYSCLK>;
+			clock-names = "func", "bus", "sysclk";
+			resets = <&syscon_rcpu_i2sctrl RESET_RCPU_I2SCTRL_RI2S3>,
+				 <&syscon_rcpu_i2sctrl RESET_RCPU_I2SCTRL_RI2S3_SYSCLK>;
+			reset-names = "reset", "reset-sys";
+			dmas = <&adma3 1>, <&adma3 0>;
+			dma-names = "rx", "tx";
+			status = "disabled";
+		};
+
+		/*
+		 * DisplayPort audio card: ri2s3 (CPU DAI) -> inno-dp1 codec
+		 * ("inno-dp-audio"). Playback-only DP-audio over the USB-C
+		 * DisplayPort. K3-only; enabled per-board.
+		 */
+		sound_card_dp1: sound-card-dp1 {
+			compatible = "simple-audio-card";
+			simple-audio-card,name = "K3-DP1-Audio";
+			simple-audio-card,format = "left_j";
+			simple-audio-card,mclk-fs = <512>;
+			status = "disabled";
+
+			simple-audio-card,cpu {
+				sound-dai = <&ri2s3>;
+			};
+
+			simple-audio-card,codec {
+				sound-dai = <&dp1>;
+			};
 		};
 	};
 };

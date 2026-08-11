@@ -46,6 +46,18 @@
 	};
 
 	/omit-if-no-ref/
+	i2c1_3_cfg: i2c1-3-cfg {
+		i2c1-3-pins {
+			pinmux = <K3_PADCONF(102, 6)>,	/* i2c1 scl */
+				 <K3_PADCONF(103, 6)>;	/* i2c1 sda */
+
+			bias-pull-up = <0>;
+			drive-strength = <25>;
+			power-source = <3300>;
+		};
+	};
+
+	/omit-if-no-ref/
 	i2c8_cfg: i2c8-cfg {
 		i2c8-pins {
 			pinmux = <K3_PADCONF(128, 0)>,	/* i2c8 scl */
@@ -64,6 +76,67 @@
 
 			bias-pull-up = <0>;
 			drive-strength = <25>;
+		};
+	};
+
+	/omit-if-no-ref/
+	sspa1_1_cfg: sspa1-1-cfg {
+		sspa1-0-pins {
+			pinmux = <K3_PADCONF(122, 2)>,	/* sspa1 clk */
+				 <K3_PADCONF(123, 2)>,	/* sspa1 frm */
+				 <K3_PADCONF(124, 2)>,	/* sspa1 tx */
+				 <K3_PADCONF(125, 2)>,	/* sspa1 rx */
+				 <K3_PADCONF(126, 2)>;	/* sspa1 sysclk */
+
+			bias-pull-up = <0>;
+			drive-strength = <25>;
+			power-source = <3300>;
+		};
+	};
+
+	/omit-if-no-ref/
+	pcie4_0_cfg: pcie4-0-cfg {
+		pcie4-0-pins {
+			pinmux = <K3_PADCONF(76, 5)>,	/* pcie4 perst */
+				 <K3_PADCONF(77, 5)>,	/* pcie4 wake */
+				 <K3_PADCONF(78, 5)>;	/* pcie4 clkreq */
+
+			bias-pull-up = <0>;
+			drive-strength = <33>;
+			power-source = <1800>;
+		};
+	};
+
+	/omit-if-no-ref/
+	wlan_en_cfg: wl-en-cfg {
+		wlan-en-pins {
+			pinmux = <K3_PADCONF(35, 0)>;
+
+			bias-pull-up = <0>;
+			drive-strength = <38>;
+			power-source = <3300>;
+		};
+	};
+
+	/omit-if-no-ref/
+	bt_en_cfg: bt-en-cfg {
+		bt-en-pins {
+			pinmux = <K3_PADCONF(30, 0)>;
+
+			bias-pull-up = <0>;
+			drive-strength = <38>;
+			power-source = <3300>;
+		};
+	};
+
+	/omit-if-no-ref/
+	fusb301_cfg: fusb301-cfg {
+		fusb301-0-pins {
+			pinmux = <K3_PADCONF(85, 0)>;
+
+			bias-pull-up = <0>;
+			drive-strength = <25>;
+			power-source = <1800>;
 		};
 	};
 };
