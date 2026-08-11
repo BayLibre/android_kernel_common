@@ -504,7 +504,7 @@ static void saturn_init_tmg(struct spacemit_crtc *a_crtc)
 	struct spacemit_hw_device *hwdev = priv->hwdev;
 	struct drm_crtc *crtc = &a_crtc->crtc;
 	struct drm_display_mode *mode = &crtc->mode;
-	u16 vfp, vbp, vsync, hfp, hbp, hsync, eof_dly;
+	u16 vfp, vbp, vsync, hfp, hbp, hsync, eof_dly = 0;
 	void __iomem *tmg_addr;
 	u32 value;
 

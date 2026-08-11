@@ -473,7 +473,7 @@ struct spacemit_hw_device {
 	uint32_t (*get_irq_bit)(enum spacemit_dpu_irq irq_id, int dev_id);
 	uint32_t (*get_int_sts)(struct spacemit_hw_device *hwdev, int dev_id);
 	uint32_t (*get_rdma_dbg_sts)(struct spacemit_crtc *a_crtc, int dev_id);
-	void (*clr_int_sts)(struct spacemit_crtc *a_crtc, u32 data, int dev_id);
+	void (*clr_int_sts)(struct spacemit_crtc *a_crtc, enum spacemit_dpu_irq data, int dev_id);
 	void (*dpu_disable)(struct spacemit_crtc *a_crtc, struct spacemit_hw_device *hwdev);
 	void (*dpu_restart)(struct spacemit_crtc *a_crtc, struct spacemit_hw_device *hwdev);
 	int (*dpu_stop_check)(struct spacemit_crtc *a_crtc, struct spacemit_hw_device *hwdev);
