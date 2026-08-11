@@ -401,20 +401,6 @@ static int cvdev_queue_setup(struct vb2_queue *q,
 	return 0;
 }
 
-static void cvdev_wait_prepare(struct vb2_queue *q)
-{
-	/* going to wait sleep, release all locks that may block any vb2 buf/stream functions */
-	struct ccic_vnode *sc_vnode = container_of(q, struct ccic_vnode, buf_queue);
-	mutex_unlock(&sc_vnode->mlock);
-}
-
-static void cvdev_wait_finish(struct vb2_queue *q)
-{
-	/* wakeup from wait sleep, reacquire all locks */
-	struct ccic_vnode *sc_vnode = container_of(q, struct ccic_vnode, buf_queue);
-	mutex_lock(&sc_vnode->mlock);
-}
-
 static int cvdev_buf_init(struct vb2_buffer *vb)
 {
 	struct ccic_vbuffer *sc_vb = to_ccic_vbuffer(vb);
@@ -618,8 +604,6 @@ static void cvdev_buf_queue(struct vb2_buffer *vb)
 
 static struct vb2_ops ccic_vb2_ops = {
 	.queue_setup = cvdev_queue_setup,
-	.wait_prepare = cvdev_wait_prepare,
-	.wait_finish = cvdev_wait_finish,
 	.buf_init = cvdev_buf_init,
 	.buf_prepare = cvdev_buf_prepare,
 	.buf_finish = cvdev_buf_finish,
