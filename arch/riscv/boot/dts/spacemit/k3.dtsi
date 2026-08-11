@@ -1643,12 +1643,13 @@
 
 		pcie4: pcie@81000000 {
 			device_type = "pci";
-			compatible = "spacemit,k1-pcie";
+			compatible = "spacemit,k3-pcie";
 			reg = <0x0 0x81000000 0x0 0x00001000>,   /* dbi */
 			      <0x0 0x81300000 0x0 0x00003f20>,   /* atu */
 			      <0x12 0xc0000000 0x0 0x00010000>,  /* config */
-			      <0x0 0x82b00000 0x0 0x00001000>;   /* link */
-			reg-names = "dbi", "atu", "config", "link";
+			      <0x0 0x82b00000 0x0 0x00001000>,   /* link */
+			      <0x0 0x81100000 0x0 0x00001000>;   /* dbi2 */
+			reg-names = "dbi", "atu", "config", "link", "dbi2";
 			linux,pci-domain = <4>;
 			bus-range = <0x00 0xff>;
 			max-link-speed = <3>;
@@ -1658,8 +1659,14 @@
 			ranges = <0x01000000 0x0 0x00000000 0x12 0xc0010000 0x0 0x00100000>,
 				 <0x02000000 0x0 0xc0110000 0x12 0xc0110000 0x0 0x3fef0000>,
 				 <0x43000000 0x13 0x00000000 0x13 0x00000000 0x1 0x00000000>;
-			interrupts = <146 IRQ_TYPE_LEVEL_HIGH>;
-			interrupt-names = "msi";
+			/*
+			 * No dma-ranges: each entry becomes an inbound iATU window,
+			 * and since all of RAM sits above 4 GiB any window narrow
+			 * enough to yield 32-bit bus addresses hides most of it from
+			 * the endpoint.  Devices reach memory 1:1 instead.
+			 */
+			interrupt-parent = <&saplic>;
+			msi-parent = <&simsic>;
 			clocks = <&syscon_apmu CLK_APMU_PCIE_PORTE_BUS>,
 				 <&syscon_apmu CLK_APMU_PCIE_PORTE_MSTE>,
 				 <&syscon_apmu CLK_APMU_PCIE_PORTE_SLV>;
