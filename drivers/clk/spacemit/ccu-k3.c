@@ -4,8 +4,10 @@
  */
 
 #include <linux/array_size.h>
+#include <linux/bitops.h>
 #include <linux/clk-provider.h>
 #include <linux/module.h>
+#include <linux/of.h>
 #include <soc/spacemit/k3-syscon.h>
 
 #include "ccu_common.h"
@@ -76,10 +78,17 @@ CCU_FACTOR_GATE_DEFINE(pll1_d4, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(3), 4,
 CCU_FACTOR_GATE_DEFINE(pll1_d5, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(4), 5, 1);
 CCU_FACTOR_GATE_DEFINE(pll1_d6, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(5), 6, 1);
 CCU_FACTOR_GATE_DEFINE(pll1_d7, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(6), 7, 1);
+/*
+ * pll1_d8 is the root of the entire MPMU always-on tree (see the comment on
+ * that block below). Live-SoC module: firmware already enabled it, so keep it
+ * on with CLK_IGNORE_UNUSED rather than force-enabling (which would re-lock
+ * the PLL1 parent) at registration.
+ */
 CCU_FACTOR_GATE_FLAGS_DEFINE(pll1_d8, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(7), 8, 1,
-			     CLK_IS_CRITICAL);
+			     CLK_IGNORE_UNUSED);
 CCU_DIV_GATE_DEFINE(pll1_dx, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, 23, 5, BIT(22), 0);
-CCU_FACTOR_GATE_DEFINE(pll1_d64_38p4, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(31), 64, 1);
+CCU_FACTOR_GATE_FLAGS_DEFINE(pll1_d64_38p4, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2,
+			     BIT(31), 64, 1, CLK_IGNORE_UNUSED);
 CCU_FACTOR_GATE_DEFINE(pll1_aud_245p7, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(21), 10, 1);
 CCU_FACTOR_DEFINE(pll1_aud_24p5, CCU_PARENT_HW(pll1_aud_245p7), 10, 1);
 
@@ -128,7 +137,7 @@ CCU_FACTOR_GATE_DEFINE(pll5_d8, CCU_PARENT_HW(pll5), APBS_PLL5_SWCR2, BIT(7), 8,
 
 CCU_FACTOR_GATE_DEFINE(pll6_d1, CCU_PARENT_HW(pll6), APBS_PLL6_SWCR2, BIT(0), 1, 1);
 CCU_FACTOR_GATE_DEFINE(pll6_d2, CCU_PARENT_HW(pll6), APBS_PLL6_SWCR2, BIT(1), 2, 1);
-CCU_FACTOR_GATE_DEFINE(pll6_d3, CCU_PARENT_HW(pll6), APBS_PLL6_SWCR2, BIT(2), 3, 1);
+CCU_FACTOR_GATE_FLAGS_DEFINE(pll6_d3, CCU_PARENT_HW(pll6), APBS_PLL6_SWCR2, BIT(2), 3, 1, CLK_IS_CRITICAL);
 CCU_FACTOR_GATE_DEFINE(pll6_d4, CCU_PARENT_HW(pll6), APBS_PLL6_SWCR2, BIT(3), 4, 1);
 CCU_FACTOR_GATE_DEFINE(pll6_d5, CCU_PARENT_HW(pll6), APBS_PLL6_SWCR2, BIT(4), 5, 1);
 CCU_FACTOR_GATE_DEFINE(pll6_d6, CCU_PARENT_HW(pll6), APBS_PLL6_SWCR2, BIT(5), 6, 1);
@@ -158,15 +167,24 @@ CCU_FACTOR_GATE_DEFINE(pll8_d8, CCU_PARENT_HW(pll8), APBS_PLL8_SWCR2, BIT(7), 8,
 /* APBS clocks end */
 
 /* MPMU clocks start */
-CCU_GATE_DEFINE(pll1_d8_307p2, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(13), 0);
+/*
+ * The vendor kernel marks the always-on root clocks below CLK_IS_CRITICAL.
+ * That would force-enable them (parent chain and PLL lock polls included)
+ * while the provider registers, but this driver probes from module context
+ * on a live system, before all parent providers exist: a failing enable
+ * fails the whole provider probe and every consumer with it. Use
+ * CLK_IGNORE_UNUSED instead, which documents the always-on intent without
+ * touching the hardware at registration.
+ */
+CCU_GATE_DEFINE(pll1_d8_307p2, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(13), CLK_IS_CRITICAL);
 CCU_FACTOR_DEFINE(pll1_d32_76p8, CCU_PARENT_HW(pll1_d8_307p2), 4, 1);
 CCU_FACTOR_DEFINE(pll1_d40_61p44, CCU_PARENT_HW(pll1_d8_307p2), 5, 1);
 CCU_FACTOR_DEFINE(pll1_d16_153p6, CCU_PARENT_HW(pll1_d8), 2, 1);
-CCU_FACTOR_GATE_DEFINE(pll1_d24_102p4, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(12), 3, 1);
-CCU_FACTOR_GATE_DEFINE(pll1_d48_51p2, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(7), 6, 1);
-CCU_FACTOR_GATE_DEFINE(pll1_d48_51p2_ap, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(11), 6, 1);
+CCU_FACTOR_GATE_FLAGS_DEFINE(pll1_d24_102p4, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(12), 3, 1, CLK_IS_CRITICAL);
+CCU_FACTOR_GATE_FLAGS_DEFINE(pll1_d48_51p2, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(7), 6, 1, CLK_IS_CRITICAL);
+CCU_FACTOR_GATE_FLAGS_DEFINE(pll1_d48_51p2_ap, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(11), 6, 1, CLK_IS_CRITICAL);
 CCU_FACTOR_GATE_DEFINE(pll1_m3d128_57p6, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(8), 16, 3);
-CCU_FACTOR_GATE_DEFINE(pll1_d96_25p6, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(4), 12, 1);
+CCU_FACTOR_GATE_FLAGS_DEFINE(pll1_d96_25p6, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(4), 12, 1, CLK_IS_CRITICAL);
 CCU_FACTOR_GATE_DEFINE(pll1_d192_12p8, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(3), 24, 1);
 CCU_FACTOR_GATE_DEFINE(pll1_d192_12p8_wdt, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(19), 24, 1);
 CCU_FACTOR_GATE_DEFINE(pll1_d384_6p4, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(2), 48, 1);
@@ -175,19 +193,19 @@ CCU_FACTOR_DEFINE(pll1_d768_3p2, CCU_PARENT_HW(pll1_d384_6p4), 2, 1);
 CCU_FACTOR_DEFINE(pll1_d1536_1p6, CCU_PARENT_HW(pll1_d384_6p4), 4, 1);
 CCU_FACTOR_DEFINE(pll1_d3072_0p8, CCU_PARENT_HW(pll1_d384_6p4), 8, 1);
 
-CCU_GATE_DEFINE(pll1_d6_409p6, CCU_PARENT_HW(pll1_d6), MPMU_ACGR, BIT(0), 0);
+CCU_GATE_DEFINE(pll1_d6_409p6, CCU_PARENT_HW(pll1_d6), MPMU_ACGR, BIT(0), CLK_IS_CRITICAL);
 CCU_FACTOR_GATE_DEFINE(pll1_d12_204p8, CCU_PARENT_HW(pll1_d6), MPMU_ACGR, BIT(5), 2, 1);
 
-CCU_GATE_DEFINE(pll1_d5_491p52, CCU_PARENT_HW(pll1_d5), MPMU_ACGR, BIT(21), 0);
+CCU_GATE_DEFINE(pll1_d5_491p52, CCU_PARENT_HW(pll1_d5), MPMU_ACGR, BIT(21), CLK_IS_CRITICAL);
 CCU_FACTOR_GATE_DEFINE(pll1_d10_245p76, CCU_PARENT_HW(pll1_d5), MPMU_ACGR, BIT(18), 2, 1);
 
-CCU_GATE_DEFINE(pll1_d4_614p4, CCU_PARENT_HW(pll1_d4), MPMU_ACGR, BIT(15), 0);
+CCU_GATE_DEFINE(pll1_d4_614p4, CCU_PARENT_HW(pll1_d4), MPMU_ACGR, BIT(15), CLK_IS_CRITICAL);
 CCU_FACTOR_GATE_DEFINE(pll1_d52_47p26, CCU_PARENT_HW(pll1_d4), MPMU_ACGR, BIT(10), 13, 1);
 CCU_FACTOR_GATE_DEFINE(pll1_d78_31p5, CCU_PARENT_HW(pll1_d4), MPMU_ACGR, BIT(6), 39, 2);
 
-CCU_GATE_DEFINE(pll1_d3_819p2, CCU_PARENT_HW(pll1_d3), MPMU_ACGR, BIT(14), 0);
+CCU_GATE_DEFINE(pll1_d3_819p2, CCU_PARENT_HW(pll1_d3), MPMU_ACGR, BIT(14), CLK_IS_CRITICAL);
 
-CCU_GATE_DEFINE(pll1_d2_1228p8, CCU_PARENT_HW(pll1_d2), MPMU_ACGR, BIT(16), 0);
+CCU_GATE_DEFINE(pll1_d2_1228p8, CCU_PARENT_HW(pll1_d2), MPMU_ACGR, BIT(16), CLK_IS_CRITICAL);
 
 static const struct clk_parent_data apb_parents[] = {
 	CCU_PARENT_HW(pll1_d96_25p6),
@@ -195,7 +213,13 @@ static const struct clk_parent_data apb_parents[] = {
 	CCU_PARENT_HW(pll1_d96_25p6),
 	CCU_PARENT_HW(pll1_d24_102p4),
 };
-CCU_MUX_DEFINE(apb_clk, apb_parents, MPMU_APBCSCR, 0, 2, 0);
+/*
+ * apb_clk feeds the console UART (uart0_bus_clk). Keep it CLK_IS_CRITICAL like
+ * the vendor so its parent chain stays enabled and the earlycon does not die
+ * when this provider registers. Its parents live in this same provider, so the
+ * deferred-probe concern above does not apply here.
+ */
+CCU_MUX_DEFINE(apb_clk, apb_parents, MPMU_APBCSCR, 0, 2, CLK_IS_CRITICAL);
 
 CCU_GATE_DEFINE(slow_uart, CCU_PARENT_NAME(osc_32k), MPMU_ACGR, BIT(1), CLK_IGNORE_UNUSED);
 CCU_DDN_DEFINE(slow_uart1_14p74, pll1_d16_153p6, MPMU_SUCCR, 16, 13, 0, 13, 2, 0);
@@ -526,9 +550,9 @@ CCU_GATE_DEFINE(i2s3_bus_clk, CCU_PARENT_HW(apb_clk), APBC_SSPA3_CLK_RST, BIT(0)
 CCU_GATE_DEFINE(i2s4_bus_clk, CCU_PARENT_HW(apb_clk), APBC_SSPA4_CLK_RST, BIT(0), 0);
 CCU_GATE_DEFINE(i2s5_bus_clk, CCU_PARENT_HW(apb_clk), APBC_SSPA5_CLK_RST, BIT(0), 0);
 
-CCU_GATE_DEFINE(dro_clk, CCU_PARENT_HW(apb_clk), APBC_DRO_CLK_RST, BIT(1), 0);
-CCU_GATE_DEFINE(ir0_clk, CCU_PARENT_HW(apb_clk), APBC_IR0_CLK_RST, BIT(1), 0);
-CCU_GATE_DEFINE(ir1_clk, CCU_PARENT_HW(apb_clk), APBC_IR1_CLK_RST, BIT(1), 0);
+CCU_GATE_DEFINE(dro_clk, CCU_PARENT_HW(apb_clk), APBC_DRO_CLK_RST, BIT(0), 0);
+CCU_GATE_DEFINE(ir0_clk, CCU_PARENT_HW(apb_clk), APBC_IR0_CLK_RST, BIT(0), 0);
+CCU_GATE_DEFINE(ir1_clk, CCU_PARENT_HW(apb_clk), APBC_IR1_CLK_RST, BIT(0), 0);
 
 CCU_GATE_DEFINE(tsen_clk, CCU_PARENT_HW(apb_clk), APBC_TSEN_CLK_RST, BIT(1), 0);
 CCU_GATE_DEFINE(tsen_bus_clk, CCU_PARENT_HW(apb_clk), APBC_TSEN_CLK_RST, BIT(0), 0);
@@ -559,7 +583,7 @@ static const struct clk_parent_data axi_clk_parents[] = {
 	CCU_PARENT_HW(pll1_d8_307p2),
 	CCU_PARENT_HW(pll1_d6_409p6),
 };
-CCU_MUX_DIV_FC_DEFINE(axi_clk, axi_clk_parents, APMU_ACLK_CLK_CTRL, 1, 2, BIT(4), 0, 1, 0);
+CCU_MUX_DIV_FC_DEFINE(axi_clk, axi_clk_parents, APMU_ACLK_CLK_CTRL, 1, 2, BIT(4), 0, 1, CLK_IS_CRITICAL);
 
 static const struct clk_parent_data cci550_clk_parents[] = {
 	CCU_PARENT_HW(pll1_d10_245p76),
@@ -571,8 +595,15 @@ static const struct clk_parent_data cci550_clk_parents[] = {
 	CCU_PARENT_HW(pll1_d2_1228p8),
 	CCU_PARENT_HW(pll7_d2),
 };
+/*
+ * Same rationale as the MPMU always-on roots above: these APMU clocks are
+ * always-on in hardware, but force-enabling them from module context on a
+ * live system (walking and re-locking the CPU/interconnect PLL parent chain
+ * while the CPUs are running on it) wedges the fabric during registration.
+ * Use CLK_IGNORE_UNUSED to keep them on without touching hardware at probe.
+ */
 CCU_MUX_DIV_FC_DEFINE(cci550_clk, cci550_clk_parents, APMU_CCI550_CLK_CTRL, 8, 2, BIT(12), 0, 3,
-		      CLK_IS_CRITICAL);
+		      CLK_IGNORE_UNUSED);
 
 static const struct clk_parent_data cpu_c0_clk_parents[] = {
 	CCU_PARENT_HW(pll1_d3_819p2),
@@ -585,7 +616,7 @@ static const struct clk_parent_data cpu_c0_clk_parents[] = {
 	CCU_PARENT_HW(pll3_d1),
 };
 CCU_MUX_DIV_FC_DEFINE(cpu_c0_core_clk, cpu_c0_clk_parents, APMU_CPU_C0_CLK_CTRL,
-		      3, 3, BIT(12), 0, 3, CLK_IS_CRITICAL);
+		      3, 3, BIT(12), 0, 3, CLK_IGNORE_UNUSED);
 
 static const struct clk_parent_data cpu_c1_clk_parents[] = {
 	CCU_PARENT_HW(pll1_d3_819p2),
@@ -598,7 +629,7 @@ static const struct clk_parent_data cpu_c1_clk_parents[] = {
 	CCU_PARENT_HW(pll4_d1),
 };
 CCU_MUX_DIV_FC_DEFINE(cpu_c1_core_clk, cpu_c1_clk_parents, APMU_CPU_C1_CLK_CTRL,
-		      3, 3, BIT(12), 0, 3, CLK_IS_CRITICAL);
+		      3, 3, BIT(12), 0, 3, CLK_IGNORE_UNUSED);
 
 static const struct clk_parent_data cpu_c2_clk_parents[] = {
 	CCU_PARENT_HW(pll1_d3_819p2),
@@ -611,7 +642,7 @@ static const struct clk_parent_data cpu_c2_clk_parents[] = {
 	CCU_PARENT_HW(pll5_d1),
 };
 CCU_MUX_DIV_FC_DEFINE(cpu_c2_core_clk, cpu_c2_clk_parents, APMU_CPU_C2_CLK_CTRL,
-		      3, 3, BIT(12), 0, 3, CLK_IS_CRITICAL);
+		      3, 3, BIT(12), 0, 3, CLK_IGNORE_UNUSED);
 
 static const struct clk_parent_data cpu_c3_clk_parents[] = {
 	CCU_PARENT_HW(pll1_d3_819p2),
@@ -624,7 +655,7 @@ static const struct clk_parent_data cpu_c3_clk_parents[] = {
 	CCU_PARENT_HW(pll8_d1),
 };
 CCU_MUX_DIV_FC_DEFINE(cpu_c3_core_clk, cpu_c3_clk_parents, APMU_CPU_C3_CLK_CTRL,
-		      3, 3, BIT(12), 0, 3, CLK_IS_CRITICAL);
+		      3, 3, BIT(12), 0, 3, CLK_IGNORE_UNUSED);
 
 static const struct clk_parent_data ccic2phy_parents[] = {
 	CCU_PARENT_HW(pll1_d24_102p4),
@@ -703,8 +734,8 @@ CCU_MUX_DIV_GATE_SPLIT_FC_DEFINE(lcd_dsc_clk, lcd_dsc_parents, APMU_LCD_CLK_RES_
 static const struct clk_parent_data lcdpx_parents[] = {
 	CCU_PARENT_HW(pll1_d4_614p4),
 	CCU_PARENT_HW(pll1_d5_491p52),
-	CCU_PARENT_HW(pll1_d10_245p76),
 	CCU_PARENT_HW(pll7_d5),
+	CCU_PARENT_HW(pll6_d6),
 	CCU_PARENT_HW(pll2_d7),
 	CCU_PARENT_HW(pll2_d4),
 	CCU_PARENT_HW(pll1_d48_51p2_ap),
@@ -744,7 +775,7 @@ CCU_MUX_GATE_DEFINE(ccic1phy_clk, ccic1phy_parents, APMU_CCIC_CLK_RES_CTRL, 7, 1
 
 static const struct clk_parent_data sc2hclk_parents[] = {
 	CCU_PARENT_HW(pll1_d8_307p2),
-	CCU_PARENT_HW(pll1_d4_614p4),
+	CCU_PARENT_HW(pll1_d6_409p6),
 	CCU_PARENT_HW(pll1_d5_491p52),
 	CCU_PARENT_HW(pll2_d4),
 };
@@ -777,7 +808,7 @@ static const struct clk_parent_data sdh2_parents[] = {
 CCU_MUX_DIV_GATE_FC_DEFINE(sdh2_clk, sdh2_parents, APMU_SDH2_CLK_RES_CTRL, 8, 3,
 			   BIT(11), 5, 3, BIT(4), 0);
 
-CCU_GATE_DEFINE(usb2_bus_clk, CCU_PARENT_HW(axi_clk), APMU_USB_CLK_RES_CTRL, BIT(0), 0);
+CCU_GATE_DEFINE(usb2_bus_clk, CCU_PARENT_HW(axi_clk), APMU_USB_CLK_RES_CTRL, BIT(1), 0);
 CCU_GATE_DEFINE(usb3_porta_bus_clk, CCU_PARENT_HW(axi_clk), APMU_USB_CLK_RES_CTRL, BIT(4), 0);
 CCU_GATE_DEFINE(usb3_portb_bus_clk, CCU_PARENT_HW(axi_clk), APMU_USB_CLK_RES_CTRL, BIT(8), 0);
 CCU_GATE_DEFINE(usb3_portc_bus_clk, CCU_PARENT_HW(axi_clk), APMU_USB_CLK_RES_CTRL, BIT(12), 0);
@@ -846,7 +877,7 @@ static const struct clk_parent_data top_parents[] = {
 	CCU_PARENT_HW(pll6_d3),
 };
 CCU_MUX_DIV_GATE_FC_DEFINE(top_dclk, top_parents, APMU_TOP_DCLK_CTRL, 5, 3,
-			   BIT(8), 2, 3, BIT(1), CLK_IS_CRITICAL);
+			   BIT(8), 2, 3, BIT(1), CLK_IGNORE_UNUSED | CCU_DIV_VALID_FIRST4_SRC_FLAG);
 
 static const struct clk_parent_data ucie_parents[] = {
 	CCU_PARENT_HW(pll1_d8_307p2),
@@ -963,11 +994,10 @@ CCU_MUX_DIV_GATE_FC_DEFINE(dpu_aclk, dpu_aclk_parents, APMU_LCD_CLK_RES_CTRL5, 1
 			   20, 3, BIT(16), 0);
 
 static const struct clk_parent_data ufs_aclk_parents[] = {
-	CCU_PARENT_HW(pll1_d6_409p6),
 	CCU_PARENT_HW(pll1_d5_491p52),
-	CCU_PARENT_HW(pll1_d4_614p4),
-	CCU_PARENT_HW(pll1_d8_307p2),
-	CCU_PARENT_HW(pll2_d4),
+	CCU_PARENT_HW(pll1_d6_409p6),
+	CCU_PARENT_HW(pll2_d6),
+	CCU_PARENT_HW(pll2_d5),
 };
 CCU_MUX_DIV_GATE_FC_DEFINE(ufs_aclk, ufs_aclk_parents, APMU_UFS_CLK_RES_CTRL, 5, 3, BIT(8),
 			   2, 3, BIT(1), 0);
@@ -987,19 +1017,19 @@ static const struct clk_parent_data edp1_pclk_parents[] = {
 CCU_MUX_GATE_DEFINE(edp1_pxclk, edp1_pclk_parents, APMU_LCD_EDP_CTRL, 18, 1, BIT(17), 0);
 
 CCU_GATE_DEFINE(pciea_mstr_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_A, BIT(2), 0);
-CCU_GATE_DEFINE(pciea_slv_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_A, BIT(1), 0);
+CCU_GATE_DEFINE(pciea_slv_clk, CCU_PARENT_HW(pll2_d6), APMU_PCIE_CLK_RES_CTRL_A, BIT(1), 0);
 CCU_GATE_DEFINE(pciea_bus_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_A, BIT(0), 0);
 CCU_GATE_DEFINE(pcieb_mstr_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_B, BIT(2), 0);
-CCU_GATE_DEFINE(pcieb_slv_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_B, BIT(1), 0);
+CCU_GATE_DEFINE(pcieb_slv_clk, CCU_PARENT_HW(pll2_d6), APMU_PCIE_CLK_RES_CTRL_B, BIT(1), 0);
 CCU_GATE_DEFINE(pcieb_bus_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_B, BIT(0), 0);
 CCU_GATE_DEFINE(pciec_mstr_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_C, BIT(2), 0);
-CCU_GATE_DEFINE(pciec_slv_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_C, BIT(1), 0);
+CCU_GATE_DEFINE(pciec_slv_clk, CCU_PARENT_HW(pll2_d6), APMU_PCIE_CLK_RES_CTRL_C, BIT(1), 0);
 CCU_GATE_DEFINE(pciec_bus_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_C, BIT(0), 0);
 CCU_GATE_DEFINE(pcied_mstr_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_D, BIT(2), 0);
-CCU_GATE_DEFINE(pcied_slv_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_D, BIT(1), 0);
+CCU_GATE_DEFINE(pcied_slv_clk, CCU_PARENT_HW(pll2_d6), APMU_PCIE_CLK_RES_CTRL_D, BIT(1), 0);
 CCU_GATE_DEFINE(pcied_bus_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_D, BIT(0), 0);
 CCU_GATE_DEFINE(pciee_mstr_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_E, BIT(2), 0);
-CCU_GATE_DEFINE(pciee_slv_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_E, BIT(1), 0);
+CCU_GATE_DEFINE(pciee_slv_clk, CCU_PARENT_HW(pll2_d6), APMU_PCIE_CLK_RES_CTRL_E, BIT(1), 0);
 CCU_GATE_DEFINE(pciee_bus_clk, CCU_PARENT_HW(axi_clk), APMU_PCIE_CLK_RES_CTRL_E, BIT(0), 0);
 
 static const struct clk_parent_data emac_1588_parents[] = {
@@ -1541,9 +1571,78 @@ static const struct of_device_id of_k3_ccu_match[] = {
 };
 MODULE_DEVICE_TABLE(of, of_k3_ccu_match);
 
+/*
+ * The K3 CCU spans several MMIO blocks (APBS/PLL, MPMU, APBC, APMU, DCIU,
+ * RCPU-I2SCTRL), each probing as an independent platform device, in DT
+ * order — APBC first. Clocks in one block can have parents in another one
+ * (e.g. the APBC UART functional clocks are children of MPMU's slow_uart
+ * DDNs, which are in turn fed by APBS PLL1 outputs). If a block registered
+ * before its parent blocks, its clocks would be registered as orphans with
+ * a 0 rate, and binding the block lets fw_devlink release the block's
+ * consumers into that window: the 8250 driver turns the 0 rate of an
+ * orphaned UART clock into a hard -EINVAL probe failure, killing the
+ * serial console.
+ *
+ * Defer a block's probe until the blocks providing its parent clocks have
+ * fully registered, so a consumer can never observe a partially-parented
+ * clock tree. The block dependency graph below is acyclic (the PLL block
+ * only takes fixed-rate DT clock inputs), so the deferred probes always
+ * converge. Probes of two blocks may run concurrently (initial driver
+ * attach vs a deferred re-probe), hence the atomic bitmask: a probe
+ * observing a stale mask only defers one more round.
+ */
+enum k3_ccu_block_id {
+	K3_CCU_PLL,
+	K3_CCU_MPMU,
+	K3_CCU_APBC,
+	K3_CCU_APMU,
+	K3_CCU_DCIU,
+	K3_CCU_RCPU_I2SCTRL,
+};
+
+static const struct k3_ccu_block {
+	const struct spacemit_ccu_data *data;
+	enum k3_ccu_block_id id;
+	unsigned long parent_blocks;
+} k3_ccu_blocks[] = {
+	{ &k3_ccu_pll_data,	K3_CCU_PLL,	0 },
+	{ &k3_ccu_mpmu_data,	K3_CCU_MPMU,	BIT(K3_CCU_PLL) },
+	{ &k3_ccu_apbc_data,	K3_CCU_APBC,	BIT(K3_CCU_PLL) | BIT(K3_CCU_MPMU) },
+	{ &k3_ccu_apmu_data,	K3_CCU_APMU,	BIT(K3_CCU_PLL) | BIT(K3_CCU_MPMU) },
+	{ &k3_ccu_dciu_data,	K3_CCU_DCIU,	BIT(K3_CCU_APMU) },
+	{ &k3_ccu_rcpu_i2sctrl_data, K3_CCU_RCPU_I2SCTRL, BIT(K3_CCU_PLL) },
+};
+
+static unsigned long k3_ccu_registered_blocks;
+
 static int k3_ccu_probe(struct platform_device *pdev)
 {
-	return spacemit_ccu_probe(pdev, "spacemit,k3-pll");
+	const struct spacemit_ccu_data *data = of_device_get_match_data(&pdev->dev);
+	const struct k3_ccu_block *block = NULL;
+	int i, ret;
+
+	for (i = 0; i < ARRAY_SIZE(k3_ccu_blocks); i++) {
+		if (k3_ccu_blocks[i].data == data) {
+			block = &k3_ccu_blocks[i];
+			break;
+		}
+	}
+	if (!block)
+		return -EINVAL;
+
+	if ((READ_ONCE(k3_ccu_registered_blocks) & block->parent_blocks) !=
+	    block->parent_blocks) {
+		return dev_err_probe(&pdev->dev, -EPROBE_DEFER,
+				     "waiting for parent CCU blocks\n");
+	}
+
+	ret = spacemit_ccu_probe(pdev, "spacemit,k3-pll");
+	if (ret)
+		return ret;
+
+	set_bit(block->id, &k3_ccu_registered_blocks);
+
+	return 0;
 }
 
 static struct platform_driver k3_ccu_driver = {

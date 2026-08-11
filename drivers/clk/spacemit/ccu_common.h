@@ -11,6 +11,10 @@
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 
+/* Some dividers in PMUAP are only valid for the first four clock sources */
+#define CCU_DIV_VALID_FIRST4_SRC_FLAG	BIT(29)
+#define CCU_DIV_VALID_SRC_MAX		4
+
 struct ccu_common {
 	struct regmap *regmap;
 	struct regmap *lock_regmap;

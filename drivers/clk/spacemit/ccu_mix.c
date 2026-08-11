@@ -117,6 +117,10 @@ ccu_mix_calc_best_rate(struct clk_hw *hw, unsigned long rate,
 		if (!parent)
 			continue;
 
+		if ((div->flags & CCU_DIV_VALID_FIRST4_SRC_FLAG)
+		     && i >= CCU_DIV_VALID_SRC_MAX)
+			div_max = 1;
+
 		parent_rate = clk_hw_get_rate(parent);
 
 		for (int j = 1; j <= div_max; j++) {

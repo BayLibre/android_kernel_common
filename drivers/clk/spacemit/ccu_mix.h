@@ -36,6 +36,7 @@ struct ccu_mux_config {
 struct ccu_div_config {
 	u8 shift;
 	u8 width;
+	u32 flags;
 };
 
 struct ccu_mix {
@@ -50,6 +51,8 @@ struct ccu_mix {
 #define CCU_FACTOR_INIT(_div, _mul)	{ .div = _div, .mul = _mul }
 #define CCU_MUX_INIT(_shift, _width)	{ .shift = _shift, .width = _width }
 #define CCU_DIV_INIT(_shift, _width)	{ .shift = _shift, .width = _width }
+#define CCU_DIV_FLAGS_INIT(_shift, _width, _flags)	\
+	{ .shift = _shift, .width = _width, .flags = _flags }
 #define CCU_GATE_FLAGS_INIT(_mask, _inverted)	{ .mask = _mask, .inverted = _inverted }
 
 #define CCU_PARENT_HW(_parent)		{ .hw = &_parent.common.hw }
@@ -169,7 +172,7 @@ static struct ccu_mix _name = {							\
 				 _muxshift, _muxwidth, _mask_gate, _flags)	\
 static struct ccu_mix _name = {							\
 	.gate	= CCU_GATE_INIT(_mask_gate),					\
-	.div	= CCU_DIV_INIT(_mshift, _mwidth),				\
+	.div	= CCU_DIV_FLAGS_INIT(_mshift, _mwidth, _flags),			\
 	.mux	= CCU_MUX_INIT(_muxshift, _muxwidth),				\
 	.common	= {								\
 		.reg_ctrl	= _reg_ctrl,					\
@@ -183,7 +186,7 @@ static struct ccu_mix _name = {							\
 					 _muxwidth, _mask_gate, _flags)		\
 static struct ccu_mix _name = {							\
 	.gate	= CCU_GATE_INIT(_mask_gate),					\
-	.div	= CCU_DIV_INIT(_mshift, _mwidth),				\
+	.div	= CCU_DIV_FLAGS_INIT(_mshift, _mwidth, _flags),			\
 	.mux	= CCU_MUX_INIT(_muxshift, _muxwidth),				\
 	.common = {								\
 		.reg_ctrl	= _reg_ctrl,					\
@@ -204,7 +207,7 @@ CCU_MUX_DIV_GATE_SPLIT_FC_DEFINE(_name, _parents, _reg_ctrl, _reg_ctrl, _mshift,
 #define CCU_MUX_DIV_FC_DEFINE(_name, _parents, _reg_ctrl, _mshift, _mwidth,	\
 			      _mask_fc, _muxshift, _muxwidth, _flags)		\
 static struct ccu_mix _name = {							\
-	.div	= CCU_DIV_INIT(_mshift, _mwidth),				\
+	.div	= CCU_DIV_FLAGS_INIT(_mshift, _mwidth, _flags),			\
 	.mux	= CCU_MUX_INIT(_muxshift, _muxwidth),				\
 	.common = {								\
 		.reg_ctrl	= _reg_ctrl,					\
