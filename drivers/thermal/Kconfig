@@ -316,6 +316,13 @@ config K3_THERMAL
 
 	  This includes temperature reading functionality.
 
+config K3_THERMAL
+	tristate "Spacemit K3 Thermal Support"
+	depends on OF && ARCH_SPACEMIT
+	help
+	  Enable this option if you want to have support for thermal management
+	  controller present in Spacemit SoCs
+
 config MAX77620_THERMAL
 	tristate "Temperature sensor driver for Maxim MAX77620 PMIC"
 	depends on MFD_MAX77620
