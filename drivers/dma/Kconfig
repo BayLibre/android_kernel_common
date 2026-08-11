@@ -439,6 +439,16 @@ config SPACEMIT_PDMA
 	help
 	  Support the Spacemit K1-X PDMA (Peripheral DMA) engine.
 
+config SPACEMIT_ADMA
+	tristate "Spacemit K3 ADMA support"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	select DMA_ENGINE
+	select GENERIC_ALLOCATOR
+	help
+	  Support the Spacemit K3 ADMA (Audio DMA) engine, a cyclic
+	  slave DMA controller feeding the RCPU I2S (ri2s) audio
+	  controllers. Used by the DisplayPort audio path on K3.
+
 config MMP_TDMA
 	tristate "MMP Two-Channel DMA support"
 	depends on ARCH_MMP || COMPILE_TEST
