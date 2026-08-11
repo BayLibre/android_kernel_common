@@ -328,6 +328,13 @@ config STM32_RPROC
 
 	  This can be either built-in or a loadable module.
 
+config SPACEMIT_K3_REMOTEPROC
+	tristate "Spacemit K3 remoteproc support"
+	depends on ARCH_SPACEMIT
+	help
+	  Say Y here to support Spacemit K3 remote processors via the
+	  remote processor framework.
+
 config TI_K3_DSP_REMOTEPROC
 	tristate "TI K3 DSP remoteproc support"
 	depends on ARCH_K3 || COMPILE_TEST
