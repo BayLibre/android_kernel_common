@@ -40,3 +40,33 @@ config SPACEMIT_DDR_BW
 	  Spacemit K1x DDR AXI monitor driver. Reads DDR bandwidth from the
 	  DDR controller and uses devfreq to scale DDR frequency under load.
 	  Exposes a character device for userspace monitoring.
+
+config SPACEMIT_HMP
+	bool "Spacemit HMP support"
+	depends on SMP && ARCH_SPACEMIT
+	help
+	  Say y here to enable the HMP feature support.
+	  This feature categorizes the CPU cores within the
+	  SOC into two distinct types, each running different
+	  types of threads.
+
+config SPACEMIT_REBOOT_CONTROL
+	bool "Spacemit k3 reboot handler"
+	depends on ARCH_SPACEMIT
+	help
+	  Say y here to support go to uboot fastboot when reset.
+
+config SPACEMIT_SUSPEND_AFFINITY
+	bool "Spacemit k3 handle irq affinity when standby"
+	depends on ARCH_SPACEMIT && PM_SLEEP
+	help
+	  Say y here to handle irq affinity in resume process to migrate
+	  back to cpu before suspend.
+
+config SPACEMIT_POWERKEY_MONITOR
+	bool "Spacemit power key monitor config"
+	depends on ARCH_SPACEMIT
+	help
+	  Say y here to using gpio to monitor the power key
+
+source "drivers/soc/spacemit/v2d/Kconfig"

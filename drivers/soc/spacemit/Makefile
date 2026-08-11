@@ -1,5 +1,10 @@
+obj-$(CONFIG_SPACEMIT_K3_PMU_KEEPALIVE)	+= k3-pmu-keepalive.o
 # SPDX-License-Identifier: GPL-2.0-only
 obj-$(CONFIG_SPACEMIT_SOCINFO)		+= spacemit-socinfo.o
 obj-$(CONFIG_SPACEMIT_K1X_DMA_RANGE)	+= k1x-dma-range.o
-obj-$(CONFIG_SPACEMIT_K3_PMU_KEEPALIVE)	+= k3-pmu-keepalive.o
 obj-y					+= ddr-bw/
+obj-$(CONFIG_SPACEMIT_HMP)		+= hmp.o
+obj-$(CONFIG_SPACEMIT_V2D)		+= v2d/
+obj-$(CONFIG_SPACEMIT_REBOOT_CONTROL)	+= spacemit_reboot.o
+obj-$(CONFIG_SPACEMIT_SUSPEND_AFFINITY)	+= suspend/
+obj-$(CONFIG_SPACEMIT_POWERKEY_MONITOR)	+= pwrkey_monitor.o
