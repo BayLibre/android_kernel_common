@@ -1131,6 +1131,11 @@
 		syscon_rcpu_i2sctrl: system-controller@c0882000 {
 			compatible = "spacemit,k3-syscon-rcpu-i2sctrl";
 			reg = <0x0 0xc0882000 0x0 0x1000>;
+			/*
+			 * These registers live on the RCPU AXI island; reaching
+			 * them with the island unclocked stalls the bus.
+			 */
+			clocks = <&syscon_apmu CLK_APMU_RCPU>;
 			#clock-cells = <1>;
 			#reset-cells = <1>;
 		};
