@@ -14,6 +14,16 @@ config SPACEMIT_SOCINFO
 	  This driver can also be built as a module. If so, the module
 	  will be called spacemit-socinfo.
 
+config SPACEMIT_K3_PMU_KEEPALIVE
+	bool "SpacemiT K3 PMU idle-vote keep-alive"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	help
+	  Periodically clears the K3 AP core/cluster power-down votes from
+	  Linux. The reset-armed votes collapse a bare-WFI hart below IMSIC
+	  reach once the RCPU ESOS firmware re-arms them at runtime, hard
+	  freezing the machine in an all-idle lull. Built in (not a module):
+	  it must run before the first deep idle.
+
 config SPACEMIT_K1X_DMA_RANGE
 	tristate "Spacemit dram range driver for k1x"
 	depends on ARCH_SPACEMIT || COMPILE_TEST
