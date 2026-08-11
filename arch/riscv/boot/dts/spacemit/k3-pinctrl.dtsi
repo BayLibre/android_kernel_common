@@ -139,4 +139,24 @@
 			power-source = <1800>;
 		};
 	};
+
+	dp1_1_cfg: dp1-1-cfg {
+		dp1-0-pins {
+			pinmux = <K3_PADCONF(24, 6)>;	/* dp1 hpd */
+
+			bias-disable;
+			drive-strength = <25>;
+			power-source = <3300>;
+		};
+	};
+
+	usb30_drd_dir_0_cfg: usb30-drd-dir-0-cfg {
+		usb30-drd-dir-pins {
+			pinmux = <K3_PADCONF(86, 6)>;	/* usb30 drd dir (SS_SW_3V3) */
+
+			bias-pull-down;
+			drive-strength = <25>;
+			power-source = <1800>;
+		};
+	};
 };

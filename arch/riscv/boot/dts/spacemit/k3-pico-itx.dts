@@ -267,7 +267,8 @@
 
 /*
  * Display pipeline (ported from the vendor K3 BSP).  The SoC-level nodes
- * live in k3.dtsi; here the board brings up both paths:
+ * live in k3.dtsi; here the board enables the external DP1 path (the eDP0
+ * path stays disabled -- no eDP panel is fitted):
  *   - eDP0  (dpu0_crtc0 -> edp0): internal-panel DisplayPort
  *   - DP1   (dpu1_crtc0 -> dp1):  external DisplayPort routed to the
  *     USB-C connector (the FUSB301 Type-C controller carries USB data
@@ -276,9 +277,10 @@
  * The matching drivers are now in-tree, K3-gated and separate from the
  * K1 spacemit-drm.ko (HDMI): spacemit-drm-k3.ko (dpu-saturn CRTC +
  * saturn-hee/edp masters) + spacemit_inno_dp.ko (inno-edp0/inno-dp1
- * output).  The vendor pinctrl/backlight references (dp0_1_cfg, dp1_1_cfg,
- * backlight, ...) are still omitted; runtime scan-out and DP/eDP
- * link-training need validation on the board.
+ * output).  The DP1 HPD pinctrl (dp1_1_cfg) is wired below; the eDP0-only
+ * references (dp0_1_cfg, backlight, panel power/enable GPIOs) stay omitted
+ * while that path is disabled.  Runtime scan-out and DP link-training still
+ * need validation on the board.
  *
  * DP-audio (audio over the USB-C DisplayPort) is wired below via
  * sound_card_dp1: spacemit_inno_dp registers an ASoC codec ("inno-dp-audio",
@@ -289,31 +291,41 @@
  * hardware IRQs (no RT coprocessor / rpmsg).  Runtime audio still needs
  * validation on the board.
  */
-/* disabled until K3 genpd/pmdomain support lands - DPU MMIO stalls the fabric without the LCD power island */
+/*
+ * Display output.  The eDP0 internal-panel pipeline (dpu0_crtc0 / edp0 /
+ * display_subsystem_edp0) stays disabled: no eDP panel is fitted on this
+ * board.  The DP1 pipeline (enabled below) drives the external DisplayPort
+ * on the USB-C connector; dpu1_crtc0 now carries
+ * power-domains = <&power K3_PMU_LCD1_PWR_DOMAIN>, so the K3 RPMI genpd
+ * powers the LCD1 island before the DPU driver touches its fabric-stalling
+ * MMIO.
+ */
 &dpu0_crtc0 {
 	memory-region = <&dpu_resv0>;
-	status = "disabled";
+	status = "okay";
 };
 
 &edp0 {
-	status = "disabled";
+	status = "okay";
 };
 
 &dpu1_crtc0 {
 	memory-region = <&dpu_resv1>;
-	status = "disabled";
+	status = "okay";
 };
 
 &dp1 {
-	status = "disabled";
+	pinctrl-names = "default";
+	pinctrl-0 = <&dp1_1_cfg>;
+	status = "okay";
 };
 
 &display_subsystem_edp0 {
-	status = "disabled";
+	status = "okay";
 };
 
 &display_subsystem_dp1 {
-	status = "disabled";
+	status = "okay";
 };
 
 /*
@@ -357,11 +369,17 @@
 };
 
 &usb3_porta_u3phy {
+	/* dual-phy (USB3 SS vs DP) + orientation select from GPIO86 (SS_SW_3V3) */
+	pinctrl-names = "default";
+	pinctrl-0 = <&usb30_drd_dir_0_cfg>;
 	status = "okay";
 };
 
 &usb3_porta {
-	dr_mode = "host";
+	dr_mode = "otg";
+	usb-role-switch;
+	role-switch-default-mode = "peripheral";
+	monitor-vbus;
 	vbus-supply = <&reg_aux_vcc5v>;
 	status = "okay";
 };
@@ -374,6 +392,23 @@
  * USB3 port D (dwc3 @ 0x81a00000): host-only standard Type-A port.
  * USB2 PHY @ 0x81b00000, USB3 PHY @ 0x82100000 (combo lane bit 0).
  */
+&usb3_portc_u2phy {
+	status = "okay";
+};
+
+&usb3_portc {
+	/* Bluetooth (RTL8852BE companion). USB2 only: the M.2 E-key slot
+	 * exposes no SuperSpeed pair for it, so leave usb3_portc_u3phy
+	 * disabled and drop it from phys, exactly as the vendor BSP does. */
+	/delete-property/ phys;
+	/delete-property/ phy-names;
+	phys = <&usb3_portc_u2phy>;
+	phy-names = "usb2-phy";
+	maximum-speed = "high-speed";
+	reset-on-resume;
+	status = "okay";
+};
+
 &usb3_portd_u2phy {
 	status = "okay";
 };
@@ -396,9 +431,9 @@
  * The connector's data port is wired to the USB3 port A dwc3 role switch.
  *
  * The FUSB301 INT line is GPIO 2/21 (active-low), per the vendor K3 Pico-ITX
- * BSP; without it the driver bails out with -ENODEV. Set "usb-role-switch" +
- * change &usb3_porta to dr_mode = "otg" once role switching is validated on
- * hardware.
+ * BSP; without it the driver bails out with -ENODEV. &usb3_porta runs
+ * dr_mode = "otg" with usb-role-switch, so the FUSB301 flips dwc3 to
+ * peripheral (registers a UDC) when a host is attached -- enabling ADB.
  */
 &i2c1 {
 	pinctrl-names = "default";

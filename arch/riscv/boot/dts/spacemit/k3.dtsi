@@ -475,6 +475,22 @@
 		#size-cells = <2>;
 		ranges;
 
+		/* Persistent store for the previous boot's console.  The board has no
+		 * battery-backed RTC and drops off USB when it suspends or hangs, so
+		 * without this a failing boot leaves nothing to read afterwards and the
+		 * only way to analyse it is to reproduce it.  Placed above the last
+		 * reserved region in the 16 GiB bank that starts at 0x1_00000000.
+		 * No no-map: ramoops memremaps it.
+		 */
+		ramoops@120000000 {
+			compatible = "ramoops";
+			reg = <0x1 0x20000000 0x0 0x00100000>;
+			console-size = <0x40000>;
+			record-size = <0x20000>;
+			pmsg-size = <0x20000>;
+			ecc = <1>;
+		};
+
 		/* used for rcpu0 code & data & bss space */
 		rcpu0_pwr: rcpu0_pwr@100200000 {
 			reg = <0x1 0x200000 0x0 0x300000>;
@@ -1132,16 +1148,20 @@
 		 *     while the FUSB301 Type-C controller handles only USB data
 		 *     role/orientation, not DP muxing)
 		 *
-		 * The matching drivers (spacemit-drm "saturn-hee/edp" + the
+		 * The matching drivers (spacemit-drm-k3 "saturn-hee/edp" + the
 		 * dpu-saturn CRTC + the Innosilicon DP "spacemit_inno_dp") are
-		 * NOT yet present in this tree — see the port plan.  The nodes
-		 * are described here (status = "disabled") so the hardware
-		 * topology and the clock/reset wiring land in the DTB now.
+		 * in-tree and built =m.  Each display-subsystem node is its own
+		 * component master: it binds only its own dpu*_crtc0 (via "ports")
+		 * and that CRTC's of-graph remote dp/edp, guarding every step with
+		 * of_device_is_available() -- so either pipeline can be enabled
+		 * independently at the board level.
 		 *
-		 * NOTE: the vendor "power-domains = <&power K3_PMU_LCD{0,1}/GPU>"
-		 * references are intentionally dropped: there is no K3 power-
-		 * controller (genpd) provider in this kernel yet.  They must be
-		 * re-added once the K3 pmdomain provider lands.
+		 * power-domains: each dpu*_crtc0 gates on its LCD power island
+		 * (LCD0 for eDP0, LCD1 for DP1) through the K3 RPMI genpd
+		 * (&power, spacemit,k3-power-controller).  This MUST stay wired:
+		 * the DPU MMIO stalls the fabric if touched before its island is
+		 * powered, and the CRTC's pm_runtime/genpd is what brings the
+		 * island up before the driver's first DPU register access.
 		 */
 		display_subsystem_edp0: display-subsystem@c0340000 {
 			compatible = "spacemit,saturn-hee";
@@ -1171,6 +1191,7 @@
 				 <&syscon_apmu RESET_APMU_LCD_DSCCLK>;
 			reset-names = "mclk_reset", "lcd_reset", "esc_reset",
 				      "aclk_reset", "dsc_reset";
+			power-domains = <&power K3_PMU_LCD0_PWR_DOMAIN>;
 			pipeline-id = <1>;
 			is_edp = <1>;
 			dpu-id = <0>;
@@ -1215,6 +1236,84 @@
 			};
 		};
 
+		/* K3 SoC drivers ported from the vendor BSP (batch). iommu@c0f00000
+		 * is deliberately omitted: it needs CLK_APMU_IOMMU which our clock
+		 * driver does not provide, and its iommu-map targets pcie0/1/2_rc
+		 * (we only have pcie4). */
+		thermal: thermal@d4018000 {
+			compatible = "spacemit,k3-tsensor";
+			reg = <0x0 0xd4018000 0x0 0x100>;
+			interrupt-parent = <&saplic>;
+			interrupts = <61 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "tsensor";
+			clocks = <&syscon_apbc CLK_APBC_TSEN>,
+				<&syscon_apbc CLK_APBC_TSEN_BUS>;
+			clock-names = "func", "bus";
+			resets = <&syscon_apbc RESET_APBC_TSEN>;
+			sensor_range = <0x0 0x0>;
+			tsensor_map = <1 0 0 0 0 0 0 0>;
+			temperature_offset = <274>;
+			#thermal-sensor-cells = <1>;
+			status = "okay";
+		};
+
+		thermal-zones {
+			soc_thermal: soc-thermal {
+				polling-delay-passive = <1000>;
+				polling-delay = <2000>;
+				thermal-sensors = <&thermal 0>;
+				trips {
+					soc_crit: soc-crit {
+						temperature = <110000>;
+						hysteresis = <2000>;
+						type = "critical";
+					};
+				};
+			};
+		};
+
+		pwrkey_monitor: pwrkey_monitor@1101 {
+			compatible = "spacemit,k3-pwrkey-monitor";
+			status = "disabled";
+		};
+
+		reboot_mode_helper: reboot-mode-helper@c087c000 {
+			compatible = "spacemit,k3-reboot";
+			reg = <0x0 0xc087c000 0x0 0x1000>;
+		};
+
+		v2d: v2d@c0100000 {
+			compatible = "spacemit,v2d";
+			reg = <0x0 0xc0100000 0x0 0x1000>;
+			reg-names = "v2dreg";
+			clocks = <&syscon_apmu CLK_APMU_LCD_MCLK>,
+				 <&syscon_apmu CLK_APMU_V2D>;
+			clock-names = "v2d-io", "v2d-core";
+			resets = <&syscon_apmu RESET_APMU_V2D>;
+			reset-names = "v2d_reset";
+			interrupt-parent = <&saplic>;
+			interrupts = <86 IRQ_TYPE_LEVEL_HIGH>;
+			status = "okay";
+		};
+
+		vpu: linlon-v5@c0500000 {
+			compatible = "arm china,linlon-v5";
+			reg = <0x0 0xc0500000 0x0 0x200000>;
+			interrupt-parent = <&saplic>;
+			interrupts = <74 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&syscon_apmu CLK_APMU_VPU>;
+			clock-names = "vpu_clk";
+			power-domains = <&power K3_PMU_VPU_PWR_DOMAIN>;
+			resets = <&syscon_apmu RESET_APMU_VPU>;
+			status = "okay";
+		};
+
+		irq_affinity: irq-aff@0 {
+			compatible = "spacemit,irq-affinity-restore";
+			msi-parent = <&simsic>;
+			status = "okay";
+		};
+
 		display_subsystem_dp1: display-subsystem@c0440000 {
 			compatible = "spacemit,saturn-edp";
 			reg = <0x0 0xc0440000 0x0 0x54000>;
@@ -1240,9 +1339,17 @@
 				 <&syscon_apmu RESET_APMU_DSI4LN2_LCD_SW>,
 				 <&syscon_apmu RESET_APMU_DSI4LN2_DPU_ACLK>,
 				 <&syscon_apmu RESET_APMU_DSI4LN2_LCD_DSCCLK>;
-			reset-names = "mclk_reset", "esc_reset", "lcd_reset",
-				      "aclk_reset", "dsc_reset";
+			reset-names = "mclk_reset", "esc_reset", "lcd_reset", "aclk_reset", "dsc_reset";
+			power-domains = <&power K3_PMU_LCD1_PWR_DOMAIN>;
 			pipeline-id = <1>;
+			/*
+			 * Keep this at 1 even though the pipeline drives the
+			 * external DisplayPort and not an embedded panel.  Setting
+			 * it to 0 selects a different plane/RDMA path and every
+			 * atomic commit is then rejected by spacemit_plane_atomic_check()
+			 * with "Invalid rdma id:15", so the CRTC never enables and
+			 * the output stays dark -- tested on the Pico-ITX.
+			 */
 			is_edp = <1>;
 			dpu-id = <1>;
 			ip = "spacemit-saturn";
@@ -1573,6 +1680,58 @@
 			};
 		};
 
+		/*
+		 * usb3_portc carries the Bluetooth companion of the RTL8852BE
+		 * combo card: WiFi rides the PCIe side, Bluetooth is a separate
+		 * USB function, and on this SoC it is wired to port C. Ported
+		 * from the vendor K3 BSP linux-6.18, whose node is commented
+		 * "Bluetooth" verbatim. Without it there is no host controller
+		 * behind the M.2 E-key USB pins, the controller never appears on
+		 * any USB bus, and every Bluetooth HAL has nothing to open.
+		 *
+		 * Only the USB2 phy is used on the Pico-ITX; the board file keeps
+		 * the SS phy disabled and caps the controller at high-speed.
+		 */
+		usb3_portc_u2phy: phy@81800000 {
+			compatible = "spacemit,k3-usb2-phy";
+			reg = <0x0 0x81800000 0x0 0x200>;
+			#phy-cells = <0>;
+			status = "disabled";
+		};
+
+		usb3_portc_u3phy: phy@82000000 {
+			compatible = "spacemit,k3-usb3-phy";
+			reg = <0x0 0x82000000 0x0 0x200>;
+			clocks = <&syscon_apmu CLK_APMU_USB3_PORTC_BUS>;
+			spacemit,syscon-apmu = <&syscon_apmu>;
+			spacemit,syscon-apb-spare = <&pll>;
+			combo-usb-bit = <1>;
+			#phy-cells = <0>;
+			status = "disabled";
+		};
+
+		usb3_portc: usb3@81700000 {
+			compatible = "spacemit,k1-dwc3";
+			reg = <0x0 0x81700000 0x0 0x10000>;
+			interrupts = <148 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&syscon_apmu CLK_APMU_USB3_PORTC_BUS>;
+			resets = <&syscon_apmu RESET_APMU_USB3_C_AHB>,
+				 <&syscon_apmu RESET_APMU_USB3_C_VCC>,
+				 <&syscon_apmu RESET_APMU_USB3_C_PHY>;
+			reset-names = "ahb", "vcc", "phy";
+			phys = <&usb3_portc_u2phy>, <&usb3_portc_u3phy>;
+			phy-names = "usb2-phy", "usb3-phy";
+			phy_type = "utmi";
+			snps,dis_enblslpm_quirk;
+			snps,dis_u2_susphy_quirk;
+			snps,dis_u3_susphy_quirk;
+			snps,dis-del-phy-power-chg-quirk;
+			snps,dis-tx-ipgap-linecheck-quirk;
+			snps,parkmode-disable-ss-quirk;
+			dr_mode = "host";
+			status = "disabled";
+		};
+
 		usb3_portd_u2phy: phy@81b00000 {
 			compatible = "spacemit,k3-usb2-phy";
 			reg = <0x0 0x81b00000 0x0 0x200>;
@@ -1619,13 +1778,17 @@
 		 * PHY instances.  Only the controllers wired to a usable slot are
 		 * described here; ports/PHYs are added on demand.
 		 *
-		 * The controller binds the shared upstream spacemit,k1-pcie driver
-		 * (CONFIG_PCIE_SPACEMIT_K1, also used by K1).  That binding differs
-		 * from the BSP downstream shape: 4 reg regions (no dbi2), a single
-		 * "msi" interrupt served by the DWC built-in MSI controller (no
-		 * external msi-parent), and exactly ONE PHY referenced from the
-		 * child root-port node (pcie@0) via "phys", together with a
-		 * vpcie3v3-supply.  Clocks/resets keep the dbi/mstr/slv triplet.
+		 * The controller binds the shared spacemit,k1-pcie driver
+		 * (CONFIG_PCIE_SPACEMIT_K1, also used by K1), but must keep the
+		 * "spacemit,k3-pcie" compatible first: that is what makes the
+		 * driver advertise device ID 0x0002 instead of the K1's 0x0001 in
+		 * the root port's config space.  rtw89 keys its DAC whitelist on
+		 * that ID, and without it the M.2 card falls back to a 32-bit DMA
+		 * mask, which cannot work when all RAM sits above 4 GiB.  The node
+		 * shape differs from the BSP downstream one: 4 reg regions (no
+		 * dbi2), a single "msi" interrupt, and exactly ONE PHY referenced
+		 * from the child root-port node (pcie@0) via "phys", together with
+		 * a vpcie3v3-supply.  Clocks/resets keep the dbi/mstr/slv triplet.
 		 *
 		 * Port E (pcie4, domain 4, x1) drives the Pico-ITX M.2 WiFi slot
 		 * (Realtek RTL8852BE).  Its APMU control register is at offset
