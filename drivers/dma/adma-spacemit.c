@@ -719,6 +719,7 @@ static const struct of_device_id adma_id_table[] = {
 	{ .compatible = "spacemit,k3-adma"},
 	{},
 };
+MODULE_DEVICE_TABLE(of, adma_id_table);
 
 static int adma_probe(struct platform_device *pdev)
 {
