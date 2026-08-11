@@ -250,6 +250,7 @@ static int dwc3_spacemit_probe(struct platform_device *pdev)
 	bool wakeup_source;
 	int			i, ret;
 
+
 	spacemit = devm_kzalloc(dev, sizeof(*spacemit), GFP_KERNEL);
 	if (!spacemit)
 		return -ENOMEM;
