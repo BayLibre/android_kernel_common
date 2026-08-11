@@ -7,3 +7,14 @@ config SPACEMIT_PM_DOMAINS
 	help
 	  Support for SpacemiT K1 SoC power domains. This driver manages
 	  the power domains for peripherals such as HDMI, LCD, and USB.
+
+config SPACEMIT_K3_PM_DOMAINS
+	tristate "SpacemiT K3 Power Domain driver (RPMI)"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on PM
+	depends on MAILBOX
+	select PM_GENERIC_DOMAINS
+	help
+	  Support for SpacemiT K3 SoC power domains. The domains are
+	  controlled by the power management firmware over the RISC-V
+	  RPMI device-power service group via the SBI MPXY mailbox.

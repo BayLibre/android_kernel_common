@@ -93,6 +93,7 @@ static inline int rpmi_to_linux_error(int rpmi_error)
 /* RPMI service group IDs */
 #define RPMI_SRVGRP_SYSTEM_MSI		0x00002
 #define RPMI_SRVGRP_CLOCK		0x00008
+#define RPMI_SRVGRP_DEVICE_POWER	0x00009
 
 /* RPMI clock service IDs */
 enum rpmi_clock_service_id {
@@ -105,6 +106,16 @@ enum rpmi_clock_service_id {
 	RPMI_CLK_SRV_SET_RATE = 0x07,
 	RPMI_CLK_SRV_GET_RATE = 0x08,
 	RPMI_CLK_SRV_ID_MAX_COUNT
+};
+
+/* RPMI device power service IDs */
+enum rpmi_domain_service_id {
+	RPMI_DOMAIN_SRV_ENABLE_NOTIFICATION = 0x01,
+	RPMI_DOMAIN_SRV_GET_NUM_DOMAINS = 0x02,
+	RPMI_DOMAIN_SRV_GET_ATTRIBUTES = 0x03,
+	RPMI_DOMAIN_SRV_SET_STATE = 0x04,
+	RPMI_DOMAIN_SRV_GET_STATE = 0x05,
+	RPMI_DOMAIN_SRV_ID_MAX_COUNT,
 };
 
 /* RPMI system MSI service IDs */
