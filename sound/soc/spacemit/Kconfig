@@ -12,4 +12,14 @@ config SND_SOC_K1_I2S
 	  K1 I2S controller. The device supports up to maximum of
 	  2 channels each for play and record.
 
+config SND_SOC_K3_RI2S
+	tristate "K3 RI2S Device Driver"
+	select SND_SOC_GENERIC_DMAENGINE_PCM
+	help
+	  Say Y or M to add support for the RI2S ASoC CPU DAI on the
+	  SpacemiT K3 SoC. The RI2S controllers live in the RCPU audio
+	  domain and feed audio through the ADMA cyclic DMA engine; on
+	  the Muse Pico-ITX the ri2s3 instance carries DisplayPort audio
+	  to the inno-dp-audio codec.
+
 endmenu
