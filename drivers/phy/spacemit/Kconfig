@@ -31,3 +31,27 @@ config PHY_SPACEMIT_K1X_COMBPHY
 	default SOC_SPACEMIT_K1X && USB_DWC3_SPACEMIT
 	help
 	  USB3 and PCIE Combo PHY Support for Spacemit k1-x Soc
+
+config PHY_SPACEMIT_K3_USB3
+	tristate "SpacemiT K3 USB 3.0 PHY support"
+	depends on (ARCH_SPACEMIT || COMPILE_TEST) && OF
+	depends on COMMON_CLK
+	depends on USB_COMMON
+	depends on TYPEC || TYPEC=n
+	select GENERIC_PHY
+	help
+	  Enable this to support K3 USB 3.0 PHY driver. This driver takes care of
+	  enabling and clock setup and will be used by K3 dwc3 driver. It also
+	  exposes the Type-C orientation switch built into the combo PHY.
+
+config PHY_SPACEMIT_K3_PCIE
+	tristate "SpacemiT K3 PCIe PHY support"
+	depends on (ARCH_SPACEMIT || COMPILE_TEST) && OF
+	depends on COMMON_CLK
+	depends on HAS_IOMEM
+	select GENERIC_PHY
+	help
+	  Enable this to support the K3 PCIe PHY driver.  It exposes the PCIe
+	  PHY initialisation sequence (lane setup, PLL lock and RCAL trim) via
+	  the generic PHY framework so the K3 PCIe controller can be wired up
+	  through the standard DT "phys" binding.

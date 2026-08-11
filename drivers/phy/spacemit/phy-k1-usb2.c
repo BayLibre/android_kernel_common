@@ -48,8 +48,11 @@
 #define  PHY_CLK_HSTXP_EN		BIT(3)		/* clock hstxp enable */
 #define  PHY_HSTXP_MODE			BIT(4)		/* 0: force en_txp to be 1; 1: no force */
 
-#define PHY_K1_HS_HOST_DISC		0x40
-#define  PHY_K1_HS_HOST_DISC_CLR		BIT(0)
+#define PHY_HS_HOST_DISC		0x40
+#define  PHY_HS_HOST_DISC_CLR		BIT(0)
+
+#define PHY_HS_HOST_DISC2		0x20
+#define  PHY_HS_HOST_DISC2_CLR		BIT(8)
 
 #define PHY_PLL_DIV_CFG			0x98
 #define  PHY_FDIV_FRACT_8_15		GENMASK(7, 0)
@@ -148,8 +151,12 @@ static int spacemit_usb2phy_disconnect(struct phy *phy, int port)
 {
 	struct spacemit_usb2phy *sphy = phy_get_drvdata(phy);
 
-	regmap_update_bits(sphy->regmap_base, PHY_K1_HS_HOST_DISC,
-			   PHY_K1_HS_HOST_DISC_CLR, PHY_K1_HS_HOST_DISC_CLR);
+	if (device_is_compatible(&phy->dev, "spacemit,k3-usb2-phy"))
+		regmap_update_bits(sphy->regmap_base, PHY_HS_HOST_DISC2,
+				   PHY_HS_HOST_DISC2_CLR, PHY_HS_HOST_DISC2_CLR);
+	else
+		regmap_update_bits(sphy->regmap_base, PHY_HS_HOST_DISC,
+				   PHY_HS_HOST_DISC_CLR, PHY_HS_HOST_DISC_CLR);
 
 	return 0;
 }
@@ -172,7 +179,7 @@ static int spacemit_usb2phy_probe(struct platform_device *pdev)
 	if (!sphy)
 		return -ENOMEM;
 
-	sphy->clk = devm_clk_get_prepared(&pdev->dev, NULL);
+	sphy->clk = devm_clk_get_optional_prepared(&pdev->dev, NULL);
 	if (IS_ERR(sphy->clk))
 		return dev_err_probe(dev, PTR_ERR(sphy->clk), "Failed to get clock\n");
 
@@ -196,6 +203,7 @@ static int spacemit_usb2phy_probe(struct platform_device *pdev)
 
 static const struct of_device_id spacemit_usb2phy_dt_match[] = {
 	{ .compatible = "spacemit,k1-usb2-phy", },
+	{ .compatible = "spacemit,k3-usb2-phy", },
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(of, spacemit_usb2phy_dt_match);
