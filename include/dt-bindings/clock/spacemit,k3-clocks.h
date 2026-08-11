@@ -386,6 +386,8 @@
 #define CLK_APMU_PCIE_PORTD_BUS  92
 #define CLK_APMU_PCIE_PORTE_BUS  93
 #define CLK_APMU_UFS_REFCLK      94
+#define CLK_APMU_CPU_C1_PLL_SRC  95
+#define CLK_APMU_CPU_C3_PLL_SRC  96
 
 /* DCIU clocks */
 #define CLK_DCIU_HDMA            0

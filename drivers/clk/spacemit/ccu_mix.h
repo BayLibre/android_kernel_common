@@ -55,6 +55,7 @@ struct ccu_mix {
 	{ .shift = _shift, .width = _width, .flags = _flags }
 #define CCU_GATE_FLAGS_INIT(_mask, _inverted)	{ .mask = _mask, .inverted = _inverted }
 
+#define CCU_PARENT_HW_NULL()		{ .hw = NULL }
 #define CCU_PARENT_HW(_parent)		{ .hw = &_parent.common.hw }
 #define CCU_PARENT_NAME(_name)		{ .fw_name = #_name }
 
@@ -221,6 +222,20 @@ static struct ccu_mix _name = {							\
 #define CCU_MUX_FC_DEFINE(_name, _parents, _reg_ctrl, _mask_fc,	_muxshift,	\
 			  _muxwidth, _flags)					\
 static struct ccu_mix _name = {							\
+	.mux	= CCU_MUX_INIT(_muxshift, _muxwidth),				\
+	.common = {								\
+		.reg_ctrl	= _reg_ctrl,					\
+		.reg_fc		= _reg_ctrl,					\
+		.mask_fc	= _mask_fc,					\
+		CCU_MIX_INITHW_PARENTS(_name, _parents, spacemit_ccu_mux_ops,	\
+				       _flags)					\
+	},									\
+}
+
+#define CCU_MUX_GATE_FC_DEFINE(_name, _parents, _reg_ctrl, _mask_fc, _muxshift,	\
+			  _muxwidth, _mask_gate, _flags)\
+static struct ccu_mix _name = {							\
+	.gate	= CCU_GATE_INIT(_mask_gate),					\
 	.mux	= CCU_MUX_INIT(_muxshift, _muxwidth),				\
 	.common = {								\
 		.reg_ctrl	= _reg_ctrl,					\

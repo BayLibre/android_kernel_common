@@ -81,13 +81,15 @@ CCU_FACTOR_GATE_DEFINE(pll1_d5, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(4), 5,
 CCU_FACTOR_GATE_DEFINE(pll1_d6, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(5), 6, 1);
 CCU_FACTOR_GATE_DEFINE(pll1_d7, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(6), 7, 1);
 /*
- * pll1_d8 is the root of the entire MPMU always-on tree (see the comment on
- * that block below). Live-SoC module: firmware already enabled it, so keep it
- * on with CLK_IGNORE_UNUSED rather than force-enabling (which would re-lock
- * the PLL1 parent) at registration.
+ * pll1_d8 roots the entire MPMU always-on tree. It must be CLK_IS_CRITICAL,
+ * not merely CLK_IGNORE_UNUSED: IGNORE_UNUSED only skips the boot-time unused
+ * sweep, so once a leaf consumer drops the tree's last reference the gate is
+ * closed at runtime and the SoC wedges. The gate enable is an idempotent
+ * write of the SWCR2 bit (ccu_gate_enable, no PLL re-lock -- that only happens
+ * on set_rate), so pinning an already-on gate at registration is safe.
  */
 CCU_FACTOR_GATE_FLAGS_DEFINE(pll1_d8, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, BIT(7), 8, 1,
-			     CLK_IGNORE_UNUSED);
+			     CLK_IS_CRITICAL);
 CCU_DIV_GATE_DEFINE(pll1_dx, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2, 23, 5, BIT(22), 0);
 CCU_FACTOR_GATE_FLAGS_DEFINE(pll1_d64_38p4, CCU_PARENT_HW(pll1), APBS_PLL1_SWCR2,
 			     BIT(31), 64, 1, CLK_IGNORE_UNUSED);
@@ -170,13 +172,10 @@ CCU_FACTOR_GATE_DEFINE(pll8_d8, CCU_PARENT_HW(pll8), APBS_PLL8_SWCR2, BIT(7), 8,
 
 /* MPMU clocks start */
 /*
- * The vendor kernel marks the always-on root clocks below CLK_IS_CRITICAL.
- * That would force-enable them (parent chain and PLL lock polls included)
- * while the provider registers, but this driver probes from module context
- * on a live system, before all parent providers exist: a failing enable
- * fails the whole provider probe and every consumer with it. Use
- * CLK_IGNORE_UNUSED instead, which documents the always-on intent without
- * touching the hardware at registration.
+ * These MPMU divider roots are always-on and CLK_IS_CRITICAL, matching the
+ * vendor: they must never be gated at runtime, and their gate enable is an
+ * idempotent bit set (ccu_gate_enable, no PLL re-lock) so pinning them at
+ * registration is safe even though this driver probes from module context.
  */
 CCU_GATE_DEFINE(pll1_d8_307p2, CCU_PARENT_HW(pll1_d8), MPMU_ACGR, BIT(13), CLK_IS_CRITICAL);
 CCU_FACTOR_DEFINE(pll1_d32_76p8, CCU_PARENT_HW(pll1_d8_307p2), 4, 1);
@@ -262,11 +261,11 @@ CCU_MUX_DEFINE(i2s3_sysclk_sel, i2s_sysclk_parents, MPMU_I2S_SYSCLK_CTRL, 12, 2,
 CCU_MUX_DEFINE(i2s4_sysclk_sel, i2s_sysclk_parents, MPMU_I2S_SYSCLK_CTRL, 16, 2, 0);
 CCU_MUX_DEFINE(i2s5_sysclk_sel, i2s_sysclk_parents, MPMU_I2S_SYSCLK_CTRL, 20, 2, 0);
 
-CCU_DDN_DEFINE(i2s0_sysclk_div, i2s0_sysclk_sel, MPMU_I2S0_SYSCLK, 0, 16, 16, 16, 1, 0);
-CCU_DDN_DEFINE(i2s2_sysclk_div, i2s2_sysclk_sel, MPMU_I2S2_SYSCLK, 0, 16, 16, 16, 1, 0);
-CCU_DDN_DEFINE(i2s3_sysclk_div, i2s3_sysclk_sel, MPMU_I2S3_SYSCLK, 0, 16, 16, 16, 1, 0);
-CCU_DDN_DEFINE(i2s4_sysclk_div, i2s4_sysclk_sel, MPMU_I2S4_SYSCLK, 0, 16, 16, 16, 1, 0);
-CCU_DDN_DEFINE(i2s5_sysclk_div, i2s5_sysclk_sel, MPMU_I2S5_SYSCLK, 0, 16, 16, 16, 1, 0);
+CCU_DDN_DEFINE(i2s0_sysclk_div, i2s0_sysclk_sel, MPMU_I2S0_SYSCLK, 0, 16, 16, 16, 2, 0);
+CCU_DDN_DEFINE(i2s2_sysclk_div, i2s2_sysclk_sel, MPMU_I2S2_SYSCLK, 0, 16, 16, 16, 2, 0);
+CCU_DDN_DEFINE(i2s3_sysclk_div, i2s3_sysclk_sel, MPMU_I2S3_SYSCLK, 0, 16, 16, 16, 2, 0);
+CCU_DDN_DEFINE(i2s4_sysclk_div, i2s4_sysclk_sel, MPMU_I2S4_SYSCLK, 0, 16, 16, 16, 2, 0);
+CCU_DDN_DEFINE(i2s5_sysclk_div, i2s5_sysclk_sel, MPMU_I2S5_SYSCLK, 0, 16, 16, 16, 2, 0);
 
 static const struct clk_parent_data i2s2_sysclk_parents[] = {
 	CCU_PARENT_HW(i2s1_sysclk),
@@ -598,66 +597,83 @@ static const struct clk_parent_data cci550_clk_parents[] = {
 	CCU_PARENT_HW(pll7_d2),
 };
 /*
- * Same rationale as the MPMU always-on roots above: these APMU clocks are
- * always-on in hardware, but force-enabling them from module context on a
- * live system (walking and re-locking the CPU/interconnect PLL parent chain
- * while the CPUs are running on it) wedges the fabric during registration.
- * Use CLK_IGNORE_UNUSED to keep them on without touching hardware at probe.
+ * cci550_clk (coherent interconnect) is a mux+gate with no divider, matching
+ * the vendor: the earlier mux_div form exposed a spurious set_rate path that
+ * could rewrite the divider bits of the live interconnect. It and the
+ * cpu_cX_core_clk roots below have no active gate op (cci550 uses mux ops; the
+ * cpu roots use mux_div ops), so they cannot be closed directly -- but they
+ * must be CLK_IS_CRITICAL like the vendor so they hold a permanent enable
+ * reference up their PLL parent chain. Without it, a leaf consumer releasing
+ * the tree's last reference collapses the shared interconnect/CPU clock and
+ * wedges every hart. CRITICAL is a pure refcount pin here (no .enable op), so
+ * it never touches hardware at registration.
  */
-CCU_MUX_DIV_FC_DEFINE(cci550_clk, cci550_clk_parents, APMU_CCI550_CLK_CTRL, 8, 2, BIT(12), 0, 3,
-		      CLK_IGNORE_UNUSED);
+CCU_MUX_GATE_FC_DEFINE(cci550_clk, cci550_clk_parents, APMU_CCI550_CLK_CTRL, BIT(12), 0, 3, BIT(13),
+		       CLK_IS_CRITICAL);
 
 static const struct clk_parent_data cpu_c0_clk_parents[] = {
 	CCU_PARENT_HW(pll1_d3_819p2),
 	CCU_PARENT_HW(pll1_d5_491p52),
 	CCU_PARENT_HW(pll1_d4_614p4),
 	CCU_PARENT_HW(pll2_d3),
-	CCU_PARENT_HW(pll3_d2),
+	CCU_PARENT_HW_NULL(),
 	CCU_PARENT_HW(pll1_d2_1228p8),
 	CCU_PARENT_HW(pll2_d2),
 	CCU_PARENT_HW(pll3_d1),
 };
 CCU_MUX_DIV_FC_DEFINE(cpu_c0_core_clk, cpu_c0_clk_parents, APMU_CPU_C0_CLK_CTRL,
-		      3, 3, BIT(12), 0, 3, CLK_IGNORE_UNUSED);
+		      3, 3, BIT(12), 0, 3, CLK_IS_CRITICAL | CCU_DIV_VALID_FIRST4_SRC_FLAG);
+
+static const struct clk_parent_data cpu_c1_pll_src_parents[] = {
+	CCU_PARENT_HW(pll4_d1),
+	CCU_PARENT_HW(pll3_d1),
+};
+CCU_MUX_DEFINE(cpu_c1_pll_src, cpu_c1_pll_src_parents, APMU_CPU_C1_CLK_CTRL, 13, 1, 0);
 
 static const struct clk_parent_data cpu_c1_clk_parents[] = {
 	CCU_PARENT_HW(pll1_d3_819p2),
 	CCU_PARENT_HW(pll1_d5_491p52),
 	CCU_PARENT_HW(pll1_d4_614p4),
 	CCU_PARENT_HW(pll2_d3),
-	CCU_PARENT_HW(pll4_d2),
+	CCU_PARENT_HW_NULL(),
 	CCU_PARENT_HW(pll1_d2_1228p8),
 	CCU_PARENT_HW(pll2_d2),
-	CCU_PARENT_HW(pll4_d1),
+	CCU_PARENT_HW(cpu_c1_pll_src),
 };
 CCU_MUX_DIV_FC_DEFINE(cpu_c1_core_clk, cpu_c1_clk_parents, APMU_CPU_C1_CLK_CTRL,
-		      3, 3, BIT(12), 0, 3, CLK_IGNORE_UNUSED);
+		      3, 3, BIT(12), 0, 3, CLK_IS_CRITICAL | CCU_DIV_VALID_FIRST4_SRC_FLAG);
 
 static const struct clk_parent_data cpu_c2_clk_parents[] = {
 	CCU_PARENT_HW(pll1_d3_819p2),
 	CCU_PARENT_HW(pll1_d5_491p52),
 	CCU_PARENT_HW(pll1_d4_614p4),
 	CCU_PARENT_HW(pll2_d3),
-	CCU_PARENT_HW(pll5_d2),
+	CCU_PARENT_HW_NULL(),
 	CCU_PARENT_HW(pll1_d2_1228p8),
 	CCU_PARENT_HW(pll2_d2),
 	CCU_PARENT_HW(pll5_d1),
 };
 CCU_MUX_DIV_FC_DEFINE(cpu_c2_core_clk, cpu_c2_clk_parents, APMU_CPU_C2_CLK_CTRL,
-		      3, 3, BIT(12), 0, 3, CLK_IGNORE_UNUSED);
+		      3, 3, BIT(12), 0, 3, CLK_IS_CRITICAL | CCU_DIV_VALID_FIRST4_SRC_FLAG);
+
+static const struct clk_parent_data cpu_c3_pll_src_parents[] = {
+	CCU_PARENT_HW(pll8_d1),
+	CCU_PARENT_HW(pll5_d1),
+};
+CCU_MUX_DEFINE(cpu_c3_pll_src, cpu_c3_pll_src_parents, APMU_CPU_C3_CLK_CTRL, 13, 1, 0);
 
 static const struct clk_parent_data cpu_c3_clk_parents[] = {
 	CCU_PARENT_HW(pll1_d3_819p2),
 	CCU_PARENT_HW(pll1_d5_491p52),
 	CCU_PARENT_HW(pll1_d4_614p4),
 	CCU_PARENT_HW(pll2_d3),
-	CCU_PARENT_HW(pll8_d2),
+	CCU_PARENT_HW_NULL(),
 	CCU_PARENT_HW(pll1_d2_1228p8),
 	CCU_PARENT_HW(pll2_d2),
-	CCU_PARENT_HW(pll8_d1),
+	CCU_PARENT_HW(cpu_c3_pll_src),
 };
 CCU_MUX_DIV_FC_DEFINE(cpu_c3_core_clk, cpu_c3_clk_parents, APMU_CPU_C3_CLK_CTRL,
-		      3, 3, BIT(12), 0, 3, CLK_IGNORE_UNUSED);
+		      3, 3, BIT(12), 0, 3, CLK_IS_CRITICAL | CCU_DIV_VALID_FIRST4_SRC_FLAG);
 
 static const struct clk_parent_data ccic2phy_parents[] = {
 	CCU_PARENT_HW(pll1_d24_102p4),
@@ -682,7 +698,7 @@ static const struct clk_parent_data csi_parents[] = {
 	CCU_PARENT_HW(pll1_d2_1228p8),
 };
 CCU_MUX_DIV_GATE_FC_DEFINE(csi_clk, csi_parents, APMU_CSI_CCIC2_CLK_RES_CTRL, 20, 3, BIT(15),
-			   16, 3, BIT(4), 0);
+			   16, 3, BIT(4), CCU_DIV_VALID_FIRST4_SRC_FLAG);
 
 static const struct clk_parent_data isp_bus_parents[] = {
 	CCU_PARENT_HW(pll1_d6_409p6),
@@ -766,7 +782,7 @@ static const struct clk_parent_data ccic_4x_parents[] = {
 	CCU_PARENT_HW(pll1_d2_1228p8),
 };
 CCU_MUX_DIV_GATE_FC_DEFINE(ccic_4x_clk, ccic_4x_parents, APMU_CCIC_CLK_RES_CTRL, 18, 3,
-			   BIT(15), 23, 2, BIT(4), 0);
+			   BIT(15), 23, 2, BIT(4), CCU_DIV_VALID_FIRST4_SRC_FLAG);
 
 static const struct clk_parent_data ccic1phy_parents[] = {
 	CCU_PARENT_HW(pll1_d24_102p4),
@@ -849,7 +865,7 @@ static const struct clk_parent_data vpu_parents[] = {
 	CCU_PARENT_HW(pll2_d5),
 };
 CCU_MUX_DIV_GATE_FC_DEFINE(vpu_clk, vpu_parents, APMU_VPU_CLK_RES_CTRL, 13, 3,
-			   BIT(21), 10, 3, BIT(3), 0);
+			   BIT(21), 10, 3, BIT(3), CCU_DIV_VALID_FIRST4_SRC_FLAG);
 
 CCU_GATE_DEFINE(dtc_clk, CCU_PARENT_HW(axi_clk), APMU_DTC_CLK_RES_CTRL, BIT(3), 0);
 
@@ -864,7 +880,7 @@ static const struct clk_parent_data gpu_parents[] = {
 	CCU_PARENT_HW(pll2_d5),
 };
 CCU_MUX_DIV_GATE_FC_DEFINE(gpu_clk, gpu_parents, APMU_GPU_CLK_RES_CTRL, 12, 3,
-			   BIT(15), 18, 3, BIT(4), 0);
+			   BIT(15), 18, 3, BIT(4), CCU_DIV_VALID_FIRST4_SRC_FLAG);
 
 CCU_GATE_DEFINE(mc_ahb_clk, CCU_PARENT_HW(axi_clk), APMU_PMUA_MC_CTRL, BIT(1), 0);
 
@@ -879,7 +895,7 @@ static const struct clk_parent_data top_parents[] = {
 	CCU_PARENT_HW(pll6_d3),
 };
 CCU_MUX_DIV_GATE_FC_DEFINE(top_dclk, top_parents, APMU_TOP_DCLK_CTRL, 5, 3,
-			   BIT(8), 2, 3, BIT(1), CLK_IGNORE_UNUSED | CCU_DIV_VALID_FIRST4_SRC_FLAG);
+			   BIT(8), 2, 3, BIT(1), CLK_IS_CRITICAL | CCU_DIV_VALID_FIRST4_SRC_FLAG);
 
 static const struct clk_parent_data ucie_parents[] = {
 	CCU_PARENT_HW(pll1_d8_307p2),
@@ -1415,6 +1431,8 @@ static struct clk_hw *k3_ccu_apmu_hws[] = {
 	[CLK_APMU_CPU_C1_CORE]		= &cpu_c1_core_clk.common.hw,
 	[CLK_APMU_CPU_C2_CORE]		= &cpu_c2_core_clk.common.hw,
 	[CLK_APMU_CPU_C3_CORE]		= &cpu_c3_core_clk.common.hw,
+	[CLK_APMU_CPU_C1_PLL_SRC]	= &cpu_c1_pll_src.common.hw,
+	[CLK_APMU_CPU_C3_PLL_SRC]	= &cpu_c3_pll_src.common.hw,
 	[CLK_APMU_CCIC2PHY]		= &ccic2phy_clk.common.hw,
 	[CLK_APMU_CCIC3PHY]		= &ccic3phy_clk.common.hw,
 	[CLK_APMU_CSI]			= &csi_clk.common.hw,
