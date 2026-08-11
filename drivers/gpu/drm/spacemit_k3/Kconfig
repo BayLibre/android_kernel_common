@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: GPL-2.0
+
+config DRM_SPACEMIT_K3
+	tristate "DRM Support for Spacemit K3 (saturn-hee) display"
+	depends on DRM && (ARCH_SPACEMIT || COMPILE_TEST)
+	help
+	  K3-generation (saturn-hee/saturn-edp) display support for Spacemit
+	  SoCs.  This is a distinct hardware revision from the K1 'saturn'
+	  generation handled by CONFIG_DRM_SPACEMIT; the two are not drop-in
+	  compatible and are built as separate modules.  Enabling this option
+	  only pulls in the K3-specific drivers selected below and does not
+	  affect the K1 spacemit-drm driver.
+
+config DRM_SPACEMIT_K3_DPU
+	tristate "Spacemit K3 DPU master + CRTC (scan-out)"
+	depends on DRM_SPACEMIT_K3
+	depends on COMMON_CLK && RESET_CONTROLLER
+	depends on I2C
+	select DRM_KMS_HELPER
+	select DRM_GEM_DMA_HELPER
+	select DRM_GEM_CMA_HELPER
+	select DRM_KMS_CMA_HELPER
+	select DRM_MIPI_DSI
+	select DRM_PANEL
+	select DRM_CLIENT_SELECTION
+	select DRM_FBDEV_EMULATION
+	select VIDEOMODE_HELPERS
+	select BACKLIGHT_CLASS_DEVICE
+	help
+	  K3-generation DPU master driver: registers the drm_device and the
+	  CRTC/scan-out (binds spacemit,saturn-hee / saturn-edp for the master
+	  and spacemit,dpu-saturn for the CRTC), and calls component_bind_all()
+	  so the K3 DSI/DPHY/DP sub-drivers attach.  Built as spacemit-drm-k3.ko,
+	  a separate module from the K1 spacemit-drm.ko; their of_match tables
+	  are disjoint so the two coexist in the same tree.  Requires runtime PM,
+	  the common clock framework and a reset controller.
+
+config SPACEMIT_INNO_DP
+	tristate "Spacemit K3 Innosilicon DP/eDP support"
+	depends on DRM_SPACEMIT_K3
+	select DRM_DISPLAY_HELPER
+	select DRM_DISPLAY_DP_HELPER
+	select DRM_DISPLAY_DP_AUX_BUS
+	select DRM_KMS_HELPER
+	help
+	  Support for the Spacemit K3 SoC Innosilicon DisplayPort / embedded
+	  DisplayPort controller.  Binds spacemit,inno-{dp,edp}{0,1}.  Builds
+	  as a self-contained module (spacemit_inno_dp.ko) that joins the DRM
+	  device through the component framework; it does not link against the
+	  K1 spacemit-drm driver.
