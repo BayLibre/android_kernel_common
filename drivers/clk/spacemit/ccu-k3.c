@@ -5,6 +5,7 @@
 
 #include <linux/array_size.h>
 #include <linux/bitops.h>
+#include <linux/clk.h>
 #include <linux/clk-provider.h>
 #include <linux/module.h>
 #include <linux/of.h>
@@ -1630,7 +1631,13 @@ static const struct k3_ccu_block {
 	{ &k3_ccu_apbc_data,	K3_CCU_APBC,	BIT(K3_CCU_PLL) | BIT(K3_CCU_MPMU) },
 	{ &k3_ccu_apmu_data,	K3_CCU_APMU,	BIT(K3_CCU_PLL) | BIT(K3_CCU_MPMU) },
 	{ &k3_ccu_dciu_data,	K3_CCU_DCIU,	BIT(K3_CCU_APMU) },
-	{ &k3_ccu_rcpu_i2sctrl_data, K3_CCU_RCPU_I2SCTRL, BIT(K3_CCU_PLL) },
+	/*
+	 * The RCPU I2S control registers sit on the RCPU AXI island, behind a
+	 * bus clock the APMU provides, so this block cannot be touched before
+	 * the APMU one has registered.
+	 */
+	{ &k3_ccu_rcpu_i2sctrl_data, K3_CCU_RCPU_I2SCTRL,
+	  BIT(K3_CCU_PLL) | BIT(K3_CCU_APMU) },
 };
 
 static unsigned long k3_ccu_registered_blocks;
@@ -1639,6 +1646,7 @@ static int k3_ccu_probe(struct platform_device *pdev)
 {
 	const struct spacemit_ccu_data *data = of_device_get_match_data(&pdev->dev);
 	const struct k3_ccu_block *block = NULL;
+	struct clk *bus;
 	int i, ret;
 
 	for (i = 0; i < ARRAY_SIZE(k3_ccu_blocks); i++) {
@@ -1655,6 +1663,16 @@ static int k3_ccu_probe(struct platform_device *pdev)
 		return dev_err_probe(&pdev->dev, -EPROBE_DEFER,
 				     "waiting for parent CCU blocks\n");
 	}
+
+	/*
+	 * Most blocks are always reachable, but one lives behind a bus clock
+	 * that another controller owns.  Enable it, if the node names one,
+	 * before anything reads a register here.
+	 */
+	bus = devm_clk_get_optional_enabled(&pdev->dev, NULL);
+	if (IS_ERR(bus))
+		return dev_err_probe(&pdev->dev, PTR_ERR(bus),
+				     "failed to enable the bus clock\n");
 
 	ret = spacemit_ccu_probe(pdev, "spacemit,k3-pll");
 	if (ret)
