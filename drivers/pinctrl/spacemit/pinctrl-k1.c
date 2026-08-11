@@ -637,10 +637,15 @@ static int spacemit_request_gpio(struct pinctrl_dev *pctldev,
 	struct spacemit_pinctrl *pctrl = pinctrl_dev_get_drvdata(pctldev);
 	const struct spacemit_pin *spin = spacemit_get_pin(pctrl, pin);
 	void __iomem *reg;
+	u32 val;
 
 	reg = spacemit_pin_to_reg(pctrl, pin);
+
 	guard(raw_spinlock_irqsave)(&pctrl->lock);
-	writel_relaxed(spin->gpiofunc, reg);
+	val = readl_relaxed(reg);
+	val &= ~PAD_MUX;
+	val |= spin->gpiofunc;
+	writel_relaxed(val, reg);
 
 	return 0;
 }
@@ -651,7 +656,7 @@ static const struct pinmux_ops spacemit_pmx_ops = {
 	.get_function_groups	= pinmux_generic_get_function_groups,
 	.set_mux		= spacemit_pmx_set_mux,
 	.gpio_request_enable	= spacemit_request_gpio,
-	.strict			= true,
+	.strict			= false,
 };
 
 static int spacemit_pinconf_get(struct pinctrl_dev *pctldev,
