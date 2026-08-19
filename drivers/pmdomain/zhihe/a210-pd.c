@@ -32,6 +32,22 @@
 static struct dentry *pd_debugfs_root;
 static struct dentry *pd_pde;
 
+/*
+ * NOT looked up via dev_get_drvdata()/dev_set_drvdata() across separate
+ * probe() attempts: the driver core's really_probe() explicitly resets a
+ * device's drvdata to NULL whenever .probe() returns an error, as part of
+ * its own failure cleanup - so a retried probe() can never see a previous
+ * attempt's state that way. dev_set_drvdata() is still called every attempt
+ * purely so the *rest* of this file (a210_add_one_domain(),
+ * a210_init_pm_domains(), a210_pd_parse_regulators(), a210_pd_remove()) can
+ * fetch it via dev_get_drvdata() during that same, single, still-in-flight
+ * probe() call - only the entry point in a210_pd_probe() that decides
+ * "fresh probe or retry" needs something the driver core won't touch.
+ * There's only ever one "soc:a210-power-domain" device on this SoC, so a
+ * plain singleton is correct here, not a multi-instance driver hazard.
+ */
+static struct a210_pd_soc *a210_pd_soc_singleton;
+
 static inline struct a210_pm_domain *to_a210_pd(struct generic_pm_domain *domain)
 {
 	return container_of(domain, struct a210_pm_domain, pd);
@@ -301,6 +317,10 @@ static const struct file_operations a210_power_domain_fops = {
 
 static void pd_debugfs_init(struct a210_pd_soc *soc)
 {
+	/* Idempotent: a210_pd_probe() may run this again on a retried attempt. */
+	if (pd_debugfs_root)
+		return;
+
 	pd_debugfs_root = debugfs_create_dir("power_domain", NULL);
 	if (IS_ERR_OR_NULL(pd_debugfs_root))
 		return;
@@ -344,10 +364,49 @@ static void __iomem *a210_ioremap_resource_by_node(struct device *dev, struct de
 		return ERR_PTR(ret);
 	}
 
-	addr = devm_ioremap_resource(dev, res);
+	/*
+	 * Not devm_ioremap_resource(): this mapping is owned by the
+	 * a210_pm_domain struct below, which now outlives a single failed
+	 * probe() attempt (see a210_pd_probe()) - a devm mapping would be
+	 * torn down by devres_release_all() the moment probe() returns an
+	 * error for a *different*, still-deferred domain, leaving this one's
+	 * pca/bpc/pcu_base dangling even though its own registration is fine.
+	 */
+	addr = ioremap(res->start, resource_size(res));
 	kfree(res);
 
-	return addr;
+	return addr ?: ERR_PTR(-ENOMEM);
+}
+
+static struct a210_pm_domain *a210_pd_find(struct a210_pd_soc *pd_soc,
+					    struct device_node *np)
+{
+	u32 i;
+
+	for (i = 0; i < pd_soc->num_domains; i++)
+		if (pd_soc->domains[i]->np == np)
+			return pd_soc->domains[i];
+
+	return NULL;
+}
+
+/*
+ * Swap-removes a domain from pd_soc->domains[] if present - a no-op if not
+ * (the domain never got past pm_genpd_init()/of_genpd_add_provider_simple(),
+ * so it was never added in the first place). Order doesn't matter: the array
+ * is only ever searched by np, never iterated for ordering.
+ */
+static void a210_pd_forget(struct a210_pd_soc *pd_soc,
+			   struct a210_pm_domain *a210_pd)
+{
+	u32 i;
+
+	for (i = 0; i < pd_soc->num_domains; i++) {
+		if (pd_soc->domains[i] != a210_pd)
+			continue;
+		pd_soc->domains[i] = pd_soc->domains[--pd_soc->num_domains];
+		return;
+	}
 }
 
 static int a210_add_one_domain(struct platform_device *pdev, struct device_node *np)
@@ -357,70 +416,125 @@ static int a210_add_one_domain(struct platform_device *pdev, struct device_node 
 	struct a210_pm_domain *a210_pd;
 	int ret;
 
-	a210_pd = devm_kzalloc(dev, sizeof(*a210_pd), GFP_KERNEL);
-	if (!a210_pd)
-		return -ENOMEM;
+	/*
+	 * A domain whose genpd + OF provider already registered on an
+	 * earlier attempt, but whose reset/clk fetch then hit
+	 * -EPROBE_DEFER, is looked up here instead of allocated fresh.
+	 * Repeating pm_genpd_init()/of_genpd_add_provider_simple() for the
+	 * same np on every retry corrupts genpd's own kobject/debugfs
+	 * bookkeeping for that domain - confirmed via "debugfs: '<domain>'
+	 * already exists in 'pm_genpd'" immediately followed by a
+	 * refcount_t underflow in pm_genpd_remove()'s device_link teardown.
+	 * A single occurrence just looks like a WARN()-and-continue, but
+	 * enough retries (e.g. a slow console stretching out the
+	 * deferred-probe window) reproduce it as a full boot hang instead.
+	 */
+	a210_pd = a210_pd_find(pd_soc, np);
+	if (!a210_pd) {
+		/*
+		 * Plain kzalloc, not devm: this struct is recorded in
+		 * pd_soc->domains[] and must survive a failed probe() return
+		 * for a *different* domain (see a210_init_pm_domains()'s
+		 * idempotent retry) instead of being freed by
+		 * devres_release_all() out from under an already-registered
+		 * genpd/provider.
+		 */
+		a210_pd = kzalloc(sizeof(*a210_pd), GFP_KERNEL);
+		if (!a210_pd)
+			return -ENOMEM;
 
-	int id = a210_domain_lookup(np);
-	if (id < 0) {
-		return -ENODEV;
+		int id = a210_domain_lookup(np);
+		if (id < 0) {
+			kfree(a210_pd);
+			return -ENODEV;
+		}
+
+		a210_pd->index = id;
+		a210_pd->np = np;
+		a210_pd->pd.name = np->name;
+		a210_pd->pd.power_off = a210_pd_power_off;
+		a210_pd->pd.power_on = a210_pd_power_on;
+		a210_pd->soc = pd_soc;
+
+		a210_pd->pca_base = a210_ioremap_resource_by_node(dev, np, "pca");
+		a210_pd->bpc_base = a210_ioremap_resource_by_node(dev, np, "bpc");
+		a210_pd->pcu_base = a210_ioremap_resource_by_node(dev, np, "pcu");
+
+		ret = pm_genpd_init(&a210_pd->pd, NULL, true);
+		if (ret) {
+			dev_err(dev, "failed to init power domain %s index %d",
+				a210_pd->pd.name, a210_pd->index);
+			if (!IS_ERR(a210_pd->pca_base))
+				iounmap(a210_pd->pca_base);
+			if (!IS_ERR(a210_pd->bpc_base))
+				iounmap(a210_pd->bpc_base);
+			if (!IS_ERR(a210_pd->pcu_base))
+				iounmap(a210_pd->pcu_base);
+			kfree(a210_pd);
+			return -ENODEV;
+		}
+
+		ret = of_genpd_add_provider_simple(np, &a210_pd->pd);
+		if (ret) {
+			dev_err(dev, "failed to add PM domain provider for %pOFn: %d\n",
+				np, ret);
+			goto remove_genpd;
+		}
+
+		/*
+		 * genpd + OF provider are up now, regardless of whether
+		 * reset/clk fetch below succeeds - record the domain
+		 * immediately (not only after a full success, like before
+		 * this fix) so a retry finds it via a210_pd_find() above
+		 * instead of redoing the two calls above.
+		 */
+		pd_soc->domains[pd_soc->num_domains++] = a210_pd;
 	}
 
-	a210_pd->index = id;
-	a210_pd->pd.name = np->name;
-	a210_pd->pd.power_off = a210_pd_power_off;
-	a210_pd->pd.power_on = a210_pd_power_on;
-	a210_pd->soc = pd_soc;
+	if (!a210_pd->reset_done) {
+		struct reset_control *rst = of_reset_control_array_get_optional_shared(np);
 
-	a210_pd->pca_base = a210_ioremap_resource_by_node(dev, np, "pca");
-	a210_pd->bpc_base = a210_ioremap_resource_by_node(dev, np, "bpc");
-	a210_pd->pcu_base = a210_ioremap_resource_by_node(dev, np, "pcu");
-
-	ret = pm_genpd_init(&a210_pd->pd, NULL, true);
-	if (ret) {
-		dev_err(dev, "failed to init power domain %s index %d",
-			a210_pd->pd.name, a210_pd->index);
-		devm_kfree(dev, a210_pd);
-		return -ENODEV;
+		if (IS_ERR(rst)) {
+			ret = PTR_ERR(rst);
+			dev_err(dev, "failed to get device resets for domain:%s\n", np->name);
+			if (ret != -EPROBE_DEFER)
+				goto remove_genpd;
+			return ret;
+		}
+		a210_pd->reset = rst;
+		a210_pd->reset_done = true;
 	}
 
-	ret = of_genpd_add_provider_simple(np, &a210_pd->pd);
-	if (ret) {
-		dev_err(dev, "failed to add PM domain provider for %pOFn: %d\n",
-			np, ret);
-		goto remove_genpd;
-	}
+	if (!a210_pd->num_clks)
+		a210_pd->num_clks = of_clk_get_parent_count(np);
 
-	a210_pd->reset = of_reset_control_array_get_optional_shared(np);
-	if (IS_ERR(a210_pd->reset)) {
-		ret = PTR_ERR(a210_pd->reset);
-		dev_err(dev, "failed to get device resets for domain:%s\n", np->name);
-		goto reset_fail;
-	}
-
-	a210_pd->num_clks = of_clk_get_parent_count(np);
-	if (a210_pd->num_clks) {
-		a210_pd->clks = devm_kcalloc(dev, a210_pd->num_clks,
-					     sizeof(*a210_pd->clks), GFP_KERNEL);
+	if (a210_pd->num_clks && !a210_pd->clks) {
+		/* Plain kcalloc: see the kzalloc(*a210_pd) comment above. */
+		a210_pd->clks = kcalloc(a210_pd->num_clks,
+					 sizeof(*a210_pd->clks), GFP_KERNEL);
 		if (!a210_pd->clks) {
 			ret = -ENOMEM;
-			goto reset_fail;
-		}
-
-		for (int i = 0; i < a210_pd->num_clks; i++) {
-			a210_pd->clks[i].clk = of_clk_get(np, i);
-			if (IS_ERR(a210_pd->clks[i].clk)) {
-				ret = PTR_ERR(a210_pd->clks[i].clk);
-				dev_err(dev,
-					"failed to get clk at index %d: err:%d for domain:%s\n",
-					i, ret, np->name);
-				goto clk_fail;
-			}
-
+			goto remove_genpd;
 		}
 	}
 
-	pd_soc->domains[pd_soc->num_domains++] = a210_pd;
+	for (; a210_pd->clks_fetched < a210_pd->num_clks; a210_pd->clks_fetched++) {
+		struct clk *clk = of_clk_get(np, a210_pd->clks_fetched);
+
+		if (IS_ERR(clk)) {
+			ret = PTR_ERR(clk);
+			dev_err(dev,
+				"failed to get clk at index %d: err:%d for domain:%s\n",
+				a210_pd->clks_fetched, ret, np->name);
+			if (ret != -EPROBE_DEFER)
+				goto remove_genpd;
+			return ret;
+		}
+		a210_pd->clks[a210_pd->clks_fetched].clk = clk;
+	}
+
+	if (a210_pd->complete)
+		return 0;
 
 	dev_dbg(dev, "added PM domain %s\n", a210_pd->pd.name);
 
@@ -433,7 +547,7 @@ static int a210_add_one_domain(struct platform_device *pdev, struct device_node 
 		if (!iopmp_node) {
 			dev_err(dev, "failed to get iopmps at index %d: for domain:%s\n", i, np->name);
 			ret = -EINVAL;
-			goto clk_fail;
+			goto remove_genpd;
 		}
 		else {
 			u32 device_id;
@@ -447,28 +561,115 @@ static int a210_add_one_domain(struct platform_device *pdev, struct device_node 
 	a210_pd->device_ids_count = device_id_count;
 #endif
 
+	a210_pd->complete = true;
 	return 0;
 
-clk_fail:
-	devm_kfree(dev, a210_pd->clks);
-reset_fail:
-	reset_control_put(a210_pd->reset);
 remove_genpd:
+	/*
+	 * Only reached for a genuinely permanent failure now - anything
+	 * that could plausibly resolve on a later retry (-EPROBE_DEFER)
+	 * returns early above instead, leaving the domain registered in
+	 * pd_soc->domains[] for a210_pd_find() to pick back up. del the
+	 * provider before pm_genpd_remove(): it refuses to remove a domain
+	 * that still has one attached (of_genpd_add_provider_simple() above
+	 * may have already succeeded on every failure path that reaches
+	 * here) - harmless no-op if the provider was never added.
+	 */
+	a210_pd_forget(pd_soc, a210_pd);
+	of_genpd_del_provider(np);
 	pm_genpd_remove(&a210_pd->pd);
-	devm_kfree(dev, a210_pd);
+	reset_control_put(a210_pd->reset);
+	kfree(a210_pd->clks);
+	if (!IS_ERR(a210_pd->pca_base))
+		iounmap(a210_pd->pca_base);
+	if (!IS_ERR(a210_pd->bpc_base))
+		iounmap(a210_pd->bpc_base);
+	if (!IS_ERR(a210_pd->pcu_base))
+		iounmap(a210_pd->pcu_base);
+	kfree(a210_pd);
 	return ret;
+}
+
+/*
+ * Full teardown of a registered domain: mirrors a210_add_one_domain()'s own
+ * remove_genpd unwind, plus the clk/reset/iomem state that only exists once
+ * a domain has made at least some progress. Used by .remove() below - NOT by
+ * the retry path in a210_init_pm_domains()/a210_add_one_domain() any more
+ * (see a210_pd_domain_registered() and a210_pd_find()): a domain whose
+ * genpd/provider already registered in an earlier probe() attempt now stays
+ * registered across a later -EPROBE_DEFER instead of being torn down and
+ * re-added on every retry - both when that -EPROBE_DEFER comes from a later,
+ * unrelated domain still being handled in the same for_each_child_of_node()
+ * pass, and (since a210_add_one_domain() itself no longer tears down on a
+ * transient reset/clk failure) when it's the domain's *own* reset/clk fetch
+ * that's still deferring. That churn (repeatedly removing/re-adding a
+ * domain's provider, which other devices can be fw_devlink-linked to) was
+ * itself the cause of a device_link double-release
+ * ("refcount_t: underflow; use-after-free." in device_link_release_fn) and a
+ * genpd/debugfs bookkeeping collision ("debugfs: '<domain>' already exists
+ * in 'pm_genpd'") - confirmed reproducible even with a single hart online,
+ * so it's a genuine software race in the teardown/rebuild cycle, not the
+ * SMP/cache-coherency class of hardware issue this board also has (see
+ * [[a210-vector-unaligned-erratum]]). Severe/frequent enough retries (e.g. a
+ * slow console stretching out the deferred-probe window) reproduce it as a
+ * full boot hang, not just the WARN()-and-continue it looks like in
+ * isolation.
+ */
+static void a210_teardown_pm_domains(struct a210_pd_soc *pd_soc)
+{
+	while (pd_soc->num_domains > 0) {
+		struct a210_pm_domain *a210_pd = pd_soc->domains[--pd_soc->num_domains];
+
+		of_genpd_del_provider(a210_pd->np);
+		pm_genpd_remove(&a210_pd->pd);
+		reset_control_put(a210_pd->reset);
+		kfree(a210_pd->clks);
+		if (!IS_ERR(a210_pd->pca_base))
+			iounmap(a210_pd->pca_base);
+		if (!IS_ERR(a210_pd->bpc_base))
+			iounmap(a210_pd->bpc_base);
+		if (!IS_ERR(a210_pd->pcu_base))
+			iounmap(a210_pd->pcu_base);
+		kfree(a210_pd);
+	}
+}
+
+/*
+ * True only once a domain is *fully* done (genpd, provider, reset, clks,
+ * iopmp - see a210_pd->complete). A domain that's registered but still
+ * mid-retry (genpd/provider up, reset/clk fetch still deferring) must return
+ * false here so a210_init_pm_domains() calls a210_add_one_domain() again for
+ * it - that's what lets a210_pd_find() there resume the same struct instead
+ * of redoing pm_genpd_init()/of_genpd_add_provider_simple().
+ */
+static bool a210_pd_domain_registered(struct a210_pd_soc *pd_soc,
+				      struct device_node *np)
+{
+	struct a210_pm_domain *a210_pd = a210_pd_find(pd_soc, np);
+
+	return a210_pd && a210_pd->complete;
 }
 
 static int a210_init_pm_domains(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
+	struct a210_pd_soc *pd_soc = dev_get_drvdata(dev);
 	struct device_node *np = dev->of_node;
 	struct device_node *child;
 	struct of_phandle_args child_args, parent_args;
-	int ret;
+	int ret = 0;
 
 	for_each_child_of_node(np, child) {
 		if (!of_device_is_available(child))
+			continue;
+
+		/*
+		 * Already fully registered (genpd + provider + subdomain
+		 * link, all added together the one time this child was
+		 * reached below) by an earlier, since-failed probe() attempt
+		 * for some *other*, still-deferred domain - leave it alone.
+		 */
+		if (a210_pd_domain_registered(pd_soc, child))
 			continue;
 
 		ret = a210_add_one_domain(pdev, child);
@@ -497,8 +698,18 @@ static int a210_init_pm_domains(struct platform_device *pdev)
 		}
 	}
 
-	of_node_put(np);
-
+	/*
+	 * No of_node_put(np) here: np is dev->of_node, owned by the platform
+	 * device itself - this function never took its own reference via
+	 * of_node_get(), so it has no reference to give back. Putting it
+	 * anyway silently over-decrements dev->of_node's (kobject-backed)
+	 * refcount on every call - harmless the one time builtin_platform_driver
+	 * probes in buildroot, but this function reruns on every -EPROBE_DEFER
+	 * retry here, and a few retries were enough to corrupt it badly enough
+	 * to produce "kobject ... is not initialized" / "refcount_t: underflow"
+	 * crashes and spurious "already exists" collisions on domains that were
+	 * never actually re-registered.
+	 */
 	return ret;
 }
 
@@ -530,12 +741,26 @@ static int a210_pd_parse_regulators(struct device *dev)
 					dev_info(dev, "Set %s voltage target %duV\n",
 						child->name, max_uV);
 					regulator_put(pd_soc->regulators[id]);
-					pd_soc->regulators[id] = devm_regulator_get_optional(dev, child_regulator->name);
+					/*
+					 * Not devm_regulator_get_optional(): pd_soc now
+					 * outlives a single failed probe() attempt (see
+					 * a210_pd_probe()), same reasoning as the
+					 * kzalloc(*a210_pd) comment in
+					 * a210_add_one_domain(). Currently dormant since
+					 * none of this tree's enabled domains (top/usb/
+					 * peri2/peri3) have a pmic-supply - only the
+					 * still-disabled gpu/npu_wrapper/vp_wrapper
+					 * domains do (see a210-android-unsupported.dtsi)
+					 * - but would need a matching regulator_put() in
+					 * a210_teardown_pm_domains() once those return.
+					 */
+					pd_soc->regulators[id] = regulator_get_optional(dev, child_regulator->name);
 				}
 			}
 		}
 	}
-	of_node_put(np);
+
+	/* No of_node_put(np) here - see the matching comment in a210_init_pm_domains(). */
 
 	return 0;
 }
@@ -543,14 +768,28 @@ static int a210_pd_parse_regulators(struct device *dev)
 static int a210_pd_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
-	struct a210_pd_soc *pd_soc;
+	struct a210_pd_soc *pd_soc = a210_pd_soc_singleton;
 	int ret;
 
-	pd_soc = devm_kzalloc(dev, sizeof(*pd_soc), GFP_KERNEL);
-	if (!pd_soc)
-		return -ENOMEM;
-	pd_soc->dev = dev;
-
+	/*
+	 * Not devm_kzalloc(), and looked up above via the static singleton,
+	 * not dev_get_drvdata(): pd_soc must survive a failed probe() return
+	 * (a still-deferred domain's clk/reset not being ready yet is
+	 * routine) so a retried probe() can skip re-registering domains that
+	 * already succeeded - see a210_pd_domain_registered() in
+	 * a210_init_pm_domains(). dev_get_drvdata() can't be used for this
+	 * specific lookup: really_probe() resets a device's drvdata to NULL
+	 * on any probe() failure, so it would always read back NULL here on
+	 * a retry regardless of what a prior attempt stored. Freed by
+	 * a210_pd_remove() below.
+	 */
+	if (!pd_soc) {
+		pd_soc = kzalloc(sizeof(*pd_soc), GFP_KERNEL);
+		if (!pd_soc)
+			return -ENOMEM;
+		pd_soc->dev = dev;
+		a210_pd_soc_singleton = pd_soc;
+	}
 	dev_set_drvdata(dev, pd_soc);
 
 	ret = a210_pd_parse_regulators(dev);
@@ -574,6 +813,15 @@ static int a210_pd_probe(struct platform_device *pdev)
 	return ret;
 }
 
+static void a210_pd_remove(struct platform_device *pdev)
+{
+	struct a210_pd_soc *pd_soc = dev_get_drvdata(&pdev->dev);
+
+	a210_teardown_pm_domains(pd_soc);
+	kfree(pd_soc);
+	a210_pd_soc_singleton = NULL;
+}
+
 static const struct of_device_id a210_pd_of_match[] = {
 	{ .compatible = "zhihe,a210-power-domain"},
 	{ /* Sentinel */ },
@@ -582,6 +830,7 @@ MODULE_DEVICE_TABLE(of, a210_pd_of_match);
 
 static struct platform_driver a210_pd_driver = {
 	.probe = a210_pd_probe,
+	.remove = a210_pd_remove,
 	.driver = {
 		.name = "a210-power-domain",
 		.of_match_table = of_match_ptr(a210_pd_of_match),

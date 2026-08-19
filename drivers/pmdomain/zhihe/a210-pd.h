@@ -65,11 +65,15 @@ struct a210_pd_soc {
 /* represent a single power domain */
 struct a210_pm_domain {
 	struct generic_pm_domain pd;
+	struct device_node *np;
 	u16 index;
 	struct a210_pd_soc *soc;
 	struct reset_control *reset;
+	bool reset_done;
 	struct clk_bulk_data *clks;
 	u32 num_clks;
+	u32 clks_fetched;
+	bool complete;
 	u32 device_ids[IOPMP_DEVICES_MAX_COUNT];
 	u32 device_ids_count;
 	void __iomem *pca_base;
