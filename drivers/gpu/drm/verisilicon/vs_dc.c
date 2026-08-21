@@ -24,6 +24,8 @@ static const struct regmap_config vs_dc_regmap_cfg = {
 
 static const struct of_device_id vs_dc_driver_dt_match[] = {
 	{ .compatible = "verisilicon,dc" },
+	/* Zhihe A210's DC8200 instance of this same IP block. */
+	{ .compatible = "verisilicon,dc8200" },
 	{},
 };
 MODULE_DEVICE_TABLE(of, vs_dc_driver_dt_match);
@@ -130,11 +132,52 @@ static int vs_dc_probe(struct platform_device *pdev)
 	}
 
 	ret = vs_fill_chip_identity(dc->regs, &dc->identity);
-	if (ret)
+	if (ret) {
+		dev_err(dev, "unrecognized DC chip model=%#x rev=%#x customer=%#x\n",
+			dc->identity.model, dc->identity.revision,
+			dc->identity.customer_id);
 		goto err_rst_assert;
+	}
 
 	dev_info(dev, "Found DC%x rev %x customer %x\n", dc->identity.model,
 		 dc->identity.revision, dc->identity.customer_id);
+
+	/*
+	 * DC_CLK_GATTING (0x1a28/0x1a2c, per-block internal clock-gating
+	 * enable bits) and DC_QOS_CONFIG (0x1a38, AXI read/write QoS
+	 * priority) are both unconditionally written by zhihesdk's own
+	 * vs_dc_hw.c at probe time, and neither is ever touched by this
+	 * (upstream) driver - confirmed via live register diff against a
+	 * working zhihesdk buildroot boot that both sit at different values
+	 * here (0x00000e07/0x00000e07/0x00000010) than there
+	 * (0x00000000/0x00000000/0x000000c0). Clearing all internal clock
+	 * gates and matching the vendor's QoS priority removes two more
+	 * candidates (starved-of-clock internal sub-blocks; starved-of-
+	 * memory-bandwidth fetch engine) for why the framebuffer's own
+	 * pixel data - otherwise confirmed correctly fetched, formatted,
+	 * positioned and blended - might still never reach the output.
+	 */
+	regmap_write(dc->regs, 0x1a28, 0x0);
+	regmap_write(dc->regs, 0x1a2c, 0x0);
+	regmap_write(dc->regs, 0x1a38, 0xc0);
+
+	/*
+	 * DC_FRAMEBUFFER_WATER_MARK (0x1ce8/+0x4) and DC_OVERLAY_WATER_MARK
+	 * (0x1dc0/+0x4/+0x8/+0xc) are FIFO fetch-watermark thresholds for the
+	 * framebuffer and overlay layer types respectively, unconditionally
+	 * written to 0x3000 by zhihesdk's own vs_dc_hw.c (dc_hw_init(), the
+	 * same init function DC_CLK_GATTING/DC_QOS_CONFIG above come from) -
+	 * confirmed via live register diff against a working zhihesdk
+	 * buildroot boot that both sit at 0 here (this driver never writes
+	 * them, even for the framebuffer layer type it does use) vs 0x3000
+	 * there.
+	 */
+	regmap_write(dc->regs, 0x1ce8, 0x3000);
+	regmap_write(dc->regs, 0x1cec, 0x3000);
+	regmap_write(dc->regs, 0x1dc0, 0x3000);
+	regmap_write(dc->regs, 0x1dc4, 0x3000);
+	regmap_write(dc->regs, 0x1dc8, 0x3000);
+	regmap_write(dc->regs, 0x1dcc, 0x3000);
 
 	if (port_count > dc->identity.display_count) {
 		dev_err(dev, "too many downstream ports than HW capability\n");

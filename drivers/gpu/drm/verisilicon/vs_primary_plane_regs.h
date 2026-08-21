@@ -47,7 +47,24 @@
 #define VSDC_FB_BOTTOM_RIGHT(n)			(0x24E0 + 0x4 * (n))
 /* Fill with value generated with VSDC_MAKE_PLANE_POS(x, y) */
 
+#define VSDC_FB_SRC_GLOBAL_COLOR(n)		(0x2500 + 0x4 * (n))
+#define VSDC_FB_DST_GLOBAL_COLOR(n)		(0x2508 + 0x4 * (n))
+/* Alpha in the top byte, matching zhihesdk's vs_dc_hw.c (alpha << 24) */
+#define VSDC_MAKE_GLOBAL_COLOR_ALPHA(a)		((u32)(a) << 24)
+
 #define VSDC_FB_BLEND_CONFIG(n)			(0x2510 + 0x4 * (n))
 #define VSDC_FB_BLEND_CONFIG_BLEND_DISABLE	BIT(1)
+/*
+ * BIT(1) alone ("disable") bypasses the whole compositing path rather than
+ * showing the layer opaquely - confirmed via live register diff against a
+ * working zhihesdk buildroot boot, whose vs_dc_hw.c never uses BIT(1) at
+ * all and instead hardcodes this specific packed value (its own
+ * "BLEND_PREMULTI" case) for a normal opaque/premultiplied-alpha layer.
+ * Needed together with VSDC_FB_SRC/DST_GLOBAL_COLOR above (also never set
+ * by this driver before, leaving global alpha at its reset value of 0 -
+ * i.e. fully transparent, hiding the layer regardless of its own pixel
+ * data) for the plane to actually be visible in the composited output.
+ */
+#define VSDC_FB_BLEND_CONFIG_PREMULTI		0x3450
 
 #endif /* _VS_PRIMARY_PLANE_REGS_H_ */

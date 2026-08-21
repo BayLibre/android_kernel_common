@@ -135,6 +135,16 @@ int vs_fill_chip_identity(struct regmap *regs,
 	regmap_read(regs, VSDC_TOP_CHIP_REV, &revision);
 	regmap_read(regs, VSDC_TOP_CHIP_CUSTOMER_ID, &customer_id);
 
+	/*
+	 * Filled in even on a lookup miss below, so a caller can log the
+	 * unrecognized (model, revision, customer_id) tuple instead of just
+	 * propagating -EINVAL - the only way to learn a new SoC's values to
+	 * add a table entry for is to read them back from real silicon.
+	 */
+	ident->model = model;
+	ident->revision = revision;
+	ident->customer_id = customer_id;
+
 	for (i = 0; i < ARRAY_SIZE(vs_chip_identities); i++) {
 		if (vs_chip_identities[i].model == model &&
 		    vs_chip_identities[i].revision == revision &&

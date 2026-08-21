@@ -2910,9 +2910,13 @@ static int dw_hdmi_bridge_attach(struct drm_bridge *bridge,
 {
 	struct dw_hdmi *hdmi = bridge->driver_private;
 
-	if (flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)
+	if (flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR) {
+		if (!hdmi->bridge.next_bridge)
+			return 0;
+
 		return drm_bridge_attach(encoder, hdmi->bridge.next_bridge,
 					 bridge, flags);
+	}
 
 	return dw_hdmi_connector_create(hdmi);
 }

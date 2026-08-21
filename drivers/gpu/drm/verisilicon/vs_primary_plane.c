@@ -63,6 +63,26 @@ static void vs_primary_plane_atomic_enable(struct drm_plane *plane,
 	regmap_update_bits(dc->regs, VSDC_FB_CONFIG_EX(output),
 			   VSDC_FB_CONFIG_EX_DISPLAY_ID_MASK,
 			   VSDC_FB_CONFIG_EX_DISPLAY_ID(output));
+	/*
+	 * zpos (bits 16-18 of this register) is the compositor's stacking
+	 * order for this layer - confirmed via zhihesdk's own vs_dc_hw.c
+	 * (DC_FRAMEBUFFER_CONFIG_EX's (plane->fb.zpos << 16) write) to be the
+	 * same hardware field at the same offset. This driver never wrote it
+	 * at all (left at its power-on-reset value of 0), unlike zhihesdk's
+	 * driver which always populates it from the DRM zpos plane property.
+	 * Confirmed via live register diff against a working zhihesdk
+	 * buildroot boot (zpos=3 there vs 0 here) that leaving it unset is
+	 * the reason this plane, despite every other register (address,
+	 * stride, size, format, blend, FB_EN, DISPLAY_ID) being correctly
+	 * configured, never actually appears in the composited output - the
+	 * DC8200 apparently treats zpos=0 as "not part of the visible
+	 * stack" rather than "bottom of stack". This driver only ever
+	 * enables one primary plane per display, so a fixed, non-zero value
+	 * is sufficient - real multi-plane stacking order isn't implemented.
+	 */
+	regmap_update_bits(dc->regs, VSDC_FB_CONFIG_EX(output),
+			   VSDC_FB_CONFIG_EX_ZPOS_MASK,
+			   VSDC_FB_CONFIG_EX_ZPOS(1));
 
 	vs_primary_plane_commit(dc, output);
 }
@@ -131,8 +151,24 @@ static void vs_primary_plane_atomic_update(struct drm_plane *plane,
 	regmap_write(dc->regs, VSDC_FB_SIZE(output),
 		     VSDC_MAKE_PLANE_SIZE(state->crtc_w, state->crtc_h));
 
+	/*
+	 * VSDC_FB_BLEND_CONFIG_BLEND_DISABLE (bit1 alone) bypasses the whole
+	 * compositing path instead of showing this layer opaquely - see the
+	 * comment on VSDC_FB_BLEND_CONFIG_PREMULTI. The global-color alpha
+	 * writes below are required alongside it: left unset (reset value 0,
+	 * i.e. fully transparent), the layer's own pixel data is correctly
+	 * fetched and configured everywhere else but never actually visible
+	 * in the composited output - confirmed via live register diff
+	 * against a working zhihesdk buildroot boot, which always writes a
+	 * full-opacity (0xff) global alpha alongside its own equivalent
+	 * blend-mode write.
+	 */
+	regmap_write(dc->regs, VSDC_FB_SRC_GLOBAL_COLOR(output),
+		     VSDC_MAKE_GLOBAL_COLOR_ALPHA(0xff));
+	regmap_write(dc->regs, VSDC_FB_DST_GLOBAL_COLOR(output),
+		     VSDC_MAKE_GLOBAL_COLOR_ALPHA(0xff));
 	regmap_write(dc->regs, VSDC_FB_BLEND_CONFIG(output),
-		     VSDC_FB_BLEND_CONFIG_BLEND_DISABLE);
+		     VSDC_FB_BLEND_CONFIG_PREMULTI);
 
 	vs_primary_plane_commit(dc, output);
 }

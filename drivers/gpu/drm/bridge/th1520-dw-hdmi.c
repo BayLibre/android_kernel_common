@@ -90,7 +90,25 @@ static void th1520_hdmi_phy_set_params(struct dw_hdmi *hdmi,
 static int th1520_hdmi_phy_configure(struct dw_hdmi *hdmi, void *data,
 				     unsigned long mpixelclock)
 {
+	struct th1520_hdmi *priv = data;
 	unsigned int i;
+	int ret;
+
+	/*
+	 * This device's own "pix" clock (the TMDS bit clock input) is a
+	 * separate clock-tree node from the DPU's per-channel pixel clock
+	 * that the CRTC driver rate-sets on mode_set - nothing else ever
+	 * updates it to match the current video mode. Without this, the
+	 * PHY's own PLL still locks (TX_PHY_LOCK/RX_SENSE read back set)
+	 * since that's driven by the I2C-programmed PHY parameters below,
+	 * but the actual transmitted TMDS clock stays at whatever rate it
+	 * last had (e.g. its power-on/max default) - the sink can never
+	 * lock onto that and reports no signal, even though everything
+	 * upstream (DPU timing, panel/plane enable, PHY lock) looks correct.
+	 */
+	ret = clk_set_rate(priv->pixclk, mpixelclock);
+	if (ret)
+		return ret;
 
 	for (i = 0; i < ARRAY_SIZE(th1520_hdmi_phy_params); i++) {
 		if (mpixelclock <= th1520_hdmi_phy_params[i].mpixelclock) {
@@ -130,14 +148,37 @@ static int th1520_dw_hdmi_probe(struct platform_device *pdev)
 		return dev_err_probe(dev, PTR_ERR(hdmi->prst),
 				     "Unable to get apb reset\n");
 
-	plat_data->output_port = 1;
+	/*
+	 * output_port names which of this device's *own* of_graph ports
+	 * (not the DPU's) holds a chained downstream bridge - dw_hdmi_parse_dt()
+	 * does an of_graph_get_remote_node(hdmi->dev->of_node, output_port, -1)
+	 * and requires it to resolve to something already registered as a
+	 * drm_bridge, or fails (-ENODEV if the port has no endpoint at all,
+	 * -EPROBE_DEFER forever if it resolves to a real, non-bridge device).
+	 * port@1 has no such role on either board this driver binds: TH1520's
+	 * own th1520.dtsi declares it as an empty placeholder port (no
+	 * endpoint), and A210 repurposes it entirely for I2S audio input
+	 * (hdmi_i2s_rx, permanently unable to register as a bridge - would
+	 * wedge this device in EPROBE_DEFER forever). 0 is the documented
+	 * sentinel for "no next-bridge, skip this lookup".
+	 */
+	plat_data->output_port = 0;
 	plat_data->mode_valid = th1520_hdmi_mode_valid;
 	plat_data->configure_phy = th1520_hdmi_phy_configure;
 	plat_data->priv_data = hdmi;
 
 	hdmi->dw_hdmi = dw_hdmi_probe(pdev, plat_data);
-	if (IS_ERR(hdmi))
-		return PTR_ERR(hdmi);
+	/*
+	 * Bug fix: this checked IS_ERR(hdmi) (the devm_kzalloc'd container,
+	 * never an error pointer) instead of IS_ERR(hdmi->dw_hdmi) (the
+	 * actual dw_hdmi_probe() result) - any dw_hdmi_probe() failure was
+	 * silently swallowed, leaving this platform device "bound" with no
+	 * bridge ever registered via drm_bridge_add(), which in turn made
+	 * every downstream devm_drm_of_get_bridge() caller (the DPU/verisilicon
+	 * driver) EPROBE_DEFER forever with no error ever surfacing anywhere.
+	 */
+	if (IS_ERR(hdmi->dw_hdmi))
+		return PTR_ERR(hdmi->dw_hdmi);
 
 	platform_set_drvdata(pdev, hdmi);
 
@@ -146,13 +187,26 @@ static int th1520_dw_hdmi_probe(struct platform_device *pdev)
 
 static void th1520_dw_hdmi_remove(struct platform_device *pdev)
 {
-	struct dw_hdmi *hdmi = platform_get_drvdata(pdev);
+	/*
+	 * Bug fix: platform_set_drvdata() in probe() stores the wrapper
+	 * struct th1520_hdmi *, not struct dw_hdmi * directly - this was
+	 * passing the wrapper's address straight to dw_hdmi_remove() as if
+	 * it were a struct dw_hdmi *, a type-confused pointer.
+	 */
+	struct th1520_hdmi *hdmi = platform_get_drvdata(pdev);
 
-	dw_hdmi_remove(hdmi);
+	dw_hdmi_remove(hdmi->dw_hdmi);
 }
 
 static const struct of_device_id th1520_dw_hdmi_of_table[] = {
 	{ .compatible = "thead,th1520-dw-hdmi" },
+	/*
+	 * Zhihe A210 reuses the same T-Head "light" HDMI TX block; its own
+	 * vendor kernel binds this exact compatible (alongside the legacy
+	 * "xuantie,th1520-hdmi-tx" alias) to the same PHY gen2 parameter
+	 * table this driver already carries for TH1520.
+	 */
+	{ .compatible = "thead,light-hdmi-tx" },
 	{ /* Sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, th1520_dw_hdmi_of_table);
