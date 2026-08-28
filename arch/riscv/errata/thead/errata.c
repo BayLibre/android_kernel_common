@@ -112,7 +112,16 @@ static bool errata_probe_cmo(unsigned int stage,
 	if (!IS_ENABLED(CONFIG_ERRATA_THEAD_CMO))
 		return false;
 
-	if (arch_id != 0 || impid != 0)
+	/*
+	 * th.dcache.* is common to the whole XuanTie C9xx (arch_id == 0
+	 * and impid == 0), ZhiHe A210's C908 (arch_id 0x9140d00,
+	 * impid 0x100d000) and C920 (arch_id 0x90c0d00, impid 0x20c4000).
+	 * Bit 63 of arch_id is the RISC-V implementer-defined marchid
+	 * marker, which ZhiHe sets; ignore the upper 32 bits.
+	 */
+	if (!(arch_id == 0 && impid == 0) &&
+	    !((arch_id & U32_MAX) == 0x9140d00 && impid == 0x100d000) &&
+	    !((arch_id & U32_MAX) == 0x90c0d00 && impid == 0x20c4000))
 		return false;
 
 	if (stage == RISCV_ALTERNATIVES_EARLY_BOOT)
