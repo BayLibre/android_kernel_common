@@ -1,0 +1,39 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+/*
+ * Copyright (C) 2025 Zhihe Computing Limited.
+ *
+ * Disables power domains (and the clk-a210 clock-controller instances that
+ * attach to them) for hardware blocks whose drivers aren't ported to this
+ * Android kernel tree yet: GPU, NPU, PCIe, SATA, and the VI/VP/VENC/VDEC
+ * media pipeline.
+ *
+ * a210-pd unconditionally probes every child of its "power" devicetree node
+ * regardless of whether anything actually consumes that domain, so leaving
+ * these enabled means a210-pd's probe permanently fails trying to resolve
+ * clk/reset providers that will never register in this tree - which in turn
+ * blocks unrelated domains (peri2/peri3, needed by eMMC/uart) from ever
+ * registering, and stalls first-stage init past its ~10s partition-wait
+ * timeout. clk_gpu/clk_vi/clk_vp/clk_npu are disabled alongside their
+ * power domains for the same reason: each declares a "power-domains"
+ * property, so a210-clk (which IS ported) would otherwise attach to a
+ * domain that no longer exists and sit in permanent EPROBE_DEFER.
+ *
+ */
+
+&clk_gpu { status = "disabled"; };
+&clk_pcie { status = "disabled"; };
+&clk_vi { status = "disabled"; };
+&clk_vp { status = "disabled"; };
+&clk_npu { status = "disabled"; };
+
+&power_gpu { status = "disabled"; };
+&power_npu_wrapper { status = "disabled"; };
+&power_npu_ip { status = "disabled"; };
+&power_pcie0 { status = "disabled"; };
+&power_pcie1 { status = "disabled"; };
+&power_sata { status = "disabled"; };
+&power_vi_wrapper { status = "disabled"; };
+&power_vi_isp { status = "disabled"; };
+&power_vp_wrapper { status = "disabled"; };
+&power_venc { status = "disabled"; };
+&power_vdec { status = "disabled"; };
