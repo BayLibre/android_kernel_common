@@ -1,0 +1,220 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+/*
+ * Copyright (C) 2025 Zhihe Computing Limited.
+ *
+ * Enables the VO (video output) power domain and reshapes the dc8200/HDMI
+ * TX devicetree nodes to match the property names and of_graph wiring the
+ * upstream drivers/gpu/drm/verisilicon (DRM_VERISILICON_DC, "verisilicon,dc")
+ * and drivers/gpu/drm/bridge/th1520-dw-hdmi.c drivers expect - both already
+ * live in this Android common tree (extended with A210's own
+ * "verisilicon,dc8200"/"thead,light-hdmi-tx" compatible strings) and are
+ * reused here as-is, rather than porting zhihesdk's own bespoke ~6000-line
+ * vendor display driver stack (drivers/gpu/drm/verisilicon/{vs_dc,vs_drv,
+ * vs_dc_hw,...}.c in the zhihesdk tree).
+ *
+ * a210-soc-core.dtsi/a210-soc-peri.dtsi are shared verbatim with the
+ * buildroot kernel tree, where a completely different (zhihesdk-authored)
+ * driver stack consumes these same nodes under different property/clock/
+ * reset naming conventions - hence reshaping via overrides here instead of
+ * editing those files directly.
+ *
+ * HDMI-only for now: the DP output path (dp0, dpu's port@0) and the
+ * DSI/auxdisp path (dsi0, auxdisp, dpu-encoders) are deliberately left
+ * unwired here - out of scope for this phase.
+ */
+
+&power_vo { status = "okay"; };
+&clk_vo {
+	status = "okay";
+
+	/*
+	 * VO_HDMI_PIXCLK is a clock MUX (clk-a210.c), not a plain divider -
+	 * its parent selects which DPU channel's pixel-clock chain actually
+	 * feeds the HDMI TX ("dpu0_pixclk"/"dpu1_pixclk"/"dpu2_pixclk" at
+	 * mux indices 0/1/2, encoded in the VO_PATH_CTRL register this same
+	 * node maps). Nothing else here ever requests a parent for it, so it
+	 * sits at its hardware power-on-reset default - confirmed on a
+	 * working buildroot reference to be index 1 ("dpu1_pixclk") via
+	 * zhihesdk's own U-Boot (board/zhihe/a210-evb/subsys/ss_config.c's
+	 * vo_cpr_init(), which raw-writes VO_PATH_CTRL = 0x4 on every boot,
+	 * commented "dpu port0 link dsi, dpu port1 link hdmi") - Android's
+	 * bootloader does not replicate that vendor-specific init, so
+	 * without this the mux is left on an unconfirmed/likely-wrong
+	 * default parent. Without it, clk_set_rate() on vo_hdmi_pixclk (see
+	 * th1520_hdmi_phy_configure() in drivers/gpu/drm/bridge/
+	 * th1520-dw-hdmi.c) still "succeeds" and reports the right rate -
+	 * CLK_SET_RATE_PARENT just propagates it to whatever parent is
+	 * currently selected - but if that parent isn't dpu1_pixclk (the
+	 * same clock vs_crtc_mode_set_nofb() drives for HDMI's own output
+	 * channel), the HDMI TX ends up clocked from a numerically-correct
+	 * but functionally unrelated clock domain: PHY still locks (its PLL
+	 * just needs a clean, correctly-rated edge, not the *right* one),
+	 * but no coherent video ever reaches the monitor.
+	 */
+	assigned-clocks = <&clk_vo VO_DPUC_CLK_EN>, <&clk_vo VO_CH0_PIXCLK_EN>,
+			  <&clk_vo VO_CH1_PIXCLK_EN>, <&clk_vo VO_CH2_PIXCLK_EN>,
+			  <&clk_vo VO_DPU_ACLK_EN>, <&clk_vo VO_HDMI_PCLK_EN>,
+			  <&clk_vo VO_DECOMP0_CLK_EN>, <&clk_vo VO_DECOMP1_CLK_EN>,
+			  <&clk_vo VO_AUXDISP_ACLK_EN>, <&clk_vo VO_AUXDISP_PCLK_EN>,
+			  <&clk_vo VO_HDMI_PIXCLK>;
+	assigned-clock-rates = <880000000>, <594000000>,
+			       <594000000>, <594000000>,
+			       <880000000>, <165000000>,
+			       <220000000>, <220000000>,
+			       <880000000>, <165000000>,
+			       <0>;
+	assigned-clock-parents = <0>, <0>, <0>, <0>, <0>, <0>, <0>, <0>, <0>, <0>,
+				 <&clk_vo VO_CH1_PIXCLK_EN>;
+};
+
+&power_vo {
+	/*
+	 * VO_HDMI_MAIN_RST/VO_HDMI_PRST move to &hdmi_tx below, which needs
+	 * to hold them *exclusively* (matching upstream th1520-dw-hdmi.c's
+	 * devm_reset_control_get_exclusive_deasserted() calls) - a reset
+	 * line already held here in shared mode by the power domain can't
+	 * also be claimed exclusively by a second consumer. The remaining
+	 * VO_DPU_* resets stay here AND get added to &dpu below: a210-pd
+	 * gets them as an optional-shared array (a210-pd.c), and upstream
+	 * vs_dc.c's own devm_reset_control_bulk_get_optional_shared() call
+	 * is shared too, so both consumers holding them is fine.
+	 *
+	 * VO_ARB_PRST/VO_ARB_ARST (output-path arbiter) and VO_DFMU_PRST/
+	 * VO_DFMU_ARST (its IOPMP/firewall front-end, the same "DFMU" u-boot's
+	 * config_iopmp(AP_VO_DFMU_IOPMP_BADDR, ...) targets) are the 4 lines
+	 * of the reset-a210.c-managed 19-bit VO_RSTN register (see
+	 * a210-reset.h) that no devicetree node - upstream or here - ever
+	 * requested before. Left permanently asserted, they leave the DPU's
+	 * output silently unable to reach the HDMI TX even once every other
+	 * VO_* reset, clock and mux register is confirmed correctly set.
+	 */
+	resets = <&rst VO_X2H0_RST>, <&rst VO_X2H1_RST>, <&rst VO_DPU_HRST>,
+		 <&rst VO_DPU_CRST>, <&rst VO_DPU_ARST>, <&rst VO_AUXDISP_PRST>,
+		 <&rst VO_AUXDISP_PIX_RST>, <&rst VO_AUXDISP_ARST>,
+		 <&rst VO_MIPI_PRST>, <&rst VO_DECOMP_PRST>,
+		 <&rst VO_DECOMP0_CRST>, <&rst VO_DECOMP1_CRST>, <&rst VO_DECOMP_ARST>,
+		 <&rst VO_ARB_PRST>, <&rst VO_ARB_ARST>,
+		 <&rst VO_DFMU_PRST>, <&rst VO_DFMU_ARST>;
+};
+
+&dpu {
+	/*
+	 * zhihesdk's own vs_dc_hw.c maps three separate reg windows (a small
+	 * TOP/identity block, a +0x800 main block, and a small +0x30010
+	 * block used only by its DEC/MMU extensions, which this port
+	 * doesn't use). Upstream's vs_dc.c ioremaps a single window at
+	 * index 0 and expects the TOP identity registers (VSDC_TOP_CHIP_*,
+	 * offset 0x0020-0x0030) and the per-display DISP/FB registers (up
+	 * to VSDC_OVL_CONFIG_EX(1), offset 0x2544) to live in one
+	 * contiguous span from that base.
+	 *
+	 * Assumed contiguous from the TOP base here, superseding the
+	 * upstream-narrower first two windows above - NOT confirmed against
+	 * a real datasheet or hardware (see a210_gpu_vendor_questions.txt).
+	 * If wrong, vs_fill_chip_identity() fails cleanly on a garbage
+	 * (model, revision, customer_id) read and logs what it actually
+	 * saw, rather than corrupting anything.
+	 */
+	reg = <0x00 0x6400000 0x0 0x3000>;
+
+	/*
+	 * Only the first 5 of these names are read by name
+	 * (devm_clk_get_enabled(dev, "core"/"axi"/"ahb"), "pix%u" per
+	 * display); the phandle list itself (clocks) is unchanged. The
+	 * remaining 5 are upstream PLL/sibling-pixclk sources that nothing
+	 * in this driver requests by name - left in place, unused, for
+	 * documentation.
+	 */
+	clock-names = "core", "axi", "ahb", "pix0", "pix1",
+		      "dpu0_pll_foutpostdiv", "dpu1_pll_foutpostdiv",
+		      "mipi_pixclk", "hdmi_pixclk", "dptx_pixclk";
+
+	/*
+	 * Shared (see &power_vo above), so coexisting with the domain's own
+	 * hold on the same three lines is fine.
+	 */
+	resets = <&rst VO_DPU_CRST>, <&rst VO_DPU_ARST>, <&rst VO_DPU_HRST>;
+	reset-names = "core", "axi", "ahb";
+};
+
+&disp0_out {
+	/*
+	 * HDMI-only for this phase: leave dpu's port@0 (DP output)
+	 * structurally present but unlinked, rather than deleting the node
+	 * outright - dp0's own endpoint still label-references &disp0_out,
+	 * and removing this node would leave that a dangling phandle (a dtc
+	 * compile error). An endpoint with no remote-endpoint property just
+	 * makes of_graph_get_remote_node() return NULL for output 0, which
+	 * vs_bridge_init() treats as "skip this output" - not deferring
+	 * forever, which is what would happen if this endpoint still
+	 * pointed at dp0's (never probed) port.
+	 *
+	 * Severed symmetrically (dp_tx_in below too): leaving only this side
+	 * cut makes dtc flag "graph connection ... is not bidirectional",
+	 * since dp_tx_in would still point back at this now-silent endpoint.
+	 */
+	/delete-property/ remote-endpoint;
+};
+
+&dp_tx_in {
+	/delete-property/ remote-endpoint;
+};
+
+&dpu_disp1 {
+	/*
+	 * vs_bridge_detect_output_interface() tries of_graph endpoint index
+	 * 0 first (DPI: plain RGB, RGB888-only, no DP_EN) then index 1 (DP:
+	 * proper YUV/RGB bus-format negotiation + DP_EN - used for both real
+	 * DisplayPort and HDMI outputs on this DC generation; dp0's own
+	 * endpoint uses the same index-1 convention). An unindexed endpoint
+	 * defaults to index 0, which would silently misclassify HDMI as
+	 * DPI and drive the wrong DC-side register path. Re-index this
+	 * endpoint to 1 to get the DP-style bridge functions instead.
+	 */
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	/delete-node/ endpoint;
+	disp1_out: endpoint@1 {
+		reg = <1>;
+		remote-endpoint = <&hdmi_tx_in0>;
+	};
+};
+
+&peri2_padctrl {
+	hdmi_pins: hdmi-0 {
+		hdmi-pins {
+			pins = "GPIO2_25", "GPIO2_30", "GPIO2_31";
+			function = "hdmi";
+			bias-disable;
+			drive-strength = <3>;
+			input-enable;
+			input-schmitt-disable;
+			slew-rate = <0>;
+		};
+	};
+};
+
+&hdmi_tx {
+	pinctrl-names = "default";
+	pinctrl-0 = <&hdmi_pins>;
+
+	/* Upstream th1520-dw-hdmi.c only requests the pixel clock by name
+	 * ("pix") - the other three (iahb/isfr/cec) are pre-enabled via
+	 * clk_vo's own assigned-clocks in a210-soc-core.dtsi, matching how
+	 * T-Head's own th1520.dtsi hdmi node is wired (same driver, same
+	 * clock-names shape, confirmed against arch/riscv/boot/dts/thead/
+	 * th1520.dtsi in this tree).
+	 */
+	clock-names = "iahb", "isfr", "cec", "pix";
+
+	/* See &power_vo above: needs exclusive ownership, so these move off
+	 * the domain's shared array and onto this node directly.
+	 */
+	resets = <&rst VO_HDMI_MAIN_RST>, <&rst VO_HDMI_PRST>;
+	reset-names = "main", "apb";
+};
+
+&{/display-subsystem} {
+	dma-noncoherent;
+};
