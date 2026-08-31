@@ -1017,6 +1017,13 @@ static int a210_clocks_probe(struct platform_device *pdev)
 
 	zhihe_register_clock(pdev);
 
+	if (priv == &vo_clk) {
+		clk_prepare_enable(priv->clk_data->clks[VO_ARB_ACLK_EN]);
+		clk_prepare_enable(priv->clk_data->clks[VO_ARB_PCLK_EN]);
+		clk_prepare_enable(priv->clk_data->clks[VO_DFMU_ACLK_EN]);
+		clk_prepare_enable(priv->clk_data->clks[VO_DFMU_PCLK_EN]);
+	}
+
 	ret = of_clk_add_provider(np, of_clk_src_onecell_get, priv->clk_data);
 	if (ret < 0) {
 		dev_err(dev, "failed to register clks for a210\n");
