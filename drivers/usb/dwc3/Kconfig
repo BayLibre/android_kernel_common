@@ -244,4 +244,11 @@ config USB_DWC3_SPACEMIT
 	  support compared to the generic platform driver.
 	  Say 'Y' or 'M' if you have one such device.
 
+config USB_DWC3_ZHIHE
+	tristate "Zhihe DWC3 Platform"
+	depends on ARCH_ZHIHE && OF
+	default n
+	help
+	  Support Zhihe A210 platform with DesignWare Core USB3 IP.
+
 endif

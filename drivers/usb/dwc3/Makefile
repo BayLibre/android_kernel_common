@@ -62,3 +62,4 @@ obj-$(CONFIG_USB_DWC3_RTK)		+= dwc3-rtk.o
 obj-$(CONFIG_USB_DWC3_GENERIC_PLAT)	+= dwc3-generic-plat.o
 obj-$(CONFIG_USB_DWC3_GOOGLE)		+= dwc3-google.o
 obj-$(CONFIG_USB_DWC3_SPACEMIT)		+= dwc3-spacemit.o
+obj-$(CONFIG_USB_DWC3_ZHIHE)		+= dwc3-zhihe.o
