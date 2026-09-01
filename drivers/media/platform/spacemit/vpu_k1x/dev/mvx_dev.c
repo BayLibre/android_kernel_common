@@ -531,7 +531,6 @@ static int mvx_dev_remove(struct mvx_dev_ctx *ctx)
 	destroy_workqueue(ctx->work_queue);
 	mvx_sched_destruct(&ctx->scheduler);
 	mvx_hwreg_destruct(&ctx->hwreg);
-	dev_set_drvdata(ctx->dev, NULL);
 
 	if (IS_ENABLED(CONFIG_DEBUG_FS))
 		debugfs_remove_recursive(ctx->dentry);
@@ -539,6 +538,7 @@ static int mvx_dev_remove(struct mvx_dev_ctx *ctx)
 	mvx_pm_disable_clk(ctx->dev);
 	reset_control_assert(ctx->rst);
 
+	dev_set_drvdata(ctx->dev, NULL);
 	devm_kfree(ctx->dev, ctx);
 
 	return 0;
