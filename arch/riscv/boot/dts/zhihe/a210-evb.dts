@@ -1,5 +1,6 @@
 /dts-v1/;
 
+#include <dt-bindings/gpio/gpio.h>
 #include "a210.dtsi"
 #include "a210-android-hdmi.dtsi"
 #include "a210-android-unused.dtsi"
@@ -99,6 +100,52 @@
 	dr_mode = "peripheral";
 };
 
+&aon_padctrl {
+	aoi2c1_pins: aoi2c1-0 {
+		i2c-pins {
+			pins = "AOI2C1_SCL", "AOI2C1_SDA";
+			function = "aoi2c1";
+			bias-disable;
+			drive-strength = <7>;
+			input-enable;
+			input-schmitt-enable;
+			slew-rate = <0>;
+		};
+	};
+};
+
+&aoi2c1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&aoi2c1_pins>;
+	clock-frequency = <400000>;
+	status = "okay";
+
+	aw9535_1: gpio@21 {
+		compatible = "awinic,aw9535";
+		reg = <0x21>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		ngpios = <16>;
+		gpio-line-names =
+			"PCIE_BAT_EN_IO0", "AUDIO_3V3_PWREN_IO1", "AUDIO_1V8_PWREN_IO2", "MIPI_CSI0_PWREN_IO3",
+			"MIPI_CSI1_PWREN_IO4", "MIPI_TP_PWREN_IO5", "PCIE_3V3_EN_IO6", "PCIE_12V_EN_IO7",
+			"USBCON_PWREN_IO8", "USBCON1_PWREN_IO9", "PCIE_3V3_AUX_EN_IO10", "SDIO_3V3_PWREN_IO11",
+			"SDIO_1V8_PWREN_IO12", "SIT91211_3V3_EN_IO13", "MIPI_DSI_PWREN_IO14", "BL_EN_IO15";
+	};
+};
+
+&usb20phy0 {
+	pwren-gpios = <&aw9535_1 8 GPIO_ACTIVE_HIGH>;
+};
+
+&usb20phy1 {
+	pwren-gpios = <&aw9535_1 9 GPIO_ACTIVE_HIGH>;
+};
+
+&usb2_0 {
+	status = "okay";
+};
+
 &emmc {
 	max-frequency = <196608000>;
 	non-removable;
@@ -111,10 +158,6 @@
 	pull_up;
 	bus-width = <8>;
 	cap-mmc-highspeed;
-};
-
-&usb2_0 {
-  status = "disabled";
 };
 
 &cluster0_opp {
