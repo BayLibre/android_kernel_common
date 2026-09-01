@@ -72,7 +72,7 @@ static int zhihe_usb2_phy_init(struct phy *phy)
 
 	/* Set PHY power enable */
 	if (priv->pwren)
-		gpiod_set_value(priv->pwren, 1);
+		gpiod_set_value_cansleep(priv->pwren, 1);
 
 	ret = clk_bulk_prepare_enable(priv->num_clks, priv->clks);
 	if (ret)
@@ -113,7 +113,7 @@ static int zhihe_usb2_phy_exit(struct phy *phy)
 	reset_control_assert(priv->phy_rst);
 	/* Set PHY power disable */
 	if (priv->pwren)
-		gpiod_set_value(priv->pwren, 0);
+		gpiod_set_value_cansleep(priv->pwren, 0);
 
 	return 0;
 }
