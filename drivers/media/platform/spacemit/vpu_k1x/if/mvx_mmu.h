@@ -489,4 +489,10 @@ int mvx_mmu_pages_debugfs_init(struct mvx_mmu_pages *pages,
 unsigned long phys_vpu2cpu(unsigned long phys_addr);
 unsigned long phys_cpu2vpu(unsigned long phys_addr);
 
+/**
+ * mvx_mmu_set_phys_remap() - Select whether addresses need translating.
+ * @remap:	True when the VPU reaches DRAM through an aliasing window.
+ */
+void mvx_mmu_set_phys_remap(bool remap);
+
 #endif /* _MVX_MMU_H_ */

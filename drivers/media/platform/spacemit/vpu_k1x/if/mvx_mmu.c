@@ -1352,8 +1352,22 @@ int mvx_mmu_pages_debugfs_init(struct mvx_mmu_pages *pages,
 	return 0;
 }
 
+/*
+ * Whether the VPU reaches DRAM through an aliasing window. Defaults to the K1
+ * behaviour and is overridden at probe from the OF match data.
+ */
+static bool mvx_mmu_phys_remap = true;
+
+void mvx_mmu_set_phys_remap(bool remap)
+{
+	mvx_mmu_phys_remap = remap;
+}
+
 unsigned long phys_vpu2cpu(unsigned long phys_addr)
 {
+	if (!mvx_mmu_phys_remap)
+		return phys_addr;
+
 	if (phys_addr >= 0x80000000UL) {
 		phys_addr += 0x80000000UL;
 	}
@@ -1362,6 +1376,9 @@ unsigned long phys_vpu2cpu(unsigned long phys_addr)
 
 unsigned long phys_cpu2vpu(unsigned long phys_addr)
 {
+	if (!mvx_mmu_phys_remap)
+		return phys_addr;
+
 	if (phys_addr >= 0x100000000UL) {
 		phys_addr -= 0x80000000UL;
 	}
