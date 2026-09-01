@@ -717,6 +717,7 @@ static const struct of_device_id mvx_dev_match_table[] = {
 	{ .compatible = "spacemit,k3-linlon-v5", .data = &mvx_soc_k3 },
 	{ { 0 } }
 };
+MODULE_DEVICE_TABLE(of, mvx_dev_match_table);
 
 static struct platform_driver mvx_dev_driver = {
 	.probe                  = mvx_pdev_probe,
