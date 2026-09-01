@@ -51,9 +51,11 @@
 #include <linux/workqueue.h>
 #include <linux/clk.h>
 #include <linux/delay.h>
+#include <linux/of.h>
 #include "mvx_bitops.h"
 #include "mvx_dev.h"
 #include "mvx_if.h"
+#include "mvx_mmu.h"
 #include "mvx_session.h"
 #include "mvx_log_group.h"
 #include "mvx_pm_runtime.h"
@@ -70,6 +72,29 @@
 
 #define MVX_PCI_VENDOR 0x13b5
 #define MVX_PCI_DEVICE 0x0001
+
+/**
+ * struct mvx_soc_data - SoC specific parameters of the Linlon VPU.
+ * @phys_remap:		The VPU reaches DRAM through an aliasing window and
+ *			every physical address handed to it must be translated.
+ * @dma_mask_bits:	Width to narrow the platform device DMA mask down to,
+ *			or 0 to keep the 40 bits the hardware supports.
+ * @clk_rate:		Rate to program the VPU clock to, in Hz.
+ *
+ * The same "arm china,linlon-v5" block is integrated differently on each SoC,
+ * so these three values are the only thing that separates them.
+ */
+struct mvx_soc_data {
+	bool		phys_remap;
+	unsigned int	dma_mask_bits;
+	unsigned long	clk_rate;
+};
+
+static const struct mvx_soc_data mvx_soc_k1 = {
+	.phys_remap	= true,
+	.dma_mask_bits	= 34,
+	.clk_rate	= 819200000,
+};
 
 /****************************************************************************
  * Types
@@ -330,10 +355,22 @@ static void mvx_pm_enable_clk(struct device *dev)
 }
 
 
+/*
+ * The PCI path has no OF node to match against; it is only ever used with the
+ * reference FPGA, which behaves like the K1.
+ */
+static const struct mvx_soc_data *mvx_dev_get_soc_data(struct device *dev)
+{
+	const struct mvx_soc_data *soc = of_device_get_match_data(dev);
+
+	return soc != NULL ? soc : &mvx_soc_k1;
+}
+
 static int mvx_dev_probe(struct device *dev,
 			 struct resource *iores,
 			 struct resource *irqres)
 {
+	const struct mvx_soc_data *soc = mvx_dev_get_soc_data(dev);
 	struct mvx_dev_ctx *ctx;
 	int ret;
 
@@ -341,6 +378,8 @@ static int mvx_dev_probe(struct device *dev,
 	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
 	if (ctx == NULL)
 		return -EINVAL;
+
+	mvx_mmu_set_phys_remap(soc->phys_remap);
 
 	ctx->dev = dev;
 	ctx->clock = devm_clk_get(dev, NULL);
@@ -359,7 +398,7 @@ static int mvx_dev_probe(struct device *dev,
 		goto exit_reset;
 
 	reset_control_deassert(ctx->rst);
-	clk_set_rate(ctx->clock, 819200000);
+	clk_set_rate(ctx->clock, soc->clk_rate);
 
 	/* Setup client ops callbacks. */
 	ctx->client_ops.get_hw_ver = get_hw_ver;
@@ -500,6 +539,7 @@ static int mvx_dev_remove(struct mvx_dev_ctx *ctx)
 
 static int mvx_pdev_probe(struct platform_device *pdev)
 {
+	const struct mvx_soc_data *soc;
 	struct resource iores;
 	struct resource irqres;
 	int irq;
@@ -530,7 +570,10 @@ static int mvx_pdev_probe(struct platform_device *pdev)
 
 	pm_runtime_enable(&pdev->dev);
 
-	dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(34));
+	soc = mvx_dev_get_soc_data(&pdev->dev);
+	if (soc->dma_mask_bits != 0)
+		dma_set_mask_and_coherent(&pdev->dev,
+					  DMA_BIT_MASK(soc->dma_mask_bits));
 
 	ret = mvx_dev_probe(&pdev->dev, &iores, &irqres);
 	if (ret != 0)
@@ -653,12 +696,12 @@ static const struct dev_pm_ops mvx_dev_pm_ops = {
 #endif /* CONFIG_PM */
 
 static const struct of_device_id mvx_dev_match_table[] = {
-	{ .compatible = "arm,mali-mve"  },
-	{ .compatible = "arm,mali-v500" },
-	{ .compatible = "arm,mali-v550" },
-	{ .compatible = "arm,mali-v61"  },
-	{ .compatible = "arm china,linlon-v5"  },
-	{ .compatible = "arm china,linlon-v7"  },
+	{ .compatible = "arm,mali-mve",		.data = &mvx_soc_k1 },
+	{ .compatible = "arm,mali-v500",	.data = &mvx_soc_k1 },
+	{ .compatible = "arm,mali-v550",	.data = &mvx_soc_k1 },
+	{ .compatible = "arm,mali-v61",		.data = &mvx_soc_k1 },
+	{ .compatible = "arm china,linlon-v5",	.data = &mvx_soc_k1 },
+	{ .compatible = "arm china,linlon-v7",	.data = &mvx_soc_k1 },
 	{ { 0 } }
 };
 
