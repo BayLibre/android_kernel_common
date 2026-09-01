@@ -333,16 +333,17 @@
  * "ri2s3" is the CPU DAI, fed by the "adma3" audio DMA; the codec sink is
  * the inno-dp1 controller (ASoC codec "inno-dp-audio").  K3-only stack.
  */
+/* disabled until K3 RCPU/genpd audio support lands - ri2s3 probe MMIO stalls the RCPU AXI island (bus clk CLK_APMU_RCPU not up before APMU CCU binds) */
 &adma3 {
-	status = "okay";
+	status = "disabled";
 };
 
 &ri2s3 {
-	status = "okay";
+	status = "disabled";
 };
 
 &sound_card_dp1 {
-	status = "okay";
+	status = "disabled";
 };
 
 /*
