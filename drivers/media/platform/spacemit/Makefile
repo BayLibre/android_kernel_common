@@ -2,6 +2,5 @@
 obj-y += vpu_k1x/
 obj-y += camera/
 obj-y += virtual_camera/
-obj-y += vpu_k3/
 obj-y += cam_ccic/
 obj-y += cam_sensor/
