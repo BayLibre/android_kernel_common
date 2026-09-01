@@ -63,8 +63,10 @@
 			pinmux = <K3_PADCONF(36, 4)>,	/* i2c3 scl */
 				 <K3_PADCONF(37, 4)>;	/* i2c3 sda */
 
-			bias-pull-up = <0>;
+			/* No argument: arg 1 selects the strong pull the bus needs. */
+			bias-pull-up;
 			drive-strength = <25>;
+			power-source = <3300>;
 		};
 	};
 
