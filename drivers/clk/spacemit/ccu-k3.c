@@ -580,6 +580,38 @@ CCU_GATE_DEFINE(can3_bus_clk, CCU_PARENT_HW(apb_clk), APBC_CAN3_CLK_RST, BIT(0),
 CCU_GATE_DEFINE(can4_bus_clk, CCU_PARENT_HW(apb_clk), APBC_CAN4_CLK_RST, BIT(0), 0);
 /* APBC clocks end */
 
+/* APBC2 clocks start */
+CCU_MUX_GATE_DEFINE(uart1_sec_clk, uart_clk_parents, APBC2_UART1_CLK_RST, 4, 3, BIT(1), 0);
+CCU_GATE_DEFINE(uart1_sec_bus_clk, CCU_PARENT_HW(apb_clk), APBC2_UART1_CLK_RST, BIT(0), 0);
+
+CCU_MUX_DEFINE(spi2_i2s_bclk, i2s_bclk_parents, APBC2_SSP2_CLK_RST, 3, 1, 0);
+
+static const struct clk_parent_data spi2_parents[] = {
+	CCU_PARENT_HW(pll1_d384_6p4),
+	CCU_PARENT_HW(pll1_d192_12p8),
+	CCU_PARENT_HW(pll1_d96_25p6),
+	CCU_PARENT_HW(pll1_d48_51p2),
+	CCU_PARENT_HW(pll1_d768_3p2),
+	CCU_PARENT_HW(pll1_d1536_1p6),
+	CCU_PARENT_HW(pll1_d3072_0p8),
+	CCU_PARENT_HW(spi2_i2s_bclk),
+};
+CCU_MUX_GATE_DEFINE(spi2_sec_clk, spi2_parents, APBC2_SSP2_CLK_RST, 4, 3, BIT(1), 0);
+CCU_GATE_DEFINE(spi2_sec_bus_clk, CCU_PARENT_HW(apb_clk), APBC2_SSP2_CLK_RST, BIT(0), 0);
+
+CCU_MUX_GATE_DEFINE(twsi3_sec_clk, twsi_parents, APBC2_TWSI3_CLK_RST, 4, 3, BIT(1), 0);
+CCU_GATE_DEFINE(twsi3_sec_bus_clk, CCU_PARENT_HW(apb_clk), APBC2_TWSI3_CLK_RST, BIT(0), 0);
+
+CCU_GATE_DEFINE(rtc_sec_clk, CCU_PARENT_NAME(osc_32k), APBC2_RTC_CLK_RST, BIT(7) | BIT(1), 0);
+CCU_GATE_DEFINE(rtc_sec_bus_clk, CCU_PARENT_HW(apb_clk), APBC2_RTC_CLK_RST, BIT(0), 0);
+
+CCU_MUX_GATE_DEFINE(timers_sec_clk, timer_parents, APBC2_TIMERS_CLK_RST, 4, 3, BIT(1), 0);
+CCU_GATE_DEFINE(timers_sec_bus_clk, CCU_PARENT_HW(apb_clk), APBC2_TIMERS_CLK_RST, BIT(0), 0);
+
+CCU_GATE_DEFINE(gpio_sec_clk, CCU_PARENT_NAME(vctcxo_24m), APBC2_GPIO_CLK_RST, BIT(1), 0);
+CCU_GATE_DEFINE(gpio_sec_bus_clk, CCU_PARENT_HW(apb_clk), APBC2_GPIO_CLK_RST, BIT(0), 0);
+/* APBC2 clocks end */
+
 /* APMU clocks start */
 static const struct clk_parent_data axi_clk_parents[] = {
 	CCU_PARENT_HW(pll1_d8_307p2),
@@ -1425,6 +1457,28 @@ static const struct spacemit_ccu_data k3_ccu_apbc_data = {
 	.num		= ARRAY_SIZE(k3_ccu_apbc_hws),
 };
 
+static struct clk_hw *k3_ccu_apbc2_hws[] = {
+	[CLK_APBC2_SEC_UART1]		= &uart1_sec_clk.common.hw,
+	[CLK_APBC2_SEC_UART1_BUS]	= &uart1_sec_bus_clk.common.hw,
+	[CLK_APBC2_SEC_SPI2_I2S_BCLK]	= &spi2_i2s_bclk.common.hw,
+	[CLK_APBC2_SEC_SPI2]		= &spi2_sec_clk.common.hw,
+	[CLK_APBC2_SEC_SPI2_BUS]	= &spi2_sec_bus_clk.common.hw,
+	[CLK_APBC2_SEC_TWSI3]		= &twsi3_sec_clk.common.hw,
+	[CLK_APBC2_SEC_TWSI3_BUS]	= &twsi3_sec_bus_clk.common.hw,
+	[CLK_APBC2_SEC_RTC]		= &rtc_sec_clk.common.hw,
+	[CLK_APBC2_SEC_RTC_BUS]		= &rtc_sec_bus_clk.common.hw,
+	[CLK_APBC2_SEC_TIMERS]		= &timers_sec_clk.common.hw,
+	[CLK_APBC2_SEC_TIMERS_BUS]	= &timers_sec_bus_clk.common.hw,
+	[CLK_APBC2_SEC_GPIO]		= &gpio_sec_clk.common.hw,
+	[CLK_APBC2_SEC_GPIO_BUS]	= &gpio_sec_bus_clk.common.hw,
+};
+
+static const struct spacemit_ccu_data k3_ccu_apbc2_data = {
+	.reset_name	= "k3-apbc2-reset",
+	.hws		= k3_ccu_apbc2_hws,
+	.num		= ARRAY_SIZE(k3_ccu_apbc2_hws),
+};
+
 static struct clk_hw *k3_ccu_apmu_hws[] = {
 	[CLK_APMU_AXICLK]		= &axi_clk.common.hw,
 	[CLK_APMU_CCI550]		= &cci550_clk.common.hw,
@@ -1577,6 +1631,10 @@ static const struct of_device_id of_k3_ccu_match[] = {
 		.data		= &k3_ccu_apbc_data,
 	},
 	{
+		.compatible	= "spacemit,k3-syscon-apbc2",
+		.data		= &k3_ccu_apbc2_data,
+	},
+	{
 		.compatible	= "spacemit,k3-syscon-apmu",
 		.data		= &k3_ccu_apmu_data,
 	},
@@ -1616,6 +1674,7 @@ enum k3_ccu_block_id {
 	K3_CCU_PLL,
 	K3_CCU_MPMU,
 	K3_CCU_APBC,
+	K3_CCU_APBC2,
 	K3_CCU_APMU,
 	K3_CCU_DCIU,
 	K3_CCU_RCPU_I2SCTRL,
@@ -1629,6 +1688,7 @@ static const struct k3_ccu_block {
 	{ &k3_ccu_pll_data,	K3_CCU_PLL,	0 },
 	{ &k3_ccu_mpmu_data,	K3_CCU_MPMU,	BIT(K3_CCU_PLL) },
 	{ &k3_ccu_apbc_data,	K3_CCU_APBC,	BIT(K3_CCU_PLL) | BIT(K3_CCU_MPMU) },
+	{ &k3_ccu_apbc2_data,	K3_CCU_APBC2,	BIT(K3_CCU_PLL) | BIT(K3_CCU_MPMU) },
 	{ &k3_ccu_apmu_data,	K3_CCU_APMU,	BIT(K3_CCU_PLL) | BIT(K3_CCU_MPMU) },
 	{ &k3_ccu_dciu_data,	K3_CCU_DCIU,	BIT(K3_CCU_APMU) },
 	/*

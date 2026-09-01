@@ -290,6 +290,21 @@
 #define CLK_APBC_CAN3_BUS        140
 #define CLK_APBC_CAN4_BUS        141
 
+/* APBC2 (secure APB) clocks */
+#define CLK_APBC2_SEC_UART1         0
+#define CLK_APBC2_SEC_UART1_BUS     1
+#define CLK_APBC2_SEC_SPI2_I2S_BCLK 2
+#define CLK_APBC2_SEC_SPI2          3
+#define CLK_APBC2_SEC_SPI2_BUS      4
+#define CLK_APBC2_SEC_TWSI3         5
+#define CLK_APBC2_SEC_TWSI3_BUS     6
+#define CLK_APBC2_SEC_RTC           7
+#define CLK_APBC2_SEC_RTC_BUS       8
+#define CLK_APBC2_SEC_TIMERS        9
+#define CLK_APBC2_SEC_TIMERS_BUS    10
+#define CLK_APBC2_SEC_GPIO          11
+#define CLK_APBC2_SEC_GPIO_BUS      12
+
 /* APMU clocks */
 #define CLK_APMU_AXICLK          0
 #define CLK_APMU_CCI550          1

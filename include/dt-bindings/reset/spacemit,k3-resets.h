@@ -80,6 +80,14 @@
 #define RESET_APBC_CAN3          66
 #define RESET_APBC_CAN4          67
 
+/* APBC2 (secure APB) resets */
+#define RESET_APBC2_SEC_UART1    0
+#define RESET_APBC2_SEC_SPI2     1
+#define RESET_APBC2_SEC_TWSI3    2
+#define RESET_APBC2_SEC_RTC      3
+#define RESET_APBC2_SEC_TIMERS   4
+#define RESET_APBC2_SEC_GPIO     5
+
 /* APMU resets */
 #define RESET_APMU_CSI           0
 #define RESET_APMU_CCIC2PHY      1
