@@ -152,6 +152,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&aoi2c1_pins>;
 	clock-frequency = <400000>;
+	status = "okay";
 
 	aw9535_1: gpio@21 {
 		compatible = "awinic,aw9535", "nxp,pca9535";
