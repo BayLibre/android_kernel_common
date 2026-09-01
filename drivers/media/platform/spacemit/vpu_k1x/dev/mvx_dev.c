@@ -96,6 +96,17 @@ static const struct mvx_soc_data mvx_soc_k1 = {
 	.clk_rate	= 819200000,
 };
 
+/*
+ * The K3 puts all of its DRAM above 4 GB and lets the VPU address it directly,
+ * so there is no window to translate through and no reason to narrow the mask
+ * below the 40 bits the hardware supports.
+ */
+static const struct mvx_soc_data mvx_soc_k3 = {
+	.phys_remap	= false,
+	.dma_mask_bits	= 0,
+	.clk_rate	= 1000000000,
+};
+
 /****************************************************************************
  * Types
  ****************************************************************************/
@@ -702,6 +713,8 @@ static const struct of_device_id mvx_dev_match_table[] = {
 	{ .compatible = "arm,mali-v61",		.data = &mvx_soc_k1 },
 	{ .compatible = "arm china,linlon-v5",	.data = &mvx_soc_k1 },
 	{ .compatible = "arm china,linlon-v7",	.data = &mvx_soc_k1 },
+	{ .compatible = "spacemit,k1-linlon-v5", .data = &mvx_soc_k1 },
+	{ .compatible = "spacemit,k3-linlon-v5", .data = &mvx_soc_k3 },
 	{ { 0 } }
 };
 
