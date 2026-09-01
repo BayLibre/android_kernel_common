@@ -535,7 +535,6 @@ static int mvx_dev_remove(struct mvx_dev_ctx *ctx)
 	if (IS_ENABLED(CONFIG_DEBUG_FS))
 		debugfs_remove_recursive(ctx->dentry);
 
-	mvx_pm_disable_clk(ctx->dev);
 	reset_control_assert(ctx->rst);
 
 	dev_set_drvdata(ctx->dev, NULL);
