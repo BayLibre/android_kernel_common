@@ -274,7 +274,7 @@ cpp: cpp@c02f0000 {
 };
 
 vpu: linlon-v5@c0500000 {
-	compatible = "arm china,linlon-v5";
+	compatible = "spacemit,k1-linlon-v5", "arm china,linlon-v5";
 	reg = <0x0 0xc0500000 0x0 0x10000>;
 	interrupts = <74>;
 	clocks = <&syscon_apmu CLK_VPU>;

@@ -1310,7 +1310,7 @@
 		};
 
 		vpu: linlon-v5@c0500000 {
-			compatible = "arm china,linlon-v5";
+			compatible = "spacemit,k3-linlon-v5", "arm china,linlon-v5";
 			reg = <0x0 0xc0500000 0x0 0x200000>;
 			interrupt-parent = <&saplic>;
 			interrupts = <74 IRQ_TYPE_LEVEL_HIGH>;
