@@ -95,6 +95,20 @@ static const struct ccu_reset_controller_data k3_apbc_reset_data = {
 	.count		= ARRAY_SIZE(k3_apbc_resets),
 };
 
+static const struct ccu_reset_data k3_apbc2_resets[] = {
+	[RESET_APBC2_SEC_UART1]		= RESET_DATA(APBC2_UART1_CLK_RST,	BIT(2), 0),
+	[RESET_APBC2_SEC_SPI2]		= RESET_DATA(APBC2_SSP2_CLK_RST,	BIT(2), 0),
+	[RESET_APBC2_SEC_TWSI3]		= RESET_DATA(APBC2_TWSI3_CLK_RST,	BIT(2), 0),
+	[RESET_APBC2_SEC_RTC]		= RESET_DATA(APBC2_RTC_CLK_RST,		BIT(2), 0),
+	[RESET_APBC2_SEC_TIMERS]	= RESET_DATA(APBC2_TIMERS_CLK_RST,	BIT(2), 0),
+	[RESET_APBC2_SEC_GPIO]		= RESET_DATA(APBC2_GPIO_CLK_RST,	BIT(2), 0),
+};
+
+static const struct ccu_reset_controller_data k3_apbc2_reset_data = {
+	.reset_data	= k3_apbc2_resets,
+	.count		= ARRAY_SIZE(k3_apbc2_resets),
+};
+
 static const struct ccu_reset_data k3_apmu_resets[] = {
 	[RESET_APMU_CSI]	= RESET_DATA(APMU_CSI_CCIC2_CLK_RES_CTRL,	0, BIT(1)),
 	[RESET_APMU_CCIC2PHY]	= RESET_DATA(APMU_CSI_CCIC2_CLK_RES_CTRL,	0, BIT(2)),
@@ -241,6 +255,7 @@ static const struct ccu_reset_controller_data k3_rcpu_i2sctrl_reset_data = {
 static const struct auxiliary_device_id spacemit_k3_reset_ids[] = {
 	K3_AUX_DEV_ID(mpmu),
 	K3_AUX_DEV_ID(apbc),
+	K3_AUX_DEV_ID(apbc2),
 	K3_AUX_DEV_ID(apmu),
 	K3_AUX_DEV_ID(dciu),
 	K3_AUX_DEV_ID(rcpu_i2sctrl),
