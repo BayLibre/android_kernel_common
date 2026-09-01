@@ -481,6 +481,47 @@
 };
 
 /*
+ * Speaker audio: the Everest ES8326 codec sits on the secure TWSI3 bus and
+ * is the sink for the "i2s1" CPU DAI above.
+ */
+&i2c3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c3_1_cfg>;
+	status = "okay";
+
+	es8326: es8326@19 {
+		compatible = "everest,es8326";
+		reg = <0x19>;
+		#sound-dai-cells = <0>;
+		interrupt-parent = <&gpio>;
+		interrupts = <3 31 IRQ_TYPE_EDGE_RISING>;
+		everest,mic1-src = [44];
+		everest,mic2-src = [66];
+		everest,jack-detect-inverted;
+	};
+};
+
+&sound_card1 {
+	status = "okay";
+	simple-audio-card,name = "snd-es8326";
+	simple-audio-card,mclk-fs = <256>;
+
+	simple-audio-card,dai-link@0 {
+		format = "i2s";
+		frame-master = <&link1_cpu>;
+		bitclock-master = <&link1_cpu>;
+
+		link1_cpu: cpu {
+			sound-dai = <&i2s1>;
+		};
+
+		link1_codec: codec {
+			sound-dai = <&es8326>;
+		};
+	};
+};
+
+/*
  * PCIe port E (pcie4, x1) -> M.2 WiFi slot (Realtek RTL8852BE).  The PHY,
  * the root-port PHY/supply binding and the controller are all enabled here;
  * the SoC nodes live in k3.dtsi.  Bringing up the link needs the real board.

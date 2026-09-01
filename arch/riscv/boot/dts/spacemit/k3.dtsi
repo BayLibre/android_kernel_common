@@ -1588,7 +1588,29 @@
 					      <&cpu7_intc 3>, <&cpu7_intc 7>;
 		};
 
-		/* sec_i2c3: 0xf0614000, not available from Linux */
+		syscon_apbc2: system-controller@f0610000 {
+			compatible = "spacemit,k3-syscon-apbc2";
+			reg = <0x0 0xf0610000 0x0 0x2000>;
+			clocks = <&osc_32k>, <&vctcxo_1m>, <&vctcxo_3m>, <&vctcxo_24m>;
+			clock-names = "osc", "vctcxo_1m", "vctcxo_3m", "vctcxo_24m";
+			#clock-cells = <1>;
+			#reset-cells = <1>;
+		};
+
+		i2c3: i2c@f0614000 {
+			compatible = "spacemit,k3-i2c", "spacemit,k1-i2c";
+			reg = <0x0 0xf0614000 0x0 0x38>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			interrupt-parent = <&saplic>;
+			interrupts = <39 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&syscon_apbc2 CLK_APBC2_SEC_TWSI3>,
+				 <&syscon_apbc2 CLK_APBC2_SEC_TWSI3_BUS>;
+			clock-names = "func", "bus";
+			clock-frequency = <400000>;
+			resets = <&syscon_apbc2 RESET_APBC2_SEC_TWSI3>;
+			status = "disabled";
+		};
 
 		mimsic: interrupt-controller@f1000000 {
 			compatible = "spacemit,k3-imsics", "riscv,imsics";
