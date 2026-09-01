@@ -793,6 +793,12 @@ static int setup_vb2_queue(struct mvx_v4l2_port *vport)
 	q->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_COPY;
 	q->allow_zero_bytesused = true;
 
+	/*
+	 * reqbufs, qbuf and dqbuf all run with this mutex held, which is what
+	 * vb2 needs to drop and retake while it waits for a buffer to be done.
+	 */
+	q->lock = &vport->vsession->mutex;
+
 	/* Let Vb2 handle mvx_v4l2_buffer allocations. */
 	q->buf_struct_size = sizeof(struct mvx_v4l2_buffer);
 
