@@ -1341,22 +1341,23 @@ int mvx_v4l2_vidioc_reqbufs(struct file *file,
 	if (ret != 0)
 		return ret;
 
-	if (b->count == 0) {
-		if (vport->q_set != false) {
-			vb2_queue_release(&vport->vb2_queue);
-			vport->q_set = false;
-		}
-	} else {
-		if (vport->q_set == false) {
-			ret = setup_vb2_queue(vport);
-			if (ret != 0)
-				goto unlock_mutex;
+	/*
+	 * The queue is set up once and lives until release. Tearing it down
+	 * here and rebuilding it on the next request would re-initialise its
+	 * done_wq under any poller still registered on it.
+	 */
+	if (vport->q_set == false) {
+		if (b->count == 0)
+			goto unlock_mutex;
 
-			vport->q_set = true;
-		}
+		ret = setup_vb2_queue(vport);
+		if (ret != 0)
+			goto unlock_mutex;
 
-		ret = vb2_reqbufs(&vport->vb2_queue, b);
+		vport->q_set = true;
 	}
+
+	ret = vb2_reqbufs(&vport->vb2_queue, b);
     vport->port->buffer_allocated = b->count;
 unlock_mutex:
 	mutex_unlock(&vsession->mutex);
