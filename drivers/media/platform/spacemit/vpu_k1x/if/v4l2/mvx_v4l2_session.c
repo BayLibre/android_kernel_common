@@ -34,6 +34,7 @@
  ****************************************************************************/
 
 #include <linux/debugfs.h>
+#include <linux/slab.h>
 #include <linux/sched.h>
 #include <media/v4l2-event.h>
 #include <media/videobuf2-v4l2.h>
@@ -190,7 +191,7 @@ static void free_session(struct mvx_session *session)
     if (mutex_is_locked(&s->mutex)) {
         mutex_unlock(&s->mutex);
     }
-	devm_kfree(s->ext->dev, s);
+	kfree(s);
 }
 #ifdef MODULE
 static unsigned sev_pos(const struct v4l2_subscribed_event *sev, unsigned idx)

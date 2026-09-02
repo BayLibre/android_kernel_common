@@ -30,6 +30,7 @@
  */
 
 #include <linux/fs.h>
+#include <linux/slab.h>
 #include <media/v4l2-dev.h>
 #include <media/v4l2-event.h>
 #include "mvx_ext_if.h"
@@ -51,7 +52,7 @@ int mvx_v4l2_open(struct file *file)
 	struct v4l2_format fmt = { 0 };
 	int ret;
 
-	session = devm_kzalloc(ctx->dev, sizeof(*session), GFP_KERNEL);
+	session = kzalloc(sizeof(*session), GFP_KERNEL);
 	if (session == NULL) {
 		MVX_LOG_PRINT(&mvx_log_if, MVX_LOG_WARNING,
 			      "Failed to allocate V4L2 session.");
@@ -102,7 +103,7 @@ put_session:
 	return ret;
 
 free_session:
-	devm_kfree(ctx->dev, session);
+	kfree(session);
 
 	return ret;
 }
