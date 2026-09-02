@@ -132,8 +132,6 @@ int mvx_v4l2_release(struct file *file)
 
 	file->private_data = NULL;
 
-	MVX_SESSION_INFO(&vsession->session, "v4l2: Release exit.");
-
 	return 0;
 }
 
