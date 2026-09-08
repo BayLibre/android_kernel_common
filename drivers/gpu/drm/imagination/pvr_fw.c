@@ -1076,7 +1076,7 @@ void
 pvr_fw_mts_schedule(struct pvr_device *pvr_dev, u32 val)
 {
 	/* Ensure memory is flushed before kicking MTS. */
-	wmb();
+	dma_wmb();
 
 	pvr_cr_write32(pvr_dev, ROGUE_CR_MTS_SCHEDULE, val);
 

@@ -371,6 +371,9 @@ pvr_mmu_backing_page_sync(struct pvr_mmu_backing_page *page, u32 flags)
 	dma_sync_single_for_device(dev, page->dma_addr,
 				   PVR_MMU_BACKING_PAGE_SIZE, DMA_TO_DEVICE);
 
+	/* Drain any write-combine buffering dma_sync_single_for_device() misses. */
+	dma_wmb();
+
 	pvr_mmu_set_flush_flags(pvr_dev, flags);
 }
 
@@ -1761,7 +1764,7 @@ pvr_page_table_l1_get_or_insert(struct pvr_mmu_op_context *op_ctx,
 	table->next_free = NULL;
 
 	/* Ensure new table is fully written out before adding to L2 page table. */
-	wmb();
+	dma_wmb();
 
 	pvr_page_table_l2_insert(op_ctx, table);
 
@@ -1810,7 +1813,7 @@ pvr_page_table_l0_get_or_insert(struct pvr_mmu_op_context *op_ctx,
 	table->next_free = NULL;
 
 	/* Ensure new table is fully written out before adding to L1 page table. */
-	wmb();
+	dma_wmb();
 
 	pvr_page_table_l1_insert(op_ctx, table);
 

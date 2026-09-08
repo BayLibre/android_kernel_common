@@ -296,7 +296,7 @@ pvr_gem_object_zero(struct pvr_gem_object *pvr_obj)
 	memset(cpu_ptr, 0, pvr_gem_object_size(pvr_obj));
 
 	/* Make sure the zero-ing is done before vumap-ing the object. */
-	wmb();
+	dma_wmb();
 
 	pvr_gem_object_vunmap(pvr_obj);
 

@@ -290,7 +290,8 @@ pvr_kccb_send_cmd_reserved_powered(struct pvr_device *pvr_dev,
 		WRITE_ONCE(pvr_dev->kccb.rtn[old_write_offset],
 			   ROGUE_FWIF_KCCB_RTN_SLOT_NO_RESPONSE);
 	}
-	mb(); /* memory barrier */
+	/* Ensure the command write is flushed before publishing the new write offset. */
+	dma_wmb();
 	WRITE_ONCE(ctrl->write_offset, new_write_offset);
 	pvr_dev->kccb.reserved_count--;
 

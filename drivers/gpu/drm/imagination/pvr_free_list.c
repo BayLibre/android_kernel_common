@@ -258,7 +258,7 @@ pvr_free_list_insert_pages_locked(struct pvr_free_list *free_list,
 	/* clang-format on */
 
 	/* Make sure our free_list update is flushed. */
-	wmb();
+	dma_wmb();
 
 	pvr_gem_object_vunmap(free_list->obj);
 
