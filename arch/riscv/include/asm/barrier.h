@@ -80,6 +80,13 @@ do {									\
 })
 #endif
 
+#ifdef CONFIG_ARCH_ZHIHE
+/* See <asm/iomb.h>. */
+#include <asm/iomb.h>
+#define __dma_mb()	a210_iomb()
+#define __dma_wmb()	a210_iowmb()
+#endif
+
 #include <asm-generic/barrier.h>
 
 #endif /* __ASSEMBLER__ */
