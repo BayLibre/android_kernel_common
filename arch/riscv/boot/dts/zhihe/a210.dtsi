@@ -706,6 +706,7 @@
 				resets = <&rst GPU_PWR_WRAP_RGX_HOOD_RST>,
 					 <&rst GPU_PWR_WRAP_DFMU_RST>;
 				iopmps = <&device_gpu_iopmp>, <&device_gpu_mt_iopmp>;
+				pmic-supply = <&dvdd_gpu_reg>;
 			};
 			power_npu_wrapper:power_npu_wrapper {
 				status = "disabled";
