@@ -366,6 +366,14 @@ pvr_gem_object_create(struct pvr_device *pvr_dev, size_t size, u64 flags)
 	if (IS_ERR(shmem_obj))
 		return ERR_CAST(shmem_obj);
 
+	/*
+	 * Keep pages below 4GB so a 32-bit-dma_mask device this object is
+	 * later dma-buf-shared with can still reach them without bouncing
+	 * through swiotlb. Must happen before the first page fault.
+	 */
+	mapping_set_gfp_mask(shmem_obj->base.filp->f_mapping,
+			     GFP_HIGHUSER | __GFP_DMA32 | __GFP_RETRY_MAYFAIL | __GFP_NOWARN);
+
 	shmem_obj->map_wc = !(flags & PVR_BO_CPU_CACHED);
 	pvr_obj = shmem_gem_to_pvr_gem(shmem_obj);
 	pvr_obj->flags = flags;
