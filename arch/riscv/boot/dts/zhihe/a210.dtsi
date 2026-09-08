@@ -1570,17 +1570,16 @@
 			};
 		};
 
-		gpu: gpu@6c00000{
-			compatible = "img,gpu";
+		gpu: gpu@6c00000 {
+			compatible = "zhihe,a210-gpu", "img,img-bxm-4-64",
+				     "img,img-rogue";
 			reg = <0x00 0x6c00000 0x0 0x100000>;
 			interrupt-parent = <&intc>;
 			interrupts = <72>;
-			interrupt-names = "gpuirq";
 			power-domains = <&power_gpu>;
-			vosys-regmap = <&vosys_reg>;
-			dma-mask = <0xf 0xffffffff>;
-			clocks = <&clk_gpu SW_PWR_WRAP_GPU_CORE_CLK_EN>;
-			clock-names = "gpu_core_clk ";
+			clocks = <&clk_gpu SW_PWR_WRAP_GPU_CORE_CLK_EN>,
+				 <&clk_gpu SW_PWR_WRAP_GPU_SYS_CLK_EN>;
+			clock-names = "core", "sys";
 			operating-points-v2 = <&gpu_opp_table>;
 		};
 
