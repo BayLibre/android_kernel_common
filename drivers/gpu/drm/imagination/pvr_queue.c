@@ -9,6 +9,7 @@
 #include "pvr_device.h"
 #include "pvr_drv.h"
 #include "pvr_job.h"
+#include "pvr_power.h"
 #include "pvr_queue.h"
 #include "pvr_vm.h"
 
@@ -831,6 +832,12 @@ pvr_queue_timedout_job(struct drm_sched_job *s_job)
 	mutex_unlock(&pvr_dev->queues.lock);
 
 	drm_sched_stop(sched, s_job);
+
+	/*
+	 * Force a hardware reset: a plain stop+start never actually
+	 * unblocks a stuck job, so it would just time out again next tick.
+	 */
+	pvr_power_reset(pvr_dev, true);
 
 	/* Re-assign job parent fences. */
 	list_for_each_entry(job, &sched->pending_list, base.list) {
