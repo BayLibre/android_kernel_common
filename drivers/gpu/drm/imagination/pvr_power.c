@@ -587,13 +587,20 @@ pvr_power_reset(struct pvr_device *pvr_dev, bool hard_reset)
 		if (!err) {
 			if (hard_reset) {
 				pvr_dev->fw_dev.booted = false;
-				WARN_ON(pvr_power_device_suspend(from_pvr_device(pvr_dev)->dev));
+
+				/*
+				 * Force a real runtime-PM suspend/resume transition
+				 * instead of calling the driver's own PM callbacks
+				 * directly, so it correctly cascades to the parent
+				 * power domain.
+				 */
+				WARN_ON(pm_runtime_force_suspend(from_pvr_device(pvr_dev)->dev));
 
 				err = pvr_fw_hard_reset(pvr_dev);
 				if (err)
 					goto err_device_lost;
 
-				err = pvr_power_device_resume(from_pvr_device(pvr_dev)->dev);
+				err = pm_runtime_force_resume(from_pvr_device(pvr_dev)->dev);
 				pvr_dev->fw_dev.booted = true;
 				if (err)
 					goto err_device_lost;
