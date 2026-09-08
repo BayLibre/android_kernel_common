@@ -66,14 +66,24 @@ static void bpc_config(struct device *dev, const char *str, void __iomem *base_a
     writel(0x10101, base_addr + 0x004); // pwr venc bpc 3000| fence
 }
 
-static void pcu_intr(struct device *dev, const char *str, void __iomem *base_addr)
+/* Backstop against a wedged/never-triggered PCU hanging forever. */
+#define PCU_INTR_TIMEOUT_US 10000
+
+static int pcu_intr(struct device *dev, const char *str, void __iomem *base_addr)
 {
     u32 data;
+    int timeout = PCU_INTR_TIMEOUT_US;
+
     udelay(1);
     data = readl(base_addr + 0x2c); // read pcu intr
-    while (data == 0) {
+    while (data == 0 && --timeout > 0) {
         udelay(1);
         data = readl(base_addr + 0x2c); // read pcu intr
+    }
+    if (data == 0) {
+        dev_err(dev, "%s pcu_intr timed out after %dus waiting for ack\n",
+            str, PCU_INTR_TIMEOUT_US);
+        return -ETIMEDOUT;
     }
     if (((data & (1 << 0)) != 0) || ((data & (1 << 3)) != 0)) {
         dev_dbg(dev, "%s pcu_intr accept\n", str);
@@ -85,9 +95,11 @@ static void pcu_intr(struct device *dev, const char *str, void __iomem *base_add
         dev_err(dev, "%s pcu_intr timeout\n", str);
     }
     writel(data, base_addr + 0x28); // clr cpu intr
+
+    return 0;
 }
 
-static void pcu_config(struct device *dev, const char *str,
+static int pcu_config(struct device *dev, const char *str,
 		       void __iomem * base_addr, u32 pcu_ctrl, u32 state)
 {
     writel(0x3f, base_addr + 0x24); // interrupt enable
@@ -95,10 +107,11 @@ static void pcu_config(struct device *dev, const char *str,
         dev_dbg(dev, "Enter %s pcu_config: pcu reg trigger...state=0x%x\n", str, state);
         writel((state & 0x1f), base_addr + 0x0c); // lpstate = power on
         writel(0x1, base_addr + 0x08); // lqreq
-        pcu_intr(dev, str, base_addr); // wait for accept
-    } else {
-        dev_dbg(dev, "Enter %s pcu_config: wait r2p trigger...\n", str);
+        return pcu_intr(dev, str, base_addr); // wait for accept
     }
+
+    dev_dbg(dev, "Enter %s pcu_config: wait r2p trigger...\n", str);
+    return 0;
 }
 
 static int a210_pd_power_switch(struct generic_pm_domain *domain, power_mode mode)
@@ -125,8 +138,11 @@ static int a210_pd_power_switch(struct generic_pm_domain *domain, power_mode mod
 
 	if (!IS_ERR(a210_pd->bpc_base))
 		bpc_config(dev, name, a210_pd->bpc_base, BPC_HW_MODEL);
-	if (!IS_ERR(a210_pd->pcu_base))
-		pcu_config(dev, name, a210_pd->pcu_base, PCU_REG_TRIGGER, mode);
+	if (!IS_ERR(a210_pd->pcu_base)) {
+		ret = pcu_config(dev, name, a210_pd->pcu_base, PCU_REG_TRIGGER, mode);
+		if (ret)
+			return ret;
+	}
 
 	if (mode == OFF && regulator != NULL) {
 		ret = regulator_disable(regulator);
