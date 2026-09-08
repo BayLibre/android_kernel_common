@@ -254,10 +254,16 @@ pvr_watchdog_init(struct pvr_device *pvr_dev)
 	return 0;
 }
 
+static void pvr_power_pd_reset_put(void *data)
+{
+	reset_control_put(data);
+}
+
 static int pvr_power_init_manual(struct pvr_device *pvr_dev)
 {
 	struct drm_device *drm_dev = from_pvr_device(pvr_dev);
 	struct reset_control *reset;
+	struct device_node *pd_np;
 
 	reset = devm_reset_control_get_optional_exclusive(drm_dev->dev, NULL);
 	if (IS_ERR(reset))
@@ -265,6 +271,29 @@ static int pvr_power_init_manual(struct pvr_device *pvr_dev)
 				     "failed to get gpu reset line\n");
 
 	pvr_dev->reset = reset;
+
+	/* Best-effort: pd_reset stays NULL if there is no power-domains phandle. */
+	pd_np = of_parse_phandle(drm_dev->dev->of_node, "power-domains", 0);
+	if (pd_np) {
+		struct reset_control *pd_reset =
+			of_reset_control_array_get_optional_shared(pd_np);
+
+		of_node_put(pd_np);
+
+		if (IS_ERR(pd_reset))
+			return dev_err_probe(drm_dev->dev, PTR_ERR(pd_reset),
+					     "failed to get power domain's gpu reset line(s)\n");
+
+		if (pd_reset) {
+			int err = devm_add_action_or_reset(drm_dev->dev,
+							   pvr_power_pd_reset_put,
+							   pd_reset);
+			if (err)
+				return err;
+		}
+
+		pvr_dev->pd_reset = pd_reset;
+	}
 
 	return 0;
 }
@@ -303,6 +332,11 @@ static int pvr_power_on_sequence_manual(struct pvr_device *pvr_dev)
 	if (err && !pvr_dev->clocks_enabled)
 		goto err_mem_clk_disable;
 
+	/* No-op (NULL) wherever pvr_dev->reset above already covers it. */
+	err = reset_control_deassert(pvr_dev->pd_reset);
+	if (err)
+		goto err_mem_clk_disable;
+
 	return 0;
 
 err_mem_clk_disable:
@@ -319,8 +353,15 @@ err_core_clk_disable:
 
 static int pvr_power_off_sequence_manual(struct pvr_device *pvr_dev)
 {
+	int err;
+
 	/* Only assert reset, keep clocks running (SpacemiT K1 requirement) */
-	return reset_control_assert(pvr_dev->reset);
+	err = reset_control_assert(pvr_dev->reset);
+	if (err)
+		return err;
+
+	/* No-op (NULL) wherever pvr_dev->reset above already covers it. */
+	return reset_control_assert(pvr_dev->pd_reset);
 }
 
 const struct pvr_power_sequence_ops pvr_power_sequence_ops_manual = {

@@ -188,6 +188,14 @@ struct pvr_device {
 	 */
 	struct reset_control *reset;
 
+	/**
+	 * @pd_reset: Optional reset line(s) shared with this device's power
+	 * domain, when those live on the power-domain's own devicetree node
+	 * rather than on this device's node. NULL/no-op wherever this
+	 * doesn't apply.
+	 */
+	struct reset_control *pd_reset;
+
 	/** @pwrseq: Pointer to a power sequencer, if one is used. */
 	struct pwrseq_desc *pwrseq;
 
