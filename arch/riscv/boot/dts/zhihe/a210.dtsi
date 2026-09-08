@@ -696,6 +696,7 @@
 				resets = <&rst GPU_PWR_WRAP_RGX_HOOD_RST>,
 					 <&rst GPU_PWR_WRAP_DFMU_RST>;
 				iopmps = <&device_gpu_iopmp>, <&device_gpu_mt_iopmp>;
+				pmic-supply = <&dvdd_gpu_reg>;
 			};
 			power_npu_wrapper:power_npu_wrapper {
 				reg = <0x00 0x07300600 0x0 0x200>,<0x00 0x07300200 0x0 0x200>, <0x00 0x07300000 0x0 0x200>;
