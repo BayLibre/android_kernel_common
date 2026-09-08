@@ -105,9 +105,27 @@ pvr_dump_context_reset_notification(struct pvr_device *pvr_dev,
 		 get_reset_reason_desc((enum rogue_context_reset_reason)data->reset_reason));
 	drm_info(drm_dev, "  Data Master=%u (%s)\n", data->dm, get_dm_name(data->dm));
 	drm_info(drm_dev, "  Job ref=%u\n", data->reset_job_ref);
+	drm_info(drm_dev, "  Page catalog address=%llx\n", data->pc_address);
 
 	if (data->flags & ROGUE_FWIF_FWCCB_CMD_CONTEXT_RESET_FLAG_PF) {
 		drm_info(drm_dev, "  Page fault occurred, fault address=%llx\n",
 			 data->fault_address);
 	}
+}
+
+/**
+ * pvr_dump_fw_pagefault_notification() - Handle FW pagefault notification from FW
+ * @pvr_dev: Device pointer.
+ * @data: Data provided by FW.
+ *
+ * This will decode the data structure provided by FW and print the results via drm_err().
+ */
+void
+pvr_dump_fw_pagefault_notification(struct pvr_device *pvr_dev,
+				   struct rogue_fwif_fwccb_cmd_fw_pagefault_data *data)
+{
+	struct drm_device *drm_dev = from_pvr_device(pvr_dev);
+
+	drm_err(drm_dev, "Firmware processor page fault, fault address=%llx\n",
+		data->fw_fault_addr);
 }

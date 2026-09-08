@@ -171,6 +171,13 @@ process_fwccb_command(struct pvr_device *pvr_dev, struct rogue_fwif_fwccb_cmd *c
 						    &cmd->cmd_data.cmd_context_reset_notification);
 		break;
 
+	case ROGUE_FWIF_FWCCB_CMD_CONTEXT_FW_PF_NOTIFICATION:
+		/* The FW processor itself faulted; force a hard reset. */
+		pvr_dump_fw_pagefault_notification(pvr_dev,
+						   &cmd->cmd_data.cmd_fw_pagefault);
+		pvr_power_reset(pvr_dev, true);
+		break;
+
 	default:
 		drm_info(drm_dev, "Received unknown FWCCB command (type=%d)\n",
 			 cmd->cmd_type & ~ROGUE_CMD_MAGIC_DWORD_MASK);
