@@ -2489,6 +2489,8 @@ static int dwcmshc_probe(struct platform_device *pdev)
 
 	pm_runtime_get_noresume(dev);
 	pm_runtime_set_active(dev);
+	pm_runtime_set_autosuspend_delay(dev, 50);
+	pm_runtime_use_autosuspend(dev);
 	pm_runtime_enable(dev);
 
 	err = sdhci_setup_host(host);
@@ -2544,6 +2546,7 @@ static void dwcmshc_remove(struct platform_device *pdev)
 	struct dwcmshc_priv *priv = sdhci_pltfm_priv(pltfm_host);
 
 	pm_runtime_get_sync(&pdev->dev);
+	pm_runtime_dont_use_autosuspend(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
 	pm_runtime_put_noidle(&pdev->dev);
 
