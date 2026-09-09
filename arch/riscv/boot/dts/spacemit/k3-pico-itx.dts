@@ -7,6 +7,7 @@
 
 #include "k3.dtsi"
 #include "k3-pinctrl.dtsi"
+#include "k3-display.dtsi"
 
 / {
 	model = "SpacemiT K3 Pico-ITX";
@@ -292,39 +293,23 @@
  * validation on the board.
  */
 /*
- * Display output.  The eDP0 internal-panel pipeline (dpu0_crtc0 / edp0 /
- * display_subsystem_edp0) stays disabled: no eDP panel is fitted on this
- * board.  The DP1 pipeline (enabled below) drives the external DisplayPort
- * on the USB-C connector; dpu1_crtc0 now carries
- * power-domains = <&power K3_PMU_LCD1_PWR_DOMAIN>, so the K3 RPMI genpd
- * powers the LCD1 island before the DPU driver touches its fabric-stalling
- * MMIO.
+ * Display output. The eDP0 pipeline stays disabled: no eDP panel is fitted.
+ * DP1 drives the external DisplayPort on the USB-C connector.
+ *
+ * power-domains is a local addition -- k3-display.dtsi carries none, because
+ * the upstream series expects a SpacemiT U-Boot that has already brought the
+ * display up. Without that bootloader the LCD1 island is unpowered and the
+ * driver's first DPU register access stalls the fabric, so keep the RPMI
+ * genpd wired here.
  */
-&dpu0_crtc0 {
-	memory-region = <&dpu_resv0>;
-	status = "okay";
-};
-
-&edp0 {
-	status = "okay";
-};
-
 &dpu1_crtc0 {
-	memory-region = <&dpu_resv1>;
+	power-domains = <&power K3_PMU_LCD1_PWR_DOMAIN>;
 	status = "okay";
 };
 
 &dp1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&dp1_1_cfg>;
-	status = "okay";
-};
-
-&display_subsystem_edp0 {
-	status = "okay";
-};
-
-&display_subsystem_dp1 {
 	status = "okay";
 };
 
