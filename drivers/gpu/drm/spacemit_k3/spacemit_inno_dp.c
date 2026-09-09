@@ -2079,9 +2079,22 @@ static void soc_dp_hw_disable(struct soc_dp_dev *dp)
 }
 
 /* Calculate required bandwidth in kbps (Pixel Clock * Bits Per Pixel) */
+/*
+ * Headroom the link needs beyond the active-pixel rate. Blanking, the MSA and
+ * SDP packets and the quantisation of the transfer unit all consume slots, so a
+ * configuration that merely exceeds the pixel rate does not carry the stream:
+ * 1366x768x24 on a single 2.7 Gbps lane fills 95 % of the nominal capacity
+ * (TU 60.4 of 64) and an active DP->HDMI converter shows nothing at all.
+ *
+ * 15 % is what the video needs. Raising it does not help DP audio: at 30 % that
+ * converter moves to a 2.7 Gbps x2 link and its audio gets worse, not better.
+ */
+#define DP_LINK_OVERHEAD_PCT	15
+
 static uint32_t soc_dp_calc_required_bw(const struct drm_display_mode *mode, int bpp)
 {
-	return mode->clock * bpp;
+	/* Divide first: the product alone already reaches ~14 Gbit/s at 4K. */
+	return mode->clock * bpp / 100 * (100 + DP_LINK_OVERHEAD_PCT);
 }
 
 /* Calculate available link capacity in kbps (taking 8b/10b overhead into account) */
