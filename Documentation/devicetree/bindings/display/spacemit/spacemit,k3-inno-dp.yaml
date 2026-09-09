@@ -16,6 +16,12 @@ description:
   output port drives a panel or a connector.
 
 properties:
+  '#sound-dai-cells':
+    const: 0
+    description:
+      The controller carries the DP audio stream, so it is an ASoC DAI
+      provider for a card that feeds it from an I2S controller.
+
   compatible:
     const: spacemit,k3-inno-dp
 

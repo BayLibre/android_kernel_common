@@ -22,6 +22,11 @@
 #include <linux/media-bus-format.h>
 #include <linux/of_graph.h>
 #include <linux/of_platform.h>
+
+#if IS_ENABLED(CONFIG_SND_SOC)
+#include <sound/pcm_params.h>
+#include <sound/soc.h>
+#endif
 #include <linux/phy/phy.h>
 #include <linux/phy/phy-dp.h>
 #include <linux/regmap.h>
@@ -203,6 +208,8 @@ struct spacemit_dp_dev {
 	bool use_ext_pixel_clock;
 	int pixel_clock;
 	struct mutex mode_lock;
+
+	u32 aud_mode;
 
 	struct work_struct modeset_retry_work;
 
@@ -1394,6 +1401,186 @@ static const struct drm_encoder_funcs spacemit_dp_encoder_funcs = {
 	.destroy = drm_encoder_cleanup,
 };
 
+#if IS_ENABLED(CONFIG_SND_SOC)
+
+/*
+ * The controller packs I2S coming from the RCPU I2S block into the DP audio
+ * stream. Only two-channel LPCM is wired up: that is what the K3 I2S feeds and
+ * what the sinks on this SoC advertise.
+ */
+static void spacemit_dp_audio_enable(struct spacemit_dp_dev *dp)
+{
+	regmap_write_bits(dp->regs, DP_SDP_HORIZONTAL_CTRL,
+			  DP_AUD_STREAM_HORIZONTAL_EN |
+			  DP_AUD_TIMESTAMP_HORIZONTAL_EN,
+			  DP_AUD_STREAM_HORIZONTAL_EN |
+			  DP_AUD_TIMESTAMP_HORIZONTAL_EN);
+	regmap_write_bits(dp->regs, DP_SDP_VERTICAL_CTRL,
+			  DP_AUD_STREAM_VERTICAL_EN |
+			  DP_AUD_TIMESTAMP_VERTICAL_EN,
+			  DP_AUD_STREAM_VERTICAL_EN |
+			  DP_AUD_TIMESTAMP_VERTICAL_EN);
+
+	regmap_write_bits(dp->regs, DP_AUDIO_CONFIG1,
+			  DP_AUDIO_INF_SELECT | DP_AUD_ADJUST_SEL |
+			  DP_AUDIO_NUM_CHANNELS | DP_AUDIO_DATA_IN_EN |
+			  DP_AUDIO_PACKET_ID | DP_AUDIO_TIMESTAMP_VERSION_NUM |
+			  DP_AUDIO_MUTE,
+			  FIELD_PREP(DP_AUDIO_INF_SELECT, 0) |
+			  /* The raw I2S sample path is silent; use the adjusted one. */
+			  FIELD_PREP(DP_AUD_ADJUST_SEL, 1) |
+			  FIELD_PREP(DP_AUDIO_NUM_CHANNELS, 1) |
+			  FIELD_PREP(DP_AUDIO_DATA_IN_EN, 1) |
+			  FIELD_PREP(DP_AUDIO_PACKET_ID, 0) |
+			  FIELD_PREP(DP_AUDIO_TIMESTAMP_VERSION_NUM, 0x12) |
+			  FIELD_PREP(DP_AUDIO_MUTE, 0));
+
+	/* Keep the sampler in reset until a stream is actually started. */
+	regmap_write_bits(dp->regs, DP_SOFT_RESET, DP_AUDIO_RESET,
+			  DP_AUDIO_RESET);
+}
+
+static int spacemit_dp_dai_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+{
+	struct spacemit_dp_dev *dp = snd_soc_dai_get_drvdata(dai);
+
+	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
+	case SND_SOC_DAIFMT_I2S:
+		dp->aud_mode = 0;
+		break;
+	case SND_SOC_DAIFMT_LEFT_J:
+		dp->aud_mode = 1;
+		break;
+	case SND_SOC_DAIFMT_RIGHT_J:
+		dp->aud_mode = 2;
+		break;
+	default:
+		return -EINVAL;
+	}
+
+	regmap_write_bits(dp->regs, DP_AUDIO_CONFIG1, DP_I2S_AUDIO_MODE,
+			  FIELD_PREP(DP_I2S_AUDIO_MODE, dp->aud_mode));
+
+	return 0;
+}
+
+static int spacemit_dp_dai_hw_params(struct snd_pcm_substream *substream,
+				     struct snd_pcm_hw_params *params,
+				     struct snd_soc_dai *dai)
+{
+	struct spacemit_dp_dev *dp = snd_soc_dai_get_drvdata(dai);
+	unsigned int width;
+
+	switch (params_format(params)) {
+	case SNDRV_PCM_FORMAT_S16_LE:
+		width = 16;
+		break;
+	case SNDRV_PCM_FORMAT_S20_3LE:
+		width = 20;
+		break;
+	case SNDRV_PCM_FORMAT_S24_LE:
+		width = 24;
+		break;
+	default:
+		return -EINVAL;
+	}
+
+	regmap_write_bits(dp->regs, DP_AUDIO_CONFIG1,
+			  DP_AUDIO_DATA_WIDTH | DP_I2S_AUDIO_MODE,
+			  FIELD_PREP(DP_AUDIO_DATA_WIDTH, width) |
+			  FIELD_PREP(DP_I2S_AUDIO_MODE, dp->aud_mode));
+	regmap_write_bits(dp->regs, DP_SOFT_RESET, DP_AUDIO_RESET,
+			  DP_AUDIO_RESET);
+
+	return 0;
+}
+
+static int spacemit_dp_dai_mute(struct snd_soc_dai *dai, int mute,
+				int direction)
+{
+	struct spacemit_dp_dev *dp = snd_soc_dai_get_drvdata(dai);
+
+	regmap_write_bits(dp->regs, DP_AUDIO_CONFIG1, DP_AUDIO_MUTE,
+			  FIELD_PREP(DP_AUDIO_MUTE, mute ? 1 : 0));
+
+	return 0;
+}
+
+static int spacemit_dp_dai_trigger(struct snd_pcm_substream *substream,
+				   int cmd, struct snd_soc_dai *dai)
+{
+	struct spacemit_dp_dev *dp = snd_soc_dai_get_drvdata(dai);
+	u32 val;
+
+	switch (cmd) {
+	case SNDRV_PCM_TRIGGER_START:
+	case SNDRV_PCM_TRIGGER_RESUME:
+	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
+		val = 0;
+		break;
+	case SNDRV_PCM_TRIGGER_STOP:
+	case SNDRV_PCM_TRIGGER_SUSPEND:
+	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
+		val = DP_AUDIO_RESET;
+		break;
+	default:
+		return -EINVAL;
+	}
+
+	regmap_write_bits(dp->regs, DP_SOFT_RESET, DP_AUDIO_RESET, val);
+
+	return 0;
+}
+
+static const struct snd_soc_dai_ops spacemit_dp_dai_ops = {
+	.hw_params	= spacemit_dp_dai_hw_params,
+	.set_fmt	= spacemit_dp_dai_set_fmt,
+	.trigger	= spacemit_dp_dai_trigger,
+	.mute_stream	= spacemit_dp_dai_mute,
+};
+
+static struct snd_soc_dai_driver spacemit_dp_dai = {
+	.name = "spacemit-dp-audio",
+	.playback = {
+		.stream_name	= "Playback",
+		.channels_min	= 2,
+		.channels_max	= 2,
+		.rates		= SNDRV_PCM_RATE_32000 | SNDRV_PCM_RATE_44100 |
+				  SNDRV_PCM_RATE_48000,
+		.formats	= SNDRV_PCM_FMTBIT_S16_LE |
+				  SNDRV_PCM_FMTBIT_S20_3LE |
+				  SNDRV_PCM_FMTBIT_S24_LE,
+	},
+	.ops = &spacemit_dp_dai_ops,
+};
+
+static const struct snd_soc_component_driver spacemit_dp_component = {
+	.name = "spacemit-dp-audio",
+};
+
+/*
+ * Registered once, for the life of the device. Tearing the component down from
+ * a hotplug path deadlocks as soon as userspace holds the card open:
+ * snd_card_disconnect_sync() waits for a release that only comes once that path
+ * returns.
+ */
+static int spacemit_dp_audio_register(struct spacemit_dp_dev *dp)
+{
+	return devm_snd_soc_register_component(dp->dev, &spacemit_dp_component,
+					       &spacemit_dp_dai, 1);
+}
+
+#else /* !CONFIG_SND_SOC */
+
+static void spacemit_dp_audio_enable(struct spacemit_dp_dev *dp) { }
+
+static int spacemit_dp_audio_register(struct spacemit_dp_dev *dp)
+{
+	return 0;
+}
+
+#endif /* CONFIG_SND_SOC */
+
 static void spacemit_dp_bridge_atomic_enable(struct drm_bridge *bridge,
 					     struct drm_atomic_state *state)
 {
@@ -1547,6 +1734,8 @@ static void spacemit_dp_bridge_atomic_enable(struct drm_bridge *bridge,
 	spacemit_dp_hw_set_msa_and_enable_video(dp, adjusted_mode,
 						dp->link_rate, dp->lane_count,
 						st->color_format);
+
+	spacemit_dp_audio_enable(dp);
 }
 
 static void spacemit_dp_bridge_atomic_disable(struct drm_bridge *bridge,
@@ -2338,6 +2527,11 @@ static int inno_dp_probe(struct platform_device *pdev)
 					IRQF_NO_AUTOEN, dev_name(dev), dp);
 	if (ret)
 		return ret;
+
+	ret = spacemit_dp_audio_register(dp);
+	if (ret)
+		return dev_err_probe(dev, ret,
+				     "failed to register the DP audio component\n");
 
 	ret = component_add(dev, &spacemit_dp_ops);
 	if (ret) {

@@ -284,7 +284,7 @@
  * need validation on the board.
  *
  * DP-audio (audio over the USB-C DisplayPort) is wired below via
- * sound_card_dp1: spacemit_inno_dp registers an ASoC codec ("inno-dp-audio",
+ * sound_card_dp1: the DP bridge registers an ASoC codec ("spacemit-dp-audio",
  * playback-only) and dp@cac88000 carries #sound-dai-cells, so the DP is a
  * valid codec sink.  The CPU DAI is the RCPU-domain I2S "ri2s3"
  * (spacemit,k3-ri2s) fed by "adma3" (spacemit,k3-adma) and clocked by
