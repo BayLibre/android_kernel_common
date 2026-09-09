@@ -1395,7 +1395,7 @@ static const struct drm_encoder_funcs spacemit_dp_encoder_funcs = {
 };
 
 static void spacemit_dp_bridge_atomic_enable(struct drm_bridge *bridge,
-					     struct drm_atomic_commit *state)
+					     struct drm_atomic_state *state)
 {
 	struct spacemit_dp_dev *dp = container_of(bridge,
 						  struct spacemit_dp_dev,
@@ -1550,7 +1550,7 @@ static void spacemit_dp_bridge_atomic_enable(struct drm_bridge *bridge,
 }
 
 static void spacemit_dp_bridge_atomic_disable(struct drm_bridge *bridge,
-					      struct drm_atomic_commit *state)
+					      struct drm_atomic_state *state)
 {
 	struct spacemit_dp_dev *dp = container_of(bridge,
 						  struct spacemit_dp_dev,
