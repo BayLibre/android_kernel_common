@@ -1107,6 +1107,28 @@ void saturn_hee_plane_disable_hw_channel(struct drm_plane *plane, struct drm_pla
 
 	cmdlist_regs_packing(crtc_to_cl(old_state->crtc), CMDLIST_MOD_COMP, cl_cmp);
 	free_cmdlist_regs(cl_cmp);
+
+	/*
+	 * Clearing the compositor layer stops the DPU blending this plane, but
+	 * the TBU keeps tbu_en and tlb_fetch_active_en, so it goes on
+	 * prefetching translations and its RDMA channel goes on issuing AXI
+	 * reads for a framebuffer nobody composites.  A hotplug reassigns
+	 * rdma_id (it is sticky across state duplication and only re-derived
+	 * from zpos when still invalid), so the abandoned channel survives and
+	 * doubles the fetch demand, starving the live one into a permanent
+	 * underrun -- the flat TMG background colour on the DP output.
+	 */
+	if (rdma_id != RDMA_INVALID_ID && rdma_id < hwdev->rdma_nums) {
+		u8 tbu_id = !to_spacemit_plane_state(old_state)->right_image ?
+			    rdma_id * 2 : rdma_id * 2 + 1;
+		struct cmdlist_regs *cl_tbu = alloc_cmdlist_regs(MMU_TBU_REG);
+
+		dpu_write(hwdev, MMU_TBU_REG, MMU_TBU_BASE_ADDR_ARRAY[tbu_id],
+			  tbu_en, 0, cl_tbu, 0);
+		cmdlist_regs_packing(crtc_to_cl(old_state->crtc),
+				     CMDLIST_MOD_DMMU, cl_tbu);
+		free_cmdlist_regs(cl_tbu);
+	}
 }
 
 
