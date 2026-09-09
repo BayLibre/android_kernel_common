@@ -47,6 +47,7 @@
 
 	edp0: edp@cac84000 {
 		compatible = "spacemit,k3-inno-dp";
+		#sound-dai-cells = <0>;
 		reg = <0x0 0xcac84000 0x0 0x4000>;
 		interrupts = <132 IRQ_TYPE_LEVEL_HIGH>;
 		clocks = <&syscon_apmu CLK_APMU_EDP0_PXCLK>, <&edp0_phy>;
@@ -118,6 +119,7 @@
 
 	dp1: dp@cac88000 {
 		compatible = "spacemit,k3-inno-dp";
+		#sound-dai-cells = <0>;
 		reg = <0x0 0xcac88000 0x0 0x4000>;
 		interrupts = <140 IRQ_TYPE_LEVEL_HIGH>;
 		clocks = <&syscon_apmu CLK_APMU_EDP1_PXCLK>, <&dp1_phy>;

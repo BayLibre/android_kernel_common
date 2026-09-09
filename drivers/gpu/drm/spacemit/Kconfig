@@ -20,6 +20,7 @@ config DRM_SPACEMIT
 config SPACEMIT_INNO_DP
 	tristate "SpacemiT Innosilicon DP/eDP controller support"
 	depends on DRM_SPACEMIT
+	depends on SND_SOC || SND_SOC=n
 	imply PHY_SPACEMIT_K3_INNO_DP
 	select GENERIC_PHY
 	select DRM_PANEL
