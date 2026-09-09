@@ -1163,105 +1163,15 @@
 		};
 
 		/*
-		 * Display pipeline (ported from the vendor K3 BSP linux-6.18).
+		 * The display pipeline lives in k3-display.dtsi, which boards
+		 * include when they wire an output up.
 		 *
-		 * The K3 has two independent display paths, both driven by the
-		 * "saturn" DPU and output through Innosilicon DP/eDP controllers
-		 * (each with an integrated DP PHY — there is no MIPI DSI panel on
-		 * the Pico-ITX):
-		 *   - eDP0: dpu0_crtc0 -> edp0  (internal panel connector)
-		 *   - DP1:  dpu1_crtc0 -> dp1   (external DisplayPort; on the
-		 *     Pico-ITX the DP lanes are routed to the USB-C connector,
-		 *     while the FUSB301 Type-C controller handles only USB data
-		 *     role/orientation, not DP muxing)
-		 *
-		 * The matching drivers (spacemit-drm-k3 "saturn-hee/edp" + the
-		 * dpu-saturn CRTC + the Innosilicon DP "spacemit_inno_dp") are
-		 * in-tree and built =m.  Each display-subsystem node is its own
-		 * component master: it binds only its own dpu*_crtc0 (via "ports")
-		 * and that CRTC's of-graph remote dp/edp, guarding every step with
-		 * of_device_is_available() -- so either pipeline can be enabled
-		 * independently at the board level.
-		 *
-		 * power-domains: each dpu*_crtc0 gates on its LCD power island
-		 * (LCD0 for eDP0, LCD1 for DP1) through the K3 RPMI genpd
-		 * (&power, spacemit,k3-power-controller).  This MUST stay wired:
-		 * the DPU MMIO stalls the fabric if touched before its island is
-		 * powered, and the CRTC's pm_runtime/genpd is what brings the
-		 * island up before the driver's first DPU register access.
+		 * Each dpu node gates on its LCD power island (LCD0 for eDP0,
+		 * LCD1 for DP1) through the K3 RPMI genpd. That MUST stay wired:
+		 * DPU MMIO stalls the fabric if touched before its island is
+		 * powered, and pm_runtime/genpd is what brings the island up
+		 * before the driver's first register access.
 		 */
-		display_subsystem_edp0: display-subsystem@c0340000 {
-			compatible = "spacemit,saturn-hee";
-			reg = <0x0 0xc0340000 0x0 0x54000>;
-			hw_ver = <2>;
-			ports = <&dpu0_crtc0>;
-			status = "disabled";
-		};
-
-		dpu0_crtc0: dpu0-crtc0 {
-			compatible = "spacemit,dpu-saturn";
-			interrupt-parent = <&saplic>;
-			interrupts = <90 IRQ_TYPE_LEVEL_HIGH>,
-				     <89 IRQ_TYPE_LEVEL_HIGH>;
-			interrupt-names = "ONLINE_IRQ", "OFFLINE_IRQ";
-			clocks = <&syscon_apmu CLK_APMU_LCD_PXCLK>,
-				 <&syscon_apmu CLK_APMU_LCD_MCLK>,
-				 <&syscon_apmu CLK_APMU_LCD_HCLK>,
-				 <&syscon_apmu CLK_APMU_DSI_ESC>,
-				 <&syscon_apmu CLK_APMU_DPU_ACLK>,
-				 <&syscon_apmu CLK_APMU_LCD_DSC>;
-			clock-names = "pxclk", "mclk", "hclk", "escclk", "aclk", "dscclk";
-			resets = <&syscon_apmu RESET_APMU_LCD_MCLK>,
-				 <&syscon_apmu RESET_APMU_LCD>,
-				 <&syscon_apmu RESET_APMU_DSI_ESC>,
-				 <&syscon_apmu RESET_APMU_DPU_ACLK>,
-				 <&syscon_apmu RESET_APMU_LCD_DSCCLK>;
-			reset-names = "mclk_reset", "lcd_reset", "esc_reset",
-				      "aclk_reset", "dsc_reset";
-			power-domains = <&power K3_PMU_LCD0_PWR_DOMAIN>;
-			pipeline-id = <1>;
-			is_edp = <1>;
-			dpu-id = <0>;
-			ip = "spacemit-saturn";
-			spacemit-dpu-min-mclk = <40960000>;
-			status = "disabled";
-
-			ports {
-				#address-cells = <1>;
-				#size-cells = <0>;
-
-				port@0 {
-					reg = <0>;
-					dpu0_crtc0_out0: endpoint@0 {
-						remote-endpoint = <&edp0_in>;
-					};
-				};
-			};
-		};
-
-		edp0: edp@cac84000 {
-			compatible = "spacemit,inno-edp0";
-			reg = <0x0 0xcac84000 0x0 0x4000>;
-			spacemit,apmu = <&syscon_apmu>;
-			interrupt-parent = <&saplic>;
-			interrupts = <132 IRQ_TYPE_LEVEL_HIGH>;
-			clocks = <&syscon_apmu CLK_APMU_EDP0_PXCLK>;
-			clock-names = "pxclk";
-			resets = <&syscon_apmu RESET_APMU_EDP0>;
-			reset-names = "reset";
-			edp-id = <0>;
-			status = "disabled";
-
-			port {
-				#address-cells = <1>;
-				#size-cells = <0>;
-
-				edp0_in: endpoint@0 {
-					reg = <0>;
-					remote-endpoint = <&dpu0_crtc0_out0>;
-				};
-			};
-		};
 
 		/* K3 SoC drivers ported from the vendor BSP (batch). iommu@c0f00000
 		 * is deliberately omitted: it needs CLK_APMU_IOMMU which our clock
@@ -1339,86 +1249,6 @@
 			compatible = "spacemit,irq-affinity-restore";
 			msi-parent = <&simsic>;
 			status = "okay";
-		};
-
-		display_subsystem_dp1: display-subsystem@c0440000 {
-			compatible = "spacemit,saturn-edp";
-			reg = <0x0 0xc0440000 0x0 0x54000>;
-			hw_ver = <2>;
-			ports = <&dpu1_crtc0>;
-			status = "disabled";
-		};
-
-		dpu1_crtc0: dpu1-crtc0 {
-			compatible = "spacemit,dpu-saturn";
-			interrupt-parent = <&saplic>;
-			interrupts = <139 IRQ_TYPE_LEVEL_HIGH>,
-				     <138 IRQ_TYPE_LEVEL_HIGH>;
-			interrupt-names = "ONLINE_IRQ", "OFFLINE_IRQ";
-			clocks = <&syscon_apmu CLK_APMU_DSI4LN2_LCD_PXCLK>,
-				 <&syscon_apmu CLK_APMU_DSI4LN2_LCD_MCLK>,
-				 <&syscon_apmu CLK_APMU_DSI4LN2_DPU_ACLK>,
-				 <&syscon_apmu CLK_APMU_DSI4LN2_DSI_ESC>,
-				 <&syscon_apmu CLK_APMU_DSI4LN2_LCD_DSC>;
-			clock-names = "pxclk", "mclk", "aclk", "escclk", "dscclk";
-			resets = <&syscon_apmu RESET_APMU_DSI4LN2_LCD_MCLK>,
-				 <&syscon_apmu RESET_APMU_DSI4LN2_ESCCLK>,
-				 <&syscon_apmu RESET_APMU_DSI4LN2_LCD_SW>,
-				 <&syscon_apmu RESET_APMU_DSI4LN2_DPU_ACLK>,
-				 <&syscon_apmu RESET_APMU_DSI4LN2_LCD_DSCCLK>;
-			reset-names = "mclk_reset", "esc_reset", "lcd_reset", "aclk_reset", "dsc_reset";
-			power-domains = <&power K3_PMU_LCD1_PWR_DOMAIN>;
-			pipeline-id = <1>;
-			/*
-			 * Keep this at 1 even though the pipeline drives the
-			 * external DisplayPort and not an embedded panel.  Setting
-			 * it to 0 selects a different plane/RDMA path and every
-			 * atomic commit is then rejected by spacemit_plane_atomic_check()
-			 * with "Invalid rdma id:15", so the CRTC never enables and
-			 * the output stays dark -- tested on the Pico-ITX.
-			 */
-			is_edp = <1>;
-			dpu-id = <1>;
-			ip = "spacemit-saturn";
-			spacemit-dpu-min-mclk = <40960000>;
-			status = "disabled";
-
-			ports {
-				#address-cells = <1>;
-				#size-cells = <0>;
-
-				port@0 {
-					reg = <0>;
-					dpu1_crtc0_out0: endpoint@0 {
-						remote-endpoint = <&dp1_in>;
-					};
-				};
-			};
-		};
-
-		dp1: dp@cac88000 {
-			compatible = "spacemit,inno-dp1";
-			reg = <0x0 0xcac88000 0x0 0x4000>;
-			spacemit,apmu = <&syscon_apmu>;
-			interrupt-parent = <&saplic>;
-			interrupts = <140 IRQ_TYPE_LEVEL_HIGH>;
-			clocks = <&syscon_apmu CLK_APMU_EDP1_PXCLK>;
-			clock-names = "pxclk";
-			resets = <&syscon_apmu RESET_APMU_EDP1>;
-			reset-names = "reset";
-			dp-id = <1>;
-			#sound-dai-cells = <0>;
-			status = "disabled";
-
-			port {
-				#address-cells = <1>;
-				#size-cells = <0>;
-
-				dp1_in: endpoint@0 {
-					reg = <0>;
-					remote-endpoint = <&dpu1_crtc0_out0>;
-				};
-			};
 		};
 
 		/*
