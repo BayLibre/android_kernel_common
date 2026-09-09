@@ -82,17 +82,16 @@ struct drm_driver spacemit_drm_drv = {
 	.driver_features = DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC,
 	.fops = &spacemit_drm_fops,
 
-	DRM_GEM_SHMEM_DRIVER_OPS,
-	DRM_FBDEV_SHMEM_DRIVER_OPS,
-
 	/*
-	 * DRM_GEM_SHMEM_DRIVER_OPS imports a dma-buf without mapping it, which
-	 * leaves shmem->sgt NULL. Every framebuffer here is imported from the
-	 * GPU, and the display MMU needs that scatter list on each commit, so
-	 * map at import time instead.
+	 * Spelled out rather than DRM_GEM_SHMEM_DRIVER_OPS: that macro imports
+	 * a dma-buf without mapping it, which leaves shmem->sgt NULL. Every
+	 * framebuffer here is imported from the GPU and the display MMU needs
+	 * that scatter list on every commit, so map at import time.
 	 */
+	.dumb_create = drm_gem_shmem_dumb_create,
 	.gem_prime_import = drm_gem_prime_import,
 	.gem_prime_import_sg_table = drm_gem_shmem_prime_import_sg_table,
+	DRM_FBDEV_SHMEM_DRIVER_OPS,
 
 	.name		= DRIVER_NAME,
 	.desc		= DRIVER_DESC,
