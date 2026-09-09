@@ -2826,8 +2826,6 @@ static long fe_isp_global_reset(struct isp_context *isp_ctx)
 	hw_isp_top_global_reset(SC_BLOCK(isp_ctx->pipes[0]));
 	return wait_for_completion_interruptible_timeout(&isp_ctx->global_reset_done, msecs_to_jiffies(500));
 }
-extern void dpu_mclk_exclusive_put(void);
-extern bool dpu_mclk_exclusive_get(void);
 
 static int __fe_isp_s_power(struct v4l2_subdev *sd, int on)
 {
@@ -2882,21 +2880,18 @@ static int __fe_isp_s_power(struct v4l2_subdev *sd, int on)
 			hw_isp_top_set_idi_linebuf(SC_BLOCK(isp_ctx->pipes[0]), idi0_fifo_depth, 0, 0);
 			hw_isp_top_set_idi_linebuf(SC_BLOCK(isp_ctx->pipes[1]), idi1_fifo_depth, 0, 0);
 			hw_dma_reset(isp_ctx->dma_block);
-#if IS_ENABLED(CONFIG_DRM_SPACEMIT)
-			while (1) {
-				if (dpu_mclk_exclusive_get()) {
-					clk_set_rate(isp_ctx->dpu_clk, 409600000);
-					if (ret < 0 && ret != -EBUSY) {
-						cam_err("%s lock dpu clk failed ret=%d", __func__, ret);
-						return ret;
-					} else if (ret == 0) {
-						break;
-					}
-				} else {
-					continue;
-				}
+			/*
+			 * The ISP needs the DPU clock at 409.6 MHz while it is
+			 * powered. The hand-off used to go through
+			 * dpu_mclk_exclusive_get(), exported by the vendor DPU
+			 * driver that this tree no longer builds, so set the
+			 * rate directly -- nothing else arbitrates it now.
+			 */
+			ret = clk_set_rate(isp_ctx->dpu_clk, 409600000);
+			if (ret < 0 && ret != -EBUSY) {
+				cam_err("%s lock dpu clk failed ret=%d", __func__, ret);
+				return ret;
 			}
-#endif
 #ifdef CONFIG_SPACEMIT_K1X_VI_IOMMU
 			isp_ctx->mmu_dev->ops->set_timeout_default_addr(isp_ctx->mmu_dev, (uint64_t)isp_ctx->rsvd_phy_addr);
 #endif
@@ -2904,9 +2899,6 @@ static int __fe_isp_s_power(struct v4l2_subdev *sd, int on)
 	} else {
 		v = atomic_dec_return(&isp_ctx->pwr_cnt);
 		if (v == 0) {
-#if IS_ENABLED(CONFIG_DRM_SPACEMIT)
-			dpu_mclk_exclusive_put();
-#endif
 			l_ret = fe_isp_global_reset(isp_ctx);
 			if (l_ret == 0)
 				cam_err("%s global reset timeout", __func__);
