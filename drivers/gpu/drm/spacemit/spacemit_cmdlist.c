@@ -128,7 +128,6 @@ void cmdlist_regs_packing(struct cmdlist *cl, enum cmdlist_mode_type mod,
 	for (i = 0; i < cl_regs->size;) {
 		u32 value[CMDLIST_ROW_REGS] = {0x0};
 		u32 offset, strobe = 0;
-		u8 regs_in_row = 0;
 
 		if (cl_regs->flags[i]) {
 			offset = cl_regs->base + i * sizeof(u32);
@@ -137,7 +136,6 @@ void cmdlist_regs_packing(struct cmdlist *cl, enum cmdlist_mode_type mod,
 				if (likely(index < cl_regs->size)) {
 					if (cl_regs->flags[index]) {
 						value[j] = reg_base[index];
-						regs_in_row++;
 						strobe |= CMDLIST_REG_STROBE(j);
 					}
 				} else {
