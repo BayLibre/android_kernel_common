@@ -21,7 +21,7 @@
 #define DRIVER_MAJOR	1
 #define DRIVER_MINOR	0
 
-static void spacemit_drm_atomic_commit_tail(struct drm_atomic_commit *old_state)
+static void spacemit_drm_atomic_commit_tail(struct drm_atomic_state *old_state)
 {
 	struct drm_device *dev = old_state->dev;
 

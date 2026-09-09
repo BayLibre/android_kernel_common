@@ -82,7 +82,7 @@ static int spacemit_crtc_atomic_check_fbmem(struct drm_crtc *crtc,
 }
 
 static void spacemit_crtc_atomic_enable(struct drm_crtc *crtc,
-					struct drm_atomic_commit *old_state)
+					struct drm_atomic_state *old_state)
 {
 	struct spacemit_crtc *a_crtc = to_spacemit_crtc(crtc);
 	struct spacemit_drm_private *priv = crtc->dev->dev_private;
@@ -128,7 +128,7 @@ static void spacemit_crtc_atomic_enable(struct drm_crtc *crtc,
 }
 
 static void spacemit_crtc_atomic_disable(struct drm_crtc *crtc,
-					 struct drm_atomic_commit *old_state)
+					 struct drm_atomic_state *old_state)
 {
 	struct spacemit_crtc *a_crtc = to_spacemit_crtc(crtc);
 	struct drm_device *drm = a_crtc->crtc.dev;
@@ -171,7 +171,7 @@ static void spacemit_crtc_atomic_disable(struct drm_crtc *crtc,
 }
 
 static int spacemit_crtc_atomic_check(struct drm_crtc *crtc,
-				      struct drm_atomic_commit *atomic_state)
+				      struct drm_atomic_state *atomic_state)
 {
 	struct drm_crtc_state *state =
 			drm_atomic_get_new_crtc_state(atomic_state, crtc);
@@ -198,7 +198,7 @@ static int spacemit_crtc_atomic_check(struct drm_crtc *crtc,
 }
 
 static void spacemit_crtc_atomic_begin(struct drm_crtc *crtc,
-				       struct drm_atomic_commit *state)
+				       struct drm_atomic_state *state)
 {
 	struct spacemit_crtc *a_crtc = to_spacemit_crtc(crtc);
 
@@ -206,7 +206,7 @@ static void spacemit_crtc_atomic_begin(struct drm_crtc *crtc,
 }
 
 static void spacemit_crtc_atomic_flush(struct drm_crtc *crtc,
-				       struct drm_atomic_commit *state)
+				       struct drm_atomic_state *state)
 {
 	struct spacemit_crtc *a_crtc = to_spacemit_crtc(crtc);
 	struct drm_crtc_state *old_state = drm_atomic_get_old_crtc_state(state,
