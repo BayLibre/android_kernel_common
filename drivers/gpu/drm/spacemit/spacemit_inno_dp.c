@@ -1653,7 +1653,7 @@ static u32 *spacemit_dp_bridge_atomic_get_output_bus_fmts(struct drm_bridge *bri
 }
 
 static struct drm_bridge_state *
-spacemit_dp_bridge_atomic_create_state(struct drm_bridge *bridge)
+spacemit_dp_bridge_atomic_reset(struct drm_bridge *bridge)
 {
 	struct spacemit_dp_bridge_state *new;
 
@@ -1661,7 +1661,7 @@ spacemit_dp_bridge_atomic_create_state(struct drm_bridge *bridge)
 	if (!new)
 		return ERR_PTR(-ENOMEM);
 
-	__drm_atomic_helper_bridge_state_init(&new->base, bridge);
+	__drm_atomic_helper_bridge_reset(bridge, &new->base);
 	new->link_cfg_idx = -1;
 	new->color_format = SOC_VIDEO_RGB_8BIT;
 	return &new->base;
@@ -1734,7 +1734,7 @@ static const struct drm_bridge_funcs spacemit_dp_bridge_funcs = {
 	.atomic_check			= spacemit_dp_bridge_atomic_check,
 	.atomic_duplicate_state		= spacemit_dp_bridge_atomic_duplicate_state,
 	.atomic_destroy_state		= spacemit_dp_bridge_atomic_destroy_state,
-	.atomic_create_state		= spacemit_dp_bridge_atomic_create_state,
+	.atomic_reset			= spacemit_dp_bridge_atomic_reset,
 	.atomic_get_output_bus_fmts	= spacemit_dp_bridge_atomic_get_output_bus_fmts,
 	.mode_valid			= spacemit_dp_bridge_mode_valid,
 	.detect				= spacemit_dp_bridge_detect,
