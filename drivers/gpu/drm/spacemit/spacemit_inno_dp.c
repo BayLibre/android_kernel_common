@@ -1220,11 +1220,23 @@ static void spacemit_dp_hw_disable(struct spacemit_dp_dev *dp)
 			  FIELD_PREP(DP_ANA_PREPLL_PD, 1));
 }
 
+/*
+ * Headroom the link needs beyond the active-pixel rate. Blanking, the MSA and
+ * the SDP packets -- audio among them -- all consume slots, and the priority
+ * table below takes the first configuration that merely exceeds the request.
+ * Sized on the pixel rate alone, 1366x768x24 lands on a single 2.7 Gbps lane
+ * at 95 % fill and an active DP->HDMI converter shows nothing; with audio
+ * running, the extra SDPs push a link chosen that tightly over capacity and
+ * the sink drops out mid-stream.
+ */
+#define DP_LINK_OVERHEAD_PCT	15
+
 /* Calculate required bandwidth in kbps (Pixel Clock * Bits Per Pixel) */
 static u32 spacemit_dp_calc_required_bw(const struct drm_display_mode *mode,
 					int bpp)
 {
-	return mode->clock * bpp;
+	/* Divide first: the product alone already reaches ~14 Gbit/s at 4K. */
+	return mode->clock * bpp / 100 * (100 + DP_LINK_OVERHEAD_PCT);
 }
 
 /*
