@@ -8,6 +8,7 @@
 #include <drm/drm_framebuffer.h>
 #include <drm/drm_gem_framebuffer_helper.h>
 #include <drm/drm_gem_shmem_helper.h>
+#include <drm/drm_prime.h>
 #include <drm/drm_of.h>
 #include <drm/drm_fbdev_shmem.h>
 #include <linux/component.h>
@@ -83,6 +84,15 @@ struct drm_driver spacemit_drm_drv = {
 
 	DRM_GEM_SHMEM_DRIVER_OPS,
 	DRM_FBDEV_SHMEM_DRIVER_OPS,
+
+	/*
+	 * DRM_GEM_SHMEM_DRIVER_OPS imports a dma-buf without mapping it, which
+	 * leaves shmem->sgt NULL. Every framebuffer here is imported from the
+	 * GPU, and the display MMU needs that scatter list on each commit, so
+	 * map at import time instead.
+	 */
+	.gem_prime_import = drm_gem_prime_import,
+	.gem_prime_import_sg_table = drm_gem_shmem_prime_import_sg_table,
 
 	.name		= DRIVER_NAME,
 	.desc		= DRIVER_DESC,
