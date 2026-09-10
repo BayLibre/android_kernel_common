@@ -1445,9 +1445,7 @@ static void spacemit_dp_audio_enable(struct spacemit_dp_dev *dp)
 			  FIELD_PREP(DP_AUDIO_TIMESTAMP_VERSION_NUM, 0x12) |
 			  FIELD_PREP(DP_AUDIO_MUTE, 0));
 
-	/* Keep the sampler in reset until a stream is actually started. */
-	regmap_write_bits(dp->regs, DP_SOFT_RESET, DP_AUDIO_RESET,
-			  DP_AUDIO_RESET);
+	/* The PCM callbacks own audio reset; a modeset may occur mid-stream. */
 }
 
 static int spacemit_dp_dai_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
