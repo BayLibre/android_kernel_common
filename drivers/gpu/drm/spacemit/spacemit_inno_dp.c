@@ -994,16 +994,15 @@ static void spacemit_dp_hw_set_msa_and_enable_video(struct spacemit_dp_dev *dp,
 {
 	u64 hb_num;
 	u32 link_rate;
-	u32 fp; /* Pixel clock in MHz */
+	u32 fp; /* Pixel clock in kHz */
 	u32 bpp, misc0;
 	u32 tu, tu_frac, tu_int, rd_thres;
 	u32 hsync_len;
 
-	/* mode->clock unit is kHz, fp unit is MHz */
 	if (dp->use_ext_pixel_clock)
-		fp = dp->pixel_clock / 1000;
+		fp = dp->pixel_clock;
 	else
-		fp = mode->clock / 1000;
+		fp = mode->clock;
 
 	if (fp == 0)
 		fp = 1; /* Prevent division by zero */
@@ -1060,12 +1059,11 @@ static void spacemit_dp_hw_set_msa_and_enable_video(struct spacemit_dp_dev *dp,
 	}
 
 	/*
-	 * HBlank interval = (htotal - hactive) * (LinkSymbolClock / 4) /
-	 * PixelClock, where LinkSymbolClock = LinkRate * 100 (1.62G -> 162MHz).
-	 * rate is in kHz, so link_rate = rate / 10000 gives the 162, 270, 540
-	 * form used below.
+	 * Keep both clocks in kHz: truncating the pixel clock to MHz changes
+	 * the TU allocation for modes such as 85.5 MHz and 74.25 MHz.
+	 * The link symbol clock is one tenth of the lane bit rate.
 	 */
-	link_rate = rate / 10000;
+	link_rate = rate / 10;
 
 	/* Multiply before dividing: hb_num = hblank * (link_rate / 4) / fp */
 	hb_num = (u64)(mode->htotal - mode->hdisplay) * link_rate;
