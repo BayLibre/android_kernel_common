@@ -59,11 +59,6 @@
 #define SPACEMIT_DP_SINK_READY_DELAY_MS 120
 #define SPACEMIT_DP_SINK_READY_RETRIES 3
 
-static unsigned int test_link_cfg;
-module_param(test_link_cfg, uint, 0600);
-MODULE_PARM_DESC(test_link_cfg,
-		"Diagnostic link table entry, one-based; zero selects automatically");
-
 /*
  * With DP routed through a Type-C PD controller the HPD pin is virtual and
  * can re-assert seconds after a transmitter power-cycle. Asserted HPD
@@ -1655,8 +1650,6 @@ static void spacemit_dp_bridge_atomic_enable(struct drm_bridge *bridge,
 		u32 capacity;
 
 		cfg = &spacemit_dp_link_priority_table[i];
-		if (test_link_cfg && i + 1 != test_link_cfg)
-			continue;
 
 		/* Source and sink limits */
 		if (cfg->rate > dp->link.max_rate || cfg->lanes > dp->link.max_num_lanes)
@@ -1795,9 +1788,6 @@ static int spacemit_dp_bridge_atomic_check(struct drm_bridge *bridge,
 	for (i = 0; i < ARRAY_SIZE(spacemit_dp_link_priority_table); i++) {
 		const struct spacemit_dp_link_config *cfg =
 				&spacemit_dp_link_priority_table[i];
-
-		if (test_link_cfg && i + 1 != test_link_cfg)
-			continue;
 
 		if (cfg->rate > dp->link.max_rate ||
 		    cfg->lanes > dp->link.max_num_lanes)
@@ -2443,15 +2433,11 @@ static int inno_dp_probe(struct platform_device *pdev)
 	} else {
 		dp->bridge.type = DRM_MODE_CONNECTOR_DisplayPort;
 		/*
-		 * The HPD interrupt is usable here: probe leaves pxclk
-		 * prepared and enabled for the life of the device, so the
-		 * detect logic keeps working while the output is off. Without
-		 * OP_HPD drm_bridge_connector never installs an hpd_cb, and
-		 * the interrupt handler's drm_bridge_hpd_notify() goes
-		 * nowhere -- a sink change is then simply never noticed.
+		 * No OP_HPD: the HPD interrupt is gated by the DP pixel clock.
+		 * Leaving it out marks the connector POLL_CONNECT |
+		 * POLL_DISCONNECT instead.
 		 */
-		dp->bridge.ops = DRM_BRIDGE_OP_DETECT | DRM_BRIDGE_OP_EDID |
-				 DRM_BRIDGE_OP_HPD;
+		dp->bridge.ops = DRM_BRIDGE_OP_DETECT | DRM_BRIDGE_OP_EDID;
 	}
 
 	ret = clk_prepare_enable(dp->pxclk);
