@@ -1077,13 +1077,22 @@
 		};
 
 		i2s1: i2s@d4026800 {
-			compatible = "spacemit,k1-i2s";
+			compatible = "spacemit,k3-i2s";
 			reg = <0x0 0xd4026800 0x0 0x30>;
 			clocks = <&syscon_mpmu CLK_MPMU_I2S1_SYSCLK>,
-				 <&syscon_mpmu CLK_MPMU_I2S_BCLK>,
+				 <&syscon_apbc CLK_APBC_I2S1_BCLK>,
 				 <&syscon_apbc CLK_APBC_I2S1_BUS>,
-				 <&syscon_apbc CLK_APBC_I2S1>;
-			clock-names = "sysclk", "bclk", "bus", "func";
+				 <&syscon_apbc CLK_APBC_I2S1>,
+				 <&syscon_mpmu CLK_MPMU_I2S_SYSCLK>,
+				 <&syscon_mpmu CLK_MPMU_I2S_BCLK>;
+			clock-names = "sysclk", "bclk", "bus", "func",
+				      "c-sysclk", "c-bclk";
+			assigned-clocks = <&syscon_mpmu CLK_MPMU_I2S_153P6_BASE>,
+					  <&syscon_mpmu CLK_MPMU_I2S_SYSCLK_SRC>,
+					  <&syscon_mpmu CLK_MPMU_I2S1_SYSCLK_SRC>,
+					  <&syscon_mpmu CLK_MPMU_I2S1_SYSCLK>;
+			assigned-clock-rates = <307200000>, <307200000>,
+					       <307200000>, <12288000>;
 			dmas = <&pdma 23>, <&pdma 24>;
 			dma-names = "tx", "rx";
 			resets = <&syscon_apbc RESET_APBC_I2S1>;
