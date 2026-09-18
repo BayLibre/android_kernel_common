@@ -244,11 +244,15 @@ static const struct clk_parent_data i2s_sysclk_src_parents[] = {
 	CCU_PARENT_HW(pll1_d96_25p6),
 	CCU_PARENT_HW(i2s_153p6_base),
 };
-CCU_MUX_GATE_DEFINE(i2s_sysclk_src, i2s_sysclk_src_parents, MPMU_ISCCR, 30, 1, BIT(31), 0);
+CCU_MUX_GATE_DEFINE(i2s_sysclk_src, i2s_sysclk_src_parents, MPMU_ISCCR1, 30, 1, BIT(31), 0);
+CCU_DDN_DEFINE(i2s_sysclk, i2s_sysclk_src, MPMU_ISCCR1, 0, 15, 15, 12, 1, 0);
 
-CCU_DDN_DEFINE(i2s1_sysclk, i2s_sysclk_src, MPMU_ISCCR, 0, 15, 15, 12, 1, 0);
+/* The bit-clock divider has an implicit divide-by-two stage. */
+CCU_FACTOR_DEFINE(i2s_bclk_factor, CCU_PARENT_HW(i2s_sysclk), 2, 1);
+CCU_DIV_GATE_DEFINE(i2s_bclk, CCU_PARENT_HW(i2s_bclk_factor), MPMU_ISCCR1, 27, 2, BIT(29), 0);
 
-CCU_DIV_GATE_DEFINE(i2s_bclk, CCU_PARENT_HW(i2s1_sysclk), MPMU_ISCCR, 27, 2, BIT(29), 0);
+CCU_MUX_GATE_DEFINE(i2s1_sysclk_src, i2s_sysclk_src_parents, MPMU_ISCCR0, 30, 1, BIT(31), 0);
+CCU_DDN_DEFINE(i2s1_sysclk, i2s1_sysclk_src, MPMU_ISCCR0, 0, 15, 15, 12, 1, 0);
 
 static const struct clk_parent_data i2s_sysclk_parents[] = {
 	CCU_PARENT_HW(pll1_d4_614p4),
@@ -1298,6 +1302,9 @@ static struct clk_hw *k3_ccu_mpmu_hws[] = {
 	[CLK_MPMU_I2S3_SYSCLK]		= &i2s3_sysclk.common.hw,
 	[CLK_MPMU_I2S4_SYSCLK]		= &i2s4_sysclk.common.hw,
 	[CLK_MPMU_I2S5_SYSCLK]		= &i2s5_sysclk.common.hw,
+	[CLK_MPMU_I2S_SYSCLK]		= &i2s_sysclk.common.hw,
+	[CLK_MPMU_I2S_BCLK_FACTOR]	= &i2s_bclk_factor.common.hw,
+	[CLK_MPMU_I2S1_SYSCLK_SRC]	= &i2s1_sysclk_src.common.hw,
 };
 
 static const struct spacemit_ccu_data k3_ccu_mpmu_data = {
