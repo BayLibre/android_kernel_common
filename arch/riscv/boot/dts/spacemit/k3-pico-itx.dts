@@ -492,6 +492,8 @@
 	es8326: es8326@19 {
 		compatible = "everest,es8326";
 		reg = <0x19>;
+		clocks = <&syscon_mpmu CLK_MPMU_I2S1_SYSCLK>;
+		clock-names = "mclk";
 		#sound-dai-cells = <0>;
 		interrupt-parent = <&gpio>;
 		interrupts = <3 31 IRQ_TYPE_EDGE_RISING>;
@@ -504,6 +506,7 @@
 &sound_card1 {
 	status = "okay";
 	simple-audio-card,name = "snd-es8326";
+	simple-audio-card,aux-devs = <&es8326>;
 	simple-audio-card,mclk-fs = <256>;
 
 	simple-audio-card,dai-link@0 {
