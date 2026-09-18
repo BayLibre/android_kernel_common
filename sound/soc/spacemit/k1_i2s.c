@@ -3,6 +3,7 @@
 
 #include <linux/bitfield.h>
 #include <linux/clk.h>
+#include <linux/property.h>
 #include <linux/reset.h>
 #include <sound/dmaengine_pcm.h>
 #include <sound/pcm.h>
@@ -53,6 +54,8 @@ struct spacemit_i2s_dev {
 	struct clk *sysclk;
 	struct clk *bclk;
 	struct clk *sspa_clk;
+	struct clk *c_sysclk;
+	struct clk *c_bclk;
 
 	struct snd_dmaengine_dai_dma_data capture_dma_data;
 	struct snd_dmaengine_dai_dma_data playback_dma_data;
@@ -205,6 +208,16 @@ static int spacemit_i2s_hw_params(struct snd_pcm_substream *substream,
 	bclk_rate = params_channels(params) *
 		    params_rate(params) *
 		    data_bits;
+
+	if (i2s->c_sysclk) {
+		ret = clk_set_rate(i2s->c_sysclk, bclk_rate * 2);
+		if (ret)
+			return ret;
+
+		ret = clk_set_rate(i2s->c_bclk, bclk_rate);
+		if (ret)
+			return ret;
+	}
 
 	ret = clk_set_rate(i2s->bclk, bclk_rate);
 	if (ret)
@@ -418,6 +431,18 @@ static int spacemit_i2s_probe(struct platform_device *pdev)
 
 	i2s->dev = &pdev->dev;
 
+	if (device_get_match_data(i2s->dev)) {
+		i2s->c_sysclk = devm_clk_get_enabled(i2s->dev, "c-sysclk");
+		if (IS_ERR(i2s->c_sysclk))
+			return dev_err_probe(i2s->dev, PTR_ERR(i2s->c_sysclk),
+					     "failed to enable common system clock\n");
+
+		i2s->c_bclk = devm_clk_get_enabled(i2s->dev, "c-bclk");
+		if (IS_ERR(i2s->c_bclk))
+			return dev_err_probe(i2s->dev, PTR_ERR(i2s->c_bclk),
+					     "failed to enable common bit clock\n");
+	}
+
 	i2s->sysclk = devm_clk_get_enabled(i2s->dev, "sysclk");
 	if (IS_ERR(i2s->sysclk))
 		return dev_err_probe(i2s->dev, PTR_ERR(i2s->sysclk),
@@ -460,7 +485,10 @@ static int spacemit_i2s_probe(struct platform_device *pdev)
 	return devm_snd_dmaengine_pcm_register(&pdev->dev, &spacemit_dmaengine_pcm_config, 0);
 }
 
+static const bool spacemit_k3_i2s = true;
+
 static const struct of_device_id spacemit_i2s_of_match[] = {
+	{ .compatible = "spacemit,k3-i2s", .data = &spacemit_k3_i2s },
 	{ .compatible = "spacemit,k1-i2s", },
 	{ /* sentinel */ }
 };
