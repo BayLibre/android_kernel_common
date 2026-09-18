@@ -699,9 +699,16 @@ static int simple_soc_probe(struct snd_soc_card *card)
 	if (ret < 0)
 		goto end;
 
-	ret = simple_util_init_aux_jacks(priv, PREFIX);
 end:
 	return simple_ret(priv, ret);
+}
+
+static int simple_soc_late_probe(struct snd_soc_card *card)
+{
+	struct simple_util_priv *priv = snd_soc_card_get_drvdata(card);
+
+	/* Codec jack detection requires the component probe to have completed. */
+	return simple_util_init_aux_jacks(priv, PREFIX);
 }
 
 static int simple_probe(struct platform_device *pdev)
@@ -721,6 +728,7 @@ static int simple_probe(struct platform_device *pdev)
 	card->owner		= THIS_MODULE;
 	card->dev		= dev;
 	card->probe		= simple_soc_probe;
+	card->late_probe	= simple_soc_late_probe;
 	card->driver_name       = "simple-card";
 
 	ret = -ENOMEM;
