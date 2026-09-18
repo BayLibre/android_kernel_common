@@ -1239,6 +1239,11 @@ static int es8326_set_jack(struct snd_soc_component *component,
 	return 0;
 }
 
+static int es8326_get_jack_type(struct snd_soc_component *component)
+{
+	return SND_JACK_HEADSET;
+}
+
 static void es8326_remove(struct snd_soc_component *component)
 {
 	struct es8326_priv *es8326 = snd_soc_component_get_drvdata(component);
@@ -1257,6 +1262,7 @@ static const struct snd_soc_component_driver soc_component_dev_es8326 = {
 	.suspend	= es8326_suspend,
 	.set_bias_level = es8326_set_bias_level,
 	.set_jack	= es8326_set_jack,
+	.get_jack_type	= es8326_get_jack_type,
 	.dapm_widgets	= es8326_dapm_widgets,
 	.num_dapm_widgets	= ARRAY_SIZE(es8326_dapm_widgets),
 	.dapm_routes		= es8326_dapm_routes,
