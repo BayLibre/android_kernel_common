@@ -76,6 +76,38 @@ int spacemit_drm_mode_config_init(struct drm_device *drm)
 	return 0;
 }
 
+static int spacemit_drm_dumb_create(struct drm_file *file,
+				    struct drm_device *drm,
+				    struct drm_mode_create_dumb *args)
+{
+	struct drm_gem_object *obj;
+	struct sg_table *sgt;
+	int ret;
+
+	ret = drm_gem_shmem_dumb_create(file, drm, args);
+	if (ret)
+		return ret;
+
+	obj = drm_gem_object_lookup(file, args->handle);
+	if (!obj)
+		return -ENOENT;
+
+	/*
+	 * shmem clears new pages through the cached linear map, and PRIME
+	 * hands them to importers without any cache maintenance. Map them for
+	 * the DPU right away so the zeroes reach memory before the GPU renders
+	 * into the buffer, instead of dirty lines landing on top of it later.
+	 */
+	sgt = drm_gem_shmem_get_pages_sgt(to_drm_gem_shmem_obj(obj));
+	drm_gem_object_put(obj);
+	if (IS_ERR(sgt)) {
+		drm_gem_handle_delete(file, args->handle);
+		return PTR_ERR(sgt);
+	}
+
+	return 0;
+}
+
 DEFINE_DRM_GEM_FOPS(spacemit_drm_fops);
 
 struct drm_driver spacemit_drm_drv = {
@@ -88,7 +120,7 @@ struct drm_driver spacemit_drm_drv = {
 	 * framebuffer here is imported from the GPU and the display MMU needs
 	 * that scatter list on every commit, so map at import time.
 	 */
-	.dumb_create = drm_gem_shmem_dumb_create,
+	.dumb_create = spacemit_drm_dumb_create,
 	.gem_prime_import = drm_gem_prime_import,
 	.gem_prime_import_sg_table = drm_gem_shmem_prime_import_sg_table,
 	DRM_FBDEV_SHMEM_DRIVER_OPS,
