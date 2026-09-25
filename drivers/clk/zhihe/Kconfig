@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: GPL-2.0
+
+config ZHIHE_CLK
+	tristate
+
+config CLK_A210
+	tristate "Zhihe A210 clock driver"
+	depends on ARCH_ZHIHE
+	select ZHIHE_CLK
+	help
+	  Support for the clock controllers of the Zhihe A210 SoC.
