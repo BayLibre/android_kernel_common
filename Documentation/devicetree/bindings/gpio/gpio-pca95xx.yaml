@@ -17,6 +17,9 @@ properties:
   compatible:
     oneOf:
       - items:
+          - const: awinic,aw9535
+          - const: nxp,pca9535
+      - items:
           - const: toradex,ecgpiol16
           - const: nxp,pcal6416
       - items:
