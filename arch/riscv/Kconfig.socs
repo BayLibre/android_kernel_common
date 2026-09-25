@@ -97,6 +97,14 @@ config ARCH_VIRT
 	help
 	  This enables support for QEMU Virt Machine.
 
+config ARCH_ZHIHE
+	bool "Zhihe SoCs"
+	depends on MMU
+	select ERRATA_THEAD
+	select PINCTRL
+	help
+	  This enables support for Zhihe SoC platform hardware, like the A210.
+
 config ARCH_CANAAN
 	bool "Canaan Kendryte SoC"
 	help
