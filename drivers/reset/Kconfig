@@ -22,6 +22,12 @@ config RESET_A10SR
 	  This option enables support for the external reset functions for
 	  peripheral PHYs on the Altera Arria10 System Resource Chip.
 
+config RESET_A210
+	tristate "Zhihe A210 reset controller"
+	depends on ARCH_ZHIHE
+	help
+	  Support for the reset controller of the Zhihe A210 SoC.
+
 config RESET_ASPEED
 	tristate "ASPEED Reset Driver"
 	depends on ARCH_ASPEED || COMPILE_TEST
