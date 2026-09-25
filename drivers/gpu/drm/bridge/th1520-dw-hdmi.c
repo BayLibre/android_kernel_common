@@ -12,6 +12,7 @@
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
+#include <linux/property.h>
 #include <linux/reset.h>
 
 #include <drm/bridge/dw_hdmi.h>
@@ -48,7 +49,13 @@ static const struct th1520_hdmi_phy_params th1520_hdmi_phy_params[] = {
 	{ 594000000, 0x0640, 0x3080, 0x0005, 0x80fa, 0x01e0, 0x0004 },
 };
 
+struct th1520_hdmi_soc_data {
+	/* the pixel clock rate has to follow the mode */
+	bool set_pixclk_rate;
+};
+
 struct th1520_hdmi {
+	const struct th1520_hdmi_soc_data *soc_data;
 	struct dw_hdmi_plat_data plat_data;
 	struct dw_hdmi *dw_hdmi;
 	struct clk *pixclk;
@@ -90,7 +97,15 @@ static void th1520_hdmi_phy_set_params(struct dw_hdmi *hdmi,
 static int th1520_hdmi_phy_configure(struct dw_hdmi *hdmi, void *data,
 				     unsigned long mpixelclock)
 {
+	struct th1520_hdmi *priv = data;
 	unsigned int i;
+	int ret;
+
+	if (priv->soc_data->set_pixclk_rate) {
+		ret = clk_set_rate(priv->pixclk, mpixelclock);
+		if (ret)
+			return ret;
+	}
 
 	for (i = 0; i < ARRAY_SIZE(th1520_hdmi_phy_params); i++) {
 		if (mpixelclock <= th1520_hdmi_phy_params[i].mpixelclock) {
@@ -113,6 +128,7 @@ static int th1520_dw_hdmi_probe(struct platform_device *pdev)
 	if (!hdmi)
 		return -ENOMEM;
 
+	hdmi->soc_data = device_get_match_data(dev);
 	plat_data = &hdmi->plat_data;
 
 	hdmi->pixclk = devm_clk_get_enabled(dev, "pix");
@@ -151,8 +167,16 @@ static void th1520_dw_hdmi_remove(struct platform_device *pdev)
 	dw_hdmi_remove(hdmi->dw_hdmi);
 }
 
+static const struct th1520_hdmi_soc_data th1520_hdmi_soc_data = {
+};
+
+static const struct th1520_hdmi_soc_data a210_hdmi_soc_data = {
+	.set_pixclk_rate = true,
+};
+
 static const struct of_device_id th1520_dw_hdmi_of_table[] = {
-	{ .compatible = "thead,th1520-dw-hdmi" },
+	{ .compatible = "thead,th1520-dw-hdmi", .data = &th1520_hdmi_soc_data },
+	{ .compatible = "zhihe,a210-dw-hdmi", .data = &a210_hdmi_soc_data },
 	{ /* Sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, th1520_dw_hdmi_of_table);
