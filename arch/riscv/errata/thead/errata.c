@@ -106,13 +106,20 @@ static const struct riscv_nonstd_cache_ops thead_errata_cmo_ops = {
 	.wback_inv = &thead_errata_cache_wback_inv,
 };
 
+#define ZHIHE_A210_C908_MARCHID 0x8000000009140d00UL
+#define ZHIHE_A210_C908_MIMPID  0x100d000UL
+#define ZHIHE_A210_C920_MARCHID 0x80000000090c0d00UL
+#define ZHIHE_A210_C920_MIMPID  0x20c4000UL
+
 static bool errata_probe_cmo(unsigned int stage,
 			     unsigned long arch_id, unsigned long impid)
 {
 	if (!IS_ENABLED(CONFIG_ERRATA_THEAD_CMO))
 		return false;
 
-	if (arch_id != 0 || impid != 0)
+	if (!(arch_id == 0 && impid == 0) &&
+	    !(arch_id == ZHIHE_A210_C908_MARCHID && impid == ZHIHE_A210_C908_MIMPID) &&
+	    !(arch_id == ZHIHE_A210_C920_MARCHID && impid == ZHIHE_A210_C920_MIMPID))
 		return false;
 
 	if (stage == RISCV_ALTERNATIVES_EARLY_BOOT)
