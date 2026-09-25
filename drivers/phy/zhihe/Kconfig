@@ -9,3 +9,13 @@ config PHY_ZHIHE_SNPS_USB2
 	help
 	  Support for the Synopsys USB 2.0 PHYs of the Zhihe A210 SoC, used
 	  by the two DWC2 host controllers and by the DWC3 controller.
+
+config PHY_ZHIHE_SNPS_C10PHY
+	tristate "Zhihe A210 C10 USB 3.1 PHY driver"
+	depends on ARCH_ZHIHE
+	depends on HAS_IOMEM
+	select GENERIC_PHY
+	help
+	  Support for the Synopsys C10 USB 3.1/DisplayPort combo PHY of the
+	  Zhihe A210 SoC, used by the DWC3 controller for its SuperSpeed
+	  lanes. Only the USB 3.1 mode is supported.
