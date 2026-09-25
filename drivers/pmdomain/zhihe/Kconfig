@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+config A210_POWER_DOMAIN
+	tristate "Zhihe A210 power domain driver"
+	depends on ARCH_ZHIHE && RISCV_SBI && PM
+	select PM_GENERIC_DOMAINS
+	help
+	  Support for the power domains of the Zhihe A210 SoC.
