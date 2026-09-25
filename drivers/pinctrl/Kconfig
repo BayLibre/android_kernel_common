@@ -37,6 +37,15 @@ config DEBUG_PINCTRL
 	help
 	  Say Y here to add some extra checks and diagnostics to PINCTRL calls.
 
+config PINCTRL_A210
+	tristate "Pinctrl driver for the Zhihe A210 SoC"
+	depends on ARCH_ZHIHE
+	select GENERIC_PINMUX_FUNCTIONS
+	select GENERIC_PINCONF
+	select PINMUX
+	help
+	  Support for the pin controllers of the Zhihe A210 SoC.
+
 config PINCTRL_AMD
 	bool "AMD GPIO pin control"
 	depends on HAS_IOMEM
