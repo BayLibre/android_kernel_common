@@ -529,6 +529,15 @@ static void th1520_sdhci_set_phy(struct sdhci_host *host)
 		     PHY_DLL_CNFG1_WAITCYCLE, PHY_DLL_CNFG1_R);
 }
 
+static void a210_sdhci_set_power(struct sdhci_host *host, unsigned char mode,
+				 unsigned short vdd)
+{
+	/* The PHY must be set up before the card is powered */
+	if (mode != MMC_POWER_OFF)
+		th1520_sdhci_set_phy(host);
+	sdhci_set_power(host, mode, vdd);
+}
+
 static void dwcmshc_set_uhs_signaling(struct sdhci_host *host,
 				      unsigned int timing)
 {
@@ -2058,6 +2067,18 @@ static const struct sdhci_ops sdhci_dwcmshc_th1520_ops = {
 	.platform_execute_tuning = th1520_execute_tuning,
 };
 
+static const struct sdhci_ops sdhci_dwcmshc_a210_ops = {
+	.set_clock		= sdhci_set_clock,
+	.set_power		= a210_sdhci_set_power,
+	.set_bus_width		= sdhci_set_bus_width,
+	.set_uhs_signaling	= th1520_set_uhs_signaling,
+	.get_max_clock		= dwcmshc_get_max_clock,
+	.reset			= th1520_sdhci_reset,
+	.adma_write_desc	= dwcmshc_adma_write_desc,
+	.voltage_switch		= dwcmshc_phy_init,
+	.platform_execute_tuning = th1520_execute_tuning,
+};
+
 static const struct sdhci_ops sdhci_dwcmshc_cv18xx_ops = {
 	.set_clock		= sdhci_set_clock,
 	.set_bus_width		= sdhci_set_bus_width,
@@ -2179,6 +2200,15 @@ static const struct rockchip_pltfm_data sdhci_dwcmshc_rk3588_pdata = {
 static const struct dwcmshc_pltfm_data sdhci_dwcmshc_th1520_pdata = {
 	.pdata = {
 		.ops = &sdhci_dwcmshc_th1520_ops,
+		.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
+		.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
+	},
+	.init = th1520_init,
+};
+
+static const struct dwcmshc_pltfm_data sdhci_dwcmshc_a210_pdata = {
+	.pdata = {
+		.ops = &sdhci_dwcmshc_a210_ops,
 		.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
 		.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
 	},
@@ -2381,6 +2411,10 @@ static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
 	{
 		.compatible = "hpe,gsc-dwcmshc",
 		.data = &sdhci_dwcmshc_hpe_gsc_pdata,
+	},
+	{
+		.compatible = "zhihe,a210-dwcmshc",
+		.data = &sdhci_dwcmshc_a210_pdata,
 	},
 	{},
 };
