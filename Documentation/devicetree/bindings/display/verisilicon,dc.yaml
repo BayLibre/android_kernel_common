@@ -17,6 +17,7 @@ properties:
     items:
       - enum:
           - thead,th1520-dc8200
+          - zhihe,a210-dc8200
       - const: verisilicon,dc # DC IPs have discoverable ID/revision registers
 
   reg:
@@ -26,20 +27,32 @@ properties:
     maxItems: 1
 
   clocks:
+    minItems: 5
     items:
       - description: DC Core clock
       - description: DMA AXI bus clock
       - description: Configuration AHB bus clock
       - description: Pixel clock of output 0
       - description: Pixel clock of output 1
+      - description: AXI clock of the arbiter between the DC DMA and the
+          system interconnect
+      - description: APB clock of the arbiter between the DC DMA and the
+          system interconnect
+      - description: AXI clock of the memory firewall on the DC DMA path
+      - description: APB clock of the memory firewall on the DC DMA path
 
   clock-names:
+    minItems: 5
     items:
       - const: core
       - const: axi
       - const: ahb
       - const: pix0
       - const: pix1
+      - const: arb-axi
+      - const: arb-apb
+      - const: dfmu-axi
+      - const: dfmu-apb
 
   resets:
     items:
@@ -68,6 +81,25 @@ properties:
         description: The second output channel if the DC variant
           supports. Follow the same endpoint addressing rule with
           the first port.
+
+allOf:
+  - if:
+      properties:
+        compatible:
+          contains:
+            const: zhihe,a210-dc8200
+    then:
+      properties:
+        clocks:
+          minItems: 9
+        clock-names:
+          minItems: 9
+    else:
+      properties:
+        clocks:
+          maxItems: 5
+        clock-names:
+          maxItems: 5
 
 required:
   - compatible
