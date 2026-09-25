@@ -18,8 +18,11 @@ allOf:
 
 properties:
   compatible:
-    enum:
-      - thead,th1520-dw-hdmi
+    oneOf:
+      - const: thead,th1520-dw-hdmi
+      - items:
+          - const: zhihe,a210-dw-hdmi
+          - const: thead,th1520-dw-hdmi
 
   reg-io-width:
     const: 4
