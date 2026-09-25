@@ -12,6 +12,7 @@
 #include <drm/drm_of.h>
 #include <drm/drm_fbdev_shmem.h>
 #include <linux/component.h>
+#include <linux/dma-mapping.h>
 #include <linux/of_graph.h>
 
 #include "spacemit_drm.h"
@@ -104,6 +105,13 @@ static int spacemit_drm_dumb_create(struct drm_file *file,
 		drm_gem_handle_delete(file, args->handle);
 		return PTR_ERR(sgt);
 	}
+
+	/*
+	 * Mapping for the device only cleans the lines on RISC-V, which leaves
+	 * the CPU caches holding the zeroes. Drop those copies as well, or they
+	 * still read back over what the GPU renders into the buffer.
+	 */
+	dma_sync_sgtable_for_cpu(drm->dev, sgt, DMA_BIDIRECTIONAL);
 
 	return 0;
 }
