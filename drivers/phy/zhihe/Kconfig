@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+config PHY_ZHIHE_SNPS_USB2
+	tristate "Zhihe A210 USB 2.0 PHY driver"
+	depends on ARCH_ZHIHE
+	depends on HAS_IOMEM
+	select GENERIC_PHY
+	select MFD_SYSCON
+	help
+	  Support for the Synopsys USB 2.0 PHYs of the Zhihe A210 SoC, used
+	  by the two DWC2 host controllers and by the DWC3 controller.
