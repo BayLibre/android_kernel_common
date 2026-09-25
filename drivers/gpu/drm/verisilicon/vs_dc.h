@@ -19,6 +19,7 @@
 
 #define VSDC_MAX_OUTPUTS 2
 #define VSDC_RESET_COUNT 3
+#define VSDC_BUS_CLK_COUNT 4
 
 struct vs_drm_dev;
 struct vs_crtc;
@@ -29,6 +30,7 @@ struct vs_dc {
 	struct clk *axi_clk;
 	struct clk *ahb_clk;
 	struct clk *pix_clk[VSDC_MAX_OUTPUTS];
+	struct clk_bulk_data bus_clks[VSDC_BUS_CLK_COUNT];
 	struct reset_control_bulk_data rsts[VSDC_RESET_COUNT];
 
 	struct vs_drm_dev *drm_dev;

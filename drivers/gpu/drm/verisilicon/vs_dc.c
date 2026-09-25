@@ -104,6 +104,19 @@ static int vs_dc_probe(struct platform_device *pdev)
 		return PTR_ERR(dc->ahb_clk);
 	}
 
+	/* optional clocks of the DMA path bus arbiter and memory firewall */
+	dc->bus_clks[0].id = "arb-axi";
+	dc->bus_clks[1].id = "arb-apb";
+	dc->bus_clks[2].id = "dfmu-axi";
+	dc->bus_clks[3].id = "dfmu-apb";
+
+	ret = devm_clk_bulk_get_optional_enable(dev, VSDC_BUS_CLK_COUNT,
+						dc->bus_clks);
+	if (ret) {
+		dev_err(dev, "can't get bus clocks\n");
+		return ret;
+	}
+
 	irq = platform_get_irq(pdev, 0);
 	if (irq < 0) {
 		dev_err(dev, "can't get irq\n");
