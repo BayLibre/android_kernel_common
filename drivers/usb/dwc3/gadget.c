@@ -2858,6 +2858,14 @@ static void dwc3_gadget_enable_irq(struct dwc3 *dwc)
 	if (!DWC3_VER_IS_PRIOR(DWC3, 230A))
 		reg |= DWC3_DEVTEN_U3L2L1SUSPEN;
 
+	/*
+	 * With late_event_quirk, a counted event may only be written once the
+	 * controller has another event to write: SOF events provide one every
+	 * microframe.
+	 */
+	if (dwc->late_event_quirk)
+		reg |= DWC3_DEVTEN_SOFEN;
+
 	dwc3_writel(dwc, DWC3_DEVTEN, reg);
 }
 
@@ -4521,6 +4529,27 @@ static void dwc3_process_event_entry(struct dwc3 *dwc,
 		dev_err(dwc->dev, "UNKNOWN IRQ type %d\n", event->raw);
 }
 
+/*
+ * With late_event_quirk, the controller may count an event before writing it,
+ * so events are read from the buffer, in order, once written. Entries are
+ * zeroed once consumed, and no valid event is zero.
+ */
+static bool dwc3_fetch_late_event(struct dwc3_event_buffer *evt,
+				  union dwc3_event *event)
+{
+	u32 *entry = evt->buf + evt->lpos;
+
+	event->raw = READ_ONCE(*entry);
+	if (!event->raw)
+		return false;
+
+	/* The TRBs the event reports on are read after it. */
+	dma_rmb();
+	WRITE_ONCE(*entry, 0);
+
+	return true;
+}
+
 static irqreturn_t dwc3_process_event_buf(struct dwc3_event_buffer *evt)
 {
 	struct dwc3 *dwc = evt->dwc;
@@ -4535,7 +4564,10 @@ static irqreturn_t dwc3_process_event_buf(struct dwc3_event_buffer *evt)
 	while (left > 0) {
 		union dwc3_event event;
 
-		event.raw = *(u32 *) (evt->cache + evt->lpos);
+		if (!dwc->late_event_quirk)
+			event.raw = *(u32 *) (evt->cache + evt->lpos);
+		else if (!dwc3_fetch_late_event(evt, &event))
+			break;
 
 		dwc3_process_event_entry(dwc, &event);
 
@@ -4552,7 +4584,8 @@ static irqreturn_t dwc3_process_event_buf(struct dwc3_event_buffer *evt)
 		left -= 4;
 	}
 
-	evt->count = 0;
+	/* With late_event_quirk, unwritten entries wait for the next run. */
+	evt->count = dwc->late_event_quirk ? left : 0;
 	ret = IRQ_HANDLED;
 
 	/* Unmask interrupt */
@@ -4628,12 +4661,19 @@ static irqreturn_t dwc3_check_event_buf(struct dwc3_event_buffer *evt)
 		return IRQ_NONE;
 	}
 
-	evt->count = count;
+	/* With late_event_quirk, unwritten entries are still pending. */
+	evt->count = dwc->late_event_quirk ? evt->count + count : count;
 	evt->flags |= DWC3_EVENT_PENDING;
 
 	/* Mask interrupt */
 	dwc3_writel(dwc, DWC3_GEVNTSIZ(0),
 		    DWC3_GEVNTSIZ_INTMASK | DWC3_GEVNTSIZ_SIZE(evt->length));
+
+	/* The thread reads the events from the buffer once they are written. */
+	if (dwc->late_event_quirk) {
+		dwc3_writel(dwc, DWC3_GEVNTCOUNT(0), count);
+		return IRQ_WAKE_THREAD;
+	}
 
 	amount = min(count, evt->length - evt->lpos);
 	memcpy(evt->cache + evt->lpos, evt->buf + evt->lpos, amount);
