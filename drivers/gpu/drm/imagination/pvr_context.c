@@ -17,9 +17,11 @@
 
 #include <drm/drm_auth.h>
 #include <drm/drm_managed.h>
+#include <drm/drm_print.h>
 
 #include <linux/bug.h>
 #include <linux/errno.h>
+#include <linux/iopoll.h>
 #include <linux/kernel.h>
 #include <linux/list.h>
 #include <linux/sched.h>
@@ -433,6 +435,45 @@ pvr_context_destroy(struct pvr_file *pvr_file, u32 handle)
 	return 0;
 }
 
+/* How long a closing file waits for each queue's jobs to complete. */
+#define PVR_CONTEXT_IDLE_TIMEOUT_US (2 * USEC_PER_SEC)
+
+static void pvr_queue_wait_idle(struct pvr_queue *queue)
+{
+	int count;
+
+	if (!queue)
+		return;
+
+	if (read_poll_timeout(atomic_read, count, !count, USEC_PER_MSEC,
+			      PVR_CONTEXT_IDLE_TIMEOUT_US, false,
+			      &queue->in_flight_job_count))
+		drm_warn(from_pvr_device(queue->ctx->pvr_dev),
+			 "%d jobs still in flight on a closed file\n", count);
+}
+
+/**
+ * pvr_context_wait_idle() - Wait for the jobs submitted on a context to complete
+ * @ctx: Target context.
+ *
+ * Gives up after %PVR_CONTEXT_IDLE_TIMEOUT_US per queue.
+ */
+static void pvr_context_wait_idle(struct pvr_context *ctx)
+{
+	switch (ctx->type) {
+	case DRM_PVR_CTX_TYPE_RENDER:
+		pvr_queue_wait_idle(ctx->queues.geometry);
+		pvr_queue_wait_idle(ctx->queues.fragment);
+		break;
+	case DRM_PVR_CTX_TYPE_COMPUTE:
+		pvr_queue_wait_idle(ctx->queues.compute);
+		break;
+	case DRM_PVR_CTX_TYPE_TRANSFER_FRAG:
+		pvr_queue_wait_idle(ctx->queues.transfer);
+		break;
+	}
+}
+
 /**
  * pvr_destroy_contexts_for_file: Destroy any contexts associated with the given file
  * @pvr_file: Pointer to pvr_file structure.
@@ -443,29 +484,37 @@ pvr_context_destroy(struct pvr_file *pvr_file, u32 handle)
 void pvr_destroy_contexts_for_file(struct pvr_file *pvr_file)
 {
 	struct pvr_device *pvr_dev = pvr_file->pvr_dev;
-	struct pvr_context *ctx;
+	struct pvr_context *ctx, *tmp;
 	unsigned long handle;
+	LIST_HEAD(closing);
 
 	xa_for_each(&pvr_file->ctx_handles, handle, ctx)
 		pvr_context_destroy(pvr_file, handle);
 
 	spin_lock(&pvr_dev->ctx_list_lock);
-	ctx = list_first_entry(&pvr_file->contexts, struct pvr_context, file_link);
-
-	while (!list_entry_is_head(ctx, &pvr_file->contexts, file_link)) {
+	while (!list_empty(&pvr_file->contexts)) {
+		ctx = list_first_entry(&pvr_file->contexts, struct pvr_context,
+				       file_link);
 		list_del_init(&ctx->file_link);
 
-		if (pvr_context_get_if_referenced(ctx)) {
-			spin_unlock(&pvr_dev->ctx_list_lock);
-
-			pvr_vm_unmap_all(ctx->vm_ctx);
-
-			pvr_context_put(ctx);
-			spin_lock(&pvr_dev->ctx_list_lock);
-		}
-		ctx = list_first_entry(&pvr_file->contexts, struct pvr_context, file_link);
+		if (pvr_context_get_if_referenced(ctx))
+			list_add_tail(&ctx->file_link, &closing);
 	}
 	spin_unlock(&pvr_dev->ctx_list_lock);
+
+	/*
+	 * Killing the queues only stops new jobs: the ones the firmware already
+	 * has still use the mappings. The contexts of a file share its VM, so
+	 * wait for all of them before unmapping anything.
+	 */
+	list_for_each_entry(ctx, &closing, file_link)
+		pvr_context_wait_idle(ctx);
+
+	list_for_each_entry_safe(ctx, tmp, &closing, file_link) {
+		list_del_init(&ctx->file_link);
+		pvr_vm_unmap_all(ctx->vm_ctx);
+		pvr_context_put(ctx);
+	}
 }
 
 /**
