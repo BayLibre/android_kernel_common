@@ -54,6 +54,20 @@ struct pvr_job {
 	 */
 	struct pvr_job *paired_job;
 
+	/**
+	 * @pr_geom_job: Geometry job of a partial render job kicked separately
+	 * from it.
+	 *
+	 * The partial render job still guards itself with a partial render
+	 * fence on the geometry job, but the geometry job no longer waits for
+	 * the fragment queue to reach it, so it can overlap with earlier
+	 * fragment jobs.
+	 */
+	struct pvr_job *pr_geom_job;
+
+	/** @has_pr_job: Geometry job with a separately kicked partial render job. */
+	bool has_pr_job;
+
 	/** @cccb_fence: Fence used to wait for CCCB space. */
 	struct dma_fence *cccb_fence;
 

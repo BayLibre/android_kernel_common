@@ -428,6 +428,12 @@ static unsigned long job_count_remaining_native_deps(struct pvr_job *job)
 			remaining_count++;
 	}
 
+	/* A separately kicked partial render job always gets a partial render
+	 * fence on its geometry job.
+	 */
+	if (job->pr_geom_job)
+		remaining_count++;
+
 	return remaining_count;
 }
 
@@ -695,18 +701,21 @@ static void pvr_queue_submit_job_to_cccb(struct pvr_job *job)
 		}
 	}
 
-	if (job->type == DRM_PVR_JOB_TYPE_FRAGMENT && job->paired_job) {
+	if (job->type == DRM_PVR_JOB_TYPE_FRAGMENT &&
+	    (job->paired_job || job->pr_geom_job)) {
+		struct pvr_job *geom_job = job->paired_job ? job->paired_job : job->pr_geom_job;
+
 		/*
 		 * The loop above will only process dependencies backed by a UFO i.e. with
-		 * a valid parent fence assigned, but the paired job dependency won't have
-		 * one until both jobs have been submitted. Access the parent fence directly
-		 * here instead, submitting it last as partial render fence.
+		 * a valid parent fence assigned, but the geometry job dependency is on its
+		 * scheduled fence. Access the parent fence directly here instead,
+		 * submitting it last as partial render fence.
 		 */
-		jfence = to_pvr_queue_job_fence(job->paired_job->done_fence);
+		jfence = to_pvr_queue_job_fence(geom_job->done_fence);
 		if (!WARN_ON(!jfence)) {
 			pvr_fw_object_get_fw_addr(jfence->queue->timeline_ufo.fw_obj,
 						  &ufos[ufo_count].addr);
-			ufos[ufo_count++].value = job->paired_job->done_fence->seqno;
+			ufos[ufo_count++].value = geom_job->done_fence->seqno;
 		}
 	}
 
@@ -715,7 +724,8 @@ static void pvr_queue_submit_job_to_cccb(struct pvr_job *job)
 						   sizeof(ufos[0]) * ufo_count, ufos, 0, 0);
 	}
 
-	if (job->type == DRM_PVR_JOB_TYPE_GEOMETRY && job->paired_job) {
+	if (job->type == DRM_PVR_JOB_TYPE_GEOMETRY &&
+	    (job->paired_job || job->has_pr_job)) {
 		struct rogue_fwif_cmd_geom *cmd = job->cmd;
 
 		/* Reference value for the partial render test is the current queue fence
@@ -807,9 +817,13 @@ static struct dma_fence *pvr_queue_run_job(struct drm_sched_job *sched_job)
 		struct pvr_queue *queue = container_of(job->base.sched,
 						       struct pvr_queue, scheduler);
 
+		/* As in combined kicks, partial render jobs don't attach the HWRT
+		 * data to the cleanup-ctl array.
+		 */
 		pvr_cccb_send_kccb_kick(pvr_dev, &queue->cccb,
 					pvr_context_get_fw_addr(job->ctx) + queue->ctx_offset,
-					job->hwrt);
+					job->fw_ccb_cmd_type == ROGUE_FWIF_CCB_CMD_TYPE_FRAG_PR ?
+					NULL : job->hwrt);
 
 		trace_pvr_job_submit_fw(job);
 	}
@@ -929,6 +943,8 @@ static void pvr_queue_free_job(struct drm_sched_job *sched_job)
 	if (job->type == DRM_PVR_JOB_TYPE_FRAGMENT && job->paired_job)
 		pvr_job_put(job->paired_job);
 
+	pvr_job_put(job->pr_geom_job);
+	job->pr_geom_job = NULL;
 	job->paired_job = NULL;
 	pvr_job_put(job);
 }

@@ -31,6 +31,7 @@ static void pvr_job_release(struct kref *kref)
 	pvr_context_put(job->ctx);
 
 	WARN_ON(job->paired_job);
+	pvr_job_put(job->pr_geom_job);
 
 	pvr_queue_job_cleanup(job);
 	pvr_job_release_pm_ref(job);
@@ -648,12 +649,31 @@ pvr_jobs_link_geom_frag(struct pvr_job_data *job_data, u32 *job_count)
 		if (!can_combine_jobs(job_data[i].job, job_data[i + 1].job))
 			continue;
 
+		/* A partial render job only runs if the geometry job runs out of
+		 * parameter memory. Kicking it along the geometry job would hold
+		 * the geometry job until all earlier fragment jobs are done, so
+		 * link the two without combining their kicks.
+		 */
+		frag_queue = pvr_context_get_queue_for_job(frag_job->ctx,
+							   frag_job->type);
+
+		/* Only when earlier fragment jobs are still in flight: with an
+		 * idle fragment queue the combined kick doesn't hold the geometry
+		 * job, and it lets the FW start the fragment job as soon as the
+		 * geometry job is done.
+		 */
+		if (frag_job->fw_ccb_cmd_type == ROGUE_FWIF_CCB_CMD_TYPE_FRAG_PR &&
+		    atomic_read(&frag_queue->in_flight_job_count)) {
+			geom_job->has_pr_job = true;
+			frag_job->pr_geom_job = pvr_job_get(geom_job);
+			i++;
+			continue;
+		}
+
 		/* The fragment job will be submitted by the geometry queue. We
 		 * need to make sure it comes after all the other fragment jobs
 		 * queued before it.
 		 */
-		frag_queue = pvr_context_get_queue_for_job(frag_job->ctx,
-							   frag_job->type);
 		f = get_last_queued_job_scheduled_fence(frag_queue, job_data,
 							i);
 		if (f) {
