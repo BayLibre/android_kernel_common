@@ -21,13 +21,24 @@
 		#size-cells = <0>;
 		timebase-frequency = <24000000>;
 
+		/* Sstc stays disabled: A210 uses CLINT S-mode shadow registers. */
 		c908_0: cpu@0 {
 			device_type = "cpu";
 			reg = <0>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicsr_zifencei_zihintpause_zihpm_zfh_zfhmin_zba_zbb_zbc_zbs_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicsr",
+					       "zifencei", "zihintpause", "zihpm",
+					       "zfh", "zfhmin", "zba", "zbb",
+					       "zbc", "zbs", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "1.9Ghz";
 			i-cache-block-size = <64>;
@@ -55,9 +66,19 @@
 			device_type = "cpu";
 			reg = <1>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicsr_zifencei_zihintpause_zihpm_zfh_zfhmin_zba_zbb_zbc_zbs_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicsr",
+					       "zifencei", "zihintpause", "zihpm",
+					       "zfh", "zfhmin", "zba", "zbb",
+					       "zbc", "zbs", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "1.9Ghz";
 			i-cache-block-size = <64>;
@@ -84,9 +105,19 @@
 			device_type = "cpu";
 			reg = <2>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicsr_zifencei_zihintpause_zihpm_zfh_zfhmin_zba_zbb_zbc_zbs_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicsr",
+					       "zifencei", "zihintpause", "zihpm",
+					       "zfh", "zfhmin", "zba", "zbb",
+					       "zbc", "zbs", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "1.9Ghz";
 			i-cache-block-size = <64>;
@@ -113,9 +144,19 @@
 			device_type = "cpu";
 			reg = <3>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicsr_zifencei_zihintpause_zihpm_zfh_zfhmin_zba_zbb_zbc_zbs_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicsr",
+					       "zifencei", "zihintpause", "zihpm",
+					       "zfh", "zfhmin", "zba", "zbb",
+					       "zbc", "zbs", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "1.9Ghz";
 			i-cache-block-size = <64>;
@@ -143,9 +184,22 @@
 			device_type = "cpu";
 			reg = <4>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicond_zicsr_zifencei_zihintntl_zihintpause_zihpm_zawrs_zfa_zfbfmin_zfh_zfhmin_zca_zcb_zcd_zba_zbb_zbc_zbs_zvfbfmin_zvfbfwma_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicond",
+					       "zicsr", "zifencei", "zihintntl",
+					       "zihintpause", "zihpm", "zawrs",
+					       "zfa", "zfbfmin", "zfh", "zfhmin",
+					       "zca", "zcb", "zcd", "zba", "zbb",
+					       "zbc", "zbs", "zvfbfmin",
+					       "zvfbfwma", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "2.3Ghz";
 			i-cache-block-size = <64>;
@@ -173,9 +227,22 @@
 			device_type = "cpu";
 			reg = <5>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicond_zicsr_zifencei_zihintntl_zihintpause_zihpm_zawrs_zfa_zfbfmin_zfh_zfhmin_zca_zcb_zcd_zba_zbb_zbc_zbs_zvfbfmin_zvfbfwma_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicond",
+					       "zicsr", "zifencei", "zihintntl",
+					       "zihintpause", "zihpm", "zawrs",
+					       "zfa", "zfbfmin", "zfh", "zfhmin",
+					       "zca", "zcb", "zcd", "zba", "zbb",
+					       "zbc", "zbs", "zvfbfmin",
+					       "zvfbfwma", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "2.3Ghz";
 			i-cache-block-size = <64>;
@@ -202,9 +269,22 @@
 			device_type = "cpu";
 			reg = <6>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicond_zicsr_zifencei_zihintntl_zihintpause_zihpm_zawrs_zfa_zfbfmin_zfh_zfhmin_zca_zcb_zcd_zba_zbb_zbc_zbs_zvfbfmin_zvfbfwma_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicond",
+					       "zicsr", "zifencei", "zihintntl",
+					       "zihintpause", "zihpm", "zawrs",
+					       "zfa", "zfbfmin", "zfh", "zfhmin",
+					       "zca", "zcb", "zcd", "zba", "zbb",
+					       "zbc", "zbs", "zvfbfmin",
+					       "zvfbfwma", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "2.3Ghz";
 			i-cache-block-size = <64>;
@@ -231,9 +311,22 @@
 			device_type = "cpu";
 			reg = <7>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicond_zicsr_zifencei_zihintntl_zihintpause_zihpm_zawrs_zfa_zfbfmin_zfh_zfhmin_zca_zcb_zcd_zba_zbb_zbc_zbs_zvfbfmin_zvfbfwma_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicond",
+					       "zicsr", "zifencei", "zihintntl",
+					       "zihintpause", "zihpm", "zawrs",
+					       "zfa", "zfbfmin", "zfh", "zfhmin",
+					       "zca", "zcb", "zcd", "zba", "zbb",
+					       "zbc", "zbs", "zvfbfmin",
+					       "zvfbfwma", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "2.3Ghz";
 			i-cache-block-size = <64>;
