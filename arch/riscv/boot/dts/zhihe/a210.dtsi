@@ -21,13 +21,24 @@
 		#size-cells = <0>;
 		timebase-frequency = <24000000>;
 
+		/* Sstc stays disabled: A210 uses CLINT S-mode shadow registers. */
 		c908_0: cpu@0 {
 			device_type = "cpu";
 			reg = <0>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicsr_zifencei_zihintpause_zihpm_zfh_zfhmin_zba_zbb_zbc_zbs_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicsr",
+					       "zifencei", "zihintpause", "zihpm",
+					       "zfh", "zfhmin", "zba", "zbb",
+					       "zbc", "zbs", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "1.9Ghz";
 			i-cache-block-size = <64>;
@@ -55,9 +66,19 @@
 			device_type = "cpu";
 			reg = <1>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicsr_zifencei_zihintpause_zihpm_zfh_zfhmin_zba_zbb_zbc_zbs_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicsr",
+					       "zifencei", "zihintpause", "zihpm",
+					       "zfh", "zfhmin", "zba", "zbb",
+					       "zbc", "zbs", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "1.9Ghz";
 			i-cache-block-size = <64>;
@@ -84,9 +105,19 @@
 			device_type = "cpu";
 			reg = <2>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicsr_zifencei_zihintpause_zihpm_zfh_zfhmin_zba_zbb_zbc_zbs_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicsr",
+					       "zifencei", "zihintpause", "zihpm",
+					       "zfh", "zfhmin", "zba", "zbb",
+					       "zbc", "zbs", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "1.9Ghz";
 			i-cache-block-size = <64>;
@@ -113,9 +144,19 @@
 			device_type = "cpu";
 			reg = <3>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicsr_zifencei_zihintpause_zihpm_zfh_zfhmin_zba_zbb_zbc_zbs_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicsr",
+					       "zifencei", "zihintpause", "zihpm",
+					       "zfh", "zfhmin", "zba", "zbb",
+					       "zbc", "zbs", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "1.9Ghz";
 			i-cache-block-size = <64>;
@@ -143,9 +184,22 @@
 			device_type = "cpu";
 			reg = <4>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicond_zicsr_zifencei_zihintntl_zihintpause_zihpm_zawrs_zfa_zfbfmin_zfh_zfhmin_zca_zcb_zcd_zba_zbb_zbc_zbs_zvfbfmin_zvfbfwma_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicond",
+					       "zicsr", "zifencei", "zihintntl",
+					       "zihintpause", "zihpm", "zawrs",
+					       "zfa", "zfbfmin", "zfh", "zfhmin",
+					       "zca", "zcb", "zcd", "zba", "zbb",
+					       "zbc", "zbs", "zvfbfmin",
+					       "zvfbfwma", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "2.3Ghz";
 			i-cache-block-size = <64>;
@@ -173,9 +227,22 @@
 			device_type = "cpu";
 			reg = <5>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicond_zicsr_zifencei_zihintntl_zihintpause_zihpm_zawrs_zfa_zfbfmin_zfh_zfhmin_zca_zcb_zcd_zba_zbb_zbc_zbs_zvfbfmin_zvfbfwma_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicond",
+					       "zicsr", "zifencei", "zihintntl",
+					       "zihintpause", "zihpm", "zawrs",
+					       "zfa", "zfbfmin", "zfh", "zfhmin",
+					       "zca", "zcb", "zcd", "zba", "zbb",
+					       "zbc", "zbs", "zvfbfmin",
+					       "zvfbfwma", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "2.3Ghz";
 			i-cache-block-size = <64>;
@@ -202,9 +269,22 @@
 			device_type = "cpu";
 			reg = <6>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicond_zicsr_zifencei_zihintntl_zihintpause_zihpm_zawrs_zfa_zfbfmin_zfh_zfhmin_zca_zcb_zcd_zba_zbb_zbc_zbs_zvfbfmin_zvfbfwma_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicond",
+					       "zicsr", "zifencei", "zihintntl",
+					       "zihintpause", "zihpm", "zawrs",
+					       "zfa", "zfbfmin", "zfh", "zfhmin",
+					       "zca", "zcb", "zcd", "zba", "zbb",
+					       "zbc", "zbs", "zvfbfmin",
+					       "zvfbfwma", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "2.3Ghz";
 			i-cache-block-size = <64>;
@@ -231,9 +311,22 @@
 			device_type = "cpu";
 			reg = <7>;
 			compatible = "riscv";
-			riscv,isa = "rv64imac";
+			riscv,isa = "rv64imafdcbv_zicbom_zicbop_zicboz_zicntr_zicond_zicsr_zifencei_zihintntl_zihintpause_zihpm_zawrs_zfa_zfbfmin_zfh_zfhmin_zca_zcb_zcd_zba_zbb_zbc_zbs_zvfbfmin_zvfbfwma_zvfh_zvfhmin_sscofpmf_svinval_svnapot_svpbmt";
 			riscv,isa-base = "rv64i";
-			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "v", "zicntr", "zicsr", "zifencei", "zihpm", "zba", "zbb", "zbc", "zbs", "svpbmt", "sscofpmf";
+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "b", "v",
+					       "zicbom", "zicbop", "zicboz",
+					       "zicntr", "zicond",
+					       "zicsr", "zifencei", "zihintntl",
+					       "zihintpause", "zihpm", "zawrs",
+					       "zfa", "zfbfmin", "zfh", "zfhmin",
+					       "zca", "zcb", "zcd", "zba", "zbb",
+					       "zbc", "zbs", "zvfbfmin",
+					       "zvfbfwma", "zvfh", "zvfhmin",
+					       "sscofpmf", "svinval", "svnapot",
+					       "svpbmt";
+			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
+			riscv,cboz-block-size = <64>;
 			mmu-type = "riscv,sv39";
 			cpu-freq = "2.3Ghz";
 			i-cache-block-size = <64>;
@@ -706,6 +799,7 @@
 				resets = <&rst GPU_PWR_WRAP_RGX_HOOD_RST>,
 					 <&rst GPU_PWR_WRAP_DFMU_RST>;
 				iopmps = <&device_gpu_iopmp>, <&device_gpu_mt_iopmp>;
+				pmic-supply = <&dvdd_gpu_reg>;
 			};
 			power_npu_wrapper:power_npu_wrapper {
 				status = "disabled";
@@ -1595,18 +1689,16 @@
 			};
 		};
 
-		gpu: gpu@6c00000{
-			status = "disabled";
-			compatible = "img,gpu";
+		gpu: gpu@6c00000 {
+			compatible = "zhihe,a210-gpu", "img,img-bxm-4-64",
+				     "img,img-rogue";
 			reg = <0x00 0x6c00000 0x0 0x100000>;
 			interrupt-parent = <&intc>;
 			interrupts = <72>;
-			interrupt-names = "gpuirq";
 			power-domains = <&power_gpu>;
-			vosys-regmap = <&vosys_reg>;
-			dma-mask = <0xf 0xffffffff>;
-			clocks = <&clk_gpu SW_PWR_WRAP_GPU_CORE_CLK_EN>;
-			clock-names = "gpu_core_clk ";
+			clocks = <&clk_gpu SW_PWR_WRAP_GPU_CORE_CLK_EN>,
+				 <&clk_gpu SW_PWR_WRAP_GPU_SYS_CLK_EN>;
+			clock-names = "core", "sys";
 			operating-points-v2 = <&gpu_opp_table>;
 		};
 
@@ -2799,6 +2891,7 @@
 				phy-names = "usb2-phy", "usb3-phy";
 				snps,usb3_lpm_capable;
 				snps,usb_sofitpsync;
+				snps,late-event-quirk;
 			};
 		};
 
@@ -3105,7 +3198,6 @@
 		};
 
 		aon: aon_subsys@308f8000 {
-			status = "disabled";
 			compatible = "zhihe,aon";
 			reg = <0x00 0x308f8000 0x0 0x10000>,
 			      <0x00 0x30842018 0x0 0x4>,
@@ -3118,6 +3210,155 @@
 			mbox-names = "aon0";
 			#mbox-cells = <2>;
 			version = <1>;
+
+			/* Full regulator list, verbatim from a210-dev.dts. */
+			regulators {
+				compatible = "zhihe,a210-aon-regulator";
+
+				avdd33_emmc_reg: avdd33_emmc {
+					regulator-name = "avdd33_emmc";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				avdd33_usb2_reg: avdd33_usb2 {
+					regulator-name = "avdd33_usb2";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				dvdd08_aon_reg: dvdd08_aon {
+					regulator-name = "dvdd08_aon";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				avdd18_aon_reg: avdd18_aon {
+					regulator-name = "avdd18_aon";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				avdd18_emmc_usb2_reg: avdd18_emmc_usb2 {
+					regulator-name = "avdd18_emmc_usb2";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				avdd18_emmc_peri_reg: avdd18_emmc_peri {
+					regulator-name = "avdd18_emmc_peri";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				avdd18_top_reg: avdd18_top {
+					regulator-name = "avdd18_top";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				avdd18_pll_reg: avdd18_pll {
+					regulator-name = "avdd18_pll";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				avdd18_reg: avdd18 {
+					regulator-name = "avdd18";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				dvdd18_ddr_vaa_reg: dvdd18_ddr_vaa {
+					regulator-name = "dvdd18_ddr_vaa";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				p3v3_reg: p3v3 {
+					regulator-name = "p3v3";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				dvdd08_top_reg: dvdd08_top {
+					regulator-name = "dvdd08_top";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				dvdd06_ddr_vddqlp_reg: dvdd06_ddr_vddqlp {
+					regulator-name = "dvdd06_ddr_vddqlp";
+					regulator-type = "voltage";
+					regulator-always-on;
+				};
+
+				dvdd08_ddr_reg: dvdd08_ddr {
+					regulator-name = "dvdd08_ddr";
+					regulator-type = "voltage";
+					regulator-ramp-delay = <100>;
+					regulator-min-microvolt = <750000>;
+					regulator-max-microvolt = <800000>;
+					regulator-always-on;
+				};
+
+				dvdd_cpu_reg: dvdd_cpu {
+					regulator-name = "dvdd_cpu";
+					regulator-type = "voltage";
+					regulator-ramp-delay = <100>;
+					regulator-enable-ramp-delay = <2000>;
+					regulator-min-microvolt = <600000>;
+					regulator-max-microvolt = <1000000>;
+					regulator-always-on;
+				};
+
+				dvddm_cpu_reg: dvddm_cpu {
+					regulator-name = "dvddm_cpu";
+					regulator-type = "voltage";
+					regulator-ramp-delay = <100>;
+					regulator-enable-ramp-delay = <2000>;
+					regulator-min-microvolt = <800000>;
+					regulator-max-microvolt = <1000000>;
+					regulator-always-on;
+				};
+
+				dvdd_vp_reg: dvdd_vp {
+					regulator-name = "dvdd_vp";
+					regulator-type = "voltage";
+					regulator-ramp-delay = <100>;
+					regulator-enable-ramp-delay = <2000>;
+					regulator-min-microvolt = <750000>;
+					regulator-max-microvolt = <800000>;
+				};
+
+				dvdd_npu_vip_reg: dvdd_npu_vip {
+					regulator-name = "dvdd_npu_vip";
+					regulator-type = "voltage";
+					regulator-ramp-delay = <100>;
+					regulator-enable-ramp-delay = <2000>;
+					regulator-min-microvolt = <750000>;
+					regulator-max-microvolt = <1000000>;
+				};
+
+				dvdd_cpu_p_reg: dvdd_cpu_p {
+					regulator-name = "dvdd_cpu_p";
+					regulator-type = "voltage";
+					regulator-ramp-delay = <100>;
+					regulator-enable-ramp-delay = <2000>;
+					regulator-min-microvolt = <800000>;
+					regulator-max-microvolt = <1000000>;
+					regulator-always-on;
+				};
+
+				dvdd_gpu_reg: dvdd_gpu {
+					regulator-name = "dvdd_gpu";
+					regulator-type = "voltage";
+					regulator-ramp-delay = <100>;
+					regulator-enable-ramp-delay = <2000>;
+					regulator-min-microvolt = <750000>;
+					regulator-max-microvolt = <800000>;
+				};
+			};
 		};
 
 		sata: sata@a200000 {

@@ -569,6 +569,13 @@ int dwc3_event_buffers_setup(struct dwc3 *dwc)
 
 	evt = dwc->ev_buf;
 	evt->lpos = 0;
+
+	/* With late_event_quirk, a zero entry has not been written yet. */
+	if (dwc->late_event_quirk) {
+		memset(evt->buf, 0, evt->length);
+		evt->count = 0;
+	}
+
 	dwc3_writel(dwc, DWC3_GEVNTADRLO(0),
 		    lower_32_bits(evt->dma));
 	dwc3_writel(dwc, DWC3_GEVNTADRHI(0),
@@ -1877,6 +1884,9 @@ static void dwc3_get_properties(struct dwc3 *dwc)
 
 	dwc->dis_split_quirk = device_property_read_bool(dev,
 				"snps,dis-split-quirk");
+
+	dwc->late_event_quirk = device_property_read_bool(dev,
+				"snps,late-event-quirk");
 
 	dwc->lpm_nyet_threshold = lpm_nyet_threshold;
 	dwc->tx_de_emphasis = tx_de_emphasis;

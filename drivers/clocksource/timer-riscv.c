@@ -23,6 +23,8 @@
 #include <linux/interrupt.h>
 #include <linux/of_irq.h>
 #include <linux/limits.h>
+#include <linux/smp.h>
+#include <linux/of_address.h>
 #include <clocksource/timer-riscv.h>
 #include <asm/smp.h>
 #include <asm/cpufeature.h>
@@ -31,6 +33,57 @@
 
 static DEFINE_STATIC_KEY_FALSE(riscv_sstc_available);
 static bool riscv_timer_cannot_wake_cpu;
+
+#ifdef CONFIG_XUANTIE_SSTC
+/*
+ * On this SoC, the standard SBI TIME extension ecall (sbi_set_timer())
+ * never actually delivers a timer interrupt to S-mode - confirmed by
+ * busy-polling sip.STIP for 200ms after arming the very first timer event
+ * of the whole boot: it never becomes pending, on any hart, even though
+ * sie.STIE is correctly set. zhihesdk's vendor kernel works around this by
+ * writing the next compare value directly to a per-hart "shadow register"
+ * inside the CLINT MMIO block instead of going through SBI at all - do the
+ * same here. Falls back to sbi_set_timer() if the clint0 node isn't found.
+ */
+#define CLINT_TIMER_SCMP_OFFSET 0xd000
+
+static long *xuantie_timer_smode_base;
+static void xuantie_timer_smode_map(void)
+{
+	struct device_node *node;
+	struct resource res;
+
+	node = of_find_compatible_node(NULL, NULL, "riscv,clint0");
+	if (!node)
+		return;
+
+	if (of_address_to_resource(node, 0, &res))
+		goto out;
+
+	xuantie_timer_smode_base = ioremap(res.start + CLINT_TIMER_SCMP_OFFSET, SZ_2K);
+out:
+	of_node_put(node);
+}
+
+static void xuantie_sstc_set_timer(u64 next_tval)
+{
+	int hartid = cpuid_to_hartid_map(raw_smp_processor_id());
+	void *smode_base;
+
+	/* fallback to sbi */
+	if (!xuantie_timer_smode_base) {
+		sbi_set_timer(next_tval);
+		return;
+	}
+
+	hartid %= CONFIG_NR_HARTS_PER_DIE;
+	smode_base = (void *)(xuantie_timer_smode_base + hartid);
+
+	writel_relaxed(-1U, smode_base);
+	writel_relaxed((u32)(next_tval >> 32), (char *)(smode_base) + 0x04);
+	writel_relaxed((u32)next_tval, smode_base);
+}
+#endif
 
 static void riscv_clock_event_stop(void)
 {
@@ -48,6 +101,15 @@ static int riscv_clock_next_event(unsigned long delta,
 {
 	u64 next_tval = get_cycles64() + delta;
 
+	/*
+	 * zhihesdk's vendor kernel explicitly sets IE_TIE before every
+	 * timer arm call, regardless of which mechanism arms it - do the
+	 * same here for parity, though the real fix on this SoC is using
+	 * the XuanTie CLINT shadow-register path below instead of the SBI
+	 * ecall (see xuantie_sstc_set_timer()).
+	 */
+	csr_set(CSR_IE, IE_TIE);
+
 	if (static_branch_likely(&riscv_sstc_available)) {
 #if defined(CONFIG_32BIT)
 		csr_write(CSR_STIMECMP, ULONG_MAX);
@@ -57,7 +119,11 @@ static int riscv_clock_next_event(unsigned long delta,
 		csr_write(CSR_STIMECMP, next_tval);
 #endif
 	} else
+#ifdef CONFIG_XUANTIE_SSTC
+		xuantie_sstc_set_timer(next_tval);
+#else
 		sbi_set_timer(next_tval);
+#endif
 
 	return 0;
 }
@@ -194,6 +260,10 @@ static int __init riscv_timer_init_common(void)
 		pr_info("Timer interrupt in S-mode is available via sstc extension\n");
 		static_branch_enable(&riscv_sstc_available);
 	}
+
+#ifdef CONFIG_XUANTIE_SSTC
+	xuantie_timer_smode_map();
+#endif
 
 	error = cpuhp_setup_state(CPUHP_AP_RISCV_TIMER_STARTING,
 			 "clockevents/riscv/timer:starting",

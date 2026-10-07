@@ -4,6 +4,7 @@
 
 #include <dt-bindings/gpio/gpio.h>
 #include "a210.dtsi"
+#include "a210-android-unused.dtsi"
 
 / {
 	model = "A210 EVB configuration";
@@ -151,6 +152,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&aoi2c1_pins>;
 	clock-frequency = <400000>;
+	status = "okay";
 
 	aw9535_1: gpio@21 {
 		compatible = "awinic,aw9535", "nxp,pca9535";
@@ -171,6 +173,14 @@
 
 &usb20phy1 {
 	pwren-gpios = <&aw9535_1 9 GPIO_ACTIVE_HIGH>;
+};
+
+&clk_gpu {
+	status = "okay";
+};
+
+&power_gpu {
+	status = "okay";
 };
 
 &emmc {

@@ -207,6 +207,13 @@ properties:
       avoid -EPROTO errors with usbhid on some devices (Hikey 970).
     type: boolean
 
+  snps,late-event-quirk:
+    description:
+      When set, the controller may count an event in GEVNTCOUNT before
+      writing it to the event buffer, and only write it once it has
+      another event to write (ZHIHE A210).
+    type: boolean
+
   snps,gfladj-refclk-lpm-sel-quirk:
     description:
       When set, run the SOF/ITP counter based on ref_clk.

@@ -14,6 +14,7 @@
 #include "pvr_rogue_defs.h"
 #include "pvr_rogue_fwif_client.h"
 #include "pvr_rogue_fwif_shared.h"
+#include "pvr_trace.h"
 #include "pvr_vm.h"
 
 #include <uapi/drm/pvr_drm.h>
@@ -43,8 +44,9 @@
  *
  * This driver supports the following PowerVR/IMG graphics cores from Imagination Technologies:
  *
- * * AXE-1-16M (found in Texas Instruments AM62)
- * * BXS-4-64 MC1 (found in Texas Instruments J721S2/AM68)
+ * * AXE-1-16M (33.15.11.3)
+ * * BXM-4-64 MC1 (36.52.104.182)
+ * * BXS-4-64 MC1 (36.53.104.796)
  */
 
 /**
@@ -514,7 +516,8 @@ copy_out:
 	if (err < 0)
 		return err;
 
-	args->size = sizeof(query);
+	if (args->size > sizeof(query))
+		args->size = sizeof(query);
 	return 0;
 }
 
@@ -595,7 +598,8 @@ copy_out:
 	if (err < 0)
 		return err;
 
-	args->size = sizeof(query);
+	if (args->size > sizeof(query))
+		args->size = sizeof(query);
 	return 0;
 }
 
@@ -1150,6 +1154,8 @@ pvr_ioctl_submit_jobs(struct drm_device *drm_dev, void *raw_args,
 	int idx;
 	int err;
 
+	trace_pvr_job_submit_ioctl(pvr_dev, args->jobs.count);
+
 	if (!drm_dev_enter(drm_dev, &idx))
 		return -EIO;
 
@@ -1252,14 +1258,13 @@ pvr_set_uobj_array(const struct drm_pvr_obj_array *out, u32 min_stride, u32 obj_
 			if (copy_to_user(out_ptr, in_ptr, cpy_elem_size))
 				return -EFAULT;
 
-			out_ptr += obj_size;
-			in_ptr += out->stride;
-		}
+			if (out->stride > obj_size &&
+			    clear_user(out_ptr + cpy_elem_size, out->stride - obj_size)) {
+				return -EFAULT;
+			}
 
-		if (out->stride > obj_size &&
-		    clear_user(u64_to_user_ptr(out->array + obj_size),
-			       out->stride - obj_size)) {
-			return -EFAULT;
+			out_ptr += out->stride;
+			in_ptr += obj_size;
 		}
 	}
 
@@ -1499,10 +1504,19 @@ static const struct pvr_device_data pvr_device_data_pwrseq = {
 	.pwr_ops = &pvr_power_sequence_ops_pwrseq,
 };
 
+static const struct pvr_device_data pvr_device_data_a210 = {
+	.pwr_ops = &pvr_power_sequence_ops_manual,
+	.regs_32bit_only = true,
+};
+
 static const struct of_device_id dt_match[] = {
 	{
 		.compatible = "thead,th1520-gpu",
 		.data = &pvr_device_data_pwrseq,
+	},
+	{
+		.compatible = "zhihe,a210-gpu",
+		.data = &pvr_device_data_a210,
 	},
 	{
 		.compatible = "img,img-rogue",
