@@ -175,6 +175,14 @@
 	pwren-gpios = <&aw9535_1 9 GPIO_ACTIVE_HIGH>;
 };
 
+&clk_gpu {
+	status = "okay";
+};
+
+&power_gpu {
+	status = "okay";
+};
+
 &emmc {
 	max-frequency = <196608000>;
 	non-removable;
