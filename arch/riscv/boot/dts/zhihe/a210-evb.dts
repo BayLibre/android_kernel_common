@@ -154,6 +154,23 @@
 	clock-frequency = <400000>;
 	status = "okay";
 
+	/*
+	 * HP_CTL_H (P13, index 11) enables the headset jack output.
+	 * "nxp,pca9535" fallback: gpio-pca953x has no awinic,aw9535 match.
+	 * The INT line is left unused (nothing consumes expander interrupts).
+	 */
+	aw9535_0: gpio@20 {
+		compatible = "awinic,aw9535", "nxp,pca9535";
+		reg = <0x20>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		gpio-line-names =
+			"CSI1_PWDN_IO0", "CSI1_RST_IO1", "CSI1_FSIN_IO2", "CSI0_PWDN_IO3",
+			"CSI0_RST_IO4", "CSI0_FSIN_IO5", "PCIE_X1_PRSNT_L_IO6", "PCIE_X4_PRSNT_L_IO7",
+			"AUDIO1_PARST0_IO8", "AUDIO_ADC1_INT_IO9", "AUDIO_ADC0_INT_IO10", "HP_CTL_H_IO11",
+			"SIT91211_SSC_EN_IO12", "DISP_RST_IO13", "SWITCH3_SEL_IO14", "SWITCH1_SEL_IO15";
+	};
+
 	aw9535_1: gpio@21 {
 		compatible = "awinic,aw9535", "nxp,pca9535";
 		reg = <0x21>;
@@ -339,5 +356,153 @@
 		enable-gpios = <&ao_gpio1 4 GPIO_ACTIVE_HIGH>;
 		host-wake-gpios = <&ao_gpio0 30 GPIO_ACTIVE_HIGH>;
 		device-wake-gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+/*
+ * Audio (A210 SODIMM V2 baseboard): I2S1 <-> ES8156 (DAC, I2C5 0x08) /
+ * ES7210 (ADC, I2C5 0x40), on the 3.5mm headset jack.
+ * ES8156 LOUT/ROUT drive the headphones (output enabled by HP_CTL_H on
+ * aw9535_0 P13), the headset mic goes to the ES7210. Jack insertion is
+ * reported by HP_DET_L on GPIO0_16. There is no speaker amplifier on V2.
+ * Both codecs are I2S clock consumers - I2S1 provides BCLK/LRCK (stated
+ * with bitclock-master/frame-master on its endpoint).
+ * audio-graph-card2 "Semi-Multi" link (CPU:Codec = 1:2): both codecs
+ * share the single I2S1 DAI link, so the card exposes one PCM device
+ * (device 0) with playback (ES8156, playback-only) and capture (ES7210,
+ * capture-only).
+ */
+/ {
+	sound {
+		compatible = "audio-graph-card2";
+		label = "A210-EVB-Audio";
+		links = <&i2s1_port>;
+		/* "Headphones" is the DAPM pin driven by hp-det-gpios */
+		widgets = "Headphone", "Headphones";
+		routing = "Headphones", "ES8156 LOUT",
+			  "Headphones", "ES8156 ROUT";
+		hp-det-gpios = <&gpio0 16 GPIO_ACTIVE_LOW>;
+
+		multi {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			ports@0 {
+				reg = <0>;
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				/* (X) to pair with the CPU */
+				port@0 {
+					reg = <0>;
+					mcodec_ep: endpoint {
+						remote-endpoint = <&i2s1_ep>;
+					};
+				};
+
+				/* (A) Multi element: playback DAC */
+				port@1 {
+					reg = <1>;
+					mcodec_dac_ep: endpoint {
+						remote-endpoint = <&es8156_ep>;
+					};
+				};
+
+				/* (B) Multi element: capture ADC */
+				port@2 {
+					reg = <2>;
+					mcodec_adc_ep: endpoint {
+						remote-endpoint = <&es7210_ep>;
+					};
+				};
+			};
+		};
+	};
+};
+
+&peri2_padctrl {
+	i2c5_pins: i2c5-1 {
+		i2c-pins {
+			pins = "GPIO2_28", "GPIO2_29";	/* SCL, SDA */
+			function = "i2c5";
+			bias-disable;
+			drive-strength = <7>;
+			input-enable;
+			input-schmitt-enable;
+			slew-rate = <0>;
+		};
+	};
+
+	i2s1_pins: i2s1-0 {
+		i2s-pins {
+			pins = "GPIO2_2", "GPIO2_3", "GPIO2_4", "GPIO2_5", "GPIO2_6";
+			function = "i2s1";
+			bias-disable;
+			drive-strength = <13>;
+			input-schmitt-disable;
+			slew-rate = <0>;
+		};
+	};
+};
+
+&i2c5 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c5_pins>;
+	clock-frequency = <400000>;
+	status = "okay";
+
+	codec_es8156: audio-codec@8 {
+		compatible = "everest,es8156";
+		reg = <0x8>;
+		#sound-dai-cells = <1>;
+		sound-name-prefix = "ES8156";
+		mclk-sclk-ratio = <4>;
+		audio-3v3-pwren-gpios = <&aw9535_1 1 GPIO_ACTIVE_HIGH>;
+		audio-1v8-pwren-gpios = <&aw9535_1 2 GPIO_ACTIVE_HIGH>;
+		audio-hp-ctl-gpios = <&aw9535_0 11 GPIO_ACTIVE_HIGH>;
+
+		port {
+			es8156_ep: endpoint {
+				remote-endpoint = <&mcodec_dac_ep>;
+			};
+		};
+	};
+
+	codec_es7210: audio-codec@40 {
+		compatible = "everest,es7210";
+		reg = <0x40>;
+		#sound-dai-cells = <1>;
+		work-mode = "ES7210_NORMAL_I2S";
+		channels-max = <2>;
+		mclk-sclk-ratio = <4>;
+		sound-name-prefix = "ES7210";
+
+		port {
+			es7210_ep: endpoint {
+				remote-endpoint = <&mcodec_adc_ep>;
+			};
+		};
+	};
+};
+
+&audio_i2s1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2s1_pins>;
+	status = "okay";
+
+	/*
+	 * DAI 0 (pcm-i2s1-dai). I2S1 is the BCLK/LRCK provider: with
+	 * audio-graph-card2 the provider must be stated on the CPU endpoint,
+	 * otherwise the CPU DAI is set up as clock consumer (BC_FC) and,
+	 * the codecs being consumers too, nobody drives BCLK/LRCK - the I2S
+	 * never requests DMA data.
+	 */
+	i2s1_port: port {
+		i2s1_ep: endpoint {
+			remote-endpoint = <&mcodec_ep>;
+			dai-format = "i2s";
+			bitclock-master;
+			frame-master;
+		};
 	};
 };
