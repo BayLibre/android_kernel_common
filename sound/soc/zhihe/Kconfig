@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+menu "ASoC support for ZHIHE"
+	depends on ARCH_ZHIHE || COMPILE_TEST
+
+config SND_SOC_ZHIHE_PCM
+	tristate "Zhihe Dummy PCM And PCM DMA Support"
+	depends on OF
+	select SND_SOC_GENERIC_DMAENGINE_PCM
+	help
+	  Say Y or M to build the Zhihe dummy PCM DAI driver and the Zhihe
+	  PCM DMA helper used by the Zhihe audio interface drivers.
+
+config SND_SOC_ZHIHE_I2S
+	tristate "Zhihe I2S Driver Support"
+	depends on OF && (ARCH_ZHIHE || COMPILE_TEST)
+	select SND_SOC_GENERIC_DMAENGINE_PCM
+	select SND_SOC_ZHIHE_PCM
+	help
+	  Say Y or M if you want to add support for codecs or HDMI PCM
+	  attached to the Zhihe A210 I2S interfaces.
+
+endmenu
