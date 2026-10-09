@@ -36,3 +36,17 @@
 &power_vp_wrapper { status = "disabled"; };
 &power_venc { status = "disabled"; };
 &power_vdec { status = "disabled"; };
+
+/*
+ * TDM0 slot DAIs: declared without a status in a210.dtsi (so enabled by
+ * default), but no TDM driver is ported and nothing on the EVB uses TDM.
+ * Board audio goes through I2S1 instead.
+ */
+&audio_tdm_slot0 { status = "disabled"; };
+&audio_tdm_slot1 { status = "disabled"; };
+&audio_tdm_slot2 { status = "disabled"; };
+&audio_tdm_slot3 { status = "disabled"; };
+&audio_tdm_slot4 { status = "disabled"; };
+&audio_tdm_slot5 { status = "disabled"; };
+&audio_tdm_slot6 { status = "disabled"; };
+&audio_tdm_slot7 { status = "disabled"; };
