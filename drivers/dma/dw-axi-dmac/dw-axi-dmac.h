@@ -14,6 +14,7 @@
 #include <linux/clk.h>
 #include <linux/device.h>
 #include <linux/dmaengine.h>
+#include <linux/dma/dw-axi-dma.h>
 #include <linux/types.h>
 
 #include "../virt-dma.h"
@@ -49,6 +50,8 @@ struct axi_dma_chan {
 
 	struct axi_dma_desc		*desc;
 	struct dma_slave_config		config;
+	struct axi_dma_peripheral_config pcfg;
+	bool				has_pcfg;
 	enum dma_transfer_direction	direction;
 	bool				cyclic;
 	/* these other elements are all protected by vc.lock */
