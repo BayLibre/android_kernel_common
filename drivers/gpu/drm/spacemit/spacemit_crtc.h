@@ -135,6 +135,7 @@ int spacemit_crtc_run(struct drm_crtc *crtc,
 struct spacemit_plane {
 	struct drm_plane plane;
 	struct spacemit_hw_device *hwdev;
+	u8 layer;	/* composer layer slot; layer00 composes on top */
 };
 
 /**

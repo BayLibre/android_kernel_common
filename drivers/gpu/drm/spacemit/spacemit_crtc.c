@@ -8,6 +8,7 @@
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_drv.h>
+#include <drm/drm_framebuffer.h>
 #include <drm/drm_plane_helper.h>
 #include <drm/drm_gem_framebuffer_helper.h>
 #include <drm/drm_managed.h>
@@ -79,6 +80,42 @@ static int spacemit_crtc_atomic_check_fbmem(struct drm_crtc *crtc,
 	}
 
 	return a_crtc->core->adjust_rdma_fbcmem(hwdev, rdmas);
+}
+
+/*
+ * Each RDMA layer fetches src_w pixels on every line, plus 15% for the MMU.
+ * The DPU moves 16 bytes per mclk cycle at half efficiency, and mclk stays at
+ * DPU_MCLK_DEFAULT: a layer set above that underruns instead of failing.
+ */
+static int spacemit_crtc_atomic_check_bw(struct drm_crtc *crtc,
+					 struct drm_crtc_state *crtc_state)
+{
+	const struct drm_display_mode *mode = &crtc_state->adjusted_mode;
+	const struct drm_plane_state *pstate;
+	struct drm_plane *plane;
+	u64 line_rate, bw = 0;
+
+	if (!crtc_state->enable || !mode->htotal)
+		return 0;
+
+	line_rate = div_u64((u64)mode->clock * 1000, mode->htotal);
+
+	drm_atomic_crtc_state_for_each_plane_state(plane, pstate, crtc_state) {
+		if (!pstate->fb ||
+		    to_spacemit_plane_state(pstate)->rdma_id == RDMA_INVALID_ID)
+			continue;
+
+		bw += line_rate * (pstate->src_w >> 16) *
+		      pstate->fb->format->cpp[0];
+	}
+
+	if (div_u64(bw * 115, 100) > (u64)DPU_MCLK_DEFAULT * 8) {
+		drm_dbg_kms(crtc->dev, "%llu B/s exceeds the DPU bandwidth\n",
+			    bw);
+		return -EINVAL;
+	}
+
+	return 0;
 }
 
 static void spacemit_crtc_atomic_enable(struct drm_crtc *crtc,
@@ -187,6 +224,10 @@ static int spacemit_crtc_atomic_check(struct drm_crtc *crtc,
 			    "failed to satisfy fbcmem size for all rdmas\n");
 		return ret;
 	}
+
+	ret = spacemit_crtc_atomic_check_bw(crtc, state);
+	if (ret)
+		return ret;
 
 	saturn_count_rdma_use(state);
 

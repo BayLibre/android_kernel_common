@@ -66,7 +66,8 @@ static const u32 saturn_hee_fbcmem_sizes[] = {
 };
 
 const struct spacemit_hw_device k3_saturn_dpu = {
-	.plane_nums = 1,
+	/* One plane per RDMA channel: a plane's zpos is its channel. */
+	.plane_nums = ARRAY_SIZE(saturn_hee_rdmas),
 	.crtc_nums = 2,
 	.rdma_nums = ARRAY_SIZE(saturn_hee_rdmas),
 	.rdmas = saturn_hee_rdmas,

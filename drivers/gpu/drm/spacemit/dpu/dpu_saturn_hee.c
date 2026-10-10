@@ -279,48 +279,49 @@ void saturn_hee_dpu_init(struct spacemit_crtc *a_crtc)
 	saturn_hee_irq_enable(a_crtc, true);
 }
 
-#define SATURN_WRITE_COMPOSER_LAYER(id_name) \
+/*
+ * The 16 composer layers share one register layout, seven words apart, and
+ * only layer00 has its fields spelled out.
+ */
+#define CMPS_LAYER_WORDS \
+	(CMPS_X_REG__layer01_en_WORD - CMPS_X_REG__layer00_en_WORD)
+static_assert(CMPS_X_REG__layer15_en_WORD ==
+	      CMPS_X_REG__layer00_en_WORD + 15 * CMPS_LAYER_WORDS);
+
+#define cmps_layer_write(hwdev, base, layer, field, data, cl_regs)	\
+	cmdlist_write_field(hwdev, base,				\
+			    CMPS_X_REG__layer00_##field##_WORD +	\
+			    (layer) * CMPS_LAYER_WORDS,			\
+			    CMPS_X_REG__layer00_##field##_MASK, data, cl_regs)
+
+#define SATURN_WRITE_COMPOSER_LAYER(layer) \
 do {\
-	dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _colorkey_en,	\
-		  0, cl_cmp);					\
-	dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _blend_mode,	\
-		  blend_mode, cl_cmp);				\
-	dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _blend_sel,	\
-		  alpha_sel, cl_cmp);				\
-	dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _layer_alpha,	\
-		  alpha, cl_cmp);					\
-	dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _alpha_ratio,	\
-		  0, cl_cmp);					\
-	dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _area_left,	\
-		  crtc_x, cl_cmp);					\
-	dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _area_top,	\
-		  crtc_y, cl_cmp);					\
-	dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _area_right,	\
-		  crtc_x + crtc_w - 1, cl_cmp);			\
-	dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _area_bottom,	\
-		  crtc_y + crtc_h - 1, cl_cmp);			\
+	cmps_layer_write(hwdev, base, layer, colorkey_en, 0, cl_cmp);	\
+	cmps_layer_write(hwdev, base, layer, blend_mode, blend_mode, cl_cmp); \
+	cmps_layer_write(hwdev, base, layer, blend_sel, alpha_sel, cl_cmp); \
+	cmps_layer_write(hwdev, base, layer, layer_alpha, alpha, cl_cmp); \
+	cmps_layer_write(hwdev, base, layer, alpha_ratio, 0, cl_cmp);	\
+	cmps_layer_write(hwdev, base, layer, area_left, crtc_x, cl_cmp); \
+	cmps_layer_write(hwdev, base, layer, area_top, crtc_y, cl_cmp);	\
+	cmps_layer_write(hwdev, base, layer, area_right,		\
+			 crtc_x + crtc_w - 1, cl_cmp);			\
+	cmps_layer_write(hwdev, base, layer, area_bottom,		\
+			 crtc_y + crtc_h - 1, cl_cmp);			\
 	if (unlikely(solid_en)) { \
-		dpu_write(hwdev, CMPS_X_REG, base,				\
-			  layer ## id_name ## _solid_color_r,			\
-			  solid_r, cl_cmp);			\
-		dpu_write(hwdev, CMPS_X_REG, base,				\
-			  layer ## id_name ## _solid_color_g,			\
-			  solid_g, cl_cmp);			\
-		dpu_write(hwdev, CMPS_X_REG, base,				\
-			  layer ## id_name ## _solid_color_b,			\
-			  solid_b, cl_cmp);			\
-		dpu_write(hwdev, CMPS_X_REG, base,				\
-			  layer ## id_name ## _solid_color_a,			\
-			  solid_a, cl_cmp);			\
-		dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _solid_en,	\
-			  1, cl_cmp);				\
+		cmps_layer_write(hwdev, base, layer, solid_color_r,	\
+				 solid_r, cl_cmp);			\
+		cmps_layer_write(hwdev, base, layer, solid_color_g,	\
+				 solid_g, cl_cmp);			\
+		cmps_layer_write(hwdev, base, layer, solid_color_b,	\
+				 solid_b, cl_cmp);			\
+		cmps_layer_write(hwdev, base, layer, solid_color_a,	\
+				 solid_a, cl_cmp);			\
+		cmps_layer_write(hwdev, base, layer, solid_en, 1, cl_cmp); \
 	} else { \
-		dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _solid_en,	\
-			  0, cl_cmp);				\
-		dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _dma_id,	\
-			  rdma_id, cl_cmp);			\
+		cmps_layer_write(hwdev, base, layer, solid_en, 0, cl_cmp); \
+		cmps_layer_write(hwdev, base, layer, dma_id, rdma_id, cl_cmp); \
 	} \
-	dpu_write(hwdev, CMPS_X_REG, base, layer ## id_name ## _en, 1, cl_cmp); \
+	cmps_layer_write(hwdev, base, layer, en, 1, cl_cmp);		\
 } while (0)
 
 static void saturn_write_fbcmem_regs(struct spacemit_hw_device *hwdev,
@@ -353,6 +354,7 @@ void saturn_hee_plane_update_hw_channel(struct drm_plane *plane)
 	u32 src_w, src_h, src_x, src_y;
 	u32 crtc_w, crtc_h, crtc_x, crtc_y;
 	u32 alpha_sel, blend_mode = 0;
+	u8 layer = to_spacemit_plane(plane)->layer;
 	struct drm_display_mode *mode = &state->crtc->mode;
 
 	u32 base;
@@ -454,7 +456,7 @@ void saturn_hee_plane_update_hw_channel(struct drm_plane *plane)
 	dpu_write(hwdev, CMPS_X_REG, base, dst_w, mode->hdisplay, cl_cmp);
 	dpu_write(hwdev, CMPS_X_REG, base, dst_h, mode->vdisplay, cl_cmp);
 
-	SATURN_WRITE_COMPOSER_LAYER(00);
+	SATURN_WRITE_COMPOSER_LAYER(layer);
 	cmdlist_regs_packing(crtc_to_cl(plane->state->crtc), CMDLIST_MOD_COMP,
 			     cl_cmp);
 	free_cmdlist_regs(cl_cmp);
@@ -466,13 +468,14 @@ void saturn_hee_plane_disable_hw_channel(struct drm_plane *plane,
 	u8 dev_id = to_spacemit_crtc(old_state->crtc)->dev_id;
 	u32 base = CMP_BASE_ADDR[dev_id];
 	u32 rdma_id = to_spacemit_plane_state(old_state)->rdma_id;
+	u8 layer = to_spacemit_plane(plane)->layer;
 	struct spacemit_drm_private *priv = plane->dev->dev_private;
 	struct spacemit_hw_device *hwdev = priv->hwdev;
 	struct cmdlist_regs *cl_cmp = NULL;
 
-	trace_spacemit_plane_disable_hw_channel(0, rdma_id);
+	trace_spacemit_plane_disable_hw_channel(layer, rdma_id);
 	cl_cmp = alloc_cmdlist_regs(CMPS_X_REG);
-	dpu_write(hwdev, CMPS_X_REG, base, layer00_en, 0, cl_cmp);
+	cmps_layer_write(hwdev, base, layer, en, 0, cl_cmp);
 
 	cmdlist_regs_packing(crtc_to_cl(old_state->crtc), CMDLIST_MOD_COMP,
 			     cl_cmp);

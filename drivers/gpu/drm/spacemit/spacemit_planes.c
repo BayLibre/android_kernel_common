@@ -67,8 +67,13 @@ static int spacemit_plane_atomic_check(struct drm_plane *plane,
 	if (ret)
 		return ret;
 
-	if (!state->visible)
-		return 0;
+	/* An off-screen plane would still be programmed, without a page table. */
+	if (!state->visible) {
+		if (!fb)
+			return 0;
+		drm_dbg_kms(plane->dev, "off-screen planes not supported\n");
+		return -EINVAL;
+	}
 
 	a_crtc = to_spacemit_crtc(state->crtc);
 	trace_spacemit_plane_atomic_check(a_crtc->dev_id);
@@ -312,8 +317,9 @@ static const struct drm_plane_funcs spacemit_plane_funcs = {
 struct drm_plane *spacemit_plane_init(struct drm_device *drm,
 				      struct spacemit_crtc *a_crtc)
 {
+	struct drm_plane *primary = NULL;
 	struct spacemit_plane *p = NULL;
-	int err, j;
+	int err = 0, i, j;
 	u32 *formats;
 	struct spacemit_drm_private *priv = drm->dev_private;
 	struct spacemit_hw_device *hwdev = priv->hwdev;
@@ -347,31 +353,43 @@ struct drm_plane *spacemit_plane_init(struct drm_device *drm,
 	 */
 	plane_crtc_mask = 1 << drm->mode_config.num_crtc;
 
-	/* drmm, not devm: an open DRM fd outlives the platform unbind. */
-	p = drmm_kzalloc(drm, sizeof(*p), GFP_KERNEL);
-	if (!p) {
-		kfree(formats);
-		return ERR_PTR(-ENOMEM);
-	}
-
 	for (j = 0; j < n_formats; j++)
 		formats[j] = hwdev->formats[j].format;
 
-	err = drm_universal_plane_init(drm, &p->plane, plane_crtc_mask,
-				       &spacemit_plane_funcs, formats,
-				       n_formats, supported_format_modifiers,
-				       DRM_PLANE_TYPE_PRIMARY, NULL);
-	kfree(formats);
-	if (err) {
-		drm_err(drm, "failed to init primary plane\n");
-		return ERR_PTR(err);
+	for (i = 0; i < hwdev->plane_nums; i++) {
+		enum drm_plane_type type = i ? DRM_PLANE_TYPE_OVERLAY :
+					       DRM_PLANE_TYPE_PRIMARY;
+
+		/* drmm, not devm: an open DRM fd outlives the platform unbind. */
+		p = drmm_kzalloc(drm, sizeof(*p), GFP_KERNEL);
+		if (!p) {
+			err = -ENOMEM;
+			break;
+		}
+
+		err = drm_universal_plane_init(drm, &p->plane, plane_crtc_mask,
+					       &spacemit_plane_funcs, formats,
+					       n_formats,
+					       supported_format_modifiers,
+					       type, NULL);
+		if (err) {
+			drm_err(drm, "failed to init plane %d\n", i);
+			break;
+		}
+
+		drm_plane_helper_add(&p->plane, &spacemit_plane_helper_funcs);
+
+		spacemit_plane_create_properties(p);
+		drm_plane_create_zpos_immutable_property(&p->plane, i);
+
+		/* zpos 0 is the bottom, and layer00 composes on top. */
+		p->layer = hwdev->plane_nums - 1 - i;
+		p->hwdev = hwdev;
+
+		if (!primary)
+			primary = &p->plane;
 	}
+	kfree(formats);
 
-	drm_plane_helper_add(&p->plane, &spacemit_plane_helper_funcs);
-
-	spacemit_plane_create_properties(p);
-
-	p->hwdev = hwdev;
-
-	return &p->plane;
+	return err ? ERR_PTR(err) : primary;
 }
