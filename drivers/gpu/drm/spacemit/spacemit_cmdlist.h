@@ -96,22 +96,27 @@ do { \
 
 /*
  * First touch seeds the word from a live MMIO read: only register blocks that
- * read back what was written may be routed through cmdlist.
+ * read back what was written may be routed through cmdlist. The word may be a
+ * runtime value, the mask must be a constant.
  */
-#define cmdlist_write_reg(hwdev, module_name, module_base, field, data, cl_regs) \
+#define cmdlist_write_field(hwdev, module_base, word, mask, data, cl_regs) \
 do { \
 	struct cmdlist_regs *cl_p = (cl_regs); \
 	u32 *__words = cl_p->module; \
-	const unsigned int __w = dpu_field_word(module_name, field); \
+	const unsigned int __w = (word); \
 	if (cl_p->flags[__w] == 0) { \
 		__words[__w] = readl((hwdev)->base + (module_base) + 4 * __w); \
 		cl_p->base = (module_base); \
 		cl_p->flags[__w] = 1; \
 	} \
-	__words[__w] &= ~dpu_field_mask(module_name, field); \
-	__words[__w] |= FIELD_PREP(dpu_field_mask(module_name, field), \
-				   (u32)(data)); \
+	__words[__w] &= ~(mask); \
+	__words[__w] |= FIELD_PREP(mask, (u32)(data)); \
 } while (0)
+
+#define cmdlist_write_reg(hwdev, module_name, module_base, field, data, cl_regs) \
+	cmdlist_write_field(hwdev, module_base, \
+			    dpu_field_word(module_name, field), \
+			    dpu_field_mask(module_name, field), data, cl_regs)
 
 /* Raw whole-word variant (the value32[] call sites); no seeding needed. */
 #define cmdlist_write_word(module_base, word, data, cl_regs) \
