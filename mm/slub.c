@@ -5408,7 +5408,8 @@ retry:
 		return NULL;
 	s = kmalloc_slab(size, NULL, alloc_gfp, PASS_TOKEN_PARAM(token));
 
-	if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
+	if (IS_ENABLED(CONFIG_HAVE_NMI) &&
+	    !(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
 		/*
 		 * kmalloc_nolock() is not supported on architectures that
 		 * don't implement cmpxchg16b and thus need slab_lock()
@@ -5417,6 +5418,9 @@ retry:
 		 * kmem_cache_node->list_lock, so kmalloc_nolock() can attempt
 		 * to allocate from debug caches by
 		 * spin_trylock_irqsave(&n->list_lock, ...)
+		 *
+		 * Without NMIs nothing can interrupt a slab_lock() holder,
+		 * since slab_lock() is only taken with interrupts disabled.
 		 */
 		return NULL;
 
