@@ -437,8 +437,6 @@ static void axi_chan_block_xfer_start(struct axi_dma_chan *chan,
 		return;
 	}
 
-	axi_dma_enable(chan->chip);
-
 	config.dst_multblk_type = DWAXIDMAC_MBLK_TYPE_LL;
 	config.src_multblk_type = DWAXIDMAC_MBLK_TYPE_LL;
 	config.tt_fc = DWAXIDMAC_TT_FC_MEM_TO_MEM_DMAC;
@@ -518,11 +516,17 @@ static void dw_axi_dma_synchronize(struct dma_chan *dchan)
 static int dma_chan_alloc_chan_resources(struct dma_chan *dchan)
 {
 	struct axi_dma_chan *chan = dchan_to_axi_dma_chan(dchan);
+	int ret;
+
+	ret = pm_runtime_resume_and_get(chan->chip->dev);
+	if (ret < 0)
+		return ret;
 
 	/* ASSERT: channel is idle */
 	if (axi_chan_is_hw_enable(chan)) {
 		dev_err(chan2dev(chan), "%s is non-idle!\n",
 			axi_chan_name(chan));
+		pm_runtime_put(chan->chip->dev);
 		return -EBUSY;
 	}
 
@@ -533,11 +537,10 @@ static int dma_chan_alloc_chan_resources(struct dma_chan *dchan)
 					  64, 0);
 	if (!chan->desc_pool) {
 		dev_err(chan2dev(chan), "No memory for descriptors\n");
+		pm_runtime_put(chan->chip->dev);
 		return -ENOMEM;
 	}
 	dev_vdbg(dchan2dev(dchan), "%s: allocating\n", axi_chan_name(chan));
-
-	pm_runtime_get(chan->chip->dev);
 
 	return 0;
 }
@@ -558,6 +561,8 @@ static void dma_chan_free_chan_resources(struct dma_chan *dchan)
 
 	dma_pool_destroy(chan->desc_pool);
 	chan->desc_pool = NULL;
+	/* Do not leak a peripheral config to the next user of this channel */
+	chan->has_pcfg = false;
 	dev_vdbg(dchan2dev(dchan),
 		 "%s: free resources, descriptor still allocated: %u\n",
 		 axi_chan_name(chan), atomic_read(&chan->descs_allocated));
@@ -570,8 +575,9 @@ static void dw_axi_dma_set_hw_channel(struct axi_dma_chan *chan, bool set)
 	struct axi_dma_chip *chip = chan->chip;
 	unsigned long reg_value, val;
 
+	/* Not an error: only some integrations (Intel KeemBay) have APB regs */
 	if (!chip->apb_regs) {
-		dev_err(chip->dev, "apb_regs not initialized\n");
+		dev_dbg(chip->dev, "apb_regs not initialized\n");
 		return;
 	}
 
@@ -646,6 +652,35 @@ static void set_desc_dest_master(struct axi_dma_hw_desc *hw_desc,
 	hw_desc->lli->ctl_lo = cpu_to_le32(val);
 }
 
+/**
+ * dma_burst_len_to_enum - Convert burst length value to AXI DMA burst length enum
+ * @burst_len: Burst length value to convert
+ *
+ * This function maps a numeric burst length value to the corresponding
+ * DWAXIDMAC_BURST_TRANS_LEN_* enumeration constant used in the DesignWare
+ * AXI DMA controller.
+ *
+ * Return: the corresponding DWAXIDMAC_BURST_TRANS_LEN_* value for valid
+ * inputs, DWAXIDMAC_BURST_TRANS_LEN_4 for 0 or any unsupported value.
+ */
+static inline unsigned int dma_burst_len_to_enum(unsigned int burst_len)
+{
+	switch (burst_len) {
+	case 1:		return DWAXIDMAC_BURST_TRANS_LEN_1;
+	case 4:		return DWAXIDMAC_BURST_TRANS_LEN_4;
+	case 8:		return DWAXIDMAC_BURST_TRANS_LEN_8;
+	case 16:	return DWAXIDMAC_BURST_TRANS_LEN_16;
+	case 32:	return DWAXIDMAC_BURST_TRANS_LEN_32;
+	case 64:	return DWAXIDMAC_BURST_TRANS_LEN_64;
+	case 128:	return DWAXIDMAC_BURST_TRANS_LEN_128;
+	case 256:	return DWAXIDMAC_BURST_TRANS_LEN_256;
+	case 512:	return DWAXIDMAC_BURST_TRANS_LEN_512;
+	case 1024:	return DWAXIDMAC_BURST_TRANS_LEN_1024;
+	default:
+		return DWAXIDMAC_BURST_TRANS_LEN_4;
+	}
+}
+
 static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
 				  struct axi_dma_hw_desc *hw_desc,
 				  dma_addr_t mem_addr, size_t len)
@@ -658,6 +693,20 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
 	size_t block_ts;
 	u32 ctllo, ctlhi;
 	u32 burst_len;
+	u32 src_inc = DWAXIDMAC_CH_CTL_L_NOINC;
+	u32 dst_inc = DWAXIDMAC_CH_CTL_L_NOINC;
+	u32 src_msize = DWAXIDMAC_BURST_TRANS_LEN_4;
+	u32 dst_msize = DWAXIDMAC_BURST_TRANS_LEN_4;
+
+	/* Optional per-peripheral configuration (see linux/dma/dw-axi-dma.h) */
+	if (chan->has_pcfg) {
+		src_inc = chan->pcfg.src_addr_incr ? DWAXIDMAC_CH_CTL_L_INC :
+						     DWAXIDMAC_CH_CTL_L_NOINC;
+		dst_inc = chan->pcfg.dst_addr_incr ? DWAXIDMAC_CH_CTL_L_INC :
+						     DWAXIDMAC_CH_CTL_L_NOINC;
+		src_msize = dma_burst_len_to_enum(chan->pcfg.src_fixed_burst);
+		dst_msize = dma_burst_len_to_enum(chan->pcfg.dst_fixed_burst);
+	}
 
 	axi_block_ts = chan->chip->dw->hdata->block_size[chan->id];
 
@@ -676,7 +725,7 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
 		device_addr = chan->config.dst_addr;
 		ctllo = reg_width << CH_CTL_L_DST_WIDTH_POS |
 			mem_width << CH_CTL_L_SRC_WIDTH_POS |
-			DWAXIDMAC_CH_CTL_L_NOINC << CH_CTL_L_DST_INC_POS |
+			dst_inc << CH_CTL_L_DST_INC_POS |
 			DWAXIDMAC_CH_CTL_L_INC << CH_CTL_L_SRC_INC_POS;
 		block_ts = len >> mem_width;
 		break;
@@ -686,7 +735,7 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
 		ctllo = reg_width << CH_CTL_L_SRC_WIDTH_POS |
 			mem_width << CH_CTL_L_DST_WIDTH_POS |
 			DWAXIDMAC_CH_CTL_L_INC << CH_CTL_L_DST_INC_POS |
-			DWAXIDMAC_CH_CTL_L_NOINC << CH_CTL_L_SRC_INC_POS;
+			src_inc << CH_CTL_L_SRC_INC_POS;
 		block_ts = len >> reg_width;
 		break;
 	default:
@@ -721,8 +770,8 @@ static int dw_axi_dma_set_hw_desc(struct axi_dma_chan *chan,
 
 	hw_desc->lli->block_ts_lo = cpu_to_le32(block_ts - 1);
 
-	ctllo |= DWAXIDMAC_BURST_TRANS_LEN_4 << CH_CTL_L_DST_MSIZE_POS |
-		 DWAXIDMAC_BURST_TRANS_LEN_4 << CH_CTL_L_SRC_MSIZE_POS;
+	ctllo |= dst_msize << CH_CTL_L_DST_MSIZE_POS |
+		 src_msize << CH_CTL_L_SRC_MSIZE_POS;
 	hw_desc->lli->ctl_lo = cpu_to_le32(ctllo);
 
 	set_desc_src_master(hw_desc);
@@ -1025,6 +1074,21 @@ static int dw_axi_dma_chan_slave_config(struct dma_chan *dchan,
 
 	memcpy(&chan->config, config, sizeof(*config));
 
+	if (config->peripheral_config) {
+		if (config->peripheral_size != sizeof(struct axi_dma_peripheral_config)) {
+			dev_err(chan2dev(chan), "Invalid peripheral size %zu, expected %zu\n",
+				config->peripheral_size,
+				sizeof(struct axi_dma_peripheral_config));
+			chan->has_pcfg = false;
+			return -EINVAL;
+		}
+		memcpy(&chan->pcfg, config->peripheral_config,
+		       sizeof(struct axi_dma_peripheral_config));
+		chan->has_pcfg = true;
+	} else {
+		chan->has_pcfg = false;
+	}
+
 	return 0;
 }
 
@@ -1123,7 +1187,7 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
 				hw_desc = &desc->hw_desc[i];
 				if (hw_desc->llp == llp) {
 					axi_chan_irq_clear(chan, hw_desc->lli->status_lo);
-					hw_desc->lli->ctl_hi |= CH_CTL_H_LLI_VALID;
+					hw_desc->lli->ctl_hi |= cpu_to_le32(CH_CTL_H_LLI_VALID);
 					desc->completed_blocks = i;
 
 					if (((hw_desc->len * (i + 1)) % desc->period_len) == 0)
@@ -1665,6 +1729,8 @@ static void dw_remove(struct platform_device *pdev)
 }
 
 static const struct dev_pm_ops dw_axi_dma_pm_ops = {
+	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+				pm_runtime_force_resume)
 	SET_RUNTIME_PM_OPS(axi_dma_runtime_suspend, axi_dma_runtime_resume, NULL)
 };
 
@@ -1683,6 +1749,9 @@ static const struct of_device_id dw_dma_of_id_table[] = {
 	}, {
 		.compatible = "starfive,jh8100-axi-dma",
 		.data = (void *)AXI_DMA_FLAG_HAS_RESETS,
+	}, {
+		.compatible = "zhihe,a210-axi-dma",
+		.data = (void *)AXI_DMA_FLAG_USE_CFG2,
 	},
 	{}
 };
