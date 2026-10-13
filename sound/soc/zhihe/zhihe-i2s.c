@@ -593,6 +593,23 @@ static const struct snd_soc_component_driver zhihe_i2s_soc_component = {
 	.name = DRV_NAME,
 };
 
+static bool zhihe_i2s_hdmi_only(struct device_node *np)
+{
+	struct device_node *ep;
+	bool hdmi_only;
+
+	ep = of_graph_get_endpoint_by_regs(np, DAI_HDMI, -1);
+	if (!ep)
+		return false;
+	of_node_put(ep);
+
+	ep = of_graph_get_endpoint_by_regs(np, DAI_I2S, -1);
+	hdmi_only = !ep;
+	of_node_put(ep);
+
+	return hdmi_only;
+}
+
 static bool zhihe_i2s_read_and_write_regs(unsigned int reg)
 {
 	switch (reg) {
@@ -933,7 +950,7 @@ static int zhihe_i2s_probe(struct platform_device *pdev)
 				i2s_priv->sys_csr = NULL;
 			} else {
 				i2s_priv->hdmi_connected =
-					is_csr_available(np, TRANSFER_PORT_HDMI, -1);
+					is_csr_available(np, DAI_HDMI, -1);
 			}
 		}
 	}
@@ -975,9 +992,14 @@ static int zhihe_i2s_probe(struct platform_device *pdev)
 	dai[DAI_I2S].name = i2s_priv->drvdata->i2s_dai_name;
 	dai[DAI_HDMI].name = i2s_priv->drvdata->hdmi_dai_name;
 
-	ret = devm_snd_soc_register_component(&pdev->dev,
-					      &zhihe_i2s_soc_component, dai,
-					      ARRAY_SIZE(zhihe_i2s_soc_dai));
+	if (zhihe_i2s_hdmi_only(np))
+		ret = devm_snd_soc_register_component(&pdev->dev,
+						      &zhihe_i2s_soc_component,
+						      &dai[DAI_HDMI], 1);
+	else
+		ret = devm_snd_soc_register_component(&pdev->dev,
+						      &zhihe_i2s_soc_component, dai,
+						      ARRAY_SIZE(zhihe_i2s_soc_dai));
 	if (ret) {
 		dev_err(&pdev->dev, "Could not register DAI\n");
 		goto err_suspend;
