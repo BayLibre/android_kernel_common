@@ -584,12 +584,6 @@
 #define RXFIFO_IRQ_TH			(0x20U)
 #define I2S_MAX_FIFO			(0x20U)
 
-enum zhihe_i2s_transfer_port {
-	TRANSFER_PORT_HDMI = 0,
-	TRANSFER_PORT_DP,
-	TRANSFER_PORT_UNKNOWN,
-};
-
 struct zhihe_i2s_soc_drvdata {
 	char name[32];
 	char i2s_dai_name[32];
