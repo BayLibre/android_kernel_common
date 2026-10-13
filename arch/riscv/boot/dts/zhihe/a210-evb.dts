@@ -371,12 +371,16 @@
  * share the single I2S1 DAI link, so the card exposes one PCM device
  * (device 0) with playback (ES8156, playback-only) and capture (ES7210,
  * capture-only).
+ *
+ * HDMI audio: I2S3 SD0 feeds the dw-hdmi I2S audio input internally (no
+ * pins), as a second card link -> PCM device 1. The HDMI DAI of the I2S
+ * driver is DAI 1, so the link sits on port@1 of the I2S node.
  */
 / {
 	sound {
 		compatible = "audio-graph-card2";
 		label = "A210-EVB-Audio";
-		links = <&i2s1_port>;
+		links = <&i2s1_port>, <&i2s3_hdmi_port>;
 		/* "Headphones" is the DAPM pin driven by hp-det-gpios */
 		widgets = "Headphone", "Headphones";
 		routing = "Headphones", "ES8156 LOUT",
@@ -503,6 +507,38 @@
 			dai-format = "i2s";
 			bitclock-master;
 			frame-master;
+		};
+	};
+};
+
+&audio_i2s_8ch_sd0 {
+	multi-channels = <2>;
+	status = "okay";
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		i2s3_hdmi_port: port@1 {
+			reg = <1>;
+			i2s3_hdmi_ep: endpoint {
+				remote-endpoint = <&hdmi_audio_ep>;
+				dai-format = "i2s";
+				playback-only;
+				bitclock-master;
+				frame-master;
+			};
+		};
+	};
+};
+
+&hdmi_tx {
+	ports {
+		port@2 {
+			reg = <2>;
+			hdmi_audio_ep: endpoint {
+				remote-endpoint = <&i2s3_hdmi_ep>;
+			};
 		};
 	};
 };
